@@ -2,8 +2,7 @@ services:
   App\Controller\APIController:
     arguments: ['@App\Domain\Service\VideoProcessing\CallbackVoter', '@App\Domain\Service\VideoProcessing\Callback\EagerType']
 
-
   App\Controller\UploadedVideoAdminController:
-       calls:
-           - [setContainer, ['@service_container']]
-       arguments: ['@form.factory', '@vod.video_uploader']
+    calls:
+        - [setContainer, ['@service_container']]
+    arguments: ['@form.factory', '@App\Domain\Service\VideoProcessing\VideoUploader']

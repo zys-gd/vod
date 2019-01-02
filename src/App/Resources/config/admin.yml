@@ -1,6 +1,5 @@
 services:
-    vod.admin.uploaded_video:
-        class: App\Admin\UploadedVideoAdmin
+    App\Admin\UploadedVideoAdmin:
         arguments: [~, App\Domain\Entity\UploadedVideo, 'App\Controller\UploadedVideoAdminController']
         tags:
             - { name: sonata.admin, manager_type: orm, group: admin, label: Videos }
