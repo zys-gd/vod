@@ -1,0 +1,5 @@
+services:
+  App\Twig\VideoProcessingHelperExtension:
+    tags:
+      - { name: twig.extension }
+    arguments: ['%cloudinary_cloud_name%']

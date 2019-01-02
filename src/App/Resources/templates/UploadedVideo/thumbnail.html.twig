@@ -1,0 +1,10 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field_value %}
+
+    {% for thumbnail in object.thumbnails %}
+        <img src="{{ thumbnail }}" alt="" class="img-thumbnail" style="margin-left: 3px">
+    {% endfor %}
+
+
+{% endblock %}

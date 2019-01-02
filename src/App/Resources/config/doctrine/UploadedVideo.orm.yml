@@ -1,0 +1,30 @@
+App\Domain\Entity\UploadedVideo:
+    type: entity
+    table: null
+    repositoryClass: App\Domain\Repository\UploadedVideoRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        status:
+            type: smallint
+        remoteUrl:
+            type: string
+        remoteId:
+            type: string
+        createdAt:
+            type: datetime
+        title:
+            type: string
+        thumbnails:
+            type: json_array
+
+    lifecycleCallbacks: {  }
+
+
+    manyToOne:
+        category:
+            targetEntity: App\Domain\Entity\VideoCategory

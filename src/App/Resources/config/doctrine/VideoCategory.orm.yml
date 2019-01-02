@@ -1,0 +1,24 @@
+App\Domain\Entity\VideoCategory:
+    type: entity
+    table: null
+    repositoryClass: App\Domain\Repository\VideoCategoryRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        title:
+            type: string
+            length: null
+        alias:
+            type: string
+            length: null
+        uuid:
+            type: string
+            length: 36
+            nullable: true
+            unique: true
+
+    lifecycleCallbacks: {  }

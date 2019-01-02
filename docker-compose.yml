@@ -1,0 +1,62 @@
+version: '2'
+services:
+
+    redis:
+      image: redis:alpine
+      ports:
+        - 6379:6379
+      networks:
+       dev-env:
+        ipv4_address: 192.168.101.3
+
+    webserver:
+      build: .docker/apache
+      environment:
+        PHP_IDE_CONFIG: serverName=vod.local
+      ports:
+        - 8081:80
+      volumes:
+        -  .:/var/www/html
+        -  .docker/apache/vhosts:/etc/apache2/sites-enabled:ro
+        -  .docker/php/php.ini:/usr/local/etc/php/php.ini:ro
+      networks:
+        dev-env:
+          ipv4_address: 192.168.101.4
+
+    #php-fpm:
+    # build: phpdocker/php-fpm
+    # working_dir: /application
+    # environment:
+    #   PHP_IDE_CONFIG: serverName=store.local
+    #   APP_ENV: dev
+    # volumes:
+    #   - /var/www/store:/application
+    #   - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.0/fpm/conf.d/99-overrides.ini
+    #   - ./phpdocker/php-fpm/www.conf:/etc/php/7.0/fpm/pool.d/www.conf
+    # networks:
+    #  dev-env:
+    #    ipv4_address: 192.168.101.5
+
+    mysql:
+      restart: always
+      image: mysql:5.6
+      environment:
+        MYSQL_ROOT_PASSWORD: '123456'
+      volumes:
+        - mysql-data:/var/lib/mysql
+      ports:
+        - 13306:3306
+      networks:
+       dev-env:
+        ipv4_address: 192.168.101.6
+
+
+volumes:
+  mysql-data:
+
+
+networks:
+  dev-env:
+   ipam:
+     config:
+        - subnet: 192.168.101.0/24

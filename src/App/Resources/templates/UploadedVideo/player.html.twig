@@ -1,0 +1,40 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field_value %}
+
+
+    {% if isVideoReady(object) %}
+
+
+
+        <link href="https://unpkg.com/cloudinary-video-player/dist/cld-video-player.min.css" rel="stylesheet">
+        <script src="https://unpkg.com/cloudinary-core/cloudinary-core-shrinkwrap.min.js"
+                type="text/javascript"></script>
+        <script src="https://unpkg.com/cloudinary-video-player/dist/cld-video-player.min.js"
+                type="text/javascript"></script>
+
+
+        <div style="max-width: 600px">
+            <video id="doc-player" controls muted class="cld-video-player cld-fluid"></video>
+        </div>
+
+
+        <script>
+            var cld        = cloudinary.Cloudinary.new({cloud_name: '{{ getCloudName() }}'});
+            var demoplayer = cld.videoPlayer('doc-player')
+                .sourceTypes(['hls'])
+                .fluid(true)
+                .transformation({streaming_profile: 'hd'});
+
+
+            demoplayer.source(
+                {{ createPlaylistElement(object) | raw }}
+            );
+
+        </script>
+
+    {% else %}
+        Please wait until video is processed.
+    {% endif %}
+
+{% endblock %}

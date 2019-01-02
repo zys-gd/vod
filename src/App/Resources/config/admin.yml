@@ -1,0 +1,10 @@
+services:
+    vod.admin.uploaded_video:
+        class: App\Admin\UploadedVideoAdmin
+        arguments: [~, App\Domain\Entity\UploadedVideo, 'App\Controller\UploadedVideoAdminController']
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Videos }
+
+        calls:
+            - [ setTemplate, [show, "@@App/UploadedVideo/show.html.twig"]]
+
