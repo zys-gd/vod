@@ -1,0 +1,69 @@
+App\Domain\Entity\Affiliate:
+    type: entity
+    table: affiliates
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: 255
+        type:
+            type: integer
+        url:
+            type: string
+            length: 255
+            nullable: true
+        postbackUrl:BlackList.php
+            type: string
+            length: 255
+            nullable: false
+        commercialContact:
+            type: string
+            length: 255
+            column: commercial_contact
+            nullable: true
+        technicalContact:
+            type: string
+            length: 255
+            column: technical_contact
+            nullable: true
+        skypeId:
+            type: string
+            length: 255
+            column: skype_id
+            nullable: true
+        enabled:
+            type: boolean
+        subPriceName:
+            type: string
+            length: 255
+            column: sub_price_name
+            nullable: true
+        uuid:
+            type: string
+            length: 36
+            nullable: true
+
+    lifecycleCallbacks: {  }
+
+    manyToOne:
+        country:
+            targetEntity: Country
+            joinColumn:
+                name: country_id
+                referencedColumnName: id
+    oneToMany:
+        parameters:
+            targetEntity: App\Domain\Entity\AffiliateParameter
+            mappedBy: affiliate
+            cascade: ["persist", "remove"]
+            orphanRemoval: true
+        constants:
+            targetEntity: App\Domain\Entity\AffiliateConstant
+            mappedBy: affiliate
+            cascade: ["persist", "remove"]
+            orphanRemoval: true

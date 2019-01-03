@@ -1,0 +1,143 @@
+App\Domain\Entity\Carrier:
+    type: entity
+    table: carriers
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        id_carrier:
+            type: integer
+            unique: true
+
+        operator_id:
+            type: integer
+            options:
+                default: 0
+
+        name:
+            type: string
+            length: 255
+        countryCode:
+            type: string
+            length: '2'
+        isp:
+            type: string
+            length: 255
+            nullable: true
+        published:
+            type: boolean
+            options:
+                default: false
+        lpOtp:
+            type: boolean
+            options:
+                default: false
+            #unique: true (should be added at some point...)
+        pinIdentSupport:
+            type: boolean
+            options:
+                default: false
+
+        trial_initializer:
+            type: string
+            options:
+                default: 'carrier'
+            length: 10
+
+        trial_period:
+            type: integer
+            options:
+                default: 0
+
+        trial_credits:
+            type: integer
+            options:
+                default: 2
+
+        subscription_period:
+            type: integer
+            options:
+                default: 7
+
+        subscription_credits:
+            type: integer
+            options:
+                default: 2
+
+        resubAllowed:
+            type: boolean
+            options:
+                default: false
+
+        isCampaignsOnPause:
+            type: boolean
+            options:
+                default: false
+        numberOfAllowedSubscription:
+            type: integer
+            options:
+                default: 1
+        isUnlimitedSubscriptionAttemptsAllowed:
+            type: boolean
+            options:
+                default: true
+
+        isCaptcha:
+            type: boolean
+            options:
+                default: false
+
+        numberOfAllowedSubscriptionsByConstraint:
+            type: integer
+            nullable: true
+            options:
+                default: null
+
+        redirectUrl:
+            type: string
+            nullable: true
+            options:
+                default: null
+
+        counter:
+            type: integer
+            options:
+                default: 0
+
+        flushDate:
+            type: date
+            nullable: true
+            options:
+                default: null
+
+        isCapAlertDispatch:
+            type: boolean
+            nullable: false
+            options:
+                default: false
+
+        uuid:
+            type: string
+            length: 36
+            nullable: true
+
+    lifecycleCallbacks: {  }
+
+    manyToMany:
+        categoryCarrierOverrides:
+            targetEntity: App\Domain\Entity\CategoryCarrierOverride
+            mappedBy: carriers
+        deactivatedGames:
+            targetEntity: App\Domain\Entity\Game
+            mappedBy: deactivatedCarriers
+        campaigns:
+            targetEntity: Campaign
+            mappedBy: carriers
+
+    manyToOne:
+        default_language:
+            targetEntity: App\Domain\Entity\Languages
+

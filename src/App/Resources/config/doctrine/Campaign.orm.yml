@@ -1,0 +1,92 @@
+App\Domain\Entity\Campaign:
+    type: entity
+    table: campaigns
+    indexes:
+      campaign_token_index:
+        columns: [ campaign_token ]
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        image:
+            type: string
+            length: '255'
+            #?
+            #nullable: true
+        bgColor:
+            type: string
+            length: '7'
+            column: bg_color
+            nullable: true
+            options:
+                default: '#000000'
+        textColor:
+             type: string
+             length: '7'
+             column: text_color
+             nullable: true
+             options:
+                default: '#000000'
+        campaignToken:
+             type: string
+             length: '255'
+        testUrl:
+             type: string
+             nullable: true
+             length: '255'
+        isPause:
+             type: boolean
+             options:
+                 default: false
+        counter:
+            type: integer
+            options:
+                default: 0
+        flushDate:
+            type: date
+            nullable: true
+            options:
+                default: null
+        uuid:
+            type: string
+            length: 36
+            nullable: true
+    lifecycleCallbacks:
+        postLoad : [onPostLoad]
+
+    manyToOne:
+        affiliate:
+            targetEntity: Affiliate
+            joinColumn:
+                name: affiliate_id
+                referencedColumnName: id
+        game:
+            targetEntity: Game
+            joinColumn:
+                name: game_id
+                referencedColumnName: id
+        categoryOverride:
+            targetEntity: App\Domain\Entity\CategoryCampaignOverride
+            joinColumn:
+                name: category_campaign_override_id
+                referencedColumnName: id
+
+    oneToMany:
+        campaignPricingDetails:
+            targetEntity: App\Domain\Entity\CampaignPricing
+            mappedBy: campaign
+            cascade: ["persist", "remove"]
+            orphanRemoval: true
+        campaignConstraints:
+            targetEntity: App\Domain\Entity\CampaignConstraints
+            mappedBy: campaign
+            cascade: ["persist", "remove"]
+            orphanRemoval: true
+
+    manyToMany:
+        carriers:
+            targetEntity: Carrier
+            inversedBy: campaigns

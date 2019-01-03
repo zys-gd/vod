@@ -1,0 +1,31 @@
+App\Domain\Entity\BlackList:
+    type: entity
+    table: black_list
+    indexes:
+      alias_index:
+        columns: [ alias ]
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        carrierId:
+            type: integer
+            nullable: true
+        alias:
+            type: string
+            length: 255
+        isBlockedManually:
+            type: boolean
+            nullable: false
+            options:
+                 default: true
+        addedAt:
+            type: datetime
+            nullable: false
+            options:
+                default: CURRENT_TIMESTAMP
+
+    lifecycleCallbacks: {  }

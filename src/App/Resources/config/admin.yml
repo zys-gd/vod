@@ -2,9 +2,63 @@ services:
     App\Admin\UploadedVideoAdmin:
         arguments: [~, App\Domain\Entity\UploadedVideo, 'App\Controller\UploadedVideoAdminController', '@App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector']
         tags:
-            - { name: sonata.admin, manager_type: orm, group: admin, label: Videos }
+            - { name: sonata.admin, manager_type: orm, group: Videos, label: Videos }
 
     App\Admin\VideoCategoryAdmin:
         arguments: [~, App\Domain\Entity\VideoCategory, 'App\Controller\VideoCategoryAdminController']
         tags:
-            - { name: sonata.admin, manager_type: orm, group: admin, label: Video categories }
+            - { name: sonata.admin, manager_type: orm, group: Videos, label: Categories }
+
+
+    App\Admin\BlackListAdmin:
+        arguments: [~, App\Domain\Entity\BlackList, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Users, label: BlackList }
+
+
+    App\Admin\LanguagesAdmin:
+        arguments: [~, App\Domain\Entity\Languages, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Content, label: Languages }
+
+#    App\Admin\RefundAdmin:
+#        arguments: [~, App\Domain\Entity\Refund, AppBundle:RefundAdmin]
+#        tags:
+#            - { name: sonata.admin, manager_type: orm, group: admin, label: Refunds }
+
+    App\Admin\PlaceholderAdmin:
+        arguments: [~, App\Domain\Entity\Placeholder, ~]
+        tags:
+            -
+                name: sonata.admin
+                group: Content
+                manager_type: orm
+                label: Placeholders
+
+#    App\Admin\PlaceholderToOperatorAdmin:
+#        arguments: [~, App\Domain\Entity\PlaceholderToOperator, ~, "@talentica.subscription_pack.repository"]
+#        tags:
+#            -
+#                name: sonata.admin
+#                manager_type: orm
+#                label: Placeholder to operator
+
+#    App\Admin\CarrierAdmin:
+#        arguments: [~, App\Domain\Entity\Carrier, AppBundle:CarrierAdmin]
+#        tags:
+#            -
+#                name: sonata.admin
+#                manager_type: orm
+#                group: admin
+#                label: Carrier
+#        calls:
+#            - [ setTemplate, [edit, admin/edit.html.twig]]
+
+    App\Admin\AffiliateAdmin:
+        arguments: [~, App\Domain\Entity\Affiliate, ~]
+        tags:
+            -
+                name: sonata.admin
+                manager_type: orm
+                group: Affiliates
+                label: Affiliates

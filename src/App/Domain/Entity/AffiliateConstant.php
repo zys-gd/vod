@@ -1,0 +1,147 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admin
+ * Date: 4/4/2018
+ * Time: 5:31 PM
+ */
+
+namespace App\Domain\Entity;
+
+
+use App\Domain\Entity\Interfaces\HasUuid;
+
+class AffiliateConstant implements HasUuid
+{
+    /**
+     * @var int
+     */
+    private $id;
+
+    /**
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @var string
+     */
+    private $value;
+
+    /**
+     * @var Affiliate
+     */
+    private $affiliate;
+
+    /**
+     * @var string
+     */
+    private $uuid = null;
+
+    /**
+     * AffiliateConstant constructor.
+     * @throws \Exception
+     */
+    public function __construct()
+    {
+        $this->uuid = \Ramsey\Uuid\Uuid::uuid4()->toString();
+    }
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUuid(): string
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param string $uuid
+     */
+    public function setUuid(string $uuid)
+    {
+        $this->uuid = $uuid;
+    }
+
+    /**
+     * Set input_name
+     *
+     * @param string $name
+     *
+     * @return AffiliateConstant
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $value
+     *
+     * @return AffiliateConstant
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get value
+     *
+     * @return string
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+    /**
+     * Set affiliate
+     *
+     * @param integer $affiliate
+     *
+     * @return AffiliateConstant
+     */
+    public function setAffiliate($affiliate)
+    {
+        $this->affiliate = $affiliate;
+
+        return $this;
+    }
+
+    /**
+     * Get affiliate
+     *
+     * @return Affiliate
+     */
+    public function getAffiliate()
+    {
+        return $this->affiliate;
+    }
+
+}

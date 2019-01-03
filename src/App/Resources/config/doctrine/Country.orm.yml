@@ -1,0 +1,46 @@
+App\Domain\Entity\Country:
+    type: entity
+    table: countries
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        countryCode:
+            type: string
+            length: '2'
+            unique: true
+        countryName:
+            type: string
+            length: '100'
+        currencyCode:
+            type: string
+            length: '3'
+            nullable: true
+        isoNumeric:
+            type: string
+            length: '4'
+            nullable: true
+        isoAlpha3:
+            type: string
+            length: '3'
+            nullable: true
+        uuid:
+            type: string
+            length: 36
+            nullable: true
+    lifecycleCallbacks: {  }
+    indexes:
+        country_code_idx:
+            columns: [ country_code ]
+
+
+    manyToMany:
+        categoryCountryOverrides:
+            targetEntity: App\Domain\Entity\CategoryCountryOverride
+            mappedBy: countries
+        deactivatedGames:
+            targetEntity: App\Domain\Entity\Game
+            mappedBy: deactivatedCountries

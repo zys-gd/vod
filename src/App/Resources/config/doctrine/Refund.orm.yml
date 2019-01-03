@@ -1,0 +1,50 @@
+# ORM definition of the User model.
+App\Domain\Entity\Refund:
+    type: entity
+    table: refunds
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        bfChargeProcessId:
+            type: integer
+            nullable: true
+            options:
+                default: null
+        bfRefundProcessId:
+            type: integer
+            nullable: true
+            options:
+                default: null
+        status:
+            type: string
+            length: 255
+            nullable: true
+            options:
+                default: null
+        error:
+            type: string
+            length: 255
+            nullable: true
+            options:
+                default: null
+        attemptDate:
+            type: datetime
+            nullable: false
+            options:
+                default: CURRENT_TIMESTAMP
+        refundValue:
+            type: integer
+            nullable: true
+            options:
+                default: null
+    manyToOne:
+        billableUser:
+            targetEntity: UserBundle\Entity\BillableUser
+            joinColumn:
+                name: billable_user_id
+                referencedColumnName: id
+

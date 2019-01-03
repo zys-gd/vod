@@ -1,0 +1,29 @@
+App\Domain\Entity\AffiliateParameter:
+    type: entity
+    table: affiliate_parameters
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        input_name:
+            type: string
+            length: 255
+        output_name:
+            type: string
+            length: 255
+        uuid:
+            type: string
+            length: 36
+            nullable: true
+    lifecycleCallbacks: {  }
+
+    manyToOne:
+        affiliate:
+            targetEntity: Affiliate
+            inversedBy: parameters
+            joinColumn:
+                name: affiliate_id
+                referencedColumnName: id

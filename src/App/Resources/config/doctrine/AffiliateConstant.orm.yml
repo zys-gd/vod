@@ -1,0 +1,29 @@
+App\Domain\Entity\AffiliateConstant:
+    type: entity
+    table: affiliate_constants
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: 255
+        value:
+            type: string
+            length: 255
+        uuid:
+            type: string
+            length: 36
+            nullable: true
+    lifecycleCallbacks: {  }
+
+    manyToOne:
+        affiliate:
+            targetEntity: App\Domain\Entity\Affiliate
+            inversedBy: constants
+            joinColumn:
+                name: affiliate_id
+                referencedColumnName: id
