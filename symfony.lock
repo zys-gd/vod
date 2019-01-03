@@ -62,6 +62,9 @@
             "ref": "c1431086fec31f17fbcfe6d6d7e92059458facc1"
         }
     },
+    "doctrine/event-manager": {
+        "version": "v1.0.0"
+    },
     "doctrine/inflector": {
         "version": "v1.2.0"
     },
@@ -76,6 +79,12 @@
     },
     "doctrine/orm": {
         "version": "v2.5.14"
+    },
+    "doctrine/persistence": {
+        "version": "v1.1.0"
+    },
+    "doctrine/reflection": {
+        "version": "v1.0.0"
     },
     "easycorp/easy-log-handler": {
         "version": "1.0",
@@ -209,6 +218,9 @@
             "ref": "f3a28efb32f20b8740fd763651cabd780bce43da"
         }
     },
+    "symfony/contracts": {
+        "version": "v1.0.2"
+    },
     "symfony/css-selector": {
         "version": "v3.4.20"
     },
@@ -317,13 +329,13 @@
             "ref": "0e548dd90adba18fabd4ef419b14d361fe4d6c74"
         }
     },
-    "symfony/polyfill-apcu": {
-        "version": "v1.10.0"
-    },
     "symfony/polyfill-intl-icu": {
         "version": "v1.10.0"
     },
     "symfony/polyfill-mbstring": {
+        "version": "v1.10.0"
+    },
+    "symfony/polyfill-php72": {
         "version": "v1.10.0"
     },
     "symfony/process": {
@@ -403,6 +415,9 @@
     },
     "symfony/var-dumper": {
         "version": "v3.4.20"
+    },
+    "symfony/var-exporter": {
+        "version": "v4.2.1"
     },
     "symfony/web-link": {
         "version": "v3.4.20"
