@@ -1,0 +1,554 @@
+<!-- Open in web browser for formatted version --> <!DOCTYPE html><html><title>DeviceAtlas Device Detection API</title><xmp theme="da">
+
+# DeviceAtlas Device Detection API #
+
+The DeviceAtlas Device Detection API provides a way to detect devices based on
+the HTTP headers. Using the headers, the API returns device information such as
+screen width, screen height, is mobile, vendor, model etc.
+
+To see a full list of properties in DeviceAtlas please visit:
+https://deviceatlas.com/resources/available-properties .
+
+
+
+### Data File ###
+
+The DeviceAtlas API relies on a device data file to function. DeviceAtlas
+provides daily data file updates so it is recommended to download the data file
+on a regular basis. This can be done manually from your account page or
+automated via the https://deviceatlas.com/getJSON page.
+
+For more information please see:
+https://deviceatlas.com/resources/getting-the-data
+
+
+
+### Dependencies ###
+This library does not depend on any third party libraries.
+
+
+
+### Library ###
+The DeviceAtlas Device Detection API consists of four libraries as below:
+
+
+#### DeviceAtlas Common (Api/) ####
+  Contains the shared libraries which are common between the DeviceAtlas APIs.
+  When using the DeviceApi and DeviceApiWeb, the required files from this library
+  will be included automatically by the API. Keep the relative paths of the
+  libraries as they are in the downloaded package.
+
+#### DeviceApi (Api/Device/Mobi_Mtld_Da_Device_DeviceApi) ####
+  The main DeviceApi that loads the Device data and detects and returns the
+  properties for a set of request headers or the user-agent. Client-side
+  properties can be optionally passed to this library to get more accurate
+  results.
+
+#### DeviceApiWeb (Api/Device/Mobi_Mtld_Da_Device_DeviceApiWeb) ####
+  A small extension to the main API that allows automatic extraction of the
+  request headers and client-side properties from the request. It is preferred to
+  use this library for real-time device detections in web applications.
+
+#### CacheProvider (Api/CacheProvider/) ####
+  Contains an interface for cache-provider classes that can be used with the
+  DeviceApi and DeviceApiWeb. Also contains three classes which implement the
+  interfaces for APC, Memcache and a file-cache.
+
+
+
+### The 2.x API Interface ###
+
+* This is the new standard interface, common across the DeviceAtlas APIs.
+
+* This interface is intended to be simple to use, as the interface includes
+  custom objects for getting the detected property set and getting a single
+  property value.
+
+* Unlike the former interface, this interface is not a set of static methods.
+  This allows the interface to have more encapsulation, requiring fewer and
+  simpler methods. This new API is highly maintainable and flexible for future
+  improvements and new features.
+
+* The DeviceApiWeb extension makes it possible to do device lookups based on the
+  request or a whole set of HTTP headers. This allows the API to make a more
+  precise detection and return properties with more accurate values. For example,
+  some browsers distribute the user-agent information into different headers, so
+  it is almost impossible to correctly detect the device properties, such as type
+  and model from the user-agent header itself. With this new interface, the API
+  is able to overcome these situations.
+
+
+
+### Basic Usage ###
+The API can be used as follows:
+
+* Inside a web application.
+  To lookup the properties of the device which sent the request:
+
+    ```php
+
+    // the detection is done based on the current HTTP request
+
+    require_once "/path/to/Api/Device/DeviceApiWeb.php";
+
+    /* (1) create an instance with default API configs */
+    $deviceApi = new Mobi_Mtld_DA_Device_DeviceApiWeb();
+
+    /* (2) load the data file */
+    try {
+        $deviceApi->loadDataFromFile("/path/to/datafile.json");
+    } catch (Exception $x) {
+        // handle the exceptions related to loading the data file
+    }
+
+    /* (3) look up device properties */
+    $properties = $deviceApi->getProperties();
+
+    /* (4) use the properties - e.g. detect mobile device  */
+
+    // if there is a property named "mobileDevice" and the value is true
+    if ($properties->contains("mobileDevice", true)) {
+
+        // example 1: Get the screen width for image optimization
+        $displayWidth = $properties->containsKey("displayWidth")?
+            $properties->get("displayWidth")->asInteger(): 100;
+
+        // example 2: Get the device vendor name
+        $vendor = $properties->containsKey("vendor")?
+            $properties->get("vendor")->asString(): "";
+
+        // example 3: Touch screen optimization
+        $useBiggerIcons = $properties->contains("touchScreen", true);
+
+        // example 4: Send Geo Location JS to client?
+        $supportsGeoLocation = $properties->contains("js.geoLocation", true);
+
+        // example 5: The Properties class implements the magic __get so you can:
+        // if property does not exists then the value will be null
+        // otherwise you get a typed value
+        $model         = $properties->model;         // null or string
+        $isTablet      = $properties->isTablet;      // null or boolean
+        $displayHeight = $properties->displayHeight; // null or integer
+    }
+    ```
+
+* Not in a web application or not for real-time device lookups.
+  To lookup the properties by manually passing the headers to the API:
+  Note that the DeviceApiWeb is an extension of DeviceApi so all the
+  functionality shown below is also available in DeviceApiWeb.
+
+    ```php
+
+    // the detection is done based on (HTTP headers) or user-agent string
+
+    require_once "/path/to/Api/Device/DeviceApi.php";
+
+    /* (1) create an instance with default API configs */
+    $deviceApi = new Mobi_Mtld_DA_Device_DeviceApi();
+
+    /* (2) load the data file */
+    try {
+        $deviceApi->loadDataFromFile("/path/to/datafile.json");
+    } catch (Exception $x) {
+        // handle the exceptions related to loading the data file
+    }
+
+    /* (3) look up device properties by HTTP headers */
+    $headers = array(
+        "HEADER NAME" => "HEADER VALUE",
+    );
+    $properties = $deviceApi->getProperties($headers);
+
+    /* (3) look up device properties by user-agent string */
+    $userAgent = "THE USER AGENT VALUE";
+    $properties = $deviceApi->getProperties($userAgent);
+
+    /* (4) use the properties - e.g. detect mobile device  */
+
+    // if there is a property named "mobileDevice" and the value is true
+    if ($properties->contains("mobileDevice", true)) {
+
+        // example 1: Get the screen width for image optimization
+        $displayWidth = $properties->containsKey("displayWidth")?
+            $properties->get("displayWidth")->asInteger(): 100;
+
+        // example 2: Get the device vendor name
+        $vendor = $properties->containsKey("vendor")?
+            $properties->get("vendor")->asString(): "";
+
+        // example 3: Touch screen optimization
+        $useBiggerIcons = $properties->contains("touchScreen", true);
+
+        // example 4: Send Geo Location JS to client?
+        $supportsGeoLocation = $properties->contains("js.geoLocation", true);
+
+        // example 5: The Properties class implements the magic __get so you can:
+        // if property does not exists then the value will be null
+        // otherwise you get a typed value
+        $model         = $properties->model;         // null or string
+        $isTablet      = $properties->isTablet;      // null or boolean
+        $displayHeight = $properties->displayHeight; // null or integer
+    }
+    ```
+
+
+
+### Client-side Component ###
+In addition to the properties from the data file, properties can be gathered
+from the client's browser and used both on the client side and on the server
+side. Please see the client side readme file for more information.
+
+
+#### Usage With Client-side Component ####
+In addition to normal usage, DeviceAtlas has the capability to capture client
+side properties and merge them into the server side properties.
+
+The "deviceatlas.min.js" file must be included on your webpage in order for it
+to detect the client side properties. The client side properties are returned to
+the server in a cookie called DAPROPS. The contents of this cookie are
+automatically detected with the request headers or can be passed separately,
+with Headers or a User-Agent, to get the combined properties back.. Both sets of
+properties are used in additional logic to determine other properties such
+iPhone and iPad models which are normally not detectable.
+
+* Inside a web application.
+  To lookup the properties of the device which sent the request:
+
+    ```php
+
+    // the detection is done based on the HTTP request
+
+    /* (1) create an instance with default API configs */
+    $deviceApi = new Mobi_Mtld_DA_Device_DeviceApiWeb();
+
+    /* (2) load the data file */
+    try {
+        $deviceApi->loadDataFromFile("/path/to/datafile.json");
+    } catch (Exception $x) {
+        // handle the exceptions related to loading the data file
+    }
+
+    /* (3) look up device properties */
+    $properties = $deviceApi->getProperties();
+
+    /* (4) use the properties - e.g. detect mobile device  */
+
+    // if there is a property named "mobileDevice" and the value is true
+    if ($properties->contains("mobileDevice", true)) {
+
+        // example 1: Get the screen width for image optimization
+        $displayWidth = $properties->displayWidth;
+
+        // example 2: Get the device vendor name
+        $vendor = $properties->containsKey("vendor")?
+            $properties->get("vendor")->asString(): "";
+
+        // example 3: Touch screen optimization
+        $useBiggerIcons = $properties->contains("touchScreen", true);
+
+        // example 4: Send Geo Location JS to client?
+        $supportsGeoLocation = $properties->contains("js.geoLocation", true);
+
+        // example 5: Get the device orientation (degrees)
+        $deviceOrientation = $properties->containsKey("bjs.deviceOrientation")?
+            $properties->get("bjs.deviceOrientation")->asInteger(): 0;
+    }
+    ```
+
+* Not in a web application or not for real-time device lookups.
+  To lookup the properties by manually passing the headers and the client-side
+  properties to the API:
+  Note that the DeviceApiWeb is an extension of DeviceApi so all functionalities
+  shown below are also available in DeviceApiWeb.
+
+    ```php
+
+    // the detection is done based on (HTTP headers) or user-agent string
+
+    /* (1) create an instance with default API configs */
+    $deviceApi = new Mobi_Mtld_DA_Device_DeviceApi();
+
+    /* (2) load the data file */
+    try {
+        $deviceApi->loadDataFromFile("/path/to/datafile.json");
+    } catch (Exception $x) {
+        // handle the exceptions related to loading the data file
+    }
+
+    /* (3) look up device properties by HTTP headers */
+    $clientSide = "PROPERTY1:VALUE1|PROPERTY2:VALUE2|PROPERTY3:VALUE3";
+
+    $headers = array(
+        "HEADER NAME" => "HEADER VALUE",
+    );
+    $properties = $deviceApi->getProperties($headers, $clientSide);
+
+    /* (3) look up device properties by user-agent string */
+    $userAgent = "THE USER AGENT VALUE";
+    $properties = $deviceApi->getProperties($userAgent, $clientSide);
+
+    /* (4) use the properties - e.g. detect mobile device  */
+
+    // if there is a property named "mobileDevice" and the value is true
+    if ($properties->contains("mobileDevice", true)) {
+
+        // example 1: Get the screen width for image optimization
+        $displayWidth = $properties->displayWidth;
+
+        // example 2: Get the device vendor name
+        $vendor = $properties->containsKey("vendor")?
+            $properties->get("vendor")->asString(): "";
+
+        // example 3: Touch screen optimization
+        $useBiggerIcons = $properties->contains("touchScreen", true);
+
+        // example 4: Send Geo Location JS to client?
+        $supportsGeoLocation = $properties->contains("js.geoLocation", true);
+
+        // example 5: Get the device orientation (degrees)
+        int deviceOrientation = $properties->containsKey("bjs.deviceOrientation")?
+            $properties->get("bjs.deviceOrientation")->asInteger(): 0;
+    }
+    ```
+
+
+
+### Examples ###
+Various examples are included in this package to clearly demonstrate the API
+features, usage and some use cases. These examples are very simple and are
+heavily commented.
+
+#### Basic Usage ####
+Includes six examples. Three simple command line examples which
+use DeviceApi to detect and get properties from header sets and client-side
+component. These examples show how the headers and client-side components
+help getting precise property values from Opera mini browsers and iPhone
+devices. Three simple web examples to be used in a web application. These
+examples use the DeviceAtlasWeb and the request object to automatically detect
+and get the properties for the request. Using the client-side-component is shown
+in these web examples.
+
+#### Redirection ####
+This web example uses the DeviceApiWeb to get properties for
+the current request and then uses some basic property values to decide which
+website provides the most suitable content for the device making the request.
+
+#### Content Adaptation ####
+This web example uses the DeviceApiWeb to get properties for the device making
+the current request and then uses some basic property values to choose a suitable
+template to wrap around the content.
+
+#### Analytics ####
+This web example uses the DeviceApi to get properties for user-agents from a
+given list. Some properties such as vendor, browser name and device type are
+aggregated and the results are displayed as graphs and numbers.
+
+#### Content Targeting ####
+This example uses the DeviceApiWeb to detect the device and use some of its
+properties to show certain advertisements and download links which may be
+related or of interest to the user, considering his/her device.
+This is a web example.
+
+Note that in the web examples which use the DeviceApiWeb, the client side
+properties are taken into account automatically by the API if the cookie exists
+on the browser. This means if the cookie already exists within your browser you
+will still see the client side properties in a getProperties call which has not
+included the DeviceAtlas client side component. You can delete the cookie
+manually to see the differences between the results from examples which use the
+client side component and those that don't.
+
+To run the web application examples, follow these steps:
+
+* Edit the example files and update the data file path.
+* Run the CLI examples from command line.
+* Run the web applications in a browser http://yourwebserver/ExampleName/ .
+
+
+
+### Upgrading ###
+If you are currently using a DeviceAtlas Enterprise API version prior to 2.0.
+Please see the [Upgrade readme file](README.Upgrade.html) for more information.
+
+
+
+### Optimizations ###
+When the DeviceApi or DeviceApiWeb are used in a stateless environment such as in
+a Web Server, the data file has to be loaded on each request because PHP is
+a stateless language. While this works, it greatly impacts performance. To
+address this issue this API provides two ways to optimize the memory usage and
+lookup performance.
+
+#### Data File Optimization ####
+It is highly recommended to use the data file optimizer. The optimizer breaks
+the data file into smaller parts and caches them on the disk. The API will use
+the cached data instead and will only lead the data needed for a certain lookup
+into the memory.
+
+```php
+    $config = new Mobi_Mtld_DA_Device_Config();
+    $config->setUseTreeOptimizer(true);
+
+    $deviceApi = new Mobi_Mtld_DA_Device_DeviceApiWeb($config);
+
+    try {
+        $deviceApi->loadDataFromFile("/path/to/datafile.json");
+    } catch (Exception $x) {
+
+    }
+```
+
+Using the DeviceApi or DeviceApiWeb as shown above will:
+
+* Automatically optimize the data file (datafile.json).
+* Automatically sense a newer data file when the data file is replaced or changed
+  and will optimize the new data file and renew the optimization cache.
+* The API will use the cached data files for optimized device lookups when they
+  are available.
+
+Note: as soon as the API senses a new data file, it will perform an optimization
+process on it's usage. This means that, in a web application, the first request
+after a data file update will experience a small lag. If you wish to eliminate
+this lag, you may manually run the optimization process using a command line tool
+which comes with the API package.
+
+```php
+php ExtraTools/DeviceApiCache/data-file-optimizer.php -c /path/to/datafile.json
+```
+
+Using this command line tool you can also perform the following actions:
+
+* Get a small speed and memory usage analysis report by comparing the data file
+  with the optimized data file.
+
+```php
+php ExtraTools/DeviceApiCache/data-file-optimizer.php -a /path/to/datafile.json
+```
+
+* Clear the optimization cache files of a data file.
+
+```php
+php ExtraTools/DeviceApiCache/data-file-optimizer.php -d /path/to/datafile.json
+```
+
+If you want to manually update the optimization caches with the command line tool
+then you may want to turn off the DeviceApi data file change checking which would
+be unnecessary:
+
+```php
+    $config = new Mobi_Mtld_DA_Device_Config();
+    $config->setUseTreeOptimizer(true);
+    $config->setIgnoreDataFileChanges(true);
+
+    $deviceApi = new Mobi_Mtld_DA_Device_DeviceApiWeb($config);
+
+    try {
+        $deviceApi->loadDataFromFile("/path/to/datafile.json");
+    } catch (Exception $x) {
+
+    }
+```
+
+
+By default the optimized data caches will be put inside the system temp directory,
+however you can change this temp/cache directory:
+
+```php
+    $config = new Mobi_Mtld_DA_Device_Config();
+    $config->setUseTreeOptimizer(true);
+    $config->setOptimizerTempDir('/path/to/my/temp-directory');
+
+    $deviceApi = new Mobi_Mtld_DA_Device_DeviceApiWeb($config);
+
+    try {
+        $deviceApi->loadDataFromFile("/path/to/datafile.json");
+    } catch (Exception $x) {
+
+    }
+```
+
+The custom temp directory, if implemented, must always be passed to the command
+line tool as shown below:
+
+```php
+    php ExtraTools/DeviceApiCache/data-file-optimizer.php -c /path/to/datafile.json -t /custom/temp-directory
+
+    php ExtraTools/DeviceApiCache/data-file-optimizer.php -a /path/to/datafile.json -t /custom/temp-directory
+
+    php ExtraTools/DeviceApiCache/data-file-optimizer.php -d /path/to/datafile.json -t /custom/temp-directory
+```
+
+
+#### Using Cache Providers ####
+While the DeviceAtlas API lookups are very fast, caching the lookup results will
+eliminate repeated unnecessary future lookups. Currently there are three cache
+providers available APC, Memcache and file-cache. The API can be configured to
+cache the results for a request, header set or user-agent. For future requests
+the API will return the cached results if they exists.
+
+```php
+    $config = new Mobi_Mtld_DA_Device_Config();
+
+    require_once '/path/to/Api/CacheProvider/ApcCacheProvider.php';
+    $config->setCacheProvider(new Mobi_Mtld_DA_CacheProvider_ApcCacheProvider());
+
+    $deviceApi = new Mobi_Mtld_DA_Device_DeviceApiWeb($config);
+
+    /* (2) load the data file */
+    try {
+        $deviceApi->loadDataFromFile("/path/to/datafile.json");
+
+    } catch (Exception $x) {
+
+    }
+```
+
+The default cache expiry time is 86400 seconds, which is one day. To change this
+time limit, pass the new value to the cache provider constructor like this:
+
+```php
+    $config = new Mobi_Mtld_DA_Device_Config();
+
+    require_once '/path/to/Api/CacheProvider/ApcCacheProvider.php';
+    $config->setCacheProvider(new Mobi_Mtld_DA_CacheProvider_ApcCacheProvider(604800));
+```
+
+If you want to use a cache provider that is not available within the DeviceAtlas
+package:
+
+Create a class that implements the
+Mobi_Mtld_DA_CacheProvider_CacheProviderInterface located in
+/path/to/Api/CacheProvider/CacheProviderInterface.php
+
+
+#### Using both optimizations together ####
+The two optimizations are not related to each other, you may use only one of the
+optimizations or both together. We recommend using both optimizations in a web
+application.
+
+```php
+    require_once '/path/to/Api/CacheProvider/ApcCacheProvider.php';
+
+    $config = new Mobi_Mtld_DA_Device_Config();
+    $config->setUseTreeOptimizer(true);
+    $config->setCacheProvider(new Mobi_Mtld_DA_CacheProvider_ApcCacheProvider);
+    $deviceApi = new Mobi_Mtld_DA_Device_DeviceApiWeb($config);
+
+    /* (2) load the data file */
+    try {
+        $deviceApi->loadDataFromFile("/path/to/datafile.json");
+
+    } catch (Exception $x) {
+
+    }
+```
+
+
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+_ (c) 2015 Afilias Technologies Ltd (dotMobi). All rights reserved. https://deviceatlas.com _
+
+
+<!-- HTML+JS for document formatting when opened in browser --> 
+<div class="btn-group" id="main-menu" style="float:right"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Menu<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="README.html">Main</a></li><li class="disabled"><a href="README.DeviceApi.html">Device Detection API</a></li><li><a href="README.DeviceApi-Config.html">Device Detection API Config</a></li><li><a href="README.Upgrade.html">Device Detection API Upgrade</a></li><li><a href="DeviceApiDocs/index.html">Device Detection API Docs</a></li><li class="divider"></li><li><a href="README.CarrierApi.html">Carrier Identification API</a></li><li><a href="CarrierApiDocs/index.html">Carrier Identification API Docs</a></li><li class="divider"></li><li><a href="README.ClientSide.html">Client-side Component</a></li><li><a href="README.ConnectivityAnalyser.html">Connectivity Analyser</a></li></ul></div></xmp><script src="https://deviceatlas.com/sites/all/libraries/strapdown/strapdown.js"></script></html>

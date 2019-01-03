@@ -1,0 +1,105 @@
+<!-- Open in web browser for formatted version --> <!DOCTYPE html><html><title>DeviceAtlas Enterprise</title><xmp theme="da">
+
+# DeviceAtlas Enterprise #
+
+Welcome to the DeviceAtlas Enterprise API.
+
+The API is designed to be easy to implement and use. To get an
+instance of an API working with your system, only two components are required:
+
+* The API Library files - To perform the look ups based on the headers presented
+  by the visiting browser.
+* A Data file - To hold the device data.
+
+The Data file is updated daily and can be retrieved from the
+https://deviceatlas.com website, manually or using a script. Once implemented in
+your infrastructure, you will have the ability to identify thousands of devices
+per second, without depending on any external systems or services.
+Following this documentation, it should take you no longer than 30 minutes to
+implement an API in your environment, using the sample code provided to get
+started. If you are having trouble implementing any of our APIs, please contact
+us at <support@deviceatlas.com> and our support team will be happy to assist you.
+
+The following items are available in
+this package:
+
+
+### Device Detection API ###
+
+The DeviceAtlas Device Detection API provides a way to detect devices based on
+the HTTP headers. Using the headers, the API returns device information such as
+screen width, screen height, is mobile, vendor, model etc.
+[Read more...](README.DeviceApi.html)
+
+
+### Device Detection API Config ###
+
+DeviceAtlas DeviceApi Config class provides options to customize the API
+behaviour in terms of memory use, caching, performance and device properties.
+[Read more...](README.DeviceApi-Config.html)
+
+
+### Device Detection API Upgrade ###
+
+This document is for users who are already using a DeviceAtlas DeviceAPI version
+prior to 2.0. There are three scenarios that may be considered.
+[Read more...](README.Upgrade.html)
+
+
+### Carrier Identification API ###
+
+The DeviceAtlas Carrier Identification API provides a way to lookup Mobile
+Carrier properties based on an IPv4 IP address. Using the IP address for a
+Mobile Carrier the API will return properties such as _networkOperator_,
+_networkBrand_, _countryCode_, _mcc_ and _mnc_.
+[Read more...](README.CarrierApi.html)
+
+
+### Client-side Component ###
+
+The DeviceAtlas APIs can work in conjunction with a JavaScript property
+detection file and merge the resulting properties for use on the server side.
+The client properties are also available to other JavaScript libraries. The
+DeviceAtlas client detection file needs to be included on your web page for this
+to function.
+[Read more...](README.ClientSide.html)
+
+
+### Connectivity Analyser ###
+
+The DeviceAtlas Connectivity Analyser is used to measure the round trip time when
+sending a payload of a fixed size to a client. This measures a combination of
+latency and bandwidth. The measured time is then used to categorize the
+client's current connection into low, medium or high.
+[Read more...](README.ConnectivityAnalyser.html)
+
+
+### API Documentation ###
+
+- [Device Detection API Docs](DeviceApiDocs/index.html)
+- [Carrier Identification API Docs](CarrierApiDocs/index.html)
+
+
+### Examples ###
+Example code can be found in the /Examples directory.
+
+Additional examples: https://deviceatlas.com/resources/example-code
+
+
+### Useful Links ###
+1. _Account Page:_ https://deviceatlas.com/user
+2. _Data File:_ https://deviceatlas.com/resources/getting-the-data
+3. _Properties:_ https://deviceatlas.com/resources/available-properties
+4. _User-Agent Tester:_ https://deviceatlas.com/device-data/user-agent-tester
+
+
+### Support ###
+Please contact <support@deviceatlas.com> .
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+_Copyright (c) 2008-2015 by Afilias Technologies Limited (dotMobi). All rights reserved. https://deviceatlas.com _
+
+
+<!-- HTML+JS for document formatting when opened in browser --> 
+<div class="btn-group" id="main-menu" style="float:right"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Menu<span class="caret"></span></a><ul class="dropdown-menu"><li class="disabled"><a href="README.html">Main</a></li><li><a href="README.DeviceApi.html">Device Detection API</a></li><li><a href="README.DeviceApi-Config.html">Device Detection API Config</a></li><li><a href="README.Upgrade.html">Device Detection API Upgrade</a></li><li><a href="DeviceApiDocs/index.html">Device Detection API Docs</a></li><li class="divider"></li><li><a href="README.CarrierApi.html">Carrier Identification API</a></li><li><a href="CarrierApiDocs/index.html">Carrier Identification API Docs</a></li><li class="divider"></li><li><a href="README.ClientSide.html">Client-side Component</a></li><li><a href="README.ConnectivityAnalyser.html">Connectivity Analyser</a></li></ul></div></xmp><script src="https://deviceatlas.com/sites/all/libraries/strapdown/strapdown.js"></script></html>

@@ -1,0 +1,76 @@
+<!-- Open in web browser for formatted version --> <!DOCTYPE html><html><title>DeviceAtlas Connectivity Analyser</title><xmp theme="da">
+
+# DeviceAtlas Connectivity Analyser #
+
+The DeviceAtlas Connectivity Analyser is used to measure the round trip time when
+sending a payload of a fixed size to a client. This measures a combination of
+latency and bandwidth. The measured time is then used to categorize the
+client's current connection into low, medium or high.
+
+
+
+### Dependencies ###
+This library does not depend on any third party libraries.
+
+
+
+### Usage ###
+In order to use the DeviceAtlas Connectivity Analyser in your application,
+follow these steps:
+
+```php
+// 1. Start the session.
+session_start();
+
+// 2. Include the library to your application.
+require_once 'PATH-TO_THE-LIBRARY/ConnectivityAnalyser.php';
+
+// 3. Create an instance of Mobi_Mtld_DA_ConnectivityAnalyser.
+//    The constructor will analyse connectivity.
+$connectivityAnalyser = new Mobi_Mtld_DA_ConnectivityAnalyser();
+
+// 4. Get measured values.
+$duration = $connectivityAnalyser->getDuration();
+$quality  = $connectivityAnalyser->getQuality();
+```
+
+Please see the example application for more detail.
+
+
+
+### Options ###
+
+* payload
+    - The amount of data to send to the client as part of the bandwidth
+      measurement. Defaults to 1KB.
+      The value of this option can be changed via the class constant
+      "PAYLOAD_SIZE_BYTES".
+
+* frequency
+    - Defines how often to re-measure the connectivity analyser for a given
+      user. If this is set to 1 then the network performance is checked on
+      every request. If it is greater than 1 the network performance is
+      only checked every X requests and the previous values are returned
+      until X requests is reached. Defaults to 1.
+      The value of this option can be changed via the class constant
+      "DEFAULT_FREQUENCY".
+
+* lowquality/midquality
+     - The thresholds to define the low and mid tiers. The threshold is
+       defined in ms. Everything faster than the mid threshold is
+       classified as high quality.
+       The values of this options can be changed via the class constants
+       "LOW_THRESHOLD_MS" and "MEDIUM_THRESHOLD_MS".
+
+
+To change the options edit the "ConnectivityAnalyser.php" file and change the
+class constants values related to each option.
+
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+_(c) 2015 Afilias Technologies Ltd (dotMobi). All rights reserved. https://deviceatlas.com _
+
+
+<!-- HTML+JS for document formatting when opened in browser --> 
+<div class="btn-group" id="main-menu" style="float:right"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Menu<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="README.html">Main</a></li><li><a href="README.DeviceApi.html">Device Detection API</a></li><li><a href="README.DeviceApi-Config.html">Device Detection API Config</a></li><li><a href="README.Upgrade.html">Device Detection API Upgrade</a></li><li><a href="DeviceApiDocs/index.html">Device Detection API Docs</a></li><li class="divider"></li><li><a href="README.CarrierApi.html">Carrier Identification API</a></li><li><a href="CarrierApiDocs/index.html">Carrier Identification API Docs</a></li><li class="divider"></li><li><a href="README.ClientSide.html">Client-side Component</a></li><li class="disabled"><a href="README.ConnectivityAnalyser.html">Connectivity Analyser</a></li></ul></div></xmp><script src="https://deviceatlas.com/sites/all/libraries/strapdown/strapdown.js"></script></html>
