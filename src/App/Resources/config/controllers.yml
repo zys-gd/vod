@@ -3,10 +3,10 @@ services:
   _defaults:
     tags: ['controller.service_arguments']
 
-  App\Controller\APIController:
+  App\API\Controller\APIController:
     arguments: ['@App\Domain\Service\VideoProcessing\CallbackVoter', '@App\Domain\Service\VideoProcessing\Callback\EagerType']
 
-  App\Controller\UploadedVideoAdminController:
+  App\Admin\Controller\UploadedVideoAdminController:
     calls:
         - [setContainer, ['@service_container']]
     arguments: ['@form.factory', '@App\Domain\Service\VideoProcessing\VideoUploader']

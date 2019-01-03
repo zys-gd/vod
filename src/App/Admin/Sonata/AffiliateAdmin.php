@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin;
+namespace App\Admin\Sonata;
 
 use App\Domain\Entity\Affiliate;
 use Sonata\AdminBundle\Admin\AbstractAdmin;

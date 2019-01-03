@@ -1,32 +1,32 @@
 services:
-    App\Admin\UploadedVideoAdmin:
-        arguments: [~, App\Domain\Entity\UploadedVideo, 'App\Controller\UploadedVideoAdminController', '@App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector']
+    App\Admin\Sonata\UploadedVideoAdmin:
+        arguments: [~, App\Domain\Entity\UploadedVideo, 'App\Admin\Controller\UploadedVideoAdminController', '@App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector']
         tags:
             - { name: sonata.admin, manager_type: orm, group: Videos, label: Videos }
 
-    App\Admin\VideoCategoryAdmin:
-        arguments: [~, App\Domain\Entity\VideoCategory, 'App\Controller\VideoCategoryAdminController']
+    App\Admin\Sonata\VideoCategoryAdmin:
+        arguments: [~, App\Domain\Entity\VideoCategory, 'App\Admin\Controller\VideoCategoryAdminController']
         tags:
             - { name: sonata.admin, manager_type: orm, group: Videos, label: Categories }
 
 
-    App\Admin\BlackListAdmin:
+    App\Admin\Sonata\BlackListAdmin:
         arguments: [~, App\Domain\Entity\BlackList, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, group: Users, label: BlackList }
 
 
-    App\Admin\LanguagesAdmin:
+    App\Admin\Sonata\LanguagesAdmin:
         arguments: [~, App\Domain\Entity\Languages, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, group: Content, label: Languages }
 
-#    App\Admin\RefundAdmin:
+#    App\Admin\Sonata\Sonata\RefundAdmin:
 #        arguments: [~, App\Domain\Entity\Refund, AppBundle:RefundAdmin]
 #        tags:
 #            - { name: sonata.admin, manager_type: orm, group: admin, label: Refunds }
 
-    App\Admin\PlaceholderAdmin:
+    App\Admin\Sonata\PlaceholderAdmin:
         arguments: [~, App\Domain\Entity\Placeholder, ~]
         tags:
             -
@@ -35,7 +35,7 @@ services:
                 manager_type: orm
                 label: Placeholders
 
-#    App\Admin\PlaceholderToOperatorAdmin:
+#    App\Admin\Sonata\Sonata\PlaceholderToOperatorAdmin:
 #        arguments: [~, App\Domain\Entity\PlaceholderToOperator, ~, "@talentica.subscription_pack.repository"]
 #        tags:
 #            -
@@ -43,7 +43,7 @@ services:
 #                manager_type: orm
 #                label: Placeholder to operator
 
-#    App\Admin\CarrierAdmin:
+#    App\Admin\Sonata\Sonata\CarrierAdmin:
 #        arguments: [~, App\Domain\Entity\Carrier, AppBundle:CarrierAdmin]
 #        tags:
 #            -
@@ -54,7 +54,7 @@ services:
 #        calls:
 #            - [ setTemplate, [edit, admin/edit.html.twig]]
 
-    App\Admin\AffiliateAdmin:
+    App\Admin\Sonata\AffiliateAdmin:
         arguments: [~, App\Domain\Entity\Affiliate, ~]
         tags:
             -

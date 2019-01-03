@@ -6,14 +6,14 @@
  * Time: 10:53
  */
 
-namespace App\Controller;
+namespace App\Admin\Controller;
 
 
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use App\Form\UploadVideoForm;
+use App\Admin\Form\UploadVideoForm;
 use App\Domain\Service\VideoProcessing\VideoUploader;
 
 class UploadedVideoAdminController extends CRUDController

@@ -6,7 +6,7 @@
  * Time: 10:32 AM
  */
 
-namespace App\Admin;
+namespace App\Admin\Sonata;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;

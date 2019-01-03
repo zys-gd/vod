@@ -54,6 +54,7 @@ class VODKernel extends BaseKernel
         $loader->load($appConfDir . 'twig.yml');
         $loader->load($appConfDir . 'repositories.yml');
         $loader->load($appConfDir . 'controllers.yml');
+        $loader->load($appConfDir . 'listeners.yml');
 
         $fixturesDir = $this->getProjectDir() . '/src/DataFixtures/config/';
         $loader->load($fixturesDir . 'fixtures.yml');

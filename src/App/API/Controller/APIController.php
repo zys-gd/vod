@@ -1,16 +1,22 @@
 <?php
 
-namespace App\Controller;
+namespace App\API\Controller;
 
+use App\API\Utils\ResponseMaker;
+use App\API\Controller\APIControllerInterface;
 use App\Domain\Entity\UploadedVideo;
 use App\Domain\Service\VideoProcessing\Callback\EagerType;
 use App\Domain\Service\VideoProcessing\CallbackVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class APIController extends Controller
+/**
+ * @Route("/api/v0")
+ */
+class APIController implements APIControllerInterface
 {
     /**
      * @var CallbackVoter
@@ -42,11 +48,11 @@ class APIController extends Controller
 
 
         if (!$this->eagerType->isSupports($request)) {
-            return new JsonResponse([], 400);
+            throw new BadRequestHttpException('Not supported API notification');
         }
 
         $this->eagerType->handle($request);
 
-        return new JsonResponse();
+        return ResponseMaker::makeSuccessResponse();
     }
 }

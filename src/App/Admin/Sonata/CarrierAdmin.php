@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin;
+namespace App\Admin\Sonata;
 
 use function Sodium\add;
 use Sonata\AdminBundle\Admin\AbstractAdmin;

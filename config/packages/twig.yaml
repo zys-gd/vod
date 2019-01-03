@@ -3,4 +3,5 @@ twig:
     strict_variables: '%kernel.debug%'
 
     paths:
+      '%kernel.project_dir%/src/App/Admin/Resources/templates': Admin
       '%kernel.project_dir%/src/App/Resources/templates': App

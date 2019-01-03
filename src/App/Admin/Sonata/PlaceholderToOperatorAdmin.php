@@ -6,7 +6,7 @@
  * Time: 11:52
  */
 
-namespace App\Admin;
+namespace App\Admin\Sonata;
 
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;

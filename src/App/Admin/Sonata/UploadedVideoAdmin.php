@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin;
+namespace App\Admin\Sonata;
 
 use App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -96,12 +96,12 @@ class UploadedVideoAdmin extends AbstractAdmin
             ->add('title')
             ->add('status', 'choice', ['choices' => UploadedVideo::STATUSES])
             ->add('thumbnail', null, [
-                'template' => '@App/UploadedVideo/thumbnail.html.twig',
+                'template' => '@Admin/UploadedVideo/thumbnail.html.twig',
                 'mapped'   => false,
                 'label'    => 'Thumbnails'
             ])
             ->add('player', null, [
-                'template' => '@App/UploadedVideo/player.html.twig',
+                'template' => '@Admin/UploadedVideo/player.html.twig',
                 'mapped'   => false,
                 'label'    => 'Video Preview'
             ])
@@ -124,7 +124,7 @@ class UploadedVideoAdmin extends AbstractAdmin
 
         $list = parent::configureActionButtons($action, $object);
 
-        $list['import']['template'] = '@App/UploadedVideo/upload_button.html.twig';
+        $list['import']['template'] = '@Admin/UploadedVideo/upload_button.html.twig';
 
         return $list;
     }

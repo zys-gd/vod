@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\Admin\Form;
 
 use App\Domain\Entity\VideoCategory;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
