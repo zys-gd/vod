@@ -1,16 +1,15 @@
 services:
+    _defaults:
+        tags: ['controller.service_arguments']
 
-  _defaults:
-    tags: ['controller.service_arguments']
+    App\API\Controller\APIController:
+        arguments: ['@App\Domain\Service\VideoProcessing\CallbackVoter', '@App\Domain\Service\VideoProcessing\Callback\EagerType']
 
-  App\API\Controller\APIController:
-    arguments: ['@App\Domain\Service\VideoProcessing\CallbackVoter', '@App\Domain\Service\VideoProcessing\Callback\EagerType']
-
-  App\Admin\Controller\UploadedVideoAdminController:
-    calls:
-        - [setContainer, ['@service_container']]
-    arguments: ['@form.factory', '@App\Domain\Service\VideoProcessing\VideoUploader']
+    App\Admin\Controller\UploadedVideoAdminController:
+        calls:
+            - [setContainer, ['@service_container']]
+        arguments: ['@form.factory', '@App\Domain\Service\VideoProcessing\VideoUploader']
 
     App\Admin\Controller\VideoCategoryAdminController:
-      calls:
-        - [setContainer, ['@service_container']]
+        calls:
+            - [setContainer, ['@service_container']]
