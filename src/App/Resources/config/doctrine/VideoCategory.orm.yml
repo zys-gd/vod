@@ -20,5 +20,10 @@ App\Domain\Entity\VideoCategory:
             length: 36
             nullable: true
             unique: true
+        menu_priority:
+            type: integer
+            length: 3
+            options:
+                default: 0
 
     lifecycleCallbacks: {  }

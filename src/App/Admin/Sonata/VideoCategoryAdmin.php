@@ -8,14 +8,16 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Class VideoCategoryAdmin
  */
 class VideoCategoryAdmin extends AbstractAdmin
 {
+    const MENU_PRIORITY_LABEL = 'Menu position';
+
     /**
      * @return array
      */
@@ -45,6 +47,7 @@ class VideoCategoryAdmin extends AbstractAdmin
             ->add('id')
             ->add('title')
             ->add('alias')
+            ->add('menu_priority', ['label' => self::MENU_PRIORITY_LABEL])
             ->add('uuid')
             ->add('_action', null, array(
                 'actions' => array(
@@ -63,8 +66,7 @@ class VideoCategoryAdmin extends AbstractAdmin
         $showMapper
             ->add('id')
             ->add('title')
-            ->add('alias')
-            ->add('uuid');
+            ->add('menu_priority');
     }
 
     /**
@@ -82,15 +84,8 @@ class VideoCategoryAdmin extends AbstractAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper->add(
-            'title',
-            TextType::class,
-            [
-                'constraints' => [
-                    new NotBlank()
-                ],
-                'required' => true
-            ]
-        );
+        $formMapper
+            ->add('title', TextType::class, ['required' => true])
+            ->add('menu_priority', IntegerType::class);
     }
 }
