@@ -42,10 +42,6 @@ class Country implements HasUuid
      */
     private $isoAlpha3;
 
-    /**
-     * @var array
-     */
-    private $deactivatedGames;
 
     public function __toString ()
     {
@@ -182,11 +178,6 @@ class Country implements HasUuid
         return $this->isoAlpha3;
     }
 
-    /**
-     * @var Collection
-     */
-    private $categoryCountryOverrides;
-
     /** @var string */
     private $uuid = null;
 
@@ -197,7 +188,6 @@ class Country implements HasUuid
     public function __construct ()
     {
         $this->uuid = \Ramsey\Uuid\Uuid::uuid4()->toString();
-        $this->categoryCountryOverrides = new ArrayCollection();
         $this->deactivatedGames = new ArrayCollection();
     }
 
@@ -217,77 +207,4 @@ class Country implements HasUuid
         return $this->uuid;
     }
 
-    /**
-     * @return array
-     */
-    public function getDeactivatedGames ()
-    {
-        return $this->deactivatedGames;
-    }
-
-    /**
-     * @param array $deactivatedGames
-     */
-    public function setDeactivatedGames ($deactivatedGames)
-    {
-        $this->deactivatedGames = $deactivatedGames;
-    }
-
-    /**
-     * Add game to deactivated countries array
-     *
-     * @param Game $deactivatedGames
-     *
-     * @return Country
-     */
-    public function addDeactivatedGames (Game $deactivatedGames)
-    {
-        $this->deactivatedGames[] = $deactivatedGames;
-
-        return $this;
-    }
-
-    /**
-     * Remove game from deactivated array
-     *
-     * @param Game $deactivatedGames
-     */
-    public function removeDeactivatedGames (Game $deactivatedGames)
-    {
-        $this->deactivatedGames->removeElement($deactivatedGames);
-    }
-
-    /**
-     * Add categoryCountryOverride
-     *
-     * @param CategoryCountryOverride $categoryCountryOverride
-     *
-     * @return Country
-     */
-    public function addCategoryCountryOverride (CategoryCountryOverride $categoryCountryOverride)
-    {
-        $this->categoryCountryOverrides[] = $categoryCountryOverride;
-
-        return $this;
-    }
-
-    /**
-     * Remove categoryCountryOverride
-     *
-     * @param CategoryCountryOverride $categoryCountryOverride
-     */
-    public function removeCategoryCountryOverride (CategoryCountryOverride $categoryCountryOverride)
-    {
-        $this->categoryCountryOverrides->removeElement($categoryCountryOverride);
-    }
-
-    /**
-     * Get categoryCountryOverrides
-     *
-     * @return Collection
-     */
-    public function getCategoryCountryOverrides ()
-    {
-        return $this->categoryCountryOverrides;
-    }
 }

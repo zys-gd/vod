@@ -1,0 +1,36 @@
+App\Domain\Entity\CampaignConstraints:
+    type: entity
+    table: campaign_constraints
+
+
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        numberSubscription:
+            type: integer
+        redirectUrl:
+            type: string
+        startAt:
+            type: date
+        endAt:
+            type: date
+        isPause:
+            type: boolean
+        uuid:
+            type: string
+            length: 36
+            nullable: true
+
+    manyToOne:
+        campaign:
+            targetEntity: App\Domain\Entity\Campaign
+            inversedBy: campaignConstraints
+            cascade: ['persist']
+            orphanRemoval: true
+            joinColumn:
+                name: campaign_id
+                referencedColumnName: id

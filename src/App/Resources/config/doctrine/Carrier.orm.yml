@@ -127,12 +127,6 @@ App\Domain\Entity\Carrier:
     lifecycleCallbacks: {  }
 
     manyToMany:
-        categoryCarrierOverrides:
-            targetEntity: App\Domain\Entity\CategoryCarrierOverride
-            mappedBy: carriers
-        deactivatedGames:
-            targetEntity: App\Domain\Entity\Game
-            mappedBy: deactivatedCarriers
         campaigns:
             targetEntity: Campaign
             mappedBy: carriers

@@ -1,0 +1,49 @@
+App\Domain\Entity\CampaignPricing:
+    type: entity
+    table: campaign_pricing_details
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        ppd:
+            type: decimal
+            precision: 10
+            scale: '2'
+            nullable: true
+        sub:
+            type: decimal
+            precision: 10
+            scale: '2'
+            nullable: true
+        click:
+            type: decimal
+            precision: 10
+            scale: '2'
+            nullable: true
+        startDate:
+            type: date
+            column: start_date
+        endDate:
+            type: date
+            nullable: true
+            column: end_date
+
+        # intervals can be turned off if they overlap. all intervals are active by default.
+        # do not use this flag to check if a date is expired!
+        active:
+            type: boolean
+            options:
+                default: true
+
+    manyToOne:
+        campaign:
+            targetEntity: App\Domain\Entity\Campaign
+            inversedBy: campaignPricingDetails
+            cascade: ['persist']
+            orphanRemoval: true
+            joinColumn:
+                name: campaign_id
+                referencedColumnName: id

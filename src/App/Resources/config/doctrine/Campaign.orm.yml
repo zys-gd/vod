@@ -63,16 +63,6 @@ App\Domain\Entity\Campaign:
             joinColumn:
                 name: affiliate_id
                 referencedColumnName: id
-        game:
-            targetEntity: Game
-            joinColumn:
-                name: game_id
-                referencedColumnName: id
-        categoryOverride:
-            targetEntity: App\Domain\Entity\CategoryCampaignOverride
-            joinColumn:
-                name: category_campaign_override_id
-                referencedColumnName: id
 
     oneToMany:
         campaignPricingDetails:
