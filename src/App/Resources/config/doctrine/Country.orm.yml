@@ -35,12 +35,3 @@ App\Domain\Entity\Country:
     indexes:
         country_code_idx:
             columns: [ country_code ]
-
-
-    manyToMany:
-        categoryCountryOverrides:
-            targetEntity: App\Domain\Entity\CategoryCountryOverride
-            mappedBy: countries
-        deactivatedGames:
-            targetEntity: App\Domain\Entity\Game
-            mappedBy: deactivatedCountries
