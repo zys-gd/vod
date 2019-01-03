@@ -17,7 +17,7 @@ App\Domain\Entity\Affiliate:
             type: string
             length: 255
             nullable: true
-        postbackUrl:BlackList.php
+        postbackUrl:
             type: string
             length: 255
             nullable: false
