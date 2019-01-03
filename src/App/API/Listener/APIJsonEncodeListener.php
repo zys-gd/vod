@@ -57,7 +57,12 @@ class APIJsonEncodeListener implements EventSubscriberInterface
     public function onKernelController(FilterControllerEvent $event)
     {
 
-        $controller = $event->getController()[1] ?? null;
+        $controller = $event->getController();
+
+        if (is_array($controller)) {
+            $controller = $controller[0] ?? null;
+        }
+
         if (!$controller || !($controller instanceof APIControllerInterface)) {
             return;
         }
