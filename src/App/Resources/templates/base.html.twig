@@ -1,12 +1,44 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Welcome!{% endblock %}</title>
-    {% block stylesheets %}{% endblock %}
-</head>
-<body>
-{% block body %}{% endblock %}
-{% block javascripts %}{% endblock %}
-</body>
+    <head>
+        {% block metatags %}
+            <title>{% block metatags_title %}Welcome!{% endblock metatags_title %}</title>
+        {% endblock metatags %}
+
+        {% block stylesheets %}
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+                  integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+                  crossorigin="anonymous"/>
+            <link rel="stylesheet" href="/css/vod.css"/>
+        {% endblock stylesheets %}
+    </head>
+
+    <body class="d-flex flex-column">
+        {% block header %}
+            <header class="d-flex align-items-center justify-content-center">
+                {% block header_content %}
+                {% endblock header_content %}
+            </header>
+        {% endblock header %}
+
+        <main class="d-flex media-body">
+            {% block body %}
+
+            {% endblock body %}
+        </main>
+
+        {% block footer %}
+            <footer class="d-flex flex-column align-items-center justify-content-center">
+                {% block footer_content %}
+                    <div class="d-flex copyright">
+                        © {{ "now"|date("Y") }} Все права защищены.
+                    </div>
+                {% endblock footer_content %}
+            </footer>
+        {% endblock footer %}
+
+        {% block javascripts %}
+
+        {% endblock javascripts %}
+    </body>
 </html>
