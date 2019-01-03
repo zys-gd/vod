@@ -84,4 +84,25 @@ class CloudinaryConnector
             cl_video_thumbnail_path($publicId, ['cloud_name' => $this->cloudName, 'transformation' => $transformation, 'start_offset' => '75%'])
         ];
     }
+
+    /**
+     * Delete video from cloudinary storage
+     *
+     * @param $remoteId
+     * @return mixed
+     */
+    public function deleteVideo($remoteId)
+    {
+        $result = \Cloudinary\Uploader::destroy(
+            $remoteId,
+            [
+                'resource_type' => 'video',
+                'cloud_name'    => $this->cloudName,
+                'api_key'       => $this->apiKey,
+                'api_secret'    => $this->apiSecret,
+            ]
+        );
+
+        return $result;
+    }
 }

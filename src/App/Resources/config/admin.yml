@@ -1,5 +1,10 @@
 services:
     App\Admin\UploadedVideoAdmin:
-        arguments: [~, App\Domain\Entity\UploadedVideo, 'App\Controller\UploadedVideoAdminController']
+        arguments: [~, App\Domain\Entity\UploadedVideo, 'App\Controller\UploadedVideoAdminController', '@App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector']
         tags:
             - { name: sonata.admin, manager_type: orm, group: admin, label: Videos }
+
+    App\Admin\VideoCategoryAdmin:
+        arguments: [~, App\Domain\Entity\VideoCategory, 'App\Controller\VideoCategoryAdminController']
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Video categories }
