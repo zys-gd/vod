@@ -49,7 +49,7 @@ class UploadedVideoAdminController extends CRUDController
             return new RedirectResponse($this->admin->generateUrl('list'));
         }
 
-        return $this->renderWithExtraParams('@App/UploadedVideo/upload.html.twig', [
+        return $this->renderWithExtraParams('@Admin/UploadedVideo/upload.html.twig', [
             'form' => $form->createView()
         ]);
     }
