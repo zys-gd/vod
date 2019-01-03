@@ -1,0 +1,215 @@
+<!-- Open in web browser for formatted version --> <!DOCTYPE html><html><title>DeviceAtlas Device Detection API Upgrade</title><xmp theme="da">
+
+# DeviceAtlas Device Detection API Upgrade #
+This document is for users who are already using a DeviceAtlas DeviceAPI version
+prior to 2.0. There are three scenarios that may be considered.
+
+**1) Do nothing.**
+
+The new data file (JSON) delivered as part of the 2.0 upgrade will work with API
+versions 1.5, 1.6 and 1.7. However, it is recommended to implement the new 2.0
+interface.
+
+**2) Adopt new API, utilising the 1.x API interface**
+
+This option has the benefit of avoiding any interface changes, but does not
+deliver the benefits of the 2.0 API.
+
+**3) Adopt new API, utilising new interface**
+
+This is the recommended approach, and it delivers improved accuracy of detection
+for third party browsers. It is an improved architecture and will form the basis
+of future API evolutions.
+
+
+
+### 1.x API Interface ###
+The interface used in the DeviceAtlas Device Detection API versions prior to 2.0
+is marked as deprecated. It is highly recommended to upgrade your source code to
+work with the new interface instead.
+
+As it may be inconvenient for some current users to upgrade their source code to
+use the new interface, the old interface is supported by DeviceAtlas but limited
+to bug fixes.
+
+The new libraries include the old interface (marked as deprecated) as
+"Mobi.Mtld.DA.Api". Existing source code will work without the need to be changed
+simply by replacing the old PHP file with the new PHP files. However, new users
+should avoid using the 1.x interface and current users are encouraged to upgrade
+to the new interface.
+
+
+
+### Upgrading to 2.0 ###
+The DeviceAtlas Device Detection API version 2.0 and higher is shipped with a
+different interface than previous versions. This section shows the steps to
+upgrade a system which is currently using a DeviceAtlas Device Detection API
+prior to version 2.0.
+
+1. Replace the previous DeviceAtlas Device Detection API files with the new API files shipped in this package.
+
+2. Include name changes.
+
+    ```php
+      // to use DeviceApi include:
+      require_once '/PATH/TO/Api/Device/DeviceApi.php';
+
+      // to use DeviceApiWeb include:
+      require_once '/PATH/TO/Api/Device/DeviceApiWeb.php';
+
+      // if you want to set a cache provider include one of the provider:
+      require_once '/PATH/TO/Api/CacheProvider/Apc.php';
+      require_once '/PATH/TO/Api/CacheProvider/MemCache.php';
+      require_once '/PATH/TO/Api/CacheProvider/FileCache.php';
+    ```
+
+3. Creating an instance. Unlike the 1.x interface, which was a set of static
+   methods, accessing the methods of the new interface requires an instance.
+
+    ```php
+       // for real-time web device detections use
+       $deviceApi = new Mobi_Mtld_DA_Device_DeviceApiWeb();
+    ```
+
+    ```php
+       // for other usages
+       $deviceApi = new Mobi_Mtld_DA_Device_DeviceApi();
+    ```
+
+   You can also change the default API configs:
+
+    ```php
+       // for real-time web device detections use
+       $config    = new Mobi_Mtld_DA_Device_Config();
+       $deviceApi = new Mobi_Mtld_DA_Device_DeviceApiWeb($config);
+
+       // configure the api with the "config" object
+       // find the available configs in the API documentaions
+
+       // for example if you have a cache provider such as MemCache or APC
+       // installed on your machine, you can set the API to use it:
+       $config->setCacheProvider(new Mobi_Mtld_DA_CacheProvider_Apc);
+    ```
+
+    ```php
+       // for other usages
+       $config    = new Mobi_Mtld_DA_Device_Config();
+       $deviceApi = new Mobi_Mtld_DA_Device_DeviceApi($config);
+
+       // configure the api with the "config" object
+       // find the available configs in the API documentaions
+
+       // for example if you have a cache provider such as MemCache or APC
+       // installed on your machine, you can set the API to use it:
+       $config->setCacheProvider(new Mobi_Mtld_DA_CacheProvider_Apc);
+    ```
+
+4. Loading the data. In the 1.x interface it was necessary to load the data and
+   get the tree (as an array) from the loadTreeFromFile() or loadTreeFromString()
+   and manually pass it to all the other related methods, however this is not the
+   case in the new interface. The data may be loaded into the API instance from a
+   file or string and no tree will be returned and the tree does not have to be
+   passed to other methods. This interface keeps the tree encapsulated.
+
+    ```php
+       $deviceApi->loadDataFromFile("/path/to/datafile.json");
+    ```
+
+5. Getting properties. There is only one getProperties() method for getting the
+   properties. The getPropertiesAsTyped(), and getProperty() calls must be
+   replaced with the code shown below:
+
+    ```php
+        // Previously
+        $properties = Mobi_Mtld_DA_Api::getProperties($tree, $userAgent);
+        if (isset($properties["model"])) {
+            $value = $properties["model"];
+        }
+
+        // Now
+        $properties = $deviceApi->getProperties($userAgent);
+        if ($properties->containsKey("model")) {
+            $value = $properties->get("model")->asString();
+        }
+    ```
+
+    ```php
+        // Previously
+        $properties = Mobi_Mtld_DA_Device_Api::getPropertiesAsTyped($tree, $userAgent);
+        if (isset($properties["mobileDevice"])) {
+            $value = (bool)$properties["mobileDevice"];
+        }
+
+        // Now
+        $properties = $deviceApi->getProperties($userAgent);
+        if ($properties->containsKey("mobileDevice")) {
+            $value = $properties->get("mobileDevice")->asBoolean();
+        }
+    ```
+
+    ```php
+        // Previously
+        try {
+            $isMobile = Mobi_Mtld_DA_Device_Api::getPropertyAsBoolean($tree, $userAgent, "mobileDevice");
+            if ($isMobile) {
+
+            }
+        } catch (...
+
+        // Now - method 1
+        $properties = $deviceApi->getProperties($userAgent);
+        if ($properties->contains("mobileDevice", true)) {
+
+        }
+
+        // Now - method 2
+        $properties = $deviceApi->getProperties($userAgent);
+        if ($properties->containsKey("mobileDevice")) {
+            $isMobile = $properties->get("mobileDevice")->asBoolean();
+            if ($isMobile) {
+
+            }
+        }
+
+        // Now - method 3 - magic __get()
+        $properties = $deviceApi->getProperties($userAgent);
+        if ($properties->mobileDevice) {
+
+        }
+
+    ```
+
+    ```php
+        // Previously
+        $properties = Mobi_Mtld_DA_Device_Api::getProperties($tree, $userAgent, $clientSideProperties);
+        if (isset($properties["model"])) {
+            $value = $properties["model"];
+        }
+
+        // Now
+        $properties = $deviceApi->getProperties($userAgent, $clientSideProperties);
+        // check if property exists then get the value
+        if ($properties->containsKey("model")) {
+            $value = $properties->get("model").asString();
+        }
+        // or simply get the value like this, if property not exists value will be null
+        $value = $properties->model;
+
+        // Now - when using DeviceApiWeb
+        $properties = $deviceApi->getProperties();
+        // check if property exists then get the value
+        if ($properties->containsKey("model")) {
+            $value = $properties->get("model").asString();
+        }
+        // or simply get the value like this, if property not exists value will be null
+        $value = $properties->model;
+    ```
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+_ (c) 2015 Afilias Technologies Ltd (dotMobi). All rights reserved. https://deviceatlas.com _
+
+
+<!-- HTML+JS for document formatting when opened in browser --> 
+<div class="btn-group" id="main-menu" style="float:right"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Menu<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="README.html">Main</a></li><li><a href="README.DeviceApi.html">Device Detection API</a></li><li><a href="README.DeviceApi-Config.html">Device Detection API Config</a></li><li class="disabled"><a href="README.Upgrade.html">Device Detection API Upgrade</a></li><li><a href="DeviceApiDocs/index.html">Device Detection API Docs</a></li><li class="divider"></li><li><a href="README.CarrierApi.html">Carrier Identification API</a></li><li><a href="CarrierApiDocs/index.html">Carrier Identification API Docs</a></li><li class="divider"></li><li><a href="README.ClientSide.html">Client-side Component</a></li><li><a href="README.ConnectivityAnalyser.html">Connectivity Analyser</a></li></ul></div></xmp><script src="https://deviceatlas.com/sites/all/libraries/strapdown/strapdown.js"></script></html>

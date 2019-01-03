@@ -1,0 +1,62 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 20px;
+  text-align: center;
+  padding: 0;
+}
+
+h1 {
+  font-weight: normal;
+  font-size: 18px;
+  padding: 5px 0;
+}
+
+h4 {
+	margin: 0px;
+	padding: 0px;
+}
+
+p {
+	margin: 0px;
+	padding: 2px 0;
+}
+
+#loadtime {
+  margin-top: 10px;
+  font-size: 24px;
+}
+
+#loadtime span {
+  color: #8cc6dd;
+}
+
+#experience {
+	padding: 10px 0;
+  font-size: 16px;
+}
+
+#experience span {
+  padding: 3px 10px;
+}
+
+#experience span.high {
+	background-color:#ccff00;
+}
+
+#experience span.medium {
+	background-color:#ffcc00;
+}
+
+#experience span.low {
+	background-color:#ff9900;
+}
+
+#photo-container {
+  padding-top: 20px;
+}
+
+#photo-container img {
+  width: 600px;
+}

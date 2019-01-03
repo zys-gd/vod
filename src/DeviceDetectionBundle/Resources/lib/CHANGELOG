@@ -1,0 +1,24 @@
+# Change Log
+All notable changes to this package will be documented in this file.
+
+## [2.1]
+### Added
+#### Device Detection 2.1
+- Support for new data file (smaller memory footprint, better third-party browsers coverage).
+- Config option to manage internal cache size.
+- Config and performance guide (README.DeviceApi-Config.html).
+#### Client-side 1.3
+ - Battery API detection ("js.battery" property).
+ - Capability to extend main class with custom properties.
+
+### Changed
+#### Device Detection 2.1
+- Any changes to a defined Config object will not affect an existing DeviceApi instance unless the
+  set config method of DeviceApi is called.
+
+## [2.0] - 2014-05-13
+### Added
+- Leveraging the use of all HTTP headers.
+- Language detection capability.
+- New examples.
+- README.Upgrade.html to assist migration from 1.x to 2.0.

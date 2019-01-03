@@ -1,0 +1,267 @@
+<!-- Open in web browser for formatted version --> <!DOCTYPE html><html><title>DeviceAtlas Device Detection API Config</title><xmp theme="da">
+
+# DeviceAtlas Device Detection API Config #
+
+DeviceAtlas DeviceApi Config class provides options to customize the API
+behaviour in terms of memory use, caching, performance and device properties.
+
+### Settings (Config Class Attributes) ###
+
+* [Use Tree Optimizer]
+* [Optimizer Temporary Directory]
+* [Cache Provider]
+* [Ignore Data File Changes]
+* [Include User-Agent Properties]
+* [Include Language Properties]
+* [Return NULL When There Are No Properties]
+* [Client-side Cookie Name]
+
+#### Use Tree Optimizer ####
+
+Boolean value to enable/disable optimization of data file caching (data tree).
+
+Enabling this parameter would dramatically reduce the memory foot print and data
+file loading speed. It is highly recommend to turn this config on when detecting
+devices in real-time using DeviceAtlasWeb.
+
+When this config is on, the API will automatically divide the data file into
+smaller pieces and cache them on the disk, the cached data will be used for
+lookups afterwards. The API detects data file updates and will update the cache.
+
+For more details, see [DeviceApi optimizations](README.DeviceApi.html).
+
+**Config Methods**
+setUseTreeOptimizer(TRUE/FALSE)
+getUseTreeOptimizer()
+
+**Default Value**
+FALSE
+
+#### Optimizer Temporary Directory ####
+
+When optimizer is enabled, the cached files will be put inside the temporary
+system directory by default. However you can change that directory with this
+setting parameter.
+
+**Config Methods**
+setOptimizerTempDir($optimizerTempDir)
+getOptimizerTempDir()
+
+**Default Value**
+sys_get_temp_dir()
+
+#### Cache Provider ####
+
+Parameter with the instance of the cache provider that will be used by the Tree
+optimizer (MemCache, APC or file).
+
+This will dramatically increase the lookup performance in most situations. It is
+highly recommend to use this config when detecting devices in real-time using
+DeviceAtlasWeb.
+
+**Config Methods**
+setCacheProvider(Mobi_Mtld_DA_CacheProvider_CacheProviderInterface $cacheProvider)
+getCacheProvider()
+
+**Default Value**
+NULL
+
+**NOTE**
+It is important to differentiate the two cache types our API uses: API internal
+cache and the Tree optimizer cache. Internal cache is used to save device
+properties that are obtained with every lookup. Tree optimizer cache saves the
+device data file that will be used to obtain the device properties.
+
+Config parameter for internal cache is:
+ - Cache size.
+
+Config parameters for Tree optimizer cache are:
+ - Use Tree optimizer.
+ - Optimizer temporary directory.
+ - Cache provider.
+ - Ignore data file changes.
+
+#### Ignore Data File Changes ####
+
+Boolean value to either only use the cached data file (tree) or automatically
+make several checks in order to find changes in the original file and update the
+cache.
+
+It only makes sense to use this config property when the tree optimizer is used.
+
+If you manually update the optimizer caches using the provided CLI tool
+(ExtraTools/DeviceApiCache/data-file-optimizer.php) the checking is redundant
+and unnecessary. In that case, you can turn this checking off.
+
+**Config Methods**
+setIgnoreDataFileChanges($setIgnoreDataFileChanges)
+getIgnoreDataFileChanges()
+
+**Default Value**
+FALSE
+
+#### Include User-Agent Properties ####
+
+Boolean value to enable/disable the addition of User-Agent properties to the
+detection. They are also known as "dynamic" properties as they can be detected
+on the fly by directly parsing the User-Agent.
+
+Enabling this property will worsen API detection performance. If you don't need
+these properties, then set it to FALSE.
+
+User-Agent/Dynamic properties: browserName, browserVersion,
+browserRenderingEngine, osName, osVersion
+
+**Config Methods**
+setIncludeUaProps(TRUE/FALSE)
+getIncludeUaProps()
+
+**Default Value**
+TRUE
+
+#### Include Language Properties ####
+
+Boolean value to enable/disable the addition of client's language and locale
+preferences to the device property set.
+
+If you don't need these properties, then set it to FALSE.
+
+Language properties: language, languageLocale
+
+**Config Methods**
+setIncludeLangProps(TRUE/FALSE)
+getIncludeLangProps()
+
+**Default Value**
+TRUE
+
+#### Return NULL When There Are No Properties ####
+
+Boolean value to make the API either return NULL if the property set to return
+is empty, or a Properties object with no values inside.
+
+**Config Methods**
+setReturnNullWhenNoProperties(TRUE/FALSE)
+getReturnNullWhenNoProperties()
+
+**Default Value**
+FALSE
+
+#### Client-side Cookie Name ####
+
+Name of the cookie where the Client-side properties will be saved in.
+
+When using getProperties() method in a web application (DeviceApiWeb), the
+detection will automatically use the content of this cookie, if it exists.
+
+If you want the Client-side properties to be used add the DeviceAtlas client
+side component (JavaScript lib) to your web-site pages.
+
+When the User-Agent or HTTP headers are passed manually to getProperties(), the
+Client-side properties can be also manually passed to this method as second
+parameter.
+
+Note that this config is only used as an argument of getProperties().
+
+If you set the cookie name to NULL, then the Client-side properties cookie will
+be ignored.
+
+**Config Methods**
+setCookieName($cookieName)
+getCookieName()
+
+**Default Value**
+"DAPROPS"
+
+### How It Works ###
+
+Translating into code how the API settings are used, it is as simple as having
+an instance of the Mobi_Mtld_DA_Device_Config class into the
+Mobi_Mtld_DA_Device_DeviceApi object and the respective Config public methods
+to check the wished settings and make the API work according to them.
+
+#### Use Of The Default Settings ####
+
+When a new instance of the Mobi_Mtld_DA_Device_DeviceApi class is created,
+internally another instance of the Mobi_Mtld_DA_Device_Config class is generated
+with the default settings.
+
+```php
+
+$deviceApi = new Mobi_Mtld_DA_Device_DeviceApi();
+
+```
+
+#### Use Of Custom Settings ####
+
+In order to use custom settings, it is required to explicitly create a
+Mobi_Mtld_DA_Device_Config object, set the settings and pass it to the
+Mobi_Mtld_DA_Device_DeviceApi instance.
+
+```php
+
+/* Preferred method */
+
+$config = new Mobi_Mtld_DA_Device_Config();
+$config->setIncludeUaProps(FALSE);
+$config->setUseTreeOptimizer(TRUE);
+
+$deviceApi = new Mobi_Mtld_DA_Device_DeviceApi($config);
+
+```
+
+```php
+
+/* Alternative method */
+
+$deviceApi = new Mobi_Mtld_DA_Device_DeviceApi();
+
+$config = new Mobi_Mtld_DA_Device_Config();
+$config->setIncludeUaProps(FALSE);
+$config->setUseTreeOptimizer(TRUE);
+
+$deviceApi->setConfig($config);
+
+```
+
+### Example Of Use Case ###
+
+For the scenario your system works, it is highly recommended to configure the
+API with the most convenient settings in order to enhance performance, memory
+footprint and, in general, provide a better user experience.
+
+```php
+
+/* Reduce response time and memory footprint for a web application */
+
+$config = new Mobi_Mtld_DA_Device_Config();
+
+// Boost API performance by ignoring dynamic properties if they are not part of
+// the property set you expect.
+$config->setIncludeUaProps(FALSE);
+
+// Ignore language and locale properties if they are not needed.
+$config->setIncludeLangProps(FALSE);
+
+// Use the API Tree optimizer to optimally cache the data file and prevent it to
+// load with every user request.
+$config->setUseTreeOptimizer(TRUE);
+
+// If the you don't update the data file very often (e.g. once a month), you can
+// disable the automatic changes checks of the data.
+// You can manually update the cache after downloading a new one
+// (see ExtraTools/DeviceApiCache/data-file-optimizer.php).
+$config->setIgnoreDataFileChanges(TRUE);
+
+// Finally set the config to our new instance of the DeviceAtlas API.
+$deviceApi = new Mobi_Mtld_DA_Device_DeviceApi($config);
+
+```
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+_ Copyright (c) 2008-2015 by Afilias Technologies Limited (dotMobi). All rights reserved. https://deviceatlas.com _
+
+
+<!-- HTML+JS for document formatting when opened in browser --> 
+<div class="btn-group" id="main-menu" style="float:right"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Menu<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="README.html">Main</a></li><li><a href="README.DeviceApi.html">Device Detection API</a></li><li class="disabled"><a href="README.DeviceApi-Config.html">Device Detection API Config</a></li><li><a href="README.Upgrade.html">Device Detection API Upgrade</a></li><li><a href="DeviceApiDocs/index.html">Device Detection API Docs</a></li><li class="divider"></li><li><a href="README.CarrierApi.html">Carrier Identification API</a></li><li><a href="CarrierApiDocs/index.html">Carrier Identification API Docs</a></li><li class="divider"></li><li><a href="README.ClientSide.html">Client-side Component</a></li><li><a href="README.ConnectivityAnalyser.html">Connectivity Analyser</a></li></ul></div></xmp><script src="https://deviceatlas.com/sites/all/libraries/strapdown/strapdown.js"></script></html>

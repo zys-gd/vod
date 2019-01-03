@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -12,6 +13,29 @@ use App\Domain\Entity\UploadedVideo;
 
 class UploadedVideoAdmin extends AbstractAdmin
 {
+    /**
+     * @var CloudinaryConnector
+     */
+    private $cloudinaryConnector;
+
+    /**
+     * UploadedVideoAdmin constructor
+     *
+     * @param string $code
+     * @param string $class
+     * @param string $baseControllerName
+     * @param CloudinaryConnector $cloudinaryConnector
+     */
+    public function __construct(
+        string $code,
+        string $class,
+        string $baseControllerName,
+        CloudinaryConnector $cloudinaryConnector
+    ) {
+        $this->cloudinaryConnector = $cloudinaryConnector;
+
+        parent::__construct($code, $class, $baseControllerName);
+    }
 
     public function getBatchActions()
     {
@@ -105,5 +129,11 @@ class UploadedVideoAdmin extends AbstractAdmin
         return $list;
     }
 
-
+    /**
+     * @param UploadedVideo $uploadedVideo
+     */
+    public function postRemove($uploadedVideo)
+    {
+        $this->cloudinaryConnector->deleteVideo($uploadedVideo->getRemoteId());
+    }
 }

@@ -1,0 +1,12 @@
+/* Styling for the example app */
+
+body {border: 7px solid #b6dcfd; margin: 0px; padding: 20px;}
+h2 {padding: 0px; margin: 0px;}
+ul {margin: 0px; padding: 20px}
+#results {margin-top: 20px; padding-top:10px; border-top: 1px solid #ccc;}
+.ip {color: green}
+.uamsg {color: red; font-size: 80%}
+.propname {text-align: right; font-style: italic}
+.type {color: #aaa}
+.error {color: red}
+.warn {color: orange}

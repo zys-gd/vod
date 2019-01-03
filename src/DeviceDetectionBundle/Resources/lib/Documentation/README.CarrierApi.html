@@ -1,0 +1,137 @@
+<!-- Open in web browser for formatted version --> <!DOCTYPE html><html><title>DeviceAtlas Carrier Identification API</title><xmp theme="da">
+
+# DeviceAtlas Carrier Identification API #
+
+The DeviceAtlas Carrier Identification API provides a way to lookup Mobile
+Carrier properties based on an IPv4 IP address. Using the IP address for a
+Mobile Carrier the API will return properties such as _networkOperator_,
+_networkBrand_, _countryCode_, _mcc_ and _mnc_.
+
+
+
+### Data File ###
+
+The Carrier API relies on a data file to function. DeviceAtlas provides weekly
+carrier data file updates. Please ensure you are using an up-to-date data file.
+The data file can be downloaded from your account page or automated via the
+https://deviceatlas.com/getCarrierData page.
+
+
+
+### Dependencies ###
+This library does not depend on any third party libraries.
+
+
+
+### Library ###
+The DeviceAtlas Carrier Detection API consists of three libraries as below:
+
+
+#### DeviceAtlas Common (Api/) ####
+  Contains the shared libraries which are common between the DeviceAtlas APIs.
+  When using the CarrierApi and CarrierApiWeb, the required files from this library
+  will be included automatically by the API. Keep the relative paths of the
+  libraries as they are in the downloaded package.
+
+#### CarrierApi (Api/Carrier/Mobi_Mtld_Da_Carrier_CarrierApi) ####
+  The main DeviceApi that loads the Device data and detects and returns the
+  properties for a set of request headers or the IP address.
+
+#### DeviceApiWeb (Api/Device/Mobi_Mtld_Da_Device_DeviceApiWeb) ####
+  A small extension to the main API that allows automatic extraction of the
+  request headers from the request. It is prefered to use this library for
+  real-time device detections in web applications.
+
+
+
+### Usage ###
+The API can be queried by passing any of the following to either the
+getProperty() or the getProperties() methods.
+
+1. An **IPv4** IP address string. _e.g. "62.40.34.220"_
+2. An **Array** of HTTP Header names to HTTP Header values. The API will choose
+the most appropriate IP address to use.
+3. Without arguments. The API will choose the most appropriate IP address to use
+from the $_SERVER when using CarrierApiWeb inside CarrierApiWeb.php.
+
+
+
+### Choosing an IP Address ###
+If the API is passed either an array of HTTP Headers or nothing is passed it
+will try and choose the most suitable IP address for the end client. This is
+done by iterating over the following HTTP Headers. The first non-private, valid
+IP address is returned as the client IP.
+
+- X-Forwarded-For
+- Client-Ip
+- X-Client-Ip
+- rlnClientIpAddr
+- Proxy-Client-Ip
+- Wl-Proxy-Client-Ip
+- X-Forwarded
+- Forwarded-For
+- Forwarded
+
+
+The _X-Forwarded-For_ HTTP header can contain the client IP and multiple proxy
+IPs, the API parses the header to extract the client IP.
+
+
+
+### Example ###
+The API has a very simple interface and can be used as follows:
+
+```php
+$ip = "62.40.34.220";
+$carrierApi = new Mobi_Mtld_DA_Carrier_CarrierApi();
+// multiple calls will reload the data file each time
+$carrierApi->loadDataFromFile('/path/to/carrier-data-file.dat');
+
+// get all properties
+$props = carrierApi.getProperties($ip);
+// .... use the properties ....
+if ($props->containsKey('networkOperator')) {
+    $property = $props->get('networkOperator');
+    $operatorName = $property->asString();
+    echo 'networkOperator: ' . $operatorName;
+}
+
+// get a single property
+$mccProp = $carrierApi->getProperty($ip, 'mcc');
+if ($mccProp !== null) {
+    $mcc = $mccProp->asString();
+    echo 'MCC: ' . $mcc;
+}
+```
+
+
+### Included Examples ###
+Please see the Examples directory for example code:
+
+1. **BasicUsage** - Simple examples using the API
+2. **SingletonWrapper** - Shows how the API can be wrapped in a Singleton
+3. **ExampleWebApp** - Simple page showing usage of the CarrerApiWeb class.
+
+Note: By default the examples expect a carrier data file to exist in the
+"[EXAMPLES-DIRECTORY]/Data/carrier-data-file.dat". Before trying the examples
+please place a carrier data file inside this directory or change the path to
+a carrier file inside the example sources.
+
+
+### Master Carrier List ###
+
+For a listing of all Carrier names and associated data please see:
+https://deviceatlas.com/master-carrier-list
+
+The Carrier List is also available in CSV and XML formats. It can be downloaded
+from the above page or from the following download page using your Carrier
+Identification licence key:
+https://deviceatlas.com/getMasterCarrierList
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+_ (c) 2015 Afilias Technologies Ltd (dotMobi). All rights reserved. https://deviceatlas.com _
+
+
+<!-- HTML+JS for document formatting when opened in browser --> 
+<div class="btn-group" id="main-menu" style="float:right"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Menu<span class="caret"></span></a><ul class="dropdown-menu"><li><a href="README.html">Main</a></li><li><a href="README.DeviceApi.html">Device Detection API</a></li><li><a href="README.DeviceApi-Config.html">Device Detection API Config</a></li><li><a href="README.Upgrade.html">Device Detection API Upgrade</a></li><li><a href="DeviceApiDocs/index.html">Device Detection API Docs</a></li><li class="divider"></li><li class="disabled"><a href="README.CarrierApi.html">Carrier Identification API</a></li><li><a href="CarrierApiDocs/index.html">Carrier Identification API Docs</a></li><li class="divider"></li><li><a href="README.ClientSide.html">Client-side Component</a></li><li><a href="README.ConnectivityAnalyser.html">Connectivity Analyser</a></li></ul></div></xmp><script src="https://deviceatlas.com/sites/all/libraries/strapdown/strapdown.js"></script></html>
