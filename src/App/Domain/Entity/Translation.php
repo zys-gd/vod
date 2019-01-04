@@ -2,7 +2,9 @@
 
 namespace App\Domain\Entity;
 
-class Translation
+use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
+
+class Translation implements HasUuid
 {
     /**
      * @var string
@@ -106,4 +108,11 @@ class Translation
         return $this->uuid;
     }
 
+    /**
+     * @param string $uuid
+     */
+    public function setUuid(string $uuid)
+    {
+        $this->uuid = $uuid;
+    }
 }
