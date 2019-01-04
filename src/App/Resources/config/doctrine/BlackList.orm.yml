@@ -5,13 +5,12 @@ App\Domain\Entity\BlackList:
       alias_index:
         columns: [ alias ]
     id:
-        id:
-            type: integer
-            id: true
+        uuid:
+            type: guid
             generator:
-                strategy: AUTO
+                strategy: UUID
     fields:
-        carrierId:
+        billingCarrierId:
             type: integer
             nullable: true
         alias:

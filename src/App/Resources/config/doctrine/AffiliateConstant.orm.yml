@@ -2,11 +2,10 @@ App\Domain\Entity\AffiliateConstant:
     type: entity
     table: affiliate_constants
     id:
-        id:
-            type: integer
-            id: true
+        uuid:
+            type: guid
             generator:
-                strategy: AUTO
+                strategy: UUID
     fields:
         name:
             type: string
@@ -14,16 +13,11 @@ App\Domain\Entity\AffiliateConstant:
         value:
             type: string
             length: 255
-        uuid:
-            type: string
-            length: 36
-            nullable: true
     lifecycleCallbacks: {  }
 
     manyToOne:
         affiliate:
             targetEntity: App\Domain\Entity\Affiliate
-            inversedBy: constants
             joinColumn:
-                name: affiliate_id
-                referencedColumnName: id
+                referencedColumnName: uuid
+            inversedBy: constants

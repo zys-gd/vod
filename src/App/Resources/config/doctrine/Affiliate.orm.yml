@@ -2,11 +2,8 @@ App\Domain\Entity\Affiliate:
     type: entity
     table: affiliates
     id:
-        id:
-            type: integer
-            id: true
-            generator:
-                strategy: AUTO
+        uuid:
+            type: guid
     fields:
         name:
             type: string
@@ -43,19 +40,14 @@ App\Domain\Entity\Affiliate:
             length: 255
             column: sub_price_name
             nullable: true
-        uuid:
-            type: string
-            length: 36
-            nullable: true
 
     lifecycleCallbacks: {  }
 
     manyToOne:
         country:
-            targetEntity: Country
+            targetEntity: App\Domain\Entity\Country
             joinColumn:
-                name: country_id
-                referencedColumnName: id
+                referencedColumnName: uuid
     oneToMany:
         parameters:
             targetEntity: App\Domain\Entity\AffiliateParameter

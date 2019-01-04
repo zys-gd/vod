@@ -5,11 +5,10 @@ App\Domain\Entity\Campaign:
       campaign_token_index:
         columns: [ campaign_token ]
     id:
-        id:
-            type: integer
-            id: true
+        uuid:
+            type: guid
             generator:
-                strategy: AUTO
+                strategy: UUID
     fields:
         image:
             type: string
@@ -50,10 +49,6 @@ App\Domain\Entity\Campaign:
             nullable: true
             options:
                 default: null
-        uuid:
-            type: string
-            length: 36
-            nullable: true
     lifecycleCallbacks:
         postLoad : [onPostLoad]
 
@@ -61,22 +56,27 @@ App\Domain\Entity\Campaign:
         affiliate:
             targetEntity: Affiliate
             joinColumn:
-                name: affiliate_id
-                referencedColumnName: id
+                referencedColumnName: uuid
 
     oneToMany:
         campaignPricingDetails:
             targetEntity: App\Domain\Entity\CampaignPricing
+            joinColumn:
+                referencedColumnName: uuid
             mappedBy: campaign
             cascade: ["persist", "remove"]
             orphanRemoval: true
         campaignConstraints:
             targetEntity: App\Domain\Entity\CampaignConstraints
+            joinColumn:
+                referencedColumnName: uuid
             mappedBy: campaign
             cascade: ["persist", "remove"]
             orphanRemoval: true
 
-    manyToMany:
-        carriers:
-            targetEntity: Carrier
-            inversedBy: campaigns
+#    manyToMany:
+#        carriers:
+#            targetEntity: App\Domain\Entity\Carrier
+#            joinColumn:
+#                referencedColumnName: uuid
+#            inversedBy: campaigns
