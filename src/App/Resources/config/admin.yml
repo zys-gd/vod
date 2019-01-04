@@ -17,7 +17,7 @@ services:
 
 
     App\Admin\Sonata\LanguagesAdmin:
-        arguments: [~, App\Domain\Entity\Languages, ~]
+        arguments: [~, App\Domain\Entity\Language, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, group: Content, label: Languages }
 

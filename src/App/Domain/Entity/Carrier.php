@@ -577,7 +577,7 @@ class Carrier
     }
 
     /**
-     * @var \App\Domain\Entity\Languages
+     * @var \App\Domain\Entity\Language
      */
     private $defaultLanguage;
 
@@ -585,11 +585,11 @@ class Carrier
     /**
      * Set defaultLanguage
      *
-     * @param \App\Domain\Entity\Languages $defaultLanguage
+     * @param \App\Domain\Entity\Language $defaultLanguage
      *
      * @return Carrier
      */
-    public function setDefaultLanguage(\App\Domain\Entity\Languages $defaultLanguage = null)
+    public function setDefaultLanguage(\App\Domain\Entity\Language $defaultLanguage = null)
     {
         $this->defaultLanguage = $defaultLanguage;
 
@@ -599,7 +599,7 @@ class Carrier
     /**
      * Get defaultLanguage
      *
-     * @return \App\Domain\Entity\Languages
+     * @return \App\Domain\Entity\Language
      */
     public function getDefaultLanguage()
     {

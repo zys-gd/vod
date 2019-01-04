@@ -14,7 +14,7 @@ App\Domain\Entity\Translation:
             nullable: false
     manyToOne:
         language:
-            targetEntity: App\Domain\Entity\Languages
+            targetEntity: App\Domain\Entity\Language
             joinColumn:
                 referencedColumnName: uuid
         carrier:
