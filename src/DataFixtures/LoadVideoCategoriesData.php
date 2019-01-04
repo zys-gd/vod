@@ -35,13 +35,13 @@ class LoadVideoCategoriesData extends AbstractFixture
             $title = $row[0];
             $alias = $row[1];
             $uuid  = $row[2];
-            $priority  = $row[3];
+            $menuPriority = $row[3];
 
             $category = new VideoCategory($uuid);
 
             $category->setTitle($title);
             $category->setAlias($alias);
-            $category->setMenuPriority($priority);
+            $category->setMenuPriority($menuPriority);
 
             $manager->persist($category);
         }

@@ -31,11 +31,6 @@ class Carrier
     private $billingCarrierId;
 
     /**
-     * @var Collection
-     */
-    private $categoryCarrierOverrides;
-
-    /**
      * @var string
      */
     private $countryCode;
@@ -99,11 +94,6 @@ class Carrier
     private $operatorId = null;
 
     /**
-     * @var array
-     */
-    private $deactivatedGames;
-
-    /**
      * @var boolean
      */
     private $resubAllowed = false;
@@ -158,6 +148,10 @@ class Carrier
      */
     private $isCapAlertDispatch  = false;
 
+    /**
+     * @var \App\Domain\Entity\Language
+     */
+    private $defaultLanguage;
 
     /**
      * Carrier constructor.
@@ -166,8 +160,6 @@ class Carrier
     public function __construct(string $uuid)
     {
         $this->uuid = $uuid;
-        $this->categoryCarrierOverrides = new ArrayCollection();
-        $this->deactivatedGames = new ArrayCollection();
         $this->campaigns = new ArrayCollection();
     }
 
@@ -348,40 +340,6 @@ class Carrier
     }
 
     /**
-     * Add categoryCarrierOverride
-     *
-     * @param CategoryCarrierOverride $categoryCarrierOverride
-     *
-     * @return Carrier
-     */
-    public function addCategoryCarrierOverride(CategoryCarrierOverride $categoryCarrierOverride)
-    {
-        $this->categoryCarrierOverrides[] = $categoryCarrierOverride;
-
-        return $this;
-    }
-
-    /**
-     * Remove categoryCarrierOverride
-     *
-     * @param CategoryCarrierOverride $categoryCarrierOverride
-     */
-    public function removeCategoryCarrierOverride(CategoryCarrierOverride $categoryCarrierOverride)
-    {
-        $this->categoryCarrierOverrides->removeElement($categoryCarrierOverride);
-    }
-
-    /**
-     * Get categoryCarrierOverrides
-     *
-     * @return Collection
-     */
-    public function getCategoryCarrierOverrides()
-    {
-        return $this->categoryCarrierOverrides;
-    }
-
-    /**
      * Set countryCode
      *
      * @param string $countryCode
@@ -513,46 +471,6 @@ class Carrier
     }
 
     /**
-     * @return Collection
-     */
-    public function getDeactivatedGames(): Collection
-    {
-        return $this->deactivatedGames;
-    }
-
-    /**
-     * @param array $deactivatedGames
-     */
-    public function setDeactivatedGames($deactivatedGames)
-    {
-        $this->deactivatedGames = $deactivatedGames;
-    }
-
-    /**
-     * Add game to deactivated carriers array
-     *
-     * @param Game $deactivatedGames
-     *
-     * @return Carrier
-     */
-    public function addDeactivatedGames(Game $deactivatedGames)
-    {
-        $this->deactivatedGames[] = $deactivatedGames;
-
-        return $this;
-    }
-
-    /**
-     * Remove game from deactivated array of carriers
-     *
-     * @param Game $deactivatedGames
-     */
-    public function removeDeactivatedGames(Game $deactivatedGames)
-    {
-        $this->deactivatedGames->removeElement($deactivatedGames);
-    }
-
-    /**
      * Set resubAllowed
      *
      * @param boolean $resubAllowed
@@ -577,19 +495,13 @@ class Carrier
     }
 
     /**
-     * @var \App\Domain\Entity\Language
-     */
-    private $defaultLanguage;
-
-
-    /**
      * Set defaultLanguage
      *
-     * @param \App\Domain\Entity\Language $defaultLanguage
+     * @param Language $defaultLanguage
      *
      * @return Carrier
      */
-    public function setDefaultLanguage(\App\Domain\Entity\Language $defaultLanguage = null)
+    public function setDefaultLanguage(Language $defaultLanguage = null)
     {
         $this->defaultLanguage = $defaultLanguage;
 
@@ -599,7 +511,7 @@ class Carrier
     /**
      * Get defaultLanguage
      *
-     * @return \App\Domain\Entity\Language
+     * @return Language
      */
     public function getDefaultLanguage()
     {

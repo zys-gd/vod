@@ -48,22 +48,22 @@ class Translation
     }
 
     /**
-     * @return Languages
+     * @return Language
      */
-    public function getLanguage(): Languages
+    public function getLanguage(): Language
     {
         return $this->language;
     }
 
     /**
-     * @param Languages $language
+     * @param Language $language
      */
-    public function setLanguage(Languages $language): void
+    public function setLanguage(Language $language): void
     {
         $this->language = $language;
     }
 
-    /** @var Languages */
+    /** @var Language */
     private $language;
 
     /**
