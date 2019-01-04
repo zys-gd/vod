@@ -21,3 +21,4 @@ App\Domain\Entity\Translation:
             targetEntity: App\Domain\Entity\Carrier
             joinColumn:
                 referencedColumnName: uuid
+            nullable: true
