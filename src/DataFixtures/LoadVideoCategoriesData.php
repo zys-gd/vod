@@ -27,7 +27,7 @@ class LoadVideoCategoriesData extends AbstractFixture
     public function load(ObjectManager $manager)
     {
         $data = [
-            ["Sports", "sports", "44860f37-c9b7-4c41-99f1-1483af0f424e"]
+            ["Sports", "sports", "44860f37-c9b7-4c41-99f1-1483af0f424e",0]
         ];;
 
         foreach ($data as $row) {
@@ -35,11 +35,13 @@ class LoadVideoCategoriesData extends AbstractFixture
             $title = $row[0];
             $alias = $row[1];
             $uuid  = $row[2];
+            $priority  = $row[3];
 
             $category = new VideoCategory($uuid);
 
             $category->setTitle($title);
             $category->setAlias($alias);
+            $category->setMenuPriority($priority);
 
             $manager->persist($category);
         }
