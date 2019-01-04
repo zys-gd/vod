@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Domain\Entity;
+use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 
 /**
  * Languages
  */
-class Language
+class Language implements HasUuid
 {
     /**
      * @var string
@@ -70,5 +71,13 @@ class Language
     public function setCode(string $code): void
     {
         $this->code = $code;
+    }
+
+    /**
+     * @param string $uuid
+     */
+    public function setUuid(string $uuid)
+    {
+        $this->uuid = $uuid;
     }
 }

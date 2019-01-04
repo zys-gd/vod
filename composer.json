@@ -1,12 +1,16 @@
 {
   "type": "project",
   "license": "proprietary",
+  "repositories":[
+    { "type": "git", "url": "https://git-codecommit.eu-west-1.amazonaws.com/v1/repos/store-difftool-module" }
+  ],
   "require": {
     "php": "^7.2",
     "ext-ctype": "*",
     "ext-iconv": "*",
     "cloudinary/cloudinary_php": "1.13.0",
     "geoip2/geoip2": "v2.9.0",
+    "playwing/difftool": "dev-master",
     "ramsey/uuid": "3.8.0",
     "sensio/framework-extra-bundle": "v5.2.4",
     "sonata-project/admin-bundle": "3.43.0",

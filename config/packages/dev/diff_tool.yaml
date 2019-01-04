@@ -1,0 +1,7 @@
+diff_tool:
+  paths:
+    - '%kernel.project_dir%/src/DataFixtures/Data/'
+  entities:
+       App\Domain\Entity\Language:
+          fileName: 'languages.json'
+          ignoredProperties: []

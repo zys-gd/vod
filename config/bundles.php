@@ -24,4 +24,5 @@ return [
 
     \DeviceDetectionBundle\DeviceDetectionBundle::class                 => ['all' => true],
     \CountryCarrierDetectionBundle\CountryCarrierDetectionBundle::class => ['all' => true],
+    Playwing\DiffToolBundle\DiffToolBundle::class                       => ['dev' => true, 'test' => true]
 ];
