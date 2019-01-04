@@ -1,259 +1,235 @@
 [
     {
-        "id": 1,
+        "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22",
         "countryCode": "AD",
         "countryName": "Andorra",
         "currencyCode": "EUR",
         "isoNumeric": "020",
         "isoAlpha3": "AND",
-        "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22",
         "categoryCountryOverrides": [],
         "deactivatedGames": []
     },
     {
-        "id": 2,
+        "uuid": "5103a41a-ebd4-11e8-95c4-02bb250f0f22",
         "countryCode": "AE",
         "countryName": "United Arab Emirates",
         "currencyCode": "AED",
         "isoNumeric": "784",
         "isoAlpha3": "ARE",
-        "uuid": "5103a41a-ebd4-11e8-95c4-02bb250f0f22",
         "categoryCountryOverrides": [],
         "deactivatedGames": []
     },
     {
-        "id": 3,
+        "uuid": "5103a4e4-ebd4-11e8-95c4-02bb250f0f22",
         "countryCode": "AF",
         "countryName": "Afghanistan",
         "currencyCode": "AFN",
         "isoNumeric": "004",
         "isoAlpha3": "AFG",
-        "uuid": "5103a4e4-ebd4-11e8-95c4-02bb250f0f22",
         "categoryCountryOverrides": [],
         "deactivatedGames": []
     },
     {
-        "id": 4,
+        "uuid": "5103a57a-ebd4-11e8-95c4-02bb250f0f22",
         "countryCode": "AG",
         "countryName": "Antigua and Barbuda",
         "currencyCode": "XCD",
         "isoNumeric": "028",
         "isoAlpha3": "ATG",
-        "uuid": "5103a57a-ebd4-11e8-95c4-02bb250f0f22",
         "categoryCountryOverrides": [],
         "deactivatedGames": []
     },
     {
-        "id": 5,
+        "uuid": "5103a5fd-ebd4-11e8-95c4-02bb250f0f22",
         "countryCode": "AI",
         "countryName": "Anguilla",
         "currencyCode": "XCD",
         "isoNumeric": "660",
         "isoAlpha3": "AIA",
-        "uuid": "5103a5fd-ebd4-11e8-95c4-02bb250f0f22",
         "categoryCountryOverrides": [],
         "deactivatedGames": []
     },
     {
-        "id": 6,
+        "uuid": "5103a683-ebd4-11e8-95c4-02bb250f0f22",
         "countryCode": "AL",
         "countryName": "Albania",
         "currencyCode": "ALL",
         "isoNumeric": "008",
         "isoAlpha3": "ALB",
-        "uuid": "5103a683-ebd4-11e8-95c4-02bb250f0f22",
         "categoryCountryOverrides": [],
         "deactivatedGames": []
     },
     {
-        "id": 7,
+        "uuid": "5103a701-ebd4-11e8-95c4-02bb250f0f22",
         "countryCode": "AM",
         "countryName": "Armenia",
         "currencyCode": "AMD",
         "isoNumeric": "051",
         "isoAlpha3": "ARM",
-        "uuid": "5103a701-ebd4-11e8-95c4-02bb250f0f22",
         "categoryCountryOverrides": [],
         "deactivatedGames": []
     },
     {
-        "id": 8,
+        "uuid": "5103a78e-ebd4-11e8-95c4-02bb250f0f22",
         "countryCode": "AO",
         "countryName": "Angola",
         "currencyCode": "AOA",
         "isoNumeric": "024",
         "isoAlpha3": "AGO",
-        "uuid": "5103a78e-ebd4-11e8-95c4-02bb250f0f22",
         "categoryCountryOverrides": [],
         "deactivatedGames": []
     },
     {
-        "id": 9,
+        "uuid": "5103a815-ebd4-11e8-95c4-02bb250f0f22",
         "countryCode": "AQ",
         "countryName": "Antarctica",
         "currencyCode": "",
         "isoNumeric": "010",
         "isoAlpha3": "ATA",
-        "uuid": "5103a815-ebd4-11e8-95c4-02bb250f0f22",
         "categoryCountryOverrides": [],
         "deactivatedGames": []
     },
     {
-        "id": 10,
+        "uuid": "5103a89d-ebd4-11e8-95c4-02bb250f0f22",
         "countryCode": "AR",
         "countryName": "Argentina",
         "currencyCode": "ARS",
         "isoNumeric": "032",
         "isoAlpha3": "ARG",
-        "uuid": "5103a89d-ebd4-11e8-95c4-02bb250f0f22",
         "categoryCountryOverrides": [],
         "deactivatedGames": []
     },
     {
-        "id": 11,
+        "uuid": "5103a92a-ebd4-11e8-95c4-02bb250f0f22",
         "countryCode": "AS",
         "countryName": "American Samoa",
         "currencyCode": "USD",
         "isoNumeric": "016",
         "isoAlpha3": "ASM",
-        "uuid": "5103a92a-ebd4-11e8-95c4-02bb250f0f22",
         "categoryCountryOverrides": [],
         "deactivatedGames": []
     },
     {
-        "id": 12,
+        "uuid": "5103a9c7-ebd4-11e8-95c4-02bb250f0f22",
         "countryCode": "AT",
         "countryName": "Austria",
         "currencyCode": "EUR",
         "isoNumeric": "040",
         "isoAlpha3": "AUT",
-        "uuid": "5103a9c7-ebd4-11e8-95c4-02bb250f0f22",
         "categoryCountryOverrides": [],
         "deactivatedGames": []
     },
     {
-        "id": 13,
+        "uuid": "5103aa19-ebd4-11e8-95c4-02bb250f0f22",
         "countryCode": "AU",
         "countryName": "Australia",
         "currencyCode": "AUD",
         "isoNumeric": "036",
         "isoAlpha3": "AUS",
-        "uuid": "5103aa19-ebd4-11e8-95c4-02bb250f0f22",
         "categoryCountryOverrides": [],
         "deactivatedGames": []
     },
     {
-        "id": 14,
+        "uuid": "5103aa5b-ebd4-11e8-95c4-02bb250f0f22",
         "countryCode": "AW",
         "countryName": "Aruba",
         "currencyCode": "AWG",
         "isoNumeric": "533",
         "isoAlpha3": "ABW",
-        "uuid": "5103aa5b-ebd4-11e8-95c4-02bb250f0f22",
         "categoryCountryOverrides": [],
         "deactivatedGames": []
     },
     {
-        "id": 15,
+        "uuid": "5103aab6-ebd4-11e8-95c4-02bb250f0f22",
         "countryCode": "AX",
-        "countryName": "\u00c5land",
+        "countryName": "Åland",
         "currencyCode": "EUR",
         "isoNumeric": "248",
         "isoAlpha3": "ALA",
-        "uuid": "5103aab6-ebd4-11e8-95c4-02bb250f0f22",
         "categoryCountryOverrides": [],
         "deactivatedGames": []
     },
     {
-        "id": 16,
+        "uuid": "5103ab7b-ebd4-11e8-95c4-02bb250f0f22",
         "countryCode": "AZ",
         "countryName": "Azerbaijan",
         "currencyCode": "AZN",
         "isoNumeric": "031",
         "isoAlpha3": "AZE",
-        "uuid": "5103ab7b-ebd4-11e8-95c4-02bb250f0f22",
         "categoryCountryOverrides": [],
         "deactivatedGames": []
     },
     {
-        "id": 17,
+        "uuid": "5103abc6-ebd4-11e8-95c4-02bb250f0f22",
         "countryCode": "BA",
         "countryName": "Bosnia and Herzegovina",
         "currencyCode": "BAM",
         "isoNumeric": "070",
         "isoAlpha3": "BIH",
-        "uuid": "5103abc6-ebd4-11e8-95c4-02bb250f0f22",
         "categoryCountryOverrides": [],
         "deactivatedGames": []
     },
     {
-        "id": 18,
+        "uuid": "5103ac0b-ebd4-11e8-95c4-02bb250f0f22",
         "countryCode": "BB",
         "countryName": "Barbados",
         "currencyCode": "BBD",
         "isoNumeric": "052",
         "isoAlpha3": "BRB",
-        "uuid": "5103ac0b-ebd4-11e8-95c4-02bb250f0f22",
         "categoryCountryOverrides": [],
         "deactivatedGames": []
     },
     {
-        "id": 19,
+        "uuid": "5103ac4e-ebd4-11e8-95c4-02bb250f0f22",
         "countryCode": "BD",
         "countryName": "Bangladesh",
         "currencyCode": "BDT",
         "isoNumeric": "050",
         "isoAlpha3": "BGD",
-        "uuid": "5103ac4e-ebd4-11e8-95c4-02bb250f0f22",
         "categoryCountryOverrides": [],
         "deactivatedGames": []
     },
     {
-        "id": 20,
+        "uuid": "5103ac91-ebd4-11e8-95c4-02bb250f0f22",
         "countryCode": "BE",
         "countryName": "Belgium",
         "currencyCode": "EUR",
         "isoNumeric": "056",
         "isoAlpha3": "BEL",
-        "uuid": "5103ac91-ebd4-11e8-95c4-02bb250f0f22",
         "categoryCountryOverrides": [],
         "deactivatedGames": []
     },
     {
-        "id": 21,
+        "uuid": "5103acd1-ebd4-11e8-95c4-02bb250f0f22",
         "countryCode": "BF",
         "countryName": "Burkina Faso",
         "currencyCode": "XOF",
         "isoNumeric": "854",
         "isoAlpha3": "BFA",
-        "uuid": "5103acd1-ebd4-11e8-95c4-02bb250f0f22",
         "categoryCountryOverrides": [],
         "deactivatedGames": []
     },
     {
-        "id": 22,
+        "uuid": "5103ad22-ebd4-11e8-95c4-02bb250f0f22",
         "countryCode": "BG",
         "countryName": "Bulgaria",
         "currencyCode": "BGN",
         "isoNumeric": "100",
         "isoAlpha3": "BGR",
-        "uuid": "5103ad22-ebd4-11e8-95c4-02bb250f0f22",
         "categoryCountryOverrides": [],
         "deactivatedGames": []
     },
     {
-        "id": 23,
+        "uuid": "5103ad63-ebd4-11e8-95c4-02bb250f0f22",
         "countryCode": "BH",
         "countryName": "Bahrain",
         "currencyCode": "BHD",
         "isoNumeric": "048",
         "isoAlpha3": "BHR",
-        "uuid": "5103ad63-ebd4-11e8-95c4-02bb250f0f22",
         "categoryCountryOverrides": [],
         "deactivatedGames": []
     },
     {
-        "id": 24,
         "countryCode": "BI",
         "countryName": "Burundi",
         "currencyCode": "BIF",
@@ -264,7 +240,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 25,
         "countryCode": "BJ",
         "countryName": "Benin",
         "currencyCode": "XOF",
@@ -275,9 +250,8 @@
         "deactivatedGames": []
     },
     {
-        "id": 26,
         "countryCode": "BL",
-        "countryName": "Saint Barth\u00e9lemy",
+        "countryName": "Saint Barthélemy",
         "currencyCode": "EUR",
         "isoNumeric": "652",
         "isoAlpha3": "BLM",
@@ -286,7 +260,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 27,
         "countryCode": "BM",
         "countryName": "Bermuda",
         "currencyCode": "BMD",
@@ -297,7 +270,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 28,
         "countryCode": "BN",
         "countryName": "Brunei",
         "currencyCode": "BND",
@@ -308,7 +280,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 29,
         "countryCode": "BO",
         "countryName": "Bolivia",
         "currencyCode": "BOB",
@@ -319,7 +290,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 30,
         "countryCode": "BQ",
         "countryName": "Bonaire",
         "currencyCode": "USD",
@@ -330,7 +300,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 31,
         "countryCode": "BR",
         "countryName": "Brazil",
         "currencyCode": "BRL",
@@ -341,7 +310,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 32,
         "countryCode": "BS",
         "countryName": "Bahamas",
         "currencyCode": "BSD",
@@ -352,7 +320,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 33,
         "countryCode": "BT",
         "countryName": "Bhutan",
         "currencyCode": "BTN",
@@ -363,7 +330,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 34,
         "countryCode": "BV",
         "countryName": "Bouvet Island",
         "currencyCode": "NOK",
@@ -374,7 +340,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 35,
         "countryCode": "BW",
         "countryName": "Botswana",
         "currencyCode": "BWP",
@@ -385,7 +350,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 36,
         "countryCode": "BY",
         "countryName": "Belarus",
         "currencyCode": "BYR",
@@ -396,7 +360,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 37,
         "countryCode": "BZ",
         "countryName": "Belize",
         "currencyCode": "BZD",
@@ -407,7 +370,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 38,
         "countryCode": "CA",
         "countryName": "Canada",
         "currencyCode": "CAD",
@@ -418,7 +380,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 39,
         "countryCode": "CC",
         "countryName": "Cocos [Keeling] Islands",
         "currencyCode": "AUD",
@@ -429,7 +390,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 40,
         "countryCode": "CD",
         "countryName": "Democratic Republic of the Congo",
         "currencyCode": "CDF",
@@ -440,7 +400,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 41,
         "countryCode": "CF",
         "countryName": "Central African Republic",
         "currencyCode": "XAF",
@@ -451,7 +410,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 42,
         "countryCode": "CG",
         "countryName": "Republic of the Congo",
         "currencyCode": "XAF",
@@ -462,7 +420,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 43,
         "countryCode": "CH",
         "countryName": "Switzerland",
         "currencyCode": "CHF",
@@ -473,7 +430,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 44,
         "countryCode": "CI",
         "countryName": "Ivory Coast",
         "currencyCode": "XOF",
@@ -484,7 +440,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 45,
         "countryCode": "CK",
         "countryName": "Cook Islands",
         "currencyCode": "NZD",
@@ -495,7 +450,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 46,
         "countryCode": "CL",
         "countryName": "Chile",
         "currencyCode": "CLP",
@@ -506,7 +460,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 47,
         "countryCode": "CM",
         "countryName": "Cameroon",
         "currencyCode": "XAF",
@@ -517,7 +470,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 48,
         "countryCode": "CN",
         "countryName": "China",
         "currencyCode": "CNY",
@@ -528,7 +480,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 49,
         "countryCode": "CO",
         "countryName": "Colombia",
         "currencyCode": "COP",
@@ -539,7 +490,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 50,
         "countryCode": "CR",
         "countryName": "Costa Rica",
         "currencyCode": "CRC",
@@ -550,7 +500,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 51,
         "countryCode": "CU",
         "countryName": "Cuba",
         "currencyCode": "CUP",
@@ -561,7 +510,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 52,
         "countryCode": "CV",
         "countryName": "Cape Verde",
         "currencyCode": "CVE",
@@ -572,7 +520,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 53,
         "countryCode": "CW",
         "countryName": "Curacao",
         "currencyCode": "ANG",
@@ -583,7 +530,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 54,
         "countryCode": "CX",
         "countryName": "Christmas Island",
         "currencyCode": "AUD",
@@ -594,7 +540,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 55,
         "countryCode": "CY",
         "countryName": "Cyprus",
         "currencyCode": "EUR",
@@ -605,7 +550,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 56,
         "countryCode": "CZ",
         "countryName": "Czech Republic",
         "currencyCode": "CZK",
@@ -616,7 +560,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 57,
         "countryCode": "DE",
         "countryName": "Germany",
         "currencyCode": "EUR",
@@ -627,7 +570,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 58,
         "countryCode": "DJ",
         "countryName": "Djibouti",
         "currencyCode": "DJF",
@@ -638,7 +580,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 59,
         "countryCode": "DK",
         "countryName": "Denmark",
         "currencyCode": "DKK",
@@ -649,7 +590,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 60,
         "countryCode": "DM",
         "countryName": "Dominica",
         "currencyCode": "XCD",
@@ -660,7 +600,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 61,
         "countryCode": "DO",
         "countryName": "Dominican Republic",
         "currencyCode": "DOP",
@@ -671,7 +610,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 62,
         "countryCode": "DZ",
         "countryName": "Algeria",
         "currencyCode": "DZD",
@@ -682,7 +620,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 63,
         "countryCode": "EC",
         "countryName": "Ecuador",
         "currencyCode": "USD",
@@ -693,7 +630,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 64,
         "countryCode": "EE",
         "countryName": "Estonia",
         "currencyCode": "EUR",
@@ -704,7 +640,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 65,
         "countryCode": "EG",
         "countryName": "Egypt",
         "currencyCode": "EGP",
@@ -715,7 +650,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 66,
         "countryCode": "EH",
         "countryName": "Western Sahara",
         "currencyCode": "MAD",
@@ -726,7 +660,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 67,
         "countryCode": "ER",
         "countryName": "Eritrea",
         "currencyCode": "ERN",
@@ -737,7 +670,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 68,
         "countryCode": "ES",
         "countryName": "Spain",
         "currencyCode": "EUR",
@@ -748,7 +680,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 69,
         "countryCode": "ET",
         "countryName": "Ethiopia",
         "currencyCode": "ETB",
@@ -759,7 +690,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 70,
         "countryCode": "FI",
         "countryName": "Finland",
         "currencyCode": "EUR",
@@ -770,7 +700,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 71,
         "countryCode": "FJ",
         "countryName": "Fiji",
         "currencyCode": "FJD",
@@ -781,7 +710,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 72,
         "countryCode": "FK",
         "countryName": "Falkland Islands",
         "currencyCode": "FKP",
@@ -792,7 +720,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 73,
         "countryCode": "FM",
         "countryName": "Micronesia",
         "currencyCode": "USD",
@@ -803,7 +730,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 74,
         "countryCode": "FO",
         "countryName": "Faroe Islands",
         "currencyCode": "DKK",
@@ -814,7 +740,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 75,
         "countryCode": "FR",
         "countryName": "France",
         "currencyCode": "EUR",
@@ -825,7 +750,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 76,
         "countryCode": "GA",
         "countryName": "Gabon",
         "currencyCode": "XAF",
@@ -836,7 +760,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 77,
         "countryCode": "GB",
         "countryName": "United Kingdom",
         "currencyCode": "GBP",
@@ -847,7 +770,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 78,
         "countryCode": "GD",
         "countryName": "Grenada",
         "currencyCode": "XCD",
@@ -858,7 +780,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 79,
         "countryCode": "GE",
         "countryName": "Georgia",
         "currencyCode": "GEL",
@@ -869,7 +790,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 80,
         "countryCode": "GF",
         "countryName": "French Guiana",
         "currencyCode": "EUR",
@@ -880,7 +800,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 81,
         "countryCode": "GG",
         "countryName": "Guernsey",
         "currencyCode": "GBP",
@@ -891,7 +810,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 82,
         "countryCode": "GH",
         "countryName": "Ghana",
         "currencyCode": "GHS",
@@ -902,7 +820,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 83,
         "countryCode": "GI",
         "countryName": "Gibraltar",
         "currencyCode": "GIP",
@@ -913,7 +830,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 84,
         "countryCode": "GL",
         "countryName": "Greenland",
         "currencyCode": "DKK",
@@ -924,7 +840,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 85,
         "countryCode": "GM",
         "countryName": "Gambia",
         "currencyCode": "GMD",
@@ -935,7 +850,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 86,
         "countryCode": "GN",
         "countryName": "Guinea",
         "currencyCode": "GNF",
@@ -946,7 +860,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 87,
         "countryCode": "GP",
         "countryName": "Guadeloupe",
         "currencyCode": "EUR",
@@ -957,7 +870,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 88,
         "countryCode": "GQ",
         "countryName": "Equatorial Guinea",
         "currencyCode": "XAF",
@@ -968,7 +880,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 89,
         "countryCode": "GR",
         "countryName": "Greece",
         "currencyCode": "EUR",
@@ -979,7 +890,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 90,
         "countryCode": "GS",
         "countryName": "South Georgia and the South Sandwich Islands",
         "currencyCode": "GBP",
@@ -990,7 +900,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 91,
         "countryCode": "GT",
         "countryName": "Guatemala",
         "currencyCode": "GTQ",
@@ -1001,7 +910,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 92,
         "countryCode": "GU",
         "countryName": "Guam",
         "currencyCode": "USD",
@@ -1012,7 +920,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 93,
         "countryCode": "GW",
         "countryName": "Guinea-Bissau",
         "currencyCode": "XOF",
@@ -1023,7 +930,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 94,
         "countryCode": "GY",
         "countryName": "Guyana",
         "currencyCode": "GYD",
@@ -1034,7 +940,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 95,
         "countryCode": "HK",
         "countryName": "Hong Kong",
         "currencyCode": "HKD",
@@ -1045,7 +950,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 96,
         "countryCode": "HM",
         "countryName": "Heard Island and McDonald Islands",
         "currencyCode": "AUD",
@@ -1056,7 +960,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 97,
         "countryCode": "HN",
         "countryName": "Honduras",
         "currencyCode": "HNL",
@@ -1067,7 +970,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 98,
         "countryCode": "HR",
         "countryName": "Croatia",
         "currencyCode": "HRK",
@@ -1078,7 +980,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 99,
         "countryCode": "HT",
         "countryName": "Haiti",
         "currencyCode": "HTG",
@@ -1089,7 +990,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 100,
         "countryCode": "HU",
         "countryName": "Hungary",
         "currencyCode": "HUF",
@@ -1100,7 +1000,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 101,
         "countryCode": "ID",
         "countryName": "Indonesia",
         "currencyCode": "IDR",
@@ -1111,7 +1010,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 102,
         "countryCode": "IE",
         "countryName": "Ireland",
         "currencyCode": "EUR",
@@ -1122,7 +1020,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 103,
         "countryCode": "IL",
         "countryName": "Israel",
         "currencyCode": "ILS",
@@ -1133,7 +1030,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 104,
         "countryCode": "IM",
         "countryName": "Isle of Man",
         "currencyCode": "GBP",
@@ -1144,7 +1040,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 105,
         "countryCode": "IN",
         "countryName": "India",
         "currencyCode": "INR",
@@ -1168,7 +1063,6 @@
         ]
     },
     {
-        "id": 106,
         "countryCode": "IO",
         "countryName": "British Indian Ocean Territory",
         "currencyCode": "USD",
@@ -1179,7 +1073,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 107,
         "countryCode": "IQ",
         "countryName": "Iraq",
         "currencyCode": "IQD",
@@ -1347,7 +1240,6 @@
         ]
     },
     {
-        "id": 108,
         "countryCode": "IR",
         "countryName": "Iran",
         "currencyCode": "IRR",
@@ -1358,7 +1250,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 109,
         "countryCode": "IS",
         "countryName": "Iceland",
         "currencyCode": "ISK",
@@ -1369,7 +1260,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 110,
         "countryCode": "IT",
         "countryName": "Italy",
         "currencyCode": "EUR",
@@ -1380,7 +1270,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 111,
         "countryCode": "JE",
         "countryName": "Jersey",
         "currencyCode": "GBP",
@@ -1391,7 +1280,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 112,
         "countryCode": "JM",
         "countryName": "Jamaica",
         "currencyCode": "JMD",
@@ -1402,7 +1290,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 113,
         "countryCode": "JO",
         "countryName": "Jordan",
         "currencyCode": "JOD",
@@ -1413,7 +1300,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 114,
         "countryCode": "JP",
         "countryName": "Japan",
         "currencyCode": "JPY",
@@ -1424,7 +1310,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 115,
         "countryCode": "KE",
         "countryName": "Kenya",
         "currencyCode": "KES",
@@ -1435,7 +1320,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 116,
         "countryCode": "KG",
         "countryName": "Kyrgyzstan",
         "currencyCode": "KGS",
@@ -1446,7 +1330,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 117,
         "countryCode": "KH",
         "countryName": "Cambodia",
         "currencyCode": "KHR",
@@ -1457,7 +1340,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 118,
         "countryCode": "KI",
         "countryName": "Kiribati",
         "currencyCode": "AUD",
@@ -1468,7 +1350,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 119,
         "countryCode": "KM",
         "countryName": "Comoros",
         "currencyCode": "KMF",
@@ -1479,7 +1360,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 120,
         "countryCode": "KN",
         "countryName": "Saint Kitts and Nevis",
         "currencyCode": "XCD",
@@ -1490,7 +1370,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 121,
         "countryCode": "KP",
         "countryName": "North Korea",
         "currencyCode": "KPW",
@@ -1501,7 +1380,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 122,
         "countryCode": "KR",
         "countryName": "South Korea",
         "currencyCode": "KRW",
@@ -1512,7 +1390,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 123,
         "countryCode": "KW",
         "countryName": "Kuwait",
         "currencyCode": "KWD",
@@ -1523,7 +1400,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 124,
         "countryCode": "KY",
         "countryName": "Cayman Islands",
         "currencyCode": "KYD",
@@ -1534,7 +1410,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 125,
         "countryCode": "KZ",
         "countryName": "Kazakhstan",
         "currencyCode": "KZT",
@@ -1545,7 +1420,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 126,
         "countryCode": "LA",
         "countryName": "Laos",
         "currencyCode": "LAK",
@@ -1556,7 +1430,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 127,
         "countryCode": "LB",
         "countryName": "Lebanon",
         "currencyCode": "LBP",
@@ -1567,7 +1440,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 128,
         "countryCode": "LC",
         "countryName": "Saint Lucia",
         "currencyCode": "XCD",
@@ -1578,7 +1450,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 129,
         "countryCode": "LI",
         "countryName": "Liechtenstein",
         "currencyCode": "CHF",
@@ -1589,7 +1460,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 130,
         "countryCode": "LK",
         "countryName": "Sri Lanka",
         "currencyCode": "LKR",
@@ -1600,7 +1470,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 131,
         "countryCode": "LR",
         "countryName": "Liberia",
         "currencyCode": "LRD",
@@ -1611,7 +1480,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 132,
         "countryCode": "LS",
         "countryName": "Lesotho",
         "currencyCode": "LSL",
@@ -1622,7 +1490,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 133,
         "countryCode": "LT",
         "countryName": "Lithuania",
         "currencyCode": "EUR",
@@ -1633,7 +1500,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 134,
         "countryCode": "LU",
         "countryName": "Luxembourg",
         "currencyCode": "EUR",
@@ -1644,7 +1510,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 135,
         "countryCode": "LV",
         "countryName": "Latvia",
         "currencyCode": "EUR",
@@ -1655,7 +1520,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 136,
         "countryCode": "LY",
         "countryName": "Libya",
         "currencyCode": "LYD",
@@ -1666,7 +1530,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 137,
         "countryCode": "MA",
         "countryName": "Morocco",
         "currencyCode": "MAD",
@@ -1677,7 +1540,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 138,
         "countryCode": "MC",
         "countryName": "Monaco",
         "currencyCode": "EUR",
@@ -1688,7 +1550,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 139,
         "countryCode": "MD",
         "countryName": "Moldova",
         "currencyCode": "MDL",
@@ -1699,7 +1560,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 140,
         "countryCode": "ME",
         "countryName": "Montenegro",
         "currencyCode": "EUR",
@@ -1710,7 +1570,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 141,
         "countryCode": "MF",
         "countryName": "Saint Martin",
         "currencyCode": "EUR",
@@ -1721,7 +1580,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 142,
         "countryCode": "MG",
         "countryName": "Madagascar",
         "currencyCode": "MGA",
@@ -1732,7 +1590,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 143,
         "countryCode": "MH",
         "countryName": "Marshall Islands",
         "currencyCode": "USD",
@@ -1743,7 +1600,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 144,
         "countryCode": "MK",
         "countryName": "Macedonia",
         "currencyCode": "MKD",
@@ -1754,7 +1610,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 145,
         "countryCode": "ML",
         "countryName": "Mali",
         "currencyCode": "XOF",
@@ -1765,7 +1620,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 146,
         "countryCode": "MM",
         "countryName": "Myanmar [Burma]",
         "currencyCode": "MMK",
@@ -1776,7 +1630,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 147,
         "countryCode": "MN",
         "countryName": "Mongolia",
         "currencyCode": "MNT",
@@ -1787,7 +1640,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 148,
         "countryCode": "MO",
         "countryName": "Macao",
         "currencyCode": "MOP",
@@ -1798,7 +1650,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 149,
         "countryCode": "MP",
         "countryName": "Northern Mariana Islands",
         "currencyCode": "USD",
@@ -1809,7 +1660,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 150,
         "countryCode": "MQ",
         "countryName": "Martinique",
         "currencyCode": "EUR",
@@ -1820,7 +1670,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 151,
         "countryCode": "MR",
         "countryName": "Mauritania",
         "currencyCode": "MRO",
@@ -1831,7 +1680,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 152,
         "countryCode": "MS",
         "countryName": "Montserrat",
         "currencyCode": "XCD",
@@ -1842,7 +1690,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 153,
         "countryCode": "MT",
         "countryName": "Malta",
         "currencyCode": "EUR",
@@ -1853,7 +1700,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 154,
         "countryCode": "MU",
         "countryName": "Mauritius",
         "currencyCode": "MUR",
@@ -1864,7 +1710,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 155,
         "countryCode": "MV",
         "countryName": "Maldives",
         "currencyCode": "MVR",
@@ -1875,7 +1720,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 156,
         "countryCode": "MW",
         "countryName": "Malawi",
         "currencyCode": "MWK",
@@ -1886,7 +1730,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 157,
         "countryCode": "MX",
         "countryName": "Mexico",
         "currencyCode": "MXN",
@@ -1897,7 +1740,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 158,
         "countryCode": "MY",
         "countryName": "Malaysia",
         "currencyCode": "MYR",
@@ -1908,7 +1750,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 159,
         "countryCode": "MZ",
         "countryName": "Mozambique",
         "currencyCode": "MZN",
@@ -1919,7 +1760,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 160,
         "countryCode": "NA",
         "countryName": "Namibia",
         "currencyCode": "NAD",
@@ -1930,7 +1770,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 161,
         "countryCode": "NC",
         "countryName": "New Caledonia",
         "currencyCode": "XPF",
@@ -1941,7 +1780,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 162,
         "countryCode": "NE",
         "countryName": "Niger",
         "currencyCode": "XOF",
@@ -1952,7 +1790,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 163,
         "countryCode": "NF",
         "countryName": "Norfolk Island",
         "currencyCode": "AUD",
@@ -1963,7 +1800,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 164,
         "countryCode": "NG",
         "countryName": "Nigeria",
         "currencyCode": "NGN",
@@ -1974,7 +1810,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 165,
         "countryCode": "NI",
         "countryName": "Nicaragua",
         "currencyCode": "NIO",
@@ -1985,7 +1820,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 166,
         "countryCode": "NL",
         "countryName": "Netherlands",
         "currencyCode": "EUR",
@@ -1996,7 +1830,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 167,
         "countryCode": "NO",
         "countryName": "Norway",
         "currencyCode": "NOK",
@@ -2007,7 +1840,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 168,
         "countryCode": "NP",
         "countryName": "Nepal",
         "currencyCode": "NPR",
@@ -2018,7 +1850,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 169,
         "countryCode": "NR",
         "countryName": "Nauru",
         "currencyCode": "AUD",
@@ -2029,7 +1860,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 170,
         "countryCode": "NU",
         "countryName": "Niue",
         "currencyCode": "NZD",
@@ -2040,7 +1870,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 171,
         "countryCode": "NZ",
         "countryName": "New Zealand",
         "currencyCode": "NZD",
@@ -2051,7 +1880,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 172,
         "countryCode": "OM",
         "countryName": "Oman",
         "currencyCode": "OMR",
@@ -2062,7 +1890,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 173,
         "countryCode": "PA",
         "countryName": "Panama",
         "currencyCode": "PAB",
@@ -2073,7 +1900,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 174,
         "countryCode": "PE",
         "countryName": "Peru",
         "currencyCode": "PEN",
@@ -2084,7 +1910,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 175,
         "countryCode": "PF",
         "countryName": "French Polynesia",
         "currencyCode": "XPF",
@@ -2095,7 +1920,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 176,
         "countryCode": "PG",
         "countryName": "Papua New Guinea",
         "currencyCode": "PGK",
@@ -2106,7 +1930,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 177,
         "countryCode": "PH",
         "countryName": "Philippines",
         "currencyCode": "PHP",
@@ -2117,7 +1940,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 178,
         "countryCode": "PK",
         "countryName": "Pakistan",
         "currencyCode": "PKR",
@@ -2128,7 +1950,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 179,
         "countryCode": "PL",
         "countryName": "Poland",
         "currencyCode": "PLN",
@@ -2139,7 +1960,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 180,
         "countryCode": "PM",
         "countryName": "Saint Pierre and Miquelon",
         "currencyCode": "EUR",
@@ -2150,7 +1970,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 181,
         "countryCode": "PN",
         "countryName": "Pitcairn Islands",
         "currencyCode": "NZD",
@@ -2161,7 +1980,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 182,
         "countryCode": "PR",
         "countryName": "Puerto Rico",
         "currencyCode": "USD",
@@ -2172,7 +1990,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 183,
         "countryCode": "PS",
         "countryName": "Palestine",
         "currencyCode": "ILS",
@@ -2183,7 +2000,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 184,
         "countryCode": "PT",
         "countryName": "Portugal",
         "currencyCode": "EUR",
@@ -2194,7 +2010,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 185,
         "countryCode": "PW",
         "countryName": "Palau",
         "currencyCode": "USD",
@@ -2205,7 +2020,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 186,
         "countryCode": "PY",
         "countryName": "Paraguay",
         "currencyCode": "PYG",
@@ -2216,7 +2030,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 187,
         "countryCode": "QA",
         "countryName": "Qatar",
         "currencyCode": "QAR",
@@ -2227,9 +2040,8 @@
         "deactivatedGames": []
     },
     {
-        "id": 188,
         "countryCode": "RE",
-        "countryName": "R\u00e9union",
+        "countryName": "Réunion",
         "currencyCode": "EUR",
         "isoNumeric": "638",
         "isoAlpha3": "REU",
@@ -2238,7 +2050,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 189,
         "countryCode": "RO",
         "countryName": "Romania",
         "currencyCode": "RON",
@@ -2249,7 +2060,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 190,
         "countryCode": "RS",
         "countryName": "Serbia",
         "currencyCode": "RSD",
@@ -2260,7 +2070,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 191,
         "countryCode": "RU",
         "countryName": "Russia",
         "currencyCode": "RUB",
@@ -2271,7 +2080,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 192,
         "countryCode": "RW",
         "countryName": "Rwanda",
         "currencyCode": "RWF",
@@ -2282,7 +2090,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 193,
         "countryCode": "SA",
         "countryName": "Saudi Arabia",
         "currencyCode": "SAR",
@@ -2293,7 +2100,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 194,
         "countryCode": "SB",
         "countryName": "Solomon Islands",
         "currencyCode": "SBD",
@@ -2304,7 +2110,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 195,
         "countryCode": "SC",
         "countryName": "Seychelles",
         "currencyCode": "SCR",
@@ -2315,7 +2120,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 196,
         "countryCode": "SD",
         "countryName": "Sudan",
         "currencyCode": "SDG",
@@ -2326,7 +2130,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 197,
         "countryCode": "SE",
         "countryName": "Sweden",
         "currencyCode": "SEK",
@@ -2337,7 +2140,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 198,
         "countryCode": "SG",
         "countryName": "Singapore",
         "currencyCode": "SGD",
@@ -2348,7 +2150,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 199,
         "countryCode": "SH",
         "countryName": "Saint Helena",
         "currencyCode": "SHP",
@@ -2359,7 +2160,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 200,
         "countryCode": "SI",
         "countryName": "Slovenia",
         "currencyCode": "EUR",
@@ -2370,7 +2170,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 201,
         "countryCode": "SJ",
         "countryName": "Svalbard and Jan Mayen",
         "currencyCode": "NOK",
@@ -2381,7 +2180,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 202,
         "countryCode": "SK",
         "countryName": "Slovakia",
         "currencyCode": "EUR",
@@ -2392,7 +2190,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 203,
         "countryCode": "SL",
         "countryName": "Sierra Leone",
         "currencyCode": "SLL",
@@ -2403,7 +2200,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 204,
         "countryCode": "SM",
         "countryName": "San Marino",
         "currencyCode": "EUR",
@@ -2414,7 +2210,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 205,
         "countryCode": "SN",
         "countryName": "Senegal",
         "currencyCode": "XOF",
@@ -2425,7 +2220,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 206,
         "countryCode": "SO",
         "countryName": "Somalia",
         "currencyCode": "SOS",
@@ -2436,7 +2230,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 207,
         "countryCode": "SR",
         "countryName": "Suriname",
         "currencyCode": "SRD",
@@ -2447,7 +2240,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 208,
         "countryCode": "SS",
         "countryName": "South Sudan",
         "currencyCode": "SSP",
@@ -2458,9 +2250,8 @@
         "deactivatedGames": []
     },
     {
-        "id": 209,
         "countryCode": "ST",
-        "countryName": "S\u00e3o Tom\u00e9 and Pr\u00edncipe",
+        "countryName": "São Tomé and Príncipe",
         "currencyCode": "STD",
         "isoNumeric": "678",
         "isoAlpha3": "STP",
@@ -2469,7 +2260,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 210,
         "countryCode": "SV",
         "countryName": "El Salvador",
         "currencyCode": "USD",
@@ -2480,7 +2270,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 211,
         "countryCode": "SX",
         "countryName": "Sint Maarten",
         "currencyCode": "ANG",
@@ -2491,7 +2280,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 212,
         "countryCode": "SY",
         "countryName": "Syria",
         "currencyCode": "SYP",
@@ -2502,7 +2290,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 213,
         "countryCode": "SZ",
         "countryName": "Swaziland",
         "currencyCode": "SZL",
@@ -2513,7 +2300,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 214,
         "countryCode": "TC",
         "countryName": "Turks and Caicos Islands",
         "currencyCode": "USD",
@@ -2524,7 +2310,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 215,
         "countryCode": "TD",
         "countryName": "Chad",
         "currencyCode": "XAF",
@@ -2535,7 +2320,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 216,
         "countryCode": "TF",
         "countryName": "French Southern Territories",
         "currencyCode": "EUR",
@@ -2546,7 +2330,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 217,
         "countryCode": "TG",
         "countryName": "Togo",
         "currencyCode": "XOF",
@@ -2557,7 +2340,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 218,
         "countryCode": "TH",
         "countryName": "Thailand",
         "currencyCode": "THB",
@@ -2568,7 +2350,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 219,
         "countryCode": "TJ",
         "countryName": "Tajikistan",
         "currencyCode": "TJS",
@@ -2579,7 +2360,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 220,
         "countryCode": "TK",
         "countryName": "Tokelau",
         "currencyCode": "NZD",
@@ -2590,7 +2370,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 221,
         "countryCode": "TL",
         "countryName": "East Timor",
         "currencyCode": "USD",
@@ -2601,7 +2380,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 222,
         "countryCode": "TM",
         "countryName": "Turkmenistan",
         "currencyCode": "TMT",
@@ -2612,7 +2390,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 223,
         "countryCode": "TN",
         "countryName": "Tunisia",
         "currencyCode": "TND",
@@ -2623,7 +2400,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 224,
         "countryCode": "TO",
         "countryName": "Tonga",
         "currencyCode": "TOP",
@@ -2634,7 +2410,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 225,
         "countryCode": "TR",
         "countryName": "Turkey",
         "currencyCode": "TRY",
@@ -2645,7 +2420,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 226,
         "countryCode": "TT",
         "countryName": "Trinidad and Tobago",
         "currencyCode": "TTD",
@@ -2656,7 +2430,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 227,
         "countryCode": "TV",
         "countryName": "Tuvalu",
         "currencyCode": "AUD",
@@ -2667,7 +2440,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 228,
         "countryCode": "TW",
         "countryName": "Taiwan",
         "currencyCode": "TWD",
@@ -2678,7 +2450,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 229,
         "countryCode": "TZ",
         "countryName": "Tanzania",
         "currencyCode": "TZS",
@@ -2689,7 +2460,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 230,
         "countryCode": "UA",
         "countryName": "Ukraine",
         "currencyCode": "UAH",
@@ -2700,7 +2470,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 231,
         "countryCode": "UG",
         "countryName": "Uganda",
         "currencyCode": "UGX",
@@ -2711,7 +2480,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 232,
         "countryCode": "UM",
         "countryName": "U.S. Minor Outlying Islands",
         "currencyCode": "USD",
@@ -2722,7 +2490,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 233,
         "countryCode": "US",
         "countryName": "United States",
         "currencyCode": "USD",
@@ -2733,7 +2500,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 234,
         "countryCode": "UY",
         "countryName": "Uruguay",
         "currencyCode": "UYU",
@@ -2744,7 +2510,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 235,
         "countryCode": "UZ",
         "countryName": "Uzbekistan",
         "currencyCode": "UZS",
@@ -2755,7 +2520,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 236,
         "countryCode": "VA",
         "countryName": "Vatican City",
         "currencyCode": "EUR",
@@ -2766,7 +2530,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 237,
         "countryCode": "VC",
         "countryName": "Saint Vincent and the Grenadines",
         "currencyCode": "XCD",
@@ -2777,7 +2540,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 238,
         "countryCode": "VE",
         "countryName": "Venezuela",
         "currencyCode": "VEF",
@@ -2788,7 +2550,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 239,
         "countryCode": "VG",
         "countryName": "British Virgin Islands",
         "currencyCode": "USD",
@@ -2799,7 +2560,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 240,
         "countryCode": "VI",
         "countryName": "U.S. Virgin Islands",
         "currencyCode": "USD",
@@ -2810,7 +2570,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 241,
         "countryCode": "VN",
         "countryName": "Vietnam",
         "currencyCode": "VND",
@@ -2821,7 +2580,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 242,
         "countryCode": "VU",
         "countryName": "Vanuatu",
         "currencyCode": "VUV",
@@ -2832,7 +2590,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 243,
         "countryCode": "WF",
         "countryName": "Wallis and Futuna",
         "currencyCode": "XPF",
@@ -2843,7 +2600,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 244,
         "countryCode": "WS",
         "countryName": "Samoa",
         "currencyCode": "WST",
@@ -2854,7 +2610,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 245,
         "countryCode": "XK",
         "countryName": "Kosovo",
         "currencyCode": "EUR",
@@ -2865,7 +2620,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 246,
         "countryCode": "YE",
         "countryName": "Yemen",
         "currencyCode": "YER",
@@ -2876,7 +2630,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 247,
         "countryCode": "YT",
         "countryName": "Mayotte",
         "currencyCode": "EUR",
@@ -2887,7 +2640,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 248,
         "countryCode": "ZA",
         "countryName": "South Africa",
         "currencyCode": "ZAR",
@@ -2898,7 +2650,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 249,
         "countryCode": "ZM",
         "countryName": "Zambia",
         "currencyCode": "ZMW",
@@ -2909,7 +2660,6 @@
         "deactivatedGames": []
     },
     {
-        "id": 250,
         "countryCode": "ZW",
         "countryName": "Zimbabwe",
         "currencyCode": "ZWL",

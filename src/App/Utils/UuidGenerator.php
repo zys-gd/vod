@@ -1,6 +1,6 @@
 <?php
 
-namespace DataFixtures\Utils;
+namespace App\Utils;
 
 class UuidGenerator
 {

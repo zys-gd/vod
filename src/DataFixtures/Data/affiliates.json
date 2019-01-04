@@ -1,6 +1,6 @@
 [
     {
-        "id": 1,
+        "uuid": "514fd8a1-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Kimia",
         "type": 2,
         "url": "http:\/\/Kimia.com",
@@ -10,13 +10,12 @@
         "skypeId": "albertokimia",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fd8a1-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103cf67-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 2,
+        "uuid": "514fda89-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Gorilla",
         "type": 2,
         "url": "http:\/\/Gorilla.com",
@@ -26,13 +25,12 @@
         "skypeId": "maya.go-rilla",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fda89-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103f78d-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 3,
+        "uuid": "514fdb2a-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Dmg",
         "type": 2,
         "url": "http:\/\/DSNR.com",
@@ -42,13 +40,12 @@
         "skypeId": "viki.vaturi",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fdb2a-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103f78d-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 4,
+        "uuid": "514fdb97-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Avazu",
         "type": 2,
         "url": "http:\/\/Avazu.com",
@@ -58,13 +55,12 @@
         "skypeId": "michela.secci5",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fdb97-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103cc4f-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 5,
+        "uuid": "514fdc15-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Yepmedia",
         "type": 2,
         "url": "http:\/\/YepMedia.com",
@@ -74,13 +70,12 @@
         "skypeId": "sharon.nardea",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fdc15-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103f78d-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 8,
+        "uuid": "514fdc83-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Billy",
         "type": 2,
         "url": "http:\/\/test.com",
@@ -90,13 +85,12 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fdc83-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103ce41-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 9,
+        "uuid": "514fdcf3-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Mobusi",
         "type": 2,
         "url": "http:\/\/test.com",
@@ -106,13 +100,12 @@
         "skypeId": "paloma.caballero.mob",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fdcf3-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103cf67-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 10,
+        "uuid": "514fdd62-ebd4-11e8-95c4-02bb250f0f22",
         "name": "DIALOG",
         "type": 2,
         "url": "http:\/\/test.com",
@@ -122,13 +115,12 @@
         "skypeId": "charly.adcash",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fdd62-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103cf67-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 11,
+        "uuid": "514fddc4-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Crossrider",
         "type": 2,
         "url": "http:\/\/test.com",
@@ -138,13 +130,12 @@
         "skypeId": "erez.yerushalmi",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fddc4-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103f78d-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 12,
+        "uuid": "514fde3b-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Volo",
         "type": 2,
         "url": "http:\/\/www.test.com",
@@ -154,13 +145,12 @@
         "skypeId": "yuval_4444",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fde3b-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103f78d-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 13,
+        "uuid": "514fdf10-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Gasmobi",
         "type": 2,
         "url": "http:\/\/www.gasmobi.com",
@@ -170,13 +160,12 @@
         "skypeId": "victor_edm",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fdf10-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103cf67-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 15,
+        "uuid": "514fdfd7-ebd4-11e8-95c4-02bb250f0f22",
         "name": "BidderPlace",
         "type": 2,
         "url": "https:\/\/www.bidderplace.com",
@@ -186,13 +175,12 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fdfd7-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103cc4f-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 16,
+        "uuid": "514fe099-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Hootmobi",
         "type": 2,
         "url": "http:\/\/www.hootmobi.com",
@@ -202,13 +190,12 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fe099-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103d7ed-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 17,
+        "uuid": "514fe164-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Spiroox",
         "type": 2,
         "url": "http:\/\/www.test.com",
@@ -218,13 +205,12 @@
         "skypeId": "raulcruzarnelas_",
         "enabled": true,
         "subPriceName": "CESTA",
-        "uuid": "514fe164-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103cf67-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 18,
+        "uuid": "514fe22c-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Appalgo",
         "type": 2,
         "url": "http:\/\/www.appalgo.com",
@@ -234,13 +220,12 @@
         "skypeId": "nadav_luxembourg",
         "enabled": true,
         "subPriceName": "amt",
-        "uuid": "514fe22c-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103f78d-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 20,
+        "uuid": "514fe2c2-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Harrenmedia",
         "type": 2,
         "url": "http:\/\/www.test.com",
@@ -250,13 +235,12 @@
         "skypeId": "karny.yosi",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fe2c2-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103f78d-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 21,
+        "uuid": "514fe33d-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Advancemobile",
         "type": 2,
         "url": "http:\/\/.advancemobile.net",
@@ -266,13 +250,12 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fe33d-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 22,
+        "uuid": "514fe3a5-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Clariad",
         "type": 2,
         "url": "http:\/\/www.test.com",
@@ -282,13 +265,12 @@
         "skypeId": "hguesa",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fe3a5-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "51043478-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 23,
+        "uuid": "514fe40c-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Yeahmobi",
         "type": 2,
         "url": "http:\/\/yeamobi.com",
@@ -298,13 +280,12 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fe40c-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 24,
+        "uuid": "514fe478-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Google",
         "type": 1,
         "url": "http:\/\/google.com",
@@ -314,13 +295,12 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fe478-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 25,
+        "uuid": "514fe4dc-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Ydigital",
         "type": 2,
         "url": "http:\/\/www.ydigital.com",
@@ -330,13 +310,12 @@
         "skypeId": "vasconcellos.bernardo",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fe4dc-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "51044bcc-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 26,
+        "uuid": "514fe63b-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Facebook",
         "type": 1,
         "url": "http:\/\/www.test.com",
@@ -346,13 +325,12 @@
         "skypeId": "lgarcia.ama",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fe63b-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103cf67-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 27,
+        "uuid": "514fe741-ebd4-11e8-95c4-02bb250f0f22",
         "name": "MoPub",
         "type": 1,
         "url": "https:\/\/app.mopub.com",
@@ -362,13 +340,12 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fe741-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 28,
+        "uuid": "514fe80f-ebd4-11e8-95c4-02bb250f0f22",
         "name": "mopub",
         "type": 1,
         "url": "http:\/\/mopub.com",
@@ -378,13 +355,12 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fe80f-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 29,
+        "uuid": "514fe8ce-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Startapp",
         "type": 1,
         "url": "http:\/\/www.test.com",
@@ -394,13 +370,12 @@
         "skypeId": "dinah.saada",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fe8ce-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103f78d-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 30,
+        "uuid": "514fea13-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Smadex",
         "type": 1,
         "url": "http:\/\/smadex.com",
@@ -410,13 +385,12 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fea13-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 31,
+        "uuid": "514fea8a-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Admoustache",
         "type": 2,
         "url": "http:\/\/www.admoustache.com\/es\/",
@@ -426,13 +400,12 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fea8a-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 32,
+        "uuid": "514feaf5-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Flymob",
         "type": 2,
         "url": "http:\/\/www.test.com",
@@ -442,13 +415,12 @@
         "skypeId": "sharuna.flymob",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514feaf5-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103f6ea-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 33,
+        "uuid": "514feb9d-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Clickdealer",
         "type": 2,
         "url": "http:\/\/www.test.com",
@@ -458,13 +430,12 @@
         "skypeId": "raulcruzarnelas_",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514feb9d-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103cf67-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 34,
+        "uuid": "514fec63-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Dialog",
         "type": 2,
         "url": "http:\/\/www.test.com",
@@ -474,13 +445,12 @@
         "skypeId": "sumudu.dialog",
         "enabled": false,
         "subPriceName": null,
-        "uuid": "514fec63-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "510419b4-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 35,
+        "uuid": "514fed21-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Elymobile",
         "type": 2,
         "url": "http:\/\/www.elymobile.com\/",
@@ -490,13 +460,12 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fed21-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 36,
+        "uuid": "514fee48-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Dooeeads",
         "type": 2,
         "url": "http:\/\/www.dooeeads.com",
@@ -506,13 +475,12 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fee48-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 37,
+        "uuid": "514feec2-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Nazara",
         "type": 2,
         "url": "http:\/\/www.nazara.com",
@@ -522,13 +490,12 @@
         "skypeId": "manish.mishra6",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514feec2-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103fb7c-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 38,
+        "uuid": "514fef25-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Digital",
         "type": 2,
         "url": "http:\/\/www.314digital.com",
@@ -538,13 +505,12 @@
         "skypeId": "abhimanyu.chatterjee",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fef25-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103fb7c-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 39,
+        "uuid": "514fef98-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Mobipium",
         "type": 2,
         "url": "http:\/\/mobipiumlink.com",
@@ -554,13 +520,12 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514fef98-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "51044bcc-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 40,
+        "uuid": "514ff007-ebd4-11e8-95c4-02bb250f0f22",
         "name": "ClickdealerNEW",
         "type": 2,
         "url": "http:\/\/www.test.com",
@@ -570,13 +535,12 @@
         "skypeId": "raulcruzarnelas_",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514ff007-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103cf67-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 41,
+        "uuid": "514ff0af-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Airtel WAP portal",
         "type": 2,
         "url": "https:\/\/one.airtel.in",
@@ -586,13 +550,12 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514ff0af-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103fb7c-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 42,
+        "uuid": "514ff15b-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Mobidiscover",
         "type": 2,
         "url": "https:\/\/mobidiscover.com",
@@ -602,13 +565,12 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514ff15b-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103fb7c-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 43,
+        "uuid": "514ff1e6-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Tapgerine",
         "type": 2,
         "url": "http:\/\/www.test.com",
@@ -618,13 +580,12 @@
         "skypeId": "lyuba_84",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514ff1e6-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "510461e4-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 44,
+        "uuid": "514ff272-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Mobidea",
         "type": 2,
         "url": "http:\/\/Mobidea.com",
@@ -634,13 +595,12 @@
         "skypeId": "catia.gomes_9",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514ff272-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 46,
+        "uuid": "514ff311-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Sinozo",
         "type": 2,
         "url": "https:\/\/test.com",
@@ -650,13 +610,12 @@
         "skypeId": "jenna@sinozo",
         "enabled": true,
         "subPriceName": "payout",
-        "uuid": "514ff311-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "51044fe9-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 47,
+        "uuid": "514ff3ad-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Traffic Company",
         "type": 2,
         "url": "https:\/\/www.trafficcompany.com\/",
@@ -666,13 +625,12 @@
         "skypeId": "jasperbanse@trafficcompany.com",
         "enabled": true,
         "subPriceName": "payout",
-        "uuid": "514ff3ad-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5104403e-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 48,
+        "uuid": "514ff448-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Origindata MarketPlace",
         "type": 2,
         "url": "http:\/\/playwing.com",
@@ -682,13 +640,12 @@
         "skypeId": "geoffrey_domdom",
         "enabled": true,
         "subPriceName": "payout",
-        "uuid": "514ff448-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 49,
+        "uuid": "514ff4e9-ebd4-11e8-95c4-02bb250f0f22",
         "name": "myTarget",
         "type": 2,
         "url": "http:\/\/mytarget.com",
@@ -698,13 +655,12 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514ff4e9-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 50,
+        "uuid": "514ff58a-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Yeesshh",
         "type": 2,
         "url": "https:\/\/my.yeesshh.com",
@@ -714,13 +670,12 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": "value",
-        "uuid": "514ff58a-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "51046d7f-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 51,
+        "uuid": "514ff619-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Adjomo",
         "type": 2,
         "url": "https:\/\/www.adjomo.com\/en\/",
@@ -730,13 +685,12 @@
         "skypeId": "awad.adjomo",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514ff619-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103cf67-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 52,
+        "uuid": "514ff6b3-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Harrenmedia NEW",
         "type": 2,
         "url": "http:\/\/harrenmedia.com\/",
@@ -746,13 +700,12 @@
         "skypeId": "Karny.yosi",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514ff6b3-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103f78d-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 53,
+        "uuid": "514ff757-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Claymotion",
         "type": 2,
         "url": "http:\/\/claymotion.in\/",
@@ -762,13 +715,12 @@
         "skypeId": "vikrant.claym",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514ff757-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103fb7c-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 54,
+        "uuid": "514ff884-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Mobikok",
         "type": 2,
         "url": "http:\/\/www.mobikok.com\/en\/cn\/index.asp",
@@ -778,13 +730,12 @@
         "skypeId": "zoey@sparklemob.com",
         "enabled": true,
         "subPriceName": "payout",
-        "uuid": "514ff884-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103e066-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 55,
+        "uuid": "514ff8df-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Offerseven",
         "type": 2,
         "url": "https:\/\/offerseven.com\/",
@@ -794,13 +745,12 @@
         "skypeId": "Khrystyna.Bykova@offerseven.com",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514ff8df-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "510461e4-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {
-        "id": 57,
+        "uuid": "514ff93b-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Toro",
         "type": 2,
         "url": "https:\/\/toroadvertising.com\/",
@@ -810,7 +760,6 @@
         "skypeId": "sol@toroadvertising.com",
         "enabled": true,
         "subPriceName": null,
-        "uuid": "514ff93b-ebd4-11e8-95c4-02bb250f0f22",
         "country": {
             "uuid": "5103cf67-ebd4-11e8-95c4-02bb250f0f22"
         }

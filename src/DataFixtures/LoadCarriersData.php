@@ -35,8 +35,8 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
 
         foreach ($data as $row) {
 
-            $id                                      = $row['id'];
-            $carrierId                               = $row['id_carrier'];
+            $uuid                                    = $row['uuid'];
+            $billingCarrierId                               = $row['id_carrier'];
             $operatorId                              = $row['operator_id'];
             $name                                    = $row['name'];
             $countryCode                             = $row['countryCode'];
@@ -57,7 +57,6 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $numberOfAllowedSubscriptionByConstraint = $row['numberOfAllowedSubscriptionsByConstraint'];
             $redirectUrl                             = $row['redirectUrl'];
             $counter                                 = $row['counter'];
-            $uuid                                    = $row['uuid'];
             $flushdate                               = $row['flushDate'];
             $isCapAlertDispatch                      = $row['isCapAlertDispatch'];
             $flushdate = $row['flushDate'];
@@ -65,9 +64,9 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
 
             $defaultLanguageId = $row['default_language']['uuid'];
 
-            $carrier = new Carrier();
+            $carrier = new Carrier($uuid);
 
-            $carrier->setIdCarrier($carrierId);
+            $carrier->setBillingCarrierId($billingCarrierId);
             $carrier->setName($name);
             $carrier->setCountryCode($countryCode);
             $carrier->setIsp($isp);
@@ -99,8 +98,7 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $manager->persist($carrier);
 
             $this->addReference(sprintf('carrier_%s', $uuid), $carrier);
-            $this->addReference(sprintf('carrier_with_id_%s', $id), $carrier);
-            $this->addReference(sprintf('carrier_with_internal_id_%s', $carrierId), $carrier);
+            $this->addReference(sprintf('carrier_with_internal_id_%s', $billingCarrierId), $carrier);
 
         }
 

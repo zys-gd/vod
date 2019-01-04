@@ -31,7 +31,6 @@ class LoadCountriesData extends AbstractFixture implements ContainerAwareInterfa
         $data = FixtureDataLoader::loadDataFromJSONFile('countries.json');
 
         foreach ($data as $row) {
-            $id = $row['id'];
             $countryCode = $row['countryCode'];
             $countryName = $row['countryName'];
             $currency = $row['currencyCode'];
@@ -39,15 +38,13 @@ class LoadCountriesData extends AbstractFixture implements ContainerAwareInterfa
             $isoAlpha = $row['isoAlpha3'];
             $uuid = $row['uuid'];
 
-            $country = new Country();
+            $country = new Country($uuid);
             $country->setCountryCode($countryCode);
             $country->setCountryName($countryName);
             $country->setCurrencyCode($currency);
             $country->setIsoNumeric($isoNumeric);
             $country->setIsoAlpha3($isoAlpha);
-            $country->setUuid($uuid);
             $this->addReference(sprintf('country_%s', $uuid), $country);
-            $this->addReference(sprintf('country_with_id_%s', $id), $country);
 
             $manager->persist($country);
         }

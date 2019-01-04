@@ -1,6 +1,5 @@
 [
     {
-        "id": 13,
         "id_carrier": 30,
         "operator_id": 0,
         "name": "Orange(Egypt)",
@@ -463,7 +462,6 @@
         ]
     },
     {
-        "id": 14,
         "id_carrier": 31,
         "operator_id": 0,
         "name": "Vodafone(Egypt)",
@@ -530,7 +528,6 @@
         ]
     },
     {
-        "id": 15,
         "id_carrier": 136,
         "operator_id": 0,
         "name": "Etisalat(Egypt)",
@@ -705,7 +702,6 @@
         ]
     },
     {
-        "id": 16,
         "id_carrier": 132,
         "operator_id": 0,
         "name": "Umniah(Jordan)",
@@ -736,7 +732,6 @@
         "campaigns": []
     },
     {
-        "id": 17,
         "id_carrier": 338,
         "operator_id": 21,
         "name": "Mobilink(Pakistan)",
@@ -1100,7 +1095,6 @@
         ]
     },
     {
-        "id": 18,
         "id_carrier": 348,
         "operator_id": 13,
         "name": "MTN(Sudan)",
@@ -1371,7 +1365,6 @@
         ]
     },
     {
-        "id": 19,
         "id_carrier": 363,
         "operator_id": 14,
         "name": "Zain(Sudan)",
@@ -1409,7 +1402,6 @@
         ]
     },
     {
-        "id": 20,
         "id_carrier": 40,
         "operator_id": 0,
         "name": "Telenor(Bulgaria)",
@@ -1440,7 +1432,6 @@
         "campaigns": []
     },
     {
-        "id": 21,
         "id_carrier": 41,
         "operator_id": 0,
         "name": "Sandbox(Estonia)",
@@ -1471,7 +1462,6 @@
         "campaigns": []
     },
     {
-        "id": 22,
         "id_carrier": 39,
         "operator_id": 0,
         "name": "Telenor(Hungary)",
@@ -1502,7 +1492,6 @@
         "campaigns": []
     },
     {
-        "id": 23,
         "id_carrier": 37,
         "operator_id": 0,
         "name": "Hutchison 3 ID (unlock)",
@@ -1533,7 +1522,6 @@
         "campaigns": []
     },
     {
-        "id": 24,
         "id_carrier": 36,
         "operator_id": 30,
         "name": "Smartfren(Indonesia)",
@@ -1642,7 +1630,6 @@
         ]
     },
     {
-        "id": 25,
         "id_carrier": 35,
         "operator_id": 0,
         "name": "Digi(Malaysia)",
@@ -1673,7 +1660,6 @@
         "campaigns": []
     },
     {
-        "id": 26,
         "id_carrier": 382,
         "operator_id": 0,
         "name": "Globe(Philippines)",
@@ -1767,7 +1753,6 @@
         ]
     },
     {
-        "id": 27,
         "id_carrier": 38,
         "operator_id": 0,
         "name": "Orange(Poland)",
@@ -1798,7 +1783,6 @@
         "campaigns": []
     },
     {
-        "id": 28,
         "id_carrier": 42,
         "operator_id": 0,
         "name": "Claro(Brasil)",
@@ -1829,7 +1813,6 @@
         "campaigns": []
     },
     {
-        "id": 29,
         "id_carrier": 200,
         "operator_id": 0,
         "name": "Oi(Brasil)",
@@ -1860,12 +1843,11 @@
         "campaigns": []
     },
     {
-        "id": 30,
         "id_carrier": 201,
         "operator_id": 0,
         "name": "Vivo(Brasil)",
         "countryCode": "BR",
-        "isp": "Vivo|Vivo|TELEF\u00d4NICA BRASIL S.A (BR)",
+        "isp": "Vivo|Vivo|TELEFÔNICA BRASIL S.A (BR)",
         "published": false,
         "lpOtp": false,
         "pinIdentSupport": false,
@@ -1891,7 +1873,6 @@
         "campaigns": []
     },
     {
-        "id": 31,
         "id_carrier": 275,
         "operator_id": 0,
         "name": "Ooredoo(Algeria)",
@@ -2132,7 +2113,6 @@
         ]
     },
     {
-        "id": 32,
         "id_carrier": 339,
         "operator_id": 0,
         "name": "MTN(South Africa)",
@@ -2266,7 +2246,6 @@
         ]
     },
     {
-        "id": 33,
         "id_carrier": 341,
         "operator_id": 0,
         "name": "Vodacom(South Africa)",
@@ -2297,7 +2276,6 @@
         "campaigns": []
     },
     {
-        "id": 34,
         "id_carrier": 342,
         "operator_id": 0,
         "name": "CELL C(South Africa)",
@@ -2328,7 +2306,6 @@
         "campaigns": []
     },
     {
-        "id": 39,
         "id_carrier": 169,
         "operator_id": 0,
         "name": "Etisalat(Kazakhstan)",
@@ -2363,7 +2340,6 @@
         ]
     },
     {
-        "id": 40,
         "id_carrier": 337,
         "operator_id": 24,
         "name": "Need to be dropped ID",
@@ -2496,7 +2472,6 @@
         ]
     },
     {
-        "id": 42,
         "id_carrier": 340,
         "operator_id": 27,
         "name": "Zong",
@@ -2638,7 +2613,6 @@
         ]
     },
     {
-        "id": 43,
         "id_carrier": 365,
         "operator_id": 0,
         "name": "OOREDOO TN",
@@ -2682,7 +2656,6 @@
         ]
     },
     {
-        "id": 44,
         "id_carrier": 44,
         "operator_id": 0,
         "name": "Meditel (Morocco)",
@@ -2713,7 +2686,6 @@
         "campaigns": []
     },
     {
-        "id": 45,
         "id_carrier": 343,
         "operator_id": 0,
         "name": "DTAC (Thailand)",
@@ -2744,7 +2716,6 @@
         "campaigns": []
     },
     {
-        "id": 48,
         "id_carrier": 347,
         "operator_id": 0,
         "name": "Dialog(Sri Lanka)",
@@ -2904,7 +2875,6 @@
         ]
     },
     {
-        "id": 49,
         "id_carrier": 364,
         "operator_id": 0,
         "name": "Orange (Tunis)",
@@ -3226,7 +3196,6 @@
         ]
     },
     {
-        "id": 50,
         "id_carrier": 1004,
         "operator_id": 0,
         "name": "Jawwal",
@@ -3257,7 +3226,6 @@
         "campaigns": []
     },
     {
-        "id": 51,
         "id_carrier": 373,
         "operator_id": 0,
         "name": "KCell (Kazahstan)",
@@ -3540,7 +3508,6 @@
         ]
     },
     {
-        "id": 52,
         "id_carrier": 374,
         "operator_id": 0,
         "name": "Beeline (Russia)",
@@ -3571,7 +3538,6 @@
         "campaigns": []
     },
     {
-        "id": 53,
         "id_carrier": 1000,
         "operator_id": 32,
         "name": "Airtel (India)",
@@ -3717,7 +3683,6 @@
         ]
     },
     {
-        "id": 54,
         "id_carrier": 381,
         "operator_id": 0,
         "name": "Telenor (Pakistan)",
@@ -3955,7 +3920,6 @@
         ]
     },
     {
-        "id": 55,
         "id_carrier": 383,
         "operator_id": 0,
         "name": "Celcom Malaysia",
@@ -3986,7 +3950,6 @@
         "campaigns": []
     },
     {
-        "id": 56,
         "id_carrier": 384,
         "operator_id": 0,
         "name": "Telenor (Myanmar)",
@@ -4119,7 +4082,6 @@
         ]
     },
     {
-        "id": 57,
         "id_carrier": 385,
         "operator_id": 0,
         "name": "Etisalat UAE",
@@ -4150,7 +4112,6 @@
         "campaigns": []
     },
     {
-        "id": 58,
         "id_carrier": 2000,
         "operator_id": 0,
         "name": "Orange(Romania)",
@@ -4181,7 +4142,6 @@
         "campaigns": []
     },
     {
-        "id": 59,
         "id_carrier": 2001,
         "operator_id": 0,
         "name": "Vodafone(Romania)",
@@ -4212,7 +4172,6 @@
         "campaigns": []
     },
     {
-        "id": 60,
         "id_carrier": 2002,
         "operator_id": 0,
         "name": "STC(Saudi Arabia )",
@@ -4243,7 +4202,6 @@
         "campaigns": []
     },
     {
-        "id": 61,
         "id_carrier": 2003,
         "operator_id": 0,
         "name": "Mobily(Saudi Arabia )",
@@ -4274,7 +4232,6 @@
         "campaigns": []
     },
     {
-        "id": 62,
         "id_carrier": 2004,
         "operator_id": 0,
         "name": "Zain(Saudi Arabia )",
@@ -4305,7 +4262,6 @@
         "campaigns": []
     },
     {
-        "id": 63,
         "id_carrier": 2005,
         "operator_id": 0,
         "name": "Vodafone(India)",
@@ -4336,7 +4292,6 @@
         "campaigns": []
     },
     {
-        "id": 64,
         "id_carrier": 2006,
         "operator_id": 0,
         "name": "Idea(India )",
@@ -4367,7 +4322,6 @@
         "campaigns": []
     },
     {
-        "id": 65,
         "id_carrier": 2007,
         "operator_id": 0,
         "name": "Aircel(India )",
@@ -4398,7 +4352,6 @@
         "campaigns": []
     },
     {
-        "id": 66,
         "id_carrier": 2008,
         "operator_id": 22,
         "name": "DU(UAE)",
@@ -4438,7 +4391,6 @@
         ]
     },
     {
-        "id": 67,
         "id_carrier": 2009,
         "operator_id": 0,
         "name": "Viettel(Vietnam )",
@@ -4469,7 +4421,6 @@
         "campaigns": []
     },
     {
-        "id": 68,
         "id_carrier": 2010,
         "operator_id": 0,
         "name": "Mobiphone(Vietnam )",
@@ -4500,7 +4451,6 @@
         "campaigns": []
     },
     {
-        "id": 69,
         "id_carrier": 2011,
         "operator_id": 0,
         "name": "Vinaphone(Vietnam )",
@@ -4531,7 +4481,6 @@
         "campaigns": []
     },
     {
-        "id": 70,
         "id_carrier": 2012,
         "operator_id": 0,
         "name": "Asiacell(Iraq)",
@@ -4562,7 +4511,6 @@
         "campaigns": []
     },
     {
-        "id": 71,
         "id_carrier": 1020,
         "operator_id": 0,
         "name": "Zain(Iraq )",
@@ -4862,7 +4810,6 @@
         ]
     },
     {
-        "id": 72,
         "id_carrier": 2014,
         "operator_id": 0,
         "name": "Maxis(Malaysia)",
@@ -4893,7 +4840,6 @@
         "campaigns": []
     },
     {
-        "id": 73,
         "id_carrier": 2015,
         "operator_id": 0,
         "name": "O2(Czech Republic)",
@@ -4924,7 +4870,6 @@
         "campaigns": []
     },
     {
-        "id": 74,
         "id_carrier": 2016,
         "operator_id": 0,
         "name": "T-Mobile(Czech Republic)",
@@ -4955,7 +4900,6 @@
         "campaigns": []
     },
     {
-        "id": 75,
         "id_carrier": 2017,
         "operator_id": 0,
         "name": "Free Mobile(France)",
@@ -4986,7 +4930,6 @@
         "campaigns": []
     },
     {
-        "id": 76,
         "id_carrier": 2018,
         "operator_id": 0,
         "name": "Tunisie Telekom(Tunisia)",
@@ -5017,7 +4960,6 @@
         "campaigns": []
     },
     {
-        "id": 77,
         "id_carrier": 2019,
         "operator_id": 0,
         "name": "Elisa FI",
@@ -5048,7 +4990,6 @@
         "campaigns": []
     },
     {
-        "id": 78,
         "id_carrier": 2020,
         "operator_id": 0,
         "name": "Sonera FI",
@@ -5079,7 +5020,6 @@
         "campaigns": []
     },
     {
-        "id": 79,
         "id_carrier": 2021,
         "operator_id": 0,
         "name": "Korek IQ",
@@ -5110,7 +5050,6 @@
         "campaigns": []
     },
     {
-        "id": 80,
         "id_carrier": 2022,
         "operator_id": 0,
         "name": "Vodafone CZ",
@@ -5141,7 +5080,6 @@
         "campaigns": []
     },
     {
-        "id": 81,
         "id_carrier": 2023,
         "operator_id": 0,
         "name": "O2 GB",
@@ -5172,7 +5110,6 @@
         "campaigns": []
     },
     {
-        "id": 82,
         "id_carrier": 2024,
         "operator_id": 0,
         "name": "Proximus BE",
@@ -5203,7 +5140,6 @@
         "campaigns": []
     },
     {
-        "id": 83,
         "id_carrier": 2025,
         "operator_id": 0,
         "name": "Cosmote GR",
@@ -5234,7 +5170,6 @@
         "campaigns": []
     },
     {
-        "id": 84,
         "id_carrier": 2026,
         "operator_id": 0,
         "name": "T-Mobile HU",
@@ -5265,7 +5200,6 @@
         "campaigns": []
     },
     {
-        "id": 85,
         "id_carrier": 2027,
         "operator_id": 0,
         "name": "EE GB",
@@ -5296,7 +5230,6 @@
         "campaigns": []
     },
     {
-        "id": 86,
         "id_carrier": 2028,
         "operator_id": 0,
         "name": "DNA FI",
@@ -5327,7 +5260,6 @@
         "campaigns": []
     },
     {
-        "id": 87,
         "id_carrier": 2029,
         "operator_id": 0,
         "name": "Telia EE",
@@ -5358,7 +5290,6 @@
         "campaigns": []
     },
     {
-        "id": 88,
         "id_carrier": 2030,
         "operator_id": 0,
         "name": "Telekom RO",
@@ -5389,7 +5320,6 @@
         "campaigns": []
     },
     {
-        "id": 89,
         "id_carrier": 2031,
         "operator_id": 0,
         "name": "Vodafone GB",
@@ -5420,7 +5350,6 @@
         "campaigns": []
     },
     {
-        "id": 90,
         "id_carrier": 2032,
         "operator_id": 0,
         "name": "SFR FR",
@@ -5451,7 +5380,6 @@
         "campaigns": []
     },
     {
-        "id": 91,
         "id_carrier": 2033,
         "operator_id": 0,
         "name": "Vodafone HU",
@@ -5482,7 +5410,6 @@
         "campaigns": []
     },
     {
-        "id": 92,
         "id_carrier": 2034,
         "operator_id": 0,
         "name": "Grameenphone BD TnB",
@@ -5513,7 +5440,6 @@
         "campaigns": []
     },
     {
-        "id": 93,
         "id_carrier": 2035,
         "operator_id": 0,
         "name": "Banglalink",
@@ -5544,7 +5470,6 @@
         "campaigns": []
     },
     {
-        "id": 94,
         "id_carrier": 2225,
         "operator_id": 0,
         "name": "Zain KW",
@@ -5620,7 +5545,6 @@
         ]
     },
     {
-        "id": 95,
         "id_carrier": 2037,
         "operator_id": 0,
         "name": "Telekom SK",
@@ -5651,7 +5575,6 @@
         "campaigns": []
     },
     {
-        "id": 96,
         "id_carrier": 2038,
         "operator_id": 0,
         "name": "Mobistar BE",
@@ -5682,7 +5605,6 @@
         "campaigns": []
     },
     {
-        "id": 97,
         "id_carrier": 2039,
         "operator_id": 0,
         "name": "Telkomsel ID",
@@ -5713,7 +5635,6 @@
         "campaigns": []
     },
     {
-        "id": 98,
         "id_carrier": 2040,
         "operator_id": 0,
         "name": "Elisa EE",
@@ -5744,7 +5665,6 @@
         "campaigns": []
     },
     {
-        "id": 99,
         "id_carrier": 2041,
         "operator_id": 0,
         "name": "XL ID",
@@ -5775,7 +5695,6 @@
         "campaigns": []
     },
     {
-        "id": 100,
         "id_carrier": 2042,
         "operator_id": 0,
         "name": "Swisscom CH",
@@ -5806,7 +5725,6 @@
         "campaigns": []
     },
     {
-        "id": 101,
         "id_carrier": 2043,
         "operator_id": 0,
         "name": "Ufone PK",
@@ -5837,7 +5755,6 @@
         "campaigns": []
     },
     {
-        "id": 102,
         "id_carrier": 2044,
         "operator_id": 0,
         "name": "Tata IN",
@@ -5868,7 +5785,6 @@
         "campaigns": []
     },
     {
-        "id": 103,
         "id_carrier": 2045,
         "operator_id": 0,
         "name": "Tele2 LT",
@@ -5899,7 +5815,6 @@
         "campaigns": []
     },
     {
-        "id": 104,
         "id_carrier": 2046,
         "operator_id": 0,
         "name": "MTS RS",
@@ -5930,7 +5845,6 @@
         "campaigns": []
     },
     {
-        "id": 105,
         "id_carrier": 2047,
         "operator_id": 0,
         "name": "BSNL IN",
@@ -5961,12 +5875,11 @@
         "campaigns": []
     },
     {
-        "id": 106,
         "id_carrier": 2048,
         "operator_id": 0,
         "name": "Base BE",
         "countryCode": "BE",
-        "isp": "Telenet Group BVBA\/SPRL|Telenet Group BVBA\/SPRL|Telenet Group BVBA\/SPRL (BE)",
+        "isp": "Telenet Group BVBA/SPRL|Telenet Group BVBA/SPRL|Telenet Group BVBA/SPRL (BE)",
         "published": true,
         "lpOtp": false,
         "pinIdentSupport": false,
@@ -5992,7 +5905,6 @@
         "campaigns": []
     },
     {
-        "id": 107,
         "id_carrier": 2049,
         "operator_id": 0,
         "name": "Zain JO",
@@ -6023,7 +5935,6 @@
         "campaigns": []
     },
     {
-        "id": 108,
         "id_carrier": 2050,
         "operator_id": 0,
         "name": "Vodafone GR",
@@ -6054,7 +5965,6 @@
         "campaigns": []
     },
     {
-        "id": 109,
         "id_carrier": 2051,
         "operator_id": 0,
         "name": "Tele2 EE",
@@ -6085,7 +5995,6 @@
         "campaigns": []
     },
     {
-        "id": 110,
         "id_carrier": 2052,
         "operator_id": 0,
         "name": "Orange SK",
@@ -6116,7 +6025,6 @@
         "campaigns": []
     },
     {
-        "id": 111,
         "id_carrier": 2053,
         "operator_id": 0,
         "name": "T-Mobile DE",
@@ -6147,7 +6055,6 @@
         "campaigns": []
     },
     {
-        "id": 112,
         "id_carrier": 2054,
         "operator_id": 0,
         "name": "VIPnet HR",
@@ -6178,7 +6085,6 @@
         "campaigns": []
     },
     {
-        "id": 113,
         "id_carrier": 2055,
         "operator_id": 0,
         "name": "T-mobile HR",
@@ -6209,7 +6115,6 @@
         "campaigns": []
     },
     {
-        "id": 114,
         "id_carrier": 2056,
         "operator_id": 0,
         "name": "Telefonica O2 SK",
@@ -6240,7 +6145,6 @@
         "campaigns": []
     },
     {
-        "id": 115,
         "id_carrier": 2057,
         "operator_id": 0,
         "name": "Vodafone PT",
@@ -6271,7 +6175,6 @@
         "campaigns": []
     },
     {
-        "id": 116,
         "id_carrier": 2058,
         "operator_id": 0,
         "name": "Smart PH",
@@ -6302,7 +6205,6 @@
         "campaigns": []
     },
     {
-        "id": 117,
         "id_carrier": 2059,
         "operator_id": 10,
         "name": "Ooredoo KW",
@@ -6351,7 +6253,6 @@
         ]
     },
     {
-        "id": 118,
         "id_carrier": 2060,
         "operator_id": 0,
         "name": "BT FR",
@@ -6382,7 +6283,6 @@
         "campaigns": []
     },
     {
-        "id": 119,
         "id_carrier": 2061,
         "operator_id": 0,
         "name": "Orange FR",
@@ -6413,7 +6313,6 @@
         "campaigns": []
     },
     {
-        "id": 120,
         "id_carrier": 2062,
         "operator_id": 0,
         "name": "Vip RS",
@@ -6444,7 +6343,6 @@
         "campaigns": []
     },
     {
-        "id": 121,
         "id_carrier": 2063,
         "operator_id": 0,
         "name": "Telenet BE",
@@ -6475,7 +6373,6 @@
         "campaigns": []
     },
     {
-        "id": 122,
         "id_carrier": 2064,
         "operator_id": 47,
         "name": "Ooredoo OM",
@@ -6516,7 +6413,6 @@
         ]
     },
     {
-        "id": 123,
         "id_carrier": 2065,
         "operator_id": 0,
         "name": "Plus PL",
@@ -6547,7 +6443,6 @@
         "campaigns": []
     },
     {
-        "id": 124,
         "id_carrier": 2066,
         "operator_id": 0,
         "name": "MEO PT",
@@ -6578,7 +6473,6 @@
         "campaigns": []
     },
     {
-        "id": 125,
         "id_carrier": 2067,
         "operator_id": 0,
         "name": "Omnitel LT",
@@ -6609,7 +6503,6 @@
         "campaigns": []
     },
     {
-        "id": 126,
         "id_carrier": 2068,
         "operator_id": 0,
         "name": "Vodafone IE",
@@ -6640,7 +6533,6 @@
         "campaigns": []
     },
     {
-        "id": 127,
         "id_carrier": 2069,
         "operator_id": 0,
         "name": "Viva KW",
@@ -6671,7 +6563,6 @@
         "campaigns": []
     },
     {
-        "id": 128,
         "id_carrier": 2070,
         "operator_id": 0,
         "name": "Cyta-Vodafone CY",
@@ -6702,7 +6593,6 @@
         "campaigns": []
     },
     {
-        "id": 129,
         "id_carrier": 2071,
         "operator_id": 0,
         "name": "Play PL",
@@ -6733,7 +6623,6 @@
         "campaigns": []
     },
     {
-        "id": 130,
         "id_carrier": 2072,
         "operator_id": 0,
         "name": "O2 DE",
@@ -6764,7 +6653,6 @@
         "campaigns": []
     },
     {
-        "id": 131,
         "id_carrier": 2073,
         "operator_id": 0,
         "name": "Vivacom BG",
@@ -6795,7 +6683,6 @@
         "campaigns": []
     },
     {
-        "id": 132,
         "id_carrier": 2074,
         "operator_id": 0,
         "name": "LMT LV",
@@ -6826,7 +6713,6 @@
         "campaigns": []
     },
     {
-        "id": 133,
         "id_carrier": 2075,
         "operator_id": 0,
         "name": "MTS RU",
@@ -6857,7 +6743,6 @@
         "campaigns": []
     },
     {
-        "id": 134,
         "id_carrier": 2076,
         "operator_id": 0,
         "name": "MTN NG",
@@ -6888,7 +6773,6 @@
         "campaigns": []
     },
     {
-        "id": 135,
         "id_carrier": 2077,
         "operator_id": 0,
         "name": "Salt CH",
@@ -6919,7 +6803,6 @@
         "campaigns": []
     },
     {
-        "id": 136,
         "id_carrier": 2078,
         "operator_id": 0,
         "name": "Megafon RU",
@@ -6950,7 +6833,6 @@
         "campaigns": []
     },
     {
-        "id": 137,
         "id_carrier": 2079,
         "operator_id": 0,
         "name": "Wind IT",
@@ -6981,7 +6863,6 @@
         "campaigns": []
     },
     {
-        "id": 138,
         "id_carrier": 2080,
         "operator_id": 0,
         "name": "Smart KH",
@@ -7012,7 +6893,6 @@
         "campaigns": []
     },
     {
-        "id": 139,
         "id_carrier": 2081,
         "operator_id": 0,
         "name": "Tele2 LV",
@@ -7043,7 +6923,6 @@
         "campaigns": []
     },
     {
-        "id": 140,
         "id_carrier": 2082,
         "operator_id": 0,
         "name": "M-Tel BG",
@@ -7074,7 +6953,6 @@
         "campaigns": []
     },
     {
-        "id": 141,
         "id_carrier": 2083,
         "operator_id": 0,
         "name": "T-Mobile PL",
@@ -7105,7 +6983,6 @@
         "campaigns": []
     },
     {
-        "id": 142,
         "id_carrier": 2084,
         "operator_id": 0,
         "name": "Wind GR",
@@ -7136,7 +7013,6 @@
         "campaigns": []
     },
     {
-        "id": 143,
         "id_carrier": 2085,
         "operator_id": 0,
         "name": "Azercell AZ",
@@ -7167,7 +7043,6 @@
         "campaigns": []
     },
     {
-        "id": 144,
         "id_carrier": 2086,
         "operator_id": 0,
         "name": "Sunrise CH",
@@ -7198,7 +7073,6 @@
         "campaigns": []
     },
     {
-        "id": 145,
         "id_carrier": 2087,
         "operator_id": 0,
         "name": "Mobitel LK",
@@ -7229,7 +7103,6 @@
         "campaigns": []
     },
     {
-        "id": 146,
         "id_carrier": 2088,
         "operator_id": 0,
         "name": "Telia SE",
@@ -7260,7 +7133,6 @@
         "campaigns": []
     },
     {
-        "id": 147,
         "id_carrier": 2089,
         "operator_id": 0,
         "name": "Beeline KZ",
@@ -7291,7 +7163,6 @@
         "campaigns": []
     },
     {
-        "id": 148,
         "id_carrier": 2090,
         "operator_id": 0,
         "name": "Vodafone NL",
@@ -7322,7 +7193,6 @@
         "campaigns": []
     },
     {
-        "id": 149,
         "id_carrier": 2091,
         "operator_id": 0,
         "name": "Bite LV",
@@ -7353,7 +7223,6 @@
         "campaigns": []
     },
     {
-        "id": 150,
         "id_carrier": 2092,
         "operator_id": 0,
         "name": "Telenor RS",
@@ -7384,7 +7253,6 @@
         "campaigns": []
     },
     {
-        "id": 151,
         "id_carrier": 2093,
         "operator_id": 0,
         "name": "T-Mobile NL",
@@ -7415,7 +7283,6 @@
         "campaigns": []
     },
     {
-        "id": 152,
         "id_carrier": 387,
         "operator_id": 0,
         "name": "Viva BH",
@@ -7446,7 +7313,6 @@
         "campaigns": []
     },
     {
-        "id": 153,
         "id_carrier": 2095,
         "operator_id": 0,
         "name": "Tele2 HR",
@@ -7477,7 +7343,6 @@
         "campaigns": []
     },
     {
-        "id": 154,
         "id_carrier": 2096,
         "operator_id": 0,
         "name": "NOS PT",
@@ -7508,7 +7373,6 @@
         "campaigns": []
     },
     {
-        "id": 155,
         "id_carrier": 2097,
         "operator_id": 0,
         "name": "Movistar ES",
@@ -7539,7 +7403,6 @@
         "campaigns": []
     },
     {
-        "id": 156,
         "id_carrier": 2098,
         "operator_id": 0,
         "name": "Orange CI",
@@ -7570,7 +7433,6 @@
         "campaigns": []
     },
     {
-        "id": 157,
         "id_carrier": 2099,
         "operator_id": 0,
         "name": "Orange JO",
@@ -7601,7 +7463,6 @@
         "campaigns": []
     },
     {
-        "id": 158,
         "id_carrier": 2100,
         "operator_id": 0,
         "name": "KPN NL",
@@ -7632,7 +7493,6 @@
         "campaigns": []
     },
     {
-        "id": 159,
         "id_carrier": 2101,
         "operator_id": 0,
         "name": "Banglalink BD TnB",
@@ -7663,7 +7523,6 @@
         "campaigns": []
     },
     {
-        "id": 160,
         "id_carrier": 2102,
         "operator_id": 0,
         "name": "Grameenphone",
@@ -7694,7 +7553,6 @@
         "campaigns": []
     },
     {
-        "id": 161,
         "id_carrier": 2103,
         "operator_id": 0,
         "name": "Velcom BY",
@@ -7725,7 +7583,6 @@
         "campaigns": []
     },
     {
-        "id": 162,
         "id_carrier": 2104,
         "operator_id": 0,
         "name": "Meteor IE",
@@ -7756,7 +7613,6 @@
         "campaigns": []
     },
     {
-        "id": 163,
         "id_carrier": 2105,
         "operator_id": 0,
         "name": "Inwi MA",
@@ -7787,7 +7643,6 @@
         "campaigns": []
     },
     {
-        "id": 164,
         "id_carrier": 2106,
         "operator_id": 0,
         "name": "Tim IT",
@@ -7822,7 +7677,6 @@
         ]
     },
     {
-        "id": 165,
         "id_carrier": 2107,
         "operator_id": 0,
         "name": "Vodafone IT",
@@ -7853,7 +7707,6 @@
         "campaigns": []
     },
     {
-        "id": 166,
         "id_carrier": 2108,
         "operator_id": 0,
         "name": "Magti GE",
@@ -7884,7 +7737,6 @@
         "campaigns": []
     },
     {
-        "id": 167,
         "id_carrier": 2109,
         "operator_id": 0,
         "name": "Gmobile VN",
@@ -7915,7 +7767,6 @@
         "campaigns": []
     },
     {
-        "id": 168,
         "id_carrier": 2110,
         "operator_id": 0,
         "name": "Tele2 SE",
@@ -7946,7 +7797,6 @@
         "campaigns": []
     },
     {
-        "id": 169,
         "id_carrier": 2111,
         "operator_id": 0,
         "name": "LUXgsm LU",
@@ -7977,7 +7827,6 @@
         "campaigns": []
     },
     {
-        "id": 170,
         "id_carrier": 2112,
         "operator_id": 0,
         "name": "NRJ FR",
@@ -8008,7 +7857,6 @@
         "campaigns": []
     },
     {
-        "id": 171,
         "id_carrier": 2113,
         "operator_id": 0,
         "name": "Vodafone DE",
@@ -8039,7 +7887,6 @@
         "campaigns": []
     },
     {
-        "id": 172,
         "id_carrier": 2114,
         "operator_id": 0,
         "name": "AirtelRobi BD TNB",
@@ -8070,7 +7917,6 @@
         "campaigns": []
     },
     {
-        "id": 173,
         "id_carrier": 2115,
         "operator_id": 0,
         "name": "Tango LU",
@@ -8101,7 +7947,6 @@
         "campaigns": []
     },
     {
-        "id": 174,
         "id_carrier": 2116,
         "operator_id": 0,
         "name": "MTN CY",
@@ -8132,7 +7977,6 @@
         "campaigns": []
     },
     {
-        "id": 175,
         "id_carrier": 2117,
         "operator_id": 0,
         "name": "HT-ERONET BA",
@@ -8163,7 +8007,6 @@
         "campaigns": []
     },
     {
-        "id": 176,
         "id_carrier": 2118,
         "operator_id": 0,
         "name": "MTS BY",
@@ -8194,7 +8037,6 @@
         "campaigns": []
     },
     {
-        "id": 177,
         "id_carrier": 2119,
         "operator_id": 0,
         "name": "Saunalahti FI",
@@ -8225,7 +8067,6 @@
         "campaigns": []
     },
     {
-        "id": 178,
         "id_carrier": 2120,
         "operator_id": 0,
         "name": "MTN CI",
@@ -8256,7 +8097,6 @@
         "campaigns": []
     },
     {
-        "id": 179,
         "id_carrier": 2121,
         "operator_id": 0,
         "name": "Alfa LB",
@@ -8287,7 +8127,6 @@
         "campaigns": []
     },
     {
-        "id": 180,
         "id_carrier": 2122,
         "operator_id": 0,
         "name": "Vietnamobile VN",
@@ -8318,7 +8157,6 @@
         "campaigns": []
     },
     {
-        "id": 181,
         "id_carrier": 2123,
         "operator_id": 0,
         "name": "Touch LB",
@@ -8349,7 +8187,6 @@
         "campaigns": []
     },
     {
-        "id": 182,
         "id_carrier": 2124,
         "operator_id": 0,
         "name": "Bakcell AZ",
@@ -8380,7 +8217,6 @@
         "campaigns": []
     },
     {
-        "id": 183,
         "id_carrier": 386,
         "operator_id": 0,
         "name": "Tele2 RU",
@@ -8546,7 +8382,6 @@
         ]
     },
     {
-        "id": 184,
         "id_carrier": 2126,
         "operator_id": 0,
         "name": "Airtel KE",
@@ -8577,7 +8412,6 @@
         "campaigns": []
     },
     {
-        "id": 185,
         "id_carrier": 2127,
         "operator_id": 0,
         "name": "T-Mobile AT",
@@ -8608,7 +8442,6 @@
         "campaigns": []
     },
     {
-        "id": 186,
         "id_carrier": 2128,
         "operator_id": 0,
         "name": "Orange ES",
@@ -8639,7 +8472,6 @@
         "campaigns": []
     },
     {
-        "id": 187,
         "id_carrier": 2129,
         "operator_id": 0,
         "name": "Telfort NL",
@@ -8670,7 +8502,6 @@
         "campaigns": []
     },
     {
-        "id": 188,
         "id_carrier": 2130,
         "operator_id": 0,
         "name": "Vodafone ES",
@@ -8701,7 +8532,6 @@
         "campaigns": []
     },
     {
-        "id": 189,
         "id_carrier": 2131,
         "operator_id": 0,
         "name": "T-mobile ME",
@@ -8732,7 +8562,6 @@
         "campaigns": []
     },
     {
-        "id": 190,
         "id_carrier": 2132,
         "operator_id": 0,
         "name": "Etisalat LK",
@@ -8763,7 +8592,6 @@
         "campaigns": []
     },
     {
-        "id": 191,
         "id_carrier": 2133,
         "operator_id": 0,
         "name": "Geocell GE",
@@ -8794,7 +8622,6 @@
         "campaigns": []
     },
     {
-        "id": 193,
         "id_carrier": 2135,
         "operator_id": 0,
         "name": "Vodafone EG TNB",
@@ -8825,7 +8652,6 @@
         "campaigns": []
     },
     {
-        "id": 194,
         "id_carrier": 2136,
         "operator_id": 0,
         "name": "m:tel BA",
@@ -8856,7 +8682,6 @@
         "campaigns": []
     },
     {
-        "id": 195,
         "id_carrier": 2137,
         "operator_id": 0,
         "name": "Megacom KG",
@@ -8887,7 +8712,6 @@
         "campaigns": []
     },
     {
-        "id": 196,
         "id_carrier": 2138,
         "operator_id": 0,
         "name": "MTS AM",
@@ -8918,7 +8742,6 @@
         "campaigns": []
     },
     {
-        "id": 197,
         "id_carrier": 2139,
         "operator_id": 0,
         "name": "Azerfon AZ",
@@ -8949,7 +8772,6 @@
         "campaigns": []
     },
     {
-        "id": 198,
         "id_carrier": 2140,
         "operator_id": 0,
         "name": "Telenor ME",
@@ -8980,7 +8802,6 @@
         "campaigns": []
     },
     {
-        "id": 199,
         "id_carrier": 2141,
         "operator_id": 0,
         "name": "BH Mobile BA",
@@ -9011,7 +8832,6 @@
         "campaigns": []
     },
     {
-        "id": 200,
         "id_carrier": 2142,
         "operator_id": 0,
         "name": "Telekom (AMC) AL",
@@ -9042,7 +8862,6 @@
         "campaigns": []
     },
     {
-        "id": 201,
         "id_carrier": 2143,
         "operator_id": 0,
         "name": "Beeline KG",
@@ -9073,7 +8892,6 @@
         "campaigns": []
     },
     {
-        "id": 202,
         "id_carrier": 2144,
         "operator_id": 0,
         "name": "T-Mobile MK",
@@ -9104,7 +8922,6 @@
         "campaigns": []
     },
     {
-        "id": 203,
         "id_carrier": 2145,
         "operator_id": 0,
         "name": "Orange SN",
@@ -9135,7 +8952,6 @@
         "campaigns": []
     },
     {
-        "id": 204,
         "id_carrier": 2146,
         "operator_id": 0,
         "name": "Beeline AM",
@@ -9166,7 +8982,6 @@
         "campaigns": []
     },
     {
-        "id": 205,
         "id_carrier": 2147,
         "operator_id": 0,
         "name": "Vala XK",
@@ -9197,7 +9012,6 @@
         "campaigns": []
     },
     {
-        "id": 206,
         "id_carrier": 2148,
         "operator_id": 0,
         "name": "Batelco BH",
@@ -9228,7 +9042,6 @@
         "campaigns": []
     },
     {
-        "id": 207,
         "id_carrier": 2149,
         "operator_id": 0,
         "name": "m:tel ME",
@@ -9259,7 +9072,6 @@
         "campaigns": []
     },
     {
-        "id": 208,
         "id_carrier": 2150,
         "operator_id": 0,
         "name": "Beeline GE",
@@ -9290,7 +9102,6 @@
         "campaigns": []
     },
     {
-        "id": 209,
         "id_carrier": 2151,
         "operator_id": 0,
         "name": "Airtel CD",
@@ -9321,7 +9132,6 @@
         "campaigns": []
     },
     {
-        "id": 210,
         "id_carrier": 2152,
         "operator_id": 0,
         "name": "O2 IE",
@@ -9352,7 +9162,6 @@
         "campaigns": []
     },
     {
-        "id": 211,
         "id_carrier": 388,
         "operator_id": 0,
         "name": "Robi Bangladesh",
@@ -9431,7 +9240,6 @@
         ]
     },
     {
-        "id": 212,
         "id_carrier": 2154,
         "operator_id": 0,
         "name": "AMT FI",
@@ -9462,7 +9270,6 @@
         "campaigns": []
     },
     {
-        "id": 213,
         "id_carrier": 2155,
         "operator_id": 0,
         "name": "Etisalat NG",
@@ -9493,7 +9300,6 @@
         "campaigns": []
     },
     {
-        "id": 214,
         "id_carrier": 2156,
         "operator_id": 0,
         "name": "Mobitel SI",
@@ -9524,7 +9330,6 @@
         "campaigns": []
     },
     {
-        "id": 215,
         "id_carrier": 2157,
         "operator_id": 0,
         "name": "Drei AT",
@@ -9555,7 +9360,6 @@
         "campaigns": []
     },
     {
-        "id": 216,
         "id_carrier": 2158,
         "operator_id": 0,
         "name": "Tele2 NL",
@@ -9586,7 +9390,6 @@
         "campaigns": []
     },
     {
-        "id": 217,
         "id_carrier": 2159,
         "operator_id": 0,
         "name": "Safaricom KE",
@@ -9617,7 +9420,6 @@
         "campaigns": []
     },
     {
-        "id": 218,
         "id_carrier": 2160,
         "operator_id": 0,
         "name": "3 GB",
@@ -9648,7 +9450,6 @@
         "campaigns": []
     },
     {
-        "id": 219,
         "id_carrier": 2161,
         "operator_id": 0,
         "name": "Vodafone GH",
@@ -9679,7 +9480,6 @@
         "campaigns": []
     },
     {
-        "id": 220,
         "id_carrier": 2162,
         "operator_id": 0,
         "name": "Telenor SE",
@@ -9710,7 +9510,6 @@
         "campaigns": []
     },
     {
-        "id": 221,
         "id_carrier": 2163,
         "operator_id": 0,
         "name": "Life UA",
@@ -9741,7 +9540,6 @@
         "campaigns": []
     },
     {
-        "id": 222,
         "id_carrier": 2164,
         "operator_id": 0,
         "name": "Airtel UG",
@@ -9772,7 +9570,6 @@
         "campaigns": []
     },
     {
-        "id": 223,
         "id_carrier": 2165,
         "operator_id": 0,
         "name": "Orange LU",
@@ -9803,7 +9600,6 @@
         "campaigns": []
     },
     {
-        "id": 224,
         "id_carrier": 2166,
         "operator_id": 0,
         "name": "Yoigo ES",
@@ -9834,7 +9630,6 @@
         "campaigns": []
     },
     {
-        "id": 225,
         "id_carrier": 2167,
         "operator_id": 0,
         "name": "Mobileone SG",
@@ -9865,7 +9660,6 @@
         "campaigns": []
     },
     {
-        "id": 226,
         "id_carrier": 2168,
         "operator_id": 0,
         "name": "Airtel GH",
@@ -9896,7 +9690,6 @@
         "campaigns": []
     },
     {
-        "id": 227,
         "id_carrier": 2169,
         "operator_id": 0,
         "name": "Si.mobil SI",
@@ -9927,7 +9720,6 @@
         "campaigns": []
     },
     {
-        "id": 228,
         "id_carrier": 2170,
         "operator_id": 0,
         "name": "Teleena NL",
@@ -9958,7 +9750,6 @@
         "campaigns": []
     },
     {
-        "id": 229,
         "id_carrier": 2171,
         "operator_id": 0,
         "name": "H3G IT",
@@ -9989,7 +9780,6 @@
         "campaigns": []
     },
     {
-        "id": 230,
         "id_carrier": 2172,
         "operator_id": 0,
         "name": "Voiceworks NL",
@@ -10020,7 +9810,6 @@
         "campaigns": []
     },
     {
-        "id": 231,
         "id_carrier": 2200,
         "operator_id": 0,
         "name": "Tim BR",
@@ -10118,7 +9907,6 @@
         ]
     },
     {
-        "id": 232,
         "id_carrier": 2174,
         "operator_id": 0,
         "name": "Vodacom MZ",
@@ -10149,7 +9937,6 @@
         "campaigns": []
     },
     {
-        "id": 233,
         "id_carrier": 2175,
         "operator_id": 0,
         "name": "TeleTalk BD TnB",
@@ -10180,7 +9967,6 @@
         "campaigns": []
     },
     {
-        "id": 234,
         "id_carrier": 2176,
         "operator_id": 0,
         "name": "Kyvistar UA",
@@ -10211,7 +9997,6 @@
         "campaigns": []
     },
     {
-        "id": 235,
         "id_carrier": 2177,
         "operator_id": 0,
         "name": "Smarts RU",
@@ -10242,7 +10027,6 @@
         "campaigns": []
     },
     {
-        "id": 236,
         "id_carrier": 2178,
         "operator_id": 0,
         "name": "Zain BH",
@@ -10273,7 +10057,6 @@
         "campaigns": []
     },
     {
-        "id": 237,
         "id_carrier": 2179,
         "operator_id": 0,
         "name": "Digi.Mobil RO",
@@ -10304,7 +10087,6 @@
         "campaigns": []
     },
     {
-        "id": 238,
         "id_carrier": 2180,
         "operator_id": 0,
         "name": "life:) BY",
@@ -10335,7 +10117,6 @@
         "campaigns": []
     },
     {
-        "id": 239,
         "id_carrier": 2181,
         "operator_id": 0,
         "name": "Singtel SG",
@@ -10366,7 +10147,6 @@
         "campaigns": []
     },
     {
-        "id": 240,
         "id_carrier": 2182,
         "operator_id": 0,
         "name": "Airtel BD TnB",
@@ -10397,7 +10177,6 @@
         "campaigns": []
     },
     {
-        "id": 241,
         "id_carrier": 2183,
         "operator_id": 0,
         "name": "Ethio Telekom ET",
@@ -10428,7 +10207,6 @@
         "campaigns": []
     },
     {
-        "id": 242,
         "id_carrier": 2184,
         "operator_id": 0,
         "name": "Starhub SG",
@@ -10459,7 +10237,6 @@
         "campaigns": []
     },
     {
-        "id": 243,
         "id_carrier": 2185,
         "operator_id": 0,
         "name": "Eagle Mobile AL",
@@ -10490,7 +10267,6 @@
         "campaigns": []
     },
     {
-        "id": 244,
         "id_carrier": 2186,
         "operator_id": 0,
         "name": "Telkom ZA",
@@ -10521,7 +10297,6 @@
         "campaigns": []
     },
     {
-        "id": 245,
         "id_carrier": 2187,
         "operator_id": 0,
         "name": "Airtel ZM",
@@ -10552,7 +10327,6 @@
         "campaigns": []
     },
     {
-        "id": 246,
         "id_carrier": 2188,
         "operator_id": 0,
         "name": "One MK",
@@ -10583,7 +10357,6 @@
         "campaigns": []
     },
     {
-        "id": 247,
         "id_carrier": 2189,
         "operator_id": 0,
         "name": "Altel KZ",
@@ -10614,7 +10387,6 @@
         "campaigns": []
     },
     {
-        "id": 248,
         "id_carrier": 2190,
         "operator_id": 0,
         "name": "Movitel MZ",
@@ -10645,7 +10417,6 @@
         "campaigns": []
     },
     {
-        "id": 249,
         "id_carrier": 2191,
         "operator_id": 0,
         "name": "Vodafone UA",
@@ -10676,7 +10447,6 @@
         "campaigns": []
     },
     {
-        "id": 250,
         "id_carrier": 2192,
         "operator_id": 0,
         "name": "Plus AL",
@@ -10707,7 +10477,6 @@
         "campaigns": []
     },
     {
-        "id": 251,
         "id_carrier": 2193,
         "operator_id": 0,
         "name": "Vodafone AL",
@@ -10738,7 +10507,6 @@
         "campaigns": []
     },
     {
-        "id": 252,
         "id_carrier": 2194,
         "operator_id": 0,
         "name": "Airtel MW",
@@ -10769,12 +10537,11 @@
         "campaigns": []
     },
     {
-        "id": 253,
         "id_carrier": 2195,
         "operator_id": 0,
         "name": "Movistar MX",
         "countryCode": "MX",
-        "isp": "Movistar M\u00e9xico|Telef\u00f3nica Movistar|Pegaso PCS, S.A. de C.V. (MX)",
+        "isp": "Movistar México|Telefónica Movistar|Pegaso PCS, S.A. de C.V. (MX)",
         "published": true,
         "lpOtp": false,
         "pinIdentSupport": false,
@@ -10800,7 +10567,6 @@
         "campaigns": []
     },
     {
-        "id": 254,
         "id_carrier": 2196,
         "operator_id": 0,
         "name": "Airtel MG",
@@ -10831,7 +10597,6 @@
         "campaigns": []
     },
     {
-        "id": 255,
         "id_carrier": 2197,
         "operator_id": 0,
         "name": "Wataniya PS",
@@ -10862,7 +10627,6 @@
         "campaigns": []
     },
     {
-        "id": 256,
         "id_carrier": 2198,
         "operator_id": 0,
         "name": "Airtel NE",
@@ -10893,7 +10657,6 @@
         "campaigns": []
     },
     {
-        "id": 260,
         "id_carrier": 2201,
         "operator_id": 0,
         "name": "Telkom KE",
@@ -10955,7 +10718,6 @@
         ]
     },
     {
-        "id": 261,
         "id_carrier": 2207,
         "operator_id": 0,
         "name": "Cellcard KH",
@@ -11073,12 +10835,11 @@
         ]
     },
     {
-        "id": 262,
         "id_carrier": 2220,
         "operator_id": 0,
         "name": "Tigo HN",
         "countryCode": "HN",
-        "isp": "Telef\u00f3nica Celular S.A|Telef\u00f3nica Celular S.A|Telef\u00f3nica Celular S.A",
+        "isp": "Telefónica Celular S.A|Telefónica Celular S.A|Telefónica Celular S.A",
         "published": true,
         "lpOtp": true,
         "pinIdentSupport": true,
@@ -11176,7 +10937,6 @@
         ]
     },
     {
-        "id": 263,
         "id_carrier": 389,
         "operator_id": 0,
         "name": "CLARO NICARAGUA",
@@ -11228,7 +10988,6 @@
         ]
     },
     {
-        "id": 270,
         "id_carrier": 390,
         "operator_id": 0,
         "name": "Tele2 RU Megasyst",
@@ -11263,7 +11022,6 @@
         ]
     },
     {
-        "id": 391,
         "id_carrier": 391,
         "operator_id": 29,
         "name": "Hutchinson3",
@@ -11324,7 +11082,6 @@
         ]
     },
     {
-        "id": 392,
         "id_carrier": 392,
         "operator_id": 46,
         "name": "Indosat",
@@ -11367,7 +11124,6 @@
         ]
     },
     {
-        "id": 393,
         "id_carrier": 393,
         "operator_id": 23,
         "name": "Ooredoo Qatar",
@@ -11416,7 +11172,6 @@
         ]
     },
     {
-        "id": 394,
         "id_carrier": 2233,
         "operator_id": 0,
         "name": "Ooredoo MMR",
@@ -11456,7 +11211,6 @@
         ]
     },
     {
-        "id": 395,
         "id_carrier": 2234,
         "operator_id": 0,
         "name": "Ooredoo DZ",

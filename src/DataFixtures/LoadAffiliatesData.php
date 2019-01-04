@@ -33,7 +33,7 @@ class LoadAffiliatesData extends AbstractFixture implements ContainerAwareInterf
 
         foreach ($data as $row) {
 
-            $id                = $row['id'];
+            $uuid              = $row['uuid'];
             $countryId         = $row['country']['uuid'];
             $name              = $row['name'];
             $type              = $row['type'];
@@ -43,10 +43,9 @@ class LoadAffiliatesData extends AbstractFixture implements ContainerAwareInterf
             $skypeId           = $row['skypeId'];
             $enabled           = $row['enabled'];
             $postBackUrl       = $row['postbackUrl'];
-            $uuid              = $row['uuid'];
             $subPriceName      = $row['subPriceName'];
 
-            $affiliate = new Affiliate();
+            $affiliate = new Affiliate($uuid);
             $affiliate->setCountry($this->getReference(sprintf('country_%s', $countryId)));
             $affiliate->setName($name);
             $affiliate->setType($type);
@@ -56,7 +55,6 @@ class LoadAffiliatesData extends AbstractFixture implements ContainerAwareInterf
             $affiliate->setSkypeId($skypeId);
             $affiliate->setEnabled($enabled);
             $affiliate->setPostbackUrl($postBackUrl);
-            $affiliate->setUuid($uuid);
             $affiliate->setSubPriceName($subPriceName);
 
             $this->addReference(sprintf('affiliate_%s', $uuid), $affiliate);

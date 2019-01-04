@@ -9,7 +9,7 @@
 namespace DataFixtures;
 
 
-use App\Domain\Entity\Languages;
+use App\Domain\Entity\Language;
 use DataFixtures\Utils\FixtureDataLoader;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -30,16 +30,14 @@ class LoadLanguagesData extends AbstractFixture implements ContainerAwareInterfa
         $data = FixtureDataLoader::loadDataFromJSONFile('languages.json');
 
         foreach ($data as $row) {
-            $id = $row['id'];
             $name = $row['name'];
             $code = $row['code'];
             $uuid = $row['uuid'];
 
-            $language = new Languages();
+            $language = new Language($uuid);
 
             $language->setName($name);
             $language->setCode($code);
-            $language->setUuid($uuid);
 
             $this->addReference(sprintf('language_%s', $uuid), $language);
             $this->addReference(sprintf('language_code_%s', $code), $language);

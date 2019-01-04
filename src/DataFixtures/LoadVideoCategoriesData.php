@@ -36,11 +36,10 @@ class LoadVideoCategoriesData extends AbstractFixture
             $alias = $row[1];
             $uuid  = $row[2];
 
-            $category = new VideoCategory();
+            $category = new VideoCategory($uuid);
 
             $category->setTitle($title);
             $category->setAlias($alias);
-            $category->setUuid($uuid);
 
             $manager->persist($category);
         }

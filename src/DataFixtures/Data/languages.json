@@ -1,138 +1,115 @@
 [
     {
-        "id": 1,
         "name": "Arabic",
         "code": "ar",
         "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
     },
     {
-        "id": 2,
         "name": "English",
         "code": "en",
         "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
     },
     {
-        "id": 3,
         "name": "",
         "code": "fr",
         "uuid": "5179f269-ebd4-11e8-95c4-02bb250f0f22"
     },
     {
-        "id": 4,
         "name": "",
         "code": "id",
         "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
     },
     {
-        "id": 5,
         "name": "",
         "code": "th",
         "uuid": "5179f518-ebd4-11e8-95c4-02bb250f0f22"
     },
     {
-        "id": 6,
         "name": "",
         "code": "ru",
         "uuid": "5179f5ab-ebd4-11e8-95c4-02bb250f0f22"
     },
     {
-        "id": 7,
         "name": "",
         "code": "my",
         "uuid": "5179f635-ebd4-11e8-95c4-02bb250f0f22"
     },
     {
-        "id": 8,
         "name": "",
         "code": "in",
         "uuid": "5179f810-ebd4-11e8-95c4-02bb250f0f22"
     },
     {
-        "id": 9,
         "name": "",
         "code": "bg",
         "uuid": "5179f8c2-ebd4-11e8-95c4-02bb250f0f22"
     },
     {
-        "id": 10,
         "name": "",
         "code": "br",
         "uuid": "5179f95a-ebd4-11e8-95c4-02bb250f0f22"
     },
     {
-        "id": 11,
         "name": "",
         "code": "vi",
         "uuid": "5179f9f3-ebd4-11e8-95c4-02bb250f0f22"
     },
     {
-        "id": 12,
         "name": "",
         "code": "de",
         "uuid": "5179fa73-ebd4-11e8-95c4-02bb250f0f22"
     },
     {
-        "id": 13,
         "name": "",
         "code": "el",
         "uuid": "5179fad1-ebd4-11e8-95c4-02bb250f0f22"
     },
     {
-        "id": 14,
         "name": "",
         "code": "uk",
         "uuid": "5179fb20-ebd4-11e8-95c4-02bb250f0f22"
     },
     {
-        "id": 15,
         "name": "",
         "code": "es",
         "uuid": "5179fb6e-ebd4-11e8-95c4-02bb250f0f22"
     },
     {
-        "id": 16,
         "name": "",
         "code": "tr",
         "uuid": "5179fbba-ebd4-11e8-95c4-02bb250f0f22"
     },
     {
-        "id": 17,
         "name": "",
         "code": "hi",
         "uuid": "5179fc11-ebd4-11e8-95c4-02bb250f0f22"
     },
     {
-        "id": 18,
         "name": "",
         "code": "it",
         "uuid": "5179fc79-ebd4-11e8-95c4-02bb250f0f22"
     },
     {
-        "id": 19,
         "name": "",
         "code": "pt",
         "uuid": "5179fce1-ebd4-11e8-95c4-02bb250f0f22"
     },
     {
-        "id": 20,
         "name": "",
         "code": "pl",
         "uuid": "5179fd32-ebd4-11e8-95c4-02bb250f0f22"
     },
     {
-        "id": 21,
         "name": "",
         "code": "cz",
         "uuid": "5179fd7b-ebd4-11e8-95c4-02bb250f0f22"
     },
     {
-        "id": 22,
         "name": "Bengalian",
         "code": "bn",
         "uuid": "5179fdc8-ebd4-11e8-95c4-02bb250f0f22"
     },
     {
-        "id": 23,
         "name": "Khmer",
         "code": "kh",
         "uuid": "5179fe22-ebd4-11e8-95c4-02bb250f0f22"
