@@ -44,6 +44,15 @@ class CampaignPricing
 
     private $active = true;
 
+    /**
+     * CampaignPricing constructor.
+     * @param string $uuid
+     */
+    public function __construct(string $uuid)
+    {
+        $this->uuid = $uuid;
+    }
+
     public function getActive()
     {
         return $this->active;

@@ -23,6 +23,15 @@ class Translation
     private $carrier;
 
     /**
+     * Translation constructor.
+     * @param string $uuid
+     */
+    public function __construct(string $uuid)
+    {
+        $this->uuid = $uuid;
+    }
+
+    /**
      * @return Carrier
      */
     public function getCarrier(): Carrier

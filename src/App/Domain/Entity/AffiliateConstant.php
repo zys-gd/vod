@@ -31,6 +31,15 @@ class AffiliateConstant
     private $affiliate;
 
     /**
+     * AffiliateConstant constructor.
+     * @param string $uuid
+     */
+    public function __construct(string $uuid)
+    {
+        $this->uuid = $uuid;
+    }
+
+    /**
      * @return string
      */
     public function getUuid(): string

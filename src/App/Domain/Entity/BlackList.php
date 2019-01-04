@@ -34,12 +34,14 @@ class BlackList
 
     /**
      * BlackList constructor.
+     * @param string $uuid
+     * @throws \Exception
      */
-    public function __construct()
+    public function __construct(string $uuid)
     {
+        $this->uuid = $uuid;
         $this->addedAt = new \DateTime();
         $this->isBlockedManually = true;
-        // $this->uuid = \Ramsey\Uuid\Uuid::uuid4()->toString();
     }
 
     /**

@@ -91,9 +91,11 @@ class Campaign
 
     /**
      * Campaign constructor.
+     * @param string $uuid
      */
-    public function __construct()
+    public function __construct(string $uuid)
     {
+        $this->uuid = $uuid;
         $this->campaignPricingDetails = new ArrayCollection();
         $this->campaignConstraints = new ArrayCollection();
         $this->carriers = new ArrayCollection();

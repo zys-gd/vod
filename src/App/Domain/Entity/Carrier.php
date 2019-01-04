@@ -161,10 +161,11 @@ class Carrier
 
     /**
      * Carrier constructor.
-     * @throws \Exception
+     * @param string $uuid
      */
-    public function __construct()
+    public function __construct(string $uuid)
     {
+        $this->uuid = $uuid;
         $this->categoryCarrierOverrides = new ArrayCollection();
         $this->deactivatedGames = new ArrayCollection();
         $this->campaigns = new ArrayCollection();

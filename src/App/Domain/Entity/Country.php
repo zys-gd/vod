@@ -169,11 +169,11 @@ class Country
 
     /**
      * Country constructor.
-     * @throws \Exception
+     * @param string $uuid
      */
-    public function __construct ()
+    public function __construct(string $uuid)
     {
-        $this->uuid = \Ramsey\Uuid\Uuid::uuid4()->toString();
+        $this->uuid = $uuid;
         $this->deactivatedGames = new ArrayCollection();
     }
 

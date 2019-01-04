@@ -28,6 +28,15 @@ class VideoCategory
     private $menuPriority;
 
     /**
+     * VideoCategory constructor.
+     * @param string $uuid
+     */
+    public function __construct(string $uuid)
+    {
+        $this->uuid = $uuid;
+    }
+
+    /**
      * Set title
      *
      * @param string $title

@@ -36,9 +36,12 @@ class UploadedVideo
 
     /**
      * UploadedVideo constructor.
+     * @param string $uuid
+     * @throws \Exception
      */
-    public function __construct()
+    public function __construct(string $uuid)
     {
+        $this->uuid = $uuid;
         $this->createdAt = new \DateTime();
     }
 
