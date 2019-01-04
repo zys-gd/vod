@@ -9,6 +9,7 @@
 namespace App\Domain\Service\VideoProcessing;
 
 
+use App\Utils\UuidGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Routing\RouterInterface;
@@ -83,7 +84,7 @@ class VideoUploader
             'http://' . $this->host . $this->router->generate('vod_listen', [])
         );
 
-        $videoEntity = new UploadedVideo();
+        $videoEntity = new UploadedVideo(UuidGenerator::generate());
 
         $videoEntity->setTitle($title);
         $videoEntity->setCategory($category);
