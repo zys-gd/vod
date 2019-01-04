@@ -43,16 +43,14 @@ services:
 #                manager_type: orm
 #                label: Placeholder to operator
 
-#    App\Admin\Sonata\Sonata\CarrierAdmin:
-#        arguments: [~, App\Domain\Entity\Carrier, AppBundle:CarrierAdmin]
-#        tags:
-#            -
-#                name: sonata.admin
-#                manager_type: orm
-#                group: admin
-#                label: Carrier
-#        calls:
-#            - [ setTemplate, [edit, admin/edit.html.twig]]
+    App\Admin\Sonata\CarrierAdmin:
+        arguments: [~, App\Domain\Entity\Carrier, 'App\Admin\Controller\CarrierAdminController']
+        tags:
+            -
+                name: sonata.admin
+                manager_type: orm
+                group: Carriers
+                label: Carriers
 
     App\Admin\Sonata\AffiliateAdmin:
         arguments: [~, App\Domain\Entity\Affiliate, ~]

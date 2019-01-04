@@ -47,8 +47,8 @@ App\Domain\Entity\Campaign:
             nullable: true
             options:
                 default: null
-    lifecycleCallbacks:
-        postLoad : [onPostLoad]
+
+    lifecycleCallbacks: {  }
 
     manyToOne:
         affiliate:

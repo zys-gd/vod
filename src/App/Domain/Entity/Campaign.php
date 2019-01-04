@@ -33,11 +33,6 @@ class Campaign
     private $carriers;
 
     /**
-     * @var Game
-     */
-    private $game;
-
-    /**
      * @var string
      */
     private $bgColor = '#000000';
@@ -53,11 +48,6 @@ class Campaign
      * @var string
      */
     private $image;
-
-    /**
-     * @var CategoryCampaignOverride
-     */
-    private $categoryOverride;
 
     /**
      * @var File
@@ -264,30 +254,6 @@ class Campaign
     }
 
     /**
-     * Set game
-     *
-     * @param integer $game
-     *
-     * @return Campaign
-     */
-    public function setGame($game)
-    {
-        $this->game = $game;
-
-        return $this;
-    }
-
-    /**
-     * Get game
-     *
-     * @return Game
-     */
-    public function getGame()
-    {
-        return $this->game;
-    }
-
-    /**
      * Set bgColor
      *
      * @param string $bgColor
@@ -348,22 +314,6 @@ class Campaign
     }
 
     /**
-     * @return CategoryCampaignOverride
-     */
-    public function getCategoryOverride()
-    {
-        return $this->categoryOverride;
-    }
-
-    /**
-     * @param CategoryCampaignOverride $categoryOverride
-     */
-    public function setCategoryOverride(CategoryCampaignOverride $categoryOverride)
-    {
-        $this->categoryOverride = $categoryOverride;
-    }
-
-    /**
      * @param CampaignConstraints $campaignConstraint
      */
     public function addCampaignConstraint(CampaignConstraints $campaignConstraint)
@@ -403,23 +353,6 @@ class Campaign
     {
         return 'Campaign #'.$this->getUuid();
     }
-
-    /**
-     * Required to load the default value on campaigns, that was previously created
-     *
-     * @param LifecycleEventArgs $event
-     */
-    public function onPostLoad(LifecycleEventArgs $event)
-    {
-        if ($this->categoryOverride instanceof CategoryCampaignOverride) {
-            return;
-        }
-
-        $this->setCategoryOverride(
-            $event->getEntityManager()->getReference(CategoryCampaignOverride::class, 1)
-        );
-    }
-
 
     /**
      * @return string

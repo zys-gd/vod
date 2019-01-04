@@ -47,20 +47,10 @@ App\Domain\Entity\Carrier:
             options:
                 default: 0
 
-        trialCredits:
-            type: integer
-            options:
-                default: 2
-
         subscriptionPeriod:
             type: integer
             options:
                 default: 7
-
-        subscriptionCredits:
-            type: integer
-            options:
-                default: 2
 
         resubAllowed:
             type: boolean

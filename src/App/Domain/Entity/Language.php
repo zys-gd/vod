@@ -32,6 +32,10 @@ class Language implements HasUuid
         $this->uuid = $uuid;
     }
 
+    public function __toString()
+    {
+        return strlen($this->name) > 0 ? $this->name : $this->code;
+    }
 
     /**
      * @return string

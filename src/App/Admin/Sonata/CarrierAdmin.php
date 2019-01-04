@@ -2,16 +2,25 @@
 
 namespace App\Admin\Sonata;
 
+use App\Domain\Entity\Carrier;
+use App\Utils\UuidGenerator;
 use function Sodium\add;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class CarrierAdmin extends AbstractAdmin
 {
+    public function getNewInstance()
+    {
+        return new Carrier(UuidGenerator::generate());
+    }
+
 //todo default_lang
     /**
      * @param DatagridMapper $datagridMapper
@@ -19,21 +28,19 @@ class CarrierAdmin extends AbstractAdmin
     protected function configureDatagridFilters (DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('id')
-            ->add('id_carrier')
-            ->add('operator_id')
+            ->add('uuid')
+            ->add('billingCarrierId')
+            ->add('operatorId')
             ->add('name')
             ->add('countryCode')
-            ->add('default_language')
+            ->add('defaultLanguage')
             ->add('isp')
             ->add('published')
             ->add('lpOtp')
             ->add('pinIdentSupport')
-            ->add('trial_initializer')
-            ->add('trial_period')
-            ->add('trial_credits')
-            ->add('subscription_period')
-            ->add('subscription_credits')
+            ->add('trialInitializer')
+            ->add('trialPeriod')
+            ->add('subscriptionPeriod')
             ->add('numberOfAllowedSubscriptionsByConstraint')
             ->add('redirectUrl')
             ->add('resubAllowed')
@@ -49,21 +56,19 @@ class CarrierAdmin extends AbstractAdmin
     protected function configureListFields (ListMapper $listMapper)
     {
         $listMapper
-            ->add('id')
-            ->add('id_carrier')
-            ->add('operator_id')
+            ->add('uuid')
+            ->add('billingCarrierId')
+            ->add('operatorId')
             ->add('name')
             ->add('countryCode')
-            ->add('default_language', 'string')
+            ->add('defaultLanguage', TextType::class)
             ->add('isp')
             ->add('published')
             ->add('lpOtp')
             ->add('pinIdentSupport')
-            ->add('trial_initializer')
-            ->add('trial_period')
-            ->add('trial_credits')
-            ->add('subscription_period')
-            ->add('subscription_credits')
+            ->add('trialInitializer')
+            ->add('trialPeriod')
+            ->add('subscriptionPeriod')
             ->add('resubAllowed')
             ->add('isCampaignsOnPause')
             ->add('_action', null, array(
@@ -83,25 +88,23 @@ class CarrierAdmin extends AbstractAdmin
     protected function configureFormFields (FormMapper $formMapper)
     {
         $formMapper
-            ->add('id', TextType::class, [
+            ->add('uuid', TextType::class, [
                 'required' => false
             ])
-            ->add('id_carrier')
-            ->add('operator_id')
+            ->add('billingCarrierId')
+            ->add('operatorId')
             ->add('name')
             ->add('countryCode')
-            ->add('default_language')
+            ->add('defaultLanguage')
             ->add('isp')
             ->add('published')
             ->add('lpOtp')
             ->add('pinIdentSupport')
-            ->add('trial_initializer')
-            ->add('trial_period')
-            ->add('trial_credits')
-            ->add('subscription_period')
-            ->add('subscription_credits')
-            ->add('numberOfAllowedSubscriptionsByConstraint', 'integer', ['attr' => ['min' => 0], 'required' => false,])
-            ->add('redirectUrl','url', ['required' => false])
+            ->add('trialInitializer')
+            ->add('trialPeriod')
+            ->add('subscriptionPeriod')
+            ->add('numberOfAllowedSubscriptionsByConstraint', IntegerType::class, ['attr' => ['min' => 0], 'required' => false,])
+            ->add('redirectUrl', UrlType::class, ['required' => false])
             ->add('resubAllowed')
             ->add('isCampaignsOnPause')
             ->add('isUnlimitedSubscriptionAttemptsAllowed', null,[
@@ -119,9 +122,9 @@ class CarrierAdmin extends AbstractAdmin
     protected function configureShowFields (ShowMapper $showMapper)
     {
         $showMapper
-            ->add('id')
-            ->add('id_carrier')
-            ->add('operator_id')
+            ->add('uuid')
+            ->add('billingCarrierId')
+            ->add('operatorId')
             ->add('name')
             ->add('countryCode')
             ->add('default_language')
@@ -129,11 +132,9 @@ class CarrierAdmin extends AbstractAdmin
             ->add('published')
             ->add('lpOtp')
             ->add('pinIdentSupport')
-            ->add('trial_initializer')
-            ->add('trial_period')
-            ->add('trial_credits')
-            ->add('subscription_period')
-            ->add('subscription_credits')
+            ->add('trialInitializer')
+            ->add('trialPeriod')
+            ->add('subscriptionPeriod')
             ->add('resubAllowed')
             ->add('isCampaignsOnPause')
             ->add('isUnlimitedSubscriptionAttemptsAllowed')

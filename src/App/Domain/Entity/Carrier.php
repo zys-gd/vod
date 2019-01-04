@@ -63,12 +63,6 @@ class Carrier
     private $trialInitializer = 'carrier';
 
     /**
-     * Amount of credits for users trial subscription
-     * @var integer
-     */
-    private $trialCredits = 2;
-
-    /**
      * Trial period in days
      * @var integer
      */
@@ -79,14 +73,6 @@ class Carrier
      * @var integer
      */
     private $subscriptionPeriod = 7;
-
-
-    /**
-     *  Amount of credits for users subscription
-     * @var integer
-     */
-    private $subscriptionCredits = 2;
-
 
     /**
      * @var $operatorId
@@ -232,22 +218,6 @@ class Carrier
     /**
      * @return int
      */
-    public function getTrialCredits(): int
-    {
-        return $this->trialCredits;
-    }
-
-    /**
-     * @param int $trialCredits
-     */
-    public function setTrialCredits(int $trialCredits)
-    {
-        $this->trialCredits = $trialCredits;
-    }
-
-    /**
-     * @return int
-     */
     public function getSubscriptionPeriod(): int
     {
         return $this->subscriptionPeriod;
@@ -259,22 +229,6 @@ class Carrier
     public function setSubscriptionPeriod(int $subscriptionPeriod)
     {
         $this->subscriptionPeriod = $subscriptionPeriod;
-    }
-
-    /**
-     * @return int
-     */
-    public function getSubscriptionCredits(): int
-    {
-        return $this->subscriptionCredits;
-    }
-
-    /**
-     * @param int $subscriptionCredits
-     */
-    public function setSubscriptionCredits(int $subscriptionCredits)
-    {
-        $this->subscriptionCredits = $subscriptionCredits;
     }
 
     /**

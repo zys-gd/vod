@@ -46,9 +46,7 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $pinIdentSupport                         = $row['pinIdentSupport'];
             $trialInitializer                        = $row['trial_initializer'];
             $trialPeriod                             = $row['trial_period'];
-            $trialCredits                            = $row['trial_credits'];
             $subscriptionPeriod                      = $row['subscription_period'];
-            $subscriptionCredits                     = $row['subscription_credits'];
             $resubAllowed                            = $row['resubAllowed'];
             $isCampaignsOnPause                      = $row['isCampaignsOnPause'];
             $numberOfAllowedSubscription             = $row['numberOfAllowedSubscription'];
@@ -73,9 +71,7 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $carrier->setPublished($published);
             $carrier->setTrialInitializer($trialInitializer);
             $carrier->setTrialPeriod($trialPeriod);
-            $carrier->setTrialCredits($trialCredits);
             $carrier->setSubscriptionPeriod($subscriptionPeriod);
-            $carrier->setSubscriptionCredits($subscriptionCredits);
             $carrier->setOperatorId($operatorId);
             $carrier->setLpOtp($lpOtp);
             $carrier->setPinIdentSupport($pinIdentSupport);
