@@ -118,9 +118,15 @@ App\Domain\Entity\Carrier:
 
     manyToMany:
         campaigns:
-            targetEntity: Campaign
-            joinColumn:
-                referencedColumnName: uuid
+            targetEntity: App\Domain\Entity\Campaign
+            joinTable:
+              name: null
+              joinColumns:
+                carrier_id:
+                  referencedColumnName: uuid
+              inverseJoinColumns:
+                  campaign_id:
+                    referencedColumnName: uuid
             mappedBy: carriers
 
     manyToOne:

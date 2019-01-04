@@ -72,9 +72,15 @@ App\Domain\Entity\Campaign:
             cascade: ["persist", "remove"]
             orphanRemoval: true
 
-#    manyToMany:
-#        carriers:
-#            targetEntity: App\Domain\Entity\Carrier
-#            joinColumn:
-#                referencedColumnName: uuid
-#            inversedBy: campaigns
+    manyToMany:
+        carriers:
+            targetEntity: App\Domain\Entity\Carrier
+            joinTable:
+              name: null
+              joinColumns:
+                campaign_id:
+                  referencedColumnName: uuid
+              inverseJoinColumns:
+                  carrier_id:
+                    referencedColumnName: uuid
+            inversedBy: campaigns
