@@ -9,7 +9,7 @@ App\Domain\Entity\Translation:
             type: string
             length: 255
             nullable: false
-        translate:
+        translation:
             type: text
             nullable: false
     manyToOne:
