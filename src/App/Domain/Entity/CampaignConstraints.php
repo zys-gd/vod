@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Domain\Entity;
-use App\Domain\Entity\Interfaces\HasUuid;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use phpDocumentor\Reflection\Types\Boolean;
@@ -14,12 +14,12 @@ use AppBundle\Validator\Constraints as Constraints;
  * CampaignConstraints
  * @Constraints\ContainsConstraints
  */
-class CampaignConstraints implements HasUuid
+class CampaignConstraints
 {
     /**
-     * @var integer
+     * @var string
      */
-    private $id;
+    private $uuid;
 
     /**
      * @var integer
@@ -51,42 +51,12 @@ class CampaignConstraints implements HasUuid
      */
     private $campaign;
 
-    /** @var string */
-    private $uuid = null;
-
-    /**
-     * CampaignConstraints constructor.
-     * @throws \Exception
-     */
-    public function __construct()
-    {
-        $this->uuid = \Ramsey\Uuid\Uuid::uuid4()->toString();
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
     /**
      * @return string
      */
     public function getUuid(): string
     {
         return $this->uuid;
-    }
-
-    /**
-     * @param string $uuid
-     */
-    public function setUuid(string $uuid)
-    {
-        $this->uuid = $uuid;
     }
 
     /**

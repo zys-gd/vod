@@ -8,14 +8,14 @@ namespace App\Domain\Entity;
 class BlackList
 {
     /**
-     * @var int
+     * @var string
      */
-    private $id;
+    private $uuid;
 
     /**
      * @var int
      */
-    private $carrierId;
+    private $billingCarrierId;
 
     /**
      * @var string
@@ -39,6 +39,7 @@ class BlackList
     {
         $this->addedAt = new \DateTime();
         $this->isBlockedManually = true;
+        // $this->uuid = \Ramsey\Uuid\Uuid::uuid4()->toString();
     }
 
     /**
@@ -46,21 +47,21 @@ class BlackList
      *
      * @return int
      */
-    public function getId()
+    public function getUuid()
     {
-        return $this->id;
+        return $this->uuid;
     }
 
     /**
      * Set carrierId
      *
-     * @param integer $carrierId
+     * @param integer $billingCarrierId
      *
      * @return BlackList
      */
-    public function setCarrierId($carrierId)
+    public function setBillingCarrierId($billingCarrierId)
     {
-        $this->carrierId = $carrierId;
+        $this->billingCarrierId = $billingCarrierId;
 
         return $this;
     }
@@ -70,9 +71,9 @@ class BlackList
      *
      * @return int
      */
-    public function getCarrierId()
+    public function getBillingCarrierId()
     {
-        return $this->carrierId;
+        return $this->billingCarrierId;
     }
 
     /**

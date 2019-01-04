@@ -2,7 +2,7 @@
 
 namespace App\Domain\Entity;
 
-class Translations
+class Translation
 {
     /**
      * @var string

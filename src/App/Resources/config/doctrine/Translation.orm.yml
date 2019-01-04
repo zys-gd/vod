@@ -1,4 +1,4 @@
-App\Domain\Entity\Translations:
+App\Domain\Entity\Translation:
     type: entity
     table: translations
     id:

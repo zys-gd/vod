@@ -1,4 +1,4 @@
-App\Domain\Entity\Languages:
+App\Domain\Entity\Language:
     type: entity
     table: languages
     id:

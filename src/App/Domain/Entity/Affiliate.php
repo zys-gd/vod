@@ -1,21 +1,21 @@
 <?php
 
 namespace App\Domain\Entity;
-use App\Domain\Entity\Interfaces\HasUuid;
+
 use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Affiliate
  */
-class Affiliate implements HasUuid
+class Affiliate
 {
     const CPC_TYPE = 1;
 
     const CPA_TYPE = 2;
 
     /**
-     * @var int
+     * @var string
      */
-    private $id;
+    private $uuid;
 
     /**
      * @var string
@@ -33,7 +33,7 @@ class Affiliate implements HasUuid
     private $url;
 
     /**
-     * @var int
+     * @var string
      */
     private $country;
 
@@ -75,9 +75,6 @@ class Affiliate implements HasUuid
      */
     private $subPriceName;
 
-    /** @var string */
-    private $uuid = null;
-
 
     /**
      * Affiliate constructor.
@@ -90,32 +87,12 @@ class Affiliate implements HasUuid
         $this->parameters = new ArrayCollection();
     }
 
-
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
     /**
      * @return string
      */
     public function getUuid(): string
     {
         return $this->uuid;
-    }
-
-    /**
-     * @param string $uuid
-     */
-    public function setUuid(string $uuid)
-    {
-        $this->uuid = $uuid;
     }
 
     /**
@@ -193,7 +170,7 @@ class Affiliate implements HasUuid
     /**
      * Set country
      *
-     * @param integer $country
+     * @param string $country
      *
      * @return Affiliate
      */
@@ -207,7 +184,7 @@ class Affiliate implements HasUuid
     /**
      * Get country
      *
-     * @return int
+     * @return string
      */
     public function getCountry()
     {

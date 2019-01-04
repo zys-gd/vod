@@ -15,9 +15,9 @@ class UploadedVideo
         self::STATUS_READY => 'Ready'
     ];
     /**
-     * @var int
+     * @var string
      */
-    private $id;
+    private $uuid;
 
 
     private $title = '';
@@ -46,11 +46,11 @@ class UploadedVideo
     /**
      * Get id
      *
-     * @return int
+     * @return string
      */
-    public function getId()
+    public function getUuid()
     {
-        return $this->id;
+        return $this->uuid;
 
     }
 

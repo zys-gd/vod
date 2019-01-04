@@ -8,9 +8,9 @@ namespace App\Domain\Entity;
 class CampaignPricing
 {
     /**
-     * @var int
+     * @var string
      */
-    private $id;
+    private $uuid;
 
     /**
      * @var Campaign
@@ -71,9 +71,9 @@ class CampaignPricing
      *
      * @return int
      */
-    public function getId()
+    public function getUuid()
     {
-        return $this->id;
+        return $this->uuid;
     }
 
     /**
