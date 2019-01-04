@@ -1,0 +1,25 @@
+App\Domain\Entity\Translations:
+    type: entity
+    table: translations
+    id:
+        uuid:
+            type: guid
+            generator:
+                strategy: UUID
+    fields:
+        key:
+            type: string
+            length: 255
+            nullable: false
+        translate:
+            type: text
+            nullable: false
+    manyToOne:
+        language:
+            targetEntity: App\Domain\Entity\Languages
+            joinColumn:
+                referencedColumnName: uuid
+        carrier:
+            targetEntity: App\Domain\Entity\Carrier
+            joinColumn:
+                referencedColumnName: uuid
