@@ -74,11 +74,8 @@ class VideoUploader
 
         $folderName = $category->getAlias();
 
-        $uuid = \Ramsey\Uuid\Uuid::uuid4()->toString();
-
-
         $result = $this->cloudinaryConnector->uploadVideo(
-            $uuid,
+            UuidGenerator::generate(),
             $file->getRealPath(),
             $folderName,
             'http://' . $this->host . $this->router->generate('vod_listen', [])

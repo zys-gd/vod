@@ -1,453 +1,6 @@
 [
     {
-        "key": "buttons.join.now",
-        "translation": "JOIN NOW",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "buttons.join",
-        "translation": "JOIN",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "buttons.subscribe",
-        "translation": "SUBSCRIBE",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "buttons.download",
-        "translation": "DOWNLOAD",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "buttons.see_all",
-        "translation": "See all",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "buttons.load_more",
-        "translation": "Load More",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "buttons.send",
-        "translation": "SEND",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "buttons.leave",
-        "translation": "Leave 100% sports",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "buttons.continue",
-        "translation": "Continue",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "menu.footer.contact_us",
-        "translation": "Contact Us",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "menu.footer.faq",
-        "translation": "FAQ",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "menu.footer.terms",
-        "translation": "T&C",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "menu.hamburger.account",
-        "translation": "MY ACCOUNT",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "menu.hamburger.contact_us",
-        "translation": "CONTACT US",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "menu.hamburger.faq",
-        "translation": "FAQ",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "menu.hamburger.terms",
-        "translation": "TERMS & CONDITIONS",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "promotional.landing",
-        "translation": "Unlimited videos of your favorite sports and teams",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "offer.landing",
-        "translation": "Watch unlimited sport videos for only 450 MMK per week",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "offer.annotation_block",
-        "translation": "Watch unlimited sport videos for only 450 MMK per week",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "offer.account",
-        "translation": "Watch unlimited sport videos for only 450 MMK per week",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "lure_block.text",
-        "translation": "Over 40+ sports covered!",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "annotation_block.text.1",
-        "translation": "The cost will be added to your mobile phone bill",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "annotation_block.text.2",
-        "translation": "Access more than 2,000 videos and and new content every day",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "annotation_block.text.3",
-        "translation": "You can cancel your subscription anytime from My Account section",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "annotation_block.text.4",
-        "translation": "Data download charges will apply as per bundle or package rates",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "subscription.status.subscribed",
-        "translation": "You are subscribed to 100% sports",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "subscription.text.enjoy",
-        "translation": "Enjoy unlimited sport videos!",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "subscription.status.unsubscribed",
-        "translation": "You have been unsubscribed from 100% sports",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "subscription.status.not_subscribe",
-        "translation": "You are not subscribed to Playwing Premium",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "subscription.text.resubscribe",
-        "translation": "To subscribe anew, please Contact Us",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "contact_us.text.1",
-        "translation": "Do you have any question about 100% sports? We will give you straight answers!",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "contact_us.text.2",
-        "translation": "Contact us using our contact form below",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "contact_us.field.email",
-        "translation": "Email address",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "contact_us.field.comments",
-        "translation": "Comments",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "contact_us.field.mandatory",
-        "translation": "Mandatory fields",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "faq.q.1",
-        "translation": "How can I terminate my subscription to 100% sports?",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "faq.a.1",
-        "translation": "100% sports is a subscription service which is automatically renewed every week or day (as appropriate) unless you unsubscribe. You can terminate your subscription whenever you want only by entering in your personal menu on <service URL> (icon at top right of the display) and clicking on Leave 100% sports link. Depending on your mobile operator, you may terminate your subscription by sending a SMS.",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "faq.q.2",
-        "translation": "Where can I watch all videos?",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "faq.a.2",
-        "translation": "To watch and enjoy your sports videos, you should simple access to our homepage <homepage link> and click on any video available. You are able to browse our whole catalogue on the main menu (searching by title or category).",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "faq.q.3",
-        "translation": "I downloaded one sports game but I cannot install it on my handset, what is happening?",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "faq.a.3",
-        "translation": "First of all, make sure that you have permission to install apps from different stores to Google Play: in your device, go to settings / Security / Device Administration and enable Unknown Sources Allow installation of apps from unknown sources. In addition, you might check if you have enough space in your storage. If this issue persists, don’t hesitate to contact us.",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "faq.q.4",
-        "translation": "Is it safe to browse videos and download games from 100% sports?",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "faq.a.4",
-        "translation": "Yes, all content provided by 100% sports is totally safe for your handset and your personal data.",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "faq.q.5",
-        "translation": "I am subscribed to 100% sports, if I unsubscribe, how much longer will I be able to access videos?",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "faq.a.5",
-        "translation": "You will keep your access to 100% sports until the last period paid ends. For example, in case of daily subscription which was already renewed today, you will be able to see all videos until current date ends. Or if you were subscribed to weekly and your last renewal happened on Monday, you will have access until Sunday (7 days).",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "faq.q.6",
-        "translation": "The mobile site does not detect my account and my subscription to 100% sports",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "faq.a.6",
-        "translation": "Check your 3G or WIFI connection is working properly. If so, and this issue persists, please contact us indicating your issue, phone number, mobile operator and handset.",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "account.text.subscribed",
-        "translation": "You are part of 100% sports since",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "account.text.leave",
-        "translation": "If you want to leave the service, please click on the link below.",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "messages.action.unsubscribe.confirm",
-        "translation": "Are you sure you want to unsubscribe?",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "messages.action.unsubscribe.confirmation.1",
-        "translation": "You are no longer member of Playwing Premium",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "messages.action.unsubscribe.confirmation.2",
-        "translation": "Please, continue your visit at our homepage",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "terms.text.description",
-        "translation": "These terms (\"Terms and Conditions\") are the particular conditions of a legal agreement between you, on the one side, and ORIGINDATA Ltd (hereinafter mentioned as \"100% sports\"), on the other side.",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "terms.block_1.title.1",
-        "translation": "Object",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "terms.block_1.text.1",
-        "translation": "100% sports is a mobile service which provides mobile games.100% sports proposes this service:  - Weekly subscription which will be automatically activated when you confirm your subscription on 100% sports mobile site (<homepage URL>).",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "terms.block_2.title.1",
-        "translation": "Conditions",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
+        "uuid": "01cc2435-f513-4507-936e-60254d725758",
         "key": "terms.block_2.text.1",
         "translation": "This service is only available for users in [Country]. You must have permission from the carrier to use this service.",
         "language": {
@@ -456,118 +9,43 @@
         "carrier": null
     },
     {
-        "key": "terms.block_3.title.1",
-        "translation": "Service description",
+        "uuid": "03f1f58c-d13b-402e-88dd-4169e399a97b",
+        "key": "annotation_block.text.3",
+        "translation": "You can cancel your subscription anytime from My Account section",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
     },
     {
-        "key": "terms.block_3.title.1.1",
-        "translation": "Subscription",
+        "uuid": "04b2e1e4-ee02-407e-aaad-6aa8f9b27f1c",
+        "key": "buttons.join.now",
+        "translation": "JOIN NOW",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
     },
     {
-        "key": "terms.block_3.text.1",
-        "translation": "This subscription service allows you to watch unlimited sports videos every week your phone from 100% sports catalogue for [price] (+ WAP connection charges). As long as you are subscribed to 100% sports, you will be able to watch unlimited content every week.",
+        "uuid": "09b412fa-735a-474c-ab29-3954b3494a6d",
+        "key": "contact_us.text.1",
+        "translation": "Do you have any question about 100% sports? We will give you straight answers!",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
     },
     {
-        "key": "terms.block_3.text.2",
-        "translation": "To join the subscription service and get access to videos and games, you should click on the subscription button on 100% sports mobile website. Once your subscription is confirmed, you will be redirected to our homepage and be able to enjoy unlimited sports videos and games according to 100% sports catalogue.",
+        "uuid": "0ac3b8f1-3dce-4961-b7bd-a5edefc8101c",
+        "key": "subscription.text.enjoy",
+        "translation": "Enjoy unlimited sport videos!",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
     },
     {
-        "key": "terms.block_3.text.3",
-        "translation": "Your weekly subscription will be automatically renewed unless you would unsubscribe. You can terminate your subscription whenever you want from your personal menu by clicking on Leave 100% sports link. 100% sports reserves the right to end the subscription at any time.",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "terms.block_4.title.1",
-        "translation": "Help and support",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "terms.block_4.text.1",
-        "translation": "Contact us",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "terms.block_5.title.1",
-        "translation": "Payments",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "terms.block_5.text.1",
-        "translation": "The total cost of this subscription service will be advertised in each page where you can sign up 100% sports services. Total or partial amounts of the contracted service will be charged each week or day as specified by your mobile operator. However, the maximum price for subscription will be [price] per week.",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "terms.block_5.text.2",
-        "translation": "For postpaid users, the cost will be added to your mobile phone bill. If you are a prepaid user, you should make sure that you have enough credit on your prepaid card to complete your subscription and/or purchase.",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "terms.block_5.text.3",
-        "translation": "Fees might differ depending on the mobile operator. The exact price will be displayed along with service’s conditions before your subscription or purchase.",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "terms.block_5.text.4",
-        "translation": "Access to 100% sports website via mobile connection 3G or 4G may add additional navigation costs. The amount of these costs will depend on the rates and conditions you have contracted with your mobile phone operator, so 100% sports cannot be considered responsible for such costs.",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "terms.block_6.title.1",
-        "translation": "Service access",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "terms.block_6.text.1",
-        "translation": "Only individuals of legal age and emancipated minors (over 14 years old) can apply and contract the services of 100% sports. Unemancipated minors can only use 100% sports services under authorization from their parents or legal guardians, who will be in any case responsible for the acts of their dependents. 100% sports cannot replace in anyway the parental control of legal tutors, so the owner of the mobile phone line will be deemed responsible for all effects.",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
+        "uuid": "0b322a73-ab93-48fb-beda-b44939a739b9",
         "key": "terms.block_6.text.2",
         "translation": "You should have all the necessary resources (handset, software, Internet connection) to use 100% sports services. 100% sports may discontinue its services in order to accomplish repair works, corrections and maintenance. 100% sports might also modify temporarily or permanently specific services or products.",
         "language": {
@@ -576,78 +54,43 @@
         "carrier": null
     },
     {
-        "key": "terms.block_7.title.1",
-        "translation": "User’s liability",
+        "uuid": "0c0e063c-e09f-4bdf-a737-24299a3f1afc",
+        "key": "buttons.load_more",
+        "translation": "Load More",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
     },
     {
-        "key": "terms.block_7.text.1",
-        "translation": "100% sports is not liable for any loss or injuries due to inappropriate use of the service provided by 100% sports beyond its control or resulting from causes not attributable to it. You are required not misuse 100% sports services and respect the laws of third parties including trademark rights, patents, copyright and other intellectual and industrial properties.",
+        "uuid": "0f5cf82e-b95b-45d1-80aa-e971aef6f2ac",
+        "key": "offer.account",
+        "translation": "Watch unlimited sport videos for only 450 MMK per week",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
     },
     {
-        "key": "terms.block_7.text.2",
-        "translation": "Likewise, you acknowledge and agree that the use of 100% sports services is not allowed for commercial purposes and any other unrelated purposes described in these Terms and Conditions.",
+        "uuid": "10c32997-360e-4db4-a68e-5449e16f3933",
+        "key": "lure_block.text",
+        "translation": "Over 40+ sports covered!",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
     },
     {
-        "key": "terms.block_8.title.1",
-        "translation": "100% sports' liability",
+        "uuid": "1207fa79-384b-4b2c-8576-f2fb69ac11fd",
+        "key": "buttons.continue",
+        "translation": "Continue",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
     },
     {
-        "key": "terms.block_8.text.1",
-        "translation": "100% sports is not responsible for the technical availability or content of Web / Wap / Mobile Internet sites of third parties where you access through a link included on their site. Therefore, 100% sports neither approve nor endorses products, services, content, information, data, files and any kind of material displayed on third-party websites. Also 100% sports does not control and is not responsible for the quality, legality, reliability and usefulness of the content and services on linked external sites unrelated to 100% sports.",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "terms.block_8.text.2",
-        "translation": "100% sports is not responsible in case of products or services requested are not delivered or rendered properly when this issue cannot be attributed to 100% sports causes (including, but not limited to, situations like your video cannot be loaded due to operator connectivity problems or technical issues related to your handset configuration).",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "terms.block_8.text.3",
-        "translation": "If you detect any illegal content, contact us immediately.",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "terms.block_9.title.1",
-        "translation": "Intellectual and industrial property rights",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "key": "terms.block_9.text.1",
-        "translation": "All contents, games, designs and programming codes inside 100% sports mobile portal are fully protected by copyright: reproduction, communication, dissemination and distribution of any element is completely forbidden unless you have the necessary authorization.",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
+        "uuid": "1aeab479-4bf1-43f8-81a7-c2087cd80407",
         "key": "terms.block_9.text.2",
         "translation": "In addition, all symbols (logos, fonts, icons, etc.) on 100% sports website are owned by 100% sports or third parties and its reproduction or distribution is completely forbidden without express permission. Also it is prohibited to copy, reproduce or use all or part of these Terms and Conditions without consent of 100% sports.",
         "language": {
@@ -656,46 +99,52 @@
         "carrier": null
     },
     {
-        "key": "terms.block_9.text.3",
-        "translation": "100% sports reserves the right to unilaterally remove, add or modify any content, services or utilities available on 100% sports mobile website.",
+        "uuid": "1afc25c9-e1bd-4520-ae58-c917f3434e65",
+        "key": "annotation_block.text.2",
+        "translation": "Access more than 2,000 videos and and new content every day",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
     },
     {
-        "key": "terms.block_10.title.1",
-        "translation": "Personal data",
+        "uuid": "1b363351-38ec-4ed2-b0e1-c93f85458d62",
+        "key": "faq.a.6",
+        "translation": "Check your 3G or WIFI connection is working properly. If so, and this issue persists, please contact us indicating your issue, phone number, mobile operator and handset.",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
     },
     {
-        "key": "terms.block_10.text.1",
-        "translation": "Pursuant to Data Protection Act 1998, the user has the right to access, rectify and/or oppose any personal data by writing to the data controller ORIGINDATA Ltd, 3rd Floor, 207 Regent Street, London W1B 3HH, UK.",
+        "uuid": "1d8f5301-1e9a-4749-b9eb-ebd7d8f38536",
+        "key": "faq.a.4",
+        "translation": "Yes, all content provided by 100% sports is totally safe for your handset and your personal data.",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
     },
     {
-        "key": "terms.block_11.title.1",
-        "translation": "Modifications",
+        "uuid": "229ac7b1-75c9-4c58-8707-a1e7b40c2fd7",
+        "key": "terms.block_3.title.1",
+        "translation": "Service description",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
     },
     {
-        "key": "terms.block_11.text.1",
-        "translation": "100% sports reserves the right to modify these Terms and Conditions, including prices and anything else related to subscription.",
+        "uuid": "26438c4c-597c-478e-9515-f8ae90c922c1",
+        "key": "terms.block_2.title.1",
+        "translation": "Conditions",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
     },
     {
+        "uuid": "28318db6-775c-49d1-af60-f46fb7531686",
         "key": "terms.block_12.title.1",
         "translation": "Information about the Company",
         "language": {
@@ -704,8 +153,648 @@
         "carrier": null
     },
     {
+        "uuid": "2bbac731-7205-4ce2-a346-a294c1d2c0d6",
+        "key": "terms.block_8.text.3",
+        "translation": "If you detect any illegal content, contact us immediately.",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "2c184a68-62c8-4212-8c90-99ee54f01b41",
+        "key": "messages.action.unsubscribe.confirmation.2",
+        "translation": "Please, continue your visit at our homepage",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "2cf8f221-c275-4e6b-988b-823d1b9011e7",
+        "key": "contact_us.text.2",
+        "translation": "Contact us using our contact form below",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "3089e19f-7b72-4ad5-93d3-c8ccde038ef4",
+        "key": "terms.block_4.title.1",
+        "translation": "Help and support",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "311c9bcf-5362-4ded-83d0-3073e1207388",
+        "key": "terms.block_11.text.1",
+        "translation": "100% sports reserves the right to modify these Terms and Conditions, including prices and anything else related to subscription.",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "350047c3-00e2-43cb-a8d2-d7170200b4b4",
+        "key": "terms.block_11.title.1",
+        "translation": "Modifications",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "352ec5a5-fd10-4e46-9d2c-61e4eff9e833",
+        "key": "terms.block_5.title.1",
+        "translation": "Payments",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "37e42b10-2e16-4c3a-9a28-d8fce85b0e4d",
+        "key": "buttons.send",
+        "translation": "SEND",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "3f944e0f-0ddb-49d7-bff2-f774d7001fdc",
+        "key": "terms.block_3.text.3",
+        "translation": "Your weekly subscription will be automatically renewed unless you would unsubscribe. You can terminate your subscription whenever you want from your personal menu by clicking on Leave 100% sports link. 100% sports reserves the right to end the subscription at any time.",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "3ff40c37-efdb-4801-b9cb-d358bd350a29",
+        "key": "faq.q.3",
+        "translation": "I downloaded one sports game but I cannot install it on my handset, what is happening?",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "40b351bd-086f-407a-9481-0f33eaaa91c7",
+        "key": "menu.hamburger.account",
+        "translation": "MY ACCOUNT",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "443378ea-91aa-45be-b061-82dd37f278b9",
+        "key": "terms.text.description",
+        "translation": "These terms (\"Terms and Conditions\") are the particular conditions of a legal agreement between you, on the one side, and ORIGINDATA Ltd (hereinafter mentioned as \"100% sports\"), on the other side.",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "44908774-9f6f-4d5b-bf5e-64bf548d23fc",
+        "key": "faq.q.6",
+        "translation": "The mobile site does not detect my account and my subscription to 100% sports",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "45ed94e9-8467-4cfd-943c-5a59aec17ead",
+        "key": "faq.q.1",
+        "translation": "How can I terminate my subscription to 100% sports?",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "47dab2b5-138f-4ce3-900d-2c3da53f62ea",
+        "key": "subscription.status.unsubscribed",
+        "translation": "You have been unsubscribed from 100% sports",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "4996fd98-46b5-475d-92e2-c6c9b456f2a3",
+        "key": "terms.block_7.text.2",
+        "translation": "Likewise, you acknowledge and agree that the use of 100% sports services is not allowed for commercial purposes and any other unrelated purposes described in these Terms and Conditions.",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "4ca74f28-6c4f-40b4-811a-a23c5b2dd5c9",
+        "key": "terms.block_5.text.3",
+        "translation": "Fees might differ depending on the mobile operator. The exact price will be displayed along with service\u2019s conditions before your subscription or purchase.",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "4de49572-2a6a-4b9b-864c-3aab5540e218",
+        "key": "subscription.text.resubscribe",
+        "translation": "To subscribe anew, please Contact Us",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "51136644-9be4-4eac-b466-f617e7238d00",
+        "key": "offer.landing",
+        "translation": "Watch unlimited sport videos for only 450 MMK per week",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "5181a045-7981-4974-8a10-500d19c7be79",
+        "key": "terms.block_3.title.1.1",
+        "translation": "Subscription",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "5346e98d-70cf-49e8-a5ac-e3a64bf6197e",
+        "key": "account.text.leave",
+        "translation": "If you want to leave the service, please click on the link below.",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "53e52a0a-39e2-480f-80fc-0e7b08bc2c92",
+        "key": "account.text.subscribed",
+        "translation": "You are part of 100% sports since",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "55add8d8-094f-47cf-a4c1-203800007a37",
+        "key": "buttons.see_all",
+        "translation": "See all",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "56ae923d-bf0d-4d15-864a-cf4e96f45a3d",
+        "key": "terms.block_9.text.1",
+        "translation": "All contents, games, designs and programming codes inside 100% sports mobile portal are fully protected by copyright: reproduction, communication, dissemination and distribution of any element is completely forbidden unless you have the necessary authorization.",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "576c0805-7fc0-4f46-8cb6-6223508f4ecf",
+        "key": "annotation_block.text.1",
+        "translation": "The cost will be added to your mobile phone bill",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "5eccbca4-f16b-44d2-9eae-8c4beebc2a5d",
+        "key": "terms.block_3.text.2",
+        "translation": "To join the subscription service and get access to videos and games, you should click on the subscription button on 100% sports mobile website. Once your subscription is confirmed, you will be redirected to our homepage and be able to enjoy unlimited sports videos and games according to 100% sports catalogue.",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "5f1cc0d1-373c-4cbf-b226-75b94bb3b13c",
+        "key": "terms.block_6.title.1",
+        "translation": "Service access",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "6310d02a-0f5f-4242-a865-c4896f579e6d",
+        "key": "terms.block_5.text.2",
+        "translation": "For postpaid users, the cost will be added to your mobile phone bill. If you are a prepaid user, you should make sure that you have enough credit on your prepaid card to complete your subscription and\/or purchase.",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "67a5fa89-a185-4054-982d-ab6c9ee8f534",
+        "key": "terms.block_8.text.2",
+        "translation": "100% sports is not responsible in case of products or services requested are not delivered or rendered properly when this issue cannot be attributed to 100% sports causes (including, but not limited to, situations like your video cannot be loaded due to operator connectivity problems or technical issues related to your handset configuration).",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "6aa50a29-fada-4a96-b7c5-0b2d3ba8265c",
+        "key": "menu.footer.faq",
+        "translation": "FAQ",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "727b838c-641e-42db-b1b9-171b68e50ef4",
+        "key": "buttons.leave",
+        "translation": "Leave 100% sports",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "7ad82a9e-1f0e-4437-a607-cfb8d7408dd3",
+        "key": "buttons.download",
+        "translation": "DOWNLOAD",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "7e38a2b2-b790-4cbe-b53f-02c1a82ef28a",
+        "key": "faq.q.5",
+        "translation": "I am subscribed to 100% sports, if I unsubscribe, how much longer will I be able to access videos?",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "7e52ca82-5c67-4df9-80b5-4131a56f7bbb",
+        "key": "offer.annotation_block",
+        "translation": "Watch unlimited sport videos for only 450 MMK per week",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "7e5d7569-9e3a-4fb6-9429-20fb3ae5a670",
+        "key": "terms.block_3.text.1",
+        "translation": "This subscription service allows you to watch unlimited sports videos every week your phone from 100% sports catalogue for [price] (+ WAP connection charges). As long as you are subscribed to 100% sports, you will be able to watch unlimited content every week.",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "8813c186-30d3-4aea-81f6-74776cc2b38b",
+        "key": "terms.block_10.text.1",
+        "translation": "Pursuant to Data Protection Act 1998, the user has the right to access, rectify and\/or oppose any personal data by writing to the data controller ORIGINDATA Ltd, 3rd Floor, 207 Regent Street, London W1B 3HH, UK.",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "8ad893ca-89e8-43d9-b6b6-be7e447061a9",
+        "key": "contact_us.field.email",
+        "translation": "Email address",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "8bcf53a9-f7d2-4deb-be1b-a6bc8716ad4b",
+        "key": "terms.block_7.text.1",
+        "translation": "100% sports is not liable for any loss or injuries due to inappropriate use of the service provided by 100% sports beyond its control or resulting from causes not attributable to it. You are required not misuse 100% sports services and respect the laws of third parties including trademark rights, patents, copyright and other intellectual and industrial properties.",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "8ca54c88-2952-4d90-b586-741decd99bd7",
+        "key": "messages.action.unsubscribe.confirm",
+        "translation": "Are you sure you want to unsubscribe?",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "8e369a6d-e34a-4037-9a96-85f247e345c2",
         "key": "terms.block_12.text.1",
         "translation": "\"Name: ORIGINDATA Ltd\nAddress:  3rd Floor, 207 Regent street, London W1B 3HH, UK.\nVAT Number: GB 250 2427 42\nCompany Register Number: 10294628\"",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "90deeedb-58cc-4d61-8c77-eb56843634ef",
+        "key": "terms.block_9.title.1",
+        "translation": "Intellectual and industrial property rights",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "9175f563-cb84-4092-9695-cc65caf64393",
+        "key": "terms.block_7.title.1",
+        "translation": "User\u2019s liability",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "91bd89a0-da1c-42d2-812b-79f7128adfd3",
+        "key": "terms.block_1.title.1",
+        "translation": "Object",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "95c4a9f0-f6de-4fcf-9374-9fc04274ea9d",
+        "key": "terms.block_6.text.1",
+        "translation": "Only individuals of legal age and emancipated minors (over 14 years old) can apply and contract the services of 100% sports. Unemancipated minors can only use 100% sports services under authorization from their parents or legal guardians, who will be in any case responsible for the acts of their dependents. 100% sports cannot replace in anyway the parental control of legal tutors, so the owner of the mobile phone line will be deemed responsible for all effects.",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "9975dd99-7a29-4a46-aa91-3518f2f3cdc7",
+        "key": "annotation_block.text.4",
+        "translation": "Data download charges will apply as per bundle or package rates",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "9bb32291-e02d-43b9-bf43-07ac6d93c3c8",
+        "key": "menu.hamburger.contact_us",
+        "translation": "CONTACT US",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "a44bd9c7-10af-4174-b9fc-b6052ae4144b",
+        "key": "menu.hamburger.terms",
+        "translation": "TERMS & CONDITIONS",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "a9626feb-3fe7-46e7-8f5d-f687d6e9ed5f",
+        "key": "terms.block_4.text.1",
+        "translation": "Contact us",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "a97e0863-bf27-4219-9a71-f9e4d27d3138",
+        "key": "contact_us.field.comments",
+        "translation": "Comments",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "ac248003-59f0-43ce-86d4-f7c30387897f",
+        "key": "messages.action.unsubscribe.confirmation.1",
+        "translation": "You are no longer member of Playwing Premium",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "af9e79c0-244e-47ec-888e-1e813c6c71f8",
+        "key": "subscription.status.subscribed",
+        "translation": "You are subscribed to 100% sports",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "b4649e88-79dd-45b4-855d-79fd6b299ece",
+        "key": "terms.block_8.text.1",
+        "translation": "100% sports is not responsible for the technical availability or content of Web \/ Wap \/ Mobile Internet sites of third parties where you access through a link included on their site. Therefore, 100% sports neither approve nor endorses products, services, content, information, data, files and any kind of material displayed on third-party websites. Also 100% sports does not control and is not responsible for the quality, legality, reliability and usefulness of the content and services on linked external sites unrelated to 100% sports.",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "bb0bce31-fb67-40db-a196-938a9f67ff1f",
+        "key": "buttons.join",
+        "translation": "JOIN",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "c1e6bcf7-3517-4164-a2fd-41744f841a3e",
+        "key": "faq.a.1",
+        "translation": "100% sports is a subscription service which is automatically renewed every week or day (as appropriate) unless you unsubscribe. You can terminate your subscription whenever you want only by entering in your personal menu on <service URL> (icon at top right of the display) and clicking on Leave 100% sports link. Depending on your mobile operator, you may terminate your subscription by sending a SMS.",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "c38ffea6-7e44-43b2-996e-825fbdfefe8b",
+        "key": "buttons.subscribe",
+        "translation": "SUBSCRIBE",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "c4a1eb00-b547-47e6-8cb5-61901c4e9585",
+        "key": "subscription.status.not_subscribe",
+        "translation": "You are not subscribed to Playwing Premium",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "c55b5f46-10b1-4f9c-bbc3-e8c695d7594f",
+        "key": "faq.a.2",
+        "translation": "To watch and enjoy your sports videos, you should simple access to our homepage <homepage link> and click on any video available. You are able to browse our whole catalogue on the main menu (searching by title or category).",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "ca5b052c-ad26-4466-b673-f51269b732ba",
+        "key": "terms.block_10.title.1",
+        "translation": "Personal data",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "d8351203-c497-4096-91bf-acba910dc10e",
+        "key": "terms.block_8.title.1",
+        "translation": "100% sports' liability",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "d84250da-a110-44de-b7bf-ebb51d04cfe8",
+        "key": "faq.q.4",
+        "translation": "Is it safe to browse videos and download games from 100% sports?",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "dbeea442-37f6-4f11-b5c3-e47696f2a9f5",
+        "key": "promotional.landing",
+        "translation": "Unlimited videos of your favorite sports and teams",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "de18e3b9-6c99-4419-bd0d-383f7582a51e",
+        "key": "terms.block_9.text.3",
+        "translation": "100% sports reserves the right to unilaterally remove, add or modify any content, services or utilities available on 100% sports mobile website.",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "dfe0d1ca-7e8a-4365-b17d-a64c4150769d",
+        "key": "terms.block_5.text.1",
+        "translation": "The total cost of this subscription service will be advertised in each page where you can sign up 100% sports services. Total or partial amounts of the contracted service will be charged each week or day as specified by your mobile operator. However, the maximum price for subscription will be [price] per week.",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "e4c09983-ec8f-4ed0-bb1e-7ccf45091be2",
+        "key": "contact_us.field.mandatory",
+        "translation": "Mandatory fields",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "e9ed41a7-af0a-4fc6-b7e2-8fac3db2b84e",
+        "key": "menu.hamburger.faq",
+        "translation": "FAQ",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "eabb8fa0-a794-426b-891b-d3744e1b1e60",
+        "key": "faq.a.5",
+        "translation": "You will keep your access to 100% sports until the last period paid ends. For example, in case of daily subscription which was already renewed today, you will be able to see all videos until current date ends. Or if you were subscribed to weekly and your last renewal happened on Monday, you will have access until Sunday (7 days).",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "ef884604-25a3-4004-a764-2e19f6864cda",
+        "key": "terms.block_1.text.1",
+        "translation": "100% sports is a mobile service which provides mobile games.100% sports proposes this service:  - Weekly subscription which will be automatically activated when you confirm your subscription on 100% sports mobile site (<homepage URL>).",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "f04f5433-d26f-46cb-9d8e-1dbc9bba3e56",
+        "key": "menu.footer.contact_us",
+        "translation": "Contact Us",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "f21b9093-8557-489f-8457-358b412da07e",
+        "key": "faq.q.2",
+        "translation": "Where can I watch all videos?",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "f4df381c-1725-4670-926c-a1ec285ca012",
+        "key": "faq.a.3",
+        "translation": "First of all, make sure that you have permission to install apps from different stores to Google Play: in your device, go to settings \/ Security \/ Device Administration and enable Unknown Sources Allow installation of apps from unknown sources. In addition, you might check if you have enough space in your storage. If this issue persists, don\u2019t hesitate to contact us.",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "fb0a335b-8073-4ec8-8ecd-9b1465653f71",
+        "key": "menu.footer.terms",
+        "translation": "T&C",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "ff93167a-7604-4e32-9c8f-8958d9194ca5",
+        "key": "terms.block_5.text.4",
+        "translation": "Access to 100% sports website via mobile connection 3G or 4G may add additional navigation costs. The amount of these costs will depend on the rates and conditions you have contracted with your mobile phone operator, so 100% sports cannot be considered responsible for such costs.",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },

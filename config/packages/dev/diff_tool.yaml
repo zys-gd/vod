@@ -5,3 +5,6 @@ diff_tool:
        App\Domain\Entity\Language:
           fileName: 'languages.json'
           ignoredProperties: []
+       App\Domain\Entity\Translation:
+          fileName: 'tranlations.json'
+          ignoredProperties: []
