@@ -4,8 +4,6 @@ App\Domain\Entity\Translation:
     id:
         uuid:
             type: guid
-            generator:
-                strategy: UUID
     fields:
         key:
             type: string

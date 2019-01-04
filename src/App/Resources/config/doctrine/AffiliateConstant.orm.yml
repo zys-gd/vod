@@ -4,8 +4,6 @@ App\Domain\Entity\AffiliateConstant:
     id:
         uuid:
             type: guid
-            generator:
-                strategy: UUID
     fields:
         name:
             type: string

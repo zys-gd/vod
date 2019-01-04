@@ -4,8 +4,6 @@ App\Domain\Entity\Carrier:
     id:
         uuid:
             type: guid
-            generator:
-                strategy: UUID
     fields:
         billingCarrierId:
             type: integer

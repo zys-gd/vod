@@ -2,7 +2,6 @@
 
 namespace App\Domain\Entity;
 
-
 /**
  * Languages
  */
@@ -22,6 +21,16 @@ class Language
      * @var string
      */
     private $code;
+
+    /**
+     * Language constructor.
+     * @param string $uuid
+     */
+    public function __construct(string $uuid)
+    {
+        $this->uuid = $uuid;
+    }
+
 
     /**
      * @return string

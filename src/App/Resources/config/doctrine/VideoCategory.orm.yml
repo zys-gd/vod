@@ -5,8 +5,6 @@ App\Domain\Entity\VideoCategory:
     id:
         uuid:
             type: guid
-            generator:
-                strategy: UUID
     fields:
         title:
             type: string

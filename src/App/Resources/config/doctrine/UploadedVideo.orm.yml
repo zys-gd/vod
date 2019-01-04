@@ -5,8 +5,6 @@ App\Domain\Entity\UploadedVideo:
     id:
         uuid:
             type: guid
-            generator:
-                strategy: UUID
     fields:
         status:
             type: smallint

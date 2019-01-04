@@ -7,8 +7,6 @@ App\Domain\Entity\Campaign:
     id:
         uuid:
             type: guid
-            generator:
-                strategy: UUID
     fields:
         image:
             type: string

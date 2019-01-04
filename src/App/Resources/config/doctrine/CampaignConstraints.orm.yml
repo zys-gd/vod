@@ -4,8 +4,6 @@ App\Domain\Entity\CampaignConstraints:
     id:
         uuid:
             type: guid
-            generator:
-                strategy: UUID
     fields:
         numberSubscription:
             type: integer

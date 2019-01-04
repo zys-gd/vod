@@ -4,8 +4,6 @@ App\Domain\Entity\AffiliateParameter:
     id:
         uuid:
             type: guid
-            generator:
-                strategy: UUID
     fields:
         inputName:
             type: string

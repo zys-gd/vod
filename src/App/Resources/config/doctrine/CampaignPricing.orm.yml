@@ -4,8 +4,6 @@ App\Domain\Entity\CampaignPricing:
     id:
         uuid:
             type: guid
-            generator:
-                strategy: UUID
     fields:
         ppd:
             type: decimal
