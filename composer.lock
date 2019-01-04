@@ -1992,7 +1992,14 @@
             "source": {
                 "type": "git",
                 "url": "https://git-codecommit.eu-west-1.amazonaws.com/v1/repos/store-difftool-module",
-                "reference": "fdd030e5a4f44de79f7c573fd1781f6685634fc1"
+                "reference": "913bb55f1ff09d5e4864423d53feac1cf6a97441"
+            },
+            "require": {
+                "doctrine/doctrine-bundle": ">=1.6.4",
+                "doctrine/orm": "^2.5",
+                "php": ">=7.0",
+                "symfony/console": "3.*|4.2.*",
+                "symfony/filesystem": "3.*|4.*"
             },
             "type": "library",
             "autoload": {
@@ -2006,7 +2013,7 @@
                     "email": "dmitriy.bichenko@playwing.net"
                 }
             ],
-            "time": "2019-01-04T14:04:35+00:00"
+            "time": "2019-01-04T15:47:48+00:00"
         },
         {
             "name": "psr/cache",
