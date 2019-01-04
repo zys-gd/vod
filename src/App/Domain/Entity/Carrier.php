@@ -3,7 +3,6 @@
 namespace App\Domain\Entity;
 
 use App\Domain\Entity\Campaign;
-use App\Domain\Entity\Interfaces\HasUuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use AppBundle\Validator\Constraints\ContainsConstraints;
 use Doctrine\Common\Collections\Collection;
@@ -14,12 +13,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Carrier
  * @package App\Domain\Entity
  */
-class Carrier implements HasUuid
+class Carrier
 {
     /**
-     * @var int
+     * @var string
      */
-    private $id;
+    private $uuid;
 
     /**
      * @var string
@@ -29,7 +28,7 @@ class Carrier implements HasUuid
     /**
      * @var integer
      */
-    private $id_carrier;
+    private $billingCarrierId;
 
     /**
      * @var Collection
@@ -66,38 +65,38 @@ class Carrier implements HasUuid
      * Can be store|carrier
      * @var string
      */
-    private $trial_initializer = 'carrier';
+    private $trialInitializer = 'carrier';
 
     /**
      * Amount of credits for users trial subscription
      * @var integer
      */
-    private $trial_credits = 2;
+    private $trialCredits = 2;
 
     /**
      * Trial period in days
      * @var integer
      */
-    private $trial_period = 0;
+    private $trialPeriod = 0;
 
     /**
      * User subscription days amount
      * @var integer
      */
-    private $subscription_period = 7;
+    private $subscriptionPeriod = 7;
 
 
     /**
      *  Amount of credits for users subscription
      * @var integer
      */
-    private $subscription_credits = 2;
+    private $subscriptionCredits = 2;
 
 
     /**
-     * @var $operator_id
+     * @var $operatorId
      */
-    private $operator_id = null;
+    private $operatorId = null;
 
     /**
      * @var array
@@ -154,8 +153,6 @@ class Carrier implements HasUuid
      */
     private $campaigns;
 
-    /** @var string */
-    private $uuid = null;
     /**
      * @var bool
      */
@@ -168,7 +165,6 @@ class Carrier implements HasUuid
      */
     public function __construct()
     {
-        $this->uuid = \Ramsey\Uuid\Uuid::uuid4()->toString();
         $this->categoryCarrierOverrides = new ArrayCollection();
         $this->deactivatedGames = new ArrayCollection();
         $this->campaigns = new ArrayCollection();
@@ -183,14 +179,6 @@ class Carrier implements HasUuid
     }
 
     /**
-     * @param string $uuid
-     */
-    public function setUuid(string $uuid)
-    {
-        $this->uuid = $uuid;
-    }
-
-    /**
      * toString()
      *
      * @return string
@@ -201,11 +189,11 @@ class Carrier implements HasUuid
     }
 
     /**
-     * @param mixed $operator_id
+     * @param mixed $operatorId
      */
-    public function setOperatorId($operator_id)
+    public function setOperatorId($operatorId)
     {
-        $this->operator_id = $operator_id;
+        $this->operatorId = $operatorId;
     }
 
     /**
@@ -213,7 +201,7 @@ class Carrier implements HasUuid
      */
     public function getOperatorId()
     {
-        return $this->operator_id;
+        return $this->operatorId;
     }
 
     /**
@@ -221,15 +209,15 @@ class Carrier implements HasUuid
      */
     public function getTrialInitializer()
     {
-        return $this->trial_initializer;
+        return $this->trialInitializer;
     }
 
     /**
-     * @param mixed $trial_initializer
+     * @param mixed $trialInitializer
      */
-    public function setTrialInitializer($trial_initializer)
+    public function setTrialInitializer($trialInitializer)
     {
-        $this->trial_initializer = $trial_initializer;
+        $this->trialInitializer = $trialInitializer;
     }
 
     /**
@@ -237,15 +225,15 @@ class Carrier implements HasUuid
      */
     public function getTrialPeriod(): int
     {
-        return $this->trial_period;
+        return $this->trialPeriod;
     }
 
     /**
-     * @param int $trial_period
+     * @param int $trialPeriod
      */
-    public function setTrialPeriod(int $trial_period)
+    public function setTrialPeriod(int $trialPeriod)
     {
-        $this->trial_period = $trial_period;
+        $this->trialPeriod = $trialPeriod;
     }
 
     /**
@@ -253,15 +241,15 @@ class Carrier implements HasUuid
      */
     public function getTrialCredits(): int
     {
-        return $this->trial_credits;
+        return $this->trialCredits;
     }
 
     /**
-     * @param int $trial_credits
+     * @param int $trialCredits
      */
-    public function setTrialCredits(int $trial_credits)
+    public function setTrialCredits(int $trialCredits)
     {
-        $this->trial_credits = $trial_credits;
+        $this->trialCredits = $trialCredits;
     }
 
     /**
@@ -269,15 +257,15 @@ class Carrier implements HasUuid
      */
     public function getSubscriptionPeriod(): int
     {
-        return $this->subscription_period;
+        return $this->subscriptionPeriod;
     }
 
     /**
-     * @param int $subscription_period
+     * @param int $subscriptionPeriod
      */
-    public function setSubscriptionPeriod(int $subscription_period)
+    public function setSubscriptionPeriod(int $subscriptionPeriod)
     {
-        $this->subscription_period = $subscription_period;
+        $this->subscriptionPeriod = $subscriptionPeriod;
     }
 
     /**
@@ -285,37 +273,27 @@ class Carrier implements HasUuid
      */
     public function getSubscriptionCredits(): int
     {
-        return $this->subscription_credits;
+        return $this->subscriptionCredits;
     }
 
     /**
-     * @param int $subscription_credits
+     * @param int $subscriptionCredits
      */
-    public function setSubscriptionCredits(int $subscription_credits)
+    public function setSubscriptionCredits(int $subscriptionCredits)
     {
-        $this->subscription_credits = $subscription_credits;
-    }
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
+        $this->subscriptionCredits = $subscriptionCredits;
     }
 
     /**
      * Set id
      *
-     * @param string $id
+     * @param string $uuid
      *
      * @return Carrier
      */
-    public function setId($id)
+    public function setUuid($uuid)
     {
-        $this->id = $id;
+        $this->uuid = $uuid;
 
         return $this;
     }
@@ -351,9 +329,9 @@ class Carrier implements HasUuid
      *
      * @return Carrier
      */
-    public function setIdCarrier($idCarrier)
+    public function setBillingCarrierId($idCarrier)
     {
-        $this->id_carrier = $idCarrier;
+        $this->billingCarrierId = $idCarrier;
 
         return $this;
     }
@@ -363,9 +341,9 @@ class Carrier implements HasUuid
      *
      * @return integer
      */
-    public function getIdCarrier()
+    public function getBillingCarrierId()
     {
-        return (int)$this->id_carrier;
+        return (int)$this->billingCarrierId;
     }
 
     /**
@@ -600,7 +578,7 @@ class Carrier implements HasUuid
     /**
      * @var \App\Domain\Entity\Languages
      */
-    private $default_language;
+    private $defaultLanguage;
 
 
     /**
@@ -612,7 +590,7 @@ class Carrier implements HasUuid
      */
     public function setDefaultLanguage(\App\Domain\Entity\Languages $defaultLanguage = null)
     {
-        $this->default_language = $defaultLanguage;
+        $this->defaultLanguage = $defaultLanguage;
 
         return $this;
     }
@@ -624,7 +602,7 @@ class Carrier implements HasUuid
      */
     public function getDefaultLanguage()
     {
-        return $this->default_language;
+        return $this->defaultLanguage;
     }
 
     /**

@@ -3,19 +3,18 @@
 namespace App\Domain\Entity;
 
 use App\Domain\Entity\CategoryCountryOverride;
-use App\Domain\Entity\Interfaces\HasUuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
  * Country entity
  */
-class Country implements HasUuid
+class Country
 {
     /**
-     * @var int
+     * @var string
      */
-    private $id;
+    private $uuid;
 
     /**
      * @var string
@@ -46,16 +45,6 @@ class Country implements HasUuid
     public function __toString ()
     {
         return '(' . $this->getCountryCode() . ') ' . $this->getCountryName();
-    }
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId ()
-    {
-        return $this->id;
     }
 
     /**
@@ -178,9 +167,6 @@ class Country implements HasUuid
         return $this->isoAlpha3;
     }
 
-    /** @var string */
-    private $uuid = null;
-
     /**
      * Country constructor.
      * @throws \Exception
@@ -189,14 +175,6 @@ class Country implements HasUuid
     {
         $this->uuid = \Ramsey\Uuid\Uuid::uuid4()->toString();
         $this->deactivatedGames = new ArrayCollection();
-    }
-
-    /**
-     * @param string $uuid
-     */
-    public function setUuid(string $uuid)
-    {
-        $this->uuid = $uuid;
     }
 
     /**

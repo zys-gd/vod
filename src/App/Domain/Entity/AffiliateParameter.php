@@ -1,32 +1,25 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Admin
- * Date: 4/4/2018
- * Time: 5:09 PM
- */
 
 namespace App\Domain\Entity;
 
 
-use App\Domain\Entity\Interfaces\HasUuid;
 
-class AffiliateParameter implements HasUuid
+class AffiliateParameter
 {
     /**
-     * @var int
+     * @var string
      */
-    private $id;
+    private $uuid;
 
     /**
      * @var string
      */
-    private $input_name;
+    private $inputName;
 
     /**
      * @var string
      */
-    private $output_name;
+    private $outputName;
 
     /**
      * @var Affiliate
@@ -34,43 +27,11 @@ class AffiliateParameter implements HasUuid
     private $affiliate;
 
     /**
-     * @var string
-     */
-    private $uuid = null;
-
-    /**
-     * AffiliateParameter constructor.
-     * @throws \Exception
-     */
-    public function __construct()
-    {
-        $this->uuid = \Ramsey\Uuid\Uuid::uuid4()->toString();
-    }
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
      * @return string
      */
     public function getUuid(): string
     {
         return $this->uuid;
-    }
-
-    /**
-     * @param string $uuid
-     */
-    public function setUuid(string $uuid)
-    {
-        $this->uuid = $uuid;
     }
 
     /**
@@ -82,7 +43,7 @@ class AffiliateParameter implements HasUuid
      */
     public function setInputName($name)
     {
-        $this->input_name = $name;
+        $this->inputName = $name;
 
         return $this;
     }
@@ -94,7 +55,7 @@ class AffiliateParameter implements HasUuid
      */
     public function getInputName()
     {
-        return $this->input_name;
+        return $this->inputName;
     }
 
     /**
@@ -106,7 +67,7 @@ class AffiliateParameter implements HasUuid
      */
     public function setOutputName($name)
     {
-        $this->output_name = $name;
+        $this->outputName = $name;
 
         return $this;
     }
@@ -118,7 +79,7 @@ class AffiliateParameter implements HasUuid
      */
     public function getOutputName()
     {
-        return $this->output_name;
+        return $this->outputName;
     }
     /**
      * Set affiliate

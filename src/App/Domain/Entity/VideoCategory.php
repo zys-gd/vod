@@ -2,18 +2,15 @@
 
 namespace App\Domain\Entity;
 
-use App\Domain\Entity\Interfaces\HasUuid;
-
-
 /**
  * VideoCategory
  */
-class VideoCategory implements HasUuid
+class VideoCategory
 {
     /**
-     * @var int
+     * @var string
      */
-    private $id;
+    private $uuid;
 
     /**
      * @var string
@@ -25,30 +22,10 @@ class VideoCategory implements HasUuid
      */
     private $alias;
 
-    private $uuid;
-
     /**
      * @var integer
      */
     private $menuPriority;
-
-    /**
-     * VideoCategory constructor.
-     */
-    public function __construct()
-    {
-        $this->uuid = \Ramsey\Uuid\Uuid::uuid4()->toString();
-    }
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * Set title
@@ -97,15 +74,6 @@ class VideoCategory implements HasUuid
     {
         return $this->alias;
     }
-
-    /**
-     * @param string $uuid
-     */
-    public function setUuid(string $uuid)
-    {
-        $this->uuid = $uuid;
-    }
-
 
     /**
      * @return string

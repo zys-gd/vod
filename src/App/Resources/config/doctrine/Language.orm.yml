@@ -1,0 +1,20 @@
+App\Domain\Entity\Language:
+    type: entity
+    table: languages
+    id:
+        uuid:
+            type: guid
+            generator:
+                strategy: UUID
+    lifecycleCallbacks: {  }
+    fields:
+        name:
+            type: string
+            length: '255'
+            nullable: true
+            options:
+                default: ''
+        code:
+            type: string
+            nullable: false
+            length: '2'

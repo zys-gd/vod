@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Domain\Entity;
-use App\Domain\Entity\Interfaces\HasUuid;
+
 use AppBundle\Validator\Constraints\ContainsConstraints;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Event\LifecycleEventArgs;
@@ -11,14 +11,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Campaign
  */
-class Campaign implements HasUuid
+class Campaign
 {
 
     const RESOURCE_IMAGE = 'images/campaign_banner';
     /**
-     * @var int
+     * @var string
      */
-    private $id;
+    private $uuid;
 
     /**
      * @var Affiliate
@@ -62,7 +62,7 @@ class Campaign implements HasUuid
     /**
      * @var File
      */
-    private $image_file;
+    private $imageFile;
 
     /**
      * @var Boolean
@@ -88,26 +88,15 @@ class Campaign implements HasUuid
      */
     private $flushDate;
 
-    /** @var string */
-    private $uuid = null;
 
     /**
      * Campaign constructor.
      */
     public function __construct()
     {
-        $this->uuid = \Ramsey\Uuid\Uuid::uuid4()->toString();
         $this->campaignPricingDetails = new ArrayCollection();
         $this->campaignConstraints = new ArrayCollection();
         $this->carriers = new ArrayCollection();
-    }
-
-    /**
-     * @param string $uuid
-     */
-    public function setUuid(string $uuid)
-    {
-        $this->uuid = $uuid;
     }
 
     /**
@@ -152,7 +141,7 @@ class Campaign implements HasUuid
      */
     public function getImageFile()
     {
-        return $this->image_file;
+        return $this->imageFile;
     }
 
     /**
@@ -163,7 +152,7 @@ class Campaign implements HasUuid
      */
     public function setImageFile(File $file)
     {
-        $this->image_file = $file;
+        $this->imageFile = $file;
     }
 
     public function setCampaignToken($token) {
@@ -214,14 +203,6 @@ class Campaign implements HasUuid
     public function removeCampaignPricingDetail(CampaignPricing $campaignPricing)
     {
          $this->campaignPricingDetails->removeElement($campaignPricing);
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**
@@ -418,7 +399,7 @@ class Campaign implements HasUuid
      */
     public function __toString()
     {
-        return 'Campaign #'.$this->getId();
+        return 'Campaign #'.$this->getUuid();
     }
 
     /**

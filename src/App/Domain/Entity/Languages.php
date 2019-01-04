@@ -1,16 +1,17 @@
 <?php
+
 namespace App\Domain\Entity;
-use App\Domain\Entity\Interfaces\HasUuid;
+
 
 /**
  * Languages
  */
-class Languages implements HasUuid
+class Language
 {
     /**
-     * @var integer
+     * @var string
      */
-    private $id;
+    private $uuid;
 
     /**
      * @var string
@@ -22,43 +23,6 @@ class Languages implements HasUuid
      */
     private $code;
 
-    /** @var string */
-    private $uuid = null;
-
-    /**
-     * Languages constructor.
-     * @throws \Exception
-     */
-    public function __construct()
-    {
-        $this->uuid = \Ramsey\Uuid\Uuid::uuid4()->toString();
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString(){
-        return strlen($this->name) > 0 ? $this->name : $this->code;
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param string $uuid
-     */
-    public function setUuid(string $uuid)
-    {
-        $this->uuid = $uuid;
-    }
-
     /**
      * @return string
      */
@@ -68,50 +32,34 @@ class Languages implements HasUuid
     }
 
     /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return Languages
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * Set code
-     *
-     * @param string $code
-     *
-     * @return Languages
+     * @return string
      */
-    public function setCode($code)
+    public function getCode(): string
     {
-        $this->code = $code;
-
-        return $this;
+        return $this->code;
     }
 
     /**
-     * Get code
-     *
-     * @return string
+     * @param string $name
      */
-    public function getCode()
+    public function setName(string $name): void
     {
-        return $this->code;
+        $this->name = $name;
+    }
+
+    /**
+     * @param string $code
+     */
+    public function setCode(string $code): void
+    {
+        $this->code = $code;
     }
 }

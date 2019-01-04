@@ -2,11 +2,10 @@ App\Domain\Entity\CampaignPricing:
     type: entity
     table: campaign_pricing_details
     id:
-        id:
-            type: integer
-            id: true
+        uuid:
+            type: guid
             generator:
-                strategy: AUTO
+                strategy: UUID
     fields:
         ppd:
             type: decimal
@@ -41,9 +40,8 @@ App\Domain\Entity\CampaignPricing:
     manyToOne:
         campaign:
             targetEntity: App\Domain\Entity\Campaign
+            joinColumn:
+                referencedColumnName: uuid
             inversedBy: campaignPricingDetails
             cascade: ['persist']
             orphanRemoval: true
-            joinColumn:
-                name: campaign_id
-                referencedColumnName: id

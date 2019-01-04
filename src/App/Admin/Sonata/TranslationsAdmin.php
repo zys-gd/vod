@@ -16,7 +16,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Talentica\SubscriptionBundle\Repository\SubscriptionPack\SubscriptionPackRepository;
 
-class PlaceholderToOperatorAdmin extends AbstractAdmin
+class TranslationsAdmin extends AbstractAdmin
 {
     /** @var null|SubscriptionPackRepository  */
     protected $subscriptionPackRepository = null;

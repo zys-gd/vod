@@ -3,11 +3,10 @@ App\Domain\Entity\VideoCategory:
     table: null
     repositoryClass: App\Domain\Repository\VideoCategoryRepository
     id:
-        id:
-            type: integer
-            id: true
+        uuid:
+            type: guid
             generator:
-                strategy: AUTO
+                strategy: UUID
     fields:
         title:
             type: string
@@ -15,11 +14,6 @@ App\Domain\Entity\VideoCategory:
         alias:
             type: string
             length: null
-        uuid:
-            type: string
-            length: 36
-            nullable: true
-            unique: true
         menuPriority:
             type: integer
             length: 3

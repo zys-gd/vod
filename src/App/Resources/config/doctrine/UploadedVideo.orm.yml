@@ -3,11 +3,10 @@ App\Domain\Entity\UploadedVideo:
     table: null
     repositoryClass: App\Domain\Repository\UploadedVideoRepository
     id:
-        id:
-            type: integer
-            id: true
+        uuid:
+            type: guid
             generator:
-                strategy: AUTO
+                strategy: UUID
     fields:
         status:
             type: smallint
@@ -28,3 +27,5 @@ App\Domain\Entity\UploadedVideo:
     manyToOne:
         category:
             targetEntity: App\Domain\Entity\VideoCategory
+            joinColumn:
+                referencedColumnName: uuid

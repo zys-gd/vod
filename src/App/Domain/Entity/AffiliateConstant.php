@@ -8,15 +8,12 @@
 
 namespace App\Domain\Entity;
 
-
-use App\Domain\Entity\Interfaces\HasUuid;
-
-class AffiliateConstant implements HasUuid
+class AffiliateConstant
 {
     /**
-     * @var int
+     * @var string
      */
-    private $id;
+    private $uuid;
 
     /**
      * @var string
@@ -34,43 +31,11 @@ class AffiliateConstant implements HasUuid
     private $affiliate;
 
     /**
-     * @var string
-     */
-    private $uuid = null;
-
-    /**
-     * AffiliateConstant constructor.
-     * @throws \Exception
-     */
-    public function __construct()
-    {
-        $this->uuid = \Ramsey\Uuid\Uuid::uuid4()->toString();
-    }
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
      * @return string
      */
     public function getUuid(): string
     {
         return $this->uuid;
-    }
-
-    /**
-     * @param string $uuid
-     */
-    public function setUuid(string $uuid)
-    {
-        $this->uuid = $uuid;
     }
 
     /**
