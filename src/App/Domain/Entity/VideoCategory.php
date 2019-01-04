@@ -23,6 +23,11 @@ class VideoCategory
     private $alias;
 
     /**
+     * @var integer
+     */
+    private $menuPriority;
+
+    /**
      * Set title
      *
      * @param string $title
@@ -76,6 +81,18 @@ class VideoCategory
     public function getUuid(): string
     {
         return $this->uuid;
+    }
+
+    public function getMenuPriority(): int
+    {
+        return $this->menuPriority;
+    }
+
+    public function setMenuPriority(int $menuPriority): VideoCategory
+    {
+        $this->menuPriority = $menuPriority;
+
+        return $this;
     }
 }
 

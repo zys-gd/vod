@@ -47,7 +47,7 @@ class VideoCategoryAdmin extends AbstractAdmin
             ->add('id')
             ->add('title')
             ->add('alias')
-            ->add('menu_priority', ['label' => self::MENU_PRIORITY_LABEL])
+            ->add('menuPriority', ['label' => self::MENU_PRIORITY_LABEL])
             ->add('uuid')
             ->add('_action', null, array(
                 'actions' => array(
@@ -66,7 +66,7 @@ class VideoCategoryAdmin extends AbstractAdmin
         $showMapper
             ->add('id')
             ->add('title')
-            ->add('menu_priority');
+            ->add('menuPriority');
     }
 
     /**
@@ -86,6 +86,6 @@ class VideoCategoryAdmin extends AbstractAdmin
     {
         $formMapper
             ->add('title', TextType::class, ['required' => true])
-            ->add('menu_priority', IntegerType::class);
+            ->add('menuPriority', IntegerType::class, ['label' => self::MENU_PRIORITY_LABEL]);
     }
 }

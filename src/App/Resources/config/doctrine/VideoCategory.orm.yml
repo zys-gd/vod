@@ -12,5 +12,10 @@ App\Domain\Entity\VideoCategory:
         alias:
             type: string
             length: null
+        menuPriority:
+            type: integer
+            length: 3
+            options:
+                default: 0
 
     lifecycleCallbacks: {  }
