@@ -20,7 +20,7 @@ App\Domain\Entity\VideoCategory:
             length: 36
             nullable: true
             unique: true
-        menu_priority:
+        menuPriority:
             type: integer
             length: 3
             options:

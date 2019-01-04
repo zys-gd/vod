@@ -28,13 +28,17 @@ class VideoCategory implements HasUuid
     private $uuid;
 
     /**
+     * @var integer
+     */
+    private $menuPriority;
+
+    /**
      * VideoCategory constructor.
      */
     public function __construct()
     {
         $this->uuid = \Ramsey\Uuid\Uuid::uuid4()->toString();
     }
-
 
     /**
      * Get id
@@ -109,6 +113,18 @@ class VideoCategory implements HasUuid
     public function getUuid(): string
     {
         return $this->uuid;
+    }
+
+    public function getMenuPriority(): int
+    {
+        return $this->menuPriority;
+    }
+
+    public function setMenuPriority(int $menuPriority): VideoCategory
+    {
+        $this->menuPriority = $menuPriority;
+
+        return $this;
     }
 }
 
