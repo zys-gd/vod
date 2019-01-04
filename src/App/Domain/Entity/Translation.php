@@ -17,7 +17,7 @@ class Translation
     /**
      * @var string
      */
-    private $translate;
+    private $translation;
 
     /** @var Carrier */
     private $carrier;
@@ -85,17 +85,17 @@ class Translation
     /**
      * @return string
      */
-    public function getTranslate(): string
+    public function getTranslation(): string
     {
-        return $this->translate;
+        return $this->translation;
     }
 
     /**
-     * @param string $translate
+     * @param string $translation
      */
-    public function setTranslate(string $translate): void
+    public function setTranslation(string $translation): void
     {
-        $this->translate = $translate;
+        $this->translation = $translation;
     }
 
     /**
