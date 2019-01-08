@@ -13,3 +13,7 @@ services:
     App\Admin\Controller\VideoCategoryAdminController:
         calls:
             - [setContainer, ['@service_container']]
+
+    App\Admin\Controller\CarrierAdminController:
+        calls:
+            - [setContainer, ['@service_container']]
