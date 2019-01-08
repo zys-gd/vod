@@ -25,6 +25,7 @@ services:
     php-fpm:
      build: .docker/php-fpm
      environment:
+       PHP_IDE_CONFIG: serverName=vod.local
        APP_ENV: dev
      volumes:
        - .:/var/www/html
