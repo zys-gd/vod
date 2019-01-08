@@ -1,0 +1,35 @@
+services:
+
+  talentica.billing_framework_link_creator:
+      class: IdentificationBundle\BillingFramework\Process\API\LinkCreator
+      arguments: ['%billing_api_host%', '@talentica.utils.url_param_appender']
+
+
+  talentica.notification.service:
+        class: IdentificationBundle\BillingFramework\Notification\API\RequestSender
+        arguments:
+          - "@subscription.http.client"
+          - "@logger"
+          - '@talentica.billing_framework_link_creator'
+
+
+  talentica.billing_framework_api:
+      class: IdentificationBundle\BillingFramework\Process\API\Client
+      arguments:
+        - '@event_dispatcher'
+        - '@subscription.http.client'
+        - '@talentica.billing_framework_link_creator'
+        - '@cache.app'
+        - '@talentica.billing_framework_process_response_mapper'
+        - '%billing_fake_mode_enabled%'
+        - '%billing_fake_mode_msisdn%'
+        - '%billing_fake_mode_user_ip%'
+
+
+  talentica.billing_framework_process_response_mapper:
+      class: IdentificationBundle\BillingFramework\Process\API\ProcessResponseMapper
+
+
+  talentica.billing_framework_request_sender:
+      class: IdentificationBundle\BillingFramework\Process\API\RequestSender
+      arguments: ['@event_dispatcher', '@talentica.billing_framework_api', '@logger']

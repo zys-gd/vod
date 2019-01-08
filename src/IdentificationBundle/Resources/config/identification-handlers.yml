@@ -1,0 +1,6 @@
+services:
+  IdentificationBundle\Service\Action\Identification\Handler\DefaultHandler: ~
+
+  IdentificationBundle\Service\Action\Identification\Handler\IdentificationHandlerProvider:
+    arguments:
+      - '@IdentificationBundle\Service\Action\Identification\Handler\DefaultHandler'

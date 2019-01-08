@@ -23,6 +23,7 @@ return [
     Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class         => ['dev' => true, 'test' => true],
 
     \DeviceDetectionBundle\DeviceDetectionBundle::class                 => ['all' => true],
+    IdentificationBundle\IdentificationBundle::class                   => ['all' => true],
     \CountryCarrierDetectionBundle\CountryCarrierDetectionBundle::class => ['all' => true],
     Playwing\DiffToolBundle\DiffToolBundle::class                       => ['dev' => true, 'test' => true]
 ];

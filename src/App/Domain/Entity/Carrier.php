@@ -7,13 +7,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use AppBundle\Validator\Constraints\ContainsConstraints;
 use Doctrine\Common\Collections\Collection;
 use http\Url;
+use IdentificationBundle\Entity\CarrierInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Carrier
  * @package App\Domain\Entity
  */
-class Carrier
+class Carrier implements CarrierInterface
 {
     /**
      * @var string
@@ -288,7 +289,7 @@ class Carrier
      *
      * @return integer
      */
-    public function getBillingCarrierId()
+    public function getBillingCarrierId(): int
     {
         return (int)$this->billingCarrierId;
     }
@@ -332,7 +333,7 @@ class Carrier
      *
      * @return string
      */
-    public function getIsp()
+    public function getIsp(): string
     {
         return $this->isp;
     }
