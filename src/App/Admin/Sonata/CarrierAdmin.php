@@ -2,13 +2,12 @@
 
 namespace App\Admin\Sonata;
 
-use App\Domain\Entity\Carrier;
-use App\Utils\UuidGenerator;
 use function Sodium\add;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -16,11 +15,6 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class CarrierAdmin extends AbstractAdmin
 {
-    public function getNewInstance()
-    {
-        return new Carrier(UuidGenerator::generate());
-    }
-
 //todo default_lang
     /**
      * @param DatagridMapper $datagridMapper
@@ -142,5 +136,15 @@ class CarrierAdmin extends AbstractAdmin
             ->add('isCaptcha')
             ->add('numberOfAllowedSubscriptionsByConstraint')
             ->add('redirectUrl');
+    }
+
+    /**
+     * @param RouteCollection $collection
+     */
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->clearExcept(['list', 'edit', 'delete', 'show']);
+
+        parent::configureRoutes($collection);
     }
 }

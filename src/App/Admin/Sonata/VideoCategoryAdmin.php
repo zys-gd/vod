@@ -44,11 +44,10 @@ class VideoCategoryAdmin extends AbstractAdmin
         unset($this->listModes['mosaic']);
 
         $listMapper
-            ->add('id')
+            ->add('uuid')
             ->add('title')
             ->add('alias')
-            ->add('menuPriority', ['label' => self::MENU_PRIORITY_LABEL])
-            ->add('uuid')
+            ->add('menuPriority', IntegerType::class, ['label' => self::MENU_PRIORITY_LABEL])
             ->add('_action', null, array(
                 'actions' => array(
                     'show'   => array(),
@@ -64,7 +63,7 @@ class VideoCategoryAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('id')
+            ->add('uuid')
             ->add('title')
             ->add('menuPriority');
     }
