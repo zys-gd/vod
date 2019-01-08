@@ -10,32 +10,30 @@ services:
         ipv4_address: 192.168.101.3
 
     webserver:
-      build: .docker/apache
-      environment:
-        PHP_IDE_CONFIG: serverName=vod.local
+      image: nginx:1.15.8-alpine
+      volumes:
+        - .:/var/www/html
+        - .docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
       ports:
         - 8081:80
-      volumes:
-        -  .:/var/www/html
-        -  .docker/apache/vhosts:/etc/apache2/sites-enabled:ro
-        -  .docker/php/php.ini:/usr/local/etc/php/php.ini:ro
       networks:
         dev-env:
           ipv4_address: 192.168.101.4
+      depends_on:
+        - php-fpm
 
-    #php-fpm:
-    # build: phpdocker/php-fpm
-    # working_dir: /application
-    # environment:
-    #   PHP_IDE_CONFIG: serverName=store.local
-    #   APP_ENV: dev
-    # volumes:
-    #   - /var/www/store:/application
-    #   - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.0/fpm/conf.d/99-overrides.ini
-    #   - ./phpdocker/php-fpm/www.conf:/etc/php/7.0/fpm/pool.d/www.conf
-    # networks:
-    #  dev-env:
-    #    ipv4_address: 192.168.101.5
+    php-fpm:
+     build: .docker/php-fpm
+     environment:
+       PHP_IDE_CONFIG: serverName=vod.local
+       APP_ENV: dev
+     volumes:
+       - .:/var/www/html
+       - .docker/php-fpm/php.ini:/etc/php/7.2/fpm/conf.d/99-docker.ini
+       - .docker/php-fpm/www.conf:/etc/php/7.2/fpm/pool.d/www.conf
+     networks:
+      dev-env:
+        ipv4_address: 192.168.101.5
 
     mysql:
       restart: always

@@ -1,4 +1,4 @@
-FROM php:7.2-apache
+FROM php:7.2-fpm
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
     librabbitmq-dev \
@@ -34,5 +34,3 @@ RUN pecl install xdebug  && docker-php-ext-enable xdebug \
 
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-RUN a2enmod rewrite
