@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
@@ -21,19 +22,19 @@ class AffiliateConstantType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $fieldOptions = [
+            'required' => true,
+            'constraints' => [
+                new NotBlank(),
+                new Length([
+                    'max' => 255
+                ])
+            ]
+        ];
+
         $builder
-            ->add('name', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank()
-                ]
-            ])
-            ->add('value', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank()
-                ]
-            ]);
+            ->add('name', TextType::class, $fieldOptions)
+            ->add('value', TextType::class, $fieldOptions);
     }
 
     /**

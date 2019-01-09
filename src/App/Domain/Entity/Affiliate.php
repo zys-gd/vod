@@ -9,8 +9,10 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Affiliate
 {
+    /**
+     * Affiliate types
+     */
     const CPC_TYPE = 1;
-
     const CPA_TYPE = 2;
 
     /**
@@ -62,10 +64,12 @@ class Affiliate
      * @var string
      */
     private $postbackUrl;
+
     /**
      * @var ArrayCollection
      */
     protected $parameters;
+
     /**
      * @var ArrayCollection
      */
@@ -75,7 +79,6 @@ class Affiliate
      * @var string
      */
     private $subPriceName;
-
 
     /**
      * Affiliate constructor.
