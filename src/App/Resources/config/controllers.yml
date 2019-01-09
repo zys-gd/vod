@@ -9,11 +9,3 @@ services:
         calls:
             - [setContainer, ['@service_container']]
         arguments: ['@form.factory', '@App\Domain\Service\VideoProcessing\VideoUploader']
-
-    App\Admin\Controller\VideoCategoryAdminController:
-        calls:
-            - [setContainer, ['@service_container']]
-
-    App\Admin\Controller\CarrierAdminController:
-        calls:
-            - [setContainer, ['@service_container']]

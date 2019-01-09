@@ -5,7 +5,7 @@ services:
             - { name: sonata.admin, manager_type: orm, group: Content management, label: Videos }
 
     App\Admin\Sonata\VideoCategoryAdmin:
-        arguments: [~, App\Domain\Entity\VideoCategory, 'App\Admin\Controller\VideoCategoryAdminController']
+        arguments: [~, App\Domain\Entity\VideoCategory, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, group: Content management, label: Categories }
 
@@ -14,8 +14,13 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: Affiliate management, label: Affiliates }
 
+#    App\Admin\Sonata\CampaignAdmin:
+#        arguments: [~, App\Domain\Entity\Campaign, ~, '@service_container']
+#        tags:
+#            - { name: sonata.admin, manager_type: orm, group: Affiliate management, label: Campaign
+
     App\Admin\Sonata\CarrierAdmin:
-        arguments: [~, App\Domain\Entity\Carrier, 'App\Admin\Controller\CarrierAdminController']
+        arguments: [~, App\Domain\Entity\Carrier, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, group: Carriers management, label: Carriers }
 
