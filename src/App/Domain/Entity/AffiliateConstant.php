@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Admin
- * Date: 4/4/2018
- * Time: 5:31 PM
- */
 
 namespace App\Domain\Entity;
 
@@ -97,7 +91,7 @@ class AffiliateConstant
     /**
      * Set affiliate
      *
-     * @param integer $affiliate
+     * @param Affiliate $affiliate
      *
      * @return AffiliateConstant
      */
@@ -117,5 +111,4 @@ class AffiliateConstant
     {
         return $this->affiliate;
     }
-
 }

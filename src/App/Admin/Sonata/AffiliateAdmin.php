@@ -2,36 +2,36 @@
 
 namespace App\Admin\Sonata;
 
+use App\Admin\Form\Type\AffiliateConstantType;
+use App\Admin\Form\Type\AffiliateParameterType;
 use App\Domain\Entity\Affiliate;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\CoreBundle\Form\Type\CollectionType;
 use Sonata\CoreBundle\Validator\ErrorElement;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
-
+/**
+ * Class AffiliateAdmin
+ */
 class AffiliateAdmin extends AbstractAdmin
 {
-
-
     /**
      * @param FormMapper $formMapper
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
-
-
         $this->buildGeneralSection($formMapper);
         $this->buildContactSection($formMapper);
         $this->buildMiscSection($formMapper);
         $this->buildConstantSection($formMapper);
         $this->buildParametersSection($formMapper);
-
-
-
-
     }
 
     /**
@@ -42,16 +42,15 @@ class AffiliateAdmin extends AbstractAdmin
         $formMapper
             ->tab('General')
             ->with('', ['box_class' => 'box-solid'])
-            ->add('type', 'choice', [
+            ->add('type', ChoiceType::class, [
                 'choices' => [
                     'CPC' => Affiliate::CPC_TYPE,
                     'CPA' => Affiliate::CPA_TYPE
                 ],
                 'label' => 'Type'
             ])
-            ->add('name', 'text', ['label' => 'Name'])
-//            ->add('url', 'url', ['label' => 'URL'])
-            ->add('postbackUrl', 'url',
+            ->add('name', TextType::class, ['label' => 'Name'])
+            ->add('postbackUrl', UrlType::class,
                 [
                 'required' => true,
                 'label' => 'Postback URL',
@@ -61,7 +60,6 @@ class AffiliateAdmin extends AbstractAdmin
             ->end();
     }
 
-
     /**
      * @param FormMapper $formMapper
      */
@@ -70,14 +68,25 @@ class AffiliateAdmin extends AbstractAdmin
         $formMapper
             ->tab('Contact details')
             ->with('', ['box_class' => 'box-solid'])
-            ->add('country', 'entity', [
+            ->add('country', EntityType::class, [
                 'class' => 'App\Domain\Entity\Country',
                 'choice_label' => 'countryName',
                 'label' => 'Based in'
             ])
-            ->add('commercialContact', 'text', ['required' => false, 'label' => 'Commercial Contact person'])
-            ->add('technicalContact', 'text', ['required' => false, 'label' => 'Technical Contact person'])
-            ->add('skypeId', 'text', ['required' => false, 'label' => 'Skype ID'])
+            ->add('commercialContact', TextType::class,
+                [
+                    'required' => false,
+                    'label' => 'Commercial Contact person'
+                ]
+            )
+            ->add('technicalContact', TextType::class, [
+                    'required' => false,
+                    'label' => 'Technical Contact person'
+            ])
+            ->add('skypeId', TextType::class, [
+                'required' => false,
+                'label' => 'Skype ID'
+            ])
             ->end()
             ->end();
     }
@@ -90,18 +99,20 @@ class AffiliateAdmin extends AbstractAdmin
         $formMapper
             ->tab('Other options')
             ->with('', ['box_class' => 'box-solid'])
-            ->add('enabled', 'choice', [
+            ->add('enabled', ChoiceType::class, [
                 'choices' => [
                     'Yes' => true,
                     'No' => false
                 ],
                 'label' => 'Enable this affiliate?'
             ])
-            ->add('subPriceName', 'text', ['required' => false, 'label' => 'Name of subscription price parameter. Fill JUST when the partner requires!'])
+            ->add('subPriceName', TextType::class, [
+                'required' => false,
+                'label' => 'Name of subscription price parameter. Fill JUST when the partner requires!'
+            ])
             ->end()
             ->end();
     }
-
 
     /**
      * @param DatagridMapper $datagridMapper
@@ -110,7 +121,7 @@ class AffiliateAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('name')
-            ->add('id')
+            ->add('uuid')
             ->add('type')
             ->add('url')
             ->add('country')
@@ -127,7 +138,7 @@ class AffiliateAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('name')
-            ->add('id')
+            ->add('uuid')
             ->add('url')
             ->add('enabled', null, ['label' => 'Is Enabled?'])
             ->add('_action', null, [
@@ -155,36 +166,23 @@ class AffiliateAdmin extends AbstractAdmin
             ->add('enabled');
     }
 
-
-
-
-
     /**
      * @param FormMapper $formMapper
      */
     private function buildConstantSection(FormMapper $formMapper)
     {
-
         $formMapper
             ->tab('Constants')
             ->with('', ['box_class' => 'box-solid'])
-//            ->add('constants', 'sonata_type_collection', [
             ->add('constants', CollectionType::class, [
-                'by_reference' => true,
-                'type_options' => [
-                    'delete' => true,
-                ],
-                'required' => true,
-            ],
-                [
-                    'edit' => 'inline',
-                    'inline' => 'table',
-                ])
+                'entry_type' => AffiliateConstantType::class,
+                'by_reference' => false,
+                'allow_delete' => true,
+                'allow_add' => true
+            ])
             ->end()
             ->end();
     }
-
-
 
     /**
      * @param FormMapper $formMapper
@@ -195,27 +193,22 @@ class AffiliateAdmin extends AbstractAdmin
         $formMapper
             ->tab('Parameters')
             ->with('', ['box_class' => 'box-solid'])
-            ->add('parameters', 'sonata_type_collection', [
-                'by_reference' => true,
-                'type_options' => [
-                    'delete' => true,
-
-                ],
-                'required' => true,
-            ],
-                [
-                    'edit' => 'inline',
-                    'inline' => 'table'
-                ])
+            ->add('parameters', CollectionType::class, [
+                'entry_type' => AffiliateParameterType::class,
+                'by_reference' => false,
+                'allow_delete' => true,
+                'allow_add' => true
+            ])
             ->end()
             ->end();
     }
 
-
-
+    /**
+     * @param ErrorElement $errorElement
+     * @param Affiliate $object
+     */
     public function validate(ErrorElement $errorElement, $object)
     {
-
         $errorElement
             ->with("postbackUrl")
             ->assertNotBlank()
@@ -252,13 +245,5 @@ class AffiliateAdmin extends AbstractAdmin
                 break;
             }
         }
-
-
     }
-
-
-
-
-
-
 }

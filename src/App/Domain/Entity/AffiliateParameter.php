@@ -93,7 +93,7 @@ class AffiliateParameter
     /**
      * Set affiliate
      *
-     * @param integer $affiliate
+     * @param Affiliate $affiliate
      *
      * @return AffiliateParameter
      */
