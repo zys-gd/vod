@@ -10,6 +10,7 @@ return [
     'CLOUDINARY_API_KEY'    => '187818276162186',
     'CLOUDINARY_API_SECRET' => 'sHmSwu7rTZqiAmfqFMM-XLl-r0k',
     'CLOUDINARY_CLOUD_NAME' => 'origindata',
-    'HOST'                  => 'vod.local'
+    'HOST'                  => 'vod.local',
+    'BILLING_API_HOST'      => 'http://billing.playwing.com/api',
 
 ];

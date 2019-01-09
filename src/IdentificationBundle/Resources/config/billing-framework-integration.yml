@@ -1,0 +1,33 @@
+services:
+
+  subscription.http.client:
+        class: GuzzleHttp\Client
+        tags:
+            - { name: guzzle.client }
+
+  talentica.billing_framework_link_creator:
+      class: IdentificationBundle\BillingFramework\Process\API\LinkCreator
+      arguments: ['%billing_api_host%', '@talentica.utils.url_param_appender']
+
+  talentica.billing_framework_api:
+      class: IdentificationBundle\BillingFramework\Process\API\Client
+      arguments:
+        - '@event_dispatcher'
+        - '@subscription.http.client'
+        - '@talentica.billing_framework_link_creator'
+        - '@cache.app'
+        - '@talentica.billing_framework_process_response_mapper'
+
+  talentica.billing_framework_process_response_mapper:
+      class: IdentificationBundle\BillingFramework\Process\API\ProcessResponseMapper
+
+
+  talentica.billing_framework_request_sender:
+      class: IdentificationBundle\BillingFramework\Process\API\RequestSender
+      arguments: ['@event_dispatcher', '@talentica.billing_framework_api', '@logger']
+
+  IdentificationBundle\BillingFramework\Process\IdentProcess:
+      arguments: ['@logger', '@talentica.billing_framework_request_sender']
+
+  talentica.utils.url_param_appender:
+      class: IdentificationBundle\Utils\UrlParamAppender

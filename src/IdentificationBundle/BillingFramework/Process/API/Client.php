@@ -1,0 +1,211 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: dmitriy
+ * Date: 03.05.18
+ * Time: 12:44
+ */
+
+namespace IdentificationBundle\BillingFramework\Process\API;
+
+
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\GuzzleException;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
+use stdClass;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use IdentificationBundle\BillingFramework\Process\API\Exception\EmptyResponse;
+use IdentificationBundle\BillingFramework\Process\Exception\BillingFrameworkException;
+use IdentificationBundle\BillingFramework\Process\Exception\BillingFrameworkProcessException;
+
+class Client
+{
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    private $httpClient;
+    /**
+     * @var LinkCreator
+     */
+    private $billingFrameworkLinkCreator;
+    /**
+     * @var AdapterInterface
+     */
+    private $cache;
+    /**
+     * @var ProcessResponseMapper
+     */
+    private $responseMapper;
+
+    /**
+     * BillingFrameworkAPI constructor.
+     * @param EventDispatcherInterface              $eventDispatcher
+     * @param ClientInterface                       $httpClient
+     * @param LinkCreator                           $billingFrameworkLinkCreator
+     * @param AdapterInterface                      $cache
+     * @param ProcessResponseMapper                 $responseMapper
+     * @param                                       $fakeModeEnabled
+     * @param                                       $fakeUserIdentifier
+     * @param                                       $fakeUserIp
+     */
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        ClientInterface $httpClient,
+        LinkCreator $billingFrameworkLinkCreator,
+        AdapterInterface $cache,
+        ProcessResponseMapper $responseMapper
+
+    )
+    {
+        $this->eventDispatcher             = $eventDispatcher;
+        $this->httpClient                  = $httpClient;
+        $this->billingFrameworkLinkCreator = $billingFrameworkLinkCreator;
+        $this->cache                       = $cache;
+        $this->responseMapper              = $responseMapper;
+    }
+
+
+    /**
+     * @param              $options
+     * @param              $method
+     * @return \IdentificationBundle\BillingFramework\Process\API\DTO\ProcessResult
+     * @throws BillingFrameworkException
+     * @throws BillingFrameworkProcessException
+     * @throws EmptyResponse
+     */
+    public function sendPostProcessRequest(array $options, $method)
+    {
+
+        $url      = $this->billingFrameworkLinkCreator->createProcessLink($method);
+        $response = $this->makePostRequest($url, $options);
+        $type     = !empty($response) && isset($response->data) && isset($response->data->type)
+            ? $response->data->type
+            : $method;
+
+        $processedResponse = $this->responseMapper->map($type, $response);
+
+        return $processedResponse;
+    }
+
+    /**
+     * @param ResponseInterface $response
+     * @return null | stdClass | stdClass[]
+     */
+    protected function extractContentFromResponse(ResponseInterface $response): stdClass
+    {
+
+        $data = null;
+        $body = $response->getBody();
+        if ($body instanceof StreamInterface) {
+            $contents = $body->getContents();
+            if ($contents) {
+                /** @var stdClass $parsedResponse */
+                $data = json_decode($contents);
+            }
+        }
+        return $data;
+    }
+
+    /**
+     * @param $method
+     * @return stdClass[]
+     * @throws BillingFrameworkException
+     * @throws BillingFrameworkProcessException
+     */
+    public function sendGetDataRequest(string $method): stdClass
+    {
+        $url = $this->billingFrameworkLinkCreator->createDataLink($method);
+
+        try {
+            $cachedResponse = $this->cache->getItem($this->generateCacheKey($method));
+        } catch (\Psr\Cache\InvalidArgumentException $ex) {
+            return $this->performGetRequest($url);
+        }
+
+        if (!$cachedResponse->isHit()) {
+            $response = $this->performGetRequest($url);
+            $cachedResponse->set($response);
+            $this->cache->save($cachedResponse);
+        } else {
+            $response = $cachedResponse->get();
+        }
+        return (object)$response->data;
+
+    }
+
+
+    private function generateCacheKey($method)
+    {
+        return str_replace("/", "-", $method);
+    }
+
+
+    /**
+     * @param $url
+     * @return null|stdClass|stdClass[]
+     * @throws BillingFrameworkProcessException
+     * @throws BillingFrameworkException
+     */
+    private function performGetRequest($url)
+    {
+        try {
+            $response         = $this->httpClient->request('GET', $url);
+            $preparedResponse = $this->extractContentFromResponse($response);
+            return $preparedResponse;
+        } catch (ClientException $e) {
+            throw $this->makeBillingResponseException($e);
+        } catch (GuzzleException $e) {
+            throw new BillingFrameworkException(null, $e->getCode(), $e);
+        } catch (\Exception $e) {
+            throw new BillingFrameworkException(null, $e->getCode(), $e);
+        }
+
+
+    }
+
+    /**
+     * @param $url
+     * @param $params
+     * @return null|stdClass|stdClass[]
+     * @throws BillingFrameworkProcessException
+     * @throws BillingFrameworkException
+     */
+    private function makePostRequest($url, array $params)
+    {
+        try {
+
+            $response         = $this->httpClient->request('POST', $url, [\GuzzleHttp\RequestOptions::FORM_PARAMS => $params]);
+            $preparedResponse = $this->extractContentFromResponse($response);
+            return $preparedResponse;
+        } catch (ClientException $e) {
+            throw $this->makeBillingResponseException($e);
+        } catch (GuzzleException $e) {
+            throw new BillingFrameworkException($e->getMessage(), $e->getCode(), $e);
+        } catch (\Exception $e) {
+            throw new BillingFrameworkException($e->getMessage(), $e->getCode(), $e);
+        }
+
+
+    }
+
+    /**
+     * @param $e
+     * @return BillingFrameworkProcessException
+     */
+    protected function makeBillingResponseException(ClientException $e): BillingFrameworkProcessException
+    {
+        $content          = $this->extractContentFromResponse($e->getResponse());
+        $processException = new BillingFrameworkProcessException(null, $e->getCode(), $e);
+        $processException->setRawResponse($content);
+        try {
+            $processException->setResponse($this->responseMapper->map('', $content));
+        } catch (EmptyResponse $exception) {
+        }
+        return $processException;
+    }
+}

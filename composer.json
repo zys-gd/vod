@@ -18,6 +18,7 @@
     "sonata-project/doctrine-orm-admin-bundle": "3.7.0",
     "symfony/asset": "v4.2.1",
     "symfony/console": "v4.2.1",
+    "symfony/event-dispatcher": "^4.2",
     "symfony/expression-language": "v4.2.1",
     "symfony/flex": "v1.1.8",
     "symfony/form": "v4.2.1",
