@@ -5,17 +5,18 @@ namespace App\Admin\Sonata;
 use App\Admin\Form\Type\AffiliateConstantType;
 use App\Admin\Form\Type\AffiliateParameterType;
 use App\Domain\Entity\Affiliate;
+use App\Domain\Entity\Country;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\CoreBundle\Validator\ErrorElement;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Class AffiliateAdmin
@@ -49,13 +50,16 @@ class AffiliateAdmin extends AbstractAdmin
                 ],
                 'label' => 'Type'
             ])
-            ->add('name', TextType::class, ['label' => 'Name'])
-            ->add('postbackUrl', UrlType::class,
-                [
+            ->add('name', TextType::class, [
+                'label' => 'Name'
+            ])
+            ->add('postbackUrl', UrlType::class, [
                 'required' => true,
                 'label' => 'Postback URL',
+                'constraints' => [
+                    new NotBlank()
                 ]
-            )
+            ])
             ->end()
             ->end();
     }
@@ -69,16 +73,14 @@ class AffiliateAdmin extends AbstractAdmin
             ->tab('Contact details')
             ->with('', ['box_class' => 'box-solid'])
             ->add('country', EntityType::class, [
-                'class' => 'App\Domain\Entity\Country',
+                'class' => Country::class,
                 'choice_label' => 'countryName',
                 'label' => 'Based in'
             ])
-            ->add('commercialContact', TextType::class,
-                [
+            ->add('commercialContact', TextType::class, [
                     'required' => false,
                     'label' => 'Commercial Contact person'
-                ]
-            )
+            ])
             ->add('technicalContact', TextType::class, [
                     'required' => false,
                     'label' => 'Technical Contact person'
@@ -140,7 +142,9 @@ class AffiliateAdmin extends AbstractAdmin
             ->add('name')
             ->add('uuid')
             ->add('url')
-            ->add('enabled', null, ['label' => 'Is Enabled?'])
+            ->add('enabled', null, [
+                'label' => 'Is Enabled?'
+            ])
             ->add('_action', null, [
                 'actions' => [
                     'show' => [],
@@ -189,7 +193,6 @@ class AffiliateAdmin extends AbstractAdmin
      */
     private function buildParametersSection(FormMapper $formMapper)
     {
-
         $formMapper
             ->tab('Parameters')
             ->with('', ['box_class' => 'box-solid'])
@@ -201,49 +204,5 @@ class AffiliateAdmin extends AbstractAdmin
             ])
             ->end()
             ->end();
-    }
-
-    /**
-     * @param ErrorElement $errorElement
-     * @param Affiliate $object
-     */
-    public function validate(ErrorElement $errorElement, $object)
-    {
-        $errorElement
-            ->with("postbackUrl")
-            ->assertNotBlank()
-            ->end();
-
-        foreach ($object->getConstants() as $constantsProps) {
-
-            if ($constantsProps->getName() == null) {
-                $error = 'Constant field "Name" should not be blank';
-                $errorElement->with('constant')->addViolation($error)->end();
-                break;
-            }
-
-
-            if ($constantsProps->getValue() == null) {
-                $error = 'Constant field "Value" should not be blank';
-                $errorElement->with('constants')->addViolation($error)->end();
-                break;
-            }
-        }
-
-        foreach ($object->getParameters() as $paramsProps) {
-
-            if ($paramsProps->getInputName() == null) {
-                $error = 'Parameters field "Input Name" should not be blank';
-                $errorElement->with('parameters')->addViolation($error)->end();
-                break;
-            }
-
-
-            if ($paramsProps->getOutputName() == null) {
-                $error = 'Parameters field "Output Name" should not be blank';
-                $errorElement->with('constants')->addViolation($error)->end();
-                break;
-            }
-        }
     }
 }
