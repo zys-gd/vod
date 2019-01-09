@@ -1,0 +1,10 @@
+services:
+    subscription.vodafone_eg_subscribe_handler:
+        class: SubscriptionBundle\Carriers\VodafoneEG\Subscribe\VodafoneEGSubscribeHandler
+        tags:
+          - {name: subscription.subscription_handler }
+
+    subscription.vodafone_eg_callback_subscribe_handler:
+        class: SubscriptionBundle\Carriers\VodafoneEG\Callback\VodafoneEGCallbackSubscribeHandler
+        tags:
+          - {name: subscription.callback_carrier_handler, type: subscribe }

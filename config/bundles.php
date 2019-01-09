@@ -25,4 +25,5 @@ return [
     CountryCarrierDetectionBundle\CountryCarrierDetectionBundle::class => ['all' => true],
     Playwing\DiffToolBundle\DiffToolBundle::class => ['dev' => true, 'test' => true],
     Liip\FunctionalTestBundle\LiipFunctionalTestBundle::class => ['dev' => true, 'test' => true],
+    \SubscriptionBundle\Entity\Subscription::class => ['all' => true]
 ];

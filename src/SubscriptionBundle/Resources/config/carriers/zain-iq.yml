@@ -1,0 +1,38 @@
+services:
+  handler.billing_callback_mobimind_handler:
+        class: SubscriptionBundle\Carriers\ZainIQ\Callback\MobimindCallbackHandler
+        arguments:
+          - '@app.carriers'
+          - '@subscription.renewer.updater'
+          - '@subscription.billing_framework_process_response_mapper'
+          - '@subscription.subscription.repository'
+          - '@user.billable_user.repository'
+          - '@subscription.billing_framework_subscription_renew_handler'
+          - '@affiliate.carrier_post_send_affiliate_checker'
+          - '@subscription.piwic_statistic_sender'
+          - '@affiliate.user_info_mapper'
+          - '@subscription.entity_save_helper'
+          - '@subscription.legacy.mobimind_service'
+        tags:
+          - { name: subscription.callback_carrier_handler, type: renew }
+
+
+  subscription.legacy.mobimind_service:
+      class: SubscriptionBundle\Service\Legacy\MobimindSubscriberService
+      arguments:
+          - '@session'
+          - '@identification.service'
+          - '%token_session_name%'
+          - '@piwik.new_tracker'
+          - '@affiliate.affiliate.service'
+          - '@user.billable_user.repository'
+          - '@subscription.subscription_provider'
+          - '@subscription.entity_save_helper'
+          - '@subscription.subscription_creator'
+          - '@app.carriers'
+          - '@subscription.subscription_pack_provider'
+          - '@affiliate.user_info_mapper'
+          - '@subscription.legacy.bf_dummy_response_mapper'
+          - '@subscription.subscriber.updater'
+          - '@router'
+          - '@subscription.billing_framework_link_creator'

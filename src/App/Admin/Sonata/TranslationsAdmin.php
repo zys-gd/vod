@@ -14,7 +14,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Talentica\SubscriptionBundle\Repository\SubscriptionPack\SubscriptionPackRepository;
+use subscription\SubscriptionBundle\Repository\SubscriptionPack\SubscriptionPackRepository;
 
 class TranslationsAdmin extends AbstractAdmin
 {

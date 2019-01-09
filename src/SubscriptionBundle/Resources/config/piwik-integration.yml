@@ -1,0 +1,4 @@
+services:
+  subscription.piwic_statistic_sender:
+      class: SubscriptionBundle\Piwik\PiwikStatisticSender
+      arguments: ['@piwik.new_tracker', '@logger']

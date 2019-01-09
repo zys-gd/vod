@@ -1,0 +1,6 @@
+services:
+  subscription.zong_pk_subscriber:
+      class: SubscriptionBundle\Carriers\ZongPK\Subscribe\ZongPKSubscriber
+      arguments: ['@subscription.notification_facade']
+      tags:
+        - { name: subscription.subscription_handler }

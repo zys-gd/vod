@@ -1,0 +1,36 @@
+services:
+  subscription.callback_ooreedoo_al:
+      class: SubscriptionBundle\Carriers\OoredooAL\Callback\OoredooALSubscribeHandler
+      tags:
+        - { name: subscription.callback_carrier_handler, type: subscribe }
+
+  subscription.ooredoo_al_unsubscribe_callback_handler:
+      class: SubscriptionBundle\Carriers\OoredooAL\Callback\OoredooALUnsubscribeHandler
+      tags:
+        - {name: subscription.callback_carrier_handler, type: unsubscribe}
+
+  subscription.ooredoo_al_unsubscribe_handler:
+      class: SubscriptionBundle\Carriers\OoredooAL\Unsubscribe\OoredooALUnsubscribeHandler
+      tags:
+        - {name: subscription.unsubscription_handler}
+
+  subscription.ooredoo.service:
+      class: SubscriptionBundle\Carriers\OoredooAL\SubscribeBack\OoredooBackSubscriber
+      arguments:
+       - '@affiliate.affiliate.service'
+       - '@subscription.piwic_statistic_sender'
+       - '@app.carriers.repository'
+       - '@user.billable_user.repository'
+       - '@subscription.subscription_pack_provider'
+       - '@subscription.billing_framework_link_creator'
+       - '@affiliate.user_info_mapper'
+       - '@subscription.entity_save_helper'
+       - '@subscription.billing_framework_renew_date_calculator'
+       - '@subscription.legacy.bf_dummy_response_mapper'
+       - '@subscription.subscription_creator'
+       - '@subscription.subscription_provider'
+       - '@subscription.billing_framework_credit_calculator'
+
+  handler.subscribe_back.ooredoo:
+          class: SubscriptionBundle\Carriers\OoredooAL\SubscribeBack\OoredooHandler
+          arguments: ["@subscription.ooredoo.service", '@router']

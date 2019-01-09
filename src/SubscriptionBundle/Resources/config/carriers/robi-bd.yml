@@ -1,0 +1,25 @@
+services:
+
+  handler.subscribe_back.robi:
+      class: SubscriptionBundle\Carriers\RobiBD\SubscribeBack\RobiHandler
+      arguments: ["@subscription.robi.service", '@router']
+
+  subscription.robi_bd_subscribe_handler:
+      class: SubscriptionBundle\Carriers\RobiBD\Subscribe\RobiBDSubscriber
+      arguments: ['@router']
+      tags:
+        - {name: subscription.subscription_handler}
+
+
+  subscription.robi.service:
+      class: SubscriptionBundle\Carriers\RobiBD\SubscribeBack\RobiBackSubscriber
+      arguments:
+        - '@user.billable_user.repository'
+        - '@subscription.subscription.repository'
+        - '@subscription.billing_framework_renew_date_calculator'
+        - '@subscription.entity_save_helper'
+        - '@subscription.piwic_statistic_sender'
+        - '@affiliate.affiliate.service'
+        - '@subscription.billing_framework_credit_calculator'
+        - '@subscription.billing_framework_process_response_mapper'
+        - '@affiliate.user_info_mapper'

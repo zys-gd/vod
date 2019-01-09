@@ -1,0 +1,49 @@
+services:
+
+  handler.billing_callback_common:
+      class: SubscriptionBundle\Service\Callback\Common\CommonFlowHandler
+      arguments:
+        - '@logger'
+        - '@subscription.billing_framework_subscription_handler_provider'
+        - '@subscription.billing_framework_process_response_mapper'
+        - '@subscription.subscription.repository'
+        - '@user.billable_user.repository'
+        - '@event_dispatcher'
+        - '@subscription.entity_save_helper'
+        - '@affiliate.carrier_post_send_affiliate_checker'
+        - '@affiliate.affiliate.service'
+        - '@subscription.piwic_statistic_sender'
+        - '@affiliate.user_info_mapper'
+        - '@handler.billing_callback_chain'
+
+      public: false
+
+  handler.billing_callback_chain:
+      class: SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider
+
+
+  subscription.billing_framework_subscription_handler_provider:
+      class: SubscriptionBundle\Service\Callback\Common\CallbackTypeHandlerProvider
+      arguments:
+        - '@subscription.billing_framework_unsubscription_handler'
+        - '@subscription.billing_framework_subscription_handler'
+        - '@subscription.billing_framework_subscription_renew_handler'
+
+  subscription.billing_framework_subscription_abstract_handler:
+        class: SubscriptionBundle\Service\Callback\Common\Type\AbstractCallbackHandler
+
+  subscription.billing_framework_unsubscription_handler:
+        class: SubscriptionBundle\Service\Callback\Common\Type\UnsubscriptionCallbackHandler
+        arguments:
+            - '@subscription.unsubscribe.updater'
+
+  subscription.billing_framework_subscription_handler:
+      class: SubscriptionBundle\Service\Callback\Common\Type\SubscriptionCallbackHandler
+      arguments:
+          - '@subscription.subscriber.updater'
+
+  subscription.billing_framework_subscription_renew_handler:
+      class: SubscriptionBundle\Service\Callback\Common\Type\RenewCallbackHandler
+      arguments:
+          - '@subscription.renewer.updater'
+          - '@event_dispatcher'

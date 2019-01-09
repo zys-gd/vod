@@ -1,0 +1,55 @@
+services:
+
+  subscription.megasyst_callback_handler:
+      class: SubscriptionBundle\Carriers\Megasyst\Callback\MegasystCallbackHandler
+      arguments:
+        - "@subscription.subscription_pack_provider"
+        - '@subscription.piwic_statistic_sender'
+        - '@affiliate.affiliate.service'
+        - '@user.billable_user.repository'
+        - '@session'
+        - '@subscription.subscription.repository'
+        - '@subscription.megasyst_billable_user_creator'
+        - '@app.carriers'
+        - '@subscription.megasyst_identification_request_creator'
+        - '@subscription.entity_save_helper'
+        - '@subscription.megasyst_billable_user_provider'
+        - '@affiliate.user_info_mapper'
+        - '@subscription.billing_framework_process_response_mapper'
+
+  subscription.megasyst_billable_user_creator:
+      class: SubscriptionBundle\Carriers\Megasyst\Callback\MegasystBillableUserCreator
+      arguments: ['@user.billable_user.repository', '%token_session_name%', '@identification.service', '@session']
+
+  subscription.megasyst_billable_user_provider:
+      class: SubscriptionBundle\Carriers\Megasyst\Callback\MegasystBillableUserProvider
+      arguments: ['@user.billable_user.repository']
+
+  subscription.megasyst_identification_request_creator:
+      class: SubscriptionBundle\Carriers\Megasyst\Callback\MegasystIdentificationRequestCreator
+      arguments: ['@subscription.entity_save_helper', '@subscription.billing_framework_link_creator']
+
+
+  subscription.subscriber.megasyst:
+      class: SubscriptionBundle\Carriers\Megasyst\Subscribe\MegasystHandler
+      arguments: ['@subscription.megasyst_carrier_checker', '@subscription.megasyst_phone_checker']
+      tags:
+         - { name: subscription.subscription_handler }
+
+  subscription.megasyst_phone_checker:
+      class: SubscriptionBundle\Carriers\Megasyst\Subscribe\MegasystPhoneChecker
+      arguments: ['@user.billable_user.repository', '%token_session_name%', '@identification.service', '@session']
+
+  subscription.megasyst_carrier_checker:
+      class: SubscriptionBundle\Carriers\Megasyst\Subscribe\MegasystCarrierChecker
+
+
+  handler.billing_callback_megasyst:
+      class: SubscriptionBundle\Carriers\Megasyst\Callback\MegasystHandler
+      arguments: ["@subscription.megasyst_callback_handler", '@subscription.megasyst_carrier_checker']
+      public: false
+      tags:
+        - { name: subscription.callback_carrier_handler, type: subscribe }
+        - { name: subscription.callback_carrier_handler, type: unsubscribe }
+        - { name: subscription.callback_carrier_handler, type: renew }
+

@@ -1,0 +1,33 @@
+services:
+  subscription.notification_handler_provider:
+      class: SubscriptionBundle\Service\Notification\Impl\NotificationHandlerProvider
+      arguments: ['@subscription.notification_default_handler']
+
+  subscription.notification_default_handler:
+      class: SubscriptionBundle\Service\Notification\Impl\DefaultHandler
+
+  subscription.notification_facade:
+      class: SubscriptionBundle\Service\Notification\Notifier
+      arguments:
+        - '@subscription.notification.message_compiler'
+        - '@subscription.notification.service'
+        - '@monolog.logger.subscription_log'
+        - '@subscription.notification.process_id_extractor'
+        - '@user_bundle.users_service'
+        - '@router'
+        - '@subscription.notification_handler_provider'
+
+  subscription.notification.message_compiler:
+        class: SubscriptionBundle\Service\Notification\Common\MessageCompiler
+        arguments:
+          - '@logger'
+          - '@subscription.notification_message_creator'
+          - '@subscription.subscriber.notification_sms_text_provider'
+
+  subscription.notification.process_id_extractor:
+      class: SubscriptionBundle\Service\Notification\Common\ProcessIdExtractor
+      arguments: ['@identification.identification_request_repository']
+
+  subscription.subscriber.notification_sms_text_provider:
+          class: SubscriptionBundle\Service\Notification\Common\SMSTextProvider
+          arguments: ['%sms.notification.messages%', '@app.carriers']

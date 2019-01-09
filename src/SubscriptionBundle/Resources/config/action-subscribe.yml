@@ -1,0 +1,76 @@
+services:
+  subscription.subscriber:
+      class: SubscriptionBundle\Service\Action\Subscribe\Subscriber
+      arguments:
+        - '@logger'
+        - '@subscription.entity_save_helper'
+        - '@session'
+        - '@subscription.subscription_creator'
+        - '@subscription.promotional_tier_checker'
+        - '@subscription.promotional_response_mapper'
+        - '@subscription.notification_facade'
+        - '@subscription.process.subscribe'
+        - '@subscription.subscriber.updater'
+        - '@affiliate.affiliate.service'
+        - '@affiliate.user_info_mapper'
+        - '@subscription.piwic_statistic_sender'
+        - '@subscription.billing_framework_subscription_data_provider'
+        - '@subscription.subscriber_provider'
+        - '@subscription.subscribe.parameters_provider'
+
+  subscription.subscriber_provider:
+      class: SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider
+      arguments: ['@subscription.subscription_default_handler']
+
+  subscription.subscriber.common:
+      class: SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler
+      arguments:
+          - '@subscription.subscription_provider'
+          - '@subscription.subscription_pack_provider'
+          - '@subscription.subscriber'
+          - '@subscription.subscription_eligibility_checker'
+          - '@logger'
+          - '@subscription.redirect_url_nullifier'
+          - '@subscription.subscriber_provider'
+          - '@subscription.subscriber.common_response_creator'
+          - '@subscription.utils.url_param_appender'
+          - '@router'
+          - '@affiliate.affiliate.service'
+          - '@subscription.piwic_statistic_sender'
+          - '@affiliate.user_info_mapper'
+          - '@subscription.entity_save_helper'
+
+  subscription.subscription_eligibility_checker:
+      class: SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker
+
+  subscription.unsubscription_eligibility_checker:
+      class: SubscriptionBundle\Service\Action\Unsubscribe\UnsubscriptionEligibilityChecker
+
+
+  subscription.redirect_url_nullifier:
+    class: SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier
+    arguments: ['@subscription.entity_save_helper']
+
+  subscription.subscribe.blacklist_voter:
+    class: SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter
+    arguments: ['@app.cache.default', '@router', '@identification.service', '%token_session_name%', '@user_bundle.users_service', '@logger']
+
+  subscription.subscriber.updater:
+      class: SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater
+      arguments:
+        - '@subscription.subscription_provider'
+        - '@subscription.billing_framework_credit_calculator'
+        - '@subscription.billing_framework_renew_date_calculator'
+        - '@event_dispatcher'
+        - '@subscription.common_subscription_updater'
+
+  subscription.subscriber.common_response_creator:
+      class: SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator
+      arguments: ['@subscription.subscription_provider', '@subscription.redirect_url_nullifier']
+
+  subscription.subscription_default_handler:
+      class: SubscriptionBundle\Service\Action\Subscribe\Handler\DefaultHandler
+
+  subscription.subscribe.parameters_provider:
+      class: SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider
+      arguments: ['@subscription.request_parameters_provider', '@request_stack', '@router']

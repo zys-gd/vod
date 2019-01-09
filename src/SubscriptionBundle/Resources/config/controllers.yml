@@ -1,0 +1,50 @@
+services:
+  subscription.subscribe_action:
+    class: SubscriptionBundle\Controller\Actions\SubscribeAction
+    arguments:
+        - '@subscription.billable_user_provider'
+        - '@subscription.subscriber.common'
+        - '@router.default'
+        - '@logger'
+        - '@subscription.legacy.mobimind_service'
+        - '@subscription.megasyst_carrier_checker'
+        - '@subscription.subscribe.blacklist_voter'
+        - '@subscription.megasyst_phone_checker'
+        - '@subscription.utils.url_param_appender'
+        - '@subscription.legacy.mobilife_service'
+        - '@subscription.subscriber_provider'
+
+  subscription.listen_action:
+    class: SubscriptionBundle\Controller\Actions\ListenAction
+    arguments: ['@handler.billing_callback_common', '@logger', '@handler.billing_callback_chain']
+
+  subscription.subscribe_back_action:
+    class: SubscriptionBundle\Controller\Actions\SubscribeBackAction
+    arguments: ['@handler.subscribe_back_chain', '@router']
+
+  subscription.redirect_action:
+    class: SubscriptionBundle\Controller\Actions\RedirectAction
+    arguments: ['@subscription.billable_user_provider', '@monolog.logger.subscription_log', '@subscription.subscription_provider']
+
+  subscription.unsubscribe_action:
+    class: SubscriptionBundle\Controller\Actions\UnsubscribeAction
+    arguments:
+        - '@subscription.billable_user_provider'
+        - '@subscription.subscription_provider'
+        - '@subscription.subscription_pack_provider'
+        - '@subscription.unsubscriber'
+        - '@subscription.unsubscription_eligibility_checker'
+        - '@subscription.unsubscription_handler_provider'
+
+  subscription.check_airtel_action:
+    class: SubscriptionBundle\Controller\Actions\CheckAirtelAction
+    arguments: ['@identification.dot', '@subscription.airtel_subscriber']
+
+  subscription.wait_action:
+    class: SubscriptionBundle\Controller\Actions\WaitAction
+    arguments: ['@subscription.billable_user_provider', '@subscription.subscription_provider', '@router.default']
+
+  subscription.get_subscription_action:
+    class: SubscriptionBundle\Controller\Actions\GetSubscriptionAction
+    arguments: ['@subscription.billable_user_provider', '@subscription.subscription_provider']
+

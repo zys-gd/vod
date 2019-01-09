@@ -36,7 +36,7 @@ services:
                 label: Placeholders
 
 #    App\Admin\Sonata\Sonata\PlaceholderToOperatorAdmin:
-#        arguments: [~, App\Domain\Entity\PlaceholderToOperator, ~, "@talentica.subscription_pack.repository"]
+#        arguments: [~, App\Domain\Entity\PlaceholderToOperator, ~, "@subscription.subscription_pack.repository"]
 #        tags:
 #            -
 #                name: sonata.admin

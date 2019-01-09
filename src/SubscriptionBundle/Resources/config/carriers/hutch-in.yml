@@ -1,0 +1,13 @@
+services:
+  subscription.subscriber.hutch_indonesia:
+      class: SubscriptionBundle\Carriers\HutchIN\Subscribe\HutchINHandler
+      arguments:
+        - '@logger'
+        - '@subscription.notification.service'
+        - '@subscription.subscription_pack_provider'
+        - '@subscription.utils.url_param_appender'
+        - '@subscription.notification_facade'
+        - '@subscription.subscriber.common_response_creator'
+        - '@router'
+      tags:
+         - { name: subscription.subscription_handler }

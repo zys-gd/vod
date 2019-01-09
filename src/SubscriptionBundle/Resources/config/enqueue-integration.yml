@@ -1,0 +1,10 @@
+services:
+  subscription.renew_subscription.consumer:
+      class: SubscriptionBundle\Enqueue\RenewSubscriptionConsumer
+      arguments:
+        -  "@subscription.subscription.service"
+        -  "@subscription.subscription.repository"
+        - '@subscription.renewer'
+        - '@logger'
+      tags:
+          - { name: enqueue.client.processor }

@@ -1,0 +1,34 @@
+services:
+
+
+  subscription.dialog_lk_notification_handler:
+      class: SubscriptionBundle\Carriers\DialogLK\Notification\DialogLKNotificationHandler
+      tags:
+        - {name: subscription.notification_handler, type: subscribe}
+        - {name: subscription.notification_handler, type: unsubscribe}
+        - {name: subscription.notification_handler, type: renew}
+
+  subscription.dialog_lk_subscribe_handler:
+      class: SubscriptionBundle\Carriers\DialogLK\Subscribe\DialogLKSubscriber
+      tags:
+        - {name: subscription.subscription_handler}
+      arguments: ['@router']
+
+  subscription.dialog_lk_subscribeback_handler:
+      class: SubscriptionBundle\Carriers\DialogLK\SubscribeBack\DialogLKSubscribeBackHandler
+      arguments:
+        - '@router'
+        - '@app.carriers.repository'
+        - '@identification.method.subscribestatus'
+        - '@user.billable_user.repository'
+        - '@identification.service'
+        - '@user_bundle.users_service'
+        - '@subscription.subscription.repository'
+        - '@subscription.subscription_pack_provider'
+        - '@affiliate.affiliate.service'
+        - '@subscription.piwic_statistic_sender'
+        - '@subscription.subscriber.updater'
+        - '@affiliate.user_info_mapper'
+        - '@subscription.promotional_response_mapper'
+        - '@subscription.subscription_creator'
+        - '@subscription.entity_save_helper'

@@ -1,0 +1,5 @@
+services:
+  subscription.veoo_subscribe_callback_handler:
+      class: SubscriptionBundle\Carriers\Veoo\Callback\VeooSubscribeCallbackHandler
+      tags:
+          - { name: subscription.callback_carrier_handler, type: subscribe }
