@@ -1,7 +1,7 @@
 services:
   subscription.subscriber.orange_tunisia:
     class: SubscriptionBundle\Carriers\OrangeTN\Subscribe\OrangeTNHandler
-    arguments: ['@subscription.subscription_provider', '@subscription.redirect_url_nullifier', '@router']
+    arguments: ['@SubscriptionBundle\Service\SubscriptionProvider', '@SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier', '@router']
     tags:
       - { name: subscription.subscription_handler }
 

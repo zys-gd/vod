@@ -10,7 +10,7 @@ class NotificationHandlerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $definition = $container->findDefinition('subscription.notification_handler_provider');
+        $definition = $container->findDefinition('SubscriptionBundle\Service\Notification\Impl\NotificationHandlerProvider');
 
         $taggedServices = $container->findTaggedServiceIds('subscription.notification_handler');
 

@@ -21,33 +21,31 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: Content, label: Languages }
 
-#    App\Admin\Sonata\Sonata\RefundAdmin:
-#        arguments: [~, App\Domain\Entity\Refund, AppBundle:RefundAdmin]
-#        tags:
-#            - { name: sonata.admin, manager_type: orm, group: admin, label: Refunds }
+    #    App\Admin\Sonata\Sonata\RefundAdmin:
+    #        arguments: [~, App\Domain\Entity\Refund, AppBundle:RefundAdmin]
+    #        tags:
+    #            - { name: sonata.admin, manager_type: orm, group: admin, label: Refunds }
 
     App\Admin\Sonata\PlaceholderAdmin:
         arguments: [~, App\Domain\Entity\Placeholder, ~]
         tags:
-            -
-                name: sonata.admin
+            -   name: sonata.admin
                 group: Content
                 manager_type: orm
                 label: Placeholders
 
-#    App\Admin\Sonata\Sonata\PlaceholderToOperatorAdmin:
-#        arguments: [~, App\Domain\Entity\PlaceholderToOperator, ~, "@subscription.subscription_pack.repository"]
-#        tags:
-#            -
-#                name: sonata.admin
-#                manager_type: orm
-#                label: Placeholder to operator
+    #    App\Admin\Sonata\Sonata\PlaceholderToOperatorAdmin:
+    #        arguments: [~, App\Domain\Entity\PlaceholderToOperator, ~, "@SubscriptionBundle\Repository\SubscriptionPackRepository"]
+    #        tags:
+    #            -
+    #                name: sonata.admin
+    #                manager_type: orm
+    #                label: Placeholder to operator
 
     App\Admin\Sonata\CarrierAdmin:
         arguments: [~, App\Domain\Entity\Carrier, 'App\Admin\Controller\CarrierAdminController']
         tags:
-            -
-                name: sonata.admin
+            -   name: sonata.admin
                 manager_type: orm
                 group: Carriers
                 label: Carriers
@@ -55,8 +53,7 @@ services:
     App\Admin\Sonata\AffiliateAdmin:
         arguments: [~, App\Domain\Entity\Affiliate, ~]
         tags:
-            -
-                name: sonata.admin
+            -   name: sonata.admin
                 manager_type: orm
                 group: Affiliates
                 label: Affiliates

@@ -10,24 +10,18 @@ namespace SubscriptionBundle\Enqueue;
 
 
 use Enqueue\Client\TopicSubscriberInterface;
-use Interop\Queue\PsrContext;
-use Interop\Queue\PsrMessage;
-use Interop\Queue\PsrProcessor;
+use Interop\Queue\Context;
+use Interop\Queue\Message;
+use Interop\Queue\Processor;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkException;
 use SubscriptionBundle\Command\RenewCommand;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Repository\SubscriptionRepository;
 use SubscriptionBundle\Service\Action\Renew\Renewer;
-use SubscriptionBundle\Service\Legacy\SubscriptionHelperService;
 
-class RenewSubscriptionConsumer implements PsrProcessor, TopicSubscriberInterface
+class RenewSubscriptionConsumer implements Processor, TopicSubscriberInterface
 {
-
-    /**
-     * @var SubscriptionHelperService
-     */
-    private $subscriptionService;
     /**
      * @var LoggerInterface
      */
@@ -43,21 +37,17 @@ class RenewSubscriptionConsumer implements PsrProcessor, TopicSubscriberInterfac
 
     /**
      * RenewSubscriptionConsumer constructor.
-     * @param SubscriptionHelperService $subscriptionService
      * @param SubscriptionRepository    $subscriptionRepo
      * @param Renewer                   $renewer
      * @param LoggerInterface           $logger
      * @internal param LoggerInterface $logger
      */
     public function __construct(
-        SubscriptionHelperService $subscriptionService,
         SubscriptionRepository $subscriptionRepo,
         Renewer $renewer,
         LoggerInterface $logger
     )
     {
-
-        $this->subscriptionService = $subscriptionService;
         $this->logger              = $logger;
         $this->subscriptionRepo    = $subscriptionRepo;
         $this->renewer             = $renewer;
@@ -69,12 +59,12 @@ class RenewSubscriptionConsumer implements PsrProcessor, TopicSubscriberInterfac
      * The method also can return an object.
      * It must implement __toString method and the method must return one of the constants from above.
      *
-     * @param PsrMessage $message
-     * @param PsrContext $context
+     * @param Message $message
+     * @param Context $context
      *
      * @return string|object with __toString method implemented
      */
-    public function process(PsrMessage $message, PsrContext $context)
+    public function process(Message $message, Context $context)
     {
 
         $subscriptionId = $message->getBody();

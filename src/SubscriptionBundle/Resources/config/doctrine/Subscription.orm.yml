@@ -1,9 +1,9 @@
 SubscriptionBundle\Entity\Subscription:
     type: entity
     table: subscriptions
+    repositoryClass: SubscriptionBundle\Repository\SubscriptionRepository
     gedmo:
       loggable: true
-    repositoryClass: SubscriptionBundle\Repository\SubscriptionRepository
     id:
         uuid:
             type: guid

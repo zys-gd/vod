@@ -1,7 +1,6 @@
 services:
 
-  subscription.admin.subscription_pack_subscription_pack_country_carrier_tier:
-          class: SubscriptionBundle\Validator\Constraints\CountryCarrierTierValidator
+    SubscriptionBundle\Validator\Constraints\CountryCarrierTierValidator:
           arguments:
               - "@request_stack"
           tags:
@@ -11,6 +10,6 @@ services:
 
   #subscription.admin.subscription_pack_contains_unique_active_carrier:
   #    class: SubscriptionBundle\Validator\Constraints\ContainsUniqueActiveCarrierValidator
-  #    arguments: ['@subscription.subscription_pack.repository']
+  #    arguments: ['@SubscriptionBundle\Repository\SubscriptionPackRepository']
   #    tags:
   #      - { name: validator.constraint_validator }

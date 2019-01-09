@@ -1,23 +1,20 @@
 services:
-  subscription.renewer:
-      class: SubscriptionBundle\Service\Action\Renew\Renewer
+  SubscriptionBundle\Service\Action\Renew\Renewer:
       arguments:
         - '@logger'
         - '@event_dispatcher'
-        - '@subscription.entity_save_helper'
-        - '@subscription.process.renew'
-        - '@subscription.renewer.updater'
-        - '@subscription.renew.parameters_provider'
+        - '@SubscriptionBundle\Service\EntitySaveHelper'
+        - '@SubscriptionBundle\BillingFramework\Process\RenewProcess'
+        - '@SubscriptionBundle\Service\Action\Renew\OnRenewUpdater'
+        - '@SubscriptionBundle\Service\Action\Renew\RenewParametersProvider'
 
-  subscription.renewer.updater:
-      class: SubscriptionBundle\Service\Action\Renew\OnRenewUpdater
+  SubscriptionBundle\Service\Action\Renew\OnRenewUpdater:
       arguments:
-        - '@subscription.billing_framework_renew_date_calculator'
-        - '@subscription.subscription_provider'
-        - '@subscription.billing_framework_credit_calculator'
+        - '@SubscriptionBundle\Service\RenewDateCalculator'
+        - '@SubscriptionBundle\Service\SubscriptionProvider'
+        - '@SubscriptionBundle\Service\CreditsCalculator'
         - '@event_dispatcher'
-        - '@subscription.common_subscription_updater'
+        - '@SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater'
 
-  subscription.renew.parameters_provider:
-      class: SubscriptionBundle\Service\Action\Renew\RenewParametersProvider
-      arguments: ['@subscription.request_parameters_provider', '%host%', '@router']
+  SubscriptionBundle\Service\Action\Renew\RenewParametersProvider:
+      arguments: ['@SubscriptionBundle\Service\Action\Common\RequestParametersProvider', '%host%', '@router']

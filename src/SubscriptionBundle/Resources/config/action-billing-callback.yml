@@ -1,49 +1,41 @@
 services:
 
-  handler.billing_callback_common:
-      class: SubscriptionBundle\Service\Callback\Common\CommonFlowHandler
+  SubscriptionBundle\Service\Callback\Common\CommonFlowHandler:
       arguments:
         - '@logger'
-        - '@subscription.billing_framework_subscription_handler_provider'
-        - '@subscription.billing_framework_process_response_mapper'
-        - '@subscription.subscription.repository'
+        - '@SubscriptionBundle\Service\Callback\Common\CallbackTypeHandlerProvider'
+        - '@SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper'
+        - '@SubscriptionBundle\Repository\SubscriptionRepository'
         - '@user.billable_user.repository'
         - '@event_dispatcher'
-        - '@subscription.entity_save_helper'
+        - '@SubscriptionBundle\Service\EntitySaveHelper'
         - '@affiliate.carrier_post_send_affiliate_checker'
         - '@affiliate.affiliate.service'
-        - '@subscription.piwic_statistic_sender'
+        - '@SubscriptionBundle\Piwik\PiwikStatisticSender'
         - '@affiliate.user_info_mapper'
-        - '@handler.billing_callback_chain'
+        - '@SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider'
 
       public: false
 
-  handler.billing_callback_chain:
-      class: SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider
+  SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider: ~
 
-
-  subscription.billing_framework_subscription_handler_provider:
-      class: SubscriptionBundle\Service\Callback\Common\CallbackTypeHandlerProvider
+  SubscriptionBundle\Service\Callback\Common\CallbackTypeHandlerProvider:
       arguments:
-        - '@subscription.billing_framework_unsubscription_handler'
-        - '@subscription.billing_framework_subscription_handler'
-        - '@subscription.billing_framework_subscription_renew_handler'
+        - '@SubscriptionBundle\Service\Callback\Common\Type\UnsubscriptionCallbackHandler'
+        - '@SubscriptionBundle\Service\Callback\Common\Type\SubscriptionCallbackHandler'
+        - '@SubscriptionBundle\Service\Callback\Common\Type\RenewCallbackHandler'
 
-  subscription.billing_framework_subscription_abstract_handler:
-        class: SubscriptionBundle\Service\Callback\Common\Type\AbstractCallbackHandler
+  SubscriptionBundle\Service\Callback\Common\Type\AbstractCallbackHandler: ~
 
-  subscription.billing_framework_unsubscription_handler:
-        class: SubscriptionBundle\Service\Callback\Common\Type\UnsubscriptionCallbackHandler
+  SubscriptionBundle\Service\Callback\Common\Type\UnsubscriptionCallbackHandler:
         arguments:
-            - '@subscription.unsubscribe.updater'
+            - '@SubscriptionBundle\Service\Action\Unsubscribe\OnUnsubscribeUpdater'
 
-  subscription.billing_framework_subscription_handler:
-      class: SubscriptionBundle\Service\Callback\Common\Type\SubscriptionCallbackHandler
+  SubscriptionBundle\Service\Callback\Common\Type\SubscriptionCallbackHandler:
       arguments:
-          - '@subscription.subscriber.updater'
+          - '@SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater'
 
-  subscription.billing_framework_subscription_renew_handler:
-      class: SubscriptionBundle\Service\Callback\Common\Type\RenewCallbackHandler
+  SubscriptionBundle\Service\Callback\Common\Type\RenewCallbackHandler:
       arguments:
-          - '@subscription.renewer.updater'
+          - '@SubscriptionBundle\Service\Action\Renew\Renewer.updater'
           - '@event_dispatcher'

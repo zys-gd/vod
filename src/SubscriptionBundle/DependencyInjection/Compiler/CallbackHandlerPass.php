@@ -10,7 +10,7 @@ class CallbackHandlerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $definition = $container->findDefinition('handler.billing_callback_chain');
+        $definition = $container->findDefinition('SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider');
 
         $taggedServices = $container->findTaggedServiceIds('subscription.callback_carrier_handler');
 

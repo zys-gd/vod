@@ -101,6 +101,24 @@
     "egulias/email-validator": {
         "version": "2.1.7"
     },
+    "enqueue/dsn": {
+        "version": "0.9.2"
+    },
+    "enqueue/enqueue": {
+        "version": "0.9.4"
+    },
+    "enqueue/enqueue-bundle": {
+        "version": "0.9",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "0.9",
+            "ref": "a025d0d707c6a7fefb8903f1c9844700dc69ee9d"
+        }
+    },
+    "enqueue/null": {
+        "version": "0.9.2"
+    },
     "fig/link-util": {
         "version": "1.0.0"
     },
@@ -220,6 +238,12 @@
     },
     "psr/simple-cache": {
         "version": "1.0.1"
+    },
+    "queue-interop/amqp-interop": {
+        "version": "0.8.1"
+    },
+    "queue-interop/queue-interop": {
+        "version": "0.8.0"
     },
     "ralouphie/getallheaders": {
         "version": "2.0.5"

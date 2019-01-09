@@ -2,31 +2,33 @@
 
 namespace SubscriptionBundle\Service;
 
-use AppBundle\Repository\LanguagesRepository;
-use AppBundle\Repository\PlaceholderToOperatorRepository;
+use App\Domain\Repository\TranslationRepository;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Service\SubscriptionText\SubscriptionTextProvider;
 
 class SubscriptionTextService
 {
-    protected $placeholderToOperatorRepository = null;
     /**
      * @var SubscriptionTextProvider
      */
     private $subscriptionTextProvider;
+    /**
+     * @var TranslationRepository
+     */
+    private $translationRepository;
 
     /**
      * SubscriptionTextService constructor.
-     * @param PlaceholderToOperatorRepository $placeholderToOperatorRepository
+     * @param TranslationRepository $translationRepository
      * @param SubscriptionTextProvider $subscriptionTextProvider
      */
     public function __construct(
-        PlaceholderToOperatorRepository $placeholderToOperatorRepository,
+        TranslationRepository $translationRepository,
         SubscriptionTextProvider $subscriptionTextProvider
     )
     {
-        $this->placeholderToOperatorRepository = $placeholderToOperatorRepository;
         $this->subscriptionTextProvider = $subscriptionTextProvider;
+        $this->translationRepository = $translationRepository;
     }
 
     /**

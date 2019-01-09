@@ -26,7 +26,7 @@ class AlertCommand extends ContainerAwareCommand
         $entityManager->getConnection()->getConfiguration()->setSQLLogger(null);
         $logger = $container->get('logger');
         /** @var SubscriptionRepository $subscriptionRepo */
-        $subscriptionRepo = $container->get('subscription.subscription.repository');
+        $subscriptionRepo = $container->get('SubscriptionBundle\Repository\SubscriptionRepository');
         $pendingSubCount = $subscriptionRepo->findPendingSubscription();
         if ($pendingSubCount > $pendingLimit) {
             $message = (new \Swift_Message('Alert pending subsriptions'))

@@ -10,7 +10,7 @@ services:
   #  arguments:
   #    - '@doctrine.orm.entity_manager'
   #    - '@logger'
-  #    - '@subscription.subscription.repository'
+  #    - '@SubscriptionBundle\Repository\SubscriptionRepository'
   #    - '@enqueue.client.producer'
   #  tags:
   #    - { name: console.command }
@@ -24,10 +24,10 @@ services:
   #cron.trial_renew_service:
   #    class: SubscriptionBundle\Service\Cron\TrialRenewer
   #    arguments:
-  #      - '@subscription.subscription_pack_provider'
-  #      - '@subscription.renewer'
-  #      - '@subscription.subscription_provider'
+  #      - '@SubscriptionBundle\Service\SubscriptionPackProvider'
+  #      - '@SubscriptionBundle\Service\Action\Renew\Renewer'
+  #      - '@SubscriptionBundle\Service\SubscriptionProvider'
 
   #cron.task:
   #    class: SubscriptionBundle\Service\Cron\CronTaskStatus
-  #    arguments: ['@doctrine.orm.default_entity_manager', '@subscription.cron_task.repository']
+  #    arguments: ['@doctrine.orm.default_entity_manager', '@SubscriptionBundle\Repository\CronTaskRepository']

@@ -1,97 +1,78 @@
 services:
-  subscription.http.client:
+    subscription.http.client:
         class: "%guzzle.client.class%"
         tags:
             - { name: guzzle.client }
 
-  #subscription.subscription_text.service:
-  #  class: SubscriptionBundle\Service\SubscriptionTextService
-  #  arguments:
-  #    - "@app.placeholder_to_operator.repository"
-  #    - '@subscription.service.subscription_text.provider'
+    SubscriptionBundle\Service\SubscriptionTextService:
+        arguments:
+            - '@App\Domain\Repository\TranslationRepository'
+            - '@SubscriptionBundle\Service\SubscriptionText\SubscriptionTextProvider'
 
-  #subscription.service.subscription_text.provider:
-  #    class: SubscriptionBundle\Service\SubscriptionText\SubscriptionTextProvider
-  #    arguments: ['@app.language.repository', '@subscription.service.subscription_text.query_manager']
+    SubscriptionBundle\Service\SubscriptionText\SubscriptionTextProvider:
+        arguments:
+            - '@App\Domain\Repository\TranslationRepository'
+            - '@SubscriptionBundle\Service\SubscriptionText\QueryManager'
 
-  subscription.service.subscription_text.query_manager:
-        class: SubscriptionBundle\Service\SubscriptionText\QueryManager
-        arguments: ['@subscription.service.subscription_text.declension_helper']
+    SubscriptionBundle\Service\SubscriptionText\QueryManager:
+        arguments: ['@SubscriptionBundle\Service\SubscriptionText\DeclensionHelper']
 
-  subscription.service.subscription_text.declension_helper:
-      class: SubscriptionBundle\Service\SubscriptionText\DeclensionHelper
+    SubscriptionBundle\Service\SubscriptionText\DeclensionHelper: ~
 
-  #subscription.billable_user_provider:
-  #    class: SubscriptionBundle\Service\BillableUserProvider
-  #    arguments:
-  #        - "@session"
-  #        - "@identification.service"
-  #        - "@user_bundle.users_service"
-  #        - "@router"
-  #        - "%token_session_name%"
-  #        - '@monolog.logger.subscription_log'
+    #subscription.billable_user_provider:
+    #    class: SubscriptionBundle\Service\BillableUserProvider
+    #    arguments:
+    #        - "@session"
+    #        - "@identification.service"
+    #        - "@user_bundle.users_service"
+    #        - "@router"
+    #        - "%token_session_name%"
+    #        - '@monolog.logger.subscription_log'
 
 
-  #subscription.monolog.db_handler:
-  #        class: SubscriptionBundle\Service\Logs\MonologDBHandler
-  #        arguments: ['@doctrine.orm.entity_manager']
+    #subscription.monolog.db_handler:
+    #        class: SubscriptionBundle\Service\Logs\MonologDBHandler
+    #        arguments: ['@doctrine.orm.entity_manager']
 
-  #subscription.monolog.processor.request:
-  #        class: SubscriptionBundle\Service\Logs\RequestProcessor
-  #        arguments: ['@request_stack', '@service_container']
-  #        tags:
-  #            - { name: monolog.processor, method: processRecord, handler: db }
+    #subscription.monolog.processor.request:
+    #        class: SubscriptionBundle\Service\Logs\RequestProcessor
+    #        arguments: ['@request_stack', '@service_container']
+    #        tags:
+    #            - { name: monolog.processor, method: processRecord, handler: db }
 
-  subscription.subscription_pack_provider:
-      class: SubscriptionBundle\Service\SubscriptionPackProvider
-      arguments: ['@subscription.subscription_pack.repository']
+    SubscriptionBundle\Service\SubscriptionPackProvider:
+        arguments: ['@SubscriptionBundle\Repository\SubscriptionPackRepository']
 
-  subscription.entity_save_helper:
-      class: SubscriptionBundle\Service\EntitySaveHelper
-      arguments: ['@doctrine.orm.entity_manager', '@logger']
+    SubscriptionBundle\Service\EntitySaveHelper:
+        arguments: ['@doctrine.orm.entity_manager', '@logger']
 
-  subscription.subscription_provider:
-      class: SubscriptionBundle\Service\SubscriptionProvider
-      arguments: ['@subscription.subscription.repository']
+    SubscriptionBundle\Service\SubscriptionProvider:
+        class: SubscriptionBundle\Service\SubscriptionProvider
+        arguments: ['@SubscriptionBundle\Repository\SubscriptionRepository']
 
-  subscription.utils.url_param_appender:
-      class: SubscriptionBundle\Utils\UrlParamAppender
+    SubscriptionBundle\Utils\UrlParamAppender: ~
 
+    SubscriptionBundle\Service\SubscriptionCreator:
+        arguments: ['@SubscriptionBundle\Service\EntitySaveHelper']
 
-  subscription.subscription_creator:
-      class: SubscriptionBundle\Service\SubscriptionCreator
-      arguments: ['@subscription.entity_save_helper']
+    SubscriptionBundle\Service\RenewDateCalculator: ~
 
+    SubscriptionBundle\Service\CreditsCalculator:
+        arguments: ['@SubscriptionBundle\Service\RenewDateCalculator']
 
+    SubscriptionBundle\Service\Action\Common\FakeResponseProvider:
+        arguments:
+          ['@logger', '@event_dispatcher']
 
-  subscription.billing_framework_renew_date_calculator:
-      class: SubscriptionBundle\Service\RenewDateCalculator
+    SubscriptionBundle\Service\Action\Common\RequestParametersProvider:
+        arguments: ['@request_stack', '@event_dispatcher', '@router', '@session']
 
-  subscription.billing_framework_credit_calculator:
-      class: SubscriptionBundle\Service\CreditsCalculator
-      arguments: ['@subscription.billing_framework_renew_date_calculator']
+    SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker: ~
 
-
-
-  subscription.promotional_response_mapper:
-      class: SubscriptionBundle\Service\Action\Common\FakeResponseProvider
-      arguments:
-        ['@logger', '@event_dispatcher']
-
-  subscription.request_parameters_provider:
-      class: SubscriptionBundle\Service\Action\Common\RequestParametersProvider
-      arguments: ['@request_stack', '@event_dispatcher', '@router', '@session']
-
-  subscription.promotional_tier_checker:
-      class: SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker
-
-
-  subscription.common_subscription_updater:
-      class: SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater
-      arguments: ['@event_dispatcher']
-
+    SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater:
+        arguments: ['@event_dispatcher']
 
 parameters:
-  subscription.subscription.class: SubscriptionBundle\Entity\SubscriptionPack
-  guzzle.client.class: GuzzleHttp\Client
+    subscription.subscription.class: SubscriptionBundle\Entity\SubscriptionPack
+    guzzle.client.class: GuzzleHttp\Client
 

@@ -1,50 +1,41 @@
 services:
-  subscription.subscribe_action:
-    class: SubscriptionBundle\Controller\Actions\SubscribeAction
-    arguments:
-        - '@subscription.billable_user_provider'
-        - '@subscription.subscriber.common'
-        - '@router.default'
-        - '@logger'
-        - '@subscription.legacy.mobimind_service'
-        - '@subscription.megasyst_carrier_checker'
-        - '@subscription.subscribe.blacklist_voter'
-        - '@subscription.megasyst_phone_checker'
-        - '@subscription.utils.url_param_appender'
-        - '@subscription.legacy.mobilife_service'
-        - '@subscription.subscriber_provider'
+    SubscriptionBundle\Controller\Actions\SubscribeAction:
+        arguments:
+            - '@subscription.billable_user_provider'
+            - '@SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler'
+            - '@router.default'
+            - '@logger'
+            - '@subscription.legacy.mobimind_service'
+            - '@subscription.megasyst_carrier_checker'
+            - '@SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter'
+            - '@subscription.megasyst_phone_checker'
+            - '@SubscriptionBundle\Utils\UrlParamAppender'
+            - '@subscription.legacy.mobilife_service'
+            - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
 
-  subscription.listen_action:
-    class: SubscriptionBundle\Controller\Actions\ListenAction
-    arguments: ['@handler.billing_callback_common', '@logger', '@handler.billing_callback_chain']
+    SubscriptionBundle\Controller\Actions\ListenAction:
+        arguments: ['@SubscriptionBundle\Service\Callback\Common\CommonFlowHandler', '@logger', '@SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider']
 
-  subscription.subscribe_back_action:
-    class: SubscriptionBundle\Controller\Actions\SubscribeBackAction
-    arguments: ['@handler.subscribe_back_chain', '@router']
+    SubscriptionBundle\Controller\Actions\SubscribeBackAction:
+        arguments: ['@SubscriptionBundle\Service\Action\SubscribeBack\SubscribeBackHandlerProvider', '@router']
 
-  subscription.redirect_action:
-    class: SubscriptionBundle\Controller\Actions\RedirectAction
-    arguments: ['@subscription.billable_user_provider', '@monolog.logger.subscription_log', '@subscription.subscription_provider']
+    SubscriptionBundle\Controller\Actions\RedirectAction:
+        arguments: ['@subscription.billable_user_provider', '@monolog.logger.subscription_log', '@SubscriptionBundle\Service\SubscriptionProvider']
 
-  subscription.unsubscribe_action:
-    class: SubscriptionBundle\Controller\Actions\UnsubscribeAction
-    arguments:
-        - '@subscription.billable_user_provider'
-        - '@subscription.subscription_provider'
-        - '@subscription.subscription_pack_provider'
-        - '@subscription.unsubscriber'
-        - '@subscription.unsubscription_eligibility_checker'
-        - '@subscription.unsubscription_handler_provider'
+    SubscriptionBundle\Controller\Actions\UnsubscribeAction:
+        arguments:
+            - '@subscription.billable_user_provider'
+            - '@SubscriptionBundle\Service\SubscriptionProvider'
+            - '@SubscriptionBundle\Service\SubscriptionPackProvider'
+            - '@SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber'
+            - '@SubscriptionBundle\Service\Action\Unsubscribe\UnsubscriptionEligibilityChecker'
+            - '@SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
 
-  subscription.check_airtel_action:
-    class: SubscriptionBundle\Controller\Actions\CheckAirtelAction
-    arguments: ['@identification.dot', '@subscription.airtel_subscriber']
+    SubscriptionBundle\Controller\Actions\WaitAction:
+        class: SubscriptionBundle\Controller\Actions\WaitAction
+        arguments: ['@subscription.billable_user_provider', '@SubscriptionBundle\Service\SubscriptionProvider', '@router.default']
 
-  subscription.wait_action:
-    class: SubscriptionBundle\Controller\Actions\WaitAction
-    arguments: ['@subscription.billable_user_provider', '@subscription.subscription_provider', '@router.default']
-
-  subscription.get_subscription_action:
-    class: SubscriptionBundle\Controller\Actions\GetSubscriptionAction
-    arguments: ['@subscription.billable_user_provider', '@subscription.subscription_provider']
+    SubscriptionBundle\Controller\Actions\GetSubscriptionAction:
+        class: SubscriptionBundle\Controller\Actions\GetSubscriptionAction
+        arguments: ['@subscription.billable_user_provider', '@SubscriptionBundle\Service\SubscriptionProvider']
 

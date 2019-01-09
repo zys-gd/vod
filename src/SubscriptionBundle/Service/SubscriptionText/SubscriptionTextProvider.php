@@ -3,7 +3,7 @@
 namespace SubscriptionBundle\Service\SubscriptionText;
 
 
-use AppBundle\Repository\LanguagesRepository;
+use App\Domain\Repository\TranslationRepository;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Service\SubscriptionText\Periodicity\Custom;
 use SubscriptionBundle\Service\SubscriptionText\Periodicity\Daily;
@@ -13,23 +13,23 @@ use SubscriptionBundle\Service\SubscriptionText\Periodicity\Weekly;
 class SubscriptionTextProvider
 {
     /**
-     * @var LanguagesRepository
-     */
-    private $languagesRepository;
-    /**
      * @var QueryManager
      */
     private $queryManager;
+    /**
+     * @var TranslationRepository
+     */
+    private $translationRepository;
 
     /**
      * SubscriptionTextProvider constructor.
-     * @param LanguagesRepository $languagesRepository
+     * @param TranslationRepository $translationRepository
      * @param QueryManager $queryManager
      */
-    public function __construct(LanguagesRepository $languagesRepository, QueryManager $queryManager)
+    public function __construct(TranslationRepository $translationRepository, QueryManager $queryManager)
     {
-        $this->languagesRepository = $languagesRepository;
         $this->queryManager = $queryManager;
+        $this->translationRepository = $translationRepository;
     }
 
     /**
@@ -42,7 +42,7 @@ class SubscriptionTextProvider
     {
         $billingCarrierId = $oSubPack->getCarrierId();
         $subPackId = $oSubPack->getUuid();
-        $engLangId = $this->languagesRepository->getEnglishLanguageId();
+        $engLangId = $this->translationRepository->getEnglishLanguageId();
         $oPeriodicity = $this->getSubscriptionPeriodicity($oSubPack);
         $period = $oSubPack->getFinalPeriodForSubscription();
         $credits = $oSubPack->getFinalCreditsForSubscription();

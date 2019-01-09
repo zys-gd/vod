@@ -5,8 +5,7 @@ services:
 
 
 
-  handler.subscribe_back_chain:
-      class: SubscriptionBundle\Service\Action\SubscribeBack\SubscribeBackHandlerProvider
+  SubscriptionBundle\Service\Action\SubscribeBack\SubscribeBackHandlerProvider:
       arguments:
         - "@handler.subscribe_back.tim"
         - "@handler.subscribe_back.robi"
@@ -20,13 +19,13 @@ services:
 #      class: SubscriptionBundle\Carriers\ZainIQ\SubscribeBack\ZainBackSubscriber
 #      arguments:
 #        - "@affiliate.affiliate.service"
-#        - '@subscription.subscription_pack_provider'
-#        - '@subscription.piwic_statistic_sender'
+#        - '@SubscriptionBundle\Service\SubscriptionPackProvider'
+#        - '@SubscriptionBundle\Piwik\PiwikStatisticSender'
 #        - '@affiliate.user_info_mapper'
 #        - '@app.carriers'
 #        - '@?'
 #        - '@?'
 #        - '@?'
-#        - '@subscription.billing_framework_process_response_mapper'
+#        - '@SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper'
 #        - '@?'
 #
