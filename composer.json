@@ -10,6 +10,7 @@
     "ext-iconv": "*",
     "cloudinary/cloudinary_php": "1.13.0",
     "geoip2/geoip2": "v2.9.0",
+    "guzzlehttp/guzzle": "v6.3.3",
     "playwing/difftool": "dev-master",
     "ramsey/uuid": "3.8.0",
     "sensio/framework-extra-bundle": "v5.2.4",
@@ -34,6 +35,9 @@
 
   "require-dev": {
     "doctrine/doctrine-fixtures-bundle": "3.1.0",
+    "liip/functional-test-bundle": "v2.x-dev",
+    "mockery/mockery": "1.2.0",
+    "phpunit/phpunit": "7",
     "symfony/debug-pack": "v1.0.7",
     "symfony/maker-bundle": "v1.11.1",
     "symfony/profiler-pack": "v1.0.4",
