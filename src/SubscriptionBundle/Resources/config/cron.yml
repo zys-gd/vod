@@ -1,33 +1,33 @@
 services:
-  subscription.commands.general_renew:
-    class: SubscriptionBundle\Command\GeneralRenewCommand
-    arguments: ['@subscription.cron_running_history.repository', '@doctrine.orm.entity_manager']
-    tags:
-      - { name: console.command }
+  #subscription.commands.general_renew:
+  #  class: SubscriptionBundle\Command\GeneralRenewCommand
+  #  arguments: ['@subscription.cron_running_history.repository', '@doctrine.orm.entity_manager']
+  #  tags:
+  #    - { name: console.command }
 
-  subscription.commands.renew:
-    class: SubscriptionBundle\Command\RenewCommand
-    arguments:
-      - '@doctrine.orm.entity_manager'
-      - '@logger'
-      - '@subscription.subscription.repository'
-      - '@enqueue.client.producer'
-    tags:
-      - { name: console.command }
+  #subscription.commands.renew:
+  #  class: SubscriptionBundle\Command\RenewCommand
+  #  arguments:
+  #    - '@doctrine.orm.entity_manager'
+  #    - '@logger'
+  #    - '@subscription.subscription.repository'
+  #    - '@enqueue.client.producer'
+  #  tags:
+  #    - { name: console.command }
 
-  subscription.commands.trial_renew:
-    class: SubscriptionBundle\Command\RenewTrialSubscriptionCommand
-    tags:
-      - { name: console.command }
-    arguments: ['@cron.trial_renew_service', '@cron.task', '@app.carriers']
+  #subscription.commands.trial_renew:
+  #  class: SubscriptionBundle\Command\RenewTrialSubscriptionCommand
+  #  tags:
+  #    - { name: console.command }
+  #  arguments: ['@cron.trial_renew_service', '@cron.task', '@app.carriers']
 
-  cron.trial_renew_service:
-      class: SubscriptionBundle\Service\Cron\TrialRenewer
-      arguments:
-        - '@subscription.subscription_pack_provider'
-        - '@subscription.renewer'
-        - '@subscription.subscription_provider'
+  #cron.trial_renew_service:
+  #    class: SubscriptionBundle\Service\Cron\TrialRenewer
+  #    arguments:
+  #      - '@subscription.subscription_pack_provider'
+  #      - '@subscription.renewer'
+  #      - '@subscription.subscription_provider'
 
-  cron.task:
-      class: SubscriptionBundle\Service\Cron\CronTaskStatus
-      arguments: ['@doctrine.orm.default_entity_manager', '@subscription.cron_task.repository']
+  #cron.task:
+  #    class: SubscriptionBundle\Service\Cron\CronTaskStatus
+  #    arguments: ['@doctrine.orm.default_entity_manager', '@subscription.cron_task.repository']

@@ -12,7 +12,7 @@ namespace SubscriptionBundle\BillingFramework\Process\API\DTO;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use SubscriptionBundle\BillingFramework\Process\RenewProcess;
 
-class ProcessResult extends JsonResponse
+class ProcessResult
 {
     const STATUS_FAILED = 'failed';
     const STATUS_SUCCESSFUL = 'successful';
@@ -161,7 +161,6 @@ class ProcessResult extends JsonResponse
         $data['message'] = $message;
 
 
-        parent::__construct($data, 200, []);
         $this->provider   = $provider;
         $this->providerId = $providerId;
     }

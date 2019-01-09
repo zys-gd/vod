@@ -8,13 +8,12 @@
 
 namespace IdentificationBundle\BillingFramework\Process;
 
-
-use IdentificationBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters;
-use IdentificationBundle\BillingFramework\Process\API\DTO\ProcessResult;
-use IdentificationBundle\BillingFramework\Process\API\RequestSender;
-use IdentificationBundle\BillingFramework\Process\Exception\BillingFrameworkException;
 use IdentificationBundle\BillingFramework\Process\Exception\IdentProcessException;
 use Psr\Log\LoggerInterface;
+use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters;
+use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
+use SubscriptionBundle\BillingFramework\Process\API\RequestSender;
+use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkException;
 
 class IdentProcess
 {

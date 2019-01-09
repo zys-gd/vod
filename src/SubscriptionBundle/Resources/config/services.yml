@@ -4,15 +4,15 @@ services:
         tags:
             - { name: guzzle.client }
 
-  subscription.subscription_text.service:
-    class: SubscriptionBundle\Service\SubscriptionTextService
-    arguments:
-      - "@app.placeholder_to_operator.repository"
-      - '@subscription.service.subscription_text.provider'
+  #subscription.subscription_text.service:
+  #  class: SubscriptionBundle\Service\SubscriptionTextService
+  #  arguments:
+  #    - "@app.placeholder_to_operator.repository"
+  #    - '@subscription.service.subscription_text.provider'
 
-  subscription.service.subscription_text.provider:
-      class: SubscriptionBundle\Service\SubscriptionText\SubscriptionTextProvider
-      arguments: ['@app.language.repository', '@subscription.service.subscription_text.query_manager']
+  #subscription.service.subscription_text.provider:
+  #    class: SubscriptionBundle\Service\SubscriptionText\SubscriptionTextProvider
+  #    arguments: ['@app.language.repository', '@subscription.service.subscription_text.query_manager']
 
   subscription.service.subscription_text.query_manager:
         class: SubscriptionBundle\Service\SubscriptionText\QueryManager
@@ -21,26 +21,26 @@ services:
   subscription.service.subscription_text.declension_helper:
       class: SubscriptionBundle\Service\SubscriptionText\DeclensionHelper
 
-  subscription.billable_user_provider:
-      class: SubscriptionBundle\Service\BillableUserProvider
-      arguments:
-          - "@session"
-          - "@identification.service"
-          - "@user_bundle.users_service"
-          - "@router"
-          - "%token_session_name%"
-          - '@monolog.logger.subscription_log'
+  #subscription.billable_user_provider:
+  #    class: SubscriptionBundle\Service\BillableUserProvider
+  #    arguments:
+  #        - "@session"
+  #        - "@identification.service"
+  #        - "@user_bundle.users_service"
+  #        - "@router"
+  #        - "%token_session_name%"
+  #        - '@monolog.logger.subscription_log'
 
 
-  subscription.monolog.db_handler:
-          class: SubscriptionBundle\Service\Logs\MonologDBHandler
-          arguments: ['@doctrine.orm.entity_manager']
+  #subscription.monolog.db_handler:
+  #        class: SubscriptionBundle\Service\Logs\MonologDBHandler
+  #        arguments: ['@doctrine.orm.entity_manager']
 
-  subscription.monolog.processor.request:
-          class: SubscriptionBundle\Service\Logs\RequestProcessor
-          arguments: ['@request_stack', '@service_container']
-          tags:
-              - { name: monolog.processor, method: processRecord, handler: db }
+  #subscription.monolog.processor.request:
+  #        class: SubscriptionBundle\Service\Logs\RequestProcessor
+  #        arguments: ['@request_stack', '@service_container']
+  #        tags:
+  #            - { name: monolog.processor, method: processRecord, handler: db }
 
   subscription.subscription_pack_provider:
       class: SubscriptionBundle\Service\SubscriptionPackProvider

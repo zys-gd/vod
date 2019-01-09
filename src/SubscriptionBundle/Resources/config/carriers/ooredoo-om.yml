@@ -1,6 +1,0 @@
-services:
-
-  subscription.ooredoo_om_subscribe_handler:
-      class: SubscriptionBundle\Carriers\OoredooOM\Subscribe\OoredooOMSubscriber
-      tags:
-        - {name: subscription.subscription_handler}

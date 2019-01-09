@@ -8,8 +8,7 @@
 
 namespace SubscriptionBundle\Service\Action\Subscribe\Handler;
 
-
-use AppBundle\Entity\Carrier;
+use IdentificationBundle\Entity\CarrierInterface;
 
 class SubscriptionHandlerProvider
 {
@@ -62,10 +61,10 @@ class SubscriptionHandlerProvider
     }
 
     /**
-     * @param Carrier $carrier
+     * @param CarrierInterface $carrier
      * @return SubscriptionHandlerInterface
      */
-    public function getSubscriber(Carrier $carrier): SubscriptionHandlerInterface
+    public function getSubscriber(CarrierInterface $carrier): SubscriptionHandlerInterface
     {
         /** @var SubscriptionHandlerInterface $subscriber */
         foreach ($this->subscribers as $subscriber) {

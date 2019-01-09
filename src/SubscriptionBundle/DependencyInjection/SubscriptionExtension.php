@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 
-class SubscriptionBundleExtension extends ConfigurableExtension
+class SubscriptionExtension extends ConfigurableExtension
 {
     /**
      * Configures the passed container according to the merged configuration.
@@ -57,9 +57,9 @@ class SubscriptionBundleExtension extends ConfigurableExtension
             $container,
             new FileLocator(__DIR__. '/../Resources/config/carriers')
         );
-        $loader->load('orange-eg.yml');
-        $loader->load('orange-tn.yml');
-        $loader->load('etisalat-eg.yml');
-        $loader->load('telenor-pk.yml');
+        //$loader->load('orange-eg.yml');
+        //$loader->load('orange-tn.yml');
+        //$loader->load('etisalat-eg.yml');
+        //$loader->load('telenor-pk.yml');
     }
 }

@@ -12,5 +12,6 @@ return [
     'CLOUDINARY_CLOUD_NAME' => 'origindata',
     'HOST'                  => 'vod.local',
     'BILLING_API_HOST'      => 'http://billing.playwing.com/api',
+    'TOKEN_SESSION_NAME'    => ''
 
 ];

@@ -9,7 +9,7 @@
 namespace IdentificationBundle\Service\Action\Identification\Common;
 
 
-use IdentificationBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters;
+use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;

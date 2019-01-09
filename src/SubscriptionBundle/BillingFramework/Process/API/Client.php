@@ -37,13 +37,6 @@ class Client
      * @var AdapterInterface
      */
     private $cache;
-
-    /** @var  boolean */
-    private $fakeModeEnabled;
-    /** @var  string */
-    private $fakeUserIdentifier;
-    /** @var  string */
-    private $fakeUserIp;
     /**
      * @var ProcessResponseMapper
      */
@@ -56,28 +49,19 @@ class Client
      * @param LinkCreator                           $billingFrameworkLinkCreator
      * @param AdapterInterface                      $cache
      * @param ProcessResponseMapper                 $responseMapper
-     * @param                                       $fakeModeEnabled
-     * @param                                       $fakeUserIdentifier
-     * @param                                       $fakeUserIp
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         ClientInterface $httpClient,
         LinkCreator $billingFrameworkLinkCreator,
         AdapterInterface $cache,
-        ProcessResponseMapper $responseMapper,
-        $fakeModeEnabled,
-        $fakeUserIdentifier,
-        $fakeUserIp
+        ProcessResponseMapper $responseMapper
     )
     {
         $this->eventDispatcher             = $eventDispatcher;
         $this->httpClient                  = $httpClient;
         $this->billingFrameworkLinkCreator = $billingFrameworkLinkCreator;
         $this->cache                       = $cache;
-        $this->fakeModeEnabled             = $fakeModeEnabled;
-        $this->fakeUserIdentifier          = $fakeUserIdentifier;
-        $this->fakeUserIp                  = $fakeUserIp;
         $this->responseMapper              = $responseMapper;
     }
 
@@ -156,36 +140,6 @@ class Client
         return str_replace("/", "-", $method);
     }
 
-
-    private function handleForFakeRequestIfNeeded($options)
-    {
-        if ($this->fakeModeEnabled) {
-            $options['fake'] = [
-                'code' => 'OK',
-                'data' => [
-                    "id"              => "805",
-                    "subtype"         => "final",
-                    'status'          => 'successful',
-                    "provider"        => "10",
-                    "provider_id"     => 10519045527,
-                    "charge_value"    => 0,
-                    "charge_currency" => "EGP",
-                    "charge_product"  => "16",
-                    "charge_tier"     => "2",
-                    "charge_strategy" => "1"
-                ]
-            ];
-        }
-
-        $returnFields = ['charge_product', 'charge_tier', 'charge_strategy', 'carrier', 'client_id', 'client_user'];
-        foreach ($returnFields as $key) {
-            if (isset($options[$key])) {
-                $options['fake']['data'][$key] = $options[$key];
-            }
-        }
-        return $options;
-    }
-
     /**
      * @param $url
      * @return null|stdClass|stdClass[]
@@ -220,7 +174,6 @@ class Client
     {
         try {
 
-            $params           = $this->handleForFakeRequestIfNeeded($params);
             $response         = $this->httpClient->request('POST', $url, [\GuzzleHttp\RequestOptions::FORM_PARAMS => $params]);
             $preparedResponse = $this->extractContentFromResponse($response);
             return $preparedResponse;

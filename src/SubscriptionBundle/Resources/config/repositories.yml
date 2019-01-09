@@ -1,37 +1,37 @@
 services:
 
-  subscription.subscription_pack.repository:
-          class: SubscriptionBundle\Repository\SubscriptionPackRepository
-          factory: ['@doctrine.orm.default_entity_manager', getRepository]
-          arguments:
-              - SubscriptionBundle\Entity\SubscriptionPack
+  #subscription.subscription_pack.repository:
+  #        class: SubscriptionBundle\Repository\SubscriptionPackRepository
+  #        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+  #        arguments:
+  #            - SubscriptionBundle\Entity\SubscriptionPack
 
-  subscription.subscription_log.repository:
-            class: Doctrine\ORM\EntityRepository
-            factory: ['@doctrine.orm.default_entity_manager', getRepository]
-            arguments:
-                -  Gedmo\Loggable\Entity\LogEntry
-
-  subscription.subscription.repository:
-            class: SubscriptionBundle\Repository\SubscriptionRepository
-            factory: ['@doctrine.orm.default_entity_manager', getRepository]
-            arguments:
-                - SubscriptionBundle\Entity\Subscription
-
-  subscription.cron_running_history.repository:
-            class: SubscriptionBundle\Repository\CronRunningHistoryRepository
-            factory: ['@doctrine.orm.default_entity_manager', getRepository]
-            arguments:
-                - SubscriptionBundle\Entity\CronRunningHistory
-
-  subscription.cron_task.repository:
-            class: SubscriptionBundle\Repository\CronTaskRepository
-            factory: ['@doctrine.orm.default_entity_manager', getRepository]
-            arguments:
-                - SubscriptionBundle\Entity\CronTask
-
-  subscription.subscription_history.repository:
-            class: SubscriptionBundle\Entity\Old\SubscriptionHistoryRepository
-            factory: ['@doctrine.orm.default_entity_manager', getRepository]
-            arguments:
-                - SubscriptionBundle\Entity\Old\SubscriptionHistory
+  #subscription.subscription_log.repository:
+  #          class: Doctrine\ORM\EntityRepository
+  #          factory: ['@doctrine.orm.default_entity_manager', getRepository]
+  #          arguments:
+  #              -  Gedmo\Loggable\Entity\LogEntry
+#
+  #subscription.subscription.repository:
+  #          class: SubscriptionBundle\Repository\SubscriptionRepository
+  #          factory: ['@doctrine.orm.default_entity_manager', getRepository]
+  #          arguments:
+  #              - SubscriptionBundle\Entity\Subscription
+#
+  #subscription.cron_running_history.repository:
+  #          class: SubscriptionBundle\Repository\CronRunningHistoryRepository
+  #          factory: ['@doctrine.orm.default_entity_manager', getRepository]
+  #          arguments:
+  #              - SubscriptionBundle\Entity\CronRunningHistory
+#
+  #subscription.cron_task.repository:
+  #          class: SubscriptionBundle\Repository\CronTaskRepository
+  #          factory: ['@doctrine.orm.default_entity_manager', getRepository]
+  #          arguments:
+  #              - SubscriptionBundle\Entity\CronTask
+#
+  #subscription.subscription_history.repository:
+  #          class: SubscriptionBundle\Entity\Old\SubscriptionHistoryRepository
+  #          factory: ['@doctrine.orm.default_entity_manager', getRepository]
+  #          arguments:
+  #              - SubscriptionBundle\Entity\Old\SubscriptionHistory
