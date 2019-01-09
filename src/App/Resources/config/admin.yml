@@ -2,24 +2,24 @@ services:
     App\Admin\Sonata\UploadedVideoAdmin:
         arguments: [~, App\Domain\Entity\UploadedVideo, 'App\Admin\Controller\UploadedVideoAdminController', '@App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector']
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Videos, label: Videos }
+            - { name: sonata.admin, manager_type: orm, group: Content management, label: Videos }
 
     App\Admin\Sonata\VideoCategoryAdmin:
         arguments: [~, App\Domain\Entity\VideoCategory, 'App\Admin\Controller\VideoCategoryAdminController']
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Videos, label: Categories }
+            - { name: sonata.admin, manager_type: orm, group: Content management, label: Categories }
 
 
     App\Admin\Sonata\BlackListAdmin:
         arguments: [~, App\Domain\Entity\BlackList, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Users, label: BlackList }
+            - { name: sonata.admin, manager_type: orm, group: Black list management, label: BlackList }
 
 
     App\Admin\Sonata\LanguagesAdmin:
         arguments: [~, App\Domain\Entity\Language, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Content, label: Languages }
+            - { name: sonata.admin, manager_type: orm, group: Store text, label: Languages }
 
 #    App\Admin\Sonata\Sonata\RefundAdmin:
 #        arguments: [~, App\Domain\Entity\Refund, AppBundle:RefundAdmin]
@@ -31,7 +31,7 @@ services:
         tags:
             -
                 name: sonata.admin
-                group: Content
+                group: Store text
                 manager_type: orm
                 label: Placeholders
 
@@ -49,7 +49,7 @@ services:
             -
                 name: sonata.admin
                 manager_type: orm
-                group: Carriers
+                group: Carriers management
                 label: Carriers
 
     App\Admin\Sonata\AffiliateAdmin:
@@ -58,5 +58,5 @@ services:
             -
                 name: sonata.admin
                 manager_type: orm
-                group: Affiliates
+                group: Affiliate management
                 label: Affiliates
