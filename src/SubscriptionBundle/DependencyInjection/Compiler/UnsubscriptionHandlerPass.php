@@ -10,7 +10,7 @@ class UnsubscriptionHandlerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $definition = $container->findDefinition('subscription.unsubscription_handler_provider');
+        $definition = $container->findDefinition('SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider');
 
         $taggedServices = $container->findTaggedServiceIds('subscription.unsubscription_handler');
 

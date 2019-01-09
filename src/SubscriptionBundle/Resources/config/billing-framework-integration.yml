@@ -1,58 +1,45 @@
 services:
 
-  subscription.billing_framework_link_creator:
-      class: SubscriptionBundle\BillingFramework\Process\API\LinkCreator
-      arguments: ['%billing_api_host%', '@subscription.utils.url_param_appender']
+  SubscriptionBundle\BillingFramework\Process\API\LinkCreator:
+      arguments: ['%billing_api_host%', '@SubscriptionBundle\Utils\UrlParamAppender']
 
-
-  subscription.notification.service:
-        class: SubscriptionBundle\BillingFramework\Notification\API\RequestSender
+  SubscriptionBundle\BillingFramework\Notification\API\RequestSender:
         arguments:
-          - "@subscription.http.client"
-          - "@logger"
-          - '@subscription.billing_framework_link_creator'
+          - '@subscription.http.client'
+          - '@logger'
+          - '@SubscriptionBundle\BillingFramework\Process\API\LinkCreator'
 
-
-  subscription.billing_framework_api:
-      class: SubscriptionBundle\BillingFramework\Process\API\Client
+  SubscriptionBundle\BillingFramework\Process\API\Client:
       arguments:
         - '@event_dispatcher'
         - '@subscription.http.client'
-        - '@subscription.billing_framework_link_creator'
+        - '@SubscriptionBundle\BillingFramework\Process\API\LinkCreator'
         - '@cache.app'
-        - '@subscription.billing_framework_process_response_mapper'
+        - '@SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper'
 
-
-  subscription.process.subscribe:
-      class: SubscriptionBundle\BillingFramework\Process\SubscribeProcess
+  SubscriptionBundle\BillingFramework\Process\SubscribeProcess:
       arguments:
-        - '@subscription.billing_framework_request_sender'
+        - '@SubscriptionBundle\BillingFramework\Process\API\RequestSender'
         - '@logger'
 
-  subscription.process.renew:
-      class: SubscriptionBundle\BillingFramework\Process\RenewProcess
+  SubscriptionBundle\BillingFramework\Process\RenewProcess:
       arguments:
-        - '@subscription.billing_framework_request_sender'
+        - '@SubscriptionBundle\BillingFramework\Process\API\RequestSender'
         - '@logger'
 
-  subscription.notification_message_creator:
-      class: SubscriptionBundle\BillingFramework\Notification\API\MessageCreator
+  SubscriptionBundle\BillingFramework\Notification\API\MessageCreator:
       arguments: ['@logger', '@router']
 
-  subscription.process.unsubscribe:
-      class: SubscriptionBundle\BillingFramework\Process\UnsubscribeProcess
+  SubscriptionBundle\BillingFramework\Process\UnsubscribeProcess:
       arguments:
         - '@logger'
-        - '@subscription.billing_framework_request_sender'
+        - '@SubscriptionBundle\BillingFramework\Process\API\RequestSender'
 
-  subscription.billing_framework_process_response_mapper:
-      class: SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper
+  SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper: ~
 
-  subscription.billing_framework_subscription_data_provider:
-      class: SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider
+  SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider:
       arguments:
-          - "@subscription.billing_framework_api"
+          - '@SubscriptionBundle\BillingFramework\Process\API\Client'
 
-  subscription.billing_framework_request_sender:
-      class: SubscriptionBundle\BillingFramework\Process\API\RequestSender
-      arguments: ['@event_dispatcher', '@subscription.billing_framework_api', '@logger']
+  SubscriptionBundle\BillingFramework\Process\API\RequestSender:
+      arguments: ['@event_dispatcher', '@SubscriptionBundle\BillingFramework\Process\API\Client', '@logger']

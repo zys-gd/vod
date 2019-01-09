@@ -1,76 +1,64 @@
 services:
-  subscription.subscriber:
-      class: SubscriptionBundle\Service\Action\Subscribe\Subscriber
+  SubscriptionBundle\Service\Action\Subscribe\Subscriber:
       arguments:
         - '@logger'
-        - '@subscription.entity_save_helper'
+        - '@SubscriptionBundle\Service\EntitySaveHelper'
         - '@session'
-        - '@subscription.subscription_creator'
-        - '@subscription.promotional_tier_checker'
-        - '@subscription.promotional_response_mapper'
-        - '@subscription.notification_facade'
-        - '@subscription.process.subscribe'
-        - '@subscription.subscriber.updater'
+        - '@SubscriptionBundle\Service\SubscriptionCreator'
+        - '@SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker'
+        - '@SubscriptionBundle\Service\Action\Common\FakeResponseProvider'
+        - '@SubscriptionBundle\Service\Notification\Notifier'
+        - '@SubscriptionBundle\BillingFramework\Process\SubscribeProcess'
+        - '@SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater'
         - '@affiliate.affiliate.service'
         - '@affiliate.user_info_mapper'
-        - '@subscription.piwic_statistic_sender'
-        - '@subscription.billing_framework_subscription_data_provider'
-        - '@subscription.subscriber_provider'
-        - '@subscription.subscribe.parameters_provider'
+        - '@SubscriptionBundle\Piwik\PiwikStatisticSender'
+        - '@SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider'
+        - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
+        - '@SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider'
 
-  subscription.subscriber_provider:
-      class: SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider
-      arguments: ['@subscription.subscription_default_handler']
+  SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider:
+      arguments: ['@SubscriptionBundle\Service\Action\Subscribe\Handler\DefaultHandler']
 
-  subscription.subscriber.common:
-      class: SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler
+  SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler:
       arguments:
-          - '@subscription.subscription_provider'
-          - '@subscription.subscription_pack_provider'
-          - '@subscription.subscriber'
-          - '@subscription.subscription_eligibility_checker'
+          - '@SubscriptionBundle\Service\SubscriptionProvider'
+          - '@SubscriptionBundle\Service\SubscriptionPackProvider'
+          - '@SubscriptionBundle\Service\Action\Subscribe\Subscriber'
+          - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker'
           - '@logger'
-          - '@subscription.redirect_url_nullifier'
-          - '@subscription.subscriber_provider'
-          - '@subscription.subscriber.common_response_creator'
-          - '@subscription.utils.url_param_appender'
+          - '@SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier'
+          - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
+          - '@SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator'
+          - '@SubscriptionBundle\Utils\UrlParamAppender'
           - '@router'
           - '@affiliate.affiliate.service'
-          - '@subscription.piwic_statistic_sender'
+          - '@SubscriptionBundle\Piwik\PiwikStatisticSender'
           - '@affiliate.user_info_mapper'
-          - '@subscription.entity_save_helper'
+          - '@SubscriptionBundle\Service\EntitySaveHelper'
 
-  subscription.subscription_eligibility_checker:
-      class: SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker
+  SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker: ~
 
-  subscription.unsubscription_eligibility_checker:
-      class: SubscriptionBundle\Service\Action\Unsubscribe\UnsubscriptionEligibilityChecker
+  SubscriptionBundle\Service\Action\Unsubscribe\UnsubscriptionEligibilityChecker: ~
 
+  SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier:
+    arguments: ['@SubscriptionBundle\Service\EntitySaveHelper']
 
-  subscription.redirect_url_nullifier:
-    class: SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier
-    arguments: ['@subscription.entity_save_helper']
-
-  subscription.subscribe.blacklist_voter:
-    class: SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter
+  SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter:
     arguments: ['@app.cache.default', '@router', '@identification.service', '%token_session_name%', '@user_bundle.users_service', '@logger']
 
-  subscription.subscriber.updater:
-      class: SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater
+  SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater:
       arguments:
-        - '@subscription.subscription_provider'
-        - '@subscription.billing_framework_credit_calculator'
-        - '@subscription.billing_framework_renew_date_calculator'
+        - '@SubscriptionBundle\Service\SubscriptionProvider'
+        - '@SubscriptionBundle\Service\CreditsCalculator'
+        - '@SubscriptionBundle\Service\RenewDateCalculator'
         - '@event_dispatcher'
-        - '@subscription.common_subscription_updater'
+        - '@SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater'
 
-  subscription.subscriber.common_response_creator:
-      class: SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator
-      arguments: ['@subscription.subscription_provider', '@subscription.redirect_url_nullifier']
+  SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator:
+      arguments: ['@SubscriptionBundle\Service\SubscriptionProvider', '@SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier']
 
-  subscription.subscription_default_handler:
-      class: SubscriptionBundle\Service\Action\Subscribe\Handler\DefaultHandler
+  SubscriptionBundle\Service\Action\Subscribe\Handler\DefaultHandler: ~
 
-  subscription.subscribe.parameters_provider:
-      class: SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider
-      arguments: ['@subscription.request_parameters_provider', '@request_stack', '@router']
+  SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider:
+      arguments: ['@SubscriptionBundle\Service\Action\Common\RequestParametersProvider', '@request_stack', '@router']

@@ -10,7 +10,7 @@ class SubscriptionHandlerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $definition = $container->findDefinition('subscription.subscriber_provider');
+        $definition = $container->findDefinition('SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider');
 
         $taggedServices = $container->findTaggedServiceIds('subscription.subscription_handler');
 

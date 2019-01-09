@@ -1,29 +1,24 @@
 services:
-  subscription.unsubscriber:
-      class: SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber
+  SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber:
       arguments:
         - '@logger'
-        - '@subscription.entity_save_helper'
-        - '@subscription.promotional_response_mapper'
-        - '@subscription.notification_facade'
-        - '@subscription.process.unsubscribe'
-        - '@subscription.unsubscribe.updater'
+        - '@SubscriptionBundle\Service\EntitySaveHelper'
+        - '@SubscriptionBundle\Service\Action\Common\FakeResponseProvider'
+        - '@SubscriptionBundle\Service\Notification\Notifier'
+        - '@SubscriptionBundle\BillingFramework\Process\UnsubscribeProcess'
+        - '@SubscriptionBundle\Service\Action\Unsubscribe\OnUnsubscribeUpdater'
         - '@affiliate.carrier_post_send_affiliate_checker'
-        - '@subscription.piwic_statistic_sender'
-        - '@subscription.unsubscribe.parameters_provider'
+        - '@SubscriptionBundle\Piwik\PiwikStatisticSender'
+        - '@SubscriptionBundle\Service\Action\Unsubscribe\UnsubscribeParametersProvider'
 
-  subscription.unsubscription_handler_provider:
-      class: SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider
-      arguments: ['@subscription.unsubscription_default_handler']
+  SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider:
+      arguments: ['@SubscriptionBundle\Service\Action\Unsubscribe\Handler\DefaultHandler']
 
-  subscription.unsubscription_default_handler:
-      class: SubscriptionBundle\Service\Action\Unsubscribe\Handler\DefaultHandler
+  SubscriptionBundle\Service\Action\Unsubscribe\Handler\DefaultHandler: ~
 
 
-  subscription.unsubscribe.updater:
-      class: SubscriptionBundle\Service\Action\Unsubscribe\OnUnsubscribeUpdater
-      arguments: ['@event_dispatcher', '@subscription.common_subscription_updater']
+  SubscriptionBundle\Service\Action\Unsubscribe\OnUnsubscribeUpdater:
+      arguments: ['@event_dispatcher', '@SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater']
 
-  subscription.unsubscribe.parameters_provider:
-      class: SubscriptionBundle\Service\Action\Unsubscribe\UnsubscribeParametersProvider
-      arguments: ['@subscription.request_parameters_provider']
+  SubscriptionBundle\Service\Action\Unsubscribe\UnsubscribeParametersProvider:
+      arguments: ['@SubscriptionBundle\Service\Action\Common\RequestParametersProvider']

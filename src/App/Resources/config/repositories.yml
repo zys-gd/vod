@@ -11,3 +11,11 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - App\Domain\Entity\Carrier
+    App\Domain\Repository\TranslationRepository:
+    factory: ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments:
+        - App\Domain\Entity\Translation
+    App\Domain\Repository\LanguageRepository:
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - App\Domain\Entity\Language
