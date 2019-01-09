@@ -86,6 +86,9 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
+    "e-moe/guzzle6-bundle": {
+        "version": "v1.2.4"
+    },
     "easycorp/easy-log-handler": {
         "version": "1.0",
         "recipe": {
