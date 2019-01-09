@@ -1,6 +1,7 @@
 SubscriptionBundle\Entity\CronRunningHistory:
     type: entity
     table: cron_running_history
+    repositoryClass: SubscriptionBundle\Repository\CronRunningHistoryRepository
     id:
         uuid:
             type: guid

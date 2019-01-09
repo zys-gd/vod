@@ -1,6 +1,7 @@
 App\Domain\Entity\Language:
     type: entity
     table: languages
+    repositoryClass: App\Domain\Repository\LanguageRepository
     id:
         uuid:
             type: guid

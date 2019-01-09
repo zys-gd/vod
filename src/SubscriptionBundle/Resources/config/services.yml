@@ -10,7 +10,9 @@ services:
             - '@SubscriptionBundle\Service\SubscriptionText\SubscriptionTextProvider'
 
     SubscriptionBundle\Service\SubscriptionText\SubscriptionTextProvider:
-        arguments: ['@App\Domain\Repository\LanguageRepository', '@SubscriptionBundle\Service\SubscriptionText\QueryManager']
+        arguments:
+            - '@App\Domain\Repository\TranslationRepository'
+            - '@SubscriptionBundle\Service\SubscriptionText\QueryManager'
 
     SubscriptionBundle\Service\SubscriptionText\QueryManager:
         arguments: ['@SubscriptionBundle\Service\SubscriptionText\DeclensionHelper']
