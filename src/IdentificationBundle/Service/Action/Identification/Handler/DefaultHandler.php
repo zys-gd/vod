@@ -10,12 +10,18 @@ namespace IdentificationBundle\Service\Action\Identification\Handler;
 
 
 use IdentificationBundle\Entity\CarrierInterface;
+use Symfony\Component\HttpFoundation\Request;
 
-class DefaultHandler implements IdentificationHandlerInterface
+class DefaultHandler implements IdentificationHandlerInterface, HasCommonFlow
 {
 
     public function canHandle(CarrierInterface $carrier): bool
     {
         return true;
+    }
+
+    public function getAdditionalIdentificationParams(Request $request): array
+    {
+        return [];
     }
 }

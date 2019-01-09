@@ -1,8 +1,2 @@
 services:
   IdentificationBundle\Service\Carrier\ISPResolver: ~
-
-  IdentificationBundle\Service\Action\Identification\Identifier:
-    arguments:
-      - '@IdentificationBundle\Service\Action\Identification\Handler\IdentificationHandlerProvider'
-      - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
-      - '@logger'

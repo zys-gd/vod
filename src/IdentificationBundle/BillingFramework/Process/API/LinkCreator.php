@@ -9,7 +9,8 @@
 namespace IdentificationBundle\BillingFramework\Process\API;
 
 
-use Talentica\SubscriptionBundle\Utils\UrlParamAppender;
+
+use IdentificationBundle\Utils\UrlParamAppender;
 
 class LinkCreator
 {

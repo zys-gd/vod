@@ -1,0 +1,18 @@
+services:
+  IdentificationBundle\Service\Action\Identification\Identifier:
+    arguments:
+      - '@IdentificationBundle\Service\Action\Identification\Handler\IdentificationHandlerProvider'
+      - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+      - '@logger'
+      - '@IdentificationBundle\Service\Action\Identification\Common\CommonFlowHandler'
+
+  IdentificationBundle\Service\Action\Identification\Common\CommonFlowHandler:
+    arguments:
+      - '@IdentificationBundle\BillingFramework\Process\IdentProcess'
+      - '@IdentificationBundle\Service\Action\Identification\Handler\IdentificationHandlerProvider'
+      - '@IdentificationBundle\Service\Action\Identification\Common\RequestParametersProvider'
+
+  IdentificationBundle\Service\Action\Identification\Common\RequestParametersProvider:
+    arguments:
+      - '@event_dispatcher'
+      - '@router'

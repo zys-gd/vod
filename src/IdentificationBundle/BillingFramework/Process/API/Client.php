@@ -58,17 +58,14 @@ class Client
         ClientInterface $httpClient,
         LinkCreator $billingFrameworkLinkCreator,
         AdapterInterface $cache,
-        ProcessResponseMapper $responseMapper,
-        $fakeModeEnabled,
-        $fakeUserIdentifier,
-        $fakeUserIp
+        ProcessResponseMapper $responseMapper
+
     )
     {
         $this->eventDispatcher             = $eventDispatcher;
         $this->httpClient                  = $httpClient;
         $this->billingFrameworkLinkCreator = $billingFrameworkLinkCreator;
         $this->cache                       = $cache;
-
         $this->responseMapper              = $responseMapper;
     }
 

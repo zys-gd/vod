@@ -10,7 +10,10 @@ namespace IdentificationBundle\Service\Action\Identification;
 
 
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
+use IdentificationBundle\Service\Action\Identification\Common\CommonFlowHandler;
 use IdentificationBundle\Service\Action\Identification\DTO\IdentifyResult;
+use IdentificationBundle\Service\Action\Identification\Handler\HasCommonFlow;
+use IdentificationBundle\Service\Action\Identification\Handler\HasCustomFlow;
 use IdentificationBundle\Service\Action\Identification\Handler\IdentificationHandlerProvider;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,6 +33,10 @@ class Identifier
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var CommonFlowHandler
+     */
+    private $commonFlowHandler;
 
 
     /**
@@ -37,16 +44,19 @@ class Identifier
      * @param IdentificationHandlerProvider $handlerProvider
      * @param CarrierRepositoryInterface    $carrierRepository
      * @param LoggerInterface               $logger
+     * @param CommonFlowHandler             $commonFlowHandler
      */
     public function __construct(
         IdentificationHandlerProvider $handlerProvider,
         CarrierRepositoryInterface $carrierRepository,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        CommonFlowHandler $commonFlowHandler
     )
     {
         $this->handlerProvider   = $handlerProvider;
         $this->carrierRepository = $carrierRepository;
         $this->logger            = $logger;
+        $this->commonFlowHandler = $commonFlowHandler;
     }
 
     public function identify(int $carrierBillingId, Request $request): IdentifyResult
@@ -59,6 +69,14 @@ class Identifier
             'className' => get_class($handler),
             'carrierId' => $carrierBillingId
         ]);
+
+
+        if ($handler instanceof HasCustomFlow) {
+            $handler->process($request);
+        } else {
+            $this->commonFlowHandler->process($request, $handler);
+        }
+
 
         return new IdentifyResult();
 

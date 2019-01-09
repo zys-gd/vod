@@ -36,8 +36,29 @@ class IdentificationHandlerProvider
 
     public function addHandler(IdentificationHandlerInterface $handler): void
     {
+        $this->ensureIsCorrect($handler);
+
         $this->handlers[] = $handler;
     }
+
+    private function ensureIsCorrect(IdentificationHandlerInterface $handler)
+    {
+        $availableInterfaceString = json_encode([
+            HasCommonFlow::class,
+            HasCustomFlow::class
+        ]);
+        $handlerClass             = get_class($handler);
+
+        if ((!$handler instanceof HasCommonFlow) && (!$handler instanceof HasCustomFlow)) {
+            throw new \InvalidArgumentException(sprintf('Handler `%s` should implement one of following two interfaces `%s`', $handlerClass, $availableInterfaceString));
+        }
+
+        if ($handler instanceof HasCommonFlow && $handler instanceof HasCustomFlow) {
+            throw new \InvalidArgumentException(sprintf('Handler `%s` cannot implement both flows. Please select one of `%s`', $handlerClass, $availableInterfaceString));
+        }
+
+    }
+
 
     public function get(CarrierInterface $carrier): IdentificationHandlerInterface
     {
