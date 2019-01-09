@@ -1,7 +1,6 @@
 SubscriptionBundle\Entity\CronTask:
     type: entity
     table: cron_tasks
-    repositoryClass: SubscriptionBundle\Repository\CronTaskRepository
     id:
         uuid:
             type: guid

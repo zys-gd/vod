@@ -3,7 +3,6 @@ SubscriptionBundle\Entity\Subscription:
     table: subscriptions
     gedmo:
       loggable: true
-    repositoryClass: SubscriptionBundle\Repository\SubscriptionRepository
     id:
         uuid:
             type: guid

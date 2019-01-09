@@ -1,7 +1,6 @@
 SubscriptionBundle\Entity\Log:
     type: entity
     table: subscription_process_log
-    repositoryClass: SubscriptionBundle\Repository\LogRepository
     id:
         uuid:
             type: guid

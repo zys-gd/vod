@@ -1,7 +1,6 @@
 SubscriptionBundle\Entity\SubscriptionPack:
     type: entity
     table: subscription_packs
-    repositoryClass: SubscriptionBundle\Repository\SubscriptionPackRepository
     id:
         uuid:
             type: guid
