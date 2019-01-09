@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        tags: ['controller.service_arguments']
+
+    IdentificationBundle\Controller\PixelIdentController:
+      arguments:
+        - '@IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentVerifier'
+        - '@IdentificationBundle\BillingFramework\Data\DataProvider'
+        - '@IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentConfirmer'
+

@@ -44,11 +44,11 @@ class Client
 
     /**
      * BillingFrameworkAPI constructor.
-     * @param EventDispatcherInterface              $eventDispatcher
-     * @param ClientInterface                       $httpClient
-     * @param LinkCreator                           $billingFrameworkLinkCreator
-     * @param AdapterInterface                      $cache
-     * @param ProcessResponseMapper                 $responseMapper
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param ClientInterface          $httpClient
+     * @param LinkCreator              $billingFrameworkLinkCreator
+     * @param AdapterInterface         $cache
+     * @param ProcessResponseMapper    $responseMapper
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
@@ -107,15 +107,23 @@ class Client
         return $data;
     }
 
+    public function sendGetDataRequestWithoutCache(string $method, string $id = null): stdClass
+    {
+        $url      = $this->billingFrameworkLinkCreator->createDataLink($method, $id);
+        $response = $this->performGetRequest($url);
+        return (object)$response->data;
+    }
+
     /**
-     * @param $method
-     * @return stdClass[]
+     * @param string      $method
+     * @param string|null $id
+     * @return stdClass
      * @throws BillingFrameworkException
      * @throws BillingFrameworkProcessException
      */
-    public function sendGetDataRequest(string $method): stdClass
+    public function sendGetDataRequest(string $method, string $id = null): stdClass
     {
-        $url = $this->billingFrameworkLinkCreator->createDataLink($method);
+        $url = $this->billingFrameworkLinkCreator->createDataLink($method, $id);
 
         try {
             $cachedResponse = $this->cache->getItem($this->generateCacheKey($method));

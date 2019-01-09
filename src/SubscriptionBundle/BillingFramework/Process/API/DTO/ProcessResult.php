@@ -35,6 +35,7 @@ class ProcessResult
     const PROCESS_SUBTYPE_REDIRECT = 'redirect';
     const PROCESS_SUBTYPE_FINAL = 'final';
     const PROCESS_SUBTYPE_WAIT = 'wait';
+    const PROCESS_SUBTYPE_PIXEL= 'pixel';
 
     const PROCESS_STATUS_FAILED = 'failed';
     const PROCESS_STATUS_SUCCESSFUL = 'successful';
@@ -332,8 +333,12 @@ class ProcessResult
 
 
     public function isFinal(): bool
-
     {
         return $this->subtype === self::PROCESS_SUBTYPE_FINAL;
+    }
+
+    public function isPixel(): bool
+    {
+        return $this->subtype === self::PROCESS_SUBTYPE_PIXEL;
     }
 }

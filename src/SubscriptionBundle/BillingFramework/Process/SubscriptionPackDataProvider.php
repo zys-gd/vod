@@ -46,52 +46,6 @@ class SubscriptionPackDataProvider
         return $this->getDataFromAPI(self::DATA_METHOD_CARRIERS, Carrier::class, $errorMessage);
     }
 
-    /**
-     * @param $method
-     * @param $responseObjectClass
-     * @param $errorMessage
-     * @return array
-     * @throws \SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkException
-     */
-    private function getDataFromAPI($method, $responseObjectClass, $errorMessage): array
-    {
-        $data = [];
-
-        /** @var stdClass[] $strategiesResponse */
-        try {
-            $responseObjectArray = $this->billingFrameworkAPI->sendGetDataRequest($method);
-        } catch (BillingFrameworkException $ex) {
-            throw new BillingFrameworkException($errorMessage, $ex->getCode(), $ex);
-        }
-
-        if ($responseObjectArray) {
-            foreach ($responseObjectArray as $response) {
-                $responseObject = new $responseObjectClass;
-                $data[]         = $this->mapDataToClass($responseObject, $response);
-            }
-        }
-        return $data;
-    }
-
-    private function mapDataToClass($destination, \stdClass $source)
-    {
-        $sourceReflection      = new \ReflectionObject($source);
-        $destinationReflection = new \ReflectionObject($destination);
-        $sourceProperties      = $sourceReflection->getProperties();
-        foreach ($sourceProperties as $sourceProperty) {
-            $sourceProperty->setAccessible(true);
-            $name  = $sourceProperty->getName();
-            $value = $sourceProperty->getValue($source);
-            if ($destinationReflection->hasProperty($name)) {
-                $propDest = $destinationReflection->getProperty($name);
-                $propDest->setAccessible(true);
-                $propDest->setValue($destination, $value);
-            } else {
-                $destination->$name = $value;
-            }
-        }
-        return $destination;
-    }
 
     /**
      * @param Country $country

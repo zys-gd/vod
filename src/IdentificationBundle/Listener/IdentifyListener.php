@@ -68,11 +68,11 @@ class IdentifyListener
         $request = $event->getRequest();
         $session = $request->getSession();
 
-        /*if ($session->has('identification_data')) {
+        if ($session->has('identification_data')) {
             return;
-        }*/
+        }
 
-        $ipAddress  = '116.206.14.4';
+        $ipAddress  = '119.160.116.250';
         $carrierISP = $this->carrierDetection->getCarrier($ipAddress);
 
         $identificationData = [

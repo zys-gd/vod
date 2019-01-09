@@ -11,8 +11,18 @@ services:
       - '@IdentificationBundle\BillingFramework\Process\IdentProcess'
       - '@IdentificationBundle\Service\Action\Identification\Handler\IdentificationHandlerProvider'
       - '@IdentificationBundle\Service\Action\Identification\Common\RequestParametersProvider'
+      - '@router'
 
   IdentificationBundle\Service\Action\Identification\Common\RequestParametersProvider:
     arguments:
       - '@event_dispatcher'
       - '@router'
+
+  IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentVerifier:
+    arguments:
+      - '@IdentificationBundle\BillingFramework\Process\AfterPixelProcess'
+
+  IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentConfirmer:
+    arguments:
+      - '@IdentificationBundle\BillingFramework\Process\AfterPixelProcess'
+

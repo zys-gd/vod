@@ -1,3 +1,9 @@
 services:
   IdentificationBundle\BillingFramework\Process\IdentProcess:
       arguments: ['@logger', '@subscription.billing_framework_request_sender']
+
+  IdentificationBundle\BillingFramework\Process\AfterPixelProcess:
+      arguments: ['@logger', '@subscription.billing_framework_request_sender']
+
+  IdentificationBundle\BillingFramework\Data\DataProvider:
+      arguments: ['@subscription.billing_framework_api', '@subscription.billing_framework_process_response_mapper']

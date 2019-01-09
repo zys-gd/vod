@@ -38,9 +38,14 @@ class LinkCreator
         return $this->urlParamAppender->appendUrl($url, $params);
     }
 
-    public function createDataLink(string $method): string
+    public function createDataLink(string $method, string $id = null): string
     {
-        return sprintf('%s/data/%s', $this->billingFrameworkEndpoint, $method);
+        if ($id) {
+            return sprintf('%s/data/%s/%s', $this->billingFrameworkEndpoint, $method, $id);
+        } else {
+            return sprintf('%s/data/%s', $this->billingFrameworkEndpoint, $method);
+
+        }
     }
 
     public function createCustomLink(string $path): string

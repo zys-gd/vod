@@ -73,13 +73,13 @@ class Identifier
 
         if ($handler instanceof HasCustomFlow) {
             $handler->process($request);
+            return new IdentifyResult();
+        } else if ($handler instanceof HasCommonFlow) {
+            $response = $this->commonFlowHandler->process($request, $handler, $carrier);
+            return new IdentifyResult($response);
         } else {
-            $this->commonFlowHandler->process($request, $handler);
+            throw new \RuntimeException('Handlers for identification should have according interfaces');
         }
-
-
-        return new IdentifyResult();
-
 
     }
 
