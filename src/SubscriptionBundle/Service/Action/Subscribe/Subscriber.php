@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException;
 use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
-use SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider;
 use SubscriptionBundle\Entity\Price;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
@@ -81,10 +80,6 @@ class Subscriber
      */
     private $piwikStatisticSender;
     /**
-     * @var SubscriptionPackDataProvider
-     */
-    private $subscriptionPackDataProvider;
-    /**
      * @var SubscriptionHandlerProvider
      */
     private $subscriptionHandlerProvider;
@@ -107,7 +102,6 @@ class Subscriber
      * @param AffiliateService             $affiliateService
      * @param UserInfoMapper               $userInfoMapper
      * @param PiwikStatisticSender         $piwikStatisticSender
-     * @param SubscriptionPackDataProvider $subscriptionPackDataProvider
      * @param SubscriptionHandlerProvider  $subscriptionHandlerProvider
      * @param SubscribeParametersProvider  $subscribeParametersProvider
      */
@@ -124,7 +118,6 @@ class Subscriber
         AffiliateService $affiliateService,
         UserInfoMapper $userInfoMapper,
         PiwikStatisticSender $piwikStatisticSender,
-        SubscriptionPackDataProvider $subscriptionPackDataProvider,
         SubscriptionHandlerProvider $subscriptionHandlerProvider,
         SubscribeParametersProvider $subscribeParametersProvider
     )
@@ -141,7 +134,6 @@ class Subscriber
         $this->affiliateService             = $affiliateService;
         $this->userInfoMapper               = $userInfoMapper;
         $this->piwikStatisticSender         = $piwikStatisticSender;
-        $this->subscriptionPackDataProvider = $subscriptionPackDataProvider;
         $this->subscriptionHandlerProvider  = $subscriptionHandlerProvider;
         $this->subscribeParametersProvider  = $subscribeParametersProvider;
     }
@@ -212,20 +204,10 @@ class Subscriber
         }
     }
 
-
+//TODO: remove fake
     private function getPriceTierIdWithZeroValue($carrierId)
     {
-        $tierIdWithValueZero = PromotionalResponseChecker::MISSING_PROMOTIONAL_TIER;
-        /** @var Price[] $prices */
-        $prices = $this->subscriptionPackDataProvider->getTiersForCarrier($carrierId);
-        if (!empty($prices) && is_array($prices)) {
-            /** @var Price $price */
-            foreach ($prices as $price) {
-                if ($price->getValue() == 0)
-                    $tierIdWithValueZero = $price->getTierId();
-            }
-        }
-        return $tierIdWithValueZero;
+        return 0;
     }
 
     /**

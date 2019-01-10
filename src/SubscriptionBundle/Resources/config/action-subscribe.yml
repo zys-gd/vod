@@ -13,7 +13,6 @@ services:
         - '@affiliate.affiliate.service'
         - '@affiliate.user_info_mapper'
         - '@SubscriptionBundle\Piwik\PiwikStatisticSender'
-        - '@SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider'
         - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
         - '@SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider'
 

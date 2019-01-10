@@ -37,9 +37,5 @@ services:
 
   SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper: ~
 
-  SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider:
-      arguments:
-          - '@SubscriptionBundle\BillingFramework\Process\API\Client'
-
   SubscriptionBundle\BillingFramework\Process\API\RequestSender:
       arguments: ['@event_dispatcher', '@SubscriptionBundle\BillingFramework\Process\API\Client', '@logger']
