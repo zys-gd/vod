@@ -1,6 +1,5 @@
 <?php
 
-use App\Kernel;
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,16 +20,8 @@ if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? $_ENV['TRUSTED_HOSTS'] ?? false
 
 $kernel  = new VODKernel($_SERVER['APP_ENV'], (bool)$_SERVER['APP_DEBUG']);
 $request = Request::createFromGlobals();
-try {
 
-    $response = $kernel->handle($request);
-    $response->send();
-    $kernel->terminate($request, $response);
+$response = $kernel->handle($request);
+$response->send();
+$kernel->terminate($request, $response);
 
-} catch (\Throwable $exception) {
-
-    error_log($exception->getMessage());
-    http_response_code(500);
-    die($exception->getMessage());
-
-}

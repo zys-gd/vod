@@ -1,0 +1,15 @@
+services:
+  subscription.orange_eg_unsubscribe_handler:
+      class: SubscriptionBundle\Carriers\OrangeEG\Unsubscribe\OrangeEGHandler
+      tags:
+        - {name: subscription.unsubscription_handler}
+
+  subscription.orange_eg_unsubscribe_callback_handler:
+      class: SubscriptionBundle\Carriers\OrangeEG\Callback\OrangeEGUnsubscribeCallbackHandler
+      tags:
+        - {name: subscription.callback_carrier_handler, type: unsubscribe}
+
+  subscription.orange_eg_subscribe_callback_handler:
+      class: SubscriptionBundle\Carriers\OrangeEG\Callback\OrangeEGSubscribeCallbackHandler
+      tags:
+        - {name: subscription.callback_carrier_handler, type: subscribe}

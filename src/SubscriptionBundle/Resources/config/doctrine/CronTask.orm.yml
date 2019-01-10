@@ -1,0 +1,25 @@
+SubscriptionBundle\Entity\CronTask:
+    type: entity
+    table: cron_tasks
+    repositoryClass: SubscriptionBundle\Repository\CronTaskRepository
+    id:
+        uuid:
+            type: guid
+    fields:
+        cronName:
+            type: string
+            scale: 0
+            length: 100
+            unique: true
+            nullable: false
+            precision: 0
+            column: cron_name
+        isRunning:
+            type: smallint
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            column: is_running
+    lifecycleCallbacks: {  }

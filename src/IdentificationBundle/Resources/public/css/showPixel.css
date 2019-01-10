@@ -1,0 +1,16 @@
+.waiting-cont {
+    padding: 5px;
+}
+.waiting-cont-btn-loader {
+    background: url('../images/loading.svg') center center no-repeat;
+    background-size: contain;
+    width: 50px;
+    height: 50px;
+    box-shadow: none;
+}
+.waiting-send{
+    padding: 5px;
+}
+.hidden{
+    display: none;
+}

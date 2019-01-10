@@ -1,0 +1,16 @@
+services:
+  IdentificationBundle\Service\Callback\IdentCallbackProcessor:
+    arguments:
+      - '@SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper'
+      - '@IdentificationBundle\Service\Action\Identification\Common\UserFactory'
+      - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+      - '@logger'
+      - '@doctrine.orm.entity_manager'
+      - '@IdentificationBundle\Repository\UserRepository'
+      - '@IdentificationBundle\Service\Callback\Handler\IdentCallbackHandlerProvider'
+
+  IdentificationBundle\Service\Callback\Handler\DefaultHandler: ~
+
+  IdentificationBundle\Service\Callback\Handler\IdentCallbackHandlerProvider:
+    arguments:
+      - '@IdentificationBundle\Service\Callback\Handler\DefaultHandler'

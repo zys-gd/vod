@@ -1,0 +1,64 @@
+services:
+  SubscriptionBundle\Service\Action\Subscribe\Subscriber:
+      arguments:
+        - '@logger'
+        - '@SubscriptionBundle\Service\EntitySaveHelper'
+        - '@session'
+        - '@SubscriptionBundle\Service\SubscriptionCreator'
+        - '@SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker'
+        - '@SubscriptionBundle\Service\Action\Common\FakeResponseProvider'
+        - '@SubscriptionBundle\Service\Notification\Notifier'
+        - '@SubscriptionBundle\BillingFramework\Process\SubscribeProcess'
+        - '@SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater'
+        - '@affiliate.affiliate.service'
+        - '@affiliate.user_info_mapper'
+        - '@SubscriptionBundle\Piwik\PiwikStatisticSender'
+        - '@SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider'
+        - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
+        - '@SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider'
+
+  SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider:
+      arguments: ['@SubscriptionBundle\Service\Action\Subscribe\Handler\DefaultHandler']
+
+  SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler:
+      arguments:
+          - '@SubscriptionBundle\Service\SubscriptionExtractor'
+          - '@SubscriptionBundle\Service\SubscriptionPackProvider'
+          - '@SubscriptionBundle\Service\Action\Subscribe\Subscriber'
+          - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker'
+          - '@logger'
+          - '@SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier'
+          - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
+          - '@SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator'
+          - '@SubscriptionBundle\Utils\UrlParamAppender'
+          - '@router'
+          - '@affiliate.affiliate.service'
+          - '@SubscriptionBundle\Piwik\PiwikStatisticSender'
+          - '@affiliate.user_info_mapper'
+          - '@SubscriptionBundle\Service\EntitySaveHelper'
+
+  SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker: ~
+
+  SubscriptionBundle\Service\Action\Unsubscribe\UnsubscriptionEligibilityChecker: ~
+
+  SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier:
+    arguments: ['@SubscriptionBundle\Service\EntitySaveHelper']
+
+  SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter:
+    arguments: ['@app.cache.default', '@router', '@identification.service', '%token_session_name%', '@user_bundle.users_service', '@logger']
+
+  SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater:
+      arguments:
+        - '@SubscriptionBundle\Service\SubscriptionExtractor'
+        - '@SubscriptionBundle\Service\CreditsCalculator'
+        - '@SubscriptionBundle\Service\RenewDateCalculator'
+        - '@event_dispatcher'
+        - '@SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater'
+
+  SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator:
+      arguments: ['@SubscriptionBundle\Service\SubscriptionExtractor', '@SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier']
+
+  SubscriptionBundle\Service\Action\Subscribe\Handler\DefaultHandler: ~
+
+  SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider:
+      arguments: ['@SubscriptionBundle\Service\Action\Common\RequestParametersProvider', '@request_stack', '@router']

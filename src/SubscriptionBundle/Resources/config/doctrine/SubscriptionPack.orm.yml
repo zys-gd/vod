@@ -1,0 +1,291 @@
+SubscriptionBundle\Entity\SubscriptionPack:
+    type: entity
+    table: subscription_packs
+    repositoryClass: SubscriptionBundle\Repository\SubscriptionPackRepository
+    id:
+        uuid:
+            type: guid
+    fields:
+        status:
+            type: boolean
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+        name:
+            type: string
+            scale: 0
+            length: 255
+            unique: true
+            nullable: false
+            precision: 0
+        description:
+            type: text
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+        isResubAllowed:
+            type: boolean
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            options:
+                default: 0
+            column: is_resub_allowed
+        carrier:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            column: carrier_uuid
+        price:
+            type: decimal
+            precision: 14
+            scale: 2
+            nullable: true
+            column: price
+        currency:
+            type: string
+            length: 3
+            column: currency
+            options:
+                default: ''
+        displayCurrency:
+            type: string
+            length: 10
+            column: display_currency
+            nullable: true
+            options:
+                default: ''
+        credits:
+            type: bigint
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+        periodicity:
+            type: smallint
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+        customRenewPeriod:
+            type: smallint
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            column: custom_renew_period
+        gracePeriod:
+            type: smallint
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            options:
+                unsigned: true
+                default: 0
+            column: grace_period
+        unlimitedGracePeriod:
+            type: boolean
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            options:
+                default: false
+            column: unlimited_grace_period
+        preferredRenewalStart:
+            type: time
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+            column: preferred_renewal_start
+        preferredRenewalEnd:
+            type: time
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+            column: preferred_renewal_end
+        welcomeSMSText:
+            type: text
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+            column: welcome_sms_text
+        renewalSMSText:
+            type: text
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+            column: renewal_sms_text
+        unsubscribeSMSText:
+            type: text
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+            column: unsubscribe_sms_text
+        buyStrategy:
+            type: string
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            column: buy_strategy_name
+        buyStrategyId:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            column: buy_strategy_id
+        renewStrategy:
+            type: string
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            column: renew_strategy_name
+        renewStrategyId:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            column: renew_strategy_id
+        unlimited:
+            type: boolean
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+        firstSubscriptionPeriodIsFreeMultiple:
+            type: boolean
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+            options:
+                default: false
+            column: is_first_subscription_free_multiple
+        firstSubscriptionPeriodIsFree:
+            type: boolean
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+            options:
+                default: false
+            column: is_first_subscription_free
+        allowBonusCredit:
+            type: boolean
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+            options:
+                default: false
+            column: allow_bonus_credit
+        allowBonusCreditMultiple:
+            type: boolean
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+            options:
+                default: false
+            column: allow_bonus_credit_multiple
+        bonusCredit:
+            type: smallint
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+            options:
+                default: 0
+            column: bonus_credit
+        providerManagedSubscriptions:
+            type: boolean
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+            options:
+                default: false
+            column: provider_managed_subscriptions
+        created:
+            type: datetime
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            gedmo:
+              timestampable:
+                on: create
+
+        updated:
+            type: datetime
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            gedmo:
+              timestampable:
+                on: update
+
+    oneToMany:
+        subscriptions:
+            targetEntity: SubscriptionBundle\Entity\Subscription
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: plan
+            inversedBy: null
+            orphanRemoval: false
+            orderBy: null
+    manyToOne:
+        country:
+            targetEntity: App\Domain\Entity\Country
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                country_id:
+                    referencedColumnName: uuid
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

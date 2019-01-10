@@ -2,8 +2,8 @@ App\Domain\Entity\BlackList:
     type: entity
     table: black_list
     indexes:
-      alias_index:
-        columns: [ alias ]
+        alias_index:
+            columns: [ alias ]
     id:
         uuid:
             type: guid
@@ -18,7 +18,7 @@ App\Domain\Entity\BlackList:
             type: boolean
             nullable: false
             options:
-                 default: true
+                default: true
         addedAt:
             type: datetime
             nullable: false

@@ -1,0 +1,20 @@
+services:
+  SubscriptionBundle\Service\Action\Renew\Renewer:
+      arguments:
+        - '@logger'
+        - '@event_dispatcher'
+        - '@SubscriptionBundle\Service\EntitySaveHelper'
+        - '@SubscriptionBundle\BillingFramework\Process\RenewProcess'
+        - '@SubscriptionBundle\Service\Action\Renew\OnRenewUpdater'
+        - '@SubscriptionBundle\Service\Action\Renew\RenewParametersProvider'
+
+  SubscriptionBundle\Service\Action\Renew\OnRenewUpdater:
+      arguments:
+        - '@SubscriptionBundle\Service\RenewDateCalculator'
+        - '@SubscriptionBundle\Service\SubscriptionExtractor'
+        - '@SubscriptionBundle\Service\CreditsCalculator'
+        - '@event_dispatcher'
+        - '@SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater'
+
+  SubscriptionBundle\Service\Action\Renew\RenewParametersProvider:
+      arguments: ['@SubscriptionBundle\Service\Action\Common\RequestParametersProvider', '%host%', '@router']

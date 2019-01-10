@@ -1,0 +1,12 @@
+services:
+    _defaults:
+        tags: ['controller.service_arguments']
+
+    IdentificationBundle\Controller\PixelIdentController:
+      arguments:
+        - '@IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentVerifier'
+        - '@IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentConfirmer'
+
+    IdentificationBundle\Controller\CallbackController:
+      arguments:
+        - '@IdentificationBundle\Service\Callback\IdentCallbackProcessor'

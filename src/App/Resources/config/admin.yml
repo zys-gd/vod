@@ -39,10 +39,10 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: Black list management, label: Black list }
 
-#    App\Admin\Sonata\Sonata\RefundAdmin:
-#        arguments: [~, App\Domain\Entity\Refund, AppBundle:RefundAdmin]
-#        tags:
-#            - { name: sonata.admin, manager_type: orm, group: admin, label: Refunds }
+    #    App\Admin\Sonata\Sonata\RefundAdmin:
+    #        arguments: [~, App\Domain\Entity\Refund, AppBundle:RefundAdmin]
+    #        tags:
+    #            - { name: sonata.admin, manager_type: orm, group: admin, label: Refunds }
 
 #    App\Admin\Sonata\Sonata\PlaceholderToOperatorAdmin:
 #        arguments: [~, App\Domain\Entity\PlaceholderToOperator, ~, "@talentica.subscription_pack.repository"]

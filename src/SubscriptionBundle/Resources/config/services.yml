@@ -1,0 +1,80 @@
+services:
+    subscription.http.client:
+        class: "%guzzle.client.class%"
+        tags:
+            - { name: guzzle.client }
+
+    SubscriptionBundle\Service\SubscriptionTextService:
+        arguments:
+            - '@App\Domain\Repository\TranslationRepository'
+            - '@SubscriptionBundle\Service\SubscriptionText\SubscriptionTextProvider'
+
+    SubscriptionBundle\Service\SubscriptionText\SubscriptionTextProvider:
+        arguments:
+            - '@App\Domain\Repository\TranslationRepository'
+            - '@SubscriptionBundle\Service\SubscriptionText\QueryManager'
+
+    SubscriptionBundle\Service\SubscriptionText\QueryManager:
+        arguments: ['@SubscriptionBundle\Service\SubscriptionText\DeclensionHelper']
+
+    SubscriptionBundle\Service\SubscriptionText\DeclensionHelper: ~
+
+    #SubscriptionBundle\Service\UserExtractor:
+    #    class: SubscriptionBundle\Service\BillableUserProvider
+    #    arguments:
+    #        - "@session"
+    #        - "@identification.service"
+    #        - "@user_bundle.users_service"
+    #        - "@router"
+    #        - "%token_session_name%"
+    #        - '@monolog.logger.subscription_log'
+
+
+    #subscription.monolog.db_handler:
+    #        class: SubscriptionBundle\Service\Logs\MonologDBHandler
+    #        arguments: ['@doctrine.orm.entity_manager']
+
+    #subscription.monolog.processor.request:
+    #        class: SubscriptionBundle\Service\Logs\RequestProcessor
+    #        arguments: ['@request_stack', '@service_container']
+    #        tags:
+    #            - { name: monolog.processor, method: processRecord, handler: db }
+
+    SubscriptionBundle\Service\SubscriptionPackProvider:
+        arguments: ['@SubscriptionBundle\Repository\SubscriptionPackRepository']
+
+    SubscriptionBundle\Service\EntitySaveHelper:
+        arguments: ['@doctrine.orm.entity_manager', '@logger']
+
+    SubscriptionBundle\Service\SubscriptionExtractor:
+        arguments: ['@SubscriptionBundle\Repository\SubscriptionRepository']
+
+    SubscriptionBundle\Utils\UrlParamAppender: ~
+
+    SubscriptionBundle\Service\SubscriptionCreator:
+        arguments: ['@SubscriptionBundle\Service\EntitySaveHelper']
+
+    SubscriptionBundle\Service\RenewDateCalculator: ~
+
+    SubscriptionBundle\Service\CreditsCalculator:
+        arguments: ['@SubscriptionBundle\Service\RenewDateCalculator']
+
+    SubscriptionBundle\Service\Action\Common\FakeResponseProvider:
+        arguments:
+          ['@logger', '@event_dispatcher']
+
+    SubscriptionBundle\Service\Action\Common\RequestParametersProvider:
+        arguments: ['@request_stack', '@event_dispatcher', '@router', '@session']
+
+    SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker: ~
+
+    SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater:
+        arguments: ['@event_dispatcher']
+
+    SubscriptionBundle\Service\UserExtractor:
+        arguments: ['@router.default', '@logger', '@IdentificationBundle\Repository\UserRepository']
+
+parameters:
+    subscription.subscription.class: SubscriptionBundle\Entity\SubscriptionPack
+    guzzle.client.class: GuzzleHttp\Client
+

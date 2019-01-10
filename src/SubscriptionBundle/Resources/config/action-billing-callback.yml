@@ -1,0 +1,41 @@
+services:
+
+  SubscriptionBundle\Service\Callback\Common\CommonFlowHandler:
+      arguments:
+        - '@logger'
+        - '@SubscriptionBundle\Service\Callback\Common\CallbackTypeHandlerProvider'
+        - '@SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper'
+        - '@SubscriptionBundle\Repository\SubscriptionRepository'
+        - '@user.billable_user.repository'
+        - '@event_dispatcher'
+        - '@SubscriptionBundle\Service\EntitySaveHelper'
+        - '@affiliate.carrier_post_send_affiliate_checker'
+        - '@affiliate.affiliate.service'
+        - '@SubscriptionBundle\Piwik\PiwikStatisticSender'
+        - '@affiliate.user_info_mapper'
+        - '@SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider'
+
+      public: false
+
+  SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider: ~
+
+  SubscriptionBundle\Service\Callback\Common\CallbackTypeHandlerProvider:
+      arguments:
+        - '@SubscriptionBundle\Service\Callback\Common\Type\UnsubscriptionCallbackHandler'
+        - '@SubscriptionBundle\Service\Callback\Common\Type\SubscriptionCallbackHandler'
+        - '@SubscriptionBundle\Service\Callback\Common\Type\RenewCallbackHandler'
+
+  SubscriptionBundle\Service\Callback\Common\Type\AbstractCallbackHandler: ~
+
+  SubscriptionBundle\Service\Callback\Common\Type\UnsubscriptionCallbackHandler:
+        arguments:
+            - '@SubscriptionBundle\Service\Action\Unsubscribe\OnUnsubscribeUpdater'
+
+  SubscriptionBundle\Service\Callback\Common\Type\SubscriptionCallbackHandler:
+      arguments:
+          - '@SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater'
+
+  SubscriptionBundle\Service\Callback\Common\Type\RenewCallbackHandler:
+      arguments:
+          - '@SubscriptionBundle\Service\Action\Renew\Renewer.updater'
+          - '@event_dispatcher'

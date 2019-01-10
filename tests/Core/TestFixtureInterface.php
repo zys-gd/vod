@@ -14,7 +14,7 @@ namespace Tests\Core;
  * Refactor candidate.
  *
  * Interface TestFixtureInterface
- * @package Tests\Talentica\SubscriptionBundle
+ * @package Tests\subscription\SubscriptionBundle
  */
 interface TestFixtureInterface
 {

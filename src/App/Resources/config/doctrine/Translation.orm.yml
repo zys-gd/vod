@@ -1,6 +1,7 @@
 App\Domain\Entity\Translation:
     type: entity
     table: translations
+    repositoryClass: App\Domain\Repository\TranslationRepository
     id:
         uuid:
             type: guid

@@ -25,4 +25,7 @@ return [
     CountryCarrierDetectionBundle\CountryCarrierDetectionBundle::class => ['all' => true],
     Playwing\DiffToolBundle\DiffToolBundle::class => ['dev' => true, 'test' => true],
     Liip\FunctionalTestBundle\LiipFunctionalTestBundle::class => ['dev' => true, 'test' => true],
+    IdentificationBundle\IdentificationBundle::class => ['all' => true],
+    SubscriptionBundle\SubscriptionBundle::class => ['all' => true],
+    Emoe\GuzzleBundle\EmoeGuzzleBundle::class => ['all' => true],
 ];

@@ -1,0 +1,3 @@
+services:
+  SubscriptionBundle\Piwik\PiwikStatisticSender:
+      arguments: ['@logger']

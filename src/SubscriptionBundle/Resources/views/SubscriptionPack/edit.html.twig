@@ -1,0 +1,258 @@
+{% extends 'SonataAdminBundle:CRUD:edit.html.twig' %}
+
+{% block show %}
+
+    {% set successfullySaved = app.session.flashBag.get('subscription_pack_save_success') %}
+    {% if successfullySaved %}
+
+
+        <div id="modal" class="modal fade" role="dialog">
+            <div class="modal-dialog" style="margin-top: 30px">
+
+                <!-- Modal content-->
+                <div class="modal-content" style="margin-top: 200px">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Subscription pack has been successfully changed</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Please ensure all related texts are correct.</p>
+                        <button type="button" class="btn btn-info" data-dismiss="modal" id="modal-button-go">
+                            Proceed to texts
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <script type="application/javascript">
+
+            $(function(){
+                $("#modal").modal();
+            });
+            $(document).on('click', '#modal-button-go', function(){
+                var linkToRedirect = '{{ admin.generateUrl('texts',{id:object.id}) }}';
+                window.location = linkToRedirect;
+            });
+
+        </script>
+
+    {% endif %}
+{% endblock %}
+
+{% block form %}
+    {{ parent() }}
+
+    <style>
+        .select2-hidden-accessible {
+            top: 50px !important;
+        }
+    </style>
+    <script type="text/javascript">
+        var uniqueId                  = "{{ admin.uniqId }}";
+        var sendRequest               = function ($form) {
+            return function (data) {
+                return $.ajax({
+                    url : $form.attr('action'),
+                    type: $form.attr('method'),
+                    data: data
+                });
+            }
+        };
+        var getFieldWithFormUninqueId = function (formUninqueId) {
+            return function (fieldName) {
+                return $("#" + formUninqueId + "_" + fieldName);
+            }
+        };
+        var getField                  = getFieldWithFormUninqueId(uniqueId);
+        var getCarrierOptions         = function (sendRequestWithForm) {
+            return function (countryId, attributeName) {
+                var data            = {};
+                data[attributeName] = countryId;
+                return sendRequestWithForm(data)
+            }
+        };
+
+        var getTierOptions = function (sendRequestWithForm) {
+            return function (carrierId, attributeName) {
+                var data            = {};
+                data[attributeName] = carrierId;
+                return sendRequestWithForm(data)
+            }
+        };
+
+        var attachIdCaputreListener = function ($sourceEle, $targetEle, eventName, attributeName) {
+            eventName     = eventName || "select2-selecting";
+            attributeName = attributeName || "data";
+
+            $sourceEle.on(eventName, function (e) {
+                $targetEle.val($(e.choice.element).attr(attributeName))
+            });
+        };
+        var captureId               = function ($sourceEle, $targetEle, attributeName) {
+            attributeName = attributeName || "data";
+            var $source   = $sourceEle.select2('data') && $sourceEle.select2('data').element &&
+                $($sourceEle.select2('data').element[0]) || null;
+            var targetVal = $targetEle.val();
+            if (!targetVal && $source) {
+                $targetEle.val($source.attr(attributeName))
+            }
+        };
+
+        var attachTierFetchingEvent = function (carrier,
+                                                carrierId,
+                                                tier,
+                                                tierId,
+                                                getTierOptionsWithSendRequest) {
+            $carrierTag   = $(carrier);
+            $carrierIdTag = $(carrierId);
+
+            $carrierTag.on("select2-selecting", function (e) {
+
+                var $loader = $("<i>{{ 'Loading tiers  ...'| trans }}</i>");
+                //Displayed loading for the carrier
+                $carrierTag.closest(".form-group").append($loader);
+
+
+                //removed existing tier inputs
+                $(tier).closest(".form-group").remove();
+                $(tierId).remove();
+
+                var carrierIdValue = e.choice.element.length && $(e.choice.element[0]).attr("data");
+                return getTierOptionsWithSendRequest(carrierIdValue, $carrierIdTag.attr('name'))
+                    .done(function (html) {
+                        //added carrier dropdown
+                        $carrierTag.closest(".form-group").after(
+                            $(html).find(tier).closest(".form-group")
+                        );
+                        //added carrier id hidden field dropdown
+                        $carrierTag.closest(".form-group").after(
+                            $(html).find(tierId)
+                        );
+
+                        var $tierTag   = $(tier).select2();
+                        var $tierIdTag = $(tierId);
+
+                        attachIdCaputreListener($tierTag, $tierIdTag);
+                        captureId($tierTag, $tierIdTag);
+
+                        attachIdCaputreListener($tierTag, $('input[name*="\[tier_price\]"]'), null, 'data-price');
+                        attachIdCaputreListener($tierTag, $('input[name*="\[tier_currency\]"]'), null, 'data-currency');
+                        attachIdCaputreListener($tierTag, $('input[name*="\[display_currency\]"]'), null, 'data-currency');
+                        captureId($tierTag, $('input[name*="\[tier_price\]"]'), 'data-price');
+                        captureId($tierTag, $('input[name*="\[tier_currency\]"]'), 'data-currency');
+                        captureId($tierTag, $('input[name*="\[display_currency\]"]'), 'data-currency');
+                        $('div[id*="display_currency"]').show();
+
+                        $tierTag.closest('.form-group').effect("highlight", {'color': '#57A957'}, 2000);
+
+
+                    }).fail(function (error) {
+
+                        $carrierTag.closest('.form-group').effect("highlight", {'color': '#C43C35'}, 2000);
+                        Admin.log("Error while fetching tier for carrier", error);
+
+                    }).always(function () {
+                        $loader.remove();
+                    })
+            });
+
+        };
+
+        $(document).ready(function () {
+
+            // TODO: Add custom validation.
+
+
+            ["tier", "buyStrategy", "renewStrategy", "carrier"].map(function (field) {
+                var fieldId   = field + "Id",
+                    $eleTag   = getField(field),
+                    $eleIdTag = getField(fieldId);
+                attachIdCaputreListener($eleTag, $eleIdTag);
+                attachIdCaputreListener($eleTag, $('input[name*="\[tier_price\]"]'), null, 'data-price');
+                attachIdCaputreListener($eleTag, $('input[name*="\[tier_currency\]"]'), null, 'data-currency');
+                attachIdCaputreListener($eleTag, $('input[name*="\[display_currency\]"]'), null, 'data-currency');
+                captureId($eleTag, $('input[name*="\[tier_price\]"]'), 'data-price');
+                captureId($eleTag, $('input[name*="\[tier_currency\]"]'), 'data-currency');
+                captureId($eleTag, $('input[name*="\[display_currency\]"]'), 'data-currency');
+                $('div[id*="display_currency"]').show();
+                captureId($eleTag, $eleIdTag);
+
+            });
+
+            var $countryTag = getField("country");
+            var $form       = $countryTag.closest('form');
+
+            var carrierId = "#" + uniqueId + "_carrierId";
+            var carrier   = "#" + uniqueId + "_carrier";
+
+            var tier   = "#" + uniqueId + "_tier";
+            var tierId = "#" + uniqueId + "_tierId";
+
+
+            var sendRequestWithForm              = sendRequest($form);
+            var getCarrierOptionsWithSendRequest = getCarrierOptions(sendRequestWithForm);
+
+            var getTierOptionsWithSendRequest = getTierOptions(sendRequestWithForm);
+
+            $countryTag.closest(".form-group")
+                .after($(carrier).closest(".form-group"));
+
+            $(carrier).closest(".form-group").after($(tier).closest(".form-group"));
+
+
+            attachTierFetchingEvent(carrier, carrierId, tier, tierId, getTierOptionsWithSendRequest);
+
+            $countryTag.on("select2-selecting", function (e) {
+                var $loader = $("<i>{{ 'Loading carriers ...'| trans }}</i>");
+                //Displayed loading for the carrier
+                $countryTag.closest(".form-group").append($loader);
+
+                //removed existing carrier inputs
+                $(carrier).closest(".form-group").remove();
+                $(carrierId).remove();
+
+                $(tier).closest(".form-group").remove();
+                $(tierId).remove();
+
+                $('input[name*="\[tier_price\]"]').val('0');
+                $('input[name*="\[tier_currency\]"]').val('');
+
+                $('div[id*="display_currency"]').hide();
+                $('input[name*="\[display_currency\]"]').val('');
+
+                if (e.choice.id) {
+                    getCarrierOptionsWithSendRequest(e.choice.id, $countryTag.attr('name'))
+                        .done(function (html) {
+                            //added carrier dropdown
+                            $countryTag.closest(".form-group").after(
+                                $(html).find(carrier).closest(".form-group")
+                            );
+                            //added carrier id hidden field dropdown
+                            $countryTag.closest(".form-group").after(
+                                $(html).find(carrierId)
+                            );
+
+                            var $carrierTag   = $(carrier).select2();
+                            var $carrierIdTag = $(carrierId);
+
+                            attachIdCaputreListener($carrierTag, $carrierIdTag);
+                            captureId($carrierTag, $carrierIdTag);
+
+                            $carrierTag.closest('.form-group').effect("highlight", {'color': '#57A957'}, 2000);
+
+                            attachTierFetchingEvent(carrier, carrierId, tier, tierId, getTierOptionsWithSendRequest);
+
+
+                        }).fail(function (error) {
+                        $countryTag.closest('.form-group').effect("highlight", {'color': '#C43C35'}, 2000);
+                        Admin.log("Error while fetching carriers for country", error);
+                    }).always(function () {
+                        $loader.remove();
+                    })
+                }
+            });
+        });
+    </script>
+{% endblock %}
