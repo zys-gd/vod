@@ -2,8 +2,11 @@
 
 namespace SubscriptionBundle\Command;
 
-use AppBundle\Entity\Carrier;
-use AppBundle\Service\Domain\Carrier\CarrierProvider;
+use App\Domain\Constants\ConstBillingCarrierId;
+use App\Domain\Entity\Carrier;
+use Doctrine\ORM\EntityManager;
+use IdentificationBundle\Entity\CarrierInterface;
+use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -16,24 +19,36 @@ class RenewTrialSubscriptionCommand extends ContainerAwareCommand
      * @var \SubscriptionBundle\Service\Cron\TrialRenewer
      */
     private $renewer;
-    private $cronTaskStatus;
     /**
-     * @var CarrierProvider
+     * @var CarrierRepositoryInterface
      */
-    private $carrierProvider;
+    private $carrierRepository;
+    /**
+     * @var CarrierInterface
+     */
+    private $carrier;
+    /**
+     * @var EntityManager
+     */
+    private $entityManager;
+    /**
+     * @var CronTaskStatus
+     */
+    private $cronTaskStatus;
 
 
     /**
      * RenewTrialSubscriptionCommand constructor.
-     * @param TrialRenewer    $renewService
-     * @param CronTaskStatus  $cronTaskStatus
-     * @param CarrierProvider $carrierProvider
+     *
+     * @param TrialRenewer   $renewService
+     * @param CronTaskStatus $cronTaskStatus
+     * @param EntityManager  $entityManager
      */
-    public function __construct(TrialRenewer $renewService, CronTaskStatus $cronTaskStatus, CarrierProvider $carrierProvider)
+    public function __construct(TrialRenewer $renewService, CronTaskStatus $cronTaskStatus, EntityManager $entityManager)
     {
         $this->renewer         = $renewService;
-        $this->cronTaskStatus  = $cronTaskStatus;
-        $this->carrierProvider = $carrierProvider;
+        $this->cronTaskStatus = $cronTaskStatus;
+        $this->entityManager = $entityManager;
         parent::__construct();
     }
 
@@ -44,11 +59,20 @@ class RenewTrialSubscriptionCommand extends ContainerAwareCommand
         $this->setHelp('Put this command on CRON (1 time per day) and be happy :)');
     }
 
+    /**
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return int|void|null
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        foreach ([\AppBundle\Constant\Carrier::GLOBE_PHILIPPINES] as $carrierId) {
+        foreach ([ConstBillingCarrierId::GLOBE_PHILIPPINES] as $carrierId) {
 
-            $carrier = $this->carrierProvider->getCarrierEntity($carrierId);
+            $carrier = $this->entityManager->find('\App\Domain\Entity\Carrier', $carrierId);
 
             $this->cronTaskStatus->getCronTaskByName($this->getCronTaskName($carrier));
 
@@ -71,8 +95,8 @@ class RenewTrialSubscriptionCommand extends ContainerAwareCommand
      */
     private function getCronTaskName(Carrier $carrier)
     {
-        switch ($carrier->getIdCarrier()) {
-            case \AppBundle\Constant\Carrier::GLOBE_PHILIPPINES:
+        switch ($carrier->getBillingCarrierId()) {
+            case ConstBillingCarrierId::GLOBE_PHILIPPINES:
                 return 'globePhilippinesTrialCronTask';
             default:
                 throw new \Exception(sprintf('No CRON tasks for carrier %s', $carrier->getName()));

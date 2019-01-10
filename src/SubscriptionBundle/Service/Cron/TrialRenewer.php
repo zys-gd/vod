@@ -3,7 +3,7 @@
 namespace SubscriptionBundle\Service\Cron;
 
 
-use AppBundle\Entity\Carrier;
+use App\Domain\Entity\Carrier;
 use SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound;
 use SubscriptionBundle\Service\Action\Renew\Renewer;
 use SubscriptionBundle\Service\Action\Subscribe\Subscriber;
