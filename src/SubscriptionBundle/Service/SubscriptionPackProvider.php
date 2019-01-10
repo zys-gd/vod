@@ -1,19 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 26.04.18
- * Time: 14:19
- */
 
 namespace SubscriptionBundle\Service;
 
 
-use AppBundle\Entity\Carrier;
+use App\Domain\Entity\Carrier;
+use IdentificationBundle\Entity\User;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound;
-use SubscriptionBundle\Repository\SubscriptionPack\SubscriptionPackRepository;
-use UserBundle\Entity\BillableUser;
+use SubscriptionBundle\Repository\SubscriptionPackRepository;
 
 class SubscriptionPackProvider
 {
@@ -32,23 +26,23 @@ class SubscriptionPackProvider
     }
 
     /**
-     * @param $billableUser
+     * @param $user
      * @return SubscriptionPack
      * @throws ActiveSubscriptionPackNotFound
      */
-    public function getActiveSubscriptionPack(BillableUser $billableUser): SubscriptionPack
+    public function getActiveSubscriptionPack(User $user): SubscriptionPack
     {
-        $carrierId = $billableUser->getCarrier()->getIdCarrier();
+        $billingCarrierId = $user->getCarrier()->getBillingCarrierId();
 
         /** @var SubscriptionPack $subscriptionPack */
         $subscriptionPack = $this->subscriptionPackRepository->findOneBy([
-            'carrierId' => $carrierId,
+            'billingCarrierId' => $billingCarrierId,
             'status'    => SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK
         ]);
 
         if (!$subscriptionPack) {
             throw new ActiveSubscriptionPackNotFound(
-                "Active subscription pack not found for carrier id {$carrierId}"
+                "Active subscription pack not found for carrier id {$billingCarrierId}"
             );
         }
         return $subscriptionPack;
@@ -66,11 +60,11 @@ class SubscriptionPackProvider
             return null;
         }
 
-        $carrierId = $carrier->getIdCarrier();
+        $billingCarrierId = $carrier->getBillingCarrierId();
 
         /** @var SubscriptionPack $subscriptionPack */
         $subscriptionPack = $this->subscriptionPackRepository->findOneBy([
-            'carrierId' => $carrierId,
+            'billingCarrierId' => $billingCarrierId,
             'status'    => SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK
         ]);
 

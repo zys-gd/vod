@@ -1,18 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 26.04.18
- * Time: 15:49
- */
 
 namespace SubscriptionBundle\Service;
 
 
+use App\Utils\UuidGenerator;
 use Doctrine\ORM\EntityManagerInterface;
+use IdentificationBundle\Entity\User;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Entity\SubscriptionPlanInterface;
-use UserBundle\Entity\BillableUser;
+use SubscriptionBundle\Entity\SubscriptionPack;
 
 class SubscriptionCreator
 {
@@ -34,19 +29,20 @@ class SubscriptionCreator
         $this->entitySaveHelper = $entitySaveHelper;
     }
 
-    public function createAndSave(BillableUser $billableUser, SubscriptionPlanInterface $plan, $affiliateToken = null): Subscription
+    public function createAndSave(User $user, SubscriptionPack $subscriptionPack, $affiliateToken = null): Subscription
     {
-        $subscription = $this->create($billableUser, $plan, $affiliateToken);
+        $subscription = $this->create($user, $subscriptionPack, $affiliateToken);
         $this->entitySaveHelper->persistAndSave($subscription);
 
         return $subscription;
     }
 
-    public function create(BillableUser $billableUser, SubscriptionPlanInterface $plan, $affiliateToken = null, int $status = Subscription::IS_ACTIVE): Subscription
+    public function create(User $user, SubscriptionPack $subscriptionPack, $affiliateToken = null, int $status = Subscription::IS_ACTIVE): Subscription
     {
-        $subscription = new Subscription();
-        $subscription->setSubscriptionPack($plan);
-        $subscription->setUser($billableUser);
+        $uuid = UuidGenerator::generate();
+        $subscription = new Subscription($uuid);
+        $subscription->setSubscriptionPack($subscriptionPack);
+        $subscription->setUser($user);
         $subscription->setAffiliateToken($affiliateToken);
         $subscription->setStatus($status);
 
