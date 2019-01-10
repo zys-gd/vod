@@ -1,6 +1,7 @@
 App\Domain\Entity\Campaign:
     type: entity
     table: campaigns
+    repositoryClass: App\Domain\Repository\CampaignRepository
     indexes:
       campaign_token_index:
         columns: [ campaign_token ]
@@ -8,7 +9,7 @@ App\Domain\Entity\Campaign:
         uuid:
             type: guid
     fields:
-        image:
+        imageName:
             type: string
             length: '255'
             #?
@@ -47,6 +48,21 @@ App\Domain\Entity\Campaign:
             nullable: true
             options:
                 default: null
+        ppd:
+            type: decimal
+            precision: 10
+            scale: '2'
+            nullable: true
+        sub:
+            type: decimal
+            precision: 10
+            scale: '2'
+            nullable: true
+        click:
+            type: decimal
+            precision: 10
+            scale: '2'
+            nullable: true
 
     lifecycleCallbacks: {  }
 
@@ -55,22 +71,6 @@ App\Domain\Entity\Campaign:
             targetEntity: Affiliate
             joinColumn:
                 referencedColumnName: uuid
-
-    oneToMany:
-        campaignPricingDetails:
-            targetEntity: App\Domain\Entity\CampaignPricing
-            joinColumn:
-                referencedColumnName: uuid
-            mappedBy: campaign
-            cascade: ["persist", "remove"]
-            orphanRemoval: true
-        campaignConstraints:
-            targetEntity: App\Domain\Entity\CampaignConstraints
-            joinColumn:
-                referencedColumnName: uuid
-            mappedBy: campaign
-            cascade: ["persist", "remove"]
-            orphanRemoval: true
 
     manyToMany:
         carriers:
