@@ -14,4 +14,5 @@ use IdentificationBundle\Entity\CarrierInterface;
 interface IdentificationHandlerInterface
 {
     public function canHandle(CarrierInterface $carrier): bool;
+
 }

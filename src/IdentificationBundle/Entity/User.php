@@ -48,6 +48,10 @@ class User
      */
     private $shortUrlId;
 
+    private $identificationProcessId;
+
+    private $identificationToken;
+
     /**
      * User constructor.
      * @param string $uuid
@@ -210,5 +214,43 @@ class User
     {
         $this->identifier = $identifier;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getIdentificationProcessId(): ?string
+    {
+        return $this->identificationProcessId;
+    }
+
+    /**
+     * @param mixed $identificationProcessId
+     * @return User
+     */
+    public function setIdentificationProcessId(string $identificationProcessId = null)
+    {
+        $this->identificationProcessId = $identificationProcessId;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIdentificationToken()
+    {
+        return $this->identificationToken;
+    }
+
+    /**
+     * @param mixed $identificationToken
+     * @return User
+     */
+    public function setIdentificationToken($identificationToken)
+    {
+        $this->identificationToken = $identificationToken;
+        return $this;
+    }
+
+
 
 }

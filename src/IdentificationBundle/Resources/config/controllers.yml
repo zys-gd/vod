@@ -5,6 +5,5 @@ services:
     IdentificationBundle\Controller\PixelIdentController:
       arguments:
         - '@IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentVerifier'
-        - '@IdentificationBundle\BillingFramework\Data\DataProvider'
         - '@IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentConfirmer'
 

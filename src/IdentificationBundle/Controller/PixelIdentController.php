@@ -10,6 +10,7 @@ namespace IdentificationBundle\Controller;
 
 
 use IdentificationBundle\BillingFramework\Data\DataProvider;
+use IdentificationBundle\Service\Action\Identification\Common\IdentificationDataExtractor;
 use IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentConfirmer;
 use IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentVerifier;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -26,19 +27,15 @@ class PixelIdentController extends AbstractController
      * @var PixelIdentVerifier
      */
     private $pixelIdentVerifier;
-    /**
-     * @var DataProvider
-     */
-    private $dataProvider;
+
     /**
      * @var PixelIdentConfirmer
      */
     private $confirmer;
 
-    public function __construct(PixelIdentVerifier $pixelIdentVerifier, DataProvider $dataProvider, PixelIdentConfirmer $confirmer)
+    public function __construct(PixelIdentVerifier $pixelIdentVerifier, PixelIdentConfirmer $confirmer)
     {
         $this->pixelIdentVerifier = $pixelIdentVerifier;
-        $this->dataProvider       = $dataProvider;
         $this->confirmer          = $confirmer;
     }
 
@@ -62,7 +59,7 @@ class PixelIdentController extends AbstractController
         return $this->render('@Identification/pixelIdent/showPixel.twig', [
             'pixelUrl'        => $pixelUrl,
             'successUrl'      => $successUrl,
-            'failureUrl'      => $this->generateUrl('index'),
+            'failureUrl'      => $this->generateUrl('index', ['err' => 'pixel_ident_timeout']),
             'statusActionUrl' => $this->generateUrl('identification_pixelident_pixelstatus', [
                 'carrier'   => $carrier,
                 'processId' => $processId
@@ -71,7 +68,7 @@ class PixelIdentController extends AbstractController
     }
 
     /**
-     * @Route("/api/pixel-status")
+     * @Route("/pixel-status")
      * @param Request $request
      * @return JsonResponse
      */
@@ -102,14 +99,20 @@ class PixelIdentController extends AbstractController
      */
     public function confirmPixelIdentAction(Request $request)
     {
-        $backUrl   = $request->get('backUrl', '');
-        $processId = $request->get('processId', '');
+        $backUrl            = $request->get('backUrl', '');
+        $processId          = $request->get('processId', '');
+        $identificationData = IdentificationDataExtractor::extractFromSession($request->getSession());
+
+        if (!$identificationData) {
+            throw new BadRequestHttpException('You are not identified yet');
+        }
 
         try {
-            $result = $this->dataProvider->getProcessData($processId);
-            $this->confirmer->confirmIdent($result->getClientId());
+            $this->confirmer->confirmIdent(
+                $processId,
+                $identificationData
+            );
             return new RedirectResponse($backUrl);
-
         } catch (BillingFrameworkProcessException $exception) {
 
         }
