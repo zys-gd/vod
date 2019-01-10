@@ -1,18 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 02.05.18
- * Time: 14:20
- */
 
 namespace SubscriptionBundle\Service;
 
 
-use AppBundle\Entity\Carrier;
+use App\Domain\Entity\Carrier;
+use IdentificationBundle\Entity\User;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Repository\SubscriptionRepository;
-use UserBundle\Entity\BillableUser;
 
 class SubscriptionProvider
 {
@@ -41,11 +35,11 @@ class SubscriptionProvider
 
 
     /**
-     * @param BillableUser $user
+     * @param User $user
      * @return Subscription
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getExistingSubscriptionForBillableUser(BillableUser $user)
+    public function getExistingSubscriptionForBillableUser(User $user): ?Subscription
     {
         return $this->subscriptionRepository->findCurrentSubscriptionByOwner($user);
     }

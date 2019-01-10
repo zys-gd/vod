@@ -164,6 +164,9 @@
     "myclabs/deep-copy": {
         "version": "1.8.1"
     },
+    "nesbot/carbon": {
+        "version": "2.10.0"
+    },
     "nikic/php-parser": {
         "version": "v4.1.1"
     },

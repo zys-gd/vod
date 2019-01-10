@@ -40,6 +40,6 @@ class SubscriptionTextService
     public function insertDefaultPlaceholderTexts(SubscriptionPack $oSubPack)
     {
         $sql = $this->subscriptionTextProvider->provideQuery($oSubPack);
-        $this->placeholderToOperatorRepository->insertTexts($sql);
+        $this->translationRepository->insertTexts($sql);
     }
 }

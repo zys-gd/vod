@@ -2,13 +2,13 @@
 
 namespace SubscriptionBundle\Repository;
 
-use AppBundle\Entity\Carrier;
+use App\Domain\Entity\Carrier;
 use Carbon\Carbon;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
+use IdentificationBundle\Entity\User;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Exception\SubscriptionException;
-use UserBundle\Entity\BillableUser;
 
 /**
  * SubscriptionRepository
@@ -19,36 +19,42 @@ use UserBundle\Entity\BillableUser;
 class SubscriptionRepository extends EntityRepository
 {
     /**
-     * @param BillableUser $owner
+     * @param User $user
      * @return Subscription|null
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findCurrentSubscriptionByOwner(BillableUser $owner)
+    public function findCurrentSubscriptionByOwner(User $user): ?Subscription
     {
 
         // Retrieving the latest subscription created by this user
         $qb = $this->createQueryBuilder('s');
-        $qb->where('s.owner = :owner')
+        $qb->where('s.user = :user')
             ->addOrderBy('s.created', 'DESC')
             ->setMaxResults(1)
-            ->setParameter('owner', $owner);
+            ->setParameter('user', $user);
 
 
         $existingActiveSubscription = $qb->getQuery()->getOneOrNullResult();
         return $existingActiveSubscription;
     }
 
-    public function findPreviousUnSubscribedSubscription(BillableUser $owner, Subscription $subscription)
+    /**
+     * @param User $user
+     * @param Subscription $subscription
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findPreviousUnSubscribedSubscription(User $user, Subscription $subscription): ?Subscription
     {
 
         // Retrieving the latest subscription created by this user
         $qb = $this->createQueryBuilder('s');
-        $qb->where('s.owner = :owner')
+        $qb->where('s.user = :user')
             ->andWhere('s.status = :status')
             ->andWhere('s.id != :id')
             ->addOrderBy('s.created', 'DESC')
             ->setMaxResults(1)
-            ->setParameter('owner', $owner)
+            ->setParameter('user', $user)
             ->setParameter('id', $subscription->getUuid())
             ->setParameter('status', Subscription::IS_INACTIVE);
 
