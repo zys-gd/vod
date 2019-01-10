@@ -31,6 +31,7 @@ services:
        - .:/var/www/html
        - .docker/php-fpm/php.ini:/etc/php/7.2/fpm/conf.d/99-docker.ini
        - .docker/php-fpm/www.conf:/etc/php/7.2/fpm/pool.d/www.conf
+       - .docker/php-fpm/php.ini:/usr/local/etc/php/php.ini:ro
      networks:
       dev-env:
         ipv4_address: 192.168.101.5

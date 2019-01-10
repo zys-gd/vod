@@ -7,7 +7,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 	openssl \
 	libmcrypt-dev \
 	libpng-dev \
-	libgd-dev
+	libgd-dev \
+	git
 
 
 RUN pecl install apcu \
