@@ -30,7 +30,7 @@ use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvi
 use SubscriptionBundle\Service\Action\Subscribe\Subscriber;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\SubscriptionPackProvider;
-use SubscriptionBundle\Service\SubscriptionProvider;
+use SubscriptionBundle\Service\SubscriptionExtractor;
 use SubscriptionBundle\Utils\UrlParamAppender;
 use UserBundle\Entity\BillableUser;
 
@@ -51,7 +51,7 @@ class CommonFlowHandler
      */
     private $checker;
     /**
-     * @var SubscriptionProvider
+     * @var SubscriptionExtractor
      */
     private $subscriptionProvider;
     /**
@@ -98,7 +98,8 @@ class CommonFlowHandler
 
     /**
      * CommonSubscriber constructor.
-     * @param SubscriptionProvider           $subscriptionProvider
+     *
+     * @param SubscriptionExtractor          $subscriptionProvider
      * @param SubscriptionPackProvider       $subscriptionPackProvider
      * @param Subscriber                     $subscriber
      * @param SubscriptionEligibilityChecker $checker
@@ -114,7 +115,7 @@ class CommonFlowHandler
      * @param EntitySaveHelper               $entitySaveHelper
      */
     public function __construct(
-        SubscriptionProvider $subscriptionProvider,
+        SubscriptionExtractor $subscriptionProvider,
         SubscriptionPackProvider $subscriptionPackProvider,
         Subscriber $subscriber,
         SubscriptionEligibilityChecker $checker,

@@ -14,13 +14,13 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier;
-use SubscriptionBundle\Service\SubscriptionProvider;
+use SubscriptionBundle\Service\SubscriptionExtractor;
 use UserBundle\Entity\BillableUser;
 
 class CommonResponseCreator
 {
     /**
-     * @var SubscriptionProvider
+     * @var SubscriptionExtractor
      */
     private $subscriptionProvider;
     /**
@@ -30,10 +30,11 @@ class CommonResponseCreator
 
     /**
      * CommonResponseCreator constructor.
-     * @param SubscriptionProvider $subscriptionProvider
-     * @param RedirectUrlNullifier $redirectUrlNullifier
+     *
+     * @param SubscriptionExtractor $subscriptionProvider
+     * @param RedirectUrlNullifier  $redirectUrlNullifier
      */
-    public function __construct(SubscriptionProvider $subscriptionProvider, RedirectUrlNullifier $redirectUrlNullifier)
+    public function __construct(SubscriptionExtractor $subscriptionProvider, RedirectUrlNullifier $redirectUrlNullifier)
     {
         $this->subscriptionProvider = $subscriptionProvider;
         $this->redirectUrlNullifier = $redirectUrlNullifier;

@@ -15,7 +15,7 @@ use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater;
 use SubscriptionBundle\Service\CreditsCalculator;
 use SubscriptionBundle\Service\RenewDateCalculator;
-use SubscriptionBundle\Service\SubscriptionProvider;
+use SubscriptionBundle\Service\SubscriptionExtractor;
 
 class OnRenewUpdater
 {
@@ -28,7 +28,7 @@ class OnRenewUpdater
      */
     private $renewDateCalculator;
     /**
-     * @var SubscriptionProvider
+     * @var SubscriptionExtractor
      */
     private $subscriptionProvider;
     /**
@@ -42,15 +42,16 @@ class OnRenewUpdater
 
     /**
      * OnRenewUpdater constructor.
+     *
      * @param \SubscriptionBundle\Service\RenewDateCalculator                     $renewDateCalculator
-     * @param SubscriptionProvider                                                          $subscriptionProvider
-     * @param \SubscriptionBundle\Service\CreditsCalculator                $creditsCalculator
-     * @param EventDispatcherInterface                                                      $eventDispatcher
+     * @param SubscriptionExtractor                                               $subscriptionProvider
+     * @param \SubscriptionBundle\Service\CreditsCalculator                       $creditsCalculator
+     * @param EventDispatcherInterface                                            $eventDispatcher
      * @param \SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater $commonSubscriptionUpdater
      */
     public function __construct(
         RenewDateCalculator $renewDateCalculator,
-        SubscriptionProvider $subscriptionProvider,
+        SubscriptionExtractor $subscriptionProvider,
         CreditsCalculator $creditsCalculator,
         EventDispatcherInterface $eventDispatcher,
         \SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater $commonSubscriptionUpdater

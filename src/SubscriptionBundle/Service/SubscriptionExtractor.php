@@ -8,7 +8,7 @@ use IdentificationBundle\Entity\User;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Repository\SubscriptionRepository;
 
-class SubscriptionProvider
+class SubscriptionExtractor
 {
     private $subscriptionRepository;
 

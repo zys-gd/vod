@@ -46,8 +46,7 @@ services:
     SubscriptionBundle\Service\EntitySaveHelper:
         arguments: ['@doctrine.orm.entity_manager', '@logger']
 
-    SubscriptionBundle\Service\SubscriptionProvider:
-        class: SubscriptionBundle\Service\SubscriptionProvider
+    SubscriptionBundle\Service\SubscriptionExtractor:
         arguments: ['@SubscriptionBundle\Repository\SubscriptionRepository']
 
     SubscriptionBundle\Utils\UrlParamAppender: ~

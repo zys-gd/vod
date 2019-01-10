@@ -25,7 +25,7 @@ services:
   #    arguments:
   #      - '@SubscriptionBundle\Service\SubscriptionPackProvider'
   #      - '@SubscriptionBundle\Service\Action\Renew\Renewer'
-  #      - '@SubscriptionBundle\Service\SubscriptionProvider'
+  #      - '@SubscriptionBundle\Service\SubscriptionExtractor'
 
   #cron.task:
   #    class: SubscriptionBundle\Service\Cron\CronTaskStatus

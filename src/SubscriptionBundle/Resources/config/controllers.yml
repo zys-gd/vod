@@ -20,12 +20,12 @@ services:
         arguments: ['@SubscriptionBundle\Service\Action\SubscribeBack\SubscribeBackHandlerProvider', '@router']
 
     SubscriptionBundle\Controller\Actions\RedirectAction:
-        arguments: ['@SubscriptionBundle\Service\UserExtractor', '@monolog.logger.subscription_log', '@SubscriptionBundle\Service\SubscriptionProvider']
+        arguments: ['@SubscriptionBundle\Service\UserExtractor', '@monolog.logger.subscription_log', '@SubscriptionBundle\Service\SubscriptionExtractor']
 
     SubscriptionBundle\Controller\Actions\UnsubscribeAction:
         arguments:
             - '@SubscriptionBundle\Service\UserExtractor'
-            - '@SubscriptionBundle\Service\SubscriptionProvider'
+            - '@SubscriptionBundle\Service\SubscriptionExtractor'
             - '@SubscriptionBundle\Service\SubscriptionPackProvider'
             - '@SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber'
             - '@SubscriptionBundle\Service\Action\Unsubscribe\UnsubscriptionEligibilityChecker'
@@ -33,9 +33,9 @@ services:
 
     SubscriptionBundle\Controller\Actions\WaitAction:
         class: SubscriptionBundle\Controller\Actions\WaitAction
-        arguments: ['@SubscriptionBundle\Service\UserExtractor', '@SubscriptionBundle\Service\SubscriptionProvider', '@router.default']
+        arguments: ['@SubscriptionBundle\Service\UserExtractor', '@SubscriptionBundle\Service\SubscriptionExtractor', '@router.default']
 
     SubscriptionBundle\Controller\Actions\GetSubscriptionAction:
         class: SubscriptionBundle\Controller\Actions\GetSubscriptionAction
-        arguments: ['@SubscriptionBundle\Service\UserExtractor', '@SubscriptionBundle\Service\SubscriptionProvider']
+        arguments: ['@SubscriptionBundle\Service\UserExtractor', '@SubscriptionBundle\Service\SubscriptionExtractor']
 

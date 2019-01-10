@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Router;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\UserExtractor;
-use SubscriptionBundle\Service\SubscriptionProvider;
+use SubscriptionBundle\Service\SubscriptionExtractor;
 //TODO:REFACTOR BillableUserProvider
 class WaitAction
 {
@@ -26,7 +26,7 @@ class WaitAction
      */
     private $billableUserProvider;
     /**
-     * @var SubscriptionProvider
+     * @var SubscriptionExtractor
      */
     private $subscriptionProvider;
     /**
@@ -38,13 +38,13 @@ class WaitAction
     /**
      * WaitAction constructor.
      *
-     * @param UserExtractor        $billableUserProvider
-     * @param SubscriptionProvider $subscriptionProvider
-     * @param Router               $router
+     * @param UserExtractor         $billableUserProvider
+     * @param SubscriptionExtractor $subscriptionProvider
+     * @param Router                $router
      */
     public function __construct(
         UserExtractor $billableUserProvider,
-        SubscriptionProvider $subscriptionProvider,
+        SubscriptionExtractor $subscriptionProvider,
         Router $router
     )
     {

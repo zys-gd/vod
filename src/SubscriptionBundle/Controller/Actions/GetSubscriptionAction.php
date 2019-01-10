@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
 use SubscriptionBundle\Service\UserExtractor;
-use SubscriptionBundle\Service\SubscriptionProvider;
+use SubscriptionBundle\Service\SubscriptionExtractor;
 
 class GetSubscriptionAction
 {
@@ -21,7 +21,7 @@ class GetSubscriptionAction
 
 
     /**
-     * @var SubscriptionProvider
+     * @var SubscriptionExtractor
      */
     private $subscriptionProvider;
 
@@ -29,10 +29,10 @@ class GetSubscriptionAction
     /**
      * GetSubscriptionAction constructor.
      *
-     * @param UserExtractor        $userExtractor
-     * @param SubscriptionProvider $provider
+     * @param UserExtractor         $userExtractor
+     * @param SubscriptionExtractor $provider
      */
-    public function __construct(UserExtractor $userExtractor, SubscriptionProvider $provider)
+    public function __construct(UserExtractor $userExtractor, SubscriptionExtractor $provider)
     {
         $this->userExtractor = $userExtractor;
         $this->subscriptionProvider = $provider;

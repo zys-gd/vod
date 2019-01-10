@@ -11,7 +11,7 @@ services:
   SubscriptionBundle\Service\Action\Renew\OnRenewUpdater:
       arguments:
         - '@SubscriptionBundle\Service\RenewDateCalculator'
-        - '@SubscriptionBundle\Service\SubscriptionProvider'
+        - '@SubscriptionBundle\Service\SubscriptionExtractor'
         - '@SubscriptionBundle\Service\CreditsCalculator'
         - '@event_dispatcher'
         - '@SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater'

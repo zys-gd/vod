@@ -21,7 +21,7 @@ use SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber;
 use SubscriptionBundle\Service\Action\Unsubscribe\UnsubscriptionEligibilityChecker;
 use SubscriptionBundle\Service\UserExtractor;
 use SubscriptionBundle\Service\SubscriptionPackProvider;
-use SubscriptionBundle\Service\SubscriptionProvider;
+use SubscriptionBundle\Service\SubscriptionExtractor;
 //TODO:REFACTOR BillableUserProvider
 class UnsubscribeAction extends Controller
 {
@@ -45,7 +45,7 @@ class UnsubscribeAction extends Controller
      */
     private $checker;
     /**
-     * @var SubscriptionProvider
+     * @var SubscriptionExtractor
      */
     private $subscriptionProvider;
     /**
@@ -58,14 +58,14 @@ class UnsubscribeAction extends Controller
      * UnsubscribeAction constructor.
      *
      * @param UserExtractor                    $billableUserProvider
-     * @param SubscriptionProvider             $subscriptionProvider
+     * @param SubscriptionExtractor            $subscriptionProvider
      * @param SubscriptionPackProvider         $subscriptionPackProvider
      * @param Unsubscriber                     $unsubscriber
      * @param UnsubscriptionEligibilityChecker $checker
      */
     public function __construct(
         UserExtractor $billableUserProvider,
-        SubscriptionProvider $subscriptionProvider,
+        SubscriptionExtractor $subscriptionProvider,
         SubscriptionPackProvider $subscriptionPackProvider,
         Unsubscriber $unsubscriber,
         UnsubscriptionEligibilityChecker $checker,

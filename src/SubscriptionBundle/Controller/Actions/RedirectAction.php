@@ -15,7 +15,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use SubscriptionBundle\Service\UserExtractor;
-use SubscriptionBundle\Service\SubscriptionProvider;
+use SubscriptionBundle\Service\SubscriptionExtractor;
 
 class RedirectAction extends Controller
 {
@@ -28,21 +28,21 @@ class RedirectAction extends Controller
      */
     private $logger;
     /**
-     * @var SubscriptionProvider
+     * @var SubscriptionExtractor
      */
     private $subscriptionProvider;
 
     /**
      * RedirectAction constructor.
      *
-     * @param UserExtractor        $userExtractor
-     * @param LoggerInterface      $logger
-     * @param SubscriptionProvider $subscriptionProvider
+     * @param UserExtractor         $userExtractor
+     * @param LoggerInterface       $logger
+     * @param SubscriptionExtractor $subscriptionProvider
      */
     public function __construct(
         UserExtractor $userExtractor,
         LoggerInterface $logger,
-        SubscriptionProvider $subscriptionProvider
+        SubscriptionExtractor $subscriptionProvider
     )
     {
         $this->userExtractor = $userExtractor;

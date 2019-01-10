@@ -22,7 +22,7 @@ services:
 
   SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler:
       arguments:
-          - '@SubscriptionBundle\Service\SubscriptionProvider'
+          - '@SubscriptionBundle\Service\SubscriptionExtractor'
           - '@SubscriptionBundle\Service\SubscriptionPackProvider'
           - '@SubscriptionBundle\Service\Action\Subscribe\Subscriber'
           - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker'
@@ -49,14 +49,14 @@ services:
 
   SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater:
       arguments:
-        - '@SubscriptionBundle\Service\SubscriptionProvider'
+        - '@SubscriptionBundle\Service\SubscriptionExtractor'
         - '@SubscriptionBundle\Service\CreditsCalculator'
         - '@SubscriptionBundle\Service\RenewDateCalculator'
         - '@event_dispatcher'
         - '@SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater'
 
   SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator:
-      arguments: ['@SubscriptionBundle\Service\SubscriptionProvider', '@SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier']
+      arguments: ['@SubscriptionBundle\Service\SubscriptionExtractor', '@SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier']
 
   SubscriptionBundle\Service\Action\Subscribe\Handler\DefaultHandler: ~
 
