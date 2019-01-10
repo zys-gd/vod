@@ -4,7 +4,7 @@ services:
               -  ~
               - SubscriptionBundle\Entity\SubscriptionPack
               - 'SubscriptionBundle\Controller\SubscriptionPackAdminController'
-              - '@SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider'
+#              - '@SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider'
               - '@SubscriptionBundle\Service\SubscriptionTextService'
           tags:
               -
