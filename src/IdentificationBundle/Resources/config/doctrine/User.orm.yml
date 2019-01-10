@@ -35,7 +35,16 @@ IdentificationBundle\Entity\User:
             nullable: false
             options:
                 default: CURRENT_TIMESTAMP
-
+        identificationProcessId:
+            type: string
+            nullable: true
+            options:
+                default: null
+        identificationToken:
+            type: string
+            nullable: true
+            options:
+                default: null
     manyToOne:
         carrier:
             targetEntity: \IdentificationBundle\Entity\CarrierInterface

@@ -12,6 +12,7 @@ namespace IdentificationBundle\Listener;
 use CountryCarrierDetectionBundle\Service\Interfaces\ICountryCarrierDetection;
 use IdentificationBundle\Controller\ControllerWithIdentification;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
+use IdentificationBundle\Service\Action\Identification\Common\IdentificationDataExtractor;
 use IdentificationBundle\Service\Action\Identification\Identifier;
 use IdentificationBundle\Service\Carrier\ISPResolver;
 use Symfony\Component\HttpFoundation\Request;
@@ -68,7 +69,7 @@ class IdentifyListener
         $request = $event->getRequest();
         $session = $request->getSession();
 
-        if ($session->has('identification_data')) {
+        if (IdentificationDataExtractor::extractFromSession($request->getSession())) {
             return;
         }
 

@@ -13,6 +13,7 @@ use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class RequestParametersProvider
@@ -43,40 +44,36 @@ class RequestParametersProvider
     }
 
     /**
-     * @param Request          $request
-     * @param SessionInterface $session
-     * @param array            $additionalData
+     * @param array  $identificationData
+     * @param string $clientIp
+     * @param string $redirectUrl
+     * @param array  $headers
+     * @param array  $additionalData
      * @return ProcessRequestParameters
      */
-    public function prepareRequestParameters(Request $request, SessionInterface $session, array $additionalData = []): ProcessRequestParameters
+    public function prepareRequestParameters(
+        array $identificationData,
+        string $clientIp,
+        string $redirectUrl,
+        array $headers = [],
+        array $additionalData = []
+    ): ProcessRequestParameters
     {
-        $identificationData = $session->get('identification_data');
+
 
         $parameters               = new ProcessRequestParameters();
-        $parameters->listener     = ''/*$this->router->generate('talentica_subscription.listen', [], UrlGeneratorInterface::ABSOLUTE_URL)*/
-        ;
+        $parameters->listener     = $this->router->generate('identification_callback_listenidentify', [], UrlGeneratorInterface::ABSOLUTE_URL);
         $parameters->client       = 'store';
-        $parameters->listenerWait = ''/*$this->router->generate('talentica_subscription.wait_listen', [], UrlGeneratorInterface::ABSOLUTE_URL)*/
-        ;
-
-        // Not sure if its acceptable to have Request parsing here.
-        if ($request) {
-            $parameters->redirectUrl = $request->get('location', $request->getSchemeAndHttpHost());
-        } else {
-            $parameters->redirectUrl = ''/*$this->router->generate("homepage")*/
-            ;
-        }
-
-        $parameters->clientId = $identificationData['identification_token'];
-        $parameters->carrier  = $identificationData['carrier_id'];
-        $parameters->userIp   = $request->getClientIp();
+        $parameters->listenerWait = $this->router->generate('identification_callback_listenidentify', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $parameters->clientId     = $identificationData['identification_token'];
+        $parameters->carrier      = $identificationData['carrier_id'];
+        $parameters->userIp       = $clientIp;
+        $parameters->redirectUrl  = $redirectUrl;
 
         // The request headers of the end user.
         $currentUserRequestHeaders = '';
-        if ($request && is_array($request->headers->all())) {
-            foreach ($request->headers->all() as $key => $value) {
-                $currentUserRequestHeaders .= "{$key}: {$value[0]}\r\n";
-            }
+        foreach ($headers as $key => $value) {
+            $currentUserRequestHeaders .= "{$key}: {$value[0]}\r\n";
         }
         $parameters->userHeaders    = $currentUserRequestHeaders;
         $parameters->additionalData = $additionalData;

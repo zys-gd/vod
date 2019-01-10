@@ -12,11 +12,17 @@ services:
       - '@IdentificationBundle\Service\Action\Identification\Handler\IdentificationHandlerProvider'
       - '@IdentificationBundle\Service\Action\Identification\Common\RequestParametersProvider'
       - '@router'
+      - '@IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentHandler'
+      - '@IdentificationBundle\Service\Action\Identification\Common\Redirect\RedirectIdentHandler'
 
   IdentificationBundle\Service\Action\Identification\Common\RequestParametersProvider:
     arguments:
       - '@event_dispatcher'
       - '@router'
+  IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentHandler:
+    arguments:
+      - '@router'
+
 
   IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentVerifier:
     arguments:
@@ -24,5 +30,12 @@ services:
 
   IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentConfirmer:
     arguments:
-      - '@IdentificationBundle\BillingFramework\Process\AfterPixelProcess'
+      - '@doctrine.orm.entity_manager'
+      - '@IdentificationBundle\Service\Action\Identification\Common\UserFactory'
+      - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+      - '@IdentificationBundle\BillingFramework\Data\DataProvider'
+      - '@IdentificationBundle\Service\Action\Identification\Handler\IdentificationHandlerProvider'
 
+  IdentificationBundle\Service\Action\Identification\Common\UserFactory: ~
+
+  IdentificationBundle\Service\Action\Identification\Common\Redirect\RedirectIdentHandler: ~
