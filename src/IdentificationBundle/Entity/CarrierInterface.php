@@ -16,4 +16,6 @@ interface CarrierInterface
     public function getIsp(): string;
 
     public function getBillingCarrierId(): int ;
+
+    public function getCountryCode(): string;
 }

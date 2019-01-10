@@ -313,7 +313,7 @@ class Carrier implements CarrierInterface
      *
      * @return string
      */
-    public function getCountryCode()
+    public function getCountryCode(): string
     {
         return $this->countryCode;
     }

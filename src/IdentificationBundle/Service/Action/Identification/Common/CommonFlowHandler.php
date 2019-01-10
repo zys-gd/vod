@@ -98,7 +98,7 @@ class CommonFlowHandler
      * @param         $additionalParams
      * @return \SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters
      */
-    private function parseRequestParameters(Request $request, $additionalParams): \SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters
+    private function parseRequestParameters(Request $request, array $additionalParams): \SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters
     {
         $identificationData = IdentificationDataExtractor::extractFromSession($request->getSession());
         $redirectUrl        = $request->get('location', $this->router->generate('index', [], RouterInterface::ABSOLUTE_URL));

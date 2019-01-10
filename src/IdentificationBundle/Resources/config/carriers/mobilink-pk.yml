@@ -2,3 +2,7 @@ services:
   IdentificationBundle\Carriers\MobilinkPK\MobilinkPKIdentificationHandler:
       tags:
           - {name: identification.identification_handler}
+
+  IdentificationBundle\Carriers\MobilinkPK\MobilinkPKIdentificationCallbackHandler:
+      tags:
+          - {name: identification.identification_callback_handler}

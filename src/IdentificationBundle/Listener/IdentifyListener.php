@@ -16,6 +16,7 @@ use IdentificationBundle\Service\Action\Identification\Common\IdentificationData
 use IdentificationBundle\Service\Action\Identification\Identifier;
 use IdentificationBundle\Service\Carrier\ISPResolver;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 class IdentifyListener
@@ -66,19 +67,19 @@ class IdentifyListener
             return;
         }
 
+
         $request = $event->getRequest();
         $session = $request->getSession();
+
+
+        $carrierISP = $this->detectISP($request, $session);
 
         if (IdentificationDataExtractor::extractFromSession($request->getSession())) {
             return;
         }
 
-        $ipAddress  = '119.160.116.250';
-        $carrierISP = $this->carrierDetection->getCarrier($ipAddress);
-
         $identificationData = [
             'identification_token' => md5(microtime(true)),
-            'isp_name'             => $carrierISP,
             'carrier_id'           => null,
         ];
 
@@ -88,11 +89,12 @@ class IdentifyListener
         }
         if ($carrierId) {
             $identificationData['carrier_id'] = $carrierId;
-        } else {
+        }
+        $session->set('identification_data', $identificationData);
+
+        if (!$carrierId) {
             throw new \Exception('Hello wi-fi flow. Replace me by something?');
         }
-
-        $session->set('identification_data', $identificationData);
 
         $result = $this->identifier->identify((int)$carrierId, $request);
 
@@ -117,5 +119,28 @@ class IdentifyListener
             }
         }
         return null;
+    }
+
+    /**
+     * @param $request
+     * @param $session
+     * @return string
+     */
+    private function detectISP(Request $request, SessionInterface $session): string
+    {
+        $ipAddress = $request->getClientIp();
+        $ipAddress = '119.160.116.250';
+
+        if ($session->has('isp_detection_data')) {
+            $carrierISP       = $this->carrierDetection->getCarrier($ipAddress);
+            $ispDetectionData = [
+                'isp_name' => $carrierISP,
+            ];
+            $session->set('isp_detection_data', $ispDetectionData);
+        } else {
+            $ispDetectionData = $session->get('isp_detection_data');
+            $carrierISP       = $ispDetectionData['carrier_isp'];
+        }
+        return $carrierISP;
     }
 }

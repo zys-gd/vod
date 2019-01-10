@@ -40,4 +40,11 @@ trait ResponseTrait
         $response['data'] = $data;
         return new JsonResponse($response, $statusCode);
     }
+
+
+
+    protected function wrapException(\Throwable $throwable)
+    {
+        return $this->getSimpleJsonResponse($throwable->getMessage(), 400);
+    }
 }

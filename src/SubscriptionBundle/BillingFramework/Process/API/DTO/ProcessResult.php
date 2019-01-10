@@ -35,7 +35,7 @@ class ProcessResult
     const PROCESS_SUBTYPE_REDIRECT = 'redirect';
     const PROCESS_SUBTYPE_FINAL = 'final';
     const PROCESS_SUBTYPE_WAIT = 'wait';
-    const PROCESS_SUBTYPE_PIXEL= 'pixel';
+    const PROCESS_SUBTYPE_PIXEL = 'pixel';
 
     const PROCESS_STATUS_FAILED = 'failed';
     const PROCESS_STATUS_SUCCESSFUL = 'successful';
@@ -88,6 +88,12 @@ class ProcessResult
 
     private $providerId;
 
+    private $providerUser;
+    /**
+     * @var array
+     */
+    private $clientFields;
+
     /**
      * ProcessResult constructor.
      * @param int    $id
@@ -106,6 +112,8 @@ class ProcessResult
      * @param array  $charge
      * @param null   $provider
      * @param null   $providerId
+     * @param null   $providerUser
+     * @param array  $clientFields
      */
     public function __construct(
         $id = null,
@@ -123,7 +131,9 @@ class ProcessResult
         $message = null,
         $charge = null,
         $provider = null,
-        $providerId = null
+        $providerId = null,
+        $providerUser = null,
+        $clientFields = []
     )
     {
         $this->id             = $id;
@@ -162,8 +172,10 @@ class ProcessResult
         $data['message'] = $message;
 
 
-        $this->provider   = $provider;
-        $this->providerId = $providerId;
+        $this->provider     = $provider;
+        $this->providerId   = $providerId;
+        $this->providerUser = $providerUser;
+        $this->clientFields = $clientFields;
     }
 
 
@@ -341,4 +353,19 @@ class ProcessResult
     {
         return $this->subtype === self::PROCESS_SUBTYPE_PIXEL;
     }
+
+    public function getProviderUser()
+    {
+        return $this->providerUser;
+    }
+
+    /**
+     * @return array
+     */
+    public function getClientFields(): array
+    {
+        return $this->clientFields;
+    }
+
+
 }

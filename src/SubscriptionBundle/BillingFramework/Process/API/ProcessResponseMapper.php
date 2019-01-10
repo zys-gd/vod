@@ -29,9 +29,9 @@ class ProcessResponseMapper
      */
     public function map(string $type, stdClass $responseData)
     {
-        if (!isset($responseData->data)) {
+        if (isset($responseData->data) && is_array($responseData->data) && !$responseData->data) {
             throw new EmptyResponse();
-        }else{
+        } else if (isset($responseData->data) && $responseData->data) {
             $responseData = $responseData->data;
         }
 

@@ -11,11 +11,12 @@ namespace IdentificationBundle\Service\Action\Identification\Common\Pixel;
 
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\BillingFramework\Data\DataProvider;
+use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
-use IdentificationBundle\Service\Action\Identification\Common\IdentType;
 use IdentificationBundle\Service\Action\Identification\Common\UserFactory;
 use IdentificationBundle\Service\Action\Identification\Handler\HasCustomPixelIdent;
 use IdentificationBundle\Service\Action\Identification\Handler\IdentificationHandlerProvider;
+use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 
 class PixelIdentConfirmer
 {
@@ -91,11 +92,16 @@ class PixelIdentConfirmer
      * @param        $carrier
      * @param        $identificationToken
      */
-    private function saveUser(string $processId, $result, $carrier, $identificationToken): void
+    private function saveUser(string $processId, ProcessResult $result, CarrierInterface $carrier, string $identificationToken): void
     {
-        $user = $this->userFactory->create($result->getClientId(), $carrier);
-        $user->setIdentificationProcessId($processId);
-        $user->setIdentificationToken($identificationToken);
+        $clientFields = $result->getClientFields();
+        $user         = $this->userFactory->create(
+            $result->getProviderUser(),
+            $carrier,
+            $clientFields['user_ip'],
+            $identificationToken,
+            $processId
+        );
 
         $this->entityManager->persist($user);
     }
