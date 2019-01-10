@@ -1,7 +1,7 @@
 services:
     SubscriptionBundle\Controller\Actions\SubscribeAction:
         arguments:
-            - '@subscription.billable_user_provider'
+            - '@SubscriptionBundle\Service\UserExtractor'
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler'
             - '@router.default'
             - '@logger'
@@ -20,11 +20,11 @@ services:
         arguments: ['@SubscriptionBundle\Service\Action\SubscribeBack\SubscribeBackHandlerProvider', '@router']
 
     SubscriptionBundle\Controller\Actions\RedirectAction:
-        arguments: ['@subscription.billable_user_provider', '@monolog.logger.subscription_log', '@SubscriptionBundle\Service\SubscriptionProvider']
+        arguments: ['@SubscriptionBundle\Service\UserExtractor', '@monolog.logger.subscription_log', '@SubscriptionBundle\Service\SubscriptionProvider']
 
     SubscriptionBundle\Controller\Actions\UnsubscribeAction:
         arguments:
-            - '@subscription.billable_user_provider'
+            - '@SubscriptionBundle\Service\UserExtractor'
             - '@SubscriptionBundle\Service\SubscriptionProvider'
             - '@SubscriptionBundle\Service\SubscriptionPackProvider'
             - '@SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber'
@@ -33,9 +33,9 @@ services:
 
     SubscriptionBundle\Controller\Actions\WaitAction:
         class: SubscriptionBundle\Controller\Actions\WaitAction
-        arguments: ['@subscription.billable_user_provider', '@SubscriptionBundle\Service\SubscriptionProvider', '@router.default']
+        arguments: ['@SubscriptionBundle\Service\UserExtractor', '@SubscriptionBundle\Service\SubscriptionProvider', '@router.default']
 
     SubscriptionBundle\Controller\Actions\GetSubscriptionAction:
         class: SubscriptionBundle\Controller\Actions\GetSubscriptionAction
-        arguments: ['@subscription.billable_user_provider', '@SubscriptionBundle\Service\SubscriptionProvider']
+        arguments: ['@SubscriptionBundle\Service\UserExtractor', '@SubscriptionBundle\Service\SubscriptionProvider']
 

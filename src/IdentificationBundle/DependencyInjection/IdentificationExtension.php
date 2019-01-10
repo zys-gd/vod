@@ -28,6 +28,7 @@ class IdentificationExtension extends Extension
         $loader->load('action-ident.yml');
         $loader->load('billing-framework-integration.yml');
         $loader->load('controllers.yml');
+        $loader->load('repositories.yml');
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config/carriers'));
         $loader->load('mobilink-pk.yml');

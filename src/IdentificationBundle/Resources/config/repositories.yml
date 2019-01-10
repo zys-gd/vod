@@ -1,0 +1,5 @@
+services:
+    IdentificationBundle\Repository\UserRepository:
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - IdentificationBundle\Entity\User

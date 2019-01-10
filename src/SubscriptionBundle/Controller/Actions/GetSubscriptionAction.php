@@ -1,18 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Admin
- * Date: 18/06/26
- * Time: 17:24
- */
 
 namespace SubscriptionBundle\Controller\Actions;
 
 
+use IdentificationBundle\Entity\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
-use SubscriptionBundle\Service\BillableUserProvider;
+use SubscriptionBundle\Service\UserExtractor;
 use SubscriptionBundle\Service\SubscriptionProvider;
 
 class GetSubscriptionAction
@@ -20,32 +15,35 @@ class GetSubscriptionAction
 
     use ResponseTrait;
     /**
-     * @var BillableUserProvider
+     * @var UserExtractor
      */
-    private $billableUserProvider;
+    private $userExtractor;
 
 
     /**
      * @var SubscriptionProvider
      */
-    private $provider;
+    private $subscriptionProvider;
 
 
     /**
      * GetSubscriptionAction constructor.
+     *
+     * @param UserExtractor        $userExtractor
+     * @param SubscriptionProvider $provider
      */
-    public function __construct(BillableUserProvider $billableUserProvider, SubscriptionProvider $provider)
+    public function __construct(UserExtractor $userExtractor, SubscriptionProvider $provider)
     {
-        $this->billableUserProvider = $billableUserProvider;
-        $this->provider = $provider;
+        $this->userExtractor = $userExtractor;
+        $this->subscriptionProvider = $provider;
     }
 
     public function __invoke(Request $request)
     {
 
         try {
-            /** @var \UserBundle\Entity\BillableUser $billableUser */
-            $billableUser = $this->billableUserProvider->getFromRequest($request);
+            /** @var User $user */
+            $user = $this->userExtractor->getUserFromRequest($request);
         } catch (\Exception $ex) {
             return $this->getSimpleJsonResponse($ex->getMessage(), 400, [
                 'identification' => false,
@@ -54,10 +52,10 @@ class GetSubscriptionAction
         }
 
         try {
-            $subscription = $this->provider->getExistingSubscriptionForBillableUser($billableUser);
+            $subscription = $this->subscriptionProvider->getExistingSubscriptionForUser($user);
             if (!$subscription) {
                 return $this->getSimpleJsonResponse(
-                    sprintf('Can not find subscription for msisdn %s', $billableUser->getIdentifier()),
+                    sprintf('Can not find subscription for msisdn %s', $user->getIdentifier()),
                     400,
                     [
                         'user' => true,

@@ -48,7 +48,7 @@ class CommonResponseCreator
      */
     public function createCommonHttpResponse(Request $request, BillableUser $billableUser): Response
     {
-        $subscription = $this->subscriptionProvider->getExistingSubscriptionForBillableUser($billableUser);
+        $subscription = $this->subscriptionProvider->getExistingSubscriptionForUser($billableUser);
 
         if ($redirectUrl = $subscription->getRedirectUrl()) {
             $this->redirectUrlNullifier->processSubscriptionAndSave($subscription);

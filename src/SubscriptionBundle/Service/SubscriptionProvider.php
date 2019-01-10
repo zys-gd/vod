@@ -39,7 +39,7 @@ class SubscriptionProvider
      * @return Subscription
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getExistingSubscriptionForBillableUser(User $user): ?Subscription
+    public function getExistingSubscriptionForUser(User $user): ?Subscription
     {
         return $this->subscriptionRepository->findCurrentSubscriptionByOwner($user);
     }

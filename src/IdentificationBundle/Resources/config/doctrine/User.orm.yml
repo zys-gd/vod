@@ -1,6 +1,7 @@
 # ORM definition of the User model.
 IdentificationBundle\Entity\User:
     type: entity
+    repositoryClass: IdentificationBundle\Repository\UserRepository
     id:
         uuid:
             type: guid

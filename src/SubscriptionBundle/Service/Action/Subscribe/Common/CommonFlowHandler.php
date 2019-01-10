@@ -166,7 +166,7 @@ class CommonFlowHandler
 
         /** @var HasCommonFlow $subscriber */
         $subscriber   = $this->handlerProvider->getSubscriber($billableUser->getCarrier());
-        $subscription = $this->subscriptionProvider->getExistingSubscriptionForBillableUser($billableUser);
+        $subscription = $this->subscriptionProvider->getExistingSubscriptionForUser($billableUser);
 
         if (!empty($subscription) && !$this->checker->isEligibleToSubscribe($subscription)) {
             $this->logger->debug('`Subscribe` is not possible. User already have an active subscription.');
