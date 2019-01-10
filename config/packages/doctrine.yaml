@@ -31,3 +31,5 @@ doctrine:
                 dir: "%kernel.project_dir%/src/App/Resources/config/doctrine"
                 prefix: 'App\Domain\Entity'
                 alias: App
+        resolve_target_entities:
+            IdentificationBundle\Entity\CarrierInterface: App\Domain\Entity\Carrier

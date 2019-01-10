@@ -1,0 +1,45 @@
+services:
+
+  SubscriptionBundle\BillingFramework\Process\API\LinkCreator:
+      arguments: ['%billing_api_host%', '@SubscriptionBundle\Utils\UrlParamAppender']
+
+  SubscriptionBundle\BillingFramework\Notification\API\RequestSender:
+        arguments:
+          - '@subscription.http.client'
+          - '@logger'
+          - '@SubscriptionBundle\BillingFramework\Process\API\LinkCreator'
+
+  SubscriptionBundle\BillingFramework\Process\API\Client:
+      arguments:
+        - '@event_dispatcher'
+        - '@subscription.http.client'
+        - '@SubscriptionBundle\BillingFramework\Process\API\LinkCreator'
+        - '@cache.app'
+        - '@SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper'
+
+  SubscriptionBundle\BillingFramework\Process\SubscribeProcess:
+      arguments:
+        - '@SubscriptionBundle\BillingFramework\Process\API\RequestSender'
+        - '@logger'
+
+  SubscriptionBundle\BillingFramework\Process\RenewProcess:
+      arguments:
+        - '@SubscriptionBundle\BillingFramework\Process\API\RequestSender'
+        - '@logger'
+
+  SubscriptionBundle\BillingFramework\Notification\API\MessageCreator:
+      arguments: ['@logger', '@router']
+
+  SubscriptionBundle\BillingFramework\Process\UnsubscribeProcess:
+      arguments:
+        - '@logger'
+        - '@SubscriptionBundle\BillingFramework\Process\API\RequestSender'
+
+  SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper: ~
+
+  SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider:
+      arguments:
+          - '@SubscriptionBundle\BillingFramework\Process\API\Client'
+
+  SubscriptionBundle\BillingFramework\Process\API\RequestSender:
+      arguments: ['@event_dispatcher', '@SubscriptionBundle\BillingFramework\Process\API\Client', '@logger']

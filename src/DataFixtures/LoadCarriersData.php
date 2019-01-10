@@ -67,7 +67,7 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $carrier->setBillingCarrierId($billingCarrierId);
             $carrier->setName($name);
             $carrier->setCountryCode($countryCode);
-            $carrier->setIsp($isp);
+            $carrier->setIsp((string)$isp);
             $carrier->setPublished($published);
             $carrier->setTrialInitializer($trialInitializer);
             $carrier->setTrialPeriod($trialPeriod);

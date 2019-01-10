@@ -1,0 +1,10 @@
+services:
+
+  IdentificationBundle\Listener\IdentifyListener:
+    tags:
+     - { name: kernel.event_listener, event: kernel.controller }
+    arguments:
+      - '@country_carrier_detection'
+      - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+      - '@IdentificationBundle\Service\Carrier\ISPResolver'
+      - '@IdentificationBundle\Service\Action\Identification\Identifier'

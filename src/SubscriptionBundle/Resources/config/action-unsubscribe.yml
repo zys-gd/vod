@@ -1,0 +1,24 @@
+services:
+  SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber:
+      arguments:
+        - '@logger'
+        - '@SubscriptionBundle\Service\EntitySaveHelper'
+        - '@SubscriptionBundle\Service\Action\Common\FakeResponseProvider'
+        - '@SubscriptionBundle\Service\Notification\Notifier'
+        - '@SubscriptionBundle\BillingFramework\Process\UnsubscribeProcess'
+        - '@SubscriptionBundle\Service\Action\Unsubscribe\OnUnsubscribeUpdater'
+        - '@affiliate.carrier_post_send_affiliate_checker'
+        - '@SubscriptionBundle\Piwik\PiwikStatisticSender'
+        - '@SubscriptionBundle\Service\Action\Unsubscribe\UnsubscribeParametersProvider'
+
+  SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider:
+      arguments: ['@SubscriptionBundle\Service\Action\Unsubscribe\Handler\DefaultHandler']
+
+  SubscriptionBundle\Service\Action\Unsubscribe\Handler\DefaultHandler: ~
+
+
+  SubscriptionBundle\Service\Action\Unsubscribe\OnUnsubscribeUpdater:
+      arguments: ['@event_dispatcher', '@SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater']
+
+  SubscriptionBundle\Service\Action\Unsubscribe\UnsubscribeParametersProvider:
+      arguments: ['@SubscriptionBundle\Service\Action\Common\RequestParametersProvider']

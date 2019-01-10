@@ -1,0 +1,26 @@
+services:
+
+    SubscriptionBundle\Repository\SubscriptionPackRepository:
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - SubscriptionBundle\Entity\SubscriptionPack
+
+    SubscriptionBundle\Repository\SubscriptionRepository:
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - SubscriptionBundle\Entity\Subscription
+
+    SubscriptionBundle\Repository\CronTaskRepository:
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - SubscriptionBundle\Entity\CronTask
+
+    SubscriptionBundle\Repository\CronRunningHistoryRepository:
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - SubscriptionBundle\Entity\CronRunningHistory
+
+    SubscriptionBundle\Repository\LogRepository:
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - SubscriptionBundle\Entity\Log

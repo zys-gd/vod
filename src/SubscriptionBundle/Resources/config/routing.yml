@@ -1,0 +1,34 @@
+talentica_subscription.subscribe_back:
+    path: /subscribe_back
+    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\SubscribeBackAction'}
+
+talentica_subscription.subscribe:
+    path: /subscribe
+    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\SubscribeAction'}
+
+talentica_subscription.unsubscribe:
+    path: /unsubscribe
+    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\UnsubscribeAction'}
+
+talentica_subscription.redirect:
+    path: /subscribe/redirect
+    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\RedirectAction'}
+
+talentica_subscription.listen:
+    path: /v2/callback/listen
+    defaults: { _controller: 'SubscriptionBundle\Controller\Actions\ListenAction'}
+
+talentica_subscription.listen.adapter:
+    path: /callback/listen
+    defaults: { _controller: 'SubscriptionBundle\Controller\Actions\ListenAction'}
+
+talentica_subscription.wait_listen:
+    path: /wait
+    defaults: { _controller: 'SubscriptionBundle\Controller\Actions\WaitAction'}
+
+talentica_subscription.get-subscription:
+    path: /get-subscription
+    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\GetSubscriptionAction'}
+#talentica_subscription.subscription-buy-a-product:
+#    path: /buy/{id}
+#    defaults: {_controller: subscription:Subscription:buy}

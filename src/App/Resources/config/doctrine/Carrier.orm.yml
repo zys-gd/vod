@@ -111,13 +111,13 @@ App\Domain\Entity\Carrier:
         campaigns:
             targetEntity: App\Domain\Entity\Campaign
             joinTable:
-              name: null
-              joinColumns:
-                carrier_id:
-                  referencedColumnName: uuid
-              inverseJoinColumns:
-                  campaign_id:
-                    referencedColumnName: uuid
+                name: null
+                joinColumns:
+                    carrier_id:
+                        referencedColumnName: uuid
+                inverseJoinColumns:
+                    campaign_id:
+                        referencedColumnName: uuid
             mappedBy: carriers
 
     manyToOne:

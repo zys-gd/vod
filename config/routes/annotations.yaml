@@ -1,3 +1,10 @@
 api:
     resource: ../../src/App/API/Controller/
     type: annotation
+app:
+    resource: ../../src/App/Controller/
+    type: annotation
+identification:
+    resource: '@IdentificationBundle/Controller'
+    type: annotation
+    prefix: identification/

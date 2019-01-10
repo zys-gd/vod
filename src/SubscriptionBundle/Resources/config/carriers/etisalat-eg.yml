@@ -1,0 +1,20 @@
+services:
+    subscription.etisalat_eg_unsubscribe_handler:
+        class: SubscriptionBundle\Carriers\EtisalatEG\Unsubscribe\EtisalatEGUnsubscribeHandler
+        tags:
+          - {name: subscription.unsubscription_handler}
+
+    subscription.etisalat_eg_subscribe_handler:
+        class: SubscriptionBundle\Carriers\EtisalatEG\Subscribe\EtisalatEGSubscribeHander
+        tags:
+          - {name: subscription.subscription_handler}
+
+    subscription.etisalat_eg_unsubscribe_callback_handler:
+        class: SubscriptionBundle\Carriers\EtisalatEG\Callback\EtisalatEGCallbackUnsubscribe
+        tags:
+          - {name: subscription.callback_carrier_handler, type: unsubscribe }
+
+    subscription.etisalat_eg_subscribe_callback_handler:
+        class: SubscriptionBundle\Carriers\EtisalatEG\Callback\EtisalatEGCallbackSubscribe
+        tags:
+          - {name: subscription.callback_carrier_handler, type: subscribe }

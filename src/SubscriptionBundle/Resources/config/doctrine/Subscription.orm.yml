@@ -1,0 +1,120 @@
+SubscriptionBundle\Entity\Subscription:
+    type: entity
+    table: subscriptions
+    repositoryClass: SubscriptionBundle\Repository\SubscriptionRepository
+    gedmo:
+      loggable: true
+    id:
+        uuid:
+            type: guid
+    fields:
+        credits:
+            type: bigint
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+        created:
+            type: datetime
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            gedmo:
+              timestampable:
+                on: create
+        updated:
+            type: datetime
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            gedmo:
+              timestampable:
+                on: update
+
+        status:
+            type: smallint
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            gedmo:
+              - versioned
+
+        renewDate:
+            type: datetime
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+            column: renew_date
+            gedmo:
+              - versioned
+
+        currentStage:
+            type: smallint
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            column: current_stage
+            gedmo:
+              - versioned
+
+        redirectUrl:
+            type: text
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+            column: redirect_url
+            gedmo:
+              - versioned
+
+        affiliateToken:
+            type: text
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+            column: affiliate_token
+        error:
+            type: string
+            scale: 0
+            length: 255
+            unique: false
+            nullable: true
+            precision: 0
+            options:
+                default: null
+    manyToOne:
+        user:
+            targetEntity: IdentificationBundle\Entity\User
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                user_id:
+                    referencedColumnName: uuid
+            orphanRemoval: false
+        subscriptionPack:
+            targetEntity: SubscriptionBundle\Entity\SubscriptionPack
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: subscriptions
+            joinColumns:
+                subscription_pack_id:
+                    referencedColumnName: uuid
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

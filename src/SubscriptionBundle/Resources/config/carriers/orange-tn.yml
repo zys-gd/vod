@@ -1,0 +1,11 @@
+services:
+  subscription.subscriber.orange_tunisia:
+    class: SubscriptionBundle\Carriers\OrangeTN\Subscribe\OrangeTNHandler
+    arguments: ['@SubscriptionBundle\Service\SubscriptionExtractor', '@SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier', '@router']
+    tags:
+      - { name: subscription.subscription_handler }
+
+  subscription.orange_tn_subscribe_callback_handler:
+      class: SubscriptionBundle\Carriers\OrangeTN\Callback\OrangeTNSubscribeCallbackHandler
+      tags:
+        - {name: subscription.callback_carrier_handler, type: subscribe}

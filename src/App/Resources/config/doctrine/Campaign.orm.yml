@@ -3,8 +3,8 @@ App\Domain\Entity\Campaign:
     table: campaigns
     repositoryClass: App\Domain\Repository\CampaignRepository
     indexes:
-      campaign_token_index:
-        columns: [ campaign_token ]
+        campaign_token_index:
+            columns: [ campaign_token ]
     id:
         uuid:
             type: guid
@@ -22,23 +22,23 @@ App\Domain\Entity\Campaign:
             options:
                 default: '#000000'
         textColor:
-             type: string
-             length: '7'
-             column: text_color
-             nullable: true
-             options:
+            type: string
+            length: '7'
+            column: text_color
+            nullable: true
+            options:
                 default: '#000000'
         campaignToken:
-             type: string
-             length: '255'
+            type: string
+            length: '255'
         testUrl:
-             type: string
-             nullable: true
-             length: '255'
+            type: string
+            nullable: true
+            length: '255'
         isPause:
-             type: boolean
-             options:
-                 default: false
+            type: boolean
+            options:
+                default: false
         counter:
             type: integer
             options:
@@ -76,11 +76,11 @@ App\Domain\Entity\Campaign:
         carriers:
             targetEntity: App\Domain\Entity\Carrier
             joinTable:
-              name: null
-              joinColumns:
-                campaign_id:
-                  referencedColumnName: uuid
-              inverseJoinColumns:
-                  carrier_id:
-                    referencedColumnName: uuid
+                name: null
+                joinColumns:
+                    campaign_id:
+                        referencedColumnName: uuid
+                inverseJoinColumns:
+                    carrier_id:
+                        referencedColumnName: uuid
             inversedBy: campaigns
