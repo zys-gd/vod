@@ -150,7 +150,7 @@ class CommonFlowHandler
             ["subscription" => $subscription, "response" => $processResponse]
         );
 
-        $carrierHandler->afterProcess($subscription, $subscription->getOwner(), $processResponse);
+        $carrierHandler->afterProcess($subscription, $subscription->getUser(), $processResponse);
         $this->entitySaveHelper->persistAndSave($subscription);
 
 
@@ -166,18 +166,18 @@ class CommonFlowHandler
         }
 
         if ($isNeedToBeTracked) {
-            $userInfo = $this->infoMapper->mapFromBillableUser($subscription->getOwner());
+            $userInfo = $this->infoMapper->mapFromBillableUser($subscription->getUser());
             if ($type === 'subscribe') {
                 $this->affiliateService->checkAffiliateEligibilityAndSendEvent($subscription, $userInfo);
             }
             $this->piwikStatisticSender->send(
                 $callbackTypeHandler->getPiwikEventName(),
-                $subscription->getOwner(),
+                $subscription->getUser(),
                 $subscription,
                 $processResponse
             );
         } else {
-            $carrier = $subscription->getOwner()->getCarrier();
+            $carrier = $subscription->getUser()->getCarrier();
             $this->logger->info('Event should be already tracked. Ignoring', [
                 'event'   => $callbackTypeHandler->getPiwikEventName(),
                 'carrier' => $carrier->getIdCarrier()

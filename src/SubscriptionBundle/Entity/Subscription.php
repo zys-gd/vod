@@ -4,8 +4,8 @@ namespace SubscriptionBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use IdentificationBundle\Entity\User;
 use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
-use UserBundle\Entity\BillableUser;
 
 class Subscription implements HasUuid
 {
@@ -59,12 +59,9 @@ class Subscription implements HasUuid
     private $status;
 
     /**
-     * @var BillableUser
-     *
-     *
-     *
+     * @var User
      */
-    private $owner;
+    private $user;
 
     /**
      * @var \datetime
@@ -143,19 +140,19 @@ class Subscription implements HasUuid
     }
 
     /**
-     * @return BillableUser
+     * @return User
      */
-    public function getOwner()
+    public function getUser(): User
     {
-        return $this->owner;
+        return $this->user;
     }
 
     /**
-     * @param BillableUser $owner
+     * @param User $user
      */
-    public function setOwner($owner)
+    public function setUser(User $user)
     {
-        $this->owner = $owner;
+        $this->user = $user;
     }
 
     /**

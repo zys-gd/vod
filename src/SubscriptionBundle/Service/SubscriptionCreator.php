@@ -46,7 +46,7 @@ class SubscriptionCreator
     {
         $subscription = new Subscription();
         $subscription->setSubscriptionPack($plan);
-        $subscription->setOwner($billableUser);
+        $subscription->setUser($billableUser);
         $subscription->setAffiliateToken($affiliateToken);
         $subscription->setStatus($status);
 

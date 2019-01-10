@@ -81,7 +81,7 @@ class RequestParametersProvider
 
         $process->clientId = $subscription->getUuid();
         $process->carrier  = $subscription->getSubscriptionPack()->getCarrierId();
-        $process->userIp   = $subscription->getOwner()->getIp();
+        $process->userIp   = $subscription->getUser()->getIp();
 
         // The request headers of the end user.
         $currentUserRequestHeaders = '';
@@ -91,7 +91,7 @@ class RequestParametersProvider
             }
         }
         $process->userHeaders = $currentUserRequestHeaders;
-        $process->clientUser  = $subscription->getOwner()->getIdentifier();
+        $process->clientUser  = $subscription->getUser()->getIdentifier();
 
         return $process;
     }

@@ -193,7 +193,7 @@ class Subscriber
     public function resubscribe(Subscription $existingSubscription, SubscriptionPack $plan, $additionalData = []): ProcessResult
     {
 
-        $billableUser = $existingSubscription->getOwner();
+        $billableUser = $existingSubscription->getUser();
         $subscription = $this->createPendingSubscription($billableUser, $plan);
 
         $this->applyResubscribeTierChanges($subscription);
@@ -238,7 +238,7 @@ class Subscriber
         if ($this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription)) {
             $response = $this->fakeResponseProvider->getDummyResult($subscription, SubscribeProcess::PROCESS_METHOD_SUBSCRIBE);
 
-            $carrier = $subscription->getOwner()->getCarrier();
+            $carrier = $subscription->getUser()->getCarrier();
             $this->notifier->sendNotification(
                 SubscribeProcess::PROCESS_METHOD_SUBSCRIBE,
                 $subscription,
@@ -287,10 +287,10 @@ class Subscriber
     {
         $this->affiliateService->checkAffiliateEligibilityAndSendEvent(
             $subscription,
-            $this->userInfoMapper->mapFromBillableUser($subscription->getOwner())
+            $this->userInfoMapper->mapFromBillableUser($subscription->getUser())
         );
         $this->piwikStatisticSender->trackSubscribe(
-            $subscription->getOwner(),
+            $subscription->getUser(),
             $subscription,
             $response
         );
@@ -300,10 +300,10 @@ class Subscriber
     {
         $this->affiliateService->checkAffiliateEligibilityAndSendEvent(
             $subscription,
-            $this->userInfoMapper->mapFromBillableUser($subscription->getOwner())
+            $this->userInfoMapper->mapFromBillableUser($subscription->getUser())
         );
         $this->piwikStatisticSender->trackResubscribe(
-            $subscription->getOwner(),
+            $subscription->getUser(),
             $subscription,
             $response
         );

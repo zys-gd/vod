@@ -279,13 +279,13 @@ SubscriptionBundle\Entity\SubscriptionPack:
             orderBy: null
     manyToOne:
         country:
-            targetEntity: AppBundle\Entity\Country
+            targetEntity: App\Domain\Entity\Country
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
                 country_id:
-                    referencedColumnName: id
+                    referencedColumnName: uuid
             orphanRemoval: false
     lifecycleCallbacks: {  }

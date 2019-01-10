@@ -98,13 +98,13 @@ SubscriptionBundle\Entity\Subscription:
                 default: null
     manyToOne:
         user:
-            targetEntity: UserBundle\Entity\BillableUser
+            targetEntity: IdentificationBundle\Entity\User
             cascade: {  }
             fetch: LAZY
             mappedBy: null
             inversedBy: null
             joinColumns:
-                owner_id:
+                user_id:
                     referencedColumnName: uuid
             orphanRemoval: false
         subscriptionPack:

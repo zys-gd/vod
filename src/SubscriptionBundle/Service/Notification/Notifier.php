@@ -100,7 +100,7 @@ class Notifier
                 return;
             }
 
-            $billableUser = $subscription->getOwner();
+            $billableUser = $subscription->getUser();
 
             if ($handler->isProcessIdUsedInNotification()) {
                 $processId = $this->processIdExtractor->extractProcessId($billableUser);

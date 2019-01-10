@@ -110,7 +110,7 @@ class Unsubscriber
                     UnsubscribeProcess::PROCESS_METHOD_UNSUBSCRIBE,
                     $subscription,
                     $subscriptionPack,
-                    $subscription->getOwner()->getCarrier()
+                    $subscription->getUser()->getCarrier()
                 );
             } else {
                 $parameters = $this->parametersProvider->provideParameters($subscription);
@@ -136,7 +136,7 @@ class Unsubscriber
     public function trackEventsForUnsubscribe(Subscription $subscription, ProcessResult $response)
     {
         $this->piwikStatisticSender->trackUnsubscribe(
-            $subscription->getOwner(),
+            $subscription->getUser(),
             $subscription,
             $response
         );
