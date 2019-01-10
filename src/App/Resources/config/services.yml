@@ -42,9 +42,8 @@ services:
     App\Domain\Service\VideoProcessing\CallbackVoter:
         arguments: ['@App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector']
 
-    App\Domain\Service\CampaignService:
-
-    App\Domain\Service\AWS\S3Client:
+    App\Domain\Service\AWSS3\S3Client:
+        public: true
         arguments:
             -
               credentials:
@@ -52,3 +51,6 @@ services:
                   secret: '%aws_s3_secret%'
               version: '%aws_s3_version%'
               region: '%aws_s3_region%'
+
+    App\Domain\Service\CampaignService:
+        public: true

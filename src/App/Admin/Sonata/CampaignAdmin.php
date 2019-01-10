@@ -101,7 +101,7 @@ class CampaignAdmin extends AbstractAdmin
             $name = $this->generateFileName($file);
 
             /** @var S3Client $s3Client */
-            $s3Client = $this->container->get('@App\Domain\Service\AWS\S3Client');
+            $s3Client = $this->container->get('App\Domain\Service\AWSS3\S3Client');
             $adapter = new AwsS3Adapter($s3Client, 'playwing-appstore');
 
             /** @var Filesystem $filesystem */
@@ -175,8 +175,6 @@ class CampaignAdmin extends AbstractAdmin
             ->add('uuid')
             ->add('affiliate.name')
             ->add('carriers')
-            ->add('game', null,
-                ['admin_code' => 'app.admin.game', 'label' => 'Game'])
             ->add('bgColor')
             ->add('textColor')
             ->add('isPause', null,
@@ -184,8 +182,7 @@ class CampaignAdmin extends AbstractAdmin
             ->add('pausedCampaigns', null, [
                 'label' => 'Paused by Carrier',
                 'template' => '@Admin/Campaign/paused_campaigns.html.twig',
-            ])
-        ;
+            ]);
     }
 
     /**
@@ -200,12 +197,12 @@ class CampaignAdmin extends AbstractAdmin
     }
 
     /**
-     * @param $campaign
+     * @param Campaign $campaign
      */
-    protected function generateTestLink($campaign)
+    protected function generateTestLink(Campaign $campaign)
     {
         /**@var CampaignService $campaignService */
-        $campaignService = $this->container->get('@App\Domain\Service\CampaignService');
+        $campaignService = $this->container->get('App\Domain\Service\CampaignService');
         $campaignService->generateTestLink($campaign);
     }
 
@@ -238,15 +235,6 @@ class CampaignAdmin extends AbstractAdmin
                 'required' => true
             ])
             ->end()
-//            ->with('', ['box_class' => 'box-solid'])
-//            ->add('affiliate', EntityType::class, [
-//                'class' => 'AppBundle\Entity\Affiliate',
-//                'choice_label' => 'name',
-//                'query_builder' => function (EntityRepository $er) {
-//                    return $er->createQueryBuilder('a')->where('a.enabled=true'); // Only display enabled affiliates
-//                },
-//                'placeholder' => 'Select affiliate'
-//            ])
             ->add('ppd', MoneyType::class, [
                 'label' => 'PPD',
                 'required'=>true
@@ -280,10 +268,12 @@ class CampaignAdmin extends AbstractAdmin
                 'help' => $this->getImagePreviewHtml()
             ])
             ->add('bgColor', ColorType::class, [
+                'attr' => ['style' => 'width: 50px'],
                 'label' => 'Background color',
                 'required' => true
             ])
             ->add('textColor', ColorType::class, [
+                'attr' => ['style' => 'width: 50px'],
                 'label' => 'Text color',
                 'required' => true
             ])
