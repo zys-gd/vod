@@ -12,7 +12,6 @@ namespace SubscriptionBundle\Service\Action\Common;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Event\SubscriptionOnHoldEvent;
 
 class CommonSubscriptionUpdater
 {
@@ -43,18 +42,8 @@ class CommonSubscriptionUpdater
         if ($processResponse->isPutOnHold()) {
             $subscription->setCredits(0);
             $subscription->setStatus(Subscription::IS_ON_HOLD);
-
-            $this->callSubscriptionOnHoldEvent($subscription);
         }
 
-    }
-    /**
-     * @param Subscription $subscription
-     */
-    private function callSubscriptionOnHoldEvent(Subscription $subscription)
-    {
-        $event = new SubscriptionOnHoldEvent($subscription);
-        $this->eventDispatcher->dispatch(SubscriptionOnHoldEvent::EVENT_NAME, $event);
     }
 
 }

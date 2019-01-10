@@ -14,7 +14,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\RenewProcess;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Event\SubscriptionRenewSuccessEvent;
 use SubscriptionBundle\Service\Action\Renew\OnRenewUpdater;
 use SubscriptionBundle\Service\Callback\Common\SubscriptionStatusChanger;
 
@@ -47,7 +46,6 @@ class RenewCallbackHandler extends AbstractCallbackHandler
 
         $this->onRenewUpdater->updateSubscriptionByCallbackResponse($subscription, $response);
 
-        $response->isSuccessful() && $this->callSubscriptionRenewSuccessEvent($subscription);
     }
 
     public function isSupport($type): bool
@@ -58,14 +56,5 @@ class RenewCallbackHandler extends AbstractCallbackHandler
     public function getPiwikEventName(): string
     {
         return NewTracker::TRACK_RENEW;
-    }
-
-    /**
-     * @param Subscription $subscription
-     */
-    private function callSubscriptionRenewSuccessEvent(Subscription $subscription)
-    {
-        $event = new SubscriptionRenewSuccessEvent($subscription);
-        $this->eventDispatcher->dispatch(SubscriptionRenewSuccessEvent::EVENT_NAME, $event);
     }
 }

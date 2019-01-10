@@ -12,7 +12,6 @@ namespace SubscriptionBundle\Service\Action\Unsubscribe;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Event\SubscriptionUnsubscribeEvent;
 use SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater;
 
 class OnUnsubscribeUpdater
@@ -67,16 +66,6 @@ class OnUnsubscribeUpdater
     protected function applySuccess(Subscription $subscription)
     {
         $subscription->setStatus(Subscription::IS_INACTIVE);
-        $this->callSubscriptionUnsubscribeEvent($subscription);
-    }
-
-    /**
-     * @param Subscription $subscription
-     */
-    private function callSubscriptionUnsubscribeEvent(Subscription $subscription)
-    {
-        $event = new SubscriptionUnsubscribeEvent($subscription);
-        $this->eventDispatcher->dispatch(SubscriptionUnsubscribeEvent::EVENT_NAME, $event);
     }
 
     protected function applyFailure(Subscription $subscription, string $errorName)

@@ -115,17 +115,6 @@ class OnSubscribeUpdater
             $newCredits = $this->creditsCalculator->calculateCredits($subscription, $subscription->getSubscriptionPack(), $existingSubscription);
             $subscription->setCredits($newCredits);
         }
-
-        $this->callSubscriptionSubscribeEvent($subscription);
-    }
-
-    /**
-     * @param Subscription $subscription
-     */
-    private function callSubscriptionSubscribeEvent(Subscription $subscription)
-    {
-        $event = new SubscriptionSubscribeEvent($subscription);
-        $this->eventDispatcher->dispatch(SubscriptionSubscribeEvent::EVENT_NAME, $event);
     }
 
     protected function applyFailure(Subscription $subscription, string $errorName)

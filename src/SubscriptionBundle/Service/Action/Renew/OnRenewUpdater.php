@@ -12,7 +12,6 @@ namespace SubscriptionBundle\Service\Action\Renew;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Event\SubscriptionOnHoldEvent;
 use SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater;
 use SubscriptionBundle\Service\CreditsCalculator;
 use SubscriptionBundle\Service\RenewDateCalculator;
@@ -92,8 +91,6 @@ class OnRenewUpdater
                     if ($subscription->getCredits() >= 2) {
                         $subscription->setCredits($subscription->getCredits() - 2);
                     }
-
-                    $this->callSubscriptionOnHoldEvent($subscription);
                     break;
                 default:
                     $this->applyFailure($subscription, $processResponse->getError());
@@ -115,15 +112,6 @@ class OnRenewUpdater
 
         $newCredits = $this->creditsCalculator->calculateCredits($subscription, $subscription->getSubscriptionPack(), $existingSubscription);
         $subscription->setCredits($newCredits);
-    }
-
-    /**
-     * @param Subscription $subscription
-     */
-    private function callSubscriptionOnHoldEvent(Subscription $subscription)
-    {
-        $event = new SubscriptionOnHoldEvent($subscription);
-        $this->eventDispatcher->dispatch(SubscriptionOnHoldEvent::EVENT_NAME, $event);
     }
 
     protected function applyFailure(Subscription $subscription, string $errorName)
