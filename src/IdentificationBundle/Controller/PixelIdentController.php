@@ -10,7 +10,7 @@ namespace IdentificationBundle\Controller;
 
 
 use IdentificationBundle\BillingFramework\Data\DataProvider;
-use IdentificationBundle\Service\Action\Identification\Common\IdentificationDataExtractor;
+use IdentificationBundle\Service\Action\Identification\Common\IdentificationFlowDataExtractor;
 use IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentConfirmer;
 use IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentVerifier;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -101,7 +101,7 @@ class PixelIdentController extends AbstractController
     {
         $backUrl            = $request->get('backUrl', '');
         $processId          = $request->get('processId', '');
-        $identificationData = IdentificationDataExtractor::extractFromSession($request->getSession());
+        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
 
         if (!$identificationData) {
             throw new BadRequestHttpException('You are not identified yet');

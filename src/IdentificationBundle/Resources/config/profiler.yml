@@ -1,0 +1,4 @@
+services:
+  IdentificationBundle\Profiler\IdentDataCollector:
+      tags:
+          - { name: data_collector, template: '@Identification/profiler/debug_ident.html.twig', id: 'identification.ident_data_collector' }

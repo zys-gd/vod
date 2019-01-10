@@ -9,10 +9,12 @@
 namespace IdentificationBundle\Listener;
 
 
+use App\Controller\AppControllerInterface;
 use CountryCarrierDetectionBundle\Service\Interfaces\ICountryCarrierDetection;
 use IdentificationBundle\Controller\ControllerWithIdentification;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
-use IdentificationBundle\Service\Action\Identification\Common\IdentificationDataExtractor;
+use IdentificationBundle\Service\Action\Identification\Common\IdentificationFlowDataExtractor;
+use IdentificationBundle\Service\Action\Identification\Common\TokenGenerator;
 use IdentificationBundle\Service\Action\Identification\Identifier;
 use IdentificationBundle\Service\Carrier\ISPResolver;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,6 +39,10 @@ class IdentifyListener
      * @var Identifier
      */
     private $identifier;
+    /**
+     * @var TokenGenerator
+     */
+    private $generator;
 
 
     /**
@@ -45,58 +51,61 @@ class IdentifyListener
      * @param CarrierRepositoryInterface $carrierRepository
      * @param ISPResolver                $ISPResolver
      * @param Identifier                 $identifier
+     * @param TokenGenerator             $generator
      */
-    public function __construct(ICountryCarrierDetection $carrierDetection, CarrierRepositoryInterface $carrierRepository, ISPResolver $ISPResolver, Identifier $identifier)
+    public function __construct(
+        ICountryCarrierDetection $carrierDetection,
+        CarrierRepositoryInterface $carrierRepository,
+        ISPResolver $ISPResolver,
+        Identifier $identifier,
+        TokenGenerator $generator
+    )
     {
         $this->carrierDetection  = $carrierDetection;
         $this->carrierRepository = $carrierRepository;
         $this->ISPResolver       = $ISPResolver;
         $this->identifier        = $identifier;
+        $this->generator         = $generator;
     }
 
     public function onKernelController(FilterControllerEvent $event)
     {
+        $request = $event->getRequest();
+        if ($request->isXmlHttpRequest()) {
+            return;
+        }
 
         $controller = $event->getController();
-
         if (is_array($controller)) {
             $controller = $controller[0] ?? null;
         }
-
-        if (!$controller || !($controller instanceof ControllerWithIdentification)) {
+        if (!$controller) {
             return;
         }
 
-
-        $request = $event->getRequest();
-        $session = $request->getSession();
-
-
-        $carrierISP = $this->detectISP($request, $session);
-
-        if (IdentificationDataExtractor::extractFromSession($request->getSession())) {
+        if (!($controller instanceof AppControllerInterface)) {
             return;
         }
-
-        $identificationData = [
-            'identification_token' => md5(microtime(true)),
-            'carrier_id'           => null,
-        ];
-
-        $carrierId = null;
-        if ($carrierISP) {
-            $carrierId = $this->resolveISP($carrierISP);
-        }
-        if ($carrierId) {
-            $identificationData['carrier_id'] = $carrierId;
-        }
-        $session->set('identification_data', $identificationData);
-
+        $session   = $request->getSession();
+        $ipAddress = $request->getClientIp();
+        $carrierId = $this->detectCarrier($ipAddress, $session);
         if (!$carrierId) {
-            throw new \Exception('Hello wi-fi flow. Replace me by something?');
+            $session->set('is_wifi_flow', true);
+            return;
+        } else {
+            $session->set('is_wifi_flow', false);
         }
 
-        $result = $this->identifier->identify((int)$carrierId, $request);
+        if (!($controller instanceof ControllerWithIdentification)) {
+            return;
+        }
+        if (IdentificationFlowDataExtractor::extractIdentificationData($request->getSession())) {
+            return;
+        }
+
+        $token = $this->generator->generateToken();
+
+        $result = $this->identifier->identify((int)$carrierId, $request, $token, $session);
 
         if ($response = $result->getOverridedResponse()) {
             $event->setController(function () use ($response) {
@@ -126,21 +135,26 @@ class IdentifyListener
      * @param $session
      * @return string
      */
-    private function detectISP(Request $request, SessionInterface $session): string
+    private function detectCarrier(string $ipAddress, SessionInterface $session): ?int
     {
-        $ipAddress = $request->getClientIp();
-        $ipAddress = '119.160.116.250';
 
-        if ($session->has('isp_detection_data')) {
-            $carrierISP       = $this->carrierDetection->getCarrier($ipAddress);
+
+        if (!$session->has('isp_detection_data')) {
+            $carrierISP = $this->carrierDetection->getCarrier($ipAddress);
+            $carrierId  = null;
+            if ($carrierISP) {
+                $carrierId = $this->resolveISP($carrierISP);
+            }
             $ispDetectionData = [
-                'isp_name' => $carrierISP,
+                'isp_name'   => $carrierISP,
+                'carrier_id' => $carrierId,
             ];
             $session->set('isp_detection_data', $ispDetectionData);
         } else {
             $ispDetectionData = $session->get('isp_detection_data');
-            $carrierISP       = $ispDetectionData['carrier_isp'];
+            $carrierId        = $ispDetectionData['carrier_id'];
         }
-        return $carrierISP;
+
+        return $carrierId;
     }
 }
