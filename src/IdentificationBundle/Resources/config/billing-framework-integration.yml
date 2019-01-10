@@ -1,9 +1,9 @@
 services:
-  IdentificationBundle\BillingFramework\Process\IdentProcess:
-      arguments: ['@logger', '@SubscriptionBundle\BillingFramework\Process\API\RequestSender']
+    IdentificationBundle\BillingFramework\Process\IdentProcess:
+        arguments: ['@logger', '@SubscriptionBundle\BillingFramework\Process\API\RequestSender']
 
-  IdentificationBundle\BillingFramework\Process\AfterPixelProcess:
-      arguments: ['@logger', '@subscription.billing_framework_request_sender']
+    IdentificationBundle\BillingFramework\Process\AfterPixelProcess:
+        arguments: ['@logger', '@SubscriptionBundle\BillingFramework\Process\API\RequestSender']
 
-  IdentificationBundle\BillingFramework\Data\DataProvider:
-      arguments: ['@subscription.billing_framework_api', '@subscription.billing_framework_process_response_mapper']
+    IdentificationBundle\BillingFramework\Data\DataProvider:
+        arguments: ['@SubscriptionBundle\BillingFramework\Process\API\Client', '@SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper']
