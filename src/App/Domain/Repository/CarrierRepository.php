@@ -23,8 +23,13 @@ class CarrierRepository extends \Doctrine\ORM\EntityRepository implements Carrie
         return $this->findAll();
     }
 
-    public function findOneByBillingId(int $billingId): ?CarrierInterface
+    /**
+     * @param int $billingCarrierId
+     *
+     * @return CarrierInterface|null
+     */
+    public function findOneByBillingId(int $billingCarrierId): ?CarrierInterface
     {
-        return $this->findOneBy(['billingCarrierId' => $billingId]);
+        return $this->findOneBy(['billingCarrierId' => $billingCarrierId]);
     }
 }

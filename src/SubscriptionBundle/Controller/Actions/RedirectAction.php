@@ -9,41 +9,43 @@
 namespace SubscriptionBundle\Controller\Actions;
 
 
+use IdentificationBundle\Entity\User;
 use IdentificationBundle\Exception\RedirectRequiredException;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use SubscriptionBundle\Service\BillableUserProvider;
-use SubscriptionBundle\Service\SubscriptionProvider;
+use SubscriptionBundle\Service\UserExtractor;
+use SubscriptionBundle\Service\SubscriptionExtractor;
 
 class RedirectAction extends Controller
 {
     /**
-     * @var BillableUserProvider
+     * @var UserExtractor
      */
-    private $billableUserProvider;
+    private $userExtractor;
     /**
      * @var LoggerInterface
      */
     private $logger;
     /**
-     * @var SubscriptionProvider
+     * @var SubscriptionExtractor
      */
     private $subscriptionProvider;
 
     /**
      * RedirectAction constructor.
-     * @param BillableUserProvider $billableUserProvider
-     * @param LoggerInterface      $logger
-     * @param SubscriptionProvider $subscriptionProvider
+     *
+     * @param UserExtractor         $userExtractor
+     * @param LoggerInterface       $logger
+     * @param SubscriptionExtractor $subscriptionProvider
      */
     public function __construct(
-        BillableUserProvider $billableUserProvider,
+        UserExtractor $userExtractor,
         LoggerInterface $logger,
-        SubscriptionProvider $subscriptionProvider
+        SubscriptionExtractor $subscriptionProvider
     )
     {
-        $this->billableUserProvider = $billableUserProvider;
+        $this->userExtractor = $userExtractor;
         $this->logger               = $logger;
         $this->subscriptionProvider = $subscriptionProvider;
     }
@@ -59,8 +61,9 @@ class RedirectAction extends Controller
         $redirectURL = $request->getSchemeAndHttpHost();
 
         try {
-            $billableUser = $this->billableUserProvider->getFromRequest($request);
-            $subscription = $this->subscriptionProvider->getExistingSubscriptionForBillableUser($billableUser);
+            /** @var User $user */
+            $user = $this->userExtractor->getUserFromRequest($request);
+            $subscription = $this->subscriptionProvider->getExistingSubscriptionForUser($user);
 
             if (isset($subscription) && $subscription->isRedirectRequired()) {
                 $redirectURL = $subscription->getRedirectUrl();

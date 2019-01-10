@@ -12,11 +12,10 @@ namespace SubscriptionBundle\Service\Action\Renew;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Event\SubscriptionOnHoldEvent;
 use SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater;
 use SubscriptionBundle\Service\CreditsCalculator;
 use SubscriptionBundle\Service\RenewDateCalculator;
-use SubscriptionBundle\Service\SubscriptionProvider;
+use SubscriptionBundle\Service\SubscriptionExtractor;
 
 class OnRenewUpdater
 {
@@ -29,7 +28,7 @@ class OnRenewUpdater
      */
     private $renewDateCalculator;
     /**
-     * @var SubscriptionProvider
+     * @var SubscriptionExtractor
      */
     private $subscriptionProvider;
     /**
@@ -43,15 +42,16 @@ class OnRenewUpdater
 
     /**
      * OnRenewUpdater constructor.
+     *
      * @param \SubscriptionBundle\Service\RenewDateCalculator                     $renewDateCalculator
-     * @param SubscriptionProvider                                                          $subscriptionProvider
-     * @param \SubscriptionBundle\Service\CreditsCalculator                $creditsCalculator
-     * @param EventDispatcherInterface                                                      $eventDispatcher
+     * @param SubscriptionExtractor                                               $subscriptionProvider
+     * @param \SubscriptionBundle\Service\CreditsCalculator                       $creditsCalculator
+     * @param EventDispatcherInterface                                            $eventDispatcher
      * @param \SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater $commonSubscriptionUpdater
      */
     public function __construct(
         RenewDateCalculator $renewDateCalculator,
-        SubscriptionProvider $subscriptionProvider,
+        SubscriptionExtractor $subscriptionProvider,
         CreditsCalculator $creditsCalculator,
         EventDispatcherInterface $eventDispatcher,
         \SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater $commonSubscriptionUpdater
@@ -92,8 +92,6 @@ class OnRenewUpdater
                     if ($subscription->getCredits() >= 2) {
                         $subscription->setCredits($subscription->getCredits() - 2);
                     }
-
-                    $this->callSubscriptionOnHoldEvent($subscription);
                     break;
                 default:
                     $this->applyFailure($subscription, $processResponse->getError());
@@ -111,19 +109,10 @@ class OnRenewUpdater
         $subscription->setRenewDate($this->renewDateCalculator->calculateRenewDate($subscription));
 
         $billableUser         = $subscription->getUser();
-        $existingSubscription = $this->subscriptionProvider->getExistingSubscriptionForBillableUser($billableUser);
+        $existingSubscription = $this->subscriptionProvider->getExistingSubscriptionForUser($billableUser);
 
         $newCredits = $this->creditsCalculator->calculateCredits($subscription, $subscription->getSubscriptionPack(), $existingSubscription);
         $subscription->setCredits($newCredits);
-    }
-
-    /**
-     * @param Subscription $subscription
-     */
-    private function callSubscriptionOnHoldEvent(Subscription $subscription)
-    {
-        $event = new SubscriptionOnHoldEvent($subscription);
-        $this->eventDispatcher->dispatch(SubscriptionOnHoldEvent::EVENT_NAME, $event);
     }
 
     protected function applyFailure(Subscription $subscription, string $errorName)

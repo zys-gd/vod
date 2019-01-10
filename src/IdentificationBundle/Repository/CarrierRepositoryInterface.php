@@ -14,7 +14,7 @@ use IdentificationBundle\Entity\CarrierInterface;
 interface CarrierRepositoryInterface
 {
 
-    public function findOneByBillingId(int $billingId): ?CarrierInterface;
+    public function findOneByBillingId(int $billingCarrierId): ?CarrierInterface;
 
     /**
      * @return CarrierInterface[]

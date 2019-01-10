@@ -1,96 +1,84 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 02.05.18
- * Time: 12:13
- */
 
 namespace SubscriptionBundle\Piwik;
 
-
-use PiwikBundle\Service\NewTracker;
+use App\Domain\Constants\ConstFakeTrackerActions;
+use IdentificationBundle\Entity\User;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
-use UserBundle\Entity\BillableUser;
 
 class PiwikStatisticSender
 {
-    /**
-     * @var NewTracker
-     */
-    private $newTracker;
     /**
      * @var LoggerInterface
      */
     private $logger;
 
-
     /**
      * PiwikStatisticSender constructor.
-     * @param NewTracker $newTracker
+     *
+     * @param LoggerInterface $logger
      */
-    public function __construct(NewTracker $newTracker, LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger)
     {
-        $this->newTracker = $newTracker;
         $this->logger     = $logger;
     }
 
     public function trackSubscribe(
-        BillableUser $billableUser,
+        User $user,
         Subscription $subscriptionEntity,
         ProcessResult $responseData,
         $conversionMode = null
     )
     {
-        return $this->send(NewTracker::TRACK_SUBSCRIBE, $billableUser, $subscriptionEntity, $responseData, $conversionMode);
+        return $this->send(ConstFakeTrackerActions::TRACK_SUBSCRIBE, $user, $subscriptionEntity, $responseData, $conversionMode);
     }
 
     public function trackResubscribe(
-        BillableUser $billableUser,
+        User $user,
         Subscription $subscriptionEntity,
         ProcessResult $responseData,
         $conversionMode = null
     )
     {
-        return $this->send(NewTracker::TRACK_RESUBSCRIBE, $billableUser, $subscriptionEntity, $responseData, $conversionMode);
+        return $this->send(ConstFakeTrackerActions::TRACK_RESUBSCRIBE, $user, $subscriptionEntity, $responseData, $conversionMode);
     }
 
     public function trackRenew(
-        BillableUser $billableUser,
+        User $user,
         Subscription $subscriptionEntity,
         $responseData,
         $conversionMode = null
     )
     {
-        return $this->send(NewTracker::TRACK_RENEW, $billableUser, $subscriptionEntity, $responseData, $conversionMode);
+        return $this->send(ConstFakeTrackerActions::TRACK_RENEW, $user, $subscriptionEntity, $responseData, $conversionMode);
     }
 
     public function trackUnsubscribe(
-        BillableUser $billableUser,
+        User $user,
         Subscription $subscriptionEntity,
         ProcessResult $responseData,
         $conversionMode = null
     )
     {
-        return $this->send(NewTracker::TRACK_UNSUBSCRIBE, $billableUser, $subscriptionEntity, $responseData, $conversionMode);
+        return $this->send(ConstFakeTrackerActions::TRACK_UNSUBSCRIBE, $user, $subscriptionEntity, $responseData, $conversionMode);
     }
 
     public function trackDownload(
-        BillableUser $billableUser,
+        User $user,
         Subscription $subscriptionEntity,
         ProcessResult $responseData,
         $conversionMode = null
     )
     {
-        return $this->send(NewTracker::TRACK_DOWNLOAD, $billableUser, $subscriptionEntity, $responseData, $conversionMode);
+        return $this->send(ConstFakeTrackerActions::TRACK_DOWNLOAD, $user, $subscriptionEntity, $responseData, $conversionMode);
     }
 
 
     public function send(
         string $trackEventName,
-        BillableUser $billableUser,
+        User $user,
         Subscription $subscriptionEntity,
         ProcessResult $responseData,
         $conversionMode = null
@@ -100,12 +88,14 @@ class PiwikStatisticSender
             $this->logger->info('Trying to send piwik event', [
                 'eventName' => $trackEventName
             ]);
-            $result = $this->newTracker->$trackEventName(
-                $billableUser,
-                $subscriptionEntity,
-                $responseData,
-                $conversionMode
-            );
+            //TODO: implement tracker
+            // $result = $this->newTracker->$trackEventName(
+            //     $user,
+            //     $subscriptionEntity,
+            //     $responseData,
+            //     $conversionMode
+            // );
+            $result = true;
             $this->logger->info('Sending is finished', ['result' => $result]);
             return $result;
 

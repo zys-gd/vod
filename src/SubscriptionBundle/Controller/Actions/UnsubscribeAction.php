@@ -19,16 +19,16 @@ use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvi
 use SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider;
 use SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber;
 use SubscriptionBundle\Service\Action\Unsubscribe\UnsubscriptionEligibilityChecker;
-use SubscriptionBundle\Service\BillableUserProvider;
+use SubscriptionBundle\Service\UserExtractor;
 use SubscriptionBundle\Service\SubscriptionPackProvider;
-use SubscriptionBundle\Service\SubscriptionProvider;
-
+use SubscriptionBundle\Service\SubscriptionExtractor;
+//TODO:REFACTOR BillableUserProvider
 class UnsubscribeAction extends Controller
 {
     use ResponseTrait;
 
     /**
-     * @var BillableUserProvider
+     * @var UserExtractor
      */
     private $billableUserProvider;
 
@@ -45,7 +45,7 @@ class UnsubscribeAction extends Controller
      */
     private $checker;
     /**
-     * @var SubscriptionProvider
+     * @var SubscriptionExtractor
      */
     private $subscriptionProvider;
     /**
@@ -56,15 +56,16 @@ class UnsubscribeAction extends Controller
 
     /**
      * UnsubscribeAction constructor.
-     * @param BillableUserProvider             $billableUserProvider
-     * @param SubscriptionProvider             $subscriptionProvider
+     *
+     * @param UserExtractor                    $billableUserProvider
+     * @param SubscriptionExtractor            $subscriptionProvider
      * @param SubscriptionPackProvider         $subscriptionPackProvider
      * @param Unsubscriber                     $unsubscriber
      * @param UnsubscriptionEligibilityChecker $checker
      */
     public function __construct(
-        BillableUserProvider $billableUserProvider,
-        SubscriptionProvider $subscriptionProvider,
+        UserExtractor $billableUserProvider,
+        SubscriptionExtractor $subscriptionProvider,
         SubscriptionPackProvider $subscriptionPackProvider,
         Unsubscriber $unsubscriber,
         UnsubscriptionEligibilityChecker $checker,
@@ -84,9 +85,9 @@ class UnsubscribeAction extends Controller
     {
         $response = null;
         try {
-            $billableUser     = $this->billableUserProvider->getFromRequest($request);
+            $billableUser     = $this->billableUserProvider->getUserFromRequest($request);
             $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($billableUser);
-            $subscription     = $this->subscriptionProvider->getExistingSubscriptionForBillableUser($billableUser);
+            $subscription     = $this->subscriptionProvider->getExistingSubscriptionForUser($billableUser);
 
             if (!is_null($subscription) && !$this->checker->isEligibleToUnsubscribe($subscription)) {
                 throw new SubscriptionException('You have already been unsubscribed');

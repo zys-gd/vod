@@ -16,12 +16,12 @@ use SubscriptionBundle\Event\SubscriptionSubscribeEvent;
 use SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater;
 use SubscriptionBundle\Service\CreditsCalculator;
 use SubscriptionBundle\Service\RenewDateCalculator;
-use SubscriptionBundle\Service\SubscriptionProvider;
+use SubscriptionBundle\Service\SubscriptionExtractor;
 
 class OnSubscribeUpdater
 {
     /**
-     * @var SubscriptionProvider
+     * @var SubscriptionExtractor
      */
     private $subscriptionProvider;
     /**
@@ -41,14 +41,15 @@ class OnSubscribeUpdater
 
     /**
      * OnSubscribeUpdater constructor.
-     * @param SubscriptionProvider                                      $subscriptionProvider
-     * @param CreditsCalculator                                         $creditsCalculator
+     *
+     * @param SubscriptionExtractor                           $subscriptionProvider
+     * @param CreditsCalculator                               $creditsCalculator
      * @param \SubscriptionBundle\Service\RenewDateCalculator $renewDateCalculator
-     * @param EventDispatcherInterface                                  $eventDispatcher
-     * @param CommonSubscriptionUpdater                                 $commonSubscriptionUpdater
+     * @param EventDispatcherInterface                        $eventDispatcher
+     * @param CommonSubscriptionUpdater                       $commonSubscriptionUpdater
      */
     public function __construct(
-        SubscriptionProvider $subscriptionProvider,
+        SubscriptionExtractor $subscriptionProvider,
         CreditsCalculator $creditsCalculator,
         RenewDateCalculator $renewDateCalculator,
         EventDispatcherInterface $eventDispatcher,
@@ -110,22 +111,11 @@ class OnSubscribeUpdater
 
         if (intval($subscription->getCredits()) === 0) {
             $billableUser         = $subscription->getUser();
-            $existingSubscription = $this->subscriptionProvider->getExistingSubscriptionForBillableUser($billableUser);
+            $existingSubscription = $this->subscriptionProvider->getExistingSubscriptionForUser($billableUser);
 
             $newCredits = $this->creditsCalculator->calculateCredits($subscription, $subscription->getSubscriptionPack(), $existingSubscription);
             $subscription->setCredits($newCredits);
         }
-
-        $this->callSubscriptionSubscribeEvent($subscription);
-    }
-
-    /**
-     * @param Subscription $subscription
-     */
-    private function callSubscriptionSubscribeEvent(Subscription $subscription)
-    {
-        $event = new SubscriptionSubscribeEvent($subscription);
-        $this->eventDispatcher->dispatch(SubscriptionSubscribeEvent::EVENT_NAME, $event);
     }
 
     protected function applyFailure(Subscription $subscription, string $errorName)

@@ -20,13 +20,13 @@ use SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCommonFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomResponses;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerInterface;
-use SubscriptionBundle\Service\SubscriptionProvider;
+use SubscriptionBundle\Service\SubscriptionExtractor;
 use UserBundle\Entity\BillableUser;
 
 class OrangeTNHandler implements SubscriptionHandlerInterface, HasCustomResponses, HasCommonFlow
 {
     /**
-     * @var SubscriptionProvider
+     * @var SubscriptionExtractor
      */
     private $subscriptionProvider;
 
@@ -42,11 +42,12 @@ class OrangeTNHandler implements SubscriptionHandlerInterface, HasCustomResponse
 
     /**
      * OrangeTunisiaHandler constructor.
-     * @param SubscriptionProvider $subscriptionProvider
-     * @param RedirectUrlNullifier $redirectUrlNullifier
+     *
+     * @param SubscriptionExtractor $subscriptionProvider
+     * @param RedirectUrlNullifier  $redirectUrlNullifier
      */
     public function __construct(
-        SubscriptionProvider $subscriptionProvider,
+        SubscriptionExtractor $subscriptionProvider,
         RedirectUrlNullifier $redirectUrlNullifier,
         RouterInterface $router
     )

@@ -19,7 +19,7 @@ services:
 
     SubscriptionBundle\Service\SubscriptionText\DeclensionHelper: ~
 
-    #subscription.billable_user_provider:
+    #SubscriptionBundle\Service\UserExtractor:
     #    class: SubscriptionBundle\Service\BillableUserProvider
     #    arguments:
     #        - "@session"
@@ -46,8 +46,7 @@ services:
     SubscriptionBundle\Service\EntitySaveHelper:
         arguments: ['@doctrine.orm.entity_manager', '@logger']
 
-    SubscriptionBundle\Service\SubscriptionProvider:
-        class: SubscriptionBundle\Service\SubscriptionProvider
+    SubscriptionBundle\Service\SubscriptionExtractor:
         arguments: ['@SubscriptionBundle\Repository\SubscriptionRepository']
 
     SubscriptionBundle\Utils\UrlParamAppender: ~
@@ -71,6 +70,9 @@ services:
 
     SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater:
         arguments: ['@event_dispatcher']
+
+    SubscriptionBundle\Service\UserExtractor:
+        arguments: ['@router.default', '@logger', '@IdentificationBundle\Repository\UserRepository']
 
 parameters:
     subscription.subscription.class: SubscriptionBundle\Entity\SubscriptionPack

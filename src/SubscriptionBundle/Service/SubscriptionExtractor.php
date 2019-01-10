@@ -8,7 +8,7 @@ use IdentificationBundle\Entity\User;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Repository\SubscriptionRepository;
 
-class SubscriptionProvider
+class SubscriptionExtractor
 {
     private $subscriptionRepository;
 
@@ -39,7 +39,7 @@ class SubscriptionProvider
      * @return Subscription
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getExistingSubscriptionForBillableUser(User $user): ?Subscription
+    public function getExistingSubscriptionForUser(User $user): ?Subscription
     {
         return $this->subscriptionRepository->findCurrentSubscriptionByOwner($user);
     }

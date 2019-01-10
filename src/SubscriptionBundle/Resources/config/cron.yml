@@ -15,18 +15,17 @@ services:
   #  tags:
   #    - { name: console.command }
 
-  #subscription.commands.trial_renew:
-  #  class: SubscriptionBundle\Command\RenewTrialSubscriptionCommand
+  #SubscriptionBundle\Command\RenewTrialSubscriptionCommand:
   #  tags:
   #    - { name: console.command }
-  #  arguments: ['@cron.trial_renew_service', '@cron.task', '@app.carriers']
+  #  arguments: ['@cron.trial_renew_service', '@cron.task', '@doctrine.orm.entity_manager']
 
   #cron.trial_renew_service:
   #    class: SubscriptionBundle\Service\Cron\TrialRenewer
   #    arguments:
   #      - '@SubscriptionBundle\Service\SubscriptionPackProvider'
   #      - '@SubscriptionBundle\Service\Action\Renew\Renewer'
-  #      - '@SubscriptionBundle\Service\SubscriptionProvider'
+  #      - '@SubscriptionBundle\Service\SubscriptionExtractor'
 
   #cron.task:
   #    class: SubscriptionBundle\Service\Cron\CronTaskStatus

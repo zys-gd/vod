@@ -3,6 +3,7 @@
 namespace SubscriptionBundle\Command;
 
 
+use App\Utils\UuidGenerator;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -70,7 +71,7 @@ class GeneralRenewCommand extends ContainerAwareCommand
             ];
             $greenInput = new ArrayInput($arguments);
             $command->run($greenInput, $output);
-            $newEvent = new CronRunningHistory();
+            $newEvent = new CronRunningHistory(UuidGenerator::generate());
             $newEvent->setLastRunningHour($endTime);
             $this->entityManager->persist($newEvent);
             $this->entityManager->flush();

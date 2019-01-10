@@ -3,12 +3,12 @@
 namespace SubscriptionBundle\Service\Cron;
 
 
-use AppBundle\Entity\Carrier;
+use App\Domain\Entity\Carrier;
 use SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound;
 use SubscriptionBundle\Service\Action\Renew\Renewer;
 use SubscriptionBundle\Service\Action\Subscribe\Subscriber;
 use SubscriptionBundle\Service\SubscriptionPackProvider;
-use SubscriptionBundle\Service\SubscriptionProvider;
+use SubscriptionBundle\Service\SubscriptionExtractor;
 
 /**
  * Renew trial subscriptions for carriers, whom trial period is greater than their renew period
@@ -28,21 +28,22 @@ class TrialRenewer
      */
     private $renewer;
     /**
-     * @var SubscriptionProvider
+     * @var SubscriptionExtractor
      */
     private $subscriptionProvider;
 
 
     /**
      * TrialRenewService constructor.
+     *
      * @param SubscriptionPackProvider $subscriptionPackProvider
-     * @param Renewer $renewer
-     * @param SubscriptionProvider $subscriptionProvider
+     * @param Renewer                  $renewer
+     * @param SubscriptionExtractor    $subscriptionProvider
      */
     public function __construct(
         SubscriptionPackProvider $subscriptionPackProvider,
         Renewer $renewer,
-        SubscriptionProvider $subscriptionProvider
+        SubscriptionExtractor $subscriptionProvider
     )
     {
         $this->subscriptionPackProvider = $subscriptionPackProvider;

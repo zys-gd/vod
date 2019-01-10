@@ -15,19 +15,18 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Router;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Service\BillableUserProvider;
-use SubscriptionBundle\Service\SubscriptionProvider;
-
+use SubscriptionBundle\Service\UserExtractor;
+use SubscriptionBundle\Service\SubscriptionExtractor;
+//TODO:REFACTOR BillableUserProvider
 class WaitAction
 {
     /**
-     *
      * /**
-     * @var BillableUserProvider
+     * @var UserExtractor
      */
     private $billableUserProvider;
     /**
-     * @var SubscriptionProvider
+     * @var SubscriptionExtractor
      */
     private $subscriptionProvider;
     /**
@@ -38,14 +37,14 @@ class WaitAction
 
     /**
      * WaitAction constructor.
-     * @param BillableUserProvider $billableUserProvider
-     * @param SubscriptionProvider $subscriptionProvider
-     * @param Router               $router
      *
+     * @param UserExtractor         $billableUserProvider
+     * @param SubscriptionExtractor $subscriptionProvider
+     * @param Router                $router
      */
     public function __construct(
-        BillableUserProvider $billableUserProvider,
-        SubscriptionProvider $subscriptionProvider,
+        UserExtractor $billableUserProvider,
+        SubscriptionExtractor $subscriptionProvider,
         Router $router
     )
     {
@@ -61,12 +60,12 @@ class WaitAction
         $redirectUrl = $request->getSession()->get('location', $this->router->generate('homepage'));
         $ajax        = $request->server->get('HTTP_X_REQUESTED_WITH', false);
         try {
-            $billableUser = $this->billableUserProvider->getFromRequest($request);;
+            $billableUser = $this->billableUserProvider->getUserFromRequest($request);;
         } catch (UndefinedIdentityException $exception) {
             throw new \InvalidArgumentException('Cannot parse incoming request');
         }
 
-        $subscriptionEntity = $this->subscriptionProvider->getExistingSubscriptionForBillableUser($billableUser);
+        $subscriptionEntity = $this->subscriptionProvider->getExistingSubscriptionForUser($billableUser);
 
         if ($subscriptionEntity
             && $subscriptionEntity->getStatus() === Subscription::IS_PENDING

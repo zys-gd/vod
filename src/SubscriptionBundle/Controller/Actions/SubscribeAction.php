@@ -9,6 +9,7 @@
 namespace SubscriptionBundle\Controller\Actions;
 
 
+use IdentificationBundle\Entity\User;
 use IdentificationBundle\Exception\PendingIdentificationException;
 use IdentificationBundle\Exception\RedirectRequiredException;
 use Psr\Log\LoggerInterface;
@@ -28,7 +29,7 @@ use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomFlow;
 use SubscriptionBundle\Carriers\Megasyst\Subscribe\MegasystCarrierChecker;
 use SubscriptionBundle\Carriers\Megasyst\Subscribe\MegasystPhoneChecker;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
-use SubscriptionBundle\Service\BillableUserProvider;
+use SubscriptionBundle\Service\UserExtractor;
 use SubscriptionBundle\Service\Legacy\MobilifeSubscriberService;
 use SubscriptionBundle\Service\Legacy\MobimindSubscriberService;
 use SubscriptionBundle\Utils\UrlParamAppender;
@@ -38,9 +39,9 @@ class SubscribeAction extends Controller
     use ResponseTrait;
 
     /**
-     * @var BillableUserProvider
+     * @var UserExtractor
      */
-    private $billableUserProvider;
+    private $userExtractor;
     /**
      * @var CommonFlowHandler
      */
@@ -85,20 +86,21 @@ class SubscribeAction extends Controller
 
     /**
      * SubscribeAction constructor.
-     * @param BillableUserProvider                                                             $billableUserProvider
-     * @param CommonFlowHandler                                                                $commonFlowHandler
-     * @param Router                                                                           $router
-     * @param LoggerInterface                                                                  $logger
-     * @param MobimindSubscriberService                                                        $mobimindService
+     *
+     * @param UserExtractor                                                          $userExtractor
+     * @param CommonFlowHandler                                                      $commonFlowHandler
+     * @param Router                                                                 $router
+     * @param LoggerInterface                                                        $logger
+     * @param MobimindSubscriberService                                              $mobimindService
      * @param \SubscriptionBundle\Carriers\Megasyst\Subscribe\MegasystCarrierChecker $megasystCarrierChecker
-     * @param BlacklistVoter                                                                   $blacklistVoter
+     * @param BlacklistVoter                                                         $blacklistVoter
      * @param \SubscriptionBundle\Carriers\Megasyst\Subscribe\MegasystPhoneChecker   $megasystPhoneChecker
-     * @param UrlParamAppender                                                                 $urlParamAppender
-     * @param MobilifeSubscriberService                                                        $mobilifeService
-     * @param SubscriptionHandlerProvider                                                      $handlerProvider
+     * @param UrlParamAppender                                                       $urlParamAppender
+     * @param MobilifeSubscriberService                                              $mobilifeService
+     * @param SubscriptionHandlerProvider                                            $handlerProvider
      */
     public function __construct(
-        BillableUserProvider $billableUserProvider,
+        UserExtractor $userExtractor,
         CommonFlowHandler $commonFlowHandler,
         Router $router,
         LoggerInterface $logger,
@@ -111,7 +113,7 @@ class SubscribeAction extends Controller
         SubscriptionHandlerProvider $handlerProvider
     )
     {
-        $this->billableUserProvider   = $billableUserProvider;
+        $this->userExtractor   = $userExtractor;
         $this->commonFlowHandler      = $commonFlowHandler;
         $this->router                 = $router;
         $this->logger                 = $logger;
@@ -150,9 +152,10 @@ class SubscribeAction extends Controller
         }
 
         try {
-            $billableUser = $this->billableUserProvider->getFromRequest($request);
+            /** @var User $user */
+            $user = $this->userExtractor->getUserFromRequest($request);
         } catch (PendingIdentificationException $e) {
-            $billableUser = $this->tryToRetrieveUserWithDelay($request);
+            $user = $this->tryToRetrieveUserWithDelay($request);
         } catch (RedirectRequiredException $ex) {
 
             $this->logger->debug('Redirect Required', [
@@ -168,11 +171,11 @@ class SubscribeAction extends Controller
             ]);
         }
 
-        $subscriber = $this->handlerProvider->getSubscriber($billableUser->getCarrier());
+        $subscriber = $this->handlerProvider->getSubscriber($user->getCarrier());
         if ($subscriber instanceof HasCustomFlow) {
-            return $subscriber->process($request, $billableUser, $request->getSession());
+            return $subscriber->process($request, $user, $request->getSession());
         } else {
-            return $this->commonFlowHandler->process($request, $billableUser);
+            return $this->commonFlowHandler->process($request, $user);
         }
 
 
@@ -214,7 +217,7 @@ class SubscribeAction extends Controller
         for ($i = 0; $i < 3; $i++) {
             try {
                 $this->logger->debug('Trying to retrieve user with delay', ['attempt' => $i]);
-                $billableUser = $this->billableUserProvider->getFromRequest($request);
+                $billableUser = $this->userExtractor->getUserFromRequest($request);
                 $this->logger->debug('Attempt was successful', ['attempt' => $i]);
                 break;
             } catch (PendingIdentificationException $e) {

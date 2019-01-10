@@ -14,8 +14,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\RenewProcess;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Event\SubscriptionRenewOnHoldEvent;
-use SubscriptionBundle\Event\SubscriptionRenewSuccessEvent;
 use SubscriptionBundle\Service\EntitySaveHelper;
 
 class Renewer
@@ -84,8 +82,6 @@ class Renewer
 
             $this->onRenewUpdater->updateSubscriptionByResponse($subscription, $response);
 
-            $this->performV2SynchronizationEvents($subscription, $response);
-
             return $response;
         } catch (\SubscriptionBundle\BillingFramework\Process\Exception\RenewingProcessException $exception) {
 
@@ -98,34 +94,4 @@ class Renewer
 
 
     }
-
-
-    /**
-     * @param Subscription $subscription
-     */
-    private function callSubscriptionRenewOnHoldEvent(Subscription $subscription)
-    {
-        $event = new SubscriptionRenewOnHoldEvent($subscription);
-        $this->eventDispatcher->dispatch(SubscriptionRenewOnHoldEvent::EVENT_NAME, $event);
-    }
-
-    /**
-     * @param Subscription $subscription
-     */
-    private function callSubscriptionRenewSuccessEvent(Subscription $subscription)
-    {
-        $event = new SubscriptionRenewSuccessEvent($subscription);
-        $this->eventDispatcher->dispatch(SubscriptionRenewSuccessEvent::EVENT_NAME, $event);
-    }
-
-    /**
-     * @param Subscription $subscription
-     * @param              $response
-     */
-    protected function performV2SynchronizationEvents(Subscription $subscription, ProcessResult $response)
-    {
-        $response->isPutOnHold() && $this->callSubscriptionRenewOnHoldEvent($subscription);
-        $response->isSuccessful() && $this->callSubscriptionRenewSuccessEvent($subscription);
-    }
-
 }

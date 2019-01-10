@@ -2,7 +2,6 @@
 
 namespace SubscriptionBundle\Command;
 
-use AppBundle\Service\RedisCacheService;
 use Carbon\Carbon;
 use Doctrine\ORM\EntityManager;
 use Enqueue\Client\ProducerInterface;
