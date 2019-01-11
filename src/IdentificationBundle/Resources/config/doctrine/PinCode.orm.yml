@@ -1,0 +1,19 @@
+IdentificationBundle\Entity\PinCode:
+    type: entity
+    table: otppin_code
+    repositoryClass: IdentificationBundle\Repository\PinCodeRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        pin:
+            type: string
+            length: 255
+            unique: true
+        addedAt:
+            type: datetime
+            column: added_at
+    lifecycleCallbacks: {  }

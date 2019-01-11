@@ -1,10 +1,12 @@
 {% extends '@App/base.html.twig' %}
 
 {% block body %}
+    {% import "@App/Components/lp-subscribe-buttons.html.twig" as lp_subscribe_buttons %}
 
-
-    {{ dump() }}
-
-    <a href="{{ url('identify') }}"><button>Big ident button</button></a>
+    {% if is_wifi_flow %}
+        {{ lp_subscribe_buttons.wifi_subscribe_block() }}
+    {% else %}
+        {{ lp_subscribe_buttons.common_subscribe_block() }}
+    {% endif %}
 
 {% endblock %}

@@ -7,3 +7,9 @@ services:
 
     IdentificationBundle\BillingFramework\Data\DataProvider:
         arguments: ['@SubscriptionBundle\BillingFramework\Process\API\Client', '@SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper']
+
+    IdentificationBundle\BillingFramework\Process\PinRequestProcess:
+        arguments: ['@SubscriptionBundle\BillingFramework\Process\API\RequestSender', '@logger']
+
+    IdentificationBundle\BillingFramework\Process\PinResendProcess:
+        arguments: ['@SubscriptionBundle\BillingFramework\Process\API\RequestSender', '@logger']

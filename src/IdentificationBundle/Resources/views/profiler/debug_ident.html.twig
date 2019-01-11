@@ -6,7 +6,9 @@
     {% set icon %}
 
         <span class="sf-toolbar-value" style="display: inline-block;">
-            {{ collector.currentIdentity.isp.isp_name  }}: {{ collector.currentIdentity.isp.carrier_id  }}
+            {% if collector.currentIdentity.isp %}
+                {{ collector.currentIdentity.isp.carrier_id }}
+            {% endif %}
         </span>
     {% endset %}
 

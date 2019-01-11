@@ -3,3 +3,8 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - IdentificationBundle\Entity\User
+
+    IdentificationBundle\Repository\PinCodeRepository:
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - IdentificationBundle\Entity\PinCode

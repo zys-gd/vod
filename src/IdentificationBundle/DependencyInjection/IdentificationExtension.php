@@ -28,13 +28,16 @@ class IdentificationExtension extends Extension
         $loader->load('services.yml');
         $loader->load('action-ident.yml');
         $loader->load('action-ident-callback.yml');
+        $loader->load('action-wifi-ident.yml');
         $loader->load('billing-framework-integration.yml');
         $loader->load('controllers.yml');
         $loader->load('repositories.yml');
         $loader->load('profiler.yml');
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config/carriers'));
+        $loader->load('etisalat-eg.yml');
         $loader->load('mobilink-pk.yml');
+
 
 
         $configuration = new Configuration();

@@ -179,7 +179,7 @@ class Carrier implements CarrierInterface
     /**
      * @return mixed
      */
-    public function getOperatorId()
+    public function getOperatorId(): int
     {
         return $this->operatorId;
     }

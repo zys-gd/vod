@@ -1,0 +1,30 @@
+services:
+  IdentificationBundle\Service\Action\WifiIdentification\Handler\WifiIdentificationHandlerProvider: ~
+
+  IdentificationBundle\Service\Action\WifiIdentification\Common\MessageComposer: ~
+
+  IdentificationBundle\Service\Action\WifiIdentification\Common\MsisdnCleaner: ~
+
+  IdentificationBundle\Service\Action\WifiIdentification\Common\WifiIdentConfirmator:
+      arguments:
+        - '@IdentificationBundle\Service\Action\WifiIdentification\Handler\WifiIdentificationHandlerProvider'
+        - '@IdentificationBundle\Service\Action\WifiIdentification\Common\InternalSMS\PinCodeVerifier'
+        - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+
+  IdentificationBundle\Service\Action\WifiIdentification\Common\WifiIdentSMSSender:
+      arguments:
+        - '@IdentificationBundle\Service\Action\WifiIdentification\Handler\WifiIdentificationHandlerProvider'
+        - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+        - '@IdentificationBundle\BillingFramework\Process\PinRequestProcess'
+        - '@IdentificationBundle\Service\Action\WifiIdentification\Common\MessageComposer'
+        - '@IdentificationBundle\Service\Action\WifiIdentification\Common\MsisdnCleaner'
+        - '@IdentificationBundle\Service\Action\WifiIdentification\Common\InternalSMS\PinCodeSaver'
+
+  IdentificationBundle\Service\Action\WifiIdentification\Common\InternalSMS\PinCodeVerifier:
+      arguments:
+        - '@IdentificationBundle\Repository\PinCodeRepository'
+        - '@doctrine.orm.entity_manager'
+
+  IdentificationBundle\Service\Action\WifiIdentification\Common\InternalSMS\PinCodeSaver:
+      arguments:
+        - '@doctrine.orm.entity_manager'

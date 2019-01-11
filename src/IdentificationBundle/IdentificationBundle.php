@@ -11,6 +11,7 @@ namespace IdentificationBundle;
 
 use IdentificationBundle\DependencyInjection\Compiler\IdentificationCallbackHandlerPass;
 use IdentificationBundle\DependencyInjection\Compiler\IdentificationHandlerPass;
+use IdentificationBundle\DependencyInjection\Compiler\WifiIdentificationHandlerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -22,7 +23,7 @@ class IdentificationBundle extends Bundle
 
         $container->addCompilerPass(new IdentificationHandlerPass());
         $container->addCompilerPass(new IdentificationCallbackHandlerPass());
-
+        $container->addCompilerPass(new WifiIdentificationHandlerPass());
     }
 
 }

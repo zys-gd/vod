@@ -106,8 +106,6 @@ class IdentifyStartListener
                 return $this->startWifiFlow($session);
             });
             return;
-        } else {
-            $session->set('is_wifi_flow', false);
         }
 
         if (!($controller instanceof ControllerWithIdentification)) {
@@ -152,11 +150,12 @@ class IdentifyStartListener
             if ($carrierISP) {
                 $carrierId = $this->resolveISP($carrierISP);
             }
-            $ispDetectionData = [
-                'isp_name'   => $carrierISP,
-                'carrier_id' => $carrierId,
-            ];
-            $session->set('isp_detection_data', $ispDetectionData);
+            if ($carrierId) {
+                $ispDetectionData = [
+                    'carrier_id' => $carrierId,
+                ];
+                $session->set('isp_detection_data', $ispDetectionData);
+            }
         } else {
             $ispDetectionData = $session->get('isp_detection_data');
             $carrierId        = $ispDetectionData['carrier_id'];

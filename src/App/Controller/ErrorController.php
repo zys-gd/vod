@@ -24,6 +24,11 @@ class ErrorController extends AbstractController
      */
     public function wrongCarrierAction(Request $request)
     {
-        return new Response('WIFI');
+        $var = $request->request->get('carrier');
+        if($var){
+            $request->getSession()->set('isp_detection_data',['carrier_id' => $var]);
+        }
+
+        return $this->render('@App/Error/wrong_carrier.html.twig');
     }
 }

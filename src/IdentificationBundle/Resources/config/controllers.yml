@@ -15,3 +15,8 @@ services:
       arguments:
         - '@IdentificationBundle\Service\Action\Identification\Identifier'
         - '@IdentificationBundle\Service\Action\Identification\Common\TokenGenerator'
+
+    IdentificationBundle\Controller\PinIdentificationController:
+      arguments:
+        - '@IdentificationBundle\Service\Action\WifiIdentification\Common\WifiIdentSMSSender'
+        - '@IdentificationBundle\Service\Action\WifiIdentification\Common\WifiIdentConfirmator'

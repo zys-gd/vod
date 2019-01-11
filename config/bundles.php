@@ -28,4 +28,5 @@ return [
     IdentificationBundle\IdentificationBundle::class => ['all' => true],
     SubscriptionBundle\SubscriptionBundle::class => ['all' => true],
     Emoe\GuzzleBundle\EmoeGuzzleBundle::class => ['all' => true],
+    Misd\PhoneNumberBundle\MisdPhoneNumberBundle::class => ['all' => true],
 ];

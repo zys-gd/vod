@@ -1,0 +1,4 @@
+services:
+  IdentificationBundle\Carriers\EtisalatEG\EtisalatEGWifiIdentificationHandler:
+      tags:
+          - {name: identification.wifi_identification_handler}
