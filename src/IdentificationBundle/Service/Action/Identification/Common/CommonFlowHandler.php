@@ -68,19 +68,34 @@ class CommonFlowHandler
 
     )
     {
-        $this->identProcess       = $identProcess;
-        $this->handlerProvider    = $handlerProvider;
-        $this->parametersProvider = $parametersProvider;
-        $this->router             = $router;
-        $this->pixelIdentHandler  = $pixelIdentHandler;
+        $this->identProcess         = $identProcess;
+        $this->handlerProvider      = $handlerProvider;
+        $this->parametersProvider   = $parametersProvider;
+        $this->router               = $router;
+        $this->pixelIdentHandler    = $pixelIdentHandler;
         $this->redirectIdentHandler = $redirectIdentHandler;
     }
 
-    public function process(Request $request, HasCommonFlow $handler, CarrierInterface $carrier): Response
+    public function process(
+        Request $request,
+        HasCommonFlow $handler,
+        array $identificationData,
+        array $ispDetectionData,
+        CarrierInterface $carrier
+    ): Response
     {
         $additionalParams = $handler->getAdditionalIdentificationParams($request);
-        $parameters       = $this->parseRequestParameters($request, $additionalParams);
-        $processResult    = $this->identProcess->doIdent($parameters);
+        $redirectUrl      = $request->get('location', $this->router->generate('index', [], RouterInterface::ABSOLUTE_URL));
+        $parameters       = $this->parametersProvider->prepareRequestParameters(
+            $identificationData,
+            $ispDetectionData,
+            $request->getClientIp(),
+            $redirectUrl,
+            $request->headers->all(),
+            $additionalParams
+        );
+
+        $processResult = $this->identProcess->doIdent($parameters);
 
         if ($processResult->isPixel()) {
             return $this->pixelIdentHandler->doHandle($request, $processResult, $carrier);
@@ -93,23 +108,4 @@ class CommonFlowHandler
 
     }
 
-    /**
-     * @param Request $request
-     * @param         $additionalParams
-     * @return \SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters
-     */
-    private function parseRequestParameters(Request $request, array $additionalParams): \SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters
-    {
-        $identificationData = IdentificationDataExtractor::extractFromSession($request->getSession());
-        $redirectUrl        = $request->get('location', $this->router->generate('index', [], RouterInterface::ABSOLUTE_URL));
-
-        $parameters = $this->parametersProvider->prepareRequestParameters(
-            $identificationData,
-            $request->getClientIp(),
-            $redirectUrl,
-            $request->headers->all(),
-            $additionalParams
-        );
-        return $parameters;
-    }
 }

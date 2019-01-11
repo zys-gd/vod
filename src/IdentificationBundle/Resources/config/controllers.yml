@@ -10,3 +10,8 @@ services:
     IdentificationBundle\Controller\CallbackController:
       arguments:
         - '@IdentificationBundle\Service\Callback\IdentCallbackProcessor'
+
+    IdentificationBundle\Controller\IdentificationController:
+      arguments:
+        - '@IdentificationBundle\Service\Action\Identification\Identifier'
+        - '@IdentificationBundle\Service\Action\Identification\Common\TokenGenerator'

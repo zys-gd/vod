@@ -11,10 +11,15 @@ namespace IdentificationBundle\Service\Action\Identification\Common;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class IdentificationDataExtractor
+class IdentificationFlowDataExtractor
 {
-    public static function extractFromSession(SessionInterface $session): ?array
+    public static function extractIdentificationData(SessionInterface $session): ?array
     {
         return $session->get('identification_data');
+    }
+
+    public static function extractIspDetectionData(SessionInterface $session): ?array
+    {
+        return $session->get('isp_detection_data');
     }
 }

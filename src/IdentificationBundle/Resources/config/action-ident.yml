@@ -45,3 +45,5 @@ services:
   IdentificationBundle\Service\Action\Identification\Common\UserFactory: ~
 
   IdentificationBundle\Service\Action\Identification\Common\Redirect\RedirectIdentHandler: ~
+
+  IdentificationBundle\Service\Action\Identification\Common\TokenGenerator: ~

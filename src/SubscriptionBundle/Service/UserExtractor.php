@@ -4,7 +4,7 @@ namespace SubscriptionBundle\Service;
 
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Repository\UserRepository;
-use IdentificationBundle\Service\Action\Identification\Common\IdentificationDataExtractor;
+use IdentificationBundle\Service\Action\Identification\Common\IdentificationFlowDataExtractor;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -33,7 +33,7 @@ class UserExtractor
      */
     public function getUserFromRequest(Request $request): User
     {
-        $identificationData = IdentificationDataExtractor::extractFromSession($request->getSession());
+        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
         $this->logger->debug('Retrieving user user from request', [
             'identificationData' => $identificationData
         ]);

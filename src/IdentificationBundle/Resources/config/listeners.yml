@@ -8,3 +8,4 @@ services:
       - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
       - '@IdentificationBundle\Service\Carrier\ISPResolver'
       - '@IdentificationBundle\Service\Action\Identification\Identifier'
+      - '@IdentificationBundle\Service\Action\Identification\Common\TokenGenerator'
