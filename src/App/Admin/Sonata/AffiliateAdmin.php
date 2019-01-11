@@ -6,6 +6,7 @@ use App\Admin\Form\Type\AffiliateConstantType;
 use App\Admin\Form\Type\AffiliateParameterType;
 use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Country;
+use App\Utils\UuidGenerator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -23,6 +24,70 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class AffiliateAdmin extends AbstractAdmin
 {
+    /**
+     * @return Affiliate
+     *
+     * @throws \Exception
+     */
+    public function getNewInstance()
+    {
+        return new Affiliate(UuidGenerator::generate());
+    }
+
+    /**
+     * @param DatagridMapper $datagridMapper
+     */
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        $datagridMapper
+            ->add('name')
+            ->add('uuid')
+            ->add('type')
+            ->add('url')
+            ->add('country')
+            ->add('commercialContact')
+            ->add('technicalContact')
+            ->add('skypeId')
+            ->add('enabled');
+    }
+
+    /**
+     * @param ListMapper $listMapper
+     */
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper
+            ->add('name')
+            ->add('uuid')
+            ->add('url')
+            ->add('enabled', null, [
+                'label' => 'Is Enabled?'
+            ])
+            ->add('_action', null, [
+                'actions' => [
+                    'show' => [],
+                    'edit' => [],
+                    'delete' => [],
+                ]
+            ]);
+    }
+
+    /**
+     * @param ShowMapper $showMapper
+     */
+    protected function configureShowFields(ShowMapper $showMapper)
+    {
+        $showMapper
+            ->add('name')
+            ->add('type')
+            ->add('url')
+            ->add('country')
+            ->add('commercialContact')
+            ->add('technicalContact')
+            ->add('skypeId')
+            ->add('enabled');
+    }
+
     /**
      * @param FormMapper $formMapper
      */
@@ -78,12 +143,12 @@ class AffiliateAdmin extends AbstractAdmin
                 'label' => 'Based in'
             ])
             ->add('commercialContact', TextType::class, [
-                    'required' => false,
-                    'label' => 'Commercial Contact person'
+                'required' => false,
+                'label' => 'Commercial Contact person'
             ])
             ->add('technicalContact', TextType::class, [
-                    'required' => false,
-                    'label' => 'Technical Contact person'
+                'required' => false,
+                'label' => 'Technical Contact person'
             ])
             ->add('skypeId', TextType::class, [
                 'required' => false,
@@ -114,60 +179,6 @@ class AffiliateAdmin extends AbstractAdmin
             ])
             ->end()
             ->end();
-    }
-
-    /**
-     * @param DatagridMapper $datagridMapper
-     */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
-    {
-        $datagridMapper
-            ->add('name')
-            ->add('uuid')
-            ->add('type')
-            ->add('url')
-            ->add('country')
-            ->add('commercialContact')
-            ->add('technicalContact')
-            ->add('skypeId')
-            ->add('enabled');
-    }
-
-    /**
-     * @param ListMapper $listMapper
-     */
-    protected function configureListFields(ListMapper $listMapper)
-    {
-        $listMapper
-            ->add('name')
-            ->add('uuid')
-            ->add('url')
-            ->add('enabled', null, [
-                'label' => 'Is Enabled?'
-            ])
-            ->add('_action', null, [
-                'actions' => [
-                    'show' => [],
-                    'edit' => [],
-                    'delete' => [],
-                ]
-            ]);
-    }
-
-    /**
-     * @param ShowMapper $showMapper
-     */
-    protected function configureShowFields(ShowMapper $showMapper)
-    {
-        $showMapper
-            ->add('name')
-            ->add('type')
-            ->add('url')
-            ->add('country')
-            ->add('commercialContact')
-            ->add('technicalContact')
-            ->add('skypeId')
-            ->add('enabled');
     }
 
     /**
