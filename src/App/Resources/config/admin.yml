@@ -14,10 +14,12 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: Affiliate management, label: Affiliates }
 
-#    App\Admin\Sonata\CampaignAdmin:
-#        arguments: [~, App\Domain\Entity\Campaign, ~, '@service_container']
-#        tags:
-#            - { name: sonata.admin, manager_type: orm, group: Affiliate management, label: Campaign
+    App\Admin\Sonata\CampaignAdmin:
+        arguments: [~, App\Domain\Entity\Campaign, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Affiliate management, label: Campaign }
+        calls:
+            - [setContainer, ['@service_container']]
 
     App\Admin\Sonata\CarrierAdmin:
         arguments: [~, App\Domain\Entity\Carrier, ~]

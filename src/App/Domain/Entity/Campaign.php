@@ -2,19 +2,20 @@
 
 namespace App\Domain\Entity;
 
-use AppBundle\Validator\Constraints\ContainsConstraints;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * Campaign
  */
 class Campaign
 {
+    /**
+     * Path for saving campaign banner
+     */
+    const RESOURCE_IMAGE = 'uploads/images/campaign_banner';
 
-    const RESOURCE_IMAGE = 'images/campaign_banner';
     /**
      * @var string
      */
@@ -25,10 +26,13 @@ class Campaign
      */
     private $affiliate;
 
+    /**
+     * @var string
+     */
     private $campaignToken;
 
     /**
-     * @var Carrier[] | ArrayCollection
+     * @var ArrayCollection
      */
     private $carriers;
 
@@ -37,17 +41,15 @@ class Campaign
      */
     private $bgColor = '#000000';
 
-    private $textColor = '#000000';
-
     /**
-     * @var ArrayCollection
+     * @var string
      */
-    private $campaignPricingDetails;
+    private $textColor = '#000000';
 
     /**
      * @var string
      */
-    private $image;
+    private $imageName;
 
     /**
      * @var File
@@ -60,14 +62,10 @@ class Campaign
     private $isPause = false;
 
     /**
-     * @var ArrayCollection
-     * @Assert\All(
-     *     @ContainsConstraints()
-     * )
+     * @var string
      */
-    private $campaignConstraints;
-
     private $testUrl;
+
     /**
      * @var integer
      */
@@ -78,17 +76,38 @@ class Campaign
      */
     private $flushDate;
 
+    /**
+     * @var string
+     */
+    private $ppd;
 
     /**
-     * Campaign constructor.
+     * @var string
+     */
+    private $sub;
+
+    /**
+     * @var string
+     */
+    private $click;
+
+    /**
+     * Campaign constructor
+     *
      * @param string $uuid
      */
     public function __construct(string $uuid)
     {
         $this->uuid = $uuid;
-        $this->campaignPricingDetails = new ArrayCollection();
-        $this->campaignConstraints = new ArrayCollection();
         $this->carriers = new ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return 'Campaign #'.$this->getUuid();
     }
 
     /**
@@ -102,9 +121,9 @@ class Campaign
     /**
      * @return string
      */
-    public function getImage()
+    public function getImageName()
     {
-        return $this->image;
+        return $this->imageName;
     }
 
     /**
@@ -114,16 +133,19 @@ class Campaign
      */
     public function getImagePath()
     {
-        return static::RESOURCE_IMAGE .'/' . $this->getImage();
+        return static::RESOURCE_IMAGE .'/' . $this->getImageName();
     }
 
     /**
-     * @param $image
+     * @param $imageName
+     *
      * @return Campaign
      */
-    public function setImage($image)
+    public function setImageName($imageName)
     {
-        $this->image = $image;
+        $this->imageName = $imageName;
+
+        return $this;
     }
 
     /**
@@ -140,61 +162,38 @@ class Campaign
      * Set thumbnail file
      *
      * @param File $file
-     * @return Game
      */
     public function setImageFile(File $file)
     {
         $this->imageFile = $file;
     }
 
+    /**
+     * @param string $token
+     */
     public function setCampaignToken($token) {
         $this->campaignToken = $token;
     }
 
+    /**
+     * @return string
+     */
     public function getCampaignToken() {
         return $this->campaignToken;
     }
 
+    /**
+     * @param string $testUrl
+     */
     public function setTestUrl($testUrl) {
         $this->testUrl = $testUrl;
     }
 
+    /**
+     * @return string
+     */
     public function getTestUrl() {
         return $this->testUrl;
-    }
-
-
-    /**
-     * @param CampaignPricing $campaignPricing
-     */
-    public function addCampaignPricingDetail(CampaignPricing $campaignPricing)
-    {
-            $this->campaignPricingDetails[] = $campaignPricing;
-            $campaignPricing->setCampaign($this);
-    }
-
-    /**
-     * @param $campaignPricingDetails
-     */
-    public function setCampaignPricingDetails($campaignPricingDetails)
-    {
-        $this->campaignPricingDetails = $campaignPricingDetails;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getCampaignPricingDetails()
-    {
-        return $this->campaignPricingDetails->getValues();
-    }
-
-    /**
-     * @param CampaignPricing $campaignPricing
-     */
-    public function removeCampaignPricingDetail(CampaignPricing $campaignPricing)
-    {
-         $this->campaignPricingDetails->removeElement($campaignPricing);
     }
 
     /**
@@ -233,6 +232,7 @@ class Campaign
 
     /**
      * @param Carrier $carrier
+     *
      * @return $this
      */
     public function addCarrier(Carrier $carrier)
@@ -244,6 +244,7 @@ class Campaign
 
     /**
      * @param Carrier $carrier
+     *
      * @return $this
      */
     public function removeCarrier(Carrier $carrier)
@@ -277,6 +278,11 @@ class Campaign
         return $this->bgColor;
     }
 
+    /**
+     * @param string $textColor
+     *
+     * @return $this
+     */
     public function setTextColor($textColor)
     {
         $this->textColor = $textColor;
@@ -284,6 +290,9 @@ class Campaign
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getTextColor()
     {
         return $this->textColor;
@@ -314,47 +323,6 @@ class Campaign
     }
 
     /**
-     * @param CampaignConstraints $campaignConstraint
-     */
-    public function addCampaignConstraint(CampaignConstraints $campaignConstraint)
-    {
-        $this->campaignConstraints[] = $campaignConstraint;
-        $campaignConstraint->setCampaign($this);
-    }
-
-    /**
-     * @param $campaignConstraints
-     */
-    public function setCampaignConstraints($campaignConstraints)
-    {
-        $this->campaignConstraints = $campaignConstraints;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getCampaignConstraints()
-    {
-        return $this->campaignConstraints;
-    }
-
-    /**
-     * @param CampaignConstraints $campaignConstraints
-     */
-    public function removeCampaignConstraint(CampaignConstraints $campaignConstraints)
-    {
-        $this->campaignConstraints->removeElement($campaignConstraints);
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return 'Campaign #'.$this->getUuid();
-    }
-
-    /**
      * @return string
      * This is how we generate the token to identify traffic intended for aff campaigns.
      * /?cmpId=token
@@ -375,7 +343,7 @@ class Campaign
      *
      * @param integer $counter
      *
-     * @return CampaignConstraints
+     * @return Campaign
      */
     public function setCounter($counter)
     {
@@ -399,7 +367,7 @@ class Campaign
      *
      * @param \DateTime $flushDate
      *
-     * @return CampaignConstraints
+     * @return Campaign
      */
     public function setFlushDate($flushDate)
     {
@@ -409,18 +377,83 @@ class Campaign
     }
 
     /**
-     * Get flushDate
-     *
      * @return \DateTime
+     *
+     * @throws \Exception
      */
     public function getFlushDate()
     {
-        if(is_null($this->flushDate)){
-
+        if (is_null($this->flushDate)) {
             $this->flushDate = new \DateTime('now');
-
         }
+
         return $this->flushDate;
     }
-}
 
+    /**
+     * @return string
+     */
+    public function getPpd()
+    {
+        return $this->ppd;
+    }
+
+    /**
+     * @param $ppd
+     *
+     * @return Campaign
+     */
+    public function setPpd($ppd)
+    {
+        $this->ppd = $ppd;
+
+        return $this;
+    }
+
+    public function getSub()
+    {
+        return $this->sub;
+    }
+
+    /**
+     * @param $sub
+     *
+     * @return Campaign
+     */
+    public function setSub($sub)
+    {
+        $this->sub = $sub;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClick()
+    {
+        return $this->click;
+    }
+
+    /**
+     * @param  $click
+     *
+     * @return Campaign
+     */
+    public function setClick($click)
+    {
+        $this->click = $click;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getPausedCampaigns()
+    {
+        return $this->carriers->filter(function (Carrier $carrier){
+            return $carrier->getIsCampaignsOnPause();
+        });
+    }
+}
