@@ -121,7 +121,7 @@ class User
     /**
      * @return string
      */
-    public function getExternalCarrierId()
+    public function getBillingCarrierId()
     {
         return $this->carrier->getBillingCarrierId();
     }
