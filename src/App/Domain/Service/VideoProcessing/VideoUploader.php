@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Routing\RouterInterface;
 use App\Domain\Entity\UploadedVideo;
-use App\Domain\Entity\VideoCategory;
+use App\Domain\Entity\Category;
 use App\Domain\Repository\UploadedVideoRepository;
 use App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector;
 
@@ -65,7 +65,7 @@ class VideoUploader
         $this->host                = $host;
     }
 
-    public function uploadVideo(string $title, UploadedFile $file, VideoCategory $category): UploadedVideo
+    public function uploadVideo(string $title, UploadedFile $file, Category $category): UploadedVideo
     {
 
         if ($file->getError()) {

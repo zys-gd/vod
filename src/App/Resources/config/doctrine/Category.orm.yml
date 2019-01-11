@@ -1,7 +1,7 @@
-App\Domain\Entity\VideoCategory:
+App\Domain\Entity\Category:
     type: entity
-    table: null
-    repositoryClass: App\Domain\Repository\VideoCategoryRepository
+    table: categories
+    repositoryClass: App\Domain\Repository\CategoryRepository
     id:
         uuid:
             type: guid

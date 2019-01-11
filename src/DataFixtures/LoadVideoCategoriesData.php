@@ -9,7 +9,7 @@
 namespace DataFixtures;
 
 
-use App\Domain\Entity\VideoCategory;
+use App\Domain\Entity\Category;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -37,7 +37,7 @@ class LoadVideoCategoriesData extends AbstractFixture
             $uuid  = $row[2];
             $menuPriority = $row[3];
 
-            $category = new VideoCategory($uuid);
+            $category = new Category($uuid);
 
             $category->setTitle($title);
             $category->setAlias($alias);

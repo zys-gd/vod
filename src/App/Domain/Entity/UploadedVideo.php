@@ -76,18 +76,18 @@ class UploadedVideo
     }
 
     /**
-     * @return VideoCategory
+     * @return Category
      */
-    public function getCategory(): VideoCategory
+    public function getCategory(): Category
     {
         return $this->category;
     }
 
     /**
-     * @param VideoCategory $category
+     * @param Category $category
      * @return UploadedVideo
      */
-    public function setCategory(VideoCategory $category)
+    public function setCategory(Category $category)
     {
         $this->category = $category;
         return $this;

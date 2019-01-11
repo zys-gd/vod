@@ -3,9 +3,9 @@
 namespace App\Domain\Entity;
 
 /**
- * VideoCategory
+ * Category
  */
-class VideoCategory
+class Category
 {
     /**
      * @var string
@@ -28,7 +28,7 @@ class VideoCategory
     private $menuPriority;
 
     /**
-     * VideoCategory constructor.
+     * Category constructor.
      * @param string $uuid
      */
     public function __construct(string $uuid)
@@ -41,7 +41,7 @@ class VideoCategory
      *
      * @param string $title
      *
-     * @return VideoCategory
+     * @return Category
      */
     public function setTitle($title)
     {
@@ -65,7 +65,7 @@ class VideoCategory
      *
      * @param string $alias
      *
-     * @return VideoCategory
+     * @return Category
      */
     public function setAlias($alias)
     {
@@ -97,7 +97,7 @@ class VideoCategory
         return $this->menuPriority;
     }
 
-    public function setMenuPriority(int $menuPriority): VideoCategory
+    public function setMenuPriority(int $menuPriority): Category
     {
         $this->menuPriority = $menuPriority;
 
