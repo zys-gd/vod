@@ -16,11 +16,13 @@ App\Domain\Entity\UploadedVideo:
             type: datetime
         title:
             type: string
+        description:
+            type: text
+            nullable: true
         thumbnails:
             type: json_array
 
     lifecycleCallbacks: {  }
-
 
     manyToOne:
         category:
