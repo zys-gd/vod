@@ -20,7 +20,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 
@@ -30,8 +30,6 @@ use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 class CampaignAdmin extends AbstractAdmin
 {
     use InitDoctrine;
-
-    const UPLOAD_PATH = 'uploads';
 
     /**
      * @var ContainerInterface
@@ -112,7 +110,7 @@ class CampaignAdmin extends AbstractAdmin
 
             $handle = fopen($file->getPathname(), 'r');
 
-            $filesystem->putStream(sprintf("%s/%s/%s", self::UPLOAD_PATH, Campaign::RESOURCE_IMAGE, $name), $handle, [
+            $filesystem->putStream(sprintf("%s/%s", Campaign::RESOURCE_IMAGE, $name), $handle, [
                 'mimetype' => $mimeType,
             ]);
         }
@@ -145,13 +143,17 @@ class CampaignAdmin extends AbstractAdmin
                 'sort_field_mapping'=> ['fieldName'=>'name'],
                 'sort_parent_association_mappings' => [['fieldName'=>'affiliate']]
             ])
-            ->add('isPause', null, ['label' => 'Pause'])
+            ->add('isPause', null, [
+                'label' => 'Pause'
+            ])
             ->add('pausedCampaigns', null, [
                 'label' => 'Paused by Carrier',
                 'template' => '@Admin/Campaign/paused_campaigns.html.twig',
                 'sortable'=>false
             ])
-            ->add('landingUrl', null, ['label' => 'Landing page'])
+            ->add('landingUrl', null, [
+                'label' => 'Landing page'
+            ])
             ->add('carriers')
             ->add('_action', null, [
                 'actions' => [
@@ -293,7 +295,7 @@ class CampaignAdmin extends AbstractAdmin
         $subject = $this->getSubject();
 
         if ($subject && $subject->getImageName()) {
-            $imagePath = $this->container->getParameter('images_uploads') . $subject->getImagePath();
+            $imagePath = $this->container->getParameter('images_base_url') . '/' . $subject->getImagePath();
 
             $template = '<strong>Current thumbnail (square icon):</strong><br />
                      <a href="%1$s" target="_blank" title="View in actual size">

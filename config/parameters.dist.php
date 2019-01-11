@@ -15,6 +15,7 @@ return [
     'AWS_S3_SECRET'         => 'dSkPSEvMHzXs2Fv/1pyrRyRVKRQMqL8CG8dLPMQ6',
     'AWS_S3_VERSION'        => 'latest',
     'AWS_S3_REGION'         => 'eu-central-1',
+    'IMAGES_BASE_URL'       => 'http://cdn.gameimages.store.playwing.com',
     'BILLING_API_HOST'      => 'http://billing.playwing.com/api',
     'TOKEN_SESSION_NAME'    => ''
 ];

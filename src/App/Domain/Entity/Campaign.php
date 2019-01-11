@@ -14,7 +14,7 @@ class Campaign
     /**
      * Path for saving campaign banner
      */
-    const RESOURCE_IMAGE = 'images/campaign_banner';
+    const RESOURCE_IMAGE = 'uploads/images/campaign_banner';
 
     /**
      * @var string
@@ -133,7 +133,7 @@ class Campaign
      */
     public function getImagePath()
     {
-        return '/' . static::RESOURCE_IMAGE .'/' . $this->getImageName();
+        return static::RESOURCE_IMAGE .'/' . $this->getImageName();
     }
 
     /**
