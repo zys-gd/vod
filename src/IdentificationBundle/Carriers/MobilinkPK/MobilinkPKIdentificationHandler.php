@@ -11,7 +11,7 @@ namespace IdentificationBundle\Carriers\MobilinkPK;
 
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Service\Action\Identification\Handler\HasCommonFlow;
-use IdentificationBundle\Service\Action\Identification\Handler\HasCustomPixelIdent;
+use IdentificationBundle\Service\Action\Identification\Handler\CommonFlow\HasCustomPixelIdent;
 use IdentificationBundle\Service\Action\Identification\Handler\IdentificationHandlerInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use Symfony\Component\HttpFoundation\Request;

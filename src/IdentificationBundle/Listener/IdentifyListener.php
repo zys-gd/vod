@@ -13,13 +13,18 @@ use App\Controller\AppControllerInterface;
 use CountryCarrierDetectionBundle\Service\Interfaces\ICountryCarrierDetection;
 use IdentificationBundle\Controller\ControllerWithIdentification;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
+use IdentificationBundle\Service\Action\Identification\Common\Exception\FailedIdentificationException;
 use IdentificationBundle\Service\Action\Identification\Common\IdentificationFlowDataExtractor;
 use IdentificationBundle\Service\Action\Identification\Common\TokenGenerator;
+use IdentificationBundle\Service\Action\Identification\Common\WifiRouteGenerator;
 use IdentificationBundle\Service\Action\Identification\Identifier;
 use IdentificationBundle\Service\Carrier\ISPResolver;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\Routing\RouterInterface;
 
 class IdentifyListener
 {
@@ -43,6 +48,10 @@ class IdentifyListener
      * @var TokenGenerator
      */
     private $generator;
+    /**
+     * @var WifiRouteGenerator
+     */
+    private $wifiRouteGenerator;
 
 
     /**
@@ -52,20 +61,23 @@ class IdentifyListener
      * @param ISPResolver                $ISPResolver
      * @param Identifier                 $identifier
      * @param TokenGenerator             $generator
+     * @param WifiRouteGenerator         $wifiRouteGenerator
      */
     public function __construct(
         ICountryCarrierDetection $carrierDetection,
         CarrierRepositoryInterface $carrierRepository,
         ISPResolver $ISPResolver,
         Identifier $identifier,
-        TokenGenerator $generator
+        TokenGenerator $generator,
+        WifiRouteGenerator $wifiRouteGenerator
     )
     {
-        $this->carrierDetection  = $carrierDetection;
-        $this->carrierRepository = $carrierRepository;
-        $this->ISPResolver       = $ISPResolver;
-        $this->identifier        = $identifier;
-        $this->generator         = $generator;
+        $this->carrierDetection   = $carrierDetection;
+        $this->carrierRepository  = $carrierRepository;
+        $this->ISPResolver        = $ISPResolver;
+        $this->identifier         = $identifier;
+        $this->generator          = $generator;
+        $this->wifiRouteGenerator = $wifiRouteGenerator;
     }
 
     public function onKernelController(FilterControllerEvent $event)
@@ -90,7 +102,9 @@ class IdentifyListener
         $ipAddress = $request->getClientIp();
         $carrierId = $this->detectCarrier($ipAddress, $session);
         if (!$carrierId) {
-            $session->set('is_wifi_flow', true);
+            $event->setController(function () use ($session) {
+                return $this->startWifiFlow($session);
+            });
             return;
         } else {
             $session->set('is_wifi_flow', false);
@@ -99,15 +113,9 @@ class IdentifyListener
         if (!($controller instanceof ControllerWithIdentification)) {
             return;
         }
-        if (IdentificationFlowDataExtractor::extractIdentificationData($request->getSession())) {
-            return;
-        }
 
-        $token = $this->generator->generateToken();
-
-        $result = $this->identifier->identify((int)$carrierId, $request, $token, $session);
-
-        if ($response = $result->getOverridedResponse()) {
+        $response = $this->doIdentify($request, $carrierId);
+        if ($response) {
             $event->setController(function () use ($response) {
                 return $response;
             });
@@ -138,7 +146,6 @@ class IdentifyListener
     private function detectCarrier(string $ipAddress, SessionInterface $session): ?int
     {
 
-
         if (!$session->has('isp_detection_data')) {
             $carrierISP = $this->carrierDetection->getCarrier($ipAddress);
             $carrierId  = null;
@@ -156,5 +163,39 @@ class IdentifyListener
         }
 
         return $carrierId;
+    }
+
+    private function startWifiFlow(SessionInterface $session): Response
+    {
+        $session->set('is_wifi_flow', true);
+
+        return new RedirectResponse($this->wifiRouteGenerator->generate());
+
+    }
+
+    /**
+     * @param $request
+     * @param $carrierId
+     * @param $session
+     * @return null|Response
+     */
+    private function doIdentify(Request $request, int $carrierId): ?Response
+    {
+        $session = $request->getSession();
+        if (IdentificationFlowDataExtractor::extractIdentificationData($session)) {
+            return null;
+        }
+
+        $response = null;
+        try {
+            $token    = $this->generator->generateToken();
+            $result   = $this->identifier->identify((int)$carrierId, $request, $token, $request->getSession());
+            $response = $result->getOverridedResponse();
+
+        } catch (FailedIdentificationException $exception) {
+            $response = $this->startWifiFlow($request->getSession());
+        }
+
+        return $response;
     }
 }

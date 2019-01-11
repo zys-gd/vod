@@ -6,7 +6,7 @@
  * Time: 12:10
  */
 
-namespace IdentificationBundle\Service\Action\Identification\Handler;
+namespace IdentificationBundle\Service\Action\Identification\Handler\CommonFlow;
 
 
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;

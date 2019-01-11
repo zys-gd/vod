@@ -50,7 +50,7 @@ class IdentificationController extends AbstractController
 
         $token  = $this->tokenGenerator->generateToken();
         $result = $this->identifier->identify(
-            $data['carrier_id'],
+            (int)$data['carrier_id'],
             $request,
             $token,
             $request->getSession()

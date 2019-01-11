@@ -10,8 +10,13 @@ namespace IdentificationBundle\Repository;
 
 
 use Doctrine\ORM\EntityRepository;
+use IdentificationBundle\Entity\User;
 
 class UserRepository extends EntityRepository
 {
 
+    public function findOneByIdentificationToken(string $token): ?User
+    {
+
+    }
 }

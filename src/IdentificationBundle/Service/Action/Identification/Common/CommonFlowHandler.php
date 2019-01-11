@@ -80,15 +80,14 @@ class CommonFlowHandler
         Request $request,
         HasCommonFlow $handler,
         array $identificationData,
-        array $ispDetectionData,
         CarrierInterface $carrier
     ): Response
     {
         $additionalParams = $handler->getAdditionalIdentificationParams($request);
         $redirectUrl      = $request->get('location', $this->router->generate('index', [], RouterInterface::ABSOLUTE_URL));
         $parameters       = $this->parametersProvider->prepareRequestParameters(
-            $identificationData,
-            $ispDetectionData,
+            $identificationData['identification_token'],
+            $carrier->getBillingCarrierId(),
             $request->getClientIp(),
             $redirectUrl,
             $request->headers->all(),

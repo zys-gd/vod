@@ -11,6 +11,7 @@ services:
       - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
       - '@logger'
       - '@IdentificationBundle\Service\Action\Identification\Common\CommonFlowHandler'
+      - '@IdentificationBundle\Service\Action\Identification\Common\HeaderEnrichmentHandler'
 
   IdentificationBundle\Service\Action\Identification\Common\CommonFlowHandler:
     arguments:
@@ -47,3 +48,14 @@ services:
   IdentificationBundle\Service\Action\Identification\Common\Redirect\RedirectIdentHandler: ~
 
   IdentificationBundle\Service\Action\Identification\Common\TokenGenerator: ~
+
+  IdentificationBundle\Service\Action\Identification\Common\HeaderEnrichmentHandler:
+      arguments:
+          - '@IdentificationBundle\Service\Action\Identification\Common\UserFactory'
+          - '@doctrine.orm.entity_manager'
+          - '@IdentificationBundle\Repository\UserRepository'
+
+  IdentificationBundle\Service\Action\Identification\Common\WifiRouteGenerator:
+      arguments:
+          - '@router'
+          - '_wifi_route_placeholder_'

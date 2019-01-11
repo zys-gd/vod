@@ -44,8 +44,8 @@ class RequestParametersProvider
     }
 
     /**
-     * @param array  $identificationData
-     * @param array  $ispDetectionData
+     * @param string $identificationToken
+     * @param int    $carrierId
      * @param string $clientIp
      * @param string $redirectUrl
      * @param array  $headers
@@ -53,8 +53,8 @@ class RequestParametersProvider
      * @return ProcessRequestParameters
      */
     public function prepareRequestParameters(
-        array $identificationData,
-        array $ispDetectionData,
+        string $identificationToken,
+        int $carrierId,
         string $clientIp,
         string $redirectUrl,
         array $headers = [],
@@ -67,8 +67,8 @@ class RequestParametersProvider
         $parameters->listener     = $this->router->generate('identification_callback_listenidentify', [], UrlGeneratorInterface::ABSOLUTE_URL);
         $parameters->client       = 'store';
         $parameters->listenerWait = $this->router->generate('identification_callback_listenidentify', [], UrlGeneratorInterface::ABSOLUTE_URL);
-        $parameters->clientId     = $identificationData['identification_token'];
-        $parameters->carrier      = $ispDetectionData['carrier_id'];
+        $parameters->clientId     = $identificationToken;
+        $parameters->carrier      = $carrierId;
         $parameters->userIp       = $clientIp;
         $parameters->redirectUrl  = $redirectUrl;
 

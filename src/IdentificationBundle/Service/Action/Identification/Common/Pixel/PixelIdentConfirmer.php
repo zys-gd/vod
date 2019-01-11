@@ -14,7 +14,7 @@ use IdentificationBundle\BillingFramework\Data\DataProvider;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Service\Action\Identification\Common\UserFactory;
-use IdentificationBundle\Service\Action\Identification\Handler\HasCustomPixelIdent;
+use IdentificationBundle\Service\Action\Identification\Handler\CommonFlow\HasCustomPixelIdent;
 use IdentificationBundle\Service\Action\Identification\Handler\IdentificationHandlerProvider;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 

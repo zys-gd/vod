@@ -11,10 +11,13 @@ namespace IdentificationBundle\Service\Action\Identification;
 
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Service\Action\Identification\Common\CommonFlowHandler;
+use IdentificationBundle\Service\Action\Identification\Common\Exception\MissingIdentificationDataException;
+use IdentificationBundle\Service\Action\Identification\Common\HeaderEnrichmentHandler;
 use IdentificationBundle\Service\Action\Identification\Common\IdentificationFlowDataExtractor;
 use IdentificationBundle\Service\Action\Identification\DTO\IdentifyResult;
 use IdentificationBundle\Service\Action\Identification\Handler\HasCommonFlow;
 use IdentificationBundle\Service\Action\Identification\Handler\HasCustomFlow;
+use IdentificationBundle\Service\Action\Identification\Handler\HasHeaderEnrichment;
 use IdentificationBundle\Service\Action\Identification\Handler\IdentificationHandlerProvider;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,6 +42,10 @@ class Identifier
      * @var CommonFlowHandler
      */
     private $commonFlowHandler;
+    /**
+     * @var HeaderEnrichmentHandler
+     */
+    private $headerEnrichmentHandler;
 
 
     /**
@@ -47,18 +54,21 @@ class Identifier
      * @param CarrierRepositoryInterface    $carrierRepository
      * @param LoggerInterface               $logger
      * @param CommonFlowHandler             $commonFlowHandler
+     * @param HeaderEnrichmentHandler       $headerEnrichmentHandler
      */
     public function __construct(
         IdentificationHandlerProvider $handlerProvider,
         CarrierRepositoryInterface $carrierRepository,
         LoggerInterface $logger,
-        CommonFlowHandler $commonFlowHandler
+        CommonFlowHandler $commonFlowHandler,
+        HeaderEnrichmentHandler $headerEnrichmentHandler
     )
     {
-        $this->handlerProvider   = $handlerProvider;
-        $this->carrierRepository = $carrierRepository;
-        $this->logger            = $logger;
-        $this->commonFlowHandler = $commonFlowHandler;
+        $this->handlerProvider         = $handlerProvider;
+        $this->carrierRepository       = $carrierRepository;
+        $this->logger                  = $logger;
+        $this->commonFlowHandler       = $commonFlowHandler;
+        $this->headerEnrichmentHandler = $headerEnrichmentHandler;
     }
 
     public function identify(int $carrierBillingId, Request $request, string $token, SessionInterface $session): IdentifyResult
@@ -71,18 +81,23 @@ class Identifier
             'carrierId' => $carrierBillingId
         ]);
 
-        if ($handler instanceof HasCustomFlow) {
+        if ($handler instanceof HasHeaderEnrichment) {
+            $this->headerEnrichmentHandler->process($request, $handler, $carrier, $token);
+            $this->storeIdentificationData($session, $token);
+
+            return new IdentifyResult();
+
+        } elseif ($handler instanceof HasCustomFlow) {
             $handler->process($request);
             return new IdentifyResult();
 
         } else if ($handler instanceof HasCommonFlow) {
+
             $identificationData = $this->storeIdentificationData($session, $token);
-            $ispDetectionData   = IdentificationFlowDataExtractor::extractIspDetectionData($session);
             $response           = $this->commonFlowHandler->process(
                 $request,
                 $handler,
                 $identificationData,
-                $ispDetectionData,
                 $carrier
             );
             return new IdentifyResult($response);

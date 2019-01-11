@@ -21,6 +21,8 @@ class IdentificationExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+
+
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('listeners.yml');
         $loader->load('services.yml');
@@ -33,6 +35,13 @@ class IdentificationExtension extends Extension
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config/carriers'));
         $loader->load('mobilink-pk.yml');
+
+
+        $configuration = new Configuration();
+        $config        = $this->processConfiguration($configuration, $configs);
+
+        $service = $container->getDefinition('IdentificationBundle\Service\Action\Identification\Common\WifiRouteGenerator');
+        $service->replaceArgument(1, $config['wifi_flow_redirect_route']);
     }
 
 }

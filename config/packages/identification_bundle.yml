@@ -1,0 +1,7 @@
+doctrine:
+  orm:
+    resolve_target_entities:
+      IdentificationBundle\Entity\CarrierInterface: App\Domain\Entity\Carrier
+
+identification:
+  wifi_flow_redirect_route: 'mobile_identification'
