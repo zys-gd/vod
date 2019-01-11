@@ -17,14 +17,14 @@ use Symfony\Component\Routing\Router;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\UserExtractor;
 use SubscriptionBundle\Service\SubscriptionExtractor;
-//TODO:REFACTOR BillableUserProvider
+
 class WaitAction
 {
     /**
      * /**
      * @var UserExtractor
      */
-    private $billableUserProvider;
+    private $userExtractor;
     /**
      * @var SubscriptionExtractor
      */
@@ -38,17 +38,17 @@ class WaitAction
     /**
      * WaitAction constructor.
      *
-     * @param UserExtractor         $billableUserProvider
+     * @param UserExtractor         $userExtractor
      * @param SubscriptionExtractor $subscriptionProvider
      * @param Router                $router
      */
     public function __construct(
-        UserExtractor $billableUserProvider,
+        UserExtractor $userExtractor,
         SubscriptionExtractor $subscriptionProvider,
         Router $router
     )
     {
-        $this->billableUserProvider = $billableUserProvider;
+        $this->userExtractor = $userExtractor;
         $this->subscriptionProvider = $subscriptionProvider;
         $this->router               = $router;
     }
@@ -60,12 +60,12 @@ class WaitAction
         $redirectUrl = $request->getSession()->get('location', $this->router->generate('homepage'));
         $ajax        = $request->server->get('HTTP_X_REQUESTED_WITH', false);
         try {
-            $billableUser = $this->billableUserProvider->getUserFromRequest($request);;
+            $user = $this->userExtractor->getUserFromRequest($request);;
         } catch (UndefinedIdentityException $exception) {
             throw new \InvalidArgumentException('Cannot parse incoming request');
         }
 
-        $subscriptionEntity = $this->subscriptionProvider->getExistingSubscriptionForUser($billableUser);
+        $subscriptionEntity = $this->subscriptionProvider->getExistingSubscriptionForUser($user);
 
         if ($subscriptionEntity
             && $subscriptionEntity->getStatus() === Subscription::IS_PENDING

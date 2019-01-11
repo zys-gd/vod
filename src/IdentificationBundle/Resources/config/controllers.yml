@@ -3,18 +3,30 @@ services:
         tags: ['controller.service_arguments']
 
     IdentificationBundle\Controller\PixelIdentController:
-      arguments:
-        - '@IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentVerifier'
-        - '@IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentConfirmer'
+        arguments:
+            - '@IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentVerifier'
+            - '@IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentConfirmer'
 
     IdentificationBundle\Controller\CallbackController:
-      arguments:
-        - '@IdentificationBundle\Service\Callback\IdentCallbackProcessor'
+        arguments:
+            - '@IdentificationBundle\Service\Callback\IdentCallbackProcessor'
 
     IdentificationBundle\Controller\IdentificationController:
-      arguments:
-        - '@IdentificationBundle\Service\Action\Identification\Identifier'
-        - '@IdentificationBundle\Service\Action\Identification\Common\TokenGenerator'
+        arguments:
+            - '@IdentificationBundle\Service\Action\Identification\Identifier'
+            - '@IdentificationBundle\Service\Action\Identification\Common\TokenGenerator'
+
+    IdentificationBundle\Controller\FakeIdentificationController:
+        arguments:
+            - '@country_carrier_detection'
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@IdentificationBundle\Service\Carrier\ISPResolver'
+            - '@IdentificationBundle\Service\Action\Identification\Identifier'
+            - '@IdentificationBundle\Service\Action\Identification\Common\TokenGenerator'
+            - '@IdentificationBundle\Service\Action\Identification\Common\UserFactory'
+            - '@doctrine.orm.entity_manager'
+            - '@router.default'
 
     IdentificationBundle\Controller\PinIdentificationController:
       arguments:

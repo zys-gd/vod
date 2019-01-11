@@ -44,8 +44,9 @@ class UploadedVideoAdminController extends CRUDController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data   = $form->getData();
-            $entity = $this->uploader->uploadVideo($data['title'], $data['file'], $data['category']);
+            $data = $form->getData();
+            $entity = $this->uploader->uploadVideo($data);
+
             return new RedirectResponse($this->admin->generateUrl('list'));
         }
 

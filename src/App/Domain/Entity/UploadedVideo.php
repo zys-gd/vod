@@ -7,31 +7,63 @@ namespace App\Domain\Entity;
  */
 class UploadedVideo
 {
+    /**
+     * transformation video statuses
+     */
     const STATUS_IN_PROCESSING = 1;
     const STATUS_READY = 2;
 
+    /**
+     * Statuses array
+     */
     const STATUSES = [
         self::STATUS_IN_PROCESSING => 'Processing',
         self::STATUS_READY => 'Ready'
     ];
+
     /**
      * @var string
      */
     private $uuid;
 
-
+    /**
+     * @var string
+     */
     private $title = '';
 
+    /**
+     * @var string
+     */
+    private $description;
+
+    /**
+     * @var Category
+     */
     private $category;
 
+    /**
+     * @var int
+     */
     private $status = self::STATUS_IN_PROCESSING;
 
+    /**
+     * @var string
+     */
     private $remoteUrl;
 
+    /**
+     * @var string
+     */
     private $remoteId;
 
+    /**
+     * @var \DateTime
+     */
     private $createdAt;
 
+    /**
+     * @var array
+     */
     private $thumbnails = [];
 
     /**
@@ -45,13 +77,10 @@ class UploadedVideo
         $this->createdAt = new \DateTime();
     }
 
-
     /**
-     * Get id
-     *
      * @return string
      */
-    public function getUuid()
+    public function getUuid(): string
     {
         return $this->uuid;
 
@@ -85,11 +114,13 @@ class UploadedVideo
 
     /**
      * @param Category $category
+     *
      * @return UploadedVideo
      */
-    public function setCategory(Category $category)
+    public function setCategory(Category $category): UploadedVideo
     {
         $this->category = $category;
+
         return $this;
     }
 
@@ -103,47 +134,53 @@ class UploadedVideo
 
     /**
      * @param int $status
+     *
      * @return UploadedVideo
      */
     public function setStatus(int $status): UploadedVideo
     {
         $this->status = $status;
+
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getRemoteUrl()
+    public function getRemoteUrl(): string
     {
         return $this->remoteUrl;
     }
 
     /**
-     * @param mixed $remoteUrl
+     * @param string $remoteUrl
+     *
      * @return UploadedVideo
      */
-    public function setRemoteUrl($remoteUrl)
+    public function setRemoteUrl(string $remoteUrl): UploadedVideo
     {
         $this->remoteUrl = $remoteUrl;
+
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getRemoteId()
+    public function getRemoteId(): string
     {
         return $this->remoteId;
     }
 
     /**
-     * @param mixed $remoteId
+     * @param string $remoteId
+     *
      * @return UploadedVideo
      */
-    public function setRemoteId($remoteId)
+    public function setRemoteId(string $remoteId): UploadedVideo
     {
         $this->remoteId = $remoteId;
+
         return $this;
     }
 
@@ -157,11 +194,13 @@ class UploadedVideo
 
     /**
      * @param \DateTime $createdAt
+     *
      * @return UploadedVideo
      */
     public function setCreatedAt(\DateTime $createdAt): UploadedVideo
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
 
@@ -175,17 +214,29 @@ class UploadedVideo
 
     /**
      * @param array $thumbnails
+     *
      * @return UploadedVideo
      */
     public function setThumbnails(array $thumbnails): UploadedVideo
     {
         $this->thumbnails = $thumbnails;
+
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
 
-
-
-
+    /**
+     * @param string $description
+     */
+    public function setDescription(string $description)
+    {
+        $this->description = $description;
+    }
 }
-

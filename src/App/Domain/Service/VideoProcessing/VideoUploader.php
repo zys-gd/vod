@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 24.12.18
- * Time: 12:01
- */
 
 namespace App\Domain\Service\VideoProcessing;
-
 
 use App\Utils\UuidGenerator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,32 +11,39 @@ use App\Domain\Entity\Category;
 use App\Domain\Repository\UploadedVideoRepository;
 use App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector;
 
+/**
+ * Class VideoUploader
+ */
 class VideoUploader
 {
     /**
      * @var UploadedVideoRepository
      */
     private $repository;
+
     /**
      * @var CloudinaryConnector
      */
     private $cloudinaryConnector;
+
     /**
      * @var RouterInterface
      */
     private $router;
+
     /**
      * @var EntityManagerInterface
      */
     private $entityManager;
+
     /**
      * @var string
      */
     private $host;
 
-
     /**
-     * VideoUploader constructor.
+     * VideoUploader constructor
+     *
      * @param UploadedVideoRepository $repository
      * @param CloudinaryConnector     $cloudinaryConnector
      * @param RouterInterface         $router
@@ -65,8 +65,22 @@ class VideoUploader
         $this->host                = $host;
     }
 
-    public function uploadVideo(string $title, UploadedFile $file, Category $category): UploadedVideo
+    /**
+     * Upload video to cloudinary storage
+     *
+     * @param array $uploadedVideoFormData
+     *
+     * @return UploadedVideo
+     *
+     * @throws \Exception
+     */
+    public function uploadVideo($uploadedVideoFormData): UploadedVideo
     {
+        /** @var UploadedFile $file */
+        $file = $uploadedVideoFormData['file'];
+
+        /** @var Category $category */
+        $category = $uploadedVideoFormData['category'];
 
         if ($file->getError()) {
             throw new \Exception($file->getErrorMessage());
@@ -83,10 +97,11 @@ class VideoUploader
 
         $videoEntity = new UploadedVideo(UuidGenerator::generate());
 
-        $videoEntity->setTitle($title);
+        $videoEntity->setTitle($uploadedVideoFormData['title']);
         $videoEntity->setCategory($category);
         $videoEntity->setRemoteUrl($result->getUrl());
         $videoEntity->setRemoteId($result->getRemoteId());
+        $videoEntity->setDescription($uploadedVideoFormData['description']);
 
         $thumbnails = $this->cloudinaryConnector->getThumbnails($result->getRemoteId());
         $videoEntity->setThumbnails($thumbnails);

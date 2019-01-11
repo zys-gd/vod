@@ -2,6 +2,9 @@
 
 namespace App\Domain\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
 /**
  * Category
  */
@@ -23,27 +26,42 @@ class Category
     private $alias;
 
     /**
+     * @var Category
+     */
+    private $parent;
+
+    /**
+     * @var ArrayCollection
+     */
+    private $childCategories;
+
+    /**
      * @var integer
      */
     private $menuPriority;
 
     /**
-     * Category constructor.
+     * Category constructor
+     *
      * @param string $uuid
      */
     public function __construct(string $uuid)
     {
         $this->uuid = $uuid;
+        $this->childCategories = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->title;
     }
 
     /**
-     * Set title
-     *
      * @param string $title
      *
      * @return Category
      */
-    public function setTitle($title)
+    public function setTitle(string $title): Category
     {
         $this->title = $title;
 
@@ -51,23 +69,19 @@ class Category
     }
 
     /**
-     * Get title
-     *
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
     /**
-     * Set alias
-     *
      * @param string $alias
      *
      * @return Category
      */
-    public function setAlias($alias)
+    public function setAlias(string $alias): Category
     {
         $this->alias = $alias;
 
@@ -75,11 +89,9 @@ class Category
     }
 
     /**
-     * Get alias
-     *
      * @return string
      */
-    public function getAlias()
+    public function getAlias(): string
     {
         return $this->alias;
     }
@@ -92,16 +104,51 @@ class Category
         return $this->uuid;
     }
 
+    /**
+     * @return int
+     */
     public function getMenuPriority(): int
     {
         return $this->menuPriority;
     }
 
+    /**
+     * @param int $menuPriority
+     *
+     * @return Category
+     */
     public function setMenuPriority(int $menuPriority): Category
     {
         $this->menuPriority = $menuPriority;
 
         return $this;
     }
-}
 
+    /**
+     * @param Category $category
+     *
+     * @return Category
+     */
+    public function setParent(Category $category): Category
+    {
+        $this->parent = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Category | null
+     */
+    public function getParent(): ?Category
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getChildCategories(): Collection
+    {
+        return $this->childCategories;
+    }
+}
