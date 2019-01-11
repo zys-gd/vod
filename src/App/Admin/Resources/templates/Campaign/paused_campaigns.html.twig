@@ -2,7 +2,7 @@
 
 {% block field %}
     {% for carrier in value %}
-        {# TODO: correct url sonata generate #}
+        {# TODO: correct url sonata getLinkToWifiFlowPage #}
          {#<a href="{{ admin.generateObjectUrl('edit',carrier) }}">{{ carrier.name }}</a>#}
         <a href="/admin/app/carrier/{{ carrier.id }}/edit">{{ carrier.name }} {% if (value|last) != carrier.name  %}, {% endif %} </a>
     {% endfor %}

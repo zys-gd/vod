@@ -5,3 +5,4 @@ doctrine:
 
 identification:
   wifi_flow_redirect_route: 'mobile_identification'
+  homepage_route: 'index'

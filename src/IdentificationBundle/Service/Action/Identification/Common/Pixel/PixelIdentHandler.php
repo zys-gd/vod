@@ -10,6 +10,7 @@ namespace IdentificationBundle\Service\Action\Identification\Common\Pixel;
 
 
 use IdentificationBundle\Entity\CarrierInterface;
+use IdentificationBundle\Service\Action\Identification\Common\RouteProvider;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,14 +23,21 @@ class PixelIdentHandler
      * @var RouterInterface
      */
     private $router;
+    /**
+     * @var RouteProvider
+     */
+    private $routeProvider;
 
 
     /**
      * PixelIdentHandler constructor.
+     * @param RouterInterface $router
+     * @param RouteProvider   $routeProvider
      */
-    public function __construct(RouterInterface $router)
+    public function __construct(RouterInterface $router, RouteProvider $routeProvider)
     {
-        $this->router = $router;
+        $this->router        = $router;
+        $this->routeProvider = $routeProvider;
     }
 
     public function doHandle(Request $request, ProcessResult $processResult, CarrierInterface $carrier): RedirectResponse
@@ -41,7 +49,7 @@ class PixelIdentHandler
                 'processId' => $processResult->getId()
             ]);
         } catch (RouteNotFoundException $exception) {
-            $successUrl = $this->router->generate('index', [], RouterInterface::ABSOLUTE_URL);
+            $successUrl = $this->routeProvider->getAbsoluteUrlToHomepage();
         }
 
         $pixelPageLink = $this->router->generate('identification_pixelident_showpixel', [

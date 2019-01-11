@@ -18,17 +18,18 @@ services:
       - '@IdentificationBundle\BillingFramework\Process\IdentProcess'
       - '@IdentificationBundle\Service\Action\Identification\Handler\IdentificationHandlerProvider'
       - '@IdentificationBundle\Service\Action\Identification\Common\RequestParametersProvider'
-      - '@router'
+      - '@IdentificationBundle\Service\Action\Identification\Common\RouteProvider'
       - '@IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentHandler'
       - '@IdentificationBundle\Service\Action\Identification\Common\Redirect\RedirectIdentHandler'
 
   IdentificationBundle\Service\Action\Identification\Common\RequestParametersProvider:
     arguments:
-      - '@event_dispatcher'
       - '@router'
+
   IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentHandler:
     arguments:
       - '@router'
+      - '@IdentificationBundle\Service\Action\Identification\Common\RouteProvider'
 
 
   IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentVerifier:
@@ -55,7 +56,8 @@ services:
           - '@doctrine.orm.entity_manager'
           - '@IdentificationBundle\Repository\UserRepository'
 
-  IdentificationBundle\Service\Action\Identification\Common\WifiRouteGenerator:
+  IdentificationBundle\Service\Action\Identification\Common\RouteProvider:
       arguments:
           - '@router'
           - '_wifi_route_placeholder_'
+          - '_homepage_route_placeholder_'

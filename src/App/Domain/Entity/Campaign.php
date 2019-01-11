@@ -324,7 +324,7 @@ class Campaign
 
     /**
      * @return string
-     * This is how we generate the token to identify traffic intended for aff campaigns.
+     * This is how we getLinkToWifiFlowPage the token to identify traffic intended for aff campaigns.
      * /?cmpId=token
      * We don't need to store the computed token anywhere inside the DB to identify a specific campaign,
      * because we get its ID it by decoding the token. This applies only when there is no enforced ID from affiliate.

@@ -35,10 +35,7 @@ class CommonFlowHandler
      * @var RequestParametersProvider
      */
     private $parametersProvider;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+
     /**
      * @var PixelIdentHandler
      */
@@ -47,6 +44,10 @@ class CommonFlowHandler
      * @var RedirectIdentHandler
      */
     private $redirectIdentHandler;
+    /**
+     * @var RouteProvider
+     */
+    private $routeProvider;
 
 
     /**
@@ -54,7 +55,7 @@ class CommonFlowHandler
      * @param IdentProcess                  $identProcess
      * @param IdentificationHandlerProvider $handlerProvider
      * @param RequestParametersProvider     $parametersProvider
-     * @param RouterInterface               $router
+     * @param RouteProvider                 $routeProvider
      * @param PixelIdentHandler             $pixelIdentHandler
      * @param RedirectIdentHandler          $redirectIdentHandler
      */
@@ -62,7 +63,7 @@ class CommonFlowHandler
         IdentProcess $identProcess,
         IdentificationHandlerProvider $handlerProvider,
         RequestParametersProvider $parametersProvider,
-        RouterInterface $router,
+        RouteProvider $routeProvider,
         PixelIdentHandler $pixelIdentHandler,
         RedirectIdentHandler $redirectIdentHandler
 
@@ -71,22 +72,22 @@ class CommonFlowHandler
         $this->identProcess         = $identProcess;
         $this->handlerProvider      = $handlerProvider;
         $this->parametersProvider   = $parametersProvider;
-        $this->router               = $router;
         $this->pixelIdentHandler    = $pixelIdentHandler;
         $this->redirectIdentHandler = $redirectIdentHandler;
+        $this->routeProvider        = $routeProvider;
     }
 
     public function process(
         Request $request,
         HasCommonFlow $handler,
-        array $identificationData,
+        string $token,
         CarrierInterface $carrier
     ): Response
     {
         $additionalParams = $handler->getAdditionalIdentificationParams($request);
-        $redirectUrl      = $request->get('location', $this->router->generate('index', [], RouterInterface::ABSOLUTE_URL));
+        $redirectUrl      = $request->get('location', $this->routeProvider->getLinkToHomepage());
         $parameters       = $this->parametersProvider->prepareRequestParameters(
-            $identificationData['identification_token'],
+            $token,
             $carrier->getBillingCarrierId(),
             $request->getClientIp(),
             $redirectUrl,

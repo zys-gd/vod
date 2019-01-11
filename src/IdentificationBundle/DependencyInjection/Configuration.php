@@ -27,7 +27,8 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-            ->scalarNode('wifi_flow_redirect_route')->isRequired()
+            ->scalarNode('wifi_flow_redirect_route')->isRequired()->end()
+            ->scalarNode('homepage_route')->isRequired()->end()
             ->end();
 
 

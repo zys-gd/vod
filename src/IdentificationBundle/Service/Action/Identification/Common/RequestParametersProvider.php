@@ -19,28 +19,20 @@ use Symfony\Component\Routing\RouterInterface;
 class RequestParametersProvider
 {
     /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-    /**
      * @var RouterInterface
      */
     private $router;
 
 
     /**
-     * BillingFrameworkHelperService constructor.
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param RouterInterface          $router
+     * @param RouterInterface $router
      */
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
         RouterInterface $router
     )
     {
 
-        $this->eventDispatcher = $eventDispatcher;
-        $this->router          = $router;
+        $this->router = $router;
     }
 
     /**

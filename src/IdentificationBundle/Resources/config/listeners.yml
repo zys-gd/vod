@@ -1,6 +1,6 @@
 services:
 
-  IdentificationBundle\Listener\IdentifyListener:
+  IdentificationBundle\Listener\IdentifyStartListener:
     tags:
      - { name: kernel.event_listener, event: kernel.controller }
     arguments:
@@ -9,4 +9,4 @@ services:
       - '@IdentificationBundle\Service\Carrier\ISPResolver'
       - '@IdentificationBundle\Service\Action\Identification\Identifier'
       - '@IdentificationBundle\Service\Action\Identification\Common\TokenGenerator'
-      - '@IdentificationBundle\Service\Action\Identification\Common\WifiRouteGenerator'
+      - '@IdentificationBundle\Service\Action\Identification\Common\RouteProvider'

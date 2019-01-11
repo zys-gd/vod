@@ -40,8 +40,9 @@ class IdentificationExtension extends Extension
         $configuration = new Configuration();
         $config        = $this->processConfiguration($configuration, $configs);
 
-        $service = $container->getDefinition('IdentificationBundle\Service\Action\Identification\Common\WifiRouteGenerator');
+        $service = $container->getDefinition('IdentificationBundle\Service\Action\Identification\Common\RouteProvider');
         $service->replaceArgument(1, $config['wifi_flow_redirect_route']);
+        $service->replaceArgument(2, $config['homepage_route']);
     }
 
 }

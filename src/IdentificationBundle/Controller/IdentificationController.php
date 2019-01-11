@@ -15,6 +15,7 @@ use IdentificationBundle\Service\Action\Identification\Identifier;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class IdentificationController extends AbstractController
@@ -42,11 +43,17 @@ class IdentificationController extends AbstractController
     /**
      * @Route("/identify",name="identify")
      * @param Request $request
-     * @return void
+     * @return Response
      */
     public function identifyAction(Request $request): Response
     {
         $data = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession());
+
+        $identData = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
+
+        if (isset($identData['identification_token'])) {
+            throw new BadRequestHttpException('You are already identified');
+        }
 
         $token  = $this->tokenGenerator->generateToken();
         $result = $this->identifier->identify(

@@ -93,13 +93,9 @@ class Identifier
 
         } else if ($handler instanceof HasCommonFlow) {
 
-            $identificationData = $this->storeIdentificationData($session, $token);
-            $response           = $this->commonFlowHandler->process(
-                $request,
-                $handler,
-                $identificationData,
-                $carrier
-            );
+            $response = $this->commonFlowHandler->process($request, $handler, $token, $carrier);
+            $this->storeIdentificationData($session, $token);
+
             return new IdentifyResult($response);
 
         } else {
