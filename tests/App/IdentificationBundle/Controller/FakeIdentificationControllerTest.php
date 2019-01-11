@@ -27,7 +27,7 @@ class FakeIdentificationControllerTest extends AbstractFunctionalTest
 
     protected function initializeServices(ContainerInterface $container)
     {
-        $this->httpClient                   = \Mockery::spy(Client::class);
+        $this->httpClient = \Mockery::spy(Client::class);
     }
 
     protected function getFixturesListLoadedForEachTest(): array

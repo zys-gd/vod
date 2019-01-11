@@ -118,21 +118,21 @@ class FakeIdentificationController extends AbstractController
         else {
             // Get carrier
             $carrierISP = $this->carrierDetection->getCarrier($ipAddress);
-            $carrierId = null;
+            $billingCarrierId = null;
             if ($carrierISP) {
-                $carrierId = $this->resolveISP($carrierISP);
+                $billingCarrierId = $this->resolveISP($carrierISP);
             }
             // Set session data
             $ispDetectionData = [
                 'isp_name' => $carrierISP,
-                'carrier_id' => $carrierId,
+                'carrier_id' => $billingCarrierId,
             ];
             $session->set('isp_detection_data', $ispDetectionData);
 
             $token = $this->tokenGenerator->generateToken();
             $session->set('identification_data', ['identification_token' => $token]);
 
-            $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
+            $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
             $user = $this->userFactory->create($msisdn, $carrier, $ipAddress, $token);
 
             $this->entityManager->persist($user);
