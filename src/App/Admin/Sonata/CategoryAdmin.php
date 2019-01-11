@@ -12,9 +12,9 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
- * Class VideoCategoryAdmin
+ * Class CategoryAdmin
  */
-class VideoCategoryAdmin extends AbstractAdmin
+class CategoryAdmin extends AbstractAdmin
 {
     const MENU_PRIORITY_LABEL = 'Menu position';
 

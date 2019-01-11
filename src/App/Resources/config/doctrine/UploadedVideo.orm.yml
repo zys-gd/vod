@@ -24,6 +24,6 @@ App\Domain\Entity\UploadedVideo:
 
     manyToOne:
         category:
-            targetEntity: App\Domain\Entity\VideoCategory
+            targetEntity: App\Domain\Entity\Category
             joinColumn:
                 referencedColumnName: uuid

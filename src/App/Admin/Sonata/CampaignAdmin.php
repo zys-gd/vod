@@ -297,12 +297,10 @@ class CampaignAdmin extends AbstractAdmin
         if ($subject && $subject->getImageName()) {
             $imagePath = $this->container->getParameter('images_base_url') . '/' . $subject->getImagePath();
 
-            $template = '<strong>Current thumbnail (square icon):</strong><br />
-                     <a href="%1$s" target="_blank" title="View in actual size">
-                        <img style="border:dashed 1px black; height:100px;" src="%1$s" />
-                     </a>';
-
-            return sprintf($template, $imagePath);
+            return $this->container->get('twig')->render(
+                '@Admin/Campaign/campaign_banner_preview.html.twig',
+                ['url' => $imagePath]
+            );
         }
 
         return '';
