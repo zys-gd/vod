@@ -16,7 +16,11 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
  */
 class CategoryAdmin extends AbstractAdmin
 {
+    /**
+     * Fields labels
+     */
     const MENU_PRIORITY_LABEL = 'Menu position';
+    const PARENT_LABEL = 'Parent category';
 
     /**
      * @return array
@@ -33,7 +37,8 @@ class CategoryAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('title')
-            ->add('alias');
+            ->add('alias')
+            ->add('parent');
     }
 
     /**
@@ -45,9 +50,14 @@ class CategoryAdmin extends AbstractAdmin
 
         $listMapper
             ->add('uuid')
+            ->add('parent', TextType::class, [
+                'label' => self::PARENT_LABEL
+            ])
             ->add('title')
             ->add('alias')
-            ->add('menuPriority', IntegerType::class, ['label' => self::MENU_PRIORITY_LABEL])
+            ->add('menuPriority', IntegerType::class, [
+                'label' => self::MENU_PRIORITY_LABEL
+            ])
             ->add('_action', null, array(
                 'actions' => array(
                     'show'   => array(),
@@ -64,6 +74,9 @@ class CategoryAdmin extends AbstractAdmin
     {
         $showMapper
             ->add('uuid')
+            ->add('parent', TextType::class, [
+                'label' => self::PARENT_LABEL
+            ])
             ->add('title')
             ->add('menuPriority');
     }
@@ -84,7 +97,11 @@ class CategoryAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('title', TextType::class, ['required' => true])
-            ->add('menuPriority', IntegerType::class, ['label' => self::MENU_PRIORITY_LABEL]);
+            ->add('title', TextType::class, [
+                'required' => true
+            ])
+            ->add('menuPriority', IntegerType::class, [
+                'label' => self::MENU_PRIORITY_LABEL
+            ]);
     }
 }

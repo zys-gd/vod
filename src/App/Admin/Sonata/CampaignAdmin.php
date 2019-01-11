@@ -265,7 +265,7 @@ class CampaignAdmin extends AbstractAdmin
             ->tab('Landing page')
             ->with('', ['box_class' => 'box-solid'])
             ->add('image_file', FileType::class, [
-                'required' => false,
+                'required' => true,
                 'label' => 'Main Image',
                 'help' => $this->getImagePreviewHtml()
             ])
