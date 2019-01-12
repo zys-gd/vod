@@ -11,7 +11,7 @@ namespace IdentificationBundle\Carriers\EtisalatEG;
 
 use App\Domain\Constants\ConstBillingCarrierId;
 use IdentificationBundle\Entity\CarrierInterface;
-use IdentificationBundle\Service\Action\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
+use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
 
 class EtisalatEGWifiIdentificationHandler implements
     WifiIdentificationHandlerInterface

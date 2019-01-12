@@ -9,7 +9,7 @@
 namespace IdentificationBundle\Profiler;
 
 
-use IdentificationBundle\Service\Action\Identification\Common\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;

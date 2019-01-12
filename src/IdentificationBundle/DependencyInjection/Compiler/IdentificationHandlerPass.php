@@ -10,7 +10,7 @@ class IdentificationHandlerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $definition = $container->findDefinition('IdentificationBundle\Service\Action\Identification\Handler\IdentificationHandlerProvider');
+        $definition = $container->findDefinition('IdentificationBundle\Identification\Handler\IdentificationHandlerProvider');
 
         $taggedServices = $container->findTaggedServiceIds('identification.identification_handler');
 

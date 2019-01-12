@@ -9,10 +9,9 @@
 namespace IdentificationBundle\Controller;
 
 
-use IdentificationBundle\BillingFramework\Data\DataProvider;
-use IdentificationBundle\Service\Action\Identification\Common\IdentificationFlowDataExtractor;
-use IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentConfirmer;
-use IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentVerifier;
+use IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer;
+use IdentificationBundle\Identification\Common\Pixel\PixelIdentVerifier;
+use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkProcessException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

@@ -13,9 +13,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\BillingFramework\Process\IdentProcess;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
+use IdentificationBundle\Identification\Service\UserFactory;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Repository\UserRepository;
-use IdentificationBundle\Service\Action\Identification\Common\UserFactory;
 use IdentificationBundle\Service\Callback\Handler\HasCommonFlow;
 use IdentificationBundle\Service\Callback\Handler\HasCustomFlow;
 use IdentificationBundle\Service\Callback\Handler\IdentCallbackHandlerProvider;
@@ -32,7 +32,7 @@ class IdentCallbackProcessor
      */
     private $mapper;
     /**
-     * @var UserFactory
+     * @var \IdentificationBundle\Identification\Service\UserFactory
      */
     private $userFactory;
     /**

@@ -9,9 +9,9 @@
 namespace IdentificationBundle\Controller;
 
 
-use IdentificationBundle\Service\Action\Identification\Common\IdentificationFlowDataExtractor;
-use IdentificationBundle\Service\Action\Identification\Common\TokenGenerator;
-use IdentificationBundle\Service\Action\Identification\Identifier;
+use IdentificationBundle\Identification\Identifier;
+use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\TokenGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

@@ -10,9 +10,9 @@ namespace IdentificationBundle\Controller;
 
 
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
-use IdentificationBundle\Service\Action\Identification\Common\IdentificationFlowDataExtractor;
-use IdentificationBundle\Service\Action\WifiIdentification\Common\WifiIdentConfirmator;
-use IdentificationBundle\Service\Action\WifiIdentification\Common\WifiIdentSMSSender;
+use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\WifiIdentification\WifiIdentConfirmator;
+use IdentificationBundle\WifiIdentification\WifiIdentSMSSender;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +24,7 @@ class PinIdentificationController extends AbstractController implements
 {
     use ResponseTrait;
     /**
-     * @var WifiIdentSMSSender
+     * @var \IdentificationBundle\WifiIdentification\WifiIdentSMSSender
      */
     private $identSMSSender;
     /**

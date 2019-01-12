@@ -4,18 +4,17 @@ namespace IdentificationBundle\Controller;
 
 use CountryCarrierDetectionBundle\Service\Interfaces\ICountryCarrierDetection;
 use Doctrine\ORM\EntityManager;
+use IdentificationBundle\Identification\Identifier;
+use IdentificationBundle\Identification\Service\ISPResolver;
+use IdentificationBundle\Identification\Service\TokenGenerator;
+use IdentificationBundle\Identification\Service\UserFactory;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Repository\UserRepository;
-use Symfony\Component\Routing\Router;
-use IdentificationBundle\Service\Action\Identification\Common\TokenGenerator;
-use IdentificationBundle\Service\Action\Identification\Common\UserFactory;
-use IdentificationBundle\Service\Action\Identification\Identifier;
-use IdentificationBundle\Service\Carrier\ISPResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Router;
 
 class FakeIdentificationController extends AbstractController
 {
@@ -36,11 +35,11 @@ class FakeIdentificationController extends AbstractController
      */
     private $carrierRepository;
     /**
-     * @var ISPResolver
+     * @var \IdentificationBundle\Identification\Service\ISPResolver
      */
     private $ISPResolver;
     /**
-     * @var UserFactory
+     * @var \IdentificationBundle\Identification\Service\UserFactory
      */
     private $userFactory;
     /**
@@ -59,15 +58,15 @@ class FakeIdentificationController extends AbstractController
     /**
      * FakeIdentificationController constructor.
      *
-     * @param ICountryCarrierDetection   $carrierDetection
-     * @param CarrierRepositoryInterface $carrierRepository
-     * @param UserRepository             $userRepository
-     * @param ISPResolver                $ISPResolver
-     * @param Identifier                 $identifier
-     * @param TokenGenerator             $generator
-     * @param UserFactory                $userFactory
-     * @param EntityManager              $entityManager
-     * @param Router                     $router
+     * @param ICountryCarrierDetection                                 $carrierDetection
+     * @param CarrierRepositoryInterface                               $carrierRepository
+     * @param UserRepository                                           $userRepository
+     * @param \IdentificationBundle\Identification\Service\ISPResolver $ISPResolver
+     * @param Identifier                                               $identifier
+     * @param TokenGenerator                                           $generator
+     * @param UserFactory                                              $userFactory
+     * @param EntityManager                                            $entityManager
+     * @param Router                                                   $router
      */
     public function __construct(ICountryCarrierDetection $carrierDetection,
         CarrierRepositoryInterface $carrierRepository,

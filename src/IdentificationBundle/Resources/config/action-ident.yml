@@ -1,63 +1,65 @@
 services:
-  IdentificationBundle\Service\Action\Identification\Handler\DefaultHandler: ~
+  IdentificationBundle\Identification\Handler\DefaultHandler: ~
 
-  IdentificationBundle\Service\Action\Identification\Handler\IdentificationHandlerProvider:
+  IdentificationBundle\Identification\Handler\IdentificationHandlerProvider:
     arguments:
-      - '@IdentificationBundle\Service\Action\Identification\Handler\DefaultHandler'
+      - '@IdentificationBundle\Identification\Handler\DefaultHandler'
 
-  IdentificationBundle\Service\Action\Identification\Identifier:
+  IdentificationBundle\Identification\Identifier:
     arguments:
-      - '@IdentificationBundle\Service\Action\Identification\Handler\IdentificationHandlerProvider'
+      - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
       - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
       - '@logger'
-      - '@IdentificationBundle\Service\Action\Identification\Common\CommonFlowHandler'
-      - '@IdentificationBundle\Service\Action\Identification\Common\HeaderEnrichmentHandler'
+      - '@IdentificationBundle\Identification\Common\CommonFlowHandler'
+      - '@IdentificationBundle\Identification\Common\HeaderEnrichmentHandler'
 
-  IdentificationBundle\Service\Action\Identification\Common\CommonFlowHandler:
+  IdentificationBundle\Identification\Common\CommonFlowHandler:
     arguments:
       - '@IdentificationBundle\BillingFramework\Process\IdentProcess'
-      - '@IdentificationBundle\Service\Action\Identification\Handler\IdentificationHandlerProvider'
-      - '@IdentificationBundle\Service\Action\Identification\Common\RequestParametersProvider'
-      - '@IdentificationBundle\Service\Action\Identification\Common\RouteProvider'
-      - '@IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentHandler'
-      - '@IdentificationBundle\Service\Action\Identification\Common\Redirect\RedirectIdentHandler'
+      - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
+      - '@IdentificationBundle\Identification\Common\RequestParametersProvider'
+      - '@IdentificationBundle\Identification\Service\RouteProvider'
+      - '@IdentificationBundle\Identification\Common\Pixel\PixelIdentHandler'
+      - '@IdentificationBundle\Identification\Common\Redirect\RedirectIdentHandler'
 
-  IdentificationBundle\Service\Action\Identification\Common\RequestParametersProvider:
+  IdentificationBundle\Identification\Common\RequestParametersProvider:
     arguments:
       - '@router'
 
-  IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentHandler:
+  IdentificationBundle\Identification\Common\Pixel\PixelIdentHandler:
     arguments:
       - '@router'
-      - '@IdentificationBundle\Service\Action\Identification\Common\RouteProvider'
+      - '@IdentificationBundle\Identification\Service\RouteProvider'
 
 
-  IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentVerifier:
+  IdentificationBundle\Identification\Common\Pixel\PixelIdentVerifier:
     arguments:
       - '@IdentificationBundle\BillingFramework\Process\AfterPixelProcess'
 
-  IdentificationBundle\Service\Action\Identification\Common\Pixel\PixelIdentConfirmer:
+  IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer:
     arguments:
       - '@doctrine.orm.entity_manager'
-      - '@IdentificationBundle\Service\Action\Identification\Common\UserFactory'
+      - '@IdentificationBundle\Identification\Service\UserFactory'
       - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
       - '@IdentificationBundle\BillingFramework\Data\DataProvider'
-      - '@IdentificationBundle\Service\Action\Identification\Handler\IdentificationHandlerProvider'
+      - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
 
-  IdentificationBundle\Service\Action\Identification\Common\UserFactory: ~
+  IdentificationBundle\Identification\Service\UserFactory: ~
 
-  IdentificationBundle\Service\Action\Identification\Common\Redirect\RedirectIdentHandler: ~
+  IdentificationBundle\Identification\Common\Redirect\RedirectIdentHandler: ~
 
-  IdentificationBundle\Service\Action\Identification\Common\TokenGenerator: ~
+  IdentificationBundle\Identification\Service\TokenGenerator: ~
 
-  IdentificationBundle\Service\Action\Identification\Common\HeaderEnrichmentHandler:
+  IdentificationBundle\Identification\Common\HeaderEnrichmentHandler:
       arguments:
-          - '@IdentificationBundle\Service\Action\Identification\Common\UserFactory'
+          - '@IdentificationBundle\Identification\Service\UserFactory'
           - '@doctrine.orm.entity_manager'
           - '@IdentificationBundle\Repository\UserRepository'
 
-  IdentificationBundle\Service\Action\Identification\Common\RouteProvider:
+  IdentificationBundle\Identification\Service\RouteProvider:
       arguments:
           - '@router'
           - '_wifi_route_placeholder_'
           - '_homepage_route_placeholder_'
+
+  IdentificationBundle\Identification\Service\ISPResolver: ~

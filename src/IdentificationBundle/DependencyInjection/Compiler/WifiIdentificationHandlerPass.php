@@ -11,7 +11,7 @@ class WifiIdentificationHandlerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
 
-        $definition = $container->findDefinition('IdentificationBundle\Service\Action\WifiIdentification\Handler\WifiIdentificationHandlerProvider');
+        $definition = $container->findDefinition('IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerProvider');
 
         $taggedServices = $container->findTaggedServiceIds('identification.wifi_identification_handler');
 

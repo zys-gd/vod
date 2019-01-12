@@ -6,7 +6,7 @@ services:
     arguments:
       - '@country_carrier_detection'
       - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
-      - '@IdentificationBundle\Service\Carrier\ISPResolver'
-      - '@IdentificationBundle\Service\Action\Identification\Identifier'
-      - '@IdentificationBundle\Service\Action\Identification\Common\TokenGenerator'
-      - '@IdentificationBundle\Service\Action\Identification\Common\RouteProvider'
+      - '@IdentificationBundle\Identification\Service\ISPResolver'
+      - '@IdentificationBundle\Identification\Identifier'
+      - '@IdentificationBundle\Identification\Service\TokenGenerator'
+      - '@IdentificationBundle\Identification\Service\RouteProvider'

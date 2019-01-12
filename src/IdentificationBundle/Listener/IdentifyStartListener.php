@@ -12,19 +12,18 @@ namespace IdentificationBundle\Listener;
 use App\Controller\AppControllerInterface;
 use CountryCarrierDetectionBundle\Service\Interfaces\ICountryCarrierDetection;
 use IdentificationBundle\Controller\ControllerWithIdentification;
+use IdentificationBundle\Identification\Exception\FailedIdentificationException;
+use IdentificationBundle\Identification\Identifier;
+use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\ISPResolver;
+use IdentificationBundle\Identification\Service\RouteProvider;
+use IdentificationBundle\Identification\Service\TokenGenerator;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
-use IdentificationBundle\Service\Action\Identification\Common\Exception\FailedIdentificationException;
-use IdentificationBundle\Service\Action\Identification\Common\IdentificationFlowDataExtractor;
-use IdentificationBundle\Service\Action\Identification\Common\TokenGenerator;
-use IdentificationBundle\Service\Action\Identification\Common\RouteProvider;
-use IdentificationBundle\Service\Action\Identification\Identifier;
-use IdentificationBundle\Service\Carrier\ISPResolver;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
-use Symfony\Component\Routing\RouterInterface;
 
 class IdentifyStartListener
 {
@@ -56,12 +55,12 @@ class IdentifyStartListener
 
     /**
      * IdentifyStartListener constructor.
-     * @param ICountryCarrierDetection   $carrierDetection
-     * @param CarrierRepositoryInterface $carrierRepository
-     * @param ISPResolver                $ISPResolver
-     * @param Identifier                 $identifier
-     * @param TokenGenerator             $generator
-     * @param RouteProvider              $routeProvider
+     * @param ICountryCarrierDetection                                   $carrierDetection
+     * @param CarrierRepositoryInterface                                 $carrierRepository
+     * @param \IdentificationBundle\Identification\Service\ISPResolver   $ISPResolver
+     * @param Identifier                                                 $identifier
+     * @param TokenGenerator                                             $generator
+     * @param \IdentificationBundle\Identification\Service\RouteProvider $routeProvider
      */
     public function __construct(
         ICountryCarrierDetection $carrierDetection,
