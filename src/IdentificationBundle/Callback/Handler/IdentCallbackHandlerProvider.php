@@ -1,6 +1,6 @@
 <?php
 
-namespace IdentificationBundle\Service\Callback\Handler;
+namespace IdentificationBundle\Callback\Handler;
 
 class IdentCallbackHandlerProvider
 {

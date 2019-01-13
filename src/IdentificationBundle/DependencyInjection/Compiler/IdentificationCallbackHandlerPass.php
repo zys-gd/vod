@@ -10,7 +10,7 @@ class IdentificationCallbackHandlerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $definition = $container->findDefinition('IdentificationBundle\Service\Callback\Handler\IdentCallbackHandlerProvider');
+        $definition = $container->findDefinition('IdentificationBundle\Callback\Handler\IdentCallbackHandlerProvider');
 
         $taggedServices = $container->findTaggedServiceIds('identification.identification_callback_handler');
 

@@ -6,11 +6,11 @@
  * Time: 15:26
  */
 
-namespace IdentificationBundle\Controller;
+namespace IdentificationBundle\WifiIdentification\Controller;
 
 
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Controller\Annotation\DenyUsersWithoutISPData;
 use IdentificationBundle\WifiIdentification\WifiIdentConfirmator;
 use IdentificationBundle\WifiIdentification\WifiIdentSMSSender;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
@@ -19,8 +19,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PinIdentificationController extends AbstractController implements
-    ControllerForISPDetectedUsers
+class PinIdentificationController extends AbstractController
+
 {
     use ResponseTrait;
     /**
@@ -43,16 +43,14 @@ class PinIdentificationController extends AbstractController implements
 
 
     /**
-     * @Route("/sendsmspincode",name="send_sms_pin_code")
+     * @InjectISPDetectionData("ispData")
+     * @Route("/pincode/send",name="send_sms_pin_code")
      * @param Request $request
-     * @return void
+     * @param array   $ispData
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function sendSMSPinCodeAction(Request $request)
+    public function sendSMSPinCodeAction(Request $request, array $ispData)
     {
-        if (!$ispData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession())) {
-            throw new BadRequestHttpException('ISP detection data is not found');
-        }
-
         if (!$mobileNumber = $request->get('mobile_number', '')) {
             throw new BadRequestHttpException('`mobile_number` is required');
         }
@@ -60,7 +58,6 @@ class PinIdentificationController extends AbstractController implements
         $carrierId = $ispData['carrier_id'];
 
         try {
-
             $this->identSMSSender->sendSMS((int)$carrierId, $mobileNumber);
             return $this->getSimpleJsonResponse('Sent', 200, [], ['success' => true]);
         } catch (PinRequestProcessException $exception) {
@@ -69,18 +66,14 @@ class PinIdentificationController extends AbstractController implements
     }
 
     /**
-     * @Route("/confirmpincode",name="confirm_sms_pin_code")
+     * @InjectISPDetectionData("ispData")
+     * @Route("/pincode/confirm",name="confirm_sms_pin_code")
      * @param Request $request
-     * @return void
+     * @param array   $ispData
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function confirmSMSPinCodeAction(Request $request)
+    public function confirmSMSPinCodeAction(Request $request, array $ispData)
     {
-
-        if (!$ispData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession())) {
-            throw new BadRequestHttpException('ISP detection data is not found');
-        }
-
-
         if (!$pinCode = $request->get('pin_code', '')) {
             throw new BadRequestHttpException('`pin_code` is required');
         }

@@ -9,9 +9,9 @@
 namespace IdentificationBundle\Listener;
 
 
-use App\Controller\AppControllerInterface;
 use CountryCarrierDetectionBundle\Service\Interfaces\ICountryCarrierDetection;
 use IdentificationBundle\Controller\ControllerWithIdentification;
+use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\Exception\FailedIdentificationException;
 use IdentificationBundle\Identification\Identifier;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
@@ -94,7 +94,7 @@ class IdentifyStartListener
             return;
         }
 
-        if (!($controller instanceof AppControllerInterface)) {
+        if (!($controller instanceof ControllerWithISPDetection)) {
             return;
         }
         $session   = $request->getSession();

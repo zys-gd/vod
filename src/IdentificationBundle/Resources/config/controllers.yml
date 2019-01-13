@@ -2,21 +2,21 @@ services:
     _defaults:
         tags: ['controller.service_arguments']
 
-    IdentificationBundle\Controller\PixelIdentController:
+    IdentificationBundle\Identification\Controller\PixelIdentController:
         arguments:
             - '@IdentificationBundle\Identification\Common\Pixel\PixelIdentVerifier'
             - '@IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer'
 
-    IdentificationBundle\Controller\CallbackController:
+    IdentificationBundle\Callback\Controller\CallbackController:
         arguments:
-            - '@IdentificationBundle\Service\Callback\IdentCallbackProcessor'
+            - '@IdentificationBundle\Callback\IdentCallbackProcessor'
 
-    IdentificationBundle\Controller\IdentificationController:
+    IdentificationBundle\Identification\Controller\IdentificationController:
         arguments:
             - '@IdentificationBundle\Identification\Identifier'
             - '@IdentificationBundle\Identification\Service\TokenGenerator'
 
-    IdentificationBundle\Controller\FakeIdentificationController:
+    IdentificationBundle\Identification\Controller\FakeIdentificationController:
         arguments:
             - '@country_carrier_detection'
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
@@ -28,7 +28,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@router.default'
 
-    IdentificationBundle\Controller\PinIdentificationController:
+    IdentificationBundle\WifiIdentification\Controller\PinIdentificationController:
       arguments:
         - '@IdentificationBundle\WifiIdentification\WifiIdentSMSSender'
         - '@IdentificationBundle\WifiIdentification\WifiIdentConfirmator'

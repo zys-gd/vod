@@ -1,6 +1,6 @@
 <?php
 
-namespace IdentificationBundle\Controller;
+namespace IdentificationBundle\Identification\Controller;
 
 use CountryCarrierDetectionBundle\Service\Interfaces\ICountryCarrierDetection;
 use Doctrine\ORM\EntityManager;
@@ -69,28 +69,28 @@ class FakeIdentificationController extends AbstractController
      * @param Router                                                   $router
      */
     public function __construct(ICountryCarrierDetection $carrierDetection,
-        CarrierRepositoryInterface $carrierRepository,
-        UserRepository $userRepository,
-        ISPResolver $ISPResolver,
-        Identifier $identifier,
-        TokenGenerator $generator,
-        UserFactory $userFactory,
-        EntityManager $entityManager,
-        Router $router)
+                                CarrierRepositoryInterface $carrierRepository,
+                                UserRepository $userRepository,
+                                ISPResolver $ISPResolver,
+                                Identifier $identifier,
+                                TokenGenerator $generator,
+                                UserFactory $userFactory,
+                                EntityManager $entityManager,
+                                Router $router)
     {
-        $this->carrierDetection = $carrierDetection;
-        $this->identifier = $identifier;
-        $this->tokenGenerator = $generator;
+        $this->carrierDetection  = $carrierDetection;
+        $this->identifier        = $identifier;
+        $this->tokenGenerator    = $generator;
         $this->carrierRepository = $carrierRepository;
-        $this->ISPResolver = $ISPResolver;
-        $this->userFactory = $userFactory;
-        $this->entityManager = $entityManager;
-        $this->router = $router;
-        $this->userRepository = $userRepository;
+        $this->ISPResolver       = $ISPResolver;
+        $this->userFactory       = $userFactory;
+        $this->entityManager     = $entityManager;
+        $this->router            = $router;
+        $this->userRepository    = $userRepository;
     }
 
     /**
-     * @Route("/fake/identify",name="fake_identify")
+     * @Route("/identify/fake",name="fake_identify")
      * @param Request $request
      *
      * @return Response
@@ -100,30 +100,29 @@ class FakeIdentificationController extends AbstractController
     public function fakeIdentifyAction(Request $request)
     {
         $ipAddress = $request->get('ip', $request->getClientIp());
-        $msisdn = $request->get('msisdn', 'fake');
-        $force = $request->get('force', true);
+        $msisdn    = $request->get('msisdn', 'fake');
+        $force     = $request->get('force', true);
 
         $session = $request->getSession();
         $session->clear();
 
-        if($user = $this->userRepository->findOneBy(['ip' => $ipAddress])) {
+        if ($user = $this->userRepository->findOneBy(['ip' => $ipAddress])) {
             $session->set('identification_data', ['identification_token' => $user->getIdentificationToken()]);
             $ispDetectionData = [
-                'isp_name' => $user->getCarrier()->getIsp(),
+                'isp_name'   => $user->getCarrier()->getIsp(),
                 'carrier_id' => $user->getBillingCarrierId(),
             ];
             $session->set('isp_detection_data', $ispDetectionData);
-        }
-        else {
+        } else {
             // Get carrier
-            $carrierISP = $this->carrierDetection->getCarrier($ipAddress);
+            $carrierISP       = $this->carrierDetection->getCarrier($ipAddress);
             $billingCarrierId = null;
             if ($carrierISP) {
                 $billingCarrierId = $this->resolveISP($carrierISP);
             }
             // Set session data
             $ispDetectionData = [
-                'isp_name' => $carrierISP,
+                'isp_name'   => $carrierISP,
                 'carrier_id' => $billingCarrierId,
             ];
             $session->set('isp_detection_data', $ispDetectionData);
@@ -132,7 +131,7 @@ class FakeIdentificationController extends AbstractController
             $session->set('identification_data', ['identification_token' => $token]);
 
             $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
-            $user = $this->userFactory->create($msisdn, $carrier, $ipAddress, $token);
+            $user    = $this->userFactory->create($msisdn, $carrier, $ipAddress, $token);
 
             $this->entityManager->persist($user);
             $this->entityManager->flush();

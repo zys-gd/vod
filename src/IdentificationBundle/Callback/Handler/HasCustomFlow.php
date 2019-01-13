@@ -6,7 +6,7 @@
  * Time: 11:27
  */
 
-namespace IdentificationBundle\Service\Callback\Handler;
+namespace IdentificationBundle\Callback\Handler;
 
 
 use IdentificationBundle\Entity\CarrierInterface;

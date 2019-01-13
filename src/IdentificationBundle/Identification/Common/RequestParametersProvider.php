@@ -56,9 +56,9 @@ class RequestParametersProvider
 
 
         $parameters               = new ProcessRequestParameters();
-        $parameters->listener     = $this->router->generate('identification_callback_listenidentify', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $parameters->listener     = $this->router->generate('identify_callback', [], UrlGeneratorInterface::ABSOLUTE_URL);
         $parameters->client       = 'store';
-        $parameters->listenerWait = $this->router->generate('identification_callback_listenidentify', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $parameters->listenerWait = $this->router->generate('identify_callback', [], UrlGeneratorInterface::ABSOLUTE_URL);
         $parameters->clientId     = $identificationToken;
         $parameters->carrier      = $carrierId;
         $parameters->userIp       = $clientIp;

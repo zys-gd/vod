@@ -6,7 +6,7 @@
  * Time: 9:52
  */
 
-namespace IdentificationBundle\Service\Callback\Handler;
+namespace IdentificationBundle\Callback\Handler;
 
 
 use IdentificationBundle\Entity\User;

@@ -1,2 +1,4 @@
 services:
-
+  IdentificationBundle\Controller\ParamConverter\InjectISPDetectionData:
+    tags:
+      - { name: request.param_converter }

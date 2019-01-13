@@ -6,10 +6,10 @@
  * Time: 11:38
  */
 
-namespace IdentificationBundle\Controller;
+namespace IdentificationBundle\Callback\Controller;
 
 
-use IdentificationBundle\Service\Callback\IdentCallbackProcessor;
+use IdentificationBundle\Callback\IdentCallbackProcessor;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +37,7 @@ class CallbackController
     }
 
     /**
-     * @Route("/api/v2/listen/identify")
+     * @Route("/api/v2/listen/identify",name="identify_callback")
      * @param Request $request
      * @return JsonResponse
      */

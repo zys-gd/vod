@@ -6,7 +6,7 @@
  * Time: 12:51
  */
 
-namespace IdentificationBundle\Controller;
+namespace IdentificationBundle\Identification\Controller;
 
 
 use IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer;
@@ -40,7 +40,7 @@ class PixelIdentController extends AbstractController
 
 
     /**
-     * @Route("/pixel")
+     * @Route("/pixel/show-page",name="show_pixel_page")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -59,7 +59,7 @@ class PixelIdentController extends AbstractController
             'pixelUrl'        => $pixelUrl,
             'successUrl'      => $successUrl,
             'failureUrl'      => $this->generateUrl('index', ['err' => 'pixel_ident_timeout']),
-            'statusActionUrl' => $this->generateUrl('identification_pixelident_pixelstatus', [
+            'statusActionUrl' => $this->generateUrl('pixel_ident_status', [
                 'carrier'   => $carrier,
                 'processId' => $processId
             ])
@@ -67,7 +67,7 @@ class PixelIdentController extends AbstractController
     }
 
     /**
-     * @Route("/pixel-status")
+     * @Route("/pixel/status",name="pixel_ident_status")
      * @param Request $request
      * @return JsonResponse
      */
@@ -92,7 +92,7 @@ class PixelIdentController extends AbstractController
     }
 
     /**
-     * @Route("/confirm-pixel")
+     * @Route("/pixel/confirm",name="confirm_pixel_ident")
      * @param Request $request
      * @return RedirectResponse
      */

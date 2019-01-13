@@ -9,7 +9,9 @@
 namespace App\Controller;
 
 
-interface AppControllerInterface
+use IdentificationBundle\Controller\ControllerWithISPDetection;
+
+interface AppControllerInterface extends ControllerWithISPDetection
 {
 
 }

@@ -1,5 +1,5 @@
 services:
-  IdentificationBundle\Service\Callback\IdentCallbackProcessor:
+  IdentificationBundle\Callback\IdentCallbackProcessor:
     arguments:
       - '@SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper'
       - '@IdentificationBundle\Identification\Service\UserFactory'
@@ -7,10 +7,10 @@ services:
       - '@logger'
       - '@doctrine.orm.entity_manager'
       - '@IdentificationBundle\Repository\UserRepository'
-      - '@IdentificationBundle\Service\Callback\Handler\IdentCallbackHandlerProvider'
+      - '@IdentificationBundle\Callback\Handler\IdentCallbackHandlerProvider'
 
-  IdentificationBundle\Service\Callback\Handler\DefaultHandler: ~
+  IdentificationBundle\Callback\Handler\DefaultHandler: ~
 
-  IdentificationBundle\Service\Callback\Handler\IdentCallbackHandlerProvider:
+  IdentificationBundle\Callback\Handler\IdentCallbackHandlerProvider:
     arguments:
-      - '@IdentificationBundle\Service\Callback\Handler\DefaultHandler'
+      - '@IdentificationBundle\Callback\Handler\DefaultHandler'

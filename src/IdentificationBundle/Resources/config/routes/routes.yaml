@@ -1,0 +1,20 @@
+default:
+  type: annotation
+  resource:  '@IdentificationBundle/Controller'
+
+identification:
+  type: annotation
+  resource:  '@IdentificationBundle/Identification/Controller'
+
+wifi_identification:
+  type: annotation
+  resource:  '@IdentificationBundle/WifiIdentification/Controller'
+
+
+legacy_sendpincode:
+  path:     /sendsmspincode
+  controller:  IdentificationBundle:PinIdentification:sendSMSPinCode
+
+#legacy_confirmpincode:
+#  path:     /confirmpincode
+#  controller:  IdentificationBundle:PinIdentification:confirmSMSPinCode

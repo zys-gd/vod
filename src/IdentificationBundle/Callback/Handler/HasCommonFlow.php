@@ -1,6 +1,6 @@
 <?php
 
-namespace IdentificationBundle\Service\Callback\Handler;
+namespace IdentificationBundle\Callback\Handler;
 
 use IdentificationBundle\Entity\User;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;

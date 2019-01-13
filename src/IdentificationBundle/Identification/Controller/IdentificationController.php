@@ -6,7 +6,7 @@
  * Time: 17:54
  */
 
-namespace IdentificationBundle\Controller;
+namespace IdentificationBundle\Identification\Controller;
 
 
 use IdentificationBundle\Identification\Identifier;

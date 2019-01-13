@@ -10,8 +10,8 @@ namespace IdentificationBundle\Carriers\MobilinkPK;
 
 
 use IdentificationBundle\Entity\User;
-use IdentificationBundle\Service\Callback\Handler\HasCommonFlow;
-use IdentificationBundle\Service\Callback\Handler\IdentCallbackHandlerInterface;
+use IdentificationBundle\Callback\Handler\HasCommonFlow;
+use IdentificationBundle\Callback\Handler\IdentCallbackHandlerInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 
 class MobilinkPKIdentificationCallbackHandler implements

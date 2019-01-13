@@ -44,7 +44,7 @@ class PixelIdentHandler
     {
         try {
             $backUrl    = $this->router->generate($request->attributes->get('_route'), [], RouterInterface::ABSOLUTE_URL);
-            $successUrl = $this->router->generate('identification_pixelident_confirmpixelident', [
+            $successUrl = $this->router->generate('confirm_pixel_ident', [
                 'backUrl'   => $backUrl,
                 'processId' => $processResult->getId()
             ]);
@@ -52,7 +52,7 @@ class PixelIdentHandler
             $successUrl = $this->routeProvider->getAbsoluteUrlToHomepage();
         }
 
-        $pixelPageLink = $this->router->generate('identification_pixelident_showpixel', [
+        $pixelPageLink = $this->router->generate('show_pixel_page', [
             'pixelUrl'   => $processResult->getUrl(),
             'carrier'    => $carrier->getBillingCarrierId(),
             'processId'  => $processResult->getId(),

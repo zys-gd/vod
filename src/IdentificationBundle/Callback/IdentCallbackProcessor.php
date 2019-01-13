@@ -6,7 +6,7 @@
  * Time: 15:53
  */
 
-namespace IdentificationBundle\Service\Callback;
+namespace IdentificationBundle\Callback;
 
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,9 +16,9 @@ use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Service\UserFactory;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Repository\UserRepository;
-use IdentificationBundle\Service\Callback\Handler\HasCommonFlow;
-use IdentificationBundle\Service\Callback\Handler\HasCustomFlow;
-use IdentificationBundle\Service\Callback\Handler\IdentCallbackHandlerProvider;
+use IdentificationBundle\Callback\Handler\HasCommonFlow;
+use IdentificationBundle\Callback\Handler\HasCustomFlow;
+use IdentificationBundle\Callback\Handler\IdentCallbackHandlerProvider;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\API\Exception\EmptyResponse;
