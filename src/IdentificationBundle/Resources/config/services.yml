@@ -1,4 +1,4 @@
 services:
-  IdentificationBundle\Controller\ParamConverter\InjectISPDetectionData:
+  IdentificationBundle\Controller\ParamConverter\ISPDetectionConverter:
     tags:
-      - { name: request.param_converter }
+      - { name: request.param_converter, converter: isp_data_converter  }

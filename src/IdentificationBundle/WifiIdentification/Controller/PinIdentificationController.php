@@ -10,7 +10,7 @@ namespace IdentificationBundle\WifiIdentification\Controller;
 
 
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
-use IdentificationBundle\Controller\Annotation\DenyUsersWithoutISPData;
+use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\WifiIdentification\WifiIdentConfirmator;
 use IdentificationBundle\WifiIdentification\WifiIdentSMSSender;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
@@ -43,22 +43,21 @@ class PinIdentificationController extends AbstractController
 
 
     /**
-     * @InjectISPDetectionData("ispData")
      * @Route("/pincode/send",name="send_sms_pin_code")
      * @param Request $request
-     * @param array   $ispData
+     * @param ISPData $ispData
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function sendSMSPinCodeAction(Request $request, array $ispData)
+    public function sendSMSPinCodeAction(Request $request, ISPData $ispData)
     {
         if (!$mobileNumber = $request->get('mobile_number', '')) {
             throw new BadRequestHttpException('`mobile_number` is required');
         }
 
-        $carrierId = $ispData['carrier_id'];
+        $carrierId = $ispData->getCarrierId();
 
         try {
-            $this->identSMSSender->sendSMS((int)$carrierId, $mobileNumber);
+            $this->identSMSSender->sendSMS($carrierId, $mobileNumber);
             return $this->getSimpleJsonResponse('Sent', 200, [], ['success' => true]);
         } catch (PinRequestProcessException $exception) {
             return $this->getSimpleJsonResponse($exception->getBillingMessage(), 200, [], ['success' => false]);
@@ -66,22 +65,20 @@ class PinIdentificationController extends AbstractController
     }
 
     /**
-     * @InjectISPDetectionData("ispData")
      * @Route("/pincode/confirm",name="confirm_sms_pin_code")
      * @param Request $request
-     * @param array   $ispData
+     * @param ISPData $ispData
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function confirmSMSPinCodeAction(Request $request, array $ispData)
+    public function confirmSMSPinCodeAction(Request $request, ISPData $ispData)
     {
         if (!$pinCode = $request->get('pin_code', '')) {
             throw new BadRequestHttpException('`pin_code` is required');
         }
 
-        $carrierId = $ispData['carrier_id'];
+        $carrierId = $ispData->getCarrierId();
 
-        $this->identConfirmator->confirm((int)$carrierId, $pinCode);
-
+        $this->identConfirmator->confirm($carrierId, $pinCode);
 
         return $this->getSimpleJsonResponse('Sent');
     }

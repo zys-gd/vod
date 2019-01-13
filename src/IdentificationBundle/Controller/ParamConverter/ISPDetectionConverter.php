@@ -9,13 +9,17 @@
 namespace IdentificationBundle\Controller\ParamConverter;
 
 
+use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class InjectISPDetectionData implements ParamConverterInterface
+/**
+ * Class ISPDetectionConverter
+ */
+class ISPDetectionConverter implements ParamConverterInterface
 {
 
     /**
@@ -41,6 +45,6 @@ class InjectISPDetectionData implements ParamConverterInterface
      */
     public function supports(ParamConverter $configuration)
     {
-        return false;
+        return $configuration->getClass() == ISPData::class;
     }
 }
