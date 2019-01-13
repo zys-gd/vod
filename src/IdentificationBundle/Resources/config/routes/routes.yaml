@@ -10,6 +10,10 @@ wifi_identification:
   type: annotation
   resource:  '@IdentificationBundle/WifiIdentification/Controller'
 
+callback:
+  type: annotation
+  resource:  '@IdentificationBundle/Callback/Controller'
+  prefix: /api/v2
 
 legacy_sendpincode:
   path:     /sendsmspincode

@@ -9,6 +9,7 @@
 namespace IdentificationBundle\WifiIdentification\Controller;
 
 
+use ExtrasBundle\API\Controller\APIControllerInterface;
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\WifiIdentification\WifiIdentConfirmator;
@@ -19,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PinIdentificationController extends AbstractController
+class PinIdentificationController extends AbstractController implements APIControllerInterface
 
 {
     use ResponseTrait;

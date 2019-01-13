@@ -37,7 +37,7 @@ class CallbackController
     }
 
     /**
-     * @Route("/api/v2/listen/identify",name="identify_callback")
+     * @Route("/listen/identify",name="identify_callback")
      * @param Request $request
      * @return JsonResponse
      */
