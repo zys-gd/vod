@@ -6,11 +6,11 @@
  * Time: 16:55
  */
 
-namespace App\API\Listener;
+namespace ExtrasBundle\API\Listener;
 
 
-use App\API\Utils\ResponseMaker;
-use App\API\Controller\APIControllerInterface;
+use ExtrasBundle\API\Utils\ResponseMaker;
+use ExtrasBundle\API\Controller\APIControllerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;

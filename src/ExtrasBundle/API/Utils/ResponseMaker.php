@@ -6,7 +6,7 @@
  * Time: 17:13
  */
 
-namespace App\API\Utils;
+namespace ExtrasBundle\API\Utils;
 
 
 use Symfony\Component\HttpFoundation\JsonResponse;

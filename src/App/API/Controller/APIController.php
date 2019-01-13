@@ -2,13 +2,11 @@
 
 namespace App\API\Controller;
 
-use App\API\Utils\ResponseMaker;
-use App\API\Controller\APIControllerInterface;
-use App\Domain\Entity\UploadedVideo;
+
 use App\Domain\Service\VideoProcessing\Callback\EagerType;
 use App\Domain\Service\VideoProcessing\CallbackVoter;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use ExtrasBundle\API\Controller\APIControllerInterface;
+use ExtrasBundle\API\Utils\ResponseMaker;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;

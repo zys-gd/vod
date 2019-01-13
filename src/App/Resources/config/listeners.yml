@@ -1,5 +1,1 @@
 services:
-
-    App\API\Listener\APIJsonEncodeListener:
-        tags:
-            - { name: kernel.event_subscriber }

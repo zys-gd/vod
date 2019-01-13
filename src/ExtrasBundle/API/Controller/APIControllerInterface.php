@@ -6,7 +6,7 @@
  * Time: 16:47
  */
 
-namespace App\API\Controller;
+namespace ExtrasBundle\API\Controller;
 
 
 interface APIControllerInterface

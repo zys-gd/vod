@@ -29,4 +29,6 @@ return [
     SubscriptionBundle\SubscriptionBundle::class => ['all' => true],
     Emoe\GuzzleBundle\EmoeGuzzleBundle::class => ['all' => true],
     Misd\PhoneNumberBundle\MisdPhoneNumberBundle::class => ['all' => true],
+    \ExtrasBundle\ExtrasBundle::class => ['all' => true],
+
 ];
