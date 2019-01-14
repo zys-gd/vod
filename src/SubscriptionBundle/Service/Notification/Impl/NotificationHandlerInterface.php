@@ -9,11 +9,11 @@
 namespace SubscriptionBundle\Service\Notification\Impl;
 
 
-use AppBundle\Entity\Carrier;
+use IdentificationBundle\Entity\CarrierInterface;
 
 interface NotificationHandlerInterface
 {
-    public function canHandle(Carrier $carrier): bool;
+    public function canHandle(CarrierInterface $carrier): bool;
 
     public function isNotificationShouldBeSent(): bool;
 

@@ -9,8 +9,8 @@
 namespace SubscriptionBundle\Service\Action\Subscribe;
 
 
-use AffiliateBundle\Service\AffiliateService;
-use AffiliateBundle\Service\UserInfoMapper;
+use SubscriptionBundle\Affiliate\Service\AffiliateSender;
+use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
@@ -27,7 +27,7 @@ use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvi
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\Notification\Notifier;
 use SubscriptionBundle\Service\SubscriptionCreator;
-use UserBundle\Entity\BillableUser;
+use IdentificationBundle\Entity\User;
 
 class Subscriber
 {
@@ -68,7 +68,7 @@ class Subscriber
      */
     private $onSubscribeUpdater;
     /**
-     * @var AffiliateService
+     * @var AffiliateSender
      */
     private $affiliateService;
     /**
@@ -90,20 +90,20 @@ class Subscriber
 
     /**
      * Subscriber constructor.
-     * @param LoggerInterface              $logger
-     * @param EntitySaveHelper             $entitySaveHelper
-     * @param SessionInterface             $session
-     * @param SubscriptionCreator          $subscriptionCreator
-     * @param PromotionalResponseChecker   $promotionalResponseChecker
-     * @param FakeResponseProvider         $fakeResponseProvider
-     * @param Notifier                     $notifier
-     * @param SubscribeProcess             $subscribeProcess
-     * @param OnSubscribeUpdater           $onSubscribeUpdater
-     * @param AffiliateService             $affiliateService
-     * @param UserInfoMapper               $userInfoMapper
-     * @param PiwikStatisticSender         $piwikStatisticSender
-     * @param SubscriptionHandlerProvider  $subscriptionHandlerProvider
-     * @param SubscribeParametersProvider  $subscribeParametersProvider
+     * @param LoggerInterface             $logger
+     * @param EntitySaveHelper            $entitySaveHelper
+     * @param SessionInterface            $session
+     * @param SubscriptionCreator         $subscriptionCreator
+     * @param PromotionalResponseChecker  $promotionalResponseChecker
+     * @param FakeResponseProvider        $fakeResponseProvider
+     * @param Notifier                    $notifier
+     * @param SubscribeProcess            $subscribeProcess
+     * @param OnSubscribeUpdater          $onSubscribeUpdater
+     * @param AffiliateSender            $affiliateService
+     * @param UserInfoMapper              $userInfoMapper
+     * @param PiwikStatisticSender        $piwikStatisticSender
+     * @param SubscriptionHandlerProvider $subscriptionHandlerProvider
+     * @param SubscribeParametersProvider $subscribeParametersProvider
      */
     public function __construct(
         LoggerInterface $logger,
@@ -115,38 +115,38 @@ class Subscriber
         Notifier $notifier,
         SubscribeProcess $subscribeProcess,
         OnSubscribeUpdater $onSubscribeUpdater,
-        AffiliateService $affiliateService,
+        AffiliateSender $affiliateService,
         UserInfoMapper $userInfoMapper,
         PiwikStatisticSender $piwikStatisticSender,
         SubscriptionHandlerProvider $subscriptionHandlerProvider,
         SubscribeParametersProvider $subscribeParametersProvider
     )
     {
-        $this->logger                       = $logger;
-        $this->entitySaveHelper             = $entitySaveHelper;
-        $this->session                      = $session;
-        $this->subscriptionCreator          = $subscriptionCreator;
-        $this->promotionalResponseChecker   = $promotionalResponseChecker;
-        $this->fakeResponseProvider         = $fakeResponseProvider;
-        $this->notifier                     = $notifier;
-        $this->subscribeProcess             = $subscribeProcess;
-        $this->onSubscribeUpdater           = $onSubscribeUpdater;
-        $this->affiliateService             = $affiliateService;
-        $this->userInfoMapper               = $userInfoMapper;
-        $this->piwikStatisticSender         = $piwikStatisticSender;
-        $this->subscriptionHandlerProvider  = $subscriptionHandlerProvider;
-        $this->subscribeParametersProvider  = $subscribeParametersProvider;
+        $this->logger                      = $logger;
+        $this->entitySaveHelper            = $entitySaveHelper;
+        $this->session                     = $session;
+        $this->subscriptionCreator         = $subscriptionCreator;
+        $this->promotionalResponseChecker  = $promotionalResponseChecker;
+        $this->fakeResponseProvider        = $fakeResponseProvider;
+        $this->notifier                    = $notifier;
+        $this->subscribeProcess            = $subscribeProcess;
+        $this->onSubscribeUpdater          = $onSubscribeUpdater;
+        $this->affiliateService            = $affiliateService;
+        $this->userInfoMapper              = $userInfoMapper;
+        $this->piwikStatisticSender        = $piwikStatisticSender;
+        $this->subscriptionHandlerProvider = $subscriptionHandlerProvider;
+        $this->subscribeParametersProvider = $subscribeParametersProvider;
     }
 
 
     /**
      * Subscribe user to given subscription pack
-     * @param BillableUser              $user
-     * @param SubscriptionPlanInterface $plan
-     * @param array                     $additionalData
+     * @param User             $user
+     * @param SubscriptionPack $plan
+     * @param array            $additionalData
      * @return array
      */
-    public function subscribe(BillableUser $user, SubscriptionPlanInterface $plan, $additionalData = []): array
+    public function subscribe(User $user, SubscriptionPack $plan, $additionalData = []): array
     {
         $var = $this->session->get('campaignData');
         $this->logger->debug('Creating subscription', ['campaignData' => $var]);
@@ -185,8 +185,8 @@ class Subscriber
     public function resubscribe(Subscription $existingSubscription, SubscriptionPack $plan, $additionalData = []): ProcessResult
     {
 
-        $billableUser = $existingSubscription->getUser();
-        $subscription = $this->createPendingSubscription($billableUser, $plan);
+        $User         = $existingSubscription->getUser();
+        $subscription = $this->createPendingSubscription($User, $plan);
 
         $this->applyResubscribeTierChanges($subscription);
 
@@ -252,13 +252,13 @@ class Subscriber
     }
 
     /**
-     * @param BillableUser              $billableUser
-     * @param SubscriptionPlanInterface $plan
+     * @param User             $User
+     * @param SubscriptionPack $plan
      * @return Subscription
      */
-    private function createPendingSubscription(BillableUser $billableUser, SubscriptionPlanInterface $plan): Subscription
+    private function createPendingSubscription(User $User, SubscriptionPack $plan): Subscription
     {
-        $subscription = $this->subscriptionCreator->create($billableUser, $plan);
+        $subscription = $this->subscriptionCreator->create($User, $plan);
         $subscription->setStatus(Subscription::IS_PENDING);
         $subscription->setCurrentStage(Subscription::ACTION_SUBSCRIBE);
         $this->entitySaveHelper->persistAndSave($subscription);
@@ -269,7 +269,7 @@ class Subscriber
     {
         $this->affiliateService->checkAffiliateEligibilityAndSendEvent(
             $subscription,
-            $this->userInfoMapper->mapFromBillableUser($subscription->getUser())
+            $this->userInfoMapper->mapFromUser($subscription->getUser())
         );
         $this->piwikStatisticSender->trackSubscribe(
             $subscription->getUser(),
@@ -282,7 +282,7 @@ class Subscriber
     {
         $this->affiliateService->checkAffiliateEligibilityAndSendEvent(
             $subscription,
-            $this->userInfoMapper->mapFromBillableUser($subscription->getUser())
+            $this->userInfoMapper->mapFromUser($subscription->getUser())
         );
         $this->piwikStatisticSender->trackResubscribe(
             $subscription->getUser(),

@@ -12,9 +12,8 @@ namespace SubscriptionBundle\Service\Action\Subscribe\Handler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use UserBundle\Entity\BillableUser;
 
 interface HasCustomFlow
 {
-    public function process(Request $request, BillableUser $billableUser, SessionInterface $session): Response;
+    public function process(Request $request, \IdentificationBundle\Entity\User $User, SessionInterface $session): Response;
 }

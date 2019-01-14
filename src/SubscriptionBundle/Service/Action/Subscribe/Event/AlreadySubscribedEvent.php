@@ -2,7 +2,7 @@
 
 namespace SubscriptionBundle\Service\Action\Subscribe\Event;
 
-use AppBundle\Entity\Carrier;
+use IdentificationBundle\Entity\CarrierInterface;
 use Symfony\Component\EventDispatcher\Event;
 use SubscriptionBundle\Entity\Subscription;
 

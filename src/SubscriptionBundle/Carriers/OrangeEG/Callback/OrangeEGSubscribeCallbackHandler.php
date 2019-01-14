@@ -16,7 +16,7 @@ use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerInterface;
 use SubscriptionBundle\Service\Callback\Impl\HasCommonFlow;
 use SubscriptionBundle\Service\Callback\Impl\HasCustomTrackingRules;
-use UserBundle\Entity\BillableUser;
+use IdentificationBundle\Entity\User;
 
 class OrangeEGSubscribeCallbackHandler implements CarrierCallbackHandlerInterface, HasCommonFlow, HasCustomTrackingRules
 {
@@ -26,7 +26,7 @@ class OrangeEGSubscribeCallbackHandler implements CarrierCallbackHandlerInterfac
         return $carrierId == Carrier::ORANGE_EGYPT;
     }
 
-    public function afterProcess(Subscription $subscription, BillableUser $billableUser, ProcessResult $processResponse)
+    public function afterProcess(Subscription $subscription, User $User, ProcessResult $processResponse)
     {
         // TODO: Implement afterSuccess() method.
     }

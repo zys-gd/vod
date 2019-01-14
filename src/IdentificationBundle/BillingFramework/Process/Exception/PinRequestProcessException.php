@@ -19,9 +19,9 @@ class PinRequestProcessException extends \RuntimeException
      */
     private $billingMessage;
 
-    public function __construct(string $message = "", int $code = 0, string $billingMessage)
+    public function __construct(string $message = "", int $code = 0, string $billingMessage, Throwable $previous = null)
     {
-        parent::__construct($message, $code, null);
+        parent::__construct($message, $code, $previous);
         $this->billingMessage = $billingMessage;
     }
 

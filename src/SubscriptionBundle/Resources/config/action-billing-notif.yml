@@ -8,9 +8,8 @@ services:
       arguments:
         - '@SubscriptionBundle\Service\Notification\Common\MessageCompiler'
         - '@SubscriptionBundle\BillingFramework\Notification\API\RequestSender'
-        - '@monolog.logger.subscription_log'
+        - '@monolog.logger'
         - '@SubscriptionBundle\Service\Notification\Common\ProcessIdExtractor'
-        - '@user_bundle.users_service'
         - '@router'
         - '@SubscriptionBundle\Service\Notification\Impl\NotificationHandlerProvider'
 
@@ -20,8 +19,7 @@ services:
           - '@SubscriptionBundle\BillingFramework\Notification\API\MessageCreator'
           - '@SubscriptionBundle\Service\Notification\Common\SMSTextProvider'
 
-  SubscriptionBundle\Service\Notification\Common\ProcessIdExtractor:
-      arguments: ['@identification.identification_request_repository']
+  SubscriptionBundle\Service\Notification\Common\ProcessIdExtractor: ~
 
   SubscriptionBundle\Service\Notification\Common\SMSTextProvider:
-          arguments: ['%sms.notification.messages%', '@app.carriers']
+          arguments: ['%sms.notification.messages%', '@IdentificationBundle\Repository\CarrierRepositoryInterface']

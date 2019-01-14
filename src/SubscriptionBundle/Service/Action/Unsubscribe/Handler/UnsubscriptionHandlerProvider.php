@@ -9,7 +9,7 @@
 namespace SubscriptionBundle\Service\Action\Unsubscribe\Handler;
 
 
-use AppBundle\Entity\Carrier;
+use IdentificationBundle\Entity\CarrierInterface;
 
 class UnsubscriptionHandlerProvider
 {

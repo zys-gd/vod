@@ -422,54 +422,6 @@ class SubscriptionPack implements HasUuid
     }
 
     /**
-     * @return mixed
-     */
-    public function getCarrierId()
-    {
-        return $this->carrierId;
-    }
-
-    /**
-     * @param mixed $carrierId
-     */
-    public function setCarrierId($carrierId)
-    {
-        $this->carrierId = $carrierId;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTier()
-    {
-        return $this->tier;
-    }
-
-    /**
-     * @param string $tier
-     */
-    public function setTier($tier)
-    {
-        $this->tier = $tier;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTierId()
-    {
-        return $this->tierId;
-    }
-
-    /**
-     * @param int $tierId
-     */
-    public function setTierId($tierId)
-    {
-        $this->tierId = $tierId;
-    }
-
-    /**
      * @param string $currency
      */
     public function setCurrency($currency)

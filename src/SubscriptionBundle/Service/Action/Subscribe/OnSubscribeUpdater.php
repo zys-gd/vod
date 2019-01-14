@@ -110,8 +110,8 @@ class OnSubscribeUpdater
         $subscription->setRenewDate($renewDate);
 
         if (intval($subscription->getCredits()) === 0) {
-            $billableUser         = $subscription->getUser();
-            $existingSubscription = $this->subscriptionProvider->getExistingSubscriptionForUser($billableUser);
+            $User         = $subscription->getUser();
+            $existingSubscription = $this->subscriptionProvider->getExistingSubscriptionForUser($User);
 
             $newCredits = $this->creditsCalculator->calculateCredits($subscription, $subscription->getSubscriptionPack(), $existingSubscription);
             $subscription->setCredits($newCredits);

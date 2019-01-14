@@ -1,0 +1,3 @@
+services:
+    SubscriptionBundle\Affiliate\Service\AffiliateSender: ~
+    SubscriptionBundle\Affiliate\Service\UserInfoMapper: ~

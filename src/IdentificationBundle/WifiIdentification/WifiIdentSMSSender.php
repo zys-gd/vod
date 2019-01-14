@@ -9,15 +9,17 @@
 namespace IdentificationBundle\WifiIdentification;
 
 
+use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\BillingFramework\Process\PinRequestProcess;
-use IdentificationBundle\Identification\Exception\FailedIdentificationException;
+use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\WifiIdentification\Common\InternalSMS\PinCodeSaver;
+use IdentificationBundle\WifiIdentification\Common\RequestProvider;
+use IdentificationBundle\WifiIdentification\Handler\HasCustomPinRequestRules;
 use IdentificationBundle\WifiIdentification\Handler\HasInternalSMSHandling;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerProvider;
 use IdentificationBundle\WifiIdentification\Service\MessageComposer;
 use IdentificationBundle\WifiIdentification\Service\MsisdnCleaner;
-use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters;
 
 class WifiIdentSMSSender
 {
@@ -45,6 +47,14 @@ class WifiIdentSMSSender
      * @var PinCodeSaver
      */
     private $pinCodeSaver;
+    /**
+     * @var RequestProvider
+     */
+    private $requestProvider;
+    /**
+     * @var IdentificationDataStorage
+     */
+    private $dataStorage;
 
 
     /**
@@ -55,6 +65,8 @@ class WifiIdentSMSSender
      * @param MessageComposer                   $messageComposer
      * @param MsisdnCleaner                     $cleaner
      * @param PinCodeSaver                      $pinCodeSaver
+     * @param RequestProvider                   $requestProvider
+     * @param IdentificationDataStorage         $dataStorage
      */
     public function __construct(
         WifiIdentificationHandlerProvider $handlerProvider,
@@ -62,7 +74,9 @@ class WifiIdentSMSSender
         PinRequestProcess $pinRequestProcess,
         MessageComposer $messageComposer,
         MsisdnCleaner $cleaner,
-        PinCodeSaver $pinCodeSaver
+        PinCodeSaver $pinCodeSaver,
+        RequestProvider $requestProvider,
+        IdentificationDataStorage $dataStorage
     )
     {
         $this->handlerProvider   = $handlerProvider;
@@ -71,34 +85,53 @@ class WifiIdentSMSSender
         $this->messageComposer   = $messageComposer;
         $this->cleaner           = $cleaner;
         $this->pinCodeSaver      = $pinCodeSaver;
+        $this->requestProvider   = $requestProvider;
+        $this->dataStorage       = $dataStorage;
     }
 
-    public function sendSMS(int $carrierId, string $mobileNumber)
+    public function sendSMS(int $carrierId, string $mobileNumber): void
     {
         $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
 
         $handler = $this->handlerProvider->get($carrier);
 
-        // Resubscribe
-        if (!$handler->isPinSendAllowed($mobileNumber)) {
-            throw new FailedIdentificationException('Pin Ident is not allowed');
-        }
-
+        $pinCode = '000000';
         if (!$handler->areSMSSentByBilling()) {
-            $this->pinCodeSaver->savePinCode(mt_rand(0,99999));
-        } else {
-            $parameters                 = new ProcessRequestParameters();
-            $parameters->additionalData = [
-                'msisdn'  => $this->cleaner->clean($mobileNumber, $carrier),
-                'carrier' => $carrier->getBillingCarrierId(),
-                'op_id'   => $carrier->getOperatorId(),
-
-            ];
-
-            $result = $this->pinRequestProcess->doPinRequest($parameters);
+            $pinCodeObject = $this->pinCodeSaver->savePinCode(mt_rand(0, 99999));
+            $pinCode       = $pinCodeObject->getPin();
         }
 
+        $msisdn = $this->cleaner->clean($mobileNumber, $carrier);
+        $body   = $this->messageComposer->composePinCodeMessage('_subtext_', 'en', $pinCode);
 
+        if ($handler instanceof HasCustomPinRequestRules) {
+            $additionalParameters = $handler->getAdditionalPinRequestParams();
+        } else {
+            $additionalParameters = [];
+        }
+
+        $parameters = $this->requestProvider->getPinRequestParameters(
+            $msisdn,
+            $carrier->getBillingCarrierId(),
+            $carrier->getOperatorId(),
+            $body,
+            $additionalParameters
+        );
+
+        try {
+            $result = $this->pinRequestProcess->doPinRequest($parameters);
+            $this->dataStorage->storeOperationResult('pinRequest', $result);
+
+            if ($handler instanceof HasCustomPinRequestRules) {
+                $handler->afterSuccessfulPinRequest($result);
+            }
+
+        } catch (PinRequestProcessException $exception) {
+
+            if ($handler instanceof HasCustomPinRequestRules) {
+                $handler->getPinRequestErrorMessage($exception);
+            }
+            throw $exception;
+        }
     }
-
 }

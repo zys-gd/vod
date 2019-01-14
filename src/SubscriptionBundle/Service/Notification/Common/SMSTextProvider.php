@@ -10,6 +10,7 @@ namespace SubscriptionBundle\Service\Notification\Common;
 
 
 use AppBundle\Service\Domain\Carrier\CarrierProvider;
+use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\BillingFramework\Listener\NotificationContentProvider;
 use SubscriptionBundle\BillingFramework\Notification\Exception\MissingSMSTextException;
 use SubscriptionBundle\Service\Notification\Common\SMSTexts\MessageKeyHandlerProvider;
@@ -22,16 +23,16 @@ class SMSTextProvider
      */
     private $hardcodedMessages;
     /**
-     * @var CarrierProvider
+     * @var CarrierRepositoryInterface
      */
     private $carrierProvider;
 
     /**
      * NotificationContentProvider constructor.
-     * @param array           $predefinedMessages
-     * @param CarrierProvider $carrierProvider
+     * @param array                      $predefinedMessages
+     * @param CarrierRepositoryInterface $carrierProvider
      */
-    public function __construct(array $predefinedMessages, CarrierProvider $carrierProvider)
+    public function __construct(array $predefinedMessages, CarrierRepositoryInterface $carrierProvider)
     {
         $this->hardcodedMessages = $predefinedMessages;
         $this->carrierProvider   = $carrierProvider;
@@ -44,11 +45,11 @@ class SMSTextProvider
             return $textFromSubscriptionPack;
         }
 
-        $carrier = $this->carrierProvider->getCarrierEntity($subscriptionPack->getCarrierId());
+        $carrier = $this->carrierProvider->findOneByBillingId($subscriptionPack->getCarrierId());
 
-        $namespaceProvider   = MessageKeyHandlerProvider::getService($groupName);
-        $messageNamespace = $namespaceProvider->getKey(
-            $carrier->getIdCarrier(),
+        $namespaceProvider = MessageKeyHandlerProvider::getService($groupName);
+        $messageNamespace  = $namespaceProvider->getKey(
+            $carrier->getBillingCarrierId(),
             ''
         );
 

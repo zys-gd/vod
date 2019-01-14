@@ -9,7 +9,7 @@
 namespace SubscriptionBundle\Carriers\TelenorPK\Notification;
 
 
-use AppBundle\Entity\Carrier;
+use IdentificationBundle\Entity\CarrierInterface;
 use SubscriptionBundle\Service\Notification\Impl\NotificationHandlerInterface;
 
 class TelenorPKNotificationHandler implements NotificationHandlerInterface

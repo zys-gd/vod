@@ -9,12 +9,12 @@
 namespace SubscriptionBundle\Service\Notification\Impl;
 
 
-use AppBundle\Entity\Carrier;
+use IdentificationBundle\Entity\CarrierInterface;
 
 class DefaultHandler implements NotificationHandlerInterface
 {
 
-    public function canHandle(Carrier $carrier): bool
+    public function canHandle(CarrierInterface $carrier): bool
     {
         return true;
     }

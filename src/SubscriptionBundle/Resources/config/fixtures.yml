@@ -1,0 +1,7 @@
+services:
+#    SubscriptionBundle\DataFixtures\ORM\:
+#        resource: '../../DataFixtures/ORM/*.php'
+#
+#        tags: ['doctrine.fixture.orm']
+    SubscriptionBundle\DataFixtures\ORM\LoadSubscriptionPackData:
+        tags: ['doctrine.fixture.orm']

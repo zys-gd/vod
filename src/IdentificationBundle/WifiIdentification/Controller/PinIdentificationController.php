@@ -77,9 +77,18 @@ class PinIdentificationController extends AbstractController implements APIContr
             throw new BadRequestHttpException('`pin_code` is required');
         }
 
+        if (!$mobileNumber = $request->get('mobile_number', '')) {
+            throw new BadRequestHttpException('`mobile_number` is required');
+        }
+
         $carrierId = $ispData->getCarrierId();
 
-        $this->identConfirmator->confirm($carrierId, $pinCode);
+        $this->identConfirmator->confirm(
+            $carrierId,
+            $pinCode,
+            $mobileNumber,
+            $request->getClientIp()
+        );
 
         return $this->getSimpleJsonResponse('Sent');
     }

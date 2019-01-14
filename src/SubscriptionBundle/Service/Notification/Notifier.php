@@ -9,7 +9,7 @@
 namespace SubscriptionBundle\Service\Notification;
 
 
-use AppBundle\Entity\Carrier;
+use IdentificationBundle\Entity\CarrierInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -38,10 +38,6 @@ class Notifier
      */
     private $logger;
     /**
-     * @var UsersService
-     */
-    private $usersService;
-    /**
      * @var RouterInterface
      */
     private $router;
@@ -61,7 +57,6 @@ class Notifier
      * @param RequestSender               $sender
      * @param LoggerInterface             $logger
      * @param ProcessIdExtractor          $processIdExtractor
-     * @param UsersService                $usersService
      * @param RouterInterface             $router
      * @param NotificationHandlerProvider $notificationHandlerProvider
      */
@@ -70,7 +65,6 @@ class Notifier
         RequestSender $sender,
         LoggerInterface $logger,
         ProcessIdExtractor $processIdExtractor,
-        UsersService $usersService,
         RouterInterface $router,
         NotificationHandlerProvider $notificationHandlerProvider
     )
@@ -78,7 +72,6 @@ class Notifier
         $this->messageCompiler             = $messageCompiler;
         $this->sender                      = $sender;
         $this->logger                      = $logger;
-        $this->usersService                = $usersService;
         $this->router                      = $router;
         $this->processIdExtractor          = $processIdExtractor;
         $this->notificationHandlerProvider = $notificationHandlerProvider;
@@ -88,7 +81,7 @@ class Notifier
         string $type,
         Subscription $subscription,
         SubscriptionPack $subscriptionPack,
-        Carrier $carrier
+        CarrierInterface $carrier
     )
     {
 
@@ -100,34 +93,36 @@ class Notifier
                 return;
             }
 
-            $billableUser = $subscription->getUser();
+            $User = $subscription->getUser();
 
             if ($handler->isProcessIdUsedInNotification()) {
-                $processId = $this->processIdExtractor->extractProcessId($billableUser);
+                $processId = $this->processIdExtractor->extractProcessId($User);
             } else {
                 $processId = null;
             }
 
 
-            if (!$billableUser->getUrlId()) {
-                $this->usersService->setAutologinUrlId($billableUser);
-                $this->logger->debug('Generated auto-login URL for user. ', ['url' => $billableUser->getUrlId()]);
+            if (!$User->getUrlId()) {
+                // TODO - make separate service
+                $User->setShortUrlId(strtr(base64_encode(openssl_random_pseudo_bytes(8) . 'salty'), "+/=", "XXX"));
+                $this->logger->debug('Generated auto-login URL for user. ', ['url' => $User->getUrlId()]);
             }
 
-            $url          = $this->router->generate(
-                'user-identity',
-                ['urlId' => $billableUser->getUrlId()],
+            // Todo implement identification by token
+            $url = $this->router->generate(
+                'identify',
+                ['urlId' => $User->getUrlId()],
                 UrlGeneratorInterface::ABSOLUTE_URL
             );
 
             $notification = $this->messageCompiler->compileNotification(
                 $type,
-                $billableUser,
+                $User,
                 $subscriptionPack,
                 $processId,
                 ['_autologin_url_' => $url]
             );
-            $this->sender->sendNotification($notification, $carrier->getIdCarrier());
+            $this->sender->sendNotification($notification, $carrier->getBillingCarrierId());
 
 
         } catch (MissingSMSTextException $exception) {
@@ -136,11 +131,11 @@ class Notifier
 
     }
 
-    public function sendSMS(Carrier $carrier, string $clientUser, string $urlId, string $subscriptionPlan, string $lang)
+    public function sendSMS(CarrierInterface $carrier, string $clientUser, string $urlId, string $subscriptionPlan, string $lang)
     {
         $request = new SMSRequest($clientUser, $urlId, $subscriptionPlan, $lang);
 
-        $this->sender->sendSMS($request, $carrier->getIdCarrier());
+        $this->sender->sendSMS($request, $carrier->getBillingCarrierId());
 
     }
 }

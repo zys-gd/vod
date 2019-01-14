@@ -16,6 +16,7 @@ use IdentificationBundle\Identification\Handler\HasCommonFlow;
 use IdentificationBundle\Identification\Handler\HasCustomFlow;
 use IdentificationBundle\Identification\Handler\HasHeaderEnrichment;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
+use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,6 +44,10 @@ class Identifier
      * @var \IdentificationBundle\Identification\Common\HeaderEnrichmentHandler
      */
     private $headerEnrichmentHandler;
+    /**
+     * @var IdentificationDataStorage
+     */
+    private $dataStorage;
 
 
     /**
@@ -52,13 +57,15 @@ class Identifier
      * @param LoggerInterface                                                     $logger
      * @param CommonFlowHandler                                                   $commonFlowHandler
      * @param \IdentificationBundle\Identification\Common\HeaderEnrichmentHandler $headerEnrichmentHandler
+     * @param IdentificationDataStorage                                           $dataStorage
      */
     public function __construct(
         IdentificationHandlerProvider $handlerProvider,
         CarrierRepositoryInterface $carrierRepository,
         LoggerInterface $logger,
         CommonFlowHandler $commonFlowHandler,
-        HeaderEnrichmentHandler $headerEnrichmentHandler
+        HeaderEnrichmentHandler $headerEnrichmentHandler,
+        IdentificationDataStorage $dataStorage
     )
     {
         $this->handlerProvider         = $handlerProvider;
@@ -66,6 +73,7 @@ class Identifier
         $this->logger                  = $logger;
         $this->commonFlowHandler       = $commonFlowHandler;
         $this->headerEnrichmentHandler = $headerEnrichmentHandler;
+        $this->dataStorage             = $dataStorage;
     }
 
     public function identify(int $carrierBillingId, Request $request, string $token, SessionInterface $session): IdentifyResult
@@ -80,7 +88,7 @@ class Identifier
 
         if ($handler instanceof HasHeaderEnrichment) {
             $this->headerEnrichmentHandler->process($request, $handler, $carrier, $token);
-            $this->storeIdentificationData($session, $token);
+            $this->storeIdentificationData($token);
 
             return new IdentifyResult();
 
@@ -91,7 +99,7 @@ class Identifier
         } else if ($handler instanceof HasCommonFlow) {
 
             $response = $this->commonFlowHandler->process($request, $handler, $token, $carrier);
-            $this->storeIdentificationData($session, $token);
+            $this->storeIdentificationData($token);
 
             return new IdentifyResult($response);
 
@@ -101,15 +109,11 @@ class Identifier
 
     }
 
-    private function storeIdentificationData(SessionInterface $session, string $token): array
+    private function storeIdentificationData(string $token): array
     {
-        if ($session->has('identification_data')) {
-            $identificationData = $session->get('identification_data');
-        } else {
-            $identificationData = [];
-        }
-        $identificationData['identification_token'] = $token;
-        $session->set('identification_data', $identificationData);
+        $this->dataStorage->storeIdentificationToken($token);
+
+        $identificationData = $this->dataStorage->readIdentificationData();
 
         return $identificationData;
     }

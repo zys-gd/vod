@@ -13,3 +13,6 @@ services:
 
     IdentificationBundle\BillingFramework\Process\PinResendProcess:
         arguments: ['@SubscriptionBundle\BillingFramework\Process\API\RequestSender', '@logger']
+
+    IdentificationBundle\BillingFramework\Process\PinVerifyProcess:
+        arguments: ['@SubscriptionBundle\BillingFramework\Process\API\RequestSender', '@logger']

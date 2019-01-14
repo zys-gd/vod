@@ -1,16 +1,12 @@
 services:
     SubscriptionBundle\Controller\Actions\SubscribeAction:
+        tags: ['controller.service_arguments']
         arguments:
             - '@SubscriptionBundle\Service\UserExtractor'
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler'
             - '@router.default'
             - '@logger'
-            - '@subscription.legacy.mobimind_service'
-            - '@subscription.megasyst_carrier_checker'
-            - '@SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter'
-            - '@subscription.megasyst_phone_checker'
             - '@SubscriptionBundle\Utils\UrlParamAppender'
-            - '@subscription.legacy.mobilife_service'
             - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
 
     SubscriptionBundle\Controller\Actions\ListenAction:
@@ -20,7 +16,7 @@ services:
         arguments: ['@SubscriptionBundle\Service\Action\SubscribeBack\SubscribeBackHandlerProvider', '@router']
 
     SubscriptionBundle\Controller\Actions\RedirectAction:
-        arguments: ['@SubscriptionBundle\Service\UserExtractor', '@monolog.logger.subscription_log', '@SubscriptionBundle\Service\SubscriptionExtractor']
+        arguments: ['@SubscriptionBundle\Service\UserExtractor', '@monolog.logger', '@SubscriptionBundle\Service\SubscriptionExtractor']
 
     SubscriptionBundle\Controller\Actions\UnsubscribeAction:
         arguments:

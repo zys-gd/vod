@@ -22,7 +22,7 @@ use SubscriptionBundle\Service\Action\Unsubscribe\UnsubscriptionEligibilityCheck
 use SubscriptionBundle\Service\UserExtractor;
 use SubscriptionBundle\Service\SubscriptionPackProvider;
 use SubscriptionBundle\Service\SubscriptionExtractor;
-//TODO:REFACTOR BillableUserProvider
+//TODO:REFACTOR UserProvider
 class UnsubscribeAction extends Controller
 {
     use ResponseTrait;
@@ -30,7 +30,7 @@ class UnsubscribeAction extends Controller
     /**
      * @var UserExtractor
      */
-    private $billableUserProvider;
+    private $UserProvider;
 
     /**
      * @var SubscriptionPackProvider
@@ -57,14 +57,14 @@ class UnsubscribeAction extends Controller
     /**
      * UnsubscribeAction constructor.
      *
-     * @param UserExtractor                    $billableUserProvider
+     * @param UserExtractor                    $UserProvider
      * @param SubscriptionExtractor            $subscriptionProvider
      * @param SubscriptionPackProvider         $subscriptionPackProvider
      * @param Unsubscriber                     $unsubscriber
      * @param UnsubscriptionEligibilityChecker $checker
      */
     public function __construct(
-        UserExtractor $billableUserProvider,
+        UserExtractor $UserProvider,
         SubscriptionExtractor $subscriptionProvider,
         SubscriptionPackProvider $subscriptionPackProvider,
         Unsubscriber $unsubscriber,
@@ -73,7 +73,7 @@ class UnsubscribeAction extends Controller
 
     )
     {
-        $this->billableUserProvider     = $billableUserProvider;
+        $this->UserProvider     = $UserProvider;
         $this->subscriptionPackProvider = $subscriptionPackProvider;
         $this->unsubscriber             = $unsubscriber;
         $this->checker                  = $checker;
@@ -85,15 +85,15 @@ class UnsubscribeAction extends Controller
     {
         $response = null;
         try {
-            $billableUser     = $this->billableUserProvider->getUserFromRequest($request);
-            $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($billableUser);
-            $subscription     = $this->subscriptionProvider->getExistingSubscriptionForUser($billableUser);
+            $User     = $this->UserProvider->getUserFromRequest($request);
+            $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($User);
+            $subscription     = $this->subscriptionProvider->getExistingSubscriptionForUser($User);
 
             if (!is_null($subscription) && !$this->checker->isEligibleToUnsubscribe($subscription)) {
                 throw new SubscriptionException('You have already been unsubscribed');
             }
 
-            $handler  = $this->handlerProvider->getUnsubscriber($billableUser->getCarrier());
+            $handler  = $this->handlerProvider->getUnsubscriber($User->getCarrier());
             $response = $this->unsubscriber->unsubscribe($subscription, $subscriptionPack);
 
             $handler->applyPostUnsubscribeChanges($subscription);

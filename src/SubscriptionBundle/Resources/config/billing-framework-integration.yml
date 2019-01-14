@@ -38,4 +38,11 @@ services:
   SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper: ~
 
   SubscriptionBundle\BillingFramework\Process\API\RequestSender:
-      arguments: ['@event_dispatcher', '@SubscriptionBundle\BillingFramework\Process\API\Client', '@logger']
+      arguments:
+        - '@event_dispatcher'
+        - '@SubscriptionBundle\BillingFramework\Process\API\Client'
+        - '@logger'
+        - '@SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper'
+        - '@SubscriptionBundle\BillingFramework\Process\API\RequestParametersExtractor'
+
+  SubscriptionBundle\BillingFramework\Process\API\RequestParametersExtractor: ~

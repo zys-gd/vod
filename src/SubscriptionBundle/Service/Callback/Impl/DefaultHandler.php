@@ -12,7 +12,7 @@ namespace SubscriptionBundle\Service\Callback\Impl;
 use Symfony\Component\HttpFoundation\Request;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
-use UserBundle\Entity\BillableUser;
+use IdentificationBundle\Entity\User;
 
 class DefaultHandler implements CarrierCallbackHandlerInterface, HasCommonFlow
 {
@@ -21,7 +21,7 @@ class DefaultHandler implements CarrierCallbackHandlerInterface, HasCommonFlow
         return true;
     }
 
-    public function afterProcess(Subscription $subscription, BillableUser $billableUser, ProcessResult $processResponse)
+    public function afterProcess(Subscription $subscription, User $User, ProcessResult $processResponse)
     {
         // TODO: Implement afterSuccess() method.
     }

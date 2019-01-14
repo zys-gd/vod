@@ -9,7 +9,7 @@
 namespace SubscriptionBundle\Service\Notification\Impl;
 
 
-use AppBundle\Entity\Carrier;
+use IdentificationBundle\Entity\CarrierInterface;
 
 class NotificationHandlerProvider
 {
@@ -32,7 +32,7 @@ class NotificationHandlerProvider
         $this->defaultNotificationHandler = $handler;
     }
 
-    public function get(string $processType, Carrier $carrier): NotificationHandlerInterface
+    public function get(string $processType, CarrierInterface $carrier): NotificationHandlerInterface
     {
         if (isset($this->notificationHandlers[$processType])) {
             /** @var NotificationHandlerInterface[] $handlers */

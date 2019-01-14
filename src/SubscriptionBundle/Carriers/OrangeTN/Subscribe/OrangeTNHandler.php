@@ -10,7 +10,7 @@ namespace SubscriptionBundle\Carriers\OrangeTN\Subscribe;
 
 
 use AppBundle\Constant\Carrier as CarrierConst;
-use AppBundle\Entity\Carrier;
+use IdentificationBundle\Entity\CarrierInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +21,7 @@ use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCommonFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomResponses;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerInterface;
 use SubscriptionBundle\Service\SubscriptionExtractor;
-use UserBundle\Entity\BillableUser;
+use IdentificationBundle\Entity\User;
 
 class OrangeTNHandler implements SubscriptionHandlerInterface, HasCustomResponses, HasCommonFlow
 {
@@ -62,7 +62,7 @@ class OrangeTNHandler implements SubscriptionHandlerInterface, HasCustomResponse
         return $carrier->getIdCarrier() == CarrierConst::ORANGE_TUNISIA;
     }
 
-    public function getAdditionalSubscribeParams(Request $request, BillableUser $billableUser): array
+    public function getAdditionalSubscribeParams(Request $request, User $User): array
     {
         // We need subscription_contract for WiFi Flow (with send sms verification)
         // And dont need this for 3G one.
@@ -75,7 +75,7 @@ class OrangeTNHandler implements SubscriptionHandlerInterface, HasCustomResponse
         }
     }
 
-    public function createResponseForSuccessfulSubscribe(Request $request, BillableUser $billableUser, Subscription $subscription)
+    public function createResponseForSuccessfulSubscribe(Request $request, User $User, Subscription $subscription)
     {
         $jsRequest = $request->get('is_ajax_request', null);
 
@@ -101,7 +101,7 @@ class OrangeTNHandler implements SubscriptionHandlerInterface, HasCustomResponse
     /**
      * @inheritdoc
      */
-    public function createResponseForExistingSubscription(Request $request, BillableUser $billableUser, Subscription $subscription)
+    public function createResponseForExistingSubscription(Request $request, User $User, Subscription $subscription)
     {
         // TODO: Implement onExistingSubscription() method.
     }

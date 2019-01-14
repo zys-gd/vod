@@ -10,8 +10,8 @@ services:
         - '@SubscriptionBundle\Service\Notification\Notifier'
         - '@SubscriptionBundle\BillingFramework\Process\SubscribeProcess'
         - '@SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater'
-        - '@affiliate.affiliate.service'
-        - '@affiliate.user_info_mapper'
+        - '@SubscriptionBundle\Affiliate\Service\AffiliateSender'
+        - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
         - '@SubscriptionBundle\Piwik\PiwikStatisticSender'
         - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
         - '@SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider'
@@ -31,9 +31,9 @@ services:
           - '@SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator'
           - '@SubscriptionBundle\Utils\UrlParamAppender'
           - '@router'
-          - '@affiliate.affiliate.service'
+          - '@SubscriptionBundle\Affiliate\Service\AffiliateSender'
           - '@SubscriptionBundle\Piwik\PiwikStatisticSender'
-          - '@affiliate.user_info_mapper'
+          - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
           - '@SubscriptionBundle\Service\EntitySaveHelper'
 
   SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker: ~
@@ -44,7 +44,7 @@ services:
     arguments: ['@SubscriptionBundle\Service\EntitySaveHelper']
 
   SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter:
-    arguments: ['@app.cache.default', '@router', '@identification.service', '%token_session_name%', '@user_bundle.users_service', '@logger']
+    arguments: ['@router', '@identification.service', '%token_session_name%', '@user_bundle.users_service', '@logger']
 
   SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater:
       arguments:

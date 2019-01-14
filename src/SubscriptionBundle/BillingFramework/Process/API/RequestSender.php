@@ -29,23 +29,37 @@ class RequestSender
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var ProcessResponseMapper
+     */
+    private $responseMapper;
+    /**
+     * @var RequestParametersExtractor
+     */
+    private $extractor;
 
 
     /**
      * RequestSender constructor.
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param Client                   $apiClient
-     * @param LoggerInterface          $logger
+     * @param EventDispatcherInterface   $eventDispatcher
+     * @param Client                     $apiClient
+     * @param LoggerInterface            $logger
+     * @param ProcessResponseMapper      $responseMapper
+     * @param RequestParametersExtractor $extractor
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         Client $apiClient,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ProcessResponseMapper $responseMapper,
+        RequestParametersExtractor $extractor
     )
     {
         $this->eventDispatcher = $eventDispatcher;
         $this->apiClient       = $apiClient;
         $this->logger          = $logger;
+        $this->responseMapper  = $responseMapper;
+        $this->extractor       = $extractor;
     }
 
     public function sendProcessRequest(string $type, ProcessRequestParameters $processParameters): ProcessResult
@@ -53,13 +67,14 @@ class RequestSender
 
         try {
 
-            $preparedParams  = $this->parseParameters($processParameters);
-            $processResponse = $this->apiClient->sendPostProcessRequest($preparedParams, $type);
+            $preparedParams    = $this->extractor->extractParameters($processParameters);
+            $response          = $this->apiClient->sendPostRequest($preparedParams, $type);
+            $processedResponse = $this->responseMapper->map($type, $response);
             $this->logger->debug('Received response from billing', [
-                'status'  => $processResponse->getStatus(),
-                'subtype' => $processResponse->getSubtype(),
-                'url'     => $processResponse->getUrl(),
-                'error'   => $processResponse->getError()
+                'status'  => $processedResponse->getStatus(),
+                'subtype' => $processedResponse->getSubtype(),
+                'url'     => $processedResponse->getUrl(),
+                'error'   => $processedResponse->getError()
             ]);
 
         } catch (BillingFrameworkProcessException $e) {
@@ -67,25 +82,23 @@ class RequestSender
             throw $e;
         }
 
-        return $processResponse;
+        return $processedResponse;
     }
 
-    private function parseParameters(ProcessRequestParameters $processParameters): array
+    public function sendRequestWithoutResponseMapping(string $type, ProcessRequestParameters $processParameters)
     {
-        $defaults = [
-            'client'          => $processParameters->client,
-            'listener'        => $processParameters->listener,
-            'user_headers'    => $processParameters->userHeaders,
-            'client_user'     => $processParameters->clientUser,
-            'user_ip'         => $processParameters->userIp,
-            'carrier'         => $processParameters->carrier,
-            'client_id'       => $processParameters->clientId,
-            'redirect_url'    => $processParameters->redirectUrl,
-            'listener_wait'   => $processParameters->listenerWait,
-            'charge_product'  => $processParameters->chargeProduct,
-            'charge_tier'     => $processParameters->chargeTier,
-            'charge_strategy' => $processParameters->chargeStrategy,
-        ];
-        return array_merge($defaults, $processParameters->additionalData);
+        try {
+
+            $preparedParams = $this->extractor->extractParameters($processParameters);
+            $response       = $this->apiClient->sendPostRequest($preparedParams, $type);
+
+        } catch (BillingFrameworkProcessException $e) {
+            $this->logger->debug('Bad response from BF', (array)$e->getRawResponse());
+            throw $e;
+        }
+
+        return $response;
+
     }
+
 }

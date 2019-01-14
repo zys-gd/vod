@@ -17,6 +17,7 @@ class BillingFrameworkProcessException extends BillingFrameworkException
     /** @var  ProcessResult */
     protected $response;
     protected $rawResponse;
+    private $billingCode;
 
     /**
      * @return ProcessResult
@@ -46,6 +47,19 @@ class BillingFrameworkProcessException extends BillingFrameworkException
     public function getRawResponse()
     {
         return $this->rawResponse;
+    }
+
+    public function setBillingCode(int $code)
+    {
+        $this->billingCode = $code;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBillingCode(): int
+    {
+        return $this->billingCode;
     }
 
 

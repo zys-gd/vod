@@ -10,33 +10,13 @@ namespace SubscriptionBundle\Service\Notification\Common;
 
 
 use IdentificationBundle\Repository\IdentificationRequestRepository;
-use UserBundle\Entity\BillableUser;
+use IdentificationBundle\Entity\User;
 
 class ProcessIdExtractor
 {
-    /**
-     * @var IdentificationRequestRepository
-     */
-    private $identificationRequestRepository;
-
-
-    /**
-     * ProcessIdExtractor constructor.
-     * @param IdentificationRequestRepository $identificationRequestRepository
-     */
-    public function __construct(IdentificationRequestRepository $identificationRequestRepository)
+    public function extractProcessId(User $User): int
     {
-        $this->identificationRequestRepository = $identificationRequestRepository;
-    }
-
-    public function extractProcessId(BillableUser $billableUser): int
-    {
-        $identificationRequest = $this
-            ->identificationRequestRepository
-            ->findOneBy(
-                ['userIdentifier' => $billableUser->getIdentifier()],
-                ['id' => 'DESC']
-            );
+        $identificationRequest = $User->getIdentificationProcessId();
 
         $processId = $identificationRequest->getProcessId();
 

@@ -22,26 +22,15 @@ class BlacklistVoter
 {
     const TIME_LIMIT = 3600;    //in seconds
     const ATTEMPTS_LIMIT = 5;
-    /**
-     * @var ICacheService
-     */
-    private $cacheService;
+
     /**
      * @var RouterInterface
      */
     private $router;
     /**
-     * @var IdentificationService
-     */
-    private $identificationService;
-    /**
      * @var string
      */
     private $tokenName;
-    /**
-     * @var UsersService
-     */
-    private $usersService;
     /**
      * @var LoggerInterface
      */
@@ -50,35 +39,30 @@ class BlacklistVoter
 
     /**
      * BlacklistVoter constructor.
-     * @param SessionInterface      $session
-     * @param ICacheService         $cacheService
-     * @param RouterInterface       $router
-     * @param IdentificationService $identificationService
-     * @param string                $tokenName
-     * @param UsersService          $usersService
+     * @param RouterInterface $router
+     * @param string          $tokenName
+     * @param LoggerInterface $logger
      */
     public function __construct(
-        ICacheService $cacheService,
         RouterInterface $router,
-        IdentificationService $identificationService,
         string $tokenName,
-        UsersService $usersService,
         LoggerInterface $logger
 
 
     )
     {
-        $this->cacheService          = $cacheService;
-        $this->router                = $router;
-        $this->identificationService = $identificationService;
-        $this->tokenName             = $tokenName;
-        $this->usersService          = $usersService;
-        $this->logger                = $logger;
+        $this->router    = $router;
+        $this->tokenName = $tokenName;
+        $this->logger    = $logger;
 
     }
 
     public function checkIfSubscriptionRestricted(Request $request)
     {
+
+
+        // TODO - tbd when cache is ready
+        return true;
 
         $session      = $request->getSession();
         $blockingTime = $session->get('subscription_not_allowed', false);

@@ -4,7 +4,7 @@ namespace SubscriptionBundle\Service\Callback\Impl;
 
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
-use UserBundle\Entity\BillableUser;
+use IdentificationBundle\Entity\User;
 
 /**
  * Created by PhpStorm.
@@ -14,5 +14,5 @@ use UserBundle\Entity\BillableUser;
  */
 interface HasCommonFlow
 {
-    public function afterProcess(Subscription $subscription, BillableUser $billableUser, ProcessResult $processResponse);
+    public function afterProcess(Subscription $subscription, User $User, ProcessResult $processResponse);
 }

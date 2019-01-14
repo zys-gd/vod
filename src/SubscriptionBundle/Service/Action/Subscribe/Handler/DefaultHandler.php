@@ -11,17 +11,17 @@ namespace SubscriptionBundle\Service\Action\Subscribe\Handler;
 
 use Symfony\Component\HttpFoundation\Request;
 use SubscriptionBundle\Entity\Subscription;
-use UserBundle\Entity\BillableUser;
+use IdentificationBundle\Entity\User;
 
 class DefaultHandler implements HasCommonFlow, SubscriptionHandlerInterface
 {
 
-    public function canHandle(\AppBundle\Entity\Carrier $carrier): bool
+    public function canHandle(\IdentificationBundle\Entity\CarrierInterface $carrier): bool
     {
         return true;
     }
 
-    public function getAdditionalSubscribeParams(Request $request, BillableUser $billableUser): array
+    public function getAdditionalSubscribeParams(Request $request, User $User): array
     {
         return [];
     }

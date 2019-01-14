@@ -62,16 +62,16 @@ class TrialRenewer
         $subscriptionsToRenew = $this->subscriptionProvider->getTrialSubscriptionsToRenew($carrier);
 
         foreach ($subscriptionsToRenew as $subscription) {
-            $billableUser = $subscription->getUser();
+            $User = $subscription->getUser();
             try {
-                $pack = $this->subscriptionPackProvider->getActiveSubscriptionPack($billableUser);
+                $pack = $this->subscriptionPackProvider->getActiveSubscriptionPack($User);
             } catch (ActiveSubscriptionPackNotFound $e) {
                 $logRows[] = $e->getMessage();
                 continue;
             }
 
             try {
-                $this->renewer->subscribe($billableUser, $pack);
+                $this->renewer->subscribe($User, $pack);
             } catch (\Exception $e) {
                 $logRows[] = $e->getMessage();
             }

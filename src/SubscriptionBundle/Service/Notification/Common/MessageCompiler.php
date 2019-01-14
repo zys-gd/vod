@@ -15,7 +15,7 @@ use SubscriptionBundle\BillingFramework\Notification\API\MessageCreator;
 use SubscriptionBundle\BillingFramework\Notification\Exception\MissingSMSTextException;
 use SubscriptionBundle\Service\Notification\Common\SMSTexts\MessageKeyHandlerProvider;
 use SubscriptionBundle\Entity\SubscriptionPack;
-use UserBundle\Entity\BillableUser;
+use IdentificationBundle\Entity\User;
 
 class MessageCompiler
 {
@@ -52,7 +52,7 @@ class MessageCompiler
 
     /**
      * @param string $type
-     * @param BillableUser $billableUser
+     * @param User $User
      * @param SubscriptionPack $subscriptionPack
      * @param null $billingProcessId
      * @param array $bodyVariables
@@ -61,7 +61,7 @@ class MessageCompiler
      */
     public function compileNotification(
         string $type,
-        BillableUser $billableUser,
+        User $User,
         SubscriptionPack $subscriptionPack,
         $billingProcessId = null,
         array $bodyVariables = []
@@ -77,8 +77,8 @@ class MessageCompiler
             throw  $exception;
         }
 
-        $identifier = $billableUser->getIdentifier();
-        $operatorId = $billableUser->getCarrier()->getOperatorId();
+        $identifier = $User->getIdentifier();
+        $operatorId = $User->getCarrier()->getOperatorId();
 
         $body = $this->compileSmsTextTemplate($bodyVariables, $body);
         $message = $this->messageCreator->createMessage($identifier, $type, $body, $operatorId);

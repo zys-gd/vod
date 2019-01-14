@@ -65,34 +65,25 @@ class Client
         $this->responseMapper              = $responseMapper;
     }
 
-
     /**
-     * @param              $options
+     * @param array        $options
      * @param              $method
-     * @return \SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult
+     * @return null|stdClass|stdClass[]
      * @throws BillingFrameworkException
      * @throws BillingFrameworkProcessException
-     * @throws EmptyResponse
      */
-    public function sendPostProcessRequest(array $options, $method)
+    public function sendPostRequest(array $options, $method): ?stdClass
     {
-
         $url      = $this->billingFrameworkLinkCreator->createProcessLink($method);
         $response = $this->makePostRequest($url, $options);
-        $type     = !empty($response) && isset($response->data) && isset($response->data->type)
-            ? $response->data->type
-            : $method;
-
-        $processedResponse = $this->responseMapper->map($type, $response);
-
-        return $processedResponse;
+        return $response;
     }
 
     /**
      * @param ResponseInterface $response
      * @return null | stdClass | stdClass[]
      */
-    protected function extractContentFromResponse(ResponseInterface $response): stdClass
+    private function extractContentFromResponse(ResponseInterface $response): ?stdClass
     {
 
         $data = null;
@@ -178,7 +169,7 @@ class Client
      * @throws BillingFrameworkProcessException
      * @throws BillingFrameworkException
      */
-    private function makePostRequest($url, array $params)
+    private function makePostRequest($url, array $params): ?stdClass
     {
         try {
 
@@ -200,13 +191,17 @@ class Client
      * @param $e
      * @return BillingFrameworkProcessException
      */
-    protected function makeBillingResponseException(ClientException $e): BillingFrameworkProcessException
+    private function makeBillingResponseException(ClientException $e): BillingFrameworkProcessException
     {
         $content          = $this->extractContentFromResponse($e->getResponse());
         $processException = new BillingFrameworkProcessException(null, $e->getCode(), $e);
         $processException->setRawResponse($content);
         try {
             $processException->setResponse($this->responseMapper->map('', $content));
+
+            if (isset($content->data) && $content->data->code) {
+                $processException->setBillingCode($content->data->code);
+            }
         } catch (EmptyResponse $exception) {
         }
         return $processException;

@@ -12,6 +12,7 @@ services:
       - '@logger'
       - '@IdentificationBundle\Identification\Common\CommonFlowHandler'
       - '@IdentificationBundle\Identification\Common\HeaderEnrichmentHandler'
+      - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
 
   IdentificationBundle\Identification\Common\CommonFlowHandler:
     arguments:
@@ -63,3 +64,6 @@ services:
           - '_homepage_route_placeholder_'
 
   IdentificationBundle\Identification\Service\ISPResolver: ~
+
+  IdentificationBundle\Identification\Service\IdentificationDataStorage:
+      arguments: ['@session']

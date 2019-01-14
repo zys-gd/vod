@@ -9,6 +9,7 @@
 namespace IdentificationBundle\Identification\Controller;
 
 
+use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Identifier;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Identification\Service\TokenGenerator;
@@ -45,9 +46,8 @@ class IdentificationController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function identifyAction(Request $request): Response
+    public function identifyAction(Request $request, ISPData $ISPData): Response
     {
-        $data = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession());
 
         $identData = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
 
@@ -57,7 +57,7 @@ class IdentificationController extends AbstractController
 
         $token  = $this->tokenGenerator->generateToken();
         $result = $this->identifier->identify(
-            (int)$data['carrier_id'],
+            (int)$ISPData->getCarrierId(),
             $request,
             $token,
             $request->getSession()

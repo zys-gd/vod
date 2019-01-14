@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier;
 use SubscriptionBundle\Service\SubscriptionExtractor;
-use UserBundle\Entity\BillableUser;
+use IdentificationBundle\Entity\User;
 
 class CommonResponseCreator
 {
@@ -43,13 +43,13 @@ class CommonResponseCreator
 
     /**
      * @param Request      $request
-     * @param BillableUser $billableUser
+     * @param User $User
      * @return Response
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function createCommonHttpResponse(Request $request, BillableUser $billableUser): Response
+    public function createCommonHttpResponse(Request $request, User $User): Response
     {
-        $subscription = $this->subscriptionProvider->getExistingSubscriptionForUser($billableUser);
+        $subscription = $this->subscriptionProvider->getExistingSubscriptionForUser($User);
 
         if ($redirectUrl = $subscription->getRedirectUrl()) {
             $this->redirectUrlNullifier->processSubscriptionAndSave($subscription);

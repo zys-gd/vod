@@ -9,9 +9,10 @@
 namespace SubscriptionBundle\Service\Callback\Common;
 
 
-use AffiliateBundle\Service\AffiliateService;
+use IdentificationBundle\Repository\UserRepository;
+use SubscriptionBundle\Affiliate\Service\AffiliateSender;
 use AffiliateBundle\Service\CarrierTrackingTypeChecker;
-use AffiliateBundle\Service\UserInfoMapper;
+use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,8 +29,7 @@ use SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider;
 use SubscriptionBundle\Service\Callback\Impl\HasCommonFlow;
 use SubscriptionBundle\Service\Callback\Impl\HasCustomTrackingRules;
 use SubscriptionBundle\Service\EntitySaveHelper;
-use UserBundle\Entity\BillableUser;
-use UserBundle\Repository\BillableUserRepository;
+use IdentificationBundle\Entity\User;
 
 class CommonFlowHandler
 {
@@ -37,17 +37,15 @@ class CommonFlowHandler
     private $callbackTypeHandlerProvider;
     private $processResponseMapper;
     private $subscriptionRepository;
-    private $billableUserRepository;
+    private $UserRepository;
     private $eventDispatcher;
     private $entitySaveHelper;
-    private $carrierTrackingTypeChecker;
     private $affiliateService;
     private $piwikStatisticSender;
     /**
      * @var UserInfoMapper
      */
     private $infoMapper;
-    private $apiClient;
     /**
      * @var CarrierCallbackHandlerProvider
      */
@@ -59,11 +57,10 @@ class CommonFlowHandler
      * @param CallbackTypeHandlerProvider    $callbackTypeHandlerProvider
      * @param ProcessResponseMapper          $billingFrameworkProcessResponseMapper
      * @param SubscriptionRepository         $subscriptionRepository
-     * @param BillableUserRepository         $billableUserRepository
+     * @param UserRepository                 $UserRepository
      * @param EventDispatcherInterface       $eventDispatcher
      * @param EntitySaveHelper               $entitySaveHelper
-     * @param CarrierTrackingTypeChecker     $carrierTrackingTypeChecker
-     * @param AffiliateService               $affiliateService
+     * @param AffiliateSender                $affiliateService
      * @param PiwikStatisticSender           $piwikStatisticSender
      * @param UserInfoMapper                 $infoMapper
      * @param CarrierCallbackHandlerProvider $carrierCallbackHandlerProvider
@@ -73,11 +70,10 @@ class CommonFlowHandler
         CallbackTypeHandlerProvider $callbackTypeHandlerProvider,
         ProcessResponseMapper $billingFrameworkProcessResponseMapper,
         SubscriptionRepository $subscriptionRepository,
-        BillableUserRepository $billableUserRepository,
+        UserRepository $UserRepository,
         EventDispatcherInterface $eventDispatcher,
         EntitySaveHelper $entitySaveHelper,
-        CarrierTrackingTypeChecker $carrierTrackingTypeChecker,
-        AffiliateService $affiliateService,
+        AffiliateSender $affiliateService,
         PiwikStatisticSender $piwikStatisticSender,
         UserInfoMapper $infoMapper,
         CarrierCallbackHandlerProvider $carrierCallbackHandlerProvider
@@ -87,10 +83,9 @@ class CommonFlowHandler
         $this->callbackTypeHandlerProvider    = $callbackTypeHandlerProvider;
         $this->processResponseMapper          = $billingFrameworkProcessResponseMapper;
         $this->subscriptionRepository         = $subscriptionRepository;
-        $this->billableUserRepository         = $billableUserRepository;
+        $this->UserRepository                 = $UserRepository;
         $this->eventDispatcher                = $eventDispatcher;
         $this->entitySaveHelper               = $entitySaveHelper;
-        $this->carrierTrackingTypeChecker     = $carrierTrackingTypeChecker;
         $this->affiliateService               = $affiliateService;
         $this->piwikStatisticSender           = $piwikStatisticSender;
         $this->infoMapper                     = $infoMapper;
@@ -124,10 +119,10 @@ class CommonFlowHandler
         if ($subscriptionId) {
             $subscription = $this->subscriptionRepository->findOneBy(['id' => $subscriptionId]);
         } else {
-            /** @var BillableUser $billableUser */
-            $billableUser = $this->billableUserRepository->findOneBy(['identifier' => $requestParams->provider_user]);
+            /** @var User $User */
+            $User = $this->UserRepository->findOneBy(['identifier' => $requestParams->provider_user]);
             /** @var Subscription $subscription */
-            $subscription = $this->subscriptionRepository->findOneBy(['owner' => $billableUser]);
+            $subscription = $this->subscriptionRepository->findOneBy(['owner' => $User]);
         }
 
         if (!$subscription instanceof Subscription) {
@@ -166,7 +161,7 @@ class CommonFlowHandler
         }
 
         if ($isNeedToBeTracked) {
-            $userInfo = $this->infoMapper->mapFromBillableUser($subscription->getUser());
+            $userInfo = $this->infoMapper->mapFromUser($subscription->getUser());
             if ($type === 'subscribe') {
                 $this->affiliateService->checkAffiliateEligibilityAndSendEvent($subscription, $userInfo);
             }
@@ -180,7 +175,7 @@ class CommonFlowHandler
             $carrier = $subscription->getUser()->getCarrier();
             $this->logger->info('Event should be already tracked. Ignoring', [
                 'event'   => $callbackTypeHandler->getPiwikEventName(),
-                'carrier' => $carrier->getIdCarrier()
+                'carrier' => $carrier->getBillingCarrierId()
             ]);
         }
     }

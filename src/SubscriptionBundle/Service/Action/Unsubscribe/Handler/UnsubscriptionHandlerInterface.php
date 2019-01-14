@@ -9,13 +9,13 @@
 namespace SubscriptionBundle\Service\Action\Unsubscribe\Handler;
 
 
-use AppBundle\Entity\Carrier;
+use IdentificationBundle\Entity\CarrierInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
 
 interface UnsubscriptionHandlerInterface
 {
-    public function canHandle(Carrier $carrier): bool;
+    public function canHandle(CarrierInterface $carrier): bool;
 
     public function isPiwikNeedToBeTracked(ProcessResult $processResult): bool;
 

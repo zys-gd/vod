@@ -16,16 +16,16 @@ use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerInterface;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCommonFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomResponses;
-use UserBundle\Entity\BillableUser;
+use IdentificationBundle\Entity\User;
 
 class TelenorPKSubscribeHandler implements SubscriptionHandlerInterface, HasCustomResponses, HasCommonFlow
 {
-    public function canHandle(\AppBundle\Entity\Carrier $carrier): bool
+    public function canHandle(\IdentificationBundle\Entity\CarrierInterface $carrier): bool
     {
         return $carrier->getIdCarrier() === Carrier::TELENOR_PAKISTAN;
     }
 
-    public function getAdditionalSubscribeParams(Request $request, BillableUser $billableUser): array
+    public function getAdditionalSubscribeParams(Request $request, User $User): array
     {
         return [];
     }
@@ -38,11 +38,11 @@ class TelenorPKSubscribeHandler implements SubscriptionHandlerInterface, HasCust
 
     /**
      * @param Request      $request
-     * @param BillableUser $billableUser
+     * @param User $User
      * @param Subscription $subscription
      * @return Response|null
      */
-    public function createResponseForSuccessfulSubscribe(Request $request, BillableUser $billableUser, Subscription $subscription)
+    public function createResponseForSuccessfulSubscribe(Request $request, User $User, Subscription $subscription)
     {
         $redirect           = $request->get('redirect', false);
         $session            = $request->getSession();
@@ -55,11 +55,11 @@ class TelenorPKSubscribeHandler implements SubscriptionHandlerInterface, HasCust
 
     /**
      * @param Request      $request
-     * @param BillableUser $billableUser
+     * @param User $User
      * @param Subscription $subscription
      * @return Response|null
      */
-    public function createResponseForExistingSubscription(Request $request, BillableUser $billableUser, Subscription $subscription)
+    public function createResponseForExistingSubscription(Request $request, User $User, Subscription $subscription)
     {
     }
 }

@@ -20,7 +20,7 @@ services:
     SubscriptionBundle\Service\SubscriptionText\DeclensionHelper: ~
 
     #SubscriptionBundle\Service\UserExtractor:
-    #    class: SubscriptionBundle\Service\BillableUserProvider
+    #    class: SubscriptionBundle\Service\UserProvider
     #    arguments:
     #        - "@session"
     #        - "@identification.service"

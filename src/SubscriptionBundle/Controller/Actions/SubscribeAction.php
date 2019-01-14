@@ -12,6 +12,7 @@ namespace SubscriptionBundle\Controller\Actions;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Exception\PendingIdentificationException;
 use IdentificationBundle\Exception\RedirectRequiredException;
+use IdentificationBundle\Identification\DTO\IdentificationData;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -55,29 +56,13 @@ class SubscribeAction extends Controller
      */
     private $logger;
     /**
-     * @var MobimindSubscriberService
-     */
-    private $mobimindService;
-    /**
-     * @var \SubscriptionBundle\Carriers\Megasyst\Subscribe\MegasystCarrierChecker
-     */
-    private $megasystCarrierChecker;
-    /**
      * @var BlacklistVoter
      */
     private $blacklistVoter;
     /**
-     * @var \SubscriptionBundle\Carriers\Megasyst\\SubscriptionBundle\Carriers\Megasyst\Subscribe\MegasystPhoneChecker
-     */
-    private $megasystPhoneChecker;
-    /**
      * @var UrlParamAppender
      */
     private $urlParamAppender;
-    /**
-     * @var MobilifeSubscriberService
-     */
-    private $mobilifeService;
     /**
      * @var SubscriptionHandlerProvider
      */
@@ -87,89 +72,55 @@ class SubscribeAction extends Controller
     /**
      * SubscribeAction constructor.
      *
-     * @param UserExtractor                                                          $userExtractor
-     * @param CommonFlowHandler                                                      $commonFlowHandler
-     * @param Router                                                                 $router
-     * @param LoggerInterface                                                        $logger
-     * @param MobimindSubscriberService                                              $mobimindService
-     * @param \SubscriptionBundle\Carriers\Megasyst\Subscribe\MegasystCarrierChecker $megasystCarrierChecker
-     * @param BlacklistVoter                                                         $blacklistVoter
-     * @param \SubscriptionBundle\Carriers\Megasyst\Subscribe\MegasystPhoneChecker   $megasystPhoneChecker
-     * @param UrlParamAppender                                                       $urlParamAppender
-     * @param MobilifeSubscriberService                                              $mobilifeService
-     * @param SubscriptionHandlerProvider                                            $handlerProvider
+     * @param UserExtractor               $userExtractor
+     * @param CommonFlowHandler           $commonFlowHandler
+     * @param Router                      $router
+     * @param LoggerInterface             $logger
+     * @param UrlParamAppender            $urlParamAppender
+     * @param SubscriptionHandlerProvider $handlerProvider
      */
     public function __construct(
         UserExtractor $userExtractor,
         CommonFlowHandler $commonFlowHandler,
         Router $router,
         LoggerInterface $logger,
-        MobimindSubscriberService $mobimindService,
-        MegasystCarrierChecker $megasystCarrierChecker,
-        BlacklistVoter $blacklistVoter,
-        MegasystPhoneChecker $megasystPhoneChecker,
         UrlParamAppender $urlParamAppender,
-        MobilifeSubscriberService $mobilifeService,
         SubscriptionHandlerProvider $handlerProvider
     )
     {
-        $this->userExtractor   = $userExtractor;
-        $this->commonFlowHandler      = $commonFlowHandler;
-        $this->router                 = $router;
-        $this->logger                 = $logger;
-        $this->mobimindService        = $mobimindService;
-        $this->megasystCarrierChecker = $megasystCarrierChecker;
-        $this->blacklistVoter         = $blacklistVoter;
-        $this->megasystPhoneChecker   = $megasystPhoneChecker;
-        $this->urlParamAppender       = $urlParamAppender;
-        $this->mobilifeService        = $mobilifeService;
-        $this->handlerProvider        = $handlerProvider;
+        $this->userExtractor     = $userExtractor;
+        $this->commonFlowHandler = $commonFlowHandler;
+        $this->router            = $router;
+        $this->logger            = $logger;
+        $this->urlParamAppender  = $urlParamAppender;
+        $this->handlerProvider   = $handlerProvider;
     }
 
     /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse|RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @throws ExistingSubscriptionException
-     * @throws RedirectRequiredException
-     * @throws ResubscriptionIsNotAllowedException
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \IdentificationBundle\Exception\UndefinedIdentityException
      * @throws \SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound
      * @throws \SubscriptionBundle\Exception\PendingSubscriptionException
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, IdentificationData $identificationData)
     {
 
 
-        if ($result = $this->handleRequestByLegacyService($request)) {
+        /*if ($result = $this->handleRequestByLegacyService($request)) {
             return $result;
-        }
+        }*/
 
-        if ($result = $this->blacklistVoter->checkIfSubscriptionRestricted($request)) {
+        // Todo until cache is ready
+        /*if ($result = $this->blacklistVoter->checkIfSubscriptionRestricted($request)) {
             return $result;
-        }
+        }*/
 
-        try {
-            /** @var User $user */
-            $user = $this->userExtractor->getUserFromRequest($request);
-        } catch (PendingIdentificationException $e) {
-            $user = $this->tryToRetrieveUserWithDelay($request);
-        } catch (RedirectRequiredException $ex) {
+        $user = $this->userExtractor->getUserFromRequest($request);
 
-            $this->logger->debug('Redirect Required', [
-                'url'     => $ex->getRedirectUrl(),
-                'message' => $ex->getMessage()
-            ]);
-
-
-            return $this->getSimpleJsonResponse($ex->getMessage(), 400, [
-                'identification' => false,
-                'subscription'   => false,
-                'redirectUrl'    => $ex->getRedirectUrl(),
-            ]);
-        }
 
         $subscriber = $this->handlerProvider->getSubscriber($user->getCarrier());
         if ($subscriber instanceof HasCustomFlow) {
@@ -181,7 +132,7 @@ class SubscribeAction extends Controller
 
     }
 
-    private function handleRequestByLegacyService(Request $request)
+    /*private function handleRequestByLegacyService(Request $request)
     {
         if ($this->mobimindService->isMobimind($request)) {
             return $this->mobimindService->processRequest($request);
@@ -202,31 +153,7 @@ class SubscribeAction extends Controller
         }
 
 
-    }
-
-    /**
-     * @param Request $request
-     * @return \UserBundle\Entity\BillableUser
-     * @throws RedirectRequiredException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \IdentificationBundle\Exception\UndefinedIdentityException
-     */
-    private function tryToRetrieveUserWithDelay(Request $request): \UserBundle\Entity\BillableUser
-    {
-        for ($i = 0; $i < 3; $i++) {
-            try {
-                $this->logger->debug('Trying to retrieve user with delay', ['attempt' => $i]);
-                $billableUser = $this->userExtractor->getUserFromRequest($request);
-                $this->logger->debug('Attempt was successful', ['attempt' => $i]);
-                break;
-            } catch (PendingIdentificationException $e) {
-                $this->logger->debug('Failed', ['attempt' => $i]);
-            }
-            sleep(1);
-        }
-        return $billableUser;
-    }
+    }*/
 
 
 }

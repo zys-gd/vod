@@ -10,6 +10,6 @@ namespace SubscriptionBundle\Service\Action\Subscribe\Handler;
  */
 interface SubscriptionHandlerInterface
 {
-    public function canHandle(\AppBundle\Entity\Carrier $carrier): bool;
+    public function canHandle(\IdentificationBundle\Entity\CarrierInterface $carrier): bool;
 
 }

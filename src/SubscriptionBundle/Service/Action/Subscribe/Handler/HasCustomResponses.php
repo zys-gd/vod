@@ -12,24 +12,24 @@ namespace SubscriptionBundle\Service\Action\Subscribe\Handler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use SubscriptionBundle\Entity\Subscription;
-use UserBundle\Entity\BillableUser;
+use IdentificationBundle\Entity\User;
 
 interface HasCustomResponses
 {
     /**
      * @param Request      $request
-     * @param BillableUser $billableUser
+     * @param User $User
      * @param Subscription $subscription
      * @return Response|null
      */
-    public function createResponseForSuccessfulSubscribe(Request $request, BillableUser $billableUser, Subscription $subscription);
+    public function createResponseForSuccessfulSubscribe(Request $request, User $User, Subscription $subscription);
 
 
     /**
      * @param Request      $request
-     * @param BillableUser $billableUser
+     * @param User $User
      * @param Subscription $subscription
      * @return Response|null
      */
-    public function createResponseForExistingSubscription(Request $request, BillableUser $billableUser, Subscription $subscription);
+    public function createResponseForExistingSubscription(Request $request, User $User, Subscription $subscription);
 }

@@ -108,8 +108,8 @@ class OnRenewUpdater
         $subscription->setStatus(Subscription::IS_ACTIVE);
         $subscription->setRenewDate($this->renewDateCalculator->calculateRenewDate($subscription));
 
-        $billableUser         = $subscription->getUser();
-        $existingSubscription = $this->subscriptionProvider->getExistingSubscriptionForUser($billableUser);
+        $User         = $subscription->getUser();
+        $existingSubscription = $this->subscriptionProvider->getExistingSubscriptionForUser($User);
 
         $newCredits = $this->creditsCalculator->calculateCredits($subscription, $subscription->getSubscriptionPack(), $existingSubscription);
         $subscription->setCredits($newCredits);

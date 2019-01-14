@@ -8,8 +8,8 @@
 
 namespace SubscriptionBundle\Service\Action\Subscribe\Common;
 
-use AffiliateBundle\Service\AffiliateService;
-use AffiliateBundle\Service\UserInfoMapper;
+use SubscriptionBundle\Affiliate\Service\AffiliateSender;
+use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
 use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -32,7 +32,7 @@ use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\SubscriptionPackProvider;
 use SubscriptionBundle\Service\SubscriptionExtractor;
 use SubscriptionBundle\Utils\UrlParamAppender;
-use UserBundle\Entity\BillableUser;
+use IdentificationBundle\Entity\User;
 
 class CommonFlowHandler
 {
@@ -79,7 +79,7 @@ class CommonFlowHandler
      */
     private $router;
     /**
-     * @var AffiliateService
+     * @var AffiliateSender
      */
     private $affiliateService;
     /**
@@ -109,7 +109,7 @@ class CommonFlowHandler
      * @param CommonResponseCreator          $commonResponseCreator
      * @param UrlParamAppender               $urlParamAppender
      * @param RouterInterface                $router
-     * @param AffiliateService               $affiliateService
+     * @param AffiliateSender               $affiliateService
      * @param PiwikStatisticSender           $piwikStatisticSender
      * @param UserInfoMapper                 $infoMapper
      * @param EntitySaveHelper               $entitySaveHelper
@@ -125,7 +125,7 @@ class CommonFlowHandler
         CommonResponseCreator $commonResponseCreator,
         UrlParamAppender $urlParamAppender,
         RouterInterface $router,
-        AffiliateService $affiliateService,
+        AffiliateSender $affiliateService,
         PiwikStatisticSender $piwikStatisticSender,
         UserInfoMapper $infoMapper,
         EntitySaveHelper $entitySaveHelper
@@ -150,30 +150,30 @@ class CommonFlowHandler
 
     /**
      * @param Request      $request
-     * @param BillableUser $billableUser
+     * @param User $User
      * @return Response
      * @throws ActiveSubscriptionPackNotFound
      * @throws ExistingSubscriptionException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function process(Request $request, BillableUser $billableUser): Response
+    public function process(Request $request, User $User): Response
     {
-        $billableUserId         = $billableUser->getId();
-        $billableUserIdentifier = $billableUser->getIdentifier();
+        $UserId         = $User->getUuid();
+        $UserIdentifier = $User->getIdentifier();
         $this->logger->debug('Processing `subscribe` action', [
-            'billableUserId' => $billableUserId,
-            'msidsn'         => $billableUserIdentifier
+            'UserId' => $UserId,
+            'msidsn'         => $UserIdentifier
         ]);
 
         /** @var HasCommonFlow $subscriber */
-        $subscriber   = $this->handlerProvider->getSubscriber($billableUser->getCarrier());
-        $subscription = $this->subscriptionProvider->getExistingSubscriptionForUser($billableUser);
+        $subscriber   = $this->handlerProvider->getSubscriber($User->getCarrier());
+        $subscription = $this->subscriptionProvider->getExistingSubscriptionForUser($User);
 
         if (!empty($subscription) && !$this->checker->isEligibleToSubscribe($subscription)) {
             $this->logger->debug('`Subscribe` is not possible. User already have an active subscription.');
             if (
                 $subscriber instanceof HasCustomResponses &&
-                $response = $subscriber->createResponseForExistingSubscription($request, $billableUser, $subscription)) {
+                $response = $subscriber->createResponseForExistingSubscription($request, $User, $subscription)) {
                 return $response;
             }
 
@@ -192,9 +192,9 @@ class CommonFlowHandler
 
 
         if (empty($subscription)) {
-            return $this->handleSubscribe($request, $billableUser, $subscriber);
+            return $this->handleSubscribe($request, $User, $subscriber);
         } else {
-            return $this->handleResubscribe($request, $billableUser, $subscription, $subscriber);
+            return $this->handleResubscribe($request, $User, $subscription, $subscriber);
         }
 
 
@@ -203,7 +203,7 @@ class CommonFlowHandler
 
     /**
      * @param Request      $request
-     * @param BillableUser $billableUser
+     * @param User $User
      * @param Subscription $subscription
      * @param              $subscriber
      * @return \Symfony\Component\HttpFoundation\JsonResponse|RedirectResponse|Response
@@ -212,13 +212,13 @@ class CommonFlowHandler
      */
     private function handleResubscribe(
         Request $request,
-        BillableUser $billableUser,
+        User $User,
         Subscription $subscription,
         HasCommonFlow $subscriber
     ): Response
     {
 
-        $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($billableUser);
+        $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($User);
         $subpackId        = $subscriptionPack->getUuid();
         $subpackName      = $subscriptionPack->getName();
 
@@ -231,7 +231,7 @@ class CommonFlowHandler
                 'carrierName' => $subpackName
             ]);
 
-            $additionalData = $subscriber->getAdditionalSubscribeParams($request, $billableUser);
+            $additionalData = $subscriber->getAdditionalSubscribeParams($request, $User);
             $result         = $this->subscriber->resubscribe($subscription, $subscriptionPack, $additionalData);
 
         } else {
@@ -261,26 +261,26 @@ class CommonFlowHandler
         $subscriber->afterProcess($subscription, $result);
         $this->entitySaveHelper->saveAll();
 
-        return $this->commonResponseCreator->createCommonHttpResponse($request, $billableUser);
+        return $this->commonResponseCreator->createCommonHttpResponse($request, $User);
 
 
     }
 
     /**
      * @param Request       $request
-     * @param BillableUser  $billableUser
+     * @param User  $User
      * @param HasCommonFlow $subscriber
      * @return null|Response
      * @throws ActiveSubscriptionPackNotFound
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    private function handleSubscribe(Request $request, BillableUser $billableUser, HasCommonFlow $subscriber): Response
+    private function handleSubscribe(Request $request, User $User, HasCommonFlow $subscriber): Response
     {
 
-        $additionalData   = $subscriber->getAdditionalSubscribeParams($request, $billableUser);
-        $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($billableUser);
+        $additionalData   = $subscriber->getAdditionalSubscribeParams($request, $User);
+        $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($User);
         /** @var ProcessResult $result */
-        list($newSubscription, $result) = $this->subscriber->subscribe($billableUser, $subscriptionPack, $additionalData);
+        list($newSubscription, $result) = $this->subscriber->subscribe($User, $subscriptionPack, $additionalData);
 
         if ($subscriber instanceof HasCustomTrackingRules) {
             $isNeedToBeTracked = $subscriber->isNeedToBeTrackedForSubscribe($result);
@@ -295,11 +295,11 @@ class CommonFlowHandler
         $this->entitySaveHelper->saveAll();
 
         if ($subscriber instanceof HasCustomResponses &&
-            $customResponse = $subscriber->createResponseForSuccessfulSubscribe($request, $billableUser, $newSubscription)) {
+            $customResponse = $subscriber->createResponseForSuccessfulSubscribe($request, $User, $newSubscription)) {
             return $customResponse;
         }
 
-        return $this->commonResponseCreator->createCommonHttpResponse($request, $billableUser);
+        return $this->commonResponseCreator->createCommonHttpResponse($request, $User);
 
     }
 

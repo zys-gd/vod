@@ -16,13 +16,13 @@ class UserExtractor
     private $router;
     /** @var LoggerInterface */
     private $logger;
-    /** @var UserRepository  */
+    /** @var UserRepository */
     private $userRepository;
 
     public function __construct(RouterInterface $router, LoggerInterface $logger, UserRepository $userRepository)
     {
-        $this->router = $router;
-        $this->logger = $logger;
+        $this->router         = $router;
+        $this->logger         = $logger;
         $this->userRepository = $userRepository;
     }
 
@@ -38,23 +38,12 @@ class UserExtractor
             'identificationData' => $identificationData
         ]);
 
-        $identificationToken = $identificationData['identification_token'] ?? null;
-        if (!$identificationToken) {
-
-            $wrongOperatorUrl = $this->router->generate(
-                'wrong_operator',
-                [],
-                UrlGeneratorInterface::ABSOLUTE_PATH
-            );
-            $this->logger->debug('No token id found. Redirecting via exception', ['redirectUrl' => $wrongOperatorUrl]);
-            throw new RedirectRequiredException($wrongOperatorUrl);
-        }
         /** @var User $user */
-        $user = $this->userRepository->findOneBy(['identificationToken' => $identificationToken]);
+        $user = $this->userRepository->findOneByIdentificationToken($identificationData['identification_token']);
 
         $this->logger->debug('Obtained user', [
             'userUuid' => $user->getUuid(),
-            'msidsn' => $user->getIdentifier()
+            'msidsn'   => $user->getIdentifier()
         ]);
 
         return $user;

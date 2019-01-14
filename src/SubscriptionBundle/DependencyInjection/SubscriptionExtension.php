@@ -44,6 +44,8 @@ class SubscriptionExtension extends ConfigurableExtension
         $loader->load('controllers.yml');
         $loader->load('cron.yml');
         $loader->load('piwik-integration.yml');
+        $loader->load('affiliate.yml');
+        $loader->load('fixtures.yml');
 
 
         $loader  = new YamlFileLoader(
@@ -58,7 +60,7 @@ class SubscriptionExtension extends ConfigurableExtension
         );
         //$loader->load('orange-eg.yml');
         //$loader->load('orange-tn.yml');
-        //$loader->load('etisalat-eg.yml');
+        $loader->load('etisalat-eg.yml');
         //$loader->load('telenor-pk.yml');
     }
 }

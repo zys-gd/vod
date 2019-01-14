@@ -11,11 +11,11 @@ namespace SubscriptionBundle\Service\Action\Subscribe\Handler;
 
 use Symfony\Component\HttpFoundation\Request;
 use SubscriptionBundle\Entity\Subscription;
-use UserBundle\Entity\BillableUser;
+use IdentificationBundle\Entity\User;
 
 interface HasCommonFlow
 {
-    public function getAdditionalSubscribeParams(Request $request, BillableUser $billableUser): array;
+    public function getAdditionalSubscribeParams(Request $request, User $User): array;
 
     public function afterProcess(Subscription $subscription, \SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult $result);
 }

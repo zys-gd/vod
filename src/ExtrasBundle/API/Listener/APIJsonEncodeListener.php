@@ -70,15 +70,19 @@ class APIJsonEncodeListener implements EventSubscriberInterface
         $request     = $event->getRequest();
         $contentType = $request->headers->get('Content-Type');
 
-        if (strtolower($contentType) !== strtolower('application/json')) {
-            throw new BadRequestHttpException('Content-Type should be `application/json`');
+        $parameters = [];
+        if (strpos(strtolower($contentType), strtolower('application/json')) !== false) {
+            $encoder    = new JsonEncoder();
+            $parameters = $encoder->decode($request->getContent(), 'array');
         }
 
+        if (strpos(strtolower($contentType), strtolower('application/x-form-urlencoded')) !== false) {
+            $parameters = parse_str($request->getContent());
+        }
 
-        $encoder = new JsonEncoder();
-
-        $request->request->replace($encoder->decode($request->getContent(), 'array'));
-
+        if ($parameters) {
+            $request->request->replace($parameters);
+        }
 
     }
 

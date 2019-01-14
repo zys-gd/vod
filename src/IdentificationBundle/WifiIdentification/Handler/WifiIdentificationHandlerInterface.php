@@ -9,7 +9,10 @@
 namespace IdentificationBundle\WifiIdentification\Handler;
 
 
+use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
+use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\Entity\CarrierInterface;
+use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 
 interface WifiIdentificationHandlerInterface
 {
@@ -17,7 +20,7 @@ interface WifiIdentificationHandlerInterface
 
     public function getRedirectUrl();
 
-    public function isPinSendAllowed($mobileNumber): bool ;
-
     public function areSMSSentByBilling(): bool;
+
+
 }

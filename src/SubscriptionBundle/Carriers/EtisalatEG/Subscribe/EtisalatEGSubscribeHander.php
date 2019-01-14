@@ -9,28 +9,28 @@
 namespace SubscriptionBundle\Carriers\EtisalatEG\Subscribe;
 
 
-use AppBundle\Constant\Carrier;
+use App\Domain\Constants\ConstBillingCarrierId;
 use Symfony\Component\HttpFoundation\Request;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerInterface;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCommonFlow;
-use UserBundle\Entity\BillableUser;
+use IdentificationBundle\Entity\User;
 
 class EtisalatEGSubscribeHander implements SubscriptionHandlerInterface, HasCommonFlow
 {
 
-    public function canHandle(\AppBundle\Entity\Carrier $carrier): bool
+    public function canHandle(\IdentificationBundle\Entity\CarrierInterface $carrier): bool
     {
-        return in_array($carrier->getIdCarrier(), [
-            Carrier::ETISALAT_EGYPT,
+        return in_array($carrier->getBillingCarrierId(), [
+            ConstBillingCarrierId::ETISALAT_EGYPT,
         ]);
     }
 
-    public function getAdditionalSubscribeParams(Request $request, BillableUser $billableUser): array
+    public function getAdditionalSubscribeParams(Request $request, User $User): array
     {
         return [
             'subscription_contract_id' => $request->get('subscription_contract_id'),
-            'url_id'                   => $billableUser->getUrlId()
+            'url_id'                   => $User->getUrlId()
         ];
     }
 

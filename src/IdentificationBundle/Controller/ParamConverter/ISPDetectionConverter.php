@@ -35,7 +35,10 @@ class ISPDetectionConverter implements ParamConverterInterface
             throw new BadRequestHttpException('ISP detection data is not found');
         }
 
-        $request->attributes->set($configuration->getName(), $ispData);
+        $object = new ISPData($ispData['carrier_id']);
+
+
+        $request->attributes->set($configuration->getName(), $object);
     }
 
     /**

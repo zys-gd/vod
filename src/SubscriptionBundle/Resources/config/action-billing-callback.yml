@@ -6,13 +6,12 @@ services:
         - '@SubscriptionBundle\Service\Callback\Common\CallbackTypeHandlerProvider'
         - '@SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper'
         - '@SubscriptionBundle\Repository\SubscriptionRepository'
-        - '@user.billable_user.repository'
+        - '@IdentificationBundle\Repository\UserRepository'
         - '@event_dispatcher'
         - '@SubscriptionBundle\Service\EntitySaveHelper'
-        - '@affiliate.carrier_post_send_affiliate_checker'
-        - '@affiliate.affiliate.service'
+        - '@SubscriptionBundle\Affiliate\Service\AffiliateSender'
         - '@SubscriptionBundle\Piwik\PiwikStatisticSender'
-        - '@affiliate.user_info_mapper'
+        - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
         - '@SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider'
 
       public: false
@@ -37,5 +36,5 @@ services:
 
   SubscriptionBundle\Service\Callback\Common\Type\RenewCallbackHandler:
       arguments:
-          - '@SubscriptionBundle\Service\Action\Renew\Renewer.updater'
+          - '@SubscriptionBundle\Service\Action\Renew\OnRenewUpdater'
           - '@event_dispatcher'
