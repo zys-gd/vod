@@ -64,13 +64,6 @@ SubscriptionBundle\Entity\SubscriptionPack:
             nullable: true
             options:
                 default: ''
-        credits:
-            type: bigint
-            scale: 0
-            length: null
-            unique: false
-            nullable: false
-            precision: 0
         periodicity:
             type: smallint
             scale: 0
@@ -179,23 +172,6 @@ SubscriptionBundle\Entity\SubscriptionPack:
             nullable: false
             precision: 0
             column: renew_strategy_id
-        unlimited:
-            type: boolean
-            scale: 0
-            length: null
-            unique: false
-            nullable: false
-            precision: 0
-        firstSubscriptionPeriodIsFreeMultiple:
-            type: boolean
-            scale: 0
-            length: null
-            unique: false
-            nullable: true
-            precision: 0
-            options:
-                default: false
-            column: is_first_subscription_free_multiple
         firstSubscriptionPeriodIsFree:
             type: boolean
             scale: 0
@@ -206,36 +182,6 @@ SubscriptionBundle\Entity\SubscriptionPack:
             options:
                 default: false
             column: is_first_subscription_free
-        allowBonusCredit:
-            type: boolean
-            scale: 0
-            length: null
-            unique: false
-            nullable: true
-            precision: 0
-            options:
-                default: false
-            column: allow_bonus_credit
-        allowBonusCreditMultiple:
-            type: boolean
-            scale: 0
-            length: null
-            unique: false
-            nullable: true
-            precision: 0
-            options:
-                default: false
-            column: allow_bonus_credit_multiple
-        bonusCredit:
-            type: smallint
-            scale: 0
-            length: null
-            unique: false
-            nullable: true
-            precision: 0
-            options:
-                default: 0
-            column: bonus_credit
         providerManagedSubscriptions:
             type: boolean
             scale: 0

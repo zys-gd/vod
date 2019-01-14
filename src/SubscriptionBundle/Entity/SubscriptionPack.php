@@ -2,12 +2,14 @@
 
 namespace SubscriptionBundle\Entity;
 
-
 use App\Domain\Entity\Carrier;
 use App\Domain\Entity\Country;
 use Doctrine\Common\Collections\ArrayCollection;
 use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 
+/**
+ * Class SubscriptionPack
+ */
 class SubscriptionPack implements HasUuid
 {
     const DAILY = 1;
@@ -29,58 +31,49 @@ class SubscriptionPack implements HasUuid
         'INACTIVE' => self::INACTIVE_SUBSCRIPTION_PACK,
     ];
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $uuid;
 
     /**
      * @var integer
-     *
      */
     private $status;
 
     /**
      * @var string
-     *
-     *
      */
     private $name;
 
     /**
      * @var string
-     *
-     *
      */
     private $description;
 
     /**
      * @var boolean
-     *
-     *
      */
     private $isResubAllowed;
 
     /**
      * @var Subscription
-     *
-     *
      */
     private $subscriptions;
 
     /**
      * @var Country
-     *
-     *
-     *
      */
     private $country;
 
     /**
      * @var  Carrier
-     *
      */
     private $carrier;
 
-    /** @var float */
+    /**
+     * @var float
+     */
     private $price;
 
     /**
@@ -95,141 +88,76 @@ class SubscriptionPack implements HasUuid
 
     /**
      * @var int
-     *
-     *
-     */
-    private $credits = 0;
-
-    /**
-     * @var int
-     *
-     *
      */
     private $periodicity = 7;
 
     /**
      * @var int
-     *
-     *
      */
     private $customRenewPeriod = 0;
 
-
     /**
      * @var int
-     *
-     *
      */
     private $gracePeriod = 0;
 
     /**
-     *
+     * @var bool
      */
     private $unlimitedGracePeriod = false;
 
     /**
      * @var \DateTime
-     *
-     *
      */
     private $preferredRenewalStart;
 
     /**
      * @var \DateTime
-     *
-     *
      */
     private $preferredRenewalEnd;
 
     /**
      * @var string
-     *
-     *
      */
     private $welcomeSMSText = "";
 
     /**
      * @var string
-     *
-     *
      */
     private $renewalSMSText = "";
 
     /**
      * @var string
-     *
-     *
      */
     private $unsubscribeSMSText = "";
 
     /**
      * @var  string
-     *
      */
     private $buyStrategy;
 
     /**
      * @var integer
-     *
      */
     private $buyStrategyId;
 
     /**
      * @var  string
-     *
      */
     private $renewStrategy;
 
     /**
      * @var integer
-     *
      */
     private $renewStrategyId;
 
-
     /**
      * @var boolean
-     *
-     *
-     */
-    private $unlimited = 0;
-
-    /**
-     * @var boolean
-     *
-     */
-    private $firstSubscriptionPeriodIsFreeMultiple = false;
-
-    /**
-     * @var boolean
-     *
      */
     private $firstSubscriptionPeriodIsFree = false;
 
-
     /**
      * @var boolean
-     *
-     */
-    private $allowBonusCredit = false;
-
-
-    /**
-     * @var boolean
-     *
-     */
-    private $allowBonusCreditMultiple = false;
-
-    /**
-     * @var integer
-     *
-     */
-    private $bonusCredit = 0;
-
-
-    /**
-     * @var boolean
-     *
      */
     private $providerManagedSubscriptions;
 
@@ -249,7 +177,6 @@ class SubscriptionPack implements HasUuid
         $this->subscriptions = new ArrayCollection();
     }
 
-
     /**
      * Returns the subscription pack name
      *
@@ -257,7 +184,7 @@ class SubscriptionPack implements HasUuid
      */
     public function __toString()
     {
-        return $this->getName() ?: '';
+        return $this->getName() ?? '';
     }
 
     /**
@@ -323,7 +250,6 @@ class SubscriptionPack implements HasUuid
     {
         return $this->description;
     }
-
 
     /**
      * @return Subscription
@@ -467,22 +393,6 @@ class SubscriptionPack implements HasUuid
     public function getPrice()
     {
         return $this->price;
-    }
-
-    /**
-     * @return int
-     */
-    public function getCredits()
-    {
-        return $this->credits;
-    }
-
-    /**
-     * @param int $credits
-     */
-    public function setCredits($credits)
-    {
-        $this->credits = $credits;
     }
 
     /**
@@ -696,38 +606,6 @@ class SubscriptionPack implements HasUuid
     /**
      * @return bool
      */
-    public function isUnlimited()
-    {
-        return $this->unlimited;
-    }
-
-    /**
-     * @param bool $unlimited
-     */
-    public function setUnlimited($unlimited)
-    {
-        $this->unlimited = $unlimited;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isFirstSubscriptionPeriodIsFreeMultiple()
-    {
-        return $this->firstSubscriptionPeriodIsFreeMultiple;
-    }
-
-    /**
-     * @param bool $firstSubscriptionPeriodIsFreeMultiple
-     */
-    public function setFirstSubscriptionPeriodIsFreeMultiple($firstSubscriptionPeriodIsFreeMultiple)
-    {
-        $this->firstSubscriptionPeriodIsFreeMultiple = $firstSubscriptionPeriodIsFreeMultiple;
-    }
-
-    /**
-     * @return bool
-     */
     public function isFirstSubscriptionPeriodIsFree()
     {
         return $this->firstSubscriptionPeriodIsFree;
@@ -739,54 +617,6 @@ class SubscriptionPack implements HasUuid
     public function setFirstSubscriptionPeriodIsFree($firstSubscriptionPeriodIsFree)
     {
         $this->firstSubscriptionPeriodIsFree = $firstSubscriptionPeriodIsFree;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isAllowBonusCredit()
-    {
-        return $this->allowBonusCredit;
-    }
-
-    /**
-     * @param bool $allowBonusCredit
-     */
-    public function setAllowBonusCredit($allowBonusCredit)
-    {
-        $this->allowBonusCredit = $allowBonusCredit;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isAllowBonusCreditMultiple()
-    {
-        return $this->allowBonusCreditMultiple;
-    }
-
-    /**
-     * @param bool $allowBonusCreditMultiple
-     */
-    public function setAllowBonusCreditMultiple($allowBonusCreditMultiple)
-    {
-        $this->allowBonusCreditMultiple = $allowBonusCreditMultiple;
-    }
-
-    /**
-     * @return int
-     */
-    public function getBonusCredit()
-    {
-        return $this->bonusCredit;
-    }
-
-    /**
-     * @param bool $bonusCredit
-     */
-    public function setBonusCredit($bonusCredit)
-    {
-        $this->bonusCredit = $bonusCredit;
     }
 
     /**
@@ -837,25 +667,6 @@ class SubscriptionPack implements HasUuid
         $this->updated = $updated;
     }
 
-    public function getPriceFromTier()
-    {
-        $price = $this->getPrice() > 0 ? $this->getPrice() : filter_var($this->tier, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-        return (float)$price;
-    }
-
-    public function getCurrencyFromTier()
-    {
-        if (strlen($this->getDisplayCurrency()) > 0) {
-            return $this->getDisplayCurrency();
-        }
-        elseif (strlen($this->getCurrency()) == 3) {
-            return $this->getCurrency();
-        }
-        else {
-            return preg_replace('/[\.\s0-9]*/', '', $this->tier);
-        }
-    }
-
     /**
      * @return int
      */
@@ -872,4 +683,3 @@ class SubscriptionPack implements HasUuid
         return $this->getPeriodicity() == 8 ? $this->getCustomRenewPeriod() : $this->getPeriodicity();
     }
 }
-
