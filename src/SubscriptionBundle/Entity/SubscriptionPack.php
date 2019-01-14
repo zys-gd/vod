@@ -67,7 +67,7 @@ class SubscriptionPack implements HasUuid
     private $country;
 
     /**
-     * @var  Carrier
+     * @var Carrier
      */
     private $carrier;
 
@@ -340,7 +340,7 @@ class SubscriptionPack implements HasUuid
     }
 
     /**
-     * @param string $carrier
+     * @param Carrier $carrier
      */
     public function setCarrier($carrier)
     {

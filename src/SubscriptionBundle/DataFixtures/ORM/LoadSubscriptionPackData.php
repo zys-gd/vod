@@ -27,14 +27,12 @@ class LoadSubscriptionPackData extends AbstractFixture implements ContainerAware
         $data = FixtureDataLoader::loadDataFromJSONFile(__DIR__ . '/Data/', 'subscription_packs.json');
 
         foreach ($data as $row) {
-
             $id                                  = $row['id'];
-            $country_id                          = $row['country_uuid'];
+            $country_uuid                        = $row['country_uuid'];
             $status                              = $row['status'];
             $name                                = $row['name'];
             $description                         = $row['description'];
-            $carrier_name                        = $row['carrier_name'];
-            $carrier_id                          = $row['carrier_id'];
+            $carrier_uuid                        = $row['carrier_uuid'];
             $periodicity                         = $row['periodicity'];
             $custom_renew_period                 = $row['custom_renew_period'];
             $grace_period                        = $row['grace_period'];
@@ -63,14 +61,14 @@ class LoadSubscriptionPackData extends AbstractFixture implements ContainerAware
             $this->addReference(sprintf('subscription_pack_with_name_%s', $name), $pack);
 
             if ($status == SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK) {
-                $this->addReference(sprintf('subscription_pack_for_carrier_%s', $carrier_id), $pack);
+                $this->addReference(sprintf('subscription_pack_for_carrier_%s', $carrier_uuid), $pack);
             }
 
-            $pack->setCountry($this->getReference(sprintf('country_%s', $country_id)));
+            $pack->setCountry($this->getReference(sprintf('country_%s', $country_uuid)));
             $pack->setStatus($status);
             $pack->setName($name);
             $pack->setDescription($description);
-            $pack->setCarrier($carrier_name);
+            $pack->setCarrier($this->getReference(sprintf('carrier_%s', $carrier_uuid)));
             $pack->setPrice($price);
             $pack->setCurrency($currency);
             $pack->setPeriodicity($periodicity);
