@@ -95,6 +95,7 @@ class FakeIdentificationController extends AbstractController
      * @Route("/identify/fake",name="fake_identify")
      * @param Request $request
      *
+     * @return RedirectResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -141,8 +142,7 @@ class FakeIdentificationController extends AbstractController
             $this->entityManager->persist($user);
             $this->entityManager->flush();
         }
-        // return new RedirectResponse($this->router->generate('homepage'));
-        return new RedirectResponse('/');
+        return new RedirectResponse($this->router->generate('index'));
     }
 
     /**
@@ -155,7 +155,7 @@ class FakeIdentificationController extends AbstractController
     {
         $session = $request->getSession();
         $session->clear();
-        return new RedirectResponse('/');
+        return new RedirectResponse($this->router->generate('index'));
     }
 
     /**
