@@ -8,6 +8,7 @@
     "php": "^7.2",
     "ext-ctype": "*",
     "ext-iconv": "*",
+    "ext-json": "^1.6",
     "aws/aws-sdk-php": "^3.84",
     "cloudinary/cloudinary_php": "1.13.0",
     "e-moe/guzzle6-bundle": "^1.2",

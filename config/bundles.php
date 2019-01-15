@@ -30,5 +30,5 @@ return [
     Emoe\GuzzleBundle\EmoeGuzzleBundle::class => ['all' => true],
     Misd\PhoneNumberBundle\MisdPhoneNumberBundle::class => ['all' => true],
     \ExtrasBundle\ExtrasBundle::class => ['all' => true],
-
+    \PriceBundle\PriceBundle::class => ['all' => true],
 ];

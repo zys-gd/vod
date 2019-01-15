@@ -1,0 +1,27 @@
+PriceBundle\Entity\Tier:
+    type: entity
+    table: tiers
+    repositoryClass: PriceBundle\Repository\TierRepository
+    id:
+        uuid:
+            type: guid
+    fields:
+        name:
+            type: string
+            length: 255
+        bfTierId:
+            type: integer
+            nullable: true
+
+    oneToMany:
+        values:
+            targetEntity: PriceBundle\Entity\TierValue
+            mappedBy: tier
+            cascade: ["persist", "remove"]
+            orphanRemoval: true
+
+#        carriers:
+#            targetEntity: AppBundle\Entity\Carrier
+#            mappedBy: tier
+#            cascade: ["persist", "remove"]
+#            orphanRemoval: true

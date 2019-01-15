@@ -1,0 +1,21 @@
+PriceBundle\Entity\Strategy:
+    type: entity
+    table: strategies
+    repositoryClass: PriceBundle\Repository\StrategyRepository
+    id:
+        uuid:
+            type: guid
+    fields:
+        name:
+            type: string
+            length: 255
+        bfStrategyId:
+            type: integer
+            nullable: true
+
+    oneToMany:
+        values:
+            targetEntity: PriceBundle\Entity\TierValue
+            mappedBy: strategy
+            cascade: ["persist", "remove"]
+            orphanRemoval: true
