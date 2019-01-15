@@ -10,6 +10,7 @@ namespace SubscriptionBundle\BillingFramework\Process\API;
 
 
 use Psr\Log\LoggerInterface;
+use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
@@ -62,6 +63,13 @@ class RequestSender
         $this->extractor       = $extractor;
     }
 
+    /**
+     * @param string                   $type
+     * @param ProcessRequestParameters $processParameters
+     * @return ProcessResult
+     * @throws BillingFrameworkProcessException
+     * @throws BillingFrameworkException
+     */
     public function sendProcessRequest(string $type, ProcessRequestParameters $processParameters): ProcessResult
     {
 

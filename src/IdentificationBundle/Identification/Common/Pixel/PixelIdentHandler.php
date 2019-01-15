@@ -49,7 +49,7 @@ class PixelIdentHandler
                 'processId' => $processResult->getId()
             ]);
         } catch (RouteNotFoundException $exception) {
-            $successUrl = $this->routeProvider->getAbsoluteUrlToHomepage();
+            $successUrl = $this->routeProvider->getLinkToHomepage();
         }
 
         $pixelPageLink = $this->router->generate('show_pixel_page', [

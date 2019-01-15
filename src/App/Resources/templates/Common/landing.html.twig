@@ -3,10 +3,11 @@
 {% block body %}
     {% import "@App/Components/lp-subscribe-buttons.html.twig" as lp_subscribe_buttons %}
 
-    {% if is_wifi_flow %}
-        {{ lp_subscribe_buttons.wifi_subscribe_block() }}
-    {% else %}
-        {{ lp_subscribe_buttons.common_subscribe_block() }}
-    {% endif %}
-
+    <div style="padding-left: 30%; padding-top: 40px">
+        {% if is_wifi_flow %}
+            {{ lp_subscribe_buttons.wifi_subscribe_block() }}
+        {% else %}
+            {{ lp_subscribe_buttons.common_subscribe_block() }}
+        {% endif %}
+    </div>
 {% endblock %}

@@ -121,6 +121,9 @@ class Subscription implements HasUuid
     {
         $this->uuid = $uuid;
         $this->credits = 0;
+        $this->created = new \DateTimeImmutable();
+        $this->updated = new \DateTimeImmutable();
+
     }
 
     /**

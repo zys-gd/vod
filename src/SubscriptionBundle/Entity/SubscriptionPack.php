@@ -18,16 +18,16 @@ class SubscriptionPack implements HasUuid
     const CUSTOM_PERIODICITY = 8;
 
     const PERIODICITY = [
-        'DAILY' => self::DAILY,
-        'WEEKLY' => self::WEEKLY,
-        'MONTHLY' => self::MONTHLY,
+        'DAILY'              => self::DAILY,
+        'WEEKLY'             => self::WEEKLY,
+        'MONTHLY'            => self::MONTHLY,
         'CUSTOM_PERIODICITY' => self::CUSTOM_PERIODICITY,
     ];
 
     const ACTIVE_SUBSCRIPTION_PACK = 1;
     const INACTIVE_SUBSCRIPTION_PACK = 0;
     const STATUSES = [
-        'ACTIVE' => self::ACTIVE_SUBSCRIPTION_PACK,
+        'ACTIVE'   => self::ACTIVE_SUBSCRIPTION_PACK,
         'INACTIVE' => self::INACTIVE_SUBSCRIPTION_PACK,
     ];
 
@@ -210,9 +210,11 @@ class SubscriptionPack implements HasUuid
      *
      * @param string $uuid
      */
+    private $tierId;
+
     public function __construct(string $uuid)
     {
-        $this->uuid = $uuid;
+        $this->uuid          = $uuid;
         $this->subscriptions = new ArrayCollection();
     }
 
@@ -376,6 +378,11 @@ class SubscriptionPack implements HasUuid
     public function getCarrier()
     {
         return $this->carrier;
+    }
+
+    public function getCarrierId()
+    {
+        return $this->carrier->getBillingCarrierId();
     }
 
     /**
@@ -817,4 +824,23 @@ class SubscriptionPack implements HasUuid
     {
         return $this->getPeriodicity() == 8 ? $this->getCustomRenewPeriod() : $this->getPeriodicity();
     }
+
+
+    /**
+     * @return int
+     */
+    public function getTierId(): int
+    {
+        return $this->tierId;
+    }
+
+    /**
+     * @param int $tierId
+     */
+    public function setTierId(int $tierId)
+    {
+        $this->tierId = $tierId;
+    }
+
+
 }

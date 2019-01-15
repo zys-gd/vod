@@ -11,7 +11,9 @@ namespace IdentificationBundle\WifiIdentification\Controller;
 
 use ExtrasBundle\API\Controller\APIControllerInterface;
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
+use IdentificationBundle\BillingFramework\Process\Exception\PinVerifyProcessException;
 use IdentificationBundle\Identification\DTO\ISPData;
+use IdentificationBundle\WifiIdentification\Service\ErrorCodeResolver;
 use IdentificationBundle\WifiIdentification\WifiIdentConfirmator;
 use IdentificationBundle\WifiIdentification\WifiIdentSMSSender;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
@@ -32,14 +34,26 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @var WifiIdentConfirmator
      */
     private $identConfirmator;
+    /**
+     * @var ErrorCodeResolver
+     */
+    private $errorCodeResolver;
 
     /**
      * PinIdentificationController constructor.
+     * @param WifiIdentSMSSender   $identSMSSender
+     * @param WifiIdentConfirmator $identConfirmator
+     * @param ErrorCodeResolver    $errorCodeResolver
      */
-    public function __construct(WifiIdentSMSSender $identSMSSender, WifiIdentConfirmator $identConfirmator)
+    public function __construct(
+        WifiIdentSMSSender $identSMSSender,
+        WifiIdentConfirmator $identConfirmator,
+        ErrorCodeResolver $errorCodeResolver
+    )
     {
-        $this->identSMSSender   = $identSMSSender;
-        $this->identConfirmator = $identConfirmator;
+        $this->identSMSSender    = $identSMSSender;
+        $this->identConfirmator  = $identConfirmator;
+        $this->errorCodeResolver = $errorCodeResolver;
     }
 
 
@@ -56,12 +70,13 @@ class PinIdentificationController extends AbstractController implements APIContr
         }
 
         $carrierId = $ispData->getCarrierId();
-
         try {
             $this->identSMSSender->sendSMS($carrierId, $mobileNumber);
             return $this->getSimpleJsonResponse('Sent', 200, [], ['success' => true]);
+
         } catch (PinRequestProcessException $exception) {
-            return $this->getSimpleJsonResponse($exception->getBillingMessage(), 200, [], ['success' => false]);
+            $message = $this->errorCodeResolver->resolveMessage($exception->getCode());
+            return $this->getSimpleJsonResponse($message, 200, [], ['success' => false]);
         }
     }
 
@@ -83,13 +98,20 @@ class PinIdentificationController extends AbstractController implements APIContr
 
         $carrierId = $ispData->getCarrierId();
 
-        $this->identConfirmator->confirm(
-            $carrierId,
-            $pinCode,
-            $mobileNumber,
-            $request->getClientIp()
-        );
+        try {
+            $this->identConfirmator->confirm(
+                $carrierId,
+                $pinCode,
+                $mobileNumber,
+                $request->getClientIp()
+            );
+            return $this->getSimpleJsonResponse('Confirmed', 200, [], [
+                'success'     => true,
+                'redirectUrl' => $this->generateUrl('talentica_subscription.subscribe')
+            ]);
 
-        return $this->getSimpleJsonResponse('Sent');
+        } catch (PinVerifyProcessException $exception) {
+            return $this->getSimpleJsonResponse($exception->getBillingMessage(), 200, [], ['success' => false]);
+        }
     }
 }

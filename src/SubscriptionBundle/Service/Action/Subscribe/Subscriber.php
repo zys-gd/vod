@@ -157,7 +157,7 @@ class Subscriber
 
         if ($subscription->getSubscriptionPack()->isFirstSubscriptionPeriodIsFree() &&
             !$subscription->getSubscriptionPack()->isProviderManagedSubscriptions()) {
-            $tierIdWithZeroValue = $this->getPriceTierIdWithZeroValue($subscription->getSubscriptionPack()->getCarrierId());
+            $tierIdWithZeroValue = $this->getPriceTierIdWithZeroValue($subscription->getSubscriptionPack()->getCarrier());
             $subscription->setPromotionTierId($tierIdWithZeroValue);
         }
 
@@ -243,8 +243,8 @@ class Subscriber
     protected function applyResubscribeTierChanges(Subscription $subscription)
     {
         $subscriptionPack = $subscription->getSubscriptionPack();
-        if ($subscriptionPack->isFirstSubscriptionPeriodIsFree() &&
-            $subscriptionPack->isFirstSubscriptionPeriodIsFreeMultiple()
+        if ($subscriptionPack->isFirstSubscriptionPeriodIsFree() /*&&*/
+            /*$subscriptionPack->isFirstSubscriptionPeriodIsFreeMultiple()*/
         ) {
             $tierIdWithZeroValue = $this->getPriceTierIdWithZeroValue($subscriptionPack->getCarrierId());
             $subscription->setPromotionTierId($tierIdWithZeroValue);

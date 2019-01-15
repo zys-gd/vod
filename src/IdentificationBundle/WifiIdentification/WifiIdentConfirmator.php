@@ -12,15 +12,18 @@ namespace IdentificationBundle\WifiIdentification;
 use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
 use IdentificationBundle\BillingFramework\Process\Exception\PinVerifyProcessException;
 use IdentificationBundle\BillingFramework\Process\PinVerifyProcess;
+use IdentificationBundle\Identification\Exception\AlreadyIdentifiedException;
 use IdentificationBundle\Identification\Exception\MissingIdentificationDataException;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
+use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\Common\InternalSMS\PinCodeVerifier;
 use IdentificationBundle\WifiIdentification\Common\RequestProvider;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinVerifyRules;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerProvider;
 use IdentificationBundle\WifiIdentification\Service\IdentFinisher;
 use IdentificationBundle\WifiIdentification\Service\MsisdnCleaner;
+use SubscriptionBundle\Repository\SubscriptionRepository;
 
 class WifiIdentConfirmator
 {
@@ -56,6 +59,14 @@ class WifiIdentConfirmator
      * @var IdentFinisher
      */
     private $identFinisher;
+    /**
+     * @var SubscriptionRepository
+     */
+    private $subscriptionRepository;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
 
     /**
@@ -68,6 +79,8 @@ class WifiIdentConfirmator
      * @param MsisdnCleaner                     $msisdnCleaner
      * @param IdentificationDataStorage         $dataStorage
      * @param IdentFinisher                     $identFinisher
+     * @param SubscriptionRepository            $subscriptionRepository
+     * @param UserRepository                    $userRepository
      */
     public function __construct(
         WifiIdentificationHandlerProvider $handlerProvider,
@@ -77,21 +90,37 @@ class WifiIdentConfirmator
         RequestProvider $requestProvider,
         MsisdnCleaner $msisdnCleaner,
         IdentificationDataStorage $dataStorage,
-        IdentFinisher $identFinisher
+        IdentFinisher $identFinisher,
+        SubscriptionRepository $subscriptionRepository,
+        UserRepository $userRepository
     )
     {
-        $this->handlerProvider   = $handlerProvider;
-        $this->codeVerifier      = $codeVerifier;
-        $this->carrierRepository = $carrierRepository;
-        $this->pinVerifyProcess  = $pinVerifyProcess;
-        $this->requestProvider   = $requestProvider;
-        $this->msisdnCleaner     = $msisdnCleaner;
-        $this->dataStorage       = $dataStorage;
-        $this->identFinisher     = $identFinisher;
+        $this->handlerProvider        = $handlerProvider;
+        $this->codeVerifier           = $codeVerifier;
+        $this->carrierRepository      = $carrierRepository;
+        $this->pinVerifyProcess       = $pinVerifyProcess;
+        $this->requestProvider        = $requestProvider;
+        $this->msisdnCleaner          = $msisdnCleaner;
+        $this->dataStorage            = $dataStorage;
+        $this->identFinisher          = $identFinisher;
+        $this->subscriptionRepository = $subscriptionRepository;
+        $this->userRepository         = $userRepository;
     }
 
-    public function confirm(int $carrierId, string $pinCode, string $mobileNumber, string $ip): bool
+    /**
+     * @param int    $carrierId
+     * @param string $pinCode
+     * @param string $mobileNumber
+     * @param string $ip
+     * @throws AlreadyIdentifiedException
+     * @throws MissingIdentificationDataException
+     */
+    public function confirm(int $carrierId, string $pinCode, string $mobileNumber, string $ip)
     {
+        if ($this->userRepository->findOneByMsisdn($mobileNumber)) {
+            throw new AlreadyIdentifiedException('User is already exists');
+        }
+
         /** @var PinRequestResult $pinRequestResult */
         $pinRequestResult = $this->dataStorage->readPreviousOperationResult('pinRequest');
         if (!$pinRequestResult) {
@@ -102,7 +131,11 @@ class WifiIdentConfirmator
         $handler = $this->handlerProvider->get($carrier);
 
         if (!$pinRequestResult->isNeedVerifyRequest()) {
-            return $this->codeVerifier->verifyPinCode($pinCode);
+            $isValid = $this->codeVerifier->verifyPinCode($pinCode);
+            if (!$isValid) {
+                throw new PinVerifyProcessException('pinCode is not valid');
+            }
+            return;
         }
 
         if ($handler instanceof HasCustomPinVerifyRules) {
@@ -123,21 +156,18 @@ class WifiIdentConfirmator
 
         try {
             $result = $this->pinVerifyProcess->doPinVerify($parameters);
-
             if ($handler instanceof HasCustomPinVerifyRules) {
                 $handler->afterSuccessfulPinVerify($result);
             }
-
             $this->identFinisher->finish($msisdn, $carrier, $ip);
 
         } catch (PinVerifyProcessException $exception) {
-
             if ($handler instanceof HasCustomPinVerifyRules) {
                 $handler->afterFailedPinVerify($exception);
             }
+            throw $exception;
         }
 
-        return true;
     }
 
 }

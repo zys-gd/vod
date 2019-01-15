@@ -12,6 +12,7 @@ services:
         - '@SubscriptionBundle\Service\Notification\Common\ProcessIdExtractor'
         - '@router'
         - '@SubscriptionBundle\Service\Notification\Impl\NotificationHandlerProvider'
+        - '@SubscriptionBundle\Service\Notification\Common\ShortUrlHashGenerator'
 
   SubscriptionBundle\Service\Notification\Common\MessageCompiler:
         arguments:
@@ -20,6 +21,8 @@ services:
           - '@SubscriptionBundle\Service\Notification\Common\SMSTextProvider'
 
   SubscriptionBundle\Service\Notification\Common\ProcessIdExtractor: ~
+
+  SubscriptionBundle\Service\Notification\Common\ShortUrlHashGenerator: ~
 
   SubscriptionBundle\Service\Notification\Common\SMSTextProvider:
           arguments: ['%sms.notification.messages%', '@IdentificationBundle\Repository\CarrierRepositoryInterface']

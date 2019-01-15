@@ -3,6 +3,7 @@
 namespace SubscriptionBundle\Service;
 
 use IdentificationBundle\Entity\User;
+use IdentificationBundle\Identification\DTO\IdentificationData;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\UserRepository;
 use Psr\Log\LoggerInterface;
@@ -24,6 +25,20 @@ class UserExtractor
         $this->router         = $router;
         $this->logger         = $logger;
         $this->userRepository = $userRepository;
+    }
+
+
+    public function getUserByIdentificationData(IdentificationData $identificationData)
+    {
+        /** @var User $user */
+        $user = $this->userRepository->findOneByIdentificationToken($identificationData->getIdentificationToken());
+
+        $this->logger->debug('Obtained user', [
+            'userUuid' => $user->getUuid(),
+            'msidsn'   => $user->getIdentifier()
+        ]);
+
+        return $user;
     }
 
     /**

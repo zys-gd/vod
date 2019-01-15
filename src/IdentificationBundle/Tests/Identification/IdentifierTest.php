@@ -54,6 +54,8 @@ class IdentifierTest extends TestCase
      */
     private $session;
 
+    private $dataStorage;
+
     protected function setUp()/* The :void return type declaration that should be here would cause a BC issue */
     {
 
@@ -66,13 +68,16 @@ class IdentifierTest extends TestCase
 
         $this->session = new Session(new MockArraySessionStorage());
 
+        $this->dataStorage = new \IdentificationBundle\Identification\Service\IdentificationDataStorage($this->session);
+
 
         $this->identifier = new \IdentificationBundle\Identification\Identifier(
             $this->handlerProvider,
             $this->carrierRepository,
             $this->logger,
             $this->commonFlowHandler,
-            $this->headerEnrichmentHandler
+            $this->headerEnrichmentHandler,
+            $this->dataStorage
         );
 
         $this->carrierRepository->allows([

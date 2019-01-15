@@ -27,39 +27,40 @@ class LoadSubscriptionPackData extends AbstractFixture implements ContainerAware
         $data = FixtureDataLoader::loadDataFromJSONFile(__DIR__ . '/Data/', 'subscription_packs.json');
 
         foreach ($data as $row) {
-            $id                                  = $row['id'];
-            $country_uuid                        = $row['country_uuid'];
-            $status                              = $row['status'];
-            $name                                = $row['name'];
-            $description                         = $row['description'];
-            $carrier_uuid                        = $row['carrier_uuid'];
-            $periodicity                         = $row['periodicity'];
-            $custom_renew_period                 = $row['custom_renew_period'];
-            $grace_period                        = $row['grace_period'];
-            $price                               = $row['price'];
-            $currency                            = $row['currency'];
+            $id                             = $row['id'];
+            $country_uuid                   = $row['country_uuid'];
+            $status                         = $row['status'];
+            $name                           = $row['name'];
+            $description                    = $row['description'];
+            $carrier_uuid                   = $row['carrier_uuid'];
+            $periodicity                    = $row['periodicity'];
+            $custom_renew_period            = $row['custom_renew_period'];
+            $grace_period                   = $row['grace_period'];
+            $price                          = $row['price'];
+            $currency                       = $row['currency'];
             $credits                             = $row['credits'];
-            $unlimited_grace_period              = $row['unlimited_grace_period'];
-            $preferred_renewal_start             = $row['preferred_renewal_start'];
-            $preferred_renewal_end               = $row['preferred_renewal_end'];
-            $welcome_sms_text                    = $row['welcome_sms_text'];
-            $renewal_sms_text                    = $row['renewal_sms_text'];
-            $unsubscribe_sms_text                = $row['unsubscribe_sms_text'];
-            $buy_strategy_name                   = $row['buy_strategy_name'];
-            $buy_strategy_id                     = $row['buy_strategy_id'];
-            $renew_strategy_name                 = $row['renew_strategy_name'];
-            $renew_strategy_id                   = $row['renew_strategy_id'];
+            $unlimited_grace_period         = $row['unlimited_grace_period'];
+            $preferred_renewal_start        = $row['preferred_renewal_start'];
+            $preferred_renewal_end          = $row['preferred_renewal_end'];
+            $welcome_sms_text               = $row['welcome_sms_text'];
+            $renewal_sms_text               = $row['renewal_sms_text'];
+            $unsubscribe_sms_text           = $row['unsubscribe_sms_text'];
+            $buy_strategy_name              = $row['buy_strategy_name'];
+            $buy_strategy_id                = $row['buy_strategy_id'];
+            $renew_strategy_name            = $row['renew_strategy_name'];
+            $renew_strategy_id              = $row['renew_strategy_id'];
             $unlimited                           = $row['unlimited'];
-            $is_first_subscription_free          = $row['is_first_subscription_free'];
+            $is_first_subscription_free     = $row['is_first_subscription_free'];
             $is_first_subscription_free_multiple = $row['is_first_subscription_free_multiple'];
             $allow_bonus_credit                  = $row['allow_bonus_credit'];
             $allow_bonus_credit_multiple         = $row['allow_bonus_credit_multiple'];
             $bonus_credit                        = $row['bonus_credit'];
-            $provider_managed_subscriptions      = $row['provider_managed_subscriptions'];
-            $created                             = $row['created'];
-            $updated                             = $row['updated'];
-            $is_resub_allowed                    = $row['is_resub_allowed'];
-            $displayCurrency                     = $row['display_currency'] ?? '';
+            $provider_managed_subscriptions = $row['provider_managed_subscriptions'];
+            $created                        = $row['created'];
+            $updated                        = $row['updated'];
+            $is_resub_allowed               = $row['is_resub_allowed'];
+            $displayCurrency                = $row['display_currency'] ?? '';
+            $tierId                         = $row['tier_id'];
 
 
             $pack = new SubscriptionPack($id);
@@ -102,6 +103,7 @@ class LoadSubscriptionPackData extends AbstractFixture implements ContainerAware
             $pack->setUpdated(new \DateTime($updated));
             $pack->setIsResubAllowed($is_resub_allowed);
             $pack->setDisplayCurrency($displayCurrency);
+            $pack->setTierId((int)$tierId);
 
             $manager->persist($pack);
         }

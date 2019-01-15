@@ -46,6 +46,7 @@ class IdentificationExtension extends Extension
         $service = $container->getDefinition('IdentificationBundle\Identification\Service\RouteProvider');
         $service->replaceArgument(1, $config['wifi_flow_redirect_route']);
         $service->replaceArgument(2, $config['homepage_route']);
+        $service->replaceArgument(3, $config['landing_route']);
     }
 
 }

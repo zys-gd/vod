@@ -97,14 +97,12 @@ class SubscribeAction extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param Request            $request
+     * @param IdentificationData $identificationData
      * @return \Symfony\Component\HttpFoundation\JsonResponse|RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @throws ExistingSubscriptionException
      * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound
-     * @throws \SubscriptionBundle\Exception\PendingSubscriptionException
      */
     public function __invoke(Request $request, IdentificationData $identificationData)
     {
@@ -119,7 +117,7 @@ class SubscribeAction extends Controller
             return $result;
         }*/
 
-        $user = $this->userExtractor->getUserFromRequest($request);
+        $user = $this->userExtractor->getUserByIdentificationData($identificationData);
 
 
         $subscriber = $this->handlerProvider->getSubscriber($user->getCarrier());

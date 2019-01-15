@@ -16,6 +16,7 @@ use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\API\RequestSender;
 use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkException;
+use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkProcessException;
 
 class PinVerifyProcess
 {
@@ -43,9 +44,9 @@ class PinVerifyProcess
     {
         try {
             return $this->requestSender->sendProcessRequest(self::PROCESS_METHOD_PIN_VERIFY, $parameters);
-        } catch (BillingFrameworkException $exception) {
+        } catch (BillingFrameworkProcessException $exception) {
             $this->logger->error('Error while trying to `pinVerify`', ['params' => $parameters]);
-            throw new PinVerifyProcessException('Error while trying to `pinVerify`', 0, $exception);
+            throw new PinVerifyProcessException('Error while trying to `pinVerify`', $exception->getBillingCode(), $exception->getResponse()->getMessage());
         }
     }
 }

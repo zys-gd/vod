@@ -10,20 +10,22 @@
 
     <form class="x-subscribe-send-pin-block">
         <div>
-            <input type="text" name="mobile_number">
+            <input type="text" name="mobile_number" placeholder="Mobile Number" required>
         </div>
         <div>
-            <button type="button" class="x-send-pin-button">Send SMS pin code</button>
+            <button type="submit" class="x-send-pin-button">Send SMS pin code</button>
         </div>
     </form>
 
     <form class="x-subscribe-confirm-pin-block" style="display: none">
         <div>
-            <input type="text" name="mobile_number">
-            <input type="text" name="pin_code">
+            <input type="text" name="mobile_number" placeholder="Mobile Number" required>
         </div>
         <div>
-            <button type="button" class="x-confirm-pin-button">Confirm SMS</button>
+            <input type="text" name="pin_code" placeholder="Pin Code" required>
+        </div>
+        <div>
+            <button type="submit" class="x-confirm-pin-button">Confirm SMS</button>
         </div>
     </form>
 
@@ -31,9 +33,9 @@
 
     <script>
 
-        $(document).on('click', '.x-send-pin-button', function (e) {
+        $(document).on('submit', '.x-subscribe-send-pin-block', function (e) {
 
-            var form = $(this).parents('.x-subscribe-send-pin-block');
+            var form = $(this);
 
             $.ajax({
                 url    : "{{ path('send_sms_pin_code') }}",
@@ -53,16 +55,21 @@
             e.stopPropagation();
         });
 
-        $(document).on('click', '.x-confirm-pin-button', function (e) {
+        $(document).on('submit', '.x-subscribe-confirm-pin-block', function (e) {
 
-            var form = $(this).parents('.x-subscribe-confirm-pin-block');
+            var form = $(this);
 
             $.ajax({
                 url    : "{{ path('confirm_sms_pin_code') }}",
                 method : "POST",
                 data   : form.serialize(),
-                success: function (html) {
-                    $('.x-subscribe-confirm-pin-block').hide();
+                success: function (result) {
+                    if (result.data.success) {
+                        $('.x-subscribe-confirm-pin-block').hide();
+                        window.location = result.data.redirectUrl;
+                    } else {
+                        alert(result.data.message);
+                    }
                 }
             });
 
