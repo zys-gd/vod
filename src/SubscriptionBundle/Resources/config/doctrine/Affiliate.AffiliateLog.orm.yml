@@ -1,7 +1,7 @@
-SubscriptionBundle\Affiliate\Entity\AffiliateLog:
+SubscriptionBundle\Entity\Affiliate\AffiliateLog:
     type: entity
     table: affiliate_log
-    repositoryClass: SubscriptionBundle\Affiliate\Repository\AffiliateLogRepository
+    repositoryClass: SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository
     indexes:
       user_msisdn_index:
           columns: [ user_msisdn ]

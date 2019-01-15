@@ -1,6 +1,6 @@
 <?php
 
-namespace SubscriptionBundle\Affiliate\Repository;
+namespace SubscriptionBundle\Repository\Affiliate;
 
 use Doctrine\ORM\EntityRepository;
 

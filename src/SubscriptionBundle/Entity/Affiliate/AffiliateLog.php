@@ -1,6 +1,6 @@
 <?php
 
-namespace SubscriptionBundle\Affiliate\Entity;
+namespace SubscriptionBundle\Entity\Affiliate;
 
 use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 

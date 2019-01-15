@@ -2,7 +2,7 @@ services:
     SubscriptionBundle\Affiliate\Service\AffiliateSender: ~
     SubscriptionBundle\Affiliate\Service\UserInfoMapper: ~
 
-    SubscriptionBundle\Affiliate\Repository\AffiliateLogRepository:
+    SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
-            - SubscriptionBundle\Affiliate\Entity\AffiliateLog
+            - SubscriptionBundle\Entity\Affiliate\AffiliateLog
