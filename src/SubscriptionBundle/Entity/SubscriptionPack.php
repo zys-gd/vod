@@ -88,6 +88,15 @@ class SubscriptionPack implements HasUuid
 
     /**
      * @var int
+     *
+     *
+     */
+    private $credits = 0;
+
+    /**
+     * @var int
+     *
+     *
      */
     private $periodicity = 7;
 
@@ -154,7 +163,32 @@ class SubscriptionPack implements HasUuid
     /**
      * @var boolean
      */
+    private $unlimited = 0;
+
+    /**
+     * @var boolean
+     */
+    private $firstSubscriptionPeriodIsFreeMultiple = false;
+
+    /**
+     * @var boolean
+     */
     private $firstSubscriptionPeriodIsFree = false;
+
+    /**
+     * @var boolean
+     */
+    private $allowBonusCredit = false;
+
+    /**
+     * @var boolean
+     */
+    private $allowBonusCreditMultiple = false;
+
+    /**
+     * @var integer
+     */
+    private $bonusCredit = 0;
 
     /**
      * @var boolean
@@ -171,15 +205,12 @@ class SubscriptionPack implements HasUuid
      */
     private $updated;
 
-    private $tierId;
-
-
     /**
-     * @var boolean
+     * SubscriptionPack constructor
      *
-     *
+     * @param string $uuid
      */
-    private $unlimited = 0;
+    private $tierId;
 
     public function __construct(string $uuid)
     {
@@ -413,6 +444,22 @@ class SubscriptionPack implements HasUuid
     /**
      * @return int
      */
+    public function getCredits()
+    {
+        return $this->credits;
+    }
+
+    /**
+     * @param int $credits
+     */
+    public function setCredits($credits)
+    {
+        $this->credits = $credits;
+    }
+
+    /**
+     * @return int
+     */
     public function getPeriodicity()
     {
         return $this->periodicity;
@@ -621,6 +668,38 @@ class SubscriptionPack implements HasUuid
     /**
      * @return bool
      */
+    public function isUnlimited()
+    {
+        return $this->unlimited;
+    }
+
+    /**
+     * @param bool $unlimited
+     */
+    public function setUnlimited($unlimited)
+    {
+        $this->unlimited = $unlimited;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFirstSubscriptionPeriodIsFreeMultiple()
+    {
+        return $this->firstSubscriptionPeriodIsFreeMultiple;
+    }
+
+    /**
+     * @param bool $firstSubscriptionPeriodIsFreeMultiple
+     */
+    public function setFirstSubscriptionPeriodIsFreeMultiple($firstSubscriptionPeriodIsFreeMultiple)
+    {
+        $this->firstSubscriptionPeriodIsFreeMultiple = $firstSubscriptionPeriodIsFreeMultiple;
+    }
+
+    /**
+     * @return bool
+     */
     public function isFirstSubscriptionPeriodIsFree()
     {
         return $this->firstSubscriptionPeriodIsFree;
@@ -632,6 +711,54 @@ class SubscriptionPack implements HasUuid
     public function setFirstSubscriptionPeriodIsFree($firstSubscriptionPeriodIsFree)
     {
         $this->firstSubscriptionPeriodIsFree = $firstSubscriptionPeriodIsFree;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAllowBonusCredit()
+    {
+        return $this->allowBonusCredit;
+    }
+
+    /**
+     * @param bool $allowBonusCredit
+     */
+    public function setAllowBonusCredit($allowBonusCredit)
+    {
+        $this->allowBonusCredit = $allowBonusCredit;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAllowBonusCreditMultiple()
+    {
+        return $this->allowBonusCreditMultiple;
+    }
+
+    /**
+     * @param bool $allowBonusCreditMultiple
+     */
+    public function setAllowBonusCreditMultiple($allowBonusCreditMultiple)
+    {
+        $this->allowBonusCreditMultiple = $allowBonusCreditMultiple;
+    }
+
+    /**
+     * @return int
+     */
+    public function getBonusCredit()
+    {
+        return $this->bonusCredit;
+    }
+
+    /**
+     * @param bool $bonusCredit
+     */
+    public function setBonusCredit($bonusCredit)
+    {
+        $this->bonusCredit = $bonusCredit;
     }
 
     /**

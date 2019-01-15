@@ -38,6 +38,7 @@ class LoadSubscriptionPackData extends AbstractFixture implements ContainerAware
             $grace_period                   = $row['grace_period'];
             $price                          = $row['price'];
             $currency                       = $row['currency'];
+            $credits                             = $row['credits'];
             $unlimited_grace_period         = $row['unlimited_grace_period'];
             $preferred_renewal_start        = $row['preferred_renewal_start'];
             $preferred_renewal_end          = $row['preferred_renewal_end'];
@@ -48,7 +49,12 @@ class LoadSubscriptionPackData extends AbstractFixture implements ContainerAware
             $buy_strategy_id                = $row['buy_strategy_id'];
             $renew_strategy_name            = $row['renew_strategy_name'];
             $renew_strategy_id              = $row['renew_strategy_id'];
+            $unlimited                           = $row['unlimited'];
             $is_first_subscription_free     = $row['is_first_subscription_free'];
+            $is_first_subscription_free_multiple = $row['is_first_subscription_free_multiple'];
+            $allow_bonus_credit                  = $row['allow_bonus_credit'];
+            $allow_bonus_credit_multiple         = $row['allow_bonus_credit_multiple'];
+            $bonus_credit                        = $row['bonus_credit'];
             $provider_managed_subscriptions = $row['provider_managed_subscriptions'];
             $created                        = $row['created'];
             $updated                        = $row['updated'];
@@ -72,6 +78,7 @@ class LoadSubscriptionPackData extends AbstractFixture implements ContainerAware
             $pack->setCarrier($this->getReference(sprintf('carrier_%s', $carrier_uuid)));
             $pack->setPrice($price);
             $pack->setCurrency($currency);
+            $pack->setCredits($credits);
             $pack->setPeriodicity($periodicity);
             $pack->setCustomRenewPeriod($custom_renew_period);
             $pack->setGracePeriod($grace_period);
@@ -85,7 +92,12 @@ class LoadSubscriptionPackData extends AbstractFixture implements ContainerAware
             $pack->setBuyStrategyId($buy_strategy_id);
             $pack->setRenewStrategy($renew_strategy_name);
             $pack->setRenewStrategyId($renew_strategy_id);
+            $pack->setUnlimited($unlimited);
             $pack->setFirstSubscriptionPeriodIsFree($is_first_subscription_free);
+            $pack->setFirstSubscriptionPeriodIsFreeMultiple($is_first_subscription_free_multiple);
+            $pack->setAllowBonusCredit($allow_bonus_credit);
+            $pack->setAllowBonusCreditMultiple($allow_bonus_credit_multiple);
+            $pack->setBonusCredit($bonus_credit);
             $pack->setProviderManagedSubscriptions($provider_managed_subscriptions);
             $pack->setCreated(new \DateTime($created));
             $pack->setUpdated(new \DateTime($updated));
