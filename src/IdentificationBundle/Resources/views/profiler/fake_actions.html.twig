@@ -1,0 +1,45 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+
+{% block toolbar %}
+
+
+    {% set icon %}
+        <span class="sf-toolbar-value" style="display: inline-block;">
+            Actions
+        </span>
+    {% endset %}
+
+    {% set text %}
+        {#<div class="sf-toolbar-info-piece">#}
+            {#<b><a href="/?f=1">Force ident</a></b>#}
+            {#<span class="sf-toolbar-status "></span>#}
+        {#</div>#}
+
+        {#<div class="sf-toolbar-info-piece">#}
+            {#<b><a href="{{ path('talentica_subscription.fake_subscribe') }}?key=son74fat">Subscribe</a></b>#}
+            {#<span class="sf-toolbar-status "></span>#}
+        {#</div>#}
+
+        {#<div class="sf-toolbar-info-piece">#}
+            {#<b><a href="{{ path('talentica_subscription.fake_unsubscribe') }}?key=son74fat">Unsubscribe</a></b>#}
+            {#<span class="sf-toolbar-status "></span>#}
+        {#</div>#}
+
+        {#<div class="sf-toolbar-info-piece">#}
+            {#<b><a href="/_debug_">Debug</a></b>#}
+            {#<span class="sf-toolbar-status "></span>#}
+        {#</div>#}
+    {% endset %}
+
+    {% block head %}
+        <style type="text/css">
+            .sf-toolbar-status-slateblue {
+                background-color: slateblue;
+                color: #FFF;
+            }
+        </style>
+    {% endblock head %}
+
+    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { 'link': false, 'status':'slateblue' }) }}
+{% endblock %}

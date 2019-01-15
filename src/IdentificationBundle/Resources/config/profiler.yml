@@ -4,3 +4,12 @@ services:
           - { name: data_collector, template: '@Identification/profiler/debug_ident.html.twig', id: 'identification.ident_data_collector' }
       arguments:
         ['@IdentificationBundle\Identification\Service\IdentificationDataStorage']
+
+ IdentificationBundle\Profiler\FakeCarrierIdentifier:
+   tags:
+     - {name: data_collector, template: '@Identification/profiler/fake_carrier_identifier.html.twig', id: 'identification.fake_carrier_identifier'}
+   arguments: ['@App\Domain\Repository\CarrierRepository']
+
+ IdentificationBundle\Profiler\FakeActions:
+   tags:
+     - { name: data_collector, template: '@Identification/profiler/fake_actions.html.twig', id: 'identification.fake_actions' }

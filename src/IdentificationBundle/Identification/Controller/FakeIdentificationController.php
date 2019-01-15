@@ -4,6 +4,7 @@ namespace IdentificationBundle\Identification\Controller;
 
 use CountryCarrierDetectionBundle\Service\Interfaces\ICountryCarrierDetection;
 use Doctrine\ORM\EntityManager;
+use IdentificationBundle\Identification\Exception\MissingCarrierException;
 use IdentificationBundle\Identification\Identifier;
 use IdentificationBundle\Identification\Service\ISPResolver;
 use IdentificationBundle\Identification\Service\TokenGenerator;
@@ -11,6 +12,7 @@ use IdentificationBundle\Identification\Service\UserFactory;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -93,7 +95,7 @@ class FakeIdentificationController extends AbstractController
      * @Route("/identify/fake",name="fake_identify")
      * @param Request $request
      *
-     * @return Response
+     * @return RedirectResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -118,7 +120,11 @@ class FakeIdentificationController extends AbstractController
             $carrierISP       = $this->carrierDetection->getCarrier($ipAddress);
             $billingCarrierId = null;
             if ($carrierISP) {
-                $billingCarrierId = $this->resolveISP($carrierISP);
+                try{
+                    $billingCarrierId = $this->resolveISP($carrierISP);
+                } catch (MissingCarrierException $exception) {
+                    throw $exception;
+                }
             }
             // Set session data
             $ispDetectionData = [
@@ -136,8 +142,20 @@ class FakeIdentificationController extends AbstractController
             $this->entityManager->persist($user);
             $this->entityManager->flush();
         }
-        // return new RedirectResponse($this->router->generate('homepage'));
-        return new Response();
+        return new RedirectResponse($this->router->generate('index'));
+    }
+
+    /**
+     * @Route("/identify/fake/reset",name="reset_fake_identify")
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    public function resetFakeIdentifyAction(Request $request)
+    {
+        $session = $request->getSession();
+        $session->clear();
+        return new RedirectResponse($this->router->generate('index'));
     }
 
     /**
@@ -154,6 +172,6 @@ class FakeIdentificationController extends AbstractController
                 break;
             }
         }
-        return null;
+        throw new MissingCarrierException('Carrier not found');
     }
 }
