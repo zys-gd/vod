@@ -54,8 +54,8 @@ class SubscribeParametersProvider
         $isProviderManaged          = $subscription->getSubscriptionPack()->isProviderManagedSubscriptions();
 
         $parameters->chargeTier = isset($promotionalTierId) && $isProviderManaged
-            ? $promotionalTierId :
-            $subscription->getSubscriptionPack()->getTierId();
+            ? $promotionalTierId
+            : $subscription->getSubscriptionPack()->getTierId();
 
         $parameters->chargeStrategy = $subscription->getSubscriptionPack()->getBuyStrategyId();
         if ($request = $this->requestStack->getCurrentRequest()) {

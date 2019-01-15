@@ -14,6 +14,10 @@ use IdentificationBundle\Entity\User;
 
 class UserRepository extends EntityRepository
 {
+    public function findOneByMsisdn(string $msisdn): ?User
+    {
+        return $this->findOneBy(['msisdn' => $msisdn]);
+    }
 
     public function findOneByIdentificationToken(string $token): ?User
     {

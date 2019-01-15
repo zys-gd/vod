@@ -27,7 +27,8 @@
     "allow_bonus_credit_multiple": 0,
     "provider_managed_subscriptions": 0,
     "created": "2017-12-07 13:55:10",
-    "updated": "2018-03-29 11:56:06"
+    "updated": "2018-03-29 11:56:06",
+    "tier_id": 2
   },
   {
     "id": 3,
@@ -56,6 +57,7 @@
     "is_first_subscription_free": 1,
     "provider_managed_subscriptions": 1,
     "created": "2017-12-07 13:58:19",
-    "updated": "2017-12-07 13:58:19"
+    "updated": "2017-12-07 13:58:19",
+    "tier_id": 2
   }
 ]

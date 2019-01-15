@@ -62,7 +62,11 @@
                 method : "POST",
                 data   : form.serialize(),
                 success: function (html) {
-                    $('.x-subscribe-confirm-pin-block').hide();
+                    if (result.data.success) {
+                        $('.x-subscribe-confirm-pin-block').hide();
+                    } else {
+                        alert(result.data.message);
+                    }
                 }
             });
 

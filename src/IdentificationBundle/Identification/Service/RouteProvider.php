@@ -47,7 +47,7 @@ class RouteProvider
 
     public function getLinkToHomepage(): string
     {
-        return $this->router->generate($this->homepageRoute);
+        return $this->router->generate($this->homepageRoute, [], RouterInterface::ABSOLUTE_URL);
     }
 
     public function getAbsoluteUrlToHomepage(): string

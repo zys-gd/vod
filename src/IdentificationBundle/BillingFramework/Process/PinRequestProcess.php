@@ -50,7 +50,6 @@ class PinRequestProcess
             $userIdentifier    = $data['user_identifier'] ?? false;
 
             $result = new PinRequestResult($userIdentifier, (bool)$needVerifyRequest, $data);
-
             return $result;
 
         } catch (BillingFrameworkProcessException $exception) {

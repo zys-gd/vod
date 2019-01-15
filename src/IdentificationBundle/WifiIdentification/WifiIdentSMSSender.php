@@ -11,8 +11,11 @@ namespace IdentificationBundle\WifiIdentification;
 
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\BillingFramework\Process\PinRequestProcess;
+use IdentificationBundle\Identification\Exception\AlreadyIdentifiedException;
+use IdentificationBundle\Identification\Exception\FailedIdentificationException;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
+use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\Common\InternalSMS\PinCodeSaver;
 use IdentificationBundle\WifiIdentification\Common\RequestProvider;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinRequestRules;
@@ -55,6 +58,10 @@ class WifiIdentSMSSender
      * @var IdentificationDataStorage
      */
     private $dataStorage;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
 
     /**
@@ -67,6 +74,7 @@ class WifiIdentSMSSender
      * @param PinCodeSaver                      $pinCodeSaver
      * @param RequestProvider                   $requestProvider
      * @param IdentificationDataStorage         $dataStorage
+     * @param UserRepository                    $userRepository
      */
     public function __construct(
         WifiIdentificationHandlerProvider $handlerProvider,
@@ -76,7 +84,8 @@ class WifiIdentSMSSender
         MsisdnCleaner $cleaner,
         PinCodeSaver $pinCodeSaver,
         RequestProvider $requestProvider,
-        IdentificationDataStorage $dataStorage
+        IdentificationDataStorage $dataStorage,
+        UserRepository $userRepository
     )
     {
         $this->handlerProvider   = $handlerProvider;
@@ -87,10 +96,15 @@ class WifiIdentSMSSender
         $this->pinCodeSaver      = $pinCodeSaver;
         $this->requestProvider   = $requestProvider;
         $this->dataStorage       = $dataStorage;
+        $this->userRepository    = $userRepository;
     }
 
     public function sendSMS(int $carrierId, string $mobileNumber): void
     {
+        if ($this->userRepository->findOneByMsisdn($mobileNumber)) {
+            throw new AlreadyIdentifiedException('User is already identified');
+        }
+
         $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
 
         $handler = $this->handlerProvider->get($carrier);

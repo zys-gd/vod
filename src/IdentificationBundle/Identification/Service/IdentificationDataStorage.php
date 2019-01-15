@@ -9,7 +9,6 @@
 namespace IdentificationBundle\Identification\Service;
 
 
-use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class IdentificationDataStorage

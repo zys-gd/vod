@@ -10,6 +10,8 @@ namespace SubscriptionBundle\Carriers\EtisalatEG\Subscribe;
 
 
 use App\Domain\Constants\ConstBillingCarrierId;
+use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
+use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use Symfony\Component\HttpFoundation\Request;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerInterface;
@@ -18,6 +20,20 @@ use IdentificationBundle\Entity\User;
 
 class EtisalatEGSubscribeHander implements SubscriptionHandlerInterface, HasCommonFlow
 {
+    /**
+     * @var IdentificationDataStorage
+     */
+    private $identificationDataStorage;
+
+
+    /**
+     * EtisalatEGSubscribeHander constructor.
+     * @param IdentificationDataStorage $identificationDataStorage
+     */
+    public function __construct(IdentificationDataStorage $identificationDataStorage)
+    {
+        $this->identificationDataStorage = $identificationDataStorage;
+    }
 
     public function canHandle(\IdentificationBundle\Entity\CarrierInterface $carrier): bool
     {
@@ -28,8 +44,13 @@ class EtisalatEGSubscribeHander implements SubscriptionHandlerInterface, HasComm
 
     public function getAdditionalSubscribeParams(Request $request, User $User): array
     {
+        /** @var PinRequestResult $pinRequestResult */
+        $pinRequestResult = $this->identificationDataStorage->readPreviousOperationResult('pinRequest');
+
+        $contractId = $pinRequestResult->getRawData()['subscription_contract_id'];
+
         return [
-            'subscription_contract_id' => $request->get('subscription_contract_id'),
+            'subscription_contract_id' => $contractId,
             'url_id'                   => $User->getUrlId()
         ];
     }

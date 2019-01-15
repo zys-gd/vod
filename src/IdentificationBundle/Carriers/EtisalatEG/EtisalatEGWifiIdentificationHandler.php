@@ -61,7 +61,11 @@ class EtisalatEGWifiIdentificationHandler implements
 
     public function getAdditionalPinVerifyParams(PinRequestResult $pinRequestResult): array
     {
-        return ['client_user' => $pinRequestResult->getRawData()['subscription_contract_id']];
+        $contractId = $pinRequestResult->getRawData()['subscription_contract_id'];
+
+        return [
+            'client_user' => $contractId
+        ];
     }
 
     public function afterSuccessfulPinVerify(ProcessResult $parameters): void

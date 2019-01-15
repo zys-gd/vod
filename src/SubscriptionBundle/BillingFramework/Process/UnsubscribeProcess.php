@@ -14,6 +14,7 @@ use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\API\RequestSender;
 use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkException;
+use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkProcessException;
 use SubscriptionBundle\BillingFramework\Process\Exception\UnsubscribingProcessException;
 
 class UnsubscribeProcess
@@ -44,14 +45,24 @@ class UnsubscribeProcess
         $this->logger        = $logger;
     }
 
+    /**
+     * @param ProcessRequestParameters $parameters
+     * @return ProcessResult
+     * @throws UnsubscribingProcessException
+     */
     public function doUnsubscribe(ProcessRequestParameters $parameters): ProcessResult
     {
         try {
             return $this->requestSender->sendProcessRequest(self::PROCESS_METHOD_UNSUBSCRIBE, $parameters);
+        } catch (BillingFrameworkProcessException $exception) {
+            $this->logger->error('Error while trying to unsubscribe', ['subscriptionId' => $parameters->clientId, 'params' => $parameters]);
+            throw new UnsubscribingProcessException('Error while trying to unsubscribe', $exception->getBillingCode(), $exception->getResponse()->getMessage());
+
         } catch (BillingFrameworkException $exception) {
             $this->logger->error('Error while trying to unsubscribe', ['subscriptionId' => $parameters->clientId, 'params' => $parameters]);
             throw new UnsubscribingProcessException('Error while trying to unsubscribe', 0, $exception);
         }
+
     }
 
 }

@@ -12,7 +12,7 @@ namespace SubscriptionBundle\BillingFramework\Process\Exception;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use Throwable;
 
-class SubscribingProcessException extends \RuntimeException
+class SubscribingProcessException extends AbstractProcessException
 {
 
 }

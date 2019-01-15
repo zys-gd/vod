@@ -8,6 +8,7 @@ services:
         class: SubscriptionBundle\Carriers\EtisalatEG\Subscribe\EtisalatEGSubscribeHander
         tags:
           - {name: subscription.subscription_handler}
+        arguments: ['@IdentificationBundle\Identification\Service\IdentificationDataStorage']
 
     subscription.etisalat_eg_unsubscribe_callback_handler:
         class: SubscriptionBundle\Carriers\EtisalatEG\Callback\EtisalatEGCallbackUnsubscribe
