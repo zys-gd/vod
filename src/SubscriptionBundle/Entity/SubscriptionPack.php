@@ -843,20 +843,4 @@ class SubscriptionPack implements HasUuid
     }
 
 
-    /**
-     * @return bool
-     */
-    public function isUnlimited()
-    {
-        return $this->unlimited;
-    }
-
-    /**
-     * @param bool $unlimited
-     */
-    public function setUnlimited($unlimited)
-    {
-        $this->unlimited = $unlimited;
-    }
-
 }
