@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class LPController extends AbstractController implements AppControllerInterface
 {
     /**
+     * @\IdentificationBundle\Controller\Annotation\NoRedirectToWhoops
      * @Route("/lp",name="landing")
      * @param Request $request
      * @return Response
@@ -26,7 +27,6 @@ class LPController extends AbstractController implements AppControllerInterface
         $session = $request->getSession();
         return $this->render('@App/Common/landing.html.twig', [
             'isp_detection_data' => $session->get('isp_detection_data'),
-            'is_wifi_flow'       => $session->get('is_wifi_flow')
         ]);
     }
 }

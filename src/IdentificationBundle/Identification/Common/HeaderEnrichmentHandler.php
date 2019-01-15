@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Exception\FailedIdentificationException;
 use IdentificationBundle\Identification\Handler\HasHeaderEnrichment;
+use IdentificationBundle\Identification\Service\IdentificationStatus;
 use IdentificationBundle\Identification\Service\UserFactory;
 use IdentificationBundle\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,18 +32,30 @@ class HeaderEnrichmentHandler
      * @var UserRepository
      */
     private $userRepository;
+    /**
+     * @var IdentificationStatus
+     */
+    private $identificationStatus;
 
 
     /**
      * HeaderEnrichmentHandler constructor.
      * @param UserFactory            $userFactory
      * @param EntityManagerInterface $entityManager
+     * @param UserRepository         $userRepository
+     * @param IdentificationStatus   $identificationStatus
      */
-    public function __construct(UserFactory $userFactory, EntityManagerInterface $entityManager, UserRepository $userRepository)
+    public function __construct(
+        UserFactory $userFactory,
+        EntityManagerInterface $entityManager,
+        UserRepository $userRepository,
+        IdentificationStatus $identificationStatus
+    )
     {
-        $this->userFactory    = $userFactory;
-        $this->entityManager  = $entityManager;
-        $this->userRepository = $userRepository;
+        $this->userFactory          = $userFactory;
+        $this->entityManager        = $entityManager;
+        $this->userRepository       = $userRepository;
+        $this->identificationStatus = $identificationStatus;
     }
 
     /**
@@ -70,6 +83,9 @@ class HeaderEnrichmentHandler
         } else {
             $user->setIdentifier($token);
         }
+
         $this->entityManager->flush();
+        $this->identificationStatus->finishIdent($token, $user);
+
     }
 }

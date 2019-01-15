@@ -33,6 +33,7 @@ class IdentificationExtension extends Extension
         $loader->load('controllers.yml');
         $loader->load('repositories.yml');
         $loader->load('profiler.yml');
+        $loader->load('twig.yml');
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config/carriers'));
         $loader->load('etisalat-eg.yml');

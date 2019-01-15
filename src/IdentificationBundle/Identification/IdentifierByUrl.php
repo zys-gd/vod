@@ -11,7 +11,7 @@ namespace IdentificationBundle\Identification;
 
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Identification\Exception\FailedIdentificationException;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\IdentificationStatus;
 use IdentificationBundle\Identification\Service\TokenGenerator;
 use IdentificationBundle\Repository\UserRepository;
 
@@ -22,9 +22,9 @@ class IdentifierByUrl
      */
     private $userRepository;
     /**
-     * @var IdentificationDataStorage
+     * @var IdentificationStatus
      */
-    private $dataStorage;
+    private $identificationStatus;
     /**
      * @var TokenGenerator
      */
@@ -37,17 +37,22 @@ class IdentifierByUrl
 
     /**
      * IdentifierByUrl constructor.
-     * @param UserRepository            $userRepository
-     * @param IdentificationDataStorage $dataStorage
-     * @param TokenGenerator            $generator
-     * @param EntityManagerInterface    $entityManager
+     * @param UserRepository         $userRepository
+     * @param IdentificationStatus   $identificationStatus
+     * @param TokenGenerator         $generator
+     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(UserRepository $userRepository, IdentificationDataStorage $dataStorage, TokenGenerator $generator, EntityManagerInterface $entityManager)
+    public function __construct(
+        UserRepository $userRepository,
+        IdentificationStatus $identificationStatus,
+        TokenGenerator $generator,
+        EntityManagerInterface $entityManager
+    )
     {
-        $this->userRepository = $userRepository;
-        $this->dataStorage    = $dataStorage;
-        $this->tokenGenerator = $generator;
-        $this->entityManager  = $entityManager;
+        $this->userRepository       = $userRepository;
+        $this->identificationStatus = $identificationStatus;
+        $this->tokenGenerator       = $generator;
+        $this->entityManager        = $entityManager;
     }
 
     /**
@@ -61,6 +66,6 @@ class IdentifierByUrl
         }
 
         $token = $user->getIdentificationToken();
-        $this->dataStorage->storeIdentificationToken($token);
+        $this->identificationStatus->finishIdent($token, $user);
     }
 }

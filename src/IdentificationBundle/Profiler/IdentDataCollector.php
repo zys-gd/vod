@@ -9,6 +9,7 @@
 namespace IdentificationBundle\Profiler;
 
 
+use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +17,19 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 class IdentDataCollector extends DataCollector
 {
+    /**
+     * @var IdentificationDataStorage
+     */
+    private $dataStorage;
+
+    /**
+     * IdentDataCollector constructor.
+     */
+    public function __construct(IdentificationDataStorage $dataStorage)
+    {
+        $this->dataStorage = $dataStorage;
+    }
+
 
     /**
      * Collects data for the given Request and Response.
@@ -30,7 +44,7 @@ class IdentDataCollector extends DataCollector
         $this->data['current_identity'] = [
             'isp'            => IdentificationFlowDataExtractor::extractIspDetectionData($session),
             'identification' => IdentificationFlowDataExtractor::extractIdentificationData($session),
-            'wifi_flow'      => $session->get('is_wifi_flow')
+            'wifi_flow'      => (bool)$this->dataStorage->readValue('is_wifi_flow')
         ];
 
     }

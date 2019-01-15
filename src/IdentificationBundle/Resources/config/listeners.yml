@@ -10,3 +10,6 @@ services:
       - '@IdentificationBundle\Identification\Identifier'
       - '@IdentificationBundle\Identification\Service\TokenGenerator'
       - '@IdentificationBundle\Identification\Service\RouteProvider'
+      - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+      - '@IdentificationBundle\Identification\Service\IdentificationStatus'
+      - '@annotations.reader'

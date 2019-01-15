@@ -28,7 +28,7 @@ class IdentificationDataStorage
 
     public function readValue(string $key)
     {
-        return $this->session->get("storage[$key]");
+        return $this->session->get("storage[$key]",'');
     }
 
     public function storeValue(string $key, $value)

@@ -1,6 +1,10 @@
-{% macro common_subscribe_block() %}
+{% macro carrier_select_block() %}
+    No carrier selected
+{% endmacro %}
+
+{% macro common_identify_block() %}
     <a href="{{ url('identify') }}">
-        <button>Big ident button</button>
+        <button>Ident && Subscribe Me</button>
     </a>
 {% endmacro %}
 

@@ -44,6 +44,7 @@ services:
       - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
       - '@IdentificationBundle\BillingFramework\Data\DataProvider'
       - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
+      - '@IdentificationBundle\Identification\Service\IdentificationStatus'
 
   IdentificationBundle\Identification\Service\UserFactory: ~
 
@@ -56,6 +57,7 @@ services:
       - '@IdentificationBundle\Identification\Service\UserFactory'
       - '@doctrine.orm.entity_manager'
       - '@IdentificationBundle\Repository\UserRepository'
+      - '@IdentificationBundle\Identification\Service\IdentificationStatus'
 
   IdentificationBundle\Identification\Service\RouteProvider:
     arguments:
@@ -72,6 +74,9 @@ services:
   IdentificationBundle\Identification\IdentifierByUrl:
     arguments:
       - '@IdentificationBundle\Repository\UserRepository'
-      - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+      - '@IdentificationBundle\Identification\Service\IdentificationStatus'
       - '@IdentificationBundle\Identification\Service\TokenGenerator'
       - '@doctrine.orm.entity_manager'
+
+  IdentificationBundle\Identification\Service\IdentificationStatus:
+    arguments: ['@IdentificationBundle\Identification\Service\IdentificationDataStorage']

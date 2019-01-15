@@ -10,11 +10,14 @@ namespace IdentificationBundle\Listener;
 
 
 use CountryCarrierDetectionBundle\Service\Interfaces\ICountryCarrierDetection;
+use Doctrine\Common\Annotations\AnnotationReader;
+use IdentificationBundle\Controller\Annotation\NoRedirectToWhoops;
 use IdentificationBundle\Controller\ControllerWithIdentification;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\Exception\FailedIdentificationException;
 use IdentificationBundle\Identification\Identifier;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\IdentificationStatus;
 use IdentificationBundle\Identification\Service\ISPResolver;
 use IdentificationBundle\Identification\Service\RouteProvider;
 use IdentificationBundle\Identification\Service\TokenGenerator;
@@ -51,6 +54,18 @@ class IdentifyStartListener
      * @var RouteProvider
      */
     private $routeProvider;
+    /**
+     * @var IdentificationDataStorage
+     */
+    private $dataStorage;
+    /**
+     * @var IdentificationStatus
+     */
+    private $identificationStatus;
+    /**
+     * @var AnnotationReader
+     */
+    private $annotationReader;
 
 
     /**
@@ -61,6 +76,9 @@ class IdentifyStartListener
      * @param Identifier                                                 $identifier
      * @param TokenGenerator                                             $generator
      * @param \IdentificationBundle\Identification\Service\RouteProvider $routeProvider
+     * @param IdentificationDataStorage                                  $dataStorage
+     * @param IdentificationStatus                                       $identificationStatus
+     * @param AnnotationReader                                           $annotationReader
      */
     public function __construct(
         ICountryCarrierDetection $carrierDetection,
@@ -68,15 +86,21 @@ class IdentifyStartListener
         ISPResolver $ISPResolver,
         Identifier $identifier,
         TokenGenerator $generator,
-        RouteProvider $routeProvider
+        RouteProvider $routeProvider,
+        IdentificationDataStorage $dataStorage,
+        IdentificationStatus $identificationStatus,
+        AnnotationReader $annotationReader
     )
     {
-        $this->carrierDetection  = $carrierDetection;
-        $this->carrierRepository = $carrierRepository;
-        $this->ISPResolver       = $ISPResolver;
-        $this->identifier        = $identifier;
-        $this->generator         = $generator;
-        $this->routeProvider     = $routeProvider;
+        $this->carrierDetection     = $carrierDetection;
+        $this->carrierRepository    = $carrierRepository;
+        $this->ISPResolver          = $ISPResolver;
+        $this->identifier           = $identifier;
+        $this->generator            = $generator;
+        $this->routeProvider        = $routeProvider;
+        $this->dataStorage          = $dataStorage;
+        $this->identificationStatus = $identificationStatus;
+        $this->annotationReader     = $annotationReader;
     }
 
     public function onKernelController(FilterControllerEvent $event)
@@ -86,11 +110,15 @@ class IdentifyStartListener
             return;
         }
 
-        $controller = $event->getController();
-        if (is_array($controller)) {
-            $controller = $controller[0] ?? null;
+        $args = $event->getController();
+        if (is_array($args)) {
+            $controller = $args[0] ?? null;
+            $method     = $args[1] ?? null;
+        } else {
+            $method = $controller = $args;
         }
-        if (!$controller) {
+
+        if (!$controller || !$method) {
             return;
         }
 
@@ -100,16 +128,30 @@ class IdentifyStartListener
         $session   = $request->getSession();
         $ipAddress = $request->getClientIp();
         $carrierId = $this->detectCarrier($ipAddress, $session);
+
         if (!$carrierId) {
-            $event->setController(function () use ($session) {
-                return $this->startWifiFlow($session);
-            });
-            return;
+            $response = $this->startWifiFlow($session);
+            if ($this->isRedirectToWhoopsRequired($controller, $method)) {
+                $event->setController(function () use ($response) {
+                    return $response;
+                });
+                return;
+            }
         }
 
         if (!($controller instanceof ControllerWithIdentification)) {
             return;
         }
+
+        if ($this->identificationStatus->isIdentified()) {
+            return null;
+        }
+        if ($this->identificationStatus->isAlreadyTriedToAutoIdent()) {
+            return null;
+        }
+
+        $this->startWifiFlow($session);
+        $this->identificationStatus->registerAutoIdentAttempt();
 
         $response = $this->doIdentify($request, $carrierId);
         if ($response) {
@@ -165,29 +207,24 @@ class IdentifyStartListener
 
     private function startWifiFlow(SessionInterface $session): Response
     {
-        $session->set('is_wifi_flow', true);
+        $this->dataStorage->storeValue('is_wifi_flow', true);
 
         return new RedirectResponse($this->routeProvider->getLinkToWifiFlowPage());
 
     }
 
     /**
-     * @param $request
-     * @param $carrierId
-     * @param $session
+     * @param Request $request
+     * @param int     $carrierId
      * @return null|Response
      */
     private function doIdentify(Request $request, int $carrierId): ?Response
     {
-        $session = $request->getSession();
-        if (IdentificationFlowDataExtractor::extractIdentificationData($session)) {
-            return null;
-        }
 
         $response = null;
         try {
             $token    = $this->generator->generateToken();
-            $result   = $this->identifier->identify((int)$carrierId, $request, $token, $request->getSession());
+            $result   = $this->identifier->identify((int)$carrierId, $request, $token);
             $response = $result->getOverridedResponse();
 
         } catch (FailedIdentificationException $exception) {
@@ -195,5 +232,16 @@ class IdentifyStartListener
         }
 
         return $response;
+    }
+
+    private function isRedirectToWhoopsRequired(object $controller, string $method): bool
+    {
+        $controllerReflection = new \ReflectionObject($controller);
+        $methodReflection     = $controllerReflection->getMethod($method);
+
+        $annotation = $this->annotationReader->getMethodAnnotation($methodReflection, NoRedirectToWhoops::class);
+
+        return (bool)!$annotation;
+
     }
 }
