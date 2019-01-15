@@ -12,7 +12,6 @@ namespace IdentificationBundle\WifiIdentification;
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\BillingFramework\Process\PinRequestProcess;
 use IdentificationBundle\Identification\Exception\AlreadyIdentifiedException;
-use IdentificationBundle\Identification\Exception\FailedIdentificationException;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Repository\UserRepository;
@@ -106,7 +105,6 @@ class WifiIdentSMSSender
         }
 
         $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
-
         $handler = $this->handlerProvider->get($carrier);
 
         $pinCode = '000000';

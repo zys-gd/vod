@@ -13,7 +13,6 @@ use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
 use IdentificationBundle\BillingFramework\Process\Exception\PinVerifyProcessException;
 use IdentificationBundle\BillingFramework\Process\PinVerifyProcess;
 use IdentificationBundle\Identification\Exception\AlreadyIdentifiedException;
-use IdentificationBundle\Identification\Exception\FailedIdentificationException;
 use IdentificationBundle\Identification\Exception\MissingIdentificationDataException;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
@@ -166,6 +165,7 @@ class WifiIdentConfirmator
             if ($handler instanceof HasCustomPinVerifyRules) {
                 $handler->afterFailedPinVerify($exception);
             }
+            throw $exception;
         }
 
     }

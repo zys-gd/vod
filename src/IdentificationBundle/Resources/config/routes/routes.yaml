@@ -15,9 +15,6 @@ callback:
   resource:  '@IdentificationBundle/Callback/Controller'
   prefix: /api/v2
 
-legacy_sendpincode:
-  path:     /sendsmspincode
-  controller:  IdentificationBundle:PinIdentification:sendSMSPinCode
 
 #legacy_confirmpincode:
 #  path:     /confirmpincode

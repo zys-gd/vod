@@ -16,11 +16,16 @@ class UserRepository extends EntityRepository
 {
     public function findOneByMsisdn(string $msisdn): ?User
     {
-        return $this->findOneBy(['msisdn' => $msisdn]);
+        return $this->findOneBy(['identifier' => $msisdn]);
     }
 
     public function findOneByIdentificationToken(string $token): ?User
     {
         return $this->findOneBy(['identificationToken' => $token]);
+    }
+
+    public function findOneByUrlId(string $urlId): ?User
+    {
+        return $this->findOneBy(['urlId' => $urlId]);
     }
 }

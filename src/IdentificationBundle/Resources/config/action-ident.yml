@@ -52,18 +52,26 @@ services:
   IdentificationBundle\Identification\Service\TokenGenerator: ~
 
   IdentificationBundle\Identification\Common\HeaderEnrichmentHandler:
-      arguments:
-          - '@IdentificationBundle\Identification\Service\UserFactory'
-          - '@doctrine.orm.entity_manager'
-          - '@IdentificationBundle\Repository\UserRepository'
+    arguments:
+      - '@IdentificationBundle\Identification\Service\UserFactory'
+      - '@doctrine.orm.entity_manager'
+      - '@IdentificationBundle\Repository\UserRepository'
 
   IdentificationBundle\Identification\Service\RouteProvider:
-      arguments:
-          - '@router'
-          - '_wifi_route_placeholder_'
-          - '_homepage_route_placeholder_'
+    arguments:
+      - '@router'
+      - '_wifi_route_placeholder_'
+      - '_homepage_route_placeholder_'
+      - '_landing_route_placeholder_'
 
   IdentificationBundle\Identification\Service\ISPResolver: ~
 
   IdentificationBundle\Identification\Service\IdentificationDataStorage:
-      arguments: ['@session']
+    arguments: ['@session']
+
+  IdentificationBundle\Identification\IdentifierByUrl:
+    arguments:
+      - '@IdentificationBundle\Repository\UserRepository'
+      - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+      - '@IdentificationBundle\Identification\Service\TokenGenerator'
+      - '@doctrine.orm.entity_manager'

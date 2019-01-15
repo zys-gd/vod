@@ -47,3 +47,5 @@ services:
         - '@doctrine.orm.entity_manager'
 
   IdentificationBundle\WifiIdentification\Common\RequestProvider: ~
+
+  IdentificationBundle\WifiIdentification\Service\ErrorCodeResolver: ~

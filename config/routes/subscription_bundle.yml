@@ -1,0 +1,2 @@
+subscription:
+    resource: '@SubscriptionBundle/Resources/config/routing.yml'

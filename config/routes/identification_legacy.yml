@@ -1,0 +1,7 @@
+legacy_sendpincode:
+  path:     /sendsmspincode
+  controller:  'IdentificationBundle\WifiIdentification\Controller\PinIdentificationController:sendSMSPinCodeAction'
+
+legacy_identify:
+  path:     /identify
+  controller:  'IdentificationBundle\Identification\Controller\IdentificationController:IdentifyAction'
