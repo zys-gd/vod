@@ -34,7 +34,10 @@ class PixelIdentStarter
      * @param RouterInterface $router
      * @param RouteProvider   $routeProvider
      */
-    public function __construct(RouterInterface $router, RouteProvider $routeProvider)
+    public function __construct(
+        RouterInterface $router,
+        RouteProvider $routeProvider
+    )
     {
         $this->router        = $router;
         $this->routeProvider = $routeProvider;
