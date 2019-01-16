@@ -36,7 +36,7 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
         foreach ($data as $row) {
 
             $uuid                                    = $row['uuid'];
-            $billingCarrierId                               = $row['id_carrier'];
+            $billingCarrierId                        = $row['id_carrier'];
             $operatorId                              = $row['operator_id'];
             $name                                    = $row['name'];
             $countryCode                             = $row['countryCode'];
@@ -57,7 +57,7 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $counter                                 = $row['counter'];
             $flushdate                               = $row['flushDate'];
             $isCapAlertDispatch                      = $row['isCapAlertDispatch'];
-            $flushdate = $row['flushDate'];
+            $flushdate                               = $row['flushDate'];
 
 
             $defaultLanguageId = $row['default_language']['uuid'];

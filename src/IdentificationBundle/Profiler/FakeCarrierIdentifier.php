@@ -36,13 +36,13 @@ class FakeCarrierIdentifier extends DataCollector
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
-        $session = $request->getSession();
+        $session                        = $request->getSession();
         $this->data['current_identity'] = [
-            'isp' => IdentificationFlowDataExtractor::extractIspDetectionData($session),
+            'isp'            => IdentificationFlowDataExtractor::extractIspDetectionData($session),
             'identification' => IdentificationFlowDataExtractor::extractIdentificationData($session),
-            'wifi_flow' => $session->get('is_wifi_flow')
+            'wifi_flow'      => $session->get('is_wifi_flow')
         ];
-        $this->data['operators'] = $this->getFilteredOperators($this->getOperatorsList());
+        $this->data['operators']        = $this->getFilteredOperators($this->getOperatorsList());
 
         return;
     }
@@ -90,7 +90,7 @@ class FakeCarrierIdentifier extends DataCollector
     private function getOperatorsList(): array
     {
         return [
-            ['name' => 'Jazz Pakistan', 'ip' => '119.160.116.250', 'msisdn' => '923087654234'],
+            ['name' => 'Jazz Pakistan', 'ip' => '119.160.116.250', 'carrier' => ConstBillingCarrierId::MOBILINK_PAKISTAN, 'msisdn' => '923087654234'],
             ['name' => 'Zong Pakistan', 'ip' => '103.255.4.26', 'carrier' => ConstBillingCarrierId::ZONG_PAKISTAN, 'msisdn' => '923165338483'],
             ['name' => 'Telenor Pakistan', 'ip' => '202.69.8.100', 'carrier' => ConstBillingCarrierId::TELENOR_PAKISTAN, 'msisdn' => '3G - 772e9fde-68c6-3a31-8c29-dad92a0b11f8'],
             ["name" => "Telenor Myanmar", 'ip' => '103.255.172.6', 'carrier' => ConstBillingCarrierId::TELENOR_MYANMAR, 'msisdn' => '959762153238'],
@@ -100,7 +100,7 @@ class FakeCarrierIdentifier extends DataCollector
             ["name" => "Vodafone Egypt", "ip" => "196.151.0.179", 'carrier' => ConstBillingCarrierId::VODAFONE_EGYPT, 'msisdn' => '201030214098'],
             ['name' => 'OOREDOO Algeria', 'ip' => '80.88.15.180', 'carrier' => ConstBillingCarrierId::OOREDOO_ALGERIA, 'msisdn' => '213561939475'],
             ['name' => 'OOREDOO Kuwait', 'ip' => '217.69.182.68', 'carrier' => ConstBillingCarrierId::OOREDOO_KUWAIT, 'msisdn' => '96560364659'],
-            ['name' => 'OOREDOO Tunisia', 'ip' => '41.228.18.243', 'msisdn' => '21623887936'],
+            ['name' => 'OOREDOO Tunisia', 'ip' => '41.228.18.243', 'carrier' => ConstBillingCarrierId::ZONG_PAKISTAN, 'msisdn' => '21623887936'],
             ['name' => 'OOREDOO Qatar', 'ip' => '212.77.211.241', 'carrier' => ConstBillingCarrierId::OOREDOO_QATAR, 'msisdn' => '97433132342'],
             ['name' => 'OOREDOO Oman', 'ip' => '188.135.101.0', 'carrier' => ConstBillingCarrierId::OOREDOO_OMAN, 'msisdn' => '96895765558'],
             ['name' => 'Indosat Indonesia', 'ip' => '202.93.36.12', 'msisdn' => '6285770021134'],
