@@ -15,4 +15,4 @@
 
 
 {% set statusActionUrl = path('callback_status') %}
-{{ status_check_script.render(statusActionUrl, successUrl, failureUrl, 5) }}
+{{ status_check_script.render(statusActionUrl, confirmUrl, successUrl, failureUrl, 100) }}

@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
 
-class PixelIdentHandler
+class PixelIdentStarter
 {
     /**
      * @var RouterInterface
@@ -30,7 +30,7 @@ class PixelIdentHandler
 
 
     /**
-     * PixelIdentHandler constructor.
+     * PixelIdentStarter constructor.
      * @param RouterInterface $router
      * @param RouteProvider   $routeProvider
      */
@@ -40,14 +40,10 @@ class PixelIdentHandler
         $this->routeProvider = $routeProvider;
     }
 
-    public function doHandle(Request $request, ProcessResult $processResult, CarrierInterface $carrier): RedirectResponse
+    public function start(Request $request, ProcessResult $processResult, CarrierInterface $carrier): RedirectResponse
     {
         try {
-            $backUrl    = $this->router->generate($request->attributes->get('_route'), [], RouterInterface::ABSOLUTE_URL);
-            $successUrl = $this->router->generate('confirm_pixel_ident', [
-                'backUrl'   => $backUrl,
-                'processId' => $processResult->getId()
-            ]);
+            $successUrl = $this->router->generate($request->attributes->get('_route'), [], RouterInterface::ABSOLUTE_URL);
         } catch (RouteNotFoundException $exception) {
             $successUrl = $this->routeProvider->getLinkToHomepage();
         }

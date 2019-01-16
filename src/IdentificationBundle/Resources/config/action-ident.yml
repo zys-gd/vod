@@ -20,15 +20,15 @@ services:
       - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
       - '@IdentificationBundle\Identification\Common\RequestParametersProvider'
       - '@IdentificationBundle\Identification\Service\RouteProvider'
-      - '@IdentificationBundle\Identification\Common\Pixel\PixelIdentHandler'
-      - '@IdentificationBundle\Identification\Common\Redirect\RedirectIdentHandler'
+      - '@IdentificationBundle\Identification\Common\Pixel\PixelIdentStarter'
+      - '@IdentificationBundle\Identification\Common\Async\AsyncIdentStarter'
       - '@router'
 
   IdentificationBundle\Identification\Common\RequestParametersProvider:
     arguments:
       - '@router'
 
-  IdentificationBundle\Identification\Common\Pixel\PixelIdentHandler:
+  IdentificationBundle\Identification\Common\Pixel\PixelIdentStarter:
     arguments:
       - '@router'
       - '@IdentificationBundle\Identification\Service\RouteProvider'
@@ -49,7 +49,17 @@ services:
 
   IdentificationBundle\Identification\Service\UserFactory: ~
 
-  IdentificationBundle\Identification\Common\Redirect\RedirectIdentHandler: ~
+  IdentificationBundle\Identification\Common\Async\AsyncIdentStarter:
+    arguments:
+      - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+
+  IdentificationBundle\Identification\Common\Async\AsyncIdentFinisher:
+    arguments:
+      - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+      - '@IdentificationBundle\Repository\UserRepository'
+      - '@IdentificationBundle\Identification\Service\IdentificationStatus'
+      - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
+      - '@IdentificationBundle\BillingFramework\Data\DataProvider'
 
   IdentificationBundle\Identification\Service\TokenGenerator: ~
 
@@ -81,3 +91,8 @@ services:
 
   IdentificationBundle\Identification\Service\IdentificationStatus:
     arguments: ['@IdentificationBundle\Identification\Service\IdentificationDataStorage']
+
+  IdentificationBundle\Identification\Common\Async\AsyncIdentStatusProvider:
+    arguments:
+      - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+      - '@IdentificationBundle\Repository\UserRepository'
