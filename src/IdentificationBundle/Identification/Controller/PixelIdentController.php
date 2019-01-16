@@ -12,6 +12,7 @@ namespace IdentificationBundle\Identification\Controller;
 use IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer;
 use IdentificationBundle\Identification\Common\Pixel\PixelIdentVerifier;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\RouteProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkProcessException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,11 +32,16 @@ class PixelIdentController extends AbstractController
      * @var PixelIdentConfirmer
      */
     private $confirmer;
+    /**
+     * @var RouteProvider
+     */
+    private $routeProvider;
 
-    public function __construct(PixelIdentVerifier $pixelIdentVerifier, PixelIdentConfirmer $confirmer)
+    public function __construct(PixelIdentVerifier $pixelIdentVerifier, PixelIdentConfirmer $confirmer, RouteProvider $routeProvider)
     {
         $this->pixelIdentVerifier = $pixelIdentVerifier;
         $this->confirmer          = $confirmer;
+        $this->routeProvider      = $routeProvider;
     }
 
 
@@ -55,10 +61,10 @@ class PixelIdentController extends AbstractController
             throw new BadRequestHttpException('Missing `pixelUrl` parameter');
         }
 
-        return $this->render('@Identification/pixelIdent/showPixel.twig', [
+        return $this->render('@Identification/pixelIdent/show_pixel.twig', [
             'pixelUrl'        => $pixelUrl,
             'successUrl'      => $successUrl,
-            'failureUrl'      => $this->generateUrl('index', ['err' => 'pixel_ident_timeout']),
+            'failureUrl'      => $this->routeProvider->getLinkToHomepage(['err' => 'pixel_ident_timeout']),
             'statusActionUrl' => $this->generateUrl('pixel_ident_status', [
                 'carrier'   => $carrier,
                 'processId' => $processId

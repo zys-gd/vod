@@ -22,6 +22,7 @@ services:
       - '@IdentificationBundle\Identification\Service\RouteProvider'
       - '@IdentificationBundle\Identification\Common\Pixel\PixelIdentHandler'
       - '@IdentificationBundle\Identification\Common\Redirect\RedirectIdentHandler'
+      - '@router'
 
   IdentificationBundle\Identification\Common\RequestParametersProvider:
     arguments:

@@ -41,15 +41,6 @@ class AutoIdentTest extends AbstractFunctionalTest
         $this->assertArrayHasKey('storage[is_wifi_flow]', $this->session->all(), 'wifi flow are not set');
     }
 
-    public function testNoRedirectForLP()
-    {
-        $client = $this->makeClient();
-
-        $client->request('get', '/lp');
-        $this->assertFalse($client->getResponse()->isRedirect(), 'redirect is triggered');
-        $this->assertArrayHasKey('storage[is_wifi_flow]', $this->session->all(), 'wifi flow are not set');
-    }
-
     public function testIsRedirectTriggeredForPixelIdent()
     {
         $client = $this->makeClient();
@@ -76,6 +67,44 @@ class AutoIdentTest extends AbstractFunctionalTest
 
         $location = $client->getResponse()->headers->get('Location');
         $this->assertContains('test-redirect', $location, 'redirect is missing');
+    }
+
+    public function testRedirectIsPerformedWhenNoCarrierSelected()
+    {
+        $client = $this->makeClient();
+
+        $this->session->set('storage[is_wifi_flow]', true);
+        $this->session->set('identification_data', ['carrier_id' => null]);
+
+        $client->request('get', '/');
+
+        $location = $client->getResponse()->headers->get('Location');
+        $this->assertContains('whoops', $location, 'redirect is missing');
+
+    }
+
+
+    public function testNoRedirectForLPWhenNoCarrierDetected()
+    {
+        $client = $this->makeClient();
+
+        $client->request('get', '/lp');
+
+        $this->assertFalse($client->getResponse()->isRedirect(), 'redirect is triggered');
+        $this->assertArrayHasKey('storage[is_wifi_flow]', $this->session->all(), 'wifi flow are not set');
+    }
+
+
+    public function testNoRedirectOnLPWhenWifiFlow()
+    {
+        $client = $this->makeClient();
+
+        $this->session->set('storage[is_wifi_flow]', true);
+
+        $client->request('get', '/lp');
+
+        $this->assertFalse($client->getResponse()->isRedirect(), 'redirect is triggered');
+
     }
 
     protected function initializeServices(ContainerInterface $container)
