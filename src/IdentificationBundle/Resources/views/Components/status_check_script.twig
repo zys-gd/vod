@@ -1,0 +1,42 @@
+{% macro render(statusActionUrl, successUrl, failureUrl, attempts = null) %}
+
+    <script>
+        $(document).ready(function () {
+
+            var statusActionUrl = '{{ statusActionUrl | raw }}';
+            var successUrl      = '{{ successUrl | raw }}';
+            var failureUrl      = '{{ failureUrl | raw }}';
+            var attempts        = {{ attempts }};
+
+            var i           = 0;
+            var sendRequest = function () {
+
+                if (attempts && i > attempts) {
+                    window.location.href = failureUrl;
+                    return;
+                }
+
+                i++;
+
+                $.ajax({
+                    'url'     : statusActionUrl,
+                    'type'    : 'get',
+                    'dataType': 'json',
+                    'success' : function (response) {
+                        if (response.result == true) {
+                            console.log('success');
+                            window.location.href = successUrl;
+                        } else {
+                            setTimeout(sendRequest, 3000);
+                        }
+                    },
+                    'error'   : function (errorResponse) {
+                        setTimeout(sendRequest, 3000);
+                    }
+                });
+            };
+            sendRequest();
+        });
+    </script>
+
+{% endmacro %}

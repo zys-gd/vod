@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
-class IdentifyStartListener
+class AutoIdentStartListener
 {
     /**
      * @var ICountryCarrierDetection
@@ -69,7 +69,7 @@ class IdentifyStartListener
 
 
     /**
-     * IdentifyStartListener constructor.
+     * AutoIdentStartListener constructor.
      * @param ICountryCarrierDetection                                   $carrierDetection
      * @param CarrierRepositoryInterface                                 $carrierRepository
      * @param \IdentificationBundle\Identification\Service\ISPResolver   $ISPResolver
@@ -125,6 +125,7 @@ class IdentifyStartListener
         if (!($controller instanceof ControllerWithISPDetection)) {
             return;
         }
+
         $session   = $request->getSession();
         $ipAddress = $request->getClientIp();
         $carrierId = $this->detectCarrier($ipAddress, $session);
@@ -142,12 +143,14 @@ class IdentifyStartListener
         if (!($controller instanceof ControllerWithIdentification)) {
             return;
         }
-
         if ($this->identificationStatus->isIdentified()) {
-            return null;
+            return;
+        }
+        if ($this->identificationStatus->isWifiFlowStarted()) {
+            return;
         }
         if ($this->identificationStatus->isAlreadyTriedToAutoIdent()) {
-            return null;
+            return ;
         }
 
         $this->startWifiFlow($session);

@@ -1,6 +1,6 @@
 services:
 
-  IdentificationBundle\Listener\IdentifyStartListener:
+  IdentificationBundle\Listener\AutoIdentStartListener:
     tags:
      - { name: kernel.event_listener, event: kernel.controller }
     arguments:

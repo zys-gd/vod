@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>pixelIdentification</title>
+</head>
+<body>
+
+<img src="{{ asset('bundles/identification/img/ajax-loader.gif') }}" alt="">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+</body>
+</html>
+{% import "@Identification/Components/status_check_script.twig" as status_check_script %}
+
+
+{% set statusActionUrl = path('callback_status') %}
+{{ status_check_script.render(statusActionUrl, successUrl, failureUrl, 5) }}

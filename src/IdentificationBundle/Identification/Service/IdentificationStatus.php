@@ -49,4 +49,9 @@ class IdentificationStatus
         $this->dataStorage->storeValue('is_tried_to_autoident', true);
     }
 
+    public function isWifiFlowStarted(): bool
+    {
+        return (bool)$this->dataStorage->readValue('is_wifi_flow');
+    }
+
 }

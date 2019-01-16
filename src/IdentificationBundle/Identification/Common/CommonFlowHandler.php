@@ -18,6 +18,7 @@ use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Identification\Service\RouteProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
 
 class CommonFlowHandler
 {
@@ -46,6 +47,10 @@ class CommonFlowHandler
      * @var RouteProvider
      */
     private $routeProvider;
+    /**
+     * @var RouterInterface
+     */
+    private $router;
 
 
     /**
@@ -56,6 +61,7 @@ class CommonFlowHandler
      * @param RouteProvider                 $routeProvider
      * @param PixelIdentHandler             $pixelIdentHandler
      * @param RedirectIdentHandler          $redirectIdentHandler
+     * @param RouterInterface               $router
      */
     public function __construct(
         IdentProcess $identProcess,
@@ -63,7 +69,8 @@ class CommonFlowHandler
         RequestParametersProvider $parametersProvider,
         RouteProvider $routeProvider,
         PixelIdentHandler $pixelIdentHandler,
-        RedirectIdentHandler $redirectIdentHandler
+        RedirectIdentHandler $redirectIdentHandler,
+        RouterInterface $router
 
     )
     {
@@ -73,6 +80,7 @@ class CommonFlowHandler
         $this->pixelIdentHandler    = $pixelIdentHandler;
         $this->redirectIdentHandler = $redirectIdentHandler;
         $this->routeProvider        = $routeProvider;
+        $this->router               = $router;
     }
 
     public function process(
@@ -83,7 +91,8 @@ class CommonFlowHandler
     ): Response
     {
         $additionalParams = $handler->getAdditionalIdentificationParams($request);
-        $redirectUrl      = $request->get('location', $this->routeProvider->getLinkToHomepage());
+        $successUrl       = $request->get('location', $this->routeProvider->getLinkToHomepage());
+        $redirectUrl      = $this->router->generate('wait_for_callback', ['successUrl' => $successUrl]);
         $parameters       = $this->parametersProvider->prepareRequestParameters(
             $token,
             $carrier->getBillingCarrierId(),

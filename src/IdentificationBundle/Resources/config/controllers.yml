@@ -6,6 +6,7 @@ services:
         arguments:
             - '@IdentificationBundle\Identification\Common\Pixel\PixelIdentVerifier'
             - '@IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer'
+            - '@IdentificationBundle\Identification\Service\RouteProvider'
 
     IdentificationBundle\Callback\Controller\CallbackController:
         arguments:
@@ -35,3 +36,6 @@ services:
         - '@IdentificationBundle\WifiIdentification\WifiIdentSMSSender'
         - '@IdentificationBundle\WifiIdentification\WifiIdentConfirmator'
         - '@IdentificationBundle\WifiIdentification\Service\ErrorCodeResolver'
+
+    IdentificationBundle\Identification\Controller\CommonFlowController:
+      arguments: ['@IdentificationBundle\Identification\Service\RouteProvider']

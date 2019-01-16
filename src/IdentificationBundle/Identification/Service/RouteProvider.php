@@ -51,9 +51,9 @@ class RouteProvider
         return $this->router->generate($this->wifiPageRoute, [], RouterInterface::ABSOLUTE_URL);
     }
 
-    public function getLinkToHomepage(): string
+    public function getLinkToHomepage(array $parameters = []): string
     {
-        return $this->router->generate($this->homepageRoute, [], RouterInterface::ABSOLUTE_URL);
+        return $this->router->generate($this->homepageRoute, $parameters, RouterInterface::ABSOLUTE_URL);
     }
 
     public function getLinkToLanding()
