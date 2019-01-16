@@ -7,7 +7,6 @@ services:
         - '@SubscriptionBundle\Service\Notification\Notifier'
         - '@SubscriptionBundle\BillingFramework\Process\UnsubscribeProcess'
         - '@SubscriptionBundle\Service\Action\Unsubscribe\OnUnsubscribeUpdater'
-        - '@affiliate.carrier_post_send_affiliate_checker'
         - '@SubscriptionBundle\Piwik\PiwikStatisticSender'
         - '@SubscriptionBundle\Service\Action\Unsubscribe\UnsubscribeParametersProvider'
 

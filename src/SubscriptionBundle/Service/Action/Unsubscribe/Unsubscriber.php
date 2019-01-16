@@ -9,7 +9,6 @@
 namespace SubscriptionBundle\Service\Action\Unsubscribe;
 
 
-use AffiliateBundle\Service\CarrierTrackingTypeChecker;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\Exception\UnsubscribingProcessException;
@@ -47,10 +46,7 @@ class Unsubscriber
      * @var OnUnsubscribeUpdater
      */
     private $onUnsubscribeUpdater;
-    /**
-     * @var CarrierTrackingTypeChecker
-     */
-    private $trackingTypeChecker;
+
     /**
      * @var PiwikStatisticSender
      */
@@ -69,7 +65,6 @@ class Unsubscriber
      * @param Notifier                      $notifier
      * @param UnsubscribeProcess            $unsubscribeProcess
      * @param OnUnsubscribeUpdater          $onUnsubscribeUpdater
-     * @param CarrierTrackingTypeChecker    $trackingTypeChecker
      * @param PiwikStatisticSender          $piwikStatisticSender
      * @param UnsubscribeParametersProvider $parametersProvider
      */
@@ -80,7 +75,6 @@ class Unsubscriber
         Notifier $notifier,
         UnsubscribeProcess $unsubscribeProcess,
         OnUnsubscribeUpdater $onUnsubscribeUpdater,
-        CarrierTrackingTypeChecker $trackingTypeChecker,
         PiwikStatisticSender $piwikStatisticSender,
         UnsubscribeParametersProvider $parametersProvider
     )
@@ -91,7 +85,6 @@ class Unsubscriber
         $this->notifier             = $notifier;
         $this->unsubscribeProcess   = $unsubscribeProcess;
         $this->onUnsubscribeUpdater = $onUnsubscribeUpdater;
-        $this->trackingTypeChecker  = $trackingTypeChecker;
         $this->piwikStatisticSender = $piwikStatisticSender;
         $this->parametersProvider   = $parametersProvider;
     }
