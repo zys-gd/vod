@@ -37,5 +37,8 @@ services:
         - '@IdentificationBundle\WifiIdentification\WifiIdentConfirmator'
         - '@IdentificationBundle\WifiIdentification\Service\ErrorCodeResolver'
 
-    IdentificationBundle\Identification\Controller\CommonFlowController:
-      arguments: ['@IdentificationBundle\Identification\Service\RouteProvider']
+    IdentificationBundle\Identification\Controller\AsyncIdentController:
+      arguments:
+          - '@IdentificationBundle\Identification\Service\RouteProvider'
+          - '@IdentificationBundle\Identification\Common\Async\AsyncIdentFinisher'
+          - '@IdentificationBundle\Identification\Common\Async\AsyncIdentStatusProvider'

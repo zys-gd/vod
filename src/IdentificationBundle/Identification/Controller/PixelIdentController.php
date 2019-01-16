@@ -13,8 +13,8 @@ use IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer;
 use IdentificationBundle\Identification\Common\Pixel\PixelIdentVerifier;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Identification\Service\RouteProvider;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkProcessException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -63,6 +63,7 @@ class PixelIdentController extends AbstractController
 
         return $this->render('@Identification/pixelIdent/show_pixel.twig', [
             'pixelUrl'        => $pixelUrl,
+            'confirmUrl'      => $this->generateUrl('confirm_pixel_ident', ['processId' => $processId]),
             'successUrl'      => $successUrl,
             'failureUrl'      => $this->routeProvider->getLinkToHomepage(['err' => 'pixel_ident_timeout']),
             'statusActionUrl' => $this->generateUrl('pixel_ident_status', [
@@ -73,6 +74,7 @@ class PixelIdentController extends AbstractController
     }
 
     /**
+     * @Method("GET")
      * @Route("/pixel/status",name="pixel_ident_status")
      * @param Request $request
      * @return JsonResponse
@@ -98,13 +100,13 @@ class PixelIdentController extends AbstractController
     }
 
     /**
+     * @Method("POST")
      * @Route("/pixel/confirm",name="confirm_pixel_ident")
      * @param Request $request
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     public function confirmPixelIdentAction(Request $request)
     {
-        $backUrl            = $request->get('backUrl', '');
         $processId          = $request->get('processId', '');
         $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
 
@@ -117,9 +119,9 @@ class PixelIdentController extends AbstractController
                 $processId,
                 $identificationData
             );
-            return new RedirectResponse($backUrl);
-        } catch (BillingFrameworkProcessException $exception) {
-
+            return new JsonResponse(['result' => true]);
+        } catch (\Exception $exception) {
+            return new JsonResponse(['result' => false]);
         }
 
 

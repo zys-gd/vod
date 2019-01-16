@@ -107,7 +107,7 @@ class IdentCallbackProcessor
             $handler->process($result, $carrier);
 
         } elseif ($handler instanceof HasCommonFlow) {
-            if ($result->isFinal() && $result->isSuccessful()) {
+            if ($result->isSuccessful()) {
                 $user = $this->handleSuccess($result, $carrier);
                 $handler->afterSuccess($user, $result);
             } else {
