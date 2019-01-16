@@ -3,7 +3,7 @@ services:
       tags:
           - { name: data_collector, template: '@Identification/profiler/debug_ident.html.twig', id: 'identification.ident_data_collector' }
       arguments:
-        ['@IdentificationBundle\Identification\Service\IdentificationDataStorage']
+        ['@IdentificationBundle\Identification\Service\IdentificationDataStorage', '@SubscriptionBundle\Repository\SubscriptionRepository', '@IdentificationBundle\Repository\UserRepository']
 
   IdentificationBundle\Profiler\FakeCarrierIdentifier:
     tags:

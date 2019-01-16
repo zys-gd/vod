@@ -35,9 +35,9 @@ class CommonSubscriptionUpdater
     // TODO remove code duplication atleast.
     final public function updateSubscriptionByCallbackResponse(Subscription $subscription, ProcessResult $processResponse)
     {
-        if ($processResponse->getStatusCode() == 400) {
+        /*if ($processResponse->getStatusCode() == 400) {
             $subscription->setStatus(Subscription::IS_PENDING);
-        }
+        }*/
 
         if ($processResponse->isPutOnHold()) {
             $subscription->setCredits(0);

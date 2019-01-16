@@ -16,10 +16,14 @@
             <br>
             <span class="sf-toolbar-label" style="width:150px">
                 <input type="hidden" name="key" value="son74fat">
-                <select name="ip" id="development-identify-popup" style="width:152px" onchange="$('#fake_msisdn').val($(this).find('option:selected').data('msisdn')); $('#fake-identity-form').submit()">
+                <select name="ip" id="development-identify-popup" style="width:152px"
+                        onchange="$('#fake_msisdn').val($(this).find('option:selected').data('msisdn')); $('#fake-identity-form').submit()">
                     <option value="clear">...</option>
                     {% for option in collector.getOperators() %}
-                        <option value="{{ option.ip }}" data-msisdn="{{ option.msisdn }}" {% if option.carrier == collector.getCurrentIdentity.isp.carrier_id %}selected{% endif %}>
+                        <option value="{{ option.ip }}" data-msisdn="{{ option.msisdn }}"
+                                {% if collector.getCurrentIdentity.isp and option.carrier == collector.getCurrentIdentity.isp.carrier_id %}
+                                    selected
+                                {% endif %}>
                             {{ option.name }}
                         </option>
                     {% endfor %}
@@ -29,7 +33,9 @@
                 {#<input type="text" name="msisdn" style="width:147px; padding-left: 3px" placeholder="Enter msisdn">#}
             </span>
             <span class="sf-toolbar-label">
-                <button id="clear_identify" onclick="event.preventDefault(); window.location = '{{ path('reset_fake_identify') }}'" class="sf-toolbar-status sf-toolbar-status-red">Clear Identify</button>
+                <button id="clear_identify"
+                        onclick="event.preventDefault(); window.location = '{{ path('reset_fake_identify') }}'"
+                        class="sf-toolbar-status sf-toolbar-status-red">Clear Identify</button>
 
             </span>
         </form>
@@ -41,6 +47,7 @@
                 background-color: #0055a4;
                 color: #FFF;
             }
+
             #clear_identify {
                 margin-left: 5px;
             }
