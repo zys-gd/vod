@@ -81,15 +81,15 @@ class SubscriptionPackAdmin extends AbstractAdmin
     /**
      * @param SubscriptionPack $object
      *
-     * @throws \Doctrine\DBAL\DBALException
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+//     * @throws \Doctrine\DBAL\DBALException
+//     * @throws \Doctrine\ORM\NoResultException
+//     * @throws \Doctrine\ORM\NonUniqueResultException
      *
      * @throws \Exception
      */
     public function preUpdate($object)
     {
-        $this->subscriptionTextService->insertDefaultPlaceholderTexts($object);
+//        $this->subscriptionTextService->insertDefaultPlaceholderTexts($object);
         $object->setUpdated(new \DateTime('now'));
 
         parent::preUpdate($object);
@@ -213,11 +213,15 @@ class SubscriptionPackAdmin extends AbstractAdmin
      */
     private function buildGeneralSection(FormMapper $formMapper)
     {
-        $formMapper->add('name', TextType::class);
-        $formMapper->add('description', TextareaType::class, ['required' => false]);
-        $formMapper->add('country', EntityType::class,
-            ['class'    => Country::class, 'expanded' => false,
-                'required' => true, 'placeholder' => 'Please select country']);
+        $formMapper
+            ->add('name', TextType::class)
+            ->add('description', TextareaType::class, [
+                'required' => false
+            ])
+            ->add('country', EntityType::class, [
+                'class'    => Country::class, 'expanded' => false,
+                'required' => true, 'placeholder' => 'Please select country'
+            ]);
 
         $builder = $formMapper->getFormBuilder();
 
@@ -356,7 +360,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
                 return ['data' => $strategy->id];
             },
             'choice_value' => function ($strategy) {
-                return $strategy instanceof Strategy ? $strategy->getName() : null;
+                return $strategy instanceof Strategy ? $strategy->getName() : $strategy;
             }
         ];
 

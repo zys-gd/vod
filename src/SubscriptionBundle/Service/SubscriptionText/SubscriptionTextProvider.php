@@ -3,7 +3,7 @@
 namespace SubscriptionBundle\Service\SubscriptionText;
 
 
-use App\Domain\Repository\TranslationRepository;
+use App\Domain\Repository\LanguageRepository;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Service\SubscriptionText\Periodicity\Custom;
 use SubscriptionBundle\Service\SubscriptionText\Periodicity\Daily;
@@ -17,32 +17,31 @@ class SubscriptionTextProvider
      */
     private $queryManager;
     /**
-     * @var TranslationRepository
+     * @var LanguageRepository
      */
-    private $translationRepository;
+    private $languageRepository;
 
     /**
      * SubscriptionTextProvider constructor.
-     * @param TranslationRepository $translationRepository
+     * @param LanguageRepository $languageRepository
      * @param QueryManager $queryManager
      */
-    public function __construct(TranslationRepository $translationRepository, QueryManager $queryManager)
+    public function __construct(LanguageRepository $languageRepository, QueryManager $queryManager)
     {
         $this->queryManager = $queryManager;
-        $this->translationRepository = $translationRepository;
+        $this->languageRepository = $languageRepository;
     }
 
     /**
      * @param SubscriptionPack $oSubPack
      * @return string
-     * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function provideQuery(SubscriptionPack $oSubPack): string
     {
         $billingCarrierId = $oSubPack->getCarrierId();
         $subPackId = $oSubPack->getUuid();
-        $engLangId = $this->translationRepository->getEnglishLanguageId();
+        $engLangId = $this->languageRepository->getEnglishLanguageId();
         $oPeriodicity = $this->getSubscriptionPeriodicity($oSubPack);
         $period = $oSubPack->getFinalPeriodForSubscription();
         $credits = $oSubPack->getFinalCreditsForSubscription();
