@@ -11,7 +11,6 @@ namespace SubscriptionBundle\Service\Callback\Common;
 
 use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\Affiliate\Service\AffiliateSender;
-use AffiliateBundle\Service\CarrierTrackingTypeChecker;
 use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

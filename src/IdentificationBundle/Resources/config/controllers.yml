@@ -6,6 +6,7 @@ services:
         arguments:
             - '@IdentificationBundle\Identification\Common\Pixel\PixelIdentVerifier'
             - '@IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer'
+            - '@IdentificationBundle\Identification\Service\RouteProvider'
 
     IdentificationBundle\Callback\Controller\CallbackController:
         arguments:
@@ -15,6 +16,8 @@ services:
         arguments:
             - '@IdentificationBundle\Identification\Identifier'
             - '@IdentificationBundle\Identification\Service\TokenGenerator'
+            - '@IdentificationBundle\Identification\IdentifierByUrl'
+            - '@IdentificationBundle\Identification\Service\RouteProvider'
 
     IdentificationBundle\Identification\Controller\FakeIdentificationController:
         arguments:
@@ -32,3 +35,10 @@ services:
       arguments:
         - '@IdentificationBundle\WifiIdentification\WifiIdentSMSSender'
         - '@IdentificationBundle\WifiIdentification\WifiIdentConfirmator'
+        - '@IdentificationBundle\WifiIdentification\Service\ErrorCodeResolver'
+
+    IdentificationBundle\Identification\Controller\AsyncIdentController:
+      arguments:
+          - '@IdentificationBundle\Identification\Service\RouteProvider'
+          - '@IdentificationBundle\Identification\Common\Async\AsyncIdentFinisher'
+          - '@IdentificationBundle\Identification\Common\Async\AsyncIdentStatusProvider'

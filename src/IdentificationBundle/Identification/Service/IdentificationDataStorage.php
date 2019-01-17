@@ -9,7 +9,6 @@
 namespace IdentificationBundle\Identification\Service;
 
 
-use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class IdentificationDataStorage
@@ -29,7 +28,7 @@ class IdentificationDataStorage
 
     public function readValue(string $key)
     {
-        return $this->session->get("storage[$key]");
+        return $this->session->get("storage[$key]",'');
     }
 
     public function storeValue(string $key, $value)

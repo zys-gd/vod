@@ -20,14 +20,15 @@ services:
       - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
       - '@IdentificationBundle\Identification\Common\RequestParametersProvider'
       - '@IdentificationBundle\Identification\Service\RouteProvider'
-      - '@IdentificationBundle\Identification\Common\Pixel\PixelIdentHandler'
-      - '@IdentificationBundle\Identification\Common\Redirect\RedirectIdentHandler'
+      - '@IdentificationBundle\Identification\Common\Pixel\PixelIdentStarter'
+      - '@IdentificationBundle\Identification\Common\Async\AsyncIdentStarter'
+      - '@router'
 
   IdentificationBundle\Identification\Common\RequestParametersProvider:
     arguments:
       - '@router'
 
-  IdentificationBundle\Identification\Common\Pixel\PixelIdentHandler:
+  IdentificationBundle\Identification\Common\Pixel\PixelIdentStarter:
     arguments:
       - '@router'
       - '@IdentificationBundle\Identification\Service\RouteProvider'
@@ -44,26 +45,54 @@ services:
       - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
       - '@IdentificationBundle\BillingFramework\Data\DataProvider'
       - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
+      - '@IdentificationBundle\Identification\Service\IdentificationStatus'
 
   IdentificationBundle\Identification\Service\UserFactory: ~
 
-  IdentificationBundle\Identification\Common\Redirect\RedirectIdentHandler: ~
+  IdentificationBundle\Identification\Common\Async\AsyncIdentStarter:
+    arguments:
+      - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+
+  IdentificationBundle\Identification\Common\Async\AsyncIdentFinisher:
+    arguments:
+      - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+      - '@IdentificationBundle\Repository\UserRepository'
+      - '@IdentificationBundle\Identification\Service\IdentificationStatus'
+      - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
+      - '@IdentificationBundle\BillingFramework\Data\DataProvider'
 
   IdentificationBundle\Identification\Service\TokenGenerator: ~
 
   IdentificationBundle\Identification\Common\HeaderEnrichmentHandler:
-      arguments:
-          - '@IdentificationBundle\Identification\Service\UserFactory'
-          - '@doctrine.orm.entity_manager'
-          - '@IdentificationBundle\Repository\UserRepository'
+    arguments:
+      - '@IdentificationBundle\Identification\Service\UserFactory'
+      - '@doctrine.orm.entity_manager'
+      - '@IdentificationBundle\Repository\UserRepository'
+      - '@IdentificationBundle\Identification\Service\IdentificationStatus'
 
   IdentificationBundle\Identification\Service\RouteProvider:
-      arguments:
-          - '@router'
-          - '_wifi_route_placeholder_'
-          - '_homepage_route_placeholder_'
+    arguments:
+      - '@router'
+      - '_wifi_route_placeholder_'
+      - '_homepage_route_placeholder_'
+      - '_landing_route_placeholder_'
 
   IdentificationBundle\Identification\Service\ISPResolver: ~
 
   IdentificationBundle\Identification\Service\IdentificationDataStorage:
-      arguments: ['@session']
+    arguments: ['@session']
+
+  IdentificationBundle\Identification\IdentifierByUrl:
+    arguments:
+      - '@IdentificationBundle\Repository\UserRepository'
+      - '@IdentificationBundle\Identification\Service\IdentificationStatus'
+      - '@IdentificationBundle\Identification\Service\TokenGenerator'
+      - '@doctrine.orm.entity_manager'
+
+  IdentificationBundle\Identification\Service\IdentificationStatus:
+    arguments: ['@IdentificationBundle\Identification\Service\IdentificationDataStorage']
+
+  IdentificationBundle\Identification\Common\Async\AsyncIdentStatusProvider:
+    arguments:
+      - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+      - '@IdentificationBundle\Repository\UserRepository'

@@ -11,8 +11,6 @@ namespace SubscriptionBundle\Service\Notification;
 
 use IdentificationBundle\Entity\CarrierInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
 use SubscriptionBundle\BillingFramework\Notification\API\DTO\SMSRequest;
 use SubscriptionBundle\BillingFramework\Notification\API\RequestSender;
 use SubscriptionBundle\BillingFramework\Notification\Exception\MissingSMSTextException;
@@ -20,7 +18,10 @@ use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Service\Notification\Common\MessageCompiler;
 use SubscriptionBundle\Service\Notification\Common\ProcessIdExtractor;
+use SubscriptionBundle\Service\Notification\Common\ShortUrlHashGenerator;
 use SubscriptionBundle\Service\Notification\Impl\NotificationHandlerProvider;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 use UserBundle\Service\UsersService;
 
 class Notifier
@@ -49,6 +50,10 @@ class Notifier
      * @var NotificationHandlerProvider
      */
     private $notificationHandlerProvider;
+    /**
+     * @var ShortUrlHashGenerator
+     */
+    private $shortUrlHashGenerator;
 
 
     /**
@@ -59,6 +64,7 @@ class Notifier
      * @param ProcessIdExtractor          $processIdExtractor
      * @param RouterInterface             $router
      * @param NotificationHandlerProvider $notificationHandlerProvider
+     * @param ShortUrlHashGenerator       $shortUrlHashGenerator
      */
     public function __construct(
         MessageCompiler $messageCompiler,
@@ -66,7 +72,8 @@ class Notifier
         LoggerInterface $logger,
         ProcessIdExtractor $processIdExtractor,
         RouterInterface $router,
-        NotificationHandlerProvider $notificationHandlerProvider
+        NotificationHandlerProvider $notificationHandlerProvider,
+        ShortUrlHashGenerator $shortUrlHashGenerator
     )
     {
         $this->messageCompiler             = $messageCompiler;
@@ -75,6 +82,7 @@ class Notifier
         $this->router                      = $router;
         $this->processIdExtractor          = $processIdExtractor;
         $this->notificationHandlerProvider = $notificationHandlerProvider;
+        $this->shortUrlHashGenerator = $shortUrlHashGenerator;
     }
 
     public function sendNotification(
@@ -103,14 +111,12 @@ class Notifier
 
 
             if (!$User->getUrlId()) {
-                // TODO - make separate service
-                $User->setShortUrlId(strtr(base64_encode(openssl_random_pseudo_bytes(8) . 'salty'), "+/=", "XXX"));
+                $User->setShortUrlId($this->shortUrlHashGenerator->generate());
                 $this->logger->debug('Generated auto-login URL for user. ', ['url' => $User->getUrlId()]);
             }
 
-            // Todo implement identification by token
             $url = $this->router->generate(
-                'identify',
+                'identify_by_url',
                 ['urlId' => $User->getUrlId()],
                 UrlGeneratorInterface::ABSOLUTE_URL
             );

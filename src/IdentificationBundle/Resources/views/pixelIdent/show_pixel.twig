@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>pixelIdentification</title>
+    <link rel="stylesheet" href="{{ asset('bundles/identification/css/showPixel.css') }}">
+</head>
+<body>
+
+<img class="hidden" src="{{ pixelUrl }}">
+
+<img src="{{ asset('bundles/identification/img/ajax-loader.gif') }}" alt="">
+
+</body>
+</html>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+{% import "@Identification/Components/status_check_script.twig" as status_check_script %}
+{{ status_check_script.render(statusActionUrl, confirmUrl, successUrl, failureUrl, 5) }}

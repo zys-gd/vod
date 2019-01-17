@@ -1,12 +1,31 @@
 {% extends '@App/base.html.twig' %}
 
 {% block body %}
-    {% import "@App/Components/lp-subscribe-buttons.html.twig" as lp_subscribe_buttons %}
+    {% import "@App/Components/lp_subscribe_buttons.html.twig" as lp_subscribe_buttons %}
 
-    {% if is_wifi_flow %}
-        {{ lp_subscribe_buttons.wifi_subscribe_block() }}
-    {% else %}
-        {{ lp_subscribe_buttons.common_subscribe_block() }}
-    {% endif %}
+    <div style="width:100%; text-align:center; padding-top: 40px; margin-bottom: 100px">
 
+        {% if not isCarrierDetected() %}
+            {{ lp_subscribe_buttons.carrier_select_block() }}
+        {% elseif isIdentified() %}
+            <h2>You are identified</h2>
+            <div>
+                <a href="{{ path('talentica_subscription.subscribe') }}">
+                    <button type="button">Subscribe</button>
+                </a>
+            </div>
+            <div>
+                User Token: {{ getIdentificationToken() }}
+            </div>
+        {% elseif isWifiFlow() %}
+            <h2>Wifi Flow</h2>
+            {{ lp_subscribe_buttons.wifi_subscribe_block() }}
+        {% else %}
+            <h2>Common Flow</h2>
+            <div>Carrier: {{ isp_detection_data.carrier_id }}</div>
+            <div>
+                {{ lp_subscribe_buttons.common_identify_block() }}
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}

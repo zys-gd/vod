@@ -1,0 +1,65 @@
+SubscriptionBundle\Entity\Affiliate\AffiliateLog:
+    type: entity
+    table: affiliate_log
+    repositoryClass: SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository
+    indexes:
+      user_msisdn_index:
+          columns: [ user_msisdn ]
+      added_at_index:
+          columns: [ added_at ]
+    id:
+        uuid:
+            type: guid
+    fields:
+        campaignToken:
+            type: string
+            nullable: false
+        userMsisdn:
+            type: string
+            length: 255
+            nullable: true
+        event:
+            type: smallint
+            nullable: false
+        status:
+            type: smallint
+            nullable: false
+        addedAt:
+            type: datetime
+            nullable: false
+            options:
+                default: CURRENT_TIMESTAMP
+        userIp:
+            type: string
+            nullable: false
+        deviceModel:
+            type: string
+            nullable: true
+        deviceManufacturer:
+            type: string
+            nullable: true
+        deviceMarketingName:
+            type: string
+            nullable: true
+        deviceAtlasId:
+            type: string
+            nullable: true
+        connectionType:
+            type: string
+            nullable: true
+        country:
+            type: string
+            nullable: true
+        log:
+            type: text
+            nullable: true
+        url:
+            type: text
+            nullable: true
+        campaignParams:
+            type: text
+            nullable: true
+        subscriptionId:
+            type: string
+            nullable: true
+    lifecycleCallbacks: {  }

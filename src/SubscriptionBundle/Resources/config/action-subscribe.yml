@@ -44,7 +44,13 @@ services:
     arguments: ['@SubscriptionBundle\Service\EntitySaveHelper']
 
   SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter:
-    arguments: ['@router', '@identification.service', '%token_session_name%', '@user_bundle.users_service', '@logger']
+    arguments:
+      - '@app.cache.default.placeholder'
+      - '@router'
+      - '@SubscriptionBundle\Blacklist\BlacklistSaver'
+      - '@IdentificationBundle\Repository\UserRepository'
+      - '@logger'
+      - '_sub_not_allowed_route_placeholder_'
 
   SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater:
       arguments:

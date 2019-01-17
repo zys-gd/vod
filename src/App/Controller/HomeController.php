@@ -25,8 +25,9 @@ class HomeController extends AbstractController implements AppControllerInterfac
      */
     public function indexAction(Request $request)
     {
+
         return $this->render('@App/Common/home.html.twig', [
-            'identificationData' => $request->getSession()->get('identification_data')
+            'identificationData' => $request->getSession()->get('identification_data'),
         ]);
     }
 }

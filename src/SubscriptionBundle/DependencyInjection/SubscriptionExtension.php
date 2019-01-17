@@ -19,15 +19,15 @@ class SubscriptionExtension extends ConfigurableExtension
     /**
      * Configures the passed container according to the merged configuration.
      *
-     * @param array $mergedConfig
+     * @param array            $mergedConfig
      * @param ContainerBuilder $container
      * @throws \Exception
      */
     protected function loadInternal(array $mergedConfig, ContainerBuilder $container)
     {
-        $loader  = new YamlFileLoader(
+        $loader = new YamlFileLoader(
             $container,
-            new FileLocator(__DIR__. '/../Resources/config')
+            new FileLocator(__DIR__ . '/../Resources/config')
         );
         $loader->load('services.yml');
         $loader->load('action-billing-callback.yml');
@@ -46,21 +46,27 @@ class SubscriptionExtension extends ConfigurableExtension
         $loader->load('piwik-integration.yml');
         $loader->load('affiliate.yml');
         $loader->load('fixtures.yml');
+        $loader->load('blacklist.yml');
 
 
-        $loader  = new YamlFileLoader(
+        $loader = new YamlFileLoader(
             $container,
-            new FileLocator(__DIR__. '/../Resources/notifications')
+            new FileLocator(__DIR__ . '/../Resources/notifications')
         );
         $loader->load('parameters.yml');
 
-        $loader  = new YamlFileLoader(
+        $loader = new YamlFileLoader(
             $container,
-            new FileLocator(__DIR__. '/../Resources/config/carriers')
+            new FileLocator(__DIR__ . '/../Resources/config/carriers')
         );
         //$loader->load('orange-eg.yml');
         //$loader->load('orange-tn.yml');
         $loader->load('etisalat-eg.yml');
         //$loader->load('telenor-pk.yml');
+
+
+        $definition = $container->getDefinition('SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter');
+
+        $definition->replaceArgument(5, $mergedConfig['sub_not_allowed_route']);
     }
 }

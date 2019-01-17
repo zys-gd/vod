@@ -44,10 +44,6 @@ class Identifier
      * @var \IdentificationBundle\Identification\Common\HeaderEnrichmentHandler
      */
     private $headerEnrichmentHandler;
-    /**
-     * @var IdentificationDataStorage
-     */
-    private $dataStorage;
 
 
     /**
@@ -57,15 +53,13 @@ class Identifier
      * @param LoggerInterface                                                     $logger
      * @param CommonFlowHandler                                                   $commonFlowHandler
      * @param \IdentificationBundle\Identification\Common\HeaderEnrichmentHandler $headerEnrichmentHandler
-     * @param IdentificationDataStorage                                           $dataStorage
      */
     public function __construct(
         IdentificationHandlerProvider $handlerProvider,
         CarrierRepositoryInterface $carrierRepository,
         LoggerInterface $logger,
         CommonFlowHandler $commonFlowHandler,
-        HeaderEnrichmentHandler $headerEnrichmentHandler,
-        IdentificationDataStorage $dataStorage
+        HeaderEnrichmentHandler $headerEnrichmentHandler
     )
     {
         $this->handlerProvider         = $handlerProvider;
@@ -73,10 +67,9 @@ class Identifier
         $this->logger                  = $logger;
         $this->commonFlowHandler       = $commonFlowHandler;
         $this->headerEnrichmentHandler = $headerEnrichmentHandler;
-        $this->dataStorage             = $dataStorage;
     }
 
-    public function identify(int $carrierBillingId, Request $request, string $token, SessionInterface $session): IdentifyResult
+    public function identify(int $carrierBillingId, Request $request, string $token): IdentifyResult
     {
         $carrier = $this->carrierRepository->findOneByBillingId($carrierBillingId);
 
@@ -88,8 +81,6 @@ class Identifier
 
         if ($handler instanceof HasHeaderEnrichment) {
             $this->headerEnrichmentHandler->process($request, $handler, $carrier, $token);
-            $this->storeIdentificationData($token);
-
             return new IdentifyResult();
 
         } elseif ($handler instanceof HasCustomFlow) {
@@ -97,25 +88,13 @@ class Identifier
             return new IdentifyResult();
 
         } else if ($handler instanceof HasCommonFlow) {
-
             $response = $this->commonFlowHandler->process($request, $handler, $token, $carrier);
-            $this->storeIdentificationData($token);
-
             return new IdentifyResult($response);
 
         } else {
             throw new \RuntimeException('Handlers for identification should have according interfaces');
         }
 
-    }
-
-    private function storeIdentificationData(string $token): array
-    {
-        $this->dataStorage->storeIdentificationToken($token);
-
-        $identificationData = $this->dataStorage->readIdentificationData();
-
-        return $identificationData;
     }
 
 }

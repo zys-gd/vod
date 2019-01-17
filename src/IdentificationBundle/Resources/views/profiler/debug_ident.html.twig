@@ -11,7 +11,33 @@
             {% endif %}
         </span>
     {% endset %}
+    {% set text %}
+        {% if collector.currentIdentity.isp %}
+            <div class="sf-toolbar-info-piece">
+                <b>Carrier</b>
+                <span class="sf-toolbar-status">{{ collector.currentIdentity.isp.carrier_id }}</span>
+            </div>
+        {% endif %}
+        <div class="sf-toolbar-info-piece">
+            <b>Is Wifi Flow</b>
+            <span class="sf-toolbar-status">{{ collector.currentIdentity.wifi_flow  ? 'Yes' : 'No'}}</span>
+        </div>
+        {% if collector.currentIdentity.identification and collector.currentIdentity.identification.identification_token %}
+            <div class="sf-toolbar-info-piece">
+                <b>Token</b>
+                <span class="sf-toolbar-status">{{ collector.currentIdentity.identification.identification_token }}</span>
+            </div>
+        {% endif %}
+        <div class="sf-toolbar-info-piece">
+            <b>Identified</b>
+            <span class="sf-toolbar-status">{{ collector.currentIdentity.user ? 'Yes' : 'No'}}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Subscribed</b>
+            <span class="sf-toolbar-status">{{ collector.currentIdentity.subscription ? 'Yes' : 'No'}}</span>
+        </div>
 
+    {% endset %}
     {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { 'link': profiler_url }) }}
 {% endblock %}
 

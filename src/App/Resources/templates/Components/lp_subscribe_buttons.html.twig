@@ -1,0 +1,85 @@
+{% macro carrier_select_block() %}
+    No carrier selected
+{% endmacro %}
+
+{% macro common_identify_block() %}
+    <a href="{{ url('identify') }}">
+        <button>Ident && Subscribe Me</button>
+    </a>
+{% endmacro %}
+
+
+{% macro wifi_subscribe_block() %}
+
+
+    <form class="x-subscribe-send-pin-block">
+        <div>
+            <input type="text" name="mobile_number" placeholder="Mobile Number" required>
+        </div>
+        <div>
+            <button type="submit" class="x-send-pin-button">Send SMS pin code</button>
+        </div>
+    </form>
+
+    <form class="x-subscribe-confirm-pin-block" style="display: none">
+        <div>
+            <input type="text" name="mobile_number" placeholder="Mobile Number" required>
+        </div>
+        <div>
+            <input type="text" name="pin_code" placeholder="Pin Code" required>
+        </div>
+        <div>
+            <button type="submit" class="x-confirm-pin-button">Confirm SMS</button>
+        </div>
+    </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <script>
+
+        $(document).on('submit', '.x-subscribe-send-pin-block', function (e) {
+
+            var form = $(this);
+
+            $.ajax({
+                url    : "{{ path('send_sms_pin_code') }}",
+                method : "POST",
+                data   : form.serialize(),
+                success: function (result) {
+                    if (result.data.success) {
+                        $('.x-subscribe-send-pin-block').hide();
+                        $('.x-subscribe-confirm-pin-block').show();
+                    } else {
+                        alert(result.data.message);
+                    }
+                }
+            });
+
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        $(document).on('submit', '.x-subscribe-confirm-pin-block', function (e) {
+
+            var form = $(this);
+
+            $.ajax({
+                url    : "{{ path('confirm_sms_pin_code') }}",
+                method : "POST",
+                data   : form.serialize(),
+                success: function (result) {
+                    if (result.data.success) {
+                        $('.x-subscribe-confirm-pin-block').hide();
+                        window.location = result.data.redirectUrl;
+                    } else {
+                        alert(result.data.message);
+                    }
+                }
+            });
+
+            e.preventDefault();
+            e.stopPropagation();
+        });
+    </script>
+
+{% endmacro %}

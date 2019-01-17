@@ -38,7 +38,8 @@
     "symfony/twig-bundle": "v4.2.1",
     "symfony/validator": "v4.2.1",
     "symfony/web-link": "v4.2.1",
-    "symfony/yaml": "v4.2.1"
+    "symfony/yaml": "v4.2.1",
+    "ext-redis": "*"
   },
 
 

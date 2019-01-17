@@ -29,6 +29,7 @@ class Configuration implements ConfigurationInterface
             ->children()
             ->scalarNode('wifi_flow_redirect_route')->isRequired()->end()
             ->scalarNode('homepage_route')->isRequired()->end()
+            ->scalarNode('landing_route')->isRequired()->end()
             ->end();
 
 

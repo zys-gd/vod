@@ -25,6 +25,10 @@ class RouteProvider
      * @var string
      */
     private $homepageRoute;
+    /**
+     * @var string
+     */
+    private $landingRoute;
 
 
     /**
@@ -32,26 +36,29 @@ class RouteProvider
      * @param RouterInterface $router
      * @param string          $wifiPageRoute
      * @param string          $homepageRoute
+     * @param string          $landingRoute
      */
-    public function __construct(RouterInterface $router, string $wifiPageRoute, string $homepageRoute)
+    public function __construct(RouterInterface $router, string $wifiPageRoute, string $homepageRoute, string $landingRoute)
     {
         $this->router        = $router;
         $this->wifiPageRoute = $wifiPageRoute;
         $this->homepageRoute = $homepageRoute;
+        $this->landingRoute  = $landingRoute;
     }
 
     public function getLinkToWifiFlowPage(): string
     {
-        return $this->router->generate($this->wifiPageRoute);
+        return $this->router->generate($this->wifiPageRoute, [], RouterInterface::ABSOLUTE_URL);
     }
 
-    public function getLinkToHomepage(): string
+    public function getLinkToHomepage(array $parameters = []): string
     {
-        return $this->router->generate($this->homepageRoute);
+        return $this->router->generate($this->homepageRoute, $parameters, RouterInterface::ABSOLUTE_URL);
     }
 
-    public function getAbsoluteUrlToHomepage(): string
+    public function getLinkToLanding()
     {
-        return $this->router->generate($this->homepageRoute, [], RouterInterface::ABSOLUTE_URL);
+        return $this->router->generate($this->landingRoute, [], RouterInterface::ABSOLUTE_URL);
     }
+
 }

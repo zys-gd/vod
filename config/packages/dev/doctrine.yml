@@ -1,0 +1,4 @@
+doctrine:
+  dbal:
+    driver_class: ExtrasBundle\Development\DBAL\Mysql\Driver
+    server_version: 5.6

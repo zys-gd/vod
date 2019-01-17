@@ -9,14 +9,13 @@
 namespace SubscriptionBundle\Service\Action\Subscribe;
 
 
+use IdentificationBundle\Entity\User;
+use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateSender;
 use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException;
 use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
-use SubscriptionBundle\Entity\Price;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Entity\SubscriptionPlanInterface;
@@ -27,7 +26,7 @@ use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvi
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\Notification\Notifier;
 use SubscriptionBundle\Service\SubscriptionCreator;
-use IdentificationBundle\Entity\User;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class Subscriber
 {
@@ -157,7 +156,7 @@ class Subscriber
 
         if ($subscription->getSubscriptionPack()->isFirstSubscriptionPeriodIsFree() &&
             !$subscription->getSubscriptionPack()->isProviderManagedSubscriptions()) {
-            $tierIdWithZeroValue = $this->getPriceTierIdWithZeroValue($subscription->getSubscriptionPack()->getCarrierId());
+            $tierIdWithZeroValue = $this->getPriceTierIdWithZeroValue($subscription->getSubscriptionPack()->getCarrier());
             $subscription->setPromotionTierId($tierIdWithZeroValue);
         }
 
@@ -243,8 +242,8 @@ class Subscriber
     protected function applyResubscribeTierChanges(Subscription $subscription)
     {
         $subscriptionPack = $subscription->getSubscriptionPack();
-        if ($subscriptionPack->isFirstSubscriptionPeriodIsFree() &&
-            $subscriptionPack->isFirstSubscriptionPeriodIsFreeMultiple()
+        if ($subscriptionPack->isFirstSubscriptionPeriodIsFree() /*&&*/
+            /*$subscriptionPack->isFirstSubscriptionPeriodIsFreeMultiple()*/
         ) {
             $tierIdWithZeroValue = $this->getPriceTierIdWithZeroValue($subscriptionPack->getCarrierId());
             $subscription->setPromotionTierId($tierIdWithZeroValue);

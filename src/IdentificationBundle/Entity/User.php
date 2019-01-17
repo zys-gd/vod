@@ -105,7 +105,7 @@ class User
      * Returns the user's carrier
      * @return CarrierInterface
      */
-    public function getCarrier()
+    public function getCarrier(): CarrierInterface
     {
         return $this->carrier;
     }
