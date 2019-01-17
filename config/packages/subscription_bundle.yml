@@ -1,2 +1,8 @@
+doctrine:
+  orm:
+    resolve_target_entities:
+      SubscriptionBundle\Entity\Affiliate\CampaignInterface: App\Domain\Entity\Campaign
+
+
 subscription:
   sub_not_allowed_route: 'index'
