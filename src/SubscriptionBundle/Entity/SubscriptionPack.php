@@ -101,15 +101,11 @@ class SubscriptionPack implements HasUuid
 
     /**
      * @var int
-     *
-     *
      */
     private $credits = 0;
 
     /**
      * @var int
-     *
-     *
      */
     private $periodicity = 7;
 

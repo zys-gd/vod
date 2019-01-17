@@ -21,23 +21,24 @@ PriceBundle\Entity\TierValue:
     manyToOne:
         tier:
             targetEntity: PriceBundle\Entity\Tier
+            joinColumn:
+                name: tier
+                referencedColumnName: uuid
             inversedBy: values
             cascade: ["persist"]
             orphanRemoval: true
-            joinColumn:
-                name: tier_id
-                referencedColumnName: id
         strategy:
             targetEntity: PriceBundle\Entity\Strategy
+            joinColumn:
+                name: strategy
+                referencedColumnName: uuid
             inversedBy: values
             cascade: ["persist"]
             orphanRemoval: true
+        carrier:
+            targetEntity: App\Domain\Entity\Carrier
+            inversedBy: null
+            mappedBy: null
             joinColumn:
-                name: strategy_id
-                referencedColumnName: id
-
-#        carrier:
-#            targetEntity: AppBundle\Entity\Carrier
-#            joinColumn:
-#                name: carrier_id
-#                referencedColumnName: id
+                name: carrier_id
+                referencedColumnName: uuid
