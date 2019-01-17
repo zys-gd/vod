@@ -20,6 +20,6 @@ class AffiliateVisitSaver
 
     public static function extractCampaignToken(SessionInterface $session): ?string
     {
-        $session->get('campaign_id', null);
+        return $session->get('campaign_id', null);
     }
 }

@@ -36,7 +36,7 @@ class SubscriptionPackProvider
 
         /** @var SubscriptionPack $subscriptionPack */
         $subscriptionPack = $this->subscriptionPackRepository->findOneBy([
-            'carrier' => $user->getCarrier(),
+            'carrierId' => $user->getCarrier()->getBillingCarrierId(),
             'status'  => SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK
         ]);
 
