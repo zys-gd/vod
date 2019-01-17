@@ -11,6 +11,7 @@ namespace SubscriptionBundle\BillingFramework\Process;
 
 use App\Domain\Entity\Carrier;
 use App\Domain\Entity\Country;
+use App\Utils\UuidGenerator;
 use PriceBundle\Entity\Strategy;
 use PriceBundle\Entity\Tier;
 use stdClass;
@@ -66,7 +67,7 @@ class SubscriptionPackDataProvider
 
         if ($responseObjectArray) {
             foreach ($responseObjectArray as $response) {
-                $responseObject = new $responseObjectClass;
+                $responseObject = new $responseObjectClass(UuidGenerator::generate());
                 $data[]         = $this->mapDataToClass($responseObject, $response);
             }
         }
@@ -117,5 +118,50 @@ class SubscriptionPackDataProvider
         return $this->getDataFromAPI($method, Strategy::class, $errorMessage);
     }
 
+    /***
+     * @return Tier[]
+     * @throws BillingFrameworkException
+     */
+    public function getTiers(): array
+    {
+        $errorMessage = "Error while fetching tiers.";
+        return $this->getDataFromAPI(self::DATA_METHOD_TIERS, Tier::class, $errorMessage);
+    }
+
+    /**
+     * @param $carrierId
+     * @return Price[]
+     * @throws BillingFrameworkException
+     */
+    public function getTiersForCarrier($carrierId): array
+    {
+        $data         = [];
+        $method       = self::DATA_METHOD_TIERS_OF_CARRIER . $carrierId;
+        $errorMessage = "Error while fetching tiers for carrier {$carrierId}.";
+
+        try {
+            $responseObject = $this->billingFrameworkAPI->sendGetDataRequest($method);
+        } catch (BillingFrameworkException $ex) {
+            throw new BillingFrameworkException($errorMessage, $ex->getCode(), $ex);
+        }
+
+
+        if (isset($responseObject) && !empty($responseObject->prices) && is_array($responseObject->prices)) {
+            foreach ($responseObject->prices as $responsePricepoint) {
+                $oPrice = new Price(UuidGenerator::generate());
+                $oPrice->setBfPriceId($responsePricepoint->id);
+                $oPrice->setPricepoint($responsePricepoint->pricepoint);
+                $oPrice->setPricepointName($responsePricepoint->pricepoint_name);
+                $oPrice->setValue($responsePricepoint->value);
+                $oPrice->setBfTierId($responsePricepoint->tier);
+                $oPrice->setByCarrier($responsePricepoint->by_carrier);
+                $oPrice->setCurrency($responseObject->currency);
+                $oPrice->setPriceWithTax($responsePricepoint->price_with_tax ?? 0);
+                $data[] = $oPrice;
+            }
+        }
+
+        return $data;
+    }
 
 }
