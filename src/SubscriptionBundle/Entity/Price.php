@@ -2,29 +2,50 @@
 
 namespace SubscriptionBundle\Entity;
 
-
+/**
+ * Class Price
+ */
 class Price
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     private $uuid;
 
-    /** @var  integer */
+    /**
+     * @var integer
+     */
     private $pricepoint;
 
-    /** @var  string */
+    /**
+     * @var string
+     */
     private $pricepointName;
 
-    /** @var  float */
+    /**
+     * @var float
+     */
     private $value;
 
-    /** @var  integer */
-    private $tierId;
+    /**
+     * @var integer
+     */
+    private $bfTierId;
 
-    /** @var  boolean  */
+    /**
+     * @var boolean
+     */
     private $byCarrier;
 
-    /** @var float  */
+    /**
+     * @var float
+     */
     private $priceWithTax = 0;
+
+    /**
+     * @var integer
+     */
+    private $bfPriceId;
 
     /**
      * @var string
@@ -108,17 +129,17 @@ class Price
     /**
      * @return int
      */
-    public function getTierId()
+    public function getBfTierId()
     {
-        return $this->tierId;
+        return $this->bfTierId;
     }
 
     /**
-     * @param int $tierId
+     * @param int $bfTierId
      */
-    public function setTierId($tierId)
+    public function setBfTierId($bfTierId)
     {
-        $this->tierId = $tierId;
+        $this->bfTierId = $bfTierId;
     }
 
     /**
@@ -178,5 +199,15 @@ class Price
     public function setPriceWithTax(float $priceWithTax)
     {
         $this->priceWithTax = $priceWithTax;
+    }
+
+    public function setBfPriceId($id)
+    {
+        $this->bfPriceId = $id;
+    }
+
+    public function getBfPriceId()
+    {
+        return $this->bfPriceId;
     }
 }

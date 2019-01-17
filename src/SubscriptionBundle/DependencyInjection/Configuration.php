@@ -23,7 +23,13 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('talentica_subscription');
+        $rootNode    = $treeBuilder->root('subscription');
+
+        $rootNode
+            ->children()
+                ->scalarNode('sub_not_allowed_route')
+                ->end()
+            ->end();
 
         return $treeBuilder;
     }

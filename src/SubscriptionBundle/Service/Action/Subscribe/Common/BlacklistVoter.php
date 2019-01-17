@@ -9,60 +9,75 @@
 namespace SubscriptionBundle\Service\Action\Subscribe\Common;
 
 
-use AppBundle\Service\Interfaces\ICacheService;
-use IdentificationBundle\Service\IdentificationService;
+use ExtrasBundle\Cache\ICacheService;
+use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Repository\UserRepository;
 use Psr\Log\LoggerInterface;
+use SubscriptionBundle\Blacklist\BlacklistSaver;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
-use UserBundle\Service\UsersService;
 
 class BlacklistVoter
 {
     const TIME_LIMIT = 3600;    //in seconds
     const ATTEMPTS_LIMIT = 5;
-
+    /**
+     * @var ICacheService
+     */
+    private $cacheService;
     /**
      * @var RouterInterface
      */
     private $router;
     /**
-     * @var string
+     * @var UserRepository
      */
-    private $tokenName;
+    private $userRepository;
     /**
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var BlacklistSaver
+     */
+    private $blacklistSaver;
+    /**
+     * @var string
+     */
+    private $subNotAllowedRoute;
 
 
     /**
      * BlacklistVoter constructor.
+     * @param ICacheService   $cacheService
      * @param RouterInterface $router
-     * @param string          $tokenName
+     * @param BlacklistSaver  $blacklistSaver
+     * @param UserRepository  $userRepository
      * @param LoggerInterface $logger
+     * @param string          $subNotAllowedRoute
      */
     public function __construct(
+        ICacheService $cacheService,
         RouterInterface $router,
-        string $tokenName,
-        LoggerInterface $logger
+        BlacklistSaver $blacklistSaver,
+        UserRepository $userRepository,
+        LoggerInterface $logger,
+        string $subNotAllowedRoute
 
 
     )
     {
-        $this->router    = $router;
-        $this->tokenName = $tokenName;
-        $this->logger    = $logger;
-
+        $this->cacheService       = $cacheService;
+        $this->router             = $router;
+        $this->userRepository     = $userRepository;
+        $this->logger             = $logger;
+        $this->blacklistSaver     = $blacklistSaver;
+        $this->subNotAllowedRoute = $subNotAllowedRoute;
     }
 
     public function checkIfSubscriptionRestricted(Request $request)
     {
-
-
-        // TODO - tbd when cache is ready
-        return true;
 
         $session      = $request->getSession();
         $blockingTime = $session->get('subscription_not_allowed', false);
@@ -73,7 +88,9 @@ class BlacklistVoter
             return $this->createNotAllowedResponse();
         }
 
-        $sessionToken = $session->get($this->tokenName);
+
+        $data         = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
+        $sessionToken = $data['identification_token'] ?? null;
 
         if (empty($sessionToken)) {
 
@@ -125,7 +142,7 @@ class BlacklistVoter
      */
     private function createNotAllowedResponse()
     {
-        $response = new RedirectResponse($this->router->generate('sub_not_allowed'));
+        $response = new RedirectResponse($this->router->generate($this->subNotAllowedRoute));
         return $response;
     }
 
@@ -136,8 +153,8 @@ class BlacklistVoter
     {
         if (!empty($sessionToken)) {
             try {
-                $userIdentity = $this->identificationService->getUserIdentityByTransactionToken($sessionToken);
-                $this->usersService->addUserToBlackListByIdentity($userIdentity);
+                $userIdentity = $this->userRepository->findOneByIdentificationToken($sessionToken);
+                $this->userRepository->addUserToBlackListByIdentity($userIdentity);
             } catch (\Exception $e) {
             }
         }

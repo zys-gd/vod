@@ -1,4 +1,4 @@
-{% extends 'SonataAdminBundle:CRUD:edit.html.twig' %}
+{% extends '@SonataAdmin/CRUD/edit.html.twig' %}
 
 {% block show %}
 
@@ -137,13 +137,13 @@
                         attachIdCaputreListener($tierTag, $tierIdTag);
                         captureId($tierTag, $tierIdTag);
 
-                        attachIdCaputreListener($tierTag, $('input[name*="\[tier_price\]"]'), null, 'data-price');
-                        attachIdCaputreListener($tierTag, $('input[name*="\[tier_currency\]"]'), null, 'data-currency');
-                        attachIdCaputreListener($tierTag, $('input[name*="\[display_currency\]"]'), null, 'data-currency');
-                        captureId($tierTag, $('input[name*="\[tier_price\]"]'), 'data-price');
-                        captureId($tierTag, $('input[name*="\[tier_currency\]"]'), 'data-currency');
-                        captureId($tierTag, $('input[name*="\[display_currency\]"]'), 'data-currency');
-                        $('div[id*="display_currency"]').show();
+                        attachIdCaputreListener($tierTag, $('input[name*="\[tierPrice\]"]'), null, 'data-price');
+                        attachIdCaputreListener($tierTag, $('input[name*="\[tierCurrency\]"]'), null, 'data-currency');
+                        attachIdCaputreListener($tierTag, $('input[name*="\[displayCurrency\]"]'), null, 'data-currency');
+                        captureId($tierTag, $('input[name*="\[tierPrice\]"]'), 'data-price');
+                        captureId($tierTag, $('input[name*="\[tierCurrency\]"]'), 'data-currency');
+                        captureId($tierTag, $('input[name*="\[displayCurrency\]"]'), 'data-currency');
+                        $('div[id*="displayCurrency"]').show();
 
                         $tierTag.closest('.form-group').effect("highlight", {'color': '#57A957'}, 2000);
 
@@ -170,13 +170,13 @@
                     $eleTag   = getField(field),
                     $eleIdTag = getField(fieldId);
                 attachIdCaputreListener($eleTag, $eleIdTag);
-                attachIdCaputreListener($eleTag, $('input[name*="\[tier_price\]"]'), null, 'data-price');
-                attachIdCaputreListener($eleTag, $('input[name*="\[tier_currency\]"]'), null, 'data-currency');
-                attachIdCaputreListener($eleTag, $('input[name*="\[display_currency\]"]'), null, 'data-currency');
-                captureId($eleTag, $('input[name*="\[tier_price\]"]'), 'data-price');
-                captureId($eleTag, $('input[name*="\[tier_currency\]"]'), 'data-currency');
-                captureId($eleTag, $('input[name*="\[display_currency\]"]'), 'data-currency');
-                $('div[id*="display_currency"]').show();
+                attachIdCaputreListener($eleTag, $('input[name*="\[tierPrice\]"]'), null, 'data-price');
+                attachIdCaputreListener($eleTag, $('input[name*="\[tierCurrency\]"]'), null, 'data-currency');
+                attachIdCaputreListener($eleTag, $('input[name*="\[displayCurrency\]"]'), null, 'data-currency');
+                captureId($eleTag, $('input[name*="\[tierPrice\]"]'), 'data-price');
+                captureId($eleTag, $('input[name*="\[tierCurrency\]"]'), 'data-currency');
+                captureId($eleTag, $('input[name*="\[displayCurrency\]"]'), 'data-currency');
+                $('div[id*="displayCurrency"]').show();
                 captureId($eleTag, $eleIdTag);
 
             });
@@ -216,11 +216,11 @@
                 $(tier).closest(".form-group").remove();
                 $(tierId).remove();
 
-                $('input[name*="\[tier_price\]"]').val('0');
-                $('input[name*="\[tier_currency\]"]').val('');
+                $('input[name*="\[tierPrice\]"]').val('0');
+                $('input[name*="\[tierCurrency\]"]').val('');
 
-                $('div[id*="display_currency"]').hide();
-                $('input[name*="\[display_currency\]"]').val('');
+                $('div[id*="displayCurrency"]').hide();
+                $('input[name*="\[displayCurrency\]"]').val('');
 
                 if (e.choice.id) {
                     getCarrierOptionsWithSendRequest(e.choice.id, $countryTag.attr('name'))

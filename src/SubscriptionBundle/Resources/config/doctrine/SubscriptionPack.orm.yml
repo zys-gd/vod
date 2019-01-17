@@ -37,16 +37,48 @@ SubscriptionBundle\Entity\SubscriptionPack:
             options:
                 default: 0
             column: is_resub_allowed
-        price:
+        carrier:
+            type: string
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            column: carrier_name
+        carrierId:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            column: carrier_id
+        tier:
+            type: string
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            column: tier_name
+        tierId:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            column: tier_id
+        tierPrice:
             type: decimal
             precision: 14
             scale: 2
             nullable: true
-            column: price
-        currency:
+            column: tier_price
+        tierCurrency:
             type: string
             length: 3
-            column: currency
+            column: tier_currency
             options:
                 default: ''
         displayCurrency:
@@ -258,14 +290,9 @@ SubscriptionBundle\Entity\SubscriptionPack:
             gedmo:
               timestampable:
                 on: update
-        tierId:
-            type: integer
-            scale: 0
-            length: null
-            unique: false
-            nullable: false
-            precision: 0
-            column: tier_id
+
+    lifecycleCallbacks: {  }
+
     oneToMany:
         subscriptions:
             targetEntity: SubscriptionBundle\Entity\Subscription
@@ -286,12 +313,3 @@ SubscriptionBundle\Entity\SubscriptionPack:
                 country_id:
                     referencedColumnName: uuid
             orphanRemoval: false
-        carrier:
-            targetEntity: App\Domain\Entity\Carrier
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                carrier_uuid:
-                    referencedColumnName: uuid
-
-    lifecycleCallbacks: {  }

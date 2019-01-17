@@ -9,31 +9,20 @@
 namespace SubscriptionBundle\Controller\Actions;
 
 
-use IdentificationBundle\Entity\User;
-use IdentificationBundle\Exception\PendingIdentificationException;
-use IdentificationBundle\Exception\RedirectRequiredException;
 use IdentificationBundle\Identification\DTO\IdentificationData;
 use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Router;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
 use SubscriptionBundle\Exception\ExistingSubscriptionException;
-use SubscriptionBundle\Exception\SubscriptionException;
 use SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter;
 use SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler;
-use SubscriptionBundle\Service\Action\Subscribe\Exception\ResubscriptionIsNotAllowedException;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomFlow;
-use SubscriptionBundle\Carriers\Megasyst\Subscribe\MegasystCarrierChecker;
-use SubscriptionBundle\Carriers\Megasyst\Subscribe\MegasystPhoneChecker;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
 use SubscriptionBundle\Service\UserExtractor;
-use SubscriptionBundle\Service\Legacy\MobilifeSubscriberService;
-use SubscriptionBundle\Service\Legacy\MobimindSubscriberService;
 use SubscriptionBundle\Utils\UrlParamAppender;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Router;
 
 class SubscribeAction extends Controller
 {
@@ -78,6 +67,7 @@ class SubscribeAction extends Controller
      * @param LoggerInterface             $logger
      * @param UrlParamAppender            $urlParamAppender
      * @param SubscriptionHandlerProvider $handlerProvider
+     * @param BlacklistVoter              $blacklistVoter
      */
     public function __construct(
         UserExtractor $userExtractor,
@@ -85,7 +75,8 @@ class SubscribeAction extends Controller
         Router $router,
         LoggerInterface $logger,
         UrlParamAppender $urlParamAppender,
-        SubscriptionHandlerProvider $handlerProvider
+        SubscriptionHandlerProvider $handlerProvider,
+        BlacklistVoter $blacklistVoter
     )
     {
         $this->userExtractor     = $userExtractor;
@@ -94,6 +85,7 @@ class SubscribeAction extends Controller
         $this->logger            = $logger;
         $this->urlParamAppender  = $urlParamAppender;
         $this->handlerProvider   = $handlerProvider;
+        $this->blacklistVoter    = $blacklistVoter;
     }
 
     /**
@@ -112,10 +104,9 @@ class SubscribeAction extends Controller
             return $result;
         }*/
 
-        // Todo until cache is ready
-        /*if ($result = $this->blacklistVoter->checkIfSubscriptionRestricted($request)) {
+        if ($result = $this->blacklistVoter->checkIfSubscriptionRestricted($request)) {
             return $result;
-        }*/
+        }
 
         $user = $this->userExtractor->getUserByIdentificationData($identificationData);
 

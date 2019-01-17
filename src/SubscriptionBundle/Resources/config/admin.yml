@@ -1,19 +1,18 @@
 services:
-  SubscriptionBundle\Admin\SubscriptionPackAdmin:
-          arguments:
-              -  ~
-              - SubscriptionBundle\Entity\SubscriptionPack
-              - 'SubscriptionBundle\Controller\SubscriptionPackAdminController'
-#              - '@SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider'
-              - '@SubscriptionBundle\Service\SubscriptionTextService'
-          tags:
-              -
-                name: sonata.admin
+    SubscriptionBundle\Admin\SubscriptionPackAdmin:
+        arguments:
+            - ~
+            - SubscriptionBundle\Entity\SubscriptionPack
+            - 'SubscriptionBundle\Controller\SubscriptionPackAdminController'
+            - '@SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider'
+            - '@SubscriptionBundle\Service\SubscriptionTextService'
+        tags:
+            -   name: sonata.admin
                 manager_type: orm
-                group: admin
+                group: Carriers management
                 label: Subscription Pack
-          calls:
-              - [ setTemplate, [edit, SubscriptionBundleV2:SubscriptionPack:edit.html.twig]]
+        calls:
+            - [ setTemplate, [edit, '@@Subscription/SubscriptionPack/edit.html.twig']]
 
-  SubscriptionBundle\Controller\SubscriptionPackAdminController:
-          calls: [['setContainer', ['@service_container']]]
+    SubscriptionBundle\Controller\SubscriptionPackAdminController:
+        calls: [['setContainer', ['@service_container']]]

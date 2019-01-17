@@ -2,7 +2,6 @@
 
 namespace SubscriptionBundle\Entity;
 
-use App\Domain\Entity\Carrier;
 use App\Domain\Entity\Country;
 use Doctrine\Common\Collections\ArrayCollection;
 use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
@@ -67,19 +66,33 @@ class SubscriptionPack implements HasUuid
     private $country;
 
     /**
-     * @var Carrier
+     * @var integer
+     */
+    private $carrierId;
+
+    /**
+     * @var
      */
     private $carrier;
 
     /**
-     * @var float
+     * @var  string
      */
-    private $price;
+    private $tier;
+
+    /**
+     * @var integer
+     */
+    private $tierId;
+
+    /**
+     */
+    private $tierPrice;
 
     /**
      * @var string
      */
-    private $currency;
+    private $tierCurrency;
 
     /**
      * @var string
@@ -88,15 +101,11 @@ class SubscriptionPack implements HasUuid
 
     /**
      * @var int
-     *
-     *
      */
     private $credits = 0;
 
     /**
      * @var int
-     *
-     *
      */
     private $periodicity = 7;
 
@@ -210,8 +219,6 @@ class SubscriptionPack implements HasUuid
      *
      * @param string $uuid
      */
-    private $tierId;
-
     public function __construct(string $uuid)
     {
         $this->uuid          = $uuid;
@@ -373,40 +380,110 @@ class SubscriptionPack implements HasUuid
     }
 
     /**
-     * @return Carrier
+     * @return integer
+     */
+    public function getCarrierId()
+    {
+        return $this->carrierId;
+    }
+
+    /**
+     * @param integer $carrierId
+     *
+     * @return SubscriptionPack
+     */
+    public function setCarrierId($carrierId)
+    {
+        $this->carrierId = $carrierId;
+
+        return $this;
+    }
+
+    /**
+     * @param string $carrier
+     * @return $this
+     */
+    public function setCarrier($carrier)
+    {
+        $this->carrier = $carrier;
+
+        return $this;
+    }
+
+    /**
+     * @return string
      */
     public function getCarrier()
     {
         return $this->carrier;
     }
 
-    public function getCarrierId()
+    /**
+     * @param $tierPrice
+     */
+    public function setTierPrice($tierPrice)
     {
-        return $this->carrier->getBillingCarrierId();
+        $this->tierPrice = $tierPrice;
     }
 
     /**
-     * @param Carrier $carrier
+     * @return float
      */
-    public function setCarrier($carrier)
+    public function getTierPrice()
     {
-        $this->carrier = $carrier;
-    }
-
-    /**
-     * @param string $currency
-     */
-    public function setCurrency($currency)
-    {
-        $this->currency = $currency;
+        return $this->tierPrice;
     }
 
     /**
      * @return string
      */
-    public function getCurrency()
+    public function getTier()
     {
-        return $this->currency;
+        return $this->tier;
+    }
+
+    /**
+     * @param string $tier
+     */
+    public function setTier($tier)
+    {
+        $this->tier = $tier;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTierId()
+    {
+        return $this->tierId;
+    }
+
+    /**
+     * @param int $tierId
+     *
+     * @return SubscriptionPack
+     */
+    public function setTierId($tierId)
+    {
+        $this->tierId = $tierId;
+
+        return $this;
+    }
+
+    /**
+     * @param string $tierCurrency
+     */
+    public function setTierCurrency($tierCurrency)
+    {
+        $this->tierCurrency = $tierCurrency;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTierCurrency()
+    {
+        return $this->tierCurrency;
     }
 
     /**
@@ -423,22 +500,6 @@ class SubscriptionPack implements HasUuid
     public function getDisplayCurrency()
     {
         return $this->displayCurrency;
-    }
-
-    /**
-     * @param $price
-     */
-    public function setPrice($price)
-    {
-        $this->price = $price;
-    }
-
-    /**
-     * @return float
-     */
-    public function getPrice()
-    {
-        return $this->price;
     }
 
     /**
@@ -824,23 +885,4 @@ class SubscriptionPack implements HasUuid
     {
         return $this->getPeriodicity() == 8 ? $this->getCustomRenewPeriod() : $this->getPeriodicity();
     }
-
-
-    /**
-     * @return int
-     */
-    public function getTierId(): int
-    {
-        return $this->tierId;
-    }
-
-    /**
-     * @param int $tierId
-     */
-    public function setTierId(int $tierId)
-    {
-        $this->tierId = $tierId;
-    }
-
-
 }

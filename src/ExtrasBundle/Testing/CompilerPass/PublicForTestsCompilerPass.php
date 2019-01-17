@@ -6,7 +6,7 @@
  * Time: 18:01
  */
 
-namespace ExtrasBundle\Tests\CompilerPass;
+namespace ExtrasBundle\Testing\CompilerPass;
 
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;

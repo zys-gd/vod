@@ -9,7 +9,7 @@
 namespace IdentificationBundle\Tests\Identification\Controller;
 
 
-use ExtrasBundle\Tests\Core\AbstractFunctionalTest;
+use ExtrasBundle\Testing\Core\AbstractFunctionalTest;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class CommonFlowTest extends AbstractFunctionalTest
