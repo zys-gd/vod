@@ -34,7 +34,7 @@ class PinCodeVerifier
         $this->entityManager     = $entityManager;
     }
 
-    public function verifyPinCode(string $pinCode)
+    public function verifyPinCode(string $pinCode): bool
     {
         $storedPinCode = $this->pinCodeRepository->getActivePinCode($pinCode);
         if (!empty($storedPinCode)) {
