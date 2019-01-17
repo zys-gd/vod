@@ -1,54 +1,46 @@
 services:
-    piwik.new_tracker:
-        class: PiwikBundle\Service\NewTracker
+    PiwikBundle\Service\NewTracker:
         arguments:
-            - '@playwing.piwik.api_php_client'
-            - '@playwing.piwik.api_js_client'
+            - '@PiwikBundle\Api\PhpClient'
+            - '@PiwikBundle\Api\JsClient'
             - '%piwik_enable_js_tracker%'
-            - '@app.exchange_service'
-            - '@talentica.subscription_pack_provider'
+            - '@LegacyBundle\Service\Exchanger'
+            - '@SubscriptionBundle\Service\SubscriptionPackProvider'
             - '@session'
             - '%campaign_session_name%'
-            - '@app.campaign.repository'
-            - '@talentica.subscribed_game.repository'
-            - '@app.subscription_constraints_by_carrier'
+            - '@App\Domain\Repository\CampaignRepository'
+            - '@SubscriptionBundle\Repository\Game\SubscribedGameRepository'
+            - '@LegacyBundle\Service\SubscriptionConstraintsByCarrier'
             - '@device_detection.service.device'
 
-    playwing.piwik.twig_piwik_extension:
-        class: PiwikBundle\Twig\PiwikExtension
-        arguments: ['@playwing.piwik.api_js_client', '%piwik_enable_js_tracker%']
+    PiwikBundle\Twig\PiwikExtension:
+        arguments: ['@PiwikBundle\Api\JsClient', '%piwik_enable_js_tracker%']
         tags:
             - { name: twig.extension }
             
-    playwing.piwik.api_client_abstract:
-        class: PiwikBundle\Api\ClientAbstract
+    PiwikBundle\Api\ClientAbstract:
         abstract: true
         arguments: ['%piwik_id_site%', '%piwik_host%', '%piwik_https%', '%piwik_token_auth%']
         calls:
             - [setRabbitMQService, ['@enqueue.client.producer']]
 
-    playwing.piwik.api_php_client:
-        class: PiwikBundle\Api\PhpClient
+    PiwikBundle\Api\PhpClient:
         arguments: ['%piwik_id_site%', '%piwik_host%', '%piwik_https%', '%piwik_token_auth%', '@logger']
         calls:
             - [setRabbitMQService, ['@enqueue.client.producer']]
 
-    playwing.piwik.api_js_client:
-        class: PiwikBundle\Api\JsClient
-        parent: playwing.piwik.api_client_abstract
+    PiwikBundle\Api\JsClient:
+        parent: PiwikBundle\Api\ClientAbstract
         calls:
             - ['setEnableLinkTracking', ['%piwik_enable_link_tracking%']]
 
-    playwing.piwik.amqp.send_to_direct_exchange:
-        class: RabbitMqBundle\Service\SendToAMQP\SendToDirectExchange
+    RabbitMqBundle\Service\SendToAMQP\SendToDirectExchange:
         arguments: ['@wl_rabbit_mq.connection']
 
-    playwing.piwik.piwik_data_sender:
-        class: PiwikBundle\Service\PiwikDataSender
-        arguments: ['@playwing.piwik.api_php_client']
+    PiwikBundle\Service\PiwikDataSender:
+        arguments: ['@PiwikBundle\Api\PhpClient']
 
-    playwing.piwik.piwik_events_consumer:
-        class: PiwikBundle\Enqueue\PiwikEventsConsumer
-        arguments: ['@playwing.piwik.piwik_data_sender', '@enqueue.client.producer', '@enqueue.transport.rabbitmq_amqp.context']
+    PiwikBundle\Enqueue\PiwikEventsConsumer:
+        arguments: ['@PiwikBundle\Service\PiwikDataSender', '@enqueue.client.producer', '@enqueue.transport.rabbitmq_amqp.context']
         tags:
           - { name: enqueue.client.processor }

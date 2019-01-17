@@ -4,12 +4,8 @@ LegacyBundle\Entity\ExchangeRate:
     repositoryClass: LegacyBundle\Repository\ExchangeRateRepository
 
     id:
-        id:
-            type: integer
-            id: true
-            generator:
-                strategy: AUTO
-
+        uuid:
+            type: guid
     fields:
         currencyCode:
             type: string
@@ -21,9 +17,3 @@ LegacyBundle\Entity\ExchangeRate:
             type: decimal
             precision: 12
             scale: 2
-
-        uuid:
-            type: string
-            length: 36
-            nullable: true
-            unique: true

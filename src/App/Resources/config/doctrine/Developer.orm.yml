@@ -1,0 +1,21 @@
+App\Domain\Entity\Developer:
+    type: entity
+    table: developers
+    repositoryClass: App\Domain\Repository\DeveloperRepository
+    id:
+        uuid:
+            type: guid
+    fields:
+        name:
+            type: string
+        email:
+            type: string
+
+    lifecycleCallbacks: {  }
+
+    oneToMany:
+        games:
+            targetEntity: Game
+            joinColumn:
+                referencedColumnName: uuid
+            mappedBy: developer
