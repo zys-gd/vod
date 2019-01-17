@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "87faa0b03b3d7076ef1951f5bf4aea00",
+    "content-hash": "7ad036807966336c62a69cebc27774ff",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -3008,6 +3008,46 @@
                 "service proxies"
             ],
             "time": "2018-09-27T13:45:01+00:00"
+        },
+        {
+            "name": "piwik/piwik-php-tracker",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/piwik/piwik-php-tracker.git",
+                "reference": "eee31a509f950e5c2a203629276db1f53ff3f024"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/piwik/piwik-php-tracker/zipball/eee31a509f950e5c2a203629276db1f53ff3f024",
+                "reference": "eee31a509f950e5c2a203629276db1f53ff3f024",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "."
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "The Piwik Team",
+                    "email": "hello@piwik.org",
+                    "homepage": "http://piwik.org/the-piwik-team/"
+                }
+            ],
+            "description": "PHP Client for Piwik Analytics Tracking API",
+            "homepage": "http://piwik.org",
+            "keywords": [
+                "analytics",
+                "piwik",
+                "tracker"
+            ],
+            "time": "2014-12-18T23:21:02+00:00"
         },
         {
             "name": "playwing/difftool",
@@ -9923,7 +9963,8 @@
         "php": "^7.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "ext-json": "^1.6"
+        "ext-json": "^1.6",
+        "ext-redis": "*"
     },
     "platform-dev": []
 }
