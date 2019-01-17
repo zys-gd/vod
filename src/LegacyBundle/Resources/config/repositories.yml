@@ -1,0 +1,5 @@
+services:
+    LegacyBundle\Repository\ExchangeRateRepository:
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - LegacyBundle\Entity\ExchangeRate
