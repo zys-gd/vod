@@ -12,6 +12,7 @@ namespace SubscriptionBundle\Service\Action\Subscribe;
 use IdentificationBundle\Entity\User;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateSender;
+use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException;
@@ -98,7 +99,7 @@ class Subscriber
      * @param Notifier                    $notifier
      * @param SubscribeProcess            $subscribeProcess
      * @param OnSubscribeUpdater          $onSubscribeUpdater
-     * @param AffiliateSender            $affiliateService
+     * @param AffiliateSender             $affiliateService
      * @param UserInfoMapper              $userInfoMapper
      * @param PiwikStatisticSender        $piwikStatisticSender
      * @param SubscriptionHandlerProvider $subscriptionHandlerProvider
@@ -268,7 +269,8 @@ class Subscriber
     {
         $this->affiliateService->checkAffiliateEligibilityAndSendEvent(
             $subscription,
-            $this->userInfoMapper->mapFromUser($subscription->getUser())
+            $this->userInfoMapper->mapFromUser($subscription->getUser()),
+            AffiliateVisitSaver::extractCampaignToken($this->session)
         );
         $this->piwikStatisticSender->trackSubscribe(
             $subscription->getUser(),
@@ -281,7 +283,8 @@ class Subscriber
     {
         $this->affiliateService->checkAffiliateEligibilityAndSendEvent(
             $subscription,
-            $this->userInfoMapper->mapFromUser($subscription->getUser())
+            $this->userInfoMapper->mapFromUser($subscription->getUser()),
+            AffiliateVisitSaver::extractCampaignToken($this->session)
         );
         $this->piwikStatisticSender->trackResubscribe(
             $subscription->getUser(),

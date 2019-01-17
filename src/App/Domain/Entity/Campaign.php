@@ -3,13 +3,14 @@
 namespace App\Domain\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * Campaign
  */
-class Campaign
+class Campaign implements CampaignInterface
 {
     /**
      * Path for saving campaign banner
@@ -215,7 +216,7 @@ class Campaign
      *
      * @return Affiliate
      */
-    public function getAffiliate()
+    public function getAffiliate(): Affiliate
     {
         return $this->affiliate;
     }
@@ -225,7 +226,7 @@ class Campaign
      *
      * @return Carrier[] | ArrayCollection
      */
-    public function getCarriers()
+    public function getCarriers(): ArrayCollection
     {
         return $this->carriers;
     }
