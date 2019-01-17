@@ -1,0 +1,29 @@
+LegacyBundle\Entity\ExchangeRate:
+    type: entity
+    table: exchange_rates
+    repositoryClass: LegacyBundle\Repository\ExchangeRateRepository
+
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+
+    fields:
+        currencyCode:
+            type: string
+
+        currencyName:
+            type: string
+
+        exchangeRate:
+            type: decimal
+            precision: 12
+            scale: 2
+
+        uuid:
+            type: string
+            length: 36
+            nullable: true
+            unique: true
