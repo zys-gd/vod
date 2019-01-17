@@ -3,3 +3,7 @@ services:
         tags:
             - { name: twig.extension }
         arguments: ['%cloudinary_cloud_name%']
+
+    App\Twig\TranslatorExtension:
+        tags:
+            - { name: twig.extension }
