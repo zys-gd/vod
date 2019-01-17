@@ -1,0 +1,3 @@
+services:
+    LegacyBundle\Service\ExchangeService:
+        arguments: ['@LegacyBundle\Repository\ExchangeRateRepository']

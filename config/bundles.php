@@ -31,4 +31,6 @@ return [
     Misd\PhoneNumberBundle\MisdPhoneNumberBundle::class => ['all' => true],
     \ExtrasBundle\ExtrasBundle::class => ['all' => true],
     \PriceBundle\PriceBundle::class => ['all' => true],
+    \PiwikBundle\PiwikBundle::class => ['all' => true],
+    \LegacyBundle\LegacyBundle::class => ['all' => true],
 ];

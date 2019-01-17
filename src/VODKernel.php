@@ -56,6 +56,7 @@ class VODKernel extends BaseKernel
         $loader->load($appConfDir . 'controllers.yml');
         $loader->load($appConfDir . 'listeners.yml');
         $loader->load($appConfDir . 'identification-bundle.yml');
+        $loader->load($appConfDir . 'subscription-bundle.yml');
 
         $fixturesDir = $this->getProjectDir() . '/src/DataFixtures/config/';
         $loader->load($fixturesDir . 'fixtures.yml');

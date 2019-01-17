@@ -9,12 +9,14 @@
 namespace App\Controller;
 
 
+use IdentificationBundle\Controller\ControllerWithISPDetection;
+use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class LPController extends AbstractController implements AppControllerInterface
+class LPController extends AbstractController implements ControllerWithISPDetection
 {
     /**
      * @\IdentificationBundle\Controller\Annotation\NoRedirectToWhoops
@@ -25,6 +27,11 @@ class LPController extends AbstractController implements AppControllerInterface
     public function landingPageAction(Request $request)
     {
         $session = $request->getSession();
+
+        if ($cid = $request->get('cid', '')) {
+            AffiliateVisitSaver::saveCampaignId($cid, $session);
+        };
+
         return $this->render('@App/Common/landing.html.twig', [
             'isp_detection_data' => $session->get('isp_detection_data'),
         ]);

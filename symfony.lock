@@ -248,6 +248,9 @@
     "phpunit/phpunit-mock-objects": {
         "version": "6.1.2"
     },
+    "piwik/piwik-php-tracker": {
+        "version": "1.0.0"
+    },
     "playwing/difftool": {
         "version": "1.0"
     },

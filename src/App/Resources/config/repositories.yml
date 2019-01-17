@@ -22,3 +22,8 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - App\Domain\Entity\Language
+            -
+    App\Domain\Repository\CampaignRepository:
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - App\Domain\Entity\Campaign
