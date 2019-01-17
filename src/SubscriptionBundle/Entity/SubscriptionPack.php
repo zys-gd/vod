@@ -219,8 +219,6 @@ class SubscriptionPack implements HasUuid
      *
      * @param string $uuid
      */
-    private $tierId;
-
     public function __construct(string $uuid)
     {
         $this->uuid          = $uuid;
@@ -399,11 +397,6 @@ class SubscriptionPack implements HasUuid
         $this->carrierId = $carrierId;
 
         return $this;
-    }
-
-    public function getCarrierId()
-    {
-        return $this->carrier->getBillingCarrierId();
     }
 
     /**
@@ -892,23 +885,4 @@ class SubscriptionPack implements HasUuid
     {
         return $this->getPeriodicity() == 8 ? $this->getCustomRenewPeriod() : $this->getPeriodicity();
     }
-
-
-    /**
-     * @return int
-     */
-    public function getTierId(): int
-    {
-        return $this->tierId;
-    }
-
-    /**
-     * @param int $tierId
-     */
-    public function setTierId(int $tierId)
-    {
-        $this->tierId = $tierId;
-    }
-
-
 }
