@@ -1,0 +1,34 @@
+services:
+    PriceBundle\Admin\TierAdmin:
+        arguments: [~, PriceBundle\Entity\Tier, PriceBundle:TierAdmin]
+        tags:
+            -   name: sonata.admin
+                manager_type: orm
+                group: admin
+                label: Price Tier
+                show_in_dashboard: false
+    PriceBundle\Admin\StrategyAdmin:
+        arguments: [~, PriceBundle\Entity\Strategy, PriceBundle:StrategyAdmin]
+        tags:
+            -   name: sonata.admin
+                manager_type: orm
+                group: admin
+                label: Price Strategy
+                show_in_dashboard: false
+
+    PriceBundle\Admin\TierValueAdmin:
+        arguments: [~, PriceBundle\Entity\TierValue, PriceBundle:TierValueAdmin]
+        tags:
+            -   name: sonata.admin
+                manager_type: orm
+                group: admin
+                label: Price Tier Values
+                show_in_dashboard: false
+
+    PriceBundle\Repository\TierValueRepository:
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - PriceBundle\Entity\TierValue
+
+    PriceBundle\Service\CarrierPrice:
+        arguments: ['@SubscriptionBundle\Repository\SubscriptionRepository', '@SubscriptionBundle\Repository\SubscriptionPackRepository']
