@@ -5,7 +5,7 @@ namespace PriceBundle\Service;
 use App\Domain\Entity\Carrier;
 use SubscriptionBundle\Repository\SubscriptionPackRepository;
 use SubscriptionBundle\Repository\SubscriptionRepository;
-
+use IdentificationBundle\Entity\User;
 /**
  * A service for handling carriers
  * @package PriceBundle\Application
@@ -21,7 +21,7 @@ class CarrierPrice
     protected $_subPackRepository = null;
 
     /**
-     * CarrierPrice constructor
+     * CarrierPrice constructor.
      * @param SubscriptionRepository     $oSubscriptionRepository
      * @param SubscriptionPackRepository $oSubPackRepository
      */
@@ -33,15 +33,16 @@ class CarrierPrice
 
     /**
      * @param Carrier $oCarrier
-     * @param null    $billableUser
+     * @param null    $user
+     *
      * @return null|object
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getSubPackByCarrier(Carrier $oCarrier, $billableUser = null)
+    public function getSubPackByCarrier(Carrier $oCarrier, User $user = null)
     {
-        $billing_carrier_id = $oCarrier->getUuid();
+        $billing_carrier_id = $oCarrier->getBillingCarrierId();
         $criteria           = [
-            'carrierUuid' => $billing_carrier_id,
+            'carrierId' => $billing_carrier_id,
             'status'    => 1
         ];
 
@@ -51,8 +52,8 @@ class CarrierPrice
             throw new \Exception(sprintf('You have no active subscription pack for carrier `%s`', $billing_carrier_id));
         }
 
-        if ($billableUser instanceof BillableUser) {
-            $oSubscription = $this->_subscriptionRepository->findCurrentSubscriptionByOwner($billableUser);
+        if ($user instanceof User) {
+            $oSubscription = $this->_subscriptionRepository->findCurrentSubscriptionByOwner($user);
             // is it still needed?
             // if ($oSubscription) {
             //     $oSubPack = $oSubscription->getPlan();

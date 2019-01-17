@@ -30,15 +30,13 @@ class TierValueRepository extends EntityRepository
      *   ),
      * )
      *
-     * @param array $carriers
-     *
-     * @return mixed
+     * @param array $countryCode
      */
     public function getByCarriers(array $carriers)
     {
         $db = $this->getEntityManager()->createQueryBuilder()
             ->select('tv')
-            ->from('PriceBundle\Entity\TierValue', 'tv');
+            ->from('PriceBundle:TierValue', 'tv');
 
         foreach($carriers as $carrier){
             if ($carrier['carrier_id']) {

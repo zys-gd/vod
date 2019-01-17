@@ -1,7 +1,9 @@
 PriceBundle\Entity\Tier:
     type: entity
     table: tiers
+
     repositoryClass: PriceBundle\Repository\TierRepository
+
     id:
         uuid:
             type: guid
@@ -17,11 +19,11 @@ PriceBundle\Entity\Tier:
         values:
             targetEntity: PriceBundle\Entity\TierValue
             mappedBy: tier
-            cascade: ["persist", "remove"]
-            orphanRemoval: true
+            joinColumn:
+                referencedColumnName: uuid
 
-#        carriers:
-#            targetEntity: AppBundle\Entity\Carrier
-#            mappedBy: tier
-#            cascade: ["persist", "remove"]
-#            orphanRemoval: true
+        carriers:
+            targetEntity: App\Domain\Entity\Carrier
+            mappedBy: tier
+            joinColumn:
+                referencedColumnName: uuid

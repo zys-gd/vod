@@ -1,19 +1,17 @@
 <?php
-
 namespace PriceBundle\Entity;
 
 use Doctrine\Common\Collections\Collection;
 use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 
-/**
- * Class Strategy. Used as an abstarctisation for prices
- */
-class Strategy implements \JsonSerializable, HasUuid
+
+class Strategy implements HasUuid
 {
+
     /**
      * @var string
      */
-    private $uuid;
+    protected $uuid;
 
     /**
      * @var string
@@ -21,7 +19,7 @@ class Strategy implements \JsonSerializable, HasUuid
     protected $name;
 
     /**
-     * External Billing Framework tier id
+	External Billing Framework tier id
      * @var integer
      */
     protected $bfStrategyId;
@@ -32,20 +30,12 @@ class Strategy implements \JsonSerializable, HasUuid
     private $values;
 
     /**
-     * Strategy constructor
-     *
-     * @param string $uuid
+     * Strategy constructor.
+     * @throws \Exception
      */
     public function __construct(string $uuid)
     {
         $this->uuid = $uuid;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString () {
-        return $this->getName() ?? '';
     }
 
     /**
@@ -131,8 +121,16 @@ class Strategy implements \JsonSerializable, HasUuid
      */
     public function jsonSerialize(){
         return array(
-            "uuid" => $this->getUuid(),
+            "id" => $this->getUuid(),
             "name" => $this->getName()
         );
+    }
+
+    /**
+     * Returns the string representation of the tier
+     * @return null|string
+     */
+    public function __toString(){
+        return $this->getName();
     }
 }

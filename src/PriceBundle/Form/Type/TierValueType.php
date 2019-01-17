@@ -3,7 +3,6 @@ namespace PriceBundle\Form\Type;
 
 use PriceBundle\Entity\TierValue;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Form\Type\AdminType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

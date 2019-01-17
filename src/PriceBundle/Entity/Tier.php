@@ -8,12 +8,13 @@ use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
  * Class Tier. Used as an abstarctisation for prices
  * @package PriceBundle\Entity
  */
-class Tier implements \JsonSerializable, HasUuid
+class Tier implements HasUuid
 {
+
     /**
      * @var string
      */
-    private $uuid;
+    protected $uuid;
 
     /**
      * @var string
@@ -21,11 +22,11 @@ class Tier implements \JsonSerializable, HasUuid
     protected $name;
 
     /**
-     * External Billing Framework tier id
-     *
+	External Billing Framework tier id
      * @var integer
      */
     protected $bfTierId;
+
 
     /**
      * @var Collection
@@ -35,20 +36,12 @@ class Tier implements \JsonSerializable, HasUuid
     private $carriers;
 
     /**
-     * Tier constructor
-     *
-     * @param string $uuid
+     * Tier constructor.
+     * @throws \Exception
      */
     public function __construct(string $uuid)
     {
         $this->uuid = $uuid;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString () {
-        return $this->getName() ?? '';
     }
 
     /**
@@ -62,7 +55,7 @@ class Tier implements \JsonSerializable, HasUuid
     /**
      * @param string $uuid
      */
-    public function setUuid(string $uuid)
+    public function setUuid(string $uuid): void
     {
         $this->uuid = $uuid;
     }
@@ -88,13 +81,10 @@ class Tier implements \JsonSerializable, HasUuid
     /**
      * Ads a value for the tier
      * @param TierValue $value
-     * @return Tier
      */
     public function addValue(TierValue $value)
     {
         $this->values->add($value);
-
-        return $this;
     }
 
     /**
@@ -125,15 +115,12 @@ class Tier implements \JsonSerializable, HasUuid
     }
 
     /**
+     * Sets the entity name
      * @param string $name
-     *
-     * @return Tier
      */
     public function setName(string $name)
     {
         $this->name = $name;
-
-        return $this;
     }
 
     /**
@@ -141,8 +128,16 @@ class Tier implements \JsonSerializable, HasUuid
      */
     public function jsonSerialize(){
         return array(
-            "uuid" => $this->getUuid(),
+            "id" => $this->getUuid(),
             "name" => $this->getName()
         );
+    }
+
+    /**
+     * Returns the string representation of the tier
+     * @return null|string
+     */
+    public function __toString(){
+        return $this->getName();
     }
 }

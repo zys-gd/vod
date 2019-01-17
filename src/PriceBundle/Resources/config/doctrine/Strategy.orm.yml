@@ -1,7 +1,9 @@
 PriceBundle\Entity\Strategy:
     type: entity
     table: strategies
+
     repositoryClass: PriceBundle\Repository\StrategyRepository
+
     id:
         uuid:
             type: guid
@@ -16,6 +18,6 @@ PriceBundle\Entity\Strategy:
     oneToMany:
         values:
             targetEntity: PriceBundle\Entity\TierValue
+            joinColumn:
+                referencedColumnName: uuid
             mappedBy: strategy
-            cascade: ["persist", "remove"]
-            orphanRemoval: true

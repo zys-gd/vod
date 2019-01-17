@@ -1,36 +1,33 @@
 <?php
-
 namespace PriceBundle\Entity;
-
 
 use App\Domain\Entity\Carrier;
 use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 
 /**
  * Class TierValue. Represents a tier value for a carrier and a billing agregator
+ * @package PriceBundle\Entity
  */
-class TierValue implements FbTierValueInterface, HasUuid
+class TierValue implements HasUuid
 {
+
     /**
      * @var string
      */
-    private $uuid;
+    protected $uuid;
 
     /**
      * @var integer
      */
     protected $bfProcessId;
-
     /**
      * @var Carrier
      */
     protected $carrier;
-
     /**
      * @var float
      */
     protected $value;
-
     /**
      * @var string
      */
@@ -38,25 +35,24 @@ class TierValue implements FbTierValueInterface, HasUuid
 
     /**
      * The parent Tier
-     *
      * @var Tier
      */
     protected $tier;
 
     /**
+     * The strategy
      * @var strategy
      */
     protected $strategy;
 
     /**
+     * The strategy
      * @var string
      */
     protected $description;
 
     /**
-     * TierValue constructor
-     *
-     * @param string $uuid
+     * TierValue constructor.
      */
     public function __construct(string $uuid)
     {
@@ -90,7 +86,7 @@ class TierValue implements FbTierValueInterface, HasUuid
 
     /**
      * Returns the Webshop process id
-     * @return integer
+     * @return string
      */
     public function getBfProductId()
     {
@@ -173,9 +169,9 @@ class TierValue implements FbTierValueInterface, HasUuid
 
     /**
      * Sets the date expired
-     * @param FbTierValueInterface $tierValue
+     * @param TierValue $tierValue
      */
-    public function bfPrepare(FbTierValueInterface $tierValue)
+    public function bfPrepare(TierValue $tierValue)
     {
         $this->bfTierId = $tierValue->getBfTierId();
         $this->bfStrategyId = $tierValue->getBfStrategyId();
@@ -201,7 +197,6 @@ class TierValue implements FbTierValueInterface, HasUuid
 
     /**
      * Sets the Carrier
-     *
      * @param Carrier $carrier
      */
     public function setCarrier(Carrier $carrier)
