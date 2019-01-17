@@ -31,11 +31,6 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: Store text, label: Languages }
 
-    App\Admin\Sonata\PlaceholderAdmin:
-        arguments: [~, App\Domain\Entity\Placeholder, ~]
-        tags:
-            - { name: sonata.admin, manager_type: orm, group: Store text, label: Placeholders }
-
     App\Admin\Sonata\BlackListAdmin:
         arguments: [~, App\Domain\Entity\BlackList, ~]
         tags:
