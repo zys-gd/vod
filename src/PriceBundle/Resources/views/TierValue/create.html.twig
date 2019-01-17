@@ -1,0 +1,115 @@
+{% extends base_template %}
+
+{% block title %}
+    {% if admin.id(object) is not null %}
+        {{ "title_edit"|trans({'%name%': admin.toString(object)|truncate(15) }, 'SonataAdminBundle') }}
+    {% else %}
+        {{ "title_create"|trans({}, 'SonataAdminBundle') }}
+    {% endif %}
+{% endblock %}
+
+{% block navbar_title %}
+    {{ block('title') }}
+{% endblock %}
+
+{%- block actions -%}
+    {% include 'SonataAdminBundle:CRUD:action_buttons.html.twig' %}
+{%- endblock -%}
+
+{% block tab_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active', 'template': sonata_admin.adminPool.getTemplate('tab_menu_template')}, 'twig') }}{% endblock %}
+
+{% import "SonataAdminBundle:CRUD:base_edit_form_macro.html.twig" as form_helper %}
+
+{% block form %}
+
+    {{ sonata_block_render_event('sonata.admin.edit.form.top', { 'admin': admin, 'object': object }) }}
+
+    {% set url = admin.id(object) is not null ? 'edit' : 'create' %}
+
+    {% if not admin.hasRoute(url)%}
+        <div>
+            {{ "form_not_available"|trans({}, "SonataAdminBundle") }}
+        </div>
+    {% else %}
+        <div id="tier-values-admin">
+            <label>
+                <div>
+                    {{ "Choose country" | trans }}
+                </div>
+                <div>
+                    <select name="country" value="country" id="country-selector">
+                        <option value=""></option>
+                        {% for country in countries %}
+                            <option value="{{ country.countryCode }}" data-currency="{{ country.currencyCode }}">{{ country.countryName }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </label>
+            <table cellspacing="5" cellpadding="0" border="0" id="tier-values" class="hidden">
+                <thead>
+                    <tr>
+                        <th>{{ "Mobile carrier" | trans }}</th>
+                        {% for tier in tiers %}
+                        <th>{{ tier.name }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <div id="save-holder">
+                <button id="save-tiers" type="submit" class="hidden btn btn-success" name="btn_update_and_edit"><i class="fa fa-save"></i>{{ "Update" |  trans }}</button>
+            </div>
+        </div>
+    {% endif%}
+
+    {{ sonata_block_render_event('sonata.admin.edit.form.bottom', { 'admin': admin, 'object': object }) }}
+
+    <script type="html/template" id="row-template">
+        <tr>
+            <td><%=carrierName%></td>
+            {% for tier in tiers %}
+                <td>
+                    <input name="value" data-cid="<%=cid_{{ tier.id }}%>" class="tier-value" id="{{ tier.id }}_tier" value="<%=value_{{ tier.id }} ? value_{{ tier.id }} : ""%>" />
+                    <%=currency%>
+                </td>
+            {% endfor %}
+        </tr>
+    </script>
+
+    <script type="html/template" id="success-message">
+        <div class="alert alert-success alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            {{ "Tier values saved" | trans }}
+        </div>
+    </script>
+
+    <script type="html/template" id="loader-template">
+        <div class="loader"></div>
+    </script>
+
+    {#"components/jquery/dist/jquery.min.js"#}
+    {#"components/underscore/underscore-min.js"#}
+    {#"components/backbone/backbone-min.js"#}
+    {% javascripts filter="?uglifyjs"
+        "@AppBundle/Resources/public/js/App.js"
+        "@PriceBundle/Resources/public/js/Router.js"
+        "@PriceBundle/Resources/public/js/Views/List.js"
+        "@PriceBundle/Resources/public/js/Views/SuccessMessage.js"
+        "@PriceBundle/Resources/public/js/Model/Carrier.js"
+        "@PriceBundle/Resources/public/js/Model/TierValue.js"
+        "@PriceBundle/Resources/public/js/Collection/TierValues.js"
+        "@PriceBundle/Resources/public/js/Collection/Carriers.js"
+        "@PriceBundle/Resources/public/js/Module.js"
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        App.boot = {{ zitec_js_data_get_all() }};
+    </script>
+    {% stylesheets
+        "@PriceBundle/Resources/public/css/admin.css"
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
