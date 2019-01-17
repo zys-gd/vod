@@ -68,15 +68,12 @@ class SubscriptionPackAdmin extends AbstractAdmin
      */
     public function getNewInstance()
     {
-        $nowDate = new \DateTime('now');
-
         /** @var SubscriptionPack $instance */
         $instance = new SubscriptionPack(UuidGenerator::generate());
         $instance->setCustomRenewPeriod(0);
         $instance->setUnlimited(false);
         $instance->setCredits(0);
-        $instance->setCreated($nowDate);
-        $instance->setUpdated($nowDate);
+        $instance->setCreated(new \DateTime('now'));
 
         return $instance;
     }
@@ -84,13 +81,17 @@ class SubscriptionPackAdmin extends AbstractAdmin
     /**
      * @param SubscriptionPack $object
      *
-     * @throws \Doctrine\DBAL\DBALException
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+//     * @throws \Doctrine\DBAL\DBALException
+//     * @throws \Doctrine\ORM\NoResultException
+//     * @throws \Doctrine\ORM\NonUniqueResultException
+     *
+     * @throws \Exception
      */
     public function preUpdate($object)
     {
-        $this->subscriptionTextService->insertDefaultPlaceholderTexts($object);
+//        $this->subscriptionTextService->insertDefaultPlaceholderTexts($object);
+        $object->setUpdated(new \DateTime('now'));
+
         parent::preUpdate($object);
     }
 
@@ -212,11 +213,15 @@ class SubscriptionPackAdmin extends AbstractAdmin
      */
     private function buildGeneralSection(FormMapper $formMapper)
     {
-        $formMapper->add('name', TextType::class);
-        $formMapper->add('description', TextareaType::class, ['required' => false]);
-        $formMapper->add('country', EntityType::class,
-            ['class'    => Country::class, 'expanded' => false,
-                'required' => true, 'placeholder' => 'Please select country']);
+        $formMapper
+            ->add('name', TextType::class)
+            ->add('description', TextareaType::class, [
+                'required' => false
+            ])
+            ->add('country', EntityType::class, [
+                'class'    => Country::class, 'expanded' => false,
+                'required' => true, 'placeholder' => 'Please select country'
+            ]);
 
         $builder = $formMapper->getFormBuilder();
 
@@ -355,7 +360,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
                 return ['data' => $strategy->id];
             },
             'choice_value' => function ($strategy) {
-                return $strategy instanceof Strategy ? $strategy->getName() : null;
+                return $strategy instanceof Strategy ? $strategy->getName() : $strategy;
             }
         ];
 
@@ -454,6 +459,9 @@ class SubscriptionPackAdmin extends AbstractAdmin
                     'choice_attr' => function ($carrier) {
                         return ['data' => $carrier->id];
                     },
+                    'choice_value' => function ($carrier) {
+                        return $carrier instanceof Carrier ? $carrier->getName() : $carrier;
+                    },
                     'placeholder' => 'Please select carrier',
                     'required' => true
                 ])
@@ -482,7 +490,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
                     'choices' => $prices,
                     'choice_label' => 'name',
                     'choice_value' => function ($price) {
-                        return $price instanceof Price ? "{$price->getName()} ({$price->getBfTierId()})" : null;
+                        return $price instanceof Price ? $price->getName() : $price;
                     },
                     'choice_attr' => function (Price $price) {
                         return [

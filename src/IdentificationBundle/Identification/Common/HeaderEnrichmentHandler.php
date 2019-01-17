@@ -71,7 +71,7 @@ class HeaderEnrichmentHandler
             throw new FailedIdentificationException('Cannot retrieve msisdn');
         }
 
-        $user = $this->userRepository->findOneByIdentificationToken($token);
+        $user = $this->userRepository->findOneByMsisdn($msisdn);
         if (!$user) {
             $user = $this->userFactory->create(
                 $msisdn,
@@ -81,7 +81,7 @@ class HeaderEnrichmentHandler
             );
             $this->entityManager->persist($user);
         } else {
-            $user->setIdentifier($token);
+            $user->setIdentificationToken($token);
         }
 
         $this->entityManager->flush();

@@ -13,6 +13,7 @@ use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
 use IdentificationBundle\BillingFramework\Process\Exception\PinVerifyProcessException;
 use IdentificationBundle\BillingFramework\Process\PinVerifyProcess;
 use IdentificationBundle\Identification\Exception\AlreadyIdentifiedException;
+use IdentificationBundle\Identification\Exception\FailedIdentificationException;
 use IdentificationBundle\Identification\Exception\MissingIdentificationDataException;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
@@ -114,6 +115,7 @@ class WifiIdentConfirmator
      * @param string $ip
      * @throws AlreadyIdentifiedException
      * @throws MissingIdentificationDataException
+     * @throws FailedIdentificationException
      */
     public function confirm(int $carrierId, string $pinCode, string $mobileNumber, string $ip)
     {
@@ -133,7 +135,7 @@ class WifiIdentConfirmator
         if (!$pinRequestResult->isNeedVerifyRequest()) {
             $isValid = $this->codeVerifier->verifyPinCode($pinCode);
             if (!$isValid) {
-                throw new PinVerifyProcessException('pinCode is not valid');
+                throw new FailedIdentificationException('pinCode is not valid');
             }
             return;
         }
@@ -160,6 +162,7 @@ class WifiIdentConfirmator
                 $handler->afterSuccessfulPinVerify($result);
             }
             $this->identFinisher->finish($msisdn, $carrier, $ip);
+            $this->dataStorage->cleanPreviousOperationResult('pinRequest');
 
         } catch (PinVerifyProcessException $exception) {
             if ($handler instanceof HasCustomPinVerifyRules) {
