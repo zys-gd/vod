@@ -29,5 +29,6 @@ class ExtrasExtension extends Extension
         $loader->load('parameters.yml');
         $loader->load('listeners.yml');
         $loader->load('services.yml');
+        $loader->load('cache.yml');
     }
 }

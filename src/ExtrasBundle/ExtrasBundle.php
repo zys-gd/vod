@@ -9,7 +9,7 @@
 namespace ExtrasBundle;
 
 
-use ExtrasBundle\Tests\CompilerPass\PublicForTestsCompilerPass;
+use ExtrasBundle\Testing\CompilerPass\PublicForTestsCompilerPass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;

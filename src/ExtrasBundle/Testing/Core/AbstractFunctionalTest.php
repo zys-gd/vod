@@ -1,6 +1,6 @@
 <?php
 
-namespace ExtrasBundle\Tests\Core;
+namespace ExtrasBundle\Testing\Core;
 
 
 use Doctrine\Common\DataFixtures\Executor\AbstractExecutor;

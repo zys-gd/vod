@@ -10,7 +10,7 @@ namespace IdentificationBundle\Tests\Functional;
 
 
 use DataFixtures\LoadCarriersData;
-use ExtrasBundle\Tests\Core\AbstractFunctionalTest;
+use ExtrasBundle\Testing\Core\AbstractFunctionalTest;
 use IdentificationBundle\BillingFramework\Process\IdentProcess;
 use Mockery;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;

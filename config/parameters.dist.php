@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     'DATABASE_HOST'         => '192.168.101.6',
     'DATABASE_PORT'         => '3306',
     'DATABASE_NAME'         => 'vod_main',
@@ -17,5 +16,8 @@ return [
     'AWS_S3_REGION'         => 'eu-central-1',
     'IMAGES_BASE_URL'       => 'http://cdn.gameimages.store.playwing.com',
     'BILLING_API_HOST'      => 'http://billing.playwing.com/api',
-    'TOKEN_SESSION_NAME'    => ''
+    'TOKEN_SESSION_NAME'    => '',
+    'REDIS_HOST'            => '192.168.101.3',
+    'REDIS_PORT'            => '6379',
+    'APP_VERSION_HASH'      => 'default',
 ];

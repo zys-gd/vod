@@ -8,6 +8,7 @@ services:
             - '@logger'
             - '@SubscriptionBundle\Utils\UrlParamAppender'
             - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
+            - '@SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter'
 
     SubscriptionBundle\Controller\Actions\ListenAction:
         arguments: ['@SubscriptionBundle\Service\Callback\Common\CommonFlowHandler', '@logger', '@SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider']

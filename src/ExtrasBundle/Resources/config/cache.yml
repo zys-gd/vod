@@ -1,0 +1,27 @@
+services:
+  app.cache.default:
+    class: ExtrasBundle\Cache\CacheServiceWrapper
+    arguments: ['@app.cache.default.placeholder']
+
+  app.cache.default_factory:
+    class: ExtrasBundle\Cache\CacheFactoryWrapper
+    arguments: ['@app.cache.redis_factory']
+
+  app.cache.default.placeholder:
+    class: ExtrasBundle\Cache\RedisCacheService
+    factory: [ '@app.cache.default_factory', 'createPlaceholderCacheService']
+
+  app.cache.default.subscription:
+    class: ExtrasBundle\Cache\RedisCacheService
+    factory: [ '@app.cache.default_factory', 'createUserSubscriptionCacheService']
+
+  app.cache.redis_factory:
+    class: ExtrasBundle\Cache\RedisCacheServiceFactory
+    arguments: ['@app.cache.redis_connection_provider','v%app_version_hash%']
+
+  app.cache.redis_connection_provider:
+    class: ExtrasBundle\Cache\RedisConnectionProvider
+    arguments:
+      - "%redis_host%"
+      - "%redis_port%"
+      - "v%app_version_hash%"

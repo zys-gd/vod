@@ -6,7 +6,7 @@
  * Time: 15:12
  */
 
-namespace ExtrasBundle\Tests\Core;
+namespace ExtrasBundle\Testing\Core;
 
 
 use ReflectionClass;
