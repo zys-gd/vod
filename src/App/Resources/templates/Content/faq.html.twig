@@ -1,5 +1,12 @@
-{% for question in questions %}
-    <p> {{ translate(question.key) }} </p>
-    <p> {{ translate(answers[loop.index0].key) }} </p>
-    <hr/>
-{% endfor %}
+{% extends '@App/base.html.twig' %}
+
+{% block body %}
+    <div class="flex-column">
+        {% for question in questions %}
+            <p> {{ translate(question.key) }} </p>
+            <p> {{ translate(answers[loop.index0].key) }} </p>
+            <hr/>
+        {% endfor %}
+    </div>
+
+{% endblock %}
