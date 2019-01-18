@@ -5,7 +5,7 @@ namespace App\Domain\Service\Translator;
 use App\Domain\Repository\CarrierRepository;
 use App\Domain\Repository\LanguageRepository;
 use App\Domain\Repository\TranslationRepository;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
+use ExtrasBundle\Cache\ICacheService;
 
 class TranslationProvider
 {
@@ -14,7 +14,7 @@ class TranslationProvider
     /** @var TranslationRepository */
     protected $translationRepository;
 
-    /** @var AdapterInterface */
+    /** @var ICacheService */
     protected $cache;
     /** @var LanguageRepository */
     private $languageRepository;
@@ -25,7 +25,7 @@ class TranslationProvider
         TranslationRepository $translationRepository,
         CarrierRepository $carrierRepository,
         LanguageRepository $languageRepository,
-        AdapterInterface $cache
+        ICacheService $cache
     )
     {
         $this->translationRepository = $translationRepository;
@@ -39,25 +39,24 @@ class TranslationProvider
      * @param        $carrierId
      * @param string $languageCode
      *
-     * @return mixed
+     * @return string
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function getTranslation(string $translationKey, $carrierId, string $languageCode)
+    public function getTranslation(string $translationKey, $carrierId, string $languageCode): string
     {
         $cacheKey = $this->generateCacheKey($carrierId, $languageCode);
-        $cacheItem = $this->extractCache($cacheKey);
         // if cache exist
-        if ($cacheItem->get()) {
-            $this->extractTextsFromCache($cacheItem);
+        if ($this->isCacheExist($cacheKey)) {
+            $this->extractCache($cacheKey);
             if (!isset($this->texts[$translationKey])) {
                 $this->doTranslate($translationKey, $carrierId, $languageCode)
-                    ->pushTexts2Cache($cacheItem);
+                    ->pushTexts2Cache($cacheKey);
             }
         }
         else {
             $this->initializeDefaultTexts()
                 ->doTranslate($translationKey, $carrierId, $languageCode)
-                ->pushTexts2Cache($cacheItem);
+                ->pushTexts2Cache($cacheKey);
         }
         return $this->texts[$translationKey];
     }
@@ -67,7 +66,7 @@ class TranslationProvider
      * @param        $carrierId
      * @param string $languageCode
      *
-     * @return object|null
+     * @return $this
      */
     private function doTranslate(string $translationKey, $carrierId, string $languageCode)
     {
@@ -112,23 +111,20 @@ class TranslationProvider
 
     /**
      * @param string $cacheKey
-     *
-     * @return \Symfony\Component\Cache\CacheItem
-     * @throws \Psr\Cache\InvalidArgumentException
      */
     private function extractCache(string $cacheKey)
     {
-        return $this->cache->getItem($cacheKey);
+        $this->texts = $this->cache->getValue($cacheKey);
     }
 
     /**
-     * @param \Symfony\Component\Cache\CacheItem $cacheItem
+     * @param string $cacheKey
      *
-     * @throws \Psr\Cache\InvalidArgumentException
+     * @return mixed
      */
-    private function extractTextsFromCache(\Symfony\Component\Cache\CacheItem $cacheItem)
+    private function isCacheExist(string $cacheKey)
     {
-        $this->texts = $this->cache->getItem($cacheItem->getKey())->get();
+        return $this->cache->hasCache($cacheKey);
     }
 
     private function generateCacheKey($carrierId, string $languageCode)
@@ -136,10 +132,9 @@ class TranslationProvider
         return base64_encode("translations_{$languageCode}_{$carrierId}");
     }
 
-    private function pushTexts2Cache(\Symfony\Component\Cache\CacheItem $cacheItem)
+    private function pushTexts2Cache($cacheKey)
     {
-        $cacheItem->set($this->texts);
-        $this->cache->save($cacheItem);
+        $this->cache->saveCache($cacheKey, $this->texts, 86400);
         return $this;
     }
 }

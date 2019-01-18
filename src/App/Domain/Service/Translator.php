@@ -36,7 +36,7 @@ class Translator
     {
         $translate = $this->translationProvider->getTranslation($translationKey, $carrierId, $languageCode);
 
-        return $translate->getTranslation();
+        return $translate;
     }
 
     // public function replaceShortcode()

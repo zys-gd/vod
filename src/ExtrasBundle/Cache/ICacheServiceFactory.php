@@ -17,7 +17,7 @@ interface ICacheServiceFactory
      * @throws InvalidArgumentException
      * @return ICacheService
      */
-    public function createPlaceholderCacheService(array $options = []): ICacheService;
+    public function createTranslationCacheService(array $options = []): ICacheService;
 
     /**
      * @param array $options
