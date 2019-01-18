@@ -40,10 +40,10 @@ class UnsubscriptionHandlerProvider
     }
 
     /**
-     * @param Carrier $carrier
+     * @param CarrierInterface $carrier
      * @return UnsubscriptionHandlerInterface
      */
-    public function getUnsubscriber(Carrier $carrier): UnsubscriptionHandlerInterface
+    public function getUnsubscriptionHandler(CarrierInterface $carrier): UnsubscriptionHandlerInterface
     {
         /** @var UnsubscriptionHandlerInterface $subscriber */
         foreach ($this->unsubscribers as $subscriber) {

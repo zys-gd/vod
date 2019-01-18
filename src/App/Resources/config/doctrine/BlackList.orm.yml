@@ -14,6 +14,7 @@ App\Domain\Entity\BlackList:
         alias:
             type: string
             length: 255
+            nullable: false
         isBlockedManually:
             type: boolean
             nullable: false

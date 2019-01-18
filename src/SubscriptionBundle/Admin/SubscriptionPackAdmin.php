@@ -5,6 +5,7 @@ namespace SubscriptionBundle\Admin;
 use App\Domain\Entity\Carrier;
 use App\Domain\Entity\Country;
 use App\Utils\UuidGenerator;
+use Doctrine\ORM\EntityManager;
 use PriceBundle\Entity\Strategy;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -14,6 +15,7 @@ use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
 use Sonata\AdminBundle\Route\RouteCollection;
 use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkException;
 use SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider;
+use SubscriptionBundle\Repository\SubscriptionPackRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -68,12 +70,15 @@ class SubscriptionPackAdmin extends AbstractAdmin
      */
     public function getNewInstance()
     {
+        $dateTimeNow = new \DateTime('now');
+
         /** @var SubscriptionPack $instance */
         $instance = new SubscriptionPack(UuidGenerator::generate());
         $instance->setCustomRenewPeriod(0);
         $instance->setUnlimited(false);
         $instance->setCredits(0);
-        $instance->setCreated(new \DateTime('now'));
+        $instance->setCreated($dateTimeNow);
+        $instance->setUpdated($dateTimeNow);
 
         return $instance;
     }
@@ -92,7 +97,24 @@ class SubscriptionPackAdmin extends AbstractAdmin
 //        $this->subscriptionTextService->insertDefaultPlaceholderTexts($object);
         $object->setUpdated(new \DateTime('now'));
 
+        if ($object->getStatus() === SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK) {
+            $this->markSubscriptionPacksWithSameCarrierAsInactive($object);
+        }
+
         parent::preUpdate($object);
+    }
+
+    /**
+     * @param SubscriptionPack $object
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function prePersist($object)
+    {
+        if ($object->getStatus() === SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK) {
+            $this->markSubscriptionPacksWithSameCarrierAsInactive($object);
+        }
     }
 
     /**
@@ -143,10 +165,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
                 'editable' => true,
                 'choices'  => array_flip(SubscriptionPack::PERIODICITY),
             ])
-            ->add('status', ChoiceType::class, [
-                'editable' => true,
-                'choices'  => array_flip(SubscriptionPack::STATUSES),
-            ]);
+            ->add('status', TextType::class);
     }
 
     /**
@@ -506,6 +525,32 @@ class SubscriptionPackAdmin extends AbstractAdmin
                 ->add('tierId', HiddenType::class, ['required' => false]);
         } else {
             $form->remove('tier');
+        }
+    }
+
+
+    /**
+     * @param SubscriptionPack $subscriptionPack
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    private function markSubscriptionPacksWithSameCarrierAsInactive(SubscriptionPack $subscriptionPack)
+    {
+        /** @var EntityManager $em */
+        $em = $this->getConfigurationPool()->getContainer()->get('doctrine')->getEntityManager();
+        /** @var SubscriptionPackRepository $subscriptionPackRepository */
+        $subscriptionPackRepository = $em->getRepository(SubscriptionPack::class);
+        $subscriptionPacks = $subscriptionPackRepository->getOtherActiveSubscriptionPacks($subscriptionPack);
+
+        if (count($subscriptionPacks) > 0) {
+            /** @var SubscriptionPack $subscriptionPack */
+            foreach ($subscriptionPacks as $subscriptionPack) {
+                $subscriptionPack->setStatus(SubscriptionPack::INACTIVE_SUBSCRIPTION_PACK);
+                $em->persist($subscriptionPack);
+            }
+
+            $em->flush();
         }
     }
 }
