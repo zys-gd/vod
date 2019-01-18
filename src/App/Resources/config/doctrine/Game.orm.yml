@@ -1,0 +1,125 @@
+App\Domain\Entity\Game:
+    type: entity
+    table: games
+    repositoryClass: App\Domain\Repository\GameRepository
+    id:
+        uuid:
+            type: guid
+    fields:
+        title:
+            type: string
+            gedmo:
+                - translatable
+        description:
+            type: text
+            gedmo:
+                - translatable
+        icon:
+            type: string
+        thumbnail:
+            type: string
+        tags:
+            type: integer
+        rating:
+            type: integer
+        published:
+            type: boolean
+            options:
+                default: false
+        isBookmark:
+            type: boolean
+            options:
+                default: false
+        created:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updated:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+        deletedAt:
+            type: date
+            nullable: true
+
+    lifecycleCallbacks: {  }
+
+    manyToOne:
+        developer:
+            targetEntity: Developer
+            inversedBy: games
+            joinColumn:
+                name: developer_id
+                referencedColumnName: uuid
+        tier:
+          targetEntity: PriceBundle\Entity\Tier
+          joinColumn:
+            name: tier_id
+            referencedColumnName: uuid
+
+    oneToMany:
+        images:
+            targetEntity: App\Domain\Entity\GameImage
+            joinColumn:
+                referencedColumnName: uuid
+            mappedBy: game
+            cascade: ["persist", "remove"]
+            orphanRemoval: true
+#            TODO: do we need this?
+#        translations:
+#            targetEntity: App\Domain\Entity\GameTranslation
+#            joinColumn:
+#                referencedColumnName: uuid
+#            mappedBy: object
+#            cascade: ["persist", "remove"]
+        categoryGameAssociations:
+            targetEntity: App\Domain\Entity\CategoryGameAssociation
+            joinColumn:
+                referencedColumnName: uuid
+            orderBy: { 'position': 'ASC' }
+            mappedBy: game
+            cascade: ["persist", "remove"]
+        builds:
+            targetEntity: App\Domain\Entity\GameBuild
+            joinColumn:
+                referencedColumnName: uuid
+            mappedBy: game
+            cascade: ["persist", "remove"]
+            orphanRemoval: true
+        categoryGameCountryLinks:
+            targetEntity: App\Domain\Entity\CategoryGameCountryLink
+            joinColumn:
+                referencedColumnName: uuid
+            mappedBy: game
+            orphanRemoval: true
+
+    manyToMany:
+       deactivatedCountries:
+          targetEntity: App\Domain\Entity\Country
+          inversedBy: deactivatedGames
+          orderBy: { 'countryName': 'ASC' }
+          cascade: ["persist", "remove"]
+          joinTable:
+              name: games_countries_deactivate
+              joinColumns:
+                  game_id:
+                      referencedColumnName: uuid
+                      onDelete: CASCADE
+              inverseJoinColumns:
+                  country_id:
+                      referencedColumnName: uuid
+       deactivatedCarriers:
+          targetEntity: App\Domain\Entity\Carrier
+          inversedBy: deactivatedGames
+          cascade: ["persist", "remove"]
+          joinTable:
+              name: games_carriers_deactivate
+              joinColumns:
+                  game_id:
+                      referencedColumnName: uuid
+                      onDelete: CASCADE
+              inverseJoinColumns:
+                  carrier_id:
+                      referencedColumnName: uuid

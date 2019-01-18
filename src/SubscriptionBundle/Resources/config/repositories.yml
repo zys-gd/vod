@@ -24,8 +24,13 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - SubscriptionBundle\Entity\Log
-            -
+
     SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - SubscriptionBundle\Entity\Affiliate\AffiliateLog
+
+    SubscriptionBundle\Repository\Game\SubscribedGameRepository:
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - SubscriptionBundle\Entity\Game\SubscribedGame

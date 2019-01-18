@@ -1,0 +1,52 @@
+App\Domain\Entity\GameBuild:
+    type: entity
+    table: game_builds
+
+    repositoryClass: App\Domain\Repository\GameBuildRepository
+
+    id:
+        uuid:
+            type: guid
+    fields:
+        os_type:
+            type: integer
+        min_os_version:
+            type: string
+        game_apk:
+            type: string
+            nullable: true
+        apk_size:
+            type: integer
+            nullable: true
+            default: "0"
+        version:
+            type: integer
+            nullable: true
+            default: "0"
+        apk_version:
+            type: integer
+            nullable: true
+            default: "0"
+
+    lifecycleCallbacks: {  }
+
+    manyToMany:
+        device_displays:
+            targetEntity: App\Domain\Entity\DeviceDisplay
+            inversedBy: game_builds
+            joinTable:
+                name: game_builds_device_displays
+                joinColumns:
+                    game_build_id:
+                        referencedColumnName: uuid
+                inverseJoinColumns:
+                    device_display_id:
+                        referencedColumnName: uuid
+
+    manyToOne:
+        game:
+            targetEntity: App\Domain\Entity\Game
+            inversedBy: builds
+            joinColumn:
+                name: game_id
+                referencedColumnName: uuid

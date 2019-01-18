@@ -28,7 +28,7 @@ class IdentificationDataStorage
 
     public function readValue(string $key)
     {
-        return $this->session->get("storage[$key]",'');
+        return $this->session->get("storage[$key]", '');
     }
 
     public function storeValue(string $key, $value)
@@ -44,6 +44,11 @@ class IdentificationDataStorage
     public function readPreviousOperationResult(string $key)
     {
         return unserialize($this->session->get("results[$key]"));
+    }
+
+    public function cleanPreviousOperationResult(string $key): void
+    {
+        $this->session->remove("results[$key]");
     }
 
     public function storeIdentificationToken(string $token)

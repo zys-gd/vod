@@ -4,7 +4,7 @@ namespace LegacyBundle\Service;
 
 use LegacyBundle\Repository\ExchangeRateRepository;
 
-class ExchangeService
+class Exchanger
 {
     /**
      * @var ExchangeRateRepository

@@ -1,0 +1,32 @@
+App\Domain\Entity\GameImage:
+    type: entity
+    table: game_images
+    repositoryClass: App\Domain\Repository\GameImageRepository
+    id:
+        uuid:
+            type: guid
+    fields:
+        name:
+            type: string
+            gedmo:
+                - translatable
+
+    lifecycleCallbacks: {  }
+
+    manyToOne:
+        game:
+            targetEntity: App\Domain\Entity\Game
+            inversedBy: images
+            cascade: ["persist"]
+            orphanRemoval: true
+            joinColumn:
+                name: game_id
+                referencedColumnName: uuid
+#TODO: do we need this?
+#    oneToMany:
+#        translations:
+#            targetEntity: App\Domain\Entity\GameImageTranslation
+#            joinColumn:
+#                referencedColumnName: uuid
+#            mappedBy: object
+#            cascade: ["persist", "remove"]

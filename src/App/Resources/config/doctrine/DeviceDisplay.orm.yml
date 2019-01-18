@@ -1,0 +1,23 @@
+App\Domain\Entity\DeviceDisplay:
+    type: entity
+    table: device_displays
+    repositoryClass: App\Domain\Repository\DeviceDisplayRepository
+    id:
+        uuid:
+            type: guid
+    fields:
+        name:
+            type: string
+        width:
+            type: integer
+        height:
+            type: integer
+
+    lifecycleCallbacks: {  }
+
+    manyToMany:
+        game_builds:
+            targetEntity: App\Domain\Entity\GameBuild
+            joinColumn:
+                referencedColumnName: uuid
+            mappedBy: device_displays
