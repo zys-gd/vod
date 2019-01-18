@@ -2,26 +2,103 @@
 
 namespace App\Admin\Sonata;
 
+use App\Domain\Entity\BlackList;
+use App\Utils\UuidGenerator;
+use IdentificationBundle\Entity\User;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use SubscriptionBundle\Entity\Subscription;
-use Symfony\Component\HttpFoundation\Request;
+use SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider;
+use SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
+/**
+ * Class BlackListAdmin
+ */
 class BlackListAdmin extends AbstractAdmin
 {
+    /**
+     * @var UnsubscriptionHandlerProvider
+     */
+    private $unsubscriptionHandlerProvider;
+
+    /**
+     * @var Unsubscriber
+     */
+    private $unsubscriber;
+
+    public function __construct(
+        string $code,
+        string $class,
+        string $baseControllerName,
+        UnsubscriptionHandlerProvider $unsubscriptionHandlerProvider,
+        Unsubscriber $unsubscriber
+    ) {
+        $this->unsubscriptionHandlerProvider = $unsubscriptionHandlerProvider;
+        $this->unsubscriber = $unsubscriber;
+
+        parent::__construct($code, $class, $baseControllerName);
+    }
+
+    /**
+     * @param BlackList $blackList
+     */
+    public function postPersist($blackList) {
+        $doctrine = $this->getConfigurationPool()->getContainer()->get('doctrine');
+
+        /** @var User $user */
+        $user = $doctrine
+            ->getRepository('IdentificationBundle\Entity\User')
+            ->findOneBy(['identifier' => $blackList->getAlias()]);
+
+        if ($user) {
+            /** @var Subscription $subscription */
+            $subscription = $doctrine
+                ->getRepository('SubscriptionBundle\Entity\Subscription')
+                ->findOneBy(['user' => $user]);
+
+            if ($subscription && $subscription->getCurrentStage() != Subscription::ACTION_UNSUBSCRIBE) {
+                $unsubscribtionHandler = $this->unsubscriptionHandlerProvider->getUnsubscriptionHandler($user->getCarrier());
+
+                $response = $this->unsubscriber->unsubscribe($subscription, $subscription->getSubscriptionPack());
+                $unsubscribtionHandler->applyPostUnsubscribeChanges($subscription);
+
+                if ($unsubscribtionHandler->isPiwikNeedToBeTracked($response)) {
+                    $this->unsubscriber->trackEventsForUnsubscribe($subscription, $response);
+                }
+            }
+        }
+    }
+
+    /**
+     * @param BlackList $blacklist
+     */
+    public function postUpdate($blacklist) {
+        $this->postPersist($blacklist);
+    }
+
+    /**
+     * @return BlackList
+     *
+     * @throws \Exception
+     */
+    public function getNewInstance()
+    {
+        return new BlackList(UuidGenerator::generate());
+    }
+
     /**
      * @param DatagridMapper $datagridMapper
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('id')
-            ->add('carrierId')
-            ->add('alias')
-        ;
+            ->add('uuid')
+            ->add('billingCarrierId')
+            ->add('alias');
     }
 
     /**
@@ -30,8 +107,8 @@ class BlackListAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id')
-            ->add('carrierId')
+            ->add('uuid')
+            ->add('billingCarrierId')
             ->add('alias')
             ->add('_action', null, array(
                 'actions' => array(
@@ -39,8 +116,7 @@ class BlackListAdmin extends AbstractAdmin
                     'edit' => array(),
                     'delete' => array(),
                 )
-            ))
-        ;
+            ));
     }
 
     /**
@@ -49,9 +125,10 @@ class BlackListAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('carrierId')
-            ->add('alias')
-        ;
+            ->add('billingCarrierId')
+            ->add('alias', TextType::class, [
+                'required' => true
+            ]);
     }
 
     /**
@@ -60,27 +137,8 @@ class BlackListAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('id')
-            ->add('carrierId')
-            ->add('alias')
-        ;
-    }
-
-    public function postPersist($blackList) {
-        $doctrine = $this->getConfigurationPool()->getContainer()->get('Doctrine');
-        if ($blackList && $blackList->getAlias()) {
-            $billableUser = $doctrine->getRepository('UserBundle:BillableUser')->findOneBy(['identifier' => $blackList->getAlias()]);
-            if ($billableUser) {
-                $subscription = $doctrine->getRepository('SubscriptionBundleV2:Subscription')->findOneBy(['billableUser' => $billableUser]);
-                if ($subscription && $subscription->getAction() != Subscription::ACTION_UNSUBSCRIBE) {
-                    $subscriptionService = $this->getConfigurationPool()->getContainer()->get('subscription.subscription.service');
-                    $subscriptionService->unsubscribe(new Request(['unsub_after_blacklisting' => 1]), $billableUser);
-                }
-            }
-        }
-    }
-
-    public function postUpdate($blacklist) {
-        $this->postPersist($blacklist);
+            ->add('uuid')
+            ->add('billingCarrierId')
+            ->add('alias');
     }
 }
