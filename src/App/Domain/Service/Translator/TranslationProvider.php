@@ -6,6 +6,7 @@ use App\Domain\Entity\Translation;
 use App\Domain\Repository\CarrierRepository;
 use App\Domain\Repository\LanguageRepository;
 use App\Domain\Repository\TranslationRepository;
+use App\Exception\WrongTranslationKey;
 use ExtrasBundle\Cache\ICacheService;
 
 class TranslationProvider
@@ -58,7 +59,8 @@ class TranslationProvider
                 ->doTranslate($translationKey, $carrierId, $languageCode)
                 ->pushTexts2Cache($cacheKey);
         }
-        return $this->texts[$translationKey];
+
+        return $this->texts[$translationKey] ?? null;
     }
 
     /**

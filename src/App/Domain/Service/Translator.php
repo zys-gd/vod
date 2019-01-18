@@ -30,7 +30,6 @@ class Translator
      * @param string $languageCode
      *
      * @return string|null
-     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function translate(string $translationKey, $carrierId = null, string $languageCode = 'en'): ?string
     {
