@@ -100,14 +100,16 @@ class TranslationProvider
     /**
      * @return $this
      */
-    // TODO: put to cache?
     private function initializeDefaultTexts()
     {
         $oLanguage   = $this->languageRepository->findOneBy(['code' => self::DEFAULT_LOCALE]);
-        $translation = $this->translationRepository->findBy([
+        /** @var Translation[] $translations */
+        $translations = $this->translationRepository->findBy([
             'language' => $oLanguage
         ]);
-        $this->texts = json_decode(json_encode($translation), true);
+        foreach ($translations ?? [] as $translation) {
+            $this->texts[$translation->getKey()] = $translation->getTranslation();
+        }
         return $this;
     }
 

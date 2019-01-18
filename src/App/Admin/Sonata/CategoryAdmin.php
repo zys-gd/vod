@@ -17,6 +17,13 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class CategoryAdmin extends AbstractAdmin
 {
     /**
+     * @var array
+     */
+    protected $datagridValues = [
+        '_sort_by' => 'menuPriority'
+    ];
+
+    /**
      * Fields labels
      */
     const MENU_PRIORITY_LABEL = 'Menu position';

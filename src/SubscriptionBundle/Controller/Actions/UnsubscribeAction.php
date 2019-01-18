@@ -93,7 +93,7 @@ class UnsubscribeAction extends Controller
                 throw new SubscriptionException('You have already been unsubscribed');
             }
 
-            $handler  = $this->handlerProvider->getUnsubscriber($User->getCarrier());
+            $handler  = $this->handlerProvider->getUnsubscriptionHandler($User->getCarrier());
             $response = $this->unsubscriber->unsubscribe($subscription, $subscriptionPack);
 
             $handler->applyPostUnsubscribeChanges($subscription);
