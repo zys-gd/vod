@@ -45,7 +45,6 @@ class TranslationProvider
      */
     public function getTranslation(string $translationKey, $carrierId, string $languageCode): string
     {
-        $this->cache->deleteCache();
         $cacheKey = $this->generateCacheKey($carrierId, $languageCode);
         // if cache exist
         if ($this->isCacheExist($cacheKey)) {
