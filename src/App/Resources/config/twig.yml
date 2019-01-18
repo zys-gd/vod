@@ -7,3 +7,5 @@ services:
     App\Twig\TranslatorExtension:
         tags:
             - { name: twig.extension }
+        arguments:
+          ['@App\Domain\Service\Translator']

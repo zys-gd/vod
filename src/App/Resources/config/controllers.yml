@@ -9,3 +9,6 @@ services:
         calls:
             - [setContainer, ['@service_container']]
         arguments: ['@form.factory', '@App\Domain\Service\VideoProcessing\VideoUploader']
+
+    App\Controller\ContentController:
+        arguments: ['@App\Domain\Service\FaqProviderService']

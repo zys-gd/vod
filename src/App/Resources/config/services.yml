@@ -52,5 +52,12 @@ services:
               version: '%aws_s3_version%'
               region: '%aws_s3_region%'
 
-    App\Domain\Service\CampaignService:
-        public: true
+    App\Domain\Service\CampaignService: ~
+
+    App\Domain\Service\Translator\TranslationProvider: ~
+
+    App\Domain\Service\Translator\TranslatorShortcodeReplacer: ~
+
+    App\Domain\Service\Translator: ~
+
+    App\Domain\Service\FaqProviderService: ~
