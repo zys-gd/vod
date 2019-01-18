@@ -51,13 +51,13 @@ class BlackListAdmin extends AbstractAdmin
 
         /** @var User $user */
         $user = $doctrine
-            ->getRepository('IdentificationBundle\Entity\User')
+            ->getRepository(User::class)
             ->findOneBy(['identifier' => $blackList->getAlias()]);
 
         if ($user) {
             /** @var Subscription $subscription */
             $subscription = $doctrine
-                ->getRepository('SubscriptionBundle\Entity\Subscription')
+                ->getRepository(Subscription::class)
                 ->findOneBy(['user' => $user]);
 
             if ($subscription && $subscription->getCurrentStage() != Subscription::ACTION_UNSUBSCRIBE) {
