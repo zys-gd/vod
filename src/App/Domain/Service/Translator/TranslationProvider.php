@@ -6,6 +6,7 @@ use App\Domain\Entity\Translation;
 use App\Domain\Repository\CarrierRepository;
 use App\Domain\Repository\LanguageRepository;
 use App\Domain\Repository\TranslationRepository;
+use App\Exception\WrongTranslationKey;
 use ExtrasBundle\Cache\ICacheService;
 
 class TranslationProvider
@@ -41,9 +42,8 @@ class TranslationProvider
      * @param string $languageCode
      *
      * @return string
-     * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function getTranslation(string $translationKey, $carrierId, string $languageCode): string
+    public function getTranslation(string $translationKey, $carrierId, string $languageCode): ?string
     {
         $cacheKey = $this->generateCacheKey($carrierId, $languageCode);
         // if cache exist
@@ -59,7 +59,7 @@ class TranslationProvider
                 ->doTranslate($translationKey, $carrierId, $languageCode)
                 ->pushTexts2Cache($cacheKey);
         }
-        return $this->texts[$translationKey];
+        return $this->texts[$translationKey] ?? null;
     }
 
     /**
