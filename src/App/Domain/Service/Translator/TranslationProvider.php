@@ -101,7 +101,6 @@ class TranslationProvider
     /**
      * @return $this
      */
-    // TODO: put to cache?
     private function initializeDefaultTexts()
     {
         $oLanguage   = $this->languageRepository->findOneBy(['code' => self::DEFAULT_LOCALE]);
