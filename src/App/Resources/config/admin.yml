@@ -31,10 +31,10 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: Store text, label: Languages }
 
-    App\Admin\Sonata\PlaceholderAdmin:
-        arguments: [~, App\Domain\Entity\Placeholder, ~]
+    App\Admin\Sonata\TranslationsAdmin:
+        arguments: [~, App\Domain\Entity\Translation, ~, '@SubscriptionBundle\Repository\SubscriptionPackRepository']
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Store text, label: Placeholders }
+            - { name: sonata.admin, manager_type: orm, group: Store text, label: Translations }
 
     App\Admin\Sonata\BlackListAdmin:
         arguments: [~, App\Domain\Entity\BlackList, ~]

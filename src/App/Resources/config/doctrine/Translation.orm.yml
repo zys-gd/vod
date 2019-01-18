@@ -10,6 +10,7 @@ App\Domain\Entity\Translation:
             type: string
             length: 255
             nullable: false
+            column: "`key`"
         translation:
             type: text
             nullable: false

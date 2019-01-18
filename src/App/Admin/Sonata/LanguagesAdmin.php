@@ -2,24 +2,38 @@
 
 namespace App\Admin\Sonata;
 
+use App\Domain\Entity\Language;
+use App\Utils\UuidGenerator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
+/**
+ * Class LanguagesAdmin
+ */
 class LanguagesAdmin extends AbstractAdmin
 {
+    /**
+     * @return Language
+     *
+     * @throws \Exception
+     */
+    public function getNewInstance()
+    {
+        return new Language(UuidGenerator::generate());
+    }
+
     /**
      * @param DatagridMapper $datagridMapper
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('id')
+            ->add('uuid')
             ->add('name')
-            ->add('code')
-        ;
+            ->add('code');
     }
 
     /**
@@ -36,8 +50,7 @@ class LanguagesAdmin extends AbstractAdmin
                     'edit' => array(),
                     'delete' => array(),
                 )
-            ))
-        ;
+            ));
     }
 
     /**
@@ -47,8 +60,7 @@ class LanguagesAdmin extends AbstractAdmin
     {
         $formMapper
             ->add('name', null, ['required' => false])
-            ->add('code')
-        ;
+            ->add('code');
     }
 
     /**
@@ -57,9 +69,8 @@ class LanguagesAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('id')
+            ->add('uuid')
             ->add('name')
-            ->add('code')
-        ;
+            ->add('code');
     }
 }

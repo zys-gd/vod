@@ -32,9 +32,12 @@ class Language implements HasUuid
         $this->uuid = $uuid;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
-        return strlen($this->name) > 0 ? $this->name : $this->code;
+        return $this->name ? $this->name : $this->code ?? '';
     }
 
     /**
@@ -48,7 +51,7 @@ class Language implements HasUuid
     /**
      * @return string
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -56,7 +59,7 @@ class Language implements HasUuid
     /**
      * @return string
      */
-    public function getCode(): string
+    public function getCode(): ?string
     {
         return $this->code;
     }
