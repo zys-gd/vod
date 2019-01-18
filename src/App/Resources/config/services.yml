@@ -52,5 +52,20 @@ services:
               version: '%aws_s3_version%'
               region: '%aws_s3_region%'
 
-    App\Domain\Service\CampaignService:
-        public: true
+    App\Domain\Service\CampaignService: ~
+
+    App\Domain\Service\Translator\TranslationProvider:
+        arguments:
+            - '@App\Domain\Repository\TranslationRepository'
+            - '@App\Domain\Repository\CarrierRepository'
+            - '@App\Domain\Repository\LanguageRepository'
+            - '@app.cache.default.translation'
+
+    App\Domain\Service\Translator\TranslatorShortcodeReplacer: ~
+
+    App\Domain\Service\Translator:
+        arguments:
+            - '@App\Domain\Service\Translator\TranslationProvider'
+            - '@App\Domain\Service\Translator\TranslatorShortcodeReplacer'
+
+    App\Domain\Service\FaqProviderService: ~

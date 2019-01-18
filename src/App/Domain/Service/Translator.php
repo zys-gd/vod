@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Service;
+namespace App\Domain\Service;
 
-use AppBundle\Service\Translator\TranslationProvider;
-use AppBundle\Service\Translator\TranslatorShortcodeReplacer;
+use App\Domain\Service\Translator\TranslationProvider;
+use App\Domain\Service\Translator\TranslatorShortcodeReplacer;
 use SubscriptionBundle\Entity\SubscriptionPack;
 
 class Translator
@@ -35,6 +35,7 @@ class Translator
     public function translate(string $translationKey, $carrierId = null, string $languageCode = 'en'): ?string
     {
         $translate = $this->translationProvider->getTranslation($translationKey, $carrierId, $languageCode);
+
         return $translate;
     }
 

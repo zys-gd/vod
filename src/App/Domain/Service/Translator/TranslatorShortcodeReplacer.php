@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Service\Translator;
+namespace App\Domain\Service\Translator;
 
 use SubscriptionBundle\Entity\SubscriptionPack;
 

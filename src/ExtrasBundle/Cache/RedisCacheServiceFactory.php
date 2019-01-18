@@ -38,7 +38,7 @@ class RedisCacheServiceFactory implements ICacheServiceFactory
      * @throws InvalidArgumentException
      * @return ICacheService
      */
-    public function createPlaceholderCacheService(array $options = []): ICacheService
+    public function createTranslationCacheService(array $options = []): ICacheService
     {
         return $this->createService(self::PLACEHOLDER_DATABASE, $options, sprintf('%s_%s_', $this->namespace, 'placheolders'));
     }

@@ -1,15 +1,15 @@
 services:
   app.cache.default:
     class: ExtrasBundle\Cache\CacheServiceWrapper
-    arguments: ['@app.cache.default.placeholder']
+    arguments: ['@app.cache.default.translation']
 
   app.cache.default_factory:
     class: ExtrasBundle\Cache\CacheFactoryWrapper
     arguments: ['@app.cache.redis_factory']
 
-  app.cache.default.placeholder:
+  app.cache.default.translation:
     class: ExtrasBundle\Cache\RedisCacheService
-    factory: [ '@app.cache.default_factory', 'createPlaceholderCacheService']
+    factory: [ '@app.cache.default_factory', 'createTranslationCacheService']
 
   app.cache.default.subscription:
     class: ExtrasBundle\Cache\RedisCacheService

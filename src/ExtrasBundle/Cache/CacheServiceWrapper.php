@@ -41,6 +41,11 @@ class CacheServiceWrapper implements ICacheService
         return $this->ICacheService->deleteCache();
     }
 
+    /**
+     * @param string $key
+     *
+     * @return mixed
+     */
     public function hasCache(string $key)
     {
         return $this->ICacheService->hasCache($key);
