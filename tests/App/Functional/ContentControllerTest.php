@@ -8,11 +8,19 @@
 
 namespace App\Tests\App\Functional;
 
+use App\Domain\Service\Translator\TranslationProvider;
 use ExtrasBundle\Testing\Core\AbstractFunctionalTest;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Mockery;
+use IdentificationBundle\BillingFramework\Process\IdentProcess;
 
 class ContentControllerTest extends AbstractFunctionalTest
 {
+    /**
+     * @var Mockery\MockInterface|IdentProcess
+     */
+    protected $translationProvider;
+
     protected static function getKernelClass()
     {
         return \VODKernel::class;
@@ -24,7 +32,6 @@ class ContentControllerTest extends AbstractFunctionalTest
     public function testFaqPage()
     {
         $client = $this->makeClient();
-
         $client->request('GET', '/faq');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -36,7 +43,6 @@ class ContentControllerTest extends AbstractFunctionalTest
     public function testTermsAndConditionsPage()
     {
         $client = $this->makeClient();
-
         $client->request('GET', '/terms-and-conditions');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -44,7 +50,7 @@ class ContentControllerTest extends AbstractFunctionalTest
 
     protected function initializeServices(ContainerInterface $container)
     {
-
+        $this->translationProvider = $this->createMock(TranslationProvider::class);
     }
 
     protected function getFixturesListLoadedForEachTest(): array
@@ -54,6 +60,6 @@ class ContentControllerTest extends AbstractFunctionalTest
 
     protected function configureWebClientClientContainer(ContainerInterface $container)
     {
-
+        $container->set('App\Domain\Service\Translator\TranslationProvider', $this->translationProvider);
     }
 }
