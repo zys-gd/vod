@@ -26,6 +26,7 @@ class Translation implements HasUuid
 
     /**
      * Translation constructor.
+     *
      * @param string $uuid
      */
     public function __construct(string $uuid)

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Service\Translator;
+namespace App\Domain\Service\Translator;
 
 use App\Domain\Repository\CarrierRepository;
 use App\Domain\Repository\LanguageRepository;
@@ -102,8 +102,8 @@ class TranslationProvider
     // TODO: put to cache?
     private function initializeDefaultTexts()
     {
-        $oLanguage = $this->languageRepository->findOneBy(['code' => self::DEFAULT_LOCALE]);
-        $translation = $this->translationRepository->find([
+        $oLanguage   = $this->languageRepository->findOneBy(['code' => self::DEFAULT_LOCALE]);
+        $translation = $this->translationRepository->findBy([
             'language' => $oLanguage
         ]);
         $this->texts = json_decode(json_encode($translation), true);
@@ -128,7 +128,7 @@ class TranslationProvider
      */
     private function extractTextsFromCache(\Symfony\Component\Cache\CacheItem $cacheItem)
     {
-        $this->texts = $this->cache->getItem($cacheItem)->get();
+        $this->texts = $this->cache->getItem($cacheItem->getKey())->get();
     }
 
     private function generateCacheKey($carrierId, string $languageCode)
