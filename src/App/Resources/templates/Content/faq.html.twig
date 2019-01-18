@@ -1,0 +1,5 @@
+{% for question in questions %}
+    <p> {{ translate(question.key) }} </p>
+    <p> {{ translate(answers[loop.index0].key) }} </p>
+    <hr/>
+{% endfor %}
