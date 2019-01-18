@@ -1,132 +1,173 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Maxim Nevstruev
- * Date: 14.02.2017
- * Time: 11:52
- */
 
 namespace App\Admin\Sonata;
 
-
+use App\Domain\Entity\Carrier;
+use App\Domain\Entity\Language;
+use App\Domain\Entity\Translation;
+use App\Utils\UuidGenerator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use subscription\SubscriptionBundle\Repository\SubscriptionPack\SubscriptionPackRepository;
+use SubscriptionBundle\Entity\SubscriptionPack;
+use SubscriptionBundle\Repository\SubscriptionPackRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints\Length;
 
+/**
+ * Class TranslationsAdmin
+ */
 class TranslationsAdmin extends AbstractAdmin
 {
-    /** @var null|SubscriptionPackRepository  */
-    protected $subscriptionPackRepository = null;
-    /** @var array  */
-    protected $subPackOptions = ['...' => 0];
+    /**
+     * @var SubscriptionPackRepository
+     */
+    protected $subscriptionPackRepository;
 
-    public function __construct(string $code, string $class, string $baseControllerName, SubscriptionPackRepository $subscriptionPackRepository)
-    {
-        parent::__construct($code, $class, $baseControllerName);
+    /**
+     * @var array
+     */
+    protected $subscriptionPackOptions = ['...' => 0];
+
+    /**
+     * TranslationsAdmin constructor
+     *
+     * @param string $code
+     * @param string $class
+     * @param string $baseControllerName
+     * @param SubscriptionPackRepository $subscriptionPackRepository
+     */
+    public function __construct(
+        string $code,
+        string $class,
+        string $baseControllerName,
+        SubscriptionPackRepository $subscriptionPackRepository
+    ) {
         $this->subscriptionPackRepository = $subscriptionPackRepository;
+        $this->setSubscriptionPackOptions();
+
+        parent::__construct($code, $class, $baseControllerName);
     }
 
     /**
-     * @return array
+     * @return Translation
+     *
+     * @throws \Exception
      */
-    protected function getSubPackOptions()
+    public function getNewInstance(): Translation
     {
-        if(count($this->subPackOptions) == 1) {
-            $aSubPacks = $this->subscriptionPackRepository->findAll();
-            foreach ($aSubPacks as $oSubPack) {
-                $name = "[{$oSubPack->getId()}] {$oSubPack->getName()}";
-                $this->subPackOptions[$name] = $oSubPack->getId();
+        return new Translation(UuidGenerator::generate());
+    }
+
+    protected function setSubscriptionPackOptions()
+    {
+        if(count($this->subscriptionPackOptions) == 1) {
+            $subscriptionPacks = $this->subscriptionPackRepository->findAll();
+
+            /** @var SubscriptionPack $subscriptionPack */
+            foreach ($subscriptionPacks as $subscriptionPack) {
+                $name = "[{$subscriptionPack->getUuid()}] {$subscriptionPack->getName()}";
+                $this->subscriptionPackOptions[$name] = $subscriptionPack->getUuid();
             }
         }
-        return $this->subPackOptions;
     }
 
     /**
-     * Generate the entries for entity's datagrid.
-     *
      * @param DatagridMapper $datagridMapper
+     *
      * @return void
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-        $options = $this->getSubPackOptions();
         $datagridMapper
-            ->add('carrier_id')
-            ->add('placeholder_id')
-            ->add('specificValue')
+            ->add('carrier')
+            ->add('key')
             ->add('language')
-            ->add('subscription_pack_id',
-                'doctrine_orm_string',
-                [],
-                'choice',
-                [
-                    'choices' => $options
-                ]
-            );
+//            ->add('subscription_pack_id',
+//                'doctrine_orm_string',
+//                [],
+//                'choice',
+//                [
+//                    'choices' => $this->subscriptionPackOptions
+//                ]
+//            )
+        ;
     }
 
     /**
-     * Generate listing fields for entity
-     *
      * @param ListMapper $listMapper
+     *
      * @return void
      */
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('carrier_id')
-            ->add('placeholder_id')
-            ->add('specificValue', 'string', [
-                'editable' => true,
-            ])
-            ->add('language', 'string')
+            ->add('carrier')
+            ->add('language')
+            ->add('key')
+            ->add('translation')
             ->add('_action', null, array(
                 'actions' => array(
                     'show'   => array(),
                     'edit'   => array(),
                     'delete' => array(),
                 )
-            ));;
+            ));
     }
 
     /**
-     * Generate editing fields for entity
-     *
      * @param FormMapper $formMapper
+     *
      * @return void
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $options = $this->getSubPackOptions();
         $formMapper
-            ->add('carrier_id')
-            ->add('placeholder_id')
-            ->add('specificValue', 'text', ['required' => false])
-            ->add('language')
-            ->add('subscription_pack_id',
-                'choice',
-                [
-                    'choices' => $options,
-                    'required' => false
+            ->add('carrier', EntityType::class, [
+                'class' => Carrier::class,
+                'required' => false,
+                'placeholder' => 'Select carrier'
+            ])
+            ->add('key', TextType::class, [
+                'required' => true,
+                'constraints' => [
+                    new Length([
+                        'max' => 255
+                    ])
                 ]
-            );
+            ])
+            ->add('translation', TextareaType::class, [
+                'required' => true
+            ])
+            ->add('language', EntityType::class, [
+                'class' => Language::class,
+                'required' => true
+            ])
+//            ->add('subscription_pack_id',
+//                'choice',
+//                [
+//                    'choices' => $this->subscriptionPackOptions,
+//                    'required' => false
+//                ]
+//            )
+        ;
     }
 
     /**
-     * Generate show-page fields for entity
-     *
      * @param ShowMapper $showMapper
+     *
      * @return void
      */
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('carrier_id')
-            ->add('placeholder_id')
-            ->add('specificValue')
+            ->add('carrier', TextType::class)
+            ->add('key')
+            ->add('translation')
             ->add('language');
     }
 }

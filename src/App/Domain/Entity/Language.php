@@ -32,9 +32,12 @@ class Language implements HasUuid
         $this->uuid = $uuid;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
-        return $this->name ?? $this->code ?? '';
+        return $this->name ? $this->name : $this->code ?? '';
     }
 
     /**
