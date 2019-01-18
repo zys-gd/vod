@@ -45,6 +45,7 @@ class TranslationProvider
      */
     public function getTranslation(string $translationKey, $carrierId, string $languageCode): string
     {
+        $this->cache->deleteCache();
         $cacheKey = $this->generateCacheKey($carrierId, $languageCode);
         // if cache exist
         if ($this->isCacheExist($cacheKey)) {
@@ -104,10 +105,13 @@ class TranslationProvider
     private function initializeDefaultTexts()
     {
         $oLanguage   = $this->languageRepository->findOneBy(['code' => self::DEFAULT_LOCALE]);
-        $translation = $this->translationRepository->findBy([
+        /** @var Translation[] $translations */
+        $translations = $this->translationRepository->findBy([
             'language' => $oLanguage
         ]);
-        $this->texts = json_decode(json_encode($translation), true);
+        foreach ($translations ?? [] as $translation) {
+            $this->texts[$translation->getKey()] = $translation->getTranslation();
+        }
         return $this;
     }
 
