@@ -9,6 +9,7 @@
 namespace App\Tests\App\Functional;
 
 use App\Domain\Service\Translator\TranslationProvider;
+use DataFixtures\LoadTranslationsData;
 use ExtrasBundle\Testing\Core\AbstractFunctionalTest;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Mockery;
@@ -31,9 +32,13 @@ class ContentControllerTest extends AbstractFunctionalTest
      */
     public function testFaqPage()
     {
+        $this->translationProvider->shouldReceive('getTranslation')
+            ->andReturn('faq_text_translation');
+
         $client = $this->makeClient();
         $client->request('GET', '/faq');
 
+        $this->assertContains('faq_text_translation', $client->getResponse()->getContent());
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
@@ -42,20 +47,26 @@ class ContentControllerTest extends AbstractFunctionalTest
      */
     public function testTermsAndConditionsPage()
     {
+        $this->translationProvider->shouldReceive('getTranslation')
+            ->andReturn('t_and_c_text_translation');
+
         $client = $this->makeClient();
         $client->request('GET', '/terms-and-conditions');
 
+        $this->assertContains('t_and_c_text_translation', $client->getResponse()->getContent());
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
     protected function initializeServices(ContainerInterface $container)
     {
-        $this->translationProvider = $this->createMock(TranslationProvider::class);
+        $this->translationProvider = Mockery::spy(TranslationProvider::class);
     }
 
     protected function getFixturesListLoadedForEachTest(): array
     {
-        return [];
+        return [
+            LoadTranslationsData::class
+        ];
     }
 
     protected function configureWebClientClientContainer(ContainerInterface $container)

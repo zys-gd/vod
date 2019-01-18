@@ -40,10 +40,9 @@ class TranslationProvider
      * @param        $carrierId
      * @param string $languageCode
      *
-     * @return string
-     * @throws \Psr\Cache\InvalidArgumentException
+     * @return string|null
      */
-    public function getTranslation(string $translationKey, $carrierId, string $languageCode): string
+    public function getTranslation(string $translationKey, $carrierId, string $languageCode): ?string
     {
         $cacheKey = $this->generateCacheKey($carrierId, $languageCode);
         // if cache exist
