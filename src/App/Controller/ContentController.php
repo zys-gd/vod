@@ -44,7 +44,7 @@ class ContentController extends AbstractController
     }
 
     /**
-     * @Route("/terms_and_conditions",name="terms_and_conditions")
+     * @Route("/terms-and-conditions",name="terms_and_conditions")
      */
     public function termsAndConditionsAction()
     {
