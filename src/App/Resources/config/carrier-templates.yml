@@ -1,0 +1,9 @@
+services:
+    App\CarrierTemplate\TemplateConfigurator:
+        arguments:
+            - '@App\CarrierTemplate\Handler\CommonHandler'
+
+    App\CarrierTemplate\Handler\CommonHandler: ~
+
+    App\CarrierTemplate\Handler\EtisalatEGTemplateHandler:
+        - { name: app.carrier_template_handler }
