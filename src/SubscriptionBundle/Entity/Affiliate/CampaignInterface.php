@@ -16,7 +16,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 interface CampaignInterface
 {
 
-    /**
+    public function getCampaignToken(): string ;
+
+    public function getSub(): string;
+
+
+
+        /**
      * Get operator
      *
      * @return Carrier[] | ArrayCollection

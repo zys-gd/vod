@@ -86,8 +86,8 @@ class Affiliate
      */
     public function __construct(string $uuid)
     {
-        $this->uuid = $uuid;
-        $this->constants = new ArrayCollection();
+        $this->uuid       = $uuid;
+        $this->constants  = new ArrayCollection();
         $this->parameters = new ArrayCollection();
     }
 
@@ -347,29 +347,32 @@ class Affiliate
         return $this->subPriceName;
     }
 
-    public function getParamsList(){
-        $list=[];
-        if(isset($this->parameters)&&!empty($this->parameters)){
-            foreach ($this->parameters as $parameter){
+    public function getParamsList(): array
+    {
+        $list = [];
+        if (isset($this->parameters) && !empty($this->parameters)) {
+            foreach ($this->parameters as $parameter) {
                 $list[$parameter->getOutputName()] = $parameter->getInputName();
             }
         }
         return $list;
     }
 
-    public function getInputParamsList(){
-        $paramsList=$this->getParamsList();
-        $inputParams=[];
-        foreach ($paramsList as $value){
+    public function getInputParamsList()
+    {
+        $paramsList  = $this->getParamsList();
+        $inputParams = [];
+        foreach ($paramsList as $value) {
             $inputParams[] = $value;
         }
         return $inputParams;
     }
 
-    public function getConstantsList(){
-        $list=[];
-        if(isset($this->constants)&&!empty($this->constants)){
-            foreach ($this->constants as $parameter){
+    public function getConstantsList(): array
+    {
+        $list = [];
+        if (isset($this->constants) && !empty($this->constants)) {
+            foreach ($this->constants as $parameter) {
                 $list[$parameter->getName()] = $parameter->getValue();
             }
         }
@@ -380,7 +383,8 @@ class Affiliate
     /**
      * @param ArrayCollection $affiliateConstant
      */
-    public function setConstants($affiliateConstant){
+    public function setConstants($affiliateConstant)
+    {
         $affiliateConstant->map(function (AffiliateConstant $affiliateConstant) {
             $affiliateConstant->setAffiliate($this);
         });
@@ -391,7 +395,8 @@ class Affiliate
     /**
      * @return ArrayCollection
      */
-    public function getConstants(){
+    public function getConstants()
+    {
         return $this->constants;
     }
 
@@ -406,7 +411,8 @@ class Affiliate
     /**
      * @param ArrayCollection $affiliateParameters
      */
-    public function setParameters($affiliateParameters){
+    public function setParameters($affiliateParameters)
+    {
         $affiliateParameters->map(function (AffiliateParameter $affiliateParameter) {
             $affiliateParameter->setAffiliate($this);
         });
@@ -425,8 +431,9 @@ class Affiliate
     /**
      * @param AffiliateParameter $affiliateParameters
      */
-    public function removeParameter(AffiliateParameter $affiliateParameters){
-        $this->parameters -> removeElement($affiliateParameters);
+    public function removeParameter(AffiliateParameter $affiliateParameters)
+    {
+        $this->parameters->removeElement($affiliateParameters);
     }
 }
 
