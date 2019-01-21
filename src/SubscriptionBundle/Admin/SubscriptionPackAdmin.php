@@ -157,11 +157,14 @@ class SubscriptionPackAdmin extends AbstractAdmin
                 'editable' => false,
                 'label'    => 'Credits'
             ])
-            ->add('periodicity', ChoiceType::class, [
+            ->add('periodicity', 'choice', [
                 'editable' => true,
                 'choices'  => array_flip(SubscriptionPack::PERIODICITY),
             ])
-            ->add('status', TextType::class);
+            ->add('status', 'choice', [
+                'editable' => true,
+                'choices'  => array_flip(SubscriptionPack::STATUSES),
+            ]);
     }
 
     /**
@@ -532,12 +535,12 @@ class SubscriptionPackAdmin extends AbstractAdmin
      */
     private function markSubscriptionPacksWithSameCarrierAsInactive(SubscriptionPack $subscriptionPack)
     {
-        if ($subscriptionPack->getStatus() === SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK) {
+        if ($subscriptionPack->getStatus() == SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK) {
             /** @var EntityManager $em */
             $em = $this->getConfigurationPool()->getContainer()->get('doctrine')->getEntityManager();
             /** @var SubscriptionPackRepository $subscriptionPackRepository */
             $subscriptionPackRepository = $em->getRepository(SubscriptionPack::class);
-            $subscriptionPacks = $subscriptionPackRepository->getOtherActiveSubscriptionPacks($subscriptionPack);
+            $subscriptionPacks = $subscriptionPackRepository->getActiveSubscriptionPacksByCarrierId($subscriptionPack);
 
             if (count($subscriptionPacks) > 0) {
                 /** @var SubscriptionPack $subscriptionPack */

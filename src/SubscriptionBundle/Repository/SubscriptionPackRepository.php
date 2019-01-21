@@ -20,7 +20,7 @@ class SubscriptionPackRepository extends EntityRepository
      *
      * @return array
      */
-    public function getOtherActiveSubscriptionPacks(SubscriptionPack $subscriptionPack)
+    public function getActiveSubscriptionPacksByCarrierId(SubscriptionPack $subscriptionPack)
     {
         $qb = $this->createQueryBuilder('sp');
 
