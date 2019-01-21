@@ -97,9 +97,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
 //        $this->subscriptionTextService->insertDefaultPlaceholderTexts($object);
         $object->setUpdated(new \DateTime('now'));
 
-        if ($object->getStatus() === SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK) {
-            $this->markSubscriptionPacksWithSameCarrierAsInactive($object);
-        }
+        $this->markSubscriptionPacksWithSameCarrierAsInactive($object);
 
         parent::preUpdate($object);
     }
@@ -112,9 +110,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
      */
     public function prePersist($object)
     {
-        if ($object->getStatus() === SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK) {
-            $this->markSubscriptionPacksWithSameCarrierAsInactive($object);
-        }
+        $this->markSubscriptionPacksWithSameCarrierAsInactive($object);
     }
 
     /**
@@ -528,7 +524,6 @@ class SubscriptionPackAdmin extends AbstractAdmin
         }
     }
 
-
     /**
      * @param SubscriptionPack $subscriptionPack
      *
@@ -537,20 +532,22 @@ class SubscriptionPackAdmin extends AbstractAdmin
      */
     private function markSubscriptionPacksWithSameCarrierAsInactive(SubscriptionPack $subscriptionPack)
     {
-        /** @var EntityManager $em */
-        $em = $this->getConfigurationPool()->getContainer()->get('doctrine')->getEntityManager();
-        /** @var SubscriptionPackRepository $subscriptionPackRepository */
-        $subscriptionPackRepository = $em->getRepository(SubscriptionPack::class);
-        $subscriptionPacks = $subscriptionPackRepository->getOtherActiveSubscriptionPacks($subscriptionPack);
+        if ($subscriptionPack->getStatus() === SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK) {
+            /** @var EntityManager $em */
+            $em = $this->getConfigurationPool()->getContainer()->get('doctrine')->getEntityManager();
+            /** @var SubscriptionPackRepository $subscriptionPackRepository */
+            $subscriptionPackRepository = $em->getRepository(SubscriptionPack::class);
+            $subscriptionPacks = $subscriptionPackRepository->getOtherActiveSubscriptionPacks($subscriptionPack);
 
-        if (count($subscriptionPacks) > 0) {
-            /** @var SubscriptionPack $subscriptionPack */
-            foreach ($subscriptionPacks as $subscriptionPack) {
-                $subscriptionPack->setStatus(SubscriptionPack::INACTIVE_SUBSCRIPTION_PACK);
-                $em->persist($subscriptionPack);
+            if (count($subscriptionPacks) > 0) {
+                /** @var SubscriptionPack $subscriptionPack */
+                foreach ($subscriptionPacks as $subscriptionPack) {
+                    $subscriptionPack->setStatus(SubscriptionPack::INACTIVE_SUBSCRIPTION_PACK);
+                    $em->persist($subscriptionPack);
+                }
+
+                $em->flush();
             }
-
-            $em->flush();
         }
     }
 }
