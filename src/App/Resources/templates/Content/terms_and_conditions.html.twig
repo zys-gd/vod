@@ -1,53 +1,70 @@
-{% extends '@App/base.html.twig' %}
+{% extends '@App/Layout/main.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('/css/terms_and_conditions.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block header_page_subscription_container %}
+{% endblock %}
+
+{% block header_page_title %}
+    100% Sport <br/> Terms and Conditions
+{% endblock %}
 
 {% block body %}
-    <div class="flex-column">
-        <h2> 1/{{ translate('terms.block_1.title.1') }} </h2>
+    <div class="flex-column terms_and_conditions_container">
+        <div class="terms_and_conditions_disclaimer">
+            These terms ("Terms and Conditions") are the particular conditions of a legal agreement between you,
+            on the one side, and ORIGINDATA Ltd (hereinafter mentioned as "100% sports"), on the other side.
+        </div>
+
+        <h1> 1/{{ translate('terms.block_1.title.1') }} </h1>
         <p> {{ translate('terms.block_1.text.1') }} </p>
 
-        <h2> 2/{{ translate('terms.block_2.title.1') }} </h2>
+        <h1> 2/{{ translate('terms.block_2.title.1') }} </h1>
         <p> {{ translate('terms.block_2.text.1') }} </p>
 
-        <h2> 3/{{ translate('terms.block_3.title.1') }} </h2>
-        <h3> 3/a{{ translate('terms.block_3.title.1.1') }} </h3>
+        <h1> 3/{{ translate('terms.block_3.title.1') }} </h1>
+        <h2> 3/a{{ translate('terms.block_3.title.1.1') }} </h2>
         <p> {{ translate('terms.block_3.text.1') }} </p>
         <p> {{ translate('terms.block_3.text.2') }} </p>
         <p> {{ translate('terms.block_3.text.3') }} </p>
 
-        <h2> 4/{{ translate('terms.block_4.title.1') }} </h2>
+        <h1> 4/{{ translate('terms.block_4.title.1') }} </h1>
         <p> {{ translate('terms.block_4.text.1') }} </p>
 
-        <h2> 5/{{ translate('terms.block_5.title.1') }} </h2>
+        <h1> 5/{{ translate('terms.block_5.title.1') }} </h1>
         <p> {{ translate('terms.block_5.text.1') }} </p>
         <p> {{ translate('terms.block_5.text.2') }} </p>
         <p> {{ translate('terms.block_5.text.3') }} </p>
         <p> {{ translate('terms.block_5.text.4') }} </p>
 
-        <h2> 6/{{ translate('terms.block_6.title.1') }} </h2>
+        <h1> 6/{{ translate('terms.block_6.title.1') }} </h1>
         <p> {{ translate('terms.block_6.text.1') }} </p>
         <p> {{ translate('terms.block_6.text.2') }} </p>
 
-        <h2> 7/{{ translate('terms.block_7.title.1') }} </h2>
+        <h1> 7/{{ translate('terms.block_7.title.1') }} </h1>
         <p> {{ translate('terms.block_7.text.1') }} </p>
         <p> {{ translate('terms.block_7.text.2') }} </p>
 
-        <h2> 8/{{ translate('terms.block_8.title.1') }} </h2>
+        <h1> 8/{{ translate('terms.block_8.title.1') }} </h1>
         <p> {{ translate('terms.block_8.text.1') }} </p>
         <p> {{ translate('terms.block_8.text.2') }} </p>
         <p> {{ translate('terms.block_8.text.3') }} </p>
 
-        <h2> 9/{{ translate('terms.block_9.title.1') }} </h2>
+        <h1> 9/{{ translate('terms.block_9.title.1') }} </h1>
         <p> {{ translate('terms.block_9.text.1') }} </p>
         <p> {{ translate('terms.block_9.text.2') }} </p>
         <p> {{ translate('terms.block_9.text.3') }} </p>
 
-        <h2> 10/{{ translate('terms.block_10.title.1') }} </h2>
+        <h1> 10/{{ translate('terms.block_10.title.1') }} </h1>
         <p> {{ translate('terms.block_10.text.1') }} </p>
 
-        <h2> 11/{{ translate('terms.block_11.title.1') }} </h2>
+        <h1> 11/{{ translate('terms.block_11.title.1') }} </h1>
         <p> {{ translate('terms.block_11.text.1') }} </p>
 
-        <h2> 12/{{ translate('terms.block_12.title.1') }} </h2>
+        <h1> 12/{{ translate('terms.block_12.title.1') }} </h1>
         <p> {{ translate('terms.block_12.text.1') }} </p>
     </div>
 {% endblock %}

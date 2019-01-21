@@ -1,0 +1,20 @@
+.terms_and_conditions_container {
+    padding: 30px;
+    font-family: 'Kanit-Regular', sans-serif;
+}
+
+.terms_and_conditions_disclaimer, .terms_and_conditions_container h1, h2 {
+    font-size: 28pt;
+}
+
+.terms_and_conditions_container h1 {
+    padding-top: 30px;
+}
+
+.terms_and_conditions_container h1 + p, .terms_and_conditions_container h2 + p {
+    padding-top: 30px;
+}
+
+.terms_and_conditions_container p {
+    font-size: 22pt;
+}
