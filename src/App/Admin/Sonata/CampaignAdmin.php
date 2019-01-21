@@ -37,6 +37,22 @@ class CampaignAdmin extends AbstractAdmin
     private $container;
 
     /**
+     * CampaignAdmin constructor
+     *
+     * @param string $code
+     * @param string $class
+     * @param string $baseControllerName
+     * @param ContainerInterface $container
+     */
+    public function __construct(string $code, string $class, string $baseControllerName, ContainerInterface $container)
+    {
+        $this->container = $container;
+        $this->initDoctrine($container);
+
+        parent::__construct($code, $class, $baseControllerName);
+    }
+
+    /**
      * Get instance of campaign
      *
      * @return mixed
@@ -76,15 +92,6 @@ class CampaignAdmin extends AbstractAdmin
     {
         $this->prepareImage($obj);
         $this->generateTestLink($obj);
-    }
-
-    /**
-     * @param ContainerInterface $container
-     */
-    public function setContainer($container)
-    {
-        $this->container = $container;
-        $this->initDoctrine($container);
     }
 
     /**

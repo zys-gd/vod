@@ -1,27 +1,18 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 17.01.19
- * Time: 14:23
- */
 
 namespace SubscriptionBundle\Entity\Affiliate;
 
-
 use App\Domain\Entity\Affiliate;
-use App\Domain\Entity\Carrier;
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 interface CampaignInterface
 {
-
     /**
      * Get operator
      *
-     * @return Carrier[] | ArrayCollection
+     * @return Collection
      */
-    public function getCarriers(): ArrayCollection;
+    public function getCarriers(): Collection;
 
-    public function getAffiliate(): Affiliate;
+    public function getAffiliate(): ?Affiliate;
 }
