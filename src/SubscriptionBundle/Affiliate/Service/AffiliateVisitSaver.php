@@ -22,4 +22,14 @@ class AffiliateVisitSaver
     {
         return $session->get('campaign_id', null);
     }
+
+    public static function savePageVisitData(SessionInterface $session, array $requestData): void
+    {
+        $session->set('campaignData', $requestData);
+    }
+
+    public static function extractPageVisitData(SessionInterface $session, bool $asJson = true)
+    {
+        return $session->get('campaignData');
+    }
 }

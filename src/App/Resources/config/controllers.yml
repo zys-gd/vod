@@ -12,3 +12,8 @@ services:
 
     App\Controller\ContentController:
         arguments: ['@App\Domain\Service\FaqProviderService']
+
+    App\Controller\HomeController:
+      arguments:
+        - '@App\Domain\Repository\CarrierRepository'
+        - '@App\CarrierTemplate\TemplateConfigurator'

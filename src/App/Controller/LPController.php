@@ -29,8 +29,11 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $session = $request->getSession();
 
         if ($cid = $request->get('cid', '')) {
+            // Useless method atm.
             AffiliateVisitSaver::saveCampaignId($cid, $session);
         };
+
+        AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
 
         return $this->render('@App/Common/landing.html.twig', [
             'isp_detection_data' => $session->get('isp_detection_data'),

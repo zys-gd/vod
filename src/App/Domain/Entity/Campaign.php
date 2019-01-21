@@ -179,7 +179,8 @@ class Campaign implements CampaignInterface
     /**
      * @return string
      */
-    public function getCampaignToken() {
+    public function getCampaignToken(): string
+    {
         return $this->campaignToken;
     }
 
@@ -411,7 +412,7 @@ class Campaign implements CampaignInterface
         return $this;
     }
 
-    public function getSub()
+    public function getSub(): string
     {
         return $this->sub;
     }

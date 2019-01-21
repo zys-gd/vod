@@ -1,6 +1,7 @@
 <?php
 
 
+use App\DependencyInjection\Compiler\CarrierTemplateDetectionPass;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
@@ -57,6 +58,7 @@ class VODKernel extends BaseKernel
         $loader->load($appConfDir . 'listeners.yml');
         $loader->load($appConfDir . 'identification-bundle.yml');
         $loader->load($appConfDir . 'subscription-bundle.yml');
+        $loader->load($appConfDir . 'carrier-templates.yml');
 
         $fixturesDir = $this->getProjectDir() . '/src/DataFixtures/config/';
         $loader->load($fixturesDir . 'fixtures.yml');
@@ -125,4 +127,8 @@ class VODKernel extends BaseKernel
 
     }
 
+    protected function build(ContainerBuilder $container): void
+    {
+        $container->addCompilerPass(new CarrierTemplateDetectionPass());
+    }
 }
