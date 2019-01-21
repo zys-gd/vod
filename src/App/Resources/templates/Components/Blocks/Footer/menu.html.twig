@@ -1,0 +1,7 @@
+{% macro render(aMenuLinks) %}
+    <ul>
+        {% for menuLink in aMenuLinks %}
+            <li><a href="{{ menuLink.link }}">{{ menuLink.title }}</a> </li>
+        {% endfor %}
+    </ul>
+{% endmacro render %}

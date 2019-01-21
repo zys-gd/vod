@@ -13,7 +13,7 @@
         {% endblock stylesheets %}
     </head>
 
-    <body class="d-flex flex-column">
+    <body class="d-flex flex-column min-vh-100">
         {% block header %}
             <header class="d-flex align-items-center justify-content-center">
                 {% block header_content %}
@@ -30,10 +30,10 @@
         {% block footer %}
             <footer class="d-flex flex-column align-items-center justify-content-center">
                 {% block footer_content %}
-                    <div class="d-flex copyright">
-                        © {{ "now"|date("Y") }} Все права защищены.
-                    </div>
                 {% endblock footer_content %}
+                <div class="d-flex copyright">
+                    © {{ "now"|date("Y") }} Все права защищены.
+                </div>
             </footer>
         {% endblock footer %}
 
