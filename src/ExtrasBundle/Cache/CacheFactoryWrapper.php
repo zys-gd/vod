@@ -33,9 +33,9 @@ class CacheFactoryWrapper implements ICacheServiceFactory
      * @throws InvalidArgumentException
      * @return ICacheService
      */
-    public function createPlaceholderCacheService(array $options = []): ICacheService
+    public function createTranslationCacheService(array $options = []): ICacheService
     {
-        return $this->ICacheServiceFactory->createPlaceholderCacheService($options);
+        return $this->ICacheServiceFactory->createTranslationCacheService($options);
     }
 
     /**

@@ -45,7 +45,7 @@ services:
 
   SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter:
     arguments:
-      - '@app.cache.default.placeholder'
+      - '@app.cache.default.translation'
       - '@router'
       - '@SubscriptionBundle\Blacklist\BlacklistSaver'
       - '@IdentificationBundle\Repository\UserRepository'

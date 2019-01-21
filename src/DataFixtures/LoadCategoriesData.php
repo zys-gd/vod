@@ -3,6 +3,7 @@
 namespace DataFixtures;
 
 use App\Domain\Entity\Category;
+use DataFixtures\Utils\FixtureDataLoader;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -15,22 +16,18 @@ class LoadCategoriesData extends AbstractFixture
      * Load data fixtures with the passed EntityManager
      *
      * @param ObjectManager $manager
+     *
+     * @throws \Exception
      */
     public function load(ObjectManager $manager)
     {
-        $data = [
-            ["Sports", "sports", "44860f37-c9b7-4c41-99f1-1483af0f424e", 0, null],
-            ["Hokey", "hokey", "44860f37-c9b7-4c41-89f1-1483dhr7424a", 0, "44860f37-c9b7-4c41-99f1-1483af0f424e"],
-            ["Football", "football", "44d84k37-c9b7-4c41-99f1-1484850f424r", 0, "44860f37-c9b7-4c41-99f1-1483af0f424e"],
-            ["Volleyball", "volleyball", "44860f37-c9b7-4h71-99f1-1483af0fl64k", 0, "44860f37-c9b7-4c41-99f1-1483af0f424e"]
-        ];
+        $data = FixtureDataLoader::loadDataFromJSONFile('categories.json');
 
         foreach ($data as $row) {
-
-            $title = $row[0];
-            $alias = $row[1];
-            $uuid  = $row[2];
-            $menuPriority = $row[3];
+            $uuid = $row['uuid'];
+            $title = $row['title'];
+            $alias = $row['alias'];
+            $menuPriority = $row['menu_priority'];
 
             $category = new Category($uuid);
 
@@ -45,8 +42,8 @@ class LoadCategoriesData extends AbstractFixture
         $manager->clear();
 
         foreach ($data as $row) {
-            $uuid  = $row[2];
-            $parentUuid = $row[4];
+            $uuid  = $row['uuid'];
+            $parentUuid = $row['parent'];
 
             if ($parentUuid) {
                 $parentCategory = $manager->find(Category::class, $parentUuid);

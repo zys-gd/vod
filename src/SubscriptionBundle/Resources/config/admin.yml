@@ -9,7 +9,7 @@ services:
         tags:
             -   name: sonata.admin
                 manager_type: orm
-                group: Carriers management
+                group: Carriers Management
                 label: Subscription Pack
         calls:
             - [ setTemplate, [edit, '@@Subscription/SubscriptionPack/edit.html.twig']]

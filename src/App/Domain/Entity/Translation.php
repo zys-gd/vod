@@ -21,8 +21,15 @@ class Translation implements HasUuid
      */
     private $translation;
 
-    /** @var Carrier */
+    /**
+     * @var Carrier
+     */
     private $carrier;
+
+    /**
+     * @var Language
+     */
+    private $language;
 
     /**
      * Translation constructor.
@@ -35,9 +42,9 @@ class Translation implements HasUuid
     }
 
     /**
-     * @return Carrier
+     * @return Carrier|null
      */
-    public function getCarrier(): Carrier
+    public function getCarrier(): ?Carrier
     {
         return $this->carrier;
     }
@@ -51,9 +58,9 @@ class Translation implements HasUuid
     }
 
     /**
-     * @return Language
+     * @return Language|null
      */
-    public function getLanguage(): Language
+    public function getLanguage(): ?Language
     {
         return $this->language;
     }
@@ -66,13 +73,10 @@ class Translation implements HasUuid
         $this->language = $language;
     }
 
-    /** @var Language */
-    private $language;
-
     /**
-     * @return string
+     * @return string|null
      */
-    public function getKey(): string
+    public function getKey(): ?string
     {
         return $this->key;
     }
@@ -86,9 +90,9 @@ class Translation implements HasUuid
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getTranslation(): string
+    public function getTranslation(): ?string
     {
         return $this->translation;
     }

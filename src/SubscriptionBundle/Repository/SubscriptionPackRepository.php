@@ -16,25 +16,26 @@ class SubscriptionPackRepository extends EntityRepository
 {
 
     /**
-     * @param $subscriptionPack
-     * @return null | string
+     * @param SubscriptionPack $subscriptionPack
+     *
+     * @return array
      */
-    public function getOtherActiveSubscriptionPack(SubscriptionPack $subscriptionPack)
+    public function getActiveSubscriptionPacksByCarrierId(SubscriptionPack $subscriptionPack)
     {
         $qb = $this->createQueryBuilder('sp');
-        $qb->select('sp.uuid')
+
+        $query = $qb
             ->where('sp.status = :status ')
             ->andWhere('sp.carrierId = :carrierId')
-            ->setParameter('status', SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK)
-            ->setParameter('carrierId', $subscriptionPack->getCarrierId());
+            ->andWhere('sp.uuid != :uuid')
+            ->setParameters([
+                'status' => SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK,
+                'carrierId' => $subscriptionPack->getCarrierId(),
+                'uuid' => $subscriptionPack->getUuid()
+            ])
+            ->getQuery();
 
-        if ($subscriptionPack->getUuid()) {
-            $qb->andWhere('sp.id != :id')->setParameter('id', $subscriptionPack->getUuid());
-        }
-
-        $existingActivePackForSelectedCarrier = $qb->getQuery()
-            ->getOneOrNullResult(AbstractQuery::HYDRATE_SINGLE_SCALAR);
-        return $existingActivePackForSelectedCarrier;
+        return $query->getResult();
     }
 
     /**

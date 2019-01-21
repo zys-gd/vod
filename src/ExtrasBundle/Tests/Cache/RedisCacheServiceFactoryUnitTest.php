@@ -31,6 +31,6 @@ class RedisCacheServiceFactoryUnitTest extends TestCase
         $factory = new RedisCacheServiceFactory($provider, 'default');
 
         $this->assertInstanceOf(ICacheService::class, $factory->createUserSubscriptionCacheService());
-        $this->assertInstanceOf(ICacheService::class, $factory->createPlaceholderCacheService());
+        $this->assertInstanceOf(ICacheService::class, $factory->createTranslationCacheService());
     }
 }

@@ -2,44 +2,49 @@ services:
     App\Admin\Sonata\UploadedVideoAdmin:
         arguments: [~, App\Domain\Entity\UploadedVideo, 'App\Admin\Controller\UploadedVideoAdminController', '@App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector']
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Content management, label: Videos }
+            - { name: sonata.admin, manager_type: orm, group: Content Management, label: Videos }
 
     App\Admin\Sonata\CategoryAdmin:
         arguments: [~, App\Domain\Entity\Category, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Content management, label: Categories }
+            - { name: sonata.admin, manager_type: orm, group: Content Management, label: Categories }
 
     App\Admin\Sonata\AffiliateAdmin:
         arguments: [~, App\Domain\Entity\Affiliate, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Affiliate management, label: Affiliates }
+            - { name: sonata.admin, manager_type: orm, group: Affiliate Management, label: Affiliates }
 
     App\Admin\Sonata\CampaignAdmin:
         arguments: [~, App\Domain\Entity\Campaign, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Affiliate management, label: Campaign }
+            - { name: sonata.admin, manager_type: orm, group: Affiliate Management, label: Campaign }
         calls:
             - [setContainer, ['@service_container']]
 
     App\Admin\Sonata\CarrierAdmin:
         arguments: [~, App\Domain\Entity\Carrier, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Carriers management, label: Carriers }
+            - { name: sonata.admin, manager_type: orm, group: Carriers Management, label: Carriers }
 
     App\Admin\Sonata\LanguagesAdmin:
         arguments: [~, App\Domain\Entity\Language, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Store text, label: Languages }
+            - { name: sonata.admin, manager_type: orm, group: Store Text, label: Languages }
 
-    App\Admin\Sonata\PlaceholderAdmin:
-        arguments: [~, App\Domain\Entity\Placeholder, ~]
+    App\Admin\Sonata\TranslationsAdmin:
+        arguments: [~, App\Domain\Entity\Translation, ~, '@SubscriptionBundle\Repository\SubscriptionPackRepository']
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Store text, label: Placeholders }
+            - { name: sonata.admin, manager_type: orm, group: Store Text, label: Translations }
 
     App\Admin\Sonata\BlackListAdmin:
-        arguments: [~, App\Domain\Entity\BlackList, ~]
+        arguments:
+            - ~
+            - App\Domain\Entity\BlackList
+            - ~
+            - '@SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
+            - '@SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber'
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Black list management, label: Black list }
+            - { name: sonata.admin, manager_type: orm, group: Black List Management, label: Black list }
 
     #    App\Admin\Sonata\Sonata\RefundAdmin:
     #        arguments: [~, App\Domain\Entity\Refund, AppBundle:RefundAdmin]

@@ -27,7 +27,7 @@ class LoadSubscriptionPackData extends AbstractFixture implements ContainerAware
         $data = FixtureDataLoader::loadDataFromJSONFile(__DIR__ . '/Data/', 'subscription_packs.json');
 
         foreach ($data as $row) {
-            $id                                  = $row['id'];
+            $uuid                                = $row['uuid'];
             $country_uuid                        = $row['country_uuid'];
             $status                              = $row['status'];
             $name                                = $row['name'];
@@ -63,8 +63,8 @@ class LoadSubscriptionPackData extends AbstractFixture implements ContainerAware
             $displayCurrency                     = $row['display_currency'] ?? '';
 
 
-            $pack = new SubscriptionPack($id);
-            $this->addReference(sprintf('subscription_pack_%s', $id), $pack);
+            $pack = new SubscriptionPack($uuid);
+            $this->addReference(sprintf('subscription_pack_%s', $uuid), $pack);
             $this->addReference(sprintf('subscription_pack_with_name_%s', $name), $pack);
 
             if ($status == SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK) {
