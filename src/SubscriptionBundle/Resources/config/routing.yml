@@ -32,3 +32,11 @@ subscription.get-subscription:
 #talentica_subscription.subscription-buy-a-product:
 #    path: /buy/{id}
 #    defaults: {_controller: subscription:Subscription:buy}
+
+subscription.fake_subscribe:
+    path: /fake/subscribe
+    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\Fake\SubscribeAction'}
+
+subscription.fake_unsubscribe:
+    path: /fake/unsubscribe
+    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\Fake\UnsubscribeAction'}

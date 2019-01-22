@@ -36,3 +36,20 @@ services:
         class: SubscriptionBundle\Controller\Actions\GetSubscriptionAction
         arguments: ['@SubscriptionBundle\Service\UserExtractor', '@SubscriptionBundle\Service\SubscriptionExtractor']
 
+    SubscriptionBundle\Controller\Actions\Fake\SubscribeAction:
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@SubscriptionBundle\Service\UserExtractor'
+            - '@router.default'
+            - '@logger'
+            - '@SubscriptionBundle\Service\SubscriptionExtractor'
+            - '@SubscriptionBundle\Service\SubscriptionPackProvider'
+            - '@SubscriptionBundle\Service\EntitySaveHelper'
+
+    SubscriptionBundle\Controller\Actions\Fake\UnsubscribeAction:
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@SubscriptionBundle\Service\UserExtractor'
+            - '@SubscriptionBundle\Service\SubscriptionExtractor'
+            - '@SubscriptionBundle\Service\Action\Unsubscribe\UnsubscriptionEligibilityChecker'
+            - '@SubscriptionBundle\Service\EntitySaveHelper'
