@@ -30,7 +30,7 @@ services:
             - '@IdentificationBundle\Identification\Service\TokenGenerator'
             - '@IdentificationBundle\Identification\Service\UserFactory'
             - '@doctrine.orm.entity_manager'
-            - '@router.default'
+            - '@IdentificationBundle\Identification\Service\RouteProvider'
 
     IdentificationBundle\WifiIdentification\Controller\PinIdentificationController:
       arguments:

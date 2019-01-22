@@ -6,7 +6,7 @@
  * Time: 18:11
  */
 
-namespace IdentificationBundle\Controller\Annotation;
+namespace ExtrasBundle\SignatureCheck;
 
 
 /**

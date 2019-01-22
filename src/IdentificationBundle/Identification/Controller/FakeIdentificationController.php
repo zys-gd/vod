@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use IdentificationBundle\Identification\Exception\MissingCarrierException;
 use IdentificationBundle\Identification\Identifier;
 use IdentificationBundle\Identification\Service\ISPResolver;
+use IdentificationBundle\Identification\Service\RouteProvider;
 use IdentificationBundle\Identification\Service\TokenGenerator;
 use IdentificationBundle\Identification\Service\UserFactory;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
@@ -14,7 +15,6 @@ use IdentificationBundle\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Router;
 
@@ -56,6 +56,10 @@ class FakeIdentificationController extends AbstractController
      * @var UserRepository
      */
     private $userRepository;
+    /**
+     * @var RouteProvider
+     */
+    private $routeProvider;
 
     /**
      * FakeIdentificationController constructor.
@@ -68,7 +72,7 @@ class FakeIdentificationController extends AbstractController
      * @param TokenGenerator                                           $generator
      * @param UserFactory                                              $userFactory
      * @param EntityManager                                            $entityManager
-     * @param Router                                                   $router
+     * @param RouteProvider                                            $routeProvider
      */
     public function __construct(ICountryCarrierDetection $carrierDetection,
                                 CarrierRepositoryInterface $carrierRepository,
@@ -78,7 +82,7 @@ class FakeIdentificationController extends AbstractController
                                 TokenGenerator $generator,
                                 UserFactory $userFactory,
                                 EntityManager $entityManager,
-                                Router $router)
+                                RouteProvider $routeProvider)
     {
         $this->carrierDetection  = $carrierDetection;
         $this->identifier        = $identifier;
@@ -87,8 +91,8 @@ class FakeIdentificationController extends AbstractController
         $this->ISPResolver       = $ISPResolver;
         $this->userFactory       = $userFactory;
         $this->entityManager     = $entityManager;
-        $this->router            = $router;
         $this->userRepository    = $userRepository;
+        $this->routeProvider     = $routeProvider;
     }
 
     /**
@@ -120,7 +124,7 @@ class FakeIdentificationController extends AbstractController
             $carrierISP       = $this->carrierDetection->getCarrier($ipAddress);
             $billingCarrierId = null;
             if ($carrierISP) {
-                try{
+                try {
                     $billingCarrierId = $this->resolveISP($carrierISP);
                 } catch (MissingCarrierException $exception) {
                     throw $exception;
@@ -142,7 +146,8 @@ class FakeIdentificationController extends AbstractController
             $this->entityManager->persist($user);
             $this->entityManager->flush();
         }
-        return new RedirectResponse($this->router->generate('index'));
+
+        return new RedirectResponse($this->routeProvider->getLinkToHomepage());
     }
 
     /**
@@ -155,7 +160,7 @@ class FakeIdentificationController extends AbstractController
     {
         $session = $request->getSession();
         $session->clear();
-        return new RedirectResponse($this->router->generate('index'));
+        return new RedirectResponse($this->routeProvider->getLinkToHomepage());
     }
 
     /**

@@ -9,9 +9,10 @@
 namespace IdentificationBundle\Identification\Common\Pixel;
 
 
+use ExtrasBundle\SignatureCheck\SignatureCheckConfig;
+use ExtrasBundle\SignatureCheck\SignatureHandler;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Service\RouteProvider;
-use IdentificationBundle\Identification\Service\SignatureHandler;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,26 +30,33 @@ class PixelIdentStarter
      */
     private $routeProvider;
     /**
-     * @var SignatureHandler
+     * @var \ExtrasBundle\SignatureCheck\SignatureHandler
      */
     private $signatureHandler;
+    /**
+     * @var SignatureCheckConfig
+     */
+    private $config;
 
 
     /**
      * PixelIdentStarter constructor.
-     * @param RouterInterface  $router
-     * @param RouteProvider    $routeProvider
-     * @param SignatureHandler $signatureHandler
+     * @param RouterInterface                               $router
+     * @param RouteProvider                                 $routeProvider
+     * @param \ExtrasBundle\SignatureCheck\SignatureHandler $signatureHandler
+     * @param SignatureCheckConfig                          $config
      */
     public function __construct(
         RouterInterface $router,
         RouteProvider $routeProvider,
-        SignatureHandler $signatureHandler
+        SignatureHandler $signatureHandler,
+        SignatureCheckConfig $config
     )
     {
         $this->router           = $router;
         $this->routeProvider    = $routeProvider;
         $this->signatureHandler = $signatureHandler;
+        $this->config           = $config;
     }
 
     public function start(Request $request, ProcessResult $processResult, CarrierInterface $carrier): RedirectResponse
@@ -66,8 +74,9 @@ class PixelIdentStarter
             'successUrl' => $successUrl,
         ];
 
-        $parameters['signature'] = $this->signatureHandler->generateSign($parameters);
-        $pixelPageLink           = $this->router->generate('show_pixel_page', $parameters);
+        $signatureParam              = $this->config->getSignatureParameter();
+        $parameters[$signatureParam] = $this->signatureHandler->generateSign($parameters);
+        $pixelPageLink               = $this->router->generate('show_pixel_page', $parameters);
 
         return new RedirectResponse($pixelPageLink);
     }

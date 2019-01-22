@@ -6,12 +6,10 @@
  * Time: 18:12
  */
 
-namespace IdentificationBundle\Listener;
+namespace ExtrasBundle\SignatureCheck;
 
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use IdentificationBundle\Controller\Annotation\SignatureCheckIsRequired;
-use IdentificationBundle\Identification\Service\SignatureHandler;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -25,15 +23,20 @@ class SignatureCheckRoutesListener
      * @var SignatureHandler
      */
     private $checker;
+    /**
+     * @var SignatureCheckConfig
+     */
+    private $config;
 
 
     /**
      * SignatureCheckRoutesListener constructor.
      */
-    public function __construct(AnnotationReader $annotationReader, SignatureHandler $checker)
+    public function __construct(AnnotationReader $annotationReader, SignatureHandler $checker, SignatureCheckConfig $config)
     {
         $this->annotationReader = $annotationReader;
         $this->checker          = $checker;
+        $this->config           = $config;
     }
 
     public function onKernelController(FilterControllerEvent $event)
@@ -66,7 +69,7 @@ class SignatureCheckRoutesListener
 
         $request = $event->getRequest();
 
-        $signatureParam = $request->get('signature', '');
+        $signatureParam = $request->get($this->config->getSignatureParameter(), '');
 
         if (!$signatureParam) {
             throw new BadRequestHttpException('Signature is missing');

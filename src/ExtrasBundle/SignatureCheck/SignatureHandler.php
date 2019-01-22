@@ -6,13 +6,26 @@
  * Time: 18:13
  */
 
-namespace IdentificationBundle\Identification\Service;
+namespace ExtrasBundle\SignatureCheck;
 
 
 use IdentificationBundle\Identification\Exception\InvalidSignatureException;
 
 class SignatureHandler
 {
+    /**
+     * @var SignatureCheckConfig
+     */
+    private $config;
+
+    /**
+     * SignatureHandler constructor.
+     */
+    public function __construct(SignatureCheckConfig $config)
+    {
+        $this->config = $config;
+    }
+
 
     /**
      * @param string $signature
@@ -21,7 +34,7 @@ class SignatureHandler
      */
     public function performSignatureCheck(string $signature, array $requestBase): void
     {
-        unset($requestBase['signature']);
+        unset($requestBase[$this->config->getSignatureParameter()]);
 
         $validSign = $this->generateSign($requestBase);
         if ($signature !== $validSign) {
@@ -31,7 +44,7 @@ class SignatureHandler
 
     public function generateSign(array $requestBase): string
     {
-        unset($requestBase['signature']);
+        unset($requestBase[$this->config->getSignatureParameter()]);
 
         ksort($requestBase);
 
@@ -40,7 +53,7 @@ class SignatureHandler
             $signatureString .= $val;
         }
 
-        $signatureString .= 'randomkey';
+        $signatureString .= $this->config->getSignatureKey();
 
         return md5($signatureString);
     }
