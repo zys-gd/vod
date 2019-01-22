@@ -2,6 +2,10 @@
     font-family: 'Kanit', sans-serif;
 }
 
+.sf-toolbar *{
+    font-family: sans-serif;
+}
+
 .header-menu_icon {
     background-image: url(/img/header/menu_icon.png);
     width: 68px;
