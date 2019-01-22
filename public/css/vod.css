@@ -1,21 +1,5 @@
-@font-face {
-    font-family: "Kanit-ExtraBoldItalic";
-    src: url(/fonts/Kanit-ExtraBoldItalic.ttf);
-}
-
-@font-face {
-    font-family: "Kanit-Medium";
-    src: url(/fonts/Kanit-Medium.ttf);
-}
-
-@font-face {
-    font-family: "Kanit-Regular";
-    src: url(/fonts/Kanit-Regular.ttf);
-}
-
-@font-face {
-    font-family: "Kanit-MediumItalic";
-    src: url(/fonts/Kanit-MediumItalic.ttf);
+* {
+    font-family: 'Kanit', sans-serif;
 }
 
 .header-menu_icon {
@@ -67,4 +51,12 @@
     text-transform: uppercase;
     font-size: 34pt;
     color: white;
+}
+
+.button {
+    background-color: #ec0000;
+    height: 134px;
+    width: 584px;
+    color: #FFFFFF;
+    font-size: 77px;
 }

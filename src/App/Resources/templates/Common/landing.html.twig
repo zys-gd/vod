@@ -14,7 +14,7 @@
 
 {% block body %}
 
-    <div style="width:100%; text-align:center; padding-top: 40px; margin-bottom: 100px">
+    <div class="d-flex">
 
         {% if not isCarrierDetected() %}
             {{ lp_subscribe_buttons.carrier_select_block() }}
@@ -38,18 +38,19 @@
                 {{ lp_subscribe_buttons.common_identify_block() }}
             </div>
         {% endif %}
+
+
+        {{ banner.render('', 'tesl alt') }}
+        {{ button.render(translate('buttons.join.now')) }}
+
+        {{ translate('promotional.landing') }}
+
+        {{ icons_channels.render() }}
+        {{ button.render(translate('buttons.join.now')) }}
+
+        {{ translate('offer.landing') }}
+        {{ red_lure_block.render() }}
     </div>
-
-    {{ banner.render('', 'tesl alt') }}
-    {{ button.render() }}
-
-    {{ translate('promotional.landing') }}
-
-    {{ icons_channels.render() }}
-    {{ button.render() }}
-
-    {{ translate('offer.landing') }}
-    {{ red_lure_block.render() }}
 {% endblock body %}
 
 {% block footer_content %}
