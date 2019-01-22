@@ -54,8 +54,8 @@ class RenewParametersProvider
         $options = $this->parametersProvider->prepareRequestParameters($subscription);
 
         /** Override nullable variables for renew Command */
-        $options->listener       = sprintf('http://%s%s', $this->host, $this->router->generate('talentica_subscription.listen'));
-        $options->listenerWait   = sprintf('http://%s%s', $this->host, $this->router->generate('talentica_subscription.wait_listen'));
+        $options->listener       = sprintf('http://%s%s', $this->host, $this->router->generate('subscription.listen'));
+        $options->listenerWait   = sprintf('http://%s%s', $this->host, $this->router->generate('subscription.wait_listen'));
         $options->chargeProduct  = $subscription->getUuid();
         $options->chargeTier     = $subscription->getSubscriptionPack()->getTierId();
         $options->chargeStrategy = $subscription->getSubscriptionPack()->getRenewStrategyId();

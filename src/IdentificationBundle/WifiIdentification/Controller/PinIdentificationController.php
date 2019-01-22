@@ -107,7 +107,7 @@ class PinIdentificationController extends AbstractController implements APIContr
             );
             return $this->getSimpleJsonResponse('Confirmed', 200, [], [
                 'success'     => true,
-                'redirectUrl' => $this->generateUrl('talentica_subscription.subscribe')
+                'redirectUrl' => $this->generateUrl('subscription.subscribe')
             ]);
 
         } catch (PinVerifyProcessException $exception) {
