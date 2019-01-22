@@ -33,5 +33,10 @@ class ExtrasExtension extends ConfigurableExtension
         $definition->setArgument(0, $mergedConfig['signature_check']['request_parameter']);
         $definition->setArgument(1, $mergedConfig['signature_check']['secret_key']);
 
+
+        if (isset($mergedConfig['cache']['use_array_cache']) && $mergedConfig['cache']['use_array_cache']) {
+            $loader->load('redis-dummy.yml');
+        }
+
     }
 }

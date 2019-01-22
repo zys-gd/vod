@@ -1,7 +1,8 @@
 <?php
 
-namespace ExtrasBundle\Cache;
+namespace ExtrasBundle\Cache\Redis;
 
+use ExtrasBundle\Cache\ICacheService;
 use Psr\Cache\CacheItemInterface;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 

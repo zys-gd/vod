@@ -8,7 +8,7 @@
 
 namespace ExtrasBundle\Tests;
 
-use ExtrasBundle\Cache\RedisCacheService;
+use ExtrasBundle\Cache\Redis\RedisCacheService;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemInterface;
 use Symfony\Component\Cache\Adapter\RedisAdapter;

@@ -31,6 +31,12 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->scalarNode('request_parameter')->defaultValue('signature')->end()
                         ->scalarNode('secret_key')->isRequired()->end()
+                    ->end()
+                ->end()
+                ->arrayNode('cache')
+                    ->children()
+                        ->scalarNode('use_array_cache')->defaultFalse()->end()
+                    ->end()
                 ->end()
             ->end();
 

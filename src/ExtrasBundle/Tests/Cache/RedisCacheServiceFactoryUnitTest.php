@@ -9,8 +9,8 @@
 namespace ExtrasBundle\Tests;
 
 use ExtrasBundle\Cache\ICacheService;
-use ExtrasBundle\Cache\RedisCacheServiceFactory;
-use ExtrasBundle\Cache\RedisConnectionProvider;
+use ExtrasBundle\Cache\Redis\RedisCacheServiceFactory;
+use ExtrasBundle\Cache\Redis\RedisConnectionProvider;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use Redis;
