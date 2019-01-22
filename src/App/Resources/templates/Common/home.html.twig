@@ -1,10 +1,25 @@
 {% extends '@App/base.html.twig' %}
+{% import "@App/Components/Blocks/Header/header_main.html.twig" as  header %}
+{% import "@App/Components/Blocks/Footer/annotation.html.twig" as  footer %}
+{% import "@App/Components/Blocks/Main/slider.html.twig" as  slider %}
+{% import "@App/Components/Blocks/Main/elect.html.twig" as  elect %}
+{% import "@App/Components/Blocks/Main/subscription_status.html.twig" as  subscription_status %}
+
+{% block header_content %}
+    {{ header.render() }}
+{% endblock header_content %}
 
 {% block body %}
+    {{ subscription_status.render() }}
 
-
-    <div style="width:100%; text-align:center; padding-top: 40px; margin-bottom: 100px">
+    <div class="d-flex flex-fill">
         <pre>{{ dump(identificationData) }}</pre>
     </div>
 
+    {{ slider.render() }}
+    {{ elect.render() }}
 {% endblock %}
+
+{% block footer_content %}
+    {{ footer.render() }}
+{% endblock footer_content %}

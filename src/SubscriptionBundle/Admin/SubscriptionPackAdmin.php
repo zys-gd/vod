@@ -540,7 +540,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
             $em = $this->getConfigurationPool()->getContainer()->get('doctrine')->getEntityManager();
             /** @var SubscriptionPackRepository $subscriptionPackRepository */
             $subscriptionPackRepository = $em->getRepository(SubscriptionPack::class);
-            $subscriptionPacks = $subscriptionPackRepository->getActiveSubscriptionPacksByCarrierId($subscriptionPack);
+            $subscriptionPacks          = $subscriptionPackRepository->getActiveSubscriptionPacksByCarrierId($subscriptionPack);
 
             if (count($subscriptionPacks) > 0) {
                 /** @var SubscriptionPack $subscriptionPack */

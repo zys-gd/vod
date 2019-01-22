@@ -148,11 +148,12 @@ class Subscriber
      */
     public function subscribe(User $user, SubscriptionPack $plan, $additionalData = []): array
     {
-        $var = $this->session->get('campaignData');
+        $var = AffiliateVisitSaver::extractPageVisitData($this->session, true);
+
         $this->logger->debug('Creating subscription', ['campaignData' => $var]);
 
         $subscription = $this->createPendingSubscription($user, $plan);
-        $subscription->setAffiliateToken($var);
+        $subscription->setAffiliateToken(json_encode($var));
 
 
         if ($subscription->getSubscriptionPack()->isFirstSubscriptionPeriodIsFree() &&
@@ -270,6 +271,7 @@ class Subscriber
         $this->affiliateService->checkAffiliateEligibilityAndSendEvent(
             $subscription,
             $this->userInfoMapper->mapFromUser($subscription->getUser()),
+            $subscription->getAffiliateToken(),
             AffiliateVisitSaver::extractCampaignToken($this->session)
         );
         $this->piwikStatisticSender->trackSubscribe(
@@ -284,6 +286,7 @@ class Subscriber
         $this->affiliateService->checkAffiliateEligibilityAndSendEvent(
             $subscription,
             $this->userInfoMapper->mapFromUser($subscription->getUser()),
+            $subscription->getAffiliateToken(),
             AffiliateVisitSaver::extractCampaignToken($this->session)
         );
         $this->piwikStatisticSender->trackResubscribe(

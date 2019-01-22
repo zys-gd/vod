@@ -27,14 +27,14 @@ class LoadSubscriptionPackData extends AbstractFixture implements ContainerAware
         $data = FixtureDataLoader::loadDataFromJSONFile(__DIR__ . '/Data/', 'subscription_packs.json');
 
         foreach ($data as $row) {
-            $uuid                                = $row['uuid'];
-            $country_uuid                        = $row['country_uuid'];
-            $status                              = $row['status'];
-            $name                                = $row['name'];
-            $description                         = $row['description'];
-            $carrier_name                        = $row['carrier_name'];
-            $carrier_id                          = $row['carrier_id'];
-            $periodicity                         = $row['periodicity'];
+            $uuid                           = $row['uuid'];
+            $country_uuid                   = $row['country_uuid'];
+            $status                         = $row['status'];
+            $name                           = $row['name'];
+            $description                    = $row['description'];
+            $carrier_name                   = $row['carrier_name'];
+            $carrier_id                     = $row['carrier_id'];
+            $periodicity                    = $row['periodicity'];
             $custom_renew_period                 = $row['custom_renew_period'];
             $grace_period                        = $row['grace_period'];
             $tier_name                           = $row['tier_name'];
@@ -54,13 +54,13 @@ class LoadSubscriptionPackData extends AbstractFixture implements ContainerAware
             $is_first_subscription_free          = $row['is_first_subscription_free'];
             $is_first_subscription_free_multiple = $row['is_first_subscription_free_multiple'];
             $allow_bonus_credit                  = $row['allow_bonus_credit'];
-            $allow_bonus_credit_multiple         = $row['allow_bonus_credit_multiple'];
-            $bonus_credit                        = $row['bonus_credit'];
-            $provider_managed_subscriptions      = $row['provider_managed_subscriptions'];
-            $created                             = $row['created'];
-            $updated                             = $row['updated'];
-            $is_resub_allowed                    = $row['is_resub_allowed'];
-            $displayCurrency                     = $row['display_currency'] ?? '';
+            $allow_bonus_credit_multiple    = $row['allow_bonus_credit_multiple'];
+            $bonus_credit                   = $row['bonus_credit'];
+            $provider_managed_subscriptions = $row['provider_managed_subscriptions'];
+            $created                        = $row['created'];
+            $updated                        = $row['updated'];
+            $is_resub_allowed               = $row['is_resub_allowed'];
+            $displayCurrency                = $row['display_currency'] ?? '';
 
 
             $pack = new SubscriptionPack($uuid);

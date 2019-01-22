@@ -1,12 +1,52 @@
-{% extends '@App/base.html.twig' %}
+{% extends '@App/Layout/main.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('/css/faq.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block header_page_subscription_container %}
+{% endblock %}
+
+{% block header_page_title %}
+    FAQ
+{% endblock %}
 
 {% block body %}
-    <div class="flex-column">
+    <div class="w-100 accordion" id="accordionExample">
+
         {% for question in questions %}
-            <p> {{ translate(question.key) }} </p>
-            <p> {{ translate(answers[loop.index0].key) }} </p>
-            <hr/>
+
+            <div class="card faq-accordion_card">
+                <div
+                        class="d-flex align-items-center faq-accordion_card_header" id="card_{{ loop.index }}">
+                    <div class="col-1 faq-accordion_card_header_button faq-accordion_card_header_button__plus"
+                         href="#" data-toggle="collapse" data-target="#card_collapse_{{ loop.index }}"
+                         aria-expanded="true" aria-controls="card_collapse_{{ loop.index }}">
+                    </div>
+                    <div class="col-11 faq-accordion_card_header_title">
+                        {{ loop.index }}/ {{ translate(question.key) }}
+                    </div>
+                </div>
+
+                <div class="faq-accordion_card__delimiter">
+                </div>
+
+                <div id="card_collapse_{{ loop.index }}" class="collapse" aria-labelledby="card_{{ loop.index }}"
+                     data-parent="#accordionExample">
+                    <div class="card-body col-10 offset-1 faq-accordion_card_body">
+                        {{ translate(answers[loop.index0].key) }}
+                    </div>
+                </div>
+            </div>
+
         {% endfor %}
+
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('/js/faq.js') }}"></script>
 {% endblock %}

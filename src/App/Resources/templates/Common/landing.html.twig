@@ -1,9 +1,20 @@
 {% extends '@App/base.html.twig' %}
+{% import "@App/Components/Blocks/Header/header_lp.html.twig" as  header %}
+{% import "@App/Components/Blocks/Footer/annotation.html.twig" as  annotation %}
+{% import "@App/Components/Blocks/Footer/menu.html.twig" as  footer_menu %}
+{% import "@App/Components/Blocks/Main/lure.html.twig" as  red_lure_block %}
+{% import "@App/Components/Blocks/Main/banner.html.twig" as  banner %}
+{% import "@App/Components/Blocks/Main/icons_channels.html.twig" as  icons_channels %}
+{% import "@App/Components/Buttons/button.html.twig" as  button %}
+{% import "@App/Components/lp_subscribe_buttons.html.twig" as lp_subscribe_buttons %}
+
+{% block header_content %}
+    {{ header.render() }}
+{% endblock header_content %}
 
 {% block body %}
-    {% import "@App/Components/lp_subscribe_buttons.html.twig" as lp_subscribe_buttons %}
 
-    <div style="width:100%; text-align:center; padding-top: 40px; margin-bottom: 100px">
+    <div class="d-flex">
 
         {% if not isCarrierDetected() %}
             {{ lp_subscribe_buttons.carrier_select_block() }}
@@ -27,5 +38,22 @@
                 {{ lp_subscribe_buttons.common_identify_block() }}
             </div>
         {% endif %}
+
+
+        {{ banner.render('', 'tesl alt') }}
+        {{ button.render(translate('buttons.join.now')) }}
+
+        {{ translate('promotional.landing') }}
+
+        {{ icons_channels.render() }}
+        {{ button.render(translate('buttons.join.now')) }}
+
+        {{ translate('offer.landing') }}
+        {{ red_lure_block.render() }}
     </div>
-{% endblock %}
+{% endblock body %}
+
+{% block footer_content %}
+    {{ annotation.render() }}
+    {{ footer_menu.render() }}
+{% endblock footer_content %}

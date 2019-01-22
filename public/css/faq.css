@@ -1,0 +1,51 @@
+.faq-accordion_card {
+    border: none !important;
+}
+
+.faq-accordion_card_header {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    background-color: #ffffff;
+    margin-left: 35px;
+    margin-right: 50px;
+}
+
+.faq-accordion_card_header_button {
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.faq-accordion_card_header_button__plus {
+    background-image: url(/img/pages/faq/plus-button.png);
+}
+
+.faq-accordion_card_header_button__minus {
+    background-image: url(/img/pages/faq/minus-button.png);
+}
+
+.faq-accordion_card_header_title {
+    font-family: "Kanit-Medium", sans-serif;
+    font-size: 28pt;
+    text-transform: uppercase;
+    width: 100%
+}
+
+.faq-accordion_card_body {
+    background-color: #f2f2f2;
+    margin-left: calc(8.333% + 35px);
+    margin-right: 50px;
+    border-bottom: 5px solid #c5c3c3;
+    font-family: 'Kanit-Regular', sans-serif;
+    font-size: 32pt;
+    margin-bottom: 30px;
+}
+
+.faq-accordion_card__delimiter {
+    background-image: url(/img/pages/faq/faq_delimiter_line.png);
+    margin-left: calc(8.333% + 35px);
+    height: 5px;
+    width: 440px;
+}

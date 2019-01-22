@@ -43,7 +43,7 @@ class SubscriptionCreator
         $subscription = new Subscription($uuid);
         $subscription->setSubscriptionPack($subscriptionPack);
         $subscription->setUser($user);
-        $subscription->setAffiliateToken($affiliateToken);
+        $subscription->setAffiliateToken(json_encode($affiliateToken));
         $subscription->setStatus($status);
 
         return $subscription;

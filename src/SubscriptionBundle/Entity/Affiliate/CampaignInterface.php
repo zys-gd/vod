@@ -7,6 +7,12 @@ use Doctrine\Common\Collections\Collection;
 
 interface CampaignInterface
 {
+
+    public function getCampaignToken(): string;
+
+    public function getSub(): string;
+
+
     /**
      * Get operator
      *
