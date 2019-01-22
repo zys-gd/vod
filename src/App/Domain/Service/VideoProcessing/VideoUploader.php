@@ -2,12 +2,11 @@
 
 namespace App\Domain\Service\VideoProcessing;
 
+use App\Domain\Service\VideoProcessing\DTO\UploadResult;
 use App\Utils\UuidGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Routing\RouterInterface;
-use App\Domain\Entity\UploadedVideo;
-use App\Domain\Entity\Category;
 use App\Domain\Repository\UploadedVideoRepository;
 use App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector;
 
@@ -68,48 +67,26 @@ class VideoUploader
     /**
      * Upload video to cloudinary storage
      *
-     * @param array $uploadedVideoFormData
+     * @param UploadedFile $uploadedFile
+     * @param string $uploadedFolder
      *
-     * @return UploadedVideo
+     * @return UploadResult
      *
      * @throws \Exception
      */
-    public function uploadVideo($uploadedVideoFormData): UploadedVideo
+    public function uploadVideo(UploadedFile $uploadedFile, string $uploadedFolder): UploadResult
     {
-        /** @var UploadedFile $file */
-        $file = $uploadedVideoFormData['file'];
-
-        /** @var Category $category */
-        $category = $uploadedVideoFormData['category'];
-
-        if ($file->getError()) {
-            throw new \Exception($file->getErrorMessage());
+        if ($uploadedFile->getError()) {
+            throw new \Exception($uploadedFile->getErrorMessage());
         }
-
-        $folderName = $category->getAlias();
 
         $result = $this->cloudinaryConnector->uploadVideo(
             UuidGenerator::generate(),
-            $file->getRealPath(),
-            $folderName,
+            $uploadedFile->getRealPath(),
+            $uploadedFolder,
             'http://' . $this->host . $this->router->generate('vod_listen', [])
         );
 
-        $videoEntity = new UploadedVideo(UuidGenerator::generate());
-
-        $videoEntity->setTitle($uploadedVideoFormData['title']);
-        $videoEntity->setCategory($category);
-        $videoEntity->setRemoteUrl($result->getUrl());
-        $videoEntity->setRemoteId($result->getRemoteId());
-        $videoEntity->setDescription($uploadedVideoFormData['description']);
-
-        $thumbnails = $this->cloudinaryConnector->getThumbnails($result->getRemoteId());
-        $videoEntity->setThumbnails($thumbnails);
-
-
-        $this->entityManager->persist($videoEntity);
-        $this->entityManager->flush();
-
-        return $videoEntity;
+        return $result;
     }
 }

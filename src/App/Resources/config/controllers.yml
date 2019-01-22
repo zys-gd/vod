@@ -5,11 +5,6 @@ services:
     App\API\Controller\APIController:
         arguments: ['@App\Domain\Service\VideoProcessing\CallbackVoter', '@App\Domain\Service\VideoProcessing\Callback\EagerType']
 
-    App\Admin\Controller\UploadedVideoAdminController:
-        calls:
-            - [setContainer, ['@service_container']]
-        arguments: ['@form.factory', '@App\Domain\Service\VideoProcessing\VideoUploader']
-
     App\Controller\ContentController:
         arguments: ['@App\Domain\Service\FaqProviderService']
 

@@ -3,6 +3,7 @@
 namespace App\Domain\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints\Date;
@@ -33,7 +34,7 @@ class Campaign implements CampaignInterface
     private $campaignToken;
 
     /**
-     * @var ArrayCollection
+     * @var Collection
      */
     private $carriers;
 
@@ -217,7 +218,7 @@ class Campaign implements CampaignInterface
      *
      * @return Affiliate
      */
-    public function getAffiliate(): Affiliate
+    public function getAffiliate(): ?Affiliate
     {
         return $this->affiliate;
     }
@@ -225,9 +226,9 @@ class Campaign implements CampaignInterface
     /**
      * Get operator
      *
-     * @return Carrier[] | ArrayCollection
+     * @return Collection
      */
-    public function getCarriers(): ArrayCollection
+    public function getCarriers(): Collection
     {
         return $this->carriers;
     }

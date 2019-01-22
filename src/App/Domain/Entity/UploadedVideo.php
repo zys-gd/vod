@@ -2,6 +2,8 @@
 
 namespace App\Domain\Entity;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 /**
  * UploadedVideo
  */
@@ -67,14 +69,20 @@ class UploadedVideo
     private $thumbnails = [];
 
     /**
-     * UploadedVideo constructor.
+     * Unmapped field for uploading video file
+     */
+    private $videoFile;
+
+    /**
+     * UploadedVideo constructor
+     *
      * @param string $uuid
+     *
      * @throws \Exception
      */
     public function __construct(string $uuid)
     {
         $this->uuid = $uuid;
-        $this->createdAt = new \DateTime();
     }
 
     /**
@@ -83,7 +91,6 @@ class UploadedVideo
     public function getUuid(): string
     {
         return $this->uuid;
-
     }
 
     /**
@@ -96,9 +103,10 @@ class UploadedVideo
 
     /**
      * @param string $title
+     *
      * @return UploadedVideo
      */
-    public function setTitle(string $title): UploadedVideo
+    public function setTitle($title): UploadedVideo
     {
         $this->title = $title;
         return $this;
@@ -107,7 +115,7 @@ class UploadedVideo
     /**
      * @return Category
      */
-    public function getCategory(): Category
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
@@ -238,5 +246,25 @@ class UploadedVideo
     public function setDescription(string $description)
     {
         $this->description = $description;
+    }
+
+    /**
+     * @param UploadedFile|null $videoFile
+     *
+     * @return UploadedVideo
+     */
+    public function setVideoFile(?UploadedFile $videoFile)
+    {
+        $this->videoFile = $videoFile;
+
+        return $this;
+    }
+
+    /**
+     * @return UploadedFile
+     */
+    public function getVideoFile()
+    {
+        return $this->videoFile;
     }
 }

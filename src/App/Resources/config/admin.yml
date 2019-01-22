@@ -1,8 +1,16 @@
 services:
     App\Admin\Sonata\UploadedVideoAdmin:
-        arguments: [~, App\Domain\Entity\UploadedVideo, 'App\Admin\Controller\UploadedVideoAdminController', '@App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector']
+        arguments:
+            - ~
+            - App\Domain\Entity\UploadedVideo
+            - ~
+            - '@App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector'
+            - '@App\Domain\Service\VideoProcessing\VideoUploader'
+            - '@service_container'
         tags:
             - { name: sonata.admin, manager_type: orm, group: Content Management, label: Videos }
+        calls:
+            - [ setTemplate, [edit, '@@Admin\UploadedVideo\edit.html.twig'] ]
 
     App\Admin\Sonata\CategoryAdmin:
         arguments: [~, App\Domain\Entity\Category, ~]
@@ -15,11 +23,9 @@ services:
             - { name: sonata.admin, manager_type: orm, group: Affiliate Management, label: Affiliates }
 
     App\Admin\Sonata\CampaignAdmin:
-        arguments: [~, App\Domain\Entity\Campaign, ~]
+        arguments: [~, App\Domain\Entity\Campaign, ~, '@service_container']
         tags:
             - { name: sonata.admin, manager_type: orm, group: Affiliate Management, label: Campaign }
-        calls:
-            - [setContainer, ['@service_container']]
 
     App\Admin\Sonata\CarrierAdmin:
         arguments: [~, App\Domain\Entity\Carrier, ~]

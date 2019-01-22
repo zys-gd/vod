@@ -1,41 +1,45 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 24.12.18
- * Time: 14:11
- */
 
 namespace App\Domain\Service\VideoProcessing\DTO;
 
-
+/**
+ * Class UploadResult
+ */
 class UploadResult
 {
     /**
      * @var string
      */
     private $url;
+
     /**
      * @var string
      */
     private $remoteId;
 
+    /**
+     * @var array
+     */
+    private $thumbnailsPath;
 
     /**
-     * UploadResult constructor.
+     * UploadResult constructor
+     *
      * @param string $url
      * @param string $remoteId
+     * @param array $thumbnailsPath
      */
-    public function __construct(string $url, string $remoteId)
+    public function __construct(string $url, string $remoteId, array $thumbnailsPath)
     {
         $this->url      = $url;
         $this->remoteId = $remoteId;
+        $this->thumbnailsPath = $thumbnailsPath;
     }
 
     /**
      * @return string
      */
-    public function getUrl(): string
+    public function getRemoteUrl(): string
     {
         return $this->url;
     }
@@ -48,5 +52,11 @@ class UploadResult
         return $this->remoteId;
     }
 
-
+    /**
+     * @return array
+     */
+    public function getThumbnailsPath(): array
+    {
+        return $this->thumbnailsPath;
+    }
 }

@@ -10,12 +10,15 @@ App\Domain\Entity\UploadedVideo:
             type: smallint
         remoteUrl:
             type: string
+            nullable: false
         remoteId:
             type: string
+            nullable: false
         createdAt:
             type: datetime
         title:
             type: string
+            nullable: false
         description:
             type: text
             nullable: true
@@ -27,5 +30,9 @@ App\Domain\Entity\UploadedVideo:
     manyToOne:
         category:
             targetEntity: App\Domain\Entity\Category
-            joinColumn:
-                referencedColumnName: uuid
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                category_id:
+                    referencedColumnName: uuid
+            orphanRemoval: false
