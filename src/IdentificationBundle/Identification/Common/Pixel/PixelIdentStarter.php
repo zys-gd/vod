@@ -9,6 +9,8 @@
 namespace IdentificationBundle\Identification\Common\Pixel;
 
 
+use ExtrasBundle\SignatureCheck\ParametersProvider;
+use ExtrasBundle\SignatureCheck\SignatureHandler;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Service\RouteProvider;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
@@ -27,20 +29,34 @@ class PixelIdentStarter
      * @var RouteProvider
      */
     private $routeProvider;
+    /**
+     * @var \ExtrasBundle\SignatureCheck\SignatureHandler
+     */
+    private $signatureHandler;
+    /**
+     * @var ParametersProvider
+     */
+    private $config;
 
 
     /**
      * PixelIdentStarter constructor.
-     * @param RouterInterface $router
-     * @param RouteProvider   $routeProvider
+     * @param RouterInterface                               $router
+     * @param RouteProvider                                 $routeProvider
+     * @param \ExtrasBundle\SignatureCheck\SignatureHandler $signatureHandler
+     * @param ParametersProvider                          $config
      */
     public function __construct(
         RouterInterface $router,
-        RouteProvider $routeProvider
+        RouteProvider $routeProvider,
+        SignatureHandler $signatureHandler,
+        ParametersProvider $config
     )
     {
-        $this->router        = $router;
-        $this->routeProvider = $routeProvider;
+        $this->router           = $router;
+        $this->routeProvider    = $routeProvider;
+        $this->signatureHandler = $signatureHandler;
+        $this->config           = $config;
     }
 
     public function start(Request $request, ProcessResult $processResult, CarrierInterface $carrier): RedirectResponse
@@ -51,12 +67,16 @@ class PixelIdentStarter
             $successUrl = $this->routeProvider->getLinkToHomepage();
         }
 
-        $pixelPageLink = $this->router->generate('show_pixel_page', [
+        $parameters = [
             'pixelUrl'   => $processResult->getUrl(),
             'carrier'    => $carrier->getBillingCarrierId(),
             'processId'  => $processResult->getId(),
-            'successUrl' => $successUrl
-        ]);
+            'successUrl' => $successUrl,
+        ];
+
+        $signatureParam              = $this->config->getSignatureParameter();
+        $parameters[$signatureParam] = $this->signatureHandler->generateSign($parameters);
+        $pixelPageLink               = $this->router->generate('show_pixel_page', $parameters);
 
         return new RedirectResponse($pixelPageLink);
     }

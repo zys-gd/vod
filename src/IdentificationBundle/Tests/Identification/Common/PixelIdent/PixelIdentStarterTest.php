@@ -9,6 +9,8 @@
 namespace IdentificationBundle\Tests\Identification\Common\PixelIdent;
 
 
+use ExtrasBundle\SignatureCheck\ParametersProvider;
+use ExtrasBundle\SignatureCheck\SignatureHandler;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Common\Pixel\PixelIdentStarter;
 use IdentificationBundle\Identification\Service\RouteProvider;
@@ -41,7 +43,9 @@ class PixelIdentStarterTest extends TestCase
         $this->routeProvider     = Mockery::spy(RouteProvider::class);
         $this->pixelIdentStarter = new PixelIdentStarter(
             $this->router,
-            $this->routeProvider
+            $this->routeProvider,
+            Mockery::spy(SignatureHandler::class),
+            Mockery::spy(ParametersProvider::class)
         );
         parent::setUp();
     }

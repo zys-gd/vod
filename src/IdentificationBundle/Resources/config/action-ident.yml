@@ -32,6 +32,8 @@ services:
     arguments:
       - '@router'
       - '@IdentificationBundle\Identification\Service\RouteProvider'
+      - '@ExtrasBundle\SignatureCheck\SignatureHandler'
+      - '@ExtrasBundle\SignatureCheck\ParametersProvider'
 
 
   IdentificationBundle\Identification\Common\Pixel\PixelIdentVerifier:
@@ -96,3 +98,4 @@ services:
     arguments:
       - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
       - '@IdentificationBundle\Repository\UserRepository'
+

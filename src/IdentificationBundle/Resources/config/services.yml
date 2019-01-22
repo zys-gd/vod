@@ -6,3 +6,4 @@ services:
   IdentificationBundle\Controller\ParamConverter\IdentificationDataConverter:
     tags:
       - { name: request.param_converter }
+
