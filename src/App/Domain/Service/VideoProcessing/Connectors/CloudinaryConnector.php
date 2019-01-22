@@ -1,34 +1,32 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 24.12.18
- * Time: 11:40
- */
 
 namespace App\Domain\Service\VideoProcessing\Connectors;
 
-
 use App\Domain\Service\VideoProcessing\DTO\UploadResult;
 
+/**
+ * Class CloudinaryConnector
+ */
 class CloudinaryConnector
 {
     /**
      * @var string
      */
     private $apiKey;
+
     /**
      * @var string
      */
     private $apiSecret;
+
     /**
      * @var string
      */
     private $cloudName;
 
-
     /**
-     * CloudinaryConnector constructor.
+     * CloudinaryConnector constructor
+     *
      * @param string $apiKey
      * @param string $apiSecret
      * @param string $cloudName
@@ -40,18 +38,32 @@ class CloudinaryConnector
         $this->cloudName = $cloudName;
     }
 
+    /**
+     * @param string $payload
+     *
+     * @return string
+     */
     public function makeSignature(string $payload): string
     {
         $sign = sha1($payload . $this->apiSecret);
 
         return $sign;
-
     }
 
+    /**
+     * Upload video to cloudinary storage
+     *
+     * @param string $alias
+     * @param string $src
+     * @param string $folderName
+     * @param string $callbackUrl
+     *
+     * @return UploadResult
+     *
+     * @throws \Exception
+     */
     public function uploadVideo(string $alias, string $src, string $folderName, string $callbackUrl): UploadResult
     {
-
-
         $result = \Cloudinary\Uploader::upload_large($src,
             [
                 "eager"                  => [
@@ -69,10 +81,15 @@ class CloudinaryConnector
             ]
         );
 
-        return new UploadResult($result['url'], $result['public_id']);
+        return new UploadResult($result['url'], $result['public_id'], $this->getThumbnails($result['public_id']));
 
     }
 
+    /**
+     * @param string $publicId
+     *
+     * @return array
+     */
     public function getThumbnails(string $publicId): array
     {
         $transformation = [
@@ -86,9 +103,8 @@ class CloudinaryConnector
     }
 
     /**
-     * Delete video from cloudinary storage
-     *
      * @param $remoteId
+     *
      * @return mixed
      */
     public function deleteVideo($remoteId)
