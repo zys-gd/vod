@@ -14,42 +14,55 @@
 
 {% block body %}
 
-    <div class="d-flex">
+    <div class="d-flex flex-column align-items-center justify-content-top w-100">
+        <div class="d-flex align-items-center justify-content-center">
 
-        {% if not isCarrierDetected() %}
-            {{ lp_subscribe_buttons.carrier_select_block() }}
-        {% elseif isIdentified() %}
-            <h2>You are identified</h2>
-            <div>
-                <a href="{{ path('talentica_subscription.subscribe') }}">
-                    <button type="button">Subscribe</button>
-                </a>
-            </div>
-            <div>
-                User Token: {{ getIdentificationToken() }}
-            </div>
-        {% elseif isWifiFlow() %}
-            <h2>Wifi Flow</h2>
-            {{ lp_subscribe_buttons.wifi_subscribe_block() }}
-        {% else %}
-            <h2>Common Flow</h2>
-            <div>Carrier: {{ isp_detection_data.carrier_id }}</div>
-            <div>
-                {{ lp_subscribe_buttons.common_identify_block() }}
-            </div>
-        {% endif %}
+            {% if not isCarrierDetected() %}
+                {{ lp_subscribe_buttons.carrier_select_block() }}
+            {% elseif isIdentified() %}
+                <h2>You are identified</h2>
+                <div>
+                    <a href="{{ path('talentica_subscription.subscribe') }}">
+                        <button type="button">Subscribe</button>
+                    </a>
+                </div>
+                <div>
+                    User Token: {{ getIdentificationToken() }}
+                </div>
+            {% elseif isWifiFlow() %}
+                <h2>Wifi Flow</h2>
+                {{ lp_subscribe_buttons.wifi_subscribe_block() }}
+            {% else %}
+                <h2>Common Flow</h2>
+                <div>Carrier: {{ isp_detection_data.carrier_id }}</div>
+                <div>
+                    {{ lp_subscribe_buttons.common_identify_block() }}
+                </div>
+            {% endif %}
+        </div>
 
+        <div class="d-flex align-items-center justify-content-center">
+            {{ banner.render('', 'tesl alt') }}
+        </div>
+        <div class="d-flex align-items-center justify-content-center">
+            {{ button.render(translate('buttons.join.now')) }}
+        </div>
+        <div class="d-flex align-items-center justify-content-center">
+            {{ translate('promotional.landing') }}
+        </div>
 
-        {{ banner.render('', 'tesl alt') }}
-        {{ button.render(translate('buttons.join.now')) }}
-
-        {{ translate('promotional.landing') }}
-
-        {{ icons_channels.render() }}
-        {{ button.render(translate('buttons.join.now')) }}
-
-        {{ translate('offer.landing') }}
-        {{ red_lure_block.render() }}
+        <div class="d-flex align-items-center justify-content-center">
+            {{ icons_channels.render() }}
+        </div>
+        <div class="d-flex align-items-center justify-content-center">
+            {{ button.render(translate('buttons.join.now')) }}
+        </div>
+        <div class="d-flex align-items-center justify-content-center">
+            {{ translate('offer.landing') }}
+        </div>
+        <div class="d-flex align-items-center justify-content-center">
+            {{ red_lure_block.render() }}
+        </div>
     </div>
 {% endblock body %}
 
