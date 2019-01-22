@@ -9,15 +9,17 @@
 namespace IdentificationBundle\Identification\Controller;
 
 
+use IdentificationBundle\BillingFramework\Data\DataProvider;
+use IdentificationBundle\Controller\Annotation\SignatureCheckIsRequired;
 use IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer;
 use IdentificationBundle\Identification\Common\Pixel\PixelIdentVerifier;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Identification\Service\RouteProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkProcessException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -36,16 +38,28 @@ class PixelIdentController extends AbstractController
      * @var RouteProvider
      */
     private $routeProvider;
+    /**
+     * @var DataProvider
+     */
+    private $billingDataProvider;
 
-    public function __construct(PixelIdentVerifier $pixelIdentVerifier, PixelIdentConfirmer $confirmer, RouteProvider $routeProvider)
+    public function __construct(
+        PixelIdentVerifier $pixelIdentVerifier,
+        PixelIdentConfirmer $confirmer,
+        RouteProvider $routeProvider,
+        DataProvider $billingDataProvider
+    )
     {
-        $this->pixelIdentVerifier = $pixelIdentVerifier;
-        $this->confirmer          = $confirmer;
-        $this->routeProvider      = $routeProvider;
+
+        $this->pixelIdentVerifier  = $pixelIdentVerifier;
+        $this->confirmer           = $confirmer;
+        $this->routeProvider       = $routeProvider;
+        $this->billingDataProvider = $billingDataProvider;
     }
 
 
     /**
+     * @SignatureCheckIsRequired
      * @Route("/pixel/show-page",name="show_pixel_page")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -57,8 +71,20 @@ class PixelIdentController extends AbstractController
         $processId  = $request->get('processId', '');
         $successUrl = $request->get('successUrl', '');
 
+
         if (!$pixelUrl) {
             throw new BadRequestHttpException('Missing `pixelUrl` parameter');
+        }
+
+        try {
+            $result = $this->billingDataProvider->getProcessData($processId);
+
+            if (!$result->isPixel()) {
+                throw new BadRequestHttpException("Invalid ident type.");
+            }
+
+        } catch (BillingFrameworkProcessException $exception) {
+            throw new BadRequestHttpException("Pixel ident is not started yet");
         }
 
         return $this->render('@Identification/pixelIdent/show_pixel.twig', [

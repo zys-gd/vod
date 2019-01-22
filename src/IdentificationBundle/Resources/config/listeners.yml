@@ -13,3 +13,8 @@ services:
       - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
       - '@IdentificationBundle\Identification\Service\IdentificationStatus'
       - '@annotations.reader'
+
+  IdentificationBundle\Listener\SignatureCheckRoutesListener:
+    arguments: ['@annotations.reader', '@IdentificationBundle\Identification\Service\SignatureHandler']
+    tags:
+      - { name: kernel.event_listener, event: kernel.controller }
