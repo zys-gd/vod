@@ -1,6 +1,6 @@
 services:
   ExtrasBundle\SignatureCheck\SignatureHandler:
-      arguments: ['@ExtrasBundle\SignatureCheck\SignatureCheckConfig']
+      arguments: ['@ExtrasBundle\SignatureCheck\ParametersProvider']
 
-  ExtrasBundle\SignatureCheck\SignatureCheckConfig:
+  ExtrasBundle\SignatureCheck\ParametersProvider:
       arguments: ['_request_parameter_','_secret_key_']

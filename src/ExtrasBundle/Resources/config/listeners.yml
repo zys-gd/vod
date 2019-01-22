@@ -3,7 +3,7 @@ services:
     tags:
       - { name: kernel.event_subscriber }
 
-  ExtrasBundle\SignatureCheck\SignatureCheckRoutesListener:
-    arguments: ['@annotations.reader', '@ExtrasBundle\SignatureCheck\SignatureHandler', '@ExtrasBundle\SignatureCheck\SignatureCheckConfig']
+  ExtrasBundle\SignatureCheck\RouteListener:
+    arguments: ['@annotations.reader', '@ExtrasBundle\SignatureCheck\SignatureHandler', '@ExtrasBundle\SignatureCheck\ParametersProvider']
     tags:
       - { name: kernel.event_listener, event: kernel.controller }

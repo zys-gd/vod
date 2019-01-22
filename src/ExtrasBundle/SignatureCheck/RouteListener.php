@@ -13,7 +13,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class SignatureCheckRoutesListener
+class RouteListener
 {
     /**
      * @var AnnotationReader
@@ -24,15 +24,15 @@ class SignatureCheckRoutesListener
      */
     private $checker;
     /**
-     * @var SignatureCheckConfig
+     * @var ParametersProvider
      */
     private $config;
 
 
     /**
-     * SignatureCheckRoutesListener constructor.
+     * RouteListener constructor.
      */
-    public function __construct(AnnotationReader $annotationReader, SignatureHandler $checker, SignatureCheckConfig $config)
+    public function __construct(AnnotationReader $annotationReader, SignatureHandler $checker, ParametersProvider $config)
     {
         $this->annotationReader = $annotationReader;
         $this->checker          = $checker;

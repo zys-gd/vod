@@ -14,14 +14,14 @@ use IdentificationBundle\Identification\Exception\InvalidSignatureException;
 class SignatureHandler
 {
     /**
-     * @var SignatureCheckConfig
+     * @var ParametersProvider
      */
     private $config;
 
     /**
      * SignatureHandler constructor.
      */
-    public function __construct(SignatureCheckConfig $config)
+    public function __construct(ParametersProvider $config)
     {
         $this->config = $config;
     }

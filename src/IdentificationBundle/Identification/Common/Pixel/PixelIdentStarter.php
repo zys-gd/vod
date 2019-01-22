@@ -9,7 +9,7 @@
 namespace IdentificationBundle\Identification\Common\Pixel;
 
 
-use ExtrasBundle\SignatureCheck\SignatureCheckConfig;
+use ExtrasBundle\SignatureCheck\ParametersProvider;
 use ExtrasBundle\SignatureCheck\SignatureHandler;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Service\RouteProvider;
@@ -34,7 +34,7 @@ class PixelIdentStarter
      */
     private $signatureHandler;
     /**
-     * @var SignatureCheckConfig
+     * @var ParametersProvider
      */
     private $config;
 
@@ -44,13 +44,13 @@ class PixelIdentStarter
      * @param RouterInterface                               $router
      * @param RouteProvider                                 $routeProvider
      * @param \ExtrasBundle\SignatureCheck\SignatureHandler $signatureHandler
-     * @param SignatureCheckConfig                          $config
+     * @param ParametersProvider                          $config
      */
     public function __construct(
         RouterInterface $router,
         RouteProvider $routeProvider,
         SignatureHandler $signatureHandler,
-        SignatureCheckConfig $config
+        ParametersProvider $config
     )
     {
         $this->router           = $router;

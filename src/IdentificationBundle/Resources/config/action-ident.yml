@@ -33,7 +33,7 @@ services:
       - '@router'
       - '@IdentificationBundle\Identification\Service\RouteProvider'
       - '@ExtrasBundle\SignatureCheck\SignatureHandler'
-      - '@ExtrasBundle\SignatureCheck\SignatureCheckConfig'
+      - '@ExtrasBundle\SignatureCheck\ParametersProvider'
 
 
   IdentificationBundle\Identification\Common\Pixel\PixelIdentVerifier:

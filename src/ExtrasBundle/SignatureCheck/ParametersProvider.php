@@ -9,7 +9,7 @@
 namespace ExtrasBundle\SignatureCheck;
 
 
-class SignatureCheckConfig
+class ParametersProvider
 {
 
     /**

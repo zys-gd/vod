@@ -28,7 +28,7 @@ class ExtrasExtension extends ConfigurableExtension
         $loader->load('services.yml');
         $loader->load('cache.yml');
 
-        $definition = $container->getDefinition('ExtrasBundle\SignatureCheck\SignatureCheckConfig');
+        $definition = $container->getDefinition('ExtrasBundle\SignatureCheck\ParametersProvider');
 
         $definition->setArgument(0, $mergedConfig['signature_check']['request_parameter']);
         $definition->setArgument(1, $mergedConfig['signature_check']['secret_key']);
