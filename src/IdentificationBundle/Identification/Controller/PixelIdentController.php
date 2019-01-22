@@ -9,7 +9,7 @@
 namespace IdentificationBundle\Identification\Controller;
 
 
-use ExtrasBundle\SignatureCheck\SignatureCheckIsRequired;
+use ExtrasBundle\SignatureCheck\Annotation\SignatureCheckIsRequired;
 use IdentificationBundle\BillingFramework\Data\DataProvider;
 use IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer;
 use IdentificationBundle\Identification\Common\Pixel\PixelIdentVerifier;

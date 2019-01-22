@@ -9,7 +9,7 @@
 namespace ExtrasBundle\SignatureCheck;
 
 
-use IdentificationBundle\Identification\Exception\InvalidSignatureException;
+use ExtrasBundle\SignatureCheck\Exception\InvalidSignatureException;
 
 class SignatureHandler
 {
@@ -30,7 +30,7 @@ class SignatureHandler
     /**
      * @param string $signature
      * @param array  $requestBase
-     * @throws InvalidSignatureException
+     * @throws \ExtrasBundle\SignatureCheck\Exception\InvalidSignatureException
      */
     public function performSignatureCheck(string $signature, array $requestBase): void
     {

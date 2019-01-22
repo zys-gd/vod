@@ -6,10 +6,13 @@
  * Time: 18:12
  */
 
-namespace ExtrasBundle\SignatureCheck;
+namespace ExtrasBundle\SignatureCheck\Listener;
 
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use ExtrasBundle\SignatureCheck\Annotation\SignatureCheckIsRequired;
+use ExtrasBundle\SignatureCheck\ParametersProvider;
+use ExtrasBundle\SignatureCheck\SignatureHandler;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 

@@ -6,11 +6,10 @@
  * Time: 18:11
  */
 
-namespace ExtrasBundle\SignatureCheck;
+namespace ExtrasBundle\SignatureCheck\Annotation;
 
 
 /**
- * Class NoRedirectToWhoops
  * @Annotation
  */
 class SignatureCheckIsRequired

@@ -6,7 +6,7 @@
  * Time: 18:17
  */
 
-namespace IdentificationBundle\Identification\Exception;
+namespace ExtrasBundle\SignatureCheck\Exception;
 
 
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
