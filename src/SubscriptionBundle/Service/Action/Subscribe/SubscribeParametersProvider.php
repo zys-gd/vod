@@ -59,7 +59,7 @@ class SubscribeParametersProvider
 
         $parameters->chargeStrategy = $subscription->getSubscriptionPack()->getBuyStrategyId();
         if ($request = $this->requestStack->getCurrentRequest()) {
-            $parameters->redirectUrl = $request->get('location', $this->router->generate('talentica_subscription.wait_listen'));
+            $parameters->redirectUrl = $request->get('location', $this->router->generate('subscription.wait_listen'));
         }
         return $parameters;
     }
