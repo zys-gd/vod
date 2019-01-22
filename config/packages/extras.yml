@@ -1,0 +1,4 @@
+extras:
+  signature_check:
+    request_parameter: signature
+    secret_key: secretkey
