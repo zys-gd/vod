@@ -29,7 +29,7 @@ services:
           - '@SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier'
           - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
           - '@SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator'
-          - '@SubscriptionBundle\Utils\UrlParamAppender'
+          - '@ExtrasBundle\Utils\UrlParamAppender'
           - '@router'
           - '@SubscriptionBundle\Affiliate\Service\AffiliateSender'
           - '@SubscriptionBundle\Piwik\PiwikStatisticSender'

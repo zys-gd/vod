@@ -6,7 +6,7 @@
  * Time: 12:03
  */
 
-namespace SubscriptionBundle\Utils;
+namespace ExtrasBundle\Utils;
 
 
 class UrlParamAppender

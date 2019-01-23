@@ -1,6 +1,6 @@
 services:
     SubscriptionBundle\BillingFramework\Process\API\LinkCreator:
-        arguments: ['%billing_api_host%', '@SubscriptionBundle\Utils\UrlParamAppender']
+        arguments: ['%billing_api_host%', '@ExtrasBundle\Utils\UrlParamAppender']
 
     SubscriptionBundle\BillingFramework\Notification\API\RequestSender:
         arguments:
