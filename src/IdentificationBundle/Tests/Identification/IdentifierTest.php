@@ -8,6 +8,7 @@
 
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Common\CommonFlowHandler;
+use IdentificationBundle\Identification\Common\ConsentPageFlowHandler;
 use IdentificationBundle\Identification\Common\HeaderEnrichmentHandler;
 use IdentificationBundle\Identification\Handler\HasCommonFlow;
 use IdentificationBundle\Identification\Handler\HasCustomFlow;
@@ -55,6 +56,7 @@ class IdentifierTest extends TestCase
     private $session;
 
     private $dataStorage;
+    private $consentPageHandler;
 
     protected function setUp()/* The :void return type declaration that should be here would cause a BC issue */
     {
@@ -66,7 +68,8 @@ class IdentifierTest extends TestCase
         $this->logger                  = Mockery::spy(LoggerInterface::class);
         $this->commonFlowHandler       = Mockery::spy(CommonFlowHandler::class);
 
-        $this->session = new Session(new MockArraySessionStorage());
+        $this->consentPageHandler = Mockery::spy(ConsentPageFlowHandler::class);
+        $this->session            = new Session(new MockArraySessionStorage());
 
         $this->dataStorage = new \IdentificationBundle\Identification\Service\IdentificationDataStorage($this->session);
 
@@ -77,7 +80,7 @@ class IdentifierTest extends TestCase
             $this->logger,
             $this->commonFlowHandler,
             $this->headerEnrichmentHandler,
-            $this->dataStorage
+            $this->consentPageHandler
         );
 
         $this->carrierRepository->allows([
