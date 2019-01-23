@@ -2,7 +2,7 @@
     {% import "@App/Components/Buttons/link.html.twig" as  link %}
     {% import "@App/Common/Blocks/wifi_subscribe_block.html.twig" as wifi_subscribe_block %}
 
-    {% if isIdentified() %}
+    {% if isIdentified() or isConsentFlow() %}
         {{ link.render(url('subscription.subscribe'), translate('buttons.join.now'), class) }}
     {% elseif isWifiFlow() %}
         {{ wifi_subscribe_block.render() }}
