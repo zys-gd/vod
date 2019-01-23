@@ -83,6 +83,7 @@ class UploadedVideo
     public function __construct(string $uuid)
     {
         $this->uuid = $uuid;
+        $this->createdAt = new \DateTime('now');
     }
 
     /**
@@ -242,10 +243,14 @@ class UploadedVideo
 
     /**
      * @param string $description
+     *
+     * @return UploadedVideo
      */
-    public function setDescription(string $description)
+    public function setDescription(string $description): UploadedVideo
     {
         $this->description = $description;
+
+        return $this;
     }
 
     /**

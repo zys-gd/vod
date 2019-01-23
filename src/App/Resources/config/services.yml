@@ -28,13 +28,24 @@ services:
             - '%cloudinary_api_secret%'
             - '%cloudinary_cloud_name%'
 
+    App\Domain\Service\VideoProcessing\VideoManager:
+        arguments:
+            - '@App\Domain\Service\VideoProcessing\VideoUploader'
+            - '@App\Domain\Service\VideoProcessing\VideoSaver'
+
     App\Domain\Service\VideoProcessing\VideoUploader:
         arguments:
-            - '@App\Domain\Repository\UploadedVideoRepository'
             - '@App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector'
             - '@router'
-            - '@doctrine.orm.entity_manager'
             - '%host%'
+
+    App\Domain\Service\VideoProcessing\VideoSaver:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    App\Domain\Service\VideoProcessing\VideoDestroyer:
+        arguments:
+            - '@App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector'
 
     App\Domain\Service\VideoProcessing\Callback\EagerType:
         arguments: ['@App\Domain\Repository\UploadedVideoRepository', '@doctrine.orm.entity_manager']

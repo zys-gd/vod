@@ -4,9 +4,7 @@ namespace App\Admin\Sonata;
 
 use App\Admin\Sonata\Traits\InitDoctrine;
 use App\Domain\Entity\Category;
-use App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector;
-use App\Domain\Service\VideoProcessing\DTO\UploadResult;
-use App\Domain\Service\VideoProcessing\VideoUploader;
+use App\Domain\Service\VideoProcessing\VideoManager;
 use App\Utils\UuidGenerator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -18,13 +16,11 @@ use App\Domain\Entity\UploadedVideo;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -33,19 +29,14 @@ class UploadedVideoAdmin extends AbstractAdmin
     use InitDoctrine;
 
     /**
-     * @var CloudinaryConnector
-     */
-    private $cloudinaryConnector;
-
-    /**
      * @var ContainerInterface
      */
     private $container;
 
     /**
-     * @var VideoUploader
+     * @var VideoManager
      */
-    private $videoUploader;
+    private $videoManager;
 
     /**
      * UploadedVideoAdmin constructor
@@ -53,21 +44,18 @@ class UploadedVideoAdmin extends AbstractAdmin
      * @param string $code
      * @param string $class
      * @param string $baseControllerName
-     * @param CloudinaryConnector $cloudinaryConnector
-     * @param VideoUploader $videoUploader
+     * @param VideoManager $videoManager
      * @param ContainerInterface $container
      */
     public function __construct(
         string $code,
         string $class,
         string $baseControllerName,
-        CloudinaryConnector $cloudinaryConnector,
-        VideoUploader $videoUploader,
+        VideoManager $videoManager,
         ContainerInterface $container
     ) {
-        $this->cloudinaryConnector = $cloudinaryConnector;
         $this->container = $container;
-        $this->videoUploader = $videoUploader;
+        $this->videoManager = $videoManager;
 
         $this->initDoctrine($container);
 
@@ -87,7 +75,7 @@ class UploadedVideoAdmin extends AbstractAdmin
      */
     public function postRemove($uploadedVideo)
     {
-        $this->cloudinaryConnector->deleteVideo($uploadedVideo->getRemoteId());
+        $this->videoManager->destroyUploadedVideo($uploadedVideo);
     }
 
     /**
@@ -97,10 +85,7 @@ class UploadedVideoAdmin extends AbstractAdmin
      */
     public function getNewInstance()
     {
-        $uploadedVideo = new UploadedVideo(UuidGenerator::generate());
-        $uploadedVideo->setCreatedAt(new \DateTime('now'));
-
-        return $uploadedVideo;
+        return new UploadedVideo(UuidGenerator::generate());
     }
 
     /**
@@ -178,47 +163,12 @@ class UploadedVideoAdmin extends AbstractAdmin
             }
         });
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($builder) {
-            /** @var UploadedVideo $uploadedVideo */
-            $uploadedVideo = $event->getForm()->getData();
-            $videoFile = $uploadedVideo->getVideoFile();
-
-            if ($videoFile) {
-                $uploadedFolder = $uploadedVideo->getCategory()->getAlias();
-
-                /** @var UploadResult $uploadedResult */
-                $uploadedResult = $this->videoUploader->uploadVideo($videoFile, $uploadedFolder);
-
-                $uploadedVideo
-                    ->setRemoteUrl($uploadedResult->getRemoteUrl())
-                    ->setRemoteId($uploadedResult->getRemoteId())
-                    ->setThumbnails($uploadedResult->getThumbnailsPath());
-            }
-        });
-
         $builder->get('mainCategory')->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $form = $event->getForm();
             $mainCategory = $form->getData();
 
             $this->appendCategoryField($form->getParent(), $mainCategory);
         });
-
-        if ($this->isCurrentRoute('create')) {
-            $formMapper->add('videoFile', FileType::class, [
-                'label' => 'File',
-                'required' => true,
-                'constraints' => [
-                    new File([
-                        'maxSize' => '500M',
-                        'mimeTypes' => [
-                            'video/mp4'
-                        ],
-                        'mimeTypesMessage' => 'Please upload a valid MP4 file',
-                        'uploadFormSizeErrorMessage' => 'Maximum file size exceeded, allowed size - 500M'
-                    ])
-                ]
-            ]);
-        }
     }
 
     /**
@@ -255,9 +205,24 @@ class UploadedVideoAdmin extends AbstractAdmin
      */
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->clearExcept(['show', 'list', 'edit', 'delete', 'create']);
+        $collection->clearExcept(['show', 'list', 'edit', 'delete']);
+        $collection->add('upload', 'upload');
 
         parent::configureRoutes($collection);
+    }
+
+    /**
+     * @param $action
+     * @param null $object
+     *
+     * @return array
+     */
+    public function configureActionButtons($action, $object = null)
+    {
+        $list = parent::configureActionButtons($action, $object);
+        $list['import']['template'] = '@Admin/UploadedVideo/upload_button.html.twig';
+
+        return $list;
     }
 
     /**

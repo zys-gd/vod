@@ -10,7 +10,7 @@ class UploadResult
     /**
      * @var string
      */
-    private $url;
+    private $remoteUrl;
 
     /**
      * @var string
@@ -25,23 +25,11 @@ class UploadResult
     /**
      * UploadResult constructor
      *
-     * @param string $url
      * @param string $remoteId
-     * @param array $thumbnailsPath
      */
-    public function __construct(string $url, string $remoteId, array $thumbnailsPath)
+    public function __construct(string $remoteId)
     {
-        $this->url      = $url;
         $this->remoteId = $remoteId;
-        $this->thumbnailsPath = $thumbnailsPath;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRemoteUrl(): string
-    {
-        return $this->url;
     }
 
     /**
@@ -53,10 +41,42 @@ class UploadResult
     }
 
     /**
+     * @return string
+     */
+    public function getRemoteUrl(): string
+    {
+        return $this->remoteUrl;
+    }
+
+    /**
+     * @param string $remoteUrl
+     *
+     * @return UploadResult
+     */
+    public function setRemoteUrl(string $remoteUrl): self
+    {
+        $this->remoteUrl = $remoteUrl;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getThumbnailsPath(): array
     {
         return $this->thumbnailsPath;
+    }
+
+    /**
+     * @param array $thumbnailsPath
+     *
+     * @return UploadResult
+     */
+    public function setThumbnailsPath(array $thumbnailsPath): self
+    {
+        $this->thumbnailsPath = $thumbnailsPath;
+
+        return $this;
     }
 }

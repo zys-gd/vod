@@ -3,9 +3,8 @@ services:
         arguments:
             - ~
             - App\Domain\Entity\UploadedVideo
-            - ~
-            - '@App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector'
-            - '@App\Domain\Service\VideoProcessing\VideoUploader'
+            - 'App\Admin\Controller\UploadedVideoAdminController'
+            - '@App\Domain\Service\VideoProcessing\VideoManager'
             - '@service_container'
         tags:
             - { name: sonata.admin, manager_type: orm, group: Content Management, label: Videos }

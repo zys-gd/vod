@@ -2,8 +2,6 @@
 
 namespace App\Domain\Service\VideoProcessing\Connectors;
 
-use App\Domain\Service\VideoProcessing\DTO\UploadResult;
-
 /**
  * Class CloudinaryConnector
  */
@@ -54,35 +52,30 @@ class CloudinaryConnector
      * Upload video to cloudinary storage
      *
      * @param string $alias
-     * @param string $src
+     * @param string $filePath
      * @param string $folderName
      * @param string $callbackUrl
      *
-     * @return UploadResult
+     * @return array
      *
      * @throws \Exception
      */
-    public function uploadVideo(string $alias, string $src, string $folderName, string $callbackUrl): UploadResult
+    public function uploadVideo(string $alias, string $filePath, string $folderName, string $callbackUrl): array
     {
-        $result = \Cloudinary\Uploader::upload_large($src,
-            [
-                "eager"                  => [
-                    ["streaming_profile" => "hd", "format" => "m3u8"],
-                ],
-                "eager_async"            => true,
-                "eager_notification_url" => $callbackUrl,
-                'cloud_name'             => $this->cloudName,
-                'api_key'                => $this->apiKey,
-                'api_secret'             => $this->apiSecret,
-                "folder"                 => $folderName,
-                "public_id"              => $alias,
-                "overwrite"              => TRUE,
-                "resource_type"          => "video"
-            ]
-        );
+        $options = [
+            'eager'                  => [['streaming_profile' => 'hd', 'format' => 'm3u8']],
+            'eager_async'            => true,
+            'eager_notification_url' => $callbackUrl,
+            'cloud_name'             => $this->cloudName,
+            'api_key'                => $this->apiKey,
+            'api_secret'             => $this->apiSecret,
+            'folder'                 => $folderName,
+            'public_id'              => $alias,
+            'overwrite'              => true,
+            'resource_type'          => 'video'
+        ];
 
-        return new UploadResult($result['url'], $result['public_id'], $this->getThumbnails($result['public_id']));
-
+        return \Cloudinary\Uploader::upload_large($filePath, $options);
     }
 
     /**
@@ -92,13 +85,24 @@ class CloudinaryConnector
      */
     public function getThumbnails(string $publicId): array
     {
-        $transformation = [
-            array("width" => 250, "crop" => "scale")
-        ];
+        $transformation = [['width' => 250, 'crop' => 'scale']];
+
         return [
-            cl_video_thumbnail_path($publicId, ['cloud_name' => $this->cloudName, 'transformation' => $transformation, 'start_offset' => '25%']),
-            cl_video_thumbnail_path($publicId, ['cloud_name' => $this->cloudName, 'transformation' => $transformation, 'start_offset' => '50%']),
-            cl_video_thumbnail_path($publicId, ['cloud_name' => $this->cloudName, 'transformation' => $transformation, 'start_offset' => '75%'])
+            cl_video_thumbnail_path($publicId, [
+                'cloud_name' => $this->cloudName,
+                'transformation' => $transformation,
+                'start_offset' => '25%'
+            ]),
+            cl_video_thumbnail_path($publicId, [
+                'cloud_name' => $this->cloudName,
+                'transformation' => $transformation,
+                'start_offset' => '50%'
+            ]),
+            cl_video_thumbnail_path($publicId, [
+                'cloud_name' => $this->cloudName,
+                'transformation' => $transformation,
+                'start_offset' => '75%'
+            ])
         ];
     }
 
@@ -107,18 +111,15 @@ class CloudinaryConnector
      *
      * @return mixed
      */
-    public function deleteVideo($remoteId)
+    public function destroyVideo($remoteId)
     {
-        $result = \Cloudinary\Uploader::destroy(
-            $remoteId,
-            [
-                'resource_type' => 'video',
-                'cloud_name'    => $this->cloudName,
-                'api_key'       => $this->apiKey,
-                'api_secret'    => $this->apiSecret,
-            ]
-        );
+        $options = [
+            'resource_type' => 'video',
+            'cloud_name'    => $this->cloudName,
+            'api_key'       => $this->apiKey,
+            'api_secret'    => $this->apiSecret,
+        ];
 
-        return $result;
+        return \Cloudinary\Uploader::destroy($remoteId, $options);
     }
 }

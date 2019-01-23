@@ -13,6 +13,7 @@ App\Domain\Entity\UploadedVideo:
             nullable: false
         remoteId:
             type: string
+            unique: true
             nullable: false
         createdAt:
             type: datetime
