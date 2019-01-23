@@ -16,6 +16,7 @@ use IdentificationBundle\Identification\Common\Async\AsyncIdentStarter;
 use IdentificationBundle\Identification\Handler\HasCommonFlow;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Identification\Service\RouteProvider;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -111,7 +112,7 @@ class CommonFlowHandler
         }
 
 
-        return new Response();
+        return new RedirectResponse($this->routeProvider->getLinkToHomepage());
 
     }
 
