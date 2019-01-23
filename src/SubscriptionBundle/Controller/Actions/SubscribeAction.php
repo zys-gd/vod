@@ -9,7 +9,14 @@
 namespace SubscriptionBundle\Controller\Actions;
 
 
+use ExtrasBundle\Utils\UrlParamAppender;
 use IdentificationBundle\Identification\DTO\IdentificationData;
+use IdentificationBundle\Identification\DTO\ISPData;
+use IdentificationBundle\Identification\Handler\HasConsentPageFlow;
+use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
+use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
 use SubscriptionBundle\Exception\ExistingSubscriptionException;
@@ -18,10 +25,10 @@ use SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
 use SubscriptionBundle\Service\UserExtractor;
-use ExtrasBundle\Utils\UrlParamAppender;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Router;
 
 class SubscribeAction extends Controller
@@ -56,18 +63,32 @@ class SubscribeAction extends Controller
      * @var SubscriptionHandlerProvider
      */
     private $handlerProvider;
+    /**
+     * @var IdentificationDataStorage
+     */
+    private $identificationDataStorage;
+    /**
+     * @var IdentificationHandlerProvider
+     */
+    private $identificationHandlerProvider;
+    /**
+     * @var CarrierRepositoryInterface
+     */
+    private $carrierRepository;
 
 
     /**
      * SubscribeAction constructor.
      *
-     * @param UserExtractor               $userExtractor
-     * @param CommonFlowHandler           $commonFlowHandler
-     * @param Router                      $router
-     * @param LoggerInterface             $logger
-     * @param UrlParamAppender            $urlParamAppender
-     * @param SubscriptionHandlerProvider $handlerProvider
-     * @param BlacklistVoter              $blacklistVoter
+     * @param UserExtractor                 $userExtractor
+     * @param CommonFlowHandler             $commonFlowHandler
+     * @param Router                        $router
+     * @param LoggerInterface               $logger
+     * @param UrlParamAppender              $urlParamAppender
+     * @param SubscriptionHandlerProvider   $handlerProvider
+     * @param BlacklistVoter                $blacklistVoter
+     * @param IdentificationDataStorage     $identificationDataStorage
+     * @param IdentificationHandlerProvider $identificationHandlerProvider
      */
     public function __construct(
         UserExtractor $userExtractor,
@@ -76,16 +97,22 @@ class SubscribeAction extends Controller
         LoggerInterface $logger,
         UrlParamAppender $urlParamAppender,
         SubscriptionHandlerProvider $handlerProvider,
-        BlacklistVoter $blacklistVoter
+        BlacklistVoter $blacklistVoter,
+        IdentificationDataStorage $identificationDataStorage,
+        IdentificationHandlerProvider $identificationHandlerProvider,
+        CarrierRepositoryInterface $carrierRepository
     )
     {
-        $this->userExtractor     = $userExtractor;
-        $this->commonFlowHandler = $commonFlowHandler;
-        $this->router            = $router;
-        $this->logger            = $logger;
-        $this->urlParamAppender  = $urlParamAppender;
-        $this->handlerProvider   = $handlerProvider;
-        $this->blacklistVoter    = $blacklistVoter;
+        $this->userExtractor                 = $userExtractor;
+        $this->commonFlowHandler             = $commonFlowHandler;
+        $this->router                        = $router;
+        $this->logger                        = $logger;
+        $this->urlParamAppender              = $urlParamAppender;
+        $this->handlerProvider               = $handlerProvider;
+        $this->blacklistVoter                = $blacklistVoter;
+        $this->identificationDataStorage     = $identificationDataStorage;
+        $this->identificationHandlerProvider = $identificationHandlerProvider;
+        $this->carrierRepository             = $carrierRepository;
     }
 
     /**
@@ -96,13 +123,15 @@ class SubscribeAction extends Controller
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound
      */
-    public function __invoke(Request $request, IdentificationData $identificationData)
+    public function __invoke(Request $request, IdentificationData $identificationData, ISPData $ISPData)
     {
 
 
         /*if ($result = $this->handleRequestByLegacyService($request)) {
             return $result;
         }*/
+
+        $this->ensureNotConsentPageFlow($ISPData->getCarrierId());
 
         if ($result = $this->blacklistVoter->checkIfSubscriptionRestricted($request)) {
             return $result;
@@ -113,11 +142,23 @@ class SubscribeAction extends Controller
 
         $subscriber = $this->handlerProvider->getSubscriber($user->getCarrier());
         if ($subscriber instanceof HasCustomFlow) {
-            return $subscriber->process($request, $user, $request->getSession());
+            return $subscriber->process($request, $request->getSession(), $user);
         } else {
             return $this->commonFlowHandler->process($request, $user);
         }
 
+
+    }
+
+    private function ensureNotConsentPageFlow(int $carrierId): void
+    {
+        $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
+
+        $handler = $this->identificationHandlerProvider->get($carrier);
+
+        if ($handler instanceof HasConsentPageFlow) {
+            throw new BadRequestHttpException('This action is not available for `ConsentPageFlow`');
+        }
 
     }
 
