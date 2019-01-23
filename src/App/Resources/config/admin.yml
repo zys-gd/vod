@@ -5,11 +5,8 @@ services:
             - App\Domain\Entity\UploadedVideo
             - 'App\Admin\Controller\UploadedVideoAdminController'
             - '@App\Domain\Service\VideoProcessing\VideoManager'
-            - '@service_container'
         tags:
             - { name: sonata.admin, manager_type: orm, group: Content Management, label: Videos }
-        calls:
-            - [ setTemplate, [edit, '@@Admin\UploadedVideo\edit.html.twig'] ]
 
     App\Admin\Sonata\CategoryAdmin:
         arguments: [~, App\Domain\Entity\Category, ~]

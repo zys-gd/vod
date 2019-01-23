@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controller;
 
+use App\Domain\Entity\Category;
 use App\Domain\Service\VideoProcessing\VideoManager;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Form\FormFactory;
@@ -36,6 +37,13 @@ class UploadedVideoAdminController extends CRUDController
         $this->videoManager = $videoManager;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Exception
+     */
     public function uploadAction(Request $request)
     {
         $form = $this->formFactory->create(UploadedVideoForm::class);
@@ -44,6 +52,12 @@ class UploadedVideoAdminController extends CRUDController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
+
+            /** @var Category $category */
+            $category = $data['category'];
+
+            $uploadResult = $this->videoManager->uploadVideoFileToStorage($data['file'], $category->getAlias());
+            $this->videoManager->persistUploadedVideo($uploadResult, $category, $data['title'], $data['description']);
 
             return new RedirectResponse($this->admin->generateUrl('list'));
         }

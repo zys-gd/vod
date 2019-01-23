@@ -37,8 +37,8 @@ class VideoUploader
         string $host
     ) {
         $this->cloudinaryConnector = $cloudinaryConnector;
-        $this->router              = $router;
-        $this->host                = $host;
+        $this->router = $router;
+        $this->host = $host;
     }
 
     /**

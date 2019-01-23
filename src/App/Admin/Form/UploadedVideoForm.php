@@ -3,7 +3,6 @@
 namespace App\Admin\Form;
 
 use App\Domain\Entity\Category;
-use App\Domain\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -34,30 +33,15 @@ class UploadedVideoForm extends AbstractType
                     ])
                 ]
             ])
-            ->add('mainCategory', EntityType::class, [
-                'query_builder' => function (CategoryRepository $categoryRepository) {
-                    $qb = $categoryRepository
-                        ->createQueryBuilder('c')
-                        ->where("c.parent IS NULL");
-
-                    return $qb;
-                },
-                'choice_label' => 'title',
-                'class' => Category::class,
-                'mapped' => false,
-                'placeholder' => 'Select main category',
-                'required' => true
-            ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
                 'required' => true,
-                'disabled' => true,
                 'placeholder' => 'Select category'
             ])
             ->add('description', TextareaType::class, [
                 'required' => false
             ])
-            ->add('videoFile', FileType::class, [
+            ->add('file', FileType::class, [
                 'label' => 'File',
                 'constraints' => [
                     new File([

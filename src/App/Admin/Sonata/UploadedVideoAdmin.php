@@ -2,7 +2,6 @@
 
 namespace App\Admin\Sonata;
 
-use App\Admin\Sonata\Traits\InitDoctrine;
 use App\Domain\Entity\Category;
 use App\Domain\Service\VideoProcessing\VideoManager;
 use App\Utils\UuidGenerator;
@@ -14,25 +13,14 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use App\Domain\Entity\UploadedVideo;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UploadedVideoAdmin extends AbstractAdmin
 {
-    use InitDoctrine;
-
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
     /**
      * @var VideoManager
      */
@@ -45,19 +33,14 @@ class UploadedVideoAdmin extends AbstractAdmin
      * @param string $class
      * @param string $baseControllerName
      * @param VideoManager $videoManager
-     * @param ContainerInterface $container
      */
     public function __construct(
         string $code,
         string $class,
         string $baseControllerName,
-        VideoManager $videoManager,
-        ContainerInterface $container
+        VideoManager $videoManager
     ) {
-        $this->container = $container;
         $this->videoManager = $videoManager;
-
-        $this->initDoctrine($container);
 
         parent::__construct($code, $class, $baseControllerName);
     }
@@ -128,8 +111,6 @@ class UploadedVideoAdmin extends AbstractAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $mainCategories = $this->em->getRepository(Category::class)->findBy(['parent' => null]);
-
         $formMapper
             ->add('title', TextType::class, [
                 'required' => true,
@@ -140,35 +121,14 @@ class UploadedVideoAdmin extends AbstractAdmin
                     ])
                 ]
             ])
+            ->add('category', EntityType::class, [
+                'class' => Category::class,
+                'required' => true,
+                'placeholder' => 'Select category'
+            ])
             ->add('description', TextareaType::class, [
                 'required' => false
-            ])
-            ->add('mainCategory', EntityType::class, [
-                'class' => Category::class,
-                'mapped' => false,
-                'choices' => $mainCategories,
-                'placeholder' => 'Select main category',
-                'required' => true
             ]);
-
-        $builder = $formMapper->getFormBuilder();
-
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            /** @var UploadedVideo $uploadedVideo */
-            $uploadedVideo = $event->getData();
-            $category = $uploadedVideo ? $uploadedVideo->getCategory() : null;
-
-            if ($category ) {
-                $this->appendCategoryField($event->getForm(), $category);
-            }
-        });
-
-        $builder->get('mainCategory')->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-            $form = $event->getForm();
-            $mainCategory = $form->getData();
-
-            $this->appendCategoryField($form->getParent(), $mainCategory);
-        });
     }
 
     /**
@@ -223,23 +183,5 @@ class UploadedVideoAdmin extends AbstractAdmin
         $list['import']['template'] = '@Admin/UploadedVideo/upload_button.html.twig';
 
         return $list;
-    }
-
-    /**
-     * @param FormInterface $form
-     * @param Category $mainCategory
-     */
-    private function appendCategoryField(FormInterface $form, Category $mainCategory)
-    {
-        $subCategories = $this->em->getRepository(Category::class)->findBy(['parent' => $mainCategory]);
-
-        if (count($subCategories) > 0) {
-            $form->add('category', EntityType::class, [
-                'class' => Category::class,
-                'choices' => $subCategories,
-                'required' => true,
-                'placeholder' => 'Select category'
-            ]);
-        }
     }
 }

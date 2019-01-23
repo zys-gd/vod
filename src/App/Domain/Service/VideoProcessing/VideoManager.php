@@ -2,6 +2,7 @@
 
 namespace App\Domain\Service\VideoProcessing;
 
+use App\Domain\Entity\Category;
 use App\Domain\Entity\UploadedVideo;
 use App\Domain\Service\VideoProcessing\DTO\UploadResult;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -45,14 +46,20 @@ class VideoManager
 
     /**
      * @param UploadResult $uploadResult
+     * @param Category $category
      * @param string $title
      * @param string $description
      *
+     * @throws \Doctrine\ORM\ORMException
      * @throws \Exception
      */
-    public function persistUploadedVideo(UploadResult $uploadResult, string $title, string $description)
-    {
-        $uploadedVideo = $this->saver->getUploadedVideoInstance($uploadResult, $title, $description);
+    public function persistUploadedVideo(
+        UploadResult $uploadResult,
+        Category $category,
+        string $title,
+        ?string $description
+    ) {
+        $uploadedVideo = $this->saver->getUploadedVideoInstance($uploadResult, $category, $title, $description);
 
         $this->saver->persist($uploadedVideo);
     }

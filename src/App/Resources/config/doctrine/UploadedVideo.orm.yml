@@ -33,6 +33,7 @@ App\Domain\Entity\UploadedVideo:
             targetEntity: App\Domain\Entity\Category
             mappedBy: null
             inversedBy: null
+            nullable: false
             joinColumns:
                 category_id:
                     referencedColumnName: uuid

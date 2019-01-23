@@ -2,8 +2,6 @@
 
 namespace App\Domain\Entity;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-
 /**
  * UploadedVideo
  */
@@ -67,11 +65,6 @@ class UploadedVideo
      * @var array
      */
     private $thumbnails = [];
-
-    /**
-     * Unmapped field for uploading video file
-     */
-    private $videoFile;
 
     /**
      * UploadedVideo constructor
@@ -246,30 +239,10 @@ class UploadedVideo
      *
      * @return UploadedVideo
      */
-    public function setDescription(string $description): UploadedVideo
+    public function setDescription(?string $description): UploadedVideo
     {
         $this->description = $description;
 
         return $this;
-    }
-
-    /**
-     * @param UploadedFile|null $videoFile
-     *
-     * @return UploadedVideo
-     */
-    public function setVideoFile(?UploadedFile $videoFile)
-    {
-        $this->videoFile = $videoFile;
-
-        return $this;
-    }
-
-    /**
-     * @return UploadedFile
-     */
-    public function getVideoFile()
-    {
-        return $this->videoFile;
     }
 }
