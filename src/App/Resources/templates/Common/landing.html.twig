@@ -19,13 +19,14 @@
             {{ banner.render(asset('img/lp/lp_banner.png'), 'banner') }}
         </div>
         <div class="d-flex align-items-center justify-content-center">
-            {{ lp_subscribe_buttons.render('bt-lp_big') }}
-        </div>
-        <div class="d-flex align-items-center justify-content-center">
-            {{ translate('promotional.landing') }}
+            {{ lp_subscribe_buttons.render('btn-lp_big') }}
         </div>
 
-        <div class="d-flex align-items-center justify-content-center row">
+        <div class="d-flex align-items-center justify-content-center">
+            <h1 class="h1-lp">{{ translate('promotional.landing') }}</h1>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-center row m-55">
             {{ icons_channels.render() }}
         </div>
         <div class="d-flex align-items-center justify-content-center">
