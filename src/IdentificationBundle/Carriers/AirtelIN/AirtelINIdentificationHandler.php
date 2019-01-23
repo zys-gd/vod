@@ -25,6 +25,6 @@ class AirtelINIdentificationHandler implements HasConsentPageFlow, Identificatio
 
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return ConstBillingCarrierId::AIRTEL_INDIA;
+        return $carrier->getBillingCarrierId() == ConstBillingCarrierId::AIRTEL_INDIA;
     }
 }
