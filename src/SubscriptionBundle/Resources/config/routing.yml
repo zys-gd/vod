@@ -2,6 +2,10 @@ subscription.subscribe_back:
     path: /subscribe_back
     defaults: {_controller: 'SubscriptionBundle\Controller\Actions\SubscribeBackAction'}
 
+subscription.consent_page_subscribe:
+    path: /consent-subscribe
+    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\ConsentPageSubscribeAction'}
+
 subscription.subscribe:
     path: /subscribe
     defaults: {_controller: 'SubscriptionBundle\Controller\Actions\SubscribeAction'}

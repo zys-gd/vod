@@ -1,0 +1,7 @@
+framework:
+  cache:
+    app: cache.adapter.filesystem
+
+extras:
+  cache:
+    use_array_cache: true
