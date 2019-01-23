@@ -46,10 +46,11 @@ class IdentificationHandlerProvider
         $availableInterfaces = [
             HasCommonFlow::class,
             HasCustomFlow::class,
-            HasHeaderEnrichment::class
+            HasHeaderEnrichment::class,
+            HasConsentPageFlow::class
         ];
 
-        $usedInterfaces      = [];
+        $usedInterfaces = [];
         foreach ($availableInterfaces as $interface) {
             if ($handler instanceof $interface) {
                 $usedInterfaces[] = $interface;

@@ -10,17 +10,17 @@ namespace IdentificationBundle\Identification;
 
 
 use IdentificationBundle\Identification\Common\CommonFlowHandler;
+use IdentificationBundle\Identification\Common\ConsentPageFlowHandler;
 use IdentificationBundle\Identification\Common\HeaderEnrichmentHandler;
 use IdentificationBundle\Identification\DTO\IdentifyResult;
 use IdentificationBundle\Identification\Handler\HasCommonFlow;
+use IdentificationBundle\Identification\Handler\HasConsentPageFlow;
 use IdentificationBundle\Identification\Handler\HasCustomFlow;
 use IdentificationBundle\Identification\Handler\HasHeaderEnrichment;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class Identifier
 {
@@ -44,6 +44,10 @@ class Identifier
      * @var \IdentificationBundle\Identification\Common\HeaderEnrichmentHandler
      */
     private $headerEnrichmentHandler;
+    /**
+     * @var ConsentPageFlowHandler
+     */
+    private $consentPageFlowHandler;
 
 
     /**
@@ -53,13 +57,15 @@ class Identifier
      * @param LoggerInterface                                                     $logger
      * @param CommonFlowHandler                                                   $commonFlowHandler
      * @param \IdentificationBundle\Identification\Common\HeaderEnrichmentHandler $headerEnrichmentHandler
+     * @param ConsentPageFlowHandler                                              $consentPageFlowHandler
      */
     public function __construct(
         IdentificationHandlerProvider $handlerProvider,
         CarrierRepositoryInterface $carrierRepository,
         LoggerInterface $logger,
         CommonFlowHandler $commonFlowHandler,
-        HeaderEnrichmentHandler $headerEnrichmentHandler
+        HeaderEnrichmentHandler $headerEnrichmentHandler,
+        ConsentPageFlowHandler $consentPageFlowHandler
     )
     {
         $this->handlerProvider         = $handlerProvider;
@@ -67,6 +73,7 @@ class Identifier
         $this->logger                  = $logger;
         $this->commonFlowHandler       = $commonFlowHandler;
         $this->headerEnrichmentHandler = $headerEnrichmentHandler;
+        $this->consentPageFlowHandler  = $consentPageFlowHandler;
     }
 
     public function identify(int $carrierBillingId, Request $request, string $token): IdentifyResult
@@ -83,7 +90,11 @@ class Identifier
             $this->headerEnrichmentHandler->process($request, $handler, $carrier, $token);
             return new IdentifyResult();
 
-        } elseif ($handler instanceof HasCustomFlow) {
+        } else if ($handler instanceof HasConsentPageFlow) {
+            $this->consentPageFlowHandler->process($request, $handler);
+            return new IdentifyResult();
+
+        } else if ($handler instanceof HasCustomFlow) {
             $handler->process($request);
             return new IdentifyResult();
 

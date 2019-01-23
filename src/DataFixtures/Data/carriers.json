@@ -3410,7 +3410,7 @@
         "operator_id": 32,
         "name": "Airtel (India)",
         "countryCode": "IN",
-        "isp": "Bharti Airtel|Airtel",
+        "isp": "Bharti Airtel|Airtel|Bharti Broadband",
         "published": true,
         "lpOtp": false,
         "pinIdentSupport": true,
