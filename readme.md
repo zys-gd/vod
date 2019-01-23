@@ -28,4 +28,3 @@ _For Linux:_
     * `php bin/console doctrine:migrations:versions --add --all`
 - Run following commands to install application assets:
     * `php bin/console assets:install --symlink`
-    * `php bin/console assetic:dump`
