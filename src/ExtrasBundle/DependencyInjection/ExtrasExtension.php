@@ -11,24 +11,32 @@ namespace ExtrasBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 
-class ExtrasExtension extends Extension
+class ExtrasExtension extends ConfigurableExtension
 {
 
     /**
-     * Loads a specific configuration.
-     *
-     * @throws \InvalidArgumentException When provided tag is not defined in this extension
-     * @throws \Exception
+     * Configures the passed container according to the merged configuration.
      */
-    public function load(array $configs, ContainerBuilder $container)
+    protected function loadInternal(array $mergedConfig, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('parameters.yml');
         $loader->load('listeners.yml');
         $loader->load('services.yml');
         $loader->load('cache.yml');
+
+        $definition = $container->getDefinition('ExtrasBundle\SignatureCheck\ParametersProvider');
+
+        $definition->setArgument(0, $mergedConfig['signature_check']['request_parameter']);
+        $definition->setArgument(1, $mergedConfig['signature_check']['secret_key']);
+
+
+        if (isset($mergedConfig['cache']['use_array_cache']) && $mergedConfig['cache']['use_array_cache']) {
+            $loader->load('redis-dummy.yml');
+        }
+
     }
 }

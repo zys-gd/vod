@@ -6,7 +6,7 @@
  * Time: 13:27
  */
 
-namespace ExtrasBundle\Cache;
+namespace ExtrasBundle\Cache\Redis;
 
 
 use Symfony\Component\Cache\Adapter\RedisAdapter;

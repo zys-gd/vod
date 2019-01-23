@@ -1,7 +1,9 @@
 <?php
 
-namespace ExtrasBundle\Cache;
+namespace ExtrasBundle\Cache\Redis;
 
+use ExtrasBundle\Cache\ICacheService;
+use ExtrasBundle\Cache\ICacheServiceFactory;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Component\Cache\Exception\InvalidArgumentException;
 

@@ -27,8 +27,12 @@ class UserExtractor
         $this->userRepository = $userRepository;
     }
 
-
-    public function getUserByIdentificationData(IdentificationData $identificationData)
+    /**
+     * @param IdentificationData $identificationData
+     *
+     * @return User|null
+     */
+    public function getUserByIdentificationData(IdentificationData $identificationData): ?User
     {
         /** @var User $user */
         $user = $this->userRepository->findOneByIdentificationToken($identificationData->getIdentificationToken());
@@ -44,9 +48,9 @@ class UserExtractor
     /**
      * @param Request $request
      *
-     * @return User
+     * @return User|null
      */
-    public function getUserFromRequest(Request $request): User
+    public function getUserFromRequest(Request $request): ?User
     {
         $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
         $this->logger->debug('Retrieving user user from request', [

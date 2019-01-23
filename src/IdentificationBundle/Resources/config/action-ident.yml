@@ -12,7 +12,7 @@ services:
       - '@logger'
       - '@IdentificationBundle\Identification\Common\CommonFlowHandler'
       - '@IdentificationBundle\Identification\Common\HeaderEnrichmentHandler'
-      - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+      - '@IdentificationBundle\Identification\Common\ConsentPageFlowHandler'
 
   IdentificationBundle\Identification\Common\CommonFlowHandler:
     arguments:
@@ -32,6 +32,8 @@ services:
     arguments:
       - '@router'
       - '@IdentificationBundle\Identification\Service\RouteProvider'
+      - '@ExtrasBundle\SignatureCheck\SignatureHandler'
+      - '@ExtrasBundle\SignatureCheck\ParametersProvider'
 
 
   IdentificationBundle\Identification\Common\Pixel\PixelIdentVerifier:
@@ -96,3 +98,10 @@ services:
     arguments:
       - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
       - '@IdentificationBundle\Repository\UserRepository'
+
+
+  IdentificationBundle\Identification\Common\ConsentPageFlowHandler:
+    arguments:
+      - '@IdentificationBundle\Identification\Service\RouteProvider'
+      - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+      - '@IdentificationBundle\Identification\Service\TokenGenerator'

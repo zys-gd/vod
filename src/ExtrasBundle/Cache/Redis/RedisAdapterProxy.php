@@ -6,7 +6,7 @@
  * Time: 18:18
  */
 
-namespace ExtrasBundle\Cache;
+namespace ExtrasBundle\Cache\Redis;
 
 
 class RedisAdapterProxy

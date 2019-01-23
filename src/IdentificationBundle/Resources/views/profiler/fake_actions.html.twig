@@ -16,20 +16,15 @@
             {#<span class="sf-toolbar-status "></span>#}
         {#</div>#}
 
-        {#<div class="sf-toolbar-info-piece">#}
-            {#<b><a href="{{ path('talentica_subscription.fake_subscribe') }}?key=son74fat">Subscribe</a></b>#}
+        <div class="sf-toolbar-info-piece">
+            <b><a href="{{ path('subscription.fake_subscribe') }}">Subscribe</a></b>
             {#<span class="sf-toolbar-status "></span>#}
-        {#</div>#}
+        </div>
 
-        {#<div class="sf-toolbar-info-piece">#}
-            {#<b><a href="{{ path('talentica_subscription.fake_unsubscribe') }}?key=son74fat">Unsubscribe</a></b>#}
+        <div class="sf-toolbar-info-piece">
+            <b><a href="{{ path('subscription.fake_unsubscribe') }}">Unsubscribe</a></b>
             {#<span class="sf-toolbar-status "></span>#}
-        {#</div>#}
-
-        {#<div class="sf-toolbar-info-piece">#}
-            {#<b><a href="/_debug_">Debug</a></b>#}
-            {#<span class="sf-toolbar-status "></span>#}
-        {#</div>#}
+        </div>
     {% endset %}
 
     {% block head %}

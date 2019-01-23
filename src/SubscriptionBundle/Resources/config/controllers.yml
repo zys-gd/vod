@@ -6,9 +6,12 @@ services:
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler'
             - '@router.default'
             - '@logger'
-            - '@SubscriptionBundle\Utils\UrlParamAppender'
+            - '@ExtrasBundle\Utils\UrlParamAppender'
             - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter'
+            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
 
     SubscriptionBundle\Controller\Actions\ListenAction:
         arguments: ['@SubscriptionBundle\Service\Callback\Common\CommonFlowHandler', '@logger', '@SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider']
@@ -36,3 +39,28 @@ services:
         class: SubscriptionBundle\Controller\Actions\GetSubscriptionAction
         arguments: ['@SubscriptionBundle\Service\UserExtractor', '@SubscriptionBundle\Service\SubscriptionExtractor']
 
+    SubscriptionBundle\Controller\Actions\Fake\SubscribeAction:
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@SubscriptionBundle\Service\UserExtractor'
+            - '@router.default'
+            - '@logger'
+            - '@SubscriptionBundle\Service\SubscriptionExtractor'
+            - '@SubscriptionBundle\Service\SubscriptionPackProvider'
+            - '@SubscriptionBundle\Service\EntitySaveHelper'
+
+    SubscriptionBundle\Controller\Actions\Fake\UnsubscribeAction:
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@SubscriptionBundle\Service\UserExtractor'
+            - '@SubscriptionBundle\Service\SubscriptionExtractor'
+            - '@SubscriptionBundle\Service\Action\Unsubscribe\UnsubscriptionEligibilityChecker'
+            - '@SubscriptionBundle\Service\EntitySaveHelper'
+
+    SubscriptionBundle\Controller\Actions\ConsentPageSubscribeAction:
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+            - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
+            - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
+            - '@IdentificationBundle\Identification\Service\UserFactory'

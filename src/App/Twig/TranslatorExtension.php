@@ -11,8 +11,8 @@ namespace App\Twig;
 
 use App\Domain\Service\Translator;
 use App\Exception\WrongTranslationKey;
+use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -31,10 +31,9 @@ class TranslatorExtension extends \Twig_Extension
      */
     private $kernel;
     /**
-     * @var RequestStack
+     * @var LocalExtractor
      */
-    private $requestStack;
-
+    private $localExtractor;
 
     /**
      * TranslatorExtension constructor.
@@ -42,13 +41,14 @@ class TranslatorExtension extends \Twig_Extension
      * @param Translator      $translator
      * @param Session         $session
      * @param KernelInterface $kernel
+     * @param LocalExtractor  $localExtractor
      */
-    public function __construct(Translator $translator, Session $session, KernelInterface $kernel, RequestStack $requestStack)
+    public function __construct(Translator $translator, Session $session, KernelInterface $kernel, LocalExtractor $localExtractor)
     {
         $this->translator   = $translator;
         $this->session      = $session;
         $this->kernel       = $kernel;
-        $this->requestStack = $requestStack;
+        $this->localExtractor = $localExtractor;
     }
 
     public function getFunctions()
@@ -73,7 +73,7 @@ class TranslatorExtension extends \Twig_Extension
             $carrierId        = $ispDetectionData['carrier_id'];
         }
         if (is_null($languageCode)) {
-            $languageCode = $this->requestStack->getCurrentRequest()->server->get('HTTP_ACCEPT_LANGUAGE', 'en');
+            $languageCode = $this->localExtractor->getLocal();
         }
         $translation = $this->translator->translate($translationKey, $carrierId, $languageCode);
 

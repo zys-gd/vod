@@ -71,7 +71,7 @@ class WaitAction
             && $subscriptionEntity->getStatus() === Subscription::IS_PENDING
             && $subscriptionEntity->getCurrentStage() === Subscription::ACTION_SUBSCRIBE) {
 
-            return new RedirectResponse($this->router->generate('talentica_subscription.wait_listen'));
+            return new RedirectResponse($this->router->generate('subscription.wait_listen'));
         }
 
         if (!$redirectUrl) {

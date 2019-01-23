@@ -49,6 +49,10 @@ class IdentificationStatusExtension extends \Twig_Extension
                 $identificationData = $this->dataStorage->readIdentificationData();
                 return isset($identificationData['identification_token']) && $identificationData['identification_token'];
             }),
+            new \Twig_SimpleFunction('isConsentFlow', function () {
+                $token = $this->dataStorage->readValue('consentFlow[token]');
+                return (bool)$token;
+            }),
 
             new \Twig_SimpleFunction('isWifiFlow', function () {
                 return (bool)$this->dataStorage->readValue('is_wifi_flow');

@@ -7,6 +7,7 @@ services:
             - '@IdentificationBundle\Identification\Common\Pixel\PixelIdentVerifier'
             - '@IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
+            - '@IdentificationBundle\BillingFramework\Data\DataProvider'
 
     IdentificationBundle\Callback\Controller\CallbackController:
         arguments:
@@ -29,7 +30,7 @@ services:
             - '@IdentificationBundle\Identification\Service\TokenGenerator'
             - '@IdentificationBundle\Identification\Service\UserFactory'
             - '@doctrine.orm.entity_manager'
-            - '@router.default'
+            - '@IdentificationBundle\Identification\Service\RouteProvider'
 
     IdentificationBundle\WifiIdentification\Controller\PinIdentificationController:
       arguments:

@@ -15,5 +15,5 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 interface HasCustomFlow
 {
-    public function process(Request $request, \IdentificationBundle\Entity\User $User, SessionInterface $session): Response;
+    public function process(Request $request, SessionInterface $session, \IdentificationBundle\Entity\User $User = null): Response;
 }

@@ -11,4 +11,4 @@ services:
             - '@App\Domain\Service\Translator'
             - '@session'
             - '@kernel'
-            - '@request_stack'
+            - '@ExtrasBundle\Utils\LocalExtractor'

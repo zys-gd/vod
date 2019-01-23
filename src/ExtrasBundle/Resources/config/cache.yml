@@ -8,19 +8,19 @@ services:
     arguments: ['@app.cache.redis_factory']
 
   app.cache.default.translation:
-    class: ExtrasBundle\Cache\RedisCacheService
+    class: ExtrasBundle\Cache\Redis\RedisCacheService
     factory: [ '@app.cache.default_factory', 'createTranslationCacheService']
 
   app.cache.default.subscription:
-    class: ExtrasBundle\Cache\RedisCacheService
+    class: ExtrasBundle\Cache\Redis\RedisCacheService
     factory: [ '@app.cache.default_factory', 'createUserSubscriptionCacheService']
 
   app.cache.redis_factory:
-    class: ExtrasBundle\Cache\RedisCacheServiceFactory
+    class: ExtrasBundle\Cache\Redis\RedisCacheServiceFactory
     arguments: ['@app.cache.redis_connection_provider','v%app_version_hash%']
 
   app.cache.redis_connection_provider:
-    class: ExtrasBundle\Cache\RedisConnectionProvider
+    class: ExtrasBundle\Cache\Redis\RedisConnectionProvider
     arguments:
       - "%redis_host%"
       - "%redis_port%"

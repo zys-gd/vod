@@ -2,6 +2,40 @@
     font-family: 'Kanit', sans-serif;
 }
 
+.sf-toolbar *{
+    font-family: sans-serif;
+}
+body {
+    max-width: 1080px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.m-55 {
+    margin: 0 55px;
+}
+
+.header-lp {
+    background: radial-gradient(circle at center, #636363, #000000);
+    background: radial-gradient(27% 80% at center, #636363, #000000);
+    height: 165px;
+    border-bottom: 1px #b71114 solid;
+}
+.header-lp_logo {
+    border-radius: 40px;
+}
+/*******************************************/
+.h1-lp {
+    font-family: "Kanit";
+    font-style: italic;
+    font-weight: 500;
+    font-size: 67px;
+    text-align: center;
+}
+.btn-lp_big {
+    transform:translateY(-50%);
+}
+/*******************************************/
 .header-menu_icon {
     background-image: url(/img/header/menu_icon.png);
     width: 68px;

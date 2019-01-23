@@ -1,34 +1,46 @@
-talentica_subscription.subscribe_back:
+subscription.subscribe_back:
     path: /subscribe_back
     defaults: {_controller: 'SubscriptionBundle\Controller\Actions\SubscribeBackAction'}
 
-talentica_subscription.subscribe:
+subscription.consent_page_subscribe:
+    path: /consent-subscribe
+    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\ConsentPageSubscribeAction'}
+
+subscription.subscribe:
     path: /subscribe
     defaults: {_controller: 'SubscriptionBundle\Controller\Actions\SubscribeAction'}
 
-talentica_subscription.unsubscribe:
+subscription.unsubscribe:
     path: /unsubscribe
     defaults: {_controller: 'SubscriptionBundle\Controller\Actions\UnsubscribeAction'}
 
-talentica_subscription.redirect:
+subscription.redirect:
     path: /subscribe/redirect
     defaults: {_controller: 'SubscriptionBundle\Controller\Actions\RedirectAction'}
 
-talentica_subscription.listen:
+subscription.listen:
     path: /v2/callback/listen
     defaults: { _controller: 'SubscriptionBundle\Controller\Actions\ListenAction'}
 
-talentica_subscription.listen.adapter:
+subscription.listen.adapter:
     path: /callback/listen
     defaults: { _controller: 'SubscriptionBundle\Controller\Actions\ListenAction'}
 
-talentica_subscription.wait_listen:
+subscription.wait_listen:
     path: /wait
     defaults: { _controller: 'SubscriptionBundle\Controller\Actions\WaitAction'}
 
-talentica_subscription.get-subscription:
+subscription.get-subscription:
     path: /get-subscription
     defaults: {_controller: 'SubscriptionBundle\Controller\Actions\GetSubscriptionAction'}
 #talentica_subscription.subscription-buy-a-product:
 #    path: /buy/{id}
 #    defaults: {_controller: subscription:Subscription:buy}
+
+subscription.fake_subscribe:
+    path: /fake/subscribe
+    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\Fake\SubscribeAction'}
+
+subscription.fake_unsubscribe:
+    path: /fake/unsubscribe
+    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\Fake\UnsubscribeAction'}
