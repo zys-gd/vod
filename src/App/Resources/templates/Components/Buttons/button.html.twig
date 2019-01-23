@@ -1,5 +1,5 @@
-{% macro render(title) %}
-    <button class="button">
+{% macro render(title, class) %}
+    <button class="button {{ class }}">
         {{ title }}
     </button>
 {% endmacro render %}

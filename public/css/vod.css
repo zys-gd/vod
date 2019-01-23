@@ -5,7 +5,16 @@
 .sf-toolbar *{
     font-family: sans-serif;
 }
-
+body {
+    max-width: 1080px;
+    width: 100%;
+    margin: 0 auto;
+}
+/*******************************************/
+.bt-lp_big {
+    transform:translateY(-50%);
+}
+/*******************************************/
 .header-menu_icon {
     background-image: url(/img/header/menu_icon.png);
     width: 68px;
