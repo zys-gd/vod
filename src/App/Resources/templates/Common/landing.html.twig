@@ -19,7 +19,7 @@
 
             {% if not isCarrierDetected() %}
                 {{ lp_subscribe_buttons.carrier_select_block() }}
-            {% elseif isIdentified() %}
+            {% elseif isIdentified() or isConsentFlow() %}
                 <h2>You are identified</h2>
                 <div>
                     <a href="{{ path('subscription.subscribe') }}">

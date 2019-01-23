@@ -34,9 +34,12 @@ class IdentificationExtension extends ConfigurableExtension
         $loader->load('profiler.yml');
         $loader->load('twig.yml');
 
+
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config/carriers'));
-        $loader->load('etisalat-eg.yml');
-        $loader->load('mobilink-pk.yml');
+
+        foreach (glob(__DIR__ . '/../Resources/config/carriers/*') as $file) {
+            $loader->load(basename($file));
+        }
 
         $service = $container->getDefinition('IdentificationBundle\Identification\Service\RouteProvider');
         $service->replaceArgument(1, $mergedConfig['wifi_flow_redirect_route']);
