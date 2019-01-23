@@ -49,7 +49,6 @@ services:
     SubscriptionBundle\Service\SubscriptionExtractor:
         arguments: ['@SubscriptionBundle\Repository\SubscriptionRepository']
 
-    SubscriptionBundle\Utils\UrlParamAppender: ~
 
     SubscriptionBundle\Service\SubscriptionCreator:
         arguments: ['@SubscriptionBundle\Service\EntitySaveHelper']

@@ -31,7 +31,7 @@ use SubscriptionBundle\Service\Action\Subscribe\Subscriber;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\SubscriptionPackProvider;
 use SubscriptionBundle\Service\SubscriptionExtractor;
-use SubscriptionBundle\Utils\UrlParamAppender;
+use ExtrasBundle\Utils\UrlParamAppender;
 use IdentificationBundle\Entity\User;
 
 class CommonFlowHandler

@@ -6,7 +6,7 @@ services:
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler'
             - '@router.default'
             - '@logger'
-            - '@SubscriptionBundle\Utils\UrlParamAppender'
+            - '@ExtrasBundle\Utils\UrlParamAppender'
             - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter'
 

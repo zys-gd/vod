@@ -4,3 +4,9 @@ services:
 
   ExtrasBundle\SignatureCheck\ParametersProvider:
       arguments: ['_request_parameter_','_secret_key_']
+
+  ExtrasBundle\Utils\UrlParamAppender: ~
+
+  ExtrasBundle\Utils\LocalExtractor:
+      arguments:
+          - '@request_stack'

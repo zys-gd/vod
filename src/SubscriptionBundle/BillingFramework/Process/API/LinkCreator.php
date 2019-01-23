@@ -9,7 +9,7 @@
 namespace SubscriptionBundle\BillingFramework\Process\API;
 
 
-use SubscriptionBundle\Utils\UrlParamAppender;
+use ExtrasBundle\Utils\UrlParamAppender;
 
 class LinkCreator
 {
