@@ -13,10 +13,10 @@ class TranslationRepository extends \Doctrine\ORM\EntityRepository
     /**
      * @param string $type
      *
-     * @return array|null
+     * @return array
      * @throws WrongTranslationRecordType
      */
-    public function findFAQsByType(string $type): ?array
+    public function findFAQsByType(string $type): array
     {
         $query = $this->createQueryBuilder('t')
             ->where('t.key Like :key_val');
