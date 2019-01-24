@@ -4,10 +4,15 @@ services:
         arguments:
             - App\Domain\Entity\UploadedVideo
 
-    App\Domain\Repository\CategoryRepository:
+    App\Domain\Repository\MainCategoryRepository:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
-            - App\Domain\Entity\Category
+            - App\Domain\Entity\MainCategory
+
+    App\Domain\Repository\SubcategoryRepository:
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - App\Domain\Entity\Subcategory
 
     App\Domain\Repository\CarrierRepository:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]

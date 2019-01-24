@@ -2,7 +2,7 @@
 
 namespace App\Domain\Service\VideoProcessing;
 
-use App\Domain\Entity\Category;
+use App\Domain\Entity\Subcategory;
 use App\Domain\Entity\UploadedVideo;
 use App\Domain\Service\VideoProcessing\DTO\UploadResult;
 use App\Utils\UuidGenerator;
@@ -27,7 +27,7 @@ class VideoSaver
 
     /**
      * @param UploadResult $uploadResult
-     * @param Category $category
+     * @param Subcategory $category
      * @param string $title
      * @param string $description
      *
@@ -37,7 +37,7 @@ class VideoSaver
      */
     public function getUploadedVideoInstance(
         UploadResult $uploadResult,
-        Category $category,
+        Subcategory $category,
         string $title,
         ?string $description
     ): UploadedVideo

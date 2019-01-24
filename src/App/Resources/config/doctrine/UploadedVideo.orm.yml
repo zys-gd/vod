@@ -30,7 +30,7 @@ App\Domain\Entity\UploadedVideo:
 
     manyToOne:
         category:
-            targetEntity: App\Domain\Entity\Category
+            targetEntity: App\Domain\Entity\Subcategory
             mappedBy: null
             inversedBy: null
             nullable: false

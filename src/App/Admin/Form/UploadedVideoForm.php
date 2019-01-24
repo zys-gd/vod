@@ -2,7 +2,7 @@
 
 namespace App\Admin\Form;
 
-use App\Domain\Entity\Category;
+use App\Domain\Entity\Subcategory;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -34,7 +34,7 @@ class UploadedVideoForm extends AbstractType
                 ]
             ])
             ->add('category', EntityType::class, [
-                'class' => Category::class,
+                'class' => Subcategory::class,
                 'required' => true,
                 'placeholder' => 'Select category'
             ])

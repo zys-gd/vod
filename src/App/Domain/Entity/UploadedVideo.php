@@ -37,7 +37,7 @@ class UploadedVideo
     private $description;
 
     /**
-     * @var Category
+     * @var Subcategory
      */
     private $category;
 
@@ -107,19 +107,19 @@ class UploadedVideo
     }
 
     /**
-     * @return Category
+     * @return Subcategory
      */
-    public function getCategory(): ?Category
+    public function getCategory(): ?Subcategory
     {
         return $this->category;
     }
 
     /**
-     * @param Category $category
+     * @param Subcategory $category
      *
      * @return UploadedVideo
      */
-    public function setCategory(Category $category): UploadedVideo
+    public function setCategory(Subcategory $category): UploadedVideo
     {
         $this->category = $category;
 

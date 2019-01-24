@@ -39,7 +39,7 @@ class CategoryCountryOverride implements HasUuid
     }
 
     /**
-     * @var Category
+     * @var Subcategory
      */
     private $category;
 
@@ -76,11 +76,11 @@ class CategoryCountryOverride implements HasUuid
     /**
      * Set category
      *
-     * @param Category $category
+     * @param Subcategory $category
      *
      * @return CategoryCountryOverride
      */
-    public function setCategory(Category $category = null)
+    public function setCategory(Subcategory $category = null)
     {
         $this->category = $category;
 
@@ -90,7 +90,7 @@ class CategoryCountryOverride implements HasUuid
     /**
      * Get category
      *
-     * @return Category
+     * @return Subcategory
      */
     public function getCategory()
     {

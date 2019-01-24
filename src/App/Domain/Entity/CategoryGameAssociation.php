@@ -21,7 +21,7 @@ class CategoryGameAssociation implements HasUuid
     private $game;
 
     /**
-     * @var Category
+     * @var Subcategory
      */
     private $category;
 
@@ -87,7 +87,7 @@ class CategoryGameAssociation implements HasUuid
     /**
      * Get categories
      *
-     * @return Category
+     * @return Subcategory
      */
     public function getCategory()
     {
@@ -97,11 +97,11 @@ class CategoryGameAssociation implements HasUuid
     /**
      * Set category
      *
-     * @param Category $category
+     * @param Subcategory $category
      *
      * @return CategoryGameAssociation
      */
-    public function setCategory(Category $category = null)
+    public function setCategory(Subcategory $category = null)
     {
         $this->category = $category;
 

@@ -1,0 +1,24 @@
+App\Domain\Entity\MainCategory:
+    type: entity
+    table: main_categories
+    repositoryClass: App\Domain\Repository\MainCategoryRepository
+    id:
+        uuid:
+            type: guid
+    fields:
+        title:
+            type: string
+            length: null
+            nullable: false
+        menuPriority:
+            type: integer
+            length: 3
+            options:
+                default: 0
+
+    lifecycleCallbacks: {  }
+
+    oneToMany:
+        subcategories:
+            targetEntity: App\Domain\Entity\Subcategory
+            mappedBy: parent

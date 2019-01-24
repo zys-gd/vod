@@ -1,0 +1,25 @@
+App\Domain\Entity\Subcategory:
+    type: entity
+    table: subcategories
+    repositoryClass: App\Domain\Repository\SubcategoryRepository
+    id:
+        uuid:
+            type: guid
+    fields:
+        title:
+            type: string
+            length: null
+        alias:
+            type: string
+            length: null
+
+    lifecycleCallbacks: {  }
+
+    manyToOne:
+        parent:
+            targetEntity: App\Domain\Entity\MainCategory
+            joinColumn:
+                name: parent
+                referencedColumnName: uuid
+            inversedBy: Subcategory
+            nullable: false

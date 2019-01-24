@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controller;
 
-use App\Domain\Entity\Category;
+use App\Domain\Entity\Subcategory;
 use App\Domain\Service\VideoProcessing\VideoManager;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Form\FormFactory;
@@ -53,7 +53,7 @@ class UploadedVideoAdminController extends CRUDController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            /** @var Category $category */
+            /** @var Subcategory $category */
             $category = $data['category'];
 
             $uploadResult = $this->videoManager->uploadVideoFileToStorage($data['file'], $category->getAlias());

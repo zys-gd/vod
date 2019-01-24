@@ -2,7 +2,7 @@
 
 namespace App\Admin\Sonata;
 
-use App\Domain\Entity\Category;
+use App\Domain\Entity\Subcategory;
 use App\Domain\Service\VideoProcessing\VideoManager;
 use App\Utils\UuidGenerator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -122,7 +122,7 @@ class UploadedVideoAdmin extends AbstractAdmin
                 ]
             ])
             ->add('category', EntityType::class, [
-                'class' => Category::class,
+                'class' => Subcategory::class,
                 'required' => true,
                 'placeholder' => 'Select category'
             ])

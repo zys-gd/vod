@@ -6,7 +6,7 @@ use App\Domain\Constants\ConstBillingCarrierId;
 use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
-use App\Domain\Entity\Category;
+use App\Domain\Entity\Subcategory;
 use App\Domain\Entity\Game;
 use App\Domain\Repository\CampaignRepository;
 use DeviceDetectionBundle\Service\Device;
@@ -656,7 +656,7 @@ class NewTracker
     {
         $this->getApiClient()->clearCustomVariables();
         $this->addStandardVariables($user, $subscription);
-        /** @var Category $category */
+        /** @var Subcategory $category */
         $category = $game->getFirstCategory();
         $categoryName = $category ? $category->getName() : 'game';
 

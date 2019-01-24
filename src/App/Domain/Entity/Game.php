@@ -549,14 +549,14 @@ class Game implements HasUuid
     /**
      * Get first category
      *
-     * @return Category
+     * @return Subcategory
      */
-    public function getFirstCategory(): Category
+    public function getFirstCategory(): Subcategory
     {
         $category = null;
         $all_games = null;
         foreach ($this->getCategoryGameAssociations() as $association) {
-            /** @var Category $current_category */
+            /** @var Subcategory $current_category */
             $current_category = $association->getCategory();
             if (!in_array($current_category->getAlias(), [ConstCategoriesId::TOP_GAMES, ConstCategoriesId::NEW_GAMES, ConstCategoriesId::ALL_GAMES, ConstCategoriesId::HOMEPAGE_SLIDER])) {
                 $category = $current_category;

@@ -2,7 +2,7 @@
 
 namespace App\Domain\Service\VideoProcessing;
 
-use App\Domain\Entity\Category;
+use App\Domain\Entity\Subcategory;
 use App\Domain\Entity\UploadedVideo;
 use App\Domain\Service\VideoProcessing\DTO\UploadResult;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -46,7 +46,7 @@ class VideoManager
 
     /**
      * @param UploadResult $uploadResult
-     * @param Category $category
+     * @param Subcategory $category
      * @param string $title
      * @param string $description
      *
@@ -55,7 +55,7 @@ class VideoManager
      */
     public function persistUploadedVideo(
         UploadResult $uploadResult,
-        Category $category,
+        Subcategory $category,
         string $title,
         ?string $description
     ) {

@@ -6,9 +6,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
- * Category
+ * Subcategory
  */
-class Category
+class MainCategory
 {
     /**
      * @var string
@@ -21,19 +21,9 @@ class Category
     private $title;
 
     /**
-     * @var string
-     */
-    private $alias;
-
-    /**
-     * @var Category
-     */
-    private $parent;
-
-    /**
      * @var ArrayCollection
      */
-    private $childCategories;
+    private $subcategories;
 
     /**
      * @var integer
@@ -41,14 +31,14 @@ class Category
     private $menuPriority;
 
     /**
-     * Category constructor
+     * Subcategory constructor
      *
      * @param string $uuid
      */
     public function __construct(string $uuid)
     {
         $this->uuid = $uuid;
-        $this->childCategories = new ArrayCollection();
+        $this->subcategories = new ArrayCollection();
     }
 
     public function __toString()
@@ -59,9 +49,9 @@ class Category
     /**
      * @param string $title
      *
-     * @return Category
+     * @return MainCategory
      */
-    public function setTitle(string $title): Category
+    public function setTitle(string $title): self
     {
         $this->title = $title;
 
@@ -74,26 +64,6 @@ class Category
     public function getTitle(): string
     {
         return $this->title;
-    }
-
-    /**
-     * @param string $alias
-     *
-     * @return Category
-     */
-    public function setAlias(string $alias): Category
-    {
-        $this->alias = $alias;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAlias(): string
-    {
-        return $this->alias;
     }
 
     /**
@@ -115,9 +85,9 @@ class Category
     /**
      * @param int $menuPriority
      *
-     * @return Category
+     * @return MainCategory
      */
-    public function setMenuPriority(int $menuPriority): Category
+    public function setMenuPriority(int $menuPriority): self
     {
         $this->menuPriority = $menuPriority;
 
@@ -125,30 +95,10 @@ class Category
     }
 
     /**
-     * @param Category $category
-     *
-     * @return Category
-     */
-    public function setParent(Category $category): Category
-    {
-        $this->parent = $category;
-
-        return $this;
-    }
-
-    /**
-     * @return Category | null
-     */
-    public function getParent(): ?Category
-    {
-        return $this->parent;
-    }
-
-    /**
      * @return Collection
      */
-    public function getChildCategories(): Collection
+    public function getSubcategories(): Collection
     {
-        return $this->childCategories;
+        return $this->subcategories;
     }
 }

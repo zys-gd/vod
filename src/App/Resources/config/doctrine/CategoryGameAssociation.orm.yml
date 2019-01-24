@@ -23,7 +23,7 @@ App\Domain\Entity\CategoryGameAssociation:
                 name: game_id
                 referencedColumnName: uuid
         category:
-            targetEntity: App\Domain\Entity\Category
+            targetEntity: App\Domain\Entity\Subcategory
             inversedBy: categoryGameAssociations
             orphanRemoval: true
             joinColumn:

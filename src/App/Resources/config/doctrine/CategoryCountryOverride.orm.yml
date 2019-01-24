@@ -13,7 +13,7 @@ App\Domain\Entity\CategoryCountryOverride:
 
     manyToOne:
         category:
-            targetEntity: App\Domain\Entity\Category
+            targetEntity: App\Domain\Entity\MainCategory
             inversedBy: categoryCountryOverrides
             orphanRemoval: true
             joinColumn:
