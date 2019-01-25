@@ -27,7 +27,7 @@ class VideoSaver
 
     /**
      * @param UploadResult $uploadResult
-     * @param Subcategory $category
+     * @param Subcategory $subcategory
      * @param string $title
      * @param string $description
      *
@@ -37,17 +37,18 @@ class VideoSaver
      */
     public function getUploadedVideoInstance(
         UploadResult $uploadResult,
-        Subcategory $category,
+        Subcategory $subcategory,
         string $title,
         ?string $description
     ): UploadedVideo
     {
+        /** @var UploadedVideo $uploadedVideo */
         $uploadedVideo = new UploadedVideo(UuidGenerator::generate());
 
         $uploadedVideo
             ->setTitle($title)
             ->setDescription($description)
-            ->setCategory($category)
+            ->setSubcategory($subcategory)
             ->setRemoteUrl($uploadResult->getRemoteUrl())
             ->setRemoteId($uploadResult->getRemoteId())
             ->setThumbnails($uploadResult->getThumbnailsPath());

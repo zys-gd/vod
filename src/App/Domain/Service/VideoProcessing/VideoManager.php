@@ -46,7 +46,7 @@ class VideoManager
 
     /**
      * @param UploadResult $uploadResult
-     * @param Subcategory $category
+     * @param Subcategory $subcategory
      * @param string $title
      * @param string $description
      *
@@ -55,11 +55,16 @@ class VideoManager
      */
     public function persistUploadedVideo(
         UploadResult $uploadResult,
-        Subcategory $category,
+        Subcategory $subcategory,
         string $title,
         ?string $description
     ) {
-        $uploadedVideo = $this->saver->getUploadedVideoInstance($uploadResult, $category, $title, $description);
+        $uploadedVideo = $this->saver->getUploadedVideoInstance(
+            $uploadResult,
+            $subcategory,
+            $title,
+            $description
+        );
 
         $this->saver->persist($uploadedVideo);
     }

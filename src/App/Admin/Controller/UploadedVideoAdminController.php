@@ -53,11 +53,11 @@ class UploadedVideoAdminController extends CRUDController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            /** @var Subcategory $category */
-            $category = $data['category'];
+            /** @var Subcategory $subcategory */
+            $subcategory = $data['subcategory'];
 
-            $uploadResult = $this->videoManager->uploadVideoFileToStorage($data['file'], $category->getAlias());
-            $this->videoManager->persistUploadedVideo($uploadResult, $category, $data['title'], $data['description']);
+            $uploadResult = $this->videoManager->uploadVideoFileToStorage($data['file'], $subcategory->getAlias());
+            $this->videoManager->persistUploadedVideo($uploadResult, $subcategory, $data['title'], $data['description']);
 
             return new RedirectResponse($this->admin->generateUrl('list'));
         }

@@ -38,4 +38,55 @@
         </div>
         {{ form_end(form) }}
     </div>
+    <script>
+        function FormControl() {
+            this.mainCategoryIdentifier = '#uploaded_video_form_mainCategory';
+            this.subcategoryIdentifier = '#uploaded_video_form_subcategory';
+            this.titleCategoryIdentifier = '#uploaded_video_form_title';
+
+            this.loadSubCategories = function(parentCategoryId) {
+                var host = window.location.hostname;
+                var self = this;
+
+                $.ajax({
+                    url: `http://${host}/admin/app/domain/category/subcategoriesList?mainId=${parentCategoryId}`,
+                    method: 'GET',
+                    success: function(data) {
+                        var subcategories = JSON.parse(data);
+                        var subcategoriesSelect = $(self.subcategoryIdentifier);
+
+                        subcategories.forEach(function(subcategory) {
+                            subcategoriesSelect.append(new Option(subcategory.title, subcategory.id));
+                        });
+                    }
+                })
+            };
+
+            this.replaceCategoryFieldsPosition = function () {
+                var titleField = $(this.titleCategoryIdentifier).closest('div');
+                var subcategoryField = $(this.subcategoryIdentifier).closest('div');
+                var mainCategoryField = $(this.mainCategoryIdentifier).closest('div');
+
+                titleField.after(subcategoryField);
+                titleField.after(mainCategoryField);
+            };
+
+            this.clearSubcategorySelect = function () {
+                $(this.subcategoryIdentifier).html('').append(new Option('Select subcategory'));
+            }
+        }
+
+        $(document).ready(function() {
+            var formControl = new FormControl();
+            formControl.replaceCategoryFieldsPosition();
+
+            $(formControl.mainCategoryIdentifier).change(function() {
+                formControl.clearSubcategorySelect();
+
+                if ($(this).val().length > 0) {
+                    formControl.loadSubCategories($(this).val());
+                }
+            })
+        })
+    </script>
 {% endblock %}

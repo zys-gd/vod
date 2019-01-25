@@ -10,6 +10,9 @@ services:
             - [setContainer, ['@service_container']]
         arguments: ['@form.factory', '@App\Domain\Service\VideoProcessing\VideoManager']
 
+    App\Admin\Controller\SubcategoryAdminController:
+        arguments: ['@doctrine.orm.entity_manager']
+
     App\Controller\ContentController:
         arguments: ['@App\Domain\Service\FaqProviderService']
 

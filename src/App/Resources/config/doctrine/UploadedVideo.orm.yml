@@ -29,12 +29,12 @@ App\Domain\Entity\UploadedVideo:
     lifecycleCallbacks: {  }
 
     manyToOne:
-        category:
+        subcategory:
             targetEntity: App\Domain\Entity\Subcategory
             mappedBy: null
             inversedBy: null
             nullable: false
             joinColumns:
-                category_id:
+                subcategory_id:
                     referencedColumnName: uuid
             orphanRemoval: false

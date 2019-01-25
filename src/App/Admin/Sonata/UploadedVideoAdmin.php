@@ -154,7 +154,7 @@ class UploadedVideoAdmin extends AbstractAdmin
                 'mapped'   => false,
                 'label'    => 'Video Preview'
             ])
-            ->add('category', null, [
+            ->add('subcategory', null, [
                 'associated_property' => 'title'
             ])
             ->add('createdAt');

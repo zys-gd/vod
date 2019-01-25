@@ -39,7 +39,7 @@ class UploadedVideo
     /**
      * @var Subcategory
      */
-    private $category;
+    private $subcategory;
 
     /**
      * @var int
@@ -109,19 +109,19 @@ class UploadedVideo
     /**
      * @return Subcategory
      */
-    public function getCategory(): ?Subcategory
+    public function getSubcategory(): ?Subcategory
     {
-        return $this->category;
+        return $this->subcategory;
     }
 
     /**
-     * @param Subcategory $category
+     * @param Subcategory $subcategory
      *
      * @return UploadedVideo
      */
-    public function setCategory(Subcategory $category): UploadedVideo
+    public function setSubcategory(?Subcategory $subcategory): UploadedVideo
     {
-        $this->category = $category;
+        $this->subcategory = $subcategory;
 
         return $this;
     }

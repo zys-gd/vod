@@ -14,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 /**
  * Class CategoryAdmin
  */
-class CategoryAdmin extends AbstractAdmin
+class SubcategoryAdmin extends AbstractAdmin
 {
     /**
      * @var array
@@ -94,6 +94,7 @@ class CategoryAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->clearExcept(['list', 'edit', 'delete', 'show']);
+        $collection->add('subcategoriesList', 'subcategoriesList');
 
         parent::configureRoutes($collection);
     }

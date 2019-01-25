@@ -2,10 +2,12 @@
 
 namespace App\Domain\Entity;
 
+use JsonSerializable;
+
 /**
  * Subcategory
  */
-class Subcategory
+class Subcategory implements JsonSerializable
 {
     /**
      * @var string
@@ -108,8 +110,16 @@ class Subcategory
     /**
      * @return Subcategory | null
      */
-    public function getParent(): ?Subcategory
+    public function getParent(): ?MainCategory
     {
         return $this->parent;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getUuid(),
+            'title' => $this->getTitle(),
+        ];
     }
 }

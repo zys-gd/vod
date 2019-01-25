@@ -8,10 +8,10 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: Content Management, label: Videos }
 
-    App\Admin\Sonata\CategoryAdmin:
-        arguments: [~, App\Domain\Entity\Category, ~]
+    App\Admin\Sonata\SubcategoryAdmin:
+        arguments: [~, App\Domain\Entity\Category, 'App\Admin\Controller\SubcategoryAdminController']
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Content Management, label: Categories }
+            - { name: sonata.admin, manager_type: orm, group: Content Management, label: Subcategories }
 
     App\Admin\Sonata\AffiliateAdmin:
         arguments: [~, App\Domain\Entity\Affiliate, ~]
