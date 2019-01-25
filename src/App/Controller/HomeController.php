@@ -10,6 +10,8 @@ namespace App\Controller;
 
 
 use App\CarrierTemplate\TemplateConfigurator;
+use App\Domain\Repository\CategoryRepository;
+use App\Domain\Repository\UploadedVideoRepository;
 use IdentificationBundle\Controller\ControllerWithIdentification;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
@@ -28,20 +30,34 @@ class HomeController extends AbstractController implements AppControllerInterfac
      * @var TemplateConfigurator
      */
     private $templateConfigurator;
+    /**
+     * @var CategoryRepository
+     */
+    private $categoryRepository;
+    /**
+     * @var UploadedVideoRepository
+     */
+    private $videoRepository;
 
     /**
      * HomeController constructor.
      *
      * @param CarrierRepositoryInterface $carrierRepository
      * @param TemplateConfigurator       $templateConfigurator
+     * @param CategoryRepository         $categoryRepository
+     * @param UploadedVideoRepository    $videoRepository
      */
     public function __construct(
         CarrierRepositoryInterface $carrierRepository,
-        TemplateConfigurator $templateConfigurator
+        TemplateConfigurator $templateConfigurator,
+        CategoryRepository $categoryRepository,
+        UploadedVideoRepository $videoRepository
     )
     {
         $this->carrierRepository    = $carrierRepository;
         $this->templateConfigurator = $templateConfigurator;
+        $this->categoryRepository   = $categoryRepository;
+        $this->videoRepository      = $videoRepository;
     }
 
 
@@ -53,11 +69,15 @@ class HomeController extends AbstractController implements AppControllerInterfac
      */
     public function indexAction(Request $request, ISPData $data)
     {
-        $carrier = $this->carrierRepository->findOneByBillingId($data->getCarrierId());
+        $carrier    = $this->carrierRepository->findOneByBillingId($data->getCarrierId());
+        $categories = $this->categoryRepository->findAll();
+        $videos     = $this->videoRepository->findAll();
 
         return $this->render('@App/Common/home.html.twig', [
             'identificationData' => $request->getSession()->get('identification_data'),
-            'templateHandler'    => $this->templateConfigurator->getTemplateHandler($carrier)
+            'templateHandler'    => $this->templateConfigurator->getTemplateHandler($carrier),
+            'categories'         => $categories,
+            'videos'             => $videos
         ]);
     }
 }

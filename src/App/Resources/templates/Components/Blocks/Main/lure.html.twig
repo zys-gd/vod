@@ -1,3 +1,7 @@
-{% macro render() %}
-
+{% macro render(text) %}
+    <div class="d-flex align-items-center justify-content-center flex-column lure_box">
+        <img src="{{ asset('img/lp/lp_slice_1.png') }}" alt=""/>
+        <img src="{{ asset('img/lp/lp_slice_2.png') }}" alt=""/>
+        <span>{{ text }}</span>
+    </div>
 {% endmacro render %}

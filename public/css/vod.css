@@ -15,6 +15,10 @@ body {
     margin: 0 55px;
 }
 
+.mh-90 {
+    margin: 90px 0;
+}
+
 .header-lp {
     background: radial-gradient(circle at center, #636363, #000000);
     background: radial-gradient(27% 80% at center, #636363, #000000);
@@ -24,13 +28,27 @@ body {
 .header-lp_logo {
     border-radius: 40px;
 }
+.lure_box {
+    background-color: #de0000;
+    box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.5),inset 0px 2px 1px 0px rgba(255, 255, 255, 0.43);
+    color: #FFFFFF;
+    padding: 70px 120px;
+}
+.ico_channel {
+    /*max-width: 170px;*/
+    /*max-height: 170px;*/
+    /*flex: 0 0 0%;*/
+}
 /*******************************************/
 .h1-lp {
     font-family: "Kanit";
     font-style: italic;
     font-weight: 500;
-    font-size: 67px;
+    font-size: 57px;
     text-align: center;
+}
+.btn_wrapper {
+
 }
 .btn-lp_big {
     transform:translateY(-50%);
@@ -93,4 +111,12 @@ body {
     width: 584px;
     color: #FFFFFF;
     font-size: 77px;
+    font-family: 'Kanit', sans-serif;
+    font-weight: bold;
+    font-style: italic;
+    text-align: center;
+    text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.5),inset 0px 2px 1px 0px rgba(255, 255, 255, 0.43);
+    border: 0;
+    cursor: pointer;
 }

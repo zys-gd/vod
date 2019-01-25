@@ -12,12 +12,85 @@
 {% block body %}
     {{ subscription_status.render() }}
 
-    <div class="d-flex flex-fill">
-        <pre>{{ dump(identificationData) }}</pre>
-    </div>
+    <div class="d-flex flex-column" style="width: 100%">
 
+
+        <div class="d-flex flex-column">
+            {% for category in categories %}
+                <div>{{ category.title }}</div>
+            {% endfor %}
+        </div>
+        <div class="d-flex flex-column">
+            <div style="max-width: 600px">
+                <video id="video-player-frame" controls muted
+                       class="cld-video-player cld-fluid"></video>
+            </div>
+            <div id="video-player-title">
+
+            </div>
+        </div>
+
+        <div style="margin-top: 100px">
+            Related videos
+        </div>
+
+        <script>
+            var elements = [];
+        </script>
+
+        <div class="d-flex flex-column">
+            {% for video in videos %}
+                {% set videoIndex = loop.index %}
+                <div class="d-flex flex-row">
+                    <div>
+                        {% for thumbnail in video.thumbnails | slice(0,1) %}
+                            <img src="{{ thumbnail }}" class="x-play-button" data-index="{{ videoIndex }}"/>
+                        {% endfor %}
+                    </div>
+                    <div>
+                        {{ video.title }}
+                    </div>
+                    <script>
+                        elements[{{ loop.index }}] = {{ createPlaylistElement(video) | raw }};
+                    </script>
+                </div>
+            {% endfor %}
+
+        </div>
+    </div>
     {{ slider.render() }}
     {{ elect.render() }}
+
+
+    <script>
+
+
+        $(window).on('load', function () {
+
+
+            var cld        = cloudinary.Cloudinary.new({cloud_name: '{{ getCloudName() }}'});
+            var demoplayer = cld.videoPlayer('video-player-frame')
+                .sourceTypes(['hls'])
+                .transformation({streaming_profile: 'hd'});
+
+            var changeVideo = function (element) {
+                demoplayer.source(element);
+                $('#video-player-title').html(element.info.title)
+            };
+
+            if (elements[1]) {
+                changeVideo(elements[1]);
+            }
+
+            $(document).on('click', '.x-play-button', function () {
+                var index = $(this).attr('data-index');
+                changeVideo(elements[index]);
+                demoplayer.play();
+            })
+
+        })
+    </script>
+
 {% endblock %}
 
 {% block footer_content %}

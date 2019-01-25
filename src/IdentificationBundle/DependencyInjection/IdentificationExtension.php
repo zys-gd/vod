@@ -37,7 +37,7 @@ class IdentificationExtension extends ConfigurableExtension
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config/carriers'));
 
-        foreach (glob(__DIR__ . '/../Resources/config/carriers/*') as $file) {
+        foreach (glob(__DIR__ . '/../Resources/config/carriers/*.yml') as $file) {
             $loader->load(basename($file));
         }
 
