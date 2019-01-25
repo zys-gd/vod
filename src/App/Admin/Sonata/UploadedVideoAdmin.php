@@ -2,9 +2,12 @@
 
 namespace App\Admin\Sonata;
 
+use App\Domain\Entity\MainCategory;
 use App\Domain\Entity\Subcategory;
+use App\Domain\Repository\SubcategoryRepository;
 use App\Domain\Service\VideoProcessing\VideoManager;
 use App\Utils\UuidGenerator;
+use Doctrine\ORM\EntityManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -16,9 +19,15 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * Class UploadedVideoAdmin
+ */
 class UploadedVideoAdmin extends AbstractAdmin
 {
     /**
@@ -27,20 +36,28 @@ class UploadedVideoAdmin extends AbstractAdmin
     private $videoManager;
 
     /**
+     * @var EntityManager
+     */
+    private $entityManager;
+
+    /**
      * UploadedVideoAdmin constructor
      *
      * @param string $code
      * @param string $class
      * @param string $baseControllerName
      * @param VideoManager $videoManager
+     * @param EntityManager $entityManager
      */
     public function __construct(
         string $code,
         string $class,
         string $baseControllerName,
-        VideoManager $videoManager
+        VideoManager $videoManager,
+        EntityManager $entityManager
     ) {
         $this->videoManager = $videoManager;
+        $this->entityManager = $entityManager;
 
         parent::__construct($code, $class, $baseControllerName);
     }
@@ -77,9 +94,12 @@ class UploadedVideoAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('status')
             ->add('remoteId')
-            ->add('title');
+            ->add('title')
+            ->add('subcategory', null, [], EntityType::class, [
+                'class' => Subcategory::class
+            ])
+            ->add('status');
     }
 
     /**
@@ -93,7 +113,9 @@ class UploadedVideoAdmin extends AbstractAdmin
             ->add('uuid')
             ->add('remoteId')
             ->add('title')
-            ->add('status', ChoiceType::class, [
+            ->add('subcategory')
+            ->add('status', 'choice', [
+                'editable' => false,
                 'choices' => UploadedVideo::STATUSES
             ])
             ->add('createdAt')
@@ -121,14 +143,48 @@ class UploadedVideoAdmin extends AbstractAdmin
                     ])
                 ]
             ])
-            ->add('category', EntityType::class, [
-                'class' => Subcategory::class,
-                'required' => true,
-                'placeholder' => 'Select category'
-            ])
             ->add('description', TextareaType::class, [
                 'required' => false
             ]);
+
+        $builder = $formMapper->getFormBuilder();
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($builder) {
+            /** @var UploadedVideo $uploadedVideo */
+            $uploadedVideo = $event->getData();
+            $form = $event->getForm();
+            $formValues = $this->getRequest()->request->get($builder->getFormConfig()->getName());
+
+            if ($uploadedVideo) {
+                $mainCategoryId = empty($formValues)
+                    ? $uploadedVideo->getSubcategory()->getParent()->getUuid()
+                    : $formValues['mainCategory'];
+
+                $mainCategory = empty($formValues)
+                    ? $uploadedVideo->getSubcategory()->getParent()
+                    : $this->entityManager->getRepository(MainCategory::class)->find($mainCategoryId);
+
+                $form
+                    ->add('mainCategory', EntityType::class, [
+                        'class' => MainCategory::class,
+                        'data' => $mainCategory,
+                        'required' => true,
+                        'mapped' => false,
+                        'placeholder' => 'Select main category'
+                    ])
+                    ->add('subcategory', EntityType::class, [
+                        'query_builder' => function (SubcategoryRepository $subcategoryRepository) use ($mainCategoryId) {
+                            return $subcategoryRepository
+                                ->createQueryBuilder('sc')
+                                ->where('sc.parent = :mainId')
+                                ->setParameter('mainId', $mainCategoryId);
+                        },
+                        'class' => Subcategory::class,
+                        'required' => true,
+                        'placeholder' => 'Select subcategory'
+                    ]);
+            }
+        });
     }
 
     /**

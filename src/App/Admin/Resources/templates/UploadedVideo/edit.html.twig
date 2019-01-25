@@ -1,0 +1,76 @@
+{% extends '@SonataAdmin/CRUD/edit.html.twig' %}
+{% block form %}
+    {{ parent() }}
+    <script>
+        function FormControl(form, adminUniqueId) {
+            this.action = form.attr('action');
+            this.method = form.attr('method');
+            this.adminUniqueId = adminUniqueId;
+
+            this.title = `#${adminUniqueId}_title`;
+            this.mainCategory = `#${adminUniqueId}_mainCategory`;
+            this.subcategory = `#${adminUniqueId}_subcategory`;
+
+            this.sendRequest = function(data) {
+                return $.ajax({
+                    url: this.action,
+                    type: this.method,
+                    data: data
+                });
+            };
+
+            this.loadSubcategories = function(mainCategoryValue) {
+                var self = this;
+                var loader = $('<i>Loading subcategories...</i>');
+                var data = {};
+                data[`${this.adminUniqueId}[mainCategory]`] = mainCategoryValue;
+                $(this.mainCategory).closest('.form-group').append(loader);
+
+                this.sendRequest(data)
+                    .done(function(html) {
+                        var mainCategoryFormGroup = $(html).find(self.mainCategory).closest('.form-group');
+                        var subcategoryFormGroup = $(html).find(self.subcategory).closest('.form-group');
+
+                        $(self.mainCategory).closest('.form-group').replaceWith(mainCategoryFormGroup);
+                        $(self.subcategory).closest('.form-group').replaceWith(subcategoryFormGroup);
+
+                        $(self.mainCategory).select2();
+                        $(self.subcategory).select2();
+
+                        self.subscribeOnMainCategoryFieldChange();
+                })
+                    .always(function() {
+                        loader.remove();
+                    });
+            };
+
+            this.replaceCategoryFields = function() {
+                var titleFormGroup = $(this.title).closest('.form-group');
+
+                var mainCategoryFormGroup = $(this.mainCategory).closest('.form-group');
+                var subcategoryFormGroup = $(this.subcategory).closest('.form-group');
+
+                titleFormGroup.after(subcategoryFormGroup);
+                titleFormGroup.after(mainCategoryFormGroup);
+            };
+
+            this.subscribeOnMainCategoryFieldChange = function() {
+                var self = this;
+
+                $(this.mainCategory).change(function() {
+
+                    self.loadSubcategories($(this).val());
+                })
+            }
+        }
+
+        $(document).ready(function () {
+            var adminUniqueId = "{{ admin.uniqId }}";
+            var mainCategoryField = $(`#${adminUniqueId}_mainCategory`);
+            var formControl = new FormControl($(mainCategoryField).closest('form'), adminUniqueId);
+
+            formControl.replaceCategoryFields();
+            formControl.subscribeOnMainCategoryFieldChange();
+        })
+    </script>
+{% endblock %}
