@@ -10,7 +10,7 @@ namespace App\Controller;
 
 
 use App\CarrierTemplate\TemplateConfigurator;
-use App\Domain\Repository\CategoryRepository;
+use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\UploadedVideoRepository;
 use IdentificationBundle\Controller\ControllerWithIdentification;
 use IdentificationBundle\Identification\DTO\ISPData;
@@ -31,9 +31,9 @@ class HomeController extends AbstractController implements AppControllerInterfac
      */
     private $templateConfigurator;
     /**
-     * @var CategoryRepository
+     * @var MainCategoryRepository
      */
-    private $categoryRepository;
+    private $mainCategoryRepository;
     /**
      * @var UploadedVideoRepository
      */
@@ -44,19 +44,19 @@ class HomeController extends AbstractController implements AppControllerInterfac
      *
      * @param CarrierRepositoryInterface $carrierRepository
      * @param TemplateConfigurator       $templateConfigurator
-     * @param CategoryRepository         $categoryRepository
+     * @param MainCategoryRepository         $mainCategoryRepository
      * @param UploadedVideoRepository    $videoRepository
      */
     public function __construct(
         CarrierRepositoryInterface $carrierRepository,
         TemplateConfigurator $templateConfigurator,
-        CategoryRepository $categoryRepository,
+        MainCategoryRepository $mainCategoryRepository,
         UploadedVideoRepository $videoRepository
     )
     {
         $this->carrierRepository    = $carrierRepository;
         $this->templateConfigurator = $templateConfigurator;
-        $this->categoryRepository   = $categoryRepository;
+        $this->mainCategoryRepository   = $mainCategoryRepository;
         $this->videoRepository      = $videoRepository;
     }
 
@@ -70,7 +70,7 @@ class HomeController extends AbstractController implements AppControllerInterfac
     public function indexAction(Request $request, ISPData $data)
     {
         $carrier    = $this->carrierRepository->findOneByBillingId($data->getCarrierId());
-        $categories = $this->categoryRepository->findAll();
+        $categories = $this->mainCategoryRepository->findAll();
         $videos     = $this->videoRepository->findAll();
 
         return $this->render('@App/Common/home.html.twig', [

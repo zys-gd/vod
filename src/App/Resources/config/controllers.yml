@@ -20,5 +20,5 @@ services:
       arguments:
         - '@App\Domain\Repository\CarrierRepository'
         - '@App\CarrierTemplate\TemplateConfigurator'
-        - '@App\Domain\Repository\CategoryRepository'
+        - '@App\Domain\Repository\MainCategoryRepository'
         - '@App\Domain\Repository\UploadedVideoRepository'
