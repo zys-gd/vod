@@ -45,7 +45,9 @@ class SubcategoryAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('uuid')
-            ->add('parent', TextType::class)
+            ->add('parent', TextType::class, [
+                'route' => ['name' => 'show']
+            ])
             ->add('title')
             ->add('alias')
             ->add('_action', null, array(

@@ -46,7 +46,8 @@ class MainCategoryAdmin extends AbstractAdmin
         $showMapper
             ->add('uuid')
             ->add('title')
-            ->add('menuPriority');
+            ->add('menuPriority')
+            ->add('subcategories');
     }
 
     /**
