@@ -59,7 +59,7 @@
                 $(this.mainCategory).closest('div').append(loader);
 
                 $.ajax({
-                    url: `http://${host}/admin/app/domain/category/subcategoriesList?mainId=${parentCategoryId}`,
+                    url: `http://${host}/admin/app/domain/subcategory/subcategoriesList?mainId=${parentCategoryId}`,
                     method: 'GET',
                     success: function(data) {
                         var subcategories = JSON.parse(data);
