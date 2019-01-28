@@ -413,7 +413,7 @@ class Campaign implements CampaignInterface
         return $this;
     }
 
-    public function getSub(): string
+    public function getSub(): ?string
     {
         return $this->sub;
     }
