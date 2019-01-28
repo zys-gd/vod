@@ -154,13 +154,9 @@ class UploadedVideoAdmin extends AbstractAdmin
             $formValues = $this->getRequest()->request->get($builder->getFormConfig()->getName());
 
             if ($uploadedVideo) {
-                $mainCategoryId = empty($formValues)
-                    ? $uploadedVideo->getSubcategory()->getParent()->getUuid()
-                    : $formValues['mainCategory'];
-
                 $mainCategory = empty($formValues)
                     ? $uploadedVideo->getSubcategory()->getParent()
-                    : $this->entityManager->getRepository(MainCategory::class)->find($mainCategoryId);
+                    : $this->entityManager->getRepository(MainCategory::class)->find($formValues['mainCategory']);
 
                 $form
                     ->add('mainCategory', EntityType::class, [
@@ -171,7 +167,9 @@ class UploadedVideoAdmin extends AbstractAdmin
                         'placeholder' => 'Select main category'
                     ])
                     ->add('subcategory', EntityType::class, [
-                        'query_builder' => function (SubcategoryRepository $subcategoryRepository) use ($mainCategoryId) {
+                        'query_builder' => function (SubcategoryRepository $subcategoryRepository) use ($mainCategory) {
+                            $mainCategoryId = $mainCategory ? $mainCategory->getUuid() : null;
+
                             return $subcategoryRepository
                                 ->createQueryBuilder('sc')
                                 ->where('sc.parent = :mainId')
