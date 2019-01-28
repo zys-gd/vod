@@ -4,11 +4,12 @@ namespace App\Admin\Controller;
 
 use App\Domain\Entity\Subcategory;
 use Doctrine\ORM\EntityManager;
+use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class SubcategoryAdminController
+class SubcategoryAdminController extends CRUDController
 {
     /**
      * @var EntityManager

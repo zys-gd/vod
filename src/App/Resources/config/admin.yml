@@ -11,8 +11,13 @@ services:
         calls:
             - [ setTemplate, [edit, '@@Admin\UploadedVideo\edit.html.twig'] ]
 
+    App\Admin\Sonata\MainCategoryAdmin:
+        arguments: [~, App\Domain\Entity\MainCategory, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Content Management, label: Main categories }
+
     App\Admin\Sonata\SubcategoryAdmin:
-        arguments: [~, App\Domain\Entity\Category, 'App\Admin\Controller\SubcategoryAdminController']
+        arguments: [~, App\Domain\Entity\Subcategory, 'App\Admin\Controller\SubcategoryAdminController']
         tags:
             - { name: sonata.admin, manager_type: orm, group: Content Management, label: Subcategories }
 
