@@ -16,6 +16,7 @@ use IdentificationBundle\Controller\ControllerWithIdentification;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\Exception\FailedIdentificationException;
 use IdentificationBundle\Identification\Identifier;
+use IdentificationBundle\Identification\Service\CarrierSelector;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationStatus;
 use IdentificationBundle\Identification\Service\ISPResolver;
@@ -66,6 +67,10 @@ class AutoIdentStartListener
      * @var AnnotationReader
      */
     private $annotationReader;
+    /**
+     * @var CarrierSelector
+     */
+    private $carrierSelector;
 
 
     /**
@@ -79,6 +84,7 @@ class AutoIdentStartListener
      * @param IdentificationDataStorage                                  $dataStorage
      * @param IdentificationStatus                                       $identificationStatus
      * @param AnnotationReader                                           $annotationReader
+     * @param CarrierSelector                                            $carrierSelector
      */
     public function __construct(
         ICountryCarrierDetection $carrierDetection,
@@ -89,7 +95,8 @@ class AutoIdentStartListener
         RouteProvider $routeProvider,
         IdentificationDataStorage $dataStorage,
         IdentificationStatus $identificationStatus,
-        AnnotationReader $annotationReader
+        AnnotationReader $annotationReader,
+        CarrierSelector $carrierSelector
     )
     {
         $this->carrierDetection     = $carrierDetection;
@@ -101,6 +108,7 @@ class AutoIdentStartListener
         $this->dataStorage          = $dataStorage;
         $this->identificationStatus = $identificationStatus;
         $this->annotationReader     = $annotationReader;
+        $this->carrierSelector      = $carrierSelector;
     }
 
     public function onKernelController(FilterControllerEvent $event)
@@ -150,7 +158,7 @@ class AutoIdentStartListener
             return;
         }
         if ($this->identificationStatus->isAlreadyTriedToAutoIdent()) {
-            return ;
+            return;
         }
 
         $this->startWifiFlow($session);
@@ -195,10 +203,7 @@ class AutoIdentStartListener
                 $carrierId = $this->resolveISP($carrierISP);
             }
             if ($carrierId) {
-                $ispDetectionData = [
-                    'carrier_id' => $carrierId,
-                ];
-                $session->set('isp_detection_data', $ispDetectionData);
+                $this->carrierSelector->selectCarrier($carrierId);
             }
         } else {
             $ispDetectionData = $session->get('isp_detection_data');

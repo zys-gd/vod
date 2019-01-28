@@ -1,14 +1,32 @@
-{% macro render() %}
-    <form class="x-subscribe-send-pin-block">
+{% macro render(carriers) %}
+    {% import '@App/Components/Buttons/button.html.twig' as button %}
+
+    <form class="x-select-carrier-block" style="display: none; text-align: center">
+        <br>
+        <div>
+            <select name="carrier_id" required>
+                {% for carrier in carriers %}
+                    <option value="{{ carrier.billingCarrierId }}">{{ carrier.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            {{ button.renderSubmitButton('Select Carrier', 'x-select-carrier-button') }}
+        </div>
+    </form>
+
+    <form class="x-subscribe-send-pin-block" style="display: none; text-align: center">
+        <br>
         <div>
             <input type="text" name="mobile_number" placeholder="Mobile Number" required>
         </div>
         <div>
-            <button type="submit" class="x-send-pin-button">Send SMS pin code</button>
+            {{ button.renderSubmitButton('Send SMS', 'x-send-pin-button') }}
         </div>
     </form>
 
-    <form class="x-subscribe-confirm-pin-block" style="display: none">
+    <form class="x-subscribe-confirm-pin-block" style="display: none; text-align: center">
+        <br>
         <div>
             <input type="text" name="mobile_number" placeholder="Mobile Number" required>
         </div>
@@ -16,7 +34,7 @@
             <input type="text" name="pin_code" placeholder="Pin Code" required>
         </div>
         <div>
-            <button type="submit" class="x-confirm-pin-button">Confirm SMS</button>
+            {{ button.renderSubmitButton('Confirm', 'x-confirm-pin-button') }}
         </div>
     </form>
 
@@ -24,8 +42,50 @@
 
     <script>
 
-        $(document).on('submit', '.x-subscribe-send-pin-block', function (e) {
+        var isCarrierDetected = {{ isCarrierDetected() ? 'true' : 'false' }};
 
+        if (isCarrierDetected) {
+            moveToStepTwo()
+        } else {
+            moveToStepOne();
+        }
+
+        function moveToStepOne() {
+            $('.x-select-carrier-block').show();
+            $('.x-subscribe-send-pin-block').hide();
+            $('.x-subscribe-confirm-pin-block').hide();
+        }
+        function moveToStepTwo() {
+            $('.x-select-carrier-block').hide();
+            $('.x-subscribe-send-pin-block').show();
+            $('.x-subscribe-confirm-pin-block').hide();
+        }
+        function moveToStepThree() {
+            $('.x-select-carrier-block').hide();
+            $('.x-subscribe-send-pin-block').hide();
+            $('.x-subscribe-confirm-pin-block').show();
+        }
+
+        $('.x-select-carrier-block').on('submit', function (e) {
+            var form = $(this);
+
+            $.ajax({
+                url    : "{{ path('select_carrier_for_pin_code_form') }}",
+                method : "POST",
+                data   : form.serialize(),
+                success: function (result) {
+                    if (result.data.success) {
+                        moveToStepTwo();
+                    } else {
+                        alert(result.data.message);
+                    }
+                }
+            });
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        $('.x-subscribe-send-pin-block').on('submit', function (e) {
             var form = $(this);
 
             $.ajax({
@@ -34,8 +94,7 @@
                 data   : form.serialize(),
                 success: function (result) {
                     if (result.data.success) {
-                        $('.x-subscribe-send-pin-block').hide();
-                        $('.x-subscribe-confirm-pin-block').show();
+                        moveToStepThree()
                     } else {
                         alert(result.data.message);
                     }
@@ -46,8 +105,7 @@
             e.stopPropagation();
         });
 
-        $(document).on('submit', '.x-subscribe-confirm-pin-block', function (e) {
-
+        $('.x-subscribe-confirm-pin-block').on('submit', function (e) {
             var form = $(this);
 
             $.ajax({
@@ -56,7 +114,6 @@
                 data   : form.serialize(),
                 success: function (result) {
                     if (result.data.success) {
-                        $('.x-subscribe-confirm-pin-block').hide();
                         window.location = result.data.redirectUrl;
                     } else {
                         alert(result.data.message);

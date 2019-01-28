@@ -105,3 +105,8 @@ services:
       - '@IdentificationBundle\Identification\Service\RouteProvider'
       - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
       - '@IdentificationBundle\Identification\Service\TokenGenerator'
+
+  IdentificationBundle\Identification\Service\CarrierSelector:
+    arguments:
+      - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+      - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'

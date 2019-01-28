@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 
+use IdentificationBundle\Identification\Service\CarrierSelector;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +17,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ErrorController extends AbstractController
 {
+    /**
+     * @var CarrierSelector
+     */
+    private $carrierSelector;
+
+    /**
+     * ErrorController constructor.
+     */
+    public function __construct(CarrierSelector $carrierSelector)
+    {
+        $this->carrierSelector = $carrierSelector;
+    }
+
 
     /**
      * @Route("/whoops",name="mobile_identification")
@@ -25,8 +39,8 @@ class ErrorController extends AbstractController
     public function wrongCarrierAction(Request $request)
     {
         $var = $request->request->get('carrier');
-        if($var){
-            $request->getSession()->set('isp_detection_data',['carrier_id' => $var]);
+        if ($var) {
+            $this->carrierSelector->selectCarrier((int)$var);
         }
 
         return $this->render('@App/Error/wrong_carrier.html.twig');

@@ -13,3 +13,4 @@ services:
       - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
       - '@IdentificationBundle\Identification\Service\IdentificationStatus'
       - '@annotations.reader'
+      - '@IdentificationBundle\Identification\Service\CarrierSelector'

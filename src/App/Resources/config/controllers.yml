@@ -22,3 +22,10 @@ services:
         - '@App\CarrierTemplate\TemplateConfigurator'
         - '@App\Domain\Repository\MainCategoryRepository'
         - '@App\Domain\Repository\UploadedVideoRepository'
+
+    App\Controller\LPController:
+      arguments: ['@IdentificationBundle\Repository\CarrierRepositoryInterface']
+
+    App\Controller\ErrorController:
+      arguments:
+        - '@IdentificationBundle\Identification\Service\CarrierSelector'

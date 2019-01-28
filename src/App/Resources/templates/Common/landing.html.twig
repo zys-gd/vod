@@ -19,7 +19,7 @@
             {{ banner.render(asset('img/lp/lp_banner.png'), 'banner', 'w-100') }}
         </div>
         <div class="d-flex align-items-center justify-content-center">
-            {{ lp_subscribe_buttons.render('btn-lp_big') }}
+            {{ lp_subscribe_buttons.render(carriers,'btn-lp_big') }}
         </div>
 
         <div class="d-flex align-items-center justify-content-center">
@@ -29,9 +29,9 @@
         <div class="align-items-center justify-content-center row m-55">
             {{ icons_channels.render() }}
         </div>
-        <div class="d-flex align-items-center justify-content-center">
-            {{ lp_subscribe_buttons.render('mh-90') }}
-        </div>
+        {#<div class="d-flex align-items-center justify-content-center">
+            {{ lp_subscribe_buttons.render(carriers, 'mh-90') }}
+        </div>#}
         <div class="d-flex align-items-center justify-content-center">
             <h2 class="h1-lp">{{ translate('offer.landing')|raw }}</h2>
         </div>

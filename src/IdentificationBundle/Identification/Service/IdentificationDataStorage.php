@@ -80,4 +80,9 @@ class IdentificationDataStorage
     {
         $this->session->set('identification_data', $identificationData);
     }
+
+    public function storeCarrierId(int $carrierId): void
+    {
+        $this->session->set('isp_detection_data', ['carrier_id' => $carrierId]);
+    }
 }

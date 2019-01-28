@@ -63,5 +63,14 @@ class IdentificationDataStorageTest extends TestCase
 
     }
 
+    public function testStoreCarrierId()
+    {
+        $this->identificationDataStorage->storeCarrierId(135);
+
+        $data = $this->session->get('isp_detection_data');
+
+        $this->assertArraySubset(['carrier_id' => '135'], $data);
+    }
+
 
 }

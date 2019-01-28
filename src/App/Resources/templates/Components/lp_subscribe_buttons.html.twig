@@ -1,4 +1,4 @@
-{% macro render(class) %}
+{% macro render(carriers, class) %}
     {% import "@App/Components/Buttons/link.html.twig" as  link %}
     {% import "@App/Common/Blocks/wifi_subscribe_block.html.twig" as wifi_subscribe_block %}
 
@@ -7,7 +7,7 @@
     {% elseif isConsentFlow() %}
         {{ link.render(url('subscription.consent_page_subscribe'), translate('buttons.join.now'), class) }}
     {% elseif isWifiFlow() %}
-        {{ wifi_subscribe_block.render() }}
+        {{ wifi_subscribe_block.render(carriers) }}
     {% else %}
         {#Ident && Subscribe Me#}
         {{ link.render(url('identify'), translate('buttons.join.now'), class) }}

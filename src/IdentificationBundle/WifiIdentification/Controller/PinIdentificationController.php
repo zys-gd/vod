@@ -13,9 +13,12 @@ use ExtrasBundle\API\Controller\APIControllerInterface;
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\BillingFramework\Process\Exception\PinVerifyProcessException;
 use IdentificationBundle\Identification\DTO\ISPData;
+use IdentificationBundle\Identification\Exception\MissingCarrierException;
+use IdentificationBundle\Identification\Service\CarrierSelector;
 use IdentificationBundle\WifiIdentification\Service\ErrorCodeResolver;
 use IdentificationBundle\WifiIdentification\WifiIdentConfirmator;
 use IdentificationBundle\WifiIdentification\WifiIdentSMSSender;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,26 +41,56 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @var ErrorCodeResolver
      */
     private $errorCodeResolver;
+    /**
+     * @var CarrierSelector
+     */
+    private $carrierSelector;
 
     /**
      * PinIdentificationController constructor.
      * @param WifiIdentSMSSender   $identSMSSender
      * @param WifiIdentConfirmator $identConfirmator
      * @param ErrorCodeResolver    $errorCodeResolver
+     * @param CarrierSelector      $carrierSelector
      */
     public function __construct(
         WifiIdentSMSSender $identSMSSender,
         WifiIdentConfirmator $identConfirmator,
-        ErrorCodeResolver $errorCodeResolver
+        ErrorCodeResolver $errorCodeResolver,
+        CarrierSelector $carrierSelector
+
     )
     {
         $this->identSMSSender    = $identSMSSender;
         $this->identConfirmator  = $identConfirmator;
         $this->errorCodeResolver = $errorCodeResolver;
+        $this->carrierSelector   = $carrierSelector;
     }
 
 
     /**
+     * @Method("POST")
+     * @Route("/pincode/select-carrier",name="select_carrier_for_pin_code_form")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function selectCarrierAction(Request $request)
+    {
+        if (!$carrierId = $request->get('carrier_id', '')) {
+            throw new BadRequestHttpException('`carrier_id` is required');
+        }
+
+        try {
+            $this->carrierSelector->selectCarrier((int)$carrierId);
+            return $this->getSimpleJsonResponse('Successfully selected', 200, [], ['success' => true]);
+        } catch (MissingCarrierException $exception) {
+            return $this->getSimpleJsonResponse($exception->getMessage(), 200, [], ['success' => false]);
+        }
+
+    }
+
+    /**
+     * @Method("POST")
      * @Route("/pincode/send",name="send_sms_pin_code")
      * @param Request $request
      * @param ISPData $ispData
@@ -81,6 +114,7 @@ class PinIdentificationController extends AbstractController implements APIContr
     }
 
     /**
+     * @Method("POST")
      * @Route("/pincode/confirm",name="confirm_sms_pin_code")
      * @param Request $request
      * @param ISPData $ispData

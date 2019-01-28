@@ -10,6 +10,7 @@ namespace App\Controller;
 
 
 use IdentificationBundle\Controller\ControllerWithISPDetection;
+use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +19,20 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class LPController extends AbstractController implements ControllerWithISPDetection
 {
+    /**
+     * @var CarrierRepositoryInterface
+     */
+    private $carrierRepository;
+
+    /**
+     * LPController constructor.
+     */
+    public function __construct(CarrierRepositoryInterface $repository)
+    {
+        $this->carrierRepository = $repository;
+    }
+
+
     /**
      * @\IdentificationBundle\Controller\Annotation\NoRedirectToWhoops
      * @Route("/lp",name="landing")
@@ -37,6 +52,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         return $this->render('@App/Common/landing.html.twig', [
             'isp_detection_data' => $session->get('isp_detection_data'),
+            'carriers'           => $this->carrierRepository->findAllCarriers()
         ]);
     }
 }
