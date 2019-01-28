@@ -331,9 +331,9 @@ class Carrier implements CarrierInterface
     /**
      * Get isp
      *
-     * @return string
+     * @return string|null
      */
-    public function getIsp(): string
+    public function getIsp(): ?string
     {
         return $this->isp;
     }
