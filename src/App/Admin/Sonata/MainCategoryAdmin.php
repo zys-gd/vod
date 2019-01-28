@@ -13,6 +13,14 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class MainCategoryAdmin extends AbstractAdmin
 {
     /**
+     * @return array
+     */
+    public function getBatchActions()
+    {
+        return [];
+    }
+
+    /**
      * @param DatagridMapper $datagridMapper
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
