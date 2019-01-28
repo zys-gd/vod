@@ -11,6 +11,9 @@
             this.mainCategory = `#${adminUniqueId}_mainCategory`;
             this.subcategory = `#${adminUniqueId}_subcategory`;
 
+            /**
+             * Send submit request
+             */
             this.sendRequest = function(data) {
                 return $.ajax({
                     url: this.action,
@@ -19,31 +22,39 @@
                 });
             };
 
+            /**
+             * Send form submit request and get from response html subcategory options depended on selected
+             * main category, replace select item on page with select from server
+             *
+             * @param mainCategoryValue
+             */
             this.loadSubcategories = function(mainCategoryValue) {
                 var self = this;
                 var loader = $('<i>Loading subcategories...</i>');
+
                 var data = {};
                 data[`${this.adminUniqueId}[mainCategory]`] = mainCategoryValue;
+
                 $(this.mainCategory).closest('.form-group').append(loader);
 
                 this.sendRequest(data)
                     .done(function(html) {
-                        var mainCategoryFormGroup = $(html).find(self.mainCategory).closest('.form-group');
                         var subcategoryFormGroup = $(html).find(self.subcategory).closest('.form-group');
 
-                        $(self.mainCategory).closest('.form-group').replaceWith(mainCategoryFormGroup);
                         $(self.subcategory).closest('.form-group').replaceWith(subcategoryFormGroup);
-
-                        $(self.mainCategory).select2();
                         $(self.subcategory).select2();
-
-                        self.subscribeOnMainCategoryFieldChange();
-                })
+                    })
+                    .fail(function() {
+                        $(self.mainCategory).closest('.form-group').effect('highlight', {'color': '#C43C35'}, 2000);
+                    })
                     .always(function() {
                         loader.remove();
                     });
             };
 
+            /**
+             * Put categories inputs to the right place, after title input
+             */
             this.replaceCategoryFields = function() {
                 var titleFormGroup = $(this.title).closest('.form-group');
 
@@ -54,13 +65,11 @@
                 titleFormGroup.after(mainCategoryFormGroup);
             };
 
-            this.subscribeOnMainCategoryFieldChange = function() {
-                var self = this;
-
-                $(this.mainCategory).change(function() {
-
-                    self.loadSubcategories($(this).val());
-                })
+            /**
+             * Remove all options from subcategory select and set default
+             */
+            this.clearSubcategoryOptions = function () {
+                $(this.subcategory).html('').append(new Option('Select subcategory'));
             }
         }
 
@@ -70,7 +79,15 @@
             var formControl = new FormControl($(mainCategoryField).closest('form'), adminUniqueId);
 
             formControl.replaceCategoryFields();
-            formControl.subscribeOnMainCategoryFieldChange();
+
+            $(formControl.mainCategory).change(function() {
+                var selectedValue = $(this).val();
+                formControl.clearSubcategoryOptions();
+
+                if (selectedValue.length > 0) {
+                    formControl.loadSubcategories(selectedValue);
+                }
+            })
         })
     </script>
 {% endblock %}

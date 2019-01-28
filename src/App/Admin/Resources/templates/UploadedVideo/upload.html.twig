@@ -56,7 +56,9 @@
                 var host = window.location.hostname;
                 var self = this;
                 var loader = $('<i>Loading subcategories...</i>');
+
                 $(this.mainCategory).closest('div').append(loader);
+                this.clearSubcategoryOptions();
 
                 $.ajax({
                     url: `http://${host}/admin/app/domain/subcategory/subcategoriesList?mainId=${parentCategoryId}`,
@@ -70,6 +72,9 @@
                         });
                     }
                 })
+                    .fail(function() {
+                        $(self.mainCategory).closest('div').effect('highlight', {'color': '#C43C35'}, 2000);
+                    })
                     .always(function () {
                         loader.remove();
                     })
@@ -90,7 +95,7 @@
             /**
              * Remove all options from subcategory select and set default
              */
-            this.clearSubcategorySelect = function () {
+            this.clearSubcategoryOptions = function () {
                 $(this.subcategory).html('').append(new Option('Select subcategory'));
             }
         }
@@ -100,7 +105,7 @@
             formControl.replaceCategoryFieldsPosition();
 
             $(formControl.mainCategory).change(function() {
-                formControl.clearSubcategorySelect();
+                formControl.clearSubcategoryOptions();
 
                 if ($(this).val().length > 0) {
                     formControl.loadSubCategories($(this).val());

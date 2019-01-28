@@ -205,10 +205,6 @@
             attachTierFetchingEvent(carrier, carrierId, tier, tierId, getTierOptionsWithSendRequest);
 
             $countryTag.on("select2-selecting", function (e) {
-                var $loader = $("<i>{{ 'Loading carriers ...'| trans }}</i>");
-                //Displayed loading for the carrier
-                $countryTag.closest(".form-group").append($loader);
-
                 //removed existing carrier inputs
                 $(carrier).closest(".form-group").remove();
                 $(carrierId).remove();
@@ -223,6 +219,10 @@
                 $('input[name*="\[displayCurrency\]"]').val('');
 
                 if (e.choice.id) {
+                    var $loader = $("<i>{{ 'Loading carriers ...'| trans }}</i>");
+                    //Displayed loading for the carrier
+                    $countryTag.closest(".form-group").append($loader);
+
                     getCarrierOptionsWithSendRequest(e.choice.id, $countryTag.attr('name'))
                         .done(function (html) {
                             //added carrier dropdown

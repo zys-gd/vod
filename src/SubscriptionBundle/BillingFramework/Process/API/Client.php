@@ -129,7 +129,10 @@ class Client
         } else {
             $response = $cachedResponse->get();
         }
-        return (object)$response->data;
+
+        $resultData = property_exists($response, 'data') ? $response->data : [];
+
+        return (object) $resultData;
 
     }
 
