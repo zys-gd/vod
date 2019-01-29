@@ -47,6 +47,7 @@ class SubscriptionExtension extends ConfigurableExtension
         $loader->load('affiliate.yml');
         $loader->load('fixtures.yml');
         $loader->load('blacklist.yml');
+        $loader->load('twig.yml');
 
 
         $loader = new YamlFileLoader(

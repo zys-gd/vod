@@ -1,7 +1,13 @@
 {% macro render(text) %}
-    <div class="d-flex align-items-center justify-content-center flex-column lure_box">
-        <img src="{{ asset('img/lp/lp_slice_1.png') }}" alt=""/>
-        <img src="{{ asset('img/lp/lp_slice_2.png') }}" alt=""/>
-        <span>{{ text }}</span>
+    <div class="lure_box d-flex flex-column align-items-center justify-content-center">
+        <div>
+            <img class="lure_item" src="{{ asset('img/lp/lp_slice_1.png') }}" alt=""/>
+        </div>
+        <div>
+            <img class="lure_item" src="{{ asset('img/lp/lp_slice_2.png') }}" alt=""/>
+        </div>
+        <div class="lure_box_title">
+            <span>{{ text }}</span>
+        </div>
     </div>
 {% endmacro render %}

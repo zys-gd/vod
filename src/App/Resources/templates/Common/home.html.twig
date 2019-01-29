@@ -15,39 +15,45 @@
     <div class="d-flex flex-column" style="width: 100%">
 
 
-        <div class="d-flex flex-column">
+        <div class="d-flex flex-column menu-block">
             {% for category in categories %}
-                <div>{{ category.title }}</div>
+                <div class="menu-item">{{ category.title }}</div>
             {% endfor %}
         </div>
-        <div class="d-flex flex-column">
-            <div style="max-width: 600px">
-                <video id="video-player-frame" controls muted
-                       class="cld-video-player cld-fluid"></video>
-            </div>
-            <div id="video-player-title">
 
+        <div class="d-flex flex-column">
+            {% set defaultVideo = videos[0] %}
+            <div class="d-flex flex-column align-items-center justify-content-center">
+                {% for thumbnail in defaultVideo.thumbnails | slice(0,1) %}
+                    <div style="width: 100%;">
+                        <img src="{{ thumbnail }}" class="x-play-button" data-index="1" style="width: 100%;"/>
+                    </div>
+                {% endfor %}
+                <div id="video-player-title">
+                    {{ defaultVideo.title }}
+                </div>
             </div>
         </div>
 
-        <div style="margin-top: 100px">
-            Related videos
+        <hr>
+        <div style="; text-align: center">
+            ---- Related videos ----
         </div>
 
         <script>
             var elements = [];
         </script>
 
-        <div class="d-flex flex-column">
+        <div class="d-flex flex-column related-videos-block">
             {% for video in videos %}
                 {% set videoIndex = loop.index %}
-                <div class="d-flex flex-row">
+                <div class="d-flex flex-row related-video">
                     <div>
                         {% for thumbnail in video.thumbnails | slice(0,1) %}
                             <img src="{{ thumbnail }}" class="x-play-button" data-index="{{ videoIndex }}"/>
                         {% endfor %}
                     </div>
-                    <div>
+                    <div class="related-video-title align-items-center d-flex">
                         {{ video.title }}
                     </div>
                     <script>
@@ -62,37 +68,106 @@
     {{ elect.render() }}
 
 
+
+    {% if isSubscribed() %}
+        <script>
+
+
+            $(window).on('load', function () {
+
+                var cld        = cloudinary.Cloudinary.new({cloud_name: '{{ getCloudName() }}'});
+                var demoplayer = cld.videoPlayer('video-player-frame')
+                    .sourceTypes(['hls'])
+                    .transformation({streaming_profile: 'hd'});
+
+                var changeVideo = function (element) {
+                    demoplayer.source(element);
+                };
+
+                if (elements[1]) {
+                    changeVideo(elements[1]);
+                }
+
+                $(document).on('click', '.x-play-button', function () {
+                    $('.modal').modal();
+                    var index = $(this).attr('data-index');
+                    changeVideo(elements[index]);
+                    demoplayer.play();
+                });
+
+                $(document).on('click', '.x-modal-play-button', function () {
+                    var index = $(this).attr('data-index');
+                    changeVideo(elements[index]);
+                    demoplayer.play();
+                });
+
+                $(document).on('click', '.x-close-modal-button', function () {
+                    $('.modal').modal('hide');
+
+                });
+
+
+                $(document).on('hide.bs.modal', '.show-video-modal', function () {
+                    demoplayer.stop();
+                })
+
+
+            })
+        </script>
+    {% else %}
+        <script>
+            $(document).on('click', '.x-play-button', function () {
+                window.location = '{{ path('landing') }}'
+            })
+        </script>
+    {% endif %}
+
+    <div class="modal show-video-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="d-flex flex-column">
+
+                        <button class="x-close-modal-button close-modal-button" type="button">
+                            Close
+                        </button>
+
+                        <div style="">
+                            <video id="video-player-frame" controls muted
+                                   class="cld-video-player cld-fluid"></video>
+                        </div>
+
+
+                        <div>
+                            Related videos
+                        </div>
+                        <div class="d-flex flex-column">
+                            {% for video in videos %}
+                                {% set videoIndex = loop.index %}
+                                <div class="d-flex flex-row modal-related-video">
+                                    <div>
+                                        {% for thumbnail in video.thumbnails | slice(0,1) %}
+                                            <img src="{{ thumbnail }}" class="x-modal-play-button"
+                                                 data-index="{{ videoIndex }}"/>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="align-items-center d-flex modal-related-video-title">
+                                        {{ video.title }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
 
 
-        $(window).on('load', function () {
-
-
-            var cld        = cloudinary.Cloudinary.new({cloud_name: '{{ getCloudName() }}'});
-            var demoplayer = cld.videoPlayer('video-player-frame')
-                .sourceTypes(['hls'])
-                .transformation({streaming_profile: 'hd'});
-
-            var changeVideo = function (element) {
-                demoplayer.source(element);
-                $('#video-player-title').html(element.info.title)
-            };
-
-            if (elements[1]) {
-                changeVideo(elements[1]);
-            }
-
-            $(document).on('click', '.x-play-button', function () {
-                var index = $(this).attr('data-index');
-                changeVideo(elements[index]);
-                demoplayer.play();
-            })
-
-        })
     </script>
 
 {% endblock %}
-
-{% block footer_content %}
-    {{ footer.render() }}
-{% endblock footer_content %}

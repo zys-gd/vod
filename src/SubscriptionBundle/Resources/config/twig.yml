@@ -1,0 +1,4 @@
+services:
+  SubscriptionBundle\Twig\SubscriptionStatusExtension:
+    tags:
+      - { name: twig.extension }
