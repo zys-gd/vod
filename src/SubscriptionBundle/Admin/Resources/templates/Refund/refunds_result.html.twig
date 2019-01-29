@@ -1,0 +1,88 @@
+{% extends '@SonataAdmin/standard_layout.html.twig' %}
+{% block sonata_page_content %}
+    <div class="col-xs-12 col-md-12">
+        <div class="container" style="margin-top: 20px;">
+            {% if unexistMsisdns %}
+                <div class="alert alert-danger">
+                    Cannot find the msisdns:
+
+                    {% for unexistMsisdn in unexistMsisdns %}
+                        {{ unexistMsisdn }},
+                    {% endfor %}
+                </div>
+            {% else %}
+
+                <div class="alert alert-success">
+                    All msisdns were successfully found!
+                </div>
+
+            {% endif %}
+            {% if usersWithoutProcesses %}
+                <div class="alert alert-danger">
+                    Users don't have processes to refund:
+
+                    {% for usersWithoutProcess in usersWithoutProcesses %}
+                        {{ usersWithoutProcess }},
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="box box-primary">
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-bordered table-striped sonata-ba-list">
+                    <thead>
+                    {% for header in headers %}
+                        <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
+                            {{ header }}
+                        </th>
+                    {% endfor %}
+                    </thead>
+                    {% for billableUser in billableUsers %}
+                        {% set i = 0 %}
+                        {% set rowspan = billableUser['processes']|length %}
+                        {% for process in billableUser['processes'] %}
+                            {% if(i==0) %}
+                                <tr>
+                                <td rowspan="{{ rowspan }}" class="sonata-ba-list-field sonata-ba-list-field-text">
+                                    {% if billableUser['msisdn'] %}
+                                        {{ billableUser['msisdn'] }}
+                                    {% endif %}
+                                </td>
+
+                            {% endif %}
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {% if process['status'] is defined%}
+                                    {{ process['status'] }}
+                                {% endif %}
+                            </td>
+
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {% if process['error'] is defined%}
+                                    {{ process['error'] }}
+                                {% endif %}
+                            </td>
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {% if process['charge_process_id'] is defined%}
+                                    {{ process['charge_process_id'] }}
+                                {% endif %}
+                            </td>
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {% if process['refund_process_id'] is defined%}
+                                    {{ process['refund_process_id'] }}
+                                {% endif %}
+                            </td>
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {% if process['refund_value'] is defined%}
+                                    {{ process['refund_value'] }}
+                                {% endif %}
+                            </td>
+                            </tr>
+                            {% set i = i + 1 %}
+                        {% endfor %}
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
