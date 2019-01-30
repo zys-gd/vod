@@ -10,6 +10,7 @@ namespace App\Controller;
 
 
 use App\CarrierTemplate\TemplateConfigurator;
+use App\Domain\Entity\UploadedVideo;
 use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\UploadedVideoRepository;
 use IdentificationBundle\Controller\ControllerWithIdentification;
@@ -44,7 +45,7 @@ class HomeController extends AbstractController implements AppControllerInterfac
      *
      * @param CarrierRepositoryInterface $carrierRepository
      * @param TemplateConfigurator       $templateConfigurator
-     * @param MainCategoryRepository         $mainCategoryRepository
+     * @param MainCategoryRepository     $mainCategoryRepository
      * @param UploadedVideoRepository    $videoRepository
      */
     public function __construct(
@@ -54,10 +55,10 @@ class HomeController extends AbstractController implements AppControllerInterfac
         UploadedVideoRepository $videoRepository
     )
     {
-        $this->carrierRepository    = $carrierRepository;
-        $this->templateConfigurator = $templateConfigurator;
-        $this->mainCategoryRepository   = $mainCategoryRepository;
-        $this->videoRepository      = $videoRepository;
+        $this->carrierRepository      = $carrierRepository;
+        $this->templateConfigurator   = $templateConfigurator;
+        $this->mainCategoryRepository = $mainCategoryRepository;
+        $this->videoRepository        = $videoRepository;
     }
 
 
@@ -69,15 +70,28 @@ class HomeController extends AbstractController implements AppControllerInterfac
      */
     public function indexAction(Request $request, ISPData $data)
     {
-        $carrier    = $this->carrierRepository->findOneByBillingId($data->getCarrierId());
-        $categories = $this->mainCategoryRepository->findAll();
-        $videos     = $this->videoRepository->findAll();
+        $carrier = $this->carrierRepository->findOneByBillingId($data->getCarrierId());
+        $videos  = $this->videoRepository->findAll();
+
+        $mappedData = [];
+        /** @var UploadedVideo[] $videos */
+        foreach ($videos as $video) {
+            $categoryTitle = $video->getSubcategory()->getParent()->getTitle();
+            $subcategory   = $video->getSubcategory()->getTitle();
+
+            $mappedData[$categoryTitle][$subcategory][$video->getUuid()] = [
+                'uuid'       => $video->getUuid(),
+                'title'      => $video->getTitle(),
+                'publicId'   => $video->getRemoteId(),
+                'thumbnails' => $video->getThumbnails()
+            ];
+        }
+
 
         return $this->render('@App/Common/home.html.twig', [
             'identificationData' => $request->getSession()->get('identification_data'),
             'templateHandler'    => $this->templateConfigurator->getTemplateHandler($carrier),
-            'categories'         => $categories,
-            'videos'             => $videos
+            'mappedData'         => $mappedData
         ]);
     }
 }
