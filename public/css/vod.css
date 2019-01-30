@@ -198,6 +198,7 @@ body {
 .show-video-modal .modal-content {
     background-color: #222222;
     padding: 12px;
+    border: none;
     border-radius: 0;
     height: 100%;
     width: 100%;
