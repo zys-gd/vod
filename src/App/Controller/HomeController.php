@@ -21,7 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class HomeController extends AbstractController implements AppControllerInterface, ControllerWithIdentification
+class HomeController extends AbstractController implements AppControllerInterface
 {
     /**
      * @var CarrierRepositoryInterface
@@ -73,25 +73,31 @@ class HomeController extends AbstractController implements AppControllerInterfac
         $carrier = $this->carrierRepository->findOneByBillingId($data->getCarrierId());
         $videos  = $this->videoRepository->findAll();
 
-        $mappedData = [];
+        $categories     = [];
+        $categoryVideos = [];
         /** @var UploadedVideo[] $videos */
         foreach ($videos as $video) {
-            $categoryTitle = $video->getSubcategory()->getParent()->getTitle();
-            $subcategory   = $video->getSubcategory()->getTitle();
+            $categoryEntity = $video->getSubcategory()->getParent();
+            $categoryKey    = $categoryEntity->getTitle();
 
-            $mappedData[$categoryTitle][$subcategory][$video->getUuid()] = [
+            $categoryVideos[$categoryKey][$video->getUuid()] = [
                 'uuid'       => $video->getUuid(),
                 'title'      => $video->getTitle(),
                 'publicId'   => $video->getRemoteId(),
                 'thumbnails' => $video->getThumbnails()
             ];
+
+            $categories[$categoryKey] = [
+                'uuid'  => $categoryEntity->getUuid(),
+                'title' => $categoryEntity->getTitle(),
+            ];
+
         }
 
-
         return $this->render('@App/Common/home.html.twig', [
-            'identificationData' => $request->getSession()->get('identification_data'),
-            'templateHandler'    => $this->templateConfigurator->getTemplateHandler($carrier),
-            'mappedData'         => $mappedData
+            'templateHandler' => $this->templateConfigurator->getTemplateHandler($carrier),
+            'categoryVideos'  => $categoryVideos,
+            'categories'      => $categories
         ]);
     }
 }

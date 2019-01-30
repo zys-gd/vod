@@ -1,9 +1,8 @@
 {% extends '@App/base.html.twig' %}
+
 {% import "@App/Components/Blocks/Header/header_main.html.twig" as  header %}
-{% import "@App/Components/Blocks/Footer/annotation.html.twig" as  footer %}
-{% import "@App/Components/Blocks/Main/slider.html.twig" as  slider %}
-{% import "@App/Components/Blocks/Main/elect.html.twig" as  elect %}
 {% import "@App/Components/Blocks/Main/subscription_status.html.twig" as  subscription_status %}
+{% import "@App/Components/player.html.twig" as  player %}
 
 {% block header_content %}
     {{ header.render() }}
@@ -12,281 +11,48 @@
 {% block body %}
     {{ subscription_status.render() }}
 
+
+    <div class="slider-block">
+        <div class="d-flex flex-row">
+            <div class="slider-title"></div>
+            <div class="slider-see-all-button"></div>
+        </div>
+        <div class="slider-content"></div>
+
+    </div>
+
     <div class="d-flex flex-column" style="width: 100%">
-        <div class="d-flex flex-column menu-block">
+        {% for category, videos in categoryVideos %}
 
-            <div class="category-select-description">
-                Category
-            </div>
-            {% for category,subcategories in mappedData %}
+            {% set categoryData = categories[category] %}
+            <div class="categories-block d-flex flex-column">
+                <div>
+                    <div class="categories-block-title">{{ category }}</div>
+                    <a href="{{ path('show_category',{'categoryUuid': categoryData.uuid}) }}">
+                        <div class="categories-see-all-button">See all</div>
+                    </a>
+                </div>
+                <div class="categories-block-title-underline"></div>
 
-                <div class="category-block">
-                    <div class="d-flex flex-row category-content-open-link">
-                        <div class="category-title">{{ category }}</div>
-                        <div class="category_header__arrow"></div>
-                    </div>
-
-                    <div class="category-content" style="display: none">
-                        {% for subcategory,videos in subcategories %}
-                        {% set defaultVideo = videos | first %}
-                        {% set relatedVideos = videos %}
-
-                        <div class="subcategory">
-                            <div class="d-flex flex-row subcategory-content-open-link">
-                                <div class="subcategory-title">{{ subcategory }}</div>
-                                <div></div>
-                            </div>
-                            <div class="subcategory-content" style="display: none">
-                                <div class="d-flex flex-column">
-                                    <div class="d-flex flex-column align-items-center justify-content-center">
-                                        {% for thumbnail in defaultVideo.thumbnails | slice(0,1) %}
-                                            <div style="width: 100%;">
-                                                <img src="{{ thumbnail }}"
-                                                     class="x-play-button"
-                                                     data-uuid="{{ defaultVideo.uuid }}"
-                                                     data-category="{{ category }}"
-                                                     data-subcategory="{{ subcategory }}"
-                                                     style="width: 100%;"/>
-                                            </div>
-                                        {% endfor %}
-                                        <div id="video-player-title" class="video-player-title">
-                                            {{ defaultVideo.title }}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="related-videos-section-container">
-                                    <div class="category__related_title-container d-flex flex-row align-items-center justify-content-center">
-
-                                        <div class="separator_left"></div>
-                                        <div class="category__related_title">
-                                            Related videos
-                                        </div>
-                                        <div class="separator_right"></div>
-                                    </div>
-
-                                    <div class="d-flex flex-column related-videos-block">
-                                        {% for video in videos | slice(1) %}
-                                            <div class="d-flex flex-row related-video">
-                                                <div class="related-video-thumbnail-wrapper">
-                                                    {% for thumbnail in video.thumbnails | slice(0,1) %}
-                                                        <img src="{{ thumbnail }}"
-                                                             class="x-play-button"
-                                                             data-uuid="{{ video.uuid }}"
-                                                             data-subcategory="{{ subcategory }}"
-                                                             data-category="{{ category }}"/>
-                                                    {% endfor %}
-                                                    <div class="category__related__box-play">
-
-                                                    </div>
-                                                </div>
-                                                <div class="related-video-title align-items-center d-flex">
-                                                    {{ video.title }}
-                                                </div>
-                                            </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
+                <div class="categories-content d-flex flex-row" style="flex-wrap: wrap">
+                    {% for video in videos | slice(0, 4) %}
+                        <div class="video-element x-play-button">
+                            <img src="{{ video.thumbnails[0] }}"
+                                 class="x-play-button"
+                                 width="100%"
+                                 data-uuid="{{ video.uuid }}"
+                                 data-category="{{ category }}"
+                            />
+                            <div class="video-element-title">{{ video.title }}</div>
                         </div>
-                    </div>
-
-
                     {% endfor %}
-                </div>
 
-            {% endfor %}
-
-
-            <div class="active-category-container"></div>
-
-
-        </div>
-    </div>
-
-
-    {{ slider.render() }}
-    {{ elect.render() }}
-
-
-    <script>
-        $(document).on('click', '.category-title', function () {
-            let elem = $(this);
-
-            $('.category-content').hide();
-            $('.category-title').removeClass('active');
-            elem.addClass('active');
-
-            var parent = elem.parents('.category-block');
-            parent.find('.category-content').show();
-
-        });
-
-        $(document).on('click', '.subcategory-title', function () {
-            $('.subcategory-content').hide();
-            var parent = $(this).parents('.subcategory');
-            var html   = parent.find('.subcategory-content').html();
-
-            $('.active-category-container').html(html);
-
-        });
-
-    </script>
-
-
-    {% if isSubscribed() %}
-        <script>
-
-            var videos = {{ mappedData | json_encode | raw }};
-
-            function makeCurrentlyPlaying(index) {
-                $('.modal-related-video').each(function () {
-                    var elementIndex = $(this).attr('data-uuid');
-
-                    if (index != elementIndex) {
-                        $(this).removeClass('currently-playing')
-                    } else {
-                        $(this).addClass('currently-playing')
-                    }
-                });
-            }
-
-
-            $(window).on('load', function () {
-
-                var cld        = cloudinary.Cloudinary.new({cloud_name: '{{ getCloudName() }}'});
-                var demoplayer = cld.videoPlayer('video-player-frame')
-                    .sourceTypes(['hls'])
-                    .transformation({streaming_profile: 'hd'});
-
-                var changeVideo = function (element) {
-                    demoplayer.source(element);
-                };
-
-                $(document).on('click', '.x-play-button', function () {
-
-                    $('.modal').modal();
-
-                    var index       = $(this).attr('data-uuid');
-                    var category    = $(this).attr('data-category');
-                    var subcategory = $(this).attr('data-subcategory');
-
-                    let videoElement  = videos[category][subcategory][index];
-                    let relatedVideos = videos[category][subcategory];
-
-                    changeVideo(videoElement);
-                    demoplayer.play();
-
-                    var source   = document.getElementById("related-videos-block-template").innerHTML;
-                    var template = Handlebars.compile(source);
-                    var html     = template({
-                        'videos'     : relatedVideos,
-                        'category'   : category,
-                        'subcategory': subcategory,
-                        'current'    : videoElement,
-                    });
-                    $('.modal-related-videos-block').html(html);
-                });
-
-                $(document).on('click', '.x-modal-play-button', function () {
-                    var index       = $(this).attr('data-uuid');
-                    var category    = $(this).attr('data-category');
-                    var subcategory = $(this).attr('data-subcategory');
-
-                    let videoElement = videos[category][subcategory][index];
-
-                    changeVideo(videoElement);
-                    makeCurrentlyPlaying(index);
-                    demoplayer.play();
-
-                });
-
-                $(document).on('click', '.x-close-modal-button', function () {
-                    $('.modal').modal('hide');
-
-                });
-
-                $(document).on('hide.bs.modal', '.show-video-modal', function () {
-                    demoplayer.stop();
-                })
-
-
-            })
-        </script>
-    {% else %}
-        <script>
-            $(document).on('click', '.x-play-button', function () {
-                window.location = '{{ path('landing') }}'
-            })
-        </script>
-    {% endif %}
-
-    <div class="modal show-video-modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="d-flex flex-column">
-
-
-                        <div class="close-modal-button-container x-close-modal-button">
-                            <div class="close-modal-button"></div>
-                            <div class="close-modal-button-text">Close</div>
-                        </div>
-
-                        <div style="">
-                            <video id="video-player-frame" controls muted
-                                   class="cld-video-player cld-fluid"></video>
-                        </div>
-
-
-                        <div class="d-flex flex-column">
-                            <div class="justify-content-center d-flex">
-                                Related videos
-                            </div>
-                            <div class="modal-related-videos-block"></div>
-                        </div>
-
-                    </div>
 
                 </div>
             </div>
-        </div>
+        {% endfor %}
     </div>
-    <script>
-        Handlebars.registerHelper('ifEquals', function (arg1, arg2, options) {
-            return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
-        });
 
-        Handlebars.registerHelper('ifNotEquals', function (arg1, arg2, options) {
-            return (arg1 != arg2) ? options.fn(this) : options.inverse(this);
-        });
-
-    </script>
-    <script id="related-videos-block-template" type="text/x-handlebars">
-        {% verbatim %}
-
-            {{#each videos}}
-                <div class="d-flex flex-row modal-related-video {{#ifEquals uuid ../current.uuid}}currently-playing{{/ifEquals}}" data-uuid="{{ uuid }}">
-                    <div>
-                        {{#each thumbnails}}
-                            {{#if @first}}
-                                <img src="{{ this }}"
-                                    class="x-modal-play-button"
-                                    style="width: 175px"
-                                    data-uuid="{{ ../uuid }}"
-                                    data-category="{{ ../../category }}"
-                                    data-subcategory="{{ ../../subcategory }}"
-                                />
-                            {{/if}}
-                        {{/each}}
-                    </div>
-                    <div class="align-items-center d-flex modal-related-video-title">
-                        {{ title }}
-                    </div>
-                </div>
-            {{/each}}
-        {% endverbatim %}
-
-    </script>
+    {{ player.render(categoryVideos) }}
 
 {% endblock %}

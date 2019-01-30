@@ -12,3 +12,8 @@ services:
             - '@session'
             - '@kernel'
             - '@ExtrasBundle\Utils\LocalExtractor'
+            -
+    App\Twig\NavbarExtension:
+        arguments: ['@App\Domain\Repository\MainCategoryRepository', '@router']
+        tags:
+            - { name: twig.extension }

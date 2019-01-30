@@ -1,0 +1,148 @@
+{% macro render(videos) %}
+
+    <div class="modal show-video-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="d-flex flex-column">
+
+                        <div class="close-modal-button-container x-close-modal-button">
+                            <div class="close-modal-button"></div>
+                            <div class="close-modal-button-text">Close</div>
+                        </div>
+
+                        <div style="">
+                            <video id="video-player-frame" controls muted
+                                   class="cld-video-player cld-fluid"></video>
+                        </div>
+
+                        <div class="d-flex flex-column">
+                            <div class="justify-content-center d-flex">
+                                Related videos
+                            </div>
+                            <div class="modal-related-videos-block"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        Handlebars.registerHelper('ifEquals', function (arg1, arg2, options) {
+            return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
+        });
+
+        Handlebars.registerHelper('ifNotEquals', function (arg1, arg2, options) {
+            return (arg1 != arg2) ? options.fn(this) : options.inverse(this);
+        });
+
+    </script>
+    <script id="related-videos-block-template" type="text/x-handlebars">
+        {% verbatim %}
+
+            {{#each videos}}
+                <div class="d-flex flex-row modal-related-video {{#ifEquals uuid ../current.uuid}}currently-playing{{/ifEquals}}" data-uuid="{{ uuid }}">
+                    <div>
+                        {{#each thumbnails}}
+                            {{#if @first}}
+                                <img src="{{ this }}"
+                                    class="x-modal-play-button"
+                                    style="width: 175px"
+                                    data-uuid="{{ ../uuid }}"
+                                    data-category="{{ ../../category }}"
+                                />
+                            {{/if}}
+                        {{/each}}
+                    </div>
+                    <div class="align-items-center d-flex modal-related-video-title">
+                        {{ title }}
+                    </div>
+                </div>
+            {{/each}}
+        {% endverbatim %}
+
+    </script>
+
+    {% if isSubscribed() %}
+        <script>
+
+            var videos = {{ videos | json_encode | raw }};
+
+            function makeCurrentlyPlaying(index) {
+                $('.modal-related-video').each(function () {
+                    var elementIndex = $(this).attr('data-uuid');
+
+                    if (index != elementIndex) {
+                        $(this).removeClass('currently-playing')
+                    } else {
+                        $(this).addClass('currently-playing')
+                    }
+                });
+            }
+
+
+            $(window).on('load', function () {
+
+                var cld        = cloudinary.Cloudinary.new({cloud_name: '{{ getCloudName() }}'});
+                var demoplayer = cld.videoPlayer('video-player-frame')
+                    .sourceTypes(['hls'])
+                    .transformation({streaming_profile: 'hd'});
+
+                var changeVideo = function (element) {
+                    demoplayer.source(element);
+                };
+
+                $(document).on('click', '.x-play-button', function () {
+
+                    $('.modal').modal();
+
+                    var index       = $(this).attr('data-uuid');
+                    var category    = $(this).attr('data-category');
+
+                    let videoElement  = videos[category][index];
+                    let relatedVideos = videos[category];
+
+                    changeVideo(videoElement);
+                    demoplayer.play();
+
+                    var source   = document.getElementById("related-videos-block-template").innerHTML;
+                    var template = Handlebars.compile(source);
+                    var html     = template({
+                        'videos'     : relatedVideos,
+                        'category'   : category,
+                        'current'    : videoElement,
+                    });
+                    $('.modal-related-videos-block').html(html);
+                });
+
+                $(document).on('click', '.x-modal-play-button', function () {
+                    var index       = $(this).attr('data-uuid');
+                    var category    = $(this).attr('data-category');
+
+                    let videoElement = videos[category][index];
+
+                    changeVideo(videoElement);
+                    makeCurrentlyPlaying(index);
+                    demoplayer.play();
+
+                });
+
+                $(document).on('click', '.x-close-modal-button', function () {
+                    $('.modal').modal('hide');
+                });
+
+                $(document).on('hide.bs.modal', '.show-video-modal', function () {
+                    demoplayer.stop();
+                })
+            })
+        </script>
+    {% else %}
+        <script>
+            $(document).on('click', '.x-play-button', function () {
+                window.location = '{{ path('landing') }}'
+            })
+        </script>
+    {% endif %}
+
+{% endmacro %}

@@ -95,7 +95,7 @@ class MainCategory
     }
 
     /**
-     * @return Collection
+     * @return Subcategory[]|Collection
      */
     public function getSubcategories(): Collection
     {

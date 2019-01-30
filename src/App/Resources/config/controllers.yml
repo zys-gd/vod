@@ -29,3 +29,9 @@ services:
     App\Controller\ErrorController:
       arguments:
         - '@IdentificationBundle\Identification\Service\CarrierSelector'
+
+    App\Controller\CategoryController:
+      arguments:
+        - '@App\Domain\Repository\MainCategoryRepository'
+        - '@App\Domain\Repository\UploadedVideoRepository'
+        - '@App\Domain\Repository\SubcategoryRepository'

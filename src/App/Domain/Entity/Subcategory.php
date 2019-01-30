@@ -108,7 +108,7 @@ class Subcategory implements JsonSerializable
     }
 
     /**
-     * @return Subcategory | null
+     * @return MainCategory
      */
     public function getParent(): ?MainCategory
     {
