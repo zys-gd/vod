@@ -60,7 +60,10 @@ class CategoryController extends AbstractController
         $subcategories = $this->subcategoryRepository->findBy(['parent' => $category]);
 
         if ($subcategoryUuid = $request->get('subcategoryUuid', '')) {
-            $selectedSubcategory = $this->subcategoryRepository->findOneBy(['parent' => $category, 'uuid' => $subcategoryUuid]);
+            $selectedSubcategory = $this->subcategoryRepository->findOneBy([
+                'parent' => $category,
+                'uuid'   => $subcategoryUuid
+            ]);
             $videos              = $this->uploadedVideoRepository->findBy(['subcategory' => $selectedSubcategory]);
         } else {
             $videos = $this->uploadedVideoRepository->findBy(['subcategory' => $subcategories]);

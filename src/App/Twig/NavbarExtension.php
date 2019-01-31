@@ -64,7 +64,6 @@ class NavbarExtension extends \Twig_Extension
                         'subitems' => $subitems
                     ];
                 }
-
                 return $result;
 
             })

@@ -1,0 +1,62 @@
+
+.x-play-button, .x-close-modal-button, .x-modal-play-button {
+    cursor: pointer;
+}
+
+.close-modal-button-container {
+    margin-bottom: 2px;
+}
+
+.close-modal-button-text {
+    float: right;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.close-modal-button {
+    float: right;
+    width: 25px;
+    height: 25px;
+    background-image: url(../img/close_icon.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+
+.show-video-modal .modal {
+    padding-right: 0;
+
+}
+
+.show-video-modal .modal-dialog {
+    padding-right: 0 !important;
+    margin: 0;
+    height: 100%;
+    color: white;
+
+
+}
+
+.show-video-modal .modal-content {
+    background-color: #222222;
+    padding: 12px;
+    border: none;
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+}
+
+
+.show-video-modal .modal-body {
+    padding: 1px;
+}
+
+
+.modal-related-video.currently-playing {
+    border: 1px solid #F36A0E;
+}
+
+
+.modal-related-video .modal-related-video-title {
+    padding-left: 3px;
+}
