@@ -1,16 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Admin
- * Date: 5/14/2018
- * Time: 10:32 AM
- */
 
-namespace App\Admin\Sonata;
+namespace SubscriptionBundle\Admin\Sonata;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Form\FormMapper;
-use Doctrine\ORM\EntityRepository;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 
@@ -22,8 +14,7 @@ class RefundAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id')
-            ->add('billableUser.identifier')
+            ->add('user.identifier')
             ->add('status')
             ->add('error')
             ->add('bf_charge_process_id')
@@ -38,8 +29,7 @@ class RefundAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('id')
-            ->add('billableUser.identifier')
+            ->add('user.identifier')
             ->add('status')
             ->add('error');
     }

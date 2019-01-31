@@ -1,0 +1,16 @@
+{% extends '@SonataAdmin/standard_layout.html.twig' %}
+{% block sonata_page_content %}
+    <div class="box box-primary" style="height: 13em;">
+        <div class="box-body">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+
+                    <input type="submit" class="btn btn-primary" value="Refund users" style="margin-top: 10px;"/>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

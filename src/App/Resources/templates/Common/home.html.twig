@@ -90,6 +90,6 @@
             {% endfor %}
         </div>
     </div>
-    {{ player.render(categoryVideos) }}
+    {{ player.render(categoryVideos|merge(sliderVideos)) }}
 
 {% endblock %}

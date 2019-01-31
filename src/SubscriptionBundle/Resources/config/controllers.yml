@@ -64,3 +64,10 @@ services:
             - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
             - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
             - '@IdentificationBundle\Identification\Service\UserFactory'
+
+    SubscriptionBundle\Admin\Controller\SubscriptionPackAdminController:
+        calls: [['setContainer', ['@service_container']]]
+
+    SubscriptionBundle\Admin\Controller\RefundAdminController:
+        tags: ['controller.service_arguments']
+        arguments: ['@form.factory', '@SubscriptionBundle\Service\RefundService']

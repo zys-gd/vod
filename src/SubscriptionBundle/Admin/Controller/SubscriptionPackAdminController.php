@@ -6,7 +6,7 @@
  * Time: 14:26
  */
 
-namespace SubscriptionBundle\Controller;
+namespace SubscriptionBundle\Admin\Controller;
 
 
 use Sonata\AdminBundle\Controller\CRUDController;

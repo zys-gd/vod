@@ -73,6 +73,9 @@ services:
     SubscriptionBundle\Service\UserExtractor:
         arguments: ['@router.default', '@logger', '@IdentificationBundle\Repository\UserRepository']
 
+    SubscriptionBundle\Service\RefundService:
+        arguments: ['@doctrine.orm.entity_manager', '@SubscriptionBundle\BillingFramework\Process\API\Client']
+
 parameters:
     subscription.subscription.class: SubscriptionBundle\Entity\SubscriptionPack
     guzzle.client.class: GuzzleHttp\Client

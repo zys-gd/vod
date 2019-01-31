@@ -11,6 +11,8 @@
     float: right;
     font-weight: bold;
     font-size: 22px;
+    line-height: 26px;
+    margin-right: 4px;
 }
 
 .close-modal-button {
@@ -23,6 +25,8 @@
 }
 
 
+.show-video-modal{
+}
 .show-video-modal .modal {
     padding-right: 0;
 
@@ -38,7 +42,7 @@
 }
 
 .show-video-modal .modal-content {
-    background-color: #222222;
+    background-color: black;
     padding: 12px;
     border: none;
     border-radius: 0;
@@ -53,15 +57,34 @@
 
 
 .modal-related-video.currently-playing {
-    border: 1px solid #F36A0E;
+    border: 1px solid #ce1e25;
 }
 
 
 .modal-related-video .modal-related-video-title {
-    padding-left: 3px;
+    padding-left: 6px;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 14px;
 }
 
 .modal-related-videos-block {
     overflow-y: scroll;
-    max-height: 350px;
+    max-height: 295px;
+}
+.modal-related-video-thumbnail-wrapper{
+    position: relative;
+}
+.modal-related-video-section-title-block{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.modal-related-video-section-title-text{
+    text-align: center;
+    font-weight: 800;
+    text-transform: uppercase;
+
+    font-style: italic;
+    font-size: 17px;
+    width: 60%;
 }
