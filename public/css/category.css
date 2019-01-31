@@ -1,0 +1,129 @@
+
+.category__related__box-play {
+    position: absolute;
+    background-image: url(../img/play-icon-big.png);
+    height: 30px;
+    width: 30px;
+    bottom: 0;
+    right: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.category-select-description {
+    font-size: 15px;
+    font-style: italic;
+    font-weight: 500;
+    padding-left: 3px;
+}
+
+.related-video-thumbnail-wrapper {
+    position: relative;
+    width: 50%;
+}
+
+.related-video-thumbnail-wrapper > img {
+    width: 100%;
+}
+
+.related-videos-section-container {
+    padding: 3px;
+}
+
+
+.subcategory-title.active > a,
+.category-title.active > a {
+    color: #d40407;
+}
+
+.category-block {
+    margin-bottom: 15px;
+}
+
+.subcategory-title > a,
+.category-title > a {
+    cursor: pointer;
+    color: #212529;
+    font-size: 25px;
+    font-weight: 800;
+    font-style: italic;
+    line-height: 25px;
+    text-transform: uppercase;
+    padding-left: 3px;
+    border-bottom: 1px solid #c5c5c5;
+    text-decoration: none;
+}
+
+.related-videos-block {
+
+    padding: 3px;
+}
+
+.related-videos-block .related-video {
+
+}
+
+.related-videos-block .related-video .related-video-title {
+    background-color: #eaeaea;
+    width: 50%;
+    font-weight: 600;
+}
+
+
+.category_header__arrow {
+    background-image: url(../img/home/arrow-down.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
+    height: 100%;
+    margin-left: auto;
+
+    display: none;
+
+}
+
+.category-content-open-link {
+    padding-right: 8px;
+    padding-bottom: 2px;
+}
+
+.category__related_title {
+    text-align: center;
+    width: 60%;
+}
+
+.separator_left {
+    background: url(../img/home/separator-left.png) left center no-repeat;
+    height: 10px;
+    width: 20%;
+    margin-left: auto;
+    background-size: contain;
+
+}
+
+.separator_right {
+    background: url(../img/home/separator-right.png) right center no-repeat;
+    height: 10px;
+    width: 20%;
+    margin-right: auto;
+    background-size: contain;
+}
+
+.category__related_title-container {
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: 800;
+    font-style: italic;
+    margin-bottom: 20px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+
+.video-player-title {
+    font-size: 25px;
+    font-weight: 500;
+    margin-top: 5px;
+    line-height: 25px;
+}
+

@@ -4,7 +4,7 @@
 }
 
 .terms_and_conditions_disclaimer, .terms_and_conditions_container h1, h2 {
-    font-size: 28pt;
+    font-size: 22px;
 }
 
 .terms_and_conditions_container h1 {
@@ -16,5 +16,9 @@
 }
 
 .terms_and_conditions_container p {
-    font-size: 22pt;
+    font-size: 20px;
+}
+
+.terms_and_conditions__header-title_content .terms-and-conditions-link{
+    color: #212529;
 }

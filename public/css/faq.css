@@ -11,11 +11,12 @@
 }
 
 .faq-accordion_card_header_button {
-    width: 44px;
-    height: 44px;
+    width: 33px;
+    height: 33px;
     cursor: pointer;
     background-repeat: no-repeat;
     background-position: center;
+    background-size: contain;
 }
 
 .faq-accordion_card_header_button__plus {
@@ -28,24 +29,21 @@
 
 .faq-accordion_card_header_title {
     font-family: "Kanit-Medium", sans-serif;
-    font-size: 28pt;
+    font-size: 18px;
     text-transform: uppercase;
     width: 100%
 }
 
 .faq-accordion_card_body {
     background-color: #f2f2f2;
-    margin-left: calc(8.333% + 35px);
-    margin-right: 50px;
     border-bottom: 5px solid #c5c3c3;
     font-family: 'Kanit-Regular', sans-serif;
-    font-size: 32pt;
+    font-size: 16px;
     margin-bottom: 30px;
 }
 
 .faq-accordion_card__delimiter {
     background-image: url(/img/pages/faq/faq_delimiter_line.png);
-    margin-left: calc(8.333% + 35px);
     height: 5px;
-    width: 440px;
+    width: 100%;
 }

@@ -1,4 +1,6 @@
-{% macro render() %}
+{% macro render(header_page_title) %}
+
+
 
     {% import "@App/Components/Blocks/Header/navbar.html.twig" as  navbar %}
 
@@ -19,12 +21,13 @@
             </a>
         </div>
 
-        <div class="d-flex align-items-center justify-content-center header-title_container">
-            <div class="text-center header-title_content terms_and_conditions__header-title_content">
-                100% Sport<br/>
-                Terms and Conditions
+        {% if header_page_title %}
+            <div class="d-flex align-items-center justify-content-center header-title_container">
+                <div class="text-center header-title_content terms_and_conditions__header-title_content">
+                    {{ header_page_title | raw }}
+                </div>
             </div>
-        </div>
+        {% endif %}
 
         {% if isSubscribed() %}
             <div class="d-flex align-items-center justify-content-center header-page-subscription_container">

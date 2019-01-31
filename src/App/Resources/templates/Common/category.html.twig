@@ -6,6 +6,12 @@
 {% import "@App/Components/Blocks/Main/subscription_status.html.twig" as  subscription_status %}
 {% import "@App/Components/player.html.twig" as  player %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('/css/category.css') }}" rel="stylesheet">
+{% endblock %}
+
+
 {% block header_content %}
     {{ header.render() }}
 {% endblock header_content %}

@@ -1,16 +1,18 @@
-{% extends '@App/Layout/main.html.twig' %}
+{% extends '@App/base.html.twig' %}
+{% import "@App/Components/Blocks/Header/header_main.html.twig" as  header %}
+
 
 {% block stylesheets %}
     {{ parent() }}
     <link href="{{ asset('/css/faq.css') }}" rel="stylesheet">
 {% endblock %}
 
-{% block header_page_subscription_container %}
-{% endblock %}
 
-{% block header_page_title %}
-    FAQ
-{% endblock %}
+
+{% block header_content %}
+    {{ header.render('FAQ') }}
+{% endblock header_content %}
+
 
 {% block body %}
     <div class="w-100 accordion" id="accordionExample">
