@@ -1,7 +1,18 @@
 {% macro render(aMenuLinks) %}
-    <ul>
+    <div class="d-flex justify-content-around footer-menu">
         {% for menuLink in aMenuLinks %}
-            <li><a href="{{ menuLink.link }}">{{ menuLink.title }}</a></li>
+            <a class="footer-menu_link" href="{{ menuLink.link }}">
+                <button>{{ menuLink.title }}</button>
+            </a>
         {% endfor %}
-    </ul>
+        <a class="col footer-menu_link" href="{{ path('faq') }}">
+            <button>{{ translate('menu.footer.contact_us') }}</button>
+        </a>
+        <a class="col footer-menu_link" href="{{ path('faq') }}">
+            <button>{{ translate('menu.footer.faq') }}</button>
+        </a>
+        <a class="col footer-menu_link" href="{{ path('terms_and_conditions') }}">
+            <button>{{ translate('menu.footer.terms') }}</button>
+        </a>
+    </div>
 {% endmacro render %}

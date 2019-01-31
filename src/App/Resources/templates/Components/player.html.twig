@@ -66,7 +66,7 @@
 
     </script>
 
-    {% if isSubscribed() %}
+    {% if hasActiveSubscription() %}
         <script>
 
             var videos = {{ videos | json_encode | raw }};
