@@ -237,7 +237,7 @@ a button {
 .categories-block-title-underline {
     background: url(../img/home/separator-left.png) left center no-repeat;
     height: 3px;
-    width: 20%;
+    width: 50%;
     background-size: contain;
     margin-bottom: 15px;
 
@@ -245,15 +245,43 @@ a button {
 
 .video-element-title {
     padding: 8px;
+    text-transform: uppercase;
 }
 
 .video-element {
     background-color: #ebebeb;
     width: 49%;
     margin-bottom: 8px;
-    border-bottom: 4px solid silver;
+    border-bottom: 2px solid silver;
 }
 
-.homepage-container{
+.homepage-container {
     padding-top: 15px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.slider-content .categories-content{
+    overflow-x: scroll;
+}
+.slider-content .categories-content::-webkit-scrollbar {
+    display: none;
+}
+.slider-content .video-element{
+    flex: 0 0 auto;
+    width: 70%;
+    margin-right: 2%;
+}
+.category__related__box-play {
+    position: absolute;
+    background-image: url(../img/play-icon-big.png);
+    height: 30px;
+    width: 30px;
+    bottom: 0;
+    right: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+.thumbnail-wrapper{
+    position: relative;
 }

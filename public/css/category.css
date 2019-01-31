@@ -1,14 +1,4 @@
 
-.category__related__box-play {
-    position: absolute;
-    background-image: url(../img/play-icon-big.png);
-    height: 30px;
-    width: 30px;
-    bottom: 0;
-    right: 0;
-    background-size: contain;
-    background-repeat: no-repeat;
-}
 
 .category-select-description {
     font-size: 15px;

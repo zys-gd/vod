@@ -19,7 +19,38 @@
                 <div class="slider-title"></div>
                 <div class="slider-see-all-button"></div>
             </div>
-            <div class="slider-content"></div>
+            <div class="slider-content">
+                {% for category, videos in sliderVideos %}
+
+                    {% set categoryData = categories[category] %}
+                    <div class="categories-block d-flex flex-column">
+                        <div>
+                            <div class="categories-block-title">{{ category }}</div>
+                            <a href="{{ path('show_category',{'categoryUuid': categoryData.uuid}) }}">
+                                <div class="categories-see-all-icon"></div>
+                                <div class="categories-see-all-button">See all</div>
+                            </a>
+                        </div>
+                        <div class="categories-block-title-underline"></div>
+
+                        <div class="categories-content d-flex flex-row"
+                             style="justify-content: space-between;">
+                            {% for video in videos %}
+                                <div class="video-element x-play-button">
+                                    <img src="{{ video.thumbnails[0] }}"
+                                         class="x-play-button"
+                                         width="100%"
+                                         data-uuid="{{ video.uuid }}"
+                                         data-category="{{ category }}"
+                                    />
+                                    <div class="video-element-title">{{ video.title }}</div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
 
         </div>
 
@@ -40,17 +71,19 @@
                     <div class="categories-content d-flex flex-row"
                          style="flex-wrap: wrap;justify-content: space-between;">
                         {% for video in videos | slice(0, 4) %}
-                            <div class="video-element x-play-button">
-                                <img src="{{ video.thumbnails[0] }}"
-                                     class="x-play-button"
-                                     width="100%"
-                                     data-uuid="{{ video.uuid }}"
-                                     data-category="{{ category }}"
-                                />
+                            <div class="video-element">
+                                <div class="thumbnail-wrapper x-play-button">
+                                    <img src="{{ video.thumbnails[0] }}"
+                                         class="x-play-button"
+                                         width="100%"
+                                         data-uuid="{{ video.uuid }}"
+                                         data-category="{{ category }}"
+                                    />
+                                    <div class="category__related__box-play"></div>
+                                </div>
                                 <div class="video-element-title">{{ video.title }}</div>
                             </div>
                         {% endfor %}
-
 
                     </div>
                 </div>

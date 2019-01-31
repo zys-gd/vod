@@ -13,13 +13,12 @@ use App\CarrierTemplate\TemplateConfigurator;
 use App\Domain\Entity\UploadedVideo;
 use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\UploadedVideoRepository;
-use IdentificationBundle\Controller\ControllerWithIdentification;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController implements AppControllerInterface
 {
@@ -75,17 +74,25 @@ class HomeController extends AbstractController implements AppControllerInterfac
 
         $categories     = [];
         $categoryVideos = [];
+        $sliderVideos   = [];
         /** @var UploadedVideo[] $videos */
         foreach ($videos as $video) {
             $categoryEntity = $video->getSubcategory()->getParent();
             $categoryKey    = $categoryEntity->getTitle();
 
-            $categoryVideos[$categoryKey][$video->getUuid()] = [
+            $videoData = [
                 'uuid'       => $video->getUuid(),
                 'title'      => $video->getTitle(),
                 'publicId'   => $video->getRemoteId(),
                 'thumbnails' => $video->getThumbnails()
             ];
+
+
+            if ($categoryEntity->getUuid() === '15157409-49a4-4823-a7f9-654ac1d7c12f') {
+                $sliderVideos[$categoryKey][$video->getUuid()] = $videoData;
+            } else {
+                $categoryVideos[$categoryKey][$video->getUuid()] = $videoData;
+            }
 
             $categories[$categoryKey] = [
                 'uuid'  => $categoryEntity->getUuid(),
@@ -97,7 +104,8 @@ class HomeController extends AbstractController implements AppControllerInterfac
         return $this->render('@App/Common/home.html.twig', [
             'templateHandler' => $this->templateConfigurator->getTemplateHandler($carrier),
             'categoryVideos'  => $categoryVideos,
-            'categories'      => $categories
+            'categories'      => $categories,
+            'sliderVideos'    => $sliderVideos
         ]);
     }
 }
