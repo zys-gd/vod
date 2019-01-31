@@ -1,5 +1,4 @@
 
-
 .category-select-description {
     font-size: 15px;
     font-style: italic;
@@ -9,7 +8,7 @@
 
 .related-video-thumbnail-wrapper {
     position: relative;
-    width: 50%;
+    width: 35%;
 }
 
 .related-video-thumbnail-wrapper > img {
@@ -23,7 +22,7 @@
 
 .subcategory-title.active > a,
 .category-title.active > a {
-    color: #d40407;
+    color: #ff232b;
 }
 
 .category-block {
@@ -40,36 +39,43 @@
     line-height: 25px;
     text-transform: uppercase;
     padding-left: 3px;
-    border-bottom: 1px solid #c5c5c5;
     text-decoration: none;
 }
 
 .related-videos-block {
 
-    padding: 3px;
+    padding: 8px;
 }
 
 .related-videos-block .related-video {
-
+    margin-bottom: 6px;
 }
 
 .related-videos-block .related-video .related-video-title {
     background-color: #eaeaea;
-    width: 50%;
-    font-weight: 600;
+    width: 65%;
+    font-weight: 500;
+    border-bottom: 1px solid black;
+    padding: 8px;
+    font-size: 15px;
+    text-transform: uppercase;
+    line-height: 15px;
 }
 
+.category-block.expanded .category_header__arrow{
 
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+
+}
 .category_header__arrow {
     background-image: url(../img/home/arrow-down.png);
     background-repeat: no-repeat;
     background-size: contain;
     cursor: pointer;
-    height: 100%;
     margin-left: auto;
-
-    display: none;
-
+    height: 21px;
+    width: 35px;
 }
 
 .category-content-open-link {
@@ -79,6 +85,7 @@
 
 .category__related_title {
     text-align: center;
+    font-size: 17px;
     width: 60%;
 }
 
@@ -111,9 +118,13 @@
 
 
 .video-player-title {
-    font-size: 25px;
+    font-size: 21px;
     font-weight: 500;
     margin-top: 5px;
-    line-height: 25px;
+    line-height: 21px;
 }
 
+
+.menu-block {
+    padding: 3px;
+}

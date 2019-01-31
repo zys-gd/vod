@@ -20,37 +20,40 @@
     {{ subscription_status.render() }}
 
     <div class="d-flex flex-column" style="width: 100%">
-        <div class="d-flex flex-column menu-block">
+        <div class="d-flex flex-column ">
 
-            <div class="category-select-description">
-                Category
-            </div>
+            <div class="menu-block">
 
-            <div class="category-block">
-                <div class="d-flex flex-row category-content-open-link">
-                    <div class="category-title">
-                        <a href="{{ path('show_category',{'categoryUuid':category.uuid}) }}">
-                            {{ category.title }}
-                        </a>
-                    </div>
-                    <div class="category_header__arrow"></div>
+                <div class="category-select-description">
+                    Category
                 </div>
 
-                <div class="category-content">
-                    {% for subcategory in subcategories %}
-                    <div class="subcategory">
-                        <div class="d-flex flex-row subcategory-content-open-link">
-                            <div class="subcategory-title {% if selectedSubcategory and selectedSubcategory.uuid == subcategory.uuid %}active{% endif %}">
-                                <a href="{{ path('show_category',{'categoryUuid':category.uuid,'subcategoryUuid':subcategory.uuid}) }}">
-                                    {{ subcategory.title }}
-                                </a>
+                <div class="category-block">
+                    <div class="d-flex flex-row category-content-open-link x-show-subcategory-button">
+                        <div class="category-title {% if not selectedSubcategory %}active{% endif %}">
+                            <a href="{{ path('show_category',{'categoryUuid':category.uuid}) }}">
+                                {{ category.title }}
+                            </a>
+                        </div>
+                        <div class="category_header__arrow"></div>
+                    </div>
+
+                    <div class="category-content" {% if not selectedSubcategory %}style="display:none;"{% endif %}>
+                        {% for subcategory in subcategories %}
+                        <div class="subcategory">
+                            <div class="d-flex flex-row subcategory-content-open-link">
+                                <div class="subcategory-title {% if selectedSubcategory and selectedSubcategory.uuid == subcategory.uuid %}active{% endif %}">
+                                    <a href="{{ path('show_category',{'categoryUuid':category.uuid,'subcategoryUuid':subcategory.uuid}) }}">
+                                        {{ subcategory.title }}
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
+
+
+                    {% endfor %}
                 </div>
-
-
-                {% endfor %}
             </div>
 
 
@@ -117,7 +120,20 @@
     {{ elect.render() }}
 
 
+    <script>
+        $(document).on('click', '.x-show-subcategory-button', function (e) {
+            var elem = $(this);
 
+            var parent = elem.parents('.category-block');
+
+            parent.find('.category-content').toggle();
+
+            parent.toggleClass('expanded');
+
+            e.preventDefault();
+            e.stopPropagation();
+        })
+    </script>
 
 
 {% endblock %}
