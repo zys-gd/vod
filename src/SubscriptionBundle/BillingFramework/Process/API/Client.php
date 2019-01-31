@@ -80,6 +80,21 @@ class Client
     }
 
     /**
+     * @param string $method
+     * @param array $options
+     *
+     * @return stdClass|stdClass[]|null
+     *
+     * @throws BillingFrameworkException
+     * @throws BillingFrameworkProcessException
+     */
+    public function sendGetRequest(string $method, array $options = [])
+    {
+        $url = $this->billingFrameworkLinkCreator->createProcessLink($method, $options);
+        return $this->performGetRequest($url);
+    }
+
+    /**
      * @param ResponseInterface $response
      * @return null | stdClass | stdClass[]
      */

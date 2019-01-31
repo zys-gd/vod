@@ -9,6 +9,10 @@ use IdentificationBundle\Entity\User;
  */
 class Refund
 {
+    const STATUS_SUCCESSFUL = 'successful';
+    const STATUS_WAITING_PAYMENT = 'waiting_payment';
+    const STATUS_FAILED = 'failed';
+
     /**
      * @var string
      */
@@ -128,19 +132,19 @@ class Refund
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getError(): string
+    public function getError(): ?string
     {
         return $this->error;
     }
 
     /**
-     * @param string $error
+     * @param string|null $error
      *
      * @return Refund
      */
-    public function setError(string $error): self
+    public function setError(?string $error): self
     {
         $this->error = $error;
 
@@ -188,9 +192,9 @@ class Refund
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getRefundValue(): int
+    public function getRefundValue(): ?int
     {
         return $this->refundValue;
     }

@@ -26,18 +26,13 @@ services:
             - '@SubscriptionBundle\BillingFramework\Process\API\RequestSender'
             - '@logger'
 
+    SubscriptionBundle\BillingFramework\Notification\API\MessageCreator:
+        arguments: ['@logger', '@router']
+
     SubscriptionBundle\BillingFramework\Process\UnsubscribeProcess:
         arguments:
             - '@logger'
             - '@SubscriptionBundle\BillingFramework\Process\API\RequestSender'
-
-    SubscriptionBundle\BillingFramework\Process\RefundProcess:
-        arguments:
-            - '@SubscriptionBundle\BillingFramework\Process\API\RequestSender'
-            - '@logger'
-
-    SubscriptionBundle\BillingFramework\Notification\API\MessageCreator:
-        arguments: ['@logger', '@router']
 
     SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper: ~
 

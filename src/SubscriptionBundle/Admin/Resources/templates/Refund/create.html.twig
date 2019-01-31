@@ -3,11 +3,6 @@
     <div class="box box-primary" style="height: 13em;">
         <div class="box-body">
             <div class="col-sm-6">
-                {% if error %}
-                    <div class="alert alert-danger">
-                        {{ error }}
-                    </div>
-                {% endif %}
                 <div class="form-group">
                     {{ form_start(form) }}
                     {{ form_widget(form) }}

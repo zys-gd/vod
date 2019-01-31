@@ -70,4 +70,4 @@ services:
 
     SubscriptionBundle\Admin\Controller\RefundAdminController:
         tags: ['controller.service_arguments']
-        arguments: ['@form.factory']
+        arguments: ['@form.factory', '@SubscriptionBundle\Service\RefundService']
