@@ -85,7 +85,7 @@ class CloudinaryConnector
      */
     public function getThumbnails(string $publicId): array
     {
-        $transformation = [['width' => 250, 'crop' => 'scale']];
+        $transformation = [['width' => 375, 'crop' => 'scale']];
 
         return [
             cl_video_thumbnail_path($publicId, [

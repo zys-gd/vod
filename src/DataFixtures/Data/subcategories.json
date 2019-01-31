@@ -1,80 +1,106 @@
 [
-  {
-    "uuid": "88450169-49a4-4823-a7f9-574ac1d7c89p",
-    "title": "Top viral videos",
-    "parent": "15157409-49a4-4823-a7f9-654ac1d7c12f",
-    "alias": "top_viral_videos"
-  },
-  {
-    "uuid": "98721587-49a4-4823-a7f9-574ac1d7i32x",
-    "title": "Top cricket videos",
-    "parent": "986e13fa-9dfe-42e6-92f2-2cff6f60b42e",
-    "alias": "top_cricket_videos"
-  },
-  {
-    "uuid": "35987d69-49a4-4823-a7f9-574ac1d873hd",
-    "title": "Top qualifier videos",
-    "parent": "bb215764-2aad-4ca5-83cf-78f841a230e8",
-    "alias": "top_qualifier_videos"
-  },
-  {
-    "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke",
-    "title": "Top football videos",
-    "parent": "ab6ad264-bd64-4fd0-9010-9c8e503a1ad3",
-    "alias": "top_football_videos"
-  },
-  {
-    "uuid": "541d47f69-49a4-4823-a7f9-574ac1fl4hdd",
-    "title": "Top extreme sport videos",
-    "parent": "51d606c2-ab33-44ec-8098-05994b0e75e5",
-    "alias": "top_extreme_sports_videos"
-  },
-  {
-    "uuid": "fjh56169-49a4-4823-a7f9-574ac1kf54va",
-    "title": "Top moto sport videos",
-    "parent": "74558a73-902b-46cc-ab90-48a104585d38",
-    "alias": "top_moto_sport_videos"
-  },
-  {
-    "uuid": "d4gd5869-49a4-4823-a7f9-574ac1dvn7pe",
-    "title": "Top combat videos",
-    "parent": "244b3d58-fb86-4ba1-b221-9a0f3916306d",
-    "alias": "top_combat_videos"
-  },
-  {
-    "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt",
-    "title": "Top basketball videos",
-    "parent": "f49a555c-d10e-45c6-a6cb-de09cb59658f",
-    "alias": "top_basketball_videos"
-  },
-  {
-    "uuid": "232sd169-49a4-4823-a7f9-574ac1d740df",
-    "title": "Top tennis videos",
-    "parent": "dbeb8e19-ea7f-4443-970d-b113ecf819d9",
-    "alias": "top_tennis_videos"
-  },
-  {
-    "uuid": "12f51f69-49a4-4823-a7f9-574ac1852fdq",
-    "title": "Top golf videos",
-    "parent": "4ec02ca3-779f-454a-8280-f59cd9600c2a",
-    "alias": "top_golf_videos"
-  },
-  {
-    "uuid": "dfj45f69-49a4-4823-a7f9-574ac1ddcz56",
-    "title": "Top athletics videos",
-    "parent": "70b66027-8e25-400b-8e44-cc4dc399f350",
-    "alias": "top_athletics_videos"
-  },
-  {
-    "uuid": "asdf5469-49a4-4823-a7f9-574ac1d45678",
-    "title": "Top sport games",
-    "parent": "f1db233b-d8b0-4ae1-8391-330bee9d52e7",
-    "alias": "top_sport_videos"
-  },
-  {
-    "uuid": "fgh52169-49a4-4823-a7f9-574ac1dfh58a",
-    "title": "Top others videos",
-    "parent": "e14034f0-ac4d-4925-94d4-cbf9d61fae93",
-    "alias": "top_others_videos"
-  }
+    {
+        "uuid": "88450169-49a4-4823-a7f9-574ac1d7c89p",
+        "title": "Top viral videos",
+        "parent": {
+            "uuid": "15157409-49a4-4823-a7f9-654ac1d7c12f"
+        },
+        "alias": "top_viral_videos"
+    },
+    {
+        "uuid": "98721587-49a4-4823-a7f9-574ac1d7i32x",
+        "title": "Top cricket videos",
+        "parent": {
+            "uuid": "986e13fa-9dfe-42e6-92f2-2cff6f60b42e"
+        },
+        "alias": "top_cricket_videos"
+    },
+    {
+        "uuid": "35987d69-49a4-4823-a7f9-574ac1d873hd",
+        "title": "Top qualifier videos",
+        "parent": {
+            "uuid": "bb215764-2aad-4ca5-83cf-78f841a230e8"
+        },
+        "alias": "top_qualifier_videos"
+    },
+    {
+        "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke",
+        "title": "Top football videos",
+        "parent": {
+            "uuid": "ab6ad264-bd64-4fd0-9010-9c8e503a1ad3"
+        },
+        "alias": "top_football_videos"
+    },
+    {
+        "uuid": "fjh56169-49a4-4823-a7f9-574ac1kf54va",
+        "title": "Top moto sport videos",
+        "parent": {
+            "uuid": "74558a73-902b-46cc-ab90-48a104585d38"
+        },
+        "alias": "top_moto_sport_videos"
+    },
+    {
+        "uuid": "d4gd5869-49a4-4823-a7f9-574ac1dvn7pe",
+        "title": "Top combat videos",
+        "parent": {
+            "uuid": "244b3d58-fb86-4ba1-b221-9a0f3916306d"
+        },
+        "alias": "top_combat_videos"
+    },
+    {
+        "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt",
+        "title": "Top basketball videos",
+        "parent": {
+            "uuid": "f49a555c-d10e-45c6-a6cb-de09cb59658f"
+        },
+        "alias": "top_basketball_videos"
+    },
+    {
+        "uuid": "232sd169-49a4-4823-a7f9-574ac1d740df",
+        "title": "Top tennis videos",
+        "parent": {
+            "uuid": "dbeb8e19-ea7f-4443-970d-b113ecf819d9"
+        },
+        "alias": "top_tennis_videos"
+    },
+    {
+        "uuid": "12f51f69-49a4-4823-a7f9-574ac1852fdq",
+        "title": "Top golf videos",
+        "parent": {
+            "uuid": "4ec02ca3-779f-454a-8280-f59cd9600c2a"
+        },
+        "alias": "top_golf_videos"
+    },
+    {
+        "uuid": "dfj45f69-49a4-4823-a7f9-574ac1ddcz56",
+        "title": "Top athletics videos",
+        "parent": {
+            "uuid": "70b66027-8e25-400b-8e44-cc4dc399f350"
+        },
+        "alias": "top_athletics_videos"
+    },
+    {
+        "uuid": "asdf5469-49a4-4823-a7f9-574ac1d45678",
+        "title": "Top sport games",
+        "parent": {
+            "uuid": "f1db233b-d8b0-4ae1-8391-330bee9d52e7"
+        },
+        "alias": "top_sport_videos"
+    },
+    {
+        "uuid": "fgh52169-49a4-4823-a7f9-574ac1dfh58a",
+        "title": "Top others videos",
+        "parent": {
+            "uuid": "e14034f0-ac4d-4925-94d4-cbf9d61fae93"
+        },
+        "alias": "top_others_videos"
+    },
+    {
+        "uuid": "541d47f69-49a4-4823-a7f9-574ac1fl4hd",
+        "title": "Top extreme sport videos",
+        "alias": "top_extreme_sports_videos",
+        "parent": {
+            "uuid": "51d606c2-ab33-44ec-8098-05994b0e75e5"
+        }
+    }
 ]

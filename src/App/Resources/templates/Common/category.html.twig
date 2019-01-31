@@ -1,1 +1,123 @@
 {% extends '@App/base.html.twig' %}
+{% import "@App/Components/Blocks/Header/header_main.html.twig" as  header %}
+{% import "@App/Components/Blocks/Footer/annotation.html.twig" as  footer %}
+{% import "@App/Components/Blocks/Main/slider.html.twig" as  slider %}
+{% import "@App/Components/Blocks/Main/elect.html.twig" as  elect %}
+{% import "@App/Components/Blocks/Main/subscription_status.html.twig" as  subscription_status %}
+{% import "@App/Components/player.html.twig" as  player %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('/css/category.css') }}" rel="stylesheet">
+{% endblock %}
+
+
+{% block header_content %}
+    {{ header.render() }}
+{% endblock header_content %}
+
+{% block body %}
+    {{ subscription_status.render() }}
+
+    <div class="d-flex flex-column" style="width: 100%">
+        <div class="d-flex flex-column menu-block">
+
+            <div class="category-select-description">
+                Category
+            </div>
+
+            <div class="category-block">
+                <div class="d-flex flex-row category-content-open-link">
+                    <div class="category-title">
+                        <a href="{{ path('show_category',{'categoryUuid':category.uuid}) }}">
+                            {{ category.title }}
+                        </a>
+                    </div>
+                    <div class="category_header__arrow"></div>
+                </div>
+
+                <div class="category-content">
+                    {% for subcategory in subcategories %}
+                    <div class="subcategory">
+                        <div class="d-flex flex-row subcategory-content-open-link">
+                            <div class="subcategory-title {% if selectedSubcategory and selectedSubcategory.uuid == subcategory.uuid %}active{% endif %}">
+                                <a href="{{ path('show_category',{'categoryUuid':category.uuid,'subcategoryUuid':subcategory.uuid}) }}">
+                                    {{ subcategory.title }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                {% endfor %}
+            </div>
+
+
+            {% if videos | length > 0 %}
+                {% set defaultVideo = videos[0] %}
+
+                <div class="active-category-container">
+                    <div class="d-flex flex-column">
+                        <div class="d-flex flex-column align-items-center justify-content-center">
+                            {% for thumbnail in defaultVideo.thumbnails | slice(0,1) %}
+                                <div style="width: 100%;">
+                                    <img src="{{ thumbnail }}"
+                                         class="x-play-button"
+                                         data-uuid="{{ defaultVideo.uuid }}"
+                                         data-category="{{ category.uuid }}"
+                                         style="width: 100%;"/>
+                                </div>
+                            {% endfor %}
+                            <div id="video-player-title" class="video-player-title">
+                                {{ defaultVideo.title }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="related-videos-section-container">
+                        <div class="category__related_title-container d-flex flex-row align-items-center justify-content-center">
+
+                            <div class="separator_left"></div>
+                            <div class="category__related_title">
+                                Related videos
+                            </div>
+                            <div class="separator_right"></div>
+                        </div>
+
+                        <div class="d-flex flex-column related-videos-block">
+                            {% for video in videos | slice(1) %}
+                                <div class="d-flex flex-row related-video">
+                                    <div class="related-video-thumbnail-wrapper">
+                                        {% for thumbnail in video.thumbnails | slice(0,1) %}
+                                            <img src="{{ thumbnail }}"
+                                                 class="x-play-button"
+                                                 data-uuid="{{ video.uuid }}"
+                                                 data-category="{{ category.uuid }}"/>
+                                        {% endfor %}
+                                        <div class="category__related__box-play">
+
+                                        </div>
+                                    </div>
+                                    <div class="related-video-title align-items-center d-flex">
+                                        {{ video.title }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+
+    {{ player.render(categoryVideos) }}
+    {{ slider.render() }}
+    {{ elect.render() }}
+
+
+
+
+
+{% endblock %}

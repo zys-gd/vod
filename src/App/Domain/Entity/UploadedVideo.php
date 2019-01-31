@@ -2,10 +2,12 @@
 
 namespace App\Domain\Entity;
 
+use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
+
 /**
  * UploadedVideo
  */
-class UploadedVideo
+class UploadedVideo implements HasUuid
 {
     /**
      * transformation video statuses
@@ -244,5 +246,13 @@ class UploadedVideo
         $this->description = $description;
 
         return $this;
+    }
+
+    /**
+     * @param string $uuid
+     */
+    public function setUuid(string $uuid)
+    {
+        $this->uuid = $uuid;
     }
 }

@@ -1,0 +1,94 @@
+{% macro render() %}
+
+    <link href="{{ asset('/css/navbar.css') }}" rel="stylesheet">
+
+    <div class="sidebar-nav">
+        <div class="sidebar-nav_header d-flex flex-row">
+            <div class="sidebar-nav_search">
+                <input type="text" class="sidebar-nav_search_input" placeholder="Search For Videos">
+            </div>
+            <div class="sidebar-nav_close" onclick="closeSidebarMenu()"></div>
+        </div>
+
+        {#<div class="b-header-block m-search">#}
+        {#{{ render(controller('AppBundle:Default:searchBar')) }}#}
+        {#</div>#}
+
+        <ul style="padding-left: 0; margin-bottom: 0">
+
+            <li class="nav-item">
+                <a class="nav-item_link" href="{{ path('index') }}">
+                    Home
+                </a>
+            </li>
+
+            {% for item in getMenuElements() %}
+
+                <li class="nav-item">
+                    <div class="d-flex flex-row">
+                        <div>
+                            <a class="nav-item_link" href="{{ item.link }}">
+                                {{ item.title }}
+                            </a>
+                        </div>
+                        <div style="margin-left: auto" class="x-expand-button expand-button">
+                            <i class="fas fa-chevron-down open-icon"></i>
+                            <i class="fas fa-chevron-up close-icon"></i>
+                        </div>
+                    </div>
+                    {% if item.subitems is defined %}
+                        <div style="display: none" class="x-submenus-list">
+                            {% for subitem in item.subitems %}
+                                <a href="{{ subitem.link }}" class="nav-item_subitem">
+                                    {{ subitem.title }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </li>
+            {% endfor %}
+
+
+            <li class="nav-item pages-link">
+                <a class="nav-item_link" href="{{ path('faq') }}">
+                    FAQ
+                </a>
+            </li>
+
+            <li class="nav-item pages-link">
+                <a class="nav-item_link" href="{{ path('terms_and_conditions') }}">
+                    Terms and Conditions
+                </a>
+            </li>
+
+        </ul>
+    </div>
+
+    <script>
+
+        $(document).on('click', '.x-expand-button', toggleSubcategories);
+
+        function toggleSubcategories() {
+            var element = $(this);
+            var parent  = element.parents('.nav-item');
+            parent.find('.x-submenus-list').toggle();
+            element.toggleClass('active')
+        }
+
+        function openSidebarMenu() {
+            $('.sidebar-nav').addClass('activeSidebar');
+            $('sidebar-nav_close').removeClass('activeSidebar');
+            $('html, body').css({
+                overflow: 'hidden',
+            });
+        }
+
+        function closeSidebarMenu() {
+            $('.sidebar-nav').removeClass('activeSidebar');
+            $('html, body').css({
+                overflow: 'auto',
+            });
+        }
+    </script>
+
+{% endmacro %}

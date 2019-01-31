@@ -1,9 +1,8 @@
 {% extends '@App/base.html.twig' %}
+
 {% import "@App/Components/Blocks/Header/header_main.html.twig" as  header %}
-{% import "@App/Components/Blocks/Footer/annotation.html.twig" as  footer %}
-{% import "@App/Components/Blocks/Main/slider.html.twig" as  slider %}
-{% import "@App/Components/Blocks/Main/elect.html.twig" as  elect %}
 {% import "@App/Components/Blocks/Main/subscription_status.html.twig" as  subscription_status %}
+{% import "@App/Components/player.html.twig" as  player %}
 
 {% block header_content %}
     {{ header.render() }}
@@ -12,162 +11,48 @@
 {% block body %}
     {{ subscription_status.render() }}
 
+
+    <div class="slider-block">
+        <div class="d-flex flex-row">
+            <div class="slider-title"></div>
+            <div class="slider-see-all-button"></div>
+        </div>
+        <div class="slider-content"></div>
+
+    </div>
+
     <div class="d-flex flex-column" style="width: 100%">
+        {% for category, videos in categoryVideos %}
 
-
-        <div class="d-flex flex-column menu-block">
-            {% for category in categories %}
-                <div class="menu-item">{{ category.title }}</div>
-            {% endfor %}
-        </div>
-
-        <div class="d-flex flex-column">
-            {% set defaultVideo = videos[0] %}
-            <div class="d-flex flex-column align-items-center justify-content-center">
-                {% for thumbnail in defaultVideo.thumbnails | slice(0,1) %}
-                    <div style="width: 100%;">
-                        <img src="{{ thumbnail }}" class="x-play-button" data-index="1" style="width: 100%;"/>
-                    </div>
-                {% endfor %}
-                <div id="video-player-title">
-                    {{ defaultVideo.title }}
+            {% set categoryData = categories[category] %}
+            <div class="categories-block d-flex flex-column">
+                <div>
+                    <div class="categories-block-title">{{ category }}</div>
+                    <a href="{{ path('show_category',{'categoryUuid': categoryData.uuid}) }}">
+                        <div class="categories-see-all-button">See all</div>
+                    </a>
                 </div>
-            </div>
-        </div>
+                <div class="categories-block-title-underline"></div>
 
-        <hr>
-        <div style="; text-align: center">
-            ---- Related videos ----
-        </div>
-
-        <script>
-            var elements = [];
-        </script>
-
-        <div class="d-flex flex-column related-videos-block">
-            {% for video in videos %}
-                {% set videoIndex = loop.index %}
-                <div class="d-flex flex-row related-video">
-                    <div>
-                        {% for thumbnail in video.thumbnails | slice(0,1) %}
-                            <img src="{{ thumbnail }}" class="x-play-button" data-index="{{ videoIndex }}"/>
-                        {% endfor %}
-                    </div>
-                    <div class="related-video-title align-items-center d-flex">
-                        {{ video.title }}
-                    </div>
-                    <script>
-                        elements[{{ loop.index }}] = {{ createPlaylistElement(video) | raw }};
-                    </script>
-                </div>
-            {% endfor %}
-
-        </div>
-    </div>
-    {{ slider.render() }}
-    {{ elect.render() }}
-
-
-
-    {% if isSubscribed() %}
-        <script>
-
-
-            $(window).on('load', function () {
-
-                var cld        = cloudinary.Cloudinary.new({cloud_name: '{{ getCloudName() }}'});
-                var demoplayer = cld.videoPlayer('video-player-frame')
-                    .sourceTypes(['hls'])
-                    .transformation({streaming_profile: 'hd'});
-
-                var changeVideo = function (element) {
-                    demoplayer.source(element);
-                };
-
-                if (elements[1]) {
-                    changeVideo(elements[1]);
-                }
-
-                $(document).on('click', '.x-play-button', function () {
-                    $('.modal').modal();
-                    var index = $(this).attr('data-index');
-                    changeVideo(elements[index]);
-                    demoplayer.play();
-                });
-
-                $(document).on('click', '.x-modal-play-button', function () {
-                    var index = $(this).attr('data-index');
-                    changeVideo(elements[index]);
-                    demoplayer.play();
-                });
-
-                $(document).on('click', '.x-close-modal-button', function () {
-                    $('.modal').modal('hide');
-
-                });
-
-
-                $(document).on('hide.bs.modal', '.show-video-modal', function () {
-                    demoplayer.stop();
-                })
-
-
-            })
-        </script>
-    {% else %}
-        <script>
-            $(document).on('click', '.x-play-button', function () {
-                window.location = '{{ path('landing') }}'
-            })
-        </script>
-    {% endif %}
-
-    <div class="modal show-video-modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="d-flex flex-column">
-
-                        <button class="x-close-modal-button close-modal-button" type="button">
-                            Close
-                        </button>
-
-                        <div style="">
-                            <video id="video-player-frame" controls muted
-                                   class="cld-video-player cld-fluid"></video>
+                <div class="categories-content d-flex flex-row" style="flex-wrap: wrap">
+                    {% for video in videos | slice(0, 4) %}
+                        <div class="video-element x-play-button">
+                            <img src="{{ video.thumbnails[0] }}"
+                                 class="x-play-button"
+                                 width="100%"
+                                 data-uuid="{{ video.uuid }}"
+                                 data-category="{{ category }}"
+                            />
+                            <div class="video-element-title">{{ video.title }}</div>
                         </div>
+                    {% endfor %}
 
-
-                        <div>
-                            Related videos
-                        </div>
-                        <div class="d-flex flex-column">
-                            {% for video in videos %}
-                                {% set videoIndex = loop.index %}
-                                <div class="d-flex flex-row modal-related-video">
-                                    <div>
-                                        {% for thumbnail in video.thumbnails | slice(0,1) %}
-                                            <img src="{{ thumbnail }}" class="x-modal-play-button"
-                                                 data-index="{{ videoIndex }}"/>
-                                        {% endfor %}
-                                    </div>
-                                    <div class="align-items-center d-flex modal-related-video-title">
-                                        {{ video.title }}
-                                    </div>
-                                </div>
-                            {% endfor %}
-
-                        </div>
-
-                    </div>
 
                 </div>
             </div>
-        </div>
+        {% endfor %}
     </div>
-    <script>
 
-
-    </script>
+    {{ player.render(categoryVideos) }}
 
 {% endblock %}
