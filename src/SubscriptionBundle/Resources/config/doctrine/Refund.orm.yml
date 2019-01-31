@@ -1,0 +1,46 @@
+SubscriptionBundle\Entity\Refund:
+    type: entity
+    table: refunds
+    repositoryClass: SubscriptionBundle\Repository\RefundRepository
+    id:
+        uuid:
+            type: guid
+    fields:
+        bfChargeProcessId:
+            type: integer
+            nullable: true
+            options:
+                default: null
+        bfRefundProcessId:
+            type: integer
+            nullable: true
+            options:
+                default: null
+        status:
+            type: string
+            length: 255
+            nullable: true
+            options:
+                default: null
+        error:
+            type: string
+            length: 255
+            nullable: true
+            options:
+                default: null
+        attemptDate:
+            type: datetime
+            nullable: false
+            options:
+                default: CURRENT_TIMESTAMP
+        refundValue:
+            type: integer
+            nullable: true
+            options:
+                default: null
+    manyToOne:
+        user:
+            targetEntity: IdentificationBundle\Entity\User
+            joinColumn:
+                name: user_id
+                referencedColumnName: uuid

@@ -1,6 +1,6 @@
 <?php
 
-namespace SubscriptionBundle\Admin;
+namespace SubscriptionBundle\Admin\Sonata;
 
 use App\Domain\Entity\Carrier;
 use App\Domain\Entity\Country;

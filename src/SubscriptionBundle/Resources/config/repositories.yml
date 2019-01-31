@@ -34,3 +34,8 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - SubscriptionBundle\Entity\Game\SubscribedGame
+
+    SubscriptionBundle\Repository\RefundRepository:
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - SubscriptionBundle\Entity\Refund

@@ -1,9 +1,9 @@
 services:
-    SubscriptionBundle\Admin\SubscriptionPackAdmin:
+    SubscriptionBundle\Admin\Sonata\SubscriptionPackAdmin:
         arguments:
             - ~
             - SubscriptionBundle\Entity\SubscriptionPack
-            - 'SubscriptionBundle\Controller\SubscriptionPackAdminController'
+            - 'SubscriptionBundle\Admin\Controller\SubscriptionPackAdminController'
             - '@SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider'
             - '@SubscriptionBundle\Service\SubscriptionTextService'
         tags:
@@ -14,5 +14,7 @@ services:
         calls:
             - [ setTemplate, [edit, '@@Subscription/SubscriptionPack/edit.html.twig']]
 
-    SubscriptionBundle\Controller\SubscriptionPackAdminController:
-        calls: [['setContainer', ['@service_container']]]
+    SubscriptionBundle\Admin\Sonata\RefundAdmin:
+        arguments: [~, SubscriptionBundle\Entity\Refund, 'SubscriptionBundle\Admin\Controller\RefundAdminController']
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Refunds, label: Refunds }
