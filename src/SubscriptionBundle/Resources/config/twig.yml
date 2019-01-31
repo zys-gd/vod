@@ -3,4 +3,4 @@ services:
     tags:
       - { name: twig.extension }
     arguments:
-      ['@session', '@IdentificationBundle\Repository\UserRepository', '@SubscriptionBundle\Repository\SubscriptionRepository']
+      ['@session', '@SubscriptionBundle\Service\SubscriptionExtractor']

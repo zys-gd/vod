@@ -1,0 +1,55 @@
+{% extends '@App/base.html.twig' %}
+
+{% import "@App/Components/Blocks/Header/header_main.html.twig" as  header %}
+{% import "@App/Components/Blocks/Main/subscription_status.html.twig" as  subscription_status %}
+{% import "@App/Components/lp_subscribe_buttons.html.twig" as lp_subscribe_buttons %}
+{% import "@App/Components/Blocks/Footer/annotation.html.twig" as  annotation %}
+{% import "@App/Components/Blocks/Footer/menu.html.twig" as  footer_menu %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('/css/account.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block header_content %}
+    {{ header.render('Subscription info') }}
+{% endblock header_content %}
+
+{% block body %}
+    <div class="d-flex flex-column align-items-center justify-content-top w-100">
+
+        {% if hasActiveSubscription() %}
+            <div class="d-flex align-items-center justify-content-center">
+                {{ translate('subscription.status.subscribed')|raw }}
+            </div>
+            <div class="d-flex align-items-center justify-content-center">
+                {{ translate('account.text.subscribed')|raw }}
+                {{ subscriptionCreatedDate.format('d.m.Y') }}.
+                {{ translate('account.text.leave')|raw }}
+            </div>
+
+        {% elseif isUnsubscribed() %}
+
+        {% elseif hasInActiveSubscription() %}
+
+        {% elseif not isSubscriptionExist() %}
+            {{ translate('subscription.status.not_subscribe')|raw }}
+
+            <div class="d-flex align-items-center justify-content-center">
+                <h2 class="h1">{{ translate('offer.account')|raw }}</h2>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-center">
+                {{ lp_subscribe_buttons.render() }}
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock body %}
+
+{% block footer_content %}
+    {% if not isSubscriptionExist() %}
+        {{ annotation.render() }}
+        {{ footer_menu.render() }}
+    {% endif %}
+{% endblock footer_content %}

@@ -9,10 +9,8 @@
 namespace SubscriptionBundle\Twig;
 
 
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
-use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Repository\SubscriptionRepository;
+use SubscriptionBundle\Service\SubscriptionExtractor;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SubscriptionStatusExtension extends \Twig_Extension
@@ -22,26 +20,21 @@ class SubscriptionStatusExtension extends \Twig_Extension
      */
     private $session;
     /**
-     * @var UserRepository
+     * @var SubscriptionExtractor
      */
-    private $repository;
-    /**
-     * @var SubscriptionRepository
-     */
-    private $subscriptionRepository;
+    private $subscriptionExtractor;
 
 
     /**
      * SubscriptionStatusExtension constructor.
-     * @param SessionInterface       $session
-     * @param UserRepository         $repository
-     * @param SubscriptionRepository $subscriptionRepository
+     *
+     * @param SessionInterface      $session
+     * @param SubscriptionExtractor $subscriptionExtractor
      */
-    public function __construct(SessionInterface $session, UserRepository $repository, SubscriptionRepository $subscriptionRepository)
+    public function __construct(SessionInterface $session, SubscriptionExtractor $subscriptionExtractor)
     {
-        $this->session                = $session;
-        $this->repository             = $repository;
-        $this->subscriptionRepository = $subscriptionRepository;
+        $this->session = $session;
+        $this->subscriptionExtractor = $subscriptionExtractor;
     }
 
     public function getFunctions()
@@ -60,7 +53,7 @@ class SubscriptionStatusExtension extends \Twig_Extension
      */
     public function hasActiveSubscription(): bool
     {
-        if($subscription = $this->extractSubscription()) {
+        if ($subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($this->session)) {
             return $subscription->getStatus() == Subscription::IS_ACTIVE && $subscription->getCurrentStage() == Subscription::ACTION_SUBSCRIBE;
         }
         return false;
@@ -72,7 +65,7 @@ class SubscriptionStatusExtension extends \Twig_Extension
      */
     public function hasInActiveSubscription(): bool
     {
-        if($subscription = $this->extractSubscription()) {
+        if ($subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($this->session)) {
             return $subscription->getStatus() == Subscription::IS_INACTIVE;
         }
         return false;
@@ -84,7 +77,7 @@ class SubscriptionStatusExtension extends \Twig_Extension
      */
     public function isSubscriptionExist(): bool
     {
-        if($subscription = $this->extractSubscription()) {
+        if ($subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($this->session)) {
             return true;
         }
         return false;
@@ -96,27 +89,9 @@ class SubscriptionStatusExtension extends \Twig_Extension
      */
     public function isUnsubscribed(): bool
     {
-        if($subscription = $this->extractSubscription()) {
+        if ($subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($this->session)) {
             return $subscription->getStatus() == Subscription::IS_INACTIVE && $subscription->getCurrentStage() == Subscription::ACTION_UNSUBSCRIBE;
         }
         return false;
-    }
-
-    /**
-     * @return Subscription|null
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     */
-    private function extractSubscription(): ?Subscription
-    {
-        $extractIdentificationData = IdentificationFlowDataExtractor::extractIdentificationData($this->session);
-        if (isset($extractIdentificationData['identification_token'])) {
-            $user = $this->repository->findOneByIdentificationToken($extractIdentificationData['identification_token']);
-            if ($user) {
-                $subscription = $this->subscriptionRepository->findCurrentSubscriptionByOwner($user);
-
-                return $subscription;
-            }
-        }
-        return null;
     }
 }

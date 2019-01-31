@@ -17,21 +17,29 @@ services:
         arguments: ['@App\Domain\Service\FaqProviderService']
 
     App\Controller\HomeController:
-      arguments:
-        - '@App\Domain\Repository\CarrierRepository'
-        - '@App\CarrierTemplate\TemplateConfigurator'
-        - '@App\Domain\Repository\MainCategoryRepository'
-        - '@App\Domain\Repository\UploadedVideoRepository'
+        arguments:
+            - '@App\Domain\Repository\CarrierRepository'
+            - '@App\CarrierTemplate\TemplateConfigurator'
+            - '@App\Domain\Repository\MainCategoryRepository'
+            - '@App\Domain\Repository\UploadedVideoRepository'
 
     App\Controller\LPController:
-      arguments: ['@IdentificationBundle\Repository\CarrierRepositoryInterface']
+        arguments: ['@IdentificationBundle\Repository\CarrierRepositoryInterface']
 
     App\Controller\ErrorController:
-      arguments:
-        - '@IdentificationBundle\Identification\Service\CarrierSelector'
+        arguments:
+            - '@IdentificationBundle\Identification\Service\CarrierSelector'
 
     App\Controller\CategoryController:
-      arguments:
-        - '@App\Domain\Repository\MainCategoryRepository'
-        - '@App\Domain\Repository\UploadedVideoRepository'
-        - '@App\Domain\Repository\SubcategoryRepository'
+        arguments:
+            - '@App\Domain\Repository\MainCategoryRepository'
+            - '@App\Domain\Repository\UploadedVideoRepository'
+            - '@App\Domain\Repository\SubcategoryRepository'
+
+    App\Controller\AccountController:
+        arguments:
+            - '@App\Domain\Repository\CarrierRepository'
+            - '@SubscriptionBundle\Service\SubscriptionExtractor'
+            - '@App\CarrierTemplate\TemplateConfigurator'
+        calls:
+            - [setContainer, ['@service_container']]
