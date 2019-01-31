@@ -78,37 +78,40 @@
                         </div>
                     </div>
 
-                    <div class="related-videos-section-container">
-                        <div class="category__related_title-container d-flex flex-row align-items-center justify-content-center">
+                    {% set relatedVideos = videos | slice(1) %}
+                    {% if relatedVideos | length > 0 %}
+                        <div class="related-videos-section-container">
+                            <div class="category__related_title-container d-flex flex-row align-items-center justify-content-center">
 
-                            <div class="separator_left"></div>
-                            <div class="category__related_title">
-                                Related videos
+                                <div class="separator_left"></div>
+                                <div class="category__related_title">
+                                    Related videos
+                                </div>
+                                <div class="separator_right"></div>
                             </div>
-                            <div class="separator_right"></div>
-                        </div>
 
-                        <div class="d-flex flex-column related-videos-block">
-                            {% for video in videos | slice(1) %}
-                                <div class="d-flex flex-row related-video">
-                                    <div class="related-video-thumbnail-wrapper">
-                                        {% for thumbnail in video.thumbnails | slice(0,1) %}
-                                            <img src="{{ thumbnail }}"
-                                                 class="x-play-button"
-                                                 data-uuid="{{ video.uuid }}"
-                                                 data-category="{{ category.uuid }}"/>
-                                        {% endfor %}
-                                        <div class="category__related__box-play">
+                            <div class="d-flex flex-column related-videos-block">
+                                {% for video in videos | slice(1) %}
+                                    <div class="d-flex flex-row related-video">
+                                        <div class="related-video-thumbnail-wrapper">
+                                            {% for thumbnail in video.thumbnails | slice(0,1) %}
+                                                <img src="{{ thumbnail }}"
+                                                     class="x-play-button"
+                                                     data-uuid="{{ video.uuid }}"
+                                                     data-category="{{ category.uuid }}"/>
+                                            {% endfor %}
+                                            <div class="category__related__box-play">
 
+                                            </div>
+                                        </div>
+                                        <div class="related-video-title align-items-center d-flex">
+                                            {{ video.title }}
                                         </div>
                                     </div>
-                                    <div class="related-video-title align-items-center d-flex">
-                                        {{ video.title }}
-                                    </div>
-                                </div>
-                            {% endfor %}
+                                {% endfor %}
+                            </div>
                         </div>
-                    </div>
+                    {% endif %}
                 </div>
             {% endif %}
         </div>
