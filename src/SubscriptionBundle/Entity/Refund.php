@@ -100,11 +100,11 @@ class Refund
     }
 
     /**
-     * @param int $bfRefundProcessId
+     * @param int|null $bfRefundProcessId
      *
      * @return Refund
      */
-    public function setBfRefundProcessId(int $bfRefundProcessId): self
+    public function setBfRefundProcessId(?int $bfRefundProcessId): self
     {
         $this->bfRefundProcessId = $bfRefundProcessId;
 
@@ -200,11 +200,11 @@ class Refund
     }
 
     /**
-     * @param int $refundValue
+     * @param int|null $refundValue
      *
      * @return Refund
      */
-    public function setRefundValue(int $refundValue): self
+    public function setRefundValue(?int $refundValue): self
     {
         $this->refundValue = $refundValue;
 
