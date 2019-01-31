@@ -168,6 +168,7 @@ body {
 .slider-block,
 .categories-block {
     margin-bottom: 15px;
+    clear: both;
 }
 
 .categories-see-all-button,

@@ -60,3 +60,8 @@
 .modal-related-video .modal-related-video-title {
     padding-left: 3px;
 }
+
+.modal-related-videos-block {
+    overflow-y: scroll;
+    max-height: 350px;
+}

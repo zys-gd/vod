@@ -3,11 +3,12 @@
 namespace App\Domain\Entity;
 
 use JsonSerializable;
+use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 
 /**
  * Subcategory
  */
-class Subcategory implements JsonSerializable
+class Subcategory implements JsonSerializable, HasUuid
 {
     /**
      * @var string
@@ -121,5 +122,13 @@ class Subcategory implements JsonSerializable
             'id' => $this->getUuid(),
             'title' => $this->getTitle(),
         ];
+    }
+
+    /**
+     * @param string $uuid
+     */
+    public function setUuid(string $uuid)
+    {
+        $this->uuid = $uuid;
     }
 }

@@ -8,3 +8,9 @@ diff_tool:
        App\Domain\Entity\Translation:
           fileName: 'tranlations.json'
           ignoredProperties: []
+       App\Domain\Entity\UploadedVideo:
+          fileName: 'uploaded_videos.json'
+          ignoredProperties: []
+       App\Domain\Entity\Subcategory:
+          fileName: 'subcategories.json'
+          ignoredProperties: []
