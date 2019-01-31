@@ -16,7 +16,7 @@ use IdentificationBundle\Identification\Common\Pixel\PixelIdentVerifier;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Identification\Service\RouteProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkProcessException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
