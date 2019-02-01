@@ -10,8 +10,11 @@ namespace App\Controller;
 
 
 use IdentificationBundle\Controller\ControllerWithISPDetection;
+use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
+use SubscriptionBundle\Entity\SubscriptionPack;
+use SubscriptionBundle\Repository\SubscriptionPackRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,13 +26,20 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var CarrierRepositoryInterface
      */
     private $carrierRepository;
+    /**
+     * @var SubscriptionPackRepository
+     */
+    private $subscriptionPackRepository;
 
     /**
      * LPController constructor.
+     * @param SubscriptionPackRepository $subscriptionPackRepository
+     * @param CarrierRepositoryInterface $carrierRepository
      */
-    public function __construct(CarrierRepositoryInterface $repository)
+    public function __construct(SubscriptionPackRepository $subscriptionPackRepository, CarrierRepositoryInterface $carrierRepository)
     {
-        $this->carrierRepository = $repository;
+        $this->subscriptionPackRepository = $subscriptionPackRepository;
+        $this->carrierRepository          = $carrierRepository;
     }
 
 
@@ -50,9 +60,25 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
 
+        $carrierInterfaces = $this->carrierRepository->findAllCarriers();
+
+        /** @var SubscriptionPack[] $subpacks */
+        $subpacks = $this->subscriptionPackRepository->findAll();
+
+
+        $subpackCarriers = [];
+        foreach ($subpacks as $subpack) {
+            $subpackCarriers[] = $subpack->getCarrierId();
+        }
+
+        $carrierInterfaces = array_filter($carrierInterfaces, function (CarrierInterface $carrier) use ($subpackCarriers) {
+            return in_array($carrier->getBillingCarrierId(), $subpackCarriers);
+        });
+
+
         return $this->render('@App/Common/landing.html.twig', [
             'isp_detection_data' => $session->get('isp_detection_data'),
-            'carriers'           => $this->carrierRepository->findAllCarriers()
+            'carriers'           => $carrierInterfaces
         ]);
     }
 }
