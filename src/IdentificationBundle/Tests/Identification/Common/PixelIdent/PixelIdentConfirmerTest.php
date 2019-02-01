@@ -19,6 +19,7 @@ use IdentificationBundle\Identification\Service\IdentificationStatus;
 use IdentificationBundle\Identification\Service\TokenGenerator;
 use IdentificationBundle\Identification\Service\UserFactory;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
+use IdentificationBundle\Repository\UserRepository;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
@@ -59,7 +60,8 @@ class PixelIdentConfirmerTest extends TestCase
             $this->billingDataProvider,
             Mockery::spy(IdentificationHandlerProvider::class),
             new IdentificationStatus($this->dataStorage),
-            $this->tokenGenerator
+            $this->tokenGenerator,
+            Mockery::spy(UserRepository::class)
         );
 
         parent::setUp();

@@ -49,6 +49,7 @@ services:
       - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
       - '@IdentificationBundle\Identification\Service\IdentificationStatus'
       - '@IdentificationBundle\Identification\Service\TokenGenerator'
+      - '@IdentificationBundle\Repository\UserRepository'
 
   IdentificationBundle\Identification\Service\UserFactory: ~
 

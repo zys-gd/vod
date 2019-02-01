@@ -19,6 +19,7 @@ use IdentificationBundle\Identification\Service\IdentificationStatus;
 use IdentificationBundle\Identification\Service\TokenGenerator;
 use IdentificationBundle\Identification\Service\UserFactory;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
+use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 
 class PixelIdentConfirmer
@@ -51,6 +52,10 @@ class PixelIdentConfirmer
      * @var TokenGenerator
      */
     private $tokenGenerator;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
 
     /**
@@ -62,6 +67,7 @@ class PixelIdentConfirmer
      * @param IdentificationHandlerProvider $identificationHandlerProvider
      * @param IdentificationStatus          $identificationStatus
      * @param TokenGenerator                $tokenGenerator
+     * @param UserRepository                $userRepository
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -70,7 +76,8 @@ class PixelIdentConfirmer
         DataProvider $billingDataProvider,
         IdentificationHandlerProvider $identificationHandlerProvider,
         IdentificationStatus $identificationStatus,
-        TokenGenerator $tokenGenerator
+        TokenGenerator $tokenGenerator,
+        UserRepository $userRepository
 
     )
     {
@@ -81,6 +88,7 @@ class PixelIdentConfirmer
         $this->identificationHandlerProvider = $identificationHandlerProvider;
         $this->identificationStatus          = $identificationStatus;
         $this->tokenGenerator                = $tokenGenerator;
+        $this->userRepository                = $userRepository;
     }
 
     public function confirmIdent(string $processId, int $carrierId): void
@@ -96,8 +104,16 @@ class PixelIdentConfirmer
             $handler->onConfirm($result);
         }
 
-        $identificationToken = $this->tokenGenerator->generateToken();
-        $user = $this->saveUser($processId, $result, $carrier, $identificationToken);
+
+        $msisdn = $result->getProviderUser();
+        $user   = $this->userRepository->findOneByMsisdn($msisdn);
+        if ($user) {
+            $identificationToken = $user->getIdentificationToken();
+        } else {
+            $identificationToken = $this->tokenGenerator->generateToken();
+            $user                = $this->saveUser($processId, $result, $carrier, $identificationToken);
+        }
+
         $this->identificationStatus->finishIdent($identificationToken, $user);
 
     }
