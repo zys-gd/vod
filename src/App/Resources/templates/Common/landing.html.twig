@@ -5,7 +5,7 @@
 {% import "@App/Components/Blocks/Main/lure.html.twig" as  red_lure_block %}
 {% import "@App/Components/Blocks/Main/banner.html.twig" as  banner %}
 {% import "@App/Components/Blocks/Main/icons_channels.html.twig" as  icons_channels %}
-{% import "@App/Components/lp_subscribe_buttons.html.twig" as lp_subscribe_buttons %}
+{% import "@App/Components/subscribe_buttons.html.twig" as subscribe_buttons %}
 
 
 {% block header_content %}
@@ -24,7 +24,7 @@
             {{ banner.render(asset('img/lp/lp_banner.png'), 'banner', 'w-100') }}
         </div>
         <div class="d-flex align-items-center justify-content-center">
-            {{ lp_subscribe_buttons.render(carriers,'btn-lp_big') }}
+            {{ subscribe_buttons.render(carriers,'btn-lp_big') }}
         </div>
 
         <div class="d-flex align-items-center justify-content-center mh-7">
@@ -35,7 +35,7 @@
             {{ icons_channels.render() }}
         </div>
         {#<div class="d-flex align-items-center justify-content-center">
-            {{ lp_subscribe_buttons.render(carriers, 'mh-90') }}
+            {{ subscribe_buttons.render(carriers, 'mh-90') }}
         </div>#}
         <div class="d-flex align-items-center justify-content-center mh-20">
             <h2 class="h1">{{ translate('offer.landing')|raw }}</h2>
