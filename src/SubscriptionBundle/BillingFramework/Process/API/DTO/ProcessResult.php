@@ -364,7 +364,7 @@ class ProcessResult
      */
     public function getClientFields(): array
     {
-        return $this->clientFields;
+        return (array)$this->clientFields;
     }
 
 

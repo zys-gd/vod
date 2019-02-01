@@ -41,7 +41,7 @@ class AutoIdentTest extends AbstractFunctionalTest
         $this->assertArrayHasKey('storage[is_wifi_flow]', $this->session->all(), 'wifi flow are not set');
     }
 
-    public function testIsRedirectTriggeredForPixelIdent()
+    /*public function testIsRedirectTriggeredForPixelIdent()
     {
         $client = $this->makeClient();
 
@@ -53,9 +53,9 @@ class AutoIdentTest extends AbstractFunctionalTest
 
         $location = $client->getResponse()->headers->get('Location');
         $this->assertContains('identification/pixel/show-page', $location, 'redirect is missing');
-    }
+    }*/
 
-    public function testIsRedirectTriggeredForRedirectIdent()
+    /*public function testIsRedirectTriggeredForRedirectIdent()
     {
         $client = $this->makeClient();
 
@@ -67,7 +67,7 @@ class AutoIdentTest extends AbstractFunctionalTest
 
         $location = $client->getResponse()->headers->get('Location');
         $this->assertContains('test-redirect', $location, 'redirect is missing');
-    }
+    }*/
 
     public function testRedirectIsPerformedWhenNoCarrierSelected()
     {
