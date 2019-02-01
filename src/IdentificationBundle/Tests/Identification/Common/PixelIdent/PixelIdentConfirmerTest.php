@@ -16,6 +16,7 @@ use IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationStatus;
+use IdentificationBundle\Identification\Service\TokenGenerator;
 use IdentificationBundle\Identification\Service\UserFactory;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use Mockery;
@@ -41,6 +42,7 @@ class PixelIdentConfirmerTest extends TestCase
     private $dataStorage;
     private $billingDataProvider;
     private $carrierRepository;
+    private $tokenGenerator;
 
     protected function setUp()
     {
@@ -49,13 +51,15 @@ class PixelIdentConfirmerTest extends TestCase
         $this->dataStorage         = new IdentificationDataStorage($this->session);
         $this->billingDataProvider = Mockery::spy(DataProvider::class);
         $this->carrierRepository   = Mockery::spy(CarrierRepositoryInterface::class);
+        $this->tokenGenerator      = Mockery::spy(TokenGenerator::class);
         $this->pixelIdentConfirmer = new PixelIdentConfirmer(
             Mockery::spy(EntityManagerInterface::class),
             Mockery::spy(UserFactory::class),
             $this->carrierRepository,
             $this->billingDataProvider,
             Mockery::spy(IdentificationHandlerProvider::class),
-            new IdentificationStatus($this->dataStorage)
+            new IdentificationStatus($this->dataStorage),
+            $this->tokenGenerator
         );
 
         parent::setUp();
@@ -80,10 +84,9 @@ class PixelIdentConfirmerTest extends TestCase
         ]);
 
 
-        $this->pixelIdentConfirmer->confirmIdent('123456', [
-            'carrier_id'           => 0,
-            'identification_token' => 'token'
-        ]);
+        $this->tokenGenerator->allows(['generateToken' => 'token']);
+
+        $this->pixelIdentConfirmer->confirmIdent('123456', 0);
 
         $this->assertArraySubset(
             ['identification_token' => 'token'],

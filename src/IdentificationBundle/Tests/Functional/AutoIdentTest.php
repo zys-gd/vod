@@ -37,7 +37,7 @@ class AutoIdentTest extends AbstractFunctionalTest
         $client->request('get', '/');
 
         $location = $client->getResponse()->headers->get('Location');
-        $this->assertContains('whoops', $location, 'redirect is missing');
+        $this->assertContains('lp', $location, 'redirect is missing');
         $this->assertArrayHasKey('storage[is_wifi_flow]', $this->session->all(), 'wifi flow are not set');
     }
 
@@ -79,7 +79,7 @@ class AutoIdentTest extends AbstractFunctionalTest
         $client->request('get', '/');
 
         $location = $client->getResponse()->headers->get('Location');
-        $this->assertContains('whoops', $location, 'redirect is missing');
+        $this->assertContains('lp', $location, 'redirect is missing');
 
     }
 
