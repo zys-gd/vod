@@ -56,7 +56,7 @@ class AccountController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function termsAndConditionsAction(Request $request, ISPData $data)
+    public function accountAction(Request $request, ISPData $data)
     {
         $carrier = $this->carrierRepository->findOneByBillingId($data->getCarrierId());
 
