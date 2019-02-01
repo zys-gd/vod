@@ -1,6 +1,6 @@
 {% extends '@App/base.html.twig' %}
 
-{% import "@App/Components/Blocks/Header/header_main.html.twig" as  header %}
+{% import "@App/Common/Blocks/header.html.twig" as  header %}
 {% import "@App/Components/Blocks/Main/subscription_status.html.twig" as  subscription_status %}
 {% import "@App/Components/player.html.twig" as  player %}
 
@@ -9,9 +9,6 @@
 {% endblock header_content %}
 
 {% block body %}
-    {{ subscription_status.render() }}
-
-
     <div class="homepage-container">
 
         <div class="slider-block">

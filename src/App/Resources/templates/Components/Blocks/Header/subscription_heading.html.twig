@@ -1,0 +1,8 @@
+{% macro render() %}
+    {% import "@App/Components/Blocks/Main/subscription_status.html.twig" as  subscription_status %}
+    <div class="d-flex align-items-center justify-content-center header-page-subscription_container">
+        <div class="text-center header-page-subscription_text">
+            {{ subscription_status.render() }}
+        </div>
+    </div>
+{% endmacro %}
