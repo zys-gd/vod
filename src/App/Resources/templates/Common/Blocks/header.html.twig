@@ -1,4 +1,4 @@
-{% macro render(header_page_title) %}
+{% macro render(page_title) %}
 
     {% import "@App/Components/Blocks/Header/header_main.html.twig" as  header_main %}
     {% import "@App/Components/Blocks/Header/navbar.html.twig" as  navbar %}
@@ -11,6 +11,6 @@
         {{ header_main.render() }}
 
         {{ subscription_heading.render() }}
-        {{ page_heading.render(header_page_title) }}
+        {{ page_heading.render(page_title) }}
     </div>
 {% endmacro render %}
