@@ -1,0 +1,24 @@
+{% extends '@SonataAdmin/standard_layout.html.twig' %}
+{% block sonata_page_content %}
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="nav-tabs-custom" style="margin-top: 20px">
+                    <ul class="nav nav-tabs">
+                        {% for tabName, tabTitle in tabs%}
+                            <li><a data-tab-action="{{ tabName }}">{{ tabTitle }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="tab-content">
+                    {{ currentTabView }}
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        $(document).ready(function() {
+            $('.nav-tabs').find('li').first().addClass('active');
+        })
+    </script>
+{% endblock %}
