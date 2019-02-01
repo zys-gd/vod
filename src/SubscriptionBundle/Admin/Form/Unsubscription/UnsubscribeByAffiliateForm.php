@@ -5,11 +5,11 @@ namespace SubscriptionBundle\Admin\Form\Unsubscription;
 use Symfony\Component\Form\AbstractType;
 
 /**
- * Class MsisdnForm
+ * Class UnsubscribeByAffiliateForm
  */
-class MsisdnForm extends AbstractType
+class UnsubscribeByAffiliateForm extends AbstractType
 {
-    const NAME = 'msisdn';
+    const NAME = 'affiliate';
 
     /**
      * @return string

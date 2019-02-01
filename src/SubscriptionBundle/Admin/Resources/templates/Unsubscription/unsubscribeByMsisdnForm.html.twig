@@ -1,0 +1,11 @@
+{{ form_start(form) }}
+    <div class="form-group" style="margin-left: 20px">
+        <div class="row">
+            <div class="col">{{ form_label(form.msisdn) }}</div>
+            <div class="col">{{ form_widget(form.msisdn, { 'attr': {'class': 'form-control'} }) }}</div>
+        </div>
+        <div class="row">
+            <input type="submit" class="btn btn-primary" value="Start" style="margin-top: 20px;"/>
+        </div>
+    </div>
+{{ form_end(form) }}

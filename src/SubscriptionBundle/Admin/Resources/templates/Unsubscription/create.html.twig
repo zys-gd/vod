@@ -1,24 +1,71 @@
 {% extends '@SonataAdmin/standard_layout.html.twig' %}
 {% block sonata_page_content %}
+    <style>
+        .loader {
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #3498db;
+            border-radius: 50%;
+            width: 15px;
+            height: 15px;
+            animation: spin 2s linear infinite;
+            position: absolute;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
     <section class="content">
         <div class="row">
             <div class="col-md-12">
                 <div class="nav-tabs-custom" style="margin-top: 20px">
                     <ul class="nav nav-tabs">
                         {% for tabName, tabTitle in tabs%}
-                            <li><a data-tab-action="{{ tabName }}">{{ tabTitle }}</a></li>
+                            <li data-tab-action="{{ tabName }}" class="{{ activeTab == tabName ? 'active' }}">
+                                <a style="cursor: pointer">{{ tabTitle }}</a>
+                            </li>
                         {% endfor %}
                     </ul>
-                </div>
-                <div class="tab-content">
-                    {{ currentTabView }}
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active">
+                            <div class="box-body container-fluid" id="tab-content">
+                                {{ tabContent | raw }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
     <script>
         $(document).ready(function() {
-            $('.nav-tabs').find('li').first().addClass('active');
+            var navtabs = $('.nav-tabs');
+            var navTabItems = navtabs.find('li');
+            navTabItems.first().addClass('active');
+
+            navTabItems.click(function() {
+                var tabName = $(this).attr('data-tab-action');
+                var data = {};
+                var loader = $('<div class="loader"></div>');
+                data[tabName] = '';
+                navtabs.after(loader);
+
+                $.ajax({
+                    url: `http://${window.location.hostname}/admin/subscription/unsubscription/create`,
+                    method: 'POST',
+                    data: data
+                }).done(function(html) {
+                    var tabContent = $(html).find(`form[name=${tabName}]`);
+
+                    navtabs.find('.active').removeClass('active');
+                    navtabs.find(`[data-tab-action=${tabName}]`).addClass('active');
+
+                    $('#tab-content').html(tabContent);
+                }).always(function () {
+                    loader.remove();
+                })
+            })
         })
     </script>
 {% endblock %}
