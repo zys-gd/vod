@@ -21,11 +21,11 @@
 
                     {% set categoryData = categories[category] %}
                     <div class="categories-block d-flex flex-column">
-                        <div>
+                        <div class="d-flex justify-content-between">
                             <div class="categories-block-title">{{ category }}</div>
                             <a href="{{ path('show_category',{'categoryUuid': categoryData.uuid}) }}">
-                                <div class="categories-see-all-icon"></div>
-                                <div class="categories-see-all-button">See all</div>
+                                <span class="categories-see-all-icon"></span>
+                                <span class="categories-see-all-button">See all</span>
                             </a>
                         </div>
                         <div class="categories-block-title-underline"></div>
@@ -51,12 +51,12 @@
 
         </div>
 
-        <div class="d-flex flex-column" style="width: 100%">
+        <div class="d-flex flex-column w-100">
             {% for category, videos in categoryVideos %}
 
                 {% set categoryData = categories[category] %}
                 <div class="categories-block d-flex flex-column">
-                    <div>
+                    <div class="d-flex justify-content-between">
                         <div class="categories-block-title">{{ category }}</div>
                         <a href="{{ path('show_category',{'categoryUuid': categoryData.uuid}) }}">
                             <div class="categories-see-all-icon"></div>
