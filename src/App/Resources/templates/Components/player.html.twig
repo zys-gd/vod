@@ -1,35 +1,72 @@
 {% macro render(videos) %}
 
+    {% import "@App/Components/Blocks/Header/header_main.html.twig" as  header_main %}
+
+
     <link rel="stylesheet" href="{{ asset('css/player.css') }}">
 
-    <div class="modal show-video-modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
+    <div id="player-modal" class="justify-content-center player-modal-wrapper" style="display: none" tabindex="-1">
+        <div class="player-modal">
+
+
+            {{ header_main.render() }}
+
+            <div class="player-modal-content d-flex flex-column">
+                <div class="d-flex flex-column">
+                    <div class="close-modal-button-container x-close-modal-button">
+                        <div class="close-modal-button"></div>
+                        <div class="close-modal-button-text">Close</div>
+                    </div>
+
+                    <div style="">
+                        <video id="video-player-frame" controls class="cld-video-player cld-fluid"></video>
+                    </div>
+
                     <div class="d-flex flex-column">
-
-                        <div class="close-modal-button-container x-close-modal-button">
-                            <div class="close-modal-button"></div>
-                            <div class="close-modal-button-text">Close</div>
-                        </div>
-
-                        <div style="">
-                            <video id="video-player-frame" controls muted
-                                   class="cld-video-player cld-fluid"></video>
-                        </div>
-
-                        <div class="d-flex flex-column">
-                            <div class="justify-content-center d-flex">
+                        <div class="d-flex flex-row align-items-center justify-content-center modal-related-video-section-title-block">
+                            <div class="separator_left"></div>
+                            <div class="modal-related-video-section-title-text">
                                 Related videos
                             </div>
-                            <div class="modal-related-videos-block"></div>
+                            <div class="separator_right"></div>
+                        </div>
+                        <div class="modal-related-videos-block"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            {#<div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="d-flex flex-column">
+
+                            <div class="close-modal-button-container x-close-modal-button">
+                                <div class="close-modal-button"></div>
+                                <div class="close-modal-button-text">Close</div>
+                            </div>
+
+                            <div style="">
+                                <video id="video-player-frame" controls muted
+                                       class="cld-video-player cld-fluid"></video>
+                            </div>
+
+                            <div class="d-flex flex-column">
+                                <div class="d-flex flex-row align-items-center justify-content-center modal-related-video-section-title-block">
+                                    <div class="separator_left"></div>
+                                    <div class="modal-related-video-section-title-text">
+                                        Related videos
+                                    </div>
+                                    <div class="separator_right"></div>
+                                </div>
+                                <div class="modal-related-videos-block"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>#}
         </div>
     </div>
-
     <script>
         Handlebars.registerHelper('ifEquals', function (arg1, arg2, options) {
             return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
@@ -45,20 +82,22 @@
 
             {{#each videos}}
                 <div class="d-flex flex-row modal-related-video {{#ifEquals uuid ../current.uuid}}currently-playing{{/ifEquals}}" data-uuid="{{ uuid }}">
-                    <div>
                         {{#each thumbnails}}
-                            {{#if @first}}
-                                <img src="{{ this }}"
-                                    class="x-modal-play-button"
-                                    style="width: 175px"
-                                    data-uuid="{{ ../uuid }}"
-                                    data-category="{{ ../../category }}"
-                                />
-                            {{/if}}
+                            <div class="modal-related-video-thumbnail-wrapper">
+                                {{#if @first}}
+                                    <img src="{{ this }}"
+                                        class="x-modal-play-button"
+                                        style="width: 175px"
+                                        data-uuid="{{ ../uuid }}"
+                                        data-category="{{ ../../category }}"
+                                    />
+                                    <div class="category__related__box-play"></div>
+                                {{/if}}
+                            </div>
                         {{/each}}
-                    </div>
-                    <div class="align-items-center d-flex modal-related-video-title">
-                        {{ title }}
+                        <div class="align-items-center d-flex modal-related-video-title">
+                            {{ title }}
+                        </div>
                     </div>
                 </div>
             {{/each}}
@@ -69,22 +108,34 @@
     {% if hasActiveSubscription() %}
         <script>
 
+
             var videos = {{ videos | json_encode | raw }};
-
-            function makeCurrentlyPlaying(index) {
-                $('.modal-related-video').each(function () {
-                    var elementIndex = $(this).attr('data-uuid');
-
-                    if (index != elementIndex) {
-                        $(this).removeClass('currently-playing')
-                    } else {
-                        $(this).addClass('currently-playing')
-                    }
-                });
-            }
 
 
             $(window).on('load', function () {
+
+                function makeCurrentlyPlaying(index) {
+                    $('.modal-related-video').each(function () {
+                        var elementIndex = $(this).attr('data-uuid');
+
+                        if (index != elementIndex) {
+                            $(this).removeClass('currently-playing')
+                        } else {
+                            $(this).addClass('currently-playing')
+                        }
+                    });
+                }
+
+                function openModal() {
+                    $('#player-modal').show();
+                    $('html').css({'overflow-y':'hidden'});
+                }
+
+                function closeModal() {
+                    $('#player-modal').hide();
+                    $('html').css({'overflow-y':'auto'});
+                    demoplayer.stop();
+                }
 
                 var cld        = cloudinary.Cloudinary.new({cloud_name: '{{ getCloudName() }}'});
                 var demoplayer = cld.videoPlayer('video-player-frame')
@@ -95,12 +146,13 @@
                     demoplayer.source(element);
                 };
 
+
                 $(document).on('click', '.x-play-button', function () {
 
-                    $('.modal').modal();
+                    openModal();
 
-                    var index       = $(this).attr('data-uuid');
-                    var category    = $(this).attr('data-category');
+                    var index    = $(this).attr('data-uuid');
+                    var category = $(this).attr('data-category');
 
                     let videoElement  = videos[category][index];
                     let relatedVideos = videos[category];
@@ -111,16 +163,17 @@
                     var source   = document.getElementById("related-videos-block-template").innerHTML;
                     var template = Handlebars.compile(source);
                     var html     = template({
-                        'videos'     : relatedVideos,
-                        'category'   : category,
-                        'current'    : videoElement,
+                        'videos'  : relatedVideos,
+                        'category': category,
+                        'current' : videoElement,
                     });
                     $('.modal-related-videos-block').html(html);
+
                 });
 
                 $(document).on('click', '.x-modal-play-button', function () {
-                    var index       = $(this).attr('data-uuid');
-                    var category    = $(this).attr('data-category');
+                    var index    = $(this).attr('data-uuid');
+                    var category = $(this).attr('data-category');
 
                     let videoElement = videos[category][index];
 
@@ -131,12 +184,9 @@
                 });
 
                 $(document).on('click', '.x-close-modal-button', function () {
-                    $('.modal').modal('hide');
+                    closeModal()
                 });
 
-                $(document).on('hide.bs.modal', '.show-video-modal', function () {
-                    demoplayer.stop();
-                })
             })
         </script>
     {% else %}

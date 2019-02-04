@@ -89,22 +89,7 @@
     width: 60%;
 }
 
-.separator_left {
-    background: url(../img/home/separator-left.png) left center no-repeat;
-    height: 10px;
-    width: 20%;
-    margin-left: auto;
-    background-size: contain;
 
-}
-
-.separator_right {
-    background: url(../img/home/separator-right.png) right center no-repeat;
-    height: 10px;
-    width: 20%;
-    margin-right: auto;
-    background-size: contain;
-}
 
 .category__related_title-container {
     margin-top: 20px;

@@ -217,7 +217,7 @@ class Client
         try {
             $processException->setResponse($this->responseMapper->map('', $content));
 
-            if (isset($content->data) && $content->data->code) {
+            if (isset($content->data) && isset($content->data->code)) {
                 $processException->setBillingCode($content->data->code);
             }
         } catch (EmptyResponse $exception) {

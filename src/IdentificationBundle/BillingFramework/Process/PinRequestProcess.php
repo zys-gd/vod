@@ -54,7 +54,7 @@ class PinRequestProcess
 
         } catch (BillingFrameworkProcessException $exception) {
             $this->logger->error('Error while trying to ident', ['params' => $parameters]);
-            throw new PinRequestProcessException('Error while trying to `pinRequest`', $exception->getBillingCode(), $exception->getResponse()->getMessage());
+            throw new PinRequestProcessException('Error while trying to `pinRequest`', $exception->getBillingCode() ?? 0, $exception->getResponse()->getMessage());
         }
     }
 }

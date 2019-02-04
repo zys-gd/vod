@@ -13,15 +13,16 @@ use ExtrasBundle\SignatureCheck\Annotation\SignatureCheckIsRequired;
 use IdentificationBundle\BillingFramework\Data\DataProvider;
 use IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer;
 use IdentificationBundle\Identification\Common\Pixel\PixelIdentVerifier;
+use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Identification\Service\RouteProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Component\Routing\Annotation\Route;
 use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkProcessException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 class PixelIdentController extends AbstractController
 {
@@ -131,20 +132,12 @@ class PixelIdentController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    public function confirmPixelIdentAction(Request $request)
+    public function confirmPixelIdentAction(Request $request, ISPData $ISPData)
     {
         $processId          = $request->get('processId', '');
-        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
-
-        if (!$identificationData) {
-            throw new BadRequestHttpException('You are not identified yet');
-        }
 
         try {
-            $this->confirmer->confirmIdent(
-                $processId,
-                $identificationData
-            );
+            $this->confirmer->confirmIdent($processId, $ISPData->getCarrierId());
             return new JsonResponse(['result' => true]);
         } catch (\Exception $exception) {
             return new JsonResponse(['result' => false]);

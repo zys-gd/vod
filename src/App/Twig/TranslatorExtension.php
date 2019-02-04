@@ -45,9 +45,9 @@ class TranslatorExtension extends \Twig_Extension
      */
     public function __construct(Translator $translator, Session $session, KernelInterface $kernel, LocalExtractor $localExtractor)
     {
-        $this->translator   = $translator;
-        $this->session      = $session;
-        $this->kernel       = $kernel;
+        $this->translator     = $translator;
+        $this->session        = $session;
+        $this->kernel         = $kernel;
         $this->localExtractor = $localExtractor;
     }
 
@@ -76,6 +76,10 @@ class TranslatorExtension extends \Twig_Extension
             $languageCode = $this->localExtractor->getLocal();
         }
         $translation = $this->translator->translate($translationKey, $carrierId, $languageCode);
+
+        if ($this->kernel->getEnvironment() == 'test') {
+            return $translationKey;
+        }
 
         if (is_null($translation) && $this->kernel->isDebug()) {
             throw new WrongTranslationKey("Translation key doesn't exist");

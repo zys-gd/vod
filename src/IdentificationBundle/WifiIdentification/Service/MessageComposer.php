@@ -12,7 +12,8 @@ namespace IdentificationBundle\WifiIdentification\Service;
 class MessageComposer
 {
 
-    private $messages;
+
+    private $messages = ['pin_en' => 'Your pincode is _pincode_'];
 
     public function composePinCodeMessage(string $subscriptionInformation, string $lang, string $pinCode): string
     {

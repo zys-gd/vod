@@ -16,8 +16,10 @@ use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Handler\CommonFlow\HasCustomPixelIdent;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Identification\Service\IdentificationStatus;
+use IdentificationBundle\Identification\Service\TokenGenerator;
 use IdentificationBundle\Identification\Service\UserFactory;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
+use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 
 class PixelIdentConfirmer
@@ -46,6 +48,14 @@ class PixelIdentConfirmer
      * @var IdentificationStatus
      */
     private $identificationStatus;
+    /**
+     * @var TokenGenerator
+     */
+    private $tokenGenerator;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
 
     /**
@@ -56,6 +66,8 @@ class PixelIdentConfirmer
      * @param DataProvider                  $billingDataProvider
      * @param IdentificationHandlerProvider $identificationHandlerProvider
      * @param IdentificationStatus          $identificationStatus
+     * @param TokenGenerator                $tokenGenerator
+     * @param UserRepository                $userRepository
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -63,7 +75,9 @@ class PixelIdentConfirmer
         CarrierRepositoryInterface $carrierRepository,
         DataProvider $billingDataProvider,
         IdentificationHandlerProvider $identificationHandlerProvider,
-        IdentificationStatus $identificationStatus
+        IdentificationStatus $identificationStatus,
+        TokenGenerator $tokenGenerator,
+        UserRepository $userRepository
 
     )
     {
@@ -73,13 +87,12 @@ class PixelIdentConfirmer
         $this->billingDataProvider           = $billingDataProvider;
         $this->identificationHandlerProvider = $identificationHandlerProvider;
         $this->identificationStatus          = $identificationStatus;
+        $this->tokenGenerator                = $tokenGenerator;
+        $this->userRepository                = $userRepository;
     }
 
-    public function confirmIdent(string $processId, array $identificationData): void
+    public function confirmIdent(string $processId, int $carrierId): void
     {
-        $carrierId           = $identificationData['carrier_id'] ?? null;
-        $identificationToken = $identificationData['identification_token'] ?? null;
-
         $result = $this->billingDataProvider->getProcessData($processId);
         if (!$result->isSuccessful()) {
             throw  new \RuntimeException('Identification is not finished yet');
@@ -91,7 +104,16 @@ class PixelIdentConfirmer
             $handler->onConfirm($result);
         }
 
-        $user = $this->saveUser($processId, $result, $carrier, $identificationToken);
+
+        $msisdn = $result->getProviderUser();
+        $user   = $this->userRepository->findOneByMsisdn($msisdn);
+        if ($user) {
+            $identificationToken = $user->getIdentificationToken();
+        } else {
+            $identificationToken = $this->tokenGenerator->generateToken();
+            $user                = $this->saveUser($processId, $result, $carrier, $identificationToken);
+        }
+
         $this->identificationStatus->finishIdent($identificationToken, $user);
 
     }

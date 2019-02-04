@@ -30,6 +30,7 @@ a button {
     max-width: 100%;
     min-width: 0;
 }
+
 .m-55 {
     margin: 0 55px;
 }
@@ -52,12 +53,13 @@ a button {
     margin: 0 2vw;
     border: 1px #ff3333 solid;
 }
+
 .footer-menu_link * {
     color: #ff0000;
 }
 
 /*******************************************/
-.h1-lp {
+.h1 {
     font-family: "Kanit";
     font-style: italic;
     font-weight: 500;
@@ -161,6 +163,7 @@ a button {
 .categories-see-all-button {
     float: right;
 }
+
 .categories-see-all-icon {
     float: right;
     background: url(../img/home/plus-button.png) left center no-repeat;
@@ -221,17 +224,20 @@ a button {
     padding-right: 8px;
 }
 
-.slider-content .categories-content{
+.slider-content .categories-content {
     overflow-x: scroll;
 }
+
 .slider-content .categories-content::-webkit-scrollbar {
     display: none;
 }
-.slider-content .video-element{
+
+.slider-content .video-element {
     flex: 0 0 auto;
     width: 70%;
     margin-right: 2%;
 }
+
 .category__related__box-play {
     position: absolute;
     background-image: url(../img/play-icon-big.png);
@@ -242,6 +248,25 @@ a button {
     background-size: contain;
     background-repeat: no-repeat;
 }
-.thumbnail-wrapper{
+
+.thumbnail-wrapper {
     position: relative;
+}
+
+
+.separator_right {
+    background: url(../img/home/separator-right.png) right center no-repeat;
+    height: 10px;
+    width: 20%;
+    margin-right: auto;
+    background-size: contain;
+}
+
+.separator_left {
+    background: url(../img/home/separator-left.png) left center no-repeat;
+    height: 10px;
+    width: 20%;
+    margin-left: auto;
+    background-size: contain;
+
 }

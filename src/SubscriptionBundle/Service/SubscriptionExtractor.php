@@ -5,20 +5,31 @@ namespace SubscriptionBundle\Service;
 
 use App\Domain\Entity\Carrier;
 use IdentificationBundle\Entity\User;
+use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Repository\SubscriptionRepository;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SubscriptionExtractor
 {
     private $subscriptionRepository;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
     /**
      * SubscriptionProvider constructor.
-     * @param $subscriptionRepository
+     *
+     * @param SubscriptionRepository $subscriptionRepository
+     * @param UserRepository         $userRepository
      */
-    public function __construct(SubscriptionRepository $subscriptionRepository)
+    public function __construct(SubscriptionRepository $subscriptionRepository, UserRepository $userRepository)
     {
         $this->subscriptionRepository = $subscriptionRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -50,4 +61,23 @@ class SubscriptionExtractor
 
     }
 
+    /**
+     * @param Session $session
+     *
+     * @return Subscription|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function extractSubscriptionFromSession(SessionInterface $session): ?Subscription
+    {
+        $extractIdentificationData = IdentificationFlowDataExtractor::extractIdentificationData($session);
+        if (isset($extractIdentificationData['identification_token'])) {
+            $user = $this->userRepository->findOneByIdentificationToken($extractIdentificationData['identification_token']);
+            if ($user) {
+                $subscription = $this->subscriptionRepository->findCurrentSubscriptionByOwner($user);
+
+                return $subscription;
+            }
+        }
+        return null;
+    }
 }

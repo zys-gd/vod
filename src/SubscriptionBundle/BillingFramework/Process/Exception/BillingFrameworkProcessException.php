@@ -57,7 +57,7 @@ class BillingFrameworkProcessException extends BillingFrameworkException
     /**
      * @return mixed
      */
-    public function getBillingCode(): int
+    public function getBillingCode(): ?int
     {
         return $this->billingCode;
     }

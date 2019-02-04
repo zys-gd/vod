@@ -1,0 +1,9 @@
+{% macro render(header_page_title) %}
+    {% if header_page_title %}
+        <div class="d-flex align-items-center justify-content-center header-title_container">
+            <div class="text-center header-title_content terms_and_conditions__header-title_content">
+                {{ header_page_title | raw }}
+            </div>
+        </div>
+    {% endif %}
+{% endmacro %}

@@ -6,3 +6,7 @@ services:
   IdentificationBundle\Carriers\MobilinkPK\MobilinkPKIdentificationCallbackHandler:
       tags:
           - {name: identification.identification_callback_handler}
+
+  IdentificationBundle\Carriers\MobilinkPK\MobilinkPKWifiIdentificationHandler:
+      tags:
+        - { name: identification.wifi_identification_handler}

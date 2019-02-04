@@ -13,6 +13,7 @@ use ExtrasBundle\API\Controller\APIControllerInterface;
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\BillingFramework\Process\Exception\PinVerifyProcessException;
 use IdentificationBundle\Identification\DTO\ISPData;
+use IdentificationBundle\Identification\Exception\AlreadyIdentifiedException;
 use IdentificationBundle\Identification\Exception\MissingCarrierException;
 use IdentificationBundle\Identification\Service\CarrierSelector;
 use IdentificationBundle\WifiIdentification\Service\ErrorCodeResolver;
@@ -110,6 +111,8 @@ class PinIdentificationController extends AbstractController implements APIContr
         } catch (PinRequestProcessException $exception) {
             $message = $this->errorCodeResolver->resolveMessage($exception->getCode());
             return $this->getSimpleJsonResponse($message, 200, [], ['success' => false]);
+        } catch (\Exception $exception) {
+            return $this->getSimpleJsonResponse($exception->getMessage(), 200, [], ['success' => false]);
         }
     }
 

@@ -47,7 +47,7 @@ services:
         arguments: ['@doctrine.orm.entity_manager', '@logger']
 
     SubscriptionBundle\Service\SubscriptionExtractor:
-        arguments: ['@SubscriptionBundle\Repository\SubscriptionRepository']
+        arguments: ['@SubscriptionBundle\Repository\SubscriptionRepository', '@IdentificationBundle\Repository\UserRepository']
 
 
     SubscriptionBundle\Service\SubscriptionCreator:
