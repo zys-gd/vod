@@ -98,6 +98,12 @@ class WifiIdentSMSSender
         $this->userRepository    = $userRepository;
     }
 
+    /**
+     * @param int    $carrierId
+     * @param string $mobileNumber
+     * @throws AlreadyIdentifiedException
+     * @throws PinRequestProcessException
+     */
     public function sendSMS(int $carrierId, string $mobileNumber): void
     {
         if ($this->userRepository->findOneByMsisdn($mobileNumber)) {
