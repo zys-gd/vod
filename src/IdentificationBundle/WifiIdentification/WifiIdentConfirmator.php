@@ -131,44 +131,48 @@ class WifiIdentConfirmator
 
         $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
         $handler = $this->handlerProvider->get($carrier);
+        $msisdn  = $this->msisdnCleaner->clean($mobileNumber, $carrier);
 
         if (!$pinRequestResult->isNeedVerifyRequest()) {
             $isValid = $this->codeVerifier->verifyPinCode($pinCode);
             if (!$isValid) {
                 throw new FailedIdentificationException('pinCode is not valid');
             }
-            return;
-        }
 
-        if ($handler instanceof HasCustomPinVerifyRules) {
-            $additionalParams = $handler->getAdditionalPinVerifyParams($pinRequestResult);
-        } else {
-            $additionalParams = [];
-        }
-
-        $msisdn     = $this->msisdnCleaner->clean($mobileNumber, $carrier);
-        $parameters = $this->requestProvider->getPinVerifyParameters(
-            $msisdn,
-            $carrier->getBillingCarrierId(),
-            $carrier->getOperatorId(),
-            $pinCode,
-            $pinRequestResult->getUserIdentifier(),
-            $additionalParams
-        );
-
-        try {
-            $result = $this->pinVerifyProcess->doPinVerify($parameters);
-            if ($handler instanceof HasCustomPinVerifyRules) {
-                $handler->afterSuccessfulPinVerify($result);
-            }
             $this->identFinisher->finish($msisdn, $carrier, $ip);
             $this->dataStorage->cleanPreviousOperationResult('pinRequest');
+            return;
+        } else {
 
-        } catch (PinVerifyProcessException $exception) {
             if ($handler instanceof HasCustomPinVerifyRules) {
-                $handler->afterFailedPinVerify($exception);
+                $additionalParams = $handler->getAdditionalPinVerifyParams($pinRequestResult);
+            } else {
+                $additionalParams = [];
             }
-            throw $exception;
+
+            $parameters = $this->requestProvider->getPinVerifyParameters(
+                $msisdn,
+                $carrier->getBillingCarrierId(),
+                $carrier->getOperatorId(),
+                $pinCode,
+                $pinRequestResult->getUserIdentifier(),
+                $additionalParams
+            );
+
+            try {
+                $result = $this->pinVerifyProcess->doPinVerify($parameters);
+                if ($handler instanceof HasCustomPinVerifyRules) {
+                    $handler->afterSuccessfulPinVerify($result);
+                }
+                $this->identFinisher->finish($msisdn, $carrier, $ip);
+                $this->dataStorage->cleanPreviousOperationResult('pinRequest');
+
+            } catch (PinVerifyProcessException $exception) {
+                if ($handler instanceof HasCustomPinVerifyRules) {
+                    $handler->afterFailedPinVerify($exception);
+                }
+                throw $exception;
+            }
         }
 
     }
