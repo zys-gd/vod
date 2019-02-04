@@ -18,7 +18,7 @@
 
 {% block body %}
 
-    <div class="d-flex flex-column" style="width: 100%">
+    <div class="d-flex flex-column w-100">
         <div class="d-flex flex-column ">
 
             <div class="menu-block">
@@ -37,7 +37,7 @@
                         <div class="category_header__arrow"></div>
                     </div>
 
-                    <div class="category-content" {% if not selectedSubcategory %}style="display:none;"{% endif %}>
+                    <div class="category-content" {% if not selectedSubcategory %}hidden{% endif %}>
                         {% for subcategory in subcategories %}
                         <div class="subcategory">
                             <div class="d-flex flex-row subcategory-content-open-link">
@@ -63,12 +63,12 @@
                     <div class="d-flex flex-column">
                         <div class="d-flex flex-column align-items-center justify-content-center">
                             {% for thumbnail in defaultVideo.thumbnails | slice(0,1) %}
-                                <div style="width: 100%;">
+                                <div class="w-100">
                                     <img src="{{ thumbnail }}"
                                          class="x-play-button"
                                          data-uuid="{{ defaultVideo.uuid }}"
                                          data-category="{{ category.uuid }}"
-                                         style="width: 100%;"/>
+                                         class="w-100"/>
                                 </div>
                             {% endfor %}
                             <div id="video-player-title" class="video-player-title">
