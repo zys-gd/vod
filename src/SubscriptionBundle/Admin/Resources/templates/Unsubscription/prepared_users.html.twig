@@ -1,0 +1,134 @@
+<div class="col-xs-12 col-md-12">
+    <div class="container" style="margin-top: 20px;">
+        {% if nonexistentUsers %}
+            <div class="alert alert-danger">
+                Cannot find the msisdns:
+                {% for nonexistentUser in nonexistentUsers %}
+                    {{ nonexistentUser }},
+                {% endfor %}
+            </div>
+        {% elseif users|length == 0  %}
+            <div class="alert alert-danger">
+                No proper msisdns was found!
+            </div>
+        {% else  %}
+            <div class="alert alert-success">
+                All msisdns were successfully found!
+            </div>
+        {% endif %}
+        {% if alreadyBlacklisted %}
+            <div class="alert alert-warning">
+                Already in blacklist:
+                {% for alreadyBlacklistedUser in alreadyBlacklisted %}
+                    {{ alreadyBlacklistedUser }},
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if alreadyUnsubscribed %}
+            <div class="alert alert-warning">
+                Already unsubscribed:
+                {% for alreadyUnsubscribedUser in alreadyUnsubscribed %}
+                    {{ alreadyUnsubscribedUser }},
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <div class="box box-primary">
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered table-striped sonata-ba-list">
+                <thead>
+                {% for header in headers %}
+                    <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
+                        {{ header }}
+                    </th>
+                {% endfor %}
+                </thead>
+                {% for user, subscriptionId in users %}
+                    <tr data-sub-id="{{ subscriptionId }}">
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            {{ user }}
+                        </td>
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            <input type="checkbox" class="filled-in form-check-input unsubscribe_check" checked="checked">
+                        </td>
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            <input type="checkbox" class="filled-in form-check-input blacklist_check">
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    {% if users|length == 0  %}
+        <div class="clearfix ">
+            <a class="btn btn-danger col-md-2 col-md-offset-10" href="/admin/subscription/unsubscription/create">Back</a>
+        </div>
+    {% else  %}
+        <div class="clearfix" id="start">
+            <button class="btn btn-info col-md-2 col-md-offset-10">Unsubscribe!</button>
+        </div>
+        <div class="clearfix" id="back" style="display: none;">
+            <a class="btn btn-danger col-md-2 col-md-offset-10" href="/admin/subscription/unsubscription/create">Back</a>
+        </div>
+    {% endif %}
+</div>
+<div class="modal" id='progress_overlay' tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="text-align: center;">Processing...</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('.unsubscribe_check').change(function() {
+            var blacklist = $(this).closest('tr').find('.blacklist_check');
+            var blackListControl = blacklist.closest('div');
+
+            if ($(this).is(':checked')) {
+                blackListControl.removeClass('disabled');
+                blacklist.removeAttr('disabled');
+            } else {
+                blacklist.prop('checked', false);
+                blacklist.attr('disabled', true);
+                blackListControl.removeClass('checked');
+                blackListControl.addClass('disabled');
+            }
+        });
+
+        $('#start').click(function(event) {
+            event.preventDefault();
+
+            var users = [];
+
+            $('table').find('tr').each(function () {
+                if ($(this).find('.unsubscribe_check').first().is(':checked')) {
+                    var user = {
+                        'subscriptionId': $(this).attr('data-sub-id'),
+                        'toBlacklist': +$(this).find('.blacklist_check').first().is(':checked')
+                    };
+
+                    users.push(user);
+                }
+            });
+
+            if (users.length === 0) {
+                alert('You should select at least one option for one user');
+
+                return;
+            }
+
+            $.ajax({
+                url: `http://${window.location.host}/admin/subscription/unsubscription/unsubscribe`,
+                method: 'post',
+                data: {'users': users},
+                dataType: 'json',
+            })
+                .done(function (data) {
+                    console.log(data);
+                })
+        })
+    })
+</script>

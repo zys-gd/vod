@@ -85,6 +85,7 @@ class UnsubscriptionAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->clearExcept(['create', 'show', 'list']);
+        $collection->add('unsubscribe', 'unsubscribe');
 
         parent::configureRoutes($collection);
     }

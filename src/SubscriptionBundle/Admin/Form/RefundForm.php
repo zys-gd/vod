@@ -36,7 +36,7 @@ class RefundForm extends AbstractType
                             'text/tsv',
                             'application/vnd.ms-excel'
                         ],
-                        'mimeTypesMessage' => 'Invalid file format. Available extensions .csv, .tsv, ms-excel'
+                        'mimeTypesMessage' => 'Invalid file format. Available extensions .csv, .tsv (comma separated text files)'
                     ])
                 ],
                 'label' => 'Or choose the .csv file'

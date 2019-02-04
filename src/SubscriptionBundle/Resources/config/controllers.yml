@@ -74,4 +74,7 @@ services:
 
     SubscriptionBundle\Admin\Controller\UnsubscriptionAdminController:
         tags: ['controller.service_arguments']
-        arguments: ['@form.factory']
+        arguments:
+            - '@form.factory'
+            - '@SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber'
+            - '@SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider'

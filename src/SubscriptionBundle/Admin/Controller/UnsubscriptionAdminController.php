@@ -2,13 +2,22 @@
 
 namespace SubscriptionBundle\Admin\Controller;
 
+use App\Domain\Entity\BlackList;
+use App\Domain\Entity\Carrier;
+use App\Utils\UuidGenerator;
+use IdentificationBundle\Entity\User;
 use Sonata\AdminBundle\Controller\CRUDController;
 use SubscriptionBundle\Admin\Form\Unsubscription\UnsubscribeByAffiliateForm;
 use SubscriptionBundle\Admin\Form\Unsubscription\UnsubscribeByCampaignForm;
 use SubscriptionBundle\Admin\Form\Unsubscription\UnsubscribeByFileForm;
 use SubscriptionBundle\Admin\Form\Unsubscription\UnsubscribeByMsisdnForm;
+use SubscriptionBundle\Entity\Subscription;
+use SubscriptionBundle\Entity\SubscriptionPack;
+use SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider;
+use SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
@@ -22,6 +31,16 @@ class UnsubscriptionAdminController extends CRUDController
     private $formFactory;
 
     /**
+     * @var Unsubscriber
+     */
+    private $unsubscriber;
+
+    /**
+     * @var UnsubscriptionHandlerProvider
+     */
+    private $unsubscriptionHandlerProvider;
+
+    /**
      * @var array
      */
     private $tabList = [
@@ -32,15 +51,36 @@ class UnsubscriptionAdminController extends CRUDController
     ];
 
     /**
+     * @var array
+     */
+    private $tableHeaders = [
+        'Msisdn',
+        'Unsubscribe',
+        'Set to blacklist'
+    ];
+
+    /**
      * UnsubscriptionAdminController constructor
      *
      * @param FormFactory $formFactory
+     * @param Unsubscriber $unsubscriber
+     * @param UnsubscriptionHandlerProvider $unsubscriptionHandlerProvider
      */
-    public function __construct(FormFactory $formFactory)
-    {
+    public function __construct(
+        FormFactory $formFactory,
+        Unsubscriber $unsubscriber,
+        UnsubscriptionHandlerProvider $unsubscriptionHandlerProvider
+    ) {
         $this->formFactory = $formFactory;
+        $this->unsubscriber = $unsubscriber;
+        $this->unsubscriptionHandlerProvider = $unsubscriptionHandlerProvider;
     }
 
+    /**
+     * @param Request|null $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function createAction(Request $request = null)
     {
         $formName = $this->detectCurrentFormTab($request->request->all());
@@ -58,31 +98,185 @@ class UnsubscriptionAdminController extends CRUDController
         ]);
     }
 
-    private function handleMsisdn(Request $request = null)
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function unsubscribeAction(Request $request)
+    {
+        $users = $request->request->get('users');
+
+        if (empty($users)) {
+            throw new BadRequestHttpException('At least one user should be present to unsubscribe');
+        }
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $subscriptionRepository = $entityManager->getRepository(Subscription::class);
+        $carrierRepository = $entityManager->getRepository(Carrier::class);
+
+        $success = [];
+        $errors = [];
+
+        foreach ($users as $user) {
+            $subscriptionId = $user['subscriptionId'];
+
+            /** @var Subscription $subscription */
+            $subscription = $subscriptionRepository->find($subscriptionId);
+            /** @var SubscriptionPack $subscriptionPack */
+            $subscriptionPack = $subscription->getSubscriptionPack();
+            /** @var Carrier $carrier */
+            $carrier = $carrierRepository->findOneBy(['billingCarrierId' => $subscriptionPack->getCarrierId()]);
+
+            try {
+                $response = $this->unsubscriber->unsubscribe($subscription, $subscriptionPack);
+
+                $unsubscriptionHandler = $this->unsubscriptionHandlerProvider->getUnsubscriptionHandler($carrier);
+                $unsubscriptionHandler->applyPostUnsubscribeChanges($subscription);
+
+                if ($unsubscriptionHandler->isPiwikNeedToBeTracked($response)) {
+                    $this->unsubscriber->trackEventsForUnsubscribe($subscription, $response);
+                }
+
+                if ($user['toBlacklist']) {
+                    $blackList = new BlackList(UuidGenerator::generate());
+                    $blackList
+                        ->setBillingCarrierId($subscriptionPack->getCarrierId())
+                        ->setAlias($subscription->getUser()->getIdentifier());
+
+                    $entityManager->persist($blackList);
+                    $entityManager->flush();
+                }
+
+                $success[] = $subscription->getUuid();
+            } catch (\Exception $e) {
+                $errors[] = $subscription->getUuid();
+            }
+        }
+
+        return new Response(json_encode(['success' => $success, 'errors' => $errors]));
+    }
+
+    /**
+     * @param Request|null $request
+     *
+     * @return string
+     */
+    protected function handleMsisdn(Request $request = null)
     {
         $form = $this->formFactory->create(UnsubscribeByMsisdnForm::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            return $this->renderPreparedUsers([$form->get('msisdn')->getData()]);
         }
 
-        return $this->renderView('@SubscriptionAdmin/Unsubscription/unsubscribeByMsisdnForm.html.twig', [
+        return $this->renderView('@SubscriptionAdmin/Unsubscription/unsubscribe_by_msisdn.html.twig', [
             'form' => $form->createView()
         ]);
     }
 
-    private function handleFile(Request $request = null)
+    /**
+     * @param Request|null $request
+     *
+     * @return string
+     */
+    protected function handleFile(Request $request = null)
     {
         $form = $this->formFactory->create(UnsubscribeByFileForm::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form->get('file')->getData();
+            return $this->renderPreparedUsers(str_getcsv(file_get_contents($file->getRealPath()), ','));
+        }
+
+        return $this->renderView('@SubscriptionAdmin/Unsubscription/unsubscribe_by_file.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @param Request|null $request
+     *
+     * @return string
+     */
+    protected function handleCampaign(Request $request = null)
+    {
+        $form = $this->formFactory->create(UnsubscribeByCampaignForm::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
         }
 
-        return $this->renderView('@SubscriptionAdmin/Unsubscription/unsubscribeByFileForm.html.twig', [
+        return $this->renderView('@SubscriptionAdmin/Unsubscription/unsubscribe_by_campaign.html.twig', [
             'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @param Request|null $request
+     *
+     * @return string
+     */
+    protected function handleAffiliate(Request $request = null)
+    {
+        $form = $this->formFactory->create(UnsubscribeByAffiliateForm::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+        }
+
+        return $this->renderView('@SubscriptionAdmin/Unsubscription/unsubscribe_by_affiliate.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    protected function renderPreparedUsers($msisdns)
+    {
+        $nonexistentUsers = [];
+        $users = [];
+        $alreadyUnsubscribed = [];
+        $alreadyBlacklisted = [];
+        $entityManager = $this->getDoctrine()->getManager();
+
+        foreach ($msisdns as $msisdn) {
+            /** @var User $user */
+            $user = $entityManager->getRepository(User::class)->findOneBy(['identifier' => $msisdn]);
+
+            if (empty($user)) {
+                $nonexistentUsers[] = $msisdn;
+                continue;
+            }
+
+            $isBlacklisted = $entityManager->getRepository(BlackList::class)->findOneBy(['alias' => $msisdn]);
+
+            if (!empty($isBlacklisted)) {
+                $alreadyBlacklisted[] = $msisdn;
+                continue;
+            }
+
+            /** @var Subscription $subscription */
+            $subscription = $entityManager
+                ->getRepository(Subscription::class)
+                ->findOneBy(['user' => $user->getUuid()]);
+
+            if (!empty($subscription) && $subscription->isUnsubscribed()) {
+                $alreadyUnsubscribed[] = $msisdn;
+            } elseif (!empty($subscription)) {
+                $users[$msisdn] = $subscription->getUuid();
+            }
+        }
+
+        return $this->renderView('@SubscriptionAdmin/Unsubscription/prepared_users.html.twig', [
+            'headers' => $this->tableHeaders,
+            'users' => $users,
+            'nonexistentUsers' => $nonexistentUsers,
+            'alreadyUnsubscribed' => $alreadyUnsubscribed,
+            'alreadyBlacklisted' => $alreadyBlacklisted
         ]);
     }
 

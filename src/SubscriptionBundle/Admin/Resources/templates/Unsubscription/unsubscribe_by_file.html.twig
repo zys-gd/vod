@@ -2,6 +2,7 @@
 <div class="form-group" style="margin-left: 20px">
     <div class="row">
         <div class="col">{{ form_label(form.file) }}</div>
+        <div class="col">{{ form_errors(form.file) }}</div>
         <div class="col">{{ form_widget(form.file, { 'attr': {'class': 'form-control'} }) }}</div>
     </div>
     <div class="row">

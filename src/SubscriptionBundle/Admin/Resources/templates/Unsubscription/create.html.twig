@@ -62,6 +62,7 @@
                     navtabs.find(`[data-tab-action=${tabName}]`).addClass('active');
 
                     $('#tab-content').html(tabContent);
+                    $('select').select2();
                 }).always(function () {
                     loader.remove();
                 })

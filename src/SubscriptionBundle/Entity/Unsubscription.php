@@ -49,6 +49,14 @@ class Unsubscription
     }
 
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->uuid;
+    }
+
+    /**
      * @param string $type
      *
      * @return Unsubscription
