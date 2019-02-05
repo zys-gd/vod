@@ -2,17 +2,22 @@
 
 namespace SubscriptionBundle\Admin\Controller;
 
+use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\BlackList;
 use App\Domain\Entity\Carrier;
 use App\Utils\UuidGenerator;
+use Doctrine\Common\Collections\ArrayCollection;
 use IdentificationBundle\Entity\User;
 use Sonata\AdminBundle\Controller\CRUDController;
 use SubscriptionBundle\Admin\Form\Unsubscription\UnsubscribeByAffiliateForm;
 use SubscriptionBundle\Admin\Form\Unsubscription\UnsubscribeByCampaignForm;
 use SubscriptionBundle\Admin\Form\Unsubscription\UnsubscribeByFileForm;
 use SubscriptionBundle\Admin\Form\Unsubscription\UnsubscribeByMsisdnForm;
+use SubscriptionBundle\Entity\Affiliate\AffiliateLog;
+use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
+use SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository;
 use SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider;
 use SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber;
 use Symfony\Component\Form\FormFactory;
@@ -201,6 +206,8 @@ class UnsubscriptionAdminController extends CRUDController
      * @param Request|null $request
      *
      * @return string
+     *
+     * @throws \Doctrine\DBAL\DBALException
      */
     protected function handleCampaign(Request $request = null)
     {
@@ -208,7 +215,30 @@ class UnsubscriptionAdminController extends CRUDController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
 
+            /** @var ArrayCollection $campaigns */
+            $campaigns = $data['campaign'];
+            $period = $data['period'];
+            $usersLimit = $data['usersCount'];
+            $msisdns = [];
+
+            /** @var AffiliateLogRepository $affiliateLogRepository */
+            $affiliateLogRepository = $this->getDoctrine()->getRepository(AffiliateLog::class);
+
+            /** @var CampaignInterface $campaign */
+            foreach ($campaigns->getIterator() as $campaign) {
+                $identifiers = $affiliateLogRepository->findByCampaignAndDateRange(
+                    $campaign->getCampaignToken(),
+                    $period['start'],
+                    $period['end'],
+                    $usersLimit
+                );
+
+                $msisdns = array_merge($msisdns, $identifiers);
+            }
+
+            return $this->renderPreparedUsers($msisdns);
         }
 
         return $this->renderView('@SubscriptionAdmin/Unsubscription/unsubscribe_by_campaign.html.twig', [
@@ -220,6 +250,8 @@ class UnsubscriptionAdminController extends CRUDController
      * @param Request|null $request
      *
      * @return string
+     *
+     * @throws \Doctrine\DBAL\DBALException
      */
     protected function handleAffiliate(Request $request = null)
     {
@@ -227,7 +259,26 @@ class UnsubscriptionAdminController extends CRUDController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
 
+            /** @var Affiliate $affiliate */
+            $affiliate = $data['affiliate'];
+            /** @var Carrier $carrier */
+            $carrier = $data['carrier'];
+            $period = $data['period'];
+            $usersLimit = $data['usersCount'];
+
+            /** @var AffiliateLogRepository $affiliateLogRepository */
+            $affiliateLogRepository = $this->getDoctrine()->getRepository(AffiliateLog::class);
+            $msisdns = $affiliateLogRepository->findByAffiliateCarrierAndDateRange(
+                $affiliate->getUuid(),
+                $carrier->getUuid(),
+                $period['start'],
+                $period['end'],
+                $usersLimit
+            );
+
+            return $this->renderPreparedUsers($msisdns);
         }
 
         return $this->renderView('@SubscriptionAdmin/Unsubscription/unsubscribe_by_affiliate.html.twig', [

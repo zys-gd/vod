@@ -27,10 +27,9 @@ class UnsubscribeByFileForm extends AbstractType
                         'mimeTypes' => [
                             'text/csv',
                             'text/plain',
-                            'text/tsv',
-                            'application/vnd.ms-excel'
+                            'text/tsv'
                         ],
-                        'mimeTypesMessage' => 'Invalid file format. Available extensions .csv, .tsv (comma separated text files)'
+                        'mimeTypesMessage' => 'Invalid file format. Available extensions .csv, .tsv, .txt (comma separated text files)'
                     ])
                 ],
                 'required' => true,
