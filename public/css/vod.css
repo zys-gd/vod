@@ -218,6 +218,7 @@ a button {
 }
 
 .homepage-container {
+    width: 100%;
     padding-top: 15px;
     padding-left: 8px;
     padding-right: 8px;
