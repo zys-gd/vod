@@ -9,6 +9,17 @@
 {% import "@App/Common/Blocks/slider.html.twig" as  slider %}
 {% import "@App/Common/Blocks/grid_video.html.twig" as  grid_video %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css"/>
+{% endblock stylesheets %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+{% endblock javascripts %}
+
 {% block header_content %}
 
     <div class="w-100">
