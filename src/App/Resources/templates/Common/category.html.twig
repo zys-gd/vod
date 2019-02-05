@@ -129,6 +129,7 @@
 
             var parent = elem.parents('.category-block');
 
+            parent.toggleClass('expanded');
             parent.find('.category-content').toggleClass('d-none');
 
             e.preventDefault();
