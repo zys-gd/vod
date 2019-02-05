@@ -1,0 +1,38 @@
+{% macro render(aVideos, categories) %}
+    {% import '@App/Components/Blocks/Main/see_all.html.twig' as  see_all %}
+    {% import '@App/Components/Blocks/Main/slider_items.html.twig' as  slider_items %}
+
+    <div class="slider-block">
+        <div class="d-flex flex-row">
+            <div class="slider-title"></div>
+            <div class="slider-see-all-button"></div>
+        </div>
+        <div class="slider-content">
+            {% for category, videos in aVideos %}
+
+                {% set categoryData = categories[category] %}
+                <div class="categories-block d-flex flex-column">
+
+                    {{ see_all.render(category,  path('show_category',{'categoryUuid': categoryData.uuid})) }}
+
+                    <div class="categories-content d-flex flex-row"
+                         style="justify-content: space-between;">
+                        {% for video in videos %}
+                            <div class="video-element x-play-button">
+                                <img src="{{ video.thumbnails[0] }}"
+                                     class="x-play-button"
+                                     width="100%"
+                                     data-uuid="{{ video.uuid }}"
+                                     data-category="{{ category }}"
+                                />
+                                <div class="video-element-title">{{ video.title }}</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+
+    </div>
+{% endmacro render %}

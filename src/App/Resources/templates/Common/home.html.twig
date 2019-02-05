@@ -3,6 +3,7 @@
 {% import "@App/Common/Blocks/header.html.twig" as  header %}
 {% import "@App/Components/Blocks/Main/subscription_status.html.twig" as  subscription_status %}
 {% import "@App/Components/player.html.twig" as  player %}
+{% import "@App/Common/Blocks/slider.html.twig" as  slider %}
 
 {% block header_content %}
     {{ header.render() }}
@@ -11,45 +12,7 @@
 {% block body %}
     <div class="homepage-container">
 
-        <div class="slider-block">
-            <div class="d-flex flex-row">
-                <div class="slider-title"></div>
-                <div class="slider-see-all-button"></div>
-            </div>
-            <div class="slider-content">
-                {% for category, videos in sliderVideos %}
-
-                    {% set categoryData = categories[category] %}
-                    <div class="categories-block d-flex flex-column">
-                        <div class="d-flex justify-content-between">
-                            <div class="categories-block-title">{{ category }}</div>
-                            <a href="{{ path('show_category',{'categoryUuid': categoryData.uuid}) }}">
-                                <span class="categories-see-all-icon"></span>
-                                <span class="categories-see-all-button">See all</span>
-                            </a>
-                        </div>
-                        <div class="categories-block-title-underline"></div>
-
-                        <div class="categories-content d-flex flex-row"
-                             style="justify-content: space-between;">
-                            {% for video in videos %}
-                                <div class="video-element x-play-button">
-                                    <img src="{{ video.thumbnails[0] }}"
-                                         class="x-play-button"
-                                         width="100%"
-                                         data-uuid="{{ video.uuid }}"
-                                         data-category="{{ category }}"
-                                    />
-                                    <div class="video-element-title">{{ video.title }}</div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endfor %}
-
-            </div>
-
-        </div>
+        {{ slider.render(sliderVideos, categories) }}
 
         <div class="d-flex flex-column w-100">
             {% for category, videos in categoryVideos %}
