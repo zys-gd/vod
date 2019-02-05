@@ -4,6 +4,7 @@
 {% import "@App/Components/Blocks/Main/subscription_status.html.twig" as  subscription_status %}
 {% import "@App/Components/player.html.twig" as  player %}
 {% import "@App/Common/Blocks/slider.html.twig" as  slider %}
+{% import "@App/Common/Blocks/grid_video.html.twig" as  grid_video %}
 
 {% block header_content %}
     {{ header.render() }}
@@ -15,39 +16,7 @@
         {{ slider.render(sliderVideos, categories) }}
 
         <div class="d-flex flex-column w-100">
-            {% for category, videos in categoryVideos %}
-
-                {% set categoryData = categories[category] %}
-                <div class="categories-block d-flex flex-column">
-                    <div class="d-flex justify-content-between">
-                        <div class="categories-block-title">{{ category }}</div>
-                        <a href="{{ path('show_category',{'categoryUuid': categoryData.uuid}) }}">
-                            <span class="categories-see-all-icon"></span>
-                            <span class="categories-see-all-button">See all</span>
-                        </a>
-                    </div>
-                    <div class="categories-block-title-underline"></div>
-
-                    <div class="categories-content d-flex flex-row"
-                         style="flex-wrap: wrap;justify-content: space-between;">
-                        {% for video in videos | slice(0, 4) %}
-                            <div class="video-element">
-                                <div class="thumbnail-wrapper x-play-button">
-                                    <img src="{{ video.thumbnails[0] }}"
-                                         class="x-play-button"
-                                         width="100%"
-                                         data-uuid="{{ video.uuid }}"
-                                         data-category="{{ category }}"
-                                    />
-                                    <div class="category__related__box-play"></div>
-                                </div>
-                                <div class="video-element-title">{{ video.title }}</div>
-                            </div>
-                        {% endfor %}
-
-                    </div>
-                </div>
-            {% endfor %}
+           {{ grid_video.render(categoryVideos, categories) }}
         </div>
     </div>
     {{ player.render(categoryVideos|merge(sliderVideos)) }}
