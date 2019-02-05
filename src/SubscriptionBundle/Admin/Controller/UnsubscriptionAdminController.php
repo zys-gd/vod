@@ -84,14 +84,14 @@ class UnsubscriptionAdminController extends CRUDController
     /**
      * @param Request|null $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function createAction(Request $request = null)
     {
         $formName = $this->detectCurrentFormTab($request->request->all());
 
         if (empty($formName)) {
-            throw new BadRequestHttpException('Invalid form data');
+            throw new BadRequestHttpException('Unknown tab');
         }
 
         $actionName = 'handle' . ucfirst($formName);
@@ -168,7 +168,7 @@ class UnsubscriptionAdminController extends CRUDController
      *
      * @return string
      */
-    protected function handleMsisdn(Request $request = null)
+    protected function handleMsisdn(Request $request = null): string
     {
         $form = $this->formFactory->create(UnsubscribeByMsisdnForm::class);
         $form->handleRequest($request);
@@ -187,7 +187,7 @@ class UnsubscriptionAdminController extends CRUDController
      *
      * @return string
      */
-    protected function handleFile(Request $request = null)
+    protected function handleFile(Request $request = null): string
     {
         $form = $this->formFactory->create(UnsubscribeByFileForm::class);
         $form->handleRequest($request);
@@ -209,7 +209,7 @@ class UnsubscriptionAdminController extends CRUDController
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    protected function handleCampaign(Request $request = null)
+    protected function handleCampaign(Request $request = null): string
     {
         $form = $this->formFactory->create(UnsubscribeByCampaignForm::class);
         $form->handleRequest($request);
@@ -253,7 +253,7 @@ class UnsubscriptionAdminController extends CRUDController
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    protected function handleAffiliate(Request $request = null)
+    protected function handleAffiliate(Request $request = null): string
     {
         $form = $this->formFactory->create(UnsubscribeByAffiliateForm::class);
         $form->handleRequest($request);
@@ -286,7 +286,12 @@ class UnsubscriptionAdminController extends CRUDController
         ]);
     }
 
-    protected function renderPreparedUsers($msisdns)
+    /**
+     * @param array $msisdns
+     *
+     * @return string
+     */
+    protected function renderPreparedUsers(array $msisdns): string
     {
         $nonexistentUsers = [];
         $users = [];
@@ -336,7 +341,7 @@ class UnsubscriptionAdminController extends CRUDController
      *
      * @return string|null
      */
-    private function detectCurrentFormTab(array $postData)
+    private function detectCurrentFormTab(array $postData): ?string
     {
         if (count($postData) > 1) {
             return null;
