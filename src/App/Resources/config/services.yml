@@ -81,3 +81,8 @@ services:
             - '@App\Domain\Service\Translator\TranslatorShortcodeReplacer'
 
     App\Domain\Service\FaqProviderService: ~
+
+    App\Domain\Service\ContactUsMessageSender:
+        arguments: ['@App\Domain\Service\Email\EmailComposer', '@twig', '@swiftmailer.mailer']
+
+    App\Domain\Service\Email\EmailComposer: ~

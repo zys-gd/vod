@@ -53,7 +53,7 @@ class SubscriptionCreatorTest extends TestCase
         $creator      = new SubscriptionCreator($this->entitySaveHelper);
         $pack         = new SubscriptionPack(UuidGenerator::generate());
         $user         = new User(UuidGenerator::generate());
-        $subscription = $creator->create($user, $pack, json_encode('affiliate'));
+        $subscription = $creator->create($user, $pack, 'affiliate');
 
         $this->assertEquals('affiliate', $subscription->getAffiliateToken());
         $this->assertEquals($user, $subscription->getUser());

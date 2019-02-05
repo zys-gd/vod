@@ -17,6 +17,9 @@
         <testsuite name="Identification Bundle Test Suite">
             <directory>src/IdentificationBundle/Tests</directory>
         </testsuite>
+        <testsuite name="App Test Suite">
+            <directory>tests</directory>
+        </testsuite>
     </testsuites>
 
     <filter>

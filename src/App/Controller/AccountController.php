@@ -4,13 +4,14 @@ namespace App\Controller;
 
 use App\CarrierTemplate\TemplateConfigurator;
 use App\Domain\Repository\CarrierRepository;
+use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
 use SubscriptionBundle\Service\SubscriptionExtractor;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class AccountController extends AbstractController
+class AccountController extends AbstractController implements ControllerWithISPDetection
 {
     /**
      * @var SubscriptionExtractor

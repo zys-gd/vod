@@ -11,9 +11,9 @@ namespace App\Tests\App\Functional;
 use App\Domain\Service\Translator\TranslationProvider;
 use DataFixtures\LoadTranslationsData;
 use ExtrasBundle\Testing\Core\AbstractFunctionalTest;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Mockery;
 use IdentificationBundle\BillingFramework\Process\IdentProcess;
+use Mockery;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ContentControllerTest extends AbstractFunctionalTest
 {
@@ -32,13 +32,10 @@ class ContentControllerTest extends AbstractFunctionalTest
      */
     public function testFaqPage()
     {
-        $this->translationProvider->shouldReceive('getTranslation')
-            ->andReturn('faq_text_translation');
-
         $client = $this->makeClient();
         $client->request('GET', '/faq');
 
-        $this->assertContains('faq_text_translation', $client->getResponse()->getContent());
+        $this->assertContains('faq.q.1', $client->getResponse()->getContent());
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
@@ -47,13 +44,11 @@ class ContentControllerTest extends AbstractFunctionalTest
      */
     public function testTermsAndConditionsPage()
     {
-        $this->translationProvider->shouldReceive('getTranslation')
-            ->andReturn('t_and_c_text_translation');
 
         $client = $this->makeClient();
         $client->request('GET', '/terms-and-conditions');
 
-        $this->assertContains('t_and_c_text_translation', $client->getResponse()->getContent());
+        $this->assertContains('terms.block_1.title.1', $client->getResponse()->getContent());
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
