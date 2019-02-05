@@ -222,19 +222,6 @@ a button {
     padding-right: 8px;
 }
 
-.slider-content .categories-content {
-    overflow-x: scroll;
-}
-
-.slider-content .categories-content::-webkit-scrollbar {
-    display: none;
-}
-
-.slider-content .video-element {
-    flex: 0 0 auto;
-    width: 70%;
-    margin-right: 2%;
-}
 
 .category__related__box-play {
     position: absolute;
@@ -267,4 +254,18 @@ a button {
     margin-left: auto;
     background-size: contain;
 
+}
+
+
+.slider-big {
+
+}
+.slider-big .video-element{
+    height: 434px;
+    width: 770px;
+    margin-right: 20px;
+}
+.slider-big .video-element img{
+    max-height: 434px;
+    width: 770px;
 }
