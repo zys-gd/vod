@@ -1,7 +1,7 @@
 {% extends '@App/base.html.twig' %}
 {% import "@App/Common/Blocks/header.html.twig" as  header %}
 {% import "@App/Components/Blocks/Footer/annotation.html.twig" as  footer %}
-{% import "@App/Components/Blocks/Main/slider.html.twig" as  slider %}
+{% import "@App/Common/Blocks/slider.html.twig" as  slider %}
 {% import "@App/Components/Blocks/Main/elect.html.twig" as  elect %}
 {% import "@App/Components/Blocks/Main/subscription_status.html.twig" as  subscription_status %}
 {% import "@App/Components/player.html.twig" as  player %}
@@ -131,8 +131,6 @@
             var parent = elem.parents('.category-block');
 
             parent.find('.category-content').toggle();
-
-            parent.toggleClass('expanded');
 
             e.preventDefault();
             e.stopPropagation();

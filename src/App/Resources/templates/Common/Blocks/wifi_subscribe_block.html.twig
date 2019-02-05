@@ -1,6 +1,6 @@
 {% macro render(carriers) %}
     {% import '@App/Components/Buttons/button.html.twig' as button %}
-    <form class="x-select-carrier-block text-center" hidden>
+    <form class="x-select-carrier-block text-center collapse ">
         <br>
         <div>
             <select name="carrier_id" required>
@@ -14,7 +14,7 @@
         </div>
     </form>
 
-    <form class="x-subscribe-send-pin-block text-center" hidden>
+    <form class="x-subscribe-send-pin-block text-center collapse ">
         <br>
         <div>
             <input type="text" name="mobile_number" placeholder="Mobile Number" required>
@@ -24,7 +24,7 @@
         </div>
     </form>
 
-    <form class="x-subscribe-confirm-pin-block text-center" hidden>
+    <form class="x-subscribe-confirm-pin-block text-center collapse ">
         <br>
         <div>
             <input type="text" name="mobile_number" placeholder="Mobile Number" required>
@@ -40,14 +40,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
     <script>
+        // $(document).ready(function (){
+            var isCarrierDetected = {{ isCarrierDetected() ? 'true' : 'false' }};
 
-        var isCarrierDetected = {{ isCarrierDetected() ? 'true' : 'false' }};
-
-        if (isCarrierDetected) {
-            moveToStepTwo()
-        } else {
-            moveToStepOne();
-        }
+            if (isCarrierDetected) {
+                moveToStepTwo()
+            } else {
+                moveToStepOne();
+            }
 
         function moveToStepOne() {
             $('.x-select-carrier-block').show();
@@ -65,63 +65,64 @@
             $('.x-subscribe-confirm-pin-block').show();
         }
 
-        $('.x-select-carrier-block').on('submit', function (e) {
-            var form = $(this);
+            $('.x-select-carrier-block').on('submit', function (e) {
+                var form = $(this);
 
-            $.ajax({
-                url    : "{{ path('select_carrier_for_pin_code_form') }}",
-                method : "POST",
-                data   : form.serialize(),
-                success: function (result) {
-                    if (result.data.success) {
-                        moveToStepTwo();
-                    } else {
-                        alert(result.data.message);
+                $.ajax({
+                    url    : "{{ path('select_carrier_for_pin_code_form') }}",
+                    method : "POST",
+                    data   : form.serialize(),
+                    success: function (result) {
+                        if (result.data.success) {
+                            moveToStepTwo();
+                        } else {
+                            alert(result.data.message);
+                        }
                     }
-                }
-            });
-            e.preventDefault();
-            e.stopPropagation();
-        });
-
-        $('.x-subscribe-send-pin-block').on('submit', function (e) {
-            var form = $(this);
-
-            $.ajax({
-                url    : "{{ path('send_sms_pin_code') }}",
-                method : "POST",
-                data   : form.serialize(),
-                success: function (result) {
-                    if (result.data.success) {
-                        moveToStepThree()
-                    } else {
-                        alert(result.data.message);
-                    }
-                }
+                });
+                e.preventDefault();
+                e.stopPropagation();
             });
 
-            e.preventDefault();
-            e.stopPropagation();
-        });
+            $('.x-subscribe-send-pin-block').on('submit', function (e) {
+                var form = $(this);
 
-        $('.x-subscribe-confirm-pin-block').on('submit', function (e) {
-            var form = $(this);
-
-            $.ajax({
-                url    : "{{ path('confirm_sms_pin_code') }}",
-                method : "POST",
-                data   : form.serialize(),
-                success: function (result) {
-                    if (result.data.success) {
-                        window.location = result.data.redirectUrl;
-                    } else {
-                        alert(result.data.message);
+                $.ajax({
+                    url    : "{{ path('send_sms_pin_code') }}",
+                    method : "POST",
+                    data   : form.serialize(),
+                    success: function (result) {
+                        if (result.data.success) {
+                            moveToStepThree()
+                        } else {
+                            alert(result.data.message);
+                        }
                     }
-                }
+                });
+
+                e.preventDefault();
+                e.stopPropagation();
             });
 
-            e.preventDefault();
-            e.stopPropagation();
-        });
+            $('.x-subscribe-confirm-pin-block').on('submit', function (e) {
+                var form = $(this);
+
+                $.ajax({
+                    url    : "{{ path('confirm_sms_pin_code') }}",
+                    method : "POST",
+                    data   : form.serialize(),
+                    success: function (result) {
+                        if (result.data.success) {
+                            window.location = result.data.redirectUrl;
+                        } else {
+                            alert(result.data.message);
+                        }
+                    }
+                });
+
+                e.preventDefault();
+                e.stopPropagation();
+            });
+        // });
     </script>
 {% endmacro %}
