@@ -50,6 +50,6 @@
 {% block footer_content %}
     {% if not isSubscriptionExist() %}
         {{ annotation.render() }}
-        {{ footer_menu.render() }}
     {% endif %}
+    {{ footer_menu.render() }}
 {% endblock footer_content %}

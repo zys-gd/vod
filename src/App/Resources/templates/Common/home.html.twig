@@ -2,15 +2,25 @@
 
 {% import "@App/Common/Blocks/header.html.twig" as  header %}
 {% import "@App/Components/Blocks/Main/subscription_status.html.twig" as  subscription_status %}
+{% import "@App/Components/Blocks/Header/subscription_heading.html.twig" as  subscription_heading %}
+{% import "@App/Components/Blocks/Footer/menu.html.twig" as  footer_menu %}
+
 {% import "@App/Components/player.html.twig" as  player %}
 {% import "@App/Common/Blocks/slider.html.twig" as  slider %}
 {% import "@App/Common/Blocks/grid_video.html.twig" as  grid_video %}
 
 {% block header_content %}
-    {{ header.render() }}
+
+    <div style="width: 100%;">
+        {{ header.render() }}
+        {{ subscription_heading.render() }}
+    </div>
+
+
 {% endblock header_content %}
 
 {% block body %}
+
     <div class="homepage-container">
 
         {{ slider.render(sliderVideos, categories) }}
@@ -22,3 +32,7 @@
     {{ player.render(categoryVideos|merge(sliderVideos)) }}
 
 {% endblock %}
+
+{% block footer_content %}
+    {{ footer_menu.render() }}
+{% endblock footer_content %}

@@ -317,7 +317,7 @@
     {
         "uuid": "51136644-9be4-4eac-b466-f617e7238d00",
         "key": "offer.landing",
-        "translation": "Watch unlimited sport videos <br/><small>for only 450 MMK per week</small>",
+        "translation": "Watch unlimited sport videos <br\/><small>for only 450 MMK per week<\/small>",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -605,7 +605,7 @@
     {
         "uuid": "af9e79c0-244e-47ec-888e-1e813c6c71f8",
         "key": "subscription.status.subscribed",
-        "translation": "You are subscribed to 100% sports",
+        "translation": "You are subscribed to 100% sports.\nEnjoy unlimited content",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -695,7 +695,7 @@
     {
         "uuid": "dbeea442-37f6-4f11-b5c3-e47696f2a9f5",
         "key": "promotional.landing",
-        "translation": "Unlimited videos <br/> of your favorite sports and <br/> teams",
+        "translation": "Unlimited videos <br\/> of your favorite sports and <br\/> teams",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
