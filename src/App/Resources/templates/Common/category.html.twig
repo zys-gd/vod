@@ -66,10 +66,10 @@
                             {% for thumbnail in defaultVideo.thumbnails | slice(0,1) %}
                                 <div class="w-100">
                                     <img src="{{ thumbnail }}"
-                                         class="x-play-button"
+                                         class="x-play-button w-100"
                                          data-uuid="{{ defaultVideo.uuid }}"
                                          data-category="{{ category.uuid }}"
-                                         class="w-100"/>
+                                         />
                                 </div>
                             {% endfor %}
                             <div id="video-player-title" class="video-player-title">
