@@ -116,7 +116,6 @@ class Subscription implements HasUuid
     /**
      * Subscription constructor.
      * @param string $uuid
-     * @throws \Exception
      */
     public function __construct(string $uuid)
     {
@@ -125,14 +124,6 @@ class Subscription implements HasUuid
         $this->created = new \DateTimeImmutable();
         $this->updated = new \DateTimeImmutable();
 
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->uuid;
     }
 
     /**

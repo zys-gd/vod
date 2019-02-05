@@ -39,8 +39,3 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - SubscriptionBundle\Entity\Refund
-
-    SubscriptionBundle\Repository\UnsubscriptionRepository:
-        factory: ['@doctrine.orm.default_entity_manager', getRepository]
-        arguments:
-            - SubscriptionBundle\Entity\Unsubscription
