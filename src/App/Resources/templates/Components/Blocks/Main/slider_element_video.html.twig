@@ -1,0 +1,12 @@
+{% macro render(video, category) %}
+    <div class="video-element x-play-button">
+        <img src="{{ video.thumbnails[0] }}"
+             class="x-play-button"
+             width="100%"
+             data-uuid="{{ video.uuid }}"
+             data-category="{{ category }}"
+             alt="{{ video.uuid }}"
+        />
+        <div class="video-element-title">{{ video.title }}</div>
+    </div>
+{% endmacro %}

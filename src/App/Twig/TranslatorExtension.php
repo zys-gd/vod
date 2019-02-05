@@ -68,6 +68,9 @@ class TranslatorExtension extends \Twig_Extension
      */
     public function translate(string $translationKey, $carrierId = null, $languageCode = null)
     {
+        if ($this->kernel->getEnvironment() == 'test') {
+            return $translationKey;
+        }
         if (is_null($carrierId)) {
             $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
             $carrierId        = $ispDetectionData['carrier_id'];
@@ -77,9 +80,6 @@ class TranslatorExtension extends \Twig_Extension
         }
         $translation = $this->translator->translate($translationKey, $carrierId, $languageCode);
 
-        if ($this->kernel->getEnvironment() == 'test') {
-            return $translationKey;
-        }
 
         if (is_null($translation) && $this->kernel->isDebug()) {
             throw new WrongTranslationKey("Translation key doesn't exist");

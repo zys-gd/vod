@@ -23,6 +23,7 @@ services:
         arguments: ['@SubscriptionBundle\Service\UserExtractor', '@monolog.logger', '@SubscriptionBundle\Service\SubscriptionExtractor']
 
     SubscriptionBundle\Controller\Actions\UnsubscribeAction:
+        tags: ['controller.service_arguments']
         arguments:
             - '@SubscriptionBundle\Service\UserExtractor'
             - '@SubscriptionBundle\Service\SubscriptionExtractor'

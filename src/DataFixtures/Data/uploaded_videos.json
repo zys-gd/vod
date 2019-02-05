@@ -68,23 +68,6 @@
         }
     },
     {
-        "uuid": "75ea9ab8-c987-4b06-9f1a-f0c1726eab3d",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1548761309\/top_viral_videos\/f8b4b4ea-da22-4948-b8ef-9aaa701d2497.mp4",
-        "remoteId": "top_viral_videos\/f8b4b4ea-da22-4948-b8ef-9aaa701d2497",
-        "createdAt": "2019-01-29T11:28:31+02:00",
-        "title": "Dumb ways to die",
-        "description": null,
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_250\/so_25p\/v1\/top_viral_videos\/f8b4b4ea-da22-4948-b8ef-9aaa701d2497.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_250\/so_50p\/v1\/top_viral_videos\/f8b4b4ea-da22-4948-b8ef-9aaa701d2497.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_250\/so_75p\/v1\/top_viral_videos\/f8b4b4ea-da22-4948-b8ef-9aaa701d2497.jpg"
-        ],
-        "subcategory": {
-            "uuid": "88450169-49a4-4823-a7f9-574ac1d7c89p"
-        }
-    },
-    {
         "uuid": "77c462c5-3162-46b2-8b5c-f5bd78020bcb",
         "status": 2,
         "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1548931533\/top_football_videos\/d11bdcab-302c-4740-a00f-da7dc4a15119.mp4",
@@ -153,20 +136,173 @@
         }
     },
     {
-        "uuid": "d64f0929-2f99-42db-8aad-e0d3311b0552",
+        "uuid": "2f213811-8047-4109-95f5-631969978c95",
         "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1548781561\/top_viral_videos\/81661961-1a44-4895-bd30-bc4eff7225d5.mp4",
-        "remoteId": "top_viral_videos\/81661961-1a44-4895-bd30-bc4eff7225d5",
-        "createdAt": "2019-01-29T17:06:02+02:00",
-        "title": "Owl ofr viral",
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549373662\/top_cricket_videos\/136e1593-8854-43ef-9b64-09fcc0e23f8d.mp4",
+        "remoteId": "top_cricket_videos\/136e1593-8854-43ef-9b64-09fcc0e23f8d",
+        "createdAt": "2019-02-05T13:34:24+02:00",
+        "title": "\u2018Atletico can win Champions League\u2019",
         "description": null,
         "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_viral_videos\/81661961-1a44-4895-bd30-bc4eff7225d5.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_viral_videos\/81661961-1a44-4895-bd30-bc4eff7225d5.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_viral_videos\/81661961-1a44-4895-bd30-bc4eff7225d5.jpg"
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_cricket_videos\/136e1593-8854-43ef-9b64-09fcc0e23f8d.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_cricket_videos\/136e1593-8854-43ef-9b64-09fcc0e23f8d.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_cricket_videos\/136e1593-8854-43ef-9b64-09fcc0e23f8d.jpg"
+        ],
+        "subcategory": {
+            "uuid": "98721587-49a4-4823-a7f9-574ac1d7i32x"
+        }
+    },
+    {
+        "uuid": "378d249b-ef4c-4f6a-b12d-31daa2dd426e",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549374516\/top_moto_sport_videos\/e53da0c3-978c-43db-ba22-f34d29553d40.mp4",
+        "remoteId": "top_moto_sport_videos\/e53da0c3-978c-43db-ba22-f34d29553d40",
+        "createdAt": "2019-02-05T13:48:40+02:00",
+        "title": "test3",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_moto_sport_videos\/e53da0c3-978c-43db-ba22-f34d29553d40.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_moto_sport_videos\/e53da0c3-978c-43db-ba22-f34d29553d40.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_moto_sport_videos\/e53da0c3-978c-43db-ba22-f34d29553d40.jpg"
+        ],
+        "subcategory": {
+            "uuid": "fjh56169-49a4-4823-a7f9-574ac1kf54va"
+        }
+    },
+    {
+        "uuid": "5dc49e9c-5d0f-44be-bdc0-e6733075f1a3",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549372620\/top_viral_videos\/82b8c145-7717-487b-a2d0-57a60df8e06e.mp4",
+        "remoteId": "top_viral_videos\/82b8c145-7717-487b-a2d0-57a60df8e06e",
+        "createdAt": "2019-02-05T13:17:02+02:00",
+        "title": "Marquez crashes in Valencia qualifying",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_viral_videos\/82b8c145-7717-487b-a2d0-57a60df8e06e.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_viral_videos\/82b8c145-7717-487b-a2d0-57a60df8e06e.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_viral_videos\/82b8c145-7717-487b-a2d0-57a60df8e06e.jpg"
         ],
         "subcategory": {
             "uuid": "88450169-49a4-4823-a7f9-574ac1d7c89p"
+        }
+    },
+    {
+        "uuid": "76f4b953-5361-4954-aa60-19688349da95",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549373515\/top_cricket_videos\/98e6c627-4207-4ea3-8317-ebc94f90821f.mp4",
+        "remoteId": "top_cricket_videos\/98e6c627-4207-4ea3-8317-ebc94f90821f",
+        "createdAt": "2019-02-05T13:31:59+02:00",
+        "title": "Real Madrid always UCL favourites 'because of our history', says Solari",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_cricket_videos\/98e6c627-4207-4ea3-8317-ebc94f90821f.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_cricket_videos\/98e6c627-4207-4ea3-8317-ebc94f90821f.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_cricket_videos\/98e6c627-4207-4ea3-8317-ebc94f90821f.jpg"
+        ],
+        "subcategory": {
+            "uuid": "98721587-49a4-4823-a7f9-574ac1d7i32x"
+        }
+    },
+    {
+        "uuid": "9f3a8e01-9b6b-4a48-9f64-acf28ffc64d6",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549372868\/top_viral_videos\/e2577a2f-4b25-454e-9f86-55e71c40344d.mp4",
+        "remoteId": "top_viral_videos\/e2577a2f-4b25-454e-9f86-55e71c40344d",
+        "createdAt": "2019-02-05T13:21:11+02:00",
+        "title": "Sophia Floersch crash at the Macau F3 Grand Prix",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_viral_videos\/e2577a2f-4b25-454e-9f86-55e71c40344d.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_viral_videos\/e2577a2f-4b25-454e-9f86-55e71c40344d.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_viral_videos\/e2577a2f-4b25-454e-9f86-55e71c40344d.jpg"
+        ],
+        "subcategory": {
+            "uuid": "88450169-49a4-4823-a7f9-574ac1d7c89p"
+        }
+    },
+    {
+        "uuid": "b1ad8365-735b-48ce-96fa-eff6543c699e",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549373334\/top_cricket_videos\/ae3eb705-dfad-41e3-8461-69c1789081fc.mp4",
+        "remoteId": "top_cricket_videos\/ae3eb705-dfad-41e3-8461-69c1789081fc",
+        "createdAt": "2019-02-05T13:28:57+02:00",
+        "title": "Neymar and Mbappe fit for Liverpool clash - Tuchel",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_cricket_videos\/ae3eb705-dfad-41e3-8461-69c1789081fc.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_cricket_videos\/ae3eb705-dfad-41e3-8461-69c1789081fc.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_cricket_videos\/ae3eb705-dfad-41e3-8461-69c1789081fc.jpg"
+        ],
+        "subcategory": {
+            "uuid": "98721587-49a4-4823-a7f9-574ac1d7i32x"
+        }
+    },
+    {
+        "uuid": "d9323f2f-c090-41d0-873d-0109440f0f47",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549372712\/top_viral_videos\/38cd5aa0-c671-404e-9d6d-5f5707514f61.mp4",
+        "remoteId": "top_viral_videos\/38cd5aa0-c671-404e-9d6d-5f5707514f61",
+        "createdAt": "2019-02-05T13:18:35+02:00",
+        "title": "Open goal miss by Mohamed Drager during Morocco's friendly win over Tunisia",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_viral_videos\/38cd5aa0-c671-404e-9d6d-5f5707514f61.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_viral_videos\/38cd5aa0-c671-404e-9d6d-5f5707514f61.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_viral_videos\/38cd5aa0-c671-404e-9d6d-5f5707514f61.jpg"
+        ],
+        "subcategory": {
+            "uuid": "88450169-49a4-4823-a7f9-574ac1d7c89p"
+        }
+    },
+    {
+        "uuid": "e057f550-9304-4823-b5ad-32d173c39a7c",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549374194\/top_moto_sport_videos\/8407edc3-3bac-4f8e-8a3b-be97ab72def2.mp4",
+        "remoteId": "top_moto_sport_videos\/8407edc3-3bac-4f8e-8a3b-be97ab72def2",
+        "createdAt": "2019-02-05T13:43:18+02:00",
+        "title": "test1",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_moto_sport_videos\/8407edc3-3bac-4f8e-8a3b-be97ab72def2.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_moto_sport_videos\/8407edc3-3bac-4f8e-8a3b-be97ab72def2.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_moto_sport_videos\/8407edc3-3bac-4f8e-8a3b-be97ab72def2.jpg"
+        ],
+        "subcategory": {
+            "uuid": "fjh56169-49a4-4823-a7f9-574ac1kf54va"
+        }
+    },
+    {
+        "uuid": "eb2d3da5-a1f5-47ae-a09f-96bc86b9ad25",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549372376\/top_viral_videos\/23fc4e6b-659a-4861-883a-6e576ddbcdec.mp4",
+        "remoteId": "top_viral_videos\/23fc4e6b-659a-4861-883a-6e576ddbcdec",
+        "createdAt": "2019-02-05T13:12:58+02:00",
+        "title": "Hamilton gives his Pole Position award to the fans",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_viral_videos\/23fc4e6b-659a-4861-883a-6e576ddbcdec.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_viral_videos\/23fc4e6b-659a-4861-883a-6e576ddbcdec.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_viral_videos\/23fc4e6b-659a-4861-883a-6e576ddbcdec.jpg"
+        ],
+        "subcategory": {
+            "uuid": "88450169-49a4-4823-a7f9-574ac1d7c89p"
+        }
+    },
+    {
+        "uuid": "f89dd5bd-6f1e-4569-a1d8-6fec1846d452",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549374374\/top_moto_sport_videos\/f046edb5-0037-4ab6-9427-a6477537ae5c.mp4",
+        "remoteId": "top_moto_sport_videos\/f046edb5-0037-4ab6-9427-a6477537ae5c",
+        "createdAt": "2019-02-05T13:46:17+02:00",
+        "title": "test2",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_moto_sport_videos\/f046edb5-0037-4ab6-9427-a6477537ae5c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_moto_sport_videos\/f046edb5-0037-4ab6-9427-a6477537ae5c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_moto_sport_videos\/f046edb5-0037-4ab6-9427-a6477537ae5c.jpg"
+        ],
+        "subcategory": {
+            "uuid": "fjh56169-49a4-4823-a7f9-574ac1kf54va"
         }
     }
 ]

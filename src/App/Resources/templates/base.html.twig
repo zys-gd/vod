@@ -2,7 +2,7 @@
 <html>
     <head>
         {% block metatags %}
-            <title>{% block metatags_title %}Welcome!{% endblock metatags_title %}</title>
+            <title>{% block metatags_title %}100% Sport Videos!{% endblock metatags_title %}</title>
             <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         {% endblock metatags %}
 
@@ -56,6 +56,11 @@
             <footer class="d-flex flex-column align-items-center justify-content-center">
                 {% block footer_content %}
                 {% endblock footer_content %}
+                <br>
+                <div class="d-flex justify-content-around">
+                    <div class="header-logo"></div>
+                </div>
+
                 <div class="d-flex copyright">
                     © {{ "now"|date("Y") }} {{ translate('copyright') }}
                 </div>

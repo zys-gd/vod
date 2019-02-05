@@ -1,0 +1,10 @@
+.contact_us__disclaimer p {
+    font-size: 16px;
+    font-style: italic;
+    font-weight: 500;
+}
+
+.contact_us__form {
+    padding: 0 31px;
+    font-size: 16px;
+}

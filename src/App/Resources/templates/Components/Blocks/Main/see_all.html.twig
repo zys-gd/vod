@@ -1,0 +1,10 @@
+{% macro render(title, path) %}
+    <div class="d-flex justify-content-between">
+        <div class="categories-block-title">{{ title }}</div>
+        <a href="{{ path }}">
+            <span class="categories-see-all-icon"></span>
+            <span class="categories-see-all-button">See all</span>
+        </a>
+    </div>
+    <div class="categories-block-title-underline"></div>
+{% endmacro %}

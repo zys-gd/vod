@@ -4,11 +4,11 @@
 }
 
 .terms_and_conditions_disclaimer, .terms_and_conditions_container h1, h2 {
-    font-size: 22px;
+    font-size: 18px;
 }
 
 .terms_and_conditions_container h1 {
-    padding-top: 30px;
+    padding-top: 18px;
 }
 
 .terms_and_conditions_container h1 + p, .terms_and_conditions_container h2 + p {
@@ -16,7 +16,7 @@
 }
 
 .terms_and_conditions_container p {
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .terms_and_conditions__header-title_content .terms-and-conditions-link{

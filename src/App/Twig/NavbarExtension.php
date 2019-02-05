@@ -41,7 +41,7 @@ class NavbarExtension extends \Twig_Extension
             new \Twig_SimpleFunction('getMenuElements', function () {
 
                 /** @var MainCategory[] $categories */
-                $categories = $this->mainCategoryRepository->findAll();
+                $categories = $this->mainCategoryRepository->findWithSubcategories();
 
 
                 $result = [];

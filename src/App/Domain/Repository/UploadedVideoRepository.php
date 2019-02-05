@@ -10,4 +10,14 @@ namespace App\Domain\Repository;
  */
 class UploadedVideoRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findWithCategories(): array
+    {
+        $q = $this->createQueryBuilder('v')
+            ->leftJoin('v.subcategory', 'subcategory')
+            ->leftJoin('subcategory.parent', 'category')
+            ->addSelect('subcategory', 'category');
+
+
+        return $q->getQuery()->getResult();
+    }
 }

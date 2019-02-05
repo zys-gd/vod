@@ -70,7 +70,7 @@ class HomeController extends AbstractController implements AppControllerInterfac
     public function indexAction(Request $request, ISPData $data)
     {
         $carrier = $this->carrierRepository->findOneByBillingId($data->getCarrierId());
-        $videos  = $this->videoRepository->findAll();
+        $videos  = $this->videoRepository->findWithCategories();
 
         $categories     = [];
         $categoryVideos = [];
@@ -88,7 +88,8 @@ class HomeController extends AbstractController implements AppControllerInterfac
             ];
 
 
-            if ($categoryEntity->getUuid() === '15157409-49a4-4823-a7f9-654ac1d7c12f') {
+            $viralVideosUUID = '15157409-49a4-4823-a7f9-654ac1d7c12f';
+            if ($categoryEntity->getUuid() === $viralVideosUUID) {
                 $sliderVideos[$categoryKey][$video->getUuid()] = $videoData;
             } else {
                 $categoryVideos[$categoryKey][$video->getUuid()] = $videoData;

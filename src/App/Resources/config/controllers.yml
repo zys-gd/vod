@@ -41,5 +41,6 @@ services:
             - '@App\Domain\Repository\CarrierRepository'
             - '@SubscriptionBundle\Service\SubscriptionExtractor'
             - '@App\CarrierTemplate\TemplateConfigurator'
-        calls:
-            - [setContainer, ['@service_container']]
+
+    App\Controller\ContactUsController:
+        arguments: ['@form.factory', '@App\Domain\Service\ContactUsMessageSender']

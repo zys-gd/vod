@@ -1,10 +1,11 @@
 {% extends '@App/base.html.twig' %}
 {% import "@App/Common/Blocks/header.html.twig" as  header %}
 {% import "@App/Components/Blocks/Footer/annotation.html.twig" as  footer %}
-{% import "@App/Components/Blocks/Main/slider.html.twig" as  slider %}
+{% import "@App/Common/Blocks/slider.html.twig" as  slider %}
 {% import "@App/Components/Blocks/Main/elect.html.twig" as  elect %}
 {% import "@App/Components/Blocks/Main/subscription_status.html.twig" as  subscription_status %}
 {% import "@App/Components/player.html.twig" as  player %}
+{% import "@App/Components/Blocks/Footer/menu.html.twig" as  footer_menu %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -18,7 +19,7 @@
 
 {% block body %}
 
-    <div class="d-flex flex-column" style="width: 100%">
+    <div class="d-flex flex-column w-100">
         <div class="d-flex flex-column ">
 
             <div class="menu-block">
@@ -37,7 +38,7 @@
                         <div class="category_header__arrow"></div>
                     </div>
 
-                    <div class="category-content" {% if not selectedSubcategory %}style="display:none;"{% endif %}>
+                    <div class="category-content {% if not selectedSubcategory %}d-none{% endif %}" >
                         {% for subcategory in subcategories %}
                         <div class="subcategory">
                             <div class="d-flex flex-row subcategory-content-open-link">
@@ -63,12 +64,12 @@
                     <div class="d-flex flex-column">
                         <div class="d-flex flex-column align-items-center justify-content-center">
                             {% for thumbnail in defaultVideo.thumbnails | slice(0,1) %}
-                                <div style="width: 100%;">
+                                <div class="w-100">
                                     <img src="{{ thumbnail }}"
-                                         class="x-play-button"
+                                         class="x-play-button w-100"
                                          data-uuid="{{ defaultVideo.uuid }}"
                                          data-category="{{ category.uuid }}"
-                                         style="width: 100%;"/>
+                                         />
                                 </div>
                             {% endfor %}
                             <div id="video-player-title" class="video-player-title">
@@ -128,9 +129,8 @@
 
             var parent = elem.parents('.category-block');
 
-            parent.find('.category-content').toggle();
-
             parent.toggleClass('expanded');
+            parent.find('.category-content').toggleClass('d-none');
 
             e.preventDefault();
             e.stopPropagation();
@@ -139,3 +139,6 @@
 
 
 {% endblock %}
+{% block footer_content %}
+    {{ footer_menu.render() }}
+{% endblock footer_content %}

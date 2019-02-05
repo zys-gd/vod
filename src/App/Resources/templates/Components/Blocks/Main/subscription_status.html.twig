@@ -1,11 +1,11 @@
 {% macro render() %}
     {% if hasActiveSubscription() %}
-        {{ translate('subscription.status.subscribed')|raw }}
+        {{ translate('subscription.status.subscribed')|nl2br }}
     {% elseif isUnsubscribed() %}
-        {{ translate('subscription.status.unsubscribed')|raw }}
+        {{ translate('subscription.status.unsubscribed')|nl2br }}
     {% elseif hasInActiveSubscription() %}
 
     {% elseif not isSubscriptionExist() %}
-        {{ translate('subscription.status.not_subscribe')|raw }}
+        {{ translate('subscription.status.not_subscribe')|nl2br }}
     {% endif %}
 {% endmacro render %}
