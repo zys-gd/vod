@@ -126,6 +126,8 @@
         $(document).on('click', '.x-show-subcategory-button', function (e) {
             var elem = $(this);
 
+            console.log(12321);
+
             var parent = elem.parents('.category-block');
 
             parent.find('.category-content').toggle();
@@ -139,3 +141,6 @@
 
 
 {% endblock %}
+{% block footer_content %}
+    {{ footer_menu.render() }}
+{% endblock footer_content %}

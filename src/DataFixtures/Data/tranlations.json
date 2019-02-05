@@ -604,7 +604,7 @@
     },
     {
         "uuid": "af9e79c0-244e-47ec-888e-1e813c6c71f8",
-        "key": "subscription.status.subscribed",
+        "key": "subscription.status.subscribed\nEnjoy unlimited content",
         "translation": "You are subscribed to 100% sports",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"

@@ -68,6 +68,10 @@
     transform: rotate(180deg);
 
 }
+.category-block.expanded .category-content{
+
+}
+
 .category_header__arrow {
     background-image: url(../img/home/arrow-down.png);
     background-repeat: no-repeat;
