@@ -1,7 +1,7 @@
 {% macro render(carriers) %}
     {% import '@App/Components/Buttons/button.html.twig' as button %}
 
-    <form class="x-select-carrier-block" style="display: none; text-align: center">
+    <form class="x-select-carrier-block text-center" hidden>
         <br>
         <div>
             <select name="carrier_id" required>
@@ -15,7 +15,7 @@
         </div>
     </form>
 
-    <form class="x-subscribe-send-pin-block" style="display: none; text-align: center">
+    <form class="x-subscribe-send-pin-block text-center" hidden>
         <br>
         <div>
             <input type="text" name="mobile_number" placeholder="Mobile Number" required>
@@ -25,7 +25,7 @@
         </div>
     </form>
 
-    <form class="x-subscribe-confirm-pin-block" style="display: none; text-align: center">
+    <form class="x-subscribe-confirm-pin-block text-center" hidden>
         <br>
         <div>
             <input type="text" name="mobile_number" placeholder="Mobile Number" required>
