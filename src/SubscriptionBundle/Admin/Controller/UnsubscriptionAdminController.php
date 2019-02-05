@@ -140,11 +140,7 @@ class UnsubscriptionAdminController extends CRUDController
                 $unsubscriptionHandler = $this->unsubscriptionHandlerProvider->getUnsubscriptionHandler($carrier);
                 $unsubscriptionHandler->applyPostUnsubscribeChanges($subscription);
 
-                if ($unsubscriptionHandler->isPiwikNeedToBeTracked($response)) {
-                    $this->unsubscriber->trackEventsForUnsubscribe($subscription, $response);
-                }
-
-                if ($user['toBlacklist']) {
+                if ((int) $user['toBlacklist']) {
                     $blackList = new BlackList(UuidGenerator::generate());
                     $blackList
                         ->setBillingCarrierId($subscriptionPack->getCarrierId())

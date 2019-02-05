@@ -22,7 +22,7 @@ services:
     SubscriptionBundle\Admin\Sonata\UnsubscriptionAdmin:
         arguments:
             - ~
-            - SubscriptionBundle\Entity\Unsubscription
+            - SubscriptionBundle\Entity\Subscription
             - 'SubscriptionBundle\Admin\Controller\UnsubscriptionAdminController'
         tags:
             - { name: sonata.admin, manager_type: orm, group: User Management, label: Unsubscriptions }
