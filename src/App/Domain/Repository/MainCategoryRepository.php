@@ -10,4 +10,13 @@ use Doctrine\ORM\EntityRepository;
 class MainCategoryRepository extends EntityRepository
 {
 
+    public function findWithSubcategories(): array
+    {
+        $q = $this->createQueryBuilder('c')
+            ->addSelect('subcategories','c')
+            ->join('c.subcategories', 'subcategories');
+
+        return $q->getQuery()->getResult();
+
+    }
 }
