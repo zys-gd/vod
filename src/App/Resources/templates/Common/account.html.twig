@@ -39,7 +39,9 @@
 
 
         {% elseif isUnsubscribed() %}
-
+            <div class="d-flex align-items-center justify-content-center">
+                {{ translate('subscription.status.unsubscribed')|raw }}
+            </div>
         {% elseif hasInActiveSubscription() %}
 
 
