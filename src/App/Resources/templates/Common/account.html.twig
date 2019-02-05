@@ -4,6 +4,7 @@
 {% import "@App/Components/Blocks/Main/subscription_status.html.twig" as  subscription_status %}
 {% import "@App/Components/subscribe_buttons.html.twig" as subscribe_buttons %}
 {% import "@App/Components/Blocks/Footer/annotation.html.twig" as  annotation %}
+{% import "@App/Components/Buttons/button.html.twig" as  button %}
 {% import "@App/Components/Blocks/Footer/menu.html.twig" as  footer_menu %}
 
 {% block stylesheets %}
@@ -16,7 +17,7 @@
 {% endblock header_content %}
 
 {% block body %}
-    <div class="d-flex flex-column align-items-center justify-content-top w-100">
+    <div class="d-flex flex-column align-items-center justify-content-center w-100 account-page-container">
 
         {% if hasActiveSubscription() %}
             <div class="d-flex align-items-center justify-content-center">
@@ -28,9 +29,19 @@
                 {{ translate('account.text.leave')|raw }}
             </div>
 
+            <div class="d-flex align-items-center justify-content-center">
+                <a href="{{ path('subscription.unsubscribe') }}">
+                    {{ button.render('Unsubscribe') }}
+                </a>
+            </div>
+
+
+
+
         {% elseif isUnsubscribed() %}
 
         {% elseif hasInActiveSubscription() %}
+
 
         {% elseif not isSubscriptionExist() %}
             {{ translate('subscription.status.not_subscribe')|raw }}
@@ -44,7 +55,6 @@
             </div>
         {% endif %}
     </div>
-
 {% endblock body %}
 
 {% block footer_content %}
