@@ -5,6 +5,7 @@
 {% import "@App/Components/Blocks/Main/elect.html.twig" as  elect %}
 {% import "@App/Components/Blocks/Main/subscription_status.html.twig" as  subscription_status %}
 {% import "@App/Components/player.html.twig" as  player %}
+{% import "@App/Components/Blocks/Footer/menu.html.twig" as  footer_menu %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -37,7 +38,7 @@
                         <div class="category_header__arrow"></div>
                     </div>
 
-                    <div class="category-content" {% if not selectedSubcategory %}hidden{% endif %}>
+                    <div class="category-content {% if not selectedSubcategory %}d-none{% endif %}" >
                         {% for subcategory in subcategories %}
                         <div class="subcategory">
                             <div class="d-flex flex-row subcategory-content-open-link">
@@ -128,7 +129,7 @@
 
             var parent = elem.parents('.category-block');
 
-            parent.find('.category-content').toggle();
+            parent.find('.category-content').toggleClass('d-none');
 
             e.preventDefault();
             e.stopPropagation();
