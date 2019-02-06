@@ -101,6 +101,7 @@ class Campaign implements CampaignInterface
     public function __construct(string $uuid)
     {
         $this->uuid = $uuid;
+        $this->campaignToken = uniqid();
         $this->carriers = new ArrayCollection();
     }
 
@@ -109,7 +110,11 @@ class Campaign implements CampaignInterface
      */
     public function __toString()
     {
-        return 'Campaign #'.$this->getUuid();
+        return $this->campaignToken
+            . ' - '
+            . $this->affiliate->getName()
+            . ' - '
+            . implode(', ', $this->carriers->getValues());
     }
 
     /**

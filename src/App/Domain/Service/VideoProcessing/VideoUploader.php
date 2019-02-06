@@ -7,6 +7,9 @@ use App\Domain\Service\VideoProcessing\DTO\UploadResult;
 use App\Utils\UuidGenerator;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * Class VideoUploader
+ */
 class VideoUploader
 {
     /**

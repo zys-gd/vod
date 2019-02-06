@@ -2,7 +2,6 @@
 
 namespace App\Admin\Sonata;
 
-use function Sodium\add;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -13,9 +12,11 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
+/**
+ * Class CarrierAdmin
+ */
 class CarrierAdmin extends AbstractAdmin
 {
-//todo default_lang
     /**
      * @param DatagridMapper $datagridMapper
      */

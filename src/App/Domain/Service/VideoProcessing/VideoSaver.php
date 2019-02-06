@@ -8,6 +8,9 @@ use App\Domain\Service\VideoProcessing\DTO\UploadResult;
 use App\Utils\UuidGenerator;
 use Doctrine\ORM\EntityManager;
 
+/**
+ * Class VideoSaver
+ */
 class VideoSaver
 {
     /**

@@ -29,7 +29,7 @@ class AffiliateAdmin extends AbstractAdmin
      *
      * @throws \Exception
      */
-    public function getNewInstance()
+    public function getNewInstance(): Affiliate
     {
         return new Affiliate(UuidGenerator::generate());
     }
@@ -153,6 +153,9 @@ class AffiliateAdmin extends AbstractAdmin
             ->add('skypeId', TextType::class, [
                 'required' => false,
                 'label' => 'Skype ID'
+            ])
+            ->add('url', TextType::class, [
+                'required' => false
             ])
             ->end()
             ->end();

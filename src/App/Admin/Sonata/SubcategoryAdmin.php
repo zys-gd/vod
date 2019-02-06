@@ -20,7 +20,7 @@ class SubcategoryAdmin extends AbstractAdmin
     /**
      * @return array
      */
-    public function getBatchActions()
+    public function getBatchActions(): array
     {
         return [];
     }

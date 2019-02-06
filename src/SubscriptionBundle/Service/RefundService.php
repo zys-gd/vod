@@ -8,6 +8,9 @@ use SubscriptionBundle\BillingFramework\Process\API\Client;
 use SubscriptionBundle\Entity\Refund;
 use SubscriptionBundle\Entity\Subscription;
 
+/**
+ * Class RefundService
+ */
 class RefundService
 {
     const PROCESS_IDENTIFIER = 'refund';
@@ -41,7 +44,7 @@ class RefundService
      *
      * @return array
      */
-    public function sendRefundRequest(int $processId, int $billingCarrierId)
+    public function sendRefundRequest(int $processId, int $billingCarrierId): array
     {
         try {
             $options = ['process' => $processId, 'carrier' => $billingCarrierId];
