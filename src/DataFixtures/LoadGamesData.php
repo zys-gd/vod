@@ -11,7 +11,7 @@ namespace DataFixtures;
 
 use App\Domain\Entity\Game;
 use DataFixtures\Utils\FixtureDataLoader;
-use DemoDataBundle\DataFixtures\ORM\LoadDevelopersData;
+use DataFixtures\LoadDevelopersData;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;

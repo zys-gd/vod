@@ -6,7 +6,7 @@
  * Time: 4:11 PM
  */
 
-namespace DemoDataBundle\DataFixtures\ORM;
+namespace DataFixtures;
 
 use DataFixtures\Utils\FixtureDataLoader;
 use Doctrine\Common\DataFixtures\AbstractFixture;

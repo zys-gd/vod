@@ -6,7 +6,7 @@
  * Time: 4:04 PM
  */
 
-namespace DemoDataBundle\DataFixtures\ORM;
+namespace DataFixtures;
 
 
 use App\Domain\Entity\Developer;
