@@ -63,8 +63,6 @@ class RefundAdminController extends CRUDController
         $form = $this->formFactory->create(RefundForm::class);
         $form->handleRequest($request);
 
-        $error = null;
-
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
             /** @var UploadedFile $file */

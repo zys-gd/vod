@@ -61,12 +61,12 @@ class BlackListAdmin extends AbstractAdmin
                 ->findOneBy(['user' => $user]);
 
             if ($subscription && $subscription->getCurrentStage() != Subscription::ACTION_UNSUBSCRIBE) {
-                $unsubscribtionHandler = $this->unsubscriptionHandlerProvider->getUnsubscriptionHandler($user->getCarrier());
+                $unsubscriptionHandler = $this->unsubscriptionHandlerProvider->getUnsubscriptionHandler($user->getCarrier());
 
                 $response = $this->unsubscriber->unsubscribe($subscription, $subscription->getSubscriptionPack());
-                $unsubscribtionHandler->applyPostUnsubscribeChanges($subscription);
+                $unsubscriptionHandler->applyPostUnsubscribeChanges($subscription);
 
-                if ($unsubscribtionHandler->isPiwikNeedToBeTracked($response)) {
+                if ($unsubscriptionHandler->isPiwikNeedToBeTracked($response)) {
                     $this->unsubscriber->trackEventsForUnsubscribe($subscription, $response);
                 }
             }

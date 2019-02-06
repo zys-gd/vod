@@ -1,18 +1,19 @@
 <?php
 
-namespace SubscriptionBundle\Admin\Form;
+namespace SubscriptionBundle\Admin\Form\Unsubscription;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\File;
 
 /**
- * Class RefundForm
+ * Class UnsubscribeByFileForm
  */
-class RefundForm extends AbstractType
+class UnsubscribeByFileForm extends AbstractType
 {
+    const NAME = 'file';
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -20,14 +21,7 @@ class RefundForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('identifier', TextType::class, [
-                'required' => false,
-                'attr' => ['class' => 'col-md-4 mb-3 form-control'],
-                'label' => 'Please enter the msisdn'
-            ])
             ->add('file', FileType::class, [
-                'required' => false,
-                'attr' => ['class' => 'col-md-4 mb-3 form-control'],
                 'constraints' => [
                     new File([
                         'mimeTypes' => [
@@ -38,7 +32,16 @@ class RefundForm extends AbstractType
                         'mimeTypesMessage' => 'Invalid file format. Available extensions .csv, .tsv, .txt (comma separated text files)'
                     ])
                 ],
-                'label' => 'Or choose the .csv file'
+                'required' => true,
+                'label' => 'Choose the .csv file'
             ]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getBlockPrefix()
+    {
+        return self::NAME;
     }
 }
