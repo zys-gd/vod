@@ -1,13 +1,14 @@
 .faq-accordion_card {
     border: none !important;
+    padding-left: 25px;
+    padding-right: 35px;
+
 }
 
 .faq-accordion_card_header {
     margin-top: 20px;
     margin-bottom: 10px;
     background-color: #ffffff;
-    margin-left: 35px;
-    margin-right: 50px;
 }
 
 .faq-accordion_card_header_button {
@@ -31,7 +32,8 @@
     font-family: "Kanit-Medium", sans-serif;
     font-size: 15px;
     text-transform: uppercase;
-    width: 100%
+    width: 100%;
+    padding: 8px;
 }
 
 .faq-accordion_card_body {
@@ -40,10 +42,14 @@
     font-family: 'Kanit-Regular', sans-serif;
     font-size: 13px;
     margin-bottom: 30px;
+    margin-left: 31px;
 }
 
 .faq-accordion_card__delimiter {
     background-image: url(/img/pages/faq/faq_delimiter_line.png);
     height: 5px;
     width: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-left: 31px;
 }
