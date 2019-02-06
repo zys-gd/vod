@@ -59,11 +59,9 @@ class CampaignAdmin extends AbstractAdmin
      *
      * @throws \Exception
      */
-    public function getNewInstance()
+    public function getNewInstance(): Campaign
     {
         $instance = new Campaign(UuidGenerator::generate());
-        $token = uniqid();
-        $instance->setCampaignToken($token);
 
         return $instance;
     }
@@ -198,9 +196,10 @@ class CampaignAdmin extends AbstractAdmin
      * Generates a file name based on the supplied file.
      *
      * @param File $file
+     *
      * @return string
      */
-    protected function generateFileName(File $file)
+    protected function generateFileName(File $file): string
     {
         return sha1(uniqid(mt_rand())) . '.' . $file->guessExtension();
     }
@@ -296,7 +295,7 @@ class CampaignAdmin extends AbstractAdmin
     /**
      * @return string
      */
-    private function getImagePreviewHtml()
+    private function getImagePreviewHtml(): string
     {
         /** @var Campaign $subject */
         $subject = $this->getSubject();

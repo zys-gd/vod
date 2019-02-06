@@ -12,7 +12,7 @@ services:
                 group: Carriers Management
                 label: Subscription Pack
         calls:
-            - [ setTemplate, [edit, '@@Subscription/SubscriptionPack/edit.html.twig']]
+            - [ setTemplate, [edit, '@@SubscriptionAdmin/SubscriptionPack/edit.html.twig']]
 
     SubscriptionBundle\Admin\Sonata\RefundAdmin:
         arguments: [~, SubscriptionBundle\Entity\Refund, 'SubscriptionBundle\Admin\Controller\RefundAdminController']

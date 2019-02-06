@@ -63,7 +63,7 @@ class UploadedVideoAdmin extends AbstractAdmin
     /**
      * @return array
      */
-    public function getBatchActions()
+    public function getBatchActions(): array
     {
         return [];
     }
@@ -81,7 +81,7 @@ class UploadedVideoAdmin extends AbstractAdmin
      *
      * @throws \Exception
      */
-    public function getNewInstance()
+    public function getNewInstance(): UploadedVideo
     {
         return new UploadedVideo(UuidGenerator::generate());
     }
@@ -229,7 +229,7 @@ class UploadedVideoAdmin extends AbstractAdmin
      *
      * @return array
      */
-    public function configureActionButtons($action, $object = null)
+    public function configureActionButtons($action, $object = null): array
     {
         $list = parent::configureActionButtons($action, $object);
         $list['import']['template'] = '@Admin/UploadedVideo/upload_button.html.twig';

@@ -20,7 +20,7 @@ class LanguagesAdmin extends AbstractAdmin
      *
      * @throws \Exception
      */
-    public function getNewInstance()
+    public function getNewInstance(): Language
     {
         return new Language(UuidGenerator::generate());
     }

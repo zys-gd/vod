@@ -6,6 +6,9 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 
+/**
+ * Class RefundAdmin
+ */
 class RefundAdmin extends AbstractAdmin
 {
     /**

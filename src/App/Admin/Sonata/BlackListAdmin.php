@@ -30,6 +30,15 @@ class BlackListAdmin extends AbstractAdmin
      */
     private $unsubscriber;
 
+    /**
+     * BlackListAdmin constructor
+     *
+     * @param string $code
+     * @param string $class
+     * @param string $baseControllerName
+     * @param UnsubscriptionHandlerProvider $unsubscriptionHandlerProvider
+     * @param Unsubscriber $unsubscriber
+     */
     public function __construct(
         string $code,
         string $class,
@@ -85,7 +94,7 @@ class BlackListAdmin extends AbstractAdmin
      *
      * @throws \Exception
      */
-    public function getNewInstance()
+    public function getNewInstance(): BlackList
     {
         return new BlackList(UuidGenerator::generate());
     }
