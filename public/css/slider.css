@@ -1,0 +1,35 @@
+.slider-big {
+
+}
+.slider-big .video-element{
+    height: 434px;
+    width: 770px !important;
+    margin-right: 20px;
+}
+.slider-big .video-element img{
+    max-height: 434px;
+    width: 770px;
+}
+
+.slider-big .slick-track {
+    display: -webkit-box !important;
+    display: -ms-flexbox !important;
+    display: flex !important;
+
+    -webkit-box-orient: horizontal !important;
+    -webkit-box-direction: normal !important;
+    -ms-flex-direction: row !important;
+    flex-direction: row !important;
+}
+
+.slider-big .slick-initialized .slick-slide {
+    display: flex;
+}
+
+.slider-big .slick-slide {
+    display: flex;
+    float: none;
+
+    height: 100%;
+    min-height: 1px;
+}

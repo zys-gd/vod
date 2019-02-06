@@ -177,7 +177,6 @@ a button {
 .slider-block,
 .categories-block {
     margin-bottom: 15px;
-    clear: both;
 }
 
 .categories-see-all-button,
@@ -212,7 +211,6 @@ a button {
 
 .video-element {
     background-color: #ebebeb;
-    width: 49%;
     margin-bottom: 8px;
     border-bottom: 2px solid silver;
 }
@@ -224,19 +222,6 @@ a button {
     padding-right: 8px;
 }
 
-.slider-content .categories-content {
-    overflow-x: scroll;
-}
-
-.slider-content .categories-content::-webkit-scrollbar {
-    display: none;
-}
-
-.slider-content .video-element {
-    flex: 0 0 auto;
-    width: 70%;
-    margin-right: 2%;
-}
 
 .category__related__box-play {
     position: absolute;

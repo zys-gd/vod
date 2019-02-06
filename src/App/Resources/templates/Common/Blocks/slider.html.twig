@@ -3,28 +3,28 @@
     {% import '@App/Components/Blocks/Main/slider_element_video.html.twig' as  slider_element_video %}
 
     <div class="slider-block">
-        <div class="d-flex flex-row">
-            <div class="slider-title"></div>
-            <div class="slider-see-all-button"></div>
-        </div>
-        <div class="slider-content">
-            {% for category, videos in aVideos %}
+        {% for category, videos in aVideos %}
 
-                {% set categoryData = categories[category] %}
-                <div class="categories-block d-flex flex-column">
+            {% set categoryData = categories[category] %}
+            <div class="categories-block d-flex flex-column">
 
-                    {{ see_all.render(category,  path('show_category',{'categoryUuid': categoryData.uuid})) }}
+                {{ see_all.render(category,  path('show_category',{'categoryUuid': categoryData.uuid})) }}
 
-                    <div class="categories-content d-flex flex-row"
-                         style="justify-content: space-between;">
-                        {% for video in videos %}
-                            {{ slider_element_video.render(video, category) }}
-                        {% endfor %}
-                    </div>
+                <div class="d-flex align-items-center justify-content-center slider slider-big">
+                    {% for video in videos %}
+                        {{ slider_element_video.render(video, category) }}
+                    {% endfor %}
                 </div>
-            {% endfor %}
-
-        </div>
+            </div>
+        {% endfor %}
 
     </div>
+
+    <script>
+        $(document).ready(function () {
+            $('.slider').slick({
+                variableWidth: true
+            });
+        });
+    </script>
 {% endmacro render %}
