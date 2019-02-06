@@ -212,6 +212,7 @@ a button {
 .video-element {
     background-color: #ebebeb;
     margin-bottom: 8px;
+    width: 49%;
     border-bottom: 2px solid silver;
 }
 

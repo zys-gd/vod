@@ -2,13 +2,9 @@
 
 }
 .slider-big .video-element{
-    height: 434px;
-    width: 770px !important;
-    margin-right: 20px;
+    width: 40%;
 }
 .slider-big .video-element img{
-    max-height: 434px;
-    width: 770px;
 }
 
 .slider-big .slick-track {
