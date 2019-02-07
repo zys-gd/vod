@@ -56,10 +56,27 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: Black List Management, label: Black list }
 
-#    App\Admin\Sonata\Sonata\PlaceholderToOperatorAdmin:
-#        arguments: [~, App\Domain\Entity\PlaceholderToOperator, ~, "@talentica.subscription_pack.repository"]
-#        tags:
-#            -
-#                name: sonata.admin
-#                manager_type: orm
-#                label: Placeholder to operator
+    App\Admin\Sonata\GameAdmin:
+        arguments:
+            - ~
+            - App\Domain\Entity\Game
+            - ~
+            - '@service_container'
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Game Management, label: Game }
+
+    App\Admin\Sonata\DeveloperAdmin:
+        arguments:
+            - ~
+            - App\Domain\Entity\Developer
+            - ~
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Game Management, label: Developer }
+
+    App\Admin\Sonata\GameImageAdmin:
+        arguments:
+            - ~
+            - App\Domain\Entity\GameImage
+            - ~
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Screenshot }

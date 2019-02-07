@@ -1,0 +1,53 @@
+parameters:
+    images_dir: '%images_base_url%'
+    images_uploads: '%images_dir%/%uploads_path%'
+    images_cache: '%images_uploads%/cache'
+    carousel_images_large: '%images_cache%/similar_game/images/game_icons'
+    images_large_bookmark: '%images_cache%/similar_game'
+    similar_game: '%images_cache%/similar_game'
+    games_thumbnails_small: '%images_cache%/game_thumbnail_small'
+    games_screenshots_large: '%images_cache%/game_screenshot_large'
+    game_poster_small:
+        height: 500
+        width: 500
+    game_poster_medium:
+        height: 500
+        width: 500
+    game_poster_large:
+        height: 500
+        width: 500
+    game_screenshot_small:
+        width: 515
+        height: 515
+    game_screenshot_medium:
+        width: 430
+        height: 375
+    game_screenshot_large:
+        width: 515
+        height: 515
+    game_thumbnail_medium:
+        height: 170
+        width: 170
+    game_thumbnail_small:
+        height: 170
+        width: 170
+
+    carousel_large:
+        width: 515
+        height: 515
+    carousel_medium:
+        width: 515
+        height: 515
+    carousel_small:
+        width: 515
+        height: 515
+
+twig:
+  globals:
+        images_dir: '%images_dir%'
+        images_uploads: '%images_uploads%'
+        images_cache: '%images_cache%'
+        carousel_images_large: '%carousel_images_large%'
+        similar_game: '%similar_game%'
+        games_thumbnails_small: '%games_thumbnails_small%'
+        games_screenshots_large: '%games_screenshots_large%'
