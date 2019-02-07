@@ -79,4 +79,4 @@ services:
             - App\Domain\Entity\GameImage
             - ~
         tags:
-            - { name: sonata.admin, manager_type: orm, group: admin, label: Screenshot }
+            - { name: sonata.admin, manager_type: orm, group: Game Management, label: Screenshot, show_in_dashboard: false}
