@@ -107,7 +107,7 @@ class GamesController extends AbstractController
 
         return new JsonResponse([
             'games'  => $serializedData,
-            'isLast' => $games < 4
+            'isLast' => count($games) < 4
         ]);
     }
 
