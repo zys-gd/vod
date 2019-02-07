@@ -57,7 +57,7 @@
             var batchSize             = 4;
             var offset                = 0;
             var loadMorePath          = '{{ path('load_more') }}';
-            var downloadGamePath      = '{{ path('load_more') }}';
+            var downloadGamePath      = '{{ path('download_game') }}';
             var hasActiveSubscription = '{{ hasActiveSubscription() }}';
 
             doLoadMore();
@@ -65,11 +65,30 @@
             $(document).on('click', '.x-load-more-button', function () {
                 doLoadMore();
             });
+
             $(document).on('click', '.x-game-download-button', function () {
-                var button      = $(this);
-                var parent      = button.parents('.x-game-element');
-                var uuid        = parent.attr('data-uuid');
-                window.location = downloadGamePath + '/' + uuid;
+                var button = $(this);
+                var parent = button.parents('.x-game-element');
+                var uuid   = parent.attr('data-uuid');
+                var link   = downloadGamePath + '?id=' + uuid;
+
+                $.ajax({
+                    url       : link,
+                    method    : 'GET',
+                    beforeSend: function () {
+                        button.attr('disabled', 1)
+                    },
+                    complete  : function () {
+                        button.attr('disabled', null)
+                    },
+                    success   : function (data) {
+                        if (data.url) {
+                            window.location = data.url;
+                        }else{
+                            alert('Internal error. Please try again later')
+                        }
+                    }
+                })
             });
 
 

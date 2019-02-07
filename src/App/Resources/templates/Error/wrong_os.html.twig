@@ -1,0 +1,23 @@
+{% extends '@App/base.html.twig' %}
+{% import "@App/Common/Blocks/header.html.twig" as  header %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('/css/wros.css') }}" rel="stylesheet">
+
+{% endblock %}
+
+
+
+{% block header_content %}
+    {{ header.render('Wrong OS') }}
+{% endblock header_content %}
+
+{% block body %}
+    <div class="d-flex align-items-center justify-content-center w-100">
+        <div class="disclaimer-text">
+            100% Sport Videos is available only for Android Devices
+        </div>
+    </div>
+{% endblock %}

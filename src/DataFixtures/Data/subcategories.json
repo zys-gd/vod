@@ -80,14 +80,6 @@
         "alias": "top_athletics_videos"
     },
     {
-        "uuid": "asdf5469-49a4-4823-a7f9-574ac1d45678",
-        "title": "Top sport games",
-        "parent": {
-            "uuid": "f1db233b-d8b0-4ae1-8391-330bee9d52e7"
-        },
-        "alias": "top_sport_videos"
-    },
-    {
         "uuid": "fgh52169-49a4-4823-a7f9-574ac1dfh58a",
         "title": "Top others videos",
         "parent": {

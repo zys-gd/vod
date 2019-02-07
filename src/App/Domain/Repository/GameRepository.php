@@ -17,6 +17,8 @@ class GameRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('a');
 
+        $qb->where('a.deletedAt is NULL');
+
         $qb->setMaxResults($count);
         $qb->setFirstResult($offset);
 

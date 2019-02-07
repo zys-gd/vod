@@ -51,3 +51,4 @@ services:
             - '@App\Domain\Service\Games\GameSerializer'
             - '@App\Domain\Repository\GameBuildRepository'
             - '@App\Domain\Service\Games\DrmApkProvider'
+            - '@SubscriptionBundle\Service\SubscriptionExtractor'
