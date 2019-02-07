@@ -46,4 +46,8 @@ services:
         arguments: ['@form.factory', '@App\Domain\Service\ContactUsMessageSender']
 
     App\Controller\GamesController:
-        arguments: ['@App\Domain\Repository\GameRepository', '@App\Domain\Service\Games\GameSerializer']
+        arguments:
+            - '@App\Domain\Repository\GameRepository'
+            - '@App\Domain\Service\Games\GameSerializer'
+            - '@App\Domain\Repository\GameBuildRepository'
+            - '@App\Domain\Service\Games\DrmApkProvider'

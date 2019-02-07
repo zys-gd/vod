@@ -9,11 +9,15 @@
 namespace App\Controller;
 
 
+use App\Domain\Entity\GameBuild;
+use App\Domain\Repository\GameBuildRepository;
 use App\Domain\Repository\GameRepository;
+use App\Domain\Service\Games\DrmApkProvider;
 use App\Domain\Service\Games\GameSerializer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -27,17 +31,32 @@ class GamesController extends AbstractController
      * @var GameSerializer
      */
     private $gameSerializer;
+    /**
+     * @var GameBuildRepository
+     */
+    private $gameBuildRepository;
+    /**
+     * @var DrmApkProvider
+     */
+    private $drmApkProvider;
 
 
     /**
      * GamesController constructor.
-     * @param GameRepository $gameRepository
-     * @param GameSerializer $gameSerializer
+     *
+     * @param GameRepository      $gameRepository
+     * @param GameSerializer      $gameSerializer
+     * @param GameBuildRepository $gameBuildRepository
      */
-    public function __construct(GameRepository $gameRepository, GameSerializer $gameSerializer)
+    public function __construct(GameRepository $gameRepository,
+        GameSerializer $gameSerializer,
+        GameBuildRepository $gameBuildRepository,
+        DrmApkProvider $drmApkProvider)
     {
         $this->gameRepository = $gameRepository;
         $this->gameSerializer = $gameSerializer;
+        $this->gameBuildRepository = $gameBuildRepository;
+        $this->drmApkProvider = $drmApkProvider;
     }
 
 
@@ -60,6 +79,7 @@ class GamesController extends AbstractController
      * @Route("/load-more",name="load_more")
      * @Method("GET")
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function loadMoreAction(Request $request)
@@ -75,8 +95,22 @@ class GamesController extends AbstractController
         }
 
         return new JsonResponse([
-            'games'  => $serializedData,
+            'games' => $serializedData,
             'isLast' => $games < 4
         ]);
+    }
+
+    /**
+     * @Route("/download/game/{gameUuid}", name="download_game")
+     * @param string $gameUuid
+     *
+     * @return RedirectResponse
+     */
+    public function downloadAction(string $gameUuid)
+    {
+        /** @var GameBuild $gameBuild */
+        $gameBuild = $this->gameBuildRepository->findOneBy(['game' => $gameUuid]);
+        $link = $this->drmApkProvider->getDRMApkUrl($gameBuild);
+        return new RedirectResponse($link);
     }
 }
