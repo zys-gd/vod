@@ -15,10 +15,11 @@ use App\Domain\Repository\GameRepository;
 use App\Domain\Service\Games\DrmApkProvider;
 use App\Domain\Service\Games\GameSerializer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use SubscriptionBundle\Service\SubscriptionExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class GamesController extends AbstractController
@@ -39,24 +40,34 @@ class GamesController extends AbstractController
      * @var DrmApkProvider
      */
     private $drmApkProvider;
+    /**
+     * @var SubscriptionExtractor
+     */
+    private $extractor;
 
 
     /**
      * GamesController constructor.
      *
-     * @param GameRepository      $gameRepository
-     * @param GameSerializer      $gameSerializer
-     * @param GameBuildRepository $gameBuildRepository
+     * @param GameRepository        $gameRepository
+     * @param GameSerializer        $gameSerializer
+     * @param GameBuildRepository   $gameBuildRepository
+     * @param DrmApkProvider        $drmApkProvider
+     * @param SubscriptionExtractor $extractor
      */
-    public function __construct(GameRepository $gameRepository,
+    public function __construct(
+        GameRepository $gameRepository,
         GameSerializer $gameSerializer,
         GameBuildRepository $gameBuildRepository,
-        DrmApkProvider $drmApkProvider)
+        DrmApkProvider $drmApkProvider,
+        SubscriptionExtractor $extractor
+    )
     {
-        $this->gameRepository = $gameRepository;
-        $this->gameSerializer = $gameSerializer;
+        $this->gameRepository      = $gameRepository;
+        $this->gameSerializer      = $gameSerializer;
         $this->gameBuildRepository = $gameBuildRepository;
-        $this->drmApkProvider = $drmApkProvider;
+        $this->drmApkProvider      = $drmApkProvider;
+        $this->extractor           = $extractor;
     }
 
 
@@ -76,7 +87,7 @@ class GamesController extends AbstractController
     }
 
     /**
-     * @Route("/load-more",name="load_more")
+     * @Route("/games/load-more",name="load_more")
      * @Method("GET")
      * @param Request $request
      *
@@ -95,22 +106,35 @@ class GamesController extends AbstractController
         }
 
         return new JsonResponse([
-            'games' => $serializedData,
+            'games'  => $serializedData,
             'isLast' => $games < 4
         ]);
     }
 
     /**
-     * @Route("/download/game/{gameUuid}", name="download_game")
-     * @param string $gameUuid
-     *
-     * @return RedirectResponse
+     * @Route("/games/download", name="download_game")
+     * @Method("GET")
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function downloadAction(string $gameUuid)
+    public function downloadAction(Request $request)
     {
+
+        if (!$id = $request->get('id', null)) {
+            throw new BadRequestHttpException('Missing `id` parameter');
+        }
+
+        if (!$this->extractor->extractSubscriptionFromSession($request->getSession())) {
+            throw new BadRequestHttpException('You are not subscribed');
+
+        }
+
         /** @var GameBuild $gameBuild */
-        $gameBuild = $this->gameBuildRepository->findOneBy(['game' => $gameUuid]);
+        $gameBuild = $this->gameBuildRepository->findOneBy(['game' => $id]);
+
         $link = $this->drmApkProvider->getDRMApkUrl($gameBuild);
-        return new RedirectResponse($link);
+
+        return new JsonResponse(['url' => $link]);
     }
 }
