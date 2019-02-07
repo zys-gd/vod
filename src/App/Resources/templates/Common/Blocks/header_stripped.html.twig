@@ -1,4 +1,4 @@
-{% macro render(page_title) %}
+{% macro render() %}
 
     {% import "@App/Components/Blocks/Header/page_heading.html.twig" as  page_heading %}
 
@@ -9,7 +9,5 @@
                 <div class="header-logo"></div>
             </a>
         </div>
-
-        {{ page_heading.render(page_title) }}
     </div>
 {% endmacro render %}
