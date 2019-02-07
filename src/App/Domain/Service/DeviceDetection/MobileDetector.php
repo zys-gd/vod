@@ -17,7 +17,7 @@ class MobileDetector
     {
         $mobileDetect = new Mobile_Detect();
 
-        return $mobileDetect->isAndroid();
+        return $mobileDetect->isAndroidOS();
 
     }
 }
