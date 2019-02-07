@@ -1,0 +1,22 @@
+[
+    {
+        "uuid": "6e350073-f3d5-11e8-a31f-06847754f9e0",
+        "name": "Tier 1 PPD",
+        "bfTierId": 1
+    },
+    {
+        "uuid": "6e350219-f3d5-11e8-a31f-06847754f9e0",
+        "name": "Tier 1 Sub",
+        "bfTierId": 2
+    },
+    {
+        "uuid": "6e350290-f3d5-11e8-a31f-06847754f9e0",
+        "name": "Tier-3",
+        "bfTierId": null
+    },
+    {
+        "uuid": "c0ff1dea-c278-4275-b453-7f0ad5711c3f",
+        "name": "Tier 2 Sub",
+        "bfTierId": 8
+    }
+]

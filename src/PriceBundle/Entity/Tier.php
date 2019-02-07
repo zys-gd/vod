@@ -1,16 +1,15 @@
 <?php
+
 namespace PriceBundle\Entity;
 
 use Doctrine\Common\Collections\Collection;
 use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 
 /**
- * Class Tier. Used as an abstarctisation for prices
- * @package PriceBundle\Entity
+ * Class Tier
  */
 class Tier implements HasUuid
 {
-
     /**
      * @var string
      */
@@ -22,26 +21,32 @@ class Tier implements HasUuid
     protected $name;
 
     /**
-	External Billing Framework tier id
+     * External Billing Framework tier id
+     *
      * @var integer
      */
     protected $bfTierId;
-
 
     /**
      * @var Collection
      */
     private $values;
 
-    private $carriers;
-
     /**
-     * Tier constructor.
-     * @throws \Exception
+     * Tier constructor
+     *
+     * @param string $uuid
      */
     public function __construct(string $uuid)
     {
         $this->uuid = $uuid;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(){
+        return $this->getName() || '';
     }
 
     /**
@@ -131,13 +136,5 @@ class Tier implements HasUuid
             "id" => $this->getUuid(),
             "name" => $this->getName()
         );
-    }
-
-    /**
-     * Returns the string representation of the tier
-     * @return null|string
-     */
-    public function __toString(){
-        return $this->getName();
     }
 }

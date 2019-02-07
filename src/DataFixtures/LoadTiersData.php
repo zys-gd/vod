@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 4/17/18
- * Time: 4:11 PM
- */
 
 namespace DataFixtures;
 
@@ -15,10 +9,12 @@ use PriceBundle\Entity\Tier;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
+/**
+ * Class LoadTiersData
+ */
 class LoadTiersData extends AbstractFixture implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
-
 
     /**
      * Load data fixtures with the passed EntityManager
@@ -30,23 +26,20 @@ class LoadTiersData extends AbstractFixture implements ContainerAwareInterface
         $data = FixtureDataLoader::loadDataFromJSONFile('tiers.json');
 
         foreach ($data as $row) {
-            $id           = $row['id'];
+            $uuid         = $row['uuid'];
             $name         = $row['name'];
             $bfTierId     = $row['bfTierId'];
-            $uuid         = $row['uuid'];
 
             $tier = new Tier($uuid);
             $tier->setName($name);
             $tier->setBfTierId($bfTierId);
             $tier->setUuid($uuid);
             $this->addReference(sprintf('tier_%s', $uuid), $tier);
-            $this->addReference(sprintf('game_%s', $uuid), $tier);
 
             $manager->persist($tier);
         }
 
-        $manager->flush(); $manager->clear();;
-
+        $manager->flush();
+        $manager->clear();
     }
-
 }

@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 4/17/18
- * Time: 4:04 PM
- */
 
 namespace DataFixtures;
-
 
 use App\Domain\Entity\Developer;
 use DataFixtures\Utils\FixtureDataLoader;
@@ -16,9 +9,11 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
+/**
+ * Class LoadDevelopersData
+ */
 class LoadDevelopersData extends AbstractFixture implements ContainerAwareInterface
 {
-
     use ContainerAwareTrait;
 
     /**
@@ -31,15 +26,14 @@ class LoadDevelopersData extends AbstractFixture implements ContainerAwareInterf
         $data = FixtureDataLoader::loadDataFromJSONFile('developers.json');
 
         foreach ($data as $row) {
-            $id    = $row['id'];
+            $uuid  = $row['uuid'];
             $name  = $row['name'];
             $email = $row['email'];
-            $uuid  = $row['uuid'];
 
-            $developer = new Developer();
+            $developer = new Developer($uuid);
+            $developer->setUuid($uuid);
             $developer->setEmail($email);
             $developer->setName($name);
-            $developer->setUuid($uuid);
 
             $this->addReference(sprintf('developer_%s', $uuid), $developer);
 
@@ -48,6 +42,5 @@ class LoadDevelopersData extends AbstractFixture implements ContainerAwareInterf
 
         $manager->flush();
         $manager->clear();;
-
     }
 }
