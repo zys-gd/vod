@@ -33,6 +33,7 @@ return [
     'PIWIK_ENABLE_JS_TRACKER'    => false,
     'PIWIK_ENABLE_LINK_TRACKING' => true,
 
-    'MAILER_URL' => 'MAILER_URL'
+    'MAILER_URL' => 'MAILER_URL',
+    'UPLOADS_BUILDS_PATH' => 'uploads/builds',
 
 ];
