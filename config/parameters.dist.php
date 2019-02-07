@@ -35,6 +35,9 @@ return [
 
     'MAILER_URL' => 'MAILER_URL',
     'UPLOADS_BUILDS_PATH' => 'uploads/builds',
-    'USED_FILESYSTEM_STORAGE' => 's3',
+
+    'DRM_AUTHORIZE_KEY' =>  'NEbozf9AeS',
+    'DRM_API_URL' =>  'http://drm-api-dev-env.utbtaavpnd.eu-west-1.elasticbeanstalk.com/web/api/',
+    'S3_ROOT_URL' =>  'https://s3.eu-central-1.amazonaws.com/playwing-appstor',
 
 ];
