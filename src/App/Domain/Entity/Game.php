@@ -2,7 +2,6 @@
 
 namespace App\Domain\Entity;
 
-use App\Domain\Constants\ConstCategoriesId;
 use Doctrine\ORM\PersistentCollection;
 use phpDocumentor\Reflection\Types\Boolean;
 use PriceBundle\Entity\Tier;
@@ -14,6 +13,7 @@ use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 class Game implements HasUuid
 {
     public static $baseUrl = "/";
+
     /**
      * Constants used for determining the location of different resources for this entity
      */
@@ -47,6 +47,8 @@ class Game implements HasUuid
     const RATING_NAME_3_STARS = 'AA';
     const RATING_NAME_4_STARS = 'AAA-';
     const RATING_NAME_5_STARS = 'AAA+';
+
+    const BYTES_IN_MEGABYTE = 1048576;
 
     /**
      * @var string
@@ -99,11 +101,6 @@ class Game implements HasUuid
     private $description;
 
     /**
-     * @var ArrayCollection
-     */
-    private $categoryGameAssociations;
-
-    /**
      * @var Developer
      */
     private $developer;
@@ -154,26 +151,9 @@ class Game implements HasUuid
     private $deletedAt;
 
     /**
-     * @var Collection
-     */
-    private $deactivatedCountries;
-
-    /**
-     * @var Collection
-     */
-    private $deactivatedCarriers;
-
-    /**
-     * @var Collection
-     */
-    private $categoryGameCountryLinks;
-
-    /**
      * @var Boolean
      */
     private $isBookmark = false;
-
-    const BYTES_IN_MEGABYTE = 1048576;
 
     /**
      * Returns a list with all available tags
@@ -220,9 +200,14 @@ class Game implements HasUuid
         $this->builds = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->images = new ArrayCollection();
-        $this->categoryGameAssociations = new ArrayCollection();
-        $this->deactivatedCountries = new ArrayCollection();
-        $this->deactivatedCarriers = new ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getTitle();
     }
 
     /**
@@ -241,93 +226,6 @@ class Game implements HasUuid
         return $this->uuid;
     }
 
-    /**
-     * @return Collection
-     */
-    public function getDeactivatedCountries(): Collection
-    {
-        return $this->deactivatedCountries;
-    }
-
-    /**
-     * @param Collection $deactivatedCountries
-     */
-    public function setDeactivatedCountries($deactivatedCountries)
-    {
-        $this->deactivatedCountries = $deactivatedCountries;
-    }
-
-    /**
-     * Add deactivated Country
-     *
-     * @param Country $deactivatedCountries
-     *
-     * @return Game
-     */
-    public function addDeactivatedCountries(Country $deactivatedCountries)
-    {
-        $this->deactivatedCountries[] = $deactivatedCountries;
-
-        return $this;
-    }
-
-    /**
-     * Remove country from deactivated countries array
-     *
-     * @param Country $deactivatedCountries
-     */
-    public function removeDeactivatedCountries(Country $deactivatedCountries)
-    {
-        $this->deactivatedCountries->removeElement($deactivatedCountries);
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getDeactivatedCarriers(): Collection
-    {
-        return $this->deactivatedCarriers;
-    }
-
-    /**
-     * @param Collection $deactivatedCarriers
-     */
-    public function setDeactivatedCarriers(Collection $deactivatedCarriers)
-    {
-        $this->deactivatedCarriers = $deactivatedCarriers;
-    }
-
-    /**
-     * Add deactivated Carrier
-     *
-     * @param Carrier $deactivatedCarriers
-     *
-     * @return Game
-     */
-    public function addDeactivatedCarriers(Carrier $deactivatedCarriers)
-    {
-        $this->deactivatedCarriers[] = $deactivatedCarriers;
-
-        return $this;
-    }
-
-    /**
-     * Remove carrier from deactivated carriers array
-     *
-     * @param Carrier $deactivatedCarriers
-     */
-    public function removeDeactivatedCarriers(Carrier $deactivatedCarriers)
-    {
-        $this->deactivatedCarriers->removeElement($deactivatedCarriers);
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->getTitle();
-    }
     /**
      * Get title
      *
@@ -528,82 +426,6 @@ class Game implements HasUuid
         $this->downloads = $downloads;
 
         return $this;
-    }
-
-    /**
-     * Get categories
-     *
-     * @return array
-     */
-    public function getCategories()
-    {
-        $categories = [];
-
-        foreach ($this->getCategoryGameAssociations() as $association) {
-            $categories[] = $association->getCategory();
-        }
-
-        return $categories;
-    }
-
-    /**
-     * Get first category
-     *
-     * @return Subcategory
-     */
-    public function getFirstCategory(): Subcategory
-    {
-        $category = null;
-        $all_games = null;
-        foreach ($this->getCategoryGameAssociations() as $association) {
-            /** @var Subcategory $current_category */
-            $current_category = $association->getCategory();
-            if (!in_array($current_category->getAlias(), [ConstCategoriesId::TOP_GAMES, ConstCategoriesId::NEW_GAMES, ConstCategoriesId::ALL_GAMES, ConstCategoriesId::HOMEPAGE_SLIDER])) {
-                $category = $current_category;
-                break;
-            }
-            elseif ($current_category->getAlias() == ConstCategoriesId::ALL_GAMES) {
-                $all_games = $current_category;
-            };
-        }
-        if (is_null($category)) {
-            $category = $all_games;
-        };
-        return $category;
-    }
-
-    /**
-     * Get categoryGameAssociations
-     *
-     * @return CategoryGameAssociation[]|Collection
-     */
-    public function getCategoryGameAssociations()
-    {
-        return $this->categoryGameAssociations;
-    }
-
-    /**
-     * Add a categoryGameAssociation
-     *
-     * @param CategoryGameAssociation $categoryGameAssociation
-     *
-     * @return Game
-     */
-    public function addCategoryGameAssociation(CategoryGameAssociation $categoryGameAssociation)
-    {
-        $this->categoryGameAssociations[] = $categoryGameAssociation;
-
-        return $this;
-    }
-
-    /**
-     * Remove a categoryGameAssociation
-     *
-     * @param CategoryGameAssociation $categoryGameAssociation
-     */
-    public function removeCategoryGameAssociation(CategoryGameAssociation $categoryGameAssociation)
-    {
-        $this->categoryGameAssociations->removeElement($categoryGameAssociation);
     }
 
     /**
@@ -881,41 +703,6 @@ class Game implements HasUuid
         }
 
         return $gameTags;
-    }
-
-
-    /**
-     * Add categoryGameCountryLink
-     *
-     * @param CategoryGameCountryLink $categoryGameCountryLink
-     *
-     * @return Game
-     */
-    public function addCategoryGameCountryLink(CategoryGameCountryLink $categoryGameCountryLink)
-    {
-        $this->categoryGameCountryLinks[] = $categoryGameCountryLink;
-
-        return $this;
-    }
-
-    /**
-     * Remove categoryGameCountryLink
-     *
-     * @param CategoryGameCountryLink $categoryGameCountryLink
-     */
-    public function removeCategoryGameCountryLink(CategoryGameCountryLink $categoryGameCountryLink)
-    {
-        $this->categoryGameCountryLinks->removeElement($categoryGameCountryLink);
-    }
-
-    /**
-     * Get categoryGameCountryLinks
-     *
-     * @return Collection
-     */
-    public function getCategoryGameCountryLinks()
-    {
-        return $this->categoryGameCountryLinks;
     }
 
     /**

@@ -74,13 +74,6 @@ App\Domain\Entity\Game:
 #                referencedColumnName: uuid
 #            mappedBy: object
 #            cascade: ["persist", "remove"]
-        categoryGameAssociations:
-            targetEntity: App\Domain\Entity\CategoryGameAssociation
-            joinColumn:
-                referencedColumnName: uuid
-            orderBy: { 'position': 'ASC' }
-            mappedBy: game
-            cascade: ["persist", "remove"]
         builds:
             targetEntity: App\Domain\Entity\GameBuild
             joinColumn:
@@ -88,38 +81,3 @@ App\Domain\Entity\Game:
             mappedBy: game
             cascade: ["persist", "remove"]
             orphanRemoval: true
-        categoryGameCountryLinks:
-            targetEntity: App\Domain\Entity\CategoryGameCountryLink
-            joinColumn:
-                referencedColumnName: uuid
-            mappedBy: game
-            orphanRemoval: true
-
-    manyToMany:
-       deactivatedCountries:
-          targetEntity: App\Domain\Entity\Country
-          inversedBy: deactivatedGames
-          orderBy: { 'countryName': 'ASC' }
-          cascade: ["persist", "remove"]
-          joinTable:
-              name: games_countries_deactivate
-              joinColumns:
-                  game_id:
-                      referencedColumnName: uuid
-                      onDelete: CASCADE
-              inverseJoinColumns:
-                  country_id:
-                      referencedColumnName: uuid
-       deactivatedCarriers:
-          targetEntity: App\Domain\Entity\Carrier
-          inversedBy: deactivatedGames
-          cascade: ["persist", "remove"]
-          joinTable:
-              name: games_carriers_deactivate
-              joinColumns:
-                  game_id:
-                      referencedColumnName: uuid
-                      onDelete: CASCADE
-              inverseJoinColumns:
-                  carrier_id:
-                      referencedColumnName: uuid

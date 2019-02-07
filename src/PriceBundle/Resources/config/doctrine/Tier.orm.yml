@@ -21,9 +21,3 @@ PriceBundle\Entity\Tier:
             mappedBy: tier
             joinColumn:
                 referencedColumnName: uuid
-
-        carriers:
-            targetEntity: App\Domain\Entity\Carrier
-            mappedBy: tier
-            joinColumn:
-                referencedColumnName: uuid

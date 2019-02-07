@@ -8,15 +8,13 @@ use Doctrine\Common\Collections\Collection;
 
 /**
  * Class DeviceDisplay
- * @package App\Domain\Entity
  */
 class DeviceDisplay implements HasUuid
 {
-
     /**
-     * @var integer
+     * @var string
      */
-    private $id;
+    private $uuid;
 
     /**
      * @var string
@@ -38,17 +36,23 @@ class DeviceDisplay implements HasUuid
      */
     private $game_builds;
 
-    /** @var string */
-    private $uuid = null;
+    /**
+     * DeviceDisplay constructor
+     *
+     * @param $uuid
+     */
+    public function __construct($uuid)
+    {
+        $this->uuid = $uuid;
+        $this->game_builds = new ArrayCollection();
+    }
 
     /**
-     * DeviceDisplay constructor.
-     * @throws \Exception
+     * @return string
      */
-    public function __construct()
+    public function __toString()
     {
-        $this->uuid = \Ramsey\Uuid\Uuid::uuid4()->toString();
-        $this->game_builds = new ArrayCollection();
+        return $this->getName() . ' (' . $this->getWidth() . 'x' . $this->getHeight() . ')';
     }
 
     /**
@@ -65,25 +69,6 @@ class DeviceDisplay implements HasUuid
     public function getUuid(): string
     {
         return $this->uuid;
-    }
-    /**
-     * Generate title for entity.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->getName() . ' (' . $this->getWidth() . 'x' . $this->getHeight() . ')';
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**

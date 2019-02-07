@@ -21,7 +21,7 @@ class LoadMainCategoriesData extends AbstractFixture
      */
     public function load(ObjectManager $manager)
     {
-        $data = FixtureDataLoader::loadDataFromJSONFile('mainCategories.json');
+        $data = FixtureDataLoader::loadDataFromJSONFile('main_categories.json');
 
         foreach ($data as $row) {
             $uuid = $row['uuid'];

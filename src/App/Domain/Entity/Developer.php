@@ -37,12 +37,13 @@ class Developer implements HasUuid
     private $games;
 
     /**
-     * Developer constructor.
-     * @throws \Exception
+     * Developer constructor
+     *
+     * @param string $uuid
      */
-    public function __construct()
+    public function __construct(string $uuid)
     {
-        $this->uuid = \Ramsey\Uuid\Uuid::uuid4()->toString();
+        $this->uuid = $uuid;
         $this->games = new ArrayCollection();
     }
 
