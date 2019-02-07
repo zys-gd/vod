@@ -1,0 +1,15 @@
+{% macro render(page_title) %}
+
+    {% import "@App/Components/Blocks/Header/page_heading.html.twig" as  page_heading %}
+
+
+    <div class="d-flex justify-content-center flex-column w-100">
+        <div class="d-flex align-items-center header-container">
+            <a href="{{ path('index') }}" style="margin-left: auto;margin-right: auto;">
+                <div class="header-logo"></div>
+            </a>
+        </div>
+
+        {{ page_heading.render(page_title) }}
+    </div>
+{% endmacro render %}

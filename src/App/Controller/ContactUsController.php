@@ -16,7 +16,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ContactUsController extends AbstractController
+class ContactUsController extends AbstractController implements AppControllerInterface
 {
     /**
      * @var FormFactoryInterface

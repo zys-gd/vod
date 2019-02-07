@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class LPController extends AbstractController implements ControllerWithISPDetection
+class LPController extends AbstractController implements ControllerWithISPDetection, AppControllerInterface
 {
     /**
      * @var CarrierRepositoryInterface

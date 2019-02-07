@@ -9,6 +9,7 @@
 namespace App\Listener;
 
 
+use App\Controller\AppControllerInterface;
 use App\Domain\Service\DeviceDetection\MobileDetector;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
@@ -37,8 +38,13 @@ class AndroidDeviceListener
             return;
         }
 
+
         $request = $event->getRequest();
         $session = $request->getSession();
+
+        if ($request->isXmlHttpRequest()) {
+            return;
+        }
 
 
         $isForce = $request->get('f', '');
@@ -52,6 +58,16 @@ class AndroidDeviceListener
             return;
         }
 
+
+        $args = $event->getController();
+        if (is_array($args)) {
+            $controller = $args[0] ?? null;
+        }
+
+        if ($controller && !($controller instanceof AppControllerInterface)) {
+            return;
+        }
+
         $wrosRoute = $this->router->generate('wrong_os');
         if ($request->getPathInfo() == $wrosRoute) {
             return;
@@ -62,6 +78,8 @@ class AndroidDeviceListener
             $event->setController(function () use ($wrosRoute) {
                 return new RedirectResponse($wrosRoute);
             });
+
+            $event->stopPropagation();
         }
     }
 }

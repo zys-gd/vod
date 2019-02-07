@@ -33,20 +33,20 @@
     <script id="game-item-template" type="text/x-handlebars">
         {% verbatim %}
             <div class="x-game-element game" data-uuid="{{game.uuid}}">
-                    <div class="game-image-block">
-                        <img src="{{ game.iconPath }}" alt="">
+                <div class="game-image-block">
+                    <img src="{{ game.iconPath }}" alt="">
+                </div>
+                <div class="game-info-block">
+                    <div class="game-title-block">
+                        {{ game.title }}
                     </div>
-                    <div class="game-info-block">
-                        <div class="game-title-block">
-                            {{ game.title }}
-                        </div>
-                        <div class="game-download-button-block">
-                            {{#if hasActiveSubscription}}
-                                {{{buttonHtml}}}
-                            {{/if}}
-                        </div>
+                    <div class="game-download-button-block">
+                        {{#if hasActiveSubscription}}
+                            {{{buttonHtml}}}
+                        {{/if}}
                     </div>
                 </div>
+            </div>
         {% endverbatim %}
     </script>
 
