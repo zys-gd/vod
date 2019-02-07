@@ -45,8 +45,9 @@ class Tier implements HasUuid
     /**
      * @return string
      */
-    public function __toString(){
-        return $this->getName() || '';
+    public function __toString()
+    {
+        return $this->getName() ?? '';
     }
 
     /**

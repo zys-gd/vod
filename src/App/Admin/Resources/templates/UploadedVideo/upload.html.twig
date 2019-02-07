@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block form %}
+    <span hidden id="subCategoryUrl">{{ path('admin_app_domain_subcategory_subcategoriesList', {'mainId': 'paramMainId'}) }}</span>
     {{ form_start(form) }}
     <div class="sonata-ba-form">
         <div class="row">
@@ -50,10 +51,9 @@
             /**
              * Load subcategories list and pass options to select field
              *
-             * @param {string} parentCategoryId
+             * @param {string} url
              */
-            this.loadSubCategories = function(parentCategoryId) {
-                var host = window.location.hostname;
+            this.loadSubCategories = function(url) {
                 var self = this;
                 var loader = $('<i>Loading subcategories...</i>');
 
@@ -61,7 +61,7 @@
                 this.clearSubcategoryOptions();
 
                 $.ajax({
-                    url: `http://${host}/admin/app/domain/subcategory/subcategoriesList?mainId=${parentCategoryId}`,
+                    url: url,
                     method: 'GET',
                     success: function(data) {
                         var subcategories = JSON.parse(data);
@@ -108,7 +108,9 @@
                 formControl.clearSubcategoryOptions();
 
                 if ($(this).val().length > 0) {
-                    formControl.loadSubCategories($(this).val());
+                    var url = $('#subCategoryUrl').text().replace('paramMainId', $(this).val());
+
+                    formControl.loadSubCategories(url);
                 }
             })
         })
