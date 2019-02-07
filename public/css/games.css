@@ -1,0 +1,58 @@
+.game {
+    background-color: #ebebeb;
+    margin-bottom: 8px;
+    width: 49%;
+    border-bottom: 2px solid silver;
+}
+
+.games-block {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.game-image-block > img {
+    width: 100%
+}
+
+.game-info-block {
+    padding: 8px;
+}
+
+.game-title-block {
+    text-transform: uppercase;
+    min-height: 60px;
+}
+
+.game-download-button {
+    text-transform: uppercase;
+}
+
+.games-page-container {
+    padding-top: 15px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 100%;
+}
+
+.load-more-button {
+    text-transform: uppercase;
+}
+
+.load-more-button:disabled {
+    background-color: grey;
+}
+
+.x-load-more-button,
+.x-game-download-button {
+    cursor: pointer;
+}
+
+.x-game-download-button,
+.x-load-more-button {
+    cursor: pointer;
+}
+
+.x-load-more-button:disabled {
+    cursor: not-allowed;
+}

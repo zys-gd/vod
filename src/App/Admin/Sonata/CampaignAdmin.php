@@ -2,12 +2,12 @@
 
 namespace App\Admin\Sonata;
 
+use App\Admin\Sonata\Traits\InitDoctrine;
 use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Campaign;
 use App\Domain\Service\AWSS3\S3Client;
-use App\Domain\Service\CampaignService;
+use App\Domain\Service\Campaign\CampaignService;
 use App\Utils\UuidGenerator;
-use App\Admin\Sonata\Traits\InitDoctrine;
 use Doctrine\ORM\EntityRepository;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use League\Flysystem\Filesystem;
@@ -209,7 +209,7 @@ class CampaignAdmin extends AbstractAdmin
      */
     protected function generateTestLink(Campaign $campaign)
     {
-        /**@var CampaignService $campaignService */
+        /**@var \App\Domain\Service\Campaign\CampaignService $campaignService */
         $campaignService = $this->container->get('App\Domain\Service\CampaignService');
         $campaignService->generateTestLink($campaign);
     }
