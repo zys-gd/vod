@@ -35,7 +35,9 @@
             <div class="flex-column col-6 x-game-element game-wrapper" data-uuid="{{game.uuid}}">
                 <div class="game">
                     <div class="game-image-block">
-                        <img src="{{ game.iconPath }}" alt="">
+                        <a class="d-flex game-link" href="{{ gameLink }}">
+                            <img class="game-img" src="{{ game.iconPath }}" alt="{{ game.uuid }}"/>
+                        </a>
                     </div>
                     <div class="game-info-block">
                         <div class="game-title-block">
@@ -60,6 +62,7 @@
             var offset                = 0;
             var loadMorePath          = '{{ path('load_more') }}';
             var downloadGamePath      = '{{ path('download_game') }}';
+            var gameLink              = '{{ path('game_content') }}';
             var hasActiveSubscription = '{{ hasActiveSubscription() }}';
 
             doLoadMore();
@@ -136,7 +139,8 @@
                             var html = gameTemplate({
                                 'game'                 : game,
                                 'buttonHtml'           : buttonTemplate(),
-                                'hasActiveSubscription': hasActiveSubscription
+                                'hasActiveSubscription': hasActiveSubscription,
+                                'gameLink'             : gameLink + '/' + game.uuid
                             });
                             $('.x-games-block').append(html);
                         });
