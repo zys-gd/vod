@@ -1,0 +1,35 @@
+.game {
+    background-color: #ebebeb;
+    margin-bottom: 8px;
+    width: 49%;
+    border-bottom: 2px solid silver;
+}
+
+.games-block {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.game-image-block > img {
+    width: 100%
+}
+
+.game-title-block {
+    padding: 8px;
+    text-transform: uppercase;
+}
+
+.game-download-button {
+    text-transform: uppercase;
+}
+
+.games-page-container {
+
+    padding-top: 15px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+.load-more-button{
+    text-transform: uppercase;
+}

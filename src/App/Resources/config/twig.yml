@@ -1,19 +1,24 @@
 services:
-    App\Twig\VideoProcessingHelperExtension:
-        tags:
-            - { name: twig.extension }
-        arguments: ['%cloudinary_cloud_name%']
+  App\Twig\VideoProcessingHelperExtension:
+    tags:
+      - { name: twig.extension }
+    arguments: ['%cloudinary_cloud_name%']
 
-    App\Twig\TranslatorExtension:
-        tags:
-            - { name: twig.extension }
-        arguments:
-            - '@App\Domain\Service\Translator'
-            - '@session'
-            - '@kernel'
-            - '@ExtrasBundle\Utils\LocalExtractor'
-            -
-    App\Twig\NavbarExtension:
-        arguments: ['@App\Domain\Repository\MainCategoryRepository', '@router']
-        tags:
-            - { name: twig.extension }
+  App\Twig\TranslatorExtension:
+    tags:
+      - { name: twig.extension }
+    arguments:
+      - '@App\Domain\Service\Translator'
+      - '@session'
+      - '@kernel'
+      - '@ExtrasBundle\Utils\LocalExtractor'
+      -
+  App\Twig\NavbarExtension:
+    arguments: ['@App\Domain\Repository\MainCategoryRepository', '@router']
+    tags:
+      - { name: twig.extension }
+
+  App\Twig\GamesExtension:
+    tags:
+      - { name: twig.extension }
+    arguments: ['%images_base_url%']

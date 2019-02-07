@@ -1,0 +1,44 @@
+{% extends '@App/base.html.twig' %}
+{% import "@App/Common/Blocks/header.html.twig" as  header %}
+{% import '@App/Components/Buttons/small_button.html.twig' as button %}
+{% import '@App/Components/Buttons/gray_button.html.twig' as button_gray %}
+{% import "@App/Components/Blocks/Header/subscription_heading.html.twig" as  subscription_heading %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('/css/games.css') }}" rel="stylesheet">
+{% endblock %}
+
+
+{% block header_content %}
+    <div class="w-100">
+        {{ header.render('Sports games') }}
+    </div>
+
+{% endblock header_content %}
+
+{% block body %}
+
+    <div class="games-page-container">
+        <div class="d-flex flex-row games-block">
+            {% for game in games %}
+                <div class="game">
+
+                    <div class="game-image-block">
+                        <img src="{{ getImageLink(game.iconPath) }}" alt="">
+                    </div>
+                    <div class="game-title-block">
+                        <div>{{ game.title }}</div>
+                        {% if hasActiveSubscription() %}
+                            {{ button.render('Download', 'game-download-button') }}
+                        {% endif %}
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="load-more-button-block d-flex align-items-center justify-content-center">
+            <div>{{ button_gray.render('Load More', 'load-more-button') }}</div>
+        </div>
+    </div>
+{% endblock %}

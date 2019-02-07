@@ -154,11 +154,24 @@ a button {
     padding: 1vw 10vw;
 }
 
+.button-small,
 .button:active {
     background-color: #a90000;
-
 }
 
+.button-small{
+    padding: 6px 16px;
+    border: 0;
+    background-color: #ec0000;
+    color: #FFFFFF;
+}
+
+.button-gray{
+    padding: 6px 16px;
+    border: 0;
+    background-color: #190000;
+    color: #FFFFFF;
+}
 
 .categories-see-all-button {
     float: right;
