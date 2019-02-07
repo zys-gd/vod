@@ -35,5 +35,6 @@ return [
 
     'MAILER_URL' => 'MAILER_URL',
     'UPLOADS_BUILDS_PATH' => 'uploads/builds',
+    'USED_FILESYSTEM_STORAGE' => 's3',
 
 ];
