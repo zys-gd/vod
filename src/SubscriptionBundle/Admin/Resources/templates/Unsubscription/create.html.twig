@@ -34,6 +34,7 @@
                             </div>
                         </div>
                     </div>
+                    <span id="createUrl" hidden>{{ admin.generateUrl('create') }}</span>
                 </div>
             </div>
         </div>
@@ -44,6 +45,7 @@
             var navTabItems = navtabs.find('li');
 
             navTabItems.click(function() {
+                var url = $('#createUrl').text();
                 var tabName = $(this).attr('data-tab-action');
                 var data = {};
                 var loader = $('<div class="loader"></div>');
@@ -51,7 +53,7 @@
                 navtabs.after(loader);
 
                 $.ajax({
-                    url: `http://${window.location.hostname}/admin/subscription/subscription/create`,
+                    url: url,
                     method: 'POST',
                     data: data
                 }).done(function(html) {
