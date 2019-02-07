@@ -328,6 +328,7 @@ class UnsubscriptionAdminController extends CRUDController
         }
 
         return $this->renderView('@SubscriptionAdmin/Unsubscription/prepared_users.html.twig', [
+            'admin' => $this->admin,
             'headers' => $this->tableHeaders,
             'users' => $users,
             'nonexistentUsers' => $nonexistentUsers,

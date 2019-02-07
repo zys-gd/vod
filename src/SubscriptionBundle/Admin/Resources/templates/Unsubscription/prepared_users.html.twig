@@ -61,16 +61,17 @@
     </div>
     {% if users|length == 0  %}
         <div class="row text-right">
-            <a class="btn btn-info" href="/admin/subscription/subscription/create">Back</a>
+            <a class="btn btn-info" href="{{ admin.generateUrl('create') }}">Back</a>
         </div>
     {% else  %}
         <div id="start" class="row text-right">
             <button class="btn btn-info">Unsubscribe!</button>
         </div>
         <div id="back" class="row text-right" style="display: none;">
-            <a class="btn btn-info" href="/admin/subscription/subscription/create">Back</a>
+            <a class="btn btn-info" href="{{ admin.generateUrl('create') }}">Back</a>
         </div>
     {% endif %}
+    <span id="unsubscribeUrl" hidden>{{ admin.generateUrl('unsubscribe') }}</span>
 </div>
 <div class="modal" id='progress_overlay' tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm" role="document">
@@ -122,8 +123,10 @@
                 return;
             }
 
+            var url = $('#unsubscribeUrl').text();
+
             $.ajax({
-                url: `http://${window.location.host}/admin/subscription/subscription/unsubscribe`,
+                url: url,
                 method: 'post',
                 data: {'users': users},
                 dataType: 'json',

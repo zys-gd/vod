@@ -101,3 +101,5 @@ services:
             - '%drm_api_url%'
             - '%drm_authorize_key%'
             - '%s3_root_url%'
+
+    App\Domain\Service\SimpleImageService: ~

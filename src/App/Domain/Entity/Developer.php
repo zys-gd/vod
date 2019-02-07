@@ -50,6 +50,14 @@ class Developer implements HasUuid
     /**
      * @return string
      */
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
+    /**
+     * @return string
+     */
     public function getUuid(): string
     {
         return $this->uuid;
@@ -61,14 +69,6 @@ class Developer implements HasUuid
     public function setUuid(string $uuid)
     {
         $this->uuid = $uuid;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->getName();
     }
 
     /**

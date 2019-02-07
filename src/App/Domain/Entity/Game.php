@@ -207,7 +207,7 @@ class Game implements HasUuid
      */
     public function __toString()
     {
-        return $this->getTitle();
+        return $this->getTitle() ?? '';
     }
 
     /**

@@ -45,4 +45,14 @@ class ErrorController extends AbstractController
 
         return $this->render('@App/Error/wrong_carrier.html.twig');
     }
+
+    /**
+     * @Route("/wros",name="wrong_os")
+     * @param Request $request
+     * @return Response
+     */
+    public function wrongOS(Request $request)
+    {
+        return $this->render('@App/Error/wrong_os.html.twig');
+    }
 }

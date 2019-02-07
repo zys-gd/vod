@@ -27,6 +27,7 @@
 
 .game-download-button {
     text-transform: uppercase;
+    font-weight: 600;
 }
 
 .games-page-container {
@@ -38,9 +39,13 @@
 
 .load-more-button {
     text-transform: uppercase;
+    font-weight: 600;
 }
 
 .load-more-button:disabled {
+    background-color: grey;
+}
+.game-download-button:disabled {
     background-color: grey;
 }
 
@@ -49,11 +54,7 @@
     cursor: pointer;
 }
 
-.x-game-download-button,
-.x-load-more-button {
-    cursor: pointer;
-}
-
+.x-game-download-button:disabled,
 .x-load-more-button:disabled {
     cursor: not-allowed;
 }

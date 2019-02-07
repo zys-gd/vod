@@ -11,6 +11,11 @@ use Sonata\AdminBundle\Route\RouteCollection;
 class UnsubscriptionAdmin extends AbstractAdmin
 {
     /**
+     * @var string
+     */
+    protected $baseRoutePattern = 'unsubscription';
+
+    /**
      * @param RouteCollection $collection
      */
     protected function configureRoutes(RouteCollection $collection)
