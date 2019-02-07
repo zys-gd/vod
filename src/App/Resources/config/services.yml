@@ -100,5 +100,4 @@ services:
             - '%uploads_builds_path%'
             - '%drm_api_url%'
             - '%drm_authorize_key%'
-            - '%used_filesystem_storage%'
             - '%s3_root_url%'

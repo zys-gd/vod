@@ -1,7 +1,0 @@
-parameters:
-    aws_cloudfront_key_id: APKAI3DXZSUELMJV65KQ
-    cloudfront_domain: http://d19d3fflcjrypo.cloudfront.net
-    drm_authorize_key: NEbozf9AeS
-    drm_api_url: http://drm-api-dev-env.utbtaavpnd.eu-west-1.elasticbeanstalk.com/web/api/
-    s3_root_url: https://s3.eu-central-1.amazonaws.com/playwing-appstore
-    ideabiz_lk_identify_url: https://widget.ideabiz.lk/web/reg/initiate/b513f18a39b5c1bbb1980f07fbcd329c
