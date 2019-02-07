@@ -2,9 +2,10 @@
 
 }
 .slider-big .video-element{
-    width: 40%;
+
 }
 .slider-big .video-element img{
+    width: 100%;
 }
 
 .slider-big .slick-track {
@@ -23,9 +24,19 @@
 }
 
 .slider-big .slick-slide {
-    display: flex;
     float: none;
 
+    /*max-height: 16vh;*/
     height: 100%;
     min-height: 1px;
+
+    /*flex-grow: 1;*/
+    width: 70vw;
+    max-width: 770px;
+
+
+    margin-right: 20px;
+}
+.slider-big .slick-slide > div {
+    flex-grow: 1;
 }
