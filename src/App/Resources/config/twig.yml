@@ -21,4 +21,5 @@ services:
   App\Twig\GamesExtension:
     tags:
       - { name: twig.extension }
-    arguments: ['%images_base_url%']
+    arguments:
+      ['@App\Domain\Service\Games\IconPathProvider']

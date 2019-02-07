@@ -63,7 +63,7 @@ services:
               version: '%aws_s3_version%'
               region: '%aws_s3_region%'
 
-    App\Domain\Service\CampaignService:
+    App\Domain\Service\Campaign\CampaignService:
         public: true
 
     App\Domain\Service\Translator\TranslationProvider:
@@ -86,3 +86,8 @@ services:
         arguments: ['@App\Domain\Service\Email\EmailComposer', '@twig', '@swiftmailer.mailer']
 
     App\Domain\Service\Email\EmailComposer: ~
+
+    App\Domain\Service\Games\GameSerializer: ~
+
+    App\Domain\Service\Games\IconPathProvider:
+        arguments: ['%images_base_url%']

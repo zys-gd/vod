@@ -9,27 +9,29 @@
 namespace App\Twig;
 
 
+use App\Domain\Service\Games\IconPathProvider;
+
 class GamesExtension extends \Twig_Extension
 {
     /**
-     * @var string
+     * @var IconPathProvider
      */
-    private $imagesHost;
+    private $provider;
 
 
     /**
      * GamesExtension constructor.
      */
-    public function __construct(string $imagesHost)
+    public function __construct(IconPathProvider $provider)
     {
-        $this->imagesHost = $imagesHost;
+        $this->provider = $provider;
     }
 
     public function getFunctions()
     {
         return [
             new \Twig_SimpleFunction('getImageLink', function (string $image) {
-                return sprintf('%s/uploads/cache/similar_game/%s', $this->imagesHost, $image);
+                return $this->provider->getFullPath($image);
             })
         ];
     }

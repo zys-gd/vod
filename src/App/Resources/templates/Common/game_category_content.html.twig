@@ -20,25 +20,115 @@
 {% block body %}
 
     <div class="games-page-container">
-        <div class="d-flex flex-row games-block">
-            {% for game in games %}
-                <div class="game">
-
-                    <div class="game-image-block">
-                        <img src="{{ getImageLink(game.iconPath) }}" alt="">
-                    </div>
-                    <div class="game-title-block">
-                        <div>{{ game.title }}</div>
-                        {% if hasActiveSubscription() %}
-                            {{ button.render('Download', 'game-download-button') }}
-                        {% endif %}
-
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
+        <div class="d-flex flex-row games-block x-games-block"></div>
         <div class="load-more-button-block d-flex align-items-center justify-content-center">
-            <div>{{ button_gray.render('Load More', 'load-more-button') }}</div>
+            <div>{{ button_gray.render('Load More', 'load-more-button x-load-more-button') }}</div>
         </div>
     </div>
+
+    <script id="game-download-button" type="text/x-handlebars">
+        {{ button.render('Download', 'game-download-button x-game-download-button') }}
+    </script>
+
+    <script id="game-item-template" type="text/x-handlebars">
+        {% verbatim %}
+            <div class="x-game-element game" data-uuid="{{game.uuid}}">
+                    <div class="game-image-block">
+                        <img src="{{ game.iconPath }}" alt="">
+                    </div>
+                    <div class="game-info-block">
+                        <div class="game-title-block">
+                            {{ game.title }}
+                        </div>
+                        <div class="game-download-button-block">
+                            {{#if hasActiveSubscription}}
+                                {{{buttonHtml}}}
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+        {% endverbatim %}
+    </script>
+
+    <script>
+
+
+        (function () {
+            var batchSize             = 4;
+            var offset                = 0;
+            var loadMorePath          = '{{ path('load_more') }}';
+            var downloadGamePath      = '{{ path('load_more') }}';
+            var hasActiveSubscription = '{{ hasActiveSubscription() }}';
+
+            doLoadMore();
+
+            $(document).on('click', '.x-load-more-button', function () {
+                doLoadMore();
+            });
+            $(document).on('click', '.x-game-download-button', function () {
+                var button      = $(this);
+                var parent      = button.parents('.x-game-element');
+                var uuid        = parent.attr('data-uuid');
+                window.location = downloadGamePath + '/' + uuid;
+            });
+
+
+            function disableLoadMoreButton() {
+                $('.x-load-more-button').attr('disabled', 1)
+            }
+
+            function enableLoadMoreButton() {
+                $('.x-load-more-button').attr('disabled', null)
+            }
+
+            function compileButtonTemplate() {
+                var buttonSrc      = document.getElementById("game-download-button").innerHTML;
+                var buttonTemplate = Handlebars.compile(buttonSrc);
+                return buttonTemplate;
+            }
+
+            function compileGameTemplate() {
+                var source   = document.getElementById("game-item-template").innerHTML;
+                var template = Handlebars.compile(source);
+                return template;
+            }
+
+            function hideLoadMoreButton() {
+                $('.x-load-more-button').hide()
+            }
+
+            function doLoadMore() {
+                $.ajax({
+                    url       : loadMorePath + '?offset=' + offset,
+                    method    : 'GET',
+                    beforeSend: function () {
+                        disableLoadMoreButton()
+                    },
+                    complete  : function () {
+                        enableLoadMoreButton()
+                    },
+                    success   : function (data) {
+                        var buttonTemplate = compileButtonTemplate();
+                        var gameTemplate   = compileGameTemplate();
+
+                        data.games.forEach(function (game) {
+                            var html = gameTemplate({
+                                'game'                 : game,
+                                'buttonHtml'           : buttonTemplate(),
+                                'hasActiveSubscription': hasActiveSubscription
+                            });
+                            $('.x-games-block').append(html);
+                        });
+                        offset += batchSize;
+
+                        if (data.isLast) {
+                            hideLoadMoreButton()
+                        }
+                    }
+                })
+            }
+        })();
+
+    </script>
+
 {% endblock %}

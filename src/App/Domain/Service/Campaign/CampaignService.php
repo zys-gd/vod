@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Service;
+namespace App\Domain\Service\Campaign;
 
 use App\Domain\Entity\Campaign;
 
