@@ -12,7 +12,7 @@ use App\Domain\Service\FaqProviderService;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class ContentController extends AbstractController
+class ContentController extends AbstractController implements AppControllerInterface
 {
     /** @var FaqProviderService $faqProviderService */
     protected $faqProviderService;

@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class GamesController extends AbstractController
+class GamesController extends AbstractController implements AppControllerInterface
 {
     /**
      * @var GameRepository

@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class AccountController extends AbstractController implements ControllerWithISPDetection
+class AccountController extends AbstractController implements ControllerWithISPDetection, AppControllerInterface
 {
     /**
      * @var SubscriptionExtractor
