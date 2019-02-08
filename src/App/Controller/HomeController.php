@@ -11,6 +11,7 @@ namespace App\Controller;
 
 use App\CarrierTemplate\TemplateConfigurator;
 use App\Domain\Entity\UploadedVideo;
+use App\Domain\Repository\GameRepository;
 use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\UploadedVideoRepository;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
@@ -39,6 +40,10 @@ class HomeController extends AbstractController implements ControllerWithISPDete
      * @var UploadedVideoRepository
      */
     private $videoRepository;
+    /**
+     * @var GameRepository
+     */
+    private $gameRepository;
 
     /**
      * HomeController constructor.
@@ -47,18 +52,21 @@ class HomeController extends AbstractController implements ControllerWithISPDete
      * @param TemplateConfigurator       $templateConfigurator
      * @param MainCategoryRepository     $mainCategoryRepository
      * @param UploadedVideoRepository    $videoRepository
+     * @param GameRepository             $gameRepository
      */
     public function __construct(
         CarrierRepositoryInterface $carrierRepository,
         TemplateConfigurator $templateConfigurator,
         MainCategoryRepository $mainCategoryRepository,
-        UploadedVideoRepository $videoRepository
+        UploadedVideoRepository $videoRepository,
+        GameRepository $gameRepository
     )
     {
         $this->carrierRepository      = $carrierRepository;
         $this->templateConfigurator   = $templateConfigurator;
         $this->mainCategoryRepository = $mainCategoryRepository;
         $this->videoRepository        = $videoRepository;
+        $this->gameRepository         = $gameRepository;
     }
 
 
@@ -107,7 +115,8 @@ class HomeController extends AbstractController implements ControllerWithISPDete
             'templateHandler' => $this->templateConfigurator->getTemplateHandler($carrier),
             'categoryVideos'  => $categoryVideos,
             'categories'      => $categories,
-            'sliderVideos'    => $sliderVideos
+            'sliderVideos'    => $sliderVideos,
+            'games'           => $this->gameRepository->findBatchOfGames()
         ]);
     }
 }

@@ -22,6 +22,7 @@ services:
             - '@App\CarrierTemplate\TemplateConfigurator'
             - '@App\Domain\Repository\MainCategoryRepository'
             - '@App\Domain\Repository\UploadedVideoRepository'
+            - '@App\Domain\Repository\GameRepository'
 
     App\Controller\LPController:
         arguments: ['@SubscriptionBundle\Repository\SubscriptionPackRepository', '@IdentificationBundle\Repository\CarrierRepositoryInterface']

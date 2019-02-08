@@ -8,6 +8,7 @@
 {% import "@App/Components/player.html.twig" as  player %}
 {% import "@App/Common/Blocks/slider.html.twig" as  slider %}
 {% import "@App/Common/Blocks/grid_video.html.twig" as  grid_video %}
+{% import "@App/Common/Blocks/list_of_games.html.twig" as  list_of_games %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -39,6 +40,9 @@
 
         <div class="d-flex flex-column w-100">
            {{ grid_video.render(categoryVideos, categories) }}
+        </div>
+        <div class="d-flex flex-column w-100">
+            {{ list_of_games.render(games) }}
         </div>
     </div>
     {{ player.render(categoryVideos|merge(sliderVideos)) }}

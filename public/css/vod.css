@@ -269,3 +269,30 @@ a button {
     background-size: contain;
 
 }
+.listed-games-block{
+    width: 100%;
+    margin-bottom: 4px;
+}
+.listed-game{
+    margin-bottom: 3px;
+    border-bottom: 2px solid #c5c3c3;
+
+}
+.listed-game-image{
+    width: 66%;
+    cursor: pointer;
+}
+.listed-game-title{
+    text-transform: uppercase;
+    font-weight: 500;
+    color:#212529;
+}
+.listed-game-text{
+    background-color: #ebebeb;
+    padding: 8px;
+    width: 34%;
+    text-underline: none;
+}
+.listed-game-image img{
+    width: 100%;
+}

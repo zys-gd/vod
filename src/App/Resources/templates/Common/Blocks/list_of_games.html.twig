@@ -1,0 +1,43 @@
+{% macro render(games) %}
+    {% import '@App/Components/Blocks/Main/see_all.html.twig' as  see_all %}
+    {% import "@App/Components/Buttons/small_button.html.twig" as  button %}
+
+    {{ see_all.render('Sport games',path('game_category')) }}
+
+    <div class="listed-games-block d-flex flex-column">
+        {% for game in games %}
+
+            {% if hasActiveSubscription() %}
+                {% set href = path('game_content',{'gameUuid':game.uuid}) %}
+            {% else %}
+                {% set href = path('landing') %}
+            {% endif %}
+
+            <div class="d-flex flex-row listed-game">
+                <div class="listed-game-image">
+                    <a href="{{ href }}">
+                        <img src="{{ getImageLink(game.iconPath) }}" alt="">
+                    </a>
+                </div>
+                <div class="listed-game-text  d-flex align-items-center">
+                    <div class="d-flex flex-column">
+                        <div class="listed-game-title">
+                            {{ game.title }}
+                        </div>
+
+                        {% if hasActiveSubscription() %}
+                            <div class="listed-game-download-button">
+                                <a href="{{ path('download_game',{'id':game.uuid}) }}">
+                                    {{ button.render('Download','listed-game-download-button') }}
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+
+        {% endfor %}
+    </div>
+
+{% endmacro %}
