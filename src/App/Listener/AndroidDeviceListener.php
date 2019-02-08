@@ -64,7 +64,7 @@ class AndroidDeviceListener
             $controller = $args[0] ?? null;
         }
 
-        if ($controller && !($controller instanceof AppControllerInterface)) {
+        if (isset($controller) && !($controller instanceof AppControllerInterface)) {
             return;
         }
 
