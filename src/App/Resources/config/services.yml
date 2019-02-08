@@ -89,7 +89,7 @@ services:
 
     App\Domain\Service\Games\GameSerializer: ~
 
-    App\Domain\Service\Games\IconPathProvider:
+    App\Domain\Service\Games\ImagePathProvider:
         arguments: ['%images_base_url%']
 
     App\Domain\Service\Games\DrmApkProvider:
@@ -102,4 +102,5 @@ services:
             - '%drm_authorize_key%'
             - '%s3_root_url%'
 
-    App\Domain\Service\SimpleImageService: ~
+    App\Domain\Service\SimpleImageService:
+        public: true

@@ -62,6 +62,7 @@ services:
             - App\Domain\Entity\Game
             - ~
             - '@service_container'
+            - '@App\Domain\Service\Games\ImagePathProvider'
         tags:
             - { name: sonata.admin, manager_type: orm, group: Game Management, label: Game }
 
@@ -78,5 +79,6 @@ services:
             - ~
             - App\Domain\Entity\GameImage
             - ~
+            - '@App\Domain\Service\Games\ImagePathProvider'
         tags:
             - { name: sonata.admin, manager_type: orm, group: Game Management, label: Screenshot, show_in_dashboard: false}

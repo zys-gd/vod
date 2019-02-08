@@ -9,12 +9,12 @@
 namespace App\Twig;
 
 
-use App\Domain\Service\Games\IconPathProvider;
+use App\Domain\Service\Games\ImagePathProvider;
 
 class GamesExtension extends \Twig_Extension
 {
     /**
-     * @var IconPathProvider
+     * @var ImagePathProvider
      */
     private $provider;
 
@@ -22,7 +22,7 @@ class GamesExtension extends \Twig_Extension
     /**
      * GamesExtension constructor.
      */
-    public function __construct(IconPathProvider $provider)
+    public function __construct(ImagePathProvider $provider)
     {
         $this->provider = $provider;
     }

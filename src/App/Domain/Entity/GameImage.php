@@ -10,11 +10,6 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 class GameImage implements HasUuid
 {
     /**
-     * Constants used for determining the location of different resources for this entity
-     */
-    const RESOURCE_SCREENSHOTS = 'images/game_screenshots';
-
-    /**
      * @var string
      */
     private $uuid;
@@ -81,16 +76,6 @@ class GameImage implements HasUuid
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getNamePath()
-    {
-        return static::RESOURCE_SCREENSHOTS . '/' . $this->getName();
     }
 
     /**

@@ -6,8 +6,8 @@ use App\Admin\Sonata\Traits\InitDoctrine;
 use App\Domain\Entity\Developer;
 use App\Domain\Entity\Game;
 use App\Domain\Entity\GameBuild;
-use App\Domain\Entity\GameImage;
 use App\Domain\Service\AWSS3\S3Client;
+use App\Domain\Service\Games\ImagePathProvider;
 use App\Domain\Service\SimpleImageService;
 use App\Utils\UuidGenerator;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
@@ -64,7 +64,6 @@ class GameAdmin extends AbstractAdmin
     const THUMBNAIL_PREVIEW_LABEL = 'Current thumbnail (square icon)';
 
     const UPLOAD_PATH = 'uploads/cache/similar_game';
-    const THUMBNAILS_PATH = 'uploads/cache/game_thumbnail_small';
     const GAME_BUILD_PATH = 'builds';
 
     /**
@@ -78,22 +77,30 @@ class GameAdmin extends AbstractAdmin
     private $container;
 
     /**
+     * @var ImagePathProvider
+     */
+    private $imagePathProvider;
+
+    /**
      * GameAdmin constructor
      *
      * @param string $code
      * @param string $class
      * @param string $baseControllerName
      * @param ContainerInterface $container
+     * @param ImagePathProvider $imagePathProvider
      */
     public function __construct(
         string $code,
         string $class,
         string $baseControllerName,
-        ContainerInterface $container
+        ContainerInterface $container,
+        ImagePathProvider $imagePathProvider
     ) {
         $this->initDoctrine($container);
         $this->container = $container;
         $this->awsClient = $this->container->get('App\Domain\Service\AWSS3\S3Client');
+        $this->imagePathProvider = $imagePathProvider;
 
         parent::__construct($code, $class, $baseControllerName);
     }
@@ -257,11 +264,12 @@ class GameAdmin extends AbstractAdmin
                 'label' => static::RATING_FIELD_LABEL,
                 'choices' => Game::getAvailableRatings()
             ])
-            ->add('tags', ChoiceType::class, [
-                'label' => static::TAGS_FIELD_LABEL,
-                'multiple' => true,
-                'choices' => Game::getAvailableTags()
-            ])
+            //todo refactor tags displaying and fetching from entity
+//            ->add('tags', ChoiceType::class, [
+//                'label' => static::TAGS_FIELD_LABEL,
+//                'multiple' => true,
+//                'choices' => Game::getAvailableTags()
+//            ])
             ->add('builds', null, [
                 'label' => static::BUILDS_FIELD_LABEL
             ])
@@ -299,20 +307,20 @@ class GameAdmin extends AbstractAdmin
 
         if ($game && $game->getIcon()) {
             $posterImagePreview = $this->container->get('twig')->render(
-                '@Admin/Game/image_preview.twig',
+                '@Admin/Game/image_preview.html.twig',
                 [
                     'label' => self::POSTER_PREVIEW_LABEL,
-                    'url' => $this->container->getParameter('similar_game') . '/' . $game->getIconPath()
+                    'url' => $this->imagePathProvider->getGamePosterPath($game->getIcon())
                 ]
             );
         }
 
         if ($game && $game->getThumbnail()) {
-            $posterImagePreview = $this->container->get('twig')->render(
-                '@Admin/Game/image_preview.twig',
+            $thumbnailImagePreview = $this->container->get('twig')->render(
+                '@Admin/Game/image_preview.html.twig',
                 [
                     'label' => self::THUMBNAIL_PREVIEW_LABEL,
-                    'url' => $this->container->getParameter('games_thumbnails_small') . '/' . $game->getThumbnailPath()
+                    'url' => $this->imagePathProvider->getGameSmallThumbnailPath($game->getThumbnail())
                 ]
             );
         }
@@ -411,7 +419,7 @@ class GameAdmin extends AbstractAdmin
             $mimeType = MimeTypeGuesser::getInstance()->guess($file->getPathname());
 
             /** @var SimpleImageService $image */
-            $image = $this->container->get('@App\Domain\Service\SimpleImageService');
+            $image = $this->container->get('App\Domain\Service\SimpleImageService');
             $image->load($file->getPathname());
             $image->resizeToWidth($size['width']);
 
@@ -423,7 +431,7 @@ class GameAdmin extends AbstractAdmin
 
             $handle = fopen($file->getPathname(), 'r');
 
-            $filesystem->putStream(sprintf("%s/%s/%s", self::UPLOAD_PATH, Game::RESOURCE_POSTERS, $name), $handle, [
+            $filesystem->putStream($this->imagePathProvider->getGamePosterPath($name, true), $handle, [
                 'mimetype' => $mimeType,
             ]);
         }
@@ -450,7 +458,7 @@ class GameAdmin extends AbstractAdmin
             $filesystem = new Filesystem($adapter);
 
             /** @var SimpleImageService $image */
-            $image = $this->container->get('simple_image');
+            $image = $this->container->get('App\Domain\Service\SimpleImageService');
             $image->load($file->getPathname());
             $image->resizeToWidth($size['width']);
 
@@ -464,7 +472,7 @@ class GameAdmin extends AbstractAdmin
 
             $handle = fopen($file->getPathname(), 'r');
 
-            $filesystem->putStream(sprintf("%s/%s/%s", self::THUMBNAILS_PATH, Game::RESOURCE_THUMBNAILS, $name), $handle, [
+            $filesystem->putStream($this->imagePathProvider->getGameSmallThumbnailPath($name, true), $handle, [
                 'mimetype' => $mimeType,
             ]);
         }
@@ -495,7 +503,7 @@ class GameAdmin extends AbstractAdmin
                 $filesystem = new Filesystem($adapter);
 
                 /** @var SimpleImageService $image */
-                $image = $this->container->get('simple_image');
+                $image = $this->container->get('App\Domain\Service\SimpleImageService');
                 $image->load($file->getPathname());
                 $image->resizeToWidth($size['width']);
 
@@ -509,7 +517,7 @@ class GameAdmin extends AbstractAdmin
 
                 $handle = fopen($file->getPathname(), 'r');
 
-                $filesystem->putStream(sprintf("%s/%s", 'uploads/' . GameImage::RESOURCE_SCREENSHOTS, $name), $handle, [
+                $filesystem->putStream($this->imagePathProvider->getGameScreenshotPath($name, true), $handle, [
                     'mimetype' => $mimeType,
                 ]);
             }

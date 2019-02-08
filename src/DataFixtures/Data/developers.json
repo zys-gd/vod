@@ -1,122 +1,188 @@
 [
-    {   "uuid": "508534cc-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "Aleksey Bychkov",
-        "email": "a.bychkov@zazmic.com"
+        "email": "a.bychkov@zazmic.com",
+        "uuid": "508534cc-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "50853627-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "Zeptolab",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "50853627-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "50853699-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "ANUMAN",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "50853699-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "508536e5-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "Handy Games",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "508536e5-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "5085372d-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "Zinnia",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "5085372d-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "50853773-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "Baltoro",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "50853773-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "50853803-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "Inlogic",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "50853803-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "50853852-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "Exozet",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "50853852-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "5085395f-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "Clockstone",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "5085395f-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "508539d0-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "AMA",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "508539d0-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "50853a2d-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "AppOn",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "50853a2d-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "50853ab6-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "UBISOFT",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "50853ab6-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "50853b43-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "Thumbstar",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "50853b43-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "50853c0f-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "Outfit7",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "50853c0f-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "50853c79-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "Square Enix",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "50853c79-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "50853cbe-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "Dotemu",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "50853cbe-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "50853cfe-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "Exozet",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "50853cfe-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "50853d43-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "Dream Up",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "50853d43-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "50853d92-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "Playdigious",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "50853d92-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "50853fda-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "Deemedya",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "50853fda-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "50854183-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "Playrise Digital",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "50854183-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "50854221-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "Mega8Games",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "50854221-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "508542b6-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "Creative Mobile",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "508542b6-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "508543ef-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "Elokence",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "508543ef-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "508546a0-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "Playmous",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "508546a0-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "50854761-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "KETCHAPP",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "50854761-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "508547fc-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "Carbon Incubator",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "508547fc-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "50854918-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "Playwing",
-        "email": "support@playwing.com"
+        "email": "support@playwing.com",
+        "uuid": "50854918-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "508549d5-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "Connect2Media",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "508549d5-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
     },
-    {   "uuid": "50854a69-ebd4-11e8-95c4-02bb250f0f22",
+    {
         "name": "Mobile Games Hub",
-        "email": "playwing@playwing.com"
+        "email": "playwing@playwing.com",
+        "uuid": "50854a69-ebd4-11e8-95c4-02bb250f0f22",
+        "games": null
+    },
+    {
+        "name": "Nickelodeon",
+        "email": "playwing@playwing.com",
+        "uuid": "60b9dbf2-c219-44e0-aeb7-58458376f725",
+        "games": null
     }
 ]

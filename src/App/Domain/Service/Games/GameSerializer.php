@@ -14,16 +14,16 @@ use App\Domain\Entity\Game;
 class GameSerializer
 {
     /**
-     * @var IconPathProvider
+     * @var ImagePathProvider
      */
     private $provider;
 
 
     /**
      * GameSerializer constructor.
-     * @param IconPathProvider $provider
+     * @param ImagePathProvider $provider
      */
-    public function __construct(IconPathProvider $provider)
+    public function __construct(ImagePathProvider $provider)
     {
         $this->provider = $provider;
     }
@@ -33,7 +33,7 @@ class GameSerializer
         return [
             'uuid'     => $game->getUuid(),
             'title'    => $game->getTitle(),
-            'iconPath' => $this->provider->getFullPath($game->getIconPath())
+            'iconPath' => $this->provider->getGamePosterPath($game->getIcon())
         ];
     }
 }

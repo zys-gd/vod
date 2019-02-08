@@ -18,7 +18,6 @@ class Game implements HasUuid
      * Constants used for determining the location of different resources for this entity
      */
     const RESOURCE_POSTERS = 'images/game_icons';
-    const RESOURCE_THUMBNAILS = 'images/game_thumbnails';
 
     /**
      * Constants used for different types of tags which can be applied to games
@@ -193,10 +192,14 @@ class Game implements HasUuid
      * Game constructor.
      *
      * @param string $uuid
+     *
+     * @throws \Exception
      */
     public function __construct(string $uuid)
     {
         $this->uuid = $uuid;
+        $this->setCreated(new \DateTime('now'));
+        $this->setUpdated(new \DateTime('now'));
         $this->builds = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->images = new ArrayCollection();
@@ -340,16 +343,6 @@ class Game implements HasUuid
     public function getThumbnail()
     {
         return $this->thumbnail;
-    }
-
-    /**
-     * Get thumbnail path
-     *
-     * @return string
-     */
-    public function getThumbnailPath()
-    {
-        return static::RESOURCE_THUMBNAILS . '/' . $this->getThumbnail();
     }
 
     /**
