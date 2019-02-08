@@ -28,6 +28,7 @@ class MainCategoryAdmin extends AbstractAdmin
         $datagridMapper->add('title');
     }
 
+
     /**
      * @param ListMapper $listMapper
      */
