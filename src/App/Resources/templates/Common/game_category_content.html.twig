@@ -19,8 +19,8 @@
 
 {% block body %}
 
-    <div class="games-page-container">
-        <div class="d-flex flex-wrap x-games-block"></div>
+    <div class="games-page-container" style="">
+        <div class="d-flex flex-wrap x-games-block games-block"></div>
         <div class="load-more-button-block d-flex align-items-center justify-content-center">
             <div>{{ button_gray.render('Load More', 'load-more-button x-load-more-button') }}</div>
         </div>
@@ -32,10 +32,10 @@
 
     <script id="game-item-template" type="text/x-handlebars">
         {% verbatim %}
-            <div class="flex-column col-6 x-game-element game-wrapper" data-uuid="{{game.uuid}}">
+            <div class="flex-column x-game-element game-wrapper" data-uuid="{{game.uuid}}">
                 <div class="game">
                     <div class="game-image-block">
-                        <a class="d-flex game-link" href="{{ gameLink }}">
+                        <a class="game-link" href="{{ gameLink }}">
                             <img class="game-img" src="{{ game.iconPath }}" alt="{{ game.uuid }}"/>
                         </a>
                     </div>

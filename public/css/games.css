@@ -1,9 +1,7 @@
 .game-wrapper {
     padding: 0;
     margin-bottom: 8px;
-}
-.game-wrapper:nth-child(odd) .game {
-    margin-right: 10px;
+    width: 49%;
 }
 .game {
     background-color: #ebebeb;
@@ -12,10 +10,10 @@
     height: 100%;
 }
 .game-link {
-    flex-grow: 1;
+    display: block;
 }
 .game-img{
-    flex-grow: 1;
+    width: 100%;
 }
 
 .game-info-block {
@@ -59,4 +57,7 @@
 .x-game-download-button:disabled,
 .x-load-more-button:disabled {
     cursor: not-allowed;
+}
+.games-block{
+    justify-content: space-between
 }
