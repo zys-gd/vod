@@ -11,9 +11,11 @@
     border-bottom: 2px solid silver;
     height: 100%;
 }
-
-.game-image-block > img {
-    width: 100%
+.game-link {
+    flex-grow: 1;
+}
+.game-img{
+    flex-grow: 1;
 }
 
 .game-info-block {

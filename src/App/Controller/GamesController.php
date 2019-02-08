@@ -87,6 +87,17 @@ class GamesController extends AbstractController implements AppControllerInterfa
     }
 
     /**
+     * @Route("game/{gameUuid}", name="game_content")
+     * @Method("GET")
+     * @param string $gameUuid
+     */
+    public function showGameContentAction(string $gameUuid='')
+    {
+        $game = $this->gameRepository->find($gameUuid);
+        return $this->render('@App/Common/game.html.twig', ['game' => $game]);
+    }
+
+    /**
      * @Route("/games/load-more",name="load_more")
      * @Method("GET")
      * @param Request $request
