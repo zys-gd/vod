@@ -59,6 +59,7 @@ class AndroidDeviceListener
         }
 
 
+
         $args = $event->getController();
         if (is_array($args)) {
             $controller = $args[0] ?? null;
