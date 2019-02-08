@@ -1,22 +1,5 @@
 [
     {
-        "uuid": "38aa9807-ee0d-4377-a9a7-7eccd5abf9d7",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1548931386\/top_moto_sport_videos\/3e2f785e-f17a-4f5b-9eda-8f8cf098fa81.mp4",
-        "remoteId": "top_moto_sport_videos\/3e2f785e-f17a-4f5b-9eda-8f8cf098fa81",
-        "createdAt": "2019-01-31T10:43:10+02:00",
-        "title": "F3 Floersh",
-        "description": null,
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_moto_sport_videos\/3e2f785e-f17a-4f5b-9eda-8f8cf098fa81.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_moto_sport_videos\/3e2f785e-f17a-4f5b-9eda-8f8cf098fa81.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_moto_sport_videos\/3e2f785e-f17a-4f5b-9eda-8f8cf098fa81.jpg"
-        ],
-        "subcategory": {
-            "uuid": "fjh56169-49a4-4823-a7f9-574ac1kf54va"
-        }
-    },
-    {
         "uuid": "42fd4e0e-67ea-4510-97ea-305b62e6d851",
         "status": 2,
         "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1548931568\/top_football_videos\/3f2d22b4-2631-46e1-8575-444cd2dbadc5.mp4",
@@ -102,23 +85,6 @@
         }
     },
     {
-        "uuid": "aac3e214-db95-411d-b89b-9ee5c1713b3a",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1548931442\/top_cricket_videos\/e60e76e8-f790-427e-9f56-3c3a1daf657d.mp4",
-        "remoteId": "top_cricket_videos\/e60e76e8-f790-427e-9f56-3c3a1daf657d",
-        "createdAt": "2019-01-31T10:44:05+02:00",
-        "title": "Crunal Pandya",
-        "description": null,
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_cricket_videos\/e60e76e8-f790-427e-9f56-3c3a1daf657d.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_cricket_videos\/e60e76e8-f790-427e-9f56-3c3a1daf657d.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_cricket_videos\/e60e76e8-f790-427e-9f56-3c3a1daf657d.jpg"
-        ],
-        "subcategory": {
-            "uuid": "98721587-49a4-4823-a7f9-574ac1d7i32x"
-        }
-    },
-    {
         "uuid": "b308491f-4144-4913-9756-cd57f06d840c",
         "status": 2,
         "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1548931083\/top_football_videos\/4a39dcba-1852-48bb-9610-da3cd4dc2c4e.mp4",
@@ -133,40 +99,6 @@
         ],
         "subcategory": {
             "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
-        }
-    },
-    {
-        "uuid": "2f213811-8047-4109-95f5-631969978c95",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549373662\/top_cricket_videos\/136e1593-8854-43ef-9b64-09fcc0e23f8d.mp4",
-        "remoteId": "top_cricket_videos\/136e1593-8854-43ef-9b64-09fcc0e23f8d",
-        "createdAt": "2019-02-05T13:34:24+02:00",
-        "title": "\u2018Atletico can win Champions League\u2019",
-        "description": null,
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_cricket_videos\/136e1593-8854-43ef-9b64-09fcc0e23f8d.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_cricket_videos\/136e1593-8854-43ef-9b64-09fcc0e23f8d.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_cricket_videos\/136e1593-8854-43ef-9b64-09fcc0e23f8d.jpg"
-        ],
-        "subcategory": {
-            "uuid": "98721587-49a4-4823-a7f9-574ac1d7i32x"
-        }
-    },
-    {
-        "uuid": "378d249b-ef4c-4f6a-b12d-31daa2dd426e",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549374516\/top_moto_sport_videos\/e53da0c3-978c-43db-ba22-f34d29553d40.mp4",
-        "remoteId": "top_moto_sport_videos\/e53da0c3-978c-43db-ba22-f34d29553d40",
-        "createdAt": "2019-02-05T13:48:40+02:00",
-        "title": "test3",
-        "description": null,
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_moto_sport_videos\/e53da0c3-978c-43db-ba22-f34d29553d40.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_moto_sport_videos\/e53da0c3-978c-43db-ba22-f34d29553d40.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_moto_sport_videos\/e53da0c3-978c-43db-ba22-f34d29553d40.jpg"
-        ],
-        "subcategory": {
-            "uuid": "fjh56169-49a4-4823-a7f9-574ac1kf54va"
         }
     },
     {
@@ -187,23 +119,6 @@
         }
     },
     {
-        "uuid": "76f4b953-5361-4954-aa60-19688349da95",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549373515\/top_cricket_videos\/98e6c627-4207-4ea3-8317-ebc94f90821f.mp4",
-        "remoteId": "top_cricket_videos\/98e6c627-4207-4ea3-8317-ebc94f90821f",
-        "createdAt": "2019-02-05T13:31:59+02:00",
-        "title": "Real Madrid always UCL favourites 'because of our history', says Solari",
-        "description": null,
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_cricket_videos\/98e6c627-4207-4ea3-8317-ebc94f90821f.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_cricket_videos\/98e6c627-4207-4ea3-8317-ebc94f90821f.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_cricket_videos\/98e6c627-4207-4ea3-8317-ebc94f90821f.jpg"
-        ],
-        "subcategory": {
-            "uuid": "98721587-49a4-4823-a7f9-574ac1d7i32x"
-        }
-    },
-    {
         "uuid": "9f3a8e01-9b6b-4a48-9f64-acf28ffc64d6",
         "status": 2,
         "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549372868\/top_viral_videos\/e2577a2f-4b25-454e-9f86-55e71c40344d.mp4",
@@ -218,57 +133,6 @@
         ],
         "subcategory": {
             "uuid": "88450169-49a4-4823-a7f9-574ac1d7c89p"
-        }
-    },
-    {
-        "uuid": "b1ad8365-735b-48ce-96fa-eff6543c699e",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549373334\/top_cricket_videos\/ae3eb705-dfad-41e3-8461-69c1789081fc.mp4",
-        "remoteId": "top_cricket_videos\/ae3eb705-dfad-41e3-8461-69c1789081fc",
-        "createdAt": "2019-02-05T13:28:57+02:00",
-        "title": "Neymar and Mbappe fit for Liverpool clash - Tuchel",
-        "description": null,
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_cricket_videos\/ae3eb705-dfad-41e3-8461-69c1789081fc.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_cricket_videos\/ae3eb705-dfad-41e3-8461-69c1789081fc.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_cricket_videos\/ae3eb705-dfad-41e3-8461-69c1789081fc.jpg"
-        ],
-        "subcategory": {
-            "uuid": "98721587-49a4-4823-a7f9-574ac1d7i32x"
-        }
-    },
-    {
-        "uuid": "d9323f2f-c090-41d0-873d-0109440f0f47",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549372712\/top_viral_videos\/38cd5aa0-c671-404e-9d6d-5f5707514f61.mp4",
-        "remoteId": "top_viral_videos\/38cd5aa0-c671-404e-9d6d-5f5707514f61",
-        "createdAt": "2019-02-05T13:18:35+02:00",
-        "title": "Open goal miss by Mohamed Drager during Morocco's friendly win over Tunisia",
-        "description": null,
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_viral_videos\/38cd5aa0-c671-404e-9d6d-5f5707514f61.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_viral_videos\/38cd5aa0-c671-404e-9d6d-5f5707514f61.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_viral_videos\/38cd5aa0-c671-404e-9d6d-5f5707514f61.jpg"
-        ],
-        "subcategory": {
-            "uuid": "88450169-49a4-4823-a7f9-574ac1d7c89p"
-        }
-    },
-    {
-        "uuid": "e057f550-9304-4823-b5ad-32d173c39a7c",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549374194\/top_moto_sport_videos\/8407edc3-3bac-4f8e-8a3b-be97ab72def2.mp4",
-        "remoteId": "top_moto_sport_videos\/8407edc3-3bac-4f8e-8a3b-be97ab72def2",
-        "createdAt": "2019-02-05T13:43:18+02:00",
-        "title": "test1",
-        "description": null,
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_moto_sport_videos\/8407edc3-3bac-4f8e-8a3b-be97ab72def2.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_moto_sport_videos\/8407edc3-3bac-4f8e-8a3b-be97ab72def2.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_moto_sport_videos\/8407edc3-3bac-4f8e-8a3b-be97ab72def2.jpg"
-        ],
-        "subcategory": {
-            "uuid": "fjh56169-49a4-4823-a7f9-574ac1kf54va"
         }
     },
     {
@@ -289,20 +153,989 @@
         }
     },
     {
-        "uuid": "f89dd5bd-6f1e-4569-a1d8-6fec1846d452",
+        "uuid": "07f8564b-0cc1-4cbe-b3c4-cd4ba51b866f",
         "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549374374\/top_moto_sport_videos\/f046edb5-0037-4ab6-9427-a6477537ae5c.mp4",
-        "remoteId": "top_moto_sport_videos\/f046edb5-0037-4ab6-9427-a6477537ae5c",
-        "createdAt": "2019-02-05T13:46:17+02:00",
-        "title": "test2",
-        "description": null,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549626096\/top_tennis_videos\/8c3990fa-bc7d-4ce0-a787-67ac4e2ef9a3.mp4",
+        "remoteId": "top_tennis_videos\/8c3990fa-bc7d-4ce0-a787-67ac4e2ef9a3",
+        "createdAt": "2019-02-08T11:41:40+02:00",
+        "title": "Kiki Bertens on winning the St Petersburg ladies trophy following win over Donna Vekic",
+        "description": "Kiki Bertens gave her verdict on Sunday after clinching her third title in six months in a 7-6(2), 6-4 win over Donna Vekic in the final of the St. Petersburg Trophy.\r\n\r\nSecond-seeded Bertens came back from 5-2 down in the first set to win four straight games and force a tiebreak. Eighth-seeded Vekic saved three match points in the second set before Bertens closed out the match for her eighth career title.\r\n\r\nThe win continued Bertens' emergence as a more versatile player. Until she beat Simona Halep to win the Cincinnati Open in August, Bertens had never reached a WTA final on any surface other than clay, but she has now won three straight hard-court finals.\r\n\r\nBertens' current ranking of eighth is the highest for a Dutch woman since Betty Stove, who reached No. 5 in 1977.",
         "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_moto_sport_videos\/f046edb5-0037-4ab6-9427-a6477537ae5c.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_moto_sport_videos\/f046edb5-0037-4ab6-9427-a6477537ae5c.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_moto_sport_videos\/f046edb5-0037-4ab6-9427-a6477537ae5c.jpg"
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_tennis_videos\/8c3990fa-bc7d-4ce0-a787-67ac4e2ef9a3.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_tennis_videos\/8c3990fa-bc7d-4ce0-a787-67ac4e2ef9a3.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_tennis_videos\/8c3990fa-bc7d-4ce0-a787-67ac4e2ef9a3.jpg"
         ],
         "subcategory": {
-            "uuid": "fjh56169-49a4-4823-a7f9-574ac1kf54va"
+            "uuid": "232sd169-49a4-4823-a7f9-574ac1d740df"
+        }
+    },
+    {
+        "uuid": "0ab1c8c8-cc54-475b-999c-a576fb17b365",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549628705\/top_football_videos\/09a194c4-58f5-4af8-85ec-b1a064689f92.mp4",
+        "remoteId": "top_football_videos\/09a194c4-58f5-4af8-85ec-b1a064689f92",
+        "createdAt": "2019-02-08T12:25:18+02:00",
+        "title": "Barcelona train and talk ahead of Copa del Rey semi-final with Real Madrid",
+        "description": "Lionel Messi has returned to training, a day before Barcelona host Real Madrid in the first leg of the semifinals of the Copa del Rey.\r\nMessi was sidelined from Monday's training session because of a right leg injury sustained in a Spanish league match on Saturday.\r\nHe re-joined his teammates on the practice field on Tuesday and showed no signs he was bothered by the injury.\r\nThe media could only watch the first few minutes of the session, when players warmed up and played keep-away.\r\nCoach Ernesto Valverde had said earlier on Tuesday he would wait for the training session to end before deciding whether Messi will play on Wednesday at Camp Nou Stadium.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/09a194c4-58f5-4af8-85ec-b1a064689f92.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/09a194c4-58f5-4af8-85ec-b1a064689f92.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/09a194c4-58f5-4af8-85ec-b1a064689f92.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "11783c3e-6b2b-4971-8d7d-189b1393a2fb",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549626739\/top_tennis_videos\/bffa962e-c797-4687-9ddf-c68941851282.mp4",
+        "remoteId": "top_tennis_videos\/bffa962e-c797-4687-9ddf-c68941851282",
+        "createdAt": "2019-02-08T11:52:25+02:00",
+        "title": "Australia beat Bosnia Herzegovina 4-0 to book their place in the Madrid finals",
+        "description": "Australia completed a 4-0 win over Bosnia Herzegovina on Saturday, to clinch their place in the inaugural 18-nation Davis Cup final in Madrid, Spain later this year.\r\n\r\nOpening day singles successes for John Millman and Alex de Minaur ensured that Australia held a commanding 2-0 lead ahead of day two - and crucially ensured that Bosnia had no further room for error.\r\n\r\nThe hosts built on that lead in the hot Adelaide sun.\r\n\r\nJohn Peers and Jordan Thompson combined well to beat Tomislav Brkic and Mirza Basic 7-5 6-1 in the doubles rubber, giving Australia an unassailable 3-0 lead.\r\n\r\nThen Davis Cup debutant Alexei Popyrin beat Nerman Fatic, cruising through the opening set before fending off a decent challenge in the second set to take a 6-1 7-6(2) victory.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_tennis_videos\/bffa962e-c797-4687-9ddf-c68941851282.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_tennis_videos\/bffa962e-c797-4687-9ddf-c68941851282.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_tennis_videos\/bffa962e-c797-4687-9ddf-c68941851282.jpg"
+        ],
+        "subcategory": {
+            "uuid": "232sd169-49a4-4823-a7f9-574ac1d740df"
+        }
+    },
+    {
+        "uuid": "184a636a-d824-4d22-b443-026c736d1879",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549630334\/top_football_videos\/a4268638-3fb3-4eff-9aa5-c94190008650.mp4",
+        "remoteId": "top_football_videos\/a4268638-3fb3-4eff-9aa5-c94190008650",
+        "createdAt": "2019-02-08T12:52:20+02:00",
+        "title": "Kagawa - I'm here for the food, beaches, and to score goals for Besiktas",
+        "description": "Japanese midfielder Shinji Kagawa was presented to the media by Besiktas in Istanbul on Tuesday after his loan move from Borussia Dortmund to the Turkish side.\r\nKagawa has already made an impact at the club, coming on as a substitute in the 81st minute against Antalyaspor on Sunday and scoring twice in two minutes on his debut, as his new team completed a 6-2 win.\r\nThe 29-year-old has joined on loan until the end of the season.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/a4268638-3fb3-4eff-9aa5-c94190008650.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/a4268638-3fb3-4eff-9aa5-c94190008650.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/a4268638-3fb3-4eff-9aa5-c94190008650.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "264b846b-776f-47ab-acd2-cb0ad94ac7b9",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549630594\/top_football_videos\/79197e0b-17ce-4b25-b0fb-b04153380877.mp4",
+        "remoteId": "top_football_videos\/79197e0b-17ce-4b25-b0fb-b04153380877",
+        "createdAt": "2019-02-08T12:56:37+02:00",
+        "title": "Eng Sub: Valverde plays down Messi reliance ahead of Clasico vs Real Madrid",
+        "description": "Lionel Messi has returned to training, a day before Barcelona hosts Real Madrid in the first leg of the semifinals of the Copa del Rey.\r\nMessi was sidelined from Monday's training session because of a right leg injury sustained in a Spanish league match on Saturday.\r\nHe re-joined his teammates on the practice field on Tuesday and showed no signs he was bothered by the injury. The media could only watch the first few minutes of the session, when players warmed up and played keep-away.\r\nCoach Ernesto Valverde had said earlier Tuesday he would wait for the training session to end before deciding whether Messi will play on Wednesday at Camp Nou Stadium.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/79197e0b-17ce-4b25-b0fb-b04153380877.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/79197e0b-17ce-4b25-b0fb-b04153380877.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/79197e0b-17ce-4b25-b0fb-b04153380877.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "2f5451d8-6b46-45e0-b395-81e86c215808",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549630350\/top_football_videos\/2c8c28fa-3063-4d3b-84ab-1536866d0c9c.mp4",
+        "remoteId": "top_football_videos\/2c8c28fa-3063-4d3b-84ab-1536866d0c9c",
+        "createdAt": "2019-02-08T12:52:32+02:00",
+        "title": "Messi and Suarez train with Barcelona before Real Madrid match",
+        "description": "Lionel Messi has returned to training, a day before Barcelona hosts Real Madrid in the first leg of the semifinals of the Copa del Rey.\r\nMessi was sidelined from Monday's training session because of a right leg injury sustained in a Spanish league match on Saturday.\r\nHe re-joined his teammates on the practice field on Tuesday and showed no signs he was bothered by the injury. The media could only watch the first few minutes of the session, when players warmed up and played keep-away.\r\nCoach Ernesto Valverde had said earlier Tuesday he would wait for the training session to end before deciding whether Messi will play on Wednesday at Camp Nou Stadium.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/2c8c28fa-3063-4d3b-84ab-1536866d0c9c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/2c8c28fa-3063-4d3b-84ab-1536866d0c9c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/2c8c28fa-3063-4d3b-84ab-1536866d0c9c.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "394b14a0-0e0f-4a79-a2f1-99c20becc5a7",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549624079\/top_extreme_sports_videos\/90e92d56-2dd1-4848-98f3-9355f2dbea1b.mp4",
+        "remoteId": "top_extreme_sports_videos\/90e92d56-2dd1-4848-98f3-9355f2dbea1b",
+        "createdAt": "2019-02-08T11:08:01+02:00",
+        "title": "Rally Du Maroc 2017 Morocco",
+        "description": "Action Clip (Dirty) - Best Action",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_extreme_sports_videos\/90e92d56-2dd1-4848-98f3-9355f2dbea1b.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_extreme_sports_videos\/90e92d56-2dd1-4848-98f3-9355f2dbea1b.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_extreme_sports_videos\/90e92d56-2dd1-4848-98f3-9355f2dbea1b.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541d47f69-49a4-4823-a7f9-574ac1fl4hd"
+        }
+    },
+    {
+        "uuid": "39a2a84c-e1a8-4865-9f0d-60a91a1c1230",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549624299\/top_extreme_sports_videos\/f9d383c4-ebed-4a34-a449-4d64319c9ca1.mp4",
+        "remoteId": "top_extreme_sports_videos\/f9d383c4-ebed-4a34-a449-4d64319c9ca1",
+        "createdAt": "2019-02-08T11:11:46+02:00",
+        "title": "Peter Besenyei Fly Through Corinth Canal 2014",
+        "description": "Peter Besenyei Fly Through Corinth Canal",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_extreme_sports_videos\/f9d383c4-ebed-4a34-a449-4d64319c9ca1.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_extreme_sports_videos\/f9d383c4-ebed-4a34-a449-4d64319c9ca1.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_extreme_sports_videos\/f9d383c4-ebed-4a34-a449-4d64319c9ca1.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541d47f69-49a4-4823-a7f9-574ac1fl4hd"
+        }
+    },
+    {
+        "uuid": "3b4ac284-c004-4b3c-91fb-a0bcd2514c7f",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549628020\/top_football_videos\/a8293f6e-e272-4352-b476-d67da5662005.mp4",
+        "remoteId": "top_football_videos\/a8293f6e-e272-4352-b476-d67da5662005",
+        "createdAt": "2019-02-08T12:13:49+02:00",
+        "title": "Real Madrid prepare for first leg of Copa del Rey semi-final with Barcelona",
+        "description": "Real Madrid manager Santiago Solari spoke to the media on Tuesday, as his side continued their preparations for the first leg of their Copa del Rey semi-final tie, away at La Liga leaders Barcelona on Wednesday.\r\nThe fixture will be Solari's first 'Clasico' in charge of Real Madrid, but is the first of three matches between the rivals in less than a month.\r\nThe last time the two sides met Barcelona thrashed Madrid 5-1, a result that prompted the sacking of former coach Julen Lopetegui after just three months in charge.\r\nBarcelona have remained silent about Lionel Messi's health and whether he will feature in the semi-final, following an injury to his right leg sustained on Saturday during a 2-2 draw with Valencia.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/a8293f6e-e272-4352-b476-d67da5662005.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/a8293f6e-e272-4352-b476-d67da5662005.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/a8293f6e-e272-4352-b476-d67da5662005.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "41033d4e-e0cc-441e-b06a-08465405d234",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549623879\/top_basketball_videos\/d3752b1d-47d2-47b0-91f7-5f40523a249f.mp4",
+        "remoteId": "top_basketball_videos\/d3752b1d-47d2-47b0-91f7-5f40523a249f",
+        "createdAt": "2019-02-08T11:04:44+02:00",
+        "title": "Rookie forward Marvin Bagley leads Kings over Spurs, 127-112",
+        "description": "Rookie forward Marvin Bagley III had a career-high 24 points and 12 rebounds for his third straight double-double, leading the Sacramento Kings past the San Antonio Spurs 127-112 on Monday, for their seventh straight home win.\r\n\r\nDe'Aaron Fox added 20 points and Buddy Hield scored 18 to extend Sacramento's longest home winning streak since a 14-gamer in 2005-06.\r\n\r\nThat was the last time the Kings made the playoffs, but Sacramento could make a run at a postseason spot this season.\r\n\r\nThe Kings trail the Los Angeles Clippers by a half-game for eighth place in the Western Conference.\r\n\r\nDeMar DeRozan had 24 points and LaMarcus Aldridge added 22 for the Spurs.\r\n\r\nSacramento had lost 14 straight to San Antonio before the win in November.\r\n\r\nThe teams meet for their final regular season game in March in Texas.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/d3752b1d-47d2-47b0-91f7-5f40523a249f.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/d3752b1d-47d2-47b0-91f7-5f40523a249f.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/d3752b1d-47d2-47b0-91f7-5f40523a249f.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
+        }
+    },
+    {
+        "uuid": "413fe1bd-2988-4391-9ea1-6e5802bf800e",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549630752\/top_football_videos\/c3dd3003-8ca7-485f-812b-3fcf161e2365.mp4",
+        "remoteId": "top_football_videos\/c3dd3003-8ca7-485f-812b-3fcf161e2365",
+        "createdAt": "2019-02-08T12:59:17+02:00",
+        "title": "Data preview to Atletico vs Real Madrid in La Liga",
+        "description": "Atletico Madrid host Real Madrid in a genuine six-pointer at the top of La Liga. Victory for Atletico would put them five points clear of their cross-city rivals in second place, as Diego Simeone's men try to keep pace with leaders Barcelona.\r\nThe last three league encounters between these two have ended in draws.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/c3dd3003-8ca7-485f-812b-3fcf161e2365.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/c3dd3003-8ca7-485f-812b-3fcf161e2365.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/c3dd3003-8ca7-485f-812b-3fcf161e2365.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "52ba34de-565c-4972-acdb-d2b1c5e8b739",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549628048\/top_tennis_videos\/902671f5-6eb6-4d63-952d-6597767ba472.mp4",
+        "remoteId": "top_tennis_videos\/902671f5-6eb6-4d63-952d-6597767ba472",
+        "createdAt": "2019-02-08T12:14:12+02:00",
+        "title": "Eng Sub: Osaka fans celebrate in Tokyo",
+        "description": "Japanese fans celebrated Naomi Osaka's Australian Open title on Saturday, saying her historic win will serve as an inspiration to future generations.\r\n\r\nOsaka beat Petra Kvitova 7-6 (2), 5-7, 6-4 to claim a second consecutive Grand Slam title.\r\n\r\nOn top of that, the 21-year-old will rise to No. 1 in the rankings.\r\n\r\nOsaka, whose mother is Japanese and father is from Haiti, has been a star in Japan since she beat Serena Williams in the final of the last U.S. Open.\r\n\r\nOsaka became the first woman to win back-to-back majors since Williams in 2015.\r\n\r\nOsaka's performance at the Australian Open has topped daily news coverage in Japan.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_tennis_videos\/902671f5-6eb6-4d63-952d-6597767ba472.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_tennis_videos\/902671f5-6eb6-4d63-952d-6597767ba472.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_tennis_videos\/902671f5-6eb6-4d63-952d-6597767ba472.jpg"
+        ],
+        "subcategory": {
+            "uuid": "232sd169-49a4-4823-a7f9-574ac1d740df"
+        }
+    },
+    {
+        "uuid": "536ac569-bf12-48e6-b286-7963ba8a463b",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549625122\/top_extreme_sports_videos\/2bd8083f-cdc3-404c-96da-3d8c853810ac.mp4",
+        "remoteId": "top_extreme_sports_videos\/2bd8083f-cdc3-404c-96da-3d8c853810ac",
+        "createdAt": "2019-02-08T11:25:24+02:00",
+        "title": "Kayaking in a Cave",
+        "description": "Kayaking in a Cave",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_extreme_sports_videos\/2bd8083f-cdc3-404c-96da-3d8c853810ac.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_extreme_sports_videos\/2bd8083f-cdc3-404c-96da-3d8c853810ac.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_extreme_sports_videos\/2bd8083f-cdc3-404c-96da-3d8c853810ac.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541d47f69-49a4-4823-a7f9-574ac1fl4hd"
+        }
+    },
+    {
+        "uuid": "5514fcad-ad2c-49e0-ab13-424d02eca18a",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549624000\/top_basketball_videos\/ba6370f6-8f39-4585-b756-8468cacb3b6c.mp4",
+        "remoteId": "top_basketball_videos\/ba6370f6-8f39-4585-b756-8468cacb3b6c",
+        "createdAt": "2019-02-08T11:06:47+02:00",
+        "title": "Giannis Antetokounmpo scores 30 points as Bucks dominate Nets 113-94",
+        "description": "The Milwaukee Bucks defeated the Brooklyn Nets 113-94 at the Barclays Center in New York on Monday.\r\n\r\nThe Milwaukee Bucks outscored the Brooklyn Nets 23-17 in the first quarter.\r\n\r\nGiannis Antetokounmpo led all players with 20 points in the first half as the Bucks led the Nets, 51-42.\r\n\r\nThe Nets shot a putrid 1-18 from the perimeter in the first half.\r\n\r\nThe Nets were unable to mount a second half comeback as the Bucks held on to a comfortable victory.\r\n\r\nGiannis Antetokounmpo finished the game with 30 points, the most of any player.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/ba6370f6-8f39-4585-b756-8468cacb3b6c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/ba6370f6-8f39-4585-b756-8468cacb3b6c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/ba6370f6-8f39-4585-b756-8468cacb3b6c.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
+        }
+    },
+    {
+        "uuid": "57f96738-fe25-4234-a3f0-0ebdf752fc78",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549623542\/top_athletics_videos\/9543c979-64b1-4ef1-8422-4b124d59fba3.mp4",
+        "remoteId": "top_athletics_videos\/9543c979-64b1-4ef1-8422-4b124d59fba3",
+        "createdAt": "2019-02-08T10:59:05+02:00",
+        "title": "Malaysia defiant despite losing Paralympic event after Israeli athlete ban",
+        "description": "Malaysia's government remains defiant after losing the rights to host the World Para Swimming Championships, having banned Israel from competing in the event.\r\nThe country's governments said earlier in January that no Israeli delegates can enter Malaysia for sporting or other events, in solidarity with Palestine.\r\nThe ban prompted the International Paralympic Committee (IPC) to withdraw Malaysia's hosting rights on Sunday.\r\nMalaysian Prime Minister, Mahathir Mohamad, was unapologetic about the move when he spoke to media in Putrajaya on Monday.\r\nThe 2019 World Para Swimming Championships, which had been scheduled to take from 29th July to 4th August, is set to involve around 70 nations and will act as a qualifying competition for the 2020 Tokyo Paralympics.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_athletics_videos\/9543c979-64b1-4ef1-8422-4b124d59fba3.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_athletics_videos\/9543c979-64b1-4ef1-8422-4b124d59fba3.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_athletics_videos\/9543c979-64b1-4ef1-8422-4b124d59fba3.jpg"
+        ],
+        "subcategory": {
+            "uuid": "dfj45f69-49a4-4823-a7f9-574ac1ddcz56"
+        }
+    },
+    {
+        "uuid": "5d51e2b8-b720-424e-a75a-c72c2f7529e5",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549622359\/top_basketball_videos\/0f34c39d-7161-4ece-b50f-7133faf750d4.mp4",
+        "remoteId": "top_basketball_videos\/0f34c39d-7161-4ece-b50f-7133faf750d4",
+        "createdAt": "2019-02-08T10:39:25+02:00",
+        "title": "Reaction from LeBron James after the worst loss of his career",
+        "description": "Bojan Bogdanovic scored 24 points as the Indiana Pacers tied an NBA franchise record by making 19 3-pointers in a 136-94 win over the Los Angeles Lakers on Tuesday, handing LeBron James the most lopsided loss of his career\r\n\r\nJames' teams have lost by 36 points twice previously.\r\n\r\nJames had 18 points, nine rebounds and seven assists in his second game back since injuring his groin on Christmas Day, but he didn't feature in the fourth quarter\r\n\r\nThe Lakers players were serenaded by Pacers fan about trade rumors all night long.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/0f34c39d-7161-4ece-b50f-7133faf750d4.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/0f34c39d-7161-4ece-b50f-7133faf750d4.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/0f34c39d-7161-4ece-b50f-7133faf750d4.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
+        }
+    },
+    {
+        "uuid": "64e67d76-8be7-4c3c-80ff-b9c38f08c7d2",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549628219\/top_football_videos\/43d2794a-8d17-4b65-9550-72d4106b39ad.mp4",
+        "remoteId": "top_football_videos\/43d2794a-8d17-4b65-9550-72d4106b39ad",
+        "createdAt": "2019-02-08T12:17:08+02:00",
+        "title": "FIFA President Infantino pushes for Club World Cup and Global Nations League",
+        "description": "FIFA President Gianni Infantino on Thursday called for cooperation amongst football governing bodies at the opening of the UEFA Congress in Rome, where Aleksander Ceferin will be confirmed as the head of European football.\r\nInfantino himself will be the only candidate in the FIFA presidential election scheduled for 5th June in Paris.\r\nAfter the ballot formality in Rome, challenges will stack up for Ceferin \u2014 elite clubs demanding more Champions League money and FIFA wanting new competitions which could threaten UEFA's prized assets.\r\nInfantino has been pushing his FIFA Council for almost a year to accept a secretive 25 billion US dollars offer from private investors.\r\nThey want to jointly run an expanded Club World Cup and worldwide Nations League \u2014 originally a UEFA idea \u2014 for 12 years from 2021.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/43d2794a-8d17-4b65-9550-72d4106b39ad.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/43d2794a-8d17-4b65-9550-72d4106b39ad.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/43d2794a-8d17-4b65-9550-72d4106b39ad.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "6911ad7a-f2af-4f5a-821e-7dd09dd777fe",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549622015\/top_basketball_videos\/a68a3a57-7250-4b3e-ae31-33f0de44e65b.mp4",
+        "remoteId": "top_basketball_videos\/a68a3a57-7250-4b3e-ae31-33f0de44e65b",
+        "createdAt": "2019-02-08T10:33:39+02:00",
+        "title": "D'Angelo Russell scores 27 points to help Nets beat Nuggets 135-130",
+        "description": "D'Angelo Russell had 27 points and 11 assists as the Brooklyn Nets surpassed last season's win total by beating the Denver Nuggets 135-130 on Wednesday night.\r\n\r\nRussell made six of the Nets' 19 3-pointers, one game after they made only five as a team in their poorest shooting performance of the season.\r\n\r\nJoe Harris chipped in 17 points for the Nets.\r\n\r\nBrooklyn had failed to score 100 in its previous two games.\r\n\r\nNikola Jokic had 25 points, 14 rebounds and 10 assists in his 10th triple-double of the season for the Nuggets, who have lost two straight games to fall out of a tie for the Western Conference lead.\r\n\r\nMason Plumlee scored a season-high 24 points on 10-for-12 shooting against his former team.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/a68a3a57-7250-4b3e-ae31-33f0de44e65b.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/a68a3a57-7250-4b3e-ae31-33f0de44e65b.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/a68a3a57-7250-4b3e-ae31-33f0de44e65b.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
+        }
+    },
+    {
+        "uuid": "6a5ccfee-e170-4705-a8ed-662c1713c182",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549627708\/top_football_videos\/a05061ac-3248-4aec-857e-caff1b31c7ec.mp4",
+        "remoteId": "top_football_videos\/a05061ac-3248-4aec-857e-caff1b31c7ec",
+        "createdAt": "2019-02-08T12:08:34+02:00",
+        "title": "Sao Paulo prepare for Copa Libertadores encounter with Talleres",
+        "description": "Three-times Copa Libertadores champions Sao Paolo trained on Tuesday on the eve of the first leg of their second round clash with Argentina's Talleres de Cordoba.\r\nThe best eight teams on phase two will qualify for an additional third round that will allow four teams to reach the Group stages of the 2019 Copa Libertadores.\r\nSao Paulo claimed three Copa Libertadores - in 1992, 1993 and 2005.\r\nTheir last trophy was the Copa Sudamericana, which they won in 2012 after defeating Argentina's Tigre 2-0 on aggregate in the final.\r\nTalleres' only international victory, on the other hand, was in 1999 when they claimed the now defunct CONMEBOL Cup.\r\nWednesday's first leg match between Talleres and Sao Paulo will be played in Cordoba's Estadio Mario Alberto Kempes.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/a05061ac-3248-4aec-857e-caff1b31c7ec.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/a05061ac-3248-4aec-857e-caff1b31c7ec.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/a05061ac-3248-4aec-857e-caff1b31c7ec.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "6f036e40-2d09-4479-9a64-a35cbe90e743",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549623752\/top_basketball_videos\/f2145337-8a85-435d-a624-546b844807a2.mp4",
+        "remoteId": "top_basketball_videos\/f2145337-8a85-435d-a624-546b844807a2",
+        "createdAt": "2019-02-08T11:02:39+02:00",
+        "title": "Harlem Globetrotters set numerous Guinness World Records",
+        "description": "The Harlem Globetrotters added five more Guinness World Records in one day to make it a total of 21, which includes one by a female player - a first for the group.\r\n\r\n\"I am so happy to be the first female (Harlem Globetrotter) to be in the Guinness World Records,\" said Cherelle 'Torch' George, after setting the record for most basketball under the leg tumbles in one minute by a female, with 32.\r\n\r\nBull Bullard, one of the team's star players, set a record with a 58 foot (17.7-metres) somersault basketball shot.\r\n\r\nZeus McClurkin also set the record for most blindfolded basketball slam dunks in one minute with a total of five.\r\n\r\nThe Harlem Globetrotters are currently on a world tour.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/f2145337-8a85-435d-a624-546b844807a2.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/f2145337-8a85-435d-a624-546b844807a2.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/f2145337-8a85-435d-a624-546b844807a2.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
+        }
+    },
+    {
+        "uuid": "71feea6c-6199-4995-9212-3fc033ce2542",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549626985\/top_tennis_videos\/95db97ee-013f-4fc0-82aa-557d03e04a02.mp4",
+        "remoteId": "top_tennis_videos\/95db97ee-013f-4fc0-82aa-557d03e04a02",
+        "createdAt": "2019-02-08T11:56:32+02:00",
+        "title": "Brazil and Belgium tied at 1-1 in the 2019 Davis Cup qualifiers",
+        "description": "Brazil and Belgium are locked at one rubber each after the first day of the Davis Cup qualifying in Uberlandia in Brazil.\r\n\r\nThiago Monteiro had few problems against Arthur De Greef in the first of two singles matches\u2013 easing to a 6-3, 6-2 victory in an hour.\r\n\r\nDe Greef broke his racket in frustration as he was outclassed.\r\n\r\nYet Belgium won a vital rubber in the second match on court.\r\n\r\nThe European's beat Brazil at this stage in 2016 to reach the finals, and gave themselves hope of a repeat as Kimmer Coppejans beat Rogerio Dutra Silva in straight sets.\r\n\r\nCloser than the first match, but Coppejans took the victory 6-4, 6-4.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_tennis_videos\/95db97ee-013f-4fc0-82aa-557d03e04a02.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_tennis_videos\/95db97ee-013f-4fc0-82aa-557d03e04a02.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_tennis_videos\/95db97ee-013f-4fc0-82aa-557d03e04a02.jpg"
+        ],
+        "subcategory": {
+            "uuid": "232sd169-49a4-4823-a7f9-574ac1d740df"
+        }
+    },
+    {
+        "uuid": "738819a7-e55f-411e-bcca-d1c3a745b928",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549625110\/top_extreme_sports_videos\/2c290c46-f2c2-4356-b72c-5308fadf11c2.mp4",
+        "remoteId": "top_extreme_sports_videos\/2c290c46-f2c2-4356-b72c-5308fadf11c2",
+        "createdAt": "2019-02-08T11:25:18+02:00",
+        "title": "Best waves in Brazil - Red Bull Tube & Air",
+        "description": "Best waves in Brazil - Red Bull Tube & Air",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_extreme_sports_videos\/2c290c46-f2c2-4356-b72c-5308fadf11c2.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_extreme_sports_videos\/2c290c46-f2c2-4356-b72c-5308fadf11c2.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_extreme_sports_videos\/2c290c46-f2c2-4356-b72c-5308fadf11c2.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541d47f69-49a4-4823-a7f9-574ac1fl4hd"
+        }
+    },
+    {
+        "uuid": "776afdbf-ae1d-4741-9a2d-d2ecb091df4c",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549630910\/top_football_videos\/ebe3a97e-3f5e-480d-b373-48f8d77a903c.mp4",
+        "remoteId": "top_football_videos\/ebe3a97e-3f5e-480d-b373-48f8d77a903c",
+        "createdAt": "2019-02-08T13:01:56+02:00",
+        "title": "Macarena Sanchez makes history with legal action for women",
+        "description": "Macarena Sanchez is taking legal action against her former club UAI Urquiza and the Argentina Football Association after she was released from her club for no reason.\r\nThe 27-year-old is demanding that the AFA make women's football professional in Argentina.    \r\n\"I want to be recognised as a professional player. I want to be taken as a professional athlete and this opens the doors for other girls so that they can also enjoy the benefits of working as football players, something that we love. We have to live with the current conditions. We have to show all the time that we can play, show that we know football. We have to make a lot more effort than the men and they (clubs and AFA) give us half of the things male players receive.\"\r\nThere is a long history of women's football in the country. This Argentina vs the hosts Mexico at the 1971 Women's World Cup\r\n74-year-old Elba Selva was the 'Maradona' of the women's game and she has seen little change in attitudes.\r\nThey didn't looked at us in a good way. For example people would see a woman playing football and shout things to her, such as: 'Go wash the dishes!' But not all of them. There were some people who saw us doing kick ups or heading the ball or something like that and they applauded us and recognised that we could actually also play like men.\"\r\n\"It's not easy to be the first woman to initiate legal actions against the Argentina Football Association\" says Sanchez. \"It's a pretty big backpack that I have to put on. I knew it was going to have a lot of repercussion. I knew that I was going to find a lot of people who didn't support me. But well, in the balance, the people have spoken.\"",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/ebe3a97e-3f5e-480d-b373-48f8d77a903c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/ebe3a97e-3f5e-480d-b373-48f8d77a903c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/ebe3a97e-3f5e-480d-b373-48f8d77a903c.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "7806668d-1022-4673-80df-96c018aff764",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549624255\/top_extreme_sports_videos\/05d195be-c4f9-4ccf-822c-d5872e4c5687.mp4",
+        "remoteId": "top_extreme_sports_videos\/05d195be-c4f9-4ccf-822c-d5872e4c5687",
+        "createdAt": "2019-02-08T11:10:58+02:00",
+        "title": "Red Bull Skydive Team - Various Clips",
+        "description": "The Red Bull Skydive Team did it over 13.000 times and enjoyed every single time when they launched themselves into free fall. Especially with their new passion, the wings suit.Six Men, one common passion - freefalling.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_extreme_sports_videos\/05d195be-c4f9-4ccf-822c-d5872e4c5687.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_extreme_sports_videos\/05d195be-c4f9-4ccf-822c-d5872e4c5687.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_extreme_sports_videos\/05d195be-c4f9-4ccf-822c-d5872e4c5687.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541d47f69-49a4-4823-a7f9-574ac1fl4hd"
+        }
+    },
+    {
+        "uuid": "80b9dce8-5431-405c-b3d1-f91da631fa63",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549621422\/top_athletics_videos\/9faa5059-7b8b-407f-95e0-eab6bcafd977.mp4",
+        "remoteId": "top_athletics_videos\/9faa5059-7b8b-407f-95e0-eab6bcafd977",
+        "createdAt": "2019-02-08T10:23:47+02:00",
+        "title": "Records fall as Getaneh Molla and Ruth Chepngetich claim Dubai Marathon titles",
+        "description": "Ethiopian Getaneh Molla and Ruth Chepngetich of Kenya claimed the men's and women's titles, respectively, on a remarkable day at the Dubai Marathon on Friday.\r\nMolla won in 2 hours, 3 minutes and 34 seconds, breaking the course record by 26 seconds while clocking the sixth-fastest men's marathon time ever.\r\nSecond-placed Herpassa Negasa ran 2:03:40, for the eighth fastest-ever marathon time, with Asefa Mengstu taking third in 2:04:24 for an all-Ethiopian podium.\r\nIn the women's race, Kenya's Ruth Chepngetich ran the third-fastest time in history with 2:17:08, behind Britain's world record holder Paula Radcliffe and Kenya's Mary Keitany.\r\nTwenty-four-year-old Chepngetich smashed the course record of 2:19:17 by more than two minutes.\r\nEthiopian Worknesh Degefa finished second with a time of 2:17:41, the fourth-fastest ever, while compatriot Worknesh Edesa took third in 2:21:05.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_athletics_videos\/9faa5059-7b8b-407f-95e0-eab6bcafd977.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_athletics_videos\/9faa5059-7b8b-407f-95e0-eab6bcafd977.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_athletics_videos\/9faa5059-7b8b-407f-95e0-eab6bcafd977.jpg"
+        ],
+        "subcategory": {
+            "uuid": "dfj45f69-49a4-4823-a7f9-574ac1ddcz56"
+        }
+    },
+    {
+        "uuid": "80f9bbc1-906b-4df4-9ba0-c8fa1667e440",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549631392\/top_football_videos\/db03f79f-b832-44b8-9221-9cde04bbab00.mp4",
+        "remoteId": "top_football_videos\/db03f79f-b832-44b8-9221-9cde04bbab00",
+        "createdAt": "2019-02-08T13:10:01+02:00",
+        "title": "UEFA President Aleksander Ceferin re-elected for another four years",
+        "description": "UEFA President Aleksander Ceferin promised Europe's football leaders he won't be a \"yes man\" for FIFA's expansion plans, as he was re-elected for another four years by acclamation on Thursday.\r\nDuring his keynote speech at the UEFA Congress in Rome, he sent clear messages to FIFA President Gianni Infantino, who is keen to revamp the Club World Cup and create a global Nations League tournament.\r\nBut Ceferin also told congress UEFA aimed to collaborate with FIFA for football's development, rather than being a source of opposition for the governing body.\r\nCeferin's presidency began in September 2016 and his first two and a half years in office completed the mandate of predecessor Michel Platini, who was banned by the FIFA ethics committee for financial irregularities.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/db03f79f-b832-44b8-9221-9cde04bbab00.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/db03f79f-b832-44b8-9221-9cde04bbab00.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/db03f79f-b832-44b8-9221-9cde04bbab00.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "81dfea87-5a48-4d89-8f1b-fb5a8c446937",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549624693\/top_basketball_videos\/28484331-1573-4618-9639-46c82b5b24f7.mp4",
+        "remoteId": "top_basketball_videos\/28484331-1573-4618-9639-46c82b5b24f7",
+        "createdAt": "2019-02-08T11:18:18+02:00",
+        "title": "LeBron does not play, Warriors top Lakers 115-101",
+        "description": "Klay Thompson returned from a one-game illness absence to score 28 points, leading the Golden State Warriors to a 115-101 victory on Saturday night over a Los Angeles Lakers team missing LeBron James once again.\r\n\r\nStephen Curry missed his first eight shots before a layup with 6:20 remaining, and still scored a total of 14 points.\r\n\r\nAndre Iguodala hit a go-ahead three in the final minute of the third quarter as Golden State pulled away, and finished with 17 points.\r\n\r\nKevin Durant added 21 points.\r\n\r\nJames did not play, resting for what coach Luke Walton called 'load management'.\r\n\r\nThe four-time MVP had been set for his second game back but woke up on Friday 'very sore' after playing 40 minutes in the 123-120 overtime win against the Clippers.\r\n\r\nHe finished that game with 24 points, 14 rebounds and nine assists.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/28484331-1573-4618-9639-46c82b5b24f7.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/28484331-1573-4618-9639-46c82b5b24f7.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/28484331-1573-4618-9639-46c82b5b24f7.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
+        }
+    },
+    {
+        "uuid": "831a3b60-40bb-4a91-b8e7-b06eee11102f",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549625366\/top_extreme_sports_videos\/03d968c7-0c2b-4dca-a33f-b9a6481e40f7.mp4",
+        "remoteId": "top_extreme_sports_videos\/03d968c7-0c2b-4dca-a33f-b9a6481e40f7",
+        "createdAt": "2019-02-08T11:29:29+02:00",
+        "title": "Doubles Contest - Red Bull Double Pipe 2015 Aspen, Colorado, United States",
+        "description": "Doubles Contest - Red Bull Double Pipe 2015 Aspen, Colorado, United States",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_extreme_sports_videos\/03d968c7-0c2b-4dca-a33f-b9a6481e40f7.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_extreme_sports_videos\/03d968c7-0c2b-4dca-a33f-b9a6481e40f7.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_extreme_sports_videos\/03d968c7-0c2b-4dca-a33f-b9a6481e40f7.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541d47f69-49a4-4823-a7f9-574ac1fl4hd"
+        }
+    },
+    {
+        "uuid": "83eca0f2-1fee-4bfe-84fc-1288978105fc",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549627065\/top_tennis_videos\/9b423443-26cd-49cc-924b-9a5cfeb47b7f.mp4",
+        "remoteId": "top_tennis_videos\/9b423443-26cd-49cc-924b-9a5cfeb47b7f",
+        "createdAt": "2019-02-08T11:57:49+02:00",
+        "title": "Andy Murray has hip surgery as comeback attempt looks likely",
+        "description": "Former British number one Andy Murray underwent hip resurfacing surgery in London on Monday.\r\n\r\nThe three-time major champion posted a message Tuesday on Instagram saying he was \"feeling a bit battered and bruised\" after having a metal joint implanted.\r\n\r\nThe 31-year old had dealt with hip pain for years and already had an operation in January 2018.\r\n\r\nAfter losing in the first round of the Australian Open two weeks ago, Murray said he would decide quickly whether to have surgery again.\r\n\r\nHe said at a news conference before the Australian Open that it might end up being the last tournament of his career, despite wanting to retire at Wimbledon.\r\n\r\nMurray will now undergo more rehabilitation to see if he can play again.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_tennis_videos\/9b423443-26cd-49cc-924b-9a5cfeb47b7f.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_tennis_videos\/9b423443-26cd-49cc-924b-9a5cfeb47b7f.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_tennis_videos\/9b423443-26cd-49cc-924b-9a5cfeb47b7f.jpg"
+        ],
+        "subcategory": {
+            "uuid": "232sd169-49a4-4823-a7f9-574ac1d740df"
+        }
+    },
+    {
+        "uuid": "87ec49de-98b0-4b9a-9ac5-4a1326e472d5",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549628324\/top_football_videos\/62adf34b-9211-4255-8a84-cecb33b38978.mp4",
+        "remoteId": "top_football_videos\/62adf34b-9211-4255-8a84-cecb33b38978",
+        "createdAt": "2019-02-08T12:18:57+02:00",
+        "title": "Japanese midfielder Shinji Kagawa is presented at Turkish club Besiktas",
+        "description": "Japanese midfielder Shinji Kagawa was presented to the media by Besiktas in Istanbul on Tuesday after his loan move from Borussia Dortmund to the Turkish side.\r\nKagawa has already made an impact at the club, coming on as a substitute in the 81st minute against Antalyaspor on Sunday and scoring twice in two minutes on his debut, as his new team completed a 6-2 win.\r\nThe 29-year-old has joined on loan until the end of the season.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/62adf34b-9211-4255-8a84-cecb33b38978.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/62adf34b-9211-4255-8a84-cecb33b38978.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/62adf34b-9211-4255-8a84-cecb33b38978.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "8ba4ecf7-667e-4bd5-83d5-d44a6358da09",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549623657\/top_athletics_videos\/2d3a8f06-d6a8-4d5e-9b5d-5153c5ad20a7.mp4",
+        "remoteId": "top_athletics_videos\/2d3a8f06-d6a8-4d5e-9b5d-5153c5ad20a7",
+        "createdAt": "2019-02-08T11:01:13+02:00",
+        "title": "Competitors run seven marathons on seven continents in seven days",
+        "description": "American Michael Wardian and Britain's Susannah Gill won the men's and women's titles at the World Marathon Challenge after completing seven marathons across seven continents in seven days.\r\nThe gruelling event - a total of 183 miles (295 kilometres) - started at the Nova airbase in Antarctica, before moving on to Cape Town, Perth, Dubai, Madrid, Santiago before culminating in the seventh leg in Miami.\r\nFewer than 200 people have completed the challenge since Sir Ranulph Fiennes first achieved the feat in 2003.\r\nWardian won all seven legs of the men's event, while Gill was beaten by Denmark's Kristiana Madsen in the first leg before going on to win the next six - winning the event in a new world record time of 24 hours, 19 minutes and nine seconds.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_athletics_videos\/2d3a8f06-d6a8-4d5e-9b5d-5153c5ad20a7.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_athletics_videos\/2d3a8f06-d6a8-4d5e-9b5d-5153c5ad20a7.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_athletics_videos\/2d3a8f06-d6a8-4d5e-9b5d-5153c5ad20a7.jpg"
+        ],
+        "subcategory": {
+            "uuid": "dfj45f69-49a4-4823-a7f9-574ac1ddcz56"
+        }
+    },
+    {
+        "uuid": "8bb0b776-4352-4d5f-9ee8-6977e2b0b1e4",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549621745\/top_basketball_videos\/c6f596c9-00a1-4038-8f26-c8f11b3b3a9e.mp4",
+        "remoteId": "top_basketball_videos\/c6f596c9-00a1-4038-8f26-c8f11b3b3a9e",
+        "createdAt": "2019-02-08T10:29:10+02:00",
+        "title": "Golden State Warriors beat undermanned San Antonio Spurs 141-102",
+        "description": "The Golden State Warriors ran away in the second and third quarters to rout the San Antonio Spurs 141-102 on Wednesday night.\r\nThe two-time defending champions scored 49 points on 16 assists in the third quarter alone, making five of seven three-pointers.\r\nThey made 24 of 25 field goals in one blistering stretch spanning halftime, including 14 straight shots at one point.\r\nKevin Durant had 23 points, nine assists and eight rebounds, Klay Thompson scored 26 points and Stephen Curry had 19 points, seven assists, five rebounds, two steals and a blocked shot.\r\nCurry and company were so good the starters weren't even needed for the final 12 minutes.\r\nThe Spurs had their five-game winning streak snapped in a 127-112 loss at Sacramento on Monday, and coach Gregg Popovich rested LaMarcus Aldridge and DeMar DeRozan against Golden State.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/c6f596c9-00a1-4038-8f26-c8f11b3b3a9e.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/c6f596c9-00a1-4038-8f26-c8f11b3b3a9e.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/c6f596c9-00a1-4038-8f26-c8f11b3b3a9e.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
+        }
+    },
+    {
+        "uuid": "9080c1c5-0ea6-4db0-8cf6-13a47074049d",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549624938\/top_basketball_videos\/d08a2220-d907-46d1-9d54-dcf28a3211af.mp4",
+        "remoteId": "top_basketball_videos\/d08a2220-d907-46d1-9d54-dcf28a3211af",
+        "createdAt": "2019-02-08T11:22:24+02:00",
+        "title": "Anthony Davis says he's given all he can to Pelicans and is ready to move on",
+        "description": "Anthony Davis feels like he's given the New Orleans Pelicans all he can and that his time to move on has come.\r\n\r\nThe six-time All-Star, who recently informed New Orleans he would like to be traded, said Friday that his intention remains to play for New Orleans as long as he is healthy and under contract with the Pelicans.\r\n\r\nWhile Davis and Lakers star LeBron James share an agent, Davis said he has never provided New Orleans a list of preferred destinations and added that where he winds up is \"on the Pelicans.''\r\n\r\nThe Pelicans are mulling over what to do with Davis as the NBA's trade deadline approaches on Feb. 7.\r\n\r\nDavis did not make any immediate public statements in the days after agent Rich Paul made the trade request, for which Davis was fined $50,000.\r\n\r\nDavis is under contract with New Orleans through the end of the 2019-20 season.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/d08a2220-d907-46d1-9d54-dcf28a3211af.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/d08a2220-d907-46d1-9d54-dcf28a3211af.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/d08a2220-d907-46d1-9d54-dcf28a3211af.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
+        }
+    },
+    {
+        "uuid": "9198489d-7930-46b8-be7d-b93711686bec",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549630807\/top_football_videos\/61401720-ce58-487d-947b-6437c6547794.mp4",
+        "remoteId": "top_football_videos\/61401720-ce58-487d-947b-6437c6547794",
+        "createdAt": "2019-02-08T13:00:10+02:00",
+        "title": "Eng Sub: 'Thai courts will decide' on Hakeem al-Araibi's case",
+        "description": "The case of a refugee Bahraini footballer held in a Thai prison and fighting extradition to his home country, will be decided in the courts and not by the government, a spokesperson for the Thai Attorney-General said on Wednesday.\r\nThe plight of Hakeem al-Araibi has caused a storm of protest, particularly in Australia, where he is a permanent resident and plays semi-professional football.  \r\nAustralia's Foreign Minister called on the Thai government to free him and to allow him to travel back to Australia, but an official from the Attorney-General's Office said that wasn't possible.\r\nAl-Araibi, 25, a former Bahraini national team player, has said he fled his home country due to political repression and fears he will face torture if sent back.\r\nHe was arrested in November after flying in from Australia for his honeymoon, triggered because of an Interpol Red Notice issued against him.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/61401720-ce58-487d-947b-6437c6547794.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/61401720-ce58-487d-947b-6437c6547794.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/61401720-ce58-487d-947b-6437c6547794.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "9b0bcbe7-ecd2-40d7-8392-cadce1fe1dae",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549628092\/top_football_videos\/221dc5d7-3ce4-4715-a829-47a17047bbab.mp4",
+        "remoteId": "top_football_videos\/221dc5d7-3ce4-4715-a829-47a17047bbab",
+        "createdAt": "2019-02-08T12:15:00+02:00",
+        "title": "Reaction from Atletico Mineiro after 2-2 draw at Danubio in Copa Libertadores second stage",
+        "description": "Danubio FC of Uruguay and Atletico Mineiro of Brazil drew 2-2 (1-1) for the second phase of the Copa Libertadores 2019, in an entertaining first leg game played on Tuesday in Montevideo.\r\nThe visiting eleven opened the account through the midfielder Ricardo Oliveira, scoring between the legs of the local goalkeeper in the 29th minute.\r\nThe home side drew level just before halftime with a tip from Federico Rodriguez in the second minute of added time.\r\nThe Oliveira tallied Mineiro's second with a precise header after the break, but Danubio responded two minutes later with a header of their own from Sergio Felipe in the 80th minute.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/221dc5d7-3ce4-4715-a829-47a17047bbab.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/221dc5d7-3ce4-4715-a829-47a17047bbab.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/221dc5d7-3ce4-4715-a829-47a17047bbab.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "a5a1eafa-feda-4a5d-882a-6b2f8214b322",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549625389\/top_extreme_sports_videos\/7782ed36-9078-4b27-8a3a-056be8dbe245.mp4",
+        "remoteId": "top_extreme_sports_videos\/7782ed36-9078-4b27-8a3a-056be8dbe245",
+        "createdAt": "2019-02-08T11:29:51+02:00",
+        "title": "Red Bull Double Pipe 2014 Aspen, Colorado, United States",
+        "description": "Red Bull Double Pipe 2014 Aspen, Colorado, United States",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_extreme_sports_videos\/7782ed36-9078-4b27-8a3a-056be8dbe245.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_extreme_sports_videos\/7782ed36-9078-4b27-8a3a-056be8dbe245.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_extreme_sports_videos\/7782ed36-9078-4b27-8a3a-056be8dbe245.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541d47f69-49a4-4823-a7f9-574ac1fl4hd"
+        }
+    },
+    {
+        "uuid": "a91f1580-6648-4cad-9b49-56f6f513d231",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549623611\/top_basketball_videos\/570e1989-18b9-48f0-a037-0dd7de3fcb8b.mp4",
+        "remoteId": "top_basketball_videos\/570e1989-18b9-48f0-a037-0dd7de3fcb8b",
+        "createdAt": "2019-02-08T11:00:16+02:00",
+        "title": "Williams and Harris lead Clippers to 117-115 comeback win over Hornets",
+        "description": "Tobias Harris scored 34 points, including a running jumper in the lane with 4.3 seconds remaining, as the Los Angeles Clippers rallied from 20 points down to beat the Charlotte Hornets 117-115 on Tuesday.\r\n\r\nCharlotte had a chance to tie or take the lead with their last possession, but Marvin Williams' 3-point attempt was short at the buzzer.\r\n\r\nLou Williams scored 31 points for the Clippers, Montrezl Harrell added 16 and Patrick Beverley 15.\r\n\r\nLos Angeles were playing their third road game in four days.\r\n\r\nThe Clippers shot 75 percent (18 for 24) on 3-pointers.\r\n\r\nKemba Walker scored 32 points and Jeremy Lamb added 22 for the Hornets.\r\n\r\nMarvin Williams finished with 13 points and Malik Monk had 12.\r\n\r\nIt was the second time this season Charlotte lost a game after leading by 20.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/570e1989-18b9-48f0-a037-0dd7de3fcb8b.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/570e1989-18b9-48f0-a037-0dd7de3fcb8b.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/570e1989-18b9-48f0-a037-0dd7de3fcb8b.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
+        }
+    },
+    {
+        "uuid": "afae093d-d159-4af3-a5e8-69e7fb4218eb",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549624416\/top_basketball_videos\/9f431ab4-fff0-44b6-bb42-10212f7d0e6c.mp4",
+        "remoteId": "top_basketball_videos\/9f431ab4-fff0-44b6-bb42-10212f7d0e6c",
+        "createdAt": "2019-02-08T11:13:41+02:00",
+        "title": "Kawhi Leonard scores 18 points as Raptors beat Clippers 121-103",
+        "description": "Kawhi Leonard scored 18 points, Serge Ibaka had 16 points and 12 rebounds and the Toronto Raptors beat the Los Angeles Clippers 121-103 on Sunday for their 10th victory in their last 11 home games.\r\n\r\nIbaka has a career-best six straight double-doubles, Toronto's longest streak since Chris Bosh had eight in November 2009.\r\n\r\nPascal Siakam and C.J. Miles each had 15 points, and Delon Wright added 14.\r\n\r\nShai Gilgeous-Alexander, the guard born in nearby Hamilton, had 19 points to lead Los Angeles.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/9f431ab4-fff0-44b6-bb42-10212f7d0e6c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/9f431ab4-fff0-44b6-bb42-10212f7d0e6c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/9f431ab4-fff0-44b6-bb42-10212f7d0e6c.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
+        }
+    },
+    {
+        "uuid": "b4f6d8c7-1629-4231-b2e5-0fcb4c48f036",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549628591\/top_football_videos\/e885f51f-d46a-495a-9cfe-086e6a28e912.mp4",
+        "remoteId": "top_football_videos\/e885f51f-d46a-495a-9cfe-086e6a28e912",
+        "createdAt": "2019-02-08T12:23:18+02:00",
+        "title": "Brayan Jimenez leaves court after pleading guilty in FIFA corruption scandal",
+        "description": "A former head of Guatemalan soccer's governing body has been sentenced to time served and fined $350,000 after pleading guilty for his role in the FIFA corruption scandal.\r\nBryan Jimenez was sentenced Tuesday in federal court in Brooklyn. U.S. District Judge Pamela K. Chen said federal guidelines called for a prison sentence of 41 to 51 months, but Jimenez's cooperation and remorse mitigated the situation.\r\nChen noted Jimenez had been held in custody for 50 days and spent four to five months under home detention.\r\nJimenez was president of the National Football Federation of Guatemala from December 2009 until May 2015.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/e885f51f-d46a-495a-9cfe-086e6a28e912.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/e885f51f-d46a-495a-9cfe-086e6a28e912.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/e885f51f-d46a-495a-9cfe-086e6a28e912.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "b59ba263-711a-41f6-89f2-3c6520ce5591",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549624136\/top_extreme_sports_videos\/f621c98f-2a31-4409-9b75-9098226546a3.mp4",
+        "remoteId": "top_extreme_sports_videos\/f621c98f-2a31-4409-9b75-9098226546a3",
+        "createdAt": "2019-02-08T11:08:58+02:00",
+        "title": "Red Bull District Ride 2017 Nuremberg, Germany",
+        "description": "Once again Nuremberg's old town will play host to the world's top freeride bike athletes in the fifth edition of this city-based slopestyle contest.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_extreme_sports_videos\/f621c98f-2a31-4409-9b75-9098226546a3.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_extreme_sports_videos\/f621c98f-2a31-4409-9b75-9098226546a3.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_extreme_sports_videos\/f621c98f-2a31-4409-9b75-9098226546a3.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541d47f69-49a4-4823-a7f9-574ac1fl4hd"
+        }
+    },
+    {
+        "uuid": "b731bca1-2a1b-4517-8d00-9e9d1be09b99",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549625433\/top_extreme_sports_videos\/5c588caa-278b-4ccb-9de2-07574eb101d8.mp4",
+        "remoteId": "top_extreme_sports_videos\/5c588caa-278b-4ccb-9de2-07574eb101d8",
+        "createdAt": "2019-02-08T11:30:36+02:00",
+        "title": "Atomic Waymaker 2013 Dachstein, Austria",
+        "description": "Atomic Waymaker 2013 Dachstein, Austria",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_extreme_sports_videos\/5c588caa-278b-4ccb-9de2-07574eb101d8.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_extreme_sports_videos\/5c588caa-278b-4ccb-9de2-07574eb101d8.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_extreme_sports_videos\/5c588caa-278b-4ccb-9de2-07574eb101d8.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541d47f69-49a4-4823-a7f9-574ac1fl4hd"
+        }
+    },
+    {
+        "uuid": "c1937afb-32be-481b-a399-c246752e0197",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549625016\/top_extreme_sports_videos\/9e65514f-51c4-467b-b429-5f66f3803a1c.mp4",
+        "remoteId": "top_extreme_sports_videos\/9e65514f-51c4-467b-b429-5f66f3803a1c",
+        "createdAt": "2019-02-08T11:23:39+02:00",
+        "title": "Hell's Gate 2015 Barga, Italy",
+        "description": "Best of the Action from Hell's Gate 2015.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_extreme_sports_videos\/9e65514f-51c4-467b-b429-5f66f3803a1c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_extreme_sports_videos\/9e65514f-51c4-467b-b429-5f66f3803a1c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_extreme_sports_videos\/9e65514f-51c4-467b-b429-5f66f3803a1c.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541d47f69-49a4-4823-a7f9-574ac1fl4hd"
+        }
+    },
+    {
+        "uuid": "cbdeff79-ccd5-443d-b607-1421b634eaa4",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549625920\/top_tennis_videos\/723a854e-7fe7-4e7d-a140-70cc575b05fc.mp4",
+        "remoteId": "top_tennis_videos\/723a854e-7fe7-4e7d-a140-70cc575b05fc",
+        "createdAt": "2019-02-08T11:38:45+02:00",
+        "title": "Kiki Bertens beats Donna Vekic to win the St Petersburg ladies trophy",
+        "description": "Kiki Bertens won her third title in six months on Sunday after beating Donna Vekic 7-6 (7-2), 6-4 in the final of the St. Petersburg Trophy.\r\n\r\nSecond-seeded Bertens came back from 5-2 down in the first set to win four straight games and force a tiebreak. Eighth-seeded Vekic saved three match points in the second set before Bertens closed out the match for her eighth career title.\r\n\r\nThe win continued Bertens' emergence as a more versatile player. Until she beat Simona Halep to win the Cincinnati Open in August, Bertens had never reached a WTA final on any surface other than clay, but she has now won three straight hard-court finals.\r\n\r\nBertens' current ranking of eighth is the highest for a Dutch woman since Betty Stove, who reached No. 5 in 1977.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_tennis_videos\/723a854e-7fe7-4e7d-a140-70cc575b05fc.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_tennis_videos\/723a854e-7fe7-4e7d-a140-70cc575b05fc.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_tennis_videos\/723a854e-7fe7-4e7d-a140-70cc575b05fc.jpg"
+        ],
+        "subcategory": {
+            "uuid": "232sd169-49a4-4823-a7f9-574ac1d740df"
+        }
+    },
+    {
+        "uuid": "cf038433-04b7-460f-a6b2-9182f4fb7f33",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549625306\/top_extreme_sports_videos\/278f324e-126c-4025-886c-56cf6227cf6c.mp4",
+        "remoteId": "top_extreme_sports_videos\/278f324e-126c-4025-886c-56cf6227cf6c",
+        "createdAt": "2019-02-08T11:28:28+02:00",
+        "title": "Ben Ferguson 2016 British Colombia, Canada",
+        "description": "Best lines \/ Ben Ferguson took a backcountry trip to Baldface in December, and had some epic sessions with his brothers Gabe and Zach along with his Red Bull coach, James Jackson. Ben talks about the influence of his snowboarding crew, and how they all were raised on the slopes of Mt. Bachelor in Bend.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_extreme_sports_videos\/278f324e-126c-4025-886c-56cf6227cf6c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_extreme_sports_videos\/278f324e-126c-4025-886c-56cf6227cf6c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_extreme_sports_videos\/278f324e-126c-4025-886c-56cf6227cf6c.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541d47f69-49a4-4823-a7f9-574ac1fl4hd"
+        }
+    },
+    {
+        "uuid": "cf6fabfb-114b-4168-bd87-99807c24d0f7",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549623454\/top_basketball_videos\/89f01ce7-81f7-4050-9aaa-7c4dcdf6e2aa.mp4",
+        "remoteId": "top_basketball_videos\/89f01ce7-81f7-4050-9aaa-7c4dcdf6e2aa",
+        "createdAt": "2019-02-08T10:57:39+02:00",
+        "title": "Kawhi leads Raptors over 76ers, 119-107",
+        "description": "Kawhi Leonard finished with 24 points as the Raptors held off the Philadelphia 76ers 119-107 on Tuesday in a matchup between two of the Eastern Conference's top teams.\r\n\r\nKyle Lowry and Serge Ibaka each had 20 points to overcome the Joel Embiid-led Sixers.\r\n\r\nEmbiid had 37 points and 13 rebounds for his league-leading 44th double-double, Ben Simmons scored 20 points and Jimmy Butler had 18.\r\n\r\nAfter erupting for 40 points in the first quarter behind 11-for-11 shooting from the free-throw line, the Raptors built a 21-point advantage midway through the second quarter.\r\n\r\nLowry, who missed Toronto's last game due to back soreness, fueled the run with three 3-pointers in a two-minute stretch.\r\n\r\nThe Raptors (39-16) never let the Sixers (34-20) get closer than seven.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/89f01ce7-81f7-4050-9aaa-7c4dcdf6e2aa.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/89f01ce7-81f7-4050-9aaa-7c4dcdf6e2aa.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/89f01ce7-81f7-4050-9aaa-7c4dcdf6e2aa.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
+        }
+    },
+    {
+        "uuid": "d1c7a39a-91f8-46fc-9596-833ebd033a61",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549627621\/top_tennis_videos\/77d8a205-dee7-4c9e-a91a-7bdf42461ec6.mp4",
+        "remoteId": "top_tennis_videos\/77d8a205-dee7-4c9e-a91a-7bdf42461ec6",
+        "createdAt": "2019-02-08T12:07:18+02:00",
+        "title": "Djokovic shows off his new trophy; targets another title at Roland Garros",
+        "description": "Novak Djokovic said on Monday he is targeting a Roland Garros win next spring to hold all four Grand Slam titles for the second time in his career and inch closer to Roger Federer's record 20 Grand Slam tournaments.\r\n\r\nThe world number one was speaking at Melbourne's Botanical Gardens less than 24 hours after conquering a record seventh Australian Open trophy with a dominant performance against Rafael Nadal in the final.\r\n\r\nThe 15-time Grand Slam champion broke his tie with Roger Federer and Roy Emerson for most Australian Open men's titles.\r\n\r\nHe also broke a tie with his idol, Pete Sampras, for third-most Grand Slam trophies - Djokovic now only trails Federer with 20, and Nadal with 17.\r\n\r\nDjokovic has only won the French Open once before, in 2016, when he held all four Grand Slams at the same time.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_tennis_videos\/77d8a205-dee7-4c9e-a91a-7bdf42461ec6.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_tennis_videos\/77d8a205-dee7-4c9e-a91a-7bdf42461ec6.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_tennis_videos\/77d8a205-dee7-4c9e-a91a-7bdf42461ec6.jpg"
+        ],
+        "subcategory": {
+            "uuid": "232sd169-49a4-4823-a7f9-574ac1d740df"
+        }
+    },
+    {
+        "uuid": "d1d0a78e-92a8-4f35-a2af-cab0833287f8",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549624264\/top_basketball_videos\/475fe43c-5197-434a-be1e-02bfe287ab29.mp4",
+        "remoteId": "top_basketball_videos\/475fe43c-5197-434a-be1e-02bfe287ab29",
+        "createdAt": "2019-02-08T11:11:11+02:00",
+        "title": "Kristaps Porzingis trains with the Mavs and speaks for first time since trade",
+        "description": "Kristaps Porzingis practices with the Dallas Mavericks on Monday and speaks for the first time, with Owner Mark Cuban and General Manager Donnie Nelson, since being traded from the New York Knicks.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/475fe43c-5197-434a-be1e-02bfe287ab29.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/475fe43c-5197-434a-be1e-02bfe287ab29.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/475fe43c-5197-434a-be1e-02bfe287ab29.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
+        }
+    },
+    {
+        "uuid": "d7ecdb18-c5d3-46d9-ab1b-d0f21d7115f5",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549624569\/top_basketball_videos\/53592002-e870-48b6-93b5-6e22bcbc86a2.mp4",
+        "remoteId": "top_basketball_videos\/53592002-e870-48b6-93b5-6e22bcbc86a2",
+        "createdAt": "2019-02-08T11:16:14+02:00",
+        "title": "Marc Gasol scores 24 points to help lead Grizzlies past Knicks 96-84",
+        "description": "Mike Conley scored 25 points, Marc Gasol had 24 and the Memphis Grizzlies snapped a nine-game road losing streak with a 96-84 victory over the New York Knicks on Sunday.\r\n\r\nConley added eight rebounds and seven assists. Gasol chipped in nine rebounds in what could have been the longtime teammates' final road game with the Grizzlies.\r\n\r\nKevin Knox scored 17 points and DeAndre Jordan had 12 points and 12 rebounds for the Knicks, who lost their 13th straight overall and 14th in a row at Madison Square Garden.\r\n\r\nEnes Kanter thought he was getting a chance to play in the second quarter, walking from the bench toward the scorer's table as fans cheered. The coaches apparently wanted somebody else, so Kanter returned to his seat as the cheers quickly turned to boos.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/53592002-e870-48b6-93b5-6e22bcbc86a2.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/53592002-e870-48b6-93b5-6e22bcbc86a2.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/53592002-e870-48b6-93b5-6e22bcbc86a2.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
+        }
+    },
+    {
+        "uuid": "d9991909-b57f-4cfb-8ce9-d17bea7008bf",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549628141\/top_football_videos\/5f2748a0-f0db-4810-8b1c-835cc5ab502e.mp4",
+        "remoteId": "top_football_videos\/5f2748a0-f0db-4810-8b1c-835cc5ab502e",
+        "createdAt": "2019-02-08T12:15:54+02:00",
+        "title": "Case of refugee footballer held in Thai prison to be decided in court says official",
+        "description": "The case of a refugee Bahraini footballer held in a Thai prison and fighting extradition to his home country, will be decided in the courts and not by the government, a spokesperson for the Thai Attorney General said on Wednesday.\r\nThe plight of Hakeem al-Araibi has caused a storm of protest, particularly in Australia, where he is a permanent resident and plays semi-professional football.  \r\nAustralia's Foreign Minister called on the Thai government to free him and allow him to travel back to Australia, but an official from the Attorney General's Office said that wasn't possible.\r\nAl-Araibi, 25, a former Bahraini international, has said he fled his home country due to political repression and fears he will face torture if sent back.\r\nHe was arrested in November after flying in from Australia for his honeymoon, triggered because of an Interpol Red Notice issued against him.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/5f2748a0-f0db-4810-8b1c-835cc5ab502e.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/5f2748a0-f0db-4810-8b1c-835cc5ab502e.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/5f2748a0-f0db-4810-8b1c-835cc5ab502e.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "da2edb5d-efaa-46c6-b4d1-f208afdbba92",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549624942\/top_extreme_sports_videos\/1456d278-6518-4f15-9ac5-85f1399462a6.mp4",
+        "remoteId": "top_extreme_sports_videos\/1456d278-6518-4f15-9ac5-85f1399462a6",
+        "createdAt": "2019-02-08T11:22:25+02:00",
+        "title": "Proximity Flight in Monterrey",
+        "description": "Jon Devore and Mike Swanson on a trip to Mexico to explore and fly their wingsuits on the two top iconic mountains in Monterrey: Cerro de la Silla and La Huasteca.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_extreme_sports_videos\/1456d278-6518-4f15-9ac5-85f1399462a6.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_extreme_sports_videos\/1456d278-6518-4f15-9ac5-85f1399462a6.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_extreme_sports_videos\/1456d278-6518-4f15-9ac5-85f1399462a6.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541d47f69-49a4-4823-a7f9-574ac1fl4hd"
+        }
+    },
+    {
+        "uuid": "e3df142e-5902-4502-8a11-dee1ed74205b",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549624662\/top_extreme_sports_videos\/cd36adab-092f-46a5-a1e8-c53cb91b478f.mp4",
+        "remoteId": "top_extreme_sports_videos\/cd36adab-092f-46a5-a1e8-c53cb91b478f",
+        "createdAt": "2019-02-08T11:17:46+02:00",
+        "title": "Red Bull Cliff Search 2016 Indonesia",
+        "description": "Red Bull Cliff Search 2016 Indonesia",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_extreme_sports_videos\/cd36adab-092f-46a5-a1e8-c53cb91b478f.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_extreme_sports_videos\/cd36adab-092f-46a5-a1e8-c53cb91b478f.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_extreme_sports_videos\/cd36adab-092f-46a5-a1e8-c53cb91b478f.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541d47f69-49a4-4823-a7f9-574ac1fl4hd"
+        }
+    },
+    {
+        "uuid": "e8e06304-a64b-4772-8afe-cc3c526684ae",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549627909\/top_tennis_videos\/db5362a1-1ed6-485a-acfc-e3f460b9ca0b.mp4",
+        "remoteId": "top_tennis_videos\/db5362a1-1ed6-485a-acfc-e3f460b9ca0b",
+        "createdAt": "2019-02-08T12:12:00+02:00",
+        "title": "Naomi Osaka celebrates Australian Open win at Melbourne's Brighton Beach",
+        "description": "Newly-crowned Australian Open champion Naomi Osaka was at Melbourne's Brighton Beach on Sunday morning, holding the Daphne Akhurst Memorial Cup in her hands, hours after defeating Petra Kvitova in three sets in the tournament's final.\r\n\r\nSaturday's win also meant that Osaka became the new world number one on the WTA Tour.\r\n\r\nThe 21-year-old Japanese was the first female tennis player to win two consecutive debut Grand Slam titles since Jennifer Capriati in 2001.\r\n\r\nOsaka won her maiden major title at the 2018 US Open.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_tennis_videos\/db5362a1-1ed6-485a-acfc-e3f460b9ca0b.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_tennis_videos\/db5362a1-1ed6-485a-acfc-e3f460b9ca0b.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_tennis_videos\/db5362a1-1ed6-485a-acfc-e3f460b9ca0b.jpg"
+        ],
+        "subcategory": {
+            "uuid": "232sd169-49a4-4823-a7f9-574ac1d740df"
+        }
+    },
+    {
+        "uuid": "e9530e03-c5bd-421f-8a1e-3dc5975e480e",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549626598\/top_tennis_videos\/23d808a0-1ee8-4076-860d-0654f74ae952.mp4",
+        "remoteId": "top_tennis_videos\/23d808a0-1ee8-4076-860d-0654f74ae952",
+        "createdAt": "2019-02-08T11:50:03+02:00",
+        "title": "Germany win spot in Davis Cup finals after beating Hungary in doubles rubber",
+        "description": "Germany eased into the Davis Cup Finals on Saturday after a straight-sets victory in the doubles rubber gave them an unassailable 3-0 lead over Hungary.\r\n\r\nFollowing wins for Philipp Kohlschreiber and Alexander Zverev in Friday's singles, Jan-Lennard Struff and Tim Puetz teamed up to beat Gabor Borsos and Peter Nagy 6-2, 6-3 in a largely one-sided encounter in Frankfurt.\r\n\r\nThe Hungarian duo briefly threatened to make a match of it at three-all in the second set, but failed to win another game as Struff and Puetz closed out the win after less than an hour on court.\r\n\r\nUnder the revamped Davis Cup format, three-time champions Germany will join 17 other nations in the Finals, formerly known as the World Group, in Madrid in November.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_tennis_videos\/23d808a0-1ee8-4076-860d-0654f74ae952.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_tennis_videos\/23d808a0-1ee8-4076-860d-0654f74ae952.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_tennis_videos\/23d808a0-1ee8-4076-860d-0654f74ae952.jpg"
+        ],
+        "subcategory": {
+            "uuid": "232sd169-49a4-4823-a7f9-574ac1d740df"
+        }
+    },
+    {
+        "uuid": "e9e997d7-b3b6-4db2-8806-725b3c9e4574",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549626440\/top_tennis_videos\/83b6b288-df09-4c63-9018-d69c6c12ed70.mp4",
+        "remoteId": "top_tennis_videos\/83b6b288-df09-4c63-9018-d69c6c12ed70",
+        "createdAt": "2019-02-08T11:47:28+02:00",
+        "title": "Serbia progress to the Davis Cup finals after a 5th rubber victory over Uzbekistan",
+        "description": "Serbia qualified for the Davis Cup finals after they survived a determined fight back from Uzbekistan, who came back to 2-2 after been down 2-0.\r\n\r\nFilip Krajinovic beat Sanjar Fayziev to seal the victory for Serbia 4-6, 6-3, 6-1.\r\n\r\nUzbekistan took it to the final rubber after Sanjar Fayziev and Denis Istomin beat Nikola Milojevic and Viktor Troicki 2-6, 6-1, 6-3 in the doubles match.\r\n\r\nA second victory of the day for Istomin over Dusan Lajovic this time in the singles - 6-3, 6-4 - meant it went to the 5th rubber to see who would progress to the Davis Cup finals.\r\n\r\nFayziev started his singles match off well, taking the first set 6-4 for Uzbekistan but Serbia took back control and Krajinovic stepped up a gear taking the second and third sets, the latter 6-0.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_tennis_videos\/83b6b288-df09-4c63-9018-d69c6c12ed70.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_tennis_videos\/83b6b288-df09-4c63-9018-d69c6c12ed70.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_tennis_videos\/83b6b288-df09-4c63-9018-d69c6c12ed70.jpg"
+        ],
+        "subcategory": {
+            "uuid": "232sd169-49a4-4823-a7f9-574ac1d740df"
+        }
+    },
+    {
+        "uuid": "edbb0cdd-cc38-4fc6-8ebc-5abec45ecd1c",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549625260\/top_extreme_sports_videos\/426115bd-8e85-43df-8673-1e8731d99988.mp4",
+        "remoteId": "top_extreme_sports_videos\/426115bd-8e85-43df-8673-1e8731d99988",
+        "createdAt": "2019-02-08T11:27:41+02:00",
+        "title": "Biggest jumps - Red Bull Storm Chase 2017",
+        "description": "Biggest jumps - Red Bull Storm Chase 2017",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_extreme_sports_videos\/426115bd-8e85-43df-8673-1e8731d99988.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_extreme_sports_videos\/426115bd-8e85-43df-8673-1e8731d99988.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_extreme_sports_videos\/426115bd-8e85-43df-8673-1e8731d99988.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541d47f69-49a4-4823-a7f9-574ac1fl4hd"
+        }
+    },
+    {
+        "uuid": "f12306be-dc3b-4300-a071-30ee1de32d05",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549626011\/top_tennis_videos\/c131fa9c-0f3d-4f50-baef-8efeb54a8260.mp4",
+        "remoteId": "top_tennis_videos\/c131fa9c-0f3d-4f50-baef-8efeb54a8260",
+        "createdAt": "2019-02-08T11:40:15+02:00",
+        "title": "Eng VO: Bertens beats Vekic to win the St Petersburg ladies trophy",
+        "description": "Kiki Bertens won her third title in six months on Sunday after beating Donna Vekic 7-6 (7-2), 6-4 in the final of the St. Petersburg Ladies Trophy.\r\n\r\nSecond-seeded Bertens came back from 5-2 down in the first set to win four straight games and force a tiebreaker. Eighth-seeded Vekic saved three match points in the second set before Bertens closed out the match for her eighth career title.\r\n\r\nThe win continued Bertens' emergence as a more versatile player. Until she beat Simona Halep to win the Cincinnati Open in August, Bertens had never reached a WTA final on any surface other than clay, but she has now won three straight hard-court finals.\r\n\r\nBertens' current ranking of eighth is the best for a Dutch woman since Betty Stove, who reached No. 5 in 1977.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_tennis_videos\/c131fa9c-0f3d-4f50-baef-8efeb54a8260.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_tennis_videos\/c131fa9c-0f3d-4f50-baef-8efeb54a8260.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_tennis_videos\/c131fa9c-0f3d-4f50-baef-8efeb54a8260.jpg"
+        ],
+        "subcategory": {
+            "uuid": "232sd169-49a4-4823-a7f9-574ac1d740df"
+        }
+    },
+    {
+        "uuid": "f239deea-6f51-430e-95f8-8b5d6249a0e0",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549625326\/top_extreme_sports_videos\/6ad0fb00-67fe-4a37-9800-a4ac39fd65f2.mp4",
+        "remoteId": "top_extreme_sports_videos\/6ad0fb00-67fe-4a37-9800-a4ac39fd65f2",
+        "createdAt": "2019-02-08T11:28:48+02:00",
+        "title": "Snow Camp Snowboard - Red Bull Performance Camp 2014 Santa Monica, California, United States",
+        "description": "Snow Camp Snowboard - Red Bull Performance Camp 2014 Santa Monica, California, United States",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_extreme_sports_videos\/6ad0fb00-67fe-4a37-9800-a4ac39fd65f2.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_extreme_sports_videos\/6ad0fb00-67fe-4a37-9800-a4ac39fd65f2.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_extreme_sports_videos\/6ad0fb00-67fe-4a37-9800-a4ac39fd65f2.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541d47f69-49a4-4823-a7f9-574ac1fl4hd"
+        }
+    },
+    {
+        "uuid": "f41c652f-ff46-42d8-b9c6-5dab3e00677d",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549624805\/top_basketball_videos\/f462518e-be6b-47f5-9dce-70e1274ddf41.mp4",
+        "remoteId": "top_basketball_videos\/f462518e-be6b-47f5-9dce-70e1274ddf41",
+        "createdAt": "2019-02-08T11:20:10+02:00",
+        "title": "Panathinaikos snap three-game losing streak win 88-75 win over Anadolu Efes",
+        "description": "Panathinaikos snapped their three-game losing streak following a 88-75 win over Anadolu Efes in round 21 of the Euroleague on Friday.\r\n\r\nThe Greek side which was sat one place outside the playoff standings was seeking a vital win to boost its hopes of advancing to the knockout stages.\r\n\r\nThe hosts led from start to finish as held off a late charge from the visitors.\r\n\r\nPoint guard Nick Calathes paced Panathinaikos with 20 points with Deshaun Thomas adding 14 and Sean Kilpatrick a further 13.\r\n\r\nAnadolu were led by Rodrigue Beaubois who netted 15 points on the night with Krunoslav Simon a further 14 and Tibor Pleiss into double figures with 13.",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/f462518e-be6b-47f5-9dce-70e1274ddf41.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/f462518e-be6b-47f5-9dce-70e1274ddf41.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/f462518e-be6b-47f5-9dce-70e1274ddf41.jpg"
+        ],
+        "subcategory": {
+            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
         }
     }
 ]
