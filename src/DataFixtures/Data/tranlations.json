@@ -596,7 +596,7 @@
     {
         "uuid": "ac248003-59f0-43ce-86d4-f7c30387897f",
         "key": "messages.action.unsubscribe.confirmation.1",
-        "translation": "You are no longer member of Playwing Premium",
+        "translation": "You are no longer member of 100% sport",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -650,7 +650,7 @@
     {
         "uuid": "c4a1eb00-b547-47e6-8cb5-61901c4e9585",
         "key": "subscription.status.not_subscribe",
-        "translation": "You are not subscribed to Playwing Premium",
+        "translation": "You are not subscribed to 100% sport",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
