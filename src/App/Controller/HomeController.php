@@ -116,7 +116,7 @@ class HomeController extends AbstractController implements ControllerWithISPDete
             'categoryVideos'  => $categoryVideos,
             'categories'      => $categories,
             'sliderVideos'    => $sliderVideos,
-            'games'           => $this->gameRepository->findBatchOfGames()
+            'games'           => $this->gameRepository->findBatchOfGames(0, 2)
         ]);
     }
 }
