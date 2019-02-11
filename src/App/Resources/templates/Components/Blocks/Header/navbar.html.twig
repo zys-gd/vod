@@ -4,9 +4,7 @@
 
     <div class="sidebar-nav">
         <div class="sidebar-nav_header d-flex flex-row">
-            <div class="sidebar-nav_search">
-                <input type="text" class="sidebar-nav_search_input" placeholder="Search For Videos">
-            </div>
+
             <div class="sidebar-nav_close" onclick="closeSidebarMenu()"></div>
         </div>
 
@@ -31,12 +29,12 @@
                                 {{ item.title }}
                             </a>
                         </div>
-                        <div style="margin-left: auto" class="x-expand-button expand-button">
+                        {#<div style="margin-left: auto" class="x-expand-button expand-button">
                             <i class="fas fa-chevron-down open-icon"></i>
                             <i class="fas fa-chevron-up close-icon"></i>
-                        </div>
+                        </div>#}
                     </div>
-                    {% if item.subitems is defined %}
+                    {#{% if item.subitems is defined %}
                         <div style="display: none" class="x-submenus-list">
                             {% for subitem in item.subitems %}
                                 <a href="{{ subitem.link }}" class="nav-item_subitem">
@@ -44,7 +42,7 @@
                                 </a>
                             {% endfor %}
                         </div>
-                    {% endif %}
+                    {% endif %}#}
                 </li>
             {% endfor %}
 
