@@ -1137,5 +1137,481 @@
         "subcategory": {
             "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
         }
+    },
+    {
+        "uuid": "0146e2af-0116-4aa6-876f-2f6b82f363b3",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549638950\/top_moto_sport_videos\/ccf70e23-9495-4fda-a9bf-605e2916e228.mp4",
+        "remoteId": "top_moto_sport_videos\/ccf70e23-9495-4fda-a9bf-605e2916e228",
+        "createdAt": "2019-02-08T15:16:00+02:00",
+        "title": "FIA inducts World Rally Champions into Hall of Fame at event in Paris",
+        "description": "FIA inducts World Rally Champions into Hall of Fame at event in Paris",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_moto_sport_videos\/ccf70e23-9495-4fda-a9bf-605e2916e228.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_moto_sport_videos\/ccf70e23-9495-4fda-a9bf-605e2916e228.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_moto_sport_videos\/ccf70e23-9495-4fda-a9bf-605e2916e228.jpg"
+        ],
+        "subcategory": {
+            "uuid": "fjh56169-49a4-4823-a7f9-574ac1kf54va"
+        }
+    },
+    {
+        "uuid": "0444e89f-ba28-4be8-a173-3caeea9f2a16",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549638863\/top_cricket_videos\/f3759e68-17e0-4362-ab90-241abf871d2f.mp4",
+        "remoteId": "top_cricket_videos\/f3759e68-17e0-4362-ab90-241abf871d2f",
+        "createdAt": "2019-02-08T15:14:26+02:00",
+        "title": "Eng Sub: Ahmed to stay as Pakistan captain for World Cup following racism ban",
+        "description": "Eng Sub: Ahmed to stay as Pakistan captain for World Cup following racism ban",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_cricket_videos\/f3759e68-17e0-4362-ab90-241abf871d2f.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_cricket_videos\/f3759e68-17e0-4362-ab90-241abf871d2f.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_cricket_videos\/f3759e68-17e0-4362-ab90-241abf871d2f.jpg"
+        ],
+        "subcategory": {
+            "uuid": "98721587-49a4-4823-a7f9-574ac1d7i32x"
+        }
+    },
+    {
+        "uuid": "057c0ac3-7efd-4844-90ad-3aacbca3f84d",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549641537\/top_combat_videos\/3f6d7a80-9acc-4ff1-a800-655bb4990793.mp4",
+        "remoteId": "top_combat_videos\/3f6d7a80-9acc-4ff1-a800-655bb4990793",
+        "createdAt": "2019-02-08T15:59:06+02:00",
+        "title": "Moraes regains ONE FC flyweight world title after beating Eustaquio",
+        "description": "Moraes regains ONE FC flyweight world title after beating Eustaquio",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_combat_videos\/3f6d7a80-9acc-4ff1-a800-655bb4990793.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_combat_videos\/3f6d7a80-9acc-4ff1-a800-655bb4990793.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_combat_videos\/3f6d7a80-9acc-4ff1-a800-655bb4990793.jpg"
+        ],
+        "subcategory": {
+            "uuid": "d4gd5869-49a4-4823-a7f9-574ac1dvn7pe"
+        }
+    },
+    {
+        "uuid": "06b9ced2-31e8-4e94-a24d-b14c05f4139b",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549639713\/top_moto_sport_videos\/0cd65cf0-6532-489a-9459-9aef4a72ac9c.mp4",
+        "remoteId": "top_moto_sport_videos\/0cd65cf0-6532-489a-9459-9aef4a72ac9c",
+        "createdAt": "2019-02-08T15:28:53+02:00",
+        "title": "W Series driver selection test takes place ahead of women-only competition",
+        "description": "W Series driver selection test takes place ahead of women-only competition",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_moto_sport_videos\/0cd65cf0-6532-489a-9459-9aef4a72ac9c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_moto_sport_videos\/0cd65cf0-6532-489a-9459-9aef4a72ac9c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_moto_sport_videos\/0cd65cf0-6532-489a-9459-9aef4a72ac9c.jpg"
+        ],
+        "subcategory": {
+            "uuid": "fjh56169-49a4-4823-a7f9-574ac1kf54va"
+        }
+    },
+    {
+        "uuid": "0ff1d456-9332-44cc-9b91-cceb962b59de",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549640949\/top_qualifier_videos\/bb208b57-6696-482f-8e5d-445faceb8bac.mp4",
+        "remoteId": "top_qualifier_videos\/bb208b57-6696-482f-8e5d-445faceb8bac",
+        "createdAt": "2019-02-08T15:49:17+02:00",
+        "title": "Brazil v Belgium in Davis Cup qualifiers",
+        "description": "Brazil v Belgium in Davis Cup qualifiers",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_qualifier_videos\/bb208b57-6696-482f-8e5d-445faceb8bac.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_qualifier_videos\/bb208b57-6696-482f-8e5d-445faceb8bac.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_qualifier_videos\/bb208b57-6696-482f-8e5d-445faceb8bac.jpg"
+        ],
+        "subcategory": {
+            "uuid": "35987d69-49a4-4823-a7f9-574ac1d873hd"
+        }
+    },
+    {
+        "uuid": "2cac243b-c758-4ce0-85fc-ea8dd503e112",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549641139\/top_moto_sport_videos\/51ec046e-6b6d-4013-826f-e35fc7ab6184.mp4",
+        "remoteId": "top_moto_sport_videos\/51ec046e-6b6d-4013-826f-e35fc7ab6184",
+        "createdAt": "2019-02-08T15:52:23+02:00",
+        "title": "Yamaha unveil their new bike ahead of the 2019 MotoGP season",
+        "description": "Yamaha unveil their new bike ahead of the 2019 MotoGP season",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_moto_sport_videos\/51ec046e-6b6d-4013-826f-e35fc7ab6184.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_moto_sport_videos\/51ec046e-6b6d-4013-826f-e35fc7ab6184.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_moto_sport_videos\/51ec046e-6b6d-4013-826f-e35fc7ab6184.jpg"
+        ],
+        "subcategory": {
+            "uuid": "fjh56169-49a4-4823-a7f9-574ac1kf54va"
+        }
+    },
+    {
+        "uuid": "3bf2c356-ba18-40ea-9026-a4d82f4bce0f",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549642275\/top_golf_videos\/c4507c76-0568-4067-838d-e796f8f6648b.mp4",
+        "remoteId": "top_golf_videos\/c4507c76-0568-4067-838d-e796f8f6648b",
+        "createdAt": "2019-02-08T16:11:22+02:00",
+        "title": "Rose on Farmers Insurance Open win and decision to play in Saudi Arabia",
+        "description": "Rose on Farmers Insurance Open win and decision to play in Saudi Arabia",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_golf_videos\/c4507c76-0568-4067-838d-e796f8f6648b.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_golf_videos\/c4507c76-0568-4067-838d-e796f8f6648b.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_golf_videos\/c4507c76-0568-4067-838d-e796f8f6648b.jpg"
+        ],
+        "subcategory": {
+            "uuid": "12f51f69-49a4-4823-a7f9-574ac1852fdq"
+        }
+    },
+    {
+        "uuid": "420c9491-f358-4795-8b20-a4d59c94b300",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549639913\/top_viral_videos\/b76f1318-af8c-4176-8860-20a82f027792.mp4",
+        "remoteId": "top_viral_videos\/b76f1318-af8c-4176-8860-20a82f027792",
+        "createdAt": "2019-02-08T15:31:55+02:00",
+        "title": "Patriots honored at Bruins game, Super Bowl MVP Julian Edelman slams puck",
+        "description": "Patriots honored at Bruins game, Super Bowl MVP Julian Edelman slams puck",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_viral_videos\/b76f1318-af8c-4176-8860-20a82f027792.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_viral_videos\/b76f1318-af8c-4176-8860-20a82f027792.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_viral_videos\/b76f1318-af8c-4176-8860-20a82f027792.jpg"
+        ],
+        "subcategory": {
+            "uuid": "88450169-49a4-4823-a7f9-574ac1d7c89p"
+        }
+    },
+    {
+        "uuid": "44fc0f2e-eb79-489b-92da-511eb722b699",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549641627\/top_golf_videos\/8d57c162-8dc2-4183-806f-a39283bd6fd7.mp4",
+        "remoteId": "top_golf_videos\/8d57c162-8dc2-4183-806f-a39283bd6fd7",
+        "createdAt": "2019-02-08T16:00:36+02:00",
+        "title": "Fowler overcomes triple bogey to win Phoenix Open by 2 shots",
+        "description": "Fowler overcomes triple bogey to win Phoenix Open by 2 shots",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_golf_videos\/8d57c162-8dc2-4183-806f-a39283bd6fd7.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_golf_videos\/8d57c162-8dc2-4183-806f-a39283bd6fd7.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_golf_videos\/8d57c162-8dc2-4183-806f-a39283bd6fd7.jpg"
+        ],
+        "subcategory": {
+            "uuid": "12f51f69-49a4-4823-a7f9-574ac1852fdq"
+        }
+    },
+    {
+        "uuid": "45327283-d58b-451a-8d7a-8be000d8a335",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549638540\/top_cricket_videos\/5917d913-125a-428f-ae9c-bf0ca5d7dcab.mp4",
+        "remoteId": "top_cricket_videos\/5917d913-125a-428f-ae9c-bf0ca5d7dcab",
+        "createdAt": "2019-02-08T15:09:03+02:00",
+        "title": "Ahmed reveals details of his apology to Phehlukwayo following 'race taunt'",
+        "description": "Ahmed reveals details of his apology to Phehlukwayo following 'race taunt'",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_cricket_videos\/5917d913-125a-428f-ae9c-bf0ca5d7dcab.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_cricket_videos\/5917d913-125a-428f-ae9c-bf0ca5d7dcab.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_cricket_videos\/5917d913-125a-428f-ae9c-bf0ca5d7dcab.jpg"
+        ],
+        "subcategory": {
+            "uuid": "98721587-49a4-4823-a7f9-574ac1d7i32x"
+        }
+    },
+    {
+        "uuid": "4ab6f72d-734b-4c4d-b2a4-3553ec7d3492",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549639252\/top_cricket_videos\/99dd7006-738c-4d54-b72f-914afeb05094.mp4",
+        "remoteId": "top_cricket_videos\/99dd7006-738c-4d54-b72f-914afeb05094",
+        "createdAt": "2019-02-08T15:20:58+02:00",
+        "title": "West Indies in control after second day against England",
+        "description": "West Indies in control after second day against England",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_cricket_videos\/99dd7006-738c-4d54-b72f-914afeb05094.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_cricket_videos\/99dd7006-738c-4d54-b72f-914afeb05094.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_cricket_videos\/99dd7006-738c-4d54-b72f-914afeb05094.jpg"
+        ],
+        "subcategory": {
+            "uuid": "98721587-49a4-4823-a7f9-574ac1d7i32x"
+        }
+    },
+    {
+        "uuid": "63147e4e-8b41-41e0-9df9-0cf0eaa848d2",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549640894\/top_qualifier_videos\/ac4d6867-0f62-4a5d-b495-3ac4098e8029.mp4",
+        "remoteId": "top_qualifier_videos\/ac4d6867-0f62-4a5d-b495-3ac4098e8029",
+        "createdAt": "2019-02-08T15:48:21+02:00",
+        "title": "Brazil and Belgium tied at 1-1 in the 2019 Davis Cup qualifiers",
+        "description": "Brazil and Belgium tied at 1-1 in the 2019 Davis Cup qualifiers",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_qualifier_videos\/ac4d6867-0f62-4a5d-b495-3ac4098e8029.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_qualifier_videos\/ac4d6867-0f62-4a5d-b495-3ac4098e8029.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_qualifier_videos\/ac4d6867-0f62-4a5d-b495-3ac4098e8029.jpg"
+        ],
+        "subcategory": {
+            "uuid": "35987d69-49a4-4823-a7f9-574ac1d873hd"
+        }
+    },
+    {
+        "uuid": "64e00204-7924-4e1b-839c-0ac75bddc38c",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549638712\/top_cricket_videos\/63c6646f-9e35-4eb1-8c56-7cc3eef059fb.mp4",
+        "remoteId": "top_cricket_videos\/63c6646f-9e35-4eb1-8c56-7cc3eef059fb",
+        "createdAt": "2019-02-08T15:11:58+02:00",
+        "title": "West Indies thrash England by 10 wickets to win series with a game to spare",
+        "description": "West Indies thrash England by 10 wickets to win series with a game to spare",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_cricket_videos\/63c6646f-9e35-4eb1-8c56-7cc3eef059fb.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_cricket_videos\/63c6646f-9e35-4eb1-8c56-7cc3eef059fb.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_cricket_videos\/63c6646f-9e35-4eb1-8c56-7cc3eef059fb.jpg"
+        ],
+        "subcategory": {
+            "uuid": "98721587-49a4-4823-a7f9-574ac1d7i32x"
+        }
+    },
+    {
+        "uuid": "6ce75fd7-fa49-4a64-9c62-e247367825eb",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549640041\/top_viral_videos\/ebb657b1-de04-475a-9df4-3164aecffe49.mp4",
+        "remoteId": "top_viral_videos\/ebb657b1-de04-475a-9df4-3164aecffe49",
+        "createdAt": "2019-02-08T15:34:04+02:00",
+        "title": "Seats thrown between fans in Guimaraes v Porto match",
+        "description": "Seats thrown between fans in Guimaraes v Porto match",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_viral_videos\/ebb657b1-de04-475a-9df4-3164aecffe49.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_viral_videos\/ebb657b1-de04-475a-9df4-3164aecffe49.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_viral_videos\/ebb657b1-de04-475a-9df4-3164aecffe49.jpg"
+        ],
+        "subcategory": {
+            "uuid": "88450169-49a4-4823-a7f9-574ac1d7c89p"
+        }
+    },
+    {
+        "uuid": "6fed47ec-6b1d-4cda-9b39-687f2c22d531",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549642128\/top_golf_videos\/8b1b1432-5d68-42e0-a23e-a21bed6de86e.mp4",
+        "remoteId": "top_golf_videos\/8b1b1432-5d68-42e0-a23e-a21bed6de86e",
+        "createdAt": "2019-02-08T16:08:57+02:00",
+        "title": "Rickie Fowler holds 2nd round lead and Michael Phelps speaks at Waste Management Phoenix Open",
+        "description": "Rickie Fowler holds 2nd round lead and Michael Phelps speaks at Waste Management Phoenix Open",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_golf_videos\/8b1b1432-5d68-42e0-a23e-a21bed6de86e.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_golf_videos\/8b1b1432-5d68-42e0-a23e-a21bed6de86e.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_golf_videos\/8b1b1432-5d68-42e0-a23e-a21bed6de86e.jpg"
+        ],
+        "subcategory": {
+            "uuid": "12f51f69-49a4-4823-a7f9-574ac1852fdq"
+        }
+    },
+    {
+        "uuid": "747c9f90-6dc3-4826-aa46-e15d1aaf2a26",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549641045\/top_qualifier_videos\/f7a374d2-0cdd-477f-97be-bad06a0d59bb.mp4",
+        "remoteId": "top_qualifier_videos\/f7a374d2-0cdd-477f-97be-bad06a0d59bb",
+        "createdAt": "2019-02-08T15:50:52+02:00",
+        "title": "Australia take 2-0 Davis Cup qualifier lead over Bosnia and Herzegovina",
+        "description": "Australia take 2-0 Davis Cup qualifier lead over Bosnia and Herzegovina",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_qualifier_videos\/f7a374d2-0cdd-477f-97be-bad06a0d59bb.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_qualifier_videos\/f7a374d2-0cdd-477f-97be-bad06a0d59bb.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_qualifier_videos\/f7a374d2-0cdd-477f-97be-bad06a0d59bb.jpg"
+        ],
+        "subcategory": {
+            "uuid": "35987d69-49a4-4823-a7f9-574ac1d873hd"
+        }
+    },
+    {
+        "uuid": "7b85bc26-7980-4ddb-8fc9-5a21ec694b89",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549638735\/top_cricket_videos\/0bc8cbdf-5b81-4f43-8ecc-07cfca16b529.mp4",
+        "remoteId": "top_cricket_videos\/0bc8cbdf-5b81-4f43-8ecc-07cfca16b529",
+        "createdAt": "2019-02-08T15:12:18+02:00",
+        "title": "Eng Sub: Reaction after West Indies take 2-0 lead over Pakistan in women's T20 series",
+        "description": "Eng Sub: Reaction after West Indies take 2-0 lead over Pakistan in women's T20 series",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_cricket_videos\/0bc8cbdf-5b81-4f43-8ecc-07cfca16b529.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_cricket_videos\/0bc8cbdf-5b81-4f43-8ecc-07cfca16b529.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_cricket_videos\/0bc8cbdf-5b81-4f43-8ecc-07cfca16b529.jpg"
+        ],
+        "subcategory": {
+            "uuid": "98721587-49a4-4823-a7f9-574ac1d7i32x"
+        }
+    },
+    {
+        "uuid": "887925cc-23cb-4e17-a3de-47afaeafe87e",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549642419\/top_golf_videos\/4ee925b3-7dd8-4874-b26c-6e40711d014c.mp4",
+        "remoteId": "top_golf_videos\/4ee925b3-7dd8-4874-b26c-6e40711d014c",
+        "createdAt": "2019-02-08T16:13:43+02:00",
+        "title": "Tiger Woods speaks after the final round of the Farmers Insurance Open",
+        "description": "Tiger Woods speaks after the final round of the Farmers Insurance Open",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_golf_videos\/4ee925b3-7dd8-4874-b26c-6e40711d014c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_golf_videos\/4ee925b3-7dd8-4874-b26c-6e40711d014c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_golf_videos\/4ee925b3-7dd8-4874-b26c-6e40711d014c.jpg"
+        ],
+        "subcategory": {
+            "uuid": "12f51f69-49a4-4823-a7f9-574ac1852fdq"
+        }
+    },
+    {
+        "uuid": "8ecebbc6-c970-4cb2-ae04-dc40c6a06c17",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549640991\/top_qualifier_videos\/474b99fe-f3a2-412a-ad07-ad5cd679ff4c.mp4",
+        "remoteId": "top_qualifier_videos\/474b99fe-f3a2-412a-ad07-ad5cd679ff4c",
+        "createdAt": "2019-02-08T15:49:56+02:00",
+        "title": "Bertens, Sabalenka and Pavlyuchenkova reach quarters in the St. Petersburg Trophy",
+        "description": "Bertens, Sabalenka and Pavlyuchenkova reach quarters in the St. Petersburg Trophy",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_qualifier_videos\/474b99fe-f3a2-412a-ad07-ad5cd679ff4c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_qualifier_videos\/474b99fe-f3a2-412a-ad07-ad5cd679ff4c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_qualifier_videos\/474b99fe-f3a2-412a-ad07-ad5cd679ff4c.jpg"
+        ],
+        "subcategory": {
+            "uuid": "35987d69-49a4-4823-a7f9-574ac1d873hd"
+        }
+    },
+    {
+        "uuid": "9b08aac2-1545-45dc-944a-d4b21ef25888",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549640266\/top_viral_videos\/3bba564b-6f47-4a95-a06f-e934fa05cd5b.mp4",
+        "remoteId": "top_viral_videos\/3bba564b-6f47-4a95-a06f-e934fa05cd5b",
+        "createdAt": "2019-02-08T15:37:53+02:00",
+        "title": "Coach saves life of ice hockey player after brutal hit",
+        "description": "Coach saves life of ice hockey player after brutal hit",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_viral_videos\/3bba564b-6f47-4a95-a06f-e934fa05cd5b.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_viral_videos\/3bba564b-6f47-4a95-a06f-e934fa05cd5b.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_viral_videos\/3bba564b-6f47-4a95-a06f-e934fa05cd5b.jpg"
+        ],
+        "subcategory": {
+            "uuid": "88450169-49a4-4823-a7f9-574ac1d7c89p"
+        }
+    },
+    {
+        "uuid": "a9c07646-2b88-46ac-952d-965bdc40909b",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549641443\/top_combat_videos\/04dfcefe-4822-4e84-bda9-6921a6e99d1c.mp4",
+        "remoteId": "top_combat_videos\/04dfcefe-4822-4e84-bda9-6921a6e99d1c",
+        "createdAt": "2019-02-08T15:57:26+02:00",
+        "title": "McGregor and Nurmagomedov receive bans after post-fight clash",
+        "description": "McGregor and Nurmagomedov receive bans after post-fight clash",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_combat_videos\/04dfcefe-4822-4e84-bda9-6921a6e99d1c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_combat_videos\/04dfcefe-4822-4e84-bda9-6921a6e99d1c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_combat_videos\/04dfcefe-4822-4e84-bda9-6921a6e99d1c.jpg"
+        ],
+        "subcategory": {
+            "uuid": "d4gd5869-49a4-4823-a7f9-574ac1dvn7pe"
+        }
+    },
+    {
+        "uuid": "b56dfd72-0b26-466f-8b4a-e580438c2f72",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549639099\/top_moto_sport_videos\/23eec668-08db-4f1e-931c-12200e8f6072.mp4",
+        "remoteId": "top_moto_sport_videos\/23eec668-08db-4f1e-931c-12200e8f6072",
+        "createdAt": "2019-02-08T15:18:23+02:00",
+        "title": "David Coulthard hopes to \"do great things\" helping at the first women's only racing series",
+        "description": "David Coulthard hopes to \"do great things\" helping at the first women's only racing series",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_moto_sport_videos\/23eec668-08db-4f1e-931c-12200e8f6072.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_moto_sport_videos\/23eec668-08db-4f1e-931c-12200e8f6072.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_moto_sport_videos\/23eec668-08db-4f1e-931c-12200e8f6072.jpg"
+        ],
+        "subcategory": {
+            "uuid": "fjh56169-49a4-4823-a7f9-574ac1kf54va"
+        }
+    },
+    {
+        "uuid": "bcfcab49-8695-4d15-9bce-bb77304d8261",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549641110\/top_qualifier_videos\/cfdcaaa7-db43-4352-b4de-f21f08974f56.mp4",
+        "remoteId": "top_qualifier_videos\/cfdcaaa7-db43-4352-b4de-f21f08974f56",
+        "createdAt": "2019-02-08T15:51:58+02:00",
+        "title": "Serbia take 2-0 lead over Uzbekistan in the 2019 Davis Cup qualifiers",
+        "description": "Serbia take 2-0 lead over Uzbekistan in the 2019 Davis Cup qualifiers",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_qualifier_videos\/cfdcaaa7-db43-4352-b4de-f21f08974f56.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_qualifier_videos\/cfdcaaa7-db43-4352-b4de-f21f08974f56.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_qualifier_videos\/cfdcaaa7-db43-4352-b4de-f21f08974f56.jpg"
+        ],
+        "subcategory": {
+            "uuid": "35987d69-49a4-4823-a7f9-574ac1d873hd"
+        }
+    },
+    {
+        "uuid": "be5d1b75-c301-4472-9847-3876108c7880",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549642968\/top_athletics_videos\/90dee0a6-a783-4975-b9eb-f0a2a12e18e1.mp4",
+        "remoteId": "top_athletics_videos\/90dee0a6-a783-4975-b9eb-f0a2a12e18e1",
+        "createdAt": "2019-02-08T16:22:51+02:00",
+        "title": "Epic marathon at the south pole",
+        "description": "Epic marathon at the south pole",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_athletics_videos\/90dee0a6-a783-4975-b9eb-f0a2a12e18e1.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_athletics_videos\/90dee0a6-a783-4975-b9eb-f0a2a12e18e1.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_athletics_videos\/90dee0a6-a783-4975-b9eb-f0a2a12e18e1.jpg"
+        ],
+        "subcategory": {
+            "uuid": "dfj45f69-49a4-4823-a7f9-574ac1ddcz56"
+        }
+    },
+    {
+        "uuid": "c8882470-308e-40e9-9ffe-c7816b430187",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549641415\/top_golf_videos\/1eee1197-1ef3-49b3-aefb-578b64a27f6a.mp4",
+        "remoteId": "top_golf_videos\/1eee1197-1ef3-49b3-aefb-578b64a27f6a",
+        "createdAt": "2019-02-08T15:56:59+02:00",
+        "title": "First round highlights from the LPGA-European Tour Vic Open",
+        "description": "First round highlights from the LPGA-European Tour Vic Open",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_golf_videos\/1eee1197-1ef3-49b3-aefb-578b64a27f6a.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_golf_videos\/1eee1197-1ef3-49b3-aefb-578b64a27f6a.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_golf_videos\/1eee1197-1ef3-49b3-aefb-578b64a27f6a.jpg"
+        ],
+        "subcategory": {
+            "uuid": "12f51f69-49a4-4823-a7f9-574ac1852fdq"
+        }
+    },
+    {
+        "uuid": "ca44528d-b3f3-407f-98e3-801d1a98ec4a",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549640962\/top_moto_sport_videos\/9a532bcd-bb13-4e3d-972f-6c20522a8c1c.mp4",
+        "remoteId": "top_moto_sport_videos\/9a532bcd-bb13-4e3d-972f-6c20522a8c1c",
+        "createdAt": "2019-02-08T15:49:27+02:00",
+        "title": "Fernando Alonso wins Rolex 24 at Daytona",
+        "description": "Fernando Alonso wins Rolex 24 at Daytona",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_moto_sport_videos\/9a532bcd-bb13-4e3d-972f-6c20522a8c1c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_moto_sport_videos\/9a532bcd-bb13-4e3d-972f-6c20522a8c1c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_moto_sport_videos\/9a532bcd-bb13-4e3d-972f-6c20522a8c1c.jpg"
+        ],
+        "subcategory": {
+            "uuid": "fjh56169-49a4-4823-a7f9-574ac1kf54va"
+        }
+    },
+    {
+        "uuid": "f74ce152-c694-4ebb-9674-e5eee870c34f",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549640013\/top_viral_videos\/b992c864-4665-459c-ac2c-5336603288e3.mp4",
+        "remoteId": "top_viral_videos\/b992c864-4665-459c-ac2c-5336603288e3",
+        "createdAt": "2019-02-08T15:33:36+02:00",
+        "title": "Hilarious own goal from outside the penalty box in Denmark",
+        "description": "Hilarious own goal from outside the penalty box in Denmark",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_viral_videos\/b992c864-4665-459c-ac2c-5336603288e3.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_viral_videos\/b992c864-4665-459c-ac2c-5336603288e3.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_viral_videos\/b992c864-4665-459c-ac2c-5336603288e3.jpg"
+        ],
+        "subcategory": {
+            "uuid": "88450169-49a4-4823-a7f9-574ac1d7c89p"
+        }
+    },
+    {
+        "uuid": "faccd470-8511-421f-a6dc-4f9b4de17a86",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549639883\/top_viral_videos\/4084e7c6-14d3-44d2-b4c7-1f7efeed77cd.mp4",
+        "remoteId": "top_viral_videos\/4084e7c6-14d3-44d2-b4c7-1f7efeed77cd",
+        "createdAt": "2019-02-08T15:31:26+02:00",
+        "title": "Neymar's birthday celebrations in Paris in pictures",
+        "description": "Neymar's birthday celebrations in Paris in pictures",
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_viral_videos\/4084e7c6-14d3-44d2-b4c7-1f7efeed77cd.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_viral_videos\/4084e7c6-14d3-44d2-b4c7-1f7efeed77cd.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_viral_videos\/4084e7c6-14d3-44d2-b4c7-1f7efeed77cd.jpg"
+        ],
+        "subcategory": {
+            "uuid": "88450169-49a4-4823-a7f9-574ac1d7c89p"
+        }
     }
 ]
