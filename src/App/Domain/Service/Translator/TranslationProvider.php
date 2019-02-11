@@ -2,6 +2,7 @@
 
 namespace App\Domain\Service\Translator;
 
+use App\Domain\Entity\Carrier;
 use App\Domain\Entity\Translation;
 use App\Domain\Repository\CarrierRepository;
 use App\Domain\Repository\LanguageRepository;
@@ -86,11 +87,13 @@ class TranslationProvider
      */
     private function receiveFromDb($translationKey, $carrierId, $languageCode): ?Translation
     {
+        /** @var Carrier $oCarrier */
+        $oCarrier = $this->carrierRepository->findOneBy(['billingCarrierId' => $carrierId]);
         $oLanguage = $this->languageRepository->findOneBy(['code' => $languageCode]);
         /** @var Translation $translation */
         $translation = $this->translationRepository->findOneBy([
             'language' => $oLanguage,
-            'carrier'  => $carrierId,
+            'carrier'  => $oCarrier,
             'key'      => $translationKey
         ]);
         return $translation;
