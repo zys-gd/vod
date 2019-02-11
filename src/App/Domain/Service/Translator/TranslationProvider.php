@@ -6,7 +6,6 @@ use App\Domain\Entity\Translation;
 use App\Domain\Repository\CarrierRepository;
 use App\Domain\Repository\LanguageRepository;
 use App\Domain\Repository\TranslationRepository;
-use App\Exception\WrongTranslationKey;
 use ExtrasBundle\Cache\ICacheService;
 
 class TranslationProvider
@@ -31,9 +30,9 @@ class TranslationProvider
     )
     {
         $this->translationRepository = $translationRepository;
-        $this->carrierRepository = $carrierRepository;
-        $this->cache = $cache;
-        $this->languageRepository = $languageRepository;
+        $this->carrierRepository     = $carrierRepository;
+        $this->cache                 = $cache;
+        $this->languageRepository    = $languageRepository;
     }
 
     /**
@@ -53,8 +52,7 @@ class TranslationProvider
                 $this->doTranslate($translationKey, $carrierId, $languageCode)
                     ->pushTexts2Cache($cacheKey);
             }
-        }
-        else {
+        } else {
             $this->initializeDefaultTexts()
                 ->doTranslate($translationKey, $carrierId, $languageCode)
                 ->pushTexts2Cache($cacheKey);
@@ -73,7 +71,7 @@ class TranslationProvider
     private function doTranslate(string $translationKey, $carrierId, string $languageCode)
     {
         $translation = $this->receiveFromDb($translationKey, $carrierId, $languageCode);
-        if(!is_null($translation)) {
+        if (!is_null($translation)) {
             $this->texts[$translationKey] = $translation->getTranslation();
         }
         return $this;
@@ -92,8 +90,8 @@ class TranslationProvider
         /** @var Translation $translation */
         $translation = $this->translationRepository->findOneBy([
             'language' => $oLanguage,
-            'carrier' => $carrierId,
-            'key' => $translationKey
+            'carrier'  => $carrierId,
+            'key'      => $translationKey
         ]);
         return $translation;
     }
@@ -103,14 +101,18 @@ class TranslationProvider
      */
     private function initializeDefaultTexts()
     {
-        $oLanguage   = $this->languageRepository->findOneBy(['code' => self::DEFAULT_LOCALE]);
+        $oLanguage = $this->languageRepository->findOneBy(['code' => self::DEFAULT_LOCALE]);
         /** @var Translation[] $translations */
         $translations = $this->translationRepository->findBy([
-            'language' => $oLanguage
+            'language' => $oLanguage,
+            'carrier'  => null
         ]);
         foreach ($translations ?? [] as $translation) {
             $this->texts[$translation->getKey()] = $translation->getTranslation();
         }
+
+
+
         return $this;
     }
 

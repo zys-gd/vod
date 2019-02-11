@@ -8,7 +8,7 @@ use App\Exception\WrongTranslationRecordType;
 class TranslationRepository extends \Doctrine\ORM\EntityRepository
 {
     const FAQ_QUESTIONS_KEY_PATTERN = 'faq.q%';
-    const FAQ_ANSWERS_KEY_PATTERN   = 'faq.a%';
+    const FAQ_ANSWERS_KEY_PATTERN = 'faq.a%';
 
     /**
      * @param string $type
@@ -31,6 +31,16 @@ class TranslationRepository extends \Doctrine\ORM\EntityRepository
             default:
                 throw new WrongTranslationRecordType();
         }
+
+        return $query->getQuery()->execute();
+    }
+
+    public function findTextsForCarriers(): array
+    {
+
+        $query = $this
+            ->createQueryBuilder('t')
+            ->where('t.carrier is not NULL');
 
         return $query->getQuery()->execute();
     }

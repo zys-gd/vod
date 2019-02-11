@@ -10,13 +10,10 @@ namespace DataFixtures;
 
 
 use App\Domain\Entity\Translation;
-use App\Utils\UuidGenerator;
-use DataFixtures\LoadLanguagesData;
-use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
-use Playwing\DiffToolBundle\Utils\FixtureDataLoader;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Playwing\DiffToolBundle\Utils\FixtureDataLoader;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
@@ -41,12 +38,14 @@ class LoadTranslationsData extends AbstractFixture implements ContainerAwareInte
             $translation = $row['translation'];
             $uuid        = $row['uuid'];
             $language    = $row['language']['uuid'];
+            $carrier     = $row['carrier']['uuid'] ?? null;
 
             FixtureDataLoader::insertRow([
                 '`key`'       => $key,
                 'translation' => $translation,
                 'uuid'        => $uuid,
-                'language_id' => $language
+                'language_id' => $language,
+                'carrier_id'  => $carrier
             ], Translation::class, $manager);
         }
     }
@@ -54,7 +53,7 @@ class LoadTranslationsData extends AbstractFixture implements ContainerAwareInte
 
     function getDependencies()
     {
-        return [LoadLanguagesData::class];
+        return [LoadLanguagesData::class, LoadCarriersData::class];
     }
 
 }
