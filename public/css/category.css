@@ -116,3 +116,18 @@
 .menu-block {
     padding: 3px;
 }
+
+.default-video-thumbnail-wrapper{
+    position: relative;
+}
+
+.default-video-play-icon{
+    position: absolute;
+    background-image: url(../img/play-icon-big.png);
+    height: 50px;
+    width: 50px;
+    bottom: 0;
+    right: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+}

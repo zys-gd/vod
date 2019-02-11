@@ -62,12 +62,14 @@
                     <div class="d-flex flex-column">
                         <div class="d-flex flex-column align-items-center justify-content-center">
                             {% for thumbnail in defaultVideo.thumbnails | slice(0,1) %}
-                                <div class="w-100">
+                                <div class="w-100 default-video-thumbnail-wrapper">
                                     <img src="{{ thumbnail }}"
                                          class="x-play-button w-100"
                                          data-uuid="{{ defaultVideo.uuid }}"
                                          data-category="{{ category.uuid }}"
                                     />
+                                    <div class="default-video-play-icon"></div>
+
                                 </div>
                             {% endfor %}
                             <div id="video-player-title" class="video-player-title">
