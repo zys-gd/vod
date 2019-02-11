@@ -808,5 +808,16 @@
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
+    },
+    {
+        "uuid": "079e0821-6c7e-4305-be24-70cd49158071",
+        "key": "offer.account",
+        "translation": "Watch unlimited sport videos for only 11.95 PKR per day",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": {
+            "uuid": "5142f9ec-ebd4-11e8-95c4-02bb250f0f22"
+        }
     }
 ]
