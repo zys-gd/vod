@@ -173,8 +173,8 @@ a button {
     color: #FFFFFF;
 }
 
-.categories-see-all-button {
-    float: right;
+.see-all-box:hover {
+    text-decoration: none;
 }
 
 .categories-see-all-icon {
@@ -195,7 +195,7 @@ a button {
 .categories-see-all-button,
 .slider-see-all-button {
     color: #d40407;
-    font-weight: 800;
+    font-weight: bold;
     font-size: 22px;
     line-height: 22px;
 }
