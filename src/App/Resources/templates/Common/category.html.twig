@@ -35,24 +35,22 @@
                                 {{ category.title }}
                             </a>
                         </div>
-                        <div class="category_header__arrow"></div>
+                        {#<div class="category_header__arrow"></div>#}
                     </div>
 
-                    <div class="category-content {% if not selectedSubcategory %}d-none{% endif %}" >
+                    {#<div class="category-content {% if not selectedSubcategory %}d-none{% endif %}">
                         {% for subcategory in subcategories %}
-                        <div class="subcategory">
-                            <div class="d-flex flex-row subcategory-content-open-link">
-                                <div class="subcategory-title {% if selectedSubcategory and selectedSubcategory.uuid == subcategory.uuid %}active{% endif %}">
-                                    <a href="{{ path('show_category',{'categoryUuid':category.uuid,'subcategoryUuid':subcategory.uuid}) }}">
-                                        {{ subcategory.title }}
-                                    </a>
+                            <div class="subcategory">
+                                <div class="d-flex flex-row subcategory-content-open-link">
+                                    <div class="subcategory-title {% if selectedSubcategory and selectedSubcategory.uuid == subcategory.uuid %}active{% endif %}">
+                                        <a href="{{ path('show_category',{'categoryUuid':category.uuid,'subcategoryUuid':subcategory.uuid}) }}">
+                                            {{ subcategory.title }}
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-
-                    {% endfor %}
+                        {% endfor %}
+                    </div>#}
                 </div>
             </div>
 
@@ -69,7 +67,7 @@
                                          class="x-play-button w-100"
                                          data-uuid="{{ defaultVideo.uuid }}"
                                          data-category="{{ category.uuid }}"
-                                         />
+                                    />
                                 </div>
                             {% endfor %}
                             <div id="video-player-title" class="video-player-title">
