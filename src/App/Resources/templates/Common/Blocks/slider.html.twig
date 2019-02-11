@@ -10,7 +10,7 @@
 
                 {{ see_all.render(category,  path('show_category',{'categoryUuid': categoryData.uuid})) }}
 
-                <div class="d-flex align-items-center justify-content-center slider slider-big">
+                <div class="d-flex slider slider-big">
                     {% for video in videos %}
                         {{ slider_element_video.render(video, category) }}
                     {% endfor %}
@@ -23,7 +23,8 @@
     <script>
         $(document).ready(function () {
             $('.slider').slick({
-                variableWidth: true
+                variableWidth: true,
+                rows: 0
             });
         });
     </script>
