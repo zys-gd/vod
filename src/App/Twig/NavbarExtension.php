@@ -44,6 +44,10 @@ class NavbarExtension extends \Twig_Extension
                 $categories = $this->mainCategoryRepository->findWithSubcategories();
 
 
+                usort($categories, function (MainCategory $a, MainCategory $b) {
+                    return $a->getMenuPriority() - $b->getMenuPriority();
+                });
+
                 $result = [];
                 foreach ($categories as $category) {
                     $subitems = [];
