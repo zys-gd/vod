@@ -219,7 +219,6 @@ a button {
 
 .video-element-title {
     padding: 8px;
-    text-transform: uppercase;
 }
 
 .video-element {
@@ -283,7 +282,6 @@ a button {
     cursor: pointer;
 }
 .listed-game-title{
-    text-transform: uppercase;
     font-weight: 500;
     color:#212529;
 }
