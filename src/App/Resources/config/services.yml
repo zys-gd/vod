@@ -89,6 +89,14 @@ services:
 
     App\Domain\Service\Games\GameSerializer: ~
 
+    App\Domain\Service\Games\ExcludedGamesProvider:
+        arguments:
+            - '@device_detection.service.device'
+
+    App\Domain\Service\Games\GameImagesSerializer:
+        arguments:
+            - '@App\Domain\Service\Games\ImagePathProvider'
+
     App\Domain\Service\Games\ImagePathProvider:
         arguments: ['%images_base_url%']
 

@@ -11,6 +11,7 @@
     "ext-json": "^1.6",
     "ext-redis": "*",
     "aws/aws-sdk-php": "^3.84",
+    "beberlei/DoctrineExtensions": "^1.2",
     "cloudinary/cloudinary_php": "1.13.0",
     "e-moe/guzzle6-bundle": "^1.2",
     "enqueue/enqueue-bundle": "0.9.3",

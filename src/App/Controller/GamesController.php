@@ -9,10 +9,14 @@
 namespace App\Controller;
 
 
+use App\Domain\Entity\Game;
 use App\Domain\Entity\GameBuild;
+use App\Domain\Entity\GameImage;
 use App\Domain\Repository\GameBuildRepository;
 use App\Domain\Repository\GameRepository;
 use App\Domain\Service\Games\DrmApkProvider;
+use App\Domain\Service\Games\ExcludedGamesProvider;
+use App\Domain\Service\Games\GameImagesSerializer;
 use App\Domain\Service\Games\GameSerializer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\Service\SubscriptionExtractor;
@@ -44,6 +48,14 @@ class GamesController extends AbstractController implements AppControllerInterfa
      * @var SubscriptionExtractor
      */
     private $extractor;
+    /**
+     * @var GameImagesSerializer
+     */
+    private $gameImagesSerializer;
+    /**
+     * @var ExcludedGamesProvider
+     */
+    private $excludedGamesProvider;
 
 
     /**
@@ -54,20 +66,26 @@ class GamesController extends AbstractController implements AppControllerInterfa
      * @param GameBuildRepository   $gameBuildRepository
      * @param DrmApkProvider        $drmApkProvider
      * @param SubscriptionExtractor $extractor
+     * @param GameImagesSerializer  $gameImagesSerializer
+     * @param ExcludedGamesProvider $excludedGamesProvider
      */
     public function __construct(
         GameRepository $gameRepository,
         GameSerializer $gameSerializer,
         GameBuildRepository $gameBuildRepository,
         DrmApkProvider $drmApkProvider,
-        SubscriptionExtractor $extractor
+        SubscriptionExtractor $extractor,
+        GameImagesSerializer $gameImagesSerializer,
+        ExcludedGamesProvider $excludedGamesProvider
     )
     {
-        $this->gameRepository      = $gameRepository;
-        $this->gameSerializer      = $gameSerializer;
+        $this->gameRepository = $gameRepository;
+        $this->gameSerializer = $gameSerializer;
         $this->gameBuildRepository = $gameBuildRepository;
-        $this->drmApkProvider      = $drmApkProvider;
-        $this->extractor           = $extractor;
+        $this->drmApkProvider = $drmApkProvider;
+        $this->extractor = $extractor;
+        $this->gameImagesSerializer = $gameImagesSerializer;
+        $this->excludedGamesProvider = $excludedGamesProvider;
     }
 
 
@@ -90,11 +108,30 @@ class GamesController extends AbstractController implements AppControllerInterfa
      * @Route("game/{gameUuid}", name="game_content")
      * @Method("GET")
      * @param string $gameUuid
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showGameContentAction(string $gameUuid='')
+    public function showGameContentAction(string $gameUuid = '')
     {
+        /** @var Game $game */
         $game = $this->gameRepository->find($gameUuid);
-        return $this->render('@App/Common/game.html.twig', ['game' => $game]);
+
+        /** @var GameImage[] $images */
+        $images = $this->gameImagesSerializer->serializeGameImages($game->getImages()->getValues());
+
+        $excluded = $this->excludedGamesProvider->get();
+        $similarGames = $this->gameRepository->getSimilarGames($game, $excluded);
+        $aSimilarGames = [];
+
+        foreach ($similarGames ?? [] as $similarGame) {
+            $aSimilarGames[] = $this->gameSerializer->serializeGame($similarGame);
+        }
+
+        return $this->render('@App/Common/game.html.twig', [
+            'game' => $this->gameSerializer->serializeGame($game),
+            'images' => $images,
+            'similarGames' => $aSimilarGames
+        ]);
     }
 
     /**
@@ -117,7 +154,7 @@ class GamesController extends AbstractController implements AppControllerInterfa
         }
 
         return new JsonResponse([
-            'games'  => $serializedData,
+            'games' => $serializedData,
             'isLast' => count($games) < 4
         ]);
     }
@@ -126,6 +163,7 @@ class GamesController extends AbstractController implements AppControllerInterfa
      * @Route("/games/download", name="download_game")
      * @Method("GET")
      * @param Request $request
+     *
      * @return JsonResponse
      * @throws \Doctrine\ORM\NonUniqueResultException
      */

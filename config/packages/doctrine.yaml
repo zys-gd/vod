@@ -31,3 +31,6 @@ doctrine:
                 dir: "%kernel.project_dir%/src/App/Resources/config/doctrine"
                 prefix: 'App\Domain\Entity'
                 alias: App
+        dql:
+            numeric_functions:
+                rand: DoctrineExtensions\Query\Mysql\Rand

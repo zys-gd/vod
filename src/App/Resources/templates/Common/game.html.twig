@@ -1,1 +1,59 @@
 {% extends '@App/base.html.twig' %}
+
+{% import "@App/Common/Blocks/header.html.twig" as  header %}
+{% import '@App/Components/Buttons/button.html.twig' as button %}
+
+{% block header_content %}
+    {{ header.render(game.title) }}
+{% endblock header_content %}
+
+{% block body %}
+    <div class="d-flex align-self-start justify-content-center flex-wrap flex-column w-100 my-2">
+        <img class="img-fluid" src="{{ game.iconPath }}" alt="{{ game.title }}"/>
+
+        <div class="d-flex justify-content-center my-4-5">
+            {{ button.render('Download', 'game-download-button x-game-download-button') }}
+        </div>
+
+        <div class="game-screenshots">
+            {% for gameScreenshot in images %}
+                <img src="{{ gameScreenshot.iconPath }}" alt="Screenshot">
+            {% endfor %}
+        </div>
+
+        <div class="d-flex m-2">
+            {{ game.description|raw }}
+        </div>
+
+        <div class="d-flex justify-content-center my-4-5">
+            {{ button.render('Download', 'game-download-button x-game-download-button') }}
+        </div>
+
+        <div class="game-similars">
+            {% for similarGame in similarGames %}
+                <a href="">
+                    <img src="{{ similarGame.iconPath }}"/>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock body %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css"/>
+{% endblock stylesheets %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.game-screenshots').slick();
+            $('.game-similars').slick({
+                variableWidth: true,
+            });
+        });
+    </script>
+{% endblock  javascripts %}

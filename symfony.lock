@@ -2,6 +2,9 @@
     "aws/aws-sdk-php": {
         "version": "3.84.0"
     },
+    "beberlei/doctrineextensions": {
+        "version": "v1.2.0"
+    },
     "cloudinary/cloudinary_php": {
         "version": "1.13.0"
     },

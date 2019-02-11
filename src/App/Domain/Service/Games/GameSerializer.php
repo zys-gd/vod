@@ -18,9 +18,9 @@ class GameSerializer
      */
     private $provider;
 
-
     /**
      * GameSerializer constructor.
+     *
      * @param ImagePathProvider $provider
      */
     public function __construct(ImagePathProvider $provider)
@@ -31,8 +31,9 @@ class GameSerializer
     public function serializeGame(Game $game): array
     {
         return [
-            'uuid'     => $game->getUuid(),
-            'title'    => $game->getTitle(),
+            'uuid' => $game->getUuid(),
+            'title' => $game->getTitle(),
+            'description' => $game->getDescription(),
             'iconPath' => $this->provider->getGamePosterPath($game->getIcon())
         ];
     }
