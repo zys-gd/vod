@@ -294,3 +294,6 @@ a button {
 .listed-game-image img{
     width: 100%;
 }
+body{
+    overflow-x: hidden;
+}
