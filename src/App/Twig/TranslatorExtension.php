@@ -82,7 +82,7 @@ class TranslatorExtension extends \Twig_Extension
 
 
         if (is_null($translation) && $this->kernel->isDebug()) {
-            throw new WrongTranslationKey("Translation key doesn't exist");
+            throw new WrongTranslationKey("Translation key doesn't exist: \"{$translationKey}\"");
         }
 
         return $translation;
