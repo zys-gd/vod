@@ -5,7 +5,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/player.css') }}">
 
-    <div id="player-modal" class="justify-content-center player-modal-wrapper" style="display: none" tabindex="-1">
+    <div id="player-modal" class="justify-content-center player-modal-wrapper d-none" tabindex="-1">
         <div class="player-modal">
 
 
@@ -18,7 +18,7 @@
                         <div class="close-modal-button-text">Close</div>
                     </div>
 
-                    <div style="">
+                    <div>
                         <video id="video-player-frame" controls class="cld-video-player cld-fluid"></video>
                     </div>
 
@@ -86,8 +86,7 @@
                             <div class="modal-related-video-thumbnail-wrapper">
                                 {{#if @first}}
                                     <img src="{{ this }}"
-                                        class="x-modal-play-button"
-                                        style="width: 175px"
+                                        class="x-modal-play-button w-175px"
                                         data-uuid="{{ ../uuid }}"
                                         data-category="{{ ../../category }}"
                                     />
@@ -127,12 +126,12 @@
                 }
 
                 function openModal() {
-                    $('#player-modal').show();
+                    $('#player-modal').removeClass('d-none');
                     $('html').css({'overflow-y':'hidden'});
                 }
 
                 function closeModal() {
-                    $('#player-modal').hide();
+                    $('#player-modal').addClass('d-none');
                     $('html').css({'overflow-y':'auto'});
                     demoplayer.stop();
                 }
