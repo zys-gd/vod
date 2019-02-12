@@ -314,8 +314,8 @@ body{
         max-width: 25%;
     }
     .separator-title .after {
-        content:  url("/img/separator.png");
-        transform: rotate(180deg);
+        content:  url("/img/separator-rotate.png");
+        /*transform: rotate(180deg);*/
         max-width: 25%;
     }
 
