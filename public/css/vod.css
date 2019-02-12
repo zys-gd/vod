@@ -301,3 +301,11 @@ a button {
 body{
     overflow-x: hidden;
 }
+
+.after-games-separator {
+    background: url(../img/home/separator-left.png) left center no-repeat;
+    height: 8px;
+    width: 50%;
+    background-size: contain;
+    margin-bottom: 15px;
+}
