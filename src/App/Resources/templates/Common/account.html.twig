@@ -5,6 +5,7 @@
 {% import "@App/Components/subscribe_buttons.html.twig" as subscribe_buttons %}
 {% import "@App/Components/Blocks/Footer/annotation.html.twig" as  annotation %}
 {% import "@App/Components/Buttons/button.html.twig" as  button %}
+{% import "@App/Components/Buttons/link.html.twig" as  link %}
 {% import "@App/Components/Blocks/Footer/menu.html.twig" as  footer_menu %}
 
 {% block stylesheets %}
@@ -17,7 +18,8 @@
 {% endblock header_content %}
 
 {% block body %}
-    <div class="d-flex flex-column align-items-center justify-content-center w-100 account-page-container">
+    <div class="d-flex flex-column align-items-center justify-content-center w-100 account-page-container"
+         style="text-align: center">
 
         {% if hasActiveSubscription() %}
             <div class="d-flex align-items-center justify-content-center">
@@ -30,9 +32,10 @@
             </div>
 
             <div class="d-flex align-items-center justify-content-center">
-                <a href="{{ path('subscription.unsubscribe') }}">
+                <a href="#" class="x-unsubscribe-button">
                     Unsubscribe
                 </a>
+
             </div>
 
 
@@ -42,6 +45,8 @@
             <div class="d-flex align-items-center justify-content-center">
                 {{ translate('subscription.status.unsubscribed')|raw }}
             </div>
+            {{ link.render(url('subscription.subscribe'),translate('buttons.join.now')) }}
+
         {% elseif hasInActiveSubscription() %}
 
 
@@ -57,6 +62,21 @@
             </div>
         {% endif %}
     </div>
+
+    <script>
+        $(document).on('click', '.x-unsubscribe-button', function (event) {
+            showConfirmPopup('Do u want to unsubscribe').then(
+                function () {
+                    window.location = "{{ path('subscription.unsubscribe') }}";
+                },
+                function () {
+                    console.debug('Do not want.')
+                }
+            );
+            event.preventDefault();
+        })
+    </script>
+
 {% endblock body %}
 
 {% block footer_content %}

@@ -318,25 +318,11 @@ body{
         transform: rotate(180deg);
         max-width: 25%;
     }
-    .separator-title .title {
-        /*white-space: nowrap;*/
-    }
-    /*.separator-title:before {*/
-        /*content: "";*/
-        /*background: url("/img/separator.png") no-repeat 0 center;*/
-        /*left: 0;*/
-        /*position: absolute;*/
-        /*width: 100%;*/
-        /*display: block;*/
-        /*height: 100%;*/
-    /*}*/
-    /*.separator-title:after {*/
-        /*content: "";*/
-        /*background: url("/img/separator.png") no-repeat left center;*/
-        /*right: 0;*/
-        /*position: absolute;*/
-        /*width: 100%;*/
-        /*display: block;*/
-        /*height: 100%;*/
-        /*transform: rotate(180deg);*/
-    /*}*/
+
+.after-games-separator {
+    background: url(../img/home/separator-left.png) left center no-repeat;
+    height: 8px;
+    width: 50%;
+    background-size: contain;
+    margin-bottom: 15px;
+}
