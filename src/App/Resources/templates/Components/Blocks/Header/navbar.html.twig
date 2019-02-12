@@ -91,6 +91,7 @@
             $('html, body').css({
                 overflow: 'hidden',
             });
+            $('body').append('<div class="clickOff" onclick="closeSidebarMenu()"></div>');
         }
 
         function closeSidebarMenu() {
@@ -98,6 +99,7 @@
             $('html, body').css({
                 overflow: 'auto',
             });
+            $('.clickOff').remove();
         }
     </script>
 
