@@ -2,6 +2,7 @@
 
 {% import "@App/Common/Blocks/header.html.twig" as  header %}
 {% import '@App/Components/Buttons/button.html.twig' as button %}
+{% import '@App/Components/Buttons/small_button.html.twig' as button_small %}
 
 {% block header_content %}
     {{ header.render(game.title) }}
@@ -11,11 +12,11 @@
     <div class="d-flex align-self-start justify-content-center flex-wrap flex-column w-100 my-2">
         <img class="img-fluid" src="{{ game.iconPath }}" alt="{{ game.title }}"/>
 
-        <div class="d-flex justify-content-center my-4-5">
+        <div class="d-flex justify-content-center my-4-5 w-100 x-game-element" data-uuid="{{ game.uuid }}">
             {{ button.render('Download', 'game-download-button x-game-download-button') }}
         </div>
 
-        <div class="game-screenshots">
+        <div class="game-screenshots w-100">
             {% for gameScreenshot in images %}
                 <img src="{{ gameScreenshot.iconPath }}" alt="Screenshot">
             {% endfor %}
@@ -25,15 +26,36 @@
             {{ game.description|raw }}
         </div>
 
-        <div class="d-flex justify-content-center my-4-5">
+        <div class="d-flex justify-content-center my-4-5 x-game-element" data-uuid="{{ game.uuid }}">
             {{ button.render('Download', 'game-download-button x-game-download-button') }}
         </div>
 
-        <div class="game-similars">
+        <div class="d-flex align-items-center justify-content-between separator-title my-4">
+            <span class=" before"></span>
+            <span class="title">Other games</span>
+            <span class=" after"></span>
+        </div>
+        <div class="game-similars w-100">
             {% for similarGame in similarGames %}
-                <a href="">
-                    <img src="{{ similarGame.iconPath }}"/>
-                </a>
+                <div class="d-flex flex-column  x-game-element game-wrapper" data-uuid="{{similarGame.uuid}}">
+                    <div class="game">
+                        <div class="game-image-block">
+                            <a class="" href="{{ path('game_content',{'gameUuid': similarGame.uuid}) }}">
+                                <img class="img-fluid" src="{{ similarGame.iconPath }}" alt="{{ similarGame.uuid }}"/>
+                            </a>
+                        </div>
+                        <div class="game-info-block">
+                            <div class="game-title-block">
+                                {{ similarGame.title }}
+                            </div>
+                            <div class="game-download-button-block">
+                                {% if hasActiveSubscription() %}
+                                    {{ button_small.render('Download', 'game-download-button x-game-download-button') }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
         </div>
     </div>
@@ -43,6 +65,7 @@
     {{ parent() }}
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/games.css') }}"/>
 {% endblock stylesheets %}
 
 {% block javascripts %}
@@ -50,9 +73,36 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-            $('.game-screenshots').slick();
+            $('.game-screenshots').slick({
+                variableWidth: true,
+            });
             $('.game-similars').slick({
                 variableWidth: true,
+            });
+
+            $(document).on('click', '.x-game-download-button', function () {
+                var button = $(this);
+                var parent = button.parents('.x-game-element');
+                var uuid   = parent.attr('data-uuid');
+                var link   = "{{ path('download_game') }}" + '?id=' + uuid;
+
+                $.ajax({
+                    url       : link,
+                    method    : 'GET',
+                    beforeSend: function () {
+                        button.attr('disabled', 1)
+                    },
+                    complete  : function () {
+                        button.attr('disabled', null)
+                    },
+                    success   : function (data) {
+                        if (data.url) {
+                            window.location = data.url;
+                        }else{
+                            alert('Internal error. Please try again later')
+                        }
+                    }
+                })
             });
         });
     </script>

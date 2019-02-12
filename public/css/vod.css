@@ -301,3 +301,42 @@ a button {
 body{
     overflow-x: hidden;
 }
+
+.separator-title {
+    text-transform: uppercase;
+    font-weight: 800;
+    font-size: 26px;
+    font-style: italic;
+    position: relative;
+}
+    .separator-title .before {
+        content:  url("/img/separator.png");
+        max-width: 25%;
+    }
+    .separator-title .after {
+        content:  url("/img/separator.png");
+        transform: rotate(180deg);
+        max-width: 25%;
+    }
+    .separator-title .title {
+        /*white-space: nowrap;*/
+    }
+    /*.separator-title:before {*/
+        /*content: "";*/
+        /*background: url("/img/separator.png") no-repeat 0 center;*/
+        /*left: 0;*/
+        /*position: absolute;*/
+        /*width: 100%;*/
+        /*display: block;*/
+        /*height: 100%;*/
+    /*}*/
+    /*.separator-title:after {*/
+        /*content: "";*/
+        /*background: url("/img/separator.png") no-repeat left center;*/
+        /*right: 0;*/
+        /*position: absolute;*/
+        /*width: 100%;*/
+        /*display: block;*/
+        /*height: 100%;*/
+        /*transform: rotate(180deg);*/
+    /*}*/
