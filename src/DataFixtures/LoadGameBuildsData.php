@@ -36,6 +36,7 @@ class LoadGameBuildsData extends AbstractFixture implements ContainerAwareInterf
             $game_apk       = $row['game_apk'];
             $apk_size       = $row['apk_size'];
             $version        = $row['version'];
+            $apkVersion     = $row['apk_version'] . '';
 
             $build = new GameBuild($uuid);
 
@@ -45,7 +46,7 @@ class LoadGameBuildsData extends AbstractFixture implements ContainerAwareInterf
             $build->setGameApk($game_apk);
             $build->setApkSize($apk_size);
             $build->setUuid($uuid);
-            $build->setApkVersion($key);
+            $build->setApkVersion($apkVersion);
             $build->setVersion($version);
 
             foreach ($row['device_displays'] as $display) {

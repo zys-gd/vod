@@ -6,6 +6,7 @@ use App\Domain\Entity\GameImage;
 use App\Domain\Service\Games\ImagePathProvider;
 use App\Utils\UuidGenerator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
@@ -56,6 +57,18 @@ class GameImageAdmin extends AbstractAdmin
     public function getNewInstance(): GameImage
     {
         return new GameImage(UuidGenerator::generate());
+    }
+
+    /**
+     * @param DatagridMapper $datagridMapper
+     */
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        $datagridMapper
+            ->add('uuid')
+            ->add('name', null, [
+                'label' => static::NAME_FIELD_LABEL
+            ]);
     }
 
     /**

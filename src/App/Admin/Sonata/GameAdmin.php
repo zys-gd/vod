@@ -5,15 +5,16 @@ namespace App\Admin\Sonata;
 use App\Admin\Sonata\Traits\InitDoctrine;
 use App\Domain\Entity\Developer;
 use App\Domain\Entity\Game;
-use App\Domain\Entity\GameBuild;
 use App\Domain\Service\AWSS3\S3Client;
 use App\Domain\Service\Games\ImagePathProvider;
 use App\Domain\Service\SimpleImageService;
 use App\Utils\UuidGenerator;
+use Knp\Menu\ItemInterface as MenuItemInterface;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use League\Flysystem\Filesystem;
 use PriceBundle\Entity\Tier;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -160,16 +161,8 @@ class GameAdmin extends AbstractAdmin
      */
     protected function prepareGame(Game $game)
     {
-        // prepare the screenshots for upload or persist
         $this->prepareScreenshots($game);
-
-        //prepare the game builds for upload or persist
-        $this->prepareGameBuilds($game);
-
-        // prepare the poster for upload, or persist the old one (if available)
         $this->preparePoster($game);
-
-        // prepare the thumbnail for upload, or persist the old one (if available)
         $this->prepareThumbnail($game);
     }
 
@@ -282,6 +275,27 @@ class GameAdmin extends AbstractAdmin
             ->add('updated', null, [
                 'label' => static::UPDATED_FIELD_LABEL
             ]);
+    }
+
+    /**
+     * @param MenuItemInterface $menu
+     * @param string $action
+     * @param AdminInterface|null $childAdmin
+     */
+    protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    {
+        $childAdmins = $this->getChildren();
+
+        if ($action === 'edit' && !empty($childAdmins)) {
+            foreach ($childAdmins as $admin) {
+
+                /** @var AdminInterface $admin */
+                $menu->addChild($admin->getLabel(), [
+                    'label' => static::BUILDS_FIELD_LABEL,
+                    'uri' => $admin->generateUrl('list')
+                ]);
+            }
+        }
     }
 
     /**
@@ -520,39 +534,6 @@ class GameAdmin extends AbstractAdmin
                 $filesystem->putStream($this->imagePathProvider->getGameScreenshotPath($name, true), $handle, [
                     'mimetype' => $mimeType,
                 ]);
-            }
-        }
-    }
-
-    /**
-     * @param Game $game
-     */
-    private function prepareGameBuilds (Game $game): void
-    {
-        $builds = $game->getBuilds();
-
-        foreach ($builds as $build) {
-            if (!!$build->getId()) {
-                continue;
-            };
-
-            /** @var GameBuild $build */
-            $gameApk = $build->getGameApk();
-
-            if (!empty($gameApk)) {
-                $fileName = md5(uniqid()) . '.' . $gameApk->guessExtension();
-                $filesystem = $this->container->get('oneup_flysystem.s3_filesystem');
-                $filesystem->put(
-                    sprintf("%s/%s/%s", self::UPLOAD_PATH, self::GAME_BUILD_PATH, $fileName),
-                    file_get_contents($gameApk->getPathname())
-                );
-
-                // change the gameApk to string to persist the apk name
-                $build->setGameApk($fileName);
-            } else {
-                // if not, use the old value, meaning that the file field was left empty
-                $originalApk = $this->em->getUnitOfWork()->getOriginalEntityData($build);
-                $build->setGameApk($originalApk['game_apk']);
             }
         }
     }

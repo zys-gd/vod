@@ -10,11 +10,9 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Class GameBuild
- * @package App\Domain\Entity
  */
 class GameBuild implements HasUuid
 {
-
     /**
      * @var string
      */
@@ -23,12 +21,12 @@ class GameBuild implements HasUuid
     /**
      * @var integer
      */
-    private $os_type;
+    private $osType;
 
     /**
      * @var string
      */
-    private $min_os_version;
+    private $minOsVersion;
 
     /**
      * @var Game
@@ -38,19 +36,22 @@ class GameBuild implements HasUuid
     /**
      * @var Collection
      */
-    private $device_displays;
+    private $deviceDisplays;
 
     /**
      * @var mixed|UploadedFile
      */
-    private $game_apk;
+    private $gameApk;
 
     /**
      * @var integer
      */
-    private $apk_size;
+    private $apkSize;
 
-    private $apk_version;
+    /**
+     * @var string
+     */
+    private $apkVersion;
 
     /**
      * apk version for drm server
@@ -59,24 +60,38 @@ class GameBuild implements HasUuid
     private $version;
 
     /**
+     * GameBuild constructor
+     *
+     * @param string $uuid
+     */
+    public function __construct(string $uuid)
+    {
+        $this->uuid = $uuid;
+        $this->deviceDisplays = new ArrayCollection();
+    }
+
+    /**
+     * Generate title for entity.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        $osTypes = Device::getAvailableOsTypes();
+
+        return !empty($this->getOsType()) ? $osTypes[$this->getOsType()] . ' ' . $this->getMinOsVersion() : '';
+    }
+
+    /**
      * Returns a list with all available tags
      *
      * @param bool $flip
+     *
      * @return array
      */
     public static function getAvailableOsTypes($flip = false)
     {
         return Device::getAvailableOsTypes($flip);
-    }
-
-    /**
-     * GameBuild constructor.
-     * @throws \Exception
-     */
-    public function __construct(string $uuid)
-    {
-        $this->uuid = $uuid;
-        $this->device_displays = new ArrayCollection();
     }
 
     /**
@@ -96,18 +111,6 @@ class GameBuild implements HasUuid
     }
 
     /**
-     * Generate title for entity.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        $osTypes = Device::getAvailableOsTypes();
-
-        return $osTypes[$this->getOsType()] . ' ' . $this->getMinOsVersion();
-    }
-
-    /**
      * Set osType
      *
      * @param integer $osType
@@ -116,7 +119,7 @@ class GameBuild implements HasUuid
      */
     public function setOsType($osType)
     {
-        $this->os_type = $osType;
+        $this->osType = $osType;
 
         return $this;
     }
@@ -128,7 +131,7 @@ class GameBuild implements HasUuid
      */
     public function getOsType()
     {
-        return $this->os_type;
+        return $this->osType;
     }
 
     /**
@@ -140,7 +143,7 @@ class GameBuild implements HasUuid
      */
     public function setMinOsVersion($minOsVersion)
     {
-        $this->min_os_version = $minOsVersion;
+        $this->minOsVersion = $minOsVersion;
 
         return $this;
     }
@@ -152,7 +155,7 @@ class GameBuild implements HasUuid
      */
     public function getMinOsVersion()
     {
-        return $this->min_os_version;
+        return $this->minOsVersion;
     }
 
     /**
@@ -188,7 +191,7 @@ class GameBuild implements HasUuid
      */
     public function addDeviceDisplay(DeviceDisplay $deviceDisplay)
     {
-        $this->device_displays[] = $deviceDisplay;
+        $this->deviceDisplays[] = $deviceDisplay;
 
         return $this;
     }
@@ -200,7 +203,7 @@ class GameBuild implements HasUuid
      */
     public function removeDeviceDisplay(DeviceDisplay $deviceDisplay)
     {
-        $this->device_displays->removeElement($deviceDisplay);
+        $this->deviceDisplays->removeElement($deviceDisplay);
     }
 
     /**
@@ -210,7 +213,7 @@ class GameBuild implements HasUuid
      */
     public function getDeviceDisplays()
     {
-        return $this->device_displays;
+        return $this->deviceDisplays;
     }
 
     /**
@@ -218,7 +221,7 @@ class GameBuild implements HasUuid
      */
     public function getGameApk()
     {
-        return $this->game_apk;
+        return $this->gameApk;
     }
 
     /**
@@ -226,7 +229,7 @@ class GameBuild implements HasUuid
      */
     public function setGameApk($gameApk)
     {
-        $this->game_apk = $gameApk;
+        $this->gameApk = $gameApk;
     }
 
     /**
@@ -234,15 +237,15 @@ class GameBuild implements HasUuid
      */
     public function getApkSize()
     {
-        return $this->apk_size;
+        return $this->apkSize;
     }
 
     /**
      * @param int
      */
-    public function setApkSize($apk_size)
+    public function setApkSize($apkSize)
     {
-        $this->apk_size = $apk_size;
+        $this->apkSize = $apkSize;
     }
 
     /**
@@ -263,36 +266,37 @@ class GameBuild implements HasUuid
 
     /**
      * Update apk DRM version
+     *
      * @return int
      */
     public function updateVersion()
     {
-        if (!$this->version){
+        if (!$this->version) {
             $this->version = 1;
-        }
-        else{
+        } else {
             $this->version += 1;
         };
+
         return $this->version;
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getApkVersion()
+    public function getApkVersion(): ?string
     {
-        return $this->apk_version;
+        return $this->apkVersion;
     }
 
     /**
-     * @param mixed $apk_version
+     * @param string $apkVersion
+     *
      * @return GameBuild
      */
-    public function setApkVersion($apk_version)
+    public function setApkVersion(string $apkVersion): self
     {
-        $this->apk_version = $apk_version;
+        $this->apkVersion = $apkVersion;
+
         return $this;
     }
-
-
 }

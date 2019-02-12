@@ -1,21 +1,19 @@
 App\Domain\Entity\GameBuild:
     type: entity
     table: game_builds
-
     repositoryClass: App\Domain\Repository\GameBuildRepository
-
     id:
         uuid:
             type: guid
     fields:
-        os_type:
+        osType:
             type: integer
-        min_os_version:
+        minOsVersion:
             type: string
-        game_apk:
+        gameApk:
             type: string
             nullable: true
-        apk_size:
+        apkSize:
             type: integer
             nullable: true
             default: "0"
@@ -23,15 +21,15 @@ App\Domain\Entity\GameBuild:
             type: integer
             nullable: true
             default: "0"
-        apk_version:
-            type: integer
+        apkVersion:
+            type: string
             nullable: true
             default: "0"
 
     lifecycleCallbacks: {  }
 
     manyToMany:
-        device_displays:
+        deviceDisplays:
             targetEntity: App\Domain\Entity\DeviceDisplay
             inversedBy: game_builds
             joinTable:

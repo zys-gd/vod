@@ -109,6 +109,7 @@ services:
             - '%drm_api_url%'
             - '%drm_authorize_key%'
             - '%s3_root_url%'
+        public: true
 
     App\Domain\Service\SimpleImageService:
         public: true

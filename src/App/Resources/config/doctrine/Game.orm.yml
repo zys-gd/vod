@@ -76,8 +76,6 @@ App\Domain\Entity\Game:
 #            cascade: ["persist", "remove"]
         builds:
             targetEntity: App\Domain\Entity\GameBuild
-            joinColumn:
-                referencedColumnName: uuid
             mappedBy: game
             cascade: ["persist", "remove"]
             orphanRemoval: true
