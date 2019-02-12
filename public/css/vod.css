@@ -301,3 +301,28 @@ a button {
 body{
     overflow-x: hidden;
 }
+
+.separator-title {
+    text-transform: uppercase;
+    font-weight: 800;
+    font-size: 26px;
+    font-style: italic;
+    position: relative;
+}
+    .separator-title .before {
+        content:  url("/img/separator.png");
+        max-width: 25%;
+    }
+    .separator-title .after {
+        content:  url("/img/separator-rotate.png");
+        /*transform: rotate(180deg);*/
+        max-width: 25%;
+    }
+
+.after-games-separator {
+    background: url(../img/home/separator-left.png) left center no-repeat;
+    height: 8px;
+    width: 50%;
+    background-size: contain;
+    margin-bottom: 15px;
+}

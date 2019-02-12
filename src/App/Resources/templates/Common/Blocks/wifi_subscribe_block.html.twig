@@ -76,7 +76,7 @@
                         if (result.data.success) {
                             moveToStepTwo();
                         } else {
-                            alert(result.data.message);
+                            showPopup(result.data.message);
                         }
                     }
                 });
@@ -95,7 +95,7 @@
                         if (result.data.success) {
                             moveToStepThree()
                         } else {
-                            alert(result.data.message);
+                            showPopup(result.data.message);
                         }
                     }
                 });
@@ -115,7 +115,7 @@
                         if (result.data.success) {
                             window.location = result.data.redirectUrl;
                         } else {
-                            alert(result.data.message);
+                            showPopup(result.data.message);
                         }
                     }
                 });

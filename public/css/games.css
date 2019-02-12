@@ -62,3 +62,11 @@
 .x-load-more-button:disabled {
     cursor: not-allowed;
 }
+
+.game-similars .game {
+    background: none;
+    border: none;
+}
+.game-similars .game-wrapper {
+    margin-right: 10px;
+}
