@@ -55,7 +55,7 @@ class TranslationProvider
             }
         } else {
             $this->initializeDefaultTexts()
-                ->doTranslate($translationKey, $carrierId, $languageCode)
+                ->initializeCarrierTexts($carrierId, $languageCode)
                 ->pushTexts2Cache($cacheKey);
         }
 
@@ -114,8 +114,27 @@ class TranslationProvider
             $this->texts[$translation->getKey()] = $translation->getTranslation();
         }
 
+        return $this;
+    }
 
-
+    /**
+     * @param        $carrierId
+     * @param string $languageCode
+     *
+     * @return $this
+     */
+    private function initializeCarrierTexts($carrierId, string $languageCode)
+    {
+        $oCarrier = $this->carrierRepository->findOneBy(['billingCarrierId' => $carrierId]);
+        $oLanguage = $this->languageRepository->findOneBy(['code' => $languageCode]);
+        /** @var Translation[] $translations */
+        $translations = $this->translationRepository->findBy([
+            'language' => $oLanguage,
+            'carrier'  => $oCarrier
+        ]);
+        foreach ($translations ?? [] as $translation) {
+            $this->texts[$translation->getKey()] = $translation->getTranslation();
+        }
         return $this;
     }
 
