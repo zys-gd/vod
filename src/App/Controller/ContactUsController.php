@@ -11,6 +11,8 @@ namespace App\Controller;
 
 use App\Domain\Service\ContactUsMessageSender;
 use App\Form\ContactUsType;
+use IdentificationBundle\Repository\UserRepository;
+use SubscriptionBundle\Service\UserExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,16 +28,25 @@ class ContactUsController extends AbstractController implements AppControllerInt
      * @var ContactUsMessageSender
      */
     private $contactUsMessageSender;
+    /**
+     * @var UserExtractor
+     */
+    private $userExtractor;
 
     /**
      * ContactUsController constructor.
-     * @param FormFactoryInterface   $formFactory
+     *
+     * @param FormFactoryInterface $formFactory
      * @param ContactUsMessageSender $contactUsMessageSender
+     * @param UserExtractor $userExtractor
      */
-    public function __construct(FormFactoryInterface $formFactory, ContactUsMessageSender $contactUsMessageSender)
+    public function __construct(FormFactoryInterface $formFactory,
+        ContactUsMessageSender $contactUsMessageSender,
+        UserExtractor $userExtractor)
     {
-        $this->formFactory            = $formFactory;
+        $this->formFactory = $formFactory;
         $this->contactUsMessageSender = $contactUsMessageSender;
+        $this->userExtractor = $userExtractor;
     }
 
 
@@ -54,9 +65,14 @@ class ContactUsController extends AbstractController implements AppControllerInt
             $this->contactUsMessageSender->sendMessage($data['email'], $data['comment']);
         }
 
+        $user = $this->userExtractor->getUserFromRequest($request);
+        $userIdentifier = is_null($user)
+            ? null
+            : $user->getIdentifier();
         return $this->render(
             '@App/Content/contact_us.html.twig', [
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'userIdentifier' => $userIdentifier
             ]
         );
     }

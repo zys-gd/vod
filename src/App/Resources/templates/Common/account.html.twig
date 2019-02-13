@@ -22,8 +22,15 @@
 
         {% if hasActiveSubscription() %}
             <div class="d-flex align-items-center justify-content-center">
-                {{ translate('subscription.status.subscribed')|raw }}
+                <p class="red"> {{ translate('subscription.status.subscribed')|raw }}</p>
             </div>
+
+            <div class="d-flex align-items-center justify-content-between w-100 separator-title my-4">
+                <span class=" before"></span>
+                <span class="title"> </span>
+                <span class=" after"></span>
+            </div>
+
             <div class="d-flex align-items-center justify-content-center">
                 {{ translate('account.text.subscribed')|raw }}
                 {{ subscriptionCreatedDate.format('d.m.Y') }}.

@@ -9,6 +9,7 @@
 
 .terms_and_conditions_container h1 {
     padding-top: 18px;
+    font-weight: bold;
 }
 
 .terms_and_conditions_container h1 + p, .terms_and_conditions_container h2 + p {
