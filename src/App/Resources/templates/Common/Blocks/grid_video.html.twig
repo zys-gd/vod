@@ -8,8 +8,7 @@
         <div class="categories-block d-flex flex-column">
             {{ see_all.render(category,  path('show_category',{'categoryUuid': categoryData.uuid})) }}
 
-            <div class="categories-content d-flex flex-row"
-                 style="flex-wrap: wrap;justify-content: space-between;">
+            <div class="categories-content d-flex flex-row felx-wrap justify-content-between">
                 {% for video in videos | slice(0, 2) %}
                     {{ grid_element_video.render(video, category) }}
                 {% endfor %}

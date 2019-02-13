@@ -31,6 +31,9 @@ a button {
     min-width: 0;
 }
 
+.w-175px {
+    width: 175px;
+}
 .m-55 {
     margin: 0 55px;
 }
