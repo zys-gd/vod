@@ -197,7 +197,6 @@ class GameBuildAdmin extends AbstractAdmin
             ->add('gameApk', FileType::class, [
                 'label' => static::GAME_APK_FIELD_LABEL,
                 'required' => $requiredApk,
-                'disabled' => !$requiredApk,
                 'data_class' => null,
                 'help' => $gameApkHelpText
             ]);
@@ -259,7 +258,7 @@ class GameBuildAdmin extends AbstractAdmin
             'X-AUTHORIZE-KEY: ' . $container->getParameter('drm_authorize_key')
         ));
 
-        $response = curl_exec ($curl);
-        $test = $response;
+        curl_exec($curl);
+        curl_close($curl);
     }
 }
