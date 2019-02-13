@@ -1,107 +1,5 @@
 [
     {
-        "uuid": "42fd4e0e-67ea-4510-97ea-305b62e6d851",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1548931568\/top_football_videos\/3f2d22b4-2631-46e1-8575-444cd2dbadc5.mp4",
-        "remoteId": "top_football_videos\/3f2d22b4-2631-46e1-8575-444cd2dbadc5",
-        "createdAt": "2019-01-31T10:46:12+02:00",
-        "title": "Another footbal video",
-        "description": null,
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/3f2d22b4-2631-46e1-8575-444cd2dbadc5.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/3f2d22b4-2631-46e1-8575-444cd2dbadc5.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/3f2d22b4-2631-46e1-8575-444cd2dbadc5.jpg"
-        ],
-        "subcategory": {
-            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
-        }
-    },
-    {
-        "uuid": "4836636b-41e1-4f82-b97a-61ef3800a61c",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1548931163\/top_football_videos\/0498dde6-37d2-4b81-831a-3ca5770de5a0.mp4",
-        "remoteId": "top_football_videos\/0498dde6-37d2-4b81-831a-3ca5770de5a0",
-        "createdAt": "2019-01-31T10:39:25+02:00",
-        "title": "Another guy talking about football",
-        "description": null,
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/0498dde6-37d2-4b81-831a-3ca5770de5a0.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/0498dde6-37d2-4b81-831a-3ca5770de5a0.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/0498dde6-37d2-4b81-831a-3ca5770de5a0.jpg"
-        ],
-        "subcategory": {
-            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
-        }
-    },
-    {
-        "uuid": "6810d306-7a52-4111-8b25-e908689431f2",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1548931222\/top_football_videos\/573529b3-42d0-4e8e-8ec8-1a1e5eb6afe6.mp4",
-        "remoteId": "top_football_videos\/573529b3-42d0-4e8e-8ec8-1a1e5eb6afe6",
-        "createdAt": "2019-01-31T10:40:25+02:00",
-        "title": "Ayumeric Laporte",
-        "description": null,
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/573529b3-42d0-4e8e-8ec8-1a1e5eb6afe6.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/573529b3-42d0-4e8e-8ec8-1a1e5eb6afe6.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/573529b3-42d0-4e8e-8ec8-1a1e5eb6afe6.jpg"
-        ],
-        "subcategory": {
-            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
-        }
-    },
-    {
-        "uuid": "77c462c5-3162-46b2-8b5c-f5bd78020bcb",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1548931533\/top_football_videos\/d11bdcab-302c-4740-a00f-da7dc4a15119.mp4",
-        "remoteId": "top_football_videos\/d11bdcab-302c-4740-a00f-da7dc4a15119",
-        "createdAt": "2019-01-31T10:45:37+02:00",
-        "title": "Some football video",
-        "description": null,
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/d11bdcab-302c-4740-a00f-da7dc4a15119.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/d11bdcab-302c-4740-a00f-da7dc4a15119.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/d11bdcab-302c-4740-a00f-da7dc4a15119.jpg"
-        ],
-        "subcategory": {
-            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
-        }
-    },
-    {
-        "uuid": "7f8c1c2a-c40b-40b5-b512-686551a77a90",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1548931306\/top_football_videos\/d83fb32f-a10e-4f3e-9b57-f0ca379427fc.mp4",
-        "remoteId": "top_football_videos\/d83fb32f-a10e-4f3e-9b57-f0ca379427fc",
-        "createdAt": "2019-01-31T10:41:49+02:00",
-        "title": "Some Flyemirates guys",
-        "description": null,
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/d83fb32f-a10e-4f3e-9b57-f0ca379427fc.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/d83fb32f-a10e-4f3e-9b57-f0ca379427fc.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/d83fb32f-a10e-4f3e-9b57-f0ca379427fc.jpg"
-        ],
-        "subcategory": {
-            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
-        }
-    },
-    {
-        "uuid": "b308491f-4144-4913-9756-cd57f06d840c",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1548931083\/top_football_videos\/4a39dcba-1852-48bb-9610-da3cd4dc2c4e.mp4",
-        "remoteId": "top_football_videos\/4a39dcba-1852-48bb-9610-da3cd4dc2c4e",
-        "createdAt": "2019-01-31T10:38:05+02:00",
-        "title": "Some guy talking about some football stuff",
-        "description": null,
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/4a39dcba-1852-48bb-9610-da3cd4dc2c4e.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/4a39dcba-1852-48bb-9610-da3cd4dc2c4e.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/4a39dcba-1852-48bb-9610-da3cd4dc2c4e.jpg"
-        ],
-        "subcategory": {
-            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
-        }
-    },
-    {
         "uuid": "5dc49e9c-5d0f-44be-bdc0-e6733075f1a3",
         "status": 2,
         "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549372620\/top_viral_videos\/82b8c145-7717-487b-a2d0-57a60df8e06e.mp4",
@@ -113,23 +11,6 @@
             "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_viral_videos\/82b8c145-7717-487b-a2d0-57a60df8e06e.jpg",
             "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_viral_videos\/82b8c145-7717-487b-a2d0-57a60df8e06e.jpg",
             "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_viral_videos\/82b8c145-7717-487b-a2d0-57a60df8e06e.jpg"
-        ],
-        "subcategory": {
-            "uuid": "88450169-49a4-4823-a7f9-574ac1d7c89p"
-        }
-    },
-    {
-        "uuid": "9f3a8e01-9b6b-4a48-9f64-acf28ffc64d6",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549372868\/top_viral_videos\/e2577a2f-4b25-454e-9f86-55e71c40344d.mp4",
-        "remoteId": "top_viral_videos\/e2577a2f-4b25-454e-9f86-55e71c40344d",
-        "createdAt": "2019-02-05T13:21:11+02:00",
-        "title": "Sophia Floersch crash at the Macau F3 Grand Prix",
-        "description": null,
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_viral_videos\/e2577a2f-4b25-454e-9f86-55e71c40344d.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_viral_videos\/e2577a2f-4b25-454e-9f86-55e71c40344d.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_viral_videos\/e2577a2f-4b25-454e-9f86-55e71c40344d.jpg"
         ],
         "subcategory": {
             "uuid": "88450169-49a4-4823-a7f9-574ac1d7c89p"
@@ -150,57 +31,6 @@
         ],
         "subcategory": {
             "uuid": "88450169-49a4-4823-a7f9-574ac1d7c89p"
-        }
-    },
-    {
-        "uuid": "07f8564b-0cc1-4cbe-b3c4-cd4ba51b866f",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549626096\/top_tennis_videos\/8c3990fa-bc7d-4ce0-a787-67ac4e2ef9a3.mp4",
-        "remoteId": "top_tennis_videos\/8c3990fa-bc7d-4ce0-a787-67ac4e2ef9a3",
-        "createdAt": "2019-02-08T11:41:40+02:00",
-        "title": "Kiki Bertens on winning the St Petersburg ladies trophy following win over Donna Vekic",
-        "description": "Kiki Bertens gave her verdict on Sunday after clinching her third title in six months in a 7-6(2), 6-4 win over Donna Vekic in the final of the St. Petersburg Trophy.\r\n\r\nSecond-seeded Bertens came back from 5-2 down in the first set to win four straight games and force a tiebreak. Eighth-seeded Vekic saved three match points in the second set before Bertens closed out the match for her eighth career title.\r\n\r\nThe win continued Bertens' emergence as a more versatile player. Until she beat Simona Halep to win the Cincinnati Open in August, Bertens had never reached a WTA final on any surface other than clay, but she has now won three straight hard-court finals.\r\n\r\nBertens' current ranking of eighth is the highest for a Dutch woman since Betty Stove, who reached No. 5 in 1977.",
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_tennis_videos\/8c3990fa-bc7d-4ce0-a787-67ac4e2ef9a3.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_tennis_videos\/8c3990fa-bc7d-4ce0-a787-67ac4e2ef9a3.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_tennis_videos\/8c3990fa-bc7d-4ce0-a787-67ac4e2ef9a3.jpg"
-        ],
-        "subcategory": {
-            "uuid": "232sd169-49a4-4823-a7f9-574ac1d740df"
-        }
-    },
-    {
-        "uuid": "0ab1c8c8-cc54-475b-999c-a576fb17b365",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549628705\/top_football_videos\/09a194c4-58f5-4af8-85ec-b1a064689f92.mp4",
-        "remoteId": "top_football_videos\/09a194c4-58f5-4af8-85ec-b1a064689f92",
-        "createdAt": "2019-02-08T12:25:18+02:00",
-        "title": "Barcelona train and talk ahead of Copa del Rey semi-final with Real Madrid",
-        "description": "Lionel Messi has returned to training, a day before Barcelona host Real Madrid in the first leg of the semifinals of the Copa del Rey.\r\nMessi was sidelined from Monday's training session because of a right leg injury sustained in a Spanish league match on Saturday.\r\nHe re-joined his teammates on the practice field on Tuesday and showed no signs he was bothered by the injury.\r\nThe media could only watch the first few minutes of the session, when players warmed up and played keep-away.\r\nCoach Ernesto Valverde had said earlier on Tuesday he would wait for the training session to end before deciding whether Messi will play on Wednesday at Camp Nou Stadium.",
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/09a194c4-58f5-4af8-85ec-b1a064689f92.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/09a194c4-58f5-4af8-85ec-b1a064689f92.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/09a194c4-58f5-4af8-85ec-b1a064689f92.jpg"
-        ],
-        "subcategory": {
-            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
-        }
-    },
-    {
-        "uuid": "11783c3e-6b2b-4971-8d7d-189b1393a2fb",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549626739\/top_tennis_videos\/bffa962e-c797-4687-9ddf-c68941851282.mp4",
-        "remoteId": "top_tennis_videos\/bffa962e-c797-4687-9ddf-c68941851282",
-        "createdAt": "2019-02-08T11:52:25+02:00",
-        "title": "Australia beat Bosnia Herzegovina 4-0 to book their place in the Madrid finals",
-        "description": "Australia completed a 4-0 win over Bosnia Herzegovina on Saturday, to clinch their place in the inaugural 18-nation Davis Cup final in Madrid, Spain later this year.\r\n\r\nOpening day singles successes for John Millman and Alex de Minaur ensured that Australia held a commanding 2-0 lead ahead of day two - and crucially ensured that Bosnia had no further room for error.\r\n\r\nThe hosts built on that lead in the hot Adelaide sun.\r\n\r\nJohn Peers and Jordan Thompson combined well to beat Tomislav Brkic and Mirza Basic 7-5 6-1 in the doubles rubber, giving Australia an unassailable 3-0 lead.\r\n\r\nThen Davis Cup debutant Alexei Popyrin beat Nerman Fatic, cruising through the opening set before fending off a decent challenge in the second set to take a 6-1 7-6(2) victory.",
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_tennis_videos\/bffa962e-c797-4687-9ddf-c68941851282.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_tennis_videos\/bffa962e-c797-4687-9ddf-c68941851282.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_tennis_videos\/bffa962e-c797-4687-9ddf-c68941851282.jpg"
-        ],
-        "subcategory": {
-            "uuid": "232sd169-49a4-4823-a7f9-574ac1d740df"
         }
     },
     {
@@ -289,40 +119,6 @@
         }
     },
     {
-        "uuid": "3b4ac284-c004-4b3c-91fb-a0bcd2514c7f",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549628020\/top_football_videos\/a8293f6e-e272-4352-b476-d67da5662005.mp4",
-        "remoteId": "top_football_videos\/a8293f6e-e272-4352-b476-d67da5662005",
-        "createdAt": "2019-02-08T12:13:49+02:00",
-        "title": "Real Madrid prepare for first leg of Copa del Rey semi-final with Barcelona",
-        "description": "Real Madrid manager Santiago Solari spoke to the media on Tuesday, as his side continued their preparations for the first leg of their Copa del Rey semi-final tie, away at La Liga leaders Barcelona on Wednesday.\r\nThe fixture will be Solari's first 'Clasico' in charge of Real Madrid, but is the first of three matches between the rivals in less than a month.\r\nThe last time the two sides met Barcelona thrashed Madrid 5-1, a result that prompted the sacking of former coach Julen Lopetegui after just three months in charge.\r\nBarcelona have remained silent about Lionel Messi's health and whether he will feature in the semi-final, following an injury to his right leg sustained on Saturday during a 2-2 draw with Valencia.",
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/a8293f6e-e272-4352-b476-d67da5662005.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/a8293f6e-e272-4352-b476-d67da5662005.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/a8293f6e-e272-4352-b476-d67da5662005.jpg"
-        ],
-        "subcategory": {
-            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
-        }
-    },
-    {
-        "uuid": "41033d4e-e0cc-441e-b06a-08465405d234",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549623879\/top_basketball_videos\/d3752b1d-47d2-47b0-91f7-5f40523a249f.mp4",
-        "remoteId": "top_basketball_videos\/d3752b1d-47d2-47b0-91f7-5f40523a249f",
-        "createdAt": "2019-02-08T11:04:44+02:00",
-        "title": "Rookie forward Marvin Bagley leads Kings over Spurs, 127-112",
-        "description": "Rookie forward Marvin Bagley III had a career-high 24 points and 12 rebounds for his third straight double-double, leading the Sacramento Kings past the San Antonio Spurs 127-112 on Monday, for their seventh straight home win.\r\n\r\nDe'Aaron Fox added 20 points and Buddy Hield scored 18 to extend Sacramento's longest home winning streak since a 14-gamer in 2005-06.\r\n\r\nThat was the last time the Kings made the playoffs, but Sacramento could make a run at a postseason spot this season.\r\n\r\nThe Kings trail the Los Angeles Clippers by a half-game for eighth place in the Western Conference.\r\n\r\nDeMar DeRozan had 24 points and LaMarcus Aldridge added 22 for the Spurs.\r\n\r\nSacramento had lost 14 straight to San Antonio before the win in November.\r\n\r\nThe teams meet for their final regular season game in March in Texas.",
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/d3752b1d-47d2-47b0-91f7-5f40523a249f.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/d3752b1d-47d2-47b0-91f7-5f40523a249f.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/d3752b1d-47d2-47b0-91f7-5f40523a249f.jpg"
-        ],
-        "subcategory": {
-            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
-        }
-    },
-    {
         "uuid": "413fe1bd-2988-4391-9ea1-6e5802bf800e",
         "status": 2,
         "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549630752\/top_football_videos\/c3dd3003-8ca7-485f-812b-3fcf161e2365.mp4",
@@ -374,23 +170,6 @@
         }
     },
     {
-        "uuid": "5514fcad-ad2c-49e0-ab13-424d02eca18a",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549624000\/top_basketball_videos\/ba6370f6-8f39-4585-b756-8468cacb3b6c.mp4",
-        "remoteId": "top_basketball_videos\/ba6370f6-8f39-4585-b756-8468cacb3b6c",
-        "createdAt": "2019-02-08T11:06:47+02:00",
-        "title": "Giannis Antetokounmpo scores 30 points as Bucks dominate Nets 113-94",
-        "description": "The Milwaukee Bucks defeated the Brooklyn Nets 113-94 at the Barclays Center in New York on Monday.\r\n\r\nThe Milwaukee Bucks outscored the Brooklyn Nets 23-17 in the first quarter.\r\n\r\nGiannis Antetokounmpo led all players with 20 points in the first half as the Bucks led the Nets, 51-42.\r\n\r\nThe Nets shot a putrid 1-18 from the perimeter in the first half.\r\n\r\nThe Nets were unable to mount a second half comeback as the Bucks held on to a comfortable victory.\r\n\r\nGiannis Antetokounmpo finished the game with 30 points, the most of any player.",
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/ba6370f6-8f39-4585-b756-8468cacb3b6c.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/ba6370f6-8f39-4585-b756-8468cacb3b6c.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/ba6370f6-8f39-4585-b756-8468cacb3b6c.jpg"
-        ],
-        "subcategory": {
-            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
-        }
-    },
-    {
         "uuid": "57f96738-fe25-4234-a3f0-0ebdf752fc78",
         "status": 2,
         "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549623542\/top_athletics_videos\/9543c979-64b1-4ef1-8422-4b124d59fba3.mp4",
@@ -405,23 +184,6 @@
         ],
         "subcategory": {
             "uuid": "dfj45f69-49a4-4823-a7f9-574ac1ddcz56"
-        }
-    },
-    {
-        "uuid": "5d51e2b8-b720-424e-a75a-c72c2f7529e5",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549622359\/top_basketball_videos\/0f34c39d-7161-4ece-b50f-7133faf750d4.mp4",
-        "remoteId": "top_basketball_videos\/0f34c39d-7161-4ece-b50f-7133faf750d4",
-        "createdAt": "2019-02-08T10:39:25+02:00",
-        "title": "Reaction from LeBron James after the worst loss of his career",
-        "description": "Bojan Bogdanovic scored 24 points as the Indiana Pacers tied an NBA franchise record by making 19 3-pointers in a 136-94 win over the Los Angeles Lakers on Tuesday, handing LeBron James the most lopsided loss of his career\r\n\r\nJames' teams have lost by 36 points twice previously.\r\n\r\nJames had 18 points, nine rebounds and seven assists in his second game back since injuring his groin on Christmas Day, but he didn't feature in the fourth quarter\r\n\r\nThe Lakers players were serenaded by Pacers fan about trade rumors all night long.",
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/0f34c39d-7161-4ece-b50f-7133faf750d4.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/0f34c39d-7161-4ece-b50f-7133faf750d4.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/0f34c39d-7161-4ece-b50f-7133faf750d4.jpg"
-        ],
-        "subcategory": {
-            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
         }
     },
     {
@@ -442,23 +204,6 @@
         }
     },
     {
-        "uuid": "6911ad7a-f2af-4f5a-821e-7dd09dd777fe",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549622015\/top_basketball_videos\/a68a3a57-7250-4b3e-ae31-33f0de44e65b.mp4",
-        "remoteId": "top_basketball_videos\/a68a3a57-7250-4b3e-ae31-33f0de44e65b",
-        "createdAt": "2019-02-08T10:33:39+02:00",
-        "title": "D'Angelo Russell scores 27 points to help Nets beat Nuggets 135-130",
-        "description": "D'Angelo Russell had 27 points and 11 assists as the Brooklyn Nets surpassed last season's win total by beating the Denver Nuggets 135-130 on Wednesday night.\r\n\r\nRussell made six of the Nets' 19 3-pointers, one game after they made only five as a team in their poorest shooting performance of the season.\r\n\r\nJoe Harris chipped in 17 points for the Nets.\r\n\r\nBrooklyn had failed to score 100 in its previous two games.\r\n\r\nNikola Jokic had 25 points, 14 rebounds and 10 assists in his 10th triple-double of the season for the Nuggets, who have lost two straight games to fall out of a tie for the Western Conference lead.\r\n\r\nMason Plumlee scored a season-high 24 points on 10-for-12 shooting against his former team.",
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/a68a3a57-7250-4b3e-ae31-33f0de44e65b.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/a68a3a57-7250-4b3e-ae31-33f0de44e65b.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/a68a3a57-7250-4b3e-ae31-33f0de44e65b.jpg"
-        ],
-        "subcategory": {
-            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
-        }
-    },
-    {
         "uuid": "6a5ccfee-e170-4705-a8ed-662c1713c182",
         "status": 2,
         "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549627708\/top_football_videos\/a05061ac-3248-4aec-857e-caff1b31c7ec.mp4",
@@ -473,23 +218,6 @@
         ],
         "subcategory": {
             "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
-        }
-    },
-    {
-        "uuid": "6f036e40-2d09-4479-9a64-a35cbe90e743",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549623752\/top_basketball_videos\/f2145337-8a85-435d-a624-546b844807a2.mp4",
-        "remoteId": "top_basketball_videos\/f2145337-8a85-435d-a624-546b844807a2",
-        "createdAt": "2019-02-08T11:02:39+02:00",
-        "title": "Harlem Globetrotters set numerous Guinness World Records",
-        "description": "The Harlem Globetrotters added five more Guinness World Records in one day to make it a total of 21, which includes one by a female player - a first for the group.\r\n\r\n\"I am so happy to be the first female (Harlem Globetrotter) to be in the Guinness World Records,\" said Cherelle 'Torch' George, after setting the record for most basketball under the leg tumbles in one minute by a female, with 32.\r\n\r\nBull Bullard, one of the team's star players, set a record with a 58 foot (17.7-metres) somersault basketball shot.\r\n\r\nZeus McClurkin also set the record for most blindfolded basketball slam dunks in one minute with a total of five.\r\n\r\nThe Harlem Globetrotters are currently on a world tour.",
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/f2145337-8a85-435d-a624-546b844807a2.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/f2145337-8a85-435d-a624-546b844807a2.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/f2145337-8a85-435d-a624-546b844807a2.jpg"
-        ],
-        "subcategory": {
-            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
         }
     },
     {
@@ -595,23 +323,6 @@
         }
     },
     {
-        "uuid": "81dfea87-5a48-4d89-8f1b-fb5a8c446937",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549624693\/top_basketball_videos\/28484331-1573-4618-9639-46c82b5b24f7.mp4",
-        "remoteId": "top_basketball_videos\/28484331-1573-4618-9639-46c82b5b24f7",
-        "createdAt": "2019-02-08T11:18:18+02:00",
-        "title": "LeBron does not play, Warriors top Lakers 115-101",
-        "description": "Klay Thompson returned from a one-game illness absence to score 28 points, leading the Golden State Warriors to a 115-101 victory on Saturday night over a Los Angeles Lakers team missing LeBron James once again.\r\n\r\nStephen Curry missed his first eight shots before a layup with 6:20 remaining, and still scored a total of 14 points.\r\n\r\nAndre Iguodala hit a go-ahead three in the final minute of the third quarter as Golden State pulled away, and finished with 17 points.\r\n\r\nKevin Durant added 21 points.\r\n\r\nJames did not play, resting for what coach Luke Walton called 'load management'.\r\n\r\nThe four-time MVP had been set for his second game back but woke up on Friday 'very sore' after playing 40 minutes in the 123-120 overtime win against the Clippers.\r\n\r\nHe finished that game with 24 points, 14 rebounds and nine assists.",
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/28484331-1573-4618-9639-46c82b5b24f7.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/28484331-1573-4618-9639-46c82b5b24f7.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/28484331-1573-4618-9639-46c82b5b24f7.jpg"
-        ],
-        "subcategory": {
-            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
-        }
-    },
-    {
         "uuid": "831a3b60-40bb-4a91-b8e7-b06eee11102f",
         "status": 2,
         "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549625366\/top_extreme_sports_videos\/03d968c7-0c2b-4dca-a33f-b9a6481e40f7.mp4",
@@ -680,40 +391,6 @@
         }
     },
     {
-        "uuid": "8bb0b776-4352-4d5f-9ee8-6977e2b0b1e4",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549621745\/top_basketball_videos\/c6f596c9-00a1-4038-8f26-c8f11b3b3a9e.mp4",
-        "remoteId": "top_basketball_videos\/c6f596c9-00a1-4038-8f26-c8f11b3b3a9e",
-        "createdAt": "2019-02-08T10:29:10+02:00",
-        "title": "Golden State Warriors beat undermanned San Antonio Spurs 141-102",
-        "description": "The Golden State Warriors ran away in the second and third quarters to rout the San Antonio Spurs 141-102 on Wednesday night.\r\nThe two-time defending champions scored 49 points on 16 assists in the third quarter alone, making five of seven three-pointers.\r\nThey made 24 of 25 field goals in one blistering stretch spanning halftime, including 14 straight shots at one point.\r\nKevin Durant had 23 points, nine assists and eight rebounds, Klay Thompson scored 26 points and Stephen Curry had 19 points, seven assists, five rebounds, two steals and a blocked shot.\r\nCurry and company were so good the starters weren't even needed for the final 12 minutes.\r\nThe Spurs had their five-game winning streak snapped in a 127-112 loss at Sacramento on Monday, and coach Gregg Popovich rested LaMarcus Aldridge and DeMar DeRozan against Golden State.",
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/c6f596c9-00a1-4038-8f26-c8f11b3b3a9e.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/c6f596c9-00a1-4038-8f26-c8f11b3b3a9e.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/c6f596c9-00a1-4038-8f26-c8f11b3b3a9e.jpg"
-        ],
-        "subcategory": {
-            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
-        }
-    },
-    {
-        "uuid": "9080c1c5-0ea6-4db0-8cf6-13a47074049d",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549624938\/top_basketball_videos\/d08a2220-d907-46d1-9d54-dcf28a3211af.mp4",
-        "remoteId": "top_basketball_videos\/d08a2220-d907-46d1-9d54-dcf28a3211af",
-        "createdAt": "2019-02-08T11:22:24+02:00",
-        "title": "Anthony Davis says he's given all he can to Pelicans and is ready to move on",
-        "description": "Anthony Davis feels like he's given the New Orleans Pelicans all he can and that his time to move on has come.\r\n\r\nThe six-time All-Star, who recently informed New Orleans he would like to be traded, said Friday that his intention remains to play for New Orleans as long as he is healthy and under contract with the Pelicans.\r\n\r\nWhile Davis and Lakers star LeBron James share an agent, Davis said he has never provided New Orleans a list of preferred destinations and added that where he winds up is \"on the Pelicans.''\r\n\r\nThe Pelicans are mulling over what to do with Davis as the NBA's trade deadline approaches on Feb. 7.\r\n\r\nDavis did not make any immediate public statements in the days after agent Rich Paul made the trade request, for which Davis was fined $50,000.\r\n\r\nDavis is under contract with New Orleans through the end of the 2019-20 season.",
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/d08a2220-d907-46d1-9d54-dcf28a3211af.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/d08a2220-d907-46d1-9d54-dcf28a3211af.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/d08a2220-d907-46d1-9d54-dcf28a3211af.jpg"
-        ],
-        "subcategory": {
-            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
-        }
-    },
-    {
         "uuid": "9198489d-7930-46b8-be7d-b93711686bec",
         "status": 2,
         "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549630807\/top_football_videos\/61401720-ce58-487d-947b-6437c6547794.mp4",
@@ -762,40 +439,6 @@
         ],
         "subcategory": {
             "uuid": "541d47f69-49a4-4823-a7f9-574ac1fl4hd"
-        }
-    },
-    {
-        "uuid": "a91f1580-6648-4cad-9b49-56f6f513d231",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549623611\/top_basketball_videos\/570e1989-18b9-48f0-a037-0dd7de3fcb8b.mp4",
-        "remoteId": "top_basketball_videos\/570e1989-18b9-48f0-a037-0dd7de3fcb8b",
-        "createdAt": "2019-02-08T11:00:16+02:00",
-        "title": "Williams and Harris lead Clippers to 117-115 comeback win over Hornets",
-        "description": "Tobias Harris scored 34 points, including a running jumper in the lane with 4.3 seconds remaining, as the Los Angeles Clippers rallied from 20 points down to beat the Charlotte Hornets 117-115 on Tuesday.\r\n\r\nCharlotte had a chance to tie or take the lead with their last possession, but Marvin Williams' 3-point attempt was short at the buzzer.\r\n\r\nLou Williams scored 31 points for the Clippers, Montrezl Harrell added 16 and Patrick Beverley 15.\r\n\r\nLos Angeles were playing their third road game in four days.\r\n\r\nThe Clippers shot 75 percent (18 for 24) on 3-pointers.\r\n\r\nKemba Walker scored 32 points and Jeremy Lamb added 22 for the Hornets.\r\n\r\nMarvin Williams finished with 13 points and Malik Monk had 12.\r\n\r\nIt was the second time this season Charlotte lost a game after leading by 20.",
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/570e1989-18b9-48f0-a037-0dd7de3fcb8b.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/570e1989-18b9-48f0-a037-0dd7de3fcb8b.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/570e1989-18b9-48f0-a037-0dd7de3fcb8b.jpg"
-        ],
-        "subcategory": {
-            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
-        }
-    },
-    {
-        "uuid": "afae093d-d159-4af3-a5e8-69e7fb4218eb",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549624416\/top_basketball_videos\/9f431ab4-fff0-44b6-bb42-10212f7d0e6c.mp4",
-        "remoteId": "top_basketball_videos\/9f431ab4-fff0-44b6-bb42-10212f7d0e6c",
-        "createdAt": "2019-02-08T11:13:41+02:00",
-        "title": "Kawhi Leonard scores 18 points as Raptors beat Clippers 121-103",
-        "description": "Kawhi Leonard scored 18 points, Serge Ibaka had 16 points and 12 rebounds and the Toronto Raptors beat the Los Angeles Clippers 121-103 on Sunday for their 10th victory in their last 11 home games.\r\n\r\nIbaka has a career-best six straight double-doubles, Toronto's longest streak since Chris Bosh had eight in November 2009.\r\n\r\nPascal Siakam and C.J. Miles each had 15 points, and Delon Wright added 14.\r\n\r\nShai Gilgeous-Alexander, the guard born in nearby Hamilton, had 19 points to lead Los Angeles.",
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/9f431ab4-fff0-44b6-bb42-10212f7d0e6c.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/9f431ab4-fff0-44b6-bb42-10212f7d0e6c.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/9f431ab4-fff0-44b6-bb42-10212f7d0e6c.jpg"
-        ],
-        "subcategory": {
-            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
         }
     },
     {
@@ -901,23 +544,6 @@
         }
     },
     {
-        "uuid": "cf6fabfb-114b-4168-bd87-99807c24d0f7",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549623454\/top_basketball_videos\/89f01ce7-81f7-4050-9aaa-7c4dcdf6e2aa.mp4",
-        "remoteId": "top_basketball_videos\/89f01ce7-81f7-4050-9aaa-7c4dcdf6e2aa",
-        "createdAt": "2019-02-08T10:57:39+02:00",
-        "title": "Kawhi leads Raptors over 76ers, 119-107",
-        "description": "Kawhi Leonard finished with 24 points as the Raptors held off the Philadelphia 76ers 119-107 on Tuesday in a matchup between two of the Eastern Conference's top teams.\r\n\r\nKyle Lowry and Serge Ibaka each had 20 points to overcome the Joel Embiid-led Sixers.\r\n\r\nEmbiid had 37 points and 13 rebounds for his league-leading 44th double-double, Ben Simmons scored 20 points and Jimmy Butler had 18.\r\n\r\nAfter erupting for 40 points in the first quarter behind 11-for-11 shooting from the free-throw line, the Raptors built a 21-point advantage midway through the second quarter.\r\n\r\nLowry, who missed Toronto's last game due to back soreness, fueled the run with three 3-pointers in a two-minute stretch.\r\n\r\nThe Raptors (39-16) never let the Sixers (34-20) get closer than seven.",
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/89f01ce7-81f7-4050-9aaa-7c4dcdf6e2aa.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/89f01ce7-81f7-4050-9aaa-7c4dcdf6e2aa.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/89f01ce7-81f7-4050-9aaa-7c4dcdf6e2aa.jpg"
-        ],
-        "subcategory": {
-            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
-        }
-    },
-    {
         "uuid": "d1c7a39a-91f8-46fc-9596-833ebd033a61",
         "status": 2,
         "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549627621\/top_tennis_videos\/77d8a205-dee7-4c9e-a91a-7bdf42461ec6.mp4",
@@ -932,23 +558,6 @@
         ],
         "subcategory": {
             "uuid": "232sd169-49a4-4823-a7f9-574ac1d740df"
-        }
-    },
-    {
-        "uuid": "d1d0a78e-92a8-4f35-a2af-cab0833287f8",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549624264\/top_basketball_videos\/475fe43c-5197-434a-be1e-02bfe287ab29.mp4",
-        "remoteId": "top_basketball_videos\/475fe43c-5197-434a-be1e-02bfe287ab29",
-        "createdAt": "2019-02-08T11:11:11+02:00",
-        "title": "Kristaps Porzingis trains with the Mavs and speaks for first time since trade",
-        "description": "Kristaps Porzingis practices with the Dallas Mavericks on Monday and speaks for the first time, with Owner Mark Cuban and General Manager Donnie Nelson, since being traded from the New York Knicks.",
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/475fe43c-5197-434a-be1e-02bfe287ab29.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/475fe43c-5197-434a-be1e-02bfe287ab29.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/475fe43c-5197-434a-be1e-02bfe287ab29.jpg"
-        ],
-        "subcategory": {
-            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
         }
     },
     {
@@ -1122,23 +731,6 @@
         }
     },
     {
-        "uuid": "f41c652f-ff46-42d8-b9c6-5dab3e00677d",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549624805\/top_basketball_videos\/f462518e-be6b-47f5-9dce-70e1274ddf41.mp4",
-        "remoteId": "top_basketball_videos\/f462518e-be6b-47f5-9dce-70e1274ddf41",
-        "createdAt": "2019-02-08T11:20:10+02:00",
-        "title": "Panathinaikos snap three-game losing streak win 88-75 win over Anadolu Efes",
-        "description": "Panathinaikos snapped their three-game losing streak following a 88-75 win over Anadolu Efes in round 21 of the Euroleague on Friday.\r\n\r\nThe Greek side which was sat one place outside the playoff standings was seeking a vital win to boost its hopes of advancing to the knockout stages.\r\n\r\nThe hosts led from start to finish as held off a late charge from the visitors.\r\n\r\nPoint guard Nick Calathes paced Panathinaikos with 20 points with Deshaun Thomas adding 14 and Sean Kilpatrick a further 13.\r\n\r\nAnadolu were led by Rodrigue Beaubois who netted 15 points on the night with Krunoslav Simon a further 14 and Tibor Pleiss into double figures with 13.",
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_basketball_videos\/f462518e-be6b-47f5-9dce-70e1274ddf41.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_basketball_videos\/f462518e-be6b-47f5-9dce-70e1274ddf41.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_basketball_videos\/f462518e-be6b-47f5-9dce-70e1274ddf41.jpg"
-        ],
-        "subcategory": {
-            "uuid": "541fg169-49a4-4823-a7f9-574ac1fh74yt"
-        }
-    },
-    {
         "uuid": "0146e2af-0116-4aa6-876f-2f6b82f363b3",
         "status": 2,
         "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549638950\/top_moto_sport_videos\/ccf70e23-9495-4fda-a9bf-605e2916e228.mp4",
@@ -1170,23 +762,6 @@
         ],
         "subcategory": {
             "uuid": "98721587-49a4-4823-a7f9-574ac1d7i32x"
-        }
-    },
-    {
-        "uuid": "057c0ac3-7efd-4844-90ad-3aacbca3f84d",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549641537\/top_combat_videos\/3f6d7a80-9acc-4ff1-a800-655bb4990793.mp4",
-        "remoteId": "top_combat_videos\/3f6d7a80-9acc-4ff1-a800-655bb4990793",
-        "createdAt": "2019-02-08T15:59:06+02:00",
-        "title": "Moraes regains ONE FC flyweight world title after beating Eustaquio",
-        "description": "Moraes regains ONE FC flyweight world title after beating Eustaquio",
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_combat_videos\/3f6d7a80-9acc-4ff1-a800-655bb4990793.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_combat_videos\/3f6d7a80-9acc-4ff1-a800-655bb4990793.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_combat_videos\/3f6d7a80-9acc-4ff1-a800-655bb4990793.jpg"
-        ],
-        "subcategory": {
-            "uuid": "d4gd5869-49a4-4823-a7f9-574ac1dvn7pe"
         }
     },
     {
@@ -1258,23 +833,6 @@
         }
     },
     {
-        "uuid": "420c9491-f358-4795-8b20-a4d59c94b300",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549639913\/top_viral_videos\/b76f1318-af8c-4176-8860-20a82f027792.mp4",
-        "remoteId": "top_viral_videos\/b76f1318-af8c-4176-8860-20a82f027792",
-        "createdAt": "2019-02-08T15:31:55+02:00",
-        "title": "Patriots honored at Bruins game, Super Bowl MVP Julian Edelman slams puck",
-        "description": "Patriots honored at Bruins game, Super Bowl MVP Julian Edelman slams puck",
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_viral_videos\/b76f1318-af8c-4176-8860-20a82f027792.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_viral_videos\/b76f1318-af8c-4176-8860-20a82f027792.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_viral_videos\/b76f1318-af8c-4176-8860-20a82f027792.jpg"
-        ],
-        "subcategory": {
-            "uuid": "88450169-49a4-4823-a7f9-574ac1d7c89p"
-        }
-    },
-    {
         "uuid": "44fc0f2e-eb79-489b-92da-511eb722b699",
         "status": 2,
         "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549641627\/top_golf_videos\/8d57c162-8dc2-4183-806f-a39283bd6fd7.mp4",
@@ -1309,23 +867,6 @@
         }
     },
     {
-        "uuid": "4ab6f72d-734b-4c4d-b2a4-3553ec7d3492",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549639252\/top_cricket_videos\/99dd7006-738c-4d54-b72f-914afeb05094.mp4",
-        "remoteId": "top_cricket_videos\/99dd7006-738c-4d54-b72f-914afeb05094",
-        "createdAt": "2019-02-08T15:20:58+02:00",
-        "title": "West Indies in control after second day against England",
-        "description": "West Indies in control after second day against England",
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_cricket_videos\/99dd7006-738c-4d54-b72f-914afeb05094.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_cricket_videos\/99dd7006-738c-4d54-b72f-914afeb05094.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_cricket_videos\/99dd7006-738c-4d54-b72f-914afeb05094.jpg"
-        ],
-        "subcategory": {
-            "uuid": "98721587-49a4-4823-a7f9-574ac1d7i32x"
-        }
-    },
-    {
         "uuid": "63147e4e-8b41-41e0-9df9-0cf0eaa848d2",
         "status": 2,
         "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549640894\/top_qualifier_videos\/ac4d6867-0f62-4a5d-b495-3ac4098e8029.mp4",
@@ -1340,40 +881,6 @@
         ],
         "subcategory": {
             "uuid": "35987d69-49a4-4823-a7f9-574ac1d873hd"
-        }
-    },
-    {
-        "uuid": "64e00204-7924-4e1b-839c-0ac75bddc38c",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549638712\/top_cricket_videos\/63c6646f-9e35-4eb1-8c56-7cc3eef059fb.mp4",
-        "remoteId": "top_cricket_videos\/63c6646f-9e35-4eb1-8c56-7cc3eef059fb",
-        "createdAt": "2019-02-08T15:11:58+02:00",
-        "title": "West Indies thrash England by 10 wickets to win series with a game to spare",
-        "description": "West Indies thrash England by 10 wickets to win series with a game to spare",
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_cricket_videos\/63c6646f-9e35-4eb1-8c56-7cc3eef059fb.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_cricket_videos\/63c6646f-9e35-4eb1-8c56-7cc3eef059fb.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_cricket_videos\/63c6646f-9e35-4eb1-8c56-7cc3eef059fb.jpg"
-        ],
-        "subcategory": {
-            "uuid": "98721587-49a4-4823-a7f9-574ac1d7i32x"
-        }
-    },
-    {
-        "uuid": "6ce75fd7-fa49-4a64-9c62-e247367825eb",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549640041\/top_viral_videos\/ebb657b1-de04-475a-9df4-3164aecffe49.mp4",
-        "remoteId": "top_viral_videos\/ebb657b1-de04-475a-9df4-3164aecffe49",
-        "createdAt": "2019-02-08T15:34:04+02:00",
-        "title": "Seats thrown between fans in Guimaraes v Porto match",
-        "description": "Seats thrown between fans in Guimaraes v Porto match",
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_viral_videos\/ebb657b1-de04-475a-9df4-3164aecffe49.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_viral_videos\/ebb657b1-de04-475a-9df4-3164aecffe49.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_viral_videos\/ebb657b1-de04-475a-9df4-3164aecffe49.jpg"
-        ],
-        "subcategory": {
-            "uuid": "88450169-49a4-4823-a7f9-574ac1d7c89p"
         }
     },
     {
@@ -1459,23 +966,6 @@
         ],
         "subcategory": {
             "uuid": "35987d69-49a4-4823-a7f9-574ac1d873hd"
-        }
-    },
-    {
-        "uuid": "9b08aac2-1545-45dc-944a-d4b21ef25888",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1549640266\/top_viral_videos\/3bba564b-6f47-4a95-a06f-e934fa05cd5b.mp4",
-        "remoteId": "top_viral_videos\/3bba564b-6f47-4a95-a06f-e934fa05cd5b",
-        "createdAt": "2019-02-08T15:37:53+02:00",
-        "title": "Coach saves life of ice hockey player after brutal hit",
-        "description": "Coach saves life of ice hockey player after brutal hit",
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_viral_videos\/3bba564b-6f47-4a95-a06f-e934fa05cd5b.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_viral_videos\/3bba564b-6f47-4a95-a06f-e934fa05cd5b.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_viral_videos\/3bba564b-6f47-4a95-a06f-e934fa05cd5b.jpg"
-        ],
-        "subcategory": {
-            "uuid": "88450169-49a4-4823-a7f9-574ac1d7c89p"
         }
     },
     {
