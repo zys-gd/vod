@@ -1,0 +1,7 @@
+{% macro render(title = ' ', class) %}
+    <div class="d-flex align-items-center justify-content-between w-100 separator-title {{class}}">
+        <span class=" before"></span>
+        <span class="title">{{title}}</span>
+        <span class=" after"></span>
+    </div>
+{% endmacro %}

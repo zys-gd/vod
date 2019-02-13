@@ -2,7 +2,8 @@
 
 {% import "@App/Common/Blocks/header.html.twig" as  header %}
 {% import '@App/Components/Buttons/button.html.twig' as button %}
-{% import '@App/Components/Buttons/small_button.html.twig' as button_small %}
+{% import "@App/Components/Blocks/Main/game_cell.html.twig" as gameCell %}
+{% import "@App/Components/Blocks/Main/mirror_separator.html.twig" as mirrorSeparator %}
 
 {% block header_content %}
     {{ header.render(game.title) }}
@@ -30,32 +31,10 @@
             {{ button.render('Download', 'game-download-button x-game-download-button') }}
         </div>
 
-        <div class="d-flex align-items-center justify-content-between w-100 separator-title my-4">
-            <span class=" before"></span>
-            <span class="title">Other games</span>
-            <span class=" after"></span>
-        </div>
+        {{ mirrorSeparator.render('Other games', 'my-4') }}
         <div class="game-similars w-100">
             {% for similarGame in similarGames %}
-                <div class="d-flex flex-column  x-game-element game-wrapper" data-uuid="{{similarGame.uuid}}">
-                    <div class="game">
-                        <div class="game-image-block">
-                            <a class="" href="{{ path('game_content',{'gameUuid': similarGame.uuid}) }}">
-                                <img class="img-fluid" src="{{ similarGame.iconPath }}" alt="{{ similarGame.uuid }}"/>
-                            </a>
-                        </div>
-                        <div class="game-info-block">
-                            <div class="game-title-block">
-                                {{ similarGame.title }}
-                            </div>
-                            <div class="game-download-button-block">
-                                {% if hasActiveSubscription() %}
-                                    {{ button_small.render('Download', 'game-download-button x-game-download-button') }}
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {{ gameCell.render(similarGame) }}
             {% endfor %}
         </div>
     </div>

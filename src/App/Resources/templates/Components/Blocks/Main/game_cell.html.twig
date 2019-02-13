@@ -1,0 +1,23 @@
+{% macro render(game) %}
+    {% import '@App/Components/Buttons/small_button.html.twig' as button %}
+
+    <div class="d-flex flex-column  x-game-element game-wrapper" data-uuid="{{ game.uuid }}">
+        <div class="game">
+            <div class="game-image-block">
+                <a class="" href="{{ path('game_content',{'gameUuid': game.uuid}) }}">
+                    <img class="img-fluid" src="{{ game.iconPath }}" alt="{{ game.uuid }}"/>
+                </a>
+            </div>
+            <div class="game-info-block">
+                <div class="game-title-block">
+                    {{ game.title }}
+                </div>
+                <div class="game-download-button-block">
+                    {% if hasActiveSubscription() %}
+                        {{ button.render('Download', 'game-download-button x-game-download-button') }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
