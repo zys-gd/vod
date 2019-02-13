@@ -22,9 +22,6 @@
 .sidebar-nav_header {
     height: 60px;
     background-color: #ce1e25;
-    padding-top: 15px;
-    padding-left: 20px;
-    padding-right: 20px;
     position: relative;
 }
 
@@ -32,7 +29,6 @@
     cursor: pointer;
     width: 30px;
     height: 30px;
-    margin-left: auto;
     background: url(/img/close_icon.png) no-repeat center;
     background-size: contain;
 }
@@ -161,4 +157,10 @@ a.nav-item_subitem:hover{
 .navbar-list {
     padding-left: 0;
     margin-bottom: 0;
+}
+.nav-logo {
+    background: url(/img/header/lp_logo.png) no-repeat center;
+    width: 75%;
+    background-size: contain;
+    height: 35px;
 }
