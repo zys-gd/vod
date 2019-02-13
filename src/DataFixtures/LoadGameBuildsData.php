@@ -29,32 +29,36 @@ class LoadGameBuildsData extends AbstractFixture implements ContainerAwareInterf
         $data = FixtureDataLoader::loadDataFromJSONFile('game_builds.json');;
 
         foreach ($data as $key => $row) {
-            $uuid           = $row['uuid'];
-            $game_id        = $row['game']['uuid'];
-            $os_type        = $row['os_type'];
-            $min_os_version = $row['min_os_version'];
-            $game_apk       = $row['game_apk'];
-            $apk_size       = $row['apk_size'];
-            $version        = $row['version'];
-            $apkVersion     = $row['apk_version'] . '';
+            try {
+                $uuid           = $row['uuid'];
+                $game_id        = $row['game']['uuid'];
+                $os_type        = $row['os_type'];
+                $min_os_version = $row['min_os_version'];
+                $game_apk       = $row['game_apk'];
+                $apk_size       = $row['apk_size'];
+                $version        = $row['version'];
+                $apkVersion     = $row['apk_version'] . '';
 
-            $build = new GameBuild($uuid);
+                $build = new GameBuild($uuid);
 
-            $build->setGame($this->getReference(sprintf('game_%s', $game_id)));
-            $build->setOsType($os_type);
-            $build->setMinOsVersion($min_os_version);
-            $build->setGameApk($game_apk);
-            $build->setApkSize($apk_size);
-            $build->setUuid($uuid);
-            $build->setApkVersion($apkVersion);
-            $build->setVersion($version);
+                $build->setGame($this->getReference(sprintf('game_%s', $game_id)));
+                $build->setOsType($os_type);
+                $build->setMinOsVersion($min_os_version);
+                $build->setGameApk($game_apk);
+                $build->setApkSize($apk_size);
+                $build->setUuid($uuid);
+                $build->setApkVersion($apkVersion);
+                $build->setVersion($version);
 
-            foreach ($row['device_displays'] as $display) {
-                $build->addDeviceDisplay($this->getReference(sprintf('device_display_%s', $display['uuid'])));
+                foreach ($row['device_displays'] as $display) {
+                    $build->addDeviceDisplay($this->getReference(sprintf('device_display_%s', $display['uuid'])));
+                }
+
+                $this->addReference(sprintf('game_build_%s', $uuid), $build);
+                $manager->persist($build);
+            } catch (\Exception $exception) {
+                //do nothing
             }
-
-            $this->addReference(sprintf('game_build_%s', $uuid), $build);
-            $manager->persist($build);
         }
 
         $manager->flush(); $manager->clear();;

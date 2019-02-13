@@ -29,17 +29,21 @@ class LoadGameImagesData extends AbstractFixture implements ContainerAwareInterf
         $data = FixtureDataLoader::loadDataFromJSONFile('game_images.json');
 
         foreach ($data as $row) {
-            $uuid    = $row['uuid'];
-            $gameId  = $row['game']['uuid'];
-            $name    = $row['name'];
+            try {
+                $uuid    = $row['uuid'];
+                $gameId  = $row['game']['uuid'];
+                $name    = $row['name'];
 
-            $gameImage = new GameImage($uuid);
-            $gameImage->setGame($this->getReference(sprintf('game_%s', $gameId)));
-            $gameImage->setName($name);
+                $gameImage = new GameImage($uuid);
+                $gameImage->setGame($this->getReference(sprintf('game_%s', $gameId)));
+                $gameImage->setName($name);
 
-            $this->addReference(sprintf('game_image_%s', $uuid), $gameImage);
+                $this->addReference(sprintf('game_image_%s', $uuid), $gameImage);
 
-            $manager->persist($gameImage);
+                $manager->persist($gameImage);
+            } catch (\Exception $exception) {
+                //do nothing
+            }
         }
 
         $manager->flush(); $manager->clear();;
