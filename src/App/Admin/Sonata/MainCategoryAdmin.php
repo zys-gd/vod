@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class MainCategoryAdmin extends AbstractAdmin
@@ -76,6 +77,9 @@ class MainCategoryAdmin extends AbstractAdmin
     {
         $formMapper
             ->add('title', TextType::class, [
+                'required' => true
+            ])
+            ->add('menuPriority', IntegerType::class, [
                 'required' => true
             ]);
     }
