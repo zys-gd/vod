@@ -324,7 +324,6 @@
         "deactivatedCarriers": []
     },
     {
-        "id": 37,
         "title": "CR7 Penalty",
         "description": "Secure World Cup glory for your home country by winning the penalty shootout!\r\nHe shoots. He scores! The crowd goes wild! Can you secure World Cup glory for your home country? It all comes down to the penalty shootout. Develop your skills in Tutorial mode then hone them in Practice mode. When you are ready play successive rounds of penalty shootouts to win the final match. Penalty Ronaldo is fun and addictive!\r\n\r\n- Develop your skills in Tutorial mode\r\n- Hone them in Practice mode\r\n- When you are ready to play successive rounds of penalty shootouts to win the final match",
         "icon": "df8e933c6f453e95bf13a701624d4597f19c1cc3.png",
@@ -347,6 +346,33 @@
         },
         "tier": {
             "uuid": "6e350219-f3d5-11e8-a31f-06847754f9e0"
+        },
+        "deactivatedCountries": [],
+        "deactivatedCarriers": []
+    },
+    {
+        "title": "Super Pocket Football 2017",
+        "description": "Do you dream about winning the championship? Beat your opponents from around the world and win the cup with your team! Adjust your play style by changing your formations. Race around the pitch, take the ball away from your opponent and shoot the winning goal! Learn to pass and shoot in the training mode. Find the best tactical moves in friendly matches and win the football championship! Who will be a new champion?\r\n\r\n- Many teams to choose from\r\n- Formation selection\r\n- Retro-styled graphics",
+        "icon": "306070f0f3acbda8d8c85019aa814a416c56fa09.png",
+        "thumbnail": "5cde10ec27976142209a7b3caba071d0861319d9.png",
+        "tags": 0,
+        "rating": 2,
+        "published": true,
+        "isBookmark": false,
+        "created": "2016-12-13T08:53:35+02:00",
+        "updated": "2017-03-14T15:16:25+02:00",
+        "deletedAt": null,
+        "uuid": "51b502d5-ebd4-11e8-95c4-02bb250f0f22",
+        "images": null,
+        "translations": null,
+        "categoryGameAssociations": null,
+        "builds": null,
+        "categoryGameCountryLinks": null,
+        "developer": {
+            "uuid": "50853803-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "tier": {
+            "uuid": "6e350290-f3d5-11e8-a31f-06847754f9e0"
         },
         "deactivatedCountries": [],
         "deactivatedCarriers": []
