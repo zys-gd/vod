@@ -270,33 +270,6 @@
         "deactivatedCarriers": []
     },
     {
-        "title": "Doodle Jump",
-        "description": "Doodle Jump",
-        "icon": "c87d7ae1929f60ba491d1dfda6b9df3a72038135.png",
-        "thumbnail": "08ad577d0040e603400e7fa5187c3bbf9af2ae63.png",
-        "tags": 0,
-        "rating": 5,
-        "published": true,
-        "isBookmark": true,
-        "created": "2018-01-26T10:27:17+02:00",
-        "updated": "2018-01-30T12:24:29+02:00",
-        "deletedAt": null,
-        "uuid": "51b538ad-ebd4-11e8-95c4-02bb250f0f22",
-        "images": null,
-        "translations": null,
-        "categoryGameAssociations": null,
-        "builds": null,
-        "categoryGameCountryLinks": null,
-        "developer": {
-            "uuid": "50854918-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "tier": {
-            "uuid": "6e350073-f3d5-11e8-a31f-06847754f9e0"
-        },
-        "deactivatedCountries": [],
-        "deactivatedCarriers": []
-    },
-    {
         "title": "test",
         "description": "test",
         "icon": "9d3863c6127edfd84d52727a96224b6ac806640c.png",
@@ -351,28 +324,55 @@
         "deactivatedCarriers": []
     },
     {
-        "title": "Doodle Jump Generic",
-        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-        "icon": "39aa1fd61e25e5f72d4dcd82e59ccbc9747372db.png",
-        "thumbnail": "f6034fc22e9ed222e20b87e102be1b0de1e644ae.jpeg",
-        "tags": 0,
-        "rating": 5,
+        "title": "CR7 Penalty",
+        "description": "Secure World Cup glory for your home country by winning the penalty shootout!\r\nHe shoots. He scores! The crowd goes wild! Can you secure World Cup glory for your home country? It all comes down to the penalty shootout. Develop your skills in Tutorial mode then hone them in Practice mode. When you are ready play successive rounds of penalty shootouts to win the final match. Penalty Ronaldo is fun and addictive!\r\n\r\n- Develop your skills in Tutorial mode\r\n- Hone them in Practice mode\r\n- When you are ready to play successive rounds of penalty shootouts to win the final match",
+        "icon": "df8e933c6f453e95bf13a701624d4597f19c1cc3.png",
+        "thumbnail": "d6918c7605e3b77e54949482200ca8f2c55977bb.png",
+        "tags": 1,
+        "rating": 3,
         "published": true,
-        "isBookmark": true,
-        "created": "2018-01-23T14:36:50+02:00",
-        "updated": "2018-01-25T08:04:24+02:00",
-        "deletedAt": "2018-01-26",
-        "uuid": "51b537bb-ebd4-11e8-95c4-02bb250f0f22",
+        "isBookmark": false,
+        "created": "2016-11-11T08:33:08+02:00",
+        "updated": "2018-10-29T11:08:25+02:00",
+        "deletedAt": null,
+        "uuid": "51b42e32-ebd4-11e8-95c4-02bb250f0f22",
         "images": null,
         "translations": null,
         "categoryGameAssociations": null,
         "builds": null,
         "categoryGameCountryLinks": null,
         "developer": {
-            "uuid": "50854918-ebd4-11e8-95c4-02bb250f0f22"
+            "uuid": "5085372d-ebd4-11e8-95c4-02bb250f0f22"
         },
         "tier": {
-            "uuid": "6e350073-f3d5-11e8-a31f-06847754f9e0"
+            "uuid": "6e350219-f3d5-11e8-a31f-06847754f9e0"
+        },
+        "deactivatedCountries": [],
+        "deactivatedCarriers": []
+    },
+    {
+        "title": "Super Pocket Football 2017",
+        "description": "Do you dream about winning the championship? Beat your opponents from around the world and win the cup with your team! Adjust your play style by changing your formations. Race around the pitch, take the ball away from your opponent and shoot the winning goal! Learn to pass and shoot in the training mode. Find the best tactical moves in friendly matches and win the football championship! Who will be a new champion?\r\n\r\n- Many teams to choose from\r\n- Formation selection\r\n- Retro-styled graphics",
+        "icon": "306070f0f3acbda8d8c85019aa814a416c56fa09.png",
+        "thumbnail": "5cde10ec27976142209a7b3caba071d0861319d9.png",
+        "tags": 0,
+        "rating": 2,
+        "published": true,
+        "isBookmark": false,
+        "created": "2016-12-13T08:53:35+02:00",
+        "updated": "2017-03-14T15:16:25+02:00",
+        "deletedAt": null,
+        "uuid": "51b502d5-ebd4-11e8-95c4-02bb250f0f22",
+        "images": null,
+        "translations": null,
+        "categoryGameAssociations": null,
+        "builds": null,
+        "categoryGameCountryLinks": null,
+        "developer": {
+            "uuid": "50853803-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "tier": {
+            "uuid": "6e350290-f3d5-11e8-a31f-06847754f9e0"
         },
         "deactivatedCountries": [],
         "deactivatedCarriers": []
