@@ -8,15 +8,21 @@
     width: 100%;
 }
 
-.slider-big .slick-track {
+.slick-track {
     display: -webkit-box !important;
     display: -ms-flexbox !important;
     display: flex !important;
     flex-wrap: wrap !important;
 }
 
-.slider-big .slick-initialized .slick-slide {
+.slick-slide {
     display: flex;
+}
+
+.slick-slide {
+    float: none;
+    height: auto !important;
+    min-height: 1px;
 }
 
 .slider-big .slick-slide {
@@ -27,6 +33,11 @@
     max-width: 770px;
     margin-right: 20px;
 }
-.slider-big .slick-slide > div {
+.slick-slide > div {
     position: static;
+}
+
+.game-similars .slick-slide img {
+    max-height: 300px;
+    height: 26vw;
 }

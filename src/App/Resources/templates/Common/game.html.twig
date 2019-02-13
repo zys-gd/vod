@@ -19,7 +19,7 @@
 
         <div class="game-screenshots w-100">
             {% for gameScreenshot in images %}
-                <img src="{{ gameScreenshot.iconPath }}" alt="Screenshot">
+                <img class="vw-100" src="{{ gameScreenshot.iconPath }}" alt="Screenshot">
             {% endfor %}
         </div>
 
@@ -32,6 +32,7 @@
         </div>
 
         {{ mirrorSeparator.render('Other games', 'my-4') }}
+
         <div class="game-similars w-100">
             {% for similarGame in similarGames %}
                 {{ gameCell.render(similarGame) }}
@@ -44,6 +45,7 @@
     {{ parent() }}
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/slider.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('css/games.css') }}"/>
 {% endblock stylesheets %}
 
@@ -57,6 +59,7 @@
             });
             $('.game-similars').slick({
                 variableWidth: true,
+                rows: 0
             });
 
             $(document).on('click', '.x-game-download-button', function () {
