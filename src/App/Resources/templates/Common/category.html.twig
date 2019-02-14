@@ -6,6 +6,7 @@
 {% import "@App/Components/Blocks/Main/subscription_status.html.twig" as  subscription_status %}
 {% import "@App/Components/player.html.twig" as  player %}
 {% import "@App/Components/Blocks/Footer/menu.html.twig" as  footer_menu %}
+{% import "@App/Components/Blocks/Footer/footer_menu_separator.html.twig" as  footer_menu_separator %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -139,5 +140,6 @@
 
 {% endblock %}
 {% block footer_content %}
+    {{ footer_menu_separator.render() }}
     {{ footer_menu.render() }}
 {% endblock footer_content %}

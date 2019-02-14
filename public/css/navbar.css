@@ -106,10 +106,20 @@ a.nav-item_subitem:hover{
 }
 
 .nav-item.pages-link {
-    border-bottom: 2px solid white;
+
     font-weight: normal;
 
 }
+
+.nav-item.pages-link{
+    border-top: 2px solid white;
+}
+
+.nav-item.pages-link-last{
+    border-top: 2px solid white;
+    border-bottom: 2px solid white;
+}
+
 
 .subnav-item .nav-item_link {
     padding-left: 25px;

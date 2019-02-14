@@ -16,16 +16,18 @@
 
         <ul class="navbar-list">
 
-            <li class="nav-item pages-link">
-                <a class="nav-item_link" href="{{ path('account') }}">
-                    {{ translate('navbar.menu.account') }}
-                </a>
-            </li>
-            <li class="nav-item pages-link">
-                <a class="nav-item_link" href="{{ path('index') }}">
-                    {{ translate('navbar.menu.home') }}
-                </a>
-            </li>
+            <span>
+                <li class="nav-item pages-link">
+                    <a class="nav-item_link" href="{{ path('account') }}">
+                        {{ translate('navbar.menu.account') }}
+                    </a>
+                </li>
+                <li class="nav-item pages-link-last">
+                    <a class="nav-item_link" href="{{ path('index') }}">
+                        {{ translate('navbar.menu.home') }}
+                    </a>
+                </li>
+            </span>
 
             {% for item in getMenuElements() %}
 
@@ -60,23 +62,23 @@
                 </a>
             </li>
 
-            <li class="nav-item pages-link">
-                <a class="nav-item_link" href="{{ path('faq') }}">
-                    {{ translate('navbar.menu.faq') }}
-                </a>
-            </li>
+                <li class="nav-item pages-link">
+                    <a class="nav-item_link" href="{{ path('faq') }}">
+                        {{ translate('navbar.menu.faq') }}
+                    </a>
+                </li>
 
-            <li class="nav-item pages-link">
-                <a class="nav-item_link" href="{{ path('terms_and_conditions') }}">
-                    {{ translate('navbar.menu.terms') }}
-                </a>
-            </li>
+                <li class="nav-item pages-link">
+                    <a class="nav-item_link" href="{{ path('terms_and_conditions') }}">
+                        {{ translate('navbar.menu.terms') }}
+                    </a>
+                </li>
 
-            <li class="nav-item pages-link">
-                <a class="nav-item_link" href="{{ path('contact_us') }}">
-                    {{ translate('navbar.menu.contacts') }}
-                </a>
-            </li>
+                <li class="nav-item pages-link-last">
+                    <a class="nav-item_link" href="{{ path('contact_us') }}">
+                        {{ translate('navbar.menu.contacts') }}
+                    </a>
+                </li>
 
         </ul>
     </div>

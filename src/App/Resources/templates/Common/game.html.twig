@@ -4,6 +4,8 @@
 {% import '@App/Components/Buttons/button.html.twig' as button %}
 {% import "@App/Components/Blocks/Main/game_cell.html.twig" as gameCell %}
 {% import "@App/Components/Blocks/Main/mirror_separator.html.twig" as mirrorSeparator %}
+{% import "@App/Components/Blocks/Footer/footer_menu_separator.html.twig" as  footer_menu_separator %}
+{% import "@App/Components/Blocks/Footer/menu.html.twig" as  footer_menu %}
 
 {% block header_content %}
     {{ header.render(game.title) }}
@@ -40,6 +42,11 @@
         </div>
     </div>
 {% endblock body %}
+
+{% block footer_content %}
+    {{ footer_menu_separator.render() }}
+    {{ footer_menu.render() }}
+{% endblock footer_content %}
 
 {% block stylesheets %}
     {{ parent() }}

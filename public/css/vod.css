@@ -335,3 +335,15 @@ body{
 .copyright{
     text-align: center;
 }
+
+.footer_menu_separator{
+    margin-bottom: 15px;
+}
+
+.footer_menu_separator .separator_right{
+    margin-right: 0;
+    margin-left: auto;
+}
+.footer_menu_separator .separator_left{
+    margin-left: 0;
+}

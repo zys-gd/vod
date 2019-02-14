@@ -79,12 +79,12 @@ class GamesController extends AbstractController implements AppControllerInterfa
         ExcludedGamesProvider $excludedGamesProvider
     )
     {
-        $this->gameRepository = $gameRepository;
-        $this->gameSerializer = $gameSerializer;
-        $this->gameBuildRepository = $gameBuildRepository;
-        $this->drmApkProvider = $drmApkProvider;
-        $this->extractor = $extractor;
-        $this->gameImagesSerializer = $gameImagesSerializer;
+        $this->gameRepository        = $gameRepository;
+        $this->gameSerializer        = $gameSerializer;
+        $this->gameBuildRepository   = $gameBuildRepository;
+        $this->drmApkProvider        = $drmApkProvider;
+        $this->extractor             = $extractor;
+        $this->gameImagesSerializer  = $gameImagesSerializer;
         $this->excludedGamesProvider = $excludedGamesProvider;
     }
 
@@ -97,9 +97,11 @@ class GamesController extends AbstractController implements AppControllerInterfa
     public function showCategoryContentAction()
     {
 
-        $games = $this->gameRepository->findBatchOfGames();
+        $games = $this->gameRepository->findBatchOfGames(0, 8);
 
-        return $this->render('@App/Common/game_category_content.html.twig', ['games' => array_slice($games, 0, 4)]);
+        return $this->render('@App/Common/game_category_content.html.twig', [
+            'games' => $games
+        ]);
 
 
     }
@@ -119,8 +121,8 @@ class GamesController extends AbstractController implements AppControllerInterfa
         /** @var GameImage[] $images */
         $images = $this->gameImagesSerializer->serializeGameImages($game->getImages()->getValues());
 
-        $excluded = $this->excludedGamesProvider->get();
-        $similarGames = $this->gameRepository->getSimilarGames($game, $excluded);
+        $excluded      = $this->excludedGamesProvider->get();
+        $similarGames  = $this->gameRepository->getSimilarGames($game, $excluded);
         $aSimilarGames = [];
 
         foreach ($similarGames ?? [] as $similarGame) {
@@ -128,8 +130,8 @@ class GamesController extends AbstractController implements AppControllerInterfa
         }
 
         return $this->render('@App/Common/game.html.twig', [
-            'game' => $this->gameSerializer->serializeGame($game),
-            'images' => $images,
+            'game'         => $this->gameSerializer->serializeGame($game),
+            'images'       => $images,
             'similarGames' => $aSimilarGames
         ]);
     }
@@ -145,7 +147,7 @@ class GamesController extends AbstractController implements AppControllerInterfa
     {
         $offset = $request->get('offset', 0);
 
-        $games = $this->gameRepository->findBatchOfGames((int)$offset, 4);
+        $games = $this->gameRepository->findBatchOfGames((int)$offset, 8);
 
         $serializedData = [];
 
@@ -154,8 +156,8 @@ class GamesController extends AbstractController implements AppControllerInterfa
         }
 
         return new JsonResponse([
-            'games' => $serializedData,
-            'isLast' => count($games) < 4
+            'games'  => $serializedData,
+            'isLast' => count($games) < 8
         ]);
     }
 
