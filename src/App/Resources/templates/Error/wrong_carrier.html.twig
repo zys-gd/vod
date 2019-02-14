@@ -5,7 +5,9 @@
 
     <form method="post" action="{{ 'whoops' }}">
         <input type="text" name="carrier">
-        <button>Submit</button>
+        <button>
+            {{ translate('buttons.submit') }}
+        </button>
     </form>
 
 {% endblock %}
