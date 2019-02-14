@@ -11,6 +11,7 @@ namespace App\Controller;
 
 use App\CarrierTemplate\TemplateConfigurator;
 use App\Domain\Entity\UploadedVideo;
+use App\Domain\Repository\CountryCategoryPriorityOverrideRepository;
 use App\Domain\Repository\GameRepository;
 use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\UploadedVideoRepository;
@@ -46,27 +47,35 @@ class HomeController extends AbstractController implements ControllerWithISPDete
     private $gameRepository;
 
     /**
+     * @var CountryCategoryPriorityOverrideRepository
+     */
+    private $categoryOverrideRepository;
+
+    /**
      * HomeController constructor.
      *
      * @param CarrierRepositoryInterface $carrierRepository
-     * @param TemplateConfigurator       $templateConfigurator
-     * @param MainCategoryRepository     $mainCategoryRepository
-     * @param UploadedVideoRepository    $videoRepository
-     * @param GameRepository             $gameRepository
+     * @param TemplateConfigurator $templateConfigurator
+     * @param MainCategoryRepository $mainCategoryRepository
+     * @param UploadedVideoRepository $videoRepository
+     * @param GameRepository $gameRepository
+     * @param CountryCategoryPriorityOverrideRepository $categoryOverrideRepository
      */
     public function __construct(
         CarrierRepositoryInterface $carrierRepository,
         TemplateConfigurator $templateConfigurator,
         MainCategoryRepository $mainCategoryRepository,
         UploadedVideoRepository $videoRepository,
-        GameRepository $gameRepository
+        GameRepository $gameRepository,
+        CountryCategoryPriorityOverrideRepository $categoryOverrideRepository
     )
     {
-        $this->carrierRepository      = $carrierRepository;
-        $this->templateConfigurator   = $templateConfigurator;
-        $this->mainCategoryRepository = $mainCategoryRepository;
-        $this->videoRepository        = $videoRepository;
-        $this->gameRepository         = $gameRepository;
+        $this->carrierRepository          = $carrierRepository;
+        $this->templateConfigurator       = $templateConfigurator;
+        $this->mainCategoryRepository     = $mainCategoryRepository;
+        $this->videoRepository            = $videoRepository;
+        $this->gameRepository             = $gameRepository;
+        $this->categoryOverrideRepository = $categoryOverrideRepository;
     }
 
 
@@ -80,6 +89,7 @@ class HomeController extends AbstractController implements ControllerWithISPDete
     {
         $carrier = $this->carrierRepository->findOneByBillingId($data->getCarrierId());
         $videos  = $this->videoRepository->findWithCategories();
+        $categoryOverrides = $this->categoryOverrideRepository->findByBillingCarrierId($data->getCarrierId());
 
         $categories     = [];
         $categoryVideos = [];
