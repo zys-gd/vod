@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     {% endblock metatags %}
 
-    {% block stylesheets %}
+    {% block stylesheets deferred %}
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
               integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
               crossorigin="anonymous"/>
@@ -29,11 +29,13 @@
               sizes="160x160">
         <link rel="icon" type="image/png" href="{{ asset('/img/favicon/favicon192.png') }}"
               sizes="192x192">
+
+        {{ compileCss()|raw }}
     {% endblock stylesheets %}
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" type="text/javascript"></script>
 
-    {% block javascripts %}
+    {% block javascripts deferred %}
 
         <script type="text/javascript"
                 src="https://cdnjs.cloudflare.com/ajax/libs/cloudinary-core/2.3.0/cloudinary-core-shrinkwrap.js"></script>
@@ -48,6 +50,7 @@
         <script type="text/javascript"
                 src="{{ asset('js/common.js') }}"></script>
 
+        {{ compileJs()|raw }}
     {% endblock %}
 </head>
 

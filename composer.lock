@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "696043dc29a9735b2902eaf4ad7cf79e",
+    "content-hash": "c1e639b7064f2cd13e47b7904086093a",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -3114,6 +3114,49 @@
                 "service proxies"
             ],
             "time": "2018-09-27T13:45:01+00:00"
+        },
+        {
+            "name": "phive/twig-extensions-deferred",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rybakit/twig-deferred-extension.git",
+                "reference": "b71cb53ad05a1a11b9f88e4d46e844389887a16f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rybakit/twig-deferred-extension/zipball/b71cb53ad05a1a11b9f88e4d46e844389887a16f",
+                "reference": "b71cb53ad05a1a11b9f88e4d46e844389887a16f",
+                "shasum": ""
+            },
+            "require": {
+                "twig/twig": "^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Phive\\Twig\\Extensions\\Deferred\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Eugene Leonovich",
+                    "email": "gen.work@gmail.com"
+                }
+            ],
+            "description": "An extension for Twig that allows to defer block rendering",
+            "homepage": "https://github.com/rybakit/twig-extensions-deferred",
+            "keywords": [
+                "defer",
+                "extension",
+                "lazy",
+                "twig"
+            ],
+            "time": "2017-03-17T22:46:53+00:00"
         },
         {
             "name": "piwik/piwik-php-tracker",
