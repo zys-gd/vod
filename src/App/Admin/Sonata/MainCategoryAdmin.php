@@ -11,6 +11,9 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
+/**
+ * Class MainCategoryAdmin
+ */
 class MainCategoryAdmin extends AbstractAdmin
 {
     /**

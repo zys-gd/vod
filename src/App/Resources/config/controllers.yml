@@ -23,6 +23,7 @@ services:
             - '@App\Domain\Repository\MainCategoryRepository'
             - '@App\Domain\Repository\UploadedVideoRepository'
             - '@App\Domain\Repository\GameRepository'
+            - '@App\Domain\Repository\CountryCategoryPriorityOverrideRepository'
 
     App\Controller\LPController:
         arguments: ['@SubscriptionBundle\Repository\SubscriptionPackRepository', '@IdentificationBundle\Repository\CarrierRepositoryInterface']

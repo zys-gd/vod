@@ -42,3 +42,8 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - App\Domain\Entity\GameBuild
+
+    App\Domain\Repository\CountryCategoryPriorityOverrideRepository:
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - App\Domain\Entity\CountryCategoryPriorityOverride

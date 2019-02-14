@@ -1,0 +1,29 @@
+App\Domain\Entity\CountryCategoryPriorityOverride:
+    type: entity
+    repositoryClass: App\Domain\Repository\CountryCategoryPriorityOverrideRepository
+    table: country_category_priority_overrides
+    id:
+        uuid:
+            type: guid
+    fields:
+        menuPriority:
+            type: integer
+            length: 3
+            options:
+                default: 0
+
+    manyToOne:
+        mainCategory:
+            targetEntity: App\Domain\Entity\MainCategory
+            inversedBy: null
+            orphanRemoval: true
+            joinColumn:
+                name: main_category_id
+                referencedColumnName: uuid
+        country:
+            targetEntity: App\Domain\Entity\Country
+            inversedBy: null
+            orphanRemoval: true
+            joinColumn:
+                name: country_id
+                referencedColumnName: uuid

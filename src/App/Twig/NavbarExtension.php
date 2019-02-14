@@ -1,48 +1,70 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 30.01.19
- * Time: 18:20
- */
 
 namespace App\Twig;
 
-
 use App\Domain\Entity\MainCategory;
+use App\Domain\Repository\CountryCategoryPriorityOverrideRepository;
 use App\Domain\Repository\MainCategoryRepository;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\RouterInterface;
+use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 
+/**
+ * Class NavbarExtension
+ */
 class NavbarExtension extends \Twig_Extension
 {
     /**
      * @var MainCategoryRepository
      */
     private $mainCategoryRepository;
+
     /**
      * @var RouterInterface
      */
     private $router;
 
+    /**
+     * @var Session
+     */
+    private $session;
 
     /**
-     * NavbarExtension constructor.
-     * @param MainCategoryRepository $mainCategoryRepository
+     * @var CountryCategoryPriorityOverrideRepository
      */
-    public function __construct(MainCategoryRepository $mainCategoryRepository, RouterInterface $router)
-    {
+    private $categoryPriorityOverrideRepository;
+
+    /**
+     * NavbarExtension constructor
+     *
+     * @param MainCategoryRepository $mainCategoryRepository
+     * @param RouterInterface $router
+     * @param Session $session
+     * @param CountryCategoryPriorityOverrideRepository $categoryPriorityOverrideRepository
+     */
+    public function __construct(
+        MainCategoryRepository $mainCategoryRepository,
+        RouterInterface $router,
+        Session $session,
+        CountryCategoryPriorityOverrideRepository $categoryPriorityOverrideRepository
+    ) {
         $this->mainCategoryRepository = $mainCategoryRepository;
         $this->router                 = $router;
+        $this->session                = $session;
+        $this->categoryPriorityOverrideRepository = $categoryPriorityOverrideRepository;
     }
 
     public function getFunctions()
     {
         return [
             new \Twig_SimpleFunction('getMenuElements', function () {
-
                 /** @var MainCategory[] $categories */
                 $categories = $this->mainCategoryRepository->findWithSubcategories();
 
+                $ispData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
+                $categoryOverrides = $this
+                    ->categoryPriorityOverrideRepository
+                    ->findByBillingCarrierId($ispData['carrier_id']);
 
                 usort($categories, function (MainCategory $a, MainCategory $b) {
                     return $a->getMenuPriority() - $b->getMenuPriority();
