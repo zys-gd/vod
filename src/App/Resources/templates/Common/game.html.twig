@@ -14,12 +14,12 @@
         <img class="img-fluid" src="{{ game.iconPath }}" alt="{{ game.title }}"/>
 
         <div class="d-flex justify-content-center my-4-5 w-100 x-game-element" data-uuid="{{ game.uuid }}">
-            {{ button.render('Download', 'game-download-button x-game-download-button') }}
+            {{ button.render(translate('buttons.download'), 'game-download-button x-game-download-button') }}
         </div>
 
         <div class="game-screenshots w-100">
             {% for gameScreenshot in images %}
-                <img class="vw-100" src="{{ gameScreenshot.iconPath }}" alt="Screenshot">
+                <img class="img-fluid" src="{{ gameScreenshot.iconPath }}" alt="Screenshot">
             {% endfor %}
         </div>
 
@@ -28,10 +28,10 @@
         </div>
 
         <div class="d-flex justify-content-center my-4-5 x-game-element" data-uuid="{{ game.uuid }}">
-            {{ button.render('Download', 'game-download-button x-game-download-button') }}
+            {{ button.render(translate('buttons.download'), 'game-download-button x-game-download-button') }}
         </div>
 
-        {{ mirrorSeparator.render('Other games', 'my-4') }}
+        {{ mirrorSeparator.render(translate('game.other_games'), 'my-4') }}
 
         <div class="game-similars w-100">
             {% for similarGame in similarGames %}
@@ -81,7 +81,7 @@
                         if (data.url) {
                             window.location = data.url;
                         }else{
-                            alert('Internal error. Please try again later')
+                            showPopup('Internal error. Please try again later')
                         }
                     }
                 })

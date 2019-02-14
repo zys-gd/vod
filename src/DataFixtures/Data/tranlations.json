@@ -648,6 +648,24 @@
         "carrier": null
     },
     {
+        "uuid": "e2dd899e-52e1-4ae6-a790-aec69d417cf8",
+        "key": "buttons.unsubscribe",
+        "translation": "Unsubscribe",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "93f9441c-431d-4640-913a-b853c0434f5f",
+        "key": "buttons.submit",
+        "translation": "Submit",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
         "uuid": "c4a1eb00-b547-47e6-8cb5-61901c4e9585",
         "key": "subscription.status.not_subscribe",
         "translation": "You are not subscribed to 100% sport",
@@ -819,5 +837,113 @@
         "carrier": {
             "uuid": "5142f9ec-ebd4-11e8-95c4-02bb250f0f22"
         }
+    },
+    {
+        "uuid": "9a6d587b-2e37-44c4-97e2-de1d0468100b",
+        "key": "category.title",
+        "translation": "Category",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "d9d04d54-27b5-4b6c-8f0e-8dcfd0d6c58e",
+        "key": "category.related_videos",
+        "translation": "Related videos",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "531fd5e3-3b40-4ef7-8c16-c4787ba43415",
+        "key": "game.other_games",
+        "translation": "Other games",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "cc05ea7c-c85f-48cd-9bb9-3c6ee7abc5a8",
+        "key": "navbar.menu.home",
+        "translation": "Home",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "abe837b2-931a-4ced-ab9b-0c06d29d6b1e",
+        "key": "navbar.menu.account",
+        "translation": "My account",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "5d9880ef-e0c0-4e91-849d-05f004691e17",
+        "key": "navbar.menu.sport_games",
+        "translation": "Sport Games",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "47714839-055a-48d5-95e5-69720799649b",
+        "key": "navbar.menu.faq",
+        "translation": "FAQ",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "3150b8ed-b83b-4b0a-b299-a8bed84692b2",
+        "key": "navbar.menu.terms",
+        "translation": "Terms and Conditions",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "f29952e4-f844-4f33-98e3-2ff3b41cea8d",
+        "key": "navbar.menu.contacts",
+        "translation": "Contact Us",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "0b11e42d-8f76-4dd8-a612-73be7c478f99",
+        "key": "player.related_videos",
+        "translation": "Related videos",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "2f92fb89-b3e0-49db-a915-3a40b5a1984f",
+        "key": "player.close",
+        "translation": "Close",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "013a2e6c-75e6-45b4-be69-55293759e5d9",
+        "key": "wros",
+        "translation": "Sorry, 100% Sport Videos is available only for Android Devices",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
     }
 ]
