@@ -18,8 +18,6 @@ App\Domain\Entity\Game:
             type: string
         thumbnail:
             type: string
-        tags:
-            type: integer
         rating:
             type: integer
         published:

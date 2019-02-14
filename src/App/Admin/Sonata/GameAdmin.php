@@ -257,12 +257,6 @@ class GameAdmin extends AbstractAdmin
                 'label' => static::RATING_FIELD_LABEL,
                 'choices' => Game::getAvailableRatings()
             ])
-            //todo refactor tags displaying and fetching from entity
-//            ->add('tags', ChoiceType::class, [
-//                'label' => static::TAGS_FIELD_LABEL,
-//                'multiple' => true,
-//                'choices' => Game::getAvailableTags()
-//            ])
             ->add('builds', null, [
                 'label' => static::BUILDS_FIELD_LABEL
             ])
@@ -376,13 +370,6 @@ class GameAdmin extends AbstractAdmin
                 'placeholder' => 'Select rating',
                 'label' => static::RATING_FIELD_LABEL,
                 'choices' => Game::getAvailableRatings(true)
-            ])
-            ->add('tags', ChoiceType::class, [
-                'required' => false,
-                'label' => static::TAGS_FIELD_LABEL,
-                'multiple' => true,
-                'choices' => Game::getAvailableTags(true),
-                'placeholder' => 'Select tags'
             ])
             ->add('published', null, [
                 'label' => static::PUBLISHED_FIELD_LABEL,

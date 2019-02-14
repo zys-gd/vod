@@ -20,18 +20,6 @@ class Game implements HasUuid
     const RESOURCE_POSTERS = 'images/game_icons';
 
     /**
-     * Constants used for different types of tags which can be applied to games
-     */
-    const TAG_TYPE_NEW = 1;
-    const TAG_TYPE_HOT = 2;
-
-    /**
-     * Constants used to determine the name of the tags which are used in the admin panel
-     */
-    const TAG_NAME_NEW = 'New';
-    const TAG_NAME_HOT = 'Hot';
-
-    /**
      * Constants used for different types of ratings which can be applied to games
      */
     const RATING_TYPE_2_STARS = 2;
@@ -63,11 +51,6 @@ class Game implements HasUuid
      * @var boolean
      */
     private $published = true;
-
-    /**
-     * @var integer
-     */
-    private $tags = 0;
 
     /**
      * @var integer
@@ -153,22 +136,6 @@ class Game implements HasUuid
      * @var Boolean
      */
     private $isBookmark = false;
-
-    /**
-     * Returns a list with all available tags
-     *
-     * @param bool $flip
-     * @return array
-     */
-    public static function getAvailableTags($flip = false)
-    {
-        $tags = [
-            Game::TAG_TYPE_NEW => Game::TAG_NAME_NEW,
-            Game::TAG_TYPE_HOT => Game::TAG_NAME_HOT
-        ];
-
-        return $flip ? array_flip($tags) : $tags;
-    }
 
     /**
      * Returns a list with all available ratings
@@ -644,58 +611,6 @@ class Game implements HasUuid
     public function getDeletedAt()
     {
         return $this->deletedAt;
-    }
-
-    /**
-     * Set tags
-     *
-     * @param integer $tags
-     *
-     * @return Game
-     */
-    public function setTags($tags)
-    {
-        if (is_array($tags)) {
-
-            $sum = 0;
-
-            foreach ($tags as $tag) {
-                $sum |= $tag;
-            }
-
-            $tags = $sum;
-        }
-
-        if (is_null($tags)) {
-
-            $tags = 0;
-        }
-
-        $this->tags = $tags;
-
-        return $this;
-    }
-
-    /**
-     * Get tags
-     *
-     * @return array
-     */
-    public function getTags()
-    {
-        $gameTags = [];
-        $availableTags = static::getAvailableTags();
-
-        foreach ($availableTags as $tagType => $tagName) {
-
-            if (!($this->tags & $tagType)) {
-                continue;
-            }
-
-            $gameTags[$tagName] = $tagType;
-        }
-
-        return $gameTags;
     }
 
     /**

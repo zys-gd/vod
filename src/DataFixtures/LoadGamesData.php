@@ -36,7 +36,6 @@ class LoadGamesData extends AbstractFixture implements ContainerAwareInterface, 
             $description = $row['description'];
             $icon        = $row['icon'];
             $thumbnail   = $row['thumbnail'];
-            $tags        = $row['tags'];
             $rating      = $row['rating'];
             $published   = $row['published'];
             $created     = $row['created'];
@@ -52,7 +51,6 @@ class LoadGamesData extends AbstractFixture implements ContainerAwareInterface, 
             $game->setDescription($description);
             $game->setIcon($icon);
             $game->setThumbnail($thumbnail);
-            $game->setTags($tags);
             $game->setRating($rating);
             $game->setPublished($published);
             $game->setCreated(new \DateTimeImmutable($created));
