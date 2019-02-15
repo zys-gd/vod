@@ -1,0 +1,170 @@
+<div class="row" style="margin-top: 20px;">
+    <div class="col-lg-12">
+        {% if nonexistentUsers %}
+            <div class="alert alert-danger">
+                Cannot find the msisdns:
+
+                {% for nonexistingUser in nonexistentUsers %}
+                    {{ nonexistingUser }},
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-success">
+                All msisdns were successfully found!
+            </div>
+        {% endif %}
+    </div>
+</div>
+<div class="row" style="margin-bottom: 20px">
+    <div class="col-lg-4">
+        <a class="btn btn-info" href="{{ admin.generateUrl('create') }}">Back</a>
+    </div>
+    <div class="col-lg-8 text-right">
+        <a class="btn btn-info" href="#">Download excel</a>
+        <a class="btn btn-info" href="{{ admin.generateUrl('downloadCsv') }}" id="download-csv">Download csv</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box box-primary">
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-bordered table-striped sonata-ba-list">
+                    <thead>
+                    {% for header in tableHeaders %}
+                        <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
+                            {{ header }}
+                        </th>
+                    {% endfor %}
+                    {% for msisdn, user in users %}
+                        <tr data-msisdn="{{ msisdn }}">
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {% if user['user'] %}
+                                    {{ user['user'] }}
+                                {% endif %}
+                            </td>
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {% if user['ip'] %}
+                                    {{ user['ip'] }}
+                                {% endif %}
+                            </td>
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {% if user['device_info'] %}
+                                    {{ user['device_info'] }}
+                                {% endif %}
+                            </td>
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {% if user['aff_id'] %}
+                                    {{ user['aff_id'] }}
+                                {% endif %}
+                            </td>
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {% if user['aff_name'] %}
+                                    {{ user['aff_name'] }}
+                                {% endif %}
+                            </td>
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {% if user['campaign_id'] %}
+                                    {{ user['campaign_id'] }}
+                                {% endif %}
+                            </td>
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {% if user['campaign_name'] %}
+                                    {{ user['campaign_name'] }}
+                                {% endif %}
+                            </td>
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {% if user['campaignParams'] %}
+                                    {{ user['campaignParams'] }}
+                                {% endif %}
+                            </td>
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {% if user['url'] %}
+                                    {{ user['url'] }}
+                                {% endif %}
+                            </td>
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {% if user['subscription_date'] %}
+                                    {{ user['subscription_date']|date }}
+                                {% endif %}
+                            </td>
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {% if user['subscription_attempts'] %}
+                                    {{ user['subscription_attempts'] }}
+                                {% endif %}
+                            </td>
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {% if user['unsubscription_date'] %}
+                                    {{ user['unsubscription_date']|date }}
+                                {% endif %}
+                            </td>
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {% if user['resubs_attempts'] %}
+                                    {{ user['resubs_attempts'] }}
+                                {% endif %}
+                            </td>
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {% if user['gameDownloadCount'] %}
+                                    {{ user['gameDownloadCount'] }}
+                                {% endif %}
+                            </td>
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {% if user['gamesInfo'] %}
+                                    {% for item in user['gamesInfo'] %}
+                                        {{ item }} <br/>
+                                    {% endfor %}
+                                {% endif %}
+                            </td>
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {% if user['charges_successful_no'] %}
+                                    {{ user['charges_successful_no'] }}
+                                {% endif %}
+                            </td>
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {% if user['charges_successful_value'] %}
+                                    {{ user['charges_successful_value'] }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var userMsisdns = [];
+
+        $('tr[data-msisdn]').each(function() {
+            userMsisdns.push($(this).attr('data-msisdn'));
+        });
+
+        $('#download-csv').click(function(event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: $(this).attr('href'),
+                method: 'POST',
+                data: {
+                    msisnds: userMsisdns
+                },
+                success: function(response) {
+                    var blob = new Blob([response], {type: 'text/csv'});
+                    var reader = new FileReader();
+
+                    reader.onload = function (event) {
+                        var anchor = document.createElement('a');
+                        anchor.href = event.target.result;
+                        anchor.download = 'image.csv';
+                        anchor.click();
+                    };
+
+                    reader.readAsDataURL(blob);
+                }
+            })
+        });
+
+        console.log(userMsisdns);
+    })
+</script>
