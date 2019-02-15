@@ -59,21 +59,23 @@ class NavbarExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('getMenuElements', function () {
+                /** @var MainCategory[] $categories */
+                $categories = $this->mainCategoryRepository->findWithSubcategories();
+
                 $ispData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
                 $categoryOverrides = $this
                     ->categoryPriorityOverrideRepository
                     ->findByBillingCarrierId($ispData['carrier_id']);
 
-                /** @var MainCategory[] $categories */
                 if (!empty($categoryOverrides)) {
-                    $categories = array_map(function (CountryCategoryPriorityOverride $categoryOverride) {
+                    $mainCategoryOverride = array_map(function (CountryCategoryPriorityOverride $categoryOverride) {
                         $mainCategory = $categoryOverride->getMainCategory();
                         $mainCategory->setMenuPriority($categoryOverride->getMenuPriority());
 
                         return $mainCategory;
                     }, $categoryOverrides);
-                } else {
-                    $categories = $this->mainCategoryRepository->findWithSubcategories();
+
+                    $categories = array_unique(array_merge($mainCategoryOverride, $categories), SORT_STRING);
                 }
 
                 usort($categories, function (MainCategory $a, MainCategory $b) {
