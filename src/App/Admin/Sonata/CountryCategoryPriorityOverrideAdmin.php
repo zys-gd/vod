@@ -68,6 +68,7 @@ class CountryCategoryPriorityOverrideAdmin extends AbstractAdmin
                 'actions' => [
                     'show' => [],
                     'edit' => [],
+                    'delete' => []
                 ]
             ]);
     }
