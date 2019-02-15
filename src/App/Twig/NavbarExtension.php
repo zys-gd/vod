@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use App\Domain\Entity\CountryCategoryPriorityOverride;
 use App\Domain\Entity\MainCategory;
 use App\Domain\Repository\CountryCategoryPriorityOverrideRepository;
 use App\Domain\Repository\MainCategoryRepository;
@@ -58,13 +59,22 @@ class NavbarExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('getMenuElements', function () {
-                /** @var MainCategory[] $categories */
-                $categories = $this->mainCategoryRepository->findWithSubcategories();
-
                 $ispData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
                 $categoryOverrides = $this
                     ->categoryPriorityOverrideRepository
                     ->findByBillingCarrierId($ispData['carrier_id']);
+
+                /** @var MainCategory[] $categories */
+                if (!empty($categoryOverrides)) {
+                    $categories = array_map(function (CountryCategoryPriorityOverride $categoryOverride) {
+                        $mainCategory = $categoryOverride->getMainCategory();
+                        $mainCategory->setMenuPriority($categoryOverride->getMenuPriority());
+
+                        return $mainCategory;
+                    }, $categoryOverrides);
+                } else {
+                    $categories = $this->mainCategoryRepository->findWithSubcategories();
+                }
 
                 usort($categories, function (MainCategory $a, MainCategory $b) {
                     return $a->getMenuPriority() - $b->getMenuPriority();
