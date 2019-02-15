@@ -1,0 +1,132 @@
+[
+    {
+        "uuid": "12b73823-b52a-490f-af44-58058a18550a",
+        "menuPriority": 6,
+        "mainCategory": {
+            "uuid": "74558a73-902b-46cc-ab90-48a104585d38"
+        },
+        "country": {
+            "uuid": "510447c2-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "261b60d0-18dd-4d39-9c0c-06c49006dc96",
+        "menuPriority": 4,
+        "mainCategory": {
+            "uuid": "dbeb8e19-ea7f-4443-970d-b113ecf819d9"
+        },
+        "country": {
+            "uuid": "510447c2-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "48cdfeed-e00c-4944-8bb1-20cd405becee",
+        "menuPriority": 5,
+        "mainCategory": {
+            "uuid": "bb215764-2aad-4ca5-83cf-78f841a230e8"
+        },
+        "country": {
+            "uuid": "510447c2-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "662921f6-2d35-49f0-924c-83af4f8eea6e",
+        "menuPriority": 8,
+        "mainCategory": {
+            "uuid": "d25f4027-8e25-400b-8e44-cc4dc39fg52f"
+        },
+        "country": {
+            "uuid": "510447c2-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "9046c131-c89a-4c9e-be06-301ca8165d9d",
+        "menuPriority": 2,
+        "mainCategory": {
+            "uuid": "ab6ad264-bd64-4fd0-9010-9c8e503a1ad3"
+        },
+        "country": {
+            "uuid": "510447c2-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "b0ac3b21-6198-419e-ac56-8f3b16181d12",
+        "menuPriority": 3,
+        "mainCategory": {
+            "uuid": "51d606c2-ab33-44ec-8098-05994b0e75e5"
+        },
+        "country": {
+            "uuid": "510447c2-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "b3a84058-2d7e-4f8d-b2d9-4f9aab8192d0",
+        "menuPriority": 13,
+        "mainCategory": {
+            "uuid": "e14034f0-ac4d-4925-94d4-cbf9d61fae93"
+        },
+        "country": {
+            "uuid": "510447c2-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "c49d23c3-c7ee-4dbb-aa23-97ee29a2744e",
+        "menuPriority": 1,
+        "mainCategory": {
+            "uuid": "986e13fa-9dfe-42e6-92f2-2cff6f60b42e"
+        },
+        "country": {
+            "uuid": "510447c2-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "c72e4f86-9a60-4a4d-9e5f-28a6e019a63e",
+        "menuPriority": 7,
+        "mainCategory": {
+            "uuid": "f49a555c-d10e-45c6-a6cb-de09cb59658f"
+        },
+        "country": {
+            "uuid": "510447c2-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "cdd0e12b-8788-4b9f-b2f7-a2a6533ce857",
+        "menuPriority": 12,
+        "mainCategory": {
+            "uuid": "70b66027-8e25-400b-8e44-cc4dc399f350"
+        },
+        "country": {
+            "uuid": "510447c2-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "e8afaab7-0d45-425a-a118-3f0d3a7fe2f6",
+        "menuPriority": 10,
+        "mainCategory": {
+            "uuid": "4ec02ca3-779f-454a-8280-f59cd9600c2a"
+        },
+        "country": {
+            "uuid": "510447c2-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "f0dd6c44-8246-4eb9-aab9-bb76630b91cb",
+        "menuPriority": 9,
+        "mainCategory": {
+            "uuid": "15157409-49a4-4823-a7f9-654ac1d7c12f"
+        },
+        "country": {
+            "uuid": "510447c2-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "fdd7d867-e56f-4b3d-a8ee-de486d57a385",
+        "menuPriority": 11,
+        "mainCategory": {
+            "uuid": "244b3d58-fb86-4ba1-b221-9a0f3916306d"
+        },
+        "country": {
+            "uuid": "510447c2-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    }
+]

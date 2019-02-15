@@ -21,7 +21,7 @@
 
         <div class="game-screenshots w-100">
             {% for gameScreenshot in images %}
-                <img class="img-fluid" src="{{ gameScreenshot.iconPath }}" alt="Screenshot">
+                <img class="w-auto h-auto max-vw-75 screenshot-img" src="{{ gameScreenshot.iconPath }}" alt="Screenshot">
             {% endfor %}
         </div>
 

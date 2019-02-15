@@ -88,6 +88,14 @@
         "alias": "top_others_videos"
     },
     {
+        "uuid": "123sdf69-49a4-4823-a7f9-574ac1fdf458",
+        "title": "Top winter sport videos",
+        "parent": {
+            "uuid": "d25f4027-8e25-400b-8e44-cc4dc39fg52f"
+        },
+        "alias": "top_others_videos"
+    },
+    {
         "uuid": "541d47f69-49a4-4823-a7f9-574ac1fl4hd",
         "title": "Top extreme sport videos",
         "alias": "top_extreme_sports_videos",

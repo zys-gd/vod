@@ -2,10 +2,12 @@
 
 namespace App\Domain\Entity;
 
+use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
+
 /**
  * Class CountryCategoryPriorityOverride
  */
-class CountryCategoryPriorityOverride
+class CountryCategoryPriorityOverride implements HasUuid
 {
     /**
      * @var string
@@ -43,6 +45,18 @@ class CountryCategoryPriorityOverride
     public function getUuid(): string
     {
         return $this->uuid;
+    }
+
+    /**
+     * @param string $uuid
+     *
+     * @return CountryCategoryPriorityOverride
+     */
+    public function setUuid(string $uuid): self
+    {
+        $this->uuid = $uuid;
+
+        return $this;
     }
 
     /**

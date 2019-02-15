@@ -51,6 +51,20 @@ a button {
     margin-top: 2rem;
 }
 
+
+.max-vw-100 {
+    max-width: 100vw !important;
+}
+.max-vw-75 {
+    max-width: 75vw !important;
+}
+.max-vw-50 {
+    max-width: 50vw !important;
+}
+.max-vw-25 {
+    max-width: 25vw !important;
+}
+
 .footer-menu {
     z-index: -1;
 }
