@@ -112,12 +112,15 @@ a.nav-item_subitem:hover{
 }
 
 .nav-item.pages-link{
+    font-weight: normal;
     border-top: 2px solid white;
 }
 
 .nav-item.pages-link-last{
     border-top: 2px solid white;
     border-bottom: 2px solid white;
+    font-weight: normal;
+
 }
 
 

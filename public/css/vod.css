@@ -50,8 +50,9 @@ a button {
     margin-bottom: 2rem;
     margin-top: 2rem;
 }
-.footer-menu {
 
+.footer-menu {
+    z-index: -1;
 }
 
 .red {
