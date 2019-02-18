@@ -27,15 +27,25 @@ class RefundService
     private $billingClientApi;
 
     /**
+     * @var ReportingToolService
+     */
+    private $reportingToolService;
+
+    /**
      * RefundService constructor
      *
      * @param EntityManager $entityManager
      * @param Client $billingClientApi
+     * @param ReportingToolService $reportingToolService
      */
-    public function __construct(EntityManager $entityManager, Client $billingClientApi)
-    {
+    public function __construct(
+        EntityManager $entityManager,
+        Client $billingClientApi,
+        ReportingToolService $reportingToolService
+    ) {
         $this->entityManager = $entityManager;
         $this->billingClientApi = $billingClientApi;
+        $this->reportingToolService = $reportingToolService;
     }
 
     /**
@@ -138,7 +148,14 @@ class RefundService
             ->findOneBy(['user' => $user]);
 
         if (!empty($subscription)) {
-            $processes = $this->getDataFromReportingTool($user);
+            $reportingToolsResponse = $this->reportingToolService->getUsersStatsWithCharges($user);
+
+            if ($reportingToolsResponse && !empty($reportingToolsResponse['data']['charges_successful'])) {
+                foreach ($reportingToolsResponse['data']['charges_successful'] as $chargeData){
+                    $processes[] = $chargeData['process'];
+                }
+            }
+
             $refundRepository = $this->entityManager->getRepository(Refund::class);
 
             $userRefunds = $refundRepository->findBy(['user' => $user, 'status' => Refund::STATUS_SUCCESSFUL]);
@@ -155,43 +172,5 @@ class RefundService
         }
 
         return [array_diff($processes, $successful, $waiting), $waiting];
-    }
-
-    /**
-     * @param User $user
-     *
-     * @return array
-     */
-    private function getDataFromReportingTool(User $user): array
-    {
-        $url = 'http://stage.reporting.playwing.com/a/api/stats/userstats_withcharges/'
-            . $user->getCarrier()->getBillingCarrierId()
-            . '/';
-        $key = sha1(date("Y") . $user->getIdentifier() . date("d"));
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, [
-            CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_URL => $url,
-            CURLOPT_POSTFIELDS => ['msisdn' => $user->getIdentifier()]
-        ]);
-
-        curl_setopt($curl, CURLOPT_HTTPHEADER, [
-            'X-REVERSE-KEY: ' . $key,
-        ]);
-
-        $response = json_decode(curl_exec($curl), true);
-        curl_close($curl);
-
-        $processList = [];
-
-        if ($response && !empty($response['data']['charges_successful'])) {
-            foreach ($response['data']['charges_successful'] as $chargeData){
-                $processList[] = $chargeData['process'];
-            }
-        }
-
-        return $processList;
     }
 }

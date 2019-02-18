@@ -79,3 +79,9 @@ services:
             - '@form.factory'
             - '@SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber'
             - '@SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
+
+    SubscriptionBundle\Admin\Controller\ComplaintsAdminController:
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@form.factory'
+            - '@SubscriptionBundle\Service\ReportingToolService'

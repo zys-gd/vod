@@ -2,10 +2,14 @@
 
 namespace IdentificationBundle\Entity;
 
-
+/**
+ * Class User
+ */
 class User
 {
-
+    /**
+     * @var string
+     */
     private $uuid;
 
     /**
@@ -48,18 +52,35 @@ class User
      */
     private $shortUrlId;
 
+    /**
+     * @var string
+     */
     private $identificationProcessId;
 
+    /**
+     * @var string
+     */
     private $identificationToken;
 
     /**
-     * User constructor.
+     * User constructor
+     *
      * @param string $uuid
+     *
+     * @throws \Exception
      */
     public function __construct(string $uuid)
     {
         $this->added = new \DateTime();
         $this->uuid  = $uuid;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->identifier ?? '';
     }
 
     /**
@@ -250,7 +271,4 @@ class User
         $this->identificationToken = $identificationToken;
         return $this;
     }
-
-
-
 }
