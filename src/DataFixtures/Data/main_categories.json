@@ -57,11 +57,11 @@
   {
     "uuid": "d25f4027-8e25-400b-8e44-cc4dc39fg52f",
     "title": "Winter sports",
-    "menu_priority": 11
+    "menu_priority": 12
   },
   {
     "uuid": "e14034f0-ac4d-4925-94d4-cbf9d61fae93",
     "title": "Others",
-    "menu_priority": 12
+    "menu_priority": 13
   }
 ]
