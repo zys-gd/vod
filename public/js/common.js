@@ -18,10 +18,6 @@ $._loader = function(close) {
     var loaderHtml = '<div id="_loader"><div id="_loader__fill"></div><span id="_loader__roll"></span></div>';
     var loaderExist = loaderObj.length;
 
-    console.log('loader close:' + close);
-    console.log('loaderExist:' + loaderExist);
-
-
     if(loaderExist) {
         if(close === undefined) {
             loaderObj.remove();
