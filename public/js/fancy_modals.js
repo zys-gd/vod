@@ -1,5 +1,6 @@
 $(document).ready(function () {
     $.fancyConfirm = function (opts) {
+        $.fancybox.close(true);
         opts = $.extend(true, {
             title: 'Are you sure?',
             message: '',
@@ -15,7 +16,7 @@ $(document).ready(function () {
             src:
                 '<div class="fc-content">' +
                 '<h3 class="text-center">' + opts.title + '</h3>' +
-                '<p>' + opts.message + '</p>' +
+                '<p class="text-center">' + opts.message + '</p>' +
                 '<div class="d-flex align-self-center align-items-center justify-content-between">' +
                 '<a href="#" class="button-gray button button-confirm button-confirm__no" data-value="0" data-fancybox-close>' + opts.noButton + '</a>' +
                 '<button data-value="1" data-fancybox-close class=" button button-confirm button-confirm__yes">' + opts.okButton + '</button>' +
@@ -33,23 +34,24 @@ $(document).ready(function () {
                     '<div class="fancybox-stage"></div>' +
                     '</div>' +
                     '</div>',
-                afterClose: function (instance, current, e) {
+                beforeClose: function (instance, current, e) {
                     var button = e ? e.target || e.currentTarget : null;
                     var value = button ? $(button).data('value') : 0;
 
-                    opts.callback(value)
+                    opts.callback(value);
                 }
             },
         });
     };
 
     $.fancyAlert = function (opts) {
+        $.fancybox.close(true);
         $.fancybox.open({
             type: 'html',
             src:
                 '<div class="fc-content">' +
                 '<h3 class="text-center">' + opts.title + '</h3>' +
-                '<p>' + opts.message + '</p>' +
+                '<p class="text-center">' + opts.message + '</p>' +
                 '<div class="d-flex align-self-center align-items-center justify-content-center">' +
                 '<a href="#" class="button-gray button button-confirm button-confirm__no" data-value="0" data-fancybox-close>' + opts.closeText + '</a>' +
                 '</div>' +
