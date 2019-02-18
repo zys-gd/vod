@@ -441,6 +441,15 @@ class AffiliateLog implements HasUuid
         return $this;
     }
 
-
+    /**
+     * @return string
+     */
+    public function getFullDeviceInfo(): string
+    {
+        return
+            $this->getDeviceModel() . ' ' .
+            $this->getDeviceManufacturer() . ' ' .
+            $this->getDeviceAtlasId() . ' ' .
+            $this->getDeviceMarketingName();
+    }
 }
-

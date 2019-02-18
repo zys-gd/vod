@@ -10,6 +10,11 @@ interface CampaignInterface
     /**
      * @return string
      */
+    public function getUuid(): string;
+
+    /**
+     * @return string
+     */
     public function getCampaignToken(): string;
 
     /**

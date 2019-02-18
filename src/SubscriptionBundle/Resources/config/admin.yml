@@ -26,3 +26,11 @@ services:
             - 'SubscriptionBundle\Admin\Controller\UnsubscriptionAdminController'
         tags:
             - { name: sonata.admin, manager_type: orm, group: User Management, label: Unsubscriptions }
+
+    SubscriptionBundle\Admin\Sonata\ComplaintsAdmin:
+        arguments:
+            - ~
+            - IdentificationBundle\Entity\User
+            - 'SubscriptionBundle\Admin\Controller\ComplaintsAdminController'
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: User Management, label: Complaints }

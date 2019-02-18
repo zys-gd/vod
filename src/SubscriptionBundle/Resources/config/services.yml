@@ -74,7 +74,14 @@ services:
         arguments: ['@router.default', '@logger', '@IdentificationBundle\Repository\UserRepository']
 
     SubscriptionBundle\Service\RefundService:
-        arguments: ['@doctrine.orm.entity_manager', '@SubscriptionBundle\BillingFramework\Process\API\Client']
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@SubscriptionBundle\BillingFramework\Process\API\Client'
+            - '@SubscriptionBundle\Service\ReportingToolService'
+
+    SubscriptionBundle\Service\ReportingToolService:
+        arguments:
+            - '%reporting_stats_api_host%'
 
 parameters:
     subscription.subscription.class: SubscriptionBundle\Entity\SubscriptionPack
