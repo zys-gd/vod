@@ -15,13 +15,25 @@
         {% endif %}
     </div>
 </div>
+<div class="row">
+    <div class="col-lg-6">
+        {{ form_start(formExcel, {'attr': {'id': 'excelForm'}}) }}
+        {{ form_widget(formExcel) }}
+        {{ form_end(formExcel) }}
+    </div>
+    <div class="col-lg-6">
+        {{ form_start(formCsv, {'attr': {'id': 'csvForm'}}) }}
+        {{ form_widget(formCsv) }}
+        {{ form_end(formCsv) }}
+    </div>
+</div>
 <div class="row" style="margin-bottom: 20px">
     <div class="col-lg-4">
         <a class="btn btn-info" href="{{ admin.generateUrl('create') }}">Back</a>
     </div>
     <div class="col-lg-8 text-right">
-        <a class="btn btn-info" href="#">Download excel</a>
-        <a class="btn btn-info" href="{{ admin.generateUrl('downloadCsv') }}" id="download-csv">Download csv</a>
+        <a class="btn btn-info" href="#" onclick="document.getElementById('excelForm').submit();">Download excel</a>
+        <a class="btn btn-info" href="#" onclick="document.getElementById('csvForm').submit();">Download csv</a>
     </div>
 </div>
 <div class="row">
@@ -65,11 +77,6 @@
                             <td class="sonata-ba-list-field sonata-ba-list-field-text">
                                 {% if user['campaign_id'] %}
                                     {{ user['campaign_id'] }}
-                                {% endif %}
-                            </td>
-                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                {% if user['campaign_name'] %}
-                                    {{ user['campaign_name'] }}
                                 {% endif %}
                             </td>
                             <td class="sonata-ba-list-field sonata-ba-list-field-text">
@@ -132,39 +139,3 @@
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function () {
-        var userMsisdns = [];
-
-        $('tr[data-msisdn]').each(function() {
-            userMsisdns.push($(this).attr('data-msisdn'));
-        });
-
-        $('#download-csv').click(function(event) {
-            event.preventDefault();
-
-            $.ajax({
-                url: $(this).attr('href'),
-                method: 'POST',
-                data: {
-                    msisnds: userMsisdns
-                },
-                success: function(response) {
-                    var blob = new Blob([response], {type: 'text/csv'});
-                    var reader = new FileReader();
-
-                    reader.onload = function (event) {
-                        var anchor = document.createElement('a');
-                        anchor.href = event.target.result;
-                        anchor.download = 'image.csv';
-                        anchor.click();
-                    };
-
-                    reader.readAsDataURL(blob);
-                }
-            })
-        });
-
-        console.log(userMsisdns);
-    })
-</script>

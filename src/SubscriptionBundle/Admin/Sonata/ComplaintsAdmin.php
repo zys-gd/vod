@@ -23,6 +23,7 @@ class ComplaintsAdmin extends AbstractAdmin
     {
         $collection->clearExcept(['create', 'list']);
         $collection->add('downloadCsv', 'downloadCsv');
+        $collection->add('downloadExcel', 'downloadExcel');
 
         parent::configureRoutes($collection);
     }
