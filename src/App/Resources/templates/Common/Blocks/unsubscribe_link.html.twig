@@ -1,0 +1,44 @@
+{% macro render() %}
+    {% import "@App/Components/fancybox.html.twig" as fancybox%}
+
+    {{ fancybox.include() }}
+
+    <span class="red pseudo_link" data-action="unsubscribe">
+        {{ translate('buttons.unsubscribe') }}
+    </span>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-action="unsubscribe"]').click(function() {
+                $.fancyConfirm({
+                    title     : "Are you sure you want to unsubscribe?",
+                    message   : "",
+                    okButton  : 'Yes',
+                    noButton  : 'No',
+                    callback  : function (value) {
+                        if (value) {
+                           $.ajax("{{ path('subscription.unsubscribe') }}")
+                               .done(function () {
+                                   $.fancyAlert({
+                                       title: "You are no longer member of 100% sports",
+                                       message: "Please continue your visit at our homepage",
+                                       closeText: "Close",
+                                       reload: true
+                                   });
+                               })
+                               .fail(function(msg) {
+                                   $.fancyAlert({
+                                       title: JSON.parse(msg.responseText).data.message,
+                                       message: "",
+                                       closeText: "Close",
+                                       reload: false
+                                   });
+                               });
+                        }
+                    }
+                });
+
+            });
+        });
+    </script>
+{% endmacro %}

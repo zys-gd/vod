@@ -71,6 +71,11 @@ a button {
 .red {
     color: #ff0000;
 }
+
+.pseudo_link {
+    cursor: pointer;
+}
+
 .footer-menu_link {
     color: #ff0000;
     padding: 1vw 5vw;
@@ -176,6 +181,10 @@ a button {
     cursor: pointer;
     padding: 1vw 10vw;
 }
+.button:hover {
+    color: #FFFFFF;
+    text-decoration: none;
+}
 
 .button-small,
 .button:active {
@@ -195,6 +204,19 @@ a button {
     background-color: #190000;
     color: #FFFFFF;
 }
+
+.button-confirm {
+
+}
+.button-confirm__no {
+    padding: 0;
+    width: 40%;
+}
+.button-confirm__yes {
+    padding: 0;
+    width: 40%;
+}
+
 
 .see-all-box:hover {
     text-decoration: none;
