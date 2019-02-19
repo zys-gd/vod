@@ -29,6 +29,8 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('sub_not_allowed_route')
                 ->end()
+                ->scalarNode('resub_not_allowed_route')
+                ->end()
             ->end();
 
         return $treeBuilder;

@@ -5,4 +5,5 @@ doctrine:
 
 
 subscription:
+  resub_not_allowed_route: 'resub_not_allowed'
   sub_not_allowed_route: 'index'
