@@ -66,19 +66,14 @@ services:
     App\Domain\Service\Campaign\CampaignService:
         public: true
 
-    App\Domain\Service\Translator\TranslationProvider:
+    App\Domain\Service\Translator\Translator:
         arguments:
             - '@App\Domain\Repository\TranslationRepository'
             - '@App\Domain\Repository\CarrierRepository'
             - '@App\Domain\Repository\LanguageRepository'
             - '@app.cache.default.translation'
 
-    App\Domain\Service\Translator\TranslatorShortcodeReplacer: ~
-
-    App\Domain\Service\Translator:
-        arguments:
-            - '@App\Domain\Service\Translator\TranslationProvider'
-            - '@App\Domain\Service\Translator\TranslatorShortcodeReplacer'
+    App\Domain\Service\Translator\ShortcodeReplacer: ~
 
     App\Domain\Service\FaqProviderService: ~
 
@@ -113,3 +108,7 @@ services:
 
     App\Domain\Service\SimpleImageService:
         public: true
+
+    App\Domain\Service\Translator\DataAggregator:
+        arguments:
+            - '@App\Domain\Repository\CarrierRepository'

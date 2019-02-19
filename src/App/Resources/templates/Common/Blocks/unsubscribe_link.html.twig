@@ -1,0 +1,37 @@
+{% macro render() %}
+
+    <span class="red pseudo_link" data-action="unsubscribe">
+        {{ translate('buttons.unsubscribe') }}
+    </span>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-action="unsubscribe"]').click(function () {
+                var cfg = {
+                    title: "Are you sure you want to unsubscribe?",
+                    message: "",
+                    okButton: 'Yes',
+                    noButton: 'No',
+                };
+                showConfirmPopup(cfg)
+                    .then(function () {
+                        $.ajax("{{ path('subscription.unsubscribe') }}")
+                            .done(function () {
+                                $._loader(true);
+                                showPopup({
+                                    title: "You are no longer member of 100% sports",
+                                    message: "Please continue your visit at our homepage",
+                                    reload: true
+                                });
+                            })
+                            .fail(function (msg) {
+                                $._loader(true);
+                                $.fancyAlert({
+                                    title: JSON.parse(msg.responseText).data.message
+                                });
+                            })
+                    });
+            });
+        });
+    </script>
+{% endmacro %}
