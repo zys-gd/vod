@@ -116,6 +116,7 @@
                 </div>
             {% endif %}
         </div>
+
     </div>
 
 
@@ -140,6 +141,10 @@
 
 {% endblock %}
 {% block footer_content %}
-    {{ footer_menu_separator.render() }}
+
+    <div  class="w-100" style="padding-left: 8px ;padding-right: 8px">
+        {{ footer_menu_separator.render() }}
+    </div>
+
     {{ footer_menu.render() }}
 {% endblock footer_content %}
