@@ -46,6 +46,14 @@ $(document).ready(function () {
 
     $.fancyAlert = function (opts) {
         $.fancybox.close(true);
+
+        opts = $.extend(true, {
+            title: "Success",
+            message: "",
+            closeText: "Close",
+            reload: false
+        }, opts || {});
+
         $.fancybox.open({
             type: 'html',
             src:
@@ -53,7 +61,7 @@ $(document).ready(function () {
                 '<h3 class="text-center">' + opts.title + '</h3>' +
                 '<p class="text-center">' + opts.message + '</p>' +
                 '<div class="d-flex align-self-center align-items-center justify-content-center">' +
-                '<a href="#" class="button-gray button button-confirm button-confirm__no" data-value="0" data-fancybox-close>' + opts.closeText + '</a>' +
+                '<a href="#" class="button-gray button button-confirm" data-value="0" data-fancybox-close>' + opts.closeText + '</a>' +
                 '</div>' +
                 '</div>',
             afterClose: function () {
