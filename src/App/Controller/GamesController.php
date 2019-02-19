@@ -119,12 +119,14 @@ class GamesController extends AbstractController implements AppControllerInterfa
      */
     public function showGameContentAction(Request $request, string $gameUuid = '')
     {
+        /** @var Subscription $subscription */
         $subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($request->getSession());
         if (!$subscription
-            || $subscription->getStatus() == Subscription::IS_INACTIVE
+            || !$subscription->isSubscribed()
         ) {
             return new RedirectResponse($this->generateUrl('landing'));
         }
+
         /** @var Game $game */
         $game = $this->gameRepository->find($gameUuid);
 
