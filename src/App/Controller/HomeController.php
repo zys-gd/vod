@@ -10,11 +10,14 @@ namespace App\Controller;
 
 
 use App\CarrierTemplate\TemplateConfigurator;
+use App\Domain\Entity\CountryCategoryPriorityOverride;
+use App\Domain\Entity\MainCategory;
 use App\Domain\Entity\UploadedVideo;
 use App\Domain\Repository\CountryCategoryPriorityOverrideRepository;
 use App\Domain\Repository\GameRepository;
 use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\UploadedVideoRepository;
+use ExtrasBundle\Utils\ArraySorter;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
@@ -54,11 +57,11 @@ class HomeController extends AbstractController implements ControllerWithISPDete
     /**
      * HomeController constructor.
      *
-     * @param CarrierRepositoryInterface $carrierRepository
-     * @param TemplateConfigurator $templateConfigurator
-     * @param MainCategoryRepository $mainCategoryRepository
-     * @param UploadedVideoRepository $videoRepository
-     * @param GameRepository $gameRepository
+     * @param CarrierRepositoryInterface                $carrierRepository
+     * @param TemplateConfigurator                      $templateConfigurator
+     * @param MainCategoryRepository                    $mainCategoryRepository
+     * @param UploadedVideoRepository                   $videoRepository
+     * @param GameRepository                            $gameRepository
      * @param CountryCategoryPriorityOverrideRepository $categoryOverrideRepository
      */
     public function __construct(
@@ -87,15 +90,18 @@ class HomeController extends AbstractController implements ControllerWithISPDete
      */
     public function indexAction(Request $request, ISPData $data)
     {
-        $carrier = $this->carrierRepository->findOneByBillingId($data->getCarrierId());
-        $videos  = $this->videoRepository->findWithCategories();
+        $carrier           = $this->carrierRepository->findOneByBillingId($data->getCarrierId());
+        $videos            = $this->videoRepository->findWithCategories();
         $categoryOverrides = $this->categoryOverrideRepository->findByBillingCarrierId($data->getCarrierId());
+        $categories        = $this->mainCategoryRepository->findAll();
 
-        $categories     = [];
+        $indexedCategoryData = $this->getIndexedCategoryData($categories, $categoryOverrides);
+
         $categoryVideos = [];
         $sliderVideos   = [];
         /** @var UploadedVideo[] $videos */
         foreach ($videos as $video) {
+
             $categoryEntity = $video->getSubcategory()->getParent();
             $categoryKey    = $categoryEntity->getTitle();
 
@@ -106,27 +112,65 @@ class HomeController extends AbstractController implements ControllerWithISPDete
                 'thumbnails' => $video->getThumbnails()
             ];
 
-
             $viralVideosUUID = '15157409-49a4-4823-a7f9-654ac1d7c12f';
             if ($categoryEntity->getUuid() === $viralVideosUUID) {
                 $sliderVideos[$categoryKey][$video->getUuid()] = $videoData;
             } else {
                 $categoryVideos[$categoryKey][$video->getUuid()] = $videoData;
             }
-
-            $categories[$categoryKey] = [
-                'uuid'  => $categoryEntity->getUuid(),
-                'title' => $categoryEntity->getTitle(),
-            ];
-
         }
+
+        $categoryVideos = ArraySorter::sortArrayByKeys(
+            $categoryVideos,
+            array_keys($indexedCategoryData)
+        );
+
 
         return $this->render('@App/Common/home.html.twig', [
             'templateHandler' => $this->templateConfigurator->getTemplateHandler($carrier),
             'categoryVideos'  => $categoryVideos,
-            'categories'      => $categories,
+            'categories'      => $indexedCategoryData,
             'sliderVideos'    => $sliderVideos,
             'games'           => $this->gameRepository->findBatchOfGames(0, 2)
         ]);
+    }
+
+    /**
+     * @param array $categories
+     * @param array $categoryOverrides
+     * @return array
+     */
+    private function getIndexedCategoryData(array $categories, array $categoryOverrides): array
+    {
+        $categoryData = [];
+        /** @var MainCategory[] $categories */
+        foreach ($categories as $category) {
+            $categoryData[] = [
+                'uuid'         => $category->getUuid(),
+                'title'        => $category->getTitle(),
+                'menuPriority' => $category->getMenuPriority()
+            ];
+        }
+
+        /** @var CountryCategoryPriorityOverride[] $categoryOverrides */
+        foreach ($categoryOverrides as $categoryOverride) {
+            $category       = $categoryOverride->getMainCategory();
+            $categoryData[] = [
+                'uuid'         => $category->getUuid(),
+                'title'        => $category->getTitle(),
+                'menuPriority' => $categoryOverride->getMenuPriority()
+            ];
+        }
+
+        usort($categoryData, function ($a, $b) {
+            return $a['menuPriority'] - $b['menuPriority'];
+        });
+
+        $indexedCategoryData = [];
+        foreach ($categoryData as $categoryRow) {
+            $indexedCategoryData[$categoryRow['title']] = $categoryRow;
+        }
+
+        return $indexedCategoryData;
     }
 }
