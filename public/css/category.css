@@ -86,9 +86,8 @@
 }
 
 .category__related_title {
-    text-align: center;
     font-size: 17px;
-    width: 60%;
+    text-transform: none;
 }
 
 
