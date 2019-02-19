@@ -14,4 +14,9 @@ $(function () {
 
             $('.faq-accordion_card__delimiter').removeClass('d-none');
         });
+
+    // do smthng with me
+    $(document).on('click', '.faq-accordion_card_header_title', function () {
+        $(this).parent('div').find('.faq-accordion_card_header_button').click();
+    });
 });

@@ -28,7 +28,7 @@
                              aria-expanded="true" aria-controls="card_collapse_{{ loop.index }}">
                         </div>
                         <div class=" faq-accordion_card_header_title">
-                            {{ loop.index }}/ {{ translate(question.key) }}
+                            {{ loop.index }}/ {{ translate(question.key) | raw}}
                         </div>
                     </div>
                     <div>
@@ -41,7 +41,7 @@
                 <div id="card_collapse_{{ loop.index }}" class="collapse" aria-labelledby="card_{{ loop.index }}"
                      data-parent="#accordionExample">
                     <div class="card-body faq-accordion_card_body">
-                        {{ translate(answers[loop.index0].key) }}
+                        {{ translate(answers[loop.index0].key) | raw}}
                     </div>
                 </div>
             </div>

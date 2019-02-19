@@ -65,10 +65,6 @@ a button {
     max-width: 25vw !important;
 }
 
-.footer-menu {
-    z-index: -1;
-}
-
 .red {
     color: #ff0000;
 }

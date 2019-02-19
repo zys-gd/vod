@@ -1,4 +1,6 @@
-
+#player-modal {
+    z-index: 2;
+}
 .player-modal-wrapper{
 
     position: fixed;
