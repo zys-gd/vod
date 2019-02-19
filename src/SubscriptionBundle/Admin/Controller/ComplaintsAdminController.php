@@ -6,16 +6,22 @@ use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Country;
 use IdentificationBundle\Entity\User;
+use PhpOffice\PhpSpreadsheet\Exception;
 use Sonata\AdminBundle\Controller\CRUDController;
 use SubscriptionBundle\Admin\Form\ComplaintsForm;
 use SubscriptionBundle\Entity\Affiliate\AffiliateLog;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\ReportingToolService;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 /**
  * Class ComplaintsAdminController
@@ -36,23 +42,22 @@ class ComplaintsAdminController extends CRUDController
      * @var array
      */
     private $tableHeaders = [
-        'Msisdn',
-        'IP',
-        'Device information',
-        'Affiliate ID',
-        'Affiliate Name',
-        'Campaign ID',
-        'Campaign Name',
-        'Click ID',
-        'The user came from',
-        'Subscription date',
-        'Unsubscription date',
-        'Downloads number',
-        'Games info',
-        'Subscription attempts',
-        'Resubscription attempts',
-        'Amount of succes charges',
-        'Total Amount Charged',
+        'user'                     => 'Msisdn',
+        'ip'                       => 'IP',
+        'device_info'              => 'Device information',
+        'aff_id'                   => 'Affiliate ID',
+        'aff_name'                 => 'Affiliate Name',
+        'campaign_id'              => 'Campaign ID',
+        'campaignParams'           => 'Click ID',
+        'url'                      => 'The user came from',
+        'subscription_date'        => 'Subscription date',
+        'unsubscription_date'      => 'Unsubscription date',
+        'gameDownloadCount'        => 'Downloads number',
+        'gamesInfo'                => 'Games info',
+        'subscription_attempts'    => 'Subscription attempts',
+        'resubs_attempts'          => 'Resubscription attempts',
+        'charges_successful_no'    => 'Amount of succes charges',
+        'charges_successful_value' => 'Total Amount Charged',
     ];
 
     public function __construct(FormFactory $formFactory, ReportingToolService $reportingToolService)
@@ -61,6 +66,11 @@ class ComplaintsAdminController extends CRUDController
         $this->reportingToolService = $reportingToolService;
     }
 
+    /**
+     * @param Request|null $request
+     *
+     * @return Response
+     */
     public function createAction(Request $request = null)
     {
         $form = $this->formFactory->create(ComplaintsForm::class);
@@ -81,7 +91,9 @@ class ComplaintsAdminController extends CRUDController
                 'nonexistentUsers' => $usersData['nonexistentUsers'],
                 'tableHeaders' => $this->tableHeaders,
                 'users' => $usersData['users'],
-                'admin' => $this->admin
+                'admin' => $this->admin,
+                'formExcel' => $this->getFileDownloadFormView('downloadExcel', $msisdns),
+                'formCsv' => $this->getFileDownloadFormView('downloadCsv', $msisdns)
             ]);
         } else {
             $content = $this->renderView('@SubscriptionAdmin/Complaints/complaints_form.html.twig', [
@@ -94,9 +106,15 @@ class ComplaintsAdminController extends CRUDController
         ]);
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return StreamedResponse
+     */
     public function downloadCsvAction(Request $request)
     {
-        $report = $this->getUsersReport($request->request->get('msisnds'));
+        $msisnds = explode(',', $request->request->get('form')['msisdns']);
+        $report = $this->getUsersReport($msisnds);
         $usersData = $report['users'];
 
         $response = new StreamedResponse();
@@ -105,12 +123,16 @@ class ComplaintsAdminController extends CRUDController
 
             fputcsv($fp, $this->tableHeaders);
 
-            foreach ($usersData as $row) {
-                $row = array_map(function ($value) {
-                    return $value instanceof \DateTime ? $value->format('Y-m-d H:i:s') : $value;
-                }, $row);
+            $tableHeaderKeys = array_keys($this->tableHeaders);
 
-                fputcsv($fp, $row);
+            foreach ($usersData as $row) {
+                $formattedRow = array_map(function ($headerKey) use ($row) {
+                    $value = empty($row[$headerKey]) ? null : $row[$headerKey];
+
+                    return $value instanceof \DateTime ? $value->format('Y-m-d H:i:s') : $value;
+                }, $tableHeaderKeys);
+
+                fputcsv($fp, $formattedRow);
             }
 
             fclose($fp);
@@ -121,6 +143,65 @@ class ComplaintsAdminController extends CRUDController
         $response->setStatusCode(200);
         $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $fileName);
+
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return StreamedResponse
+     *
+     * @throws Exception
+     */
+    public function downloadExcelAction(Request $request)
+    {
+        $msisnds = explode(',', $request->request->get('form')['msisdns']);
+        $report = $this->getUsersReport($msisnds);
+        $usersData = $report['users'];
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Complaints');
+        $sheet->getDefaultColumnDimension()->setWidth(17);
+
+        $row = 1;
+        $headerColumnKey = 1;
+
+        foreach ($this->tableHeaders as $header) {
+            $sheet->setCellValueByColumnAndRow($headerColumnKey, $row, $header);
+            $headerColumnKey++;
+        }
+
+        $row++;
+        $tableHeaderKeys = array_keys($this->tableHeaders);
+
+        foreach ($usersData as $userData) {
+            $formattedRow = array_map(function ($headerKey) use ($userData) {
+                $value = empty($userData[$headerKey]) ? null : $userData[$headerKey];
+
+                return $value instanceof \DateTime ? $value->format('Y-m-d H:i:s') : $value;
+            }, $tableHeaderKeys);
+
+            foreach ($formattedRow as $key => $cell) {
+                $sheet->setCellValueByColumnAndRow($key + 1, $row, $cell);
+            }
+
+            $row++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $fileName = "Complaints-" . date("Y-m-d") . ".xlsx";
+
+        $response = new StreamedResponse();
+        $response->setStatusCode(200);
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+        $response->headers->set('Content-Disposition', 'attachment; filename=' . $fileName);
+        $response->setCallback(function () use ($writer) {
+            $writer->save('php://output');
+        });
 
         return $response;
     }
@@ -190,7 +271,6 @@ class ComplaintsAdminController extends CRUDController
                         $usersInfo[$msisdn]['aff_id'] = $campaign->getAffiliate()->getUuid();
                         $usersInfo[$msisdn]['aff_name'] = $campaign->getAffiliate()->getName();
                         $usersInfo[$msisdn]['campaign_id'] = $campaign->getUuid();
-//                        $usersInfo[$msisdn]['campaign_name'] = $campaign->getGame()->getTitle();
                     }
                 }
 
@@ -237,7 +317,6 @@ class ComplaintsAdminController extends CRUDController
             'aff_id'                   => null,
             'aff_name'                 => null,
             'campaign_id'              => null,
-            'campaign_name'            => null,
             'campaignParams'           => null,
             'url'                      => null,
             'gameDownloadCount'        => 0,
@@ -247,5 +326,21 @@ class ComplaintsAdminController extends CRUDController
             'charges_successful_no'    => null,
             'charges_successful_value' => null,
         ];
+    }
+
+    /**
+     * @param string $action
+     * @param array $msisdns
+     *
+     * @return FormView
+     */
+    private function getFileDownloadFormView(string $action, array $msisdns): FormView
+    {
+        return $this
+            ->createFormBuilder()
+            ->setAction($this->admin->generateUrl($action))
+            ->add('msisdns', HiddenType::class, ['data' => implode(',', $msisdns)])
+            ->getForm()
+            ->createView();
     }
 }
