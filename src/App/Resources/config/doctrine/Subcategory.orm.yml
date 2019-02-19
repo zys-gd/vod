@@ -18,9 +18,8 @@ App\Domain\Entity\Subcategory:
     manyToOne:
         parent:
             targetEntity: App\Domain\Entity\MainCategory
-            mappedBy: null
-            inversedBy: null
+            inversedBy: subcategories
             nullable: false
-            joinColumns:
-                parent:
-                    referencedColumnName: uuid
+            joinColumn:
+                name : parent
+                referencedColumnName: uuid
