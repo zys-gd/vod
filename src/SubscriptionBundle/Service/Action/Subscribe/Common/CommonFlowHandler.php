@@ -8,14 +8,12 @@
 
 namespace SubscriptionBundle\Service\Action\Subscribe\Common;
 
+use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
+use ExtrasBundle\Utils\UrlParamAppender;
+use IdentificationBundle\Entity\User;
+use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateSender;
 use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
-use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
 use SubscriptionBundle\Entity\Subscription;
@@ -29,10 +27,12 @@ use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomTrackingRules;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
 use SubscriptionBundle\Service\Action\Subscribe\Subscriber;
 use SubscriptionBundle\Service\EntitySaveHelper;
-use SubscriptionBundle\Service\SubscriptionPackProvider;
 use SubscriptionBundle\Service\SubscriptionExtractor;
-use ExtrasBundle\Utils\UrlParamAppender;
-use IdentificationBundle\Entity\User;
+use SubscriptionBundle\Service\SubscriptionPackProvider;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
 
 class CommonFlowHandler
 {
@@ -94,6 +94,10 @@ class CommonFlowHandler
      * @var EntityManagerHelper
      */
     private $entitySaveHelper;
+    /**
+     * @var string
+     */
+    private $resubNotAllowedRoute;
 
 
     /**
@@ -109,10 +113,11 @@ class CommonFlowHandler
      * @param CommonResponseCreator          $commonResponseCreator
      * @param UrlParamAppender               $urlParamAppender
      * @param RouterInterface                $router
-     * @param AffiliateSender               $affiliateService
+     * @param AffiliateSender                $affiliateService
      * @param PiwikStatisticSender           $piwikStatisticSender
      * @param UserInfoMapper                 $infoMapper
      * @param EntitySaveHelper               $entitySaveHelper
+     * @param string                         $resubNotAllowedRoute
      */
     public function __construct(
         SubscriptionExtractor $subscriptionProvider,
@@ -128,7 +133,8 @@ class CommonFlowHandler
         AffiliateSender $affiliateService,
         PiwikStatisticSender $piwikStatisticSender,
         UserInfoMapper $infoMapper,
-        EntitySaveHelper $entitySaveHelper
+        EntitySaveHelper $entitySaveHelper,
+        string $resubNotAllowedRoute
     )
     {
         $this->subscriptionPackProvider = $subscriptionPackProvider;
@@ -145,12 +151,13 @@ class CommonFlowHandler
         $this->piwikStatisticSender     = $piwikStatisticSender;
         $this->infoMapper               = $infoMapper;
         $this->entitySaveHelper         = $entitySaveHelper;
+        $this->resubNotAllowedRoute     = $resubNotAllowedRoute;
     }
 
 
     /**
-     * @param Request      $request
-     * @param User $User
+     * @param Request $request
+     * @param User    $User
      * @return Response
      * @throws ActiveSubscriptionPackNotFound
      * @throws ExistingSubscriptionException
@@ -162,7 +169,7 @@ class CommonFlowHandler
         $UserIdentifier = $User->getIdentifier();
         $this->logger->debug('Processing `subscribe` action', [
             'UserId' => $UserId,
-            'msidsn'         => $UserIdentifier
+            'msidsn' => $UserIdentifier
         ]);
 
         /** @var HasCommonFlow $subscriber */
@@ -203,7 +210,7 @@ class CommonFlowHandler
 
     /**
      * @param Request      $request
-     * @param User $User
+     * @param User         $User
      * @param Subscription $subscription
      * @param              $subscriber
      * @return \Symfony\Component\HttpFoundation\JsonResponse|RedirectResponse|Response
@@ -243,7 +250,7 @@ class CommonFlowHandler
             if ($request->get('is_ajax_request', null)) {
                 return $this->getSimpleJsonResponse('', 200, [], ['resub_not_allowed' => true]);
             } else {
-                return new RedirectResponse($this->router->generate('resub_not_allowed'));
+                return new RedirectResponse($this->router->generate($this->resubNotAllowedRoute));
             }
         }
 
@@ -268,7 +275,7 @@ class CommonFlowHandler
 
     /**
      * @param Request       $request
-     * @param User  $User
+     * @param User          $User
      * @param HasCommonFlow $subscriber
      * @return null|Response
      * @throws ActiveSubscriptionPackNotFound

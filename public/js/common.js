@@ -1,4 +1,4 @@
-function showPopup(cnfg) {
+function showAlert(cnfg) {
     $.fancyAlert(cnfg);
 }
 

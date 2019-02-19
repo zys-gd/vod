@@ -2,6 +2,9 @@
     {% import "@App/Components/Buttons/link.html.twig" as  link %}
     {% import "@App/Common/Blocks/wifi_subscribe_block.html.twig" as wifi_subscribe_block %}
 
+
+    {% set class = class ~ ' x-subscribe-button' %}
+
     {% if not hasActiveSubscription() %}
         {% if isIdentified() %}
             {{ link.render(url('subscription.subscribe'), translate('buttons.join.now'), class) }}
@@ -14,4 +17,14 @@
             {{ link.render(url('identify'), translate('buttons.join.now'), class) }}
         {% endif %}
     {% endif %}
+
+    <script>
+
+        $(document).on('click', '.x-subscribe-button', function (e) {
+            $._loader(false);
+        })
+
+    </script>
+
 {% endmacro %}
+

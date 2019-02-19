@@ -35,6 +35,7 @@ services:
           - '@SubscriptionBundle\Piwik\PiwikStatisticSender'
           - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
           - '@SubscriptionBundle\Service\EntitySaveHelper'
+          - '_resub_not_allowed_route_placeholder_'
 
   SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker: ~
 

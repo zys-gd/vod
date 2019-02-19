@@ -59,7 +59,7 @@ class SubscriptionExtension extends ConfigurableExtension
         $loader = new YamlFileLoader(
             $container,
             new FileLocator(__DIR__ . '/../Resources/config/carriers')
-        );
+        );http://127.0.0.1:8081/subscribe
         //$loader->load('orange-eg.yml');
         //$loader->load('orange-tn.yml');
         $loader->load('etisalat-eg.yml');
@@ -69,5 +69,10 @@ class SubscriptionExtension extends ConfigurableExtension
         $definition = $container->getDefinition('SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter');
 
         $definition->replaceArgument(5, $mergedConfig['sub_not_allowed_route']);
+
+
+        $definition = $container->getDefinition('SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler');
+
+        $definition->replaceArgument(14, $mergedConfig['resub_not_allowed_route']);
     }
 }

@@ -18,7 +18,7 @@
                         $.ajax("{{ path('subscription.unsubscribe') }}")
                             .done(function () {
                                 $._loader(true);
-                                showPopup({
+                                showAlert({
                                     title: "You are no longer member of 100% sports",
                                     message: "Please continue your visit at our homepage",
                                     reload: true
