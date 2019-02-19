@@ -352,7 +352,7 @@ class Subscription implements HasUuid
      */
     public function isUnsubscribed()
     {
-        return $this->isInActive();
+        return $this->isInActive() && $this->currentStage == self::ACTION_UNSUBSCRIBE;
     }
 
     /**

@@ -19,9 +19,11 @@ use App\Domain\Service\Games\ExcludedGamesProvider;
 use App\Domain\Service\Games\GameImagesSerializer;
 use App\Domain\Service\Games\GameSerializer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\SubscriptionExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -47,7 +49,7 @@ class GamesController extends AbstractController implements AppControllerInterfa
     /**
      * @var SubscriptionExtractor
      */
-    private $extractor;
+    private $subscriptionExtractor;
     /**
      * @var GameImagesSerializer
      */
@@ -83,7 +85,7 @@ class GamesController extends AbstractController implements AppControllerInterfa
         $this->gameSerializer        = $gameSerializer;
         $this->gameBuildRepository   = $gameBuildRepository;
         $this->drmApkProvider        = $drmApkProvider;
-        $this->extractor             = $extractor;
+        $this->subscriptionExtractor             = $extractor;
         $this->gameImagesSerializer  = $gameImagesSerializer;
         $this->excludedGamesProvider = $excludedGamesProvider;
     }
@@ -109,12 +111,22 @@ class GamesController extends AbstractController implements AppControllerInterfa
     /**
      * @Route("game/{gameUuid}", name="game_content")
      * @Method("GET")
-     * @param string $gameUuid
+     * @param Request $request
+     * @param string  $gameUuid
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function showGameContentAction(string $gameUuid = '')
+    public function showGameContentAction(Request $request, string $gameUuid = '')
     {
+        /** @var Subscription $subscription */
+        $subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($request->getSession());
+        if (!$subscription
+            || !$subscription->isSubscribed()
+        ) {
+            return new RedirectResponse($this->generateUrl('landing'));
+        }
+
         /** @var Game $game */
         $game = $this->gameRepository->find($gameUuid);
 
@@ -176,7 +188,7 @@ class GamesController extends AbstractController implements AppControllerInterfa
             throw new BadRequestHttpException('Missing `id` parameter');
         }
 
-        if (!$this->extractor->extractSubscriptionFromSession($request->getSession())) {
+        if (!$this->subscriptionExtractor->extractSubscriptionFromSession($request->getSession())) {
             throw new BadRequestHttpException('You are not subscribed');
 
         }
