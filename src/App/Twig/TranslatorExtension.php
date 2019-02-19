@@ -90,7 +90,11 @@ class TranslatorExtension extends \Twig_Extension
         $translation = $this->translateWithoutReplace($translationKey);
         $detectionData = $this->extractDetectionData();
 
-        $shortcodeValues = $this->dataAggregator->getGlobalParameters($detectionData['billingCarrierId']);
+        $shortcodeValues = [];
+        if(!is_null($detectionData['billingCarrierId'])) {
+            $shortcodeValues = $this->dataAggregator->getGlobalParameters($detectionData['billingCarrierId']);
+        }
+
         return $this->replacer->do(array_merge($shortcodeValues, $parameters), $translation);
     }
 
