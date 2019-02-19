@@ -59,7 +59,7 @@ class SubscriptionExtension extends ConfigurableExtension
         $loader = new YamlFileLoader(
             $container,
             new FileLocator(__DIR__ . '/../Resources/config/carriers')
-        );http://127.0.0.1:8081/subscribe
+        );
         //$loader->load('orange-eg.yml');
         //$loader->load('orange-tn.yml');
         $loader->load('etisalat-eg.yml');
