@@ -1,0 +1,7 @@
+{% macro include() %}
+    {{ addCss('https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.6/jquery.fancybox.min.css') }}
+    {{ addCss(asset('css/fancy_modals.css')) }}
+
+    {{ addJs('https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.6/jquery.fancybox.min.js') }}
+    {{ addJs(asset('js/fancy_modals.js')) }}
+{% endmacro %}
