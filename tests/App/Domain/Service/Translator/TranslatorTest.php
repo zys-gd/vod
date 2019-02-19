@@ -13,12 +13,12 @@ use App\Domain\Entity\Translation;
 use App\Domain\Repository\CarrierRepository;
 use App\Domain\Repository\LanguageRepository;
 use App\Domain\Repository\TranslationRepository;
-use App\Domain\Service\Translator\TranslationProvider;
+use App\Domain\Service\Translator\Translator;
 use ExtrasBundle\Cache\ICacheService;
 use PHPUnit\Framework\TestCase;
 use Mockery;
 
-class TranslationProviderTest extends TestCase
+class TranslatorTest extends TestCase
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
@@ -30,7 +30,7 @@ class TranslationProviderTest extends TestCase
     private $cache;
     /** @var  LanguageRepository|\Mockery\MockInterface */
     private $languagesRepository;
-    /** @var TranslationProvider|\Mockery\MockInterface */
+    /** @var Translator|\Mockery\MockInterface */
     private $translatorProvider;
 
     /**
@@ -39,7 +39,7 @@ class TranslationProviderTest extends TestCase
     public function testGetTranslationWithoutCache()
     {
         $this->setBaseData();
-        $result = $this->translatorProvider->getTranslation('terms.block_2.text.1', null, 'en');
+        $result = $this->translatorProvider->translate('terms.block_2.text.1', null, 'en');
 
         $this->assertEquals('This service is only available for users in [Country]. You must have permission from the carrier to use this service.', $result);
     }
@@ -47,7 +47,7 @@ class TranslationProviderTest extends TestCase
     public function testGetTranslationWithCache()
     {
         $this->setCacheData();
-        $result = $this->translatorProvider->getTranslation('terms.block_2.text.1', null, 'en');
+        $result = $this->translatorProvider->translate('terms.block_2.text.1', null, 'en');
 
         $this->assertEquals('This service is only available for users in [Country]. You must have permission from the carrier to use this service.', $result);
     }
@@ -100,7 +100,7 @@ class TranslationProviderTest extends TestCase
         $this->cache = Mockery::spy(ICacheService::class);
         $this->languagesRepository = Mockery::spy(LanguageRepository::class);
 
-        $this->translatorProvider = new TranslationProvider(
+        $this->translatorProvider = new Translator(
             $this->translationRepository,
             $this->carrierRepository,
             $this->languagesRepository,

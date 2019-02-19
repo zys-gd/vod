@@ -9,7 +9,7 @@ use App\Domain\Repository\LanguageRepository;
 use App\Domain\Repository\TranslationRepository;
 use ExtrasBundle\Cache\ICacheService;
 
-class TranslationProvider
+class Translator
 {
     const DEFAULT_LOCALE = 'en';
 
@@ -38,24 +38,24 @@ class TranslationProvider
 
     /**
      * @param string $translationKey
-     * @param        $carrierId
+     * @param        $billingCarrierId
      * @param string $languageCode
      *
      * @return string|null
      */
-    public function getTranslation(string $translationKey, $carrierId, string $languageCode): ?string
+    public function translate(string $translationKey, $billingCarrierId, string $languageCode): ?string
     {
-        $cacheKey = $this->generateCacheKey($carrierId, $languageCode);
+        $cacheKey = $this->generateCacheKey($billingCarrierId, $languageCode);
         // if cache exist
         if ($this->isCacheExist($cacheKey)) {
             $this->extractCache($cacheKey);
             if (!isset($this->texts[$translationKey])) {
-                $this->doTranslate($translationKey, $carrierId, $languageCode)
+                $this->doTranslate($translationKey, $billingCarrierId, $languageCode)
                     ->pushTexts2Cache($cacheKey);
             }
         } else {
             $this->initializeDefaultTexts()
-                ->initializeCarrierTexts($carrierId, $languageCode)
+                ->initializeCarrierTexts($billingCarrierId, $languageCode)
                 ->pushTexts2Cache($cacheKey);
         }
 
@@ -64,14 +64,14 @@ class TranslationProvider
 
     /**
      * @param string $translationKey
-     * @param        $carrierId
+     * @param        $billingCarrierId
      * @param string $languageCode
      *
      * @return $this
      */
-    private function doTranslate(string $translationKey, $carrierId, string $languageCode)
+    private function doTranslate(string $translationKey, $billingCarrierId, string $languageCode)
     {
-        $translation = $this->receiveFromDb($translationKey, $carrierId, $languageCode);
+        $translation = $this->receiveFromDb($translationKey, $billingCarrierId, $languageCode);
         if (!is_null($translation)) {
             $this->texts[$translationKey] = $translation->getTranslation();
         }
@@ -80,15 +80,15 @@ class TranslationProvider
 
     /**
      * @param $translationKey
-     * @param $carrierId
+     * @param $billingCarrierId
      * @param $languageCode
      *
      * @return Translation|null
      */
-    private function receiveFromDb($translationKey, $carrierId, $languageCode): ?Translation
+    private function receiveFromDb($translationKey, $billingCarrierId, $languageCode): ?Translation
     {
         /** @var Carrier $oCarrier */
-        $oCarrier = $this->carrierRepository->findOneBy(['billingCarrierId' => $carrierId]);
+        $oCarrier = $this->carrierRepository->findOneBy(['billingCarrierId' => $billingCarrierId]);
         $oLanguage = $this->languageRepository->findOneBy(['code' => $languageCode]);
         /** @var Translation $translation */
         $translation = $this->translationRepository->findOneBy([
@@ -118,14 +118,14 @@ class TranslationProvider
     }
 
     /**
-     * @param        $carrierId
+     * @param        $billingCarrierId
      * @param string $languageCode
      *
      * @return $this
      */
-    private function initializeCarrierTexts($carrierId, string $languageCode)
+    private function initializeCarrierTexts($billingCarrierId, string $languageCode)
     {
-        $oCarrier = $this->carrierRepository->findOneBy(['billingCarrierId' => $carrierId]);
+        $oCarrier = $this->carrierRepository->findOneBy(['billingCarrierId' => $billingCarrierId]);
         $oLanguage = $this->languageRepository->findOneBy(['code' => $languageCode]);
         /** @var Translation[] $translations */
         $translations = $this->translationRepository->findBy([

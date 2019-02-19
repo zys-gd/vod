@@ -47,7 +47,7 @@ class SubscriptionPackRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder()
             ->select('c')
-            ->from('AppBundle:Carrier', 'c')
+            ->from('App\Domain\Entity\Carrier', 'c')
             ->where('c.id_carrier = :idCarrier')
             ->setParameter('idCarrier', $subscriptionPack->getCarrierId())
         ;

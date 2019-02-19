@@ -901,4 +901,23 @@ class SubscriptionPack implements HasUuid
     {
         return $this->getPeriodicity() == 8 ? $this->getCustomRenewPeriod() : $this->getPeriodicity();
     }
+
+    /**
+     * @return string
+     */
+    public function convertPeriodicity2Text(): string
+    {
+        switch ($this->getFinalPeriodForSubscription()){
+            case self::DAILY:
+                $periodicityText = 'day';
+                break;
+            case self::WEEKLY:
+                $periodicityText = 'week';
+                break;
+            default:
+                $periodicityText = 'day';
+                break;
+        }
+        return $periodicityText;
+    }
 }
