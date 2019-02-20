@@ -110,8 +110,8 @@
         <script>
 
 
-            var videos = {{ videos | json_encode | raw }};
-
+            var videos          = {{ videos | json_encode | raw }};
+            var trackEventRoute = '{{ url('track_video_percent_event') }}';
 
             $(window).on('load', function () {
 
@@ -129,23 +129,32 @@
 
                 function openModal() {
                     $('#player-modal').removeClass('d-none');
-                    $('html').css({'overflow-y':'hidden'});
+                    $('html').css({'overflow-y': 'hidden'});
                 }
 
                 function closeModal() {
                     $('#player-modal').addClass('d-none');
-                    $('html').css({'overflow-y':'auto'});
+                    $('html').css({'overflow-y': 'auto'});
                     demoplayer.stop();
                 }
 
                 var cld        = cloudinary.Cloudinary.new({cloud_name: '{{ getCloudName() }}'});
-                var demoplayer = cld.videoPlayer('video-player-frame')
+                var demoplayer = cld.videoPlayer('video-player-frame', {playedEventPercents: [10, 50, 90]})
                     .sourceTypes(['hls'])
                     .transformation({streaming_profile: 'hd'});
 
                 var changeVideo = function (element) {
                     demoplayer.source(element);
                 };
+
+
+                demoplayer.on('percentsplayed', function (event) {
+
+                    $.post(trackEventRoute, {
+                        percent: event.eventData.percent,
+                        video: demoplayer.currentPublicId()
+                    });
+                });
 
 
                 $(document).on('click', '.x-play-button', function () {
