@@ -5,69 +5,63 @@
 
     <link rel="stylesheet" href="{{ asset('css/player.css') }}">
 
-    <div id="player-modal" class="justify-content-center player-modal-wrapper d-none" tabindex="-1">
-        <div class="player-modal">
+    <div id="player-modal" class="flex-column player-modal-wrapper d-none player-modal" tabindex="-1">
 
+        {{ header_main.render() }}
 
-            {{ header_main.render() }}
-
-            <div class="player-modal-content d-flex flex-column">
-                <div class="d-flex flex-column">
-                    <div class="close-modal-button-container x-close-modal-button">
-                        <div class="close-modal-button"></div>
-                        <div class="close-modal-button-text">
-                            {{ translate('player.close') }}
-                        </div>
-                    </div>
-
-                    <div>
-                        <video id="video-player-frame" controls class="cld-video-player cld-fluid"></video>
-                    </div>
-
-                    <div class="d-flex flex-column">
-                        <div class="d-flex flex-row align-items-center justify-content-center modal-related-video-section-title-block">
-                            <div class="separator_left"></div>
-                            <div class="modal-related-video-section-title-text">
-                                {{ translate('player.related_videos') }}
-                            </div>
-                            <div class="separator_right"></div>
-                        </div>
-                        <div class="modal-related-videos-block"></div>
-                    </div>
+        <div class="d-flex flex-column player-modal-content">
+            <div class="d-flex flex-shrink-0 close-modal-button-container x-close-modal-button align-items-center justify-content-end mb-2">
+                <div class="close-modal-button-text">
+                    {{ translate('player.close') }}
                 </div>
-
+                <div class="close-modal-button"></div>
             </div>
 
-            {#<div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-body">
+            <div class="">
+                <video id="video-player-frame" controls class="cld-video-player cld-fluid"></video>
+            </div>
+
+            <div class="d-flex flex-column">
+                <div class="d-flex flex-row align-items-center justify-content-center modal-related-video-section-title-block">
+                    <div class="separator_left"></div>
+                    <div class="modal-related-video-section-title-text">
+                        {{ translate('player.related_videos') }}
+                    </div>
+                    <div class="separator_right"></div>
+                </div>
+                <div class="modal-related-videos-block"></div>
+            </div>
+        </div>
+
+        {#<div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="d-flex flex-column">
+
+                        <div class="close-modal-button-container x-close-modal-button">
+                            <div class="close-modal-button"></div>
+                            <div class="close-modal-button-text">Close</div>
+                        </div>
+
+                        <div style="">
+                            <video id="video-player-frame" controls muted
+                                   class="cld-video-player cld-fluid"></video>
+                        </div>
+
                         <div class="d-flex flex-column">
-
-                            <div class="close-modal-button-container x-close-modal-button">
-                                <div class="close-modal-button"></div>
-                                <div class="close-modal-button-text">Close</div>
-                            </div>
-
-                            <div style="">
-                                <video id="video-player-frame" controls muted
-                                       class="cld-video-player cld-fluid"></video>
-                            </div>
-
-                            <div class="d-flex flex-column">
-                                <div class="d-flex flex-row align-items-center justify-content-center modal-related-video-section-title-block">
-                                    <div class="separator_left"></div>
-                                    <div class="modal-related-video-section-title-text">
-                                        Related videos
-                                    </div>
-                                    <div class="separator_right"></div>
+                            <div class="d-flex flex-row align-items-center justify-content-center modal-related-video-section-title-block">
+                                <div class="separator_left"></div>
+                                <div class="modal-related-video-section-title-text">
+                                    Related videos
                                 </div>
-                                <div class="modal-related-videos-block"></div>
+                                <div class="separator_right"></div>
                             </div>
+                            <div class="modal-related-videos-block"></div>
                         </div>
                     </div>
                 </div>
-            </div>#}
-        </div>
+            </div>
+        </div>#}
     </div>
     <script>
         Handlebars.registerHelper('ifEquals', function (arg1, arg2, options) {
@@ -104,13 +98,15 @@
             {{/each}}
         {% endverbatim %}
 
+
+
     </script>
 
     {% if hasActiveSubscription() %}
         <script>
 
 
-            var videos          = {{ videos | json_encode | raw }};
+            var videos = {{ videos | json_encode | raw }};
             var trackEventRoute = '{{ url('track_video_percent_event') }}';
 
             $(window).on('load', function () {
@@ -128,17 +124,17 @@
                 }
 
                 function openModal() {
-                    $('#player-modal').removeClass('d-none');
+                    $('#player-modal').addClass('d-flex');
                     $('html').css({'overflow-y': 'hidden'});
                 }
 
                 function closeModal() {
-                    $('#player-modal').addClass('d-none');
+                    $('#player-modal').removeClass('d-flex');
                     $('html').css({'overflow-y': 'auto'});
                     demoplayer.stop();
                 }
 
-                var cld        = cloudinary.Cloudinary.new({cloud_name: '{{ getCloudName() }}'});
+                var cld = cloudinary.Cloudinary.new({cloud_name: '{{ getCloudName() }}'});
                 var demoplayer = cld.videoPlayer('video-player-frame', {playedEventPercents: [10, 50, 90]})
                     .sourceTypes(['hls'])
                     .transformation({streaming_profile: 'hd'});
@@ -161,28 +157,28 @@
 
                     openModal();
 
-                    var index    = $(this).attr('data-uuid');
+                    var index = $(this).attr('data-uuid');
                     var category = $(this).attr('data-category');
 
-                    let videoElement  = videos[category][index];
+                    let videoElement = videos[category][index];
                     let relatedVideos = videos[category];
 
                     changeVideo(videoElement);
                     demoplayer.play();
 
-                    var source   = document.getElementById("related-videos-block-template").innerHTML;
+                    var source = document.getElementById("related-videos-block-template").innerHTML;
                     var template = Handlebars.compile(source);
-                    var html     = template({
-                        'videos'  : relatedVideos,
+                    var html = template({
+                        'videos': relatedVideos,
                         'category': category,
-                        'current' : videoElement,
+                        'current': videoElement,
                     });
                     $('.modal-related-videos-block').html(html);
 
                 });
 
                 $(document).on('click', '.x-modal-play-button', function () {
-                    var index    = $(this).attr('data-uuid');
+                    var index = $(this).attr('data-uuid');
                     var category = $(this).attr('data-category');
 
                     let videoElement = videos[category][index];
