@@ -8,7 +8,6 @@ use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\UserRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class UserExtractor
@@ -60,10 +59,13 @@ class UserExtractor
         /** @var User $user */
         $user = $this->userRepository->findOneByIdentificationToken($identificationData['identification_token']);
 
-        $this->logger->debug('Obtained user', [
-            'userUuid' => $user->getUuid(),
-            'msidsn'   => $user->getIdentifier()
-        ]);
+        if ($user) {
+
+            $this->logger->debug('Obtained user', [
+                'userUuid' => $user->getUuid(),
+                'msidsn'   => $user->getIdentifier()
+            ]);
+        }
 
         return $user;
     }

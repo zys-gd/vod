@@ -35,7 +35,7 @@ class IdentifyByUrlTest extends AbstractFunctionalTest
     {
         $client = $this->createClient();
 
-        $client->request('get', '/identification/identify-by-url', ['urlId' => 123]);
+        $client->request('get', '/identification/identify-by-url', ['urlId' => 123,'f' => 1]);
 
         $this->assertTrue(
             $client->getResponse()->isRedirect(),

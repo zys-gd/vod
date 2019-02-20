@@ -13,7 +13,6 @@ use DataFixtures\LoadCarriersData;
 use ExtrasBundle\Testing\Core\AbstractFunctionalTest;
 use IdentificationBundle\BillingFramework\Process\IdentProcess;
 use Mockery;
-use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class AutoIdentTest extends AbstractFunctionalTest
@@ -34,7 +33,7 @@ class AutoIdentTest extends AbstractFunctionalTest
     {
         $client = $this->makeClient();
 
-        $client->request('get', '/');
+        $client->request('get', '/', ['f' => 1]);
 
         $location = $client->getResponse()->headers->get('Location');
         $this->assertContains('lp', $location, 'redirect is missing');
@@ -76,7 +75,7 @@ class AutoIdentTest extends AbstractFunctionalTest
         $this->session->set('storage[is_wifi_flow]', true);
         $this->session->set('identification_data', ['carrier_id' => null]);
 
-        $client->request('get', '/');
+        $client->request('get', '/',['f' => 1]);
 
         $location = $client->getResponse()->headers->get('Location');
         $this->assertContains('lp', $location, 'redirect is missing');
@@ -88,7 +87,7 @@ class AutoIdentTest extends AbstractFunctionalTest
     {
         $client = $this->makeClient();
 
-        $client->request('get', '/lp');
+        $client->request('get', '/lp',['f' => 1]);
 
         $this->assertFalse($client->getResponse()->isRedirect(), 'redirect is triggered');
         $this->assertArrayHasKey('storage[is_wifi_flow]', $this->session->all(), 'wifi flow are not set');
@@ -101,7 +100,7 @@ class AutoIdentTest extends AbstractFunctionalTest
 
         $this->session->set('storage[is_wifi_flow]', true);
 
-        $client->request('get', '/lp');
+        $client->request('get', '/lp',['f' => 1]);
 
         $this->assertFalse($client->getResponse()->isRedirect(), 'redirect is triggered');
 
