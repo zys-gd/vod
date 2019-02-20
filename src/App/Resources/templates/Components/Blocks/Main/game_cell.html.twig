@@ -8,11 +8,11 @@
                     <img class="img-fluid" src="{{ game.iconPath }}" alt="{{ game.uuid }}"/>
                 </a>
             </div>
-            <div class="game-info-block">
+            <div class="d-flex flex-column game-info-block">
                 <div class="game-title-block">
                     {{ game.title }}
                 </div>
-                <div class="game-download-button-block">
+                <div class="align-self-center game-download-button-block">
                     {% if hasActiveSubscription() %}
                         {{ button.render('Download', 'game-download-button x-game-download-button') }}
                     {% endif %}
