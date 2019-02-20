@@ -56,3 +56,8 @@ services:
             - '@SubscriptionBundle\Service\SubscriptionExtractor'
             - '@App\Domain\Service\Games\GameImagesSerializer'
             - '@App\Domain\Service\Games\ExcludedGamesProvider'
+
+
+    App\Controller\TrackEventController:
+        arguments:
+            - '@App\Domain\Repository\UploadedVideoRepository'

@@ -12,7 +12,6 @@ function showConfirmPopup(cnfg) {
             clickOutside: "close",
             clickSlide: "close",
             callback: function (value) {
-                $._loader(false);
                 if (value) {
                     resolve();
                 } else {
