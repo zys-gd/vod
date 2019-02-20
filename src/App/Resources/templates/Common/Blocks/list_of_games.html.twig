@@ -20,13 +20,13 @@
                     </a>
                 </div>
                 <div class="listed-game-text  d-flex align-items-center">
-                    <div class="d-flex flex-column">
+                    <div class="d-flex flex-column w-100">
                         <div class="listed-game-title">
                             {{ game.title }}
                         </div>
 
                         {% if hasActiveSubscription() %}
-                            <div class="listed-game-download-button">
+                            <div class="align-self-center listed-game-download-button">
                                 <a href="{{ path('download_game',{'id':game.uuid}) }}">
                                     {{ button.render('Download','listed-game-download-button') }}
                                 </a>
