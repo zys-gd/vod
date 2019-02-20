@@ -6,7 +6,6 @@ use App\Domain\Constants\ConstBillingCarrierId;
 use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
-use App\Domain\Entity\Subcategory;
 use App\Domain\Entity\Game;
 use App\Domain\Repository\CampaignRepository;
 use DeviceDetectionBundle\Service\Device;
@@ -18,7 +17,6 @@ use PiwikBundle\Api\JsClient;
 use PiwikBundle\Api\PhpClient;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Repository\Game\SubscribedGameRepository;
 use SubscriptionBundle\Service\SubscriptionPackProvider;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -110,10 +108,6 @@ class NewTracker
      */
     private $campaignRepository;
     /**
-     * @var SubscribedGameRepository
-     */
-    private $subscribedGameRepository;
-    /**
      * @var Device
      */
     private $device;
@@ -130,7 +124,6 @@ class NewTracker
      * @param SessionInterface                 $session
      * @param string                           $campaignSessionName
      * @param CampaignRepository               $campaignRepository
-     * @param SubscribedGameRepository         $subscribedGameRepository
      * @param SubscriptionConstraintsByCarrier $subscriptionConstraintsByCarrier
      * @param Device                           $device
      */
@@ -143,7 +136,6 @@ class NewTracker
         SessionInterface $session,
         string $campaignSessionName,
         CampaignRepository $campaignRepository,
-        SubscribedGameRepository $subscribedGameRepository,
         SubscriptionConstraintsByCarrier $subscriptionConstraintsByCarrier,
         Device $device
     )
@@ -156,7 +148,6 @@ class NewTracker
         $this->session = $session;
         $this->campaignSessionName = $campaignSessionName;
         $this->campaignRepository = $campaignRepository;
-        $this->subscribedGameRepository = $subscribedGameRepository;
         $this->subscriptionConstraintsByCarrier = $subscriptionConstraintsByCarrier;
         $this->device = $device;
     }
@@ -229,7 +220,7 @@ class NewTracker
      * NewTracker::addStandardVariables()
      * Adds visit custom variables
      *
-     * @param null                                         $user
+     * @param User|null                                    $user
      * @param null                                         $connection
      * @param null                                         $operator
      * @param null                                         $country
@@ -244,7 +235,7 @@ class NewTracker
      * @throws \Exception
      */
     protected function addStandardVariables(
-        $user = null,
+        User $user = null,
 
         $subscription = null,
 
@@ -271,7 +262,7 @@ class NewTracker
         $aff_publisher = $aff_publisher ?: $this->aff_publisher;
 
         if ($user) {
-            $ret = $this->getApiClient()->setUserId($user->getId());
+            $ret = $this->getApiClient()->setUserId($user->getUuid());
             $this->user = $user;
 
             if ($userOperator = $user->getCarrier()) {
@@ -411,16 +402,16 @@ class NewTracker
      * @param User         $user
      * @param Subscription $subscription
      * @param              $bfResponse
-     * @param null         $conversionMode
+     * @param bool|null    $conversionMode
      *
      * @return bool
      * @throws \Exception
      */
     public function trackResubscribe(User $user,
         Subscription $subscription,
-        $bfResponse,
-        $conversionMode = null
-    )
+        ProcessResult$bfResponse,
+        bool $conversionMode = null
+    ): bool
     {
         return $this->trackSubscribe($user, $subscription, $bfResponse, $conversionMode, $type ?? 'resubscribe');
     }
@@ -429,25 +420,26 @@ class NewTracker
      * NewTracker::trackSubscribe()
      * Tracks to Piwik a subscription conversion, whether successful or failed (determined by analyzing the $bfResponse argument)
      *
-     * @param User          $user
-     * @param Subscription  $subscription
+     * @param User $user
+     * @param Subscription $subscription
      * @param ProcessResult $bfResponse
-     * @param null          $conversionMode
-     * @param string        $type
+     * @param null|bool $conversionMode
+     * @param string $type
      *
      * @return bool
+     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound
+     * @throws \Exception
      */
     public function trackSubscribe(User $user,
         Subscription $subscription,
         ProcessResult $bfResponse,
-        $conversionMode = null,
-        $type = 'subscribe'
-    )
+        bool $conversionMode = null,
+        string $type = 'subscribe'
+    ): bool
     {
         $oSubPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
-
 
         // Refactor candidate.
         // In v1 this method has been used during renew process
@@ -543,7 +535,7 @@ class NewTracker
      * @param User         $user
      * @param Subscription $subscription
      * @param              $bfResponse
-     * @param null         $conversionMode
+     * @param null|bool    $conversionMode
      *
      * @return bool
      * @throws \Exception
@@ -551,8 +543,8 @@ class NewTracker
     public function trackRenew(User $user,
         Subscription $subscription,
         ProcessResult $bfResponse,
-        $conversionMode = null
-    )
+        bool $conversionMode = null
+    ): bool
     {
         return $this->trackSubscribe($user, $subscription, $bfResponse, $conversionMode, 'renew');
     }
@@ -565,7 +557,7 @@ class NewTracker
      * @param User         $user
      * @param Subscription $subscription
      * @param              $bfResponse
-     * @param null         $conversionMode
+     * @param null|bool    $conversionMode
      *
      * @return bool
      * @throws \Exception
@@ -573,8 +565,8 @@ class NewTracker
     public function trackUnsubscribe(User $user,
         Subscription $subscription,
         ProcessResult $bfResponse = null,
-        $conversionMode = null
-    )
+        bool $conversionMode = null
+    ): bool
     {
         $bfId = $bfProvider = $oSubPack = false;
         $bfSuccess = true;
@@ -643,7 +635,7 @@ class NewTracker
      * @param User              $user
      * @param Game              $game
      * @param Subscription|null $subscription
-     * @param null              $conversionMode
+     * @param null|bool         $conversionMode
      *
      * @return bool
      * @throws \Exception
@@ -651,15 +643,11 @@ class NewTracker
     public function trackDownload(User $user,
         Game $game,
         Subscription $subscription = null,
-        $conversionMode = null
-    )
+        bool $conversionMode = null
+    ): bool
     {
         $this->getApiClient()->clearCustomVariables();
         $this->addStandardVariables($user, $subscription);
-        /** @var Subcategory $category */
-        $category = $game->getFirstCategory();
-        $categoryName = $category ? $category->getName() : 'game';
-
 
         $oSubPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
 
@@ -669,19 +657,10 @@ class NewTracker
         if ($conversionMode) {
             $this->addVariable('conversion_mode', $conversionMode);
         }
-        $gamesList = $this->subscribedGameRepository->getLastDownloadedGames($subscriptionId);
-        $list = [];
-        foreach ($gamesList as $gameItem) {
-            $list[] = $gameItem->getGame()->getId();
-        }
-        if (!in_array($game->getUuid(), $list)) {
-            $type = 'download-ok';
-            $prodSku = 'download-' . $game->getUuid();
-        }
-        else {
-            $type = 'redownload-ok';
-            $prodSku = 'redownload-' . $game->getUuid();
-        }
+
+        $type = 'download-ok';
+        $prodSku = 'download-' . $game->getUuid();
+
         $orderIdPieces = [
             $type,
             $subscriptionId,
@@ -690,7 +669,7 @@ class NewTracker
             'N' . rand(1000, 9999),
         ];
         $orderId = implode('-', $orderIdPieces);
-        return $this->sendEcommerce($orderId, 0.01, $prodSku, $categoryName);
+        return $this->sendEcommerce($orderId, 0.01, $prodSku, 'game');
     }
 
     /**

@@ -1,15 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Vlad
- * Date: 20.12.2016
- * Time: 22:22
- */
 
 namespace LegacyBundle\Entity;
 
 use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 
+/**
+ * Class ExchangeRate
+ */
 class ExchangeRate implements HasUuid
 {
     /**
@@ -28,13 +25,14 @@ class ExchangeRate implements HasUuid
     private $currencyName;
 
     /**
-     * @var decimal
+     * @var float
      */
     private $exchangeRate;
 
     /**
-     * ExchangeRate constructor.
-     * @throws \Exception
+     * ExchangeRate constructor
+     *
+     * @param string $uuid
      */
     public function __construct(string $uuid)
     {
@@ -90,7 +88,7 @@ class ExchangeRate implements HasUuid
     }
 
     /**
-     * @return decimal
+     * @return float
      */
     public function getExchangeRate()
     {
@@ -98,12 +96,10 @@ class ExchangeRate implements HasUuid
     }
 
     /**
-     * @param decimal $exchangeRate
+     * @param float $exchangeRate
      */
     public function setExchangeRate($exchangeRate)
     {
         $this->exchangeRate = $exchangeRate;
     }
-
-
 }

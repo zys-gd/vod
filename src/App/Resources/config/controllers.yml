@@ -56,6 +56,8 @@ services:
             - '@SubscriptionBundle\Service\SubscriptionExtractor'
             - '@App\Domain\Service\Games\GameImagesSerializer'
             - '@App\Domain\Service\Games\ExcludedGamesProvider'
+            - '@SubscriptionBundle\Piwik\PiwikStatisticSender'
+            - '@IdentificationBundle\Repository\UserRepository'
 
 
     App\Controller\TrackEventController:

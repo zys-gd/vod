@@ -9,7 +9,6 @@ services:
             - '@session'
             - '%campaign_session_name%'
             - '@App\Domain\Repository\CampaignRepository'
-            - '@SubscriptionBundle\Repository\Game\SubscribedGameRepository'
             - '@LegacyBundle\Service\SubscriptionConstraintsByCarrier'
             - '@device_detection.service.device'
 
@@ -22,12 +21,12 @@ services:
         abstract: true
         arguments: ['%piwik_id_site%', '%piwik_host%', '%piwik_https%', '%piwik_token_auth%']
         calls:
-            - [setRabbitMQService, ['@enqueue.client.producer']]
+            - [setRabbitMQProducer, ['@PiwikBundle\Service\RabbitMQProducer']]
 
     PiwikBundle\Api\PhpClient:
         arguments: ['%piwik_id_site%', '%piwik_host%', '%piwik_https%', '%piwik_token_auth%', '@logger']
         calls:
-            - [setRabbitMQService, ['@enqueue.client.producer']]
+            - [setRabbitMQProducer, ['@PiwikBundle\Service\RabbitMQProducer']]
 
     PiwikBundle\Api\JsClient:
         parent: PiwikBundle\Api\ClientAbstract
@@ -40,7 +39,10 @@ services:
     PiwikBundle\Service\PiwikDataSender:
         arguments: ['@PiwikBundle\Api\PhpClient']
 
-    PiwikBundle\Enqueue\PiwikEventsConsumer:
-        arguments: ['@PiwikBundle\Service\PiwikDataSender', '@enqueue.client.producer', '@enqueue.transport.rabbitmq_amqp.context']
-        tags:
-          - { name: enqueue.client.processor }
+#    PiwikBundle\Enqueue\PiwikEventsConsumer:
+#        arguments: ['@PiwikBundle\Service\PiwikDataSender', '@enqueue.client.producer', '@enqueue.transport.rabbitmq_amqp.context']
+#        tags:
+#          - { name: enqueue.client.processor }
+
+    PiwikBundle\Service\RabbitMQProducer:
+        arguments: ['%rabbit_mq_host%', '%rabbit_mq_port%', '%rabbit_mq_user%', '%rabbit_mq_password%']

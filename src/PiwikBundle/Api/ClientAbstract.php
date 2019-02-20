@@ -2,14 +2,11 @@
 
 namespace PiwikBundle\Api;
 
-use Enqueue\Client\Producer;
-use Enqueue\Client\ProducerInterface;
+use PiwikBundle\Service\RabbitMQProducer;
 use PiwikTracker;
 
 /**
  * Class ClientAbstract
- *
- * @package Playwing\PiwikBundle\Api
  */
 abstract class ClientAbstract extends PiwikTracker
 {
@@ -19,9 +16,9 @@ abstract class ClientAbstract extends PiwikTracker
     private $apiUrl;
 
     /**
-     * @var Producer
+     * @var RabbitMQProducer
      */
-    protected $rabbitMQ;
+    protected $rabbitMQProducer;
 
     const EXCHANGE_NAME = 'piwik-events-2';
     const ROUTING_KEY = 'piwik-events-route';
@@ -45,9 +42,12 @@ abstract class ClientAbstract extends PiwikTracker
 
     }
 
-    public function setRabbitMQService(ProducerInterface $rabbitMQ)
+    /**
+     * @param RabbitMQProducer $rabbitMQProducer
+     */
+    public function setRabbitMQProducer(RabbitMQProducer $rabbitMQProducer)
     {
-        $this->rabbitMQ = $rabbitMQ;
+        $this->rabbitMQProducer = $rabbitMQProducer;
     }
 
     /**

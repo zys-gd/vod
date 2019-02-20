@@ -18,8 +18,12 @@ use App\Domain\Service\Games\DrmApkProvider;
 use App\Domain\Service\Games\ExcludedGamesProvider;
 use App\Domain\Service\Games\GameImagesSerializer;
 use App\Domain\Service\Games\GameSerializer;
+use IdentificationBundle\Entity\User;
+use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\Entity\Subscription;
+use SubscriptionBundle\Piwik\PiwikStatisticSender;
 use SubscriptionBundle\Service\SubscriptionExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -58,18 +62,27 @@ class GamesController extends AbstractController implements AppControllerInterfa
      * @var ExcludedGamesProvider
      */
     private $excludedGamesProvider;
-
+    /**
+     * @var PiwikStatisticSender
+     */
+    private $piwikStatisticSender;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
     /**
      * GamesController constructor.
      *
-     * @param GameRepository        $gameRepository
-     * @param GameSerializer        $gameSerializer
-     * @param GameBuildRepository   $gameBuildRepository
-     * @param DrmApkProvider        $drmApkProvider
+     * @param GameRepository $gameRepository
+     * @param GameSerializer $gameSerializer
+     * @param GameBuildRepository $gameBuildRepository
+     * @param DrmApkProvider $drmApkProvider
      * @param SubscriptionExtractor $extractor
-     * @param GameImagesSerializer  $gameImagesSerializer
+     * @param GameImagesSerializer $gameImagesSerializer
      * @param ExcludedGamesProvider $excludedGamesProvider
+     * @param PiwikStatisticSender $piwikStatisticSender
+     * @param UserRepository $userRepository
      */
     public function __construct(
         GameRepository $gameRepository,
@@ -78,16 +91,20 @@ class GamesController extends AbstractController implements AppControllerInterfa
         DrmApkProvider $drmApkProvider,
         SubscriptionExtractor $extractor,
         GameImagesSerializer $gameImagesSerializer,
-        ExcludedGamesProvider $excludedGamesProvider
+        ExcludedGamesProvider $excludedGamesProvider,
+        PiwikStatisticSender $piwikStatisticSender,
+        UserRepository $userRepository
     )
     {
         $this->gameRepository        = $gameRepository;
         $this->gameSerializer        = $gameSerializer;
         $this->gameBuildRepository   = $gameBuildRepository;
         $this->drmApkProvider        = $drmApkProvider;
-        $this->subscriptionExtractor             = $extractor;
+        $this->subscriptionExtractor = $extractor;
         $this->gameImagesSerializer  = $gameImagesSerializer;
         $this->excludedGamesProvider = $excludedGamesProvider;
+        $this->piwikStatisticSender  = $piwikStatisticSender;
+        $this->userRepository        = $userRepository;
     }
 
 
@@ -183,20 +200,33 @@ class GamesController extends AbstractController implements AppControllerInterfa
      */
     public function downloadAction(Request $request)
     {
-
         if (!$id = $request->get('id', null)) {
             throw new BadRequestHttpException('Missing `id` parameter');
         }
 
-        if (!$this->subscriptionExtractor->extractSubscriptionFromSession($request->getSession())) {
-            throw new BadRequestHttpException('You are not subscribed');
+        $session = $request->getSession();
+        $subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($session);
 
+        if (!$subscription) {
+            throw new BadRequestHttpException('You are not subscribed');
         }
 
         /** @var GameBuild $gameBuild */
         $gameBuild = $this->gameBuildRepository->findOneBy(['game' => $id]);
-
         $link = $this->drmApkProvider->getDRMApkUrl($gameBuild);
+
+        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($session);
+
+        if (!empty($identificationData['identification_token'])) {
+            $token = $identificationData['identification_token'];
+
+            /** @var User $user */
+            $user = $this->userRepository->findOneBy(['identificationToken' => $token]);
+            /** @var Game $game */
+            $game = $this->gameRepository->find($id);
+
+            $this->piwikStatisticSender->trackDownload($user, $subscription, $game);
+        }
 
         return new JsonResponse(['url' => $link]);
     }

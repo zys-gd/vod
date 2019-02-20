@@ -35,11 +35,15 @@ class CategoryController extends AbstractController implements AppControllerInte
 
     /**
      * CategoryController constructor.
-     * @param MainCategoryRepository  $mainCategoryRepository
+     * @param MainCategoryRepository $mainCategoryRepository
      * @param UploadedVideoRepository $uploadedVideoRepository
+     * @param SubcategoryRepository $subcategoryRepository
      */
-    public function __construct(MainCategoryRepository $mainCategoryRepository, UploadedVideoRepository $uploadedVideoRepository, SubcategoryRepository $subcategoryRepository)
-    {
+    public function __construct(
+        MainCategoryRepository $mainCategoryRepository,
+        UploadedVideoRepository $uploadedVideoRepository,
+        SubcategoryRepository $subcategoryRepository
+    ) {
         $this->mainCategoryRepository  = $mainCategoryRepository;
         $this->uploadedVideoRepository = $uploadedVideoRepository;
         $this->subcategoryRepository   = $subcategoryRepository;
