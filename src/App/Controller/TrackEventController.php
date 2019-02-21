@@ -1,15 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 20.02.19
- * Time: 10:50
- */
 
 namespace App\Controller;
 
-
 use App\Domain\Repository\UploadedVideoRepository;
+use App\Domain\Service\PageVisitTracker;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,6 +11,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
+/**
+ * Class TrackEventController
+ */
 class TrackEventController extends AbstractController
 {
     /**
@@ -24,14 +21,21 @@ class TrackEventController extends AbstractController
      */
     private $uploadedVideoRepository;
 
+    /**
+     * @var PageVisitTracker
+     */
+    private $pageVisitTracker;
 
     /**
-     * TrackEventController constructor.
+     * TrackEventController constructor
+     *
      * @param UploadedVideoRepository $uploadedVideoRepository
+     * @param PageVisitTracker $pageVisitTracker
      */
-    public function __construct(UploadedVideoRepository $uploadedVideoRepository)
+    public function __construct(UploadedVideoRepository $uploadedVideoRepository, PageVisitTracker $pageVisitTracker)
     {
         $this->uploadedVideoRepository = $uploadedVideoRepository;
+        $this->pageVisitTracker = $pageVisitTracker;
     }
 
     /**

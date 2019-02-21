@@ -9,8 +9,10 @@
 namespace App\Controller;
 
 
+use App\Domain\Service\PageVisitTracker;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Entity\CarrierInterface;
+use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Entity\SubscriptionPack;
@@ -30,16 +32,26 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var SubscriptionPackRepository
      */
     private $subscriptionPackRepository;
+    /**
+     * @var PageVisitTracker
+     */
+    private $pageVisitTracker;
 
     /**
-     * LPController constructor.
+     * LPController constructor
+     *
      * @param SubscriptionPackRepository $subscriptionPackRepository
      * @param CarrierRepositoryInterface $carrierRepository
+     * @param PageVisitTracker $pageVisitTracker
      */
-    public function __construct(SubscriptionPackRepository $subscriptionPackRepository, CarrierRepositoryInterface $carrierRepository)
-    {
+    public function __construct(
+        SubscriptionPackRepository $subscriptionPackRepository,
+        CarrierRepositoryInterface $carrierRepository,
+        PageVisitTracker $pageVisitTracker
+    ) {
         $this->subscriptionPackRepository = $subscriptionPackRepository;
         $this->carrierRepository          = $carrierRepository;
+        $this->pageVisitTracker           = $pageVisitTracker;
     }
 
 
@@ -75,6 +87,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             return in_array($carrier->getBillingCarrierId(), $subpackCarriers);
         });
 
+        $this->pageVisitTracker->trackVisit();
 
         return $this->render('@App/Common/landing.html.twig', [
             'isp_detection_data' => $session->get('isp_detection_data'),

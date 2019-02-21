@@ -18,7 +18,9 @@ use App\Domain\Service\Games\DrmApkProvider;
 use App\Domain\Service\Games\ExcludedGamesProvider;
 use App\Domain\Service\Games\GameImagesSerializer;
 use App\Domain\Service\Games\GameSerializer;
+use App\Domain\Service\PageVisitTracker;
 use IdentificationBundle\Entity\User;
+use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -70,6 +72,10 @@ class GamesController extends AbstractController implements AppControllerInterfa
      * @var UserRepository
      */
     private $userRepository;
+    /**
+     * @var PageVisitTracker
+     */
+    private $pageVisitTracker;
 
     /**
      * GamesController constructor.
@@ -83,6 +89,7 @@ class GamesController extends AbstractController implements AppControllerInterfa
      * @param ExcludedGamesProvider $excludedGamesProvider
      * @param PiwikStatisticSender $piwikStatisticSender
      * @param UserRepository $userRepository
+     * @param PageVisitTracker $pageVisitTracker
      */
     public function __construct(
         GameRepository $gameRepository,
@@ -93,7 +100,8 @@ class GamesController extends AbstractController implements AppControllerInterfa
         GameImagesSerializer $gameImagesSerializer,
         ExcludedGamesProvider $excludedGamesProvider,
         PiwikStatisticSender $piwikStatisticSender,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        PageVisitTracker $pageVisitTracker
     )
     {
         $this->gameRepository        = $gameRepository;
@@ -105,18 +113,23 @@ class GamesController extends AbstractController implements AppControllerInterfa
         $this->excludedGamesProvider = $excludedGamesProvider;
         $this->piwikStatisticSender  = $piwikStatisticSender;
         $this->userRepository        = $userRepository;
+        $this->pageVisitTracker      = $pageVisitTracker;
     }
 
 
     /**
      * @Route("/games/",name="game_category")
      * @Method("GET")
+     *
+     * @param ISPData $data
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showCategoryContentAction()
+    public function showCategoryContentAction(ISPData $data)
     {
-
         $games = $this->gameRepository->findBatchOfGames(0, 8);
+
+        $this->pageVisitTracker->trackVisit($data);
 
         return $this->render('@App/Common/game_category_content.html.twig', [
             'games' => $games
@@ -129,7 +142,7 @@ class GamesController extends AbstractController implements AppControllerInterfa
      * @Route("game/{gameUuid}", name="game_content")
      * @Method("GET")
      * @param Request $request
-     * @param string  $gameUuid
+     * @param string $gameUuid
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Doctrine\ORM\NonUniqueResultException

@@ -164,7 +164,7 @@ class CommonFlowHandler
             if ($type === 'subscribe') {
                 $this->affiliateService->checkAffiliateEligibilityAndSendEvent($subscription, $userInfo);
             }
-            $this->piwikStatisticSender->trackWithBillingResponse(
+            $this->piwikStatisticSender->send(
                 $callbackTypeHandler->getPiwikEventName(),
                 $subscription->getUser(),
                 $subscription,

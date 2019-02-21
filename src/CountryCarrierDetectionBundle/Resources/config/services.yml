@@ -1,17 +1,14 @@
 services:
-    ip_service:
-        class: CountryCarrierDetectionBundle\Service\IpService
-        arguments: [ "@request_stack" ]
-    country_detection:
-        class: CountryCarrierDetectionBundle\Service\CountryService
-        arguments: [ "@ip_service", "%country_database%", "@cache.app", "@logger" ]
-    carrier_detection:
-        class: CountryCarrierDetectionBundle\Service\ISPService
-        arguments: [ "@ip_service", "%isp_database%", "@cache.app", "@logger" ]
-    connection_type_detection:
-        class: CountryCarrierDetectionBundle\Service\ConnectionTypeService
-        arguments: [ "@ip_service", "%connection_type_database%", "@cache.app", "@logger" ]
-    country_carrier_detection:
-        class: CountryCarrierDetectionBundle\Service\MaxMindIpInfo
-        arguments: [ "@country_detection", "@carrier_detection", "@connection_type_detection" ]
-
+    CountryCarrierDetectionBundle\Service\IpService:
+        arguments: [ '@request_stack' ]
+    CountryCarrierDetectionBundle\Service\CountryService:
+        arguments: [ '@CountryCarrierDetectionBundle\Service\IpService', '%country_database%', '@cache.app', '@logger' ]
+    CountryCarrierDetectionBundle\Service\ISPService:
+        arguments: [ '@CountryCarrierDetectionBundle\Service\IpService', '%isp_database%', '@cache.app', '@logger' ]
+    CountryCarrierDetectionBundle\Service\ConnectionTypeService:
+        arguments: [ '@CountryCarrierDetectionBundle\Service\IpService', '%connection_type_database%', '@cache.app', '@logger' ]
+    CountryCarrierDetectionBundle\Service\MaxMindIpInfo:
+        arguments:
+            - '@CountryCarrierDetectionBundle\Service\CountryService'
+            - '@CountryCarrierDetectionBundle\Service\ISPService'
+            - '@CountryCarrierDetectionBundle\Service\ConnectionTypeService'

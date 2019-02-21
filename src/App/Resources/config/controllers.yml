@@ -24,9 +24,13 @@ services:
             - '@App\Domain\Repository\UploadedVideoRepository'
             - '@App\Domain\Repository\GameRepository'
             - '@App\Domain\Repository\CountryCategoryPriorityOverrideRepository'
+            - '@App\Domain\Service\PageVisitTracker'
 
     App\Controller\LPController:
-        arguments: ['@SubscriptionBundle\Repository\SubscriptionPackRepository', '@IdentificationBundle\Repository\CarrierRepositoryInterface']
+        arguments:
+            - '@SubscriptionBundle\Repository\SubscriptionPackRepository'
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+            - '@App\Domain\Service\PageVisitTracker'
 
     App\Controller\ErrorController:
         arguments:
@@ -37,6 +41,7 @@ services:
             - '@App\Domain\Repository\MainCategoryRepository'
             - '@App\Domain\Repository\UploadedVideoRepository'
             - '@App\Domain\Repository\SubcategoryRepository'
+            - '@App\Domain\Service\PageVisitTracker'
 
     App\Controller\AccountController:
         arguments:
@@ -58,8 +63,9 @@ services:
             - '@App\Domain\Service\Games\ExcludedGamesProvider'
             - '@SubscriptionBundle\Piwik\PiwikStatisticSender'
             - '@IdentificationBundle\Repository\UserRepository'
-
+            - '@App\Domain\Service\PageVisitTracker'
 
     App\Controller\TrackEventController:
         arguments:
             - '@App\Domain\Repository\UploadedVideoRepository'
+            - '@App\Domain\Service\PageVisitTracker'

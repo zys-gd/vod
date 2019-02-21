@@ -48,7 +48,7 @@ class PiwikStatisticSender
         bool $conversionMode = null
     ): bool
     {
-        return $this->trackWithBillingResponse($this->newTracker::TRACK_SUBSCRIBE, $user, $subscriptionEntity, $responseData, $conversionMode);
+        return $this->send($this->newTracker::TRACK_SUBSCRIBE, $user, $subscriptionEntity, $responseData, $conversionMode);
     }
 
     /**
@@ -66,7 +66,7 @@ class PiwikStatisticSender
         bool $conversionMode = null
     ): bool
     {
-        return $this->trackWithBillingResponse($this->newTracker::TRACK_RESUBSCRIBE, $user, $subscriptionEntity, $responseData, $conversionMode);
+        return $this->send($this->newTracker::TRACK_RESUBSCRIBE, $user, $subscriptionEntity, $responseData, $conversionMode);
     }
 
     /**
@@ -84,7 +84,7 @@ class PiwikStatisticSender
         bool $conversionMode = null
     ): bool
     {
-        return $this->trackWithBillingResponse($this->newTracker::TRACK_RENEW, $user, $subscriptionEntity, $responseData, $conversionMode);
+        return $this->send($this->newTracker::TRACK_RENEW, $user, $subscriptionEntity, $responseData, $conversionMode);
     }
 
     /**
@@ -102,7 +102,7 @@ class PiwikStatisticSender
         bool $conversionMode = null
     ): bool
     {
-        return $this->trackWithBillingResponse($this->newTracker::TRACK_UNSUBSCRIBE, $user, $subscriptionEntity, $responseData, $conversionMode);
+        return $this->send($this->newTracker::TRACK_UNSUBSCRIBE, $user, $subscriptionEntity, $responseData, $conversionMode);
     }
 
     /**
@@ -142,44 +142,6 @@ class PiwikStatisticSender
         }
     }
 
-
-    public function trackVisit(
-        User $user,
-        $connection,
-        $operator,
-        $country,
-        string $ip,
-        string $msisdn,
-        $affiliate = null,
-        $campaign = null
-    ): bool
-    {
-        try {
-            $this->logger->info('Trying to send piwik event', [
-                'eventName' => 'pageVisit'
-            ]);
-
-            $result = $this->newTracker->trackPage(
-                $user,
-                $connection,
-                $operator,
-                $country,
-                $ip,
-                $msisdn,
-                $affiliate,
-                $campaign
-            );
-
-            $this->logger->info('Sending is finished', ['result' => $result]);
-
-            return $result;
-        } catch (\Exception $ex) {
-            $this->logger->info('Exception on piwik sending', ['msg' => $ex->getMessage()]);
-
-            return false;
-        }
-    }
-
     /**
      * @param string $trackEventName
      * @param User $user
@@ -190,7 +152,7 @@ class PiwikStatisticSender
      *
      * @return bool
      */
-    public function trackWithBillingResponse(
+    public function send(
         string $trackEventName,
         User $user,
         Subscription $subscriptionEntity,

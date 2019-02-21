@@ -112,3 +112,12 @@ services:
     App\Domain\Service\Translator\DataAggregator:
         arguments:
             - '@App\Domain\Repository\CarrierRepository'
+
+    App\Domain\Service\PageVisitTracker:
+        arguments:
+            - '@PiwikBundle\Service\NewTracker'
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@logger'
+            - '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
+            - '@session'
+            - '@App\Domain\Repository\CountryRepository'
