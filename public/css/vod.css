@@ -290,7 +290,7 @@ a button {
 }
 
 .thumbnail-wrapper {
-    position: relative;
+    position: relative !important;
 }
 
 
