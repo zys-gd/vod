@@ -42,7 +42,14 @@
             <div class="d-flex align-items-center justify-content-center">
                 {{ translate('subscription.status.unsubscribed')|raw }}
             </div>
-            {{ link.render(url('subscription.subscribe'),translate('buttons.join.now'), 'x-subscribe-button') }}
+
+            <div class="d-flex align-items-center justify-content-center mt-5">
+                <h2 class="h1">{{ translate('offer.account')|raw }}</h2>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-center">
+                {{ subscribe_buttons.render() }}
+            </div>
 
         {% elseif hasInActiveSubscription() %}
 

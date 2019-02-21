@@ -32,17 +32,13 @@
             {% for item in getMenuElements() %}
 
                 <li class="nav-item">
-                    <div class="d-flex flex-row">
-                        <div>
-                            <a class="nav-item_link" href="{{ item.link }}">
-                                {{ item.title }}
-                            </a>
-                        </div>
+                    <a class="nav-item_link" href="{{ item.link }}">
+                        {{ item.title }}
+                    </a>
                         {#<div style="margin-left: auto" class="x-expand-button expand-button">
                             <i class="fas fa-chevron-down open-icon"></i>
                             <i class="fas fa-chevron-up close-icon"></i>
                         </div>#}
-                    </div>
                     {#{% if item.subitems is defined %}
                         <div style="display: none" class="x-submenus-list">
                             {% for subitem in item.subitems %}
