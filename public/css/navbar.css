@@ -90,9 +90,10 @@
 }
 
 .nav-item_link {
-    height: 100%;
+    line-height: 100%;
     vertical-align: middle;
     color: white;
+    display: block;
 }
 
 .nav-item_subitem {
@@ -129,12 +130,7 @@ a.nav-item_subitem:hover{
 }
 
 .nav-item:hover {
-    background-color: #e7773c;
-    background-image: linear-gradient(to right, #e74c3c 0%, #e7773c 100%);
-    background-image: -moz-linear-gradient(to right, #e74c3c 0%, #e7773c 100%);
-    background-image: -webkit-gradient(to right, #e74c3c 0%, #e7773c 100%);
-    background-image: -webkit-linear-gradient(to right, #e74c3c 0%, #e7773c 100%);
-    background-image: -ms-linear-gradient(to right, #e74c3c 0%, #e7773c 100%);
+    background-color: #222;
     border: 0px;
 }
 
