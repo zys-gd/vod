@@ -9,7 +9,9 @@
 namespace App\Functional;
 
 
+use DataFixtures\LoadCarriersData;
 use ExtrasBundle\Testing\Core\AbstractFunctionalTest;
+use SubscriptionBundle\DataFixtures\ORM\LoadSubscriptionPackData;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ContactUsControllerTest extends AbstractFunctionalTest
@@ -23,14 +25,18 @@ class ContactUsControllerTest extends AbstractFunctionalTest
     public function testContactUsActionIsOk()
     {
         $client = $this->makeClient();
-        $client->request('get', '/contact-us');
+        $client->request('get', '/contact-us', ['f' => 1]);
 
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $location = $client->getResponse()->headers->get('Location');
+        $this->assertContains('lp', $location, 'redirect is missing');
     }
 
     public function testEmailIsSentProperly()
     {
+
+        $this->session->set('identification_data', ['identification_token' => 'xd']);
+
         $client = $this->makeClient();
 
         $client->enableProfiler();
@@ -41,13 +47,17 @@ class ContactUsControllerTest extends AbstractFunctionalTest
             ->getToken('contact-us')
             ->getValue();
 
+
         $client->request('POST', '/contact-us', [
+            'f'          => 1,
             'contact_us' => [
                 '_csrf_token' => $token,
                 'email'       => 'v@gmail.com',
                 'comment'     => 'Test Comment',
             ]
-        ]);
+        ],
+            [],
+            ['REMOTE_ADDR' => '119.160.116.250']);
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $mailCollector = $client->getProfile()->getCollector('swiftmailer');
@@ -62,7 +72,10 @@ class ContactUsControllerTest extends AbstractFunctionalTest
 
     protected function getFixturesListLoadedForEachTest(): array
     {
-        return [];
+        return [
+            LoadCarriersData::class,
+            LoadSubscriptionPackData::class
+        ];
     }
 
     protected function configureWebClientClientContainer(ContainerInterface $container)
