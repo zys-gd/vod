@@ -9,13 +9,14 @@
 namespace SubscriptionBundle\Service\Notification\Common;
 
 
+use IdentificationBundle\Entity\User;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Notification\API\DTO\NotificationMessage;
 use SubscriptionBundle\BillingFramework\Notification\API\MessageCreator;
 use SubscriptionBundle\BillingFramework\Notification\Exception\MissingSMSTextException;
-use SubscriptionBundle\Service\Notification\Common\SMSTexts\MessageKeyHandlerProvider;
+use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
-use IdentificationBundle\Entity\User;
+use SubscriptionBundle\Service\Notification\Common\SMSTexts\MessageKeyHandlerProvider;
 
 class MessageCompiler
 {
@@ -44,18 +45,19 @@ class MessageCompiler
         SMSTextProvider $SMSTextProvider
     )
     {
-        $this->logger = $logger;
+        $this->logger          = $logger;
         $this->SMSTextProvider = $SMSTextProvider;
-        $this->messageCreator = $messageCreator;
+        $this->messageCreator  = $messageCreator;
     }
 
 
     /**
-     * @param string $type
-     * @param User $User
+     * @param string           $type
+     * @param User             $User
      * @param SubscriptionPack $subscriptionPack
-     * @param null $billingProcessId
-     * @param array $bodyVariables
+     * @param Subscription     $subscription
+     * @param null             $billingProcessId
+     * @param array            $bodyVariables
      * @return NotificationMessage
      * @throws MissingSMSTextException
      */
@@ -63,9 +65,9 @@ class MessageCompiler
         string $type,
         User $User,
         SubscriptionPack $subscriptionPack,
+        Subscription $subscription,
         $billingProcessId = null,
         array $bodyVariables = []
-
     ): NotificationMessage
     {
 
@@ -80,8 +82,12 @@ class MessageCompiler
         $identifier = $User->getIdentifier();
         $operatorId = $User->getCarrier()->getOperatorId();
 
-        $body = $this->compileSmsTextTemplate($bodyVariables, $body);
-        $message = $this->messageCreator->createMessage($identifier, $type, $body, $operatorId);
+        $smsVariables = array_merge(
+            $this->getDefaultSMSVariables($subscriptionPack, $subscription),
+            $bodyVariables
+        );
+        $body         = $this->compileSmsTextTemplate($smsVariables, $body);
+        $message      = $this->messageCreator->createMessage($identifier, $type, $body, $operatorId);
 
         if ($billingProcessId) {
             $message->setBillingProccess($billingProcessId);
@@ -93,7 +99,7 @@ class MessageCompiler
 
     /**
      * @param array $bodyVariables
-     * @param $body
+     * @param       $body
      * @return string|string[]|null
      */
     private function compileSmsTextTemplate(array $bodyVariables, string $body): string
@@ -102,5 +108,17 @@ class MessageCompiler
             $body = str_replace($key, $value, $body);
         }
         return $body;
+    }
+
+    private function getDefaultSMSVariables(SubscriptionPack $pack, Subscription $subscription): array
+    {
+        return [
+            '_price_'      => $pack->getTierPrice(),
+            '_currency_'   => $pack->getTierCurrency(),
+            '_home_url_'   => 'home',
+            '_unsub_url_'  => 'myaccount',
+            '_renew_date_' => $subscription->getRenewDate()->format(DATE_ISO8601)
+        ];
+
     }
 }

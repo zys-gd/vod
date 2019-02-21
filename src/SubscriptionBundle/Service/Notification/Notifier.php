@@ -122,11 +122,7 @@ class Notifier
             );
 
             $notification = $this->messageCompiler->compileNotification(
-                $type,
-                $User,
-                $subscriptionPack,
-                $processId,
-                ['_autologin_url_' => $url]
+                $type, $User, $subscriptionPack, $subscription, $processId, ['_autologin_url_' => $url]
             );
             $this->sender->sendNotification($notification, $carrier->getBillingCarrierId());
 
