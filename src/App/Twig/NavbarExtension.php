@@ -6,9 +6,9 @@ use App\Domain\Entity\CountryCategoryPriorityOverride;
 use App\Domain\Entity\MainCategory;
 use App\Domain\Repository\CountryCategoryPriorityOverrideRepository;
 use App\Domain\Repository\MainCategoryRepository;
+use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\RouterInterface;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 
 /**
  * Class NavbarExtension
@@ -38,9 +38,9 @@ class NavbarExtension extends \Twig_Extension
     /**
      * NavbarExtension constructor
      *
-     * @param MainCategoryRepository $mainCategoryRepository
-     * @param RouterInterface $router
-     * @param Session $session
+     * @param MainCategoryRepository                    $mainCategoryRepository
+     * @param RouterInterface                           $router
+     * @param Session                                   $session
      * @param CountryCategoryPriorityOverrideRepository $categoryPriorityOverrideRepository
      */
     public function __construct(
@@ -48,10 +48,11 @@ class NavbarExtension extends \Twig_Extension
         RouterInterface $router,
         Session $session,
         CountryCategoryPriorityOverrideRepository $categoryPriorityOverrideRepository
-    ) {
-        $this->mainCategoryRepository = $mainCategoryRepository;
-        $this->router                 = $router;
-        $this->session                = $session;
+    )
+    {
+        $this->mainCategoryRepository             = $mainCategoryRepository;
+        $this->router                             = $router;
+        $this->session                            = $session;
         $this->categoryPriorityOverrideRepository = $categoryPriorityOverrideRepository;
     }
 
@@ -63,9 +64,11 @@ class NavbarExtension extends \Twig_Extension
                 $categories = $this->mainCategoryRepository->findWithSubcategories();
 
                 $ispData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
-                $categoryOverrides = $this
-                    ->categoryPriorityOverrideRepository
-                    ->findByBillingCarrierId($ispData['carrier_id']);
+                if ($ispData) {
+                    $categoryOverrides = $this
+                        ->categoryPriorityOverrideRepository
+                        ->findByBillingCarrierId($ispData['carrier_id']);
+                }
 
                 if (!empty($categoryOverrides)) {
                     $mainCategoryOverride = array_map(function (CountryCategoryPriorityOverride $categoryOverride) {

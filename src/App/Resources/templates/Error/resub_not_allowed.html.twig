@@ -1,10 +1,10 @@
 {% extends '@App/base.html.twig' %}
-{% import "@App/Common/Blocks/header_stripped.html.twig" as  header %}
+{% import "@App/Common/Blocks/header.html.twig" as  header %}
 
 
 {% block stylesheets %}
     {{ parent() }}
-    <link href="{{ asset('/css/wros.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/rsna.css') }}" rel="stylesheet">
 
 {% endblock %}
 
@@ -15,8 +15,10 @@
 
 {% block body %}
     <div class="d-flex align-items-center justify-content-center w-100">
-        <div class="disclaimer-text">
-            {{ translate('subscription.text.resubscribe') }}
+        <div class="rsna-disclaimer-text">
+            You can not subscribe to 100% Sport because you have already been unsubscribed.
+            <br>
+            If you want to subscribe anew, please <a class="contact-us-link red" href="{{ url('contact_us') }}">Contact Us</a>
         </div>
     </div>
 {% endblock %}
