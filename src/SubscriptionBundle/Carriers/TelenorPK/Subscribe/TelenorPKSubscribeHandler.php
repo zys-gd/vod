@@ -9,7 +9,7 @@
 namespace SubscriptionBundle\Carriers\TelenorPK\Subscribe;
 
 
-use AppBundle\Constant\Carrier;
+use App\Domain\Constants\ConstBillingCarrierId;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use SubscriptionBundle\Entity\Subscription;
@@ -22,7 +22,7 @@ class TelenorPKSubscribeHandler implements SubscriptionHandlerInterface, HasCust
 {
     public function canHandle(\IdentificationBundle\Entity\CarrierInterface $carrier): bool
     {
-        return $carrier->getIdCarrier() === Carrier::TELENOR_PAKISTAN;
+        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::TELENOR_PAKISTAN;
     }
 
     public function getAdditionalSubscribeParams(Request $request, User $User): array

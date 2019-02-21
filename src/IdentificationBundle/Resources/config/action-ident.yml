@@ -80,6 +80,7 @@ services:
       - '_wifi_route_placeholder_'
       - '_homepage_route_placeholder_'
       - '_landing_route_placeholder_'
+      - '_my_account_route_placeholder_'
 
   IdentificationBundle\Identification\Service\ISPResolver: ~
 

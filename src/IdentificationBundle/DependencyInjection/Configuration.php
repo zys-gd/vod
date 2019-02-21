@@ -30,6 +30,7 @@ class Configuration implements ConfigurationInterface
             ->scalarNode('wifi_flow_redirect_route')->isRequired()->end()
             ->scalarNode('homepage_route')->isRequired()->end()
             ->scalarNode('landing_route')->isRequired()->end()
+            ->scalarNode('my_account_route')->isRequired()->end()
             ->end();
 
 
