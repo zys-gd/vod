@@ -3539,7 +3539,7 @@
         "name": "Telenor (Pakistan)",
         "countryCode": "PK",
         "isp": "Telenor Pakistan|Telenor Pakistan|Telenor Pakistan (PK)|Telenor Pakistan (Pvt)| Telenor Pakistan (Pvt)",
-        "published": false,
+        "published": true,
         "lpOtp": true,
         "pinIdentSupport": true,
         "trial_initializer": "store",

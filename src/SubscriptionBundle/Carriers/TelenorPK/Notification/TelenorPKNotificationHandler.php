@@ -9,15 +9,15 @@
 namespace SubscriptionBundle\Carriers\TelenorPK\Notification;
 
 
+use App\Domain\Constants\ConstBillingCarrierId;
 use IdentificationBundle\Entity\CarrierInterface;
 use SubscriptionBundle\Service\Notification\Impl\NotificationHandlerInterface;
 
 class TelenorPKNotificationHandler implements NotificationHandlerInterface
 {
-
-    public function canHandle(Carrier $carrier): bool
+    public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getIdCarrier() === \AppBundle\Constant\Carrier::TELENOR_PAKISTAN;
+        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::TELENOR_PAKISTAN;
     }
 
     public function isNotificationShouldBeSent(): bool

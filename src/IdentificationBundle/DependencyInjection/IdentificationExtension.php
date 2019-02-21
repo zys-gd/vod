@@ -45,6 +45,7 @@ class IdentificationExtension extends ConfigurableExtension
         $service->replaceArgument(1, $mergedConfig['wifi_flow_redirect_route']);
         $service->replaceArgument(2, $mergedConfig['homepage_route']);
         $service->replaceArgument(3, $mergedConfig['landing_route']);
+        $service->replaceArgument(4, $mergedConfig['my_account_route']);
     }
 
 }

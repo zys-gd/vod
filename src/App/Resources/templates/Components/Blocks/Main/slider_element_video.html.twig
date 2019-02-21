@@ -1,14 +1,15 @@
 {% macro render(video, category) %}
     <div class="d-flex flex-column video-element x-play-button">
         {# this div for flex working same column height #}
-        <div>
+        <div class="thumbnail-wrapper">
             <img src="{{ video.thumbnails[0] }}"
                  class="x-play-button"
                  data-uuid="{{ video.uuid }}"
                  data-category="{{ category }}"
                  alt="{{ video.uuid }}"
             />
-            <div class="video-element-title">{{ video.title }}</div>
+            <div class="category__related__box-play"></div>
         </div>
+        <div class="video-element-title">{{ video.title }}</div>
     </div>
 {% endmacro %}

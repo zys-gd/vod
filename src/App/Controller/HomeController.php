@@ -131,10 +131,10 @@ class HomeController extends AbstractController implements ControllerWithISPDete
             }
         }
 
-        $categoryVideos = ArraySorter::sortArrayByKeys(
+        $categoryVideos = array_slice(ArraySorter::sortArrayByKeys(
             $categoryVideos,
             array_keys($indexedCategoryData)
-        );
+        ), 0, 4);
 
         $this->contentStatisticSender->trackVisit($data);
 
