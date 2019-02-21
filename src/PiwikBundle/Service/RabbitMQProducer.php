@@ -31,8 +31,8 @@ class RabbitMQProducer
      */
     public function __construct(string $host, string $port, string $user, string $password)
     {
-        //$this->connection = new AMQPStreamConnection($host, $port, $user, $password);
-        //$this->channel = $this->connection->channel();
+//        $this->connection = new AMQPStreamConnection($host, $port, $user, $password);
+//        $this->channel = $this->connection->channel();
     }
 
     /**
@@ -43,7 +43,7 @@ class RabbitMQProducer
     {
         $message = new AMQPMessage($data);
 
-        //$this->channel->queue_declare($queueName);
-        //$this->channel->basic_publish($message);
+//        $this->channel->queue_declare($queueName);
+//        $this->channel->basic_publish($message);
     }
 }

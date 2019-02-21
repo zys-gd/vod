@@ -9,7 +9,7 @@ use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
 
-class PiwikStatisticSender
+class SubscriptionStatisticSender
 {
     /**
      * @var LoggerInterface
@@ -22,7 +22,7 @@ class PiwikStatisticSender
     private $newTracker;
 
     /**
-     * PiwikStatisticSender constructor.
+     * SubscriptionStatisticSender constructor.
      *
      * @param LoggerInterface $logger
      * @param NewTracker $newTracker
@@ -103,43 +103,6 @@ class PiwikStatisticSender
     ): bool
     {
         return $this->send($this->newTracker::TRACK_UNSUBSCRIBE, $user, $subscriptionEntity, $responseData, $conversionMode);
-    }
-
-    /**
-     * @param User $user
-     * @param Subscription $subscriptionEntity
-     * @param Game $game
-     * @param bool|null $conversionMode
-     *
-     * @return bool
-     */
-    public function trackDownload(
-        User $user,
-        Subscription $subscriptionEntity,
-        Game $game,
-        bool $conversionMode = null
-    ): bool
-    {
-        try {
-            $this->logger->info('Trying to send piwik event', [
-                'eventName' => $this->newTracker::TRACK_DOWNLOAD
-            ]);
-
-            $result = $this->newTracker->trackDownload(
-                $user,
-                $game,
-                $subscriptionEntity,
-                $conversionMode
-            );
-
-            $this->logger->info('Sending is finished', ['result' => $result]);
-
-            return $result;
-        } catch (\Exception $ex) {
-            $this->logger->info('Exception on piwik sending', ['msg' => $ex->getMessage()]);
-
-            return false;
-        }
     }
 
     /**

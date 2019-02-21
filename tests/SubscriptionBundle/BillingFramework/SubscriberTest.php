@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
-use SubscriptionBundle\Piwik\PiwikStatisticSender;
+use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use SubscriptionBundle\Service\Action\Common\FakeResponseProvider;
 use SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
@@ -31,7 +31,7 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
     /**
-     * @var PiwikStatisticSender|\Mockery\MockInterface
+     * @var SubscriptionStatisticSender|\Mockery\MockInterface
      */
     private $piwikSender;
 
@@ -105,7 +105,7 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
     protected function setUp()
     {
 
-        $this->piwikSender         = Mockery::spy(PiwikStatisticSender::class);
+        $this->piwikSender         = Mockery::spy(SubscriptionStatisticSender::class);
         $this->subscriptionCreator = Mockery::spy(SubscriptionCreator::class);
         $this->affiliateService    = Mockery::spy(AffiliateSender::class);
         $this->subscribeProcess    = Mockery::spy(SubscribeProcess::class);

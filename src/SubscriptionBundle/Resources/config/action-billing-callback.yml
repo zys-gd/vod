@@ -10,7 +10,7 @@ services:
         - '@event_dispatcher'
         - '@SubscriptionBundle\Service\EntitySaveHelper'
         - '@SubscriptionBundle\Affiliate\Service\AffiliateSender'
-        - '@SubscriptionBundle\Piwik\PiwikStatisticSender'
+        - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
         - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
         - '@SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider'
 

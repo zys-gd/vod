@@ -7,6 +7,7 @@ use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
 use App\Domain\Entity\Game;
+use App\Domain\Entity\UploadedVideo;
 use App\Domain\Repository\CampaignRepository;
 use DeviceDetectionBundle\Service\Device;
 use IdentificationBundle\Entity\User;
@@ -23,11 +24,12 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class NewTracker
 {
-    const TRACK_SUBSCRIBE   = 'trackSubscribe';
-    const TRACK_RESUBSCRIBE = 'trackResubscribe';
-    const TRACK_RENEW       = 'trackRenew';
-    const TRACK_UNSUBSCRIBE = 'trackUnsubscribe';
-    const TRACK_DOWNLOAD    = 'trackDownload';
+    const TRACK_SUBSCRIBE     = 'trackSubscribe';
+    const TRACK_RESUBSCRIBE   = 'trackResubscribe';
+    const TRACK_RENEW         = 'trackRenew';
+    const TRACK_UNSUBSCRIBE   = 'trackUnsubscribe';
+    const TRACK_DOWNLOAD      = 'trackDownload';
+    const TRACK_PLAYING_VIDEO = 'trackPlayingVideo';
     protected $phpClient;
     protected $jsClient;
     protected $jsEnabled;
@@ -708,6 +710,47 @@ class NewTracker
         ];
         $orderId = implode('-', $orderIdPieces);
         return $this->sendEcommerce($orderId, 0.01, $prodSku, $categoryName);
+    }
+
+    /**
+     * @param User $user
+     * @param UploadedVideo $uploadedVideo
+     * @param Subscription $subscription
+     * @param null $conversionMode
+     *
+     * @return bool
+     *
+     * @throws \Exception
+     */
+    public function trackVideoPlaying(
+        User $user,
+        UploadedVideo $uploadedVideo,
+        Subscription $subscription,
+        $conversionMode = null
+    ) {
+        $this->getApiClient()->clearCustomVariables();
+        $this->addStandardVariables($user, $subscription);
+
+        if ($conversionMode) {
+            $this->addVariable('conversion_mode', $conversionMode);
+        }
+
+        $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
+
+        $type = 'playing-video';
+        $prodSku = 'playing-video-' . $uploadedVideo->getUuid();
+
+        $orderIdPieces = [
+            $type,
+            $subscription->getUuid(),
+            $subscriptionPack->getUuid(),
+            $uploadedVideo->getUuid(),
+            'N' . rand(1000, 9999)
+        ];
+
+        $orderId = implode('-', $orderIdPieces);
+
+        return $this->sendEcommerce($orderId, 0.01, $prodSku, $uploadedVideo->getSubcategory()->getTitle());
     }
 
     /**

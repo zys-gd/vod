@@ -2,6 +2,8 @@
 
 namespace App\Domain\Service;
 
+use App\Domain\Entity\Game;
+use App\Domain\Entity\UploadedVideo;
 use App\Domain\Repository\CountryRepository;
 use CountryCarrierDetectionBundle\Service\MaxMindIpInfo;
 use IdentificationBundle\Entity\User;
@@ -10,12 +12,14 @@ use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\UserRepository;
 use PiwikBundle\Service\NewTracker;
 use Psr\Log\LoggerInterface;
+use SubscriptionBundle\Entity\Subscription;
+use SubscriptionBundle\Service\SubscriptionExtractor;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
- * Class PageVisitTracker
+ * Class ContentStatisticSender
  */
-class PageVisitTracker
+class ContentStatisticSender
 {
     /**
      * @var NewTracker
@@ -48,7 +52,12 @@ class PageVisitTracker
     private $countryRepository;
 
     /**
-     * PageVisitTracker constructor
+     * @var SubscriptionExtractor
+     */
+    private $subscriptionExtractor;
+
+    /**
+     * ContentStatisticSender constructor
      *
      * @param NewTracker $newTracker
      * @param UserRepository $userRepository
@@ -56,6 +65,7 @@ class PageVisitTracker
      * @param MaxMindIpInfo $maxMindIpInfo
      * @param Session $session
      * @param CountryRepository $countryRepository
+     * @param SubscriptionExtractor $subscriptionExtractor
      */
     public function __construct(
         NewTracker $newTracker,
@@ -63,7 +73,8 @@ class PageVisitTracker
         LoggerInterface $logger,
         MaxMindIpInfo $maxMindIpInfo,
         Session $session,
-        CountryRepository $countryRepository
+        CountryRepository $countryRepository,
+        SubscriptionExtractor $subscriptionExtractor
     ) {
         $this->newTracker = $newTracker;
         $this->userRepository = $userRepository;
@@ -71,6 +82,7 @@ class PageVisitTracker
         $this->maxMindIpInfo = $maxMindIpInfo;
         $this->session = $session;
         $this->countryRepository = $countryRepository;
+        $this->subscriptionExtractor = $subscriptionExtractor;
     }
 
     /**
@@ -107,6 +119,86 @@ class PageVisitTracker
                 $operator,
                 $country,
                 $userIp
+            );
+
+            $this->logger->info('Sending is finished', ['result' => $result]);
+
+            return $result;
+        } catch (\Exception $ex) {
+            $this->logger->info('Exception on piwik sending', ['msg' => $ex->getMessage()]);
+
+            return false;
+        }
+    }
+
+    /**
+     * @param Subscription $subscription
+     * @param Game $game
+     *
+     * @return bool
+     */
+    public function trackDownload(Subscription $subscription, Game $game): bool
+    {
+        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($this->session);
+        $user = null;
+
+        if (!empty($identificationData['identification_token'])) {
+            $token = $identificationData['identification_token'];
+
+            /** @var User $user */
+            $user = $this->userRepository->findOneBy(['identificationToken' => $token]);
+        }
+
+        try {
+            $this->logger->info('Trying to send piwik event', [
+                'eventName' => $this->newTracker::TRACK_DOWNLOAD
+            ]);
+
+            $result = $this->newTracker->trackDownload(
+                $user,
+                $game,
+                $subscription
+            );
+
+            $this->logger->info('Sending is finished', ['result' => $result]);
+
+            return $result;
+        } catch (\Exception $ex) {
+            $this->logger->info('Exception on piwik sending', ['msg' => $ex->getMessage()]);
+
+            return false;
+        }
+    }
+
+    /**
+     * @param UploadedVideo $uploadedVideo
+     *
+     * @return bool
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function trackPlayingVideo(UploadedVideo $uploadedVideo): bool
+    {
+        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($this->session);
+        $subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($this->session);
+        $user = null;
+
+        if (!empty($identificationData['identification_token'])) {
+            $token = $identificationData['identification_token'];
+
+            /** @var User $user */
+            $user = $this->userRepository->findOneBy(['identificationToken' => $token]);
+        }
+
+        try {
+            $this->logger->info('Trying to send piwik event', [
+                'eventName' => $this->newTracker::TRACK_PLAYING_VIDEO
+            ]);
+
+            $result = $this->newTracker->trackVideoPlaying(
+                $user,
+                $uploadedVideo,
+                $subscription
             );
 
             $this->logger->info('Sending is finished', ['result' => $result]);

@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 07.02.19
- * Time: 11:33
- */
 
 namespace App\Controller;
-
 
 use App\Domain\Entity\Game;
 use App\Domain\Entity\GameBuild;
@@ -18,14 +11,10 @@ use App\Domain\Service\Games\DrmApkProvider;
 use App\Domain\Service\Games\ExcludedGamesProvider;
 use App\Domain\Service\Games\GameImagesSerializer;
 use App\Domain\Service\Games\GameSerializer;
-use App\Domain\Service\PageVisitTracker;
-use IdentificationBundle\Entity\User;
+use App\Domain\Service\ContentStatisticSender;
 use IdentificationBundle\Identification\DTO\ISPData;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
-use IdentificationBundle\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Piwik\PiwikStatisticSender;
 use SubscriptionBundle\Service\SubscriptionExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -65,17 +54,9 @@ class GamesController extends AbstractController implements AppControllerInterfa
      */
     private $excludedGamesProvider;
     /**
-     * @var PiwikStatisticSender
+     * @var ContentStatisticSender
      */
-    private $piwikStatisticSender;
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
-    /**
-     * @var PageVisitTracker
-     */
-    private $pageVisitTracker;
+    private $contentStatisticSender;
 
     /**
      * GamesController constructor.
@@ -87,9 +68,7 @@ class GamesController extends AbstractController implements AppControllerInterfa
      * @param SubscriptionExtractor $extractor
      * @param GameImagesSerializer $gameImagesSerializer
      * @param ExcludedGamesProvider $excludedGamesProvider
-     * @param PiwikStatisticSender $piwikStatisticSender
-     * @param UserRepository $userRepository
-     * @param PageVisitTracker $pageVisitTracker
+     * @param ContentStatisticSender $contentStatisticSender
      */
     public function __construct(
         GameRepository $gameRepository,
@@ -99,9 +78,7 @@ class GamesController extends AbstractController implements AppControllerInterfa
         SubscriptionExtractor $extractor,
         GameImagesSerializer $gameImagesSerializer,
         ExcludedGamesProvider $excludedGamesProvider,
-        PiwikStatisticSender $piwikStatisticSender,
-        UserRepository $userRepository,
-        PageVisitTracker $pageVisitTracker
+        ContentStatisticSender $contentStatisticSender
     )
     {
         $this->gameRepository        = $gameRepository;
@@ -111,9 +88,7 @@ class GamesController extends AbstractController implements AppControllerInterfa
         $this->subscriptionExtractor = $extractor;
         $this->gameImagesSerializer  = $gameImagesSerializer;
         $this->excludedGamesProvider = $excludedGamesProvider;
-        $this->piwikStatisticSender  = $piwikStatisticSender;
-        $this->userRepository        = $userRepository;
-        $this->pageVisitTracker      = $pageVisitTracker;
+        $this->contentStatisticSender  = $contentStatisticSender;
     }
 
 
@@ -129,13 +104,11 @@ class GamesController extends AbstractController implements AppControllerInterfa
     {
         $games = $this->gameRepository->findBatchOfGames(0, 8);
 
-        $this->pageVisitTracker->trackVisit($data);
+        $this->contentStatisticSender->trackVisit($data);
 
         return $this->render('@App/Common/game_category_content.html.twig', [
             'games' => $games
         ]);
-
-
     }
 
     /**
@@ -217,8 +190,7 @@ class GamesController extends AbstractController implements AppControllerInterfa
             throw new BadRequestHttpException('Missing `id` parameter');
         }
 
-        $session = $request->getSession();
-        $subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($session);
+        $subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($request->getSession());
 
         if (!$subscription) {
             throw new BadRequestHttpException('You are not subscribed');
@@ -226,20 +198,10 @@ class GamesController extends AbstractController implements AppControllerInterfa
 
         /** @var GameBuild $gameBuild */
         $gameBuild = $this->gameBuildRepository->findOneBy(['game' => $id]);
+
         $link = $this->drmApkProvider->getDRMApkUrl($gameBuild);
 
-        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($session);
-
-        if (!empty($identificationData['identification_token'])) {
-            $token = $identificationData['identification_token'];
-
-            /** @var User $user */
-            $user = $this->userRepository->findOneBy(['identificationToken' => $token]);
-            /** @var Game $game */
-            $game = $this->gameRepository->find($id);
-
-            $this->piwikStatisticSender->trackDownload($user, $subscription, $game);
-        }
+        $this->contentStatisticSender->trackDownload($subscription, $gameBuild->getGame());
 
         return new JsonResponse(['url' => $link]);
     }

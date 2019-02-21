@@ -20,7 +20,7 @@ use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Entity\SubscriptionPlanInterface;
-use SubscriptionBundle\Piwik\PiwikStatisticSender;
+use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use SubscriptionBundle\Service\Action\Common\FakeResponseProvider;
 use SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
@@ -76,9 +76,9 @@ class Subscriber
      */
     private $userInfoMapper;
     /**
-     * @var PiwikStatisticSender
+     * @var SubscriptionStatisticSender
      */
-    private $piwikStatisticSender;
+    private $subscriptionStatisticSender;
     /**
      * @var SubscriptionHandlerProvider
      */
@@ -101,7 +101,7 @@ class Subscriber
      * @param OnSubscribeUpdater          $onSubscribeUpdater
      * @param AffiliateSender             $affiliateService
      * @param UserInfoMapper              $userInfoMapper
-     * @param PiwikStatisticSender        $piwikStatisticSender
+     * @param SubscriptionStatisticSender $subscriptionStatisticSender
      * @param SubscriptionHandlerProvider $subscriptionHandlerProvider
      * @param SubscribeParametersProvider $subscribeParametersProvider
      */
@@ -117,7 +117,7 @@ class Subscriber
         OnSubscribeUpdater $onSubscribeUpdater,
         AffiliateSender $affiliateService,
         UserInfoMapper $userInfoMapper,
-        PiwikStatisticSender $piwikStatisticSender,
+        SubscriptionStatisticSender $subscriptionStatisticSender,
         SubscriptionHandlerProvider $subscriptionHandlerProvider,
         SubscribeParametersProvider $subscribeParametersProvider
     )
@@ -133,7 +133,7 @@ class Subscriber
         $this->onSubscribeUpdater          = $onSubscribeUpdater;
         $this->affiliateService            = $affiliateService;
         $this->userInfoMapper              = $userInfoMapper;
-        $this->piwikStatisticSender        = $piwikStatisticSender;
+        $this->subscriptionStatisticSender = $subscriptionStatisticSender;
         $this->subscriptionHandlerProvider = $subscriptionHandlerProvider;
         $this->subscribeParametersProvider = $subscribeParametersProvider;
     }
@@ -274,7 +274,7 @@ class Subscriber
             $subscription->getAffiliateToken(),
             AffiliateVisitSaver::extractCampaignToken($this->session)
         );
-        $this->piwikStatisticSender->trackSubscribe(
+        $this->subscriptionStatisticSender->trackSubscribe(
             $subscription->getUser(),
             $subscription,
             $response
@@ -289,7 +289,7 @@ class Subscriber
             $subscription->getAffiliateToken(),
             AffiliateVisitSaver::extractCampaignToken($this->session)
         );
-        $this->piwikStatisticSender->trackResubscribe(
+        $this->subscriptionStatisticSender->trackResubscribe(
             $subscription->getUser(),
             $subscription,
             $response

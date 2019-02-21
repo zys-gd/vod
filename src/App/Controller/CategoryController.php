@@ -13,7 +13,7 @@ use App\Domain\Entity\UploadedVideo;
 use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\SubcategoryRepository;
 use App\Domain\Repository\UploadedVideoRepository;
-use App\Domain\Service\PageVisitTracker;
+use App\Domain\Service\ContentStatisticSender;
 use IdentificationBundle\Identification\DTO\ISPData;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,27 +35,27 @@ class CategoryController extends AbstractController implements AppControllerInte
      */
     private $subcategoryRepository;
     /**
-     * @var PageVisitTracker
+     * @var ContentStatisticSender
      */
-    private $pageVisitTracker;
+    private $contentStatisticSender;
 
     /**
      * CategoryController constructor.
      * @param MainCategoryRepository $mainCategoryRepository
      * @param UploadedVideoRepository $uploadedVideoRepository
      * @param SubcategoryRepository $subcategoryRepository
-     * @param PageVisitTracker $pageVisitTracker
+     * @param ContentStatisticSender $contentStatisticSender
      */
     public function __construct(
         MainCategoryRepository $mainCategoryRepository,
         UploadedVideoRepository $uploadedVideoRepository,
         SubcategoryRepository $subcategoryRepository,
-        PageVisitTracker $pageVisitTracker
+        ContentStatisticSender $contentStatisticSender
     ) {
         $this->mainCategoryRepository  = $mainCategoryRepository;
         $this->uploadedVideoRepository = $uploadedVideoRepository;
         $this->subcategoryRepository   = $subcategoryRepository;
-        $this->pageVisitTracker        = $pageVisitTracker;
+        $this->contentStatisticSender  = $contentStatisticSender;
     }
 
 
@@ -100,7 +100,7 @@ class CategoryController extends AbstractController implements AppControllerInte
             ];
         }
 
-        $this->pageVisitTracker->trackVisit($data);
+        $this->contentStatisticSender->trackVisit($data);
 
         return $this->render('@App/Common/category.html.twig', [
             'videos'              => $videos,

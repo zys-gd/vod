@@ -17,7 +17,7 @@ use App\Domain\Repository\CountryCategoryPriorityOverrideRepository;
 use App\Domain\Repository\GameRepository;
 use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\UploadedVideoRepository;
-use App\Domain\Service\PageVisitTracker;
+use App\Domain\Service\ContentStatisticSender;
 use ExtrasBundle\Utils\ArraySorter;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
@@ -56,9 +56,9 @@ class HomeController extends AbstractController implements ControllerWithISPDete
     private $categoryOverrideRepository;
 
     /**
-     * @var PageVisitTracker
+     * @var ContentStatisticSender
      */
-    private $pageVisitTracker;
+    private $contentStatisticSender;
 
     /**
      * HomeController constructor.
@@ -69,7 +69,7 @@ class HomeController extends AbstractController implements ControllerWithISPDete
      * @param UploadedVideoRepository $videoRepository
      * @param GameRepository $gameRepository
      * @param CountryCategoryPriorityOverrideRepository $categoryOverrideRepository
-     * @param PageVisitTracker $pageVisitTracker
+     * @param ContentStatisticSender $contentStatisticSender
      */
     public function __construct(
         CarrierRepositoryInterface $carrierRepository,
@@ -78,7 +78,7 @@ class HomeController extends AbstractController implements ControllerWithISPDete
         UploadedVideoRepository $videoRepository,
         GameRepository $gameRepository,
         CountryCategoryPriorityOverrideRepository $categoryOverrideRepository,
-        PageVisitTracker $pageVisitTracker
+        ContentStatisticSender $contentStatisticSender
     )
     {
         $this->carrierRepository          = $carrierRepository;
@@ -87,7 +87,7 @@ class HomeController extends AbstractController implements ControllerWithISPDete
         $this->videoRepository            = $videoRepository;
         $this->gameRepository             = $gameRepository;
         $this->categoryOverrideRepository = $categoryOverrideRepository;
-        $this->pageVisitTracker           = $pageVisitTracker;
+        $this->contentStatisticSender     = $contentStatisticSender;
     }
 
 
@@ -136,7 +136,7 @@ class HomeController extends AbstractController implements ControllerWithISPDete
             array_keys($indexedCategoryData)
         );
 
-        $this->pageVisitTracker->trackVisit($data);
+        $this->contentStatisticSender->trackVisit($data);
 
         return $this->render('@App/Common/home.html.twig', [
             'templateHandler' => $this->templateConfigurator->getTemplateHandler($carrier),

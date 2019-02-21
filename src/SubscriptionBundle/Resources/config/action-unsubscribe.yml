@@ -7,7 +7,7 @@ services:
         - '@SubscriptionBundle\Service\Notification\Notifier'
         - '@SubscriptionBundle\BillingFramework\Process\UnsubscribeProcess'
         - '@SubscriptionBundle\Service\Action\Unsubscribe\OnUnsubscribeUpdater'
-        - '@SubscriptionBundle\Piwik\PiwikStatisticSender'
+        - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
         - '@SubscriptionBundle\Service\Action\Unsubscribe\UnsubscribeParametersProvider'
 
   SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider:

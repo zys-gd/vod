@@ -113,7 +113,7 @@ services:
         arguments:
             - '@App\Domain\Repository\CarrierRepository'
 
-    App\Domain\Service\PageVisitTracker:
+    App\Domain\Service\ContentStatisticSender:
         arguments:
             - '@PiwikBundle\Service\NewTracker'
             - '@IdentificationBundle\Repository\UserRepository'
