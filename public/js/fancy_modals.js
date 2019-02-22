@@ -2,18 +2,18 @@ $(document).ready(function () {
     $.fancyConfirm = function (opts) {
         $.fancybox.close(true);
         opts = $.extend(true, {
-            title: 'Are you sure?',
-            message: '',
-            okButton: 'Yes',
-            noButton: 'No',
-            callback: $.noop,
+            title       : 'Are you sure?',
+            message     : '',
+            okButton    : 'Yes',
+            noButton    : 'No',
+            callback    : $.noop,
             clickOutside: "close",
-            clickSlide: "close",
+            clickSlide  : "close",
         }, opts || {});
 
         $.fancybox.open({
             type: 'html',
-            src:
+            src :
                 '<div class="fc-content">' +
                 '<h3 class="text-center">' + opts.title + '</h3>' +
                 '<p class="text-center">' + opts.message + '</p>' +
@@ -25,18 +25,18 @@ $(document).ready(function () {
 
             opts: {
                 animationDuration: 350,
-                animationEffect: 'material',
-                modal: false,
-                baseTpl:
+                animationEffect  : 'material',
+                modal            : false,
+                baseTpl          :
                     '<div class="fancybox-container fc-container" role="dialog" tabindex="-1">' +
                     '<div class="fancybox-bg"></div>' +
                     '<div class="fancybox-inner">' +
                     '<div class="fancybox-stage"></div>' +
                     '</div>' +
                     '</div>',
-                beforeClose: function (instance, current, e) {
+                beforeClose      : function (instance, current, e) {
                     var button = e ? e.target || e.currentTarget : null;
-                    var value = button ? $(button).data('value') : 0;
+                    var value  = button ? $(button).data('value') : 0;
 
                     opts.callback(value);
                 }
@@ -48,15 +48,15 @@ $(document).ready(function () {
         $.fancybox.close(true);
 
         opts = $.extend(true, {
-            title: "Success",
-            message: "",
+            title    : "Success",
+            message  : "",
             closeText: "Close",
-            reload: false
+            reload   : false
         }, opts || {});
 
         $.fancybox.open({
-            type: 'html',
-            src:
+            type      : 'html',
+            src       :
                 '<div class="fc-content">' +
                 '<h3 class="text-center">' + opts.title + '</h3>' +
                 '<p class="text-center">' + opts.message + '</p>' +
@@ -65,9 +65,15 @@ $(document).ready(function () {
                 '</div>' +
                 '</div>',
             afterClose: function () {
-                if(opts.reload === true) {
+                if (opts.reload === true) {
                     location.reload();
+                    return;
                 }
+
+                if (opts.callback) {
+                    opts.callback();
+                }
+
             }
         });
     };

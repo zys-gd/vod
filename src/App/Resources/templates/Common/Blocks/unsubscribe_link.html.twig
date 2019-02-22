@@ -21,9 +21,12 @@
                             .done(function () {
                                 $._loader(true);
                                 showAlert({
-                                    title  : "You are no longer member of 100% sports",
-                                    message: "Please continue your visit at our homepage",
-                                    reload : true
+                                    title   : "You are no longer member of 100% sports",
+                                    message : "Please continue your visit at our homepage",
+                                    reload  : false,
+                                    callback: function () {
+                                        window.location = '{{ url('index') }}'
+                                    }
                                 });
                             })
                             .fail(function (msg) {
