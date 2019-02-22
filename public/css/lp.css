@@ -1,8 +1,10 @@
 .play-text{
     text-align: center;
-    font-size: 28px;
+    font-size: 23px;
     padding: 16px;
     font-style: italic;
+    line-height: 23px;
+    font-weight: 500;
 }
 .play-text-link{
     text-transform: uppercase;
@@ -17,13 +19,14 @@
 
 .header-lp_logo {
     border-radius: 40px;
-    height: 45px;
+    height: 30px;
 }
 
 .btn-lp_big {
 }
 
 .lure_box_wrapper {
+    margin-top: 20px;
     width: 100%;
     margin-bottom: 20px;
 }

@@ -15,7 +15,6 @@ use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Handler\HasConsentPageFlow;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
@@ -140,11 +139,18 @@ class SubscribeAction extends Controller
         $user = $this->userExtractor->getUserByIdentificationData($identificationData);
 
 
-        $subscriber = $this->handlerProvider->getSubscriber($user->getCarrier());
-        if ($subscriber instanceof HasCustomFlow) {
-            return $subscriber->process($request, $request->getSession(), $user);
-        } else {
-            return $this->commonFlowHandler->process($request, $user);
+        try {
+
+            $subscriber = $this->handlerProvider->getSubscriber($user->getCarrier());
+            if ($subscriber instanceof HasCustomFlow) {
+                return $subscriber->process($request, $request->getSession(), $user);
+            } else {
+                return $this->commonFlowHandler->process($request, $user);
+            }
+        } catch (ExistingSubscriptionException $exception) {
+
+
+            return new RedirectResponse($this->generateUrl('index', ['error' => 'existing_subscription']));
         }
 
 

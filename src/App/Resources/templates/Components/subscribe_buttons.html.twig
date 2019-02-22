@@ -16,6 +16,9 @@
             {#Ident && Subscribe Me#}
             {{ link.render(url('identify'), translate('buttons.join.now'), class) }}
         {% endif %}
+
+    {% else %}
+        {{ link.render(url('subscription.subscribe'), translate('buttons.join.now'), class) }}
     {% endif %}
 
     <script>
