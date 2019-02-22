@@ -33,10 +33,11 @@ return [
     'PIWIK_ENABLE_JS_TRACKER'    => false,
     'PIWIK_ENABLE_LINK_TRACKING' => true,
 
-    'RABBIT_MQ_HOST'             => '127.0.0.1',
-    'RABBIT_MQ_PORT'             => '5672',
-    'RABBIT_MQ_USER'             => 'guest',
-    'RABBIT_MQ_PASSWORD'         => 'guest',
+    'RABBIT_MQ_HOST'             => 'rabbitmq.playwing.com',
+    'RABBIT_MQ_PORT'             => 5672,
+    'RABBIT_MQ_USER'             => 'admin',
+    'RABBIT_MQ_PASSWORD'         => 'Pass1234',
+    'RABBIT_MQ_VHOST'            => '/',
 
     'CAMPAIGN_SESSION_NAME'      => 'campaignData',
 

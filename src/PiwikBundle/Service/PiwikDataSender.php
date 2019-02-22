@@ -15,7 +15,7 @@ class PiwikDataSender
     private $piwikPhpClient;
 
     /**
-     * PiwikEventsConsumer constructor
+     * PiwikDataSender constructor
      *
      * @param PhpClient $piwikPhpClient
      */

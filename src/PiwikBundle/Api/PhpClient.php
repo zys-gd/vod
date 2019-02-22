@@ -47,7 +47,7 @@ class PhpClient extends ClientAbstract
 
         $args = func_get_args();
         $args[0] .= !empty($this->userAgent) ? ('&ua=' . urlencode($this->userAgent)) : '';
-        $this->rabbitMQProducer->sendEvent(ClientAbstract::EXCHANGE_NAME, json_encode(['piwikData' => $args]));
+        $this->rabbitMQProducer->sendEvent(json_encode(['piwikData' => $args]));
 
         // TODO swap queue.
         return true;

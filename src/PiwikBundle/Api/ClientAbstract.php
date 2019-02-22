@@ -20,9 +20,9 @@ abstract class ClientAbstract extends PiwikTracker
      */
     protected $rabbitMQProducer;
 
-    const EXCHANGE_NAME = 'piwik-events-2';
+    const EXCHANGE_NAME = 'piwik-vod';
     const ROUTING_KEY = 'piwik-events-route';
-    const QUEUE_NAME = 'piwik-events-send';
+    const QUEUE_NAME = 'piwik-events-vod';
 
     /**
      * PhpClient constructor.
