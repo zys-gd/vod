@@ -20,6 +20,7 @@ use SubscriptionBundle\Service\Notification\Common\MessageCompiler;
 use SubscriptionBundle\Service\Notification\Common\ProcessIdExtractor;
 use SubscriptionBundle\Service\Notification\Common\ShortUrlHashGenerator;
 use SubscriptionBundle\Service\Notification\Impl\NotificationHandlerProvider;
+use SubscriptionBundle\Service\RenewDateCalculator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use UserBundle\Service\UsersService;
@@ -54,6 +55,10 @@ class Notifier
      * @var ShortUrlHashGenerator
      */
     private $shortUrlHashGenerator;
+    /**
+     * @var RenewDateCalculator
+     */
+    private $renewDateCalculator;
 
 
     /**
@@ -65,6 +70,7 @@ class Notifier
      * @param RouterInterface             $router
      * @param NotificationHandlerProvider $notificationHandlerProvider
      * @param ShortUrlHashGenerator       $shortUrlHashGenerator
+     * @param RenewDateCalculator         $renewDateCalculator
      */
     public function __construct(
         MessageCompiler $messageCompiler,
@@ -73,7 +79,8 @@ class Notifier
         ProcessIdExtractor $processIdExtractor,
         RouterInterface $router,
         NotificationHandlerProvider $notificationHandlerProvider,
-        ShortUrlHashGenerator $shortUrlHashGenerator
+        ShortUrlHashGenerator $shortUrlHashGenerator,
+        RenewDateCalculator $renewDateCalculator
     )
     {
         $this->messageCompiler             = $messageCompiler;
@@ -82,7 +89,8 @@ class Notifier
         $this->router                      = $router;
         $this->processIdExtractor          = $processIdExtractor;
         $this->notificationHandlerProvider = $notificationHandlerProvider;
-        $this->shortUrlHashGenerator = $shortUrlHashGenerator;
+        $this->shortUrlHashGenerator       = $shortUrlHashGenerator;
+        $this->renewDateCalculator         = $renewDateCalculator;
     }
 
     public function sendNotification(
@@ -122,7 +130,7 @@ class Notifier
             );
 
             $notification = $this->messageCompiler->compileNotification(
-                $type, $User, $subscriptionPack, $subscription, $processId, ['_autologin_url_' => $url]
+                $type, $User, $subscriptionPack, $this->renewDateCalculator->calculateRenewDate($subscription), $processId, ['_autologin_url_' => $url]
             );
             $this->sender->sendNotification($notification, $carrier->getBillingCarrierId());
 

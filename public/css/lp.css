@@ -1,3 +1,13 @@
+.play-text{
+    text-align: center;
+    font-size: 28px;
+    padding: 16px;
+    font-style: italic;
+}
+.play-text-link{
+    text-transform: uppercase;
+}
+
 .header-lp {
     background: radial-gradient(circle at center, #636363, #000000);
     background: radial-gradient(27% 80% at center, #636363, #000000);
@@ -10,6 +20,8 @@
     height: 45px;
 }
 
+.btn-lp_big {
+}
 
 .lure_box_wrapper {
     width: 100%;
@@ -38,4 +50,7 @@
     /*max-width: 170px;*/
     /*max-height: 170px;*/
     /*flex: 0 0 0%;*/
+}
+.lp-subscribe-buttons-wrapper{
+    padding-top: 8px;
 }

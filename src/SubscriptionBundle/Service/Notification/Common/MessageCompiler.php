@@ -55,7 +55,7 @@ class MessageCompiler
      * @param string           $type
      * @param User             $User
      * @param SubscriptionPack $subscriptionPack
-     * @param Subscription     $subscription
+     * @param \DateTime        $renewDate
      * @param null             $billingProcessId
      * @param array            $bodyVariables
      * @return NotificationMessage
@@ -65,7 +65,7 @@ class MessageCompiler
         string $type,
         User $User,
         SubscriptionPack $subscriptionPack,
-        Subscription $subscription,
+        \DateTime $renewDate,
         $billingProcessId = null,
         array $bodyVariables = []
     ): NotificationMessage
@@ -83,7 +83,7 @@ class MessageCompiler
         $operatorId = $User->getCarrier()->getOperatorId();
 
         $smsVariables = array_merge(
-            $this->getDefaultSMSVariables($subscriptionPack, $subscription),
+            $this->getDefaultSMSVariables($subscriptionPack, $renewDate),
             $bodyVariables
         );
         $body         = $this->compileSmsTextTemplate($smsVariables, $body);
@@ -110,14 +110,14 @@ class MessageCompiler
         return $body;
     }
 
-    private function getDefaultSMSVariables(SubscriptionPack $pack, Subscription $subscription): array
+    private function getDefaultSMSVariables(SubscriptionPack $pack, \DateTimeInterface $renewDate): array
     {
         return [
             '_price_'      => $pack->getTierPrice(),
             '_currency_'   => $pack->getTierCurrency(),
             '_home_url_'   => 'home',
             '_unsub_url_'  => 'myaccount',
-            '_renew_date_' => $subscription->getRenewDate()->format(DATE_ISO8601)
+            '_renew_date_' => $renewDate->format(DATE_ISO8601)
         ];
 
     }
