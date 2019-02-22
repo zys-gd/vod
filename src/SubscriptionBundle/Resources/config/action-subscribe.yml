@@ -12,7 +12,7 @@ services:
         - '@SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater'
         - '@SubscriptionBundle\Affiliate\Service\AffiliateSender'
         - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
-        - '@SubscriptionBundle\Piwik\PiwikStatisticSender'
+        - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
         - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
         - '@SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider'
 
@@ -32,7 +32,7 @@ services:
           - '@ExtrasBundle\Utils\UrlParamAppender'
           - '@router'
           - '@SubscriptionBundle\Affiliate\Service\AffiliateSender'
-          - '@SubscriptionBundle\Piwik\PiwikStatisticSender'
+          - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
           - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
           - '@SubscriptionBundle\Service\EntitySaveHelper'
           - '_resub_not_allowed_route_placeholder_'

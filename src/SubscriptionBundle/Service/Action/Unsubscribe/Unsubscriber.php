@@ -15,7 +15,7 @@ use SubscriptionBundle\BillingFramework\Process\Exception\UnsubscribingProcessEx
 use SubscriptionBundle\BillingFramework\Process\UnsubscribeProcess;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
-use SubscriptionBundle\Piwik\PiwikStatisticSender;
+use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use SubscriptionBundle\Service\Action\Common\FakeResponseProvider;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\Notification\Notifier;
@@ -48,9 +48,9 @@ class Unsubscriber
     private $onUnsubscribeUpdater;
 
     /**
-     * @var PiwikStatisticSender
+     * @var SubscriptionStatisticSender
      */
-    private $piwikStatisticSender;
+    private $subscriptionStatisticSender;
     /**
      * @var UnsubscribeParametersProvider
      */
@@ -65,7 +65,7 @@ class Unsubscriber
      * @param Notifier                      $notifier
      * @param UnsubscribeProcess            $unsubscribeProcess
      * @param OnUnsubscribeUpdater          $onUnsubscribeUpdater
-     * @param PiwikStatisticSender          $piwikStatisticSender
+     * @param SubscriptionStatisticSender   $subscriptionStatisticSender
      * @param UnsubscribeParametersProvider $parametersProvider
      */
     public function __construct(
@@ -75,18 +75,18 @@ class Unsubscriber
         Notifier $notifier,
         UnsubscribeProcess $unsubscribeProcess,
         OnUnsubscribeUpdater $onUnsubscribeUpdater,
-        PiwikStatisticSender $piwikStatisticSender,
+        SubscriptionStatisticSender $subscriptionStatisticSender,
         UnsubscribeParametersProvider $parametersProvider
     )
     {
-        $this->logger               = $logger;
-        $this->entitySaveHelper     = $entitySaveHelper;
-        $this->fakeResponseProvider = $fakeResponseProvider;
-        $this->notifier             = $notifier;
-        $this->unsubscribeProcess   = $unsubscribeProcess;
-        $this->onUnsubscribeUpdater = $onUnsubscribeUpdater;
-        $this->piwikStatisticSender = $piwikStatisticSender;
-        $this->parametersProvider   = $parametersProvider;
+        $this->logger                      = $logger;
+        $this->entitySaveHelper            = $entitySaveHelper;
+        $this->fakeResponseProvider        = $fakeResponseProvider;
+        $this->notifier                    = $notifier;
+        $this->unsubscribeProcess          = $unsubscribeProcess;
+        $this->onUnsubscribeUpdater        = $onUnsubscribeUpdater;
+        $this->subscriptionStatisticSender = $subscriptionStatisticSender;
+        $this->parametersProvider          = $parametersProvider;
     }
 
     public function unsubscribe(Subscription $subscription, SubscriptionPack $subscriptionPack)
@@ -128,7 +128,7 @@ class Unsubscriber
      */
     public function trackEventsForUnsubscribe(Subscription $subscription, ProcessResult $response)
     {
-        $this->piwikStatisticSender->trackUnsubscribe(
+        $this->subscriptionStatisticSender->trackUnsubscribe(
             $subscription->getUser(),
             $subscription,
             $response

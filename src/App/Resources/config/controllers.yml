@@ -24,9 +24,13 @@ services:
             - '@App\Domain\Repository\UploadedVideoRepository'
             - '@App\Domain\Repository\GameRepository'
             - '@App\Domain\Repository\CountryCategoryPriorityOverrideRepository'
+            - '@App\Domain\Service\ContentStatisticSender'
 
     App\Controller\LPController:
-        arguments: ['@SubscriptionBundle\Repository\SubscriptionPackRepository', '@IdentificationBundle\Repository\CarrierRepositoryInterface']
+        arguments:
+            - '@SubscriptionBundle\Repository\SubscriptionPackRepository'
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+            - '@App\Domain\Service\ContentStatisticSender'
 
     App\Controller\ErrorController:
         arguments:
@@ -37,6 +41,7 @@ services:
             - '@App\Domain\Repository\MainCategoryRepository'
             - '@App\Domain\Repository\UploadedVideoRepository'
             - '@App\Domain\Repository\SubcategoryRepository'
+            - '@App\Domain\Service\ContentStatisticSender'
 
     App\Controller\AccountController:
         arguments:
@@ -56,8 +61,9 @@ services:
             - '@SubscriptionBundle\Service\SubscriptionExtractor'
             - '@App\Domain\Service\Games\GameImagesSerializer'
             - '@App\Domain\Service\Games\ExcludedGamesProvider'
-
+            - '@App\Domain\Service\ContentStatisticSender'
 
     App\Controller\TrackEventController:
         arguments:
             - '@App\Domain\Repository\UploadedVideoRepository'
+            - '@App\Domain\Service\ContentStatisticSender'

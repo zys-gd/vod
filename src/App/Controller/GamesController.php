@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 07.02.19
- * Time: 11:33
- */
 
 namespace App\Controller;
-
 
 use App\Domain\Entity\Game;
 use App\Domain\Entity\GameBuild;
@@ -18,6 +11,8 @@ use App\Domain\Service\Games\DrmApkProvider;
 use App\Domain\Service\Games\ExcludedGamesProvider;
 use App\Domain\Service\Games\GameImagesSerializer;
 use App\Domain\Service\Games\GameSerializer;
+use App\Domain\Service\ContentStatisticSender;
+use IdentificationBundle\Identification\DTO\ISPData;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\SubscriptionExtractor;
@@ -58,18 +53,22 @@ class GamesController extends AbstractController implements AppControllerInterfa
      * @var ExcludedGamesProvider
      */
     private $excludedGamesProvider;
-
+    /**
+     * @var ContentStatisticSender
+     */
+    private $contentStatisticSender;
 
     /**
      * GamesController constructor.
      *
-     * @param GameRepository        $gameRepository
-     * @param GameSerializer        $gameSerializer
-     * @param GameBuildRepository   $gameBuildRepository
-     * @param DrmApkProvider        $drmApkProvider
+     * @param GameRepository $gameRepository
+     * @param GameSerializer $gameSerializer
+     * @param GameBuildRepository $gameBuildRepository
+     * @param DrmApkProvider $drmApkProvider
      * @param SubscriptionExtractor $extractor
-     * @param GameImagesSerializer  $gameImagesSerializer
+     * @param GameImagesSerializer $gameImagesSerializer
      * @param ExcludedGamesProvider $excludedGamesProvider
+     * @param ContentStatisticSender $contentStatisticSender
      */
     public function __construct(
         GameRepository $gameRepository,
@@ -78,41 +77,45 @@ class GamesController extends AbstractController implements AppControllerInterfa
         DrmApkProvider $drmApkProvider,
         SubscriptionExtractor $extractor,
         GameImagesSerializer $gameImagesSerializer,
-        ExcludedGamesProvider $excludedGamesProvider
+        ExcludedGamesProvider $excludedGamesProvider,
+        ContentStatisticSender $contentStatisticSender
     )
     {
         $this->gameRepository        = $gameRepository;
         $this->gameSerializer        = $gameSerializer;
         $this->gameBuildRepository   = $gameBuildRepository;
         $this->drmApkProvider        = $drmApkProvider;
-        $this->subscriptionExtractor             = $extractor;
+        $this->subscriptionExtractor = $extractor;
         $this->gameImagesSerializer  = $gameImagesSerializer;
         $this->excludedGamesProvider = $excludedGamesProvider;
+        $this->contentStatisticSender  = $contentStatisticSender;
     }
 
 
     /**
      * @Route("/games/",name="game_category")
      * @Method("GET")
+     *
+     * @param ISPData $data
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showCategoryContentAction()
+    public function showCategoryContentAction(ISPData $data)
     {
-
         $games = $this->gameRepository->findBatchOfGames(0, 8);
+
+        $this->contentStatisticSender->trackVisit($data);
 
         return $this->render('@App/Common/game_category_content.html.twig', [
             'games' => $games
         ]);
-
-
     }
 
     /**
      * @Route("game/{gameUuid}", name="game_content")
      * @Method("GET")
      * @param Request $request
-     * @param string  $gameUuid
+     * @param string $gameUuid
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -183,20 +186,22 @@ class GamesController extends AbstractController implements AppControllerInterfa
      */
     public function downloadAction(Request $request)
     {
-
         if (!$id = $request->get('id', null)) {
             throw new BadRequestHttpException('Missing `id` parameter');
         }
 
-        if (!$this->subscriptionExtractor->extractSubscriptionFromSession($request->getSession())) {
-            throw new BadRequestHttpException('You are not subscribed');
+        $subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($request->getSession());
 
+        if (!$subscription) {
+            throw new BadRequestHttpException('You are not subscribed');
         }
 
         /** @var GameBuild $gameBuild */
         $gameBuild = $this->gameBuildRepository->findOneBy(['game' => $id]);
 
         $link = $this->drmApkProvider->getDRMApkUrl($gameBuild);
+
+        $this->contentStatisticSender->trackDownload($subscription, $gameBuild->getGame());
 
         return new JsonResponse(['url' => $link]);
     }

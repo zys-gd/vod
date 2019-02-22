@@ -1,7 +1,6 @@
 <?php
 
 namespace PiwikBundle\Api;
-use Enqueue\AmqpExt\AmqpProducer;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -48,7 +47,7 @@ class PhpClient extends ClientAbstract
 
         $args = func_get_args();
         $args[0] .= !empty($this->userAgent) ? ('&ua=' . urlencode($this->userAgent)) : '';
-        $this->rabbitMQ->sendEvent(ClientAbstract::EXCHANGE_NAME, json_encode(['piwikData' => $args]));
+        $this->rabbitMQProducer->sendEvent(json_encode(['piwikData' => $args]));
 
         // TODO swap queue.
         return true;

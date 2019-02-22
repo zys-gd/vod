@@ -4,7 +4,7 @@ services:
     tags:
      - { name: kernel.event_listener, event: kernel.controller }
     arguments:
-      - '@country_carrier_detection'
+      - '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
       - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
       - '@IdentificationBundle\Identification\Service\ISPResolver'
       - '@IdentificationBundle\Identification\Identifier'

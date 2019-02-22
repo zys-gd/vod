@@ -22,7 +22,7 @@ services:
 
     IdentificationBundle\Identification\Controller\FakeIdentificationController:
         arguments:
-            - '@country_carrier_detection'
+            - '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
             - '@IdentificationBundle\Repository\UserRepository'
             - '@IdentificationBundle\Identification\Service\ISPResolver'

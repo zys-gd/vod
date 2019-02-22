@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 
+use App\Domain\Service\ContentStatisticSender;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
@@ -30,16 +31,26 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var SubscriptionPackRepository
      */
     private $subscriptionPackRepository;
+    /**
+     * @var ContentStatisticSender
+     */
+    private $contentStatisticSender;
 
     /**
-     * LPController constructor.
+     * LPController constructor
+     *
      * @param SubscriptionPackRepository $subscriptionPackRepository
      * @param CarrierRepositoryInterface $carrierRepository
+     * @param ContentStatisticSender $contentStatisticSender
      */
-    public function __construct(SubscriptionPackRepository $subscriptionPackRepository, CarrierRepositoryInterface $carrierRepository)
-    {
+    public function __construct(
+        SubscriptionPackRepository $subscriptionPackRepository,
+        CarrierRepositoryInterface $carrierRepository,
+        ContentStatisticSender $contentStatisticSender
+    ) {
         $this->subscriptionPackRepository = $subscriptionPackRepository;
         $this->carrierRepository          = $carrierRepository;
+        $this->contentStatisticSender     = $contentStatisticSender;
     }
 
 
@@ -75,6 +86,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             return in_array($carrier->getBillingCarrierId(), $subpackCarriers);
         });
 
+        $this->contentStatisticSender->trackVisit();
 
         return $this->render('@App/Common/landing.html.twig', [
             'isp_detection_data' => $session->get('isp_detection_data'),

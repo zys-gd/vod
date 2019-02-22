@@ -14,7 +14,7 @@ use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Process\UnsubscribeProcess;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
-use SubscriptionBundle\Piwik\PiwikStatisticSender;
+use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use SubscriptionBundle\Service\Action\Common\FakeResponseProvider;
 use SubscriptionBundle\Service\Action\Unsubscribe\OnUnsubscribeUpdater;
 use SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber;
@@ -29,7 +29,7 @@ class UnsubscriberTest extends TestCase
 
 
     /**
-     * @var PiwikStatisticSender|\Mockery\MockInterface
+     * @var SubscriptionStatisticSender|\Mockery\MockInterface
      */
     private $piwikSender;
 
@@ -96,7 +96,7 @@ class UnsubscriberTest extends TestCase
     protected function setUp()
     {
 
-        $this->piwikSender                = Mockery::spy(PiwikStatisticSender::class);
+        $this->piwikSender                = Mockery::spy(SubscriptionStatisticSender::class);
         $this->unsubscribeProcess         = Mockery::spy(UnsubscribeProcess::class);
         $this->carrierTrackingTypeChecker = Mockery::spy(CarrierTrackingTypeChecker::class);
 

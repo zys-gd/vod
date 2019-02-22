@@ -135,7 +135,7 @@
                 }
 
                 var cld = cloudinary.Cloudinary.new({cloud_name: '{{ getCloudName() }}'});
-                var demoplayer = cld.videoPlayer('video-player-frame', {playedEventPercents: [10, 50, 90]})
+                var demoplayer = cld.videoPlayer('video-player-frame', {playedEventPercents: [50]})
                     .sourceTypes(['hls'])
                     .transformation({streaming_profile: 'hd'});
 

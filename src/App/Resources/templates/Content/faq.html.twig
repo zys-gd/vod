@@ -23,11 +23,12 @@
                 <div class="faq-accordion_card_header" id="card_{{ loop.index }}">
 
                     <div class="d-flex flex-row align-items-center">
-                        <div class="faq-accordion_card_header_button faq-accordion_card_header_button__plus"
+                        <div class="faq-accordion_card_header_button"
                              href="#" data-toggle="collapse" data-target="#card_collapse_{{ loop.index }}"
-                             aria-expanded="true" aria-controls="card_collapse_{{ loop.index }}">
+                             aria-expanded="false" aria-controls="card_collapse_{{ loop.index }}">
                         </div>
-                        <div class=" faq-accordion_card_header_title">
+                        <div class="faq-accordion_card_header_title" data-toggle="collapse" data-target="#card_collapse_{{ loop.index }}"
+                             aria-expanded="false" aria-controls="card_collapse_{{ loop.index }}">
                             {{ loop.index }}/ {{ translate(question.key) | raw}}
                         </div>
                     </div>

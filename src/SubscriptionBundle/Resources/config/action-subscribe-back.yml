@@ -20,7 +20,7 @@ services:
 #      arguments:
 #        - "@affiliate.affiliate.service"
 #        - '@SubscriptionBundle\Service\SubscriptionPackProvider'
-#        - '@SubscriptionBundle\Piwik\PiwikStatisticSender'
+#        - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
 #        - '@affiliate.user_info_mapper'
 #        - '@app.carriers'
 #        - '@?'

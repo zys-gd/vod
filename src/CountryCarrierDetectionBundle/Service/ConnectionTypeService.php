@@ -1,8 +1,6 @@
 <?php
 namespace CountryCarrierDetectionBundle\Service;
 
-use CountryCarrierDetectionBundle\Service\MaxMindAbstract;
-
 /**
  * Class for detecting the Connection Type (e.g. mobile, residential, military etc.)
  *

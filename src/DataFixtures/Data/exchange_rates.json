@@ -1,0 +1,1016 @@
+[
+    {
+        "currencyCode": "AED",
+        "currencyName": "ARAB EMIRATES DIRHAM",
+        "exchangeRate": "3.89",
+        "uuid": "5114c20a-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "AFN",
+        "currencyName": "AFGHANISTAN AFGHANI",
+        "exchangeRate": "70.04",
+        "uuid": "5114c31e-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "ALL",
+        "currencyName": "ALBANIAN LEK",
+        "exchangeRate": "135.75",
+        "uuid": "5114c377-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "AMD",
+        "currencyName": "ARMENIAN DRAM",
+        "exchangeRate": "509.16",
+        "uuid": "5114c4d4-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "ANG",
+        "currencyName": "NETHERLANDS ANTILLEAN GUILDER",
+        "exchangeRate": "1.88",
+        "uuid": "5114c528-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "AOA",
+        "currencyName": "ANGOLAN KWANZA",
+        "exchangeRate": "175.67",
+        "uuid": "5114c566-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "ARS",
+        "currencyName": "ARGENTINE PESO",
+        "exchangeRate": "16.82",
+        "uuid": "5114c5c1-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "AUD",
+        "currencyName": "AUSTRALIAN DOLLAR",
+        "exchangeRate": "1.43",
+        "uuid": "5114c634-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "AZN",
+        "currencyName": "AZERBAIJAN NEW MANAT",
+        "exchangeRate": "1.86",
+        "uuid": "5114c77a-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "BAM",
+        "currencyName": "MARKA",
+        "exchangeRate": "1.96",
+        "uuid": "5114c7ca-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "BBD",
+        "currencyName": "BARBADOS DOLLAR",
+        "exchangeRate": "2.12",
+        "uuid": "5114c812-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "BDT",
+        "currencyName": "BANGLADESHI TAKA",
+        "exchangeRate": "83.29",
+        "uuid": "5114c847-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "BGN",
+        "currencyName": "BULGARIAN LEV",
+        "exchangeRate": "1.96",
+        "uuid": "5114c87e-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "BHD",
+        "currencyName": "BAHRAINI DINAR",
+        "exchangeRate": "0.40",
+        "uuid": "5114c8b0-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "BIF",
+        "currencyName": "BURUNDI FRANC",
+        "exchangeRate": "1773.49",
+        "uuid": "5114c8e2-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "BMD",
+        "currencyName": "BERMUDIAN DOLLAR",
+        "exchangeRate": "1.06",
+        "uuid": "5114c913-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "BND",
+        "currencyName": "BRUNEI DOLLAR",
+        "exchangeRate": "1.52",
+        "uuid": "5114c946-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "BOB",
+        "currencyName": "BOLIVIANO",
+        "exchangeRate": "7.32",
+        "uuid": "5114c978-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "BRL",
+        "currencyName": "BRAZILIAN REAL",
+        "exchangeRate": "3.61",
+        "uuid": "5114c9ab-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "BRL",
+        "currencyName": "BRAZILIAN REAL",
+        "exchangeRate": "3.61",
+        "uuid": "5114c9dc-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "BSD",
+        "currencyName": "BAHAMIAN DOLLAR",
+        "exchangeRate": "1.06",
+        "uuid": "5114ca15-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "BTN",
+        "currencyName": "BHUTAN NGULTRUM",
+        "exchangeRate": "72.90",
+        "uuid": "5114ca4d-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "BWP",
+        "currencyName": "BOTSWANA PULA",
+        "exchangeRate": "11.45",
+        "uuid": "5114ca7e-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "BYR",
+        "currencyName": "BELARUSSIAN RUBLE",
+        "exchangeRate": "20905.00",
+        "uuid": "5114caaf-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "BZD",
+        "currencyName": "BELIZE DOLLAR",
+        "exchangeRate": "2.11",
+        "uuid": "5114cae0-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "CAD",
+        "currencyName": "CANADIAN DOLLAR",
+        "exchangeRate": "1.45",
+        "uuid": "5114cb11-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "CDF",
+        "currencyName": "FRANCS",
+        "exchangeRate": "1216.67",
+        "uuid": "5114cb40-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "CHF",
+        "currencyName": "SWISS FRANC",
+        "exchangeRate": "1.08",
+        "uuid": "5114cc24-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "CLP",
+        "currencyName": "CHILEAN PESO",
+        "exchangeRate": "712.81",
+        "uuid": "5114cc7e-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "CNH",
+        "currencyName": "OFFSHORE CHINEESE YEN",
+        "exchangeRate": "7.33",
+        "uuid": "5114ccb0-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "CNY",
+        "currencyName": "YUAN RENMINBI",
+        "exchangeRate": "7.39",
+        "uuid": "5114ccf0-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "COP",
+        "currencyName": "COLOMBIAN PESO",
+        "exchangeRate": "3356.00",
+        "uuid": "5114cd21-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "CRC",
+        "currencyName": "COSTA RICAN COLON",
+        "exchangeRate": "583.70",
+        "uuid": "5114cd6c-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "CUC",
+        "currencyName": "CUBA CONVERTIBLE PESOS",
+        "exchangeRate": "1.06",
+        "uuid": "5114cd9b-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "CVE",
+        "currencyName": "CAPE VERDE ESCUDO",
+        "exchangeRate": "110.27",
+        "uuid": "5114cdd0-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "CYP",
+        "currencyName": "CYPRUS POUND",
+        "exchangeRate": "0.59",
+        "uuid": "5114ce03-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "CZK",
+        "currencyName": "CZECH KORUNA",
+        "exchangeRate": "27.03",
+        "uuid": "5114ce34-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "DJF",
+        "currencyName": "DJIBOUTI FRANC",
+        "exchangeRate": "188.41",
+        "uuid": "5114ce66-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "DKK",
+        "currencyName": "DANISH KRONE",
+        "exchangeRate": "7.44",
+        "uuid": "5114ce99-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "DOP",
+        "currencyName": "DOMINICAN PESO",
+        "exchangeRate": "49.23",
+        "uuid": "5114cef5-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "DZD",
+        "currencyName": "ALGERIAN DINAR",
+        "exchangeRate": "117.53",
+        "uuid": "5114cf61-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "EEK",
+        "currencyName": "ESTONIA KROON",
+        "exchangeRate": "15.65",
+        "uuid": "5114cfca-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "EGP",
+        "currencyName": "EGYPTIAN POUND",
+        "exchangeRate": "19.02",
+        "uuid": "5114d065-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "ERN",
+        "currencyName": "ERITREAN NAKFA",
+        "exchangeRate": "16.47",
+        "uuid": "5114d0d0-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "ETB",
+        "currencyName": "ETHIOPIAN BIRR",
+        "exchangeRate": "23.87",
+        "uuid": "5114d142-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "EUR",
+        "currencyName": "EURO",
+        "exchangeRate": "1.00",
+        "uuid": "5114d1d9-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "FJD",
+        "currencyName": "FIJI DOLLAR",
+        "exchangeRate": "2.20",
+        "uuid": "5114d2cc-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "GBP",
+        "currencyName": "POUND STERLING",
+        "exchangeRate": "0.87",
+        "uuid": "5114d356-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "GEL",
+        "currencyName": "GEORGIAN LARI",
+        "exchangeRate": "2.71",
+        "uuid": "5114d57c-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "GHS",
+        "currencyName": "GHANAIAN CEDI",
+        "exchangeRate": "4.58",
+        "uuid": "5114d5e1-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "GMD",
+        "currencyName": "GAMBIAN DALASI",
+        "exchangeRate": "45.55",
+        "uuid": "5114d61b-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "GNF",
+        "currencyName": "GUINEA FRANC",
+        "exchangeRate": "9742.24",
+        "uuid": "5114d64b-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "GTQ",
+        "currencyName": "QUATEMALAN QUETZAL",
+        "exchangeRate": "7.96",
+        "uuid": "5114d67f-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "GYD",
+        "currencyName": "GUYANA DOLLAR",
+        "exchangeRate": "219.62",
+        "uuid": "5114d6d8-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "HKD",
+        "currencyName": "HONG KONG DOLLAR",
+        "exchangeRate": "8.38",
+        "uuid": "5114d746-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "HNL",
+        "currencyName": "HONDURAN LEMPIRA",
+        "exchangeRate": "24.78",
+        "uuid": "5114d89e-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "HRK",
+        "currencyName": "CROATIAN KUNA",
+        "exchangeRate": "7.52",
+        "uuid": "5114d919-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "HTG",
+        "currencyName": "HAITIAN GOURDE",
+        "exchangeRate": "69.49",
+        "uuid": "5114d975-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "HUF",
+        "currencyName": "HUNGARIAN FORINT",
+        "exchangeRate": "308.82",
+        "uuid": "5114db30-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "IDR",
+        "currencyName": "INDONESIAN RUPIAH",
+        "exchangeRate": "14398.18",
+        "uuid": "5114dcc5-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "ILS",
+        "currencyName": "ISRAELI NEW SHEKEL",
+        "exchangeRate": "4.15",
+        "uuid": "5114ddcc-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "INR",
+        "currencyName": "INDIAN RUPEE",
+        "exchangeRate": "73.06",
+        "uuid": "5114de3e-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "RS",
+        "currencyName": "INDIAN RUPEE",
+        "exchangeRate": "72.66",
+        "uuid": "5114e00b-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "IQD",
+        "currencyName": "IRAQI DINAR",
+        "exchangeRate": "1247.55",
+        "uuid": "5114e08c-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "ISK",
+        "currencyName": "ICELAND KRONA",
+        "exchangeRate": "119.17",
+        "uuid": "5114e0c6-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "JMD",
+        "currencyName": "JAMAICAN DOLLAR",
+        "exchangeRate": "137.00",
+        "uuid": "5114e0fb-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "JOD",
+        "currencyName": "JORDANIAN DINAR",
+        "exchangeRate": "0.75",
+        "uuid": "5114e132-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "JPY",
+        "currencyName": "JAPANESE YEN",
+        "exchangeRate": "116.93",
+        "uuid": "5114e177-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "KES",
+        "currencyName": "KENYAN SHILLING",
+        "exchangeRate": "108.02",
+        "uuid": "5114e1ad-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "KGS",
+        "currencyName": "SOM",
+        "exchangeRate": "73.30",
+        "uuid": "5114e1e0-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "KHR",
+        "currencyName": "KAMPUCHEAN RIEL",
+        "exchangeRate": "4381.07",
+        "uuid": "5114e21f-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "KPW",
+        "currencyName": "NORTH KOREAN WON",
+        "exchangeRate": "953.91",
+        "uuid": "5114e253-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "KRW",
+        "currencyName": "KOREAN WON",
+        "exchangeRate": "1256.71",
+        "uuid": "5114e286-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "KWD",
+        "currencyName": "KUWAITI DINAR",
+        "exchangeRate": "0.32",
+        "uuid": "5114e2b9-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "KYD",
+        "currencyName": "CAYMAN ISLANDS DOLLAR",
+        "exchangeRate": "0.87",
+        "uuid": "5114e2ea-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "KZT",
+        "currencyName": "KAZAKHSTAN TENGE",
+        "exchangeRate": "360.06",
+        "uuid": "5114e31c-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "LAK",
+        "currencyName": "LAO KIP",
+        "exchangeRate": "8659.42",
+        "uuid": "5114e34e-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "LBP",
+        "currencyName": "LEBANESE POUND",
+        "exchangeRate": "1604.12",
+        "uuid": "5114e387-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "LKR",
+        "currencyName": "SRI LANKA RUPEE",
+        "exchangeRate": "157.60",
+        "uuid": "5114e3bd-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "LRD",
+        "currencyName": "LIBERIAN DOLLAR",
+        "exchangeRate": "89.55",
+        "uuid": "5114e3f0-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "LSL",
+        "currencyName": "LESOTHO LOTI",
+        "exchangeRate": "14.92",
+        "uuid": "5114e421-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "LTL",
+        "currencyName": "LITHUANIAN LITAS",
+        "exchangeRate": "3.45",
+        "uuid": "5114e456-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "LVL",
+        "currencyName": "LATVIAN LATS",
+        "exchangeRate": "0.70",
+        "uuid": "5114e48a-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "LYD",
+        "currencyName": "LIBYAN DINAR",
+        "exchangeRate": "1.51",
+        "uuid": "5114e4ba-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "MAD",
+        "currencyName": "MOROCCAN DIRHAM",
+        "exchangeRate": "10.69",
+        "uuid": "5114e4ec-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "MDL",
+        "currencyName": "MOLDOVAN LEU",
+        "exchangeRate": "21.50",
+        "uuid": "5114e5e7-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "MGA",
+        "currencyName": "MALAGASY ARIARY",
+        "exchangeRate": "3530.29",
+        "uuid": "5114e629-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "MKD",
+        "currencyName": "DENAR",
+        "exchangeRate": "61.57",
+        "uuid": "5114e66a-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "MMK",
+        "currencyName": "MYANMAR KYAT",
+        "exchangeRate": "1391.65",
+        "uuid": "5114e69e-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "MNT",
+        "currencyName": "MONGOLIAN TUGRIK",
+        "exchangeRate": "2613.12",
+        "uuid": "5114e6cd-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "MOP",
+        "currencyName": "MACAU PATACA",
+        "exchangeRate": "8.47",
+        "uuid": "5114e6ff-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "MRO",
+        "currencyName": "MAURITANIAN OUGUIYA",
+        "exchangeRate": "379.88",
+        "uuid": "5114e731-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "MTL",
+        "currencyName": "MALTESA LIRA",
+        "exchangeRate": "0.43",
+        "uuid": "5114e765-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "MUR",
+        "currencyName": "MAURITIUS RUPEE",
+        "exchangeRate": "38.19",
+        "uuid": "5114e798-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "MVR",
+        "currencyName": "MALDIVE RUFIYAA",
+        "exchangeRate": "16.33",
+        "uuid": "5114e955-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "MWK",
+        "currencyName": "MALAWI KWACHA",
+        "exchangeRate": "768.53",
+        "uuid": "5114e990-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "MXN",
+        "currencyName": "MEXICAN NUEVO PESO",
+        "exchangeRate": "21.68",
+        "uuid": "5114e9c0-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "MXN",
+        "currencyName": "MEXICAN NUEVO PESO",
+        "exchangeRate": "21.89",
+        "uuid": "5114e9fe-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "MYR",
+        "currencyName": "MALAYSIAN RINGGIT",
+        "exchangeRate": "4.68",
+        "uuid": "5114ea32-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "MYR",
+        "currencyName": "MALAYSIAN RINGGIT",
+        "exchangeRate": "4.73",
+        "uuid": "5114ea63-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "MZN",
+        "currencyName": "MOZAMBIQUE METICAL",
+        "exchangeRate": "78.96",
+        "uuid": "5114ea94-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "NAD",
+        "currencyName": "NAMIBIAN DOLLAR",
+        "exchangeRate": "14.92",
+        "uuid": "5114eaca-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "NGN",
+        "currencyName": "NIGERIAN NAIRA",
+        "exchangeRate": "333.91",
+        "uuid": "5114eafa-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "NIO",
+        "currencyName": "NICARAGUAN CORDOBA ORO",
+        "exchangeRate": "30.95",
+        "uuid": "5114eb2a-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "NOK",
+        "currencyName": "NORWEGIAN KRONE",
+        "exchangeRate": "9.08",
+        "uuid": "5114eb5c-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "NPR",
+        "currencyName": "NEPALESE RUPEE",
+        "exchangeRate": "116.05",
+        "uuid": "5114eb8b-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "NZD",
+        "currencyName": "NEW ZEALAND DOLLAR",
+        "exchangeRate": "1.51",
+        "uuid": "5114ebc3-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "OMR",
+        "currencyName": "OMANI RIAL",
+        "exchangeRate": "0.41",
+        "uuid": "5114ebf7-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "PAB",
+        "currencyName": "PANAMANIAN BALBOA",
+        "exchangeRate": "1.06",
+        "uuid": "5114ec29-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "PEN",
+        "currencyName": "PERUVIAN NUEVO SOL",
+        "exchangeRate": "3.62",
+        "uuid": "5114ec58-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "PGK",
+        "currencyName": "PAPUA NEW GUINEA KINA",
+        "exchangeRate": "3.37",
+        "uuid": "5114ec88-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "PHP",
+        "currencyName": "PHILIPPINE PESO",
+        "exchangeRate": "53.16",
+        "uuid": "5114ecb9-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "PKR",
+        "currencyName": "PAKISTAN RUPEE",
+        "exchangeRate": "111.07",
+        "uuid": "5114eceb-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "PLN",
+        "currencyName": "POLISH ZLOTY",
+        "exchangeRate": "4.39",
+        "uuid": "5114ed1b-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "PYG",
+        "currencyName": "PARAGUAY GUARANI",
+        "exchangeRate": "6189.65",
+        "uuid": "5114ed4c-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "QAR",
+        "currencyName": "QATARI RIAL",
+        "exchangeRate": "3.86",
+        "uuid": "5114ed86-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "RON",
+        "currencyName": "ROMANIAN NEW LEU",
+        "exchangeRate": "4.51",
+        "uuid": "5114edbb-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "RSD",
+        "currencyName": "DINAR",
+        "exchangeRate": "123.22",
+        "uuid": "5114edeb-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "RUB",
+        "currencyName": "RUSSIAN RUBLE",
+        "exchangeRate": "69.53",
+        "uuid": "5114ee1d-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "RWF",
+        "currencyName": "RWANDA FRANC",
+        "exchangeRate": "860.91",
+        "uuid": "5114ee4e-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "SAR",
+        "currencyName": "SAUDI RIYAL",
+        "exchangeRate": "3.98",
+        "uuid": "5114ee7e-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "SBD",
+        "currencyName": "SOLOMON ISLANDS DOLLAR",
+        "exchangeRate": "8.27",
+        "uuid": "5114eeb0-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "SCR",
+        "currencyName": "SEYCHELLES RUPEE",
+        "exchangeRate": "14.15",
+        "uuid": "5114eee1-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "SDD",
+        "currencyName": "SUDANESE DINAR",
+        "exchangeRate": "684.51",
+        "uuid": "5114ef11-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "SDG",
+        "currencyName": "SUDANESE POUND",
+        "exchangeRate": "6.85",
+        "uuid": "5114ef43-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "SEK",
+        "currencyName": "SWEDISH KRONA",
+        "exchangeRate": "9.85",
+        "uuid": "5114ef7e-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "SGD",
+        "currencyName": "SINGAPORE DOLLAR",
+        "exchangeRate": "1.52",
+        "uuid": "5114efb0-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "SIT",
+        "currencyName": "SOLEVENIA TOLAR",
+        "exchangeRate": "239.64",
+        "uuid": "5114efe4-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "SKK",
+        "currencyName": "SLOVAK KORUNA",
+        "exchangeRate": "30.13",
+        "uuid": "5114f016-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "SLL",
+        "currencyName": "SIERRA LEONE LEONE",
+        "exchangeRate": "5924.70",
+        "uuid": "5114f046-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "SOS",
+        "currencyName": "SOMALI SHILLING",
+        "exchangeRate": "25843.05",
+        "uuid": "5114f077-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "SRD",
+        "currencyName": "SURINAM DOLLAR",
+        "exchangeRate": "8.00",
+        "uuid": "5114f0a7-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "STD",
+        "currencyName": "DOBRA",
+        "exchangeRate": "24795.76",
+        "uuid": "5114f6de-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "SVC",
+        "currencyName": "EL SALVADOR COLON",
+        "exchangeRate": "9.25",
+        "uuid": "5114f75a-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "SYP",
+        "currencyName": "SYRIAN POUND",
+        "exchangeRate": "227.59",
+        "uuid": "5114f794-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "SZL",
+        "currencyName": "SWAZILAND LILANGENI",
+        "exchangeRate": "14.92",
+        "uuid": "5114f7e5-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "THB",
+        "currencyName": "THAI BAHT",
+        "exchangeRate": "38.16",
+        "uuid": "5114f820-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "TJS",
+        "currencyName": "TAJIK SOMONI",
+        "exchangeRate": "8.35",
+        "uuid": "5114f85a-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "TMM",
+        "currencyName": "TURKMENISTAN MANAT",
+        "exchangeRate": "18563.80",
+        "uuid": "5114f892-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "TMT",
+        "currencyName": "TURKMENISTAN NEW MANAT",
+        "exchangeRate": "3.02",
+        "uuid": "5114f8ca-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "TND",
+        "currencyName": "TUNISIAN DOLLAR",
+        "exchangeRate": "2.44",
+        "uuid": "5114f900-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "TOP",
+        "currencyName": "TONGAN PAANGA",
+        "exchangeRate": "2.38",
+        "uuid": "5114f938-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "TRY",
+        "currencyName": "TURKISH LIRA",
+        "exchangeRate": "3.55",
+        "uuid": "5114f96e-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "TTD",
+        "currencyName": "TRINIDAD AND TOBAGO DOLLAR",
+        "exchangeRate": "7.08",
+        "uuid": "5114f9a3-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "TWD",
+        "currencyName": "TAIWAN DOLLAR",
+        "exchangeRate": "33.85",
+        "uuid": "5114f9e4-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "TZS",
+        "currencyName": "TANZANIAN SHILLING",
+        "exchangeRate": "2310.14",
+        "uuid": "5114fa1b-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "UAH",
+        "currencyName": "UKRAINE HRYVNIA",
+        "exchangeRate": "27.07",
+        "uuid": "5114fa54-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "UGX",
+        "currencyName": "UGANDA SHILLING",
+        "exchangeRate": "3846.16",
+        "uuid": "5114fe43-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "USD",
+        "currencyName": "US DOLLAR",
+        "exchangeRate": "1.06",
+        "uuid": "5114fe92-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "UYU",
+        "currencyName": "URUGUAYAN PESO",
+        "exchangeRate": "30.74",
+        "uuid": "5114fecc-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "UZS",
+        "currencyName": "UZBEKISTAN SUM",
+        "exchangeRate": "3356.74",
+        "uuid": "5114ff0f-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "VEB",
+        "currencyName": "VENEZUELAN BOLIVAR",
+        "exchangeRate": "10597.20",
+        "uuid": "5114ff48-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "VEF",
+        "currencyName": "VENEZUELAN BOLIVAR FUERTE",
+        "exchangeRate": "10.59",
+        "uuid": "5114ff83-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "VND",
+        "currencyName": "VIETNAMESE DONG",
+        "exchangeRate": "24188.00",
+        "uuid": "5114ffc9-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "VUV",
+        "currencyName": "VANUATU VATU",
+        "exchangeRate": "115.58",
+        "uuid": "51150005-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "WST",
+        "currencyName": "SAMOAN TALA",
+        "exchangeRate": "2.68",
+        "uuid": "5115003e-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "XCD",
+        "currencyName": "EAST CARIBBEAN DOLLAR",
+        "exchangeRate": "2.86",
+        "uuid": "51150077-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "YER",
+        "currencyName": "YEMENI RIAL",
+        "exchangeRate": "265.12",
+        "uuid": "511500af-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "ZAR",
+        "currencyName": "SOUTH AFRICAN RAND",
+        "exchangeRate": "15.04",
+        "uuid": "511500e9-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "ZMW",
+        "currencyName": "ZAMBIAN KWACHA",
+        "exchangeRate": "10.52",
+        "uuid": "5115011f-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "ZWD",
+        "currencyName": "ZIMBABWE DOLLAR",
+        "exchangeRate": "396.00",
+        "uuid": "5115015c-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "ZWL",
+        "currencyName": "ZIMBABWE DOLLAR",
+        "exchangeRate": "396.00",
+        "uuid": "51150193-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "DT",
+        "currencyName": "TUNISIAN DOLLAR",
+        "exchangeRate": "2.44",
+        "uuid": "5115034b-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "RP",
+        "currencyName": "INDONESIAN RUPIAH",
+        "exchangeRate": "14398.18",
+        "uuid": "5115039b-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "KSH",
+        "currencyName": "KENYAN SHILLING",
+        "exchangeRate": "124.08",
+        "uuid": "511503d4-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "TK",
+        "currencyName": "BANGLADESHI TAKA",
+        "exchangeRate": "101.51",
+        "uuid": "5115040d-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "USD",
+        "currencyName": "USD",
+        "exchangeRate": "26.15",
+        "uuid": "51150445-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "KD",
+        "currencyName": "KUWAITI DINAR",
+        "exchangeRate": "0.36",
+        "uuid": "5115047a-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    {
+        "currencyCode": "QR",
+        "currencyName": "QATARI RIYAL",
+        "exchangeRate": "4.21",
+        "uuid": "511504b2-ebd4-11e8-95c4-02bb250f0f22"
+    }
+]

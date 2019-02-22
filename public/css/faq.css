@@ -20,11 +20,11 @@
     background-size: contain;
 }
 
-.faq-accordion_card_header_button__plus {
+.faq-accordion_card_header_button[aria-expanded="false"] {
     background-image: url(/img/pages/faq/plus-button.png);
 }
 
-.faq-accordion_card_header_button__minus {
+.faq-accordion_card_header_button[aria-expanded="true"] {
     background-image: url(/img/pages/faq/minus-button.png);
 }
 

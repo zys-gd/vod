@@ -26,7 +26,8 @@ RUN docker-php-ext-install \
        zip \
        iconv \
        gd \
-       opcache
+       opcache \
+       bcmath
 
 RUN pecl install xdebug-2.6.0  && docker-php-ext-enable xdebug \
     && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \

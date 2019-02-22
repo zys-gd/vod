@@ -19,7 +19,7 @@ use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Exception\SubscriptionException;
-use SubscriptionBundle\Piwik\PiwikStatisticSender;
+use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use SubscriptionBundle\Repository\SubscriptionRepository;
 use SubscriptionBundle\Service\Callback\Common\Type\RenewCallbackHandler;
 use SubscriptionBundle\Service\Callback\Common\Type\SubscriptionCallbackHandler;
@@ -40,7 +40,7 @@ class CommonFlowHandler
     private $eventDispatcher;
     private $entitySaveHelper;
     private $affiliateService;
-    private $piwikStatisticSender;
+    private $subscriptionStatisticSender;
     /**
      * @var UserInfoMapper
      */
@@ -60,7 +60,7 @@ class CommonFlowHandler
      * @param EventDispatcherInterface       $eventDispatcher
      * @param EntitySaveHelper               $entitySaveHelper
      * @param AffiliateSender                $affiliateService
-     * @param PiwikStatisticSender           $piwikStatisticSender
+     * @param SubscriptionStatisticSender    $subscriptionStatisticSender
      * @param UserInfoMapper                 $infoMapper
      * @param CarrierCallbackHandlerProvider $carrierCallbackHandlerProvider
      */
@@ -73,7 +73,7 @@ class CommonFlowHandler
         EventDispatcherInterface $eventDispatcher,
         EntitySaveHelper $entitySaveHelper,
         AffiliateSender $affiliateService,
-        PiwikStatisticSender $piwikStatisticSender,
+        SubscriptionStatisticSender $subscriptionStatisticSender,
         UserInfoMapper $infoMapper,
         CarrierCallbackHandlerProvider $carrierCallbackHandlerProvider
     )
@@ -86,7 +86,7 @@ class CommonFlowHandler
         $this->eventDispatcher                = $eventDispatcher;
         $this->entitySaveHelper               = $entitySaveHelper;
         $this->affiliateService               = $affiliateService;
-        $this->piwikStatisticSender           = $piwikStatisticSender;
+        $this->subscriptionStatisticSender    = $subscriptionStatisticSender;
         $this->infoMapper                     = $infoMapper;
         $this->carrierCallbackHandlerProvider = $carrierCallbackHandlerProvider;
     }
@@ -164,7 +164,7 @@ class CommonFlowHandler
             if ($type === 'subscribe') {
                 $this->affiliateService->checkAffiliateEligibilityAndSendEvent($subscription, $userInfo);
             }
-            $this->piwikStatisticSender->send(
+            $this->subscriptionStatisticSender->send(
                 $callbackTypeHandler->getPiwikEventName(),
                 $subscription->getUser(),
                 $subscription,

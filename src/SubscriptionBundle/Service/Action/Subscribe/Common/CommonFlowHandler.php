@@ -19,7 +19,7 @@ use SubscriptionBundle\Controller\Traits\ResponseTrait;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound;
 use SubscriptionBundle\Exception\ExistingSubscriptionException;
-use SubscriptionBundle\Piwik\PiwikStatisticSender;
+use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCommonFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomResponses;
@@ -83,9 +83,9 @@ class CommonFlowHandler
      */
     private $affiliateService;
     /**
-     * @var PiwikStatisticSender
+     * @var SubscriptionStatisticSender
      */
-    private $piwikStatisticSender;
+    private $subscriptionStatisticSender;
     /**
      * @var UserInfoMapper
      */
@@ -114,7 +114,7 @@ class CommonFlowHandler
      * @param UrlParamAppender               $urlParamAppender
      * @param RouterInterface                $router
      * @param AffiliateSender                $affiliateService
-     * @param PiwikStatisticSender           $piwikStatisticSender
+     * @param SubscriptionStatisticSender    $subscriptionStatisticSender
      * @param UserInfoMapper                 $infoMapper
      * @param EntitySaveHelper               $entitySaveHelper
      * @param string                         $resubNotAllowedRoute
@@ -131,27 +131,27 @@ class CommonFlowHandler
         UrlParamAppender $urlParamAppender,
         RouterInterface $router,
         AffiliateSender $affiliateService,
-        PiwikStatisticSender $piwikStatisticSender,
+        SubscriptionStatisticSender $subscriptionStatisticSender,
         UserInfoMapper $infoMapper,
         EntitySaveHelper $entitySaveHelper,
         string $resubNotAllowedRoute
     )
     {
-        $this->subscriptionPackProvider = $subscriptionPackProvider;
-        $this->subscriber               = $subscriber;
-        $this->checker                  = $checker;
-        $this->subscriptionProvider     = $subscriptionProvider;
-        $this->logger                   = $logger;
-        $this->redirectUrlNullifier     = $redirectUrlNullifier;
-        $this->handlerProvider          = $handlerProvider;
-        $this->commonResponseCreator    = $commonResponseCreator;
-        $this->urlParamAppender         = $urlParamAppender;
-        $this->router                   = $router;
-        $this->affiliateService         = $affiliateService;
-        $this->piwikStatisticSender     = $piwikStatisticSender;
-        $this->infoMapper               = $infoMapper;
-        $this->entitySaveHelper         = $entitySaveHelper;
-        $this->resubNotAllowedRoute     = $resubNotAllowedRoute;
+        $this->subscriptionPackProvider        = $subscriptionPackProvider;
+        $this->subscriber                      = $subscriber;
+        $this->checker                         = $checker;
+        $this->subscriptionProvider            = $subscriptionProvider;
+        $this->logger                          = $logger;
+        $this->redirectUrlNullifier            = $redirectUrlNullifier;
+        $this->handlerProvider                 = $handlerProvider;
+        $this->commonResponseCreator           = $commonResponseCreator;
+        $this->urlParamAppender                = $urlParamAppender;
+        $this->router                          = $router;
+        $this->affiliateService                = $affiliateService;
+        $this->subscriptionStatisticSender     = $subscriptionStatisticSender;
+        $this->infoMapper                      = $infoMapper;
+        $this->entitySaveHelper                = $entitySaveHelper;
+        $this->resubNotAllowedRoute            = $resubNotAllowedRoute;
     }
 
 

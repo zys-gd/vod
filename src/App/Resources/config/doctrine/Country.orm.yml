@@ -1,5 +1,6 @@
 App\Domain\Entity\Country:
     type: entity
+    repositoryClass: App\Domain\Repository\CountryRepository
     table: countries
     id:
         uuid:

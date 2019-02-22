@@ -17,6 +17,7 @@ use App\Domain\Repository\CountryCategoryPriorityOverrideRepository;
 use App\Domain\Repository\GameRepository;
 use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\UploadedVideoRepository;
+use App\Domain\Service\ContentStatisticSender;
 use ExtrasBundle\Utils\ArraySorter;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
@@ -55,6 +56,11 @@ class HomeController extends AbstractController implements ControllerWithISPDete
     private $categoryOverrideRepository;
 
     /**
+     * @var ContentStatisticSender
+     */
+    private $contentStatisticSender;
+
+    /**
      * HomeController constructor.
      *
      * @param CarrierRepositoryInterface                $carrierRepository
@@ -63,6 +69,7 @@ class HomeController extends AbstractController implements ControllerWithISPDete
      * @param UploadedVideoRepository                   $videoRepository
      * @param GameRepository                            $gameRepository
      * @param CountryCategoryPriorityOverrideRepository $categoryOverrideRepository
+     * @param ContentStatisticSender                    $contentStatisticSender
      */
     public function __construct(
         CarrierRepositoryInterface $carrierRepository,
@@ -70,7 +77,8 @@ class HomeController extends AbstractController implements ControllerWithISPDete
         MainCategoryRepository $mainCategoryRepository,
         UploadedVideoRepository $videoRepository,
         GameRepository $gameRepository,
-        CountryCategoryPriorityOverrideRepository $categoryOverrideRepository
+        CountryCategoryPriorityOverrideRepository $categoryOverrideRepository,
+        ContentStatisticSender $contentStatisticSender
     )
     {
         $this->carrierRepository          = $carrierRepository;
@@ -79,12 +87,15 @@ class HomeController extends AbstractController implements ControllerWithISPDete
         $this->videoRepository            = $videoRepository;
         $this->gameRepository             = $gameRepository;
         $this->categoryOverrideRepository = $categoryOverrideRepository;
+        $this->contentStatisticSender     = $contentStatisticSender;
     }
 
 
     /**
      * @Route("/",name="index")
      * @param Request $request
+     *
+     * @param ISPData $data
      *
      * @return Response
      */
@@ -119,6 +130,7 @@ class HomeController extends AbstractController implements ControllerWithISPDete
             array_keys($indexedCategoryData)
         ), 0, 5);
 
+        $this->contentStatisticSender->trackVisit($data);
 
         return $this->render('@App/Common/home.html.twig', [
             'templateHandler' => $this->templateConfigurator->getTemplateHandler($carrier),
