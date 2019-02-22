@@ -148,9 +148,7 @@ class SubscribeAction extends Controller
                 return $this->commonFlowHandler->process($request, $user);
             }
         } catch (ExistingSubscriptionException $exception) {
-
-
-            return new RedirectResponse($this->generateUrl('index', ['error' => 'existing_subscription']));
+            return new RedirectResponse($this->generateUrl('index', ['err_handle' => 'already_subscribed']));
         }
 
 

@@ -12,14 +12,17 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css"/>
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('css/slider.css') }}"/>
 {% endblock stylesheets %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
 {% endblock javascripts %}
 
 {% block header_content %}
@@ -34,7 +37,7 @@
     <div class="homepage-container">
         {{ slider.render(sliderVideos, categories) }}
         <div class="d-flex flex-column w-100">
-           {{ grid_video.render(categoryVideos, categories) }}
+            {{ grid_video.render(categoryVideos, categories) }}
         </div>
         <div class="d-flex flex-column w-100">
             {{ list_of_games.render(games) }}
@@ -42,6 +45,20 @@
         <div class="after-games-separator"></div>
     </div>
     {{ player.render(categoryVideos|merge(sliderVideos)) }}
+
+    {{ addJs('/js/errors_text.js') }}
+    <script>
+        $(document).ready(function () {
+
+            var url       = new URL(window.location.href);
+            var errHandle = url.searchParams.get("err_handle");
+            var message;
+            if (errHandle && (message = resolveErrorMessage(errHandle))) {
+                showAlert({title: message})
+            }
+        })
+
+    </script>
 
 {% endblock %}
 
