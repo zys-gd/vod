@@ -13,6 +13,7 @@ services:
         - '@router'
         - '@SubscriptionBundle\Service\Notification\Impl\NotificationHandlerProvider'
         - '@SubscriptionBundle\Service\Notification\Common\ShortUrlHashGenerator'
+        - '@SubscriptionBundle\Service\RenewDateCalculator'
 
   SubscriptionBundle\Service\Notification\Common\MessageCompiler:
         arguments:
