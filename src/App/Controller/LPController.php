@@ -12,7 +12,6 @@ namespace App\Controller;
 use App\Domain\Service\ContentStatisticSender;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Entity\CarrierInterface;
-use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Entity\SubscriptionPack;

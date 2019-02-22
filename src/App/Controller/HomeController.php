@@ -63,13 +63,13 @@ class HomeController extends AbstractController implements ControllerWithISPDete
     /**
      * HomeController constructor.
      *
-     * @param CarrierRepositoryInterface $carrierRepository
-     * @param TemplateConfigurator $templateConfigurator
-     * @param MainCategoryRepository $mainCategoryRepository
-     * @param UploadedVideoRepository $videoRepository
-     * @param GameRepository $gameRepository
+     * @param CarrierRepositoryInterface                $carrierRepository
+     * @param TemplateConfigurator                      $templateConfigurator
+     * @param MainCategoryRepository                    $mainCategoryRepository
+     * @param UploadedVideoRepository                   $videoRepository
+     * @param GameRepository                            $gameRepository
      * @param CountryCategoryPriorityOverrideRepository $categoryOverrideRepository
-     * @param ContentStatisticSender $contentStatisticSender
+     * @param ContentStatisticSender                    $contentStatisticSender
      */
     public function __construct(
         CarrierRepositoryInterface $carrierRepository,

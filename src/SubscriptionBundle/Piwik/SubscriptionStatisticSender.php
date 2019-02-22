@@ -2,7 +2,6 @@
 
 namespace SubscriptionBundle\Piwik;
 
-use App\Domain\Entity\Game;
 use IdentificationBundle\Entity\User;
 use PiwikBundle\Service\NewTracker;
 use Psr\Log\LoggerInterface;

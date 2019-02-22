@@ -145,6 +145,7 @@
 
 
                 demoplayer.on('percentsplayed', function (event) {
+
                     $.post(trackEventRoute, {
                         percent: event.eventData.percent,
                         video: demoplayer.currentPublicId()

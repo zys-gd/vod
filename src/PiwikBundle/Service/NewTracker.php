@@ -404,16 +404,16 @@ class NewTracker
      * @param User         $user
      * @param Subscription $subscription
      * @param              $bfResponse
-     * @param bool|null    $conversionMode
+     * @param null         $conversionMode
      *
      * @return bool
      * @throws \Exception
      */
     public function trackResubscribe(User $user,
         Subscription $subscription,
-        ProcessResult$bfResponse,
-        bool $conversionMode = null
-    ): bool
+        $bfResponse,
+        $conversionMode = null
+    )
     {
         return $this->trackSubscribe($user, $subscription, $bfResponse, $conversionMode, $type ?? 'resubscribe');
     }
@@ -425,7 +425,7 @@ class NewTracker
      * @param User $user
      * @param Subscription $subscription
      * @param ProcessResult $bfResponse
-     * @param null|bool $conversionMode
+     * @param null|string $conversionMode
      * @param string $type
      *
      * @return bool
@@ -437,7 +437,7 @@ class NewTracker
     public function trackSubscribe(User $user,
         Subscription $subscription,
         ProcessResult $bfResponse,
-        bool $conversionMode = null,
+        string $conversionMode = null,
         string $type = 'subscribe'
     ): bool
     {
@@ -537,7 +537,7 @@ class NewTracker
      * @param User         $user
      * @param Subscription $subscription
      * @param              $bfResponse
-     * @param null|bool    $conversionMode
+     * @param null|string    $conversionMode
      *
      * @return bool
      * @throws \Exception
@@ -545,7 +545,7 @@ class NewTracker
     public function trackRenew(User $user,
         Subscription $subscription,
         ProcessResult $bfResponse,
-        bool $conversionMode = null
+        string $conversionMode = null
     ): bool
     {
         return $this->trackSubscribe($user, $subscription, $bfResponse, $conversionMode, 'renew');
@@ -559,7 +559,7 @@ class NewTracker
      * @param User         $user
      * @param Subscription $subscription
      * @param              $bfResponse
-     * @param null|bool    $conversionMode
+     * @param null|string    $conversionMode
      *
      * @return bool
      * @throws \Exception
@@ -567,7 +567,7 @@ class NewTracker
     public function trackUnsubscribe(User $user,
         Subscription $subscription,
         ProcessResult $bfResponse = null,
-        bool $conversionMode = null
+        string $conversionMode = null
     ): bool
     {
         $bfId = $bfProvider = $oSubPack = false;
@@ -637,7 +637,7 @@ class NewTracker
      * @param User              $user
      * @param Game              $game
      * @param Subscription|null $subscription
-     * @param null|bool         $conversionMode
+     * @param null|string         $conversionMode
      *
      * @return bool
      * @throws \Exception
@@ -645,7 +645,7 @@ class NewTracker
     public function trackDownload(User $user,
         Game $game,
         Subscription $subscription = null,
-        bool $conversionMode = null
+        string $conversionMode = null
     ): bool
     {
         $this->getApiClient()->clearCustomVariables();
@@ -716,7 +716,7 @@ class NewTracker
      * @param User $user
      * @param UploadedVideo $uploadedVideo
      * @param Subscription $subscription
-     * @param null $conversionMode
+     * @param null|string $conversionMode
      *
      * @return bool
      *
@@ -726,7 +726,7 @@ class NewTracker
         User $user,
         UploadedVideo $uploadedVideo,
         Subscription $subscription,
-        $conversionMode = null
+        string $conversionMode = null
     ) {
         $this->getApiClient()->clearCustomVariables();
         $this->addStandardVariables($user, $subscription);
