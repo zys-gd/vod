@@ -19,14 +19,18 @@
 
 {% block body %}
 
-    <div class="d-flex flex-column align-items-center justify-content-top w-100">
+    <div class="d-flex flex-column align-items-center justify-content-top w-100" {% if background %} style="background: {{ background }}" {% endif %}>
 
         <div class="play-text">
             Click on <span class="play-text-link red">play</span><br> and continue watching!
         </div>
 
         <div class="d-flex align-items-center justify-content-center">
-            {{ banner.render(asset('img/lp/lp_subscribe_video.png'), 'banner', 'w-100') }}
+            {% if campaignBanner %}
+                {{  banner.render(campaignBanner, 'banner', 'w-100') }}
+            {% else %}
+                {{ banner.render(asset('img/lp/lp_subscribe_video.png'), 'banner', 'w-100') }}
+            {% endif %}
         </div>
         <div class="d-flex align-items-center justify-content-center lp-subscribe-buttons-wrapper">
             {{ subscribe_buttons.render(carriers,'btn-lp_big') }}

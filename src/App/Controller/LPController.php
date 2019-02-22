@@ -9,6 +9,8 @@
 namespace App\Controller;
 
 
+use App\Domain\Entity\Campaign;
+use App\Domain\Repository\CampaignRepository;
 use App\Domain\Service\ContentStatisticSender;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Entity\CarrierInterface;
@@ -35,6 +37,14 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var ContentStatisticSender
      */
     private $contentStatisticSender;
+    /**
+     * @var CampaignRepository
+     */
+    private $campaignRepository;
+    /**
+     * @var string
+     */
+    private $imageBaseUrl;
 
     /**
      * LPController constructor
@@ -42,15 +52,21 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param SubscriptionPackRepository $subscriptionPackRepository
      * @param CarrierRepositoryInterface $carrierRepository
      * @param ContentStatisticSender $contentStatisticSender
+     * @param CampaignRepository $campaignRepository
+     * @param string $imageBaseUrl
      */
     public function __construct(
         SubscriptionPackRepository $subscriptionPackRepository,
         CarrierRepositoryInterface $carrierRepository,
-        ContentStatisticSender $contentStatisticSender
+        ContentStatisticSender $contentStatisticSender,
+        CampaignRepository $campaignRepository,
+        string $imageBaseUrl
     ) {
         $this->subscriptionPackRepository = $subscriptionPackRepository;
         $this->carrierRepository          = $carrierRepository;
         $this->contentStatisticSender     = $contentStatisticSender;
+        $this->campaignRepository         = $campaignRepository;
+        $this->imageBaseUrl              = $imageBaseUrl;
     }
 
 
@@ -63,10 +79,17 @@ class LPController extends AbstractController implements ControllerWithISPDetect
     public function landingPageAction(Request $request)
     {
         $session = $request->getSession();
+        $campaignBanner = null;
+        $background = null;
 
         if ($cid = $request->get('cid', '')) {
             // Useless method atm.
             AffiliateVisitSaver::saveCampaignId($cid, $session);
+
+            /** @var Campaign $campaign */
+            $campaign = $this->campaignRepository->findOneBy(['campaignToken' => $cid]);
+            $campaignBanner = $this->imageBaseUrl . '/' . $campaign->getImagePath();
+            $background = $campaign->getBgColor();
         };
 
         AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
@@ -90,7 +113,9 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         return $this->render('@App/Common/landing.html.twig', [
             'isp_detection_data' => $session->get('isp_detection_data'),
-            'carriers'           => $carrierInterfaces
+            'carriers'           => $carrierInterfaces,
+            'campaignBanner'     => $campaignBanner,
+            'background'         => $background
         ]);
     }
 }
