@@ -110,11 +110,15 @@ class Campaign implements CampaignInterface
      */
     public function __toString()
     {
-        return $this->campaignToken
-            . ' - '
-            . $this->affiliate->getName()
-            . ' - '
-            . implode(', ', $this->carriers->getValues());
+        if (!empty($this->campaignToken) && !empty($this->affiliate) && !empty($this->carriers)) {
+            return $this->campaignToken
+                . ' - '
+                . $this->affiliate->getName()
+                . ' - '
+                . implode(', ', $this->carriers->getValues());
+        }
+
+        return '';
     }
 
     /**

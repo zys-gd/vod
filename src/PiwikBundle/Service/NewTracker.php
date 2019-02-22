@@ -267,9 +267,6 @@ class NewTracker
             $ret = $this->getApiClient()->setUserId($user->getUuid());
             $this->user = $user;
 
-            if ($userOperator = $user->getCarrier()) {
-                $operator = $userOperator;
-            }
             if ($userCountry = $user->getCountry()) {
                 $country = $userCountry;
             }
@@ -285,7 +282,7 @@ class NewTracker
             $this->connection = $connection;
         }
         if ($operator) {
-            $ret = $this->addVariable('operator', $operator->getBillingCarrierId());
+            $ret = $this->addVariable('operator', $operator);
             $this->operator = $operator;
         }
         if ($country) {
@@ -375,14 +372,14 @@ class NewTracker
 
     /**
      * @param Campaign $campaign
-     * @param Carrier  $carrier
+     * @param int  $carrierId
      *
      * @return bool
      */
-    private function isAppropriateCampaign(Campaign $campaign, Carrier $carrier)
+    private function isAppropriateCampaign(Campaign $campaign, int $carrierId)
     {
         $result = true;
-        if (!$carrier) {
+        if (!$carrierId) {
             $campaignCarriers = $campaign->getCarriers()->getValues();
             foreach ($campaignCarriers as $campaignCarrier) {
                 /** @var Carrier $campaignCarrier */
@@ -393,8 +390,11 @@ class NewTracker
 
         }
         else {
-            $carriers = $campaign->getCarriers()->getValues();
-            $result = in_array($carrier, $carriers) && !$carrier->getIsCampaignsOnPause() ? true : false;
+            $carriers = $campaign->getCarriers()->filter(function (Carrier $carrier) use ($carrierId) {
+                return $carrier->getBillingCarrierId() === $carrierId;
+            });
+
+            $result = $carriers->isEmpty() ? false : !$carriers->first()->getIsCampaignsOnPause();
         }
 
         return $result;

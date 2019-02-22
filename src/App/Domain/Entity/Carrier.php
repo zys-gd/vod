@@ -478,7 +478,7 @@ class Carrier implements CarrierInterface
      *
      * @return boolean
      */
-    public function getIsCampaignsOnPause()
+    public function getIsCampaignsOnPause(): bool
     {
         return $this->isCampaignsOnPause;
     }
