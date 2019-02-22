@@ -1,3 +1,26 @@
 {% macro render(src, alt, class) %}
-    <img {% if class %}class="{{ class }}"{% endif %} src="{{ src }}" alt="{{ alt }}"/>
+
+    {% set class = class ~ ' x-subscribe-button' %}
+
+    {% if isIdentified() %}
+        {% set href = url('subscription.subscribe') %}
+    {% elseif isConsentFlow() %}
+        {% set href = url('subscription.consent_page_subscribe') %}
+    {% elseif isWifiFlow() %}
+        {% set href = url('landing') %}
+    {% else %}
+        {% set href = url('identify') %}
+    {% endif %}
+
+
+    <a href="{{ href }}" class="x-subscribe-image">
+        <img {% if class %}class="{{ class }}"{% endif %} src="{{ src }}" alt="{{ alt }}"/>
+    </a>
+
+    <script>
+        $(document).on('click', '.x-subscribe-image', function (e) {
+            $._loader(false);
+        })
+    </script>
+
 {% endmacro render %}

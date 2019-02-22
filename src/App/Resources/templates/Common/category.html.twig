@@ -79,8 +79,8 @@
 
                 {% set relatedVideos = videos | slice(1) %}
                 {% if relatedVideos | length > 0 %}
+                    {{ mirror_separator.render(translate('category.related_videos'), 'category__related_title my-4') }}
                     <div class="related-videos-section-container">
-                        {{ mirror_separator.render(translate('category.related_videos'), 'category__related_title my-4') }}
 
                         <div class="d-flex flex-column related-videos-block">
                             {% for video in videos | slice(1) %}
