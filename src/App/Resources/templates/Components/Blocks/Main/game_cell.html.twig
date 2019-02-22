@@ -1,5 +1,6 @@
 {% macro render(game) %}
     {% import '@App/Components/Buttons/small_button.html.twig' as button %}
+    {% import "@App/Common/Blocks/download_button.html.twig" as  download_button %}
 
     <div class="d-flex flex-column  x-game-element game-wrapper" data-uuid="{{ game.uuid }}">
         <div class="game">
@@ -14,7 +15,7 @@
                 </div>
                 <div class="align-self-center game-download-button-block">
                     {% if hasActiveSubscription() %}
-                        {{ button.render('Download', 'game-download-button x-game-download-button') }}
+                        {{ download_button.renderSmall('game-download-button',game.uuid) }}
                     {% endif %}
                 </div>
             </div>
