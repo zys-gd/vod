@@ -1,0 +1,22 @@
+{% macro render(additionalClass, uuid) %}
+
+    {{ addJs('/js/games.js') }}
+
+    {% import "@App/Components/Buttons/button.html.twig" as  button %}
+
+    <span class="x-game-download-button-wrapper" data-href="{{ path('download_game') }}?id={{ uuid }}">
+        {{ button.render(translate('buttons.download'), 'x-game-download-button ' ~ additionalClass) }}
+    </span>
+
+{% endmacro %}
+
+{% macro renderSmall(additionalClass, uuid) %}
+
+    {{ addJs('/js/games.js') }}
+
+    {% import "@App/Components/Buttons/small_button.html.twig" as  button %}
+    <span class="x-game-download-button-wrapper" data-href="{{ path('download_game') }}?id={{ uuid }}">
+        {{ button.render(translate('buttons.download'), 'x-game-download-button ' ~ additionalClass) }}
+    </span>
+
+{% endmacro %}

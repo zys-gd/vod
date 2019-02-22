@@ -109,7 +109,6 @@ class HomeController extends AbstractController implements ControllerWithISPDete
         $indexedCategoryData = $this->getIndexedCategoryData($categories, $categoryOverrides);
 
         $categoryVideos = [];
-        $sliderVideos   = [];
         /** @var UploadedVideo[] $videos */
         foreach ($videos as $video) {
 
@@ -123,26 +122,21 @@ class HomeController extends AbstractController implements ControllerWithISPDete
                 'thumbnails' => $video->getThumbnails()
             ];
 
-            $viralVideosUUID = '15157409-49a4-4823-a7f9-654ac1d7c12f';
-            if ($categoryEntity->getUuid() === $viralVideosUUID) {
-                $sliderVideos[$categoryKey][$video->getUuid()] = $videoData;
-            } else {
-                $categoryVideos[$categoryKey][$video->getUuid()] = $videoData;
-            }
+            $categoryVideos[$categoryKey][$video->getUuid()] = $videoData;
         }
 
         $categoryVideos = array_slice(ArraySorter::sortArrayByKeys(
             $categoryVideos,
             array_keys($indexedCategoryData)
-        ), 0, 4);
+        ), 0, 5);
 
         $this->contentStatisticSender->trackVisit($data);
 
         return $this->render('@App/Common/home.html.twig', [
             'templateHandler' => $this->templateConfigurator->getTemplateHandler($carrier),
-            'categoryVideos'  => $categoryVideos,
+            'categoryVideos'  => array_slice($categoryVideos, 1, 3),
             'categories'      => $indexedCategoryData,
-            'sliderVideos'    => $sliderVideos,
+            'sliderVideos'    => array_slice($categoryVideos, 0, 1),
             'games'           => $this->gameRepository->findBatchOfGames(0, 2)
         ]);
     }
@@ -157,7 +151,7 @@ class HomeController extends AbstractController implements ControllerWithISPDete
         $categoryData = [];
         /** @var MainCategory[] $categories */
         foreach ($categories as $category) {
-            $categoryData[] = [
+            $categoryData[$category->getUuid()] = [
                 'uuid'         => $category->getUuid(),
                 'title'        => $category->getTitle(),
                 'menuPriority' => $category->getMenuPriority()
@@ -166,8 +160,8 @@ class HomeController extends AbstractController implements ControllerWithISPDete
 
         /** @var CountryCategoryPriorityOverride[] $categoryOverrides */
         foreach ($categoryOverrides as $categoryOverride) {
-            $category       = $categoryOverride->getMainCategory();
-            $categoryData[] = [
+            $category                           = $categoryOverride->getMainCategory();
+            $categoryData[$category->getUuid()] = [
                 'uuid'         => $category->getUuid(),
                 'title'        => $category->getTitle(),
                 'menuPriority' => $categoryOverride->getMenuPriority()
