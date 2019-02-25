@@ -71,7 +71,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
 
-        $carrierInterfaces = $this->carrierRepository->findAllCarriers();
+        $carrierInterfaces = $this->carrierRepository->findEnabledCarriers();
 
         /** @var SubscriptionPack[] $subpacks */
         $subpacks = $this->subscriptionPackRepository->findAll();

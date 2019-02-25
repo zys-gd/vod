@@ -93,6 +93,7 @@ class FakeCarrierIdentifier extends DataCollector
             ['name' => 'Jazz Pakistan', 'ip' => '119.160.116.250', 'carrier' => ConstBillingCarrierId::MOBILINK_PAKISTAN, 'msisdn' => '923087654234'],
             ['name' => 'Zong Pakistan', 'ip' => '103.255.4.26', 'carrier' => ConstBillingCarrierId::ZONG_PAKISTAN, 'msisdn' => '923165338483'],
             ['name' => 'Telenor Pakistan', 'ip' => '202.69.8.100', 'carrier' => ConstBillingCarrierId::TELENOR_PAKISTAN, 'msisdn' => '772e9fde-68c6-3a31-8c29-dad92a0b11f8'],
+            ['name' => 'Telenor Pakistan via DOT', 'ip' => '202.69.8.100', 'carrier' => ConstBillingCarrierId::TELENOR_PAKISTAN_DOT, 'msisdn' => '772e9fde-68c6-3a31-8c29-dad92a0b11f8'],
             ["name" => "Telenor Myanmar", 'ip' => '103.255.172.6', 'carrier' => ConstBillingCarrierId::TELENOR_MYANMAR, 'msisdn' => '959762153238'],
             ['name' => 'Etisalat EGYPT', 'ip' => '197.124.76.20', 'carrier' => ConstBillingCarrierId::ETISALAT_EGYPT, 'msisdn' => '201125936047'],
             ['name' => 'Orange EGYPT', 'ip' => '105.195.87.86', 'carrier' => ConstBillingCarrierId::ORANGE_EGYPT, 'msisdn' => 'YAbaLlO8FxojykMU5byCoZx1DFbxYxGDF46O4btqlj0='],

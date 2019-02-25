@@ -178,7 +178,7 @@ class AutoIdentStartListener
      */
     private function resolveISP(string $carrierISP): ?int
     {
-        $carriers = $this->carrierRepository->findAllCarriers();
+        $carriers = $this->carrierRepository->findEnabledCarriers();
         foreach ($carriers as $carrier) {
             if ($this->ISPResolver->isISPMatches($carrierISP, $carrier)) {
                 return $carrier->getBillingCarrierId();

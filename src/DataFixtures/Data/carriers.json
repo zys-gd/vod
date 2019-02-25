@@ -3539,7 +3539,7 @@
         "name": "Telenor (Pakistan)",
         "countryCode": "PK",
         "isp": "Telenor Pakistan|Telenor Pakistan|Telenor Pakistan (PK)|Telenor Pakistan (Pvt)| Telenor Pakistan (Pvt)",
-        "published": true,
+        "published": false,
         "lpOtp": true,
         "pinIdentSupport": true,
         "trial_initializer": "store",
@@ -10085,5 +10085,238 @@
         "uuid": "396b9bc2-a7c5-430f-ac2b-9c77955fc55b",
         "default_language": null,
         "campaigns": []
+    },
+    {
+        "id_carrier": 2252,
+        "operator_id": 0,
+        "name": "Telenor (Pakistan) via DOT",
+        "countryCode": "PK",
+        "isp": "Telenor Pakistan|Telenor Pakistan|Telenor Pakistan (PK)|Telenor Pakistan (Pvt)| Telenor Pakistan (Pvt)",
+        "published": true,
+        "lpOtp": true,
+        "pinIdentSupport": true,
+        "trial_initializer": "store",
+        "trial_period": 0,
+        "subscription_period": 7,
+        "resubAllowed": false,
+        "isCampaignsOnPause": false,
+        "numberOfAllowedSubscription": 5,
+        "isUnlimitedSubscriptionAttemptsAllowed": false,
+        "isCaptcha": false,
+        "numberOfAllowedSubscriptionsByConstraint": 3000,
+        "redirectUrl": "https:\/\/www.google.com\/",
+        "counter": 2665,
+        "flushDate": null,
+        "isCapAlertDispatch": false,
+        "uuid": "97400b8f-722b-4339-a48e-a51419bbb143",
+        "default_language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "campaigns": [
+            {
+                "uuid": "51a2d69c-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a2e13f-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a2e353-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a2e486-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a2e590-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a2e670-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a2e6d8-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a2e730-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a2e787-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a2e7d4-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a2e827-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a2e875-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a2e8f5-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a2ea63-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a2eae5-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a2edc5-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a2ee1e-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a2ef2c-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a2ef7a-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a2efc9-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a306e8-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a30b70-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a30ea6-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a31301-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a3cb3b-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a3dfe0-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a3f129-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a53a58-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a5411f-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a5416e-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a562b2-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a6503a-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a65181-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a656a4-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a65807-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a65865-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a659c3-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a65ae6-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a66c7b-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a691a4-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a6ac59-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a7ae1a-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a7b12a-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a7d017-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a887ae-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a890c4-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a897b8-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a898d7-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a8ae2c-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a8b2cd-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a8be50-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a8c4ac-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a984a9-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a9964a-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a99749-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a99843-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a9aeb1-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a9af5e-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a9b31b-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a9b382-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a9c28d-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a9c30b-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a9c605-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51a9ca94-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51aaee19-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51ab04cc-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51ab0589-ebd4-11e8-95c4-02bb250f0f22"
+            },
+            {
+                "uuid": "51ab29fa-ebd4-11e8-95c4-02bb250f0f22"
+            }
+        ]
     }
 ]
