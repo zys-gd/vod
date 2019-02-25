@@ -267,13 +267,15 @@ class CampaignAdmin extends AbstractAdmin
      */
     private function buildLandingPageSection(FormMapper $formMapper)
     {
+        $imagePreview = $this->getImagePreviewHtml();
+
         $formMapper
             ->tab('Landing page')
             ->with('', ['box_class' => 'box-solid'])
             ->add('image_file', FileType::class, [
-                'required' => false,
+                'required' => empty($imagePreview),
                 'label' => 'Main Image',
-                'help' => $this->getImagePreviewHtml()
+                'help' => $imagePreview
             ])
             ->add('bgColor', ColorType::class, [
                 'attr' => ['style' => 'width: 50px'],
