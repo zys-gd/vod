@@ -9,17 +9,16 @@
 namespace App\Controller;
 
 
+use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
 use App\Domain\Entity\Country;
-use App\Domain\Repository\CountryRepository;
-use App\Domain\Entity\Campaign;
 use App\Domain\Repository\CampaignRepository;
+use App\Domain\Repository\CountryRepository;
 use App\Domain\Service\ContentStatisticSender;
 use App\Domain\Service\Translator\Translator;
 use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Entity\CarrierInterface;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Entity\SubscriptionPack;
@@ -65,7 +64,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
     private $imageBaseUrl;
 
     /**
-     * LPController constructor
+     * LPController constructor.
      *
      * @param SubscriptionPackRepository $subscriptionPackRepository
      * @param CarrierRepositoryInterface $carrierRepository
@@ -73,9 +72,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param CountryRepository          $countryRepository
      * @param Translator                 $translator
      * @param LocalExtractor             $localExtractor
-     * @param ContentStatisticSender $contentStatisticSender
-     * @param CampaignRepository $campaignRepository
-     * @param string $imageBaseUrl
+     * @param CampaignRepository         $campaignRepository
+     * @param string                     $imageBaseUrl
      */
     public function __construct(
         SubscriptionPackRepository $subscriptionPackRepository,
@@ -83,23 +81,21 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         ContentStatisticSender $contentStatisticSender,
         CountryRepository $countryRepository,
         Translator $translator,
-        LocalExtractor $localExtractor
-    )
-    {
-        ContentStatisticSender $contentStatisticSender,
+        LocalExtractor $localExtractor,
         CampaignRepository $campaignRepository,
         string $imageBaseUrl
-    ) {
+    )
+    {
         $this->subscriptionPackRepository = $subscriptionPackRepository;
         $this->carrierRepository = $carrierRepository;
         $this->contentStatisticSender = $contentStatisticSender;
         $this->countryRepository = $countryRepository;
         $this->translator = $translator;
         $this->localExtractor = $localExtractor;
-        $this->carrierRepository          = $carrierRepository;
-        $this->contentStatisticSender     = $contentStatisticSender;
-        $this->campaignRepository         = $campaignRepository;
-        $this->imageBaseUrl              = $imageBaseUrl;
+        $this->carrierRepository = $carrierRepository;
+        $this->contentStatisticSender = $contentStatisticSender;
+        $this->campaignRepository = $campaignRepository;
+        $this->imageBaseUrl = $imageBaseUrl;
     }
 
 
@@ -178,8 +174,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         return $this->render('@App/Common/landing.html.twig', [
             'isp_detection_data' => $session->get('isp_detection_data'),
             'carriers' => $carrierInterfaces,
-            'countriesCarriers' => $countriesCarriers
-            'carriers'           => $carrierInterfaces,
+            'countriesCarriers' => $countriesCarriers,
             'campaignBanner'     => $campaignBanner,
             'background'         => $background
         ]);
