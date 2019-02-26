@@ -19,7 +19,7 @@ return [
     'AWS_S3_REGION'  => 'eu-central-1',
 
     'IMAGES_BASE_URL'    => 'http://cdn.gameimages.store.playwing.com',
-    'BILLING_API_HOST'   => 'http://billing.playwing.com/api',
+    'BILLING_API_HOST'   => 'http://billing.100sport.tv/api',
     'TOKEN_SESSION_NAME' => '',
     'APP_VERSION_HASH'   => 'default',
 

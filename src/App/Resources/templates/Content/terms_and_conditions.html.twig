@@ -20,7 +20,7 @@
         </div>
 
         <h1> 1/{{ translate('terms.block_1.title.1') }} </h1>
-        <p> {{ translate('terms.block_1.text.1')|raw }} </p>
+        <p> {{ translate('terms.block_1.text.1', {'%home_url%': path('index')})|raw }} </p>
 
         <h1> 2/{{ translate('terms.block_2.title.1') }} </h1>
         <p> {{ translate('terms.block_2.text.1') }} </p>

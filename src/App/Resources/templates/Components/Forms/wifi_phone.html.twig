@@ -1,0 +1,10 @@
+{% macro render(opts) %}
+    {% import '@App/Components/Buttons/button.html.twig' as button %}
+    <div class="">
+        <input type="text" name="mobile_number" placeholder="{{ translate('wifi.form.input_phone') }}" class="w-75 mb-3 input" required/>
+    </div>
+
+    <div id="wifi_button">
+        {{ button.renderSubmitButton(translate('wifi.form.button.send_sms'), 'x-send-pin-button') }}
+    </div>
+{% endmacro %}

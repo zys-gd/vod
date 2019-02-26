@@ -22,7 +22,7 @@
     <div class="d-flex flex-column align-items-center justify-content-top w-100" {% if background %} style="background: {{ background }}" {% endif %}>
 
         <div class="play-text">
-            Click on <span class="play-text-link red">play</span><br> and continue watching!
+            {{ translate('landing.text.pay2watch') |raw }}
         </div>
 
         <div class="d-flex align-items-center justify-content-center">
@@ -32,8 +32,9 @@
                 {{ banner.render(asset('img/lp/lp_subscribe_video.png'), 'banner', 'w-100') }}
             {% endif %}
         </div>
-        <div class="d-flex align-items-center justify-content-center lp-subscribe-buttons-wrapper">
-            {{ subscribe_buttons.render(carriers,'btn-lp_big') }}
+
+        <div class="d-flex align-items-start justify-content-center lp-subscribe-buttons-wrapper">
+            {{ subscribe_buttons.render(carriers, countriesCarriers, 'btn-lp_big') }}
         </div>
 
         <div class="d-flex align-items-center justify-content-center mh-7">
@@ -50,11 +51,11 @@
         {#<div class="d-flex align-items-center justify-content-center">
             {{ subscribe_buttons.render(carriers, 'mh-90') }}
         </div>#}
-        <div class="lure_box_wrapper">
+        <div class="lure_box_wrapper mb-0">
             {{ red_lure_block.render(translate('lure_block.text')) }}
         </div>
     </div>
 {% endblock body %}
 
-{% block footer_content %}
-{% endblock footer_content %}
+{% block footer %}
+{% endblock footer %}

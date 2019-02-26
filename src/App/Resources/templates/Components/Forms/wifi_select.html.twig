@@ -1,0 +1,39 @@
+{% macro render(countriesCarriers) %}
+    {% import '@App/Components/Buttons/button.html.twig' as button %}
+
+    <div class="">
+        <select name="country" class="w-75 mb-3 select" required>
+            <option value="">{{ translate('wifi.form.select_country') }}</option>
+            {% for country, carriers in countriesCarriers %}
+                <option data-carriers="{{ carriers }}" value="{{ country }}">{{ country }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="">
+        <select name="carrier_id" class="w-75 mb-3 select" required>
+        </select>
+    </div>
+
+    <div id="wifi_button">
+        {{ button.renderSubmitButton(translate('wifi.form.button.apply'), 'x-send-pin-button') }}
+    </div>
+
+    <script type="text/javascript">
+        $(document).on('change', 'select[name="country"]', function () {
+            var carrierSelect = $('select[name="carrier_id"]');
+            carrierSelect.empty()
+                .append("<option value=''>{{ translate('wifi.form.select_carrier') }}</option>");
+            var carriers = $(this).find(':selected').data('carriers');
+            for(carrier in carriers) {
+                var _carrier = carriers[carrier];
+                carrierSelect.append("<option data-content='"+JSON.stringify(_carrier)+"' value='"+ _carrier.billingCarrierId+"'>"+ _carrier.name +"</option>");
+            };
+        });
+
+        $(document).on('change', 'select[name="carrier_id"]', function () {
+            var carrier = $(this).find(':selected').data('content');
+            $('#wifi_offer').html( carrier.wifi_offer);
+        });
+    </script>
+{% endmacro %}

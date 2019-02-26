@@ -31,8 +31,13 @@ services:
             - '@SubscriptionBundle\Repository\SubscriptionPackRepository'
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
             - '@App\Domain\Service\ContentStatisticSender'
+            - '@App\Domain\Repository\CountryRepository'
+            - '@App\Domain\Service\Translator\Translator'
+            - '@ExtrasBundle\Utils\LocalExtractor'
             - '@App\Domain\Repository\CampaignRepository'
             - '%images_base_url%'
+            - '@App\Domain\Service\Translator\ShortcodeReplacer'
+            - '@App\Domain\Service\Translator\DataAggregator'
 
     App\Controller\ErrorController:
         arguments:

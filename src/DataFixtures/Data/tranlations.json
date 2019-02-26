@@ -677,7 +677,7 @@
     {
         "uuid": "c55b5f46-10b1-4f9c-bbc3-e8c695d7594f",
         "key": "faq.a.2",
-        "translation": "To watch and enjoy your sports videos, you should simple access to our <a href='/'>homepage</a> and click on any video available. You are able to browse our whole catalogue on the main menu (searching by title or category).",
+        "translation": "To watch and enjoy your sports videos, you should simple access to our <a href='%home_url%'>homepage</a> and click on any video available. You are able to browse our whole catalogue on the main menu (searching by title or category).",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -1024,12 +1024,122 @@
     {
         "uuid": "262f1d56-4093-418d-8eb4-5da638b756d3",
         "key": "terms.block_1.text.1",
-        "translation": "100% sport is a mobile service which provides mobile games.100% sport proposes this service:  - day subscription which will be automatically activated when you confirm your subscription on <a href='/'>100% sport mobile site</a>.",
+        "translation": "100% sport is a mobile service which provides mobile games.100% sport proposes this service:  - day subscription which will be automatically activated when you confirm your subscription on <a href='%home_url%'>100% sport mobile site</a>.",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": {
             "uuid": "5142f9ec-ebd4-11e8-95c4-02bb250f0f22"
         }
+    },
+    {
+        "uuid": "483dd864-e0cf-4f83-89bd-fb2a2d85fc9e",
+        "key": "wifi.offer",
+        "translation": "11.95 PKR per day",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": {
+            "uuid": "5142f9ec-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "a9c727ed-ead3-4fcf-8a5c-cd1afa2914a7",
+        "key": "wifi.button",
+        "translation": "SUBSCRIBE",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "14c4c9bb-efbe-4ddb-a639-0f5ac27d4c88",
+        "key": "wifi.offer",
+        "translation": "%price% %currency% per %periodicity%",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "0537d4ce-82cb-40bf-a211-da769bc8e28d",
+        "key": "wifi.warning",
+        "translation": "Whooops! We couldn't recognize your user. Please select your Country, Operator and type your mobile\n            number.You will receive a PIN code via Sms.",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "63dee082-f881-488a-94e9-a202a71b2913",
+        "key": "wifi.terms_confirmation",
+        "translation": "I have read and agreed <a href=\"%terms_path%\">Terms and Conditions</a>",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "5e2a4aa7-24d5-4fdd-86d6-d4f3e5d40df8",
+        "key": "wifi.form.select_country",
+        "translation": "Select Country",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "c707b134-f7cd-40d2-a600-f1c0a3684708",
+        "key": "wifi.form.select_carrier",
+        "translation": "Select Carrier",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "ecb16106-8cb8-4933-8d44-9241a587b7ac",
+        "key": "wifi.form.input_pin",
+        "translation": "Pin Code",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "a0528508-52bd-453e-a23d-7e43d1ea6bba",
+        "key": "wifi.form.input_phone",
+        "translation": "Type mobile number and receive PIN Code",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "1626ef41-8812-4566-aa97-de71cba4efa3",
+        "key": "wifi.form.button.send_sms",
+        "translation": "Send SMS",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "d3c1a043-8fa9-4142-9972-a4d8d23a6e4e",
+        "key": "wifi.form.button.apply",
+        "translation": "Apply",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "fe09d606-b223-4298-8ab4-b9e07977fdba",
+        "key": "landing.text.pay2watch",
+        "translation": "Click on <span class=\"play-text-link red\">play</span><br/> and continue watching!",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
     }
 ]
