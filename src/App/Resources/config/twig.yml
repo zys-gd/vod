@@ -36,3 +36,7 @@ services:
     Phive\Twig\Extensions\Deferred\DeferredExtension:
         tags:
             - { name: twig.extension }
+
+    App\Twig\StringEncodingExtension:
+        tags:
+            - { name: twig.extension }

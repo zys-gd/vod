@@ -1031,5 +1031,34 @@
         "carrier": {
             "uuid": "5142f9ec-ebd4-11e8-95c4-02bb250f0f22"
         }
+    },
+    {
+        "uuid": "483dd864-e0cf-4f83-89bd-fb2a2d85fc9e",
+        "key": "wifi.offer",
+        "translation": "11.95 PKR per day",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": {
+            "uuid": "5142f9ec-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "a9c727ed-ead3-4fcf-8a5c-cd1afa2914a7",
+        "key": "wifi.button",
+        "translation": "SUBSCRIBE",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "14c4c9bb-efbe-4ddb-a639-0f5ac27d4c88",
+        "key": "wifi.offer",
+        "translation": "%price% %currency% per %periodicity%",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
     }
 ]
