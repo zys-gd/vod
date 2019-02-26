@@ -5,9 +5,3 @@ services:
             - '@session'
         tags:
             - { name: twig.extension }
-
-    IdentificationBundle\Twig\IdentificationDataExtension:
-        arguments:
-            - '@session'
-        tags:
-            - { name: twig.extension }

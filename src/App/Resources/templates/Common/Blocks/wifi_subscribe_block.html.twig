@@ -18,7 +18,7 @@
             {% endif %}
         </div>
         <div class="">
-            <span id="wifi_offer">{% if extractBillingUserId() %}{{ translate('wifi.offer') }}{% endif %}</span>
+            <span id="wifi_offer">{% if isCarrierDetected() %}{{ translate('wifi.offer') }}{% endif %}</span>
         </div>
         <div class="">
             <label class="terms_confirmation">
