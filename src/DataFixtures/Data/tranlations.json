@@ -677,7 +677,7 @@
     {
         "uuid": "c55b5f46-10b1-4f9c-bbc3-e8c695d7594f",
         "key": "faq.a.2",
-        "translation": "To watch and enjoy your sports videos, you should simple access to our <a href='/'>homepage</a> and click on any video available. You are able to browse our whole catalogue on the main menu (searching by title or category).",
+        "translation": "To watch and enjoy your sports videos, you should simple access to our <a href='%home_url%'>homepage</a> and click on any video available. You are able to browse our whole catalogue on the main menu (searching by title or category).",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -1024,7 +1024,7 @@
     {
         "uuid": "262f1d56-4093-418d-8eb4-5da638b756d3",
         "key": "terms.block_1.text.1",
-        "translation": "100% sport is a mobile service which provides mobile games.100% sport proposes this service:  - day subscription which will be automatically activated when you confirm your subscription on <a href='/'>100% sport mobile site</a>.",
+        "translation": "100% sport is a mobile service which provides mobile games.100% sport proposes this service:  - day subscription which will be automatically activated when you confirm your subscription on <a href='%home_url%'>100% sport mobile site</a>.",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -1073,7 +1073,7 @@
     {
         "uuid": "63dee082-f881-488a-94e9-a202a71b2913",
         "key": "wifi.terms_confirmation",
-        "translation": "I have read and agreed <a href=\"%%terms_path%\">Terms and Conditions</a>",
+        "translation": "I have read and agreed <a href=\"%terms_path%\">Terms and Conditions</a>",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
