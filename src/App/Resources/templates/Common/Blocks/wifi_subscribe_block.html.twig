@@ -8,8 +8,7 @@
           class="d-flex flex-column w-75 text-center">
         <div class="wifi_form__ground"></div>
         <div class="align-self-center wifi_form__warning w-75">
-            Whooops! We couldn't recognize your user. Please select your Country, Operator and type your mobile
-            number.You will receive a PIN code via Sms.
+            {{ translate('wifi.warning') }}
         </div>
         <div id="wifi_form_step">
             {% if isCarrierDetected() %}
@@ -24,7 +23,7 @@
         <div class="">
             <label class="terms_confirmation">
                 <input type="checkbox" required value="0"/>
-                I have read and agreed <a href="{{ path('terms_and_conditions') }}">Terms and Conditions</a>
+                    {{ translate('wifi.terms_confirmation', {'%terms_path%': path('terms_and_conditions')}) | raw }}
             </label>
         </div>
     </form>

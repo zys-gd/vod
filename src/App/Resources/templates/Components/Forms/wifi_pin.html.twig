@@ -1,7 +1,7 @@
 {% macro render() %}
     {% import '@App/Components/Buttons/button.html.twig' as button %}
     <div class="">
-        <input type="text" name="pin_code" placeholder="Pin Code" class="w-75 mb-3 input" required />
+        <input type="text" name="pin_code" placeholder="{{ translate('wifi.form.input_pin') }}" class="w-75 mb-3 input" required />
     </div>
 
     <div id="wifi_button">
