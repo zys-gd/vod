@@ -2,13 +2,8 @@
 
 namespace App\Domain\Entity;
 
-use App\Domain\Entity\Campaign;
 use Doctrine\Common\Collections\ArrayCollection;
-use AppBundle\Validator\Constraints\ContainsConstraints;
-use Doctrine\Common\Collections\Collection;
-use http\Url;
 use IdentificationBundle\Entity\CarrierInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Carrier

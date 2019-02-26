@@ -1,7 +1,13 @@
 services:
-  IdentificationBundle\Twig\IdentificationStatusExtension:
-    arguments:
-      - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
-      - '@session'
-    tags:
-      - { name: twig.extension }
+    IdentificationBundle\Twig\IdentificationStatusExtension:
+        arguments:
+            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@session'
+        tags:
+            - { name: twig.extension }
+
+    IdentificationBundle\Twig\IdentificationDataExtension:
+        arguments:
+            - '@session'
+        tags:
+            - { name: twig.extension }

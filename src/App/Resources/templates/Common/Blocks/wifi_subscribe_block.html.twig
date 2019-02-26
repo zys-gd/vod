@@ -1,128 +1,101 @@
-{% macro render(carriers) %}
+{% macro render(carriers, countriesCarriers) %}
     {% import '@App/Components/Buttons/button.html.twig' as button %}
-    <form class="x-select-carrier-block text-center collapse ">
-        <br>
-        <div>
-            <select name="carrier_id" required>
-                {% for carrier in carriers %}
-                    <option value="{{ carrier.billingCarrierId }}">{{ carrier.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div>
-            {{ button.renderSubmitButton('Select Carrier', 'x-select-carrier-button') }}
-        </div>
-    </form>
+    {% import '@App/Components/Forms/wifi_phone.html.twig' as wifi_phone %}
+    {% import '@App/Components/Forms/wifi_pin.html.twig' as wifi_pin %}
+    {% import '@App/Components/Forms/wifi_select.html.twig' as wifi_select %}
 
-    <form class="x-subscribe-send-pin-block text-center collapse ">
-        <br>
-        <div>
-            <input type="text" name="mobile_number" placeholder="Mobile Number" required>
+    <form data-form="{% if isCarrierDetected() %}pin{% else %}carrier{% endif %}" id="wifi_form"
+          class="d-flex flex-column w-75 text-center">
+        <div class="wifi_form__ground"></div>
+        <div class="align-self-center wifi_form__warning w-75">
+            Whooops! We couldn't recognize your user. Please select your Country, Operator and type your mobile
+            number.You will receive a PIN code via Sms.
         </div>
-        <div>
-            {{ button.renderSubmitButton('Send SMS', 'x-send-pin-button') }}
+        <div id="wifi_form_step">
+            {% if isCarrierDetected() %}
+                {{ wifi_phone.render() }}
+            {% else %}
+                {{ wifi_select.render(countriesCarriers) }}
+            {% endif %}
         </div>
-    </form>
-
-    <form class="x-subscribe-confirm-pin-block text-center collapse ">
-        <br>
-        <div>
-            <input type="text" name="mobile_number" placeholder="Mobile Number" required>
+        <div class="">
+            <span id="wifi_offer">{% if extractBillingUserId() %}{{ translate('wifi.offer') }}{% endif %}</span>
         </div>
-        <div>
-            <input type="text" name="pin_code" placeholder="Pin Code" required>
-        </div>
-        <div>
-            {{ button.renderSubmitButton('Confirm', 'x-confirm-pin-button') }}
+        <div class="">
+            <label class="terms_confirmation">
+                <input type="checkbox" required value="0"/>
+                I have read and agreed <a href="{{ path('terms_and_conditions') }}">Terms and Conditions</a>
+            </label>
         </div>
     </form>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        var offset = parseInt($('#wifi_form').parent('div').prev().height()) + parseInt($('#wifi_form').parent('div').css('padding-top')) + parseInt($('#wifi_form').parent('div').css('margin-top'));
+        $('#wifi_form').css({
+            'margin-top': '-' + offset + 'px',
+            'min-height': parseInt($('#wifi_form').parent('div').prev().height()) + 'px'
+        });
+        var $wifi_form_step = $('#wifi_form_step');
 
-    <script>
-        // $(document).ready(function (){
-            var isCarrierDetected = {{ isCarrierDetected() ? 'true' : 'false' }};
+        $(document).on('submit', 'form[data-form=carrier]', function (e) {
+            e.preventDefault();
+            var form = $(this);
 
-            if (isCarrierDetected) {
-                moveToStepTwo()
-            } else {
-                moveToStepOne();
-            }
-
-        function moveToStepOne() {
-            $('.x-select-carrier-block').show();
-            $('.x-subscribe-send-pin-block').hide();
-            $('.x-subscribe-confirm-pin-block').hide();
-        }
-        function moveToStepTwo() {
-            $('.x-select-carrier-block').hide();
-            $('.x-subscribe-send-pin-block').show();
-            $('.x-subscribe-confirm-pin-block').hide();
-        }
-        function moveToStepThree() {
-            $('.x-select-carrier-block').hide();
-            $('.x-subscribe-send-pin-block').hide();
-            $('.x-subscribe-confirm-pin-block').show();
-        }
-
-            $('.x-select-carrier-block').on('submit', function (e) {
-                var form = $(this);
-
-                $.ajax({
-                    url    : "{{ path('select_carrier_for_pin_code_form') }}",
-                    method : "POST",
-                    data   : form.serialize(),
-                    success: function (result) {
-                        if (result.data.success) {
-                            moveToStepTwo();
-                        } else {
-                            showAlert({title: result.data.message});
-                        }
+            $.ajax({
+                url: "{{ path('select_carrier_for_pin_code_form') }}",
+                method: "POST",
+                data: form.serialize(),
+                success: function (result) {
+                    if (result.data.success) {
+                        $wifi_form_step.html($wifi_form_step.html('{{ html2string(wifi_phone.render()) }}').text());
+                        form.attr('data-form', 'pin');
+                    } else {
+                        showAlert({title: result.data.message});
                     }
-                });
-                e.preventDefault();
-                e.stopPropagation();
+                }
             });
 
-            $('.x-subscribe-send-pin-block').on('submit', function (e) {
-                var form = $(this);
+        });
 
-                $.ajax({
-                    url    : "{{ path('send_sms_pin_code') }}",
-                    method : "POST",
-                    data   : form.serialize(),
-                    success: function (result) {
-                        if (result.data.success) {
-                            moveToStepThree()
-                        } else {
-                            showAlert({title: result.data.message});
-                        }
+        $(document).on('submit', 'form[data-form=pin]', function (e) {
+            e.preventDefault();
+            var form = $(this);
+
+            $.ajax({
+                url: "{{ path('send_sms_pin_code') }}",
+                method: "POST",
+                data: form.serialize(),
+                success: function (result) {
+                    if (result.data.success) {
+                        var input_phone = $('input[name=mobile_number]');
+                        input_phone.addClass('d-none');
+                        $wifi_form_step
+                            .html($wifi_form_step.html('{{ html2string(wifi_pin.render()) }}').text())
+                            .append(input_phone);
+                        form.attr('data-form', 'confirm');
+                    } else {
+                        showAlert({title: result.data.message});
                     }
-                });
-
-                e.preventDefault();
-                e.stopPropagation();
+                }
             });
+        });
 
-            $('.x-subscribe-confirm-pin-block').on('submit', function (e) {
-                var form = $(this);
+        $(document).on('submit', 'form[data-form=confirm]', function (e) {
+            e.preventDefault();
+            var form = $(this);
 
-                $.ajax({
-                    url    : "{{ path('confirm_sms_pin_code') }}",
-                    method : "POST",
-                    data   : form.serialize(),
-                    success: function (result) {
-                        if (result.data.success) {
-                            window.location = result.data.redirectUrl;
-                        } else {
-                            showAlert({title: result.data.message});
-                        }
+            $.ajax({
+                url: "{{ path('confirm_sms_pin_code') }}",
+                method: "POST",
+                data: form.serialize(),
+                success: function (result) {
+                    if (result.data.success) {
+                        window.location = result.data.redirectUrl;
+                    } else {
+                        showAlert({title: result.data.message});
                     }
-                });
-
-                e.preventDefault();
-                e.stopPropagation();
+                }
             });
-        // });
+        });
     </script>
 {% endmacro %}

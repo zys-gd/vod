@@ -31,6 +31,9 @@ services:
             - '@SubscriptionBundle\Repository\SubscriptionPackRepository'
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
             - '@App\Domain\Service\ContentStatisticSender'
+            - '@App\Domain\Repository\CountryRepository'
+            - '@App\Domain\Service\Translator\Translator'
+            - '@ExtrasBundle\Utils\LocalExtractor'
 
     App\Controller\ErrorController:
         arguments:
