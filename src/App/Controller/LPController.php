@@ -15,6 +15,8 @@ use App\Domain\Entity\Country;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Repository\CountryRepository;
 use App\Domain\Service\ContentStatisticSender;
+use App\Domain\Service\Translator\DataAggregator;
+use App\Domain\Service\Translator\ShortcodeReplacer;
 use App\Domain\Service\Translator\Translator;
 use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
@@ -62,6 +64,14 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var string
      */
     private $imageBaseUrl;
+    /**
+     * @var ShortcodeReplacer
+     */
+    private $shortcodeReplacer;
+    /**
+     * @var DataAggregator
+     */
+    private $dataAggregator;
 
     /**
      * LPController constructor.
@@ -74,6 +84,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param LocalExtractor             $localExtractor
      * @param CampaignRepository         $campaignRepository
      * @param string                     $imageBaseUrl
+     * @param ShortcodeReplacer          $shortcodeReplacer
+     * @param DataAggregator             $dataAggregator
      */
     public function __construct(
         SubscriptionPackRepository $subscriptionPackRepository,
@@ -83,7 +95,9 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         Translator $translator,
         LocalExtractor $localExtractor,
         CampaignRepository $campaignRepository,
-        string $imageBaseUrl
+        string $imageBaseUrl,
+        ShortcodeReplacer $shortcodeReplacer,
+        DataAggregator $dataAggregator
     )
     {
         $this->subscriptionPackRepository = $subscriptionPackRepository;
@@ -96,6 +110,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->contentStatisticSender = $contentStatisticSender;
         $this->campaignRepository = $campaignRepository;
         $this->imageBaseUrl = $imageBaseUrl;
+        $this->shortcodeReplacer = $shortcodeReplacer;
+        $this->dataAggregator = $dataAggregator;
     }
 
 
@@ -106,6 +122,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param Request $request
      *
      * @return Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function landingPageAction(Request $request)
     {
@@ -159,8 +176,14 @@ class LPController extends AbstractController implements ControllerWithISPDetect
                 'uuid' => $carrier->getUuid(),
                 'billingCarrierId' => $carrier->getBillingCarrierId(),
                 'name' => $carrier->getName(),
-                'wifi_offer' => $wifi_offer,
-                'wifi_button' => $wifi_button,
+                'wifi_offer' => $this->shortcodeReplacer->do(
+                        $this->dataAggregator->getGlobalParameters($carrier->getBillingCarrierId()),
+                        $wifi_offer
+                    ),
+                'wifi_button' => $this->shortcodeReplacer->do(
+                        $this->dataAggregator->getGlobalParameters($carrier->getBillingCarrierId()),
+                        $wifi_button
+                    ),
             ];
             $countriesCarriers[$carrier->getCountryCode()][$carrier->getBillingCarrierId()] = $carrierData;
         }
@@ -175,8 +198,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             'isp_detection_data' => $session->get('isp_detection_data'),
             'carriers' => $carrierInterfaces,
             'countriesCarriers' => $countriesCarriers,
-            'campaignBanner'     => $campaignBanner,
-            'background'         => $background
+            'campaignBanner' => $campaignBanner,
+            'background' => $background
         ]);
     }
 }
