@@ -153,4 +153,39 @@ class PinIdentificationController extends AbstractController implements APIContr
             return $this->getSimpleJsonResponse($exception->getMessage(), 200, [], ['success' => false]);
         }
     }
+
+    /**
+     * @Method("POST")
+     * @Route("/pincode/select-carrier-with-send-pin",name="select_carrier_with_send_pin_code")
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function selectCarrierWithSendSMSPinCodeAction(Request $request)
+    {
+        if (!$carrierId = $request->get('carrier_id', '')) {
+            throw new BadRequestHttpException('`carrier_id` is required');
+        }
+
+        try {
+            $this->carrierSelector->selectCarrier((int)$carrierId);
+        } catch (MissingCarrierException $exception) {
+            return $this->getSimpleJsonResponse($exception->getMessage(), 200, [], ['success' => false]);
+        }
+
+        if (!$mobileNumber = $request->get('mobile_number', '')) {
+            throw new BadRequestHttpException('`mobile_number` is required');
+        }
+
+        try {
+            $this->identSMSSender->sendSMS($carrierId, $mobileNumber);
+            return $this->getSimpleJsonResponse('Sent', 200, [], ['success' => true]);
+
+        } catch (PinRequestProcessException $exception) {
+            $message = $this->errorCodeResolver->resolveMessage($exception->getCode());
+            return $this->getSimpleJsonResponse($message, 200, [], ['success' => false]);
+        } catch (\Exception $exception) {
+            return $this->getSimpleJsonResponse($exception->getMessage(), 200, [], ['success' => false]);
+        }
+    }
 }

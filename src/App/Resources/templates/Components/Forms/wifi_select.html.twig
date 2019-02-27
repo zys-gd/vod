@@ -1,6 +1,7 @@
-{% macro render(countriesCarriers) %}
+{% macro render() %}
     {% import '@App/Components/Buttons/button.html.twig' as button %}
 
+    {% set countriesCarriers = getCountryCarrierList() %}
     <div class="">
         <select name="country" class="w-75 mb-3 select" required>
             <option value="">{{ translate('wifi.form.select_country') }}</option>
@@ -12,12 +13,13 @@
 
     <div class="">
         <select name="carrier_id" class="w-75 mb-3 select" required>
+            <option value=''>{{ translate('wifi.form.select_carrier') }}</option>
         </select>
     </div>
 
-    <div id="wifi_button">
-        {{ button.renderSubmitButton(translate('wifi.form.button.apply'), 'x-send-pin-button') }}
-    </div>
+    {#<div id="wifi_button">#}
+        {#{{ button.renderSubmitButton(translate('wifi.form.button.apply'), 'x-send-pin-button') }}#}
+    {#</div>#}
 
     <script type="text/javascript">
         $(document).on('change', 'select[name="country"]', function () {
@@ -31,9 +33,9 @@
             };
         });
 
-        $(document).on('change', 'select[name="carrier_id"]', function () {
+        $(document).on('change', 'select[name="carrier_id"], select[name="country"]', function () {
             var carrier = $(this).find(':selected').data('content');
-            $('#wifi_offer').html( carrier.wifi_offer);
+            $('#wifi_offer').html( (carrier && carrier.wifi_offer) || '');
         });
     </script>
 {% endmacro %}

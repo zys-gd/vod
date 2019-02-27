@@ -1,21 +1,23 @@
-{% macro render(carriers, countriesCarriers) %}
+{% macro render() %}
     {% import '@App/Components/Buttons/button.html.twig' as button %}
     {% import '@App/Components/Forms/wifi_phone.html.twig' as wifi_phone %}
     {% import '@App/Components/Forms/wifi_pin.html.twig' as wifi_pin %}
     {% import '@App/Components/Forms/wifi_select.html.twig' as wifi_select %}
 
-    <form data-form="{% if isCarrierDetected() %}pin{% else %}carrier{% endif %}" id="wifi_form"
+    <form data-form="{% if isCarrierDetected() %}pin{% else %}carrier_with_pin{% endif %}" id="wifi_form"
           class="d-flex flex-column w-75 text-center">
         <div class="wifi_form__ground"></div>
         <div class="align-self-center wifi_form__warning w-75">
             {{ translate('wifi.warning') }}
         </div>
         <div id="wifi_form_step">
-            {% if isCarrierDetected() %}
-                {{ wifi_phone.render() }}
-            {% else %}
-                {{ wifi_select.render(countriesCarriers) }}
+            {% if not isCarrierDetected() %}
+                {{ wifi_select.render() }}
             {% endif %}
+            {{ wifi_phone.render() }}
+        </div>
+        <div id="wifi_button">
+            {{ button.renderSubmitButton(translate('buttons.subscribe'), 'x-send-pin-button') }}
         </div>
         <div class="">
             <span id="wifi_offer">{% if isCarrierDetected() %}{{ translate('wifi.offer') }}{% endif %}</span>
@@ -38,6 +40,7 @@
 
         $(document).on('submit', 'form[data-form=carrier]', function (e) {
             e.preventDefault();
+            $._loader();
             var form = $(this);
 
             $.ajax({
@@ -45,6 +48,7 @@
                 method: "POST",
                 data: form.serialize(),
                 success: function (result) {
+                    $._loader(true);
                     if (result.data.success) {
                         $wifi_form_step.html($wifi_form_step.html('{{ html2string(wifi_phone.render()) }}').text());
                         form.attr('data-form', 'pin');
@@ -58,6 +62,7 @@
 
         $(document).on('submit', 'form[data-form=pin]', function (e) {
             e.preventDefault();
+            $._loader();
             var form = $(this);
 
             $.ajax({
@@ -65,6 +70,32 @@
                 method: "POST",
                 data: form.serialize(),
                 success: function (result) {
+                    $._loader(true);
+                    if (result.data.success) {
+                        var input_phone = $('input[name=mobile_number]');
+                        input_phone.addClass('d-none');
+                        $wifi_form_step
+                            .html($wifi_form_step.html('{{ html2string(wifi_pin.render()) }}').text())
+                            .append(input_phone);
+                        form.attr('data-form', 'confirm');
+                    } else {
+                        showAlert({title: result.data.message});
+                    }
+                }
+            });
+        });
+
+        $(document).on('submit', 'form[data-form=carrier_with_pin]', function (e) {
+            e.preventDefault();
+            $._loader();
+            var form = $(this);
+
+            $.ajax({
+                url: "{{ path('select_carrier_with_send_pin_code') }}",
+                method: "POST",
+                data: form.serialize(),
+                success: function (result) {
+                    $._loader(true);
                     if (result.data.success) {
                         var input_phone = $('input[name=mobile_number]');
                         input_phone.addClass('d-none');
@@ -81,6 +112,7 @@
 
         $(document).on('submit', 'form[data-form=confirm]', function (e) {
             e.preventDefault();
+            $._loader();
             var form = $(this);
 
             $.ajax({
@@ -88,6 +120,7 @@
                 method: "POST",
                 data: form.serialize(),
                 success: function (result) {
+                    $._loader(true);
                     if (result.data.success) {
                         window.location = result.data.redirectUrl;
                     } else {
