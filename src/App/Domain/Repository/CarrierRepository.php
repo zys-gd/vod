@@ -10,7 +10,6 @@ namespace App\Domain\Repository;
 
 
 use App\Domain\Entity\Carrier;
-use Doctrine\ORM\AbstractQuery;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Entity\SubscriptionPack;
@@ -21,9 +20,9 @@ class CarrierRepository extends \Doctrine\ORM\EntityRepository implements Carrie
     /**
      * @return CarrierInterface[]
      */
-    public function findAllCarriers(): array
+    public function findEnabledCarriers(): array
     {
-        return $this->findAll();
+        return $this->findBy(['published' => true]);
     }
 
     /**
@@ -61,7 +60,7 @@ class CarrierRepository extends \Doctrine\ORM\EntityRepository implements Carrie
             ->orWhere('c.flushDate IS null')
             ->andwhere('c.uuid = :carrierId')
             ->setParameters([
-                'carrierId' => $carrier->getUuid(),
+                'carrierId'   => $carrier->getUuid(),
                 'currentDate' => date('Y-m-d')
             ]);
 
@@ -82,7 +81,7 @@ class CarrierRepository extends \Doctrine\ORM\EntityRepository implements Carrie
             ->where('sp.carrierId = :billingCarrierId')
             ->andWhere('sp.status = :status')
             ->setParameters([
-                'status' => SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK,
+                'status'           => SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK,
                 'billingCarrierId' => $billingCarrierId
             ]);
         /** @var SubscriptionPack $subscriptionPack */

@@ -38,4 +38,5 @@ class ConstBillingCarrierId
     const CELCOM_MALAYSIA       = 383;
     const OOREDOO_MYANMAR       = 2233;
     const DU_UAE                = 2008;
+    const TELENOR_PAKISTAN_DOT        = 2252;
 }

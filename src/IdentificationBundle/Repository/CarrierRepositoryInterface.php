@@ -19,6 +19,6 @@ interface CarrierRepositoryInterface
     /**
      * @return CarrierInterface[]
      */
-    public function findAllCarriers(): array;
+    public function findEnabledCarriers(): array;
 
 }
