@@ -48,11 +48,11 @@ class UploadedVideoForm extends AbstractType
             ->add('description', TextareaType::class, [
                 'required' => false
             ])
-//            ->add('expiredDate', DateTimePickerType::class, [
-//                'required' => false,
-//                //'format' => 'Y-MM-dd HH:mm:ss',
-//                'attr' => ['autocomplete' => 'off']
-//            ])
+            ->add('expiredDate', DateTimePickerType::class, [
+                'required' => false,
+                'format' => 'Y-MM-dd HH:mm:ss',
+                'attr' => ['autocomplete' => 'off']
+            ])
             ->add('isTrim', CheckboxType::class, [
                 'label' => 'Trim video',
                 'mapped' => false,

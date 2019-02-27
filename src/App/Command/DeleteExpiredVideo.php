@@ -75,8 +75,6 @@ class DeleteExpiredVideo extends Command
             try {
                 $response = $this->videoManager->destroyUploadedVideo($expiredVideo);
                 $result = $response['result'];
-                $output->writeln($result);
-                $output->writeln(CloudinaryConnector::SUCCESS_DESTROY_RESULT);
 
                 if ($result === CloudinaryConnector::SUCCESS_DESTROY_RESULT) {
                     $this->entityManager->remove($expiredVideo);

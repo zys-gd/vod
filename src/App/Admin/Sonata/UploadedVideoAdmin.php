@@ -15,6 +15,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use App\Domain\Entity\UploadedVideo;
+use Sonata\Form\Type\DateTimePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -94,6 +95,7 @@ class UploadedVideoAdmin extends AbstractAdmin
         $datagridMapper
             ->add('remoteId')
             ->add('title')
+            ->add('expiredDate', 'doctrine_orm_datetime_range')
             ->add('subcategory', null, [], EntityType::class, [
                 'class' => Subcategory::class
             ])
@@ -134,7 +136,6 @@ class UploadedVideoAdmin extends AbstractAdmin
     {
         /** @var UploadedVideo $uploadedVideo */
         $uploadedVideo = $this->getSubject();
-        $options = $uploadedVideo->getOptions();
 
         $formMapper
             ->add('title', TextType::class, [
@@ -148,6 +149,11 @@ class UploadedVideoAdmin extends AbstractAdmin
             ])
             ->add('description', TextareaType::class, [
                 'required' => false
+            ])
+            ->add('expiredDate', DateTimePickerType::class, [
+                'required' => false,
+                'format' => 'Y-MM-dd HH:mm:ss',
+                'attr' => ['autocomplete' => 'off']
             ]);
 
         $builder = $formMapper->getFormBuilder();
@@ -198,6 +204,7 @@ class UploadedVideoAdmin extends AbstractAdmin
             ->add('remoteId')
             ->add('title')
             ->add('description')
+            ->add('expiredDate')
             ->add('status', 'choice', [
                 'choices' => UploadedVideo::STATUSES
             ])
