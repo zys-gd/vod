@@ -61,12 +61,22 @@ class UploadedVideo implements HasUuid
     /**
      * @var \DateTime
      */
-    private $createdAt;
+    private $createdDate;
+
+    /**
+     * @var \DateTime
+     */
+    private $expiredDate;
 
     /**
      * @var array
      */
     private $thumbnails = [];
+
+    /**
+     * @var array
+     */
+    private $options = [];
 
     /**
      * UploadedVideo constructor
@@ -78,7 +88,7 @@ class UploadedVideo implements HasUuid
     public function __construct(string $uuid)
     {
         $this->uuid = $uuid;
-        $this->createdAt = new \DateTime('now');
+        $this->createdDate = new \DateTime('now');
     }
 
     /**
@@ -191,9 +201,9 @@ class UploadedVideo implements HasUuid
     /**
      * @return \DateTime
      */
-    public function getCreatedAt(): \DateTime
+    public function getCreatedDate(): \DateTime
     {
-        return $this->createdAt;
+        return $this->createdDate;
     }
 
     /**
@@ -201,9 +211,29 @@ class UploadedVideo implements HasUuid
      *
      * @return UploadedVideo
      */
-    public function setCreatedAt(\DateTime $createdAt): UploadedVideo
+    public function setCreatedDate(\DateTime $createdAt): UploadedVideo
     {
-        $this->createdAt = $createdAt;
+        $this->createdDate = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getExpiredDate(): ?\DateTime
+    {
+        return $this->expiredDate;
+    }
+
+    /**
+     * @param \DateTime $expiredDate
+     *
+     * @return UploadedVideo
+     */
+    public function setExpiredDate(\DateTime $expiredDate): UploadedVideo
+    {
+        $this->expiredDate = $expiredDate;
 
         return $this;
     }
@@ -224,6 +254,51 @@ class UploadedVideo implements HasUuid
     public function setThumbnails(array $thumbnails): UploadedVideo
     {
         $this->thumbnails = $thumbnails;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return UploadedVideo
+     */
+    public function setOptions(array $options): UploadedVideo
+    {
+        $this->options = $options;
+
+        return $this;
+    }
+
+    /**
+     * @param string $key
+     * @param $value
+     *
+     * @return UploadedVideo
+     */
+    public function addOption(string $key, $value): UploadedVideo
+    {
+        $this->options[$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return UploadedVideo
+     */
+    public function removeOption(string $key): UploadedVideo
+    {
+        unset($this->options[$key]);
 
         return $this;
     }
@@ -254,5 +329,18 @@ class UploadedVideo implements HasUuid
     public function setUuid(string $uuid)
     {
         $this->uuid = $uuid;
+    }
+
+    public function getDataFormTemplate(): array
+    {
+        return array_merge(
+            [
+                'uuid'       => $this->getUuid(),
+                'title'      => $this->getTitle(),
+                'publicId'   => $this->getRemoteId(),
+                'thumbnails' => $this->getThumbnails()
+            ],
+            $this->getOptions()
+        );
     }
 }

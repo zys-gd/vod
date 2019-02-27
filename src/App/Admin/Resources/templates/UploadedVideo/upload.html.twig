@@ -1,16 +1,11 @@
 {% extends base_template %}
 
 {% block title %}
-    {{ "Upload file" }}
-{% endblock %}
-
-{% block navbar_title %}
-    {{ block('title') }}
+    {{ 'Upload video' }}
 {% endblock %}
 
 {% block form %}
     <span hidden id="subCategoryUrl">{{ path('admin_app_domain_subcategory_subcategoriesList', {'mainId': 'paramMainId'}) }}</span>
-    {{ form_start(form) }}
     <div class="sonata-ba-form">
         <div class="row">
             <div class="col-md-12">
@@ -24,7 +19,69 @@
                             </div>
                             <div class="box-body">
                                 <div class="sonata-ba-collapsed-fields">
-                                    {{ form_widget(form) }}
+                                    {{ form_start(form) }}
+                                    <div class="form-group" style="margin: 15px 0">
+                                        <div class="row">
+                                            <div class="col-lg-12">{{ form_label(form.title) }}</div>
+                                            <div class="col-lg-12">{{ form_errors(form.title) }}</div>
+                                            <div class="col-lg-12">{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="margin: 15px 0">
+                                        <div class="row">
+                                            <div class="col-lg-12">{{ form_label(form.mainCategory) }}</div>
+                                            <div class="col-lg-12">{{ form_errors(form.mainCategory) }}</div>
+                                            <div class="col-lg-12">{{ form_widget(form.mainCategory, { 'attr': {'class': 'form-control'} }) }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="margin: 15px 0">
+                                        <div class="row">
+                                            <div class="col-lg-12">{{ form_label(form.subcategory) }}</div>
+                                            <div class="col-lg-12">{{ form_errors(form.subcategory) }}</div>
+                                            <div class="col-lg-12">{{ form_widget(form.subcategory, { 'attr': {'class': 'form-control'} }) }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="margin: 15px 0">
+                                        <div class="row">
+                                            <div class="col-lg-12">{{ form_errors(form.description) }}</div>
+                                            <div class="col-lg-12">{{ form_label(form.description) }}</div>
+                                            <div class="col-lg-12">{{ form_widget(form.description, { 'attr': {'class': 'form-control', 'rows': '3'} }) }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="margin: 15px 0">
+                                        <div class="row">
+                                            <div class="col-lg-3">
+                                                {{ form_errors(form.isTrim) }}
+                                                <span style="margin-right: 10px">{{ form_label(form.isTrim) }}</span>
+                                                {{ form_widget(form.isTrim) }}
+                                            </div>
+                                            <div class="col-lg-6 text-left" hidden>
+                                                {{ form_errors(form.startOffset) }}
+                                                <span style="margin-right: 10px">{{ form_label(form.startOffset) }}</span>
+                                                {{ form_widget(form.startOffset) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {#<div class="form-group" style="margin: 15px 0">#}
+                                        {#<div class="row">#}
+                                            {#<div class="col-lg-12">{{ form_errors(form.expiredDate) }}</div>#}
+                                            {#<div class="col-lg-12">{{ form_label(form.expiredDate) }}</div>#}
+                                            {#<div class="col-lg-12">{{ form_widget(form.expiredDate, { 'attr': {'class': 'form-control'} }) }}</div>#}
+                                        {#</div>#}
+                                    {#</div>#}
+                                    <div class="form-group" style="margin: 15px 0">
+                                        <div class="row">
+                                            <div class="col-lg-12">{{ form_errors(form.file) }}</div>
+                                            <div class="col-lg-12">{{ form_label(form.file) }}</div>
+                                            <div class="col-lg-12">{{ form_widget(form.file) }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-success" name="btn_update_and_edit"><i class="fa fa-save"></i>
+                                            Upload
+                                        </button>
+                                    </div>
+                                    {{ form_end(form) }}
                                 </div>
                             </div>
                         </div>
@@ -32,12 +89,6 @@
                 </div>
             </div>
         </div>
-        <div class="well well-small form-actions form-actions-stuck">
-            <button type="submit" class="btn btn-success" name="btn_update_and_edit"><i class="fa fa-save"></i>
-                Upload
-            </button>
-        </div>
-        {{ form_end(form) }}
     </div>
     <script>
         function FormControl() {
@@ -81,28 +132,15 @@
             };
 
             /**
-             * After form will rendered, put categories fields after title input
-             */
-            this.replaceCategoryFieldsPosition = function() {
-                var titleField = $(this.title).closest('div');
-                var subcategoryField = $(this.subcategory).closest('div');
-                var mainCategoryField = $(this.mainCategory).closest('div');
-
-                titleField.after(subcategoryField);
-                titleField.after(mainCategoryField);
-            };
-
-            /**
              * Remove all options from subcategory select and set default
              */
-            this.clearSubcategoryOptions = function () {
+            this.clearSubcategoryOptions = function() {
                 $(this.subcategory).html('').append(new Option('Select subcategory'));
             }
         }
 
         $(document).ready(function() {
             var formControl = new FormControl();
-            formControl.replaceCategoryFieldsPosition();
 
             $(formControl.mainCategory).change(function() {
                 formControl.clearSubcategoryOptions();
@@ -112,7 +150,26 @@
 
                     formControl.loadSubCategories(url);
                 }
-            })
+            });
+
+            var isTrimField = $('#uploaded_video_form_isTrim');
+            var startOffsetField = $('#uploaded_video_form_startOffset');
+            var startOffsetContainer = startOffsetField.closest('div');
+
+            if (isTrimField.prop('checked')) {
+                startOffsetContainer.removeAttr('hidden');
+            }
+
+            isTrimField.change(function(event) {
+                if ($(this).prop('checked')) {
+                    startOffsetContainer.removeAttr('hidden');
+                } else {
+                    startOffsetContainer.attr('hidden', true);
+                    startOffsetField.val('');
+                }
+            });
+
+            $('.js-datepicker').datetimepicker();
         })
     </script>
 {% endblock %}

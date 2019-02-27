@@ -92,12 +92,7 @@ class CategoryController extends AbstractController implements AppControllerInte
         foreach ($videos as $video) {
             $categoryEntity                                  = $video->getSubcategory()->getParent();
             $categoryKey                                     = $categoryEntity->getUuid();
-            $categoryVideos[$categoryKey][$video->getUuid()] = [
-                'uuid'       => $video->getUuid(),
-                'title'      => $video->getTitle(),
-                'publicId'   => $video->getRemoteId(),
-                'thumbnails' => $video->getThumbnails()
-            ];
+            $categoryVideos[$categoryKey][$video->getUuid()] = $video->getDataFormTemplate();
         }
 
         $this->contentStatisticSender->trackVisit($data);

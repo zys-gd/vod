@@ -4,17 +4,24 @@ namespace App\Admin\Form;
 
 use App\Domain\Entity\MainCategory;
 use App\Domain\Entity\Subcategory;
+use App\Domain\Entity\UploadedVideo;
 use App\Domain\Repository\SubcategoryRepository;
+use App\Utils\UuidGenerator;
+use Sonata\Form\Type\DateTimePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -41,8 +48,28 @@ class UploadedVideoForm extends AbstractType
             ->add('description', TextareaType::class, [
                 'required' => false
             ])
+//            ->add('expiredDate', DateTimePickerType::class, [
+//                'required' => false,
+//                //'format' => 'Y-MM-dd HH:mm:ss',
+//                'attr' => ['autocomplete' => 'off']
+//            ])
+            ->add('isTrim', CheckboxType::class, [
+                'label' => 'Trim video',
+                'mapped' => false,
+                'required' => false
+            ])
+            ->add('startOffset', IntegerType::class, [
+                'constraints' => [
+                    new NotBlank(),
+                    new GreaterThan(1)
+                ],
+                'mapped' => false,
+                'label' => 'Seconds to trim from start',
+                'required' => false
+            ])
             ->add('file', FileType::class, [
                 'label' => 'File',
+                'mapped' => false,
                 'constraints' => [
                     new File([
                         'maxSize' => '500M',
@@ -64,6 +91,16 @@ class UploadedVideoForm extends AbstractType
             $data = $event->getData();
             $this->addCategoryFields($event->getForm(), $data['mainCategory']);
         });
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => UploadedVideo::class,
+            'empty_data' => function (FormInterface $form) {
+                return new UploadedVideo(UuidGenerator::generate());
+            }
+        ]);
     }
 
     /**

@@ -30,42 +30,27 @@ class VideoSaver
 
     /**
      * @param UploadResult $uploadResult
-     * @param Subcategory $subcategory
-     * @param string $title
-     * @param string $description
-     *
-     * @return UploadedVideo
-     *
-     * @throws \Exception
-     */
-    public function getUploadedVideoInstance(
-        UploadResult $uploadResult,
-        Subcategory $subcategory,
-        string $title,
-        ?string $description
-    ): UploadedVideo
-    {
-        /** @var UploadedVideo $uploadedVideo */
-        $uploadedVideo = new UploadedVideo(UuidGenerator::generate());
-
-        $uploadedVideo
-            ->setTitle($title)
-            ->setDescription($description)
-            ->setSubcategory($subcategory)
-            ->setRemoteUrl($uploadResult->getRemoteUrl())
-            ->setRemoteId($uploadResult->getRemoteId())
-            ->setThumbnails($uploadResult->getThumbnailsPath());
-
-        return $uploadedVideo;
-    }
-
-    /**
      * @param UploadedVideo $uploadedVideo
+     * @param array $options
      *
      * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function persist(UploadedVideo $uploadedVideo)
-    {
+    public function persist(
+        UploadResult $uploadResult,
+        UploadedVideo $uploadedVideo,
+        array $options
+    ) {
+        $preparedOptions = array_filter($options, function ($value) {
+            return !empty($value);
+        });
+
+        $uploadedVideo
+            ->setRemoteUrl($uploadResult->getRemoteUrl())
+            ->setRemoteId($uploadResult->getRemoteId())
+            ->setThumbnails($uploadResult->getThumbnailsPath())
+            ->setOptions($preparedOptions);
+
         $this->entityManager->persist($uploadedVideo);
         $this->entityManager->flush();
     }

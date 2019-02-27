@@ -116,7 +116,8 @@ class UploadedVideoAdmin extends AbstractAdmin
                 'editable' => false,
                 'choices' => UploadedVideo::STATUSES
             ])
-            ->add('createdAt')
+            ->add('createdDate')
+            ->add('expiredDate')
             ->add('_action', null, array(
                 'actions' => array(
                     'show'   => array(),
@@ -131,6 +132,10 @@ class UploadedVideoAdmin extends AbstractAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        /** @var UploadedVideo $uploadedVideo */
+        $uploadedVideo = $this->getSubject();
+        $options = $uploadedVideo->getOptions();
+
         $formMapper
             ->add('title', TextType::class, [
                 'required' => true,

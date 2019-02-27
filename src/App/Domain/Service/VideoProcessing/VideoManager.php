@@ -46,27 +46,18 @@ class VideoManager
 
     /**
      * @param UploadResult $uploadResult
-     * @param Subcategory $subcategory
-     * @param string $title
-     * @param string $description
+     * @param UploadedVideo $uploadedVideo
+     * @param array $options
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Exception
      */
     public function persistUploadedVideo(
         UploadResult $uploadResult,
-        Subcategory $subcategory,
-        string $title,
-        ?string $description
+        UploadedVideo $uploadedVideo,
+        array $options
     ) {
-        $uploadedVideo = $this->saver->getUploadedVideoInstance(
-            $uploadResult,
-            $subcategory,
-            $title,
-            $description
-        );
-
-        $this->saver->persist($uploadedVideo);
+        $this->saver->persist($uploadResult, $uploadedVideo, $options);
     }
 
     /**
