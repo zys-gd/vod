@@ -79,9 +79,11 @@ class VideoManager
 
     /**
      * @param UploadedVideo $uploadedVideo
+     *
+     * @return mixed
      */
     public function destroyUploadedVideo(UploadedVideo $uploadedVideo)
     {
-        $this->destroyer->destroy($uploadedVideo->getRemoteId());
+        return $this->destroyer->destroy($uploadedVideo->getRemoteId());
     }
 }

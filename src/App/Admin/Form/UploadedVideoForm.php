@@ -60,7 +60,6 @@ class UploadedVideoForm extends AbstractType
             ])
             ->add('startOffset', IntegerType::class, [
                 'constraints' => [
-                    new NotBlank(),
                     new GreaterThan(1)
                 ],
                 'mapped' => false,
@@ -93,6 +92,9 @@ class UploadedVideoForm extends AbstractType
         });
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

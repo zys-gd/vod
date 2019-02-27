@@ -209,7 +209,7 @@ class CampaignAdmin extends AbstractAdmin
      */
     protected function generateTestLink(Campaign $campaign)
     {
-        /**@var \App\Domain\Service\Campaign\CampaignService $campaignService */
+        /**@var CampaignService $campaignService */
         $campaignService = $this->container->get('App\Domain\Service\Campaign\CampaignService');
         $campaignService->generateTestLink($campaign);
     }
