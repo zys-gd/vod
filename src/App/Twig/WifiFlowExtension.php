@@ -96,7 +96,7 @@ class WifiFlowExtension extends \Twig_Extension
      */
     public function getCountryCarrierList()
     {
-        $carrierInterfaces = $this->carrierRepository->findAllCarriers();
+        $carrierInterfaces = $this->carrierRepository->findEnabledCarriers();
 
         /** @var SubscriptionPack[] $subpacks */
         $subpacks = $this->subscriptionPackRepository->findAll();
