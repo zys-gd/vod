@@ -40,3 +40,15 @@ services:
     App\Twig\StringEncodingExtension:
         tags:
             - { name: twig.extension }
+
+    App\Twig\WifiFlowExtension:
+        arguments:
+            - '@App\Domain\Repository\CarrierRepository'
+            - '@SubscriptionBundle\Repository\SubscriptionPackRepository'
+            - '@App\Domain\Repository\CountryRepository'
+            - '@App\Domain\Service\Translator\Translator'
+            - '@App\Domain\Service\Translator\ShortcodeReplacer'
+            - '@App\Domain\Service\Translator\DataAggregator'
+            - '@ExtrasBundle\Utils\LocalExtractor'
+        tags:
+            - { name: twig.extension }

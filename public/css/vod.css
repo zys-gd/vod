@@ -199,7 +199,7 @@ a button {
     border: 0;
     background-color: #ec0000;
     color: #FFFFFF;
-    font-size: 16px;
+    font-size: small;
 }
 
 .button-gray{
