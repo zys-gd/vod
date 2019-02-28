@@ -75,6 +75,10 @@ a button {
 .red {
     color: #ff0000;
 }
+.bg-gray {
+    background-color: #190000 !important;
+    background-image: none !important;
+}
 
 .pseudo_link {
     cursor: pointer;
