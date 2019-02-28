@@ -84,13 +84,10 @@
 
                         <div class="d-flex flex-column related-videos-block">
                             {% for video in videos | slice(1) %}
-                                <div class="d-flex flex-row related-video">
+                                <div class="d-flex flex-row related-video x-play-button" data-uuid="{{ video.uuid }}" data-category="{{ category.uuid }}">
                                     <div class="related-video-thumbnail-wrapper">
                                         {% for thumbnail in video.thumbnails | slice(0,1) %}
-                                            <img src="{{ thumbnail }}"
-                                                 class="x-play-button"
-                                                 data-uuid="{{ video.uuid }}"
-                                                 data-category="{{ category.uuid }}"/>
+                                            <img src="{{ thumbnail }}" />
                                         {% endfor %}
                                         <div class="category__related__box-play">
 

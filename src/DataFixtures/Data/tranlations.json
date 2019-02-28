@@ -65,7 +65,7 @@
     {
         "uuid": "0f5cf82e-b95b-45d1-80aa-e971aef6f2ac",
         "key": "offer.account",
-        "translation": "Watch unlimited sport videos for only %price% %currency% per %periodicity%",
+        "translation": "Watch unlimited sport videos for only %price% %currency% per %period%",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -317,7 +317,7 @@
     {
         "uuid": "51136644-9be4-4eac-b466-f617e7238d00",
         "key": "offer.landing",
-        "translation": "Watch unlimited sport videos <br\/><small>for only %price% %currency% per %periodicity%<\/small>",
+        "translation": "Watch unlimited sport videos <br\/><small>for only %price% %currency% per %period%<\/small>",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -452,7 +452,7 @@
     {
         "uuid": "7e52ca82-5c67-4df9-80b5-4131a56f7bbb",
         "key": "offer.annotation_block",
-        "translation": "Watch unlimited sport videos for only %price% %currency% per %periodicity%",
+        "translation": "Watch unlimited sport videos for only %price% %currency% per %period%",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -668,7 +668,7 @@
     {
         "uuid": "c4a1eb00-b547-47e6-8cb5-61901c4e9585",
         "key": "subscription.status.not_subscribe",
-        "translation": "You are not subscribed to 100% sport",
+        "translation": "Welcome to 100% Sport!\n<small>Get unlimited videos each %period% for only %price%/%currency%</small>",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -1055,7 +1055,7 @@
     {
         "uuid": "14c4c9bb-efbe-4ddb-a639-0f5ac27d4c88",
         "key": "wifi.offer",
-        "translation": "%price% %currency% per %periodicity%",
+        "translation": "%price% %currency% per %period%",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -1137,6 +1137,33 @@
         "uuid": "fe09d606-b223-4298-8ab4-b9e07977fdba",
         "key": "landing.text.pay2watch",
         "translation": "Click on <span class=\"play-text-link red\">play</span><br/> and continue watching!",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "4408f79d-c7f8-446c-89ce-1f6bb2fe3180",
+        "key": "buttons.wifi.resend_pin",
+        "translation": "Re-Send SMS with PIN-code",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "361adddf-1679-4f36-8927-4932dc3e7233",
+        "key": "buttons.wifi.change_number",
+        "translation": "Change number",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "fe23b466-2a68-4f91-8bd9-2b976d7108d3",
+        "key": "messages.action.resend_pin",
+        "translation": "New PIN-code has been successfully sent",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },

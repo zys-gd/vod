@@ -18,7 +18,7 @@ $(document).ready(function () {
                 '<h3 class="text-center">' + opts.title + '</h3>' +
                 '<p class="text-center">' + opts.message + '</p>' +
                 '<div class="d-flex align-self-center align-items-center justify-content-between">' +
-                '<a href="#" class="button-gray button button-confirm button-confirm__no" data-value="0" data-fancybox-close>' + opts.noButton + '</a>' +
+                '<a href="#" class="button-gray bg-gray button button-confirm button-confirm__no" data-value="0" data-fancybox-close>' + opts.noButton + '</a>' +
                 '<button data-value="1" data-fancybox-close class=" button button-confirm button-confirm__yes">' + opts.okButton + '</button>' +
                 '</div>' +
                 '</div>',

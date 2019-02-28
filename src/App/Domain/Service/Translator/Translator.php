@@ -55,6 +55,7 @@ class Translator
             }
         } else {
             $this->initializeDefaultTexts()
+                ->initializeCarrierTexts($billingCarrierId, self::DEFAULT_LOCALE)
                 ->initializeCarrierTexts($billingCarrierId, $languageCode)
                 ->pushTexts2Cache($cacheKey);
         }

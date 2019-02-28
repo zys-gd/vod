@@ -55,7 +55,7 @@
 
 
         {% elseif not isSubscriptionExist() %}
-            {{ translate('subscription.status.not_subscribe')|raw }}
+            {{ translate('subscription.status.not_subscribe')|raw|nl2br }}
 
             <div class="d-flex align-items-center justify-content-center">
                 <h2 class="h1">{{ translate('offer.account')|raw }}</h2>
