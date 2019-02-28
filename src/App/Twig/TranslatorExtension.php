@@ -59,7 +59,8 @@ class TranslatorExtension extends \Twig_Extension
         Session $session,
         KernelInterface $kernel,
         LocalExtractor $localExtractor,
-        ShortcodeReplacer $replacer, DataAggregator $dataAggregator)
+        ShortcodeReplacer $replacer,
+        DataAggregator $dataAggregator)
     {
         $this->translator = $translator;
         $this->session = $session;
@@ -91,7 +92,7 @@ class TranslatorExtension extends \Twig_Extension
         $detectionData = $this->extractDetectionData();
 
         $shortcodeValues = [];
-        if(!is_null($detectionData['billingCarrierId'])) {
+        if (!is_null($detectionData['billingCarrierId'])) {
             $shortcodeValues = $this->dataAggregator->getGlobalParameters($detectionData['billingCarrierId']);
         }
 
