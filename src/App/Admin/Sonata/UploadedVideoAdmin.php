@@ -118,8 +118,12 @@ class UploadedVideoAdmin extends AbstractAdmin
                 'editable' => false,
                 'choices' => UploadedVideo::STATUSES
             ])
-            ->add('createdDate')
-            ->add('expiredDate')
+            ->add('createdDate', 'datetime', [
+                'format' => 'Y-m-d H:i',
+            ])
+            ->add('expiredDate', 'datetime', [
+                'format' => 'Y-m-d H:i',
+            ])
             ->add('_action', null, array(
                 'actions' => array(
                     'show'   => array(),
@@ -130,13 +134,44 @@ class UploadedVideoAdmin extends AbstractAdmin
     }
 
     /**
+     * @param ShowMapper $showMapper
+     */
+    protected function configureShowFields(ShowMapper $showMapper)
+    {
+        $showMapper
+            ->add('uuid')
+            ->add('remoteId')
+            ->add('title')
+            ->add('description')
+            ->add('createdDate', 'datetime', [
+                'format' => 'Y-m-d H:i',
+            ])->add('expiredDate', 'datetime', [
+                'format' => 'Y-m-d H:i',
+            ])
+            ->add('status', 'choice', [
+                'choices' => UploadedVideo::STATUSES
+            ])
+            ->add('thumbnail', null, [
+                'template' => '@Admin/UploadedVideo/thumbnail.html.twig',
+                'mapped'   => false,
+                'label'    => 'Thumbnails'
+            ])
+            ->add('player', null, [
+                'template' => '@Admin/UploadedVideo/player.html.twig',
+                'mapped'   => false,
+                'label'    => 'Video Preview'
+            ])
+            ->add('subcategory', null, [
+                'associated_property' => 'title'
+            ])
+            ->add('createdAt');
+    }
+
+    /**
      * @param FormMapper $formMapper
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
-        /** @var UploadedVideo $uploadedVideo */
-        $uploadedVideo = $this->getSubject();
-
         $formMapper
             ->add('title', TextType::class, [
                 'required' => true,
@@ -152,7 +187,7 @@ class UploadedVideoAdmin extends AbstractAdmin
             ])
             ->add('expiredDate', DateTimePickerType::class, [
                 'required' => false,
-                'format' => 'Y-MM-dd HH:mm:ss',
+                'format' => 'Y-MM-dd HH:mm',
                 'attr' => ['autocomplete' => 'off']
             ]);
 
@@ -192,36 +227,6 @@ class UploadedVideoAdmin extends AbstractAdmin
                     ]);
             }
         });
-    }
-
-    /**
-     * @param ShowMapper $showMapper
-     */
-    protected function configureShowFields(ShowMapper $showMapper)
-    {
-        $showMapper
-            ->add('uuid')
-            ->add('remoteId')
-            ->add('title')
-            ->add('description')
-            ->add('expiredDate')
-            ->add('status', 'choice', [
-                'choices' => UploadedVideo::STATUSES
-            ])
-            ->add('thumbnail', null, [
-                'template' => '@Admin/UploadedVideo/thumbnail.html.twig',
-                'mapped'   => false,
-                'label'    => 'Thumbnails'
-            ])
-            ->add('player', null, [
-                'template' => '@Admin/UploadedVideo/player.html.twig',
-                'mapped'   => false,
-                'label'    => 'Video Preview'
-            ])
-            ->add('subcategory', null, [
-                'associated_property' => 'title'
-            ])
-            ->add('createdAt');
     }
 
     /**

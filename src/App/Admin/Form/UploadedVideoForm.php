@@ -50,7 +50,7 @@ class UploadedVideoForm extends AbstractType
             ])
             ->add('expiredDate', DateTimePickerType::class, [
                 'required' => false,
-                'format' => 'Y-MM-dd HH:mm:ss',
+                'format' => 'Y-MM-dd HH:mm',
                 'attr' => ['autocomplete' => 'off']
             ])
             ->add('isTrim', CheckboxType::class, [
