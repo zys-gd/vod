@@ -1141,5 +1141,32 @@
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
+    },
+    {
+        "uuid": "4408f79d-c7f8-446c-89ce-1f6bb2fe3180",
+        "key": "buttons.wifi.resend_pin",
+        "translation": "Re-Send SMS with PIN-code",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "361adddf-1679-4f36-8927-4932dc3e7233",
+        "key": "buttons.wifi.change_number",
+        "translation": "Change number",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "fe23b466-2a68-4f91-8bd9-2b976d7108d3",
+        "key": "messages.action.resend_pin",
+        "translation": "New PIN-code has been successfully sent",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
     }
 ]

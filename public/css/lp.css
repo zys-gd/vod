@@ -87,6 +87,13 @@
     font-style: italic;
     font-size: small;
 }
+#wifi_form .wifi_form__pin_actions {
+    color: white;
+    text-decoration: underline;
+    line-height: 1.2;
+    font-size: smaller;
+}
+
 .terms_confirmation {
     color: white;
 }

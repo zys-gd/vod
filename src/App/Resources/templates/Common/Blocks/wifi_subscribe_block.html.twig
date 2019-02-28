@@ -25,23 +25,27 @@
         <div class="">
             <label class="terms_confirmation">
                 <input type="checkbox" required value="0"/>
-                    {{ translate('wifi.terms_confirmation', {'%terms_url%': path('terms_and_conditions')}) | raw }}
+                {{ translate('wifi.terms_confirmation', {'%terms_url%': path('terms_and_conditions')}) | raw }}
             </label>
         </div>
     </form>
 
     <script type="text/javascript">
-        var offset = parseInt($('#wifi_form').parent('div').prev().height()) + parseInt($('#wifi_form').parent('div').css('padding-top')) + parseInt($('#wifi_form').parent('div').css('margin-top'));
-        $('#wifi_form').css({
+        var form = $('#wifi_form');
+
+        var offset = parseInt(form.parent('div').prev().height()) + parseInt(form.parent('div').css('padding-top')) + parseInt(form.parent('div').css('margin-top'));
+        form.css({
             'margin-top': '-' + offset + 'px',
-            'min-height': parseInt($('#wifi_form').parent('div').prev().height()) + 'px'
+            'min-height': parseInt(form.parent('div').prev().height()) + 'px'
         });
         var $wifi_form_step = $('#wifi_form_step');
+        var phone;
+        var input_phone = $('input[name=mobile_number]');
 
         $(document).on('submit', 'form[data-form=carrier]', function (e) {
             e.preventDefault();
             $._loader();
-            var form = $(this);
+            phone = input_phone.val();
 
             $.ajax({
                 url: "{{ path('select_carrier_for_pin_code_form') }}",
@@ -63,7 +67,7 @@
         $(document).on('submit', 'form[data-form=pin]', function (e) {
             e.preventDefault();
             $._loader();
-            var form = $(this);
+            phone = input_phone.val();
 
             $.ajax({
                 url: "{{ path('send_sms_pin_code') }}",
@@ -72,7 +76,6 @@
                 success: function (result) {
                     $._loader(true);
                     if (result.data.success) {
-                        var input_phone = $('input[name=mobile_number]');
                         input_phone.addClass('d-none');
                         $wifi_form_step
                             .html($wifi_form_step.html('{{ html2string(wifi_pin.render()) }}').text())
@@ -88,7 +91,7 @@
         $(document).on('submit', 'form[data-form=carrier_with_pin]', function (e) {
             e.preventDefault();
             $._loader();
-            var form = $(this);
+            phone = input_phone.val();
 
             $.ajax({
                 url: "{{ path('select_carrier_with_send_pin_code') }}",
@@ -113,7 +116,6 @@
         $(document).on('submit', 'form[data-form=confirm]', function (e) {
             e.preventDefault();
             $._loader();
-            var form = $(this);
 
             $.ajax({
                 url: "{{ path('confirm_sms_pin_code') }}",
@@ -128,6 +130,26 @@
                     }
                 }
             });
+        });
+
+        $(document).on('click', '#resend-pin', function (event) {
+            event.preventDefault();
+            $(this).closest('form').attr('data-form', 'pin').submit();
+            $(document).ajaxSuccess(function (event, request, settings) {
+                if(settings.url === '{{ path('send_sms_pin_code') }}') {
+                    showAlert({title: 'New PIN-code', message: 'has been successfully sent'});
+                }
+            });
+        });
+
+        $(document).on('click', '#change-number', function (event) {
+            event.preventDefault();
+            $._loader();
+            console.log(phone);
+            $wifi_form_step.html($wifi_form_step.html('{{ html2string(wifi_phone.render()) }}').text());
+            form.attr('data-form', 'pin');
+            $('input[name=mobile_number]').val(phone);
+            $._loader(true);
         });
     </script>
 {% endmacro %}
