@@ -231,7 +231,7 @@ class UploadedVideo implements HasUuid
      *
      * @return UploadedVideo
      */
-    public function setExpiredDate(\DateTime $expiredDate): UploadedVideo
+    public function setExpiredDate(?\DateTime $expiredDate): UploadedVideo
     {
         $this->expiredDate = $expiredDate;
 
@@ -279,31 +279,6 @@ class UploadedVideo implements HasUuid
     }
 
     /**
-     * @param string $key
-     * @param $value
-     *
-     * @return UploadedVideo
-     */
-    public function addOption(string $key, $value): UploadedVideo
-    {
-        $this->options[$key] = $value;
-
-        return $this;
-    }
-
-    /**
-     * @param string $key
-     *
-     * @return UploadedVideo
-     */
-    public function removeOption(string $key): UploadedVideo
-    {
-        unset($this->options[$key]);
-
-        return $this;
-    }
-
-    /**
      * @return string|null
      */
     public function getDescription(): ?string
@@ -331,6 +306,9 @@ class UploadedVideo implements HasUuid
         $this->uuid = $uuid;
     }
 
+    /**
+     * @return array
+     */
     public function getDataFormTemplate(): array
     {
         return array_merge(

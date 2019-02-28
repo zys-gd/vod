@@ -2,10 +2,8 @@
 
 namespace App\Domain\Service\VideoProcessing;
 
-use App\Domain\Entity\Subcategory;
 use App\Domain\Entity\UploadedVideo;
 use App\Domain\Service\VideoProcessing\DTO\UploadResult;
-use App\Utils\UuidGenerator;
 use Doctrine\ORM\EntityManager;
 
 /**
