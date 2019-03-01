@@ -22,7 +22,7 @@
         <div class="">
             <span id="wifi_offer">{% if isCarrierDetected() %}{{ translate('wifi.offer') }}{% endif %}</span>
         </div>
-        <div class="">
+        <div class="mt-3">
             <label class="terms_confirmation">
                 <input type="checkbox" required value="0"/>
                 {{ translate('wifi.terms_confirmation', {'%terms_url%': path('terms_and_conditions')}) | raw }}
@@ -33,15 +33,26 @@
     <script type="text/javascript">
         var form = $('#wifi_form');
 
+        // move form to designed position (the best designer ever)
         var offset = parseInt(form.parent('div').prev().height()) + parseInt(form.parent('div').css('padding-top')) + parseInt(form.parent('div').css('margin-top'));
         form.css({
             'margin-top': '-' + offset + 'px',
             'min-height': parseInt(form.parent('div').prev().height()) + 'px'
         });
+
         var $wifi_form_step = $('#wifi_form_step');
+        var $wifi_warning = $('.wifi_form__warning');
         var phone;
         var input_phone = $('input[name=mobile_number]');
 
+        var params = {
+            html_wifi_phone: $('<div />').html('{{ html2string(wifi_phone.render()) }}').text(),
+            html_wifi_pin: $('<div />').html('{{ html2string(wifi_pin.render()) }}').text(),
+            pin_notif: $('<div />').html('{{ html2string(translate('wifi.pin_notif')|nl2br) }}').text(),
+            warning: $('<div />').html('{{ html2string(translate('wifi.warning')|nl2br) }}').text()
+        };
+
+        // set carrier to IdentificationDataStorage
         $(document).on('submit', 'form[data-form=carrier]', function (e) {
             e.preventDefault();
             $._loader();
@@ -54,7 +65,7 @@
                 success: function (result) {
                     $._loader(true);
                     if (result.data.success) {
-                        $wifi_form_step.html($wifi_form_step.html('{{ html2string(wifi_phone.render()) }}').text());
+                        $wifi_form_step.html(params.html_wifi_phone);
                         form.attr('data-form', 'pin');
                     } else {
                         showAlert({title: result.data.message});
@@ -64,10 +75,12 @@
 
         });
 
+        // send pin code to input phone
         $(document).on('submit', 'form[data-form=pin]', function (e) {
             e.preventDefault();
             $._loader();
             phone = input_phone.val();
+            $(document).unbind("ajaxSuccess"); // hook for re-send pin
 
             $.ajax({
                 url: "{{ path('send_sms_pin_code') }}",
@@ -78,9 +91,10 @@
                     if (result.data.success) {
                         input_phone.addClass('d-none');
                         $wifi_form_step
-                            .html($wifi_form_step.html('{{ html2string(wifi_pin.render()) }}').text())
+                            .html(params.html_wifi_pin)
                             .append(input_phone);
                         form.attr('data-form', 'confirm');
+                        $wifi_warning.html(params.pin_notif);
                     } else {
                         showAlert({title: result.data.message});
                     }
@@ -88,6 +102,7 @@
             });
         });
 
+        // merge carrier and phone steps
         $(document).on('submit', 'form[data-form=carrier_with_pin]', function (e) {
             e.preventDefault();
             $._loader();
@@ -103,7 +118,7 @@
                         var input_phone = $('input[name=mobile_number]');
                         input_phone.addClass('d-none');
                         $wifi_form_step
-                            .html($wifi_form_step.html('{{ html2string(wifi_pin.render()) }}').text())
+                            .html(params.html_wifi_pin)
                             .append(input_phone);
                         form.attr('data-form', 'confirm');
                     } else {
@@ -113,6 +128,7 @@
             });
         });
 
+        // confirm pin code
         $(document).on('submit', 'form[data-form=confirm]', function (e) {
             e.preventDefault();
             $._loader();
@@ -132,6 +148,7 @@
             });
         });
 
+        // re-send pin code
         $(document).on('click', '#resend-pin', function (event) {
             event.preventDefault();
             $(this).closest('form').attr('data-form', 'pin').submit();
@@ -142,11 +159,12 @@
             });
         });
 
+        // change phone number
         $(document).on('click', '#change-number', function (event) {
             event.preventDefault();
             $._loader();
-            console.log(phone);
-            $wifi_form_step.html($wifi_form_step.html('{{ html2string(wifi_phone.render()) }}').text());
+            $wifi_form_step.html(params.html_wifi_phone);
+            $wifi_warning.html(params.warning);
             form.attr('data-form', 'pin');
             $('input[name=mobile_number]').val(phone);
             $._loader(true);

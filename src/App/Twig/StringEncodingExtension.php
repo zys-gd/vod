@@ -27,6 +27,6 @@ class StringEncodingExtension extends \Twig_Extension
     {
         $converted = preg_replace('/\r|\n/m', '', $string);
         // $converted = htmlspecialchars($converted);
-        return $converted;
+        return addslashes($converted);
     }
 }
