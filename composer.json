@@ -14,6 +14,7 @@
     "beberlei/DoctrineExtensions": "^1.2",
     "cloudinary/cloudinary_php": "1.13.0",
     "e-moe/guzzle6-bundle": "^1.2",
+    "friendsofsymfony/user-bundle": "^2.1",
     "geoip2/geoip2": "v2.9.0",
     "guzzlehttp/guzzle": "v6.3.3",
     "league/flysystem-aws-s3-v3": "dev-master",

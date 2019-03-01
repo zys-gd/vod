@@ -98,11 +98,13 @@ class HomeController extends AbstractController implements ControllerWithISPDete
      * @param ISPData $data
      *
      * @return Response
+     *
+     * @throws \Exception
      */
     public function indexAction(Request $request, ISPData $data)
     {
         $carrier           = $this->carrierRepository->findOneByBillingId($data->getCarrierId());
-        $videos            = $this->videoRepository->findWithCategories();
+        $videos            = $this->videoRepository->findNotExpiredWithCategories();
         $categoryOverrides = $this->categoryOverrideRepository->findByBillingCarrierId($data->getCarrierId());
         $categories        = $this->mainCategoryRepository->findAll();
 
@@ -114,15 +116,7 @@ class HomeController extends AbstractController implements ControllerWithISPDete
 
             $categoryEntity = $video->getSubcategory()->getParent();
             $categoryKey    = $categoryEntity->getTitle();
-
-            $videoData = [
-                'uuid'       => $video->getUuid(),
-                'title'      => $video->getTitle(),
-                'publicId'   => $video->getRemoteId(),
-                'thumbnails' => $video->getThumbnails()
-            ];
-
-            $categoryVideos[$categoryKey][$video->getUuid()] = $videoData;
+            $categoryVideos[$categoryKey][$video->getUuid()] = $video->getDataFormTemplate();
         }
 
         $categoryVideos = array_slice(ArraySorter::sortArrayByKeys(

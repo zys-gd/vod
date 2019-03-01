@@ -8,7 +8,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 	libmcrypt-dev \
 	libpng-dev \
 	libgd-dev \
-	git
+	git \
+	libicu-dev
 
 
 RUN pecl install apcu \
@@ -20,6 +21,7 @@ RUN pecl install redis && docker-php-ext-enable redis
 RUN pecl install amqp && docker-php-ext-enable amqp
 
 RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
+RUN docker-php-ext-configure intl
 
 RUN docker-php-ext-install \
        pdo_mysql \
@@ -27,7 +29,8 @@ RUN docker-php-ext-install \
        iconv \
        gd \
        opcache \
-       bcmath
+       bcmath \
+       intl
 
 RUN pecl install xdebug-2.6.0  && docker-php-ext-enable xdebug \
     && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \

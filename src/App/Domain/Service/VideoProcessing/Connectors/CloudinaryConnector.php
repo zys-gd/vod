@@ -7,6 +7,9 @@ namespace App\Domain\Service\VideoProcessing\Connectors;
  */
 class CloudinaryConnector
 {
+    const SUCCESS_DESTROY_RESULT = 'ok';
+    const NOT_FOUND_DESTROY_RESULT = 'not found';
+
     /**
      * @var string
      */
