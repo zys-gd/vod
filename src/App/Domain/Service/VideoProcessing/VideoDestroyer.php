@@ -24,8 +24,13 @@ class VideoDestroyer
         $this->cloudinaryConnector = $cloudinaryConnector;
     }
 
+    /**
+     * @param string $remoteId
+     *
+     * @return mixed
+     */
     public function destroy(string $remoteId)
     {
-        $this->cloudinaryConnector->destroyVideo($remoteId);
+        return $this->cloudinaryConnector->destroyVideo($remoteId);
     }
 }

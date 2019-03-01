@@ -1,0 +1,22 @@
+{% block user_block %}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <li class="user-header">
+            <p>{{ 'Welcome %username%!' | trans({'%username%': app.user.username}) }}</p>
+        </li>
+        <li class="user-footer">
+            {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                <div class="pull-left">
+                    <a href="{{ path('sonata_admin_dashboard', {'_switch_user': '_exit'}) }}"
+                       class="btn btn-default btn-flat">
+                        <i class="fa fa-sign-out fa-fw"></i> {{ 'user_exit_impersonation' | trans({}, 'SonataAdminBundle') }}
+                    </a>
+                </div>
+            {% endif %}
+            <div class="pull-right">
+                <a href="{{ logout_url() }}" class="btn btn-default btn-flat"><i
+                            class="fa fa-sign-out fa-fw"></i> Logout
+                </a>
+            </div>
+        </li>
+    {% endif %}
+{% endblock %}

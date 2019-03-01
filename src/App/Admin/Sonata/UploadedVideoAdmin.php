@@ -15,6 +15,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use App\Domain\Entity\UploadedVideo;
+use Sonata\Form\Type\DateTimePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -94,6 +95,7 @@ class UploadedVideoAdmin extends AbstractAdmin
         $datagridMapper
             ->add('remoteId')
             ->add('title')
+            ->add('expiredDate', 'doctrine_orm_datetime_range')
             ->add('subcategory', null, [], EntityType::class, [
                 'class' => Subcategory::class
             ])
@@ -116,7 +118,12 @@ class UploadedVideoAdmin extends AbstractAdmin
                 'editable' => false,
                 'choices' => UploadedVideo::STATUSES
             ])
-            ->add('createdAt')
+            ->add('createdDate', 'datetime', [
+                'format' => 'Y-m-d H:i',
+            ])
+            ->add('expiredDate', 'datetime', [
+                'format' => 'Y-m-d H:i',
+            ])
             ->add('_action', null, array(
                 'actions' => array(
                     'show'   => array(),
@@ -124,6 +131,40 @@ class UploadedVideoAdmin extends AbstractAdmin
                     'delete' => array(),
                 )
             ));
+    }
+
+    /**
+     * @param ShowMapper $showMapper
+     */
+    protected function configureShowFields(ShowMapper $showMapper)
+    {
+        $showMapper
+            ->add('uuid')
+            ->add('remoteId')
+            ->add('title')
+            ->add('description')
+            ->add('createdDate', 'datetime', [
+                'format' => 'Y-m-d H:i',
+            ])->add('expiredDate', 'datetime', [
+                'format' => 'Y-m-d H:i',
+            ])
+            ->add('status', 'choice', [
+                'choices' => UploadedVideo::STATUSES
+            ])
+            ->add('thumbnail', null, [
+                'template' => '@Admin/UploadedVideo/thumbnail.html.twig',
+                'mapped'   => false,
+                'label'    => 'Thumbnails'
+            ])
+            ->add('player', null, [
+                'template' => '@Admin/UploadedVideo/player.html.twig',
+                'mapped'   => false,
+                'label'    => 'Video Preview'
+            ])
+            ->add('subcategory', null, [
+                'associated_property' => 'title'
+            ])
+            ->add('createdAt');
     }
 
     /**
@@ -143,6 +184,11 @@ class UploadedVideoAdmin extends AbstractAdmin
             ])
             ->add('description', TextareaType::class, [
                 'required' => false
+            ])
+            ->add('expiredDate', DateTimePickerType::class, [
+                'required' => false,
+                'format' => 'Y-MM-dd HH:mm',
+                'attr' => ['autocomplete' => 'off']
             ]);
 
         $builder = $formMapper->getFormBuilder();
@@ -181,35 +227,6 @@ class UploadedVideoAdmin extends AbstractAdmin
                     ]);
             }
         });
-    }
-
-    /**
-     * @param ShowMapper $showMapper
-     */
-    protected function configureShowFields(ShowMapper $showMapper)
-    {
-        $showMapper
-            ->add('uuid')
-            ->add('remoteId')
-            ->add('title')
-            ->add('description')
-            ->add('status', 'choice', [
-                'choices' => UploadedVideo::STATUSES
-            ])
-            ->add('thumbnail', null, [
-                'template' => '@Admin/UploadedVideo/thumbnail.html.twig',
-                'mapped'   => false,
-                'label'    => 'Thumbnails'
-            ])
-            ->add('player', null, [
-                'template' => '@Admin/UploadedVideo/player.html.twig',
-                'mapped'   => false,
-                'label'    => 'Video Preview'
-            ])
-            ->add('subcategory', null, [
-                'associated_property' => 'title'
-            ])
-            ->add('createdAt');
     }
 
     /**

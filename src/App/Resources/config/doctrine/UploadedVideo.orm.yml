@@ -15,8 +15,13 @@ App\Domain\Entity\UploadedVideo:
             type: string
             unique: true
             nullable: false
-        createdAt:
+        createdDate:
             type: datetime
+            options:
+                default: CURRENT_TIMESTAMP
+        expiredDate:
+            type: datetime
+            nullable: true
         title:
             type: string
             nullable: false
@@ -25,6 +30,8 @@ App\Domain\Entity\UploadedVideo:
             nullable: true
         thumbnails:
             type: json_array
+        options:
+            type: json
 
     lifecycleCallbacks: {  }
 

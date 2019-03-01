@@ -7,49 +7,49 @@ services:
             - '@App\Domain\Service\VideoProcessing\VideoManager'
             - '@doctrine.orm.entity_manager'
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Content Management, label: Videos }
+            - { name: sonata.admin, manager_type: orm, group: content_management, label: Videos }
         calls:
             - [ setTemplate, [edit, '@@Admin\UploadedVideo\edit.html.twig'] ]
 
     App\Admin\Sonata\MainCategoryAdmin:
         arguments: [~, App\Domain\Entity\MainCategory, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Content Management, label: Main categories }
+            - { name: sonata.admin, manager_type: orm, group: content_management, label: Main categories }
 
     App\Admin\Sonata\SubcategoryAdmin:
         arguments: [~, App\Domain\Entity\Subcategory, 'App\Admin\Controller\SubcategoryAdminController']
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Content Management, label: Subcategories }
+            - { name: sonata.admin, manager_type: orm, group: content_management, label: Subcategories }
 
     App\Admin\Sonata\CountryCategoryPriorityOverrideAdmin:
         arguments: [~, App\Domain\Entity\CountryCategoryPriorityOverride, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Content Management, label: Country menu priorities }
+            - { name: sonata.admin, manager_type: orm, group: content_management, label: Country menu priorities }
 
     App\Admin\Sonata\AffiliateAdmin:
         arguments: [~, App\Domain\Entity\Affiliate, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Affiliate Management, label: Affiliates }
+            - { name: sonata.admin, manager_type: orm, group: affiliate_management, label: Affiliates }
 
     App\Admin\Sonata\CampaignAdmin:
         arguments: [~, App\Domain\Entity\Campaign, ~, '@service_container']
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Affiliate Management, label: Campaign }
+            - { name: sonata.admin, manager_type: orm, group: affiliate_management, label: Campaign }
 
     App\Admin\Sonata\CarrierAdmin:
         arguments: [~, App\Domain\Entity\Carrier, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Carriers Management, label: Carriers }
+            - { name: sonata.admin, manager_type: orm, group: carrier_management, label: Carriers }
 
     App\Admin\Sonata\LanguagesAdmin:
         arguments: [~, App\Domain\Entity\Language, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Store Text, label: Languages }
+            - { name: sonata.admin, manager_type: orm, group: store_text, label: Languages }
 
     App\Admin\Sonata\TranslationsAdmin:
         arguments: [~, App\Domain\Entity\Translation, ~, '@SubscriptionBundle\Repository\SubscriptionPackRepository']
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Store Text, label: Translations }
+            - { name: sonata.admin, manager_type: orm, group: store_text, label: Translations }
 
     App\Admin\Sonata\BlackListAdmin:
         arguments:
@@ -59,7 +59,7 @@ services:
             - '@SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
             - '@SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber'
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Black List Management, label: Black list }
+            - { name: sonata.admin, manager_type: orm, group: black_list_management, label: Black list }
 
     App\Admin\Sonata\GameAdmin:
         arguments:
@@ -71,7 +71,7 @@ services:
         calls:
             - [addChild, ['@App\Admin\Sonata\GameBuildAdmin', 'game']]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Game Management, label: Game }
+            - { name: sonata.admin, manager_type: orm, group: game_management, label: Game }
 
     App\Admin\Sonata\DeveloperAdmin:
         arguments:
@@ -79,7 +79,7 @@ services:
             - App\Domain\Entity\Developer
             - ~
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Game Management, label: Developer }
+            - { name: sonata.admin, manager_type: orm, group: game_management, label: Developer }
 
     App\Admin\Sonata\GameImageAdmin:
         arguments:
@@ -88,7 +88,7 @@ services:
             - ~
             - '@App\Domain\Service\Games\ImagePathProvider'
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Game Management, label: Screenshot, show_in_dashboard: false}
+            - { name: sonata.admin, manager_type: orm, group: game_management, label: Screenshot, show_in_dashboard: false}
 
     App\Admin\Sonata\GameBuildAdmin:
         arguments:
@@ -96,4 +96,13 @@ services:
             - App\Domain\Entity\GameBuild
             - ~
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Game Management, label: Game build, show_in_dashboard: false}
+            - { name: sonata.admin, manager_type: orm, group: game_management, label: Game build, show_in_dashboard: false}
+
+    App\Admin\Sonata\Admin:
+        arguments:
+            - ~
+            - App\Domain\Entity\Admin
+            - ~
+            - '@fos_user.user_manager'
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: user_management, label: Administrators}

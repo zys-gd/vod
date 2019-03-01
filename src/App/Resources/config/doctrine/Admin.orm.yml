@@ -1,0 +1,8 @@
+App\Domain\Entity\Admin:
+    type: entity
+    table: admins
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO

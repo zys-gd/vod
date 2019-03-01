@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 30.01.19
- * Time: 17:40
- */
 
 namespace App\Controller;
-
 
 use App\Domain\Entity\UploadedVideo;
 use App\Domain\Repository\MainCategoryRepository;
@@ -20,6 +13,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class CategoryController
+ */
 class CategoryController extends AbstractController implements AppControllerInterface
 {
     /**
@@ -67,6 +63,8 @@ class CategoryController extends AbstractController implements AppControllerInte
      * @param ISPData $data
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Exception
      */
     public function showCategoryAction(string $categoryUuid, Request $request, ISPData $data)
     {
@@ -81,9 +79,9 @@ class CategoryController extends AbstractController implements AppControllerInte
                 'parent' => $category,
                 'uuid'   => $subcategoryUuid
             ]);
-            $videos              = $this->uploadedVideoRepository->findBy(['subcategory' => $selectedSubcategory]);
+            $videos = $this->uploadedVideoRepository->findNotExpiredBySubcategories([$selectedSubcategory]);
         } else {
-            $videos = $this->uploadedVideoRepository->findBy(['subcategory' => $subcategories]);
+            $videos = $this->uploadedVideoRepository->findNotExpiredBySubcategories($subcategories);
         }
 
 
@@ -92,12 +90,7 @@ class CategoryController extends AbstractController implements AppControllerInte
         foreach ($videos as $video) {
             $categoryEntity                                  = $video->getSubcategory()->getParent();
             $categoryKey                                     = $categoryEntity->getUuid();
-            $categoryVideos[$categoryKey][$video->getUuid()] = [
-                'uuid'       => $video->getUuid(),
-                'title'      => $video->getTitle(),
-                'publicId'   => $video->getRemoteId(),
-                'thumbnails' => $video->getThumbnails()
-            ];
+            $categoryVideos[$categoryKey][$video->getUuid()] = $video->getDataFormTemplate();
         }
 
         $this->contentStatisticSender->trackVisit($data);
@@ -109,7 +102,5 @@ class CategoryController extends AbstractController implements AppControllerInte
             'categoryVideos'      => $categoryVideos,
             'selectedSubcategory' => $selectedSubcategory ?? null
         ]);
-
     }
-
 }

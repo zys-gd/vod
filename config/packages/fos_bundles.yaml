@@ -1,0 +1,7 @@
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: App\Domain\Entity\Admin
+    from_email:
+        address: noreply@origin-data.net
+        sender_name: origin-data

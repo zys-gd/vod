@@ -8,6 +8,8 @@ framework:
     # Remove or comment this section to explicitly disable session support.
     session:
         handler_id: ~
+    templating:
+        engines: ['twig']
 
     #esi: true
     #fragments: true

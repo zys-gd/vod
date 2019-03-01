@@ -2,10 +2,11 @@
 
 namespace App\Admin\Controller;
 
-use App\Domain\Entity\Subcategory;
+use App\Domain\Entity\UploadedVideo;
 use App\Domain\Service\VideoProcessing\VideoManager;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use App\Admin\Form\UploadedVideoForm;
@@ -51,13 +52,20 @@ class UploadedVideoAdminController extends CRUDController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
+            /** @var UploadedVideo $uploadedVideo */
+            $uploadedVideo = $form->getData();
+            /** @var UploadedFile $uploadedFile */
+            $uploadedFile = $form->get('file')->getData();
 
-            /** @var Subcategory $subcategory */
-            $subcategory = $data['subcategory'];
+            $options = [
+                'start_offset' => $form->get('startOffset')->getData()
+            ];
 
-            $uploadResult = $this->videoManager->uploadVideoFileToStorage($data['file'], $subcategory->getAlias());
-            $this->videoManager->persistUploadedVideo($uploadResult, $subcategory, $data['title'], $data['description']);
+            $uploadResult = $this
+                ->videoManager
+                ->uploadVideoFileToStorage($uploadedFile, $uploadedVideo->getSubcategory()->getAlias());
+
+            $this->videoManager->persistUploadedVideo($uploadResult, $uploadedVideo, $options);
 
             return new RedirectResponse($this->admin->generateUrl('list'));
         }

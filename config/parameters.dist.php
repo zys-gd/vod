@@ -7,6 +7,8 @@ return [
     'DATABASE_USER'     => 'root',
     'DATABASE_PASSWORD' => '123456',
 
+    'SECRET' => 'ThisTokenIsNotSoSecretChangeIt',
+
     'CLOUDINARY_API_KEY'    => '187818276162186',
     'CLOUDINARY_API_SECRET' => 'sHmSwu7rTZqiAmfqFMM-XLl-r0k',
     'CLOUDINARY_CLOUD_NAME' => 'origindata',

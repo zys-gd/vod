@@ -110,6 +110,9 @@
     "fig/link-util": {
         "version": "1.0.0"
     },
+    "friendsofsymfony/user-bundle": {
+        "version": "v2.1.2"
+    },
     "geoip2/geoip2": {
         "version": "v2.9.0"
     },
