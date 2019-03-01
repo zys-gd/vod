@@ -77,7 +77,7 @@
         {% verbatim %}
 
             {{#each videos}}
-                <div class="d-flex flex-row modal-related-video {{#ifEquals uuid ../current.uuid}}currently-playing{{/ifEquals}}" data-uuid="{{ uuid }}">
+                <div class="d-flex flex-row modal-related-video my-2 {{#ifEquals uuid ../current.uuid}}currently-playing{{/ifEquals}}" data-uuid="{{ uuid }}">
                         {{#each thumbnails}}
                             <div class="modal-related-video-thumbnail-wrapper">
                                 {{#if @first}}
