@@ -1,6 +1,36 @@
 sonata_admin:
-    title: 'Sonata Admin'
+    title: 'Sport videos'
+    security:
+        handler: sonata.admin.security.handler.role
+        role_super_admin: ROLE_SUPER_ADMIN
+        role_admin: ROLE_ADMIN
+    templates:
+        user_block: '@App\SonataAdmin\user_block.html.twig'
     dashboard:
+        groups:
+            content_management:
+                label: Content Management
+                icon: '<i class="fa fa-video-camera"></i>'
+            affiliate_management:
+                label: Affiliate Management
+                icon: '<i class="fa fa-bar-chart"></i>'
+            carrier_management:
+                label: Carrier Management
+            store_text:
+                label: Store Text
+                icon: '<i class="fa fa-pencil-square-o"></i>'
+            black_list_management:
+                label: Black List Management
+                icon: '<i class="fa fa-ban"></i>'
+            game_management:
+                label: Game Management
+                icon: '<i class="fa fa-gamepad"></i>'
+            refunds:
+                label: Refunds
+                icon: '<i class="fa fa-dollar"></i>'
+            user_management:
+                label: User Management
+                icon: '<i class="fa fa-users"></i>'
         blocks:
             - { type: sonata.admin.block.admin_list, position: left }
 
