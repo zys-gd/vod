@@ -13,6 +13,7 @@ use ExtrasBundle\SignatureCheck\Annotation\SignatureCheckIsRequired;
 use IdentificationBundle\BillingFramework\Data\DataProvider;
 use IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer;
 use IdentificationBundle\Identification\Common\Pixel\PixelIdentVerifier;
+use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Identification\Service\RouteProvider;
@@ -132,12 +133,12 @@ class PixelIdentController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    public function confirmPixelIdentAction(Request $request, ISPData $ISPData)
+    public function confirmPixelIdentAction(Request $request, ISPData $ISPData, DeviceData $deviceData)
     {
         $processId          = $request->get('processId', '');
 
         try {
-            $this->confirmer->confirmIdent($processId, $ISPData->getCarrierId());
+            $this->confirmer->confirmIdent($processId, $ISPData->getCarrierId(), $deviceData);
             return new JsonResponse(['result' => true]);
         } catch (\Exception $exception) {
             return new JsonResponse(['result' => false]);

@@ -133,7 +133,7 @@ class IdentCallbackProcessor
 
         /** @var User $user */
         if (!$user = $this->userRepository->findOneBy(['identifier' => $msisdn])) {
-            $user = $this->userFactory->create($msisdn, $carrier, $clientFields['user_ip'], $token, $processId);
+            $user = $this->userFactory->create($msisdn, $carrier, $clientFields['user_ip'], $token, $processId );
             $this->entityManager->persist($user);
         } else {
             $user->setIdentificationToken($token);

@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\BillingFramework\Data\DataProvider;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
+use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\Handler\CommonFlow\HasCustomPixelIdent;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Identification\Service\IdentificationStatus;
@@ -91,7 +92,7 @@ class PixelIdentConfirmer
         $this->userRepository                = $userRepository;
     }
 
-    public function confirmIdent(string $processId, int $carrierId): void
+    public function confirmIdent(string $processId, int $carrierId, DeviceData $deviceData): void
     {
         $result = $this->billingDataProvider->getProcessData($processId);
         if (!$result->isSuccessful()) {
@@ -111,7 +112,13 @@ class PixelIdentConfirmer
             $identificationToken = $user->getIdentificationToken();
         } else {
             $identificationToken = $this->tokenGenerator->generateToken();
-            $user                = $this->saveUser($processId, $result, $carrier, $identificationToken);
+            $user                = $this->saveUser(
+                $processId,
+                $result,
+                $carrier,
+                $identificationToken,
+                $deviceData
+            );
         }
 
         $this->identificationStatus->finishIdent($identificationToken, $user);
@@ -119,21 +126,18 @@ class PixelIdentConfirmer
     }
 
     /**
-     * @param string $processId
-     * @param        $result
-     * @param        $carrier
-     * @param        $identificationToken
+     * @param string           $processId
+     * @param ProcessResult    $result
+     * @param CarrierInterface $carrier
+     * @param string           $identificationToken
+     * @param DeviceData       $deviceData
      * @return User
      */
-    private function saveUser(string $processId, ProcessResult $result, CarrierInterface $carrier, string $identificationToken): User
+    private function saveUser(string $processId, ProcessResult $result, CarrierInterface $carrier, string $identificationToken, DeviceData $deviceData): User
     {
         $clientFields = $result->getClientFields();
         $user         = $this->userFactory->create(
-            $result->getProviderUser(),
-            $carrier,
-            $clientFields['user_ip'],
-            $identificationToken,
-            $processId
+            $result->getProviderUser(), $carrier, $clientFields['user_ip'], $identificationToken, $processId, $deviceData
         );
 
         $this->entityManager->persist($user);

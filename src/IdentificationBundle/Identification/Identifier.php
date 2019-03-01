@@ -12,6 +12,7 @@ namespace IdentificationBundle\Identification;
 use IdentificationBundle\Identification\Common\CommonFlowHandler;
 use IdentificationBundle\Identification\Common\ConsentPageFlowHandler;
 use IdentificationBundle\Identification\Common\HeaderEnrichmentHandler;
+use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\DTO\IdentifyResult;
 use IdentificationBundle\Identification\Handler\HasCommonFlow;
 use IdentificationBundle\Identification\Handler\HasConsentPageFlow;
@@ -76,7 +77,7 @@ class Identifier
         $this->consentPageFlowHandler  = $consentPageFlowHandler;
     }
 
-    public function identify(int $carrierBillingId, Request $request, string $token): IdentifyResult
+    public function identify(int $carrierBillingId, Request $request, string $token, DeviceData $deviceData): IdentifyResult
     {
         $carrier = $this->carrierRepository->findOneByBillingId($carrierBillingId);
 
@@ -87,7 +88,7 @@ class Identifier
         ]);
 
         if ($handler instanceof HasHeaderEnrichment) {
-            $this->headerEnrichmentHandler->process($request, $handler, $carrier, $token);
+            $this->headerEnrichmentHandler->process($request, $handler, $carrier, $token, $deviceData);
             return new IdentifyResult();
 
         } else if ($handler instanceof HasConsentPageFlow) {

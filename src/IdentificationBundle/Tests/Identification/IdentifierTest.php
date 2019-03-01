@@ -10,6 +10,7 @@ use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Common\CommonFlowHandler;
 use IdentificationBundle\Identification\Common\ConsentPageFlowHandler;
 use IdentificationBundle\Identification\Common\HeaderEnrichmentHandler;
+use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\Handler\HasCommonFlow;
 use IdentificationBundle\Identification\Handler\HasCustomFlow;
 use IdentificationBundle\Identification\Handler\HasHeaderEnrichment;
@@ -98,7 +99,7 @@ class IdentifierTest extends TestCase
             'get' => Mockery::spy(HasHeaderEnrichment::class, IdentificationHandlerInterface::class)
         ]);
 
-        $this->identifier->identify(0, $request, 'token', $this->session);
+        $this->identifier->identify(0, $request, 'token', Mockery::spy(DeviceData::class), $this->session);
 
         $this->assertTrue(true, 'smoke test is not passed');
     }
@@ -111,7 +112,7 @@ class IdentifierTest extends TestCase
             'get' => Mockery::spy(HasCustomFlow::class, IdentificationHandlerInterface::class)
         ]);
 
-        $this->identifier->identify(0, $request, 'token', $this->session);
+        $this->identifier->identify(0, $request, 'token', Mockery::spy(DeviceData::class), $this->session);
 
         $this->assertTrue(true, 'smoke test is not passed');
     }
@@ -126,7 +127,7 @@ class IdentifierTest extends TestCase
             'get' => Mockery::spy(HasCommonFlow::class, IdentificationHandlerInterface::class)
         ]);
 
-        $result = $this->identifier->identify(0, $request, 'token', $this->session);
+        $result = $this->identifier->identify(0, $request, 'token', Mockery::spy(DeviceData::class), $this->session);
         $this->assertNotNull($result->getOverridedResponse(), 'response are not propagated');
 
 

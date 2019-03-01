@@ -9,11 +9,15 @@
 namespace IdentificationBundle\Tests\Identification\Controller;
 
 
+use CountryCarrierDetectionBundle\Service\IpService;
 use ExtrasBundle\Testing\Core\AbstractFunctionalTest;
+use Mockery;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class IdentifyByUrlTest extends AbstractFunctionalTest
 {
+    private $ipService;
+
     protected static function getKernelClass()
     {
         return \VODKernel::class;
@@ -21,7 +25,9 @@ class IdentifyByUrlTest extends AbstractFunctionalTest
 
     public function testRedirectIsPerformedForV1Urls()
     {
-        $client = $this->createClient();
+        $client = $this->makeClient();
+
+        $this->ipService->allows(['getIp' => '127.0.0.1']);
 
         $client->request('get', '/identification/identify', ['urlId' => 123]);
 
@@ -33,9 +39,11 @@ class IdentifyByUrlTest extends AbstractFunctionalTest
 
     public function testHomepageRedirectAfterIdentifiedByUrl()
     {
-        $client = $this->createClient();
+        $client = $this->makeClient();
 
-        $client->request('get', '/identification/identify-by-url', ['urlId' => 123,'f' => 1]);
+        $this->ipService->allows(['getIp' => '127.0.0.1']);
+
+        $client->request('get', '/identification/identify-by-url', ['urlId' => 123, 'f' => 1]);
 
         $this->assertTrue(
             $client->getResponse()->isRedirect(),
@@ -45,7 +53,7 @@ class IdentifyByUrlTest extends AbstractFunctionalTest
 
     protected function initializeServices(ContainerInterface $container)
     {
-        // TODO: Implement initializeServices() method.
+        $this->ipService = Mockery::spy(IpService::class);
     }
 
     protected function getFixturesListLoadedForEachTest(): array
@@ -55,6 +63,6 @@ class IdentifyByUrlTest extends AbstractFunctionalTest
 
     protected function configureWebClientClientContainer(ContainerInterface $container)
     {
-        // TODO: Implement configureWebClientClientContainer() method.
+        $container->set('CountryCarrierDetectionBundle\Service\IpService', $this->ipService);
     }
 }

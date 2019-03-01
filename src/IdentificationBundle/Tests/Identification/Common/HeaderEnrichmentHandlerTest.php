@@ -8,6 +8,7 @@
 
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Common\HeaderEnrichmentHandler;
+use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\Handler\HasHeaderEnrichment;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -81,7 +82,7 @@ class HeaderEnrichmentHandlerTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\IdentificationBundle\Identification\Exception\FailedIdentificationException::class);
 
-        $this->headerEnrichmentHandler->process($this->request, $this->handler, $this->carrier, 'token');
+        $this->headerEnrichmentHandler->process($this->request, $this->handler, $this->carrier, 'token', Mockery::spy(DeviceData::class));
     }
 
     public function testTokenIsSetForExistingUser()
@@ -91,7 +92,7 @@ class HeaderEnrichmentHandlerTest extends \PHPUnit\Framework\TestCase
         $this->handler->allows(['getMsisdn' => 'msisdn']);
         $this->userRepository->allows(['findOneByMsisdn' => $user]);
 
-        $this->headerEnrichmentHandler->process($this->request, $this->handler, $this->carrier, 'token');
+        $this->headerEnrichmentHandler->process($this->request, $this->handler, $this->carrier, 'token', Mockery::spy(DeviceData::class));
 
         $this->assertEquals('token', $user->getIdentificationToken());
         $this->assertArraySubset(['identification_token' => 'token'], $this->dataStorage->readIdentificationData());
@@ -104,7 +105,7 @@ class HeaderEnrichmentHandlerTest extends \PHPUnit\Framework\TestCase
         $this->handler->allows(['getMsisdn' => 'msisdn']);
         $this->userRepository->allows(['findOneByMsisdn' => null]);
 
-        $this->headerEnrichmentHandler->process($this->request, $this->handler, $this->carrier, 'token');
+        $this->headerEnrichmentHandler->process($this->request, $this->handler, $this->carrier, 'token', Mockery::spy(DeviceData::class));
 
         $this->assertArraySubset(['identification_token' => 'token'], $this->dataStorage->readIdentificationData());
 

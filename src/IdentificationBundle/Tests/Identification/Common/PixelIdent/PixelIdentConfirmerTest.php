@@ -14,6 +14,7 @@ use IdentificationBundle\BillingFramework\Data\DataProvider;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer;
+use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationStatus;
@@ -91,7 +92,7 @@ class PixelIdentConfirmerTest extends TestCase
         $this->userRepository->allows(['findOneByMsisdn' => null]);
         $this->tokenGenerator->allows(['generateToken' => 'token']);
 
-        $this->pixelIdentConfirmer->confirmIdent('123456', 0);
+        $this->pixelIdentConfirmer->confirmIdent('123456', 0,Mockery::spy(DeviceData::class));
 
         $this->assertArraySubset(
             ['identification_token' => 'token'],
@@ -123,7 +124,7 @@ class PixelIdentConfirmerTest extends TestCase
 
         $user->allows(['getIdentificationToken' => 555555]);
         $this->userRepository->allows(['findOneByMsisdn' => $user]);
-        $this->pixelIdentConfirmer->confirmIdent('123456', 0);
+        $this->pixelIdentConfirmer->confirmIdent('123456', 0, Mockery::spy(DeviceData::class));
 
         $this->assertArraySubset(
             ['identification_token' => '555555'],

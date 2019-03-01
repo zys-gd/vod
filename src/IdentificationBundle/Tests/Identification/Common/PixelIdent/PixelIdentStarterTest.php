@@ -71,12 +71,11 @@ class PixelIdentStarterTest extends TestCase
         $this->router
             ->shouldReceive('generate')
             ->andReturnValues([
-                new RouteNotFoundException(),
                 'pixelPageLink'
             ]);
 
 
-        $this->routeProvider->allows(['getLinkToHomepage' => 'homepage']);
+        $this->routeProvider->allows(['getLinkToHomepage' => 'index']);
 
         $result = $this->pixelIdentStarter->start(
             new Request(),

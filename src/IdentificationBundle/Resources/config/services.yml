@@ -7,3 +7,9 @@ services:
     tags:
       - { name: request.param_converter }
 
+  IdentificationBundle\Controller\ParamConverter\DeviceDataConverter:
+    tags:
+      - { name: request.param_converter }
+    arguments:
+      ['@device_detection.service.device', '@CountryCarrierDetectionBundle\Service\ConnectionTypeService']
+

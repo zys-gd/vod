@@ -4,6 +4,7 @@ namespace IdentificationBundle\Identification\Controller;
 
 use CountryCarrierDetectionBundle\Service\Interfaces\ICountryCarrierDetection;
 use Doctrine\ORM\EntityManager;
+use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\Exception\MissingCarrierException;
 use IdentificationBundle\Identification\Identifier;
 use IdentificationBundle\Identification\Service\ISPResolver;
@@ -103,7 +104,7 @@ class FakeIdentificationController extends AbstractController
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function fakeIdentifyAction(Request $request)
+    public function fakeIdentifyAction(Request $request, DeviceData $deviceData)
     {
         $ipAddress = $request->get('ip', $request->getClientIp());
         $msisdn    = $request->get('msisdn', 'fake');
@@ -141,7 +142,7 @@ class FakeIdentificationController extends AbstractController
             $session->set('identification_data', ['identification_token' => $token]);
 
             $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
-            $user    = $this->userFactory->create($msisdn, $carrier, $ipAddress, $token);
+            $user    = $this->userFactory->create($msisdn, $carrier, $ipAddress,$token, null, $deviceData);
 
             $this->entityManager->persist($user);
             $this->entityManager->flush();

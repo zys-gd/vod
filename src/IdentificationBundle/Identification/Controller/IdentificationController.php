@@ -9,6 +9,7 @@
 namespace IdentificationBundle\Identification\Controller;
 
 
+use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\Exception\FailedIdentificationException;
 use IdentificationBundle\Identification\Identifier;
 use IdentificationBundle\Identification\IdentifierByUrl;
@@ -66,7 +67,7 @@ class IdentificationController extends AbstractController
      * @param DeviceData $deviceData
      * @return Response
      */
-    public function identifyAction(Request $request): Response
+    public function identifyAndSubscribeAction(Request $request, DeviceData $deviceData): Response
     {
         if ($urlId = $request->get('urlId', '')) {
             // V1->V2 backward compatibility redirect
@@ -87,7 +88,8 @@ class IdentificationController extends AbstractController
             (int)$ispData['carrier_id'],
             $request,
             $token,
-            $request->getSession()
+            $request->getSession(),
+            $deviceData
         );
 
         if ($customResponse = $result->getOverridedResponse()) {

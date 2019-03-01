@@ -23,6 +23,7 @@ services:
       - '@IdentificationBundle\Identification\Common\Pixel\PixelIdentStarter'
       - '@IdentificationBundle\Identification\Common\Async\AsyncIdentStarter'
       - '@router'
+      - '@IdentificationBundle\Identification\Service\RouteProvider'
 
   IdentificationBundle\Identification\Common\RequestParametersProvider:
     arguments:

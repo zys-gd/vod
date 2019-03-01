@@ -11,6 +11,7 @@ namespace IdentificationBundle\Identification\Common;
 
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\CarrierInterface;
+use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\Exception\FailedIdentificationException;
 use IdentificationBundle\Identification\Handler\HasHeaderEnrichment;
 use IdentificationBundle\Identification\Service\IdentificationStatus;
@@ -63,9 +64,9 @@ class HeaderEnrichmentHandler
      * @param HasHeaderEnrichment $handler
      * @param CarrierInterface    $carrier
      * @param string              $token
-     * @throws FailedIdentificationException
+     * @param DeviceData          $deviceData
      */
-    public function process(Request $request, HasHeaderEnrichment $handler, CarrierInterface $carrier, string $token): void
+    public function process(Request $request, HasHeaderEnrichment $handler, CarrierInterface $carrier, string $token, DeviceData $deviceData): void
     {
         if (!$msisdn = $handler->getMsisdn($request)) {
             throw new FailedIdentificationException('Cannot retrieve msisdn');
@@ -74,10 +75,7 @@ class HeaderEnrichmentHandler
         $user = $this->userRepository->findOneByMsisdn($msisdn);
         if (!$user) {
             $user = $this->userFactory->create(
-                $msisdn,
-                $carrier,
-                $request->getClientIp(),
-                $token
+                $msisdn, $carrier, $request->getClientIp(), $token, $deviceData
             );
             $this->entityManager->persist($user);
         } else {

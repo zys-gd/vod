@@ -32,7 +32,6 @@ abstract class AbstractFunctionalTest extends \Liip\FunctionalTestBundle\Test\We
 
     abstract protected function getFixturesListLoadedForEachTest(): array;
 
-
     /**
      * {@inheritDoc}
      */
@@ -41,7 +40,7 @@ abstract class AbstractFunctionalTest extends \Liip\FunctionalTestBundle\Test\We
 
         self::bootKernel();
 
-        $container           = self::$kernel->getContainer();
+        $container = self::$kernel->getContainer();
 
         $this->entityManager = $container->get('doctrine.orm.entity_manager');
 

@@ -19,7 +19,7 @@ class UserFactoryTest extends TestCase
     {
         $carrier = Mockery::spy(CarrierInterface::class);
 
-        $user = $this->userFactory->create('msisdn', $carrier, '127.0.0.1', 'token', 'processId');
+        $user = $this->userFactory->create('msisdn', $carrier, '127.0.0.1', 'token', 'processId' );
 
         $this->assertEquals('msisdn', $user->getIdentifier());
         $this->assertEquals($carrier, $user->getCarrier());

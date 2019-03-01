@@ -12,15 +12,12 @@ namespace IdentificationBundle\Identification\Service;
 use App\Utils\UuidGenerator;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
+use IdentificationBundle\Identification\DTO\DeviceData;
 
 class UserFactory
 {
     public function create(
-        string $msisdn,
-        CarrierInterface $carrier,
-        string $ip,
-        string $identificationToken = null,
-        string $processId = null
+        string $msisdn, CarrierInterface $carrier, string $ip, string $identificationToken = null, string $processId = null, DeviceData $deviceData = null
     ): User
     {
         $user = new User(UuidGenerator::generate());
@@ -36,6 +33,13 @@ class UserFactory
 
         if ($identificationToken) {
             $user->setIdentificationToken($identificationToken);
+        }
+
+        if ($deviceData) {
+            $user->setDeviceManufacturer($deviceData->getDeviceManufacturer());
+            $user->setDeviceModel($deviceData->getDeviceModel());
+            $user->setConnectionType($deviceData->getConnectionType());
+            $user->setIdentificationUrl($deviceData->getIdentificationUrl());
         }
 
         return $user;
