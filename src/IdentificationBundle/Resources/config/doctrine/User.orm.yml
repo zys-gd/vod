@@ -2,6 +2,13 @@
 IdentificationBundle\Entity\User:
     type: entity
     repositoryClass: IdentificationBundle\Repository\UserRepository
+    indexes:
+        added_index:
+            columns: [ added ]
+        identifier_index:
+            columns: [ identifier ]
+        identification_token_index:
+            columns: [ identification_token ]
     id:
         uuid:
             type: guid
@@ -46,6 +53,19 @@ IdentificationBundle\Entity\User:
             nullable: true
             options:
                 default: null
+        connectionType:
+            type: string
+            nullable: true
+        deviceModel:
+            type: string
+            nullable: true
+        deviceManufacturer:
+            type: string
+            nullable: true
+        identificationUrl:
+            type: text
+            nullable: true
+
     manyToOne:
         carrier:
             targetEntity: \IdentificationBundle\Entity\CarrierInterface

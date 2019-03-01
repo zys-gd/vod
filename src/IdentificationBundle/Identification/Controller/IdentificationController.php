@@ -61,8 +61,9 @@ class IdentificationController extends AbstractController
     }
 
     /**
-     * @Route("/identify",name="identify")
-     * @param Request $request
+     * @Route("/identify",name="identify_and_subscribe")
+     * @param Request    $request
+     * @param DeviceData $deviceData
      * @return Response
      */
     public function identifyAction(Request $request): Response

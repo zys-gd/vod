@@ -63,6 +63,23 @@ class User
     private $identificationToken;
 
     /**
+     * @var string
+     */
+    private $connectionType;
+    /**
+     * @var string
+     */
+    private $identificationUrl;
+    /**
+     * @var string
+     */
+    private $deviceManufacturer;
+    /**
+     * @var string
+     */
+    private $deviceModel;
+
+    /**
      * User constructor
      *
      * @param string $uuid
@@ -271,4 +288,77 @@ class User
         $this->identificationToken = $identificationToken;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getConnectionType()
+    {
+        return $this->connectionType;
+    }
+
+    /**
+     * @param mixed $connectionType
+     * @return User
+     */
+    public function setConnectionType($connectionType)
+    {
+        $this->connectionType = $connectionType;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIdentificationUrl()
+    {
+        return $this->identificationUrl;
+    }
+
+    /**
+     * @param mixed $identificationUrl
+     * @return User
+     */
+    public function setIdentificationUrl($identificationUrl)
+    {
+        $this->identificationUrl = $identificationUrl;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDeviceManufacturer()
+    {
+        return $this->deviceManufacturer;
+    }
+
+    /**
+     * @param mixed $deviceManufacturer
+     * @return User
+     */
+    public function setDeviceManufacturer($deviceManufacturer)
+    {
+        $this->deviceManufacturer = $deviceManufacturer;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDeviceModel()
+    {
+        return $this->deviceModel;
+    }
+
+    /**
+     * @param mixed $deviceModel
+     * @return User
+     */
+    public function setDeviceModel($deviceModel)
+    {
+        $this->deviceModel = $deviceModel;
+        return $this;
+    }
+
 }
