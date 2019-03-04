@@ -1073,7 +1073,7 @@
     {
         "uuid": "0537d4ce-82cb-40bf-a211-da769bc8e28d",
         "key": "wifi.warning",
-        "translation": "Whooops! We couldn't recognize your user. Please select your Country, Operator and type your mobile number.You will receive a PIN code via Sms.",
+        "translation": "Whooops! We couldn't recognize your mobile number. Please select your Country, Operator and type your mobile number.You will receive a PIN code via Sms.",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -1082,7 +1082,7 @@
     {
         "uuid": "63dee082-f881-488a-94e9-a202a71b2913",
         "key": "wifi.terms_confirmation",
-        "translation": "I have read and agreed <a href=\"%terms_url%\">Terms and Conditions</a>",
+        "translation": "I have read and agree to the <a href=\"%terms_url%\">Terms and Conditions</a>",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
