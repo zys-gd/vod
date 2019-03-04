@@ -30,8 +30,6 @@ App\Domain\Entity\UploadedVideo:
             nullable: true
         thumbnails:
             type: json_array
-        options:
-            type: json
 
     lifecycleCallbacks: {  }
 

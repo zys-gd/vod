@@ -58,14 +58,21 @@ class CloudinaryConnector
      * @param string $filePath
      * @param string $folderName
      * @param string $callbackUrl
+     * @param array $options
      *
      * @return array
      *
      * @throws \Exception
      */
-    public function uploadVideo(string $alias, string $filePath, string $folderName, string $callbackUrl): array
+    public function uploadVideo(
+        string $alias,
+        string $filePath,
+        string $folderName,
+        string $callbackUrl,
+        array $options
+    ): array
     {
-        $options = [
+        $defaultOptions = [
             'eager'                  => [['streaming_profile' => 'hd', 'format' => 'm3u8']],
             'eager_async'            => true,
             'eager_notification_url' => $callbackUrl,
@@ -78,7 +85,7 @@ class CloudinaryConnector
             'resource_type'          => 'video'
         ];
 
-        return \Cloudinary\Uploader::upload_large($filePath, $options);
+        return \Cloudinary\Uploader::upload_large($filePath, array_merge($defaultOptions, $options));
     }
 
     /**

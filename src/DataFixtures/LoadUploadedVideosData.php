@@ -33,7 +33,6 @@ class LoadUploadedVideosData extends AbstractFixture implements DependentFixture
             $title           = $row['title'];
             $description     = $row['description'];
             $thumbnails      = $row['thumbnails'];
-            $options         = $row['options'];
             $subcategoryUuid = $row['subcategory']['uuid'];
 
             $video = new UploadedVideo($uuid);
@@ -46,7 +45,6 @@ class LoadUploadedVideosData extends AbstractFixture implements DependentFixture
             $video->setTitle($title);
             $video->setDescription($description);
             $video->setThumbnails($thumbnails);
-            $video->setOptions($options);
             $video->setSubcategory($this->getReference(sprintf('subcategory_%s', $subcategoryUuid)));
 
             $manager->persist($video);

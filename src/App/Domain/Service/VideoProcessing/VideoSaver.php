@@ -29,25 +29,18 @@ class VideoSaver
     /**
      * @param UploadResult $uploadResult
      * @param UploadedVideo $uploadedVideo
-     * @param array $options
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function persist(
         UploadResult $uploadResult,
-        UploadedVideo $uploadedVideo,
-        array $options
+        UploadedVideo $uploadedVideo
     ) {
-        $preparedOptions = array_filter($options, function ($value) {
-            return !empty($value);
-        });
-
         $uploadedVideo
             ->setRemoteUrl($uploadResult->getRemoteUrl())
             ->setRemoteId($uploadResult->getRemoteId())
-            ->setThumbnails($uploadResult->getThumbnailsPath())
-            ->setOptions($preparedOptions);
+            ->setThumbnails($uploadResult->getThumbnailsPath());
 
         $this->entityManager->persist($uploadedVideo);
         $this->entityManager->flush();
