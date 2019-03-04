@@ -101,7 +101,7 @@
     {
         "uuid": "1afc25c9-e1bd-4520-ae58-c917f3434e65",
         "key": "annotation_block.text.2",
-        "translation": "Access more than 2,000 videos and and new content every day",
+        "translation": "Access more than 2,000 videos and new content every day",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -1173,6 +1173,15 @@
         "uuid": "8e05f0ca-16a5-4e26-8300-625b80949d8c",
         "key": "wifi.pin_notif",
         "translation": "Welcome: %wifi_phone%\nType PIN code received by SMS and click on SUBSCRIBE!",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "3a1fa46f-c414-4ed2-ae99-c5bb3b660f8f",
+        "key": "buttons.confirm",
+        "translation": "Confirm",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },

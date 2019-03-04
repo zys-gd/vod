@@ -3,7 +3,13 @@
     {% import "@App/Common/Blocks/wifi_subscribe_block.html.twig" as wifi_subscribe_block %}
 
 
-    {% set class = class ~ ' x-subscribe-button' %}
+    {% set class %}
+        {% if isOtp() %}
+            {{ class ~ ' x-otp-button' }}
+        {% else %}
+            {{ class ~ ' x-subscribe-button' }}
+        {% endif %}
+    {% endset %}
 
     {% if not hasActiveSubscription() %}
         {% if isIdentified() %}
@@ -26,11 +32,24 @@
         {{ link.render(url('subscription.subscribe'), translate('buttons.join.now'), class) }}
     {% endif %}
 
-    <script>
+    <script type="text/javascript">
 
         $(document).on('click', '.x-subscribe-button', function (e) {
             $._loader(false);
-        })
+        });
+        $(document).on('click', '.x-otp-button', function (e) {
+            e.preventDefault();
+            if ($(this).is('a')) {
+                $(this).removeClass('x-otp-button')
+                    .addClass('x-subscribe-button')
+                    .find('button').text('{{ translate('buttons.confirm') }}');
+            }
+            else if($(this).is('button')) {
+                $(this).removeClass('x-otp-button')
+                    .addClass('x-subscribe-button')
+                    .text('{{ translate('buttons.confirm') }}');
+            }
+        });
 
     </script>
 

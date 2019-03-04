@@ -4,7 +4,9 @@
     {% elseif isUnsubscribed() %}
         {{ translate('subscription.status.unsubscribed')|raw|nl2br }}
     {% elseif hasInActiveSubscription() %}
-
+        hasInActiveSubscription (need text)
+    {% elseif hasSubscriptionWithError() %}
+        hasSubscriptionWithError (need text)
     {% elseif not isSubscriptionExist() %}
         {{ translate('subscription.status.not_subscribe')|raw|nl2br }}
     {% endif %}
