@@ -47,34 +47,33 @@ class VideoManager
     /**
      * @param UploadResult $uploadResult
      * @param UploadedVideo $uploadedVideo
-     * @param array $options
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Exception
      */
     public function persistUploadedVideo(
         UploadResult $uploadResult,
-        UploadedVideo $uploadedVideo,
-        array $options
+        UploadedVideo $uploadedVideo
     ) {
-        $this->saver->persist($uploadResult, $uploadedVideo, $options);
+        $this->saver->persist($uploadResult, $uploadedVideo);
     }
 
     /**
      * @param UploadedFile $file
      * @param string $remoteFolder
+     * @param array $options
      *
      * @return UploadResult
      *
      * @throws \Exception
      */
-    public function uploadVideoFileToStorage(UploadedFile $file, string $remoteFolder): UploadResult
+    public function uploadVideoFileToStorage(UploadedFile $file, string $remoteFolder, array $options): UploadResult
     {
         if ($file->getError()) {
             throw new \Exception($file->getErrorMessage());
         }
 
-        return $this->uploader->upload($file->getRealPath(), $remoteFolder);
+        return $this->uploader->upload($file->getRealPath(), $remoteFolder, $options);
     }
 
     /**

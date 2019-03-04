@@ -74,11 +74,6 @@ class UploadedVideo implements HasUuid
     private $thumbnails = [];
 
     /**
-     * @var array
-     */
-    private $options = [];
-
-    /**
      * UploadedVideo constructor
      *
      * @param string $uuid
@@ -259,26 +254,6 @@ class UploadedVideo implements HasUuid
     }
 
     /**
-     * @return array
-     */
-    public function getOptions(): array
-    {
-        return $this->options;
-    }
-
-    /**
-     * @param array $options
-     *
-     * @return UploadedVideo
-     */
-    public function setOptions(array $options): UploadedVideo
-    {
-        $this->options = $options;
-
-        return $this;
-    }
-
-    /**
      * @return string|null
      */
     public function getDescription(): ?string
@@ -311,14 +286,11 @@ class UploadedVideo implements HasUuid
      */
     public function getDataFormTemplate(): array
     {
-        return array_merge(
-            [
-                'uuid'       => $this->getUuid(),
-                'title'      => $this->getTitle(),
-                'publicId'   => $this->getRemoteId(),
-                'thumbnails' => $this->getThumbnails()
-            ],
-            $this->getOptions()
-        );
+        return [
+            'uuid'       => $this->getUuid(),
+            'title'      => $this->getTitle(),
+            'publicId'   => $this->getRemoteId(),
+            'thumbnails' => $this->getThumbnails()
+        ];
     }
 }

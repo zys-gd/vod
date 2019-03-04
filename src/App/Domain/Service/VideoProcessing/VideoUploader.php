@@ -47,18 +47,20 @@ class VideoUploader
     /**
      * @param string $realPath
      * @param string $uploadedFolder
+     * @param array $options
      *
      * @return UploadResult
      *
      * @throws \Exception
      */
-    public function upload(string $realPath, string $uploadedFolder): UploadResult
+    public function upload(string $realPath, string $uploadedFolder, array $options): UploadResult
     {
         $result = $this->cloudinaryConnector->uploadVideo(
             UuidGenerator::generate(),
             $realPath,
             $uploadedFolder,
-            'http://' . $this->host . $this->router->generate('vod_listen', [])
+            'http://' . $this->host . $this->router->generate('vod_listen', []),
+            $options
         );
 
         $uploadResult = new UploadResult($result['public_id']);
