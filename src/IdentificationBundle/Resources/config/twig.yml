@@ -3,5 +3,6 @@ services:
         arguments:
             - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
             - '@session'
+            - '@App\Domain\Repository\CarrierRepository'
         tags:
             - { name: twig.extension }

@@ -44,6 +44,7 @@ class SubscriptionStatusExtension extends \Twig_Extension
             new \Twig_SimpleFunction('hasInActiveSubscription', [$this, 'hasInActiveSubscription']),
             new \Twig_SimpleFunction('isSubscriptionExist', [$this, 'isSubscriptionExist']),
             new \Twig_SimpleFunction('isUnsubscribed', [$this, 'isUnsubscribed']),
+            new \Twig_SimpleFunction('hasSubscriptionWithError', [$this, 'hasSubscriptionWithError']),
         ];
     }
 
@@ -91,6 +92,18 @@ class SubscriptionStatusExtension extends \Twig_Extension
     {
         if ($subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($this->session)) {
             return $subscription->getStatus() == Subscription::IS_INACTIVE && $subscription->getCurrentStage() == Subscription::ACTION_UNSUBSCRIBE;
+        }
+        return false;
+    }
+
+    /**
+     * @return bool
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function hasSubscriptionWithError()
+    {
+        if ($subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($this->session)) {
+            return $subscription->hasError();
         }
         return false;
     }
