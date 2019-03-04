@@ -675,6 +675,15 @@
         "carrier": null
     },
     {
+        "uuid": "27f643fc-3e18-47d1-bbd7-8a3a14660af4",
+        "key": "account.subscription.status.not_subscribe",
+        "translation": "Get unlimited videos each %period% for only %price%/%currency%",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
         "uuid": "c55b5f46-10b1-4f9c-bbc3-e8c695d7594f",
         "key": "faq.a.2",
         "translation": "To watch and enjoy your sports videos, you should simple access to our <a href='%home_url%'>homepage</a> and click on any video available. You are able to browse our whole catalogue on the main menu (searching by title or category).",

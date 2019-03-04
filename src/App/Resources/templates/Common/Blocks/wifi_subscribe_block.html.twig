@@ -94,7 +94,7 @@
                             .html(params.html_wifi_pin)
                             .append(input_phone);
                         form.attr('data-form', 'confirm');
-                        $wifi_warning.html(params.pin_notif);
+                        $wifi_warning.html(params.pin_notif.replace(/%wifi_phone%/, phone));
                     } else {
                         showAlert({title: result.data.message});
                     }
@@ -121,6 +121,7 @@
                             .html(params.html_wifi_pin)
                             .append(input_phone);
                         form.attr('data-form', 'confirm');
+                        $wifi_warning.html(params.pin_notif.replace(/%wifi_phone%/, phone));
                     } else {
                         showAlert({title: result.data.message});
                     }
@@ -168,6 +169,18 @@
             form.attr('data-form', 'pin');
             $('input[name=mobile_number]').val(phone);
             $._loader(true);
+        });
+
+        $(document).on('focus', 'input[name=mobile_number]', function () {
+            if($(this).val() === '') {
+                $(this).val('+');
+            }
+        });
+
+        $(document).on('blur', 'input[name=mobile_number]', function () {
+            if($(this).val() === '+') {
+                $(this).val('');
+            }
         });
     </script>
 {% endmacro %}

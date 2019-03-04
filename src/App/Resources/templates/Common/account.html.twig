@@ -55,7 +55,7 @@
 
 
         {% elseif not isSubscriptionExist() %}
-            {{ translate('subscription.status.not_subscribe')|raw|nl2br }}
+            {{ translate('account.subscription.status.not_subscribe')|raw|nl2br }}
 
             <div class="d-flex align-items-center justify-content-center">
                 <h2 class="h1">{{ translate('offer.account')|raw }}</h2>
@@ -79,8 +79,8 @@
 {% endblock body %}
 
 {% block footer_content %}
-    {% if not isSubscriptionExist() %}
-        {{ annotation.render() }}
-    {% endif %}
+    {#{% if not isSubscriptionExist() %}#}
+        {#{{ annotation.render() }}#}
+    {#{% endif %}#}
     {{ footer_menu.render() }}
 {% endblock footer_content %}
