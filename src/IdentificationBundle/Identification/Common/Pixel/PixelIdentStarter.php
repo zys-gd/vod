@@ -60,13 +60,11 @@ class PixelIdentStarter
 
     public function start(Request $request, ProcessResult $processResult, CarrierInterface $carrier): RedirectResponse
     {
-        $successUrl = $this->routeProvider->getLinkToHomepage();
 
         $parameters = [
-            'pixelUrl'   => $processResult->getUrl(),
-            'carrier'    => $carrier->getBillingCarrierId(),
-            'processId'  => $processResult->getId(),
-            'successUrl' => $successUrl,
+            'pixelUrl'  => $processResult->getUrl(),
+            'carrier'   => $carrier->getBillingCarrierId(),
+            'processId' => $processResult->getId(),
         ];
 
         $signatureParam              = $this->config->getSignatureParameter();

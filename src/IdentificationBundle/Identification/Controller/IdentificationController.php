@@ -13,6 +13,7 @@ use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\Exception\FailedIdentificationException;
 use IdentificationBundle\Identification\Identifier;
 use IdentificationBundle\Identification\IdentifierByUrl;
+use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Identification\Service\RouteProvider;
 use IdentificationBundle\Identification\Service\TokenGenerator;
@@ -40,25 +41,32 @@ class IdentificationController extends AbstractController
      * @var RouteProvider
      */
     private $routeProvider;
+    /**
+     * @var IdentificationDataStorage
+     */
+    private $identificationDataStorage;
 
     /**
      * IdentificationController constructor.
-     * @param Identifier      $identifier
-     * @param TokenGenerator  $generator
-     * @param IdentifierByUrl $identifierByUrl
-     * @param RouteProvider   $provider
+     * @param Identifier                $identifier
+     * @param TokenGenerator            $generator
+     * @param IdentifierByUrl           $identifierByUrl
+     * @param RouteProvider             $provider
+     * @param IdentificationDataStorage $identificationDataStorage
      */
     public function __construct(
         Identifier $identifier,
         TokenGenerator $generator,
         IdentifierByUrl $identifierByUrl,
-        RouteProvider $provider
+        RouteProvider $provider,
+        IdentificationDataStorage $identificationDataStorage
     )
     {
-        $this->identifier      = $identifier;
-        $this->tokenGenerator  = $generator;
-        $this->identifierByUrl = $identifierByUrl;
-        $this->routeProvider   = $provider;
+        $this->identifier                = $identifier;
+        $this->tokenGenerator            = $generator;
+        $this->identifierByUrl           = $identifierByUrl;
+        $this->routeProvider             = $provider;
+        $this->identificationDataStorage = $identificationDataStorage;
     }
 
     /**
@@ -83,14 +91,17 @@ class IdentificationController extends AbstractController
             throw new BadRequestHttpException('Isp data missing');
         }
 
-        $token  = $this->tokenGenerator->generateToken();
+        $token = $this->tokenGenerator->generateToken();
+
+
         $result = $this->identifier->identify(
             (int)$ispData['carrier_id'],
             $request,
             $token,
-            $request->getSession(),
             $deviceData
         );
+
+        $this->identificationDataStorage->storeValue('subscribeAfterIdent', true);
 
         if ($customResponse = $result->getOverridedResponse()) {
             return $customResponse;

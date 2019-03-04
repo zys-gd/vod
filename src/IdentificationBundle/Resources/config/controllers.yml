@@ -8,6 +8,7 @@ services:
             - '@IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
             - '@IdentificationBundle\BillingFramework\Data\DataProvider'
+            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
 
     IdentificationBundle\Callback\Controller\CallbackController:
         arguments:
@@ -19,6 +20,7 @@ services:
             - '@IdentificationBundle\Identification\Service\TokenGenerator'
             - '@IdentificationBundle\Identification\IdentifierByUrl'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
+            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
 
     IdentificationBundle\Identification\Controller\FakeIdentificationController:
         arguments:
