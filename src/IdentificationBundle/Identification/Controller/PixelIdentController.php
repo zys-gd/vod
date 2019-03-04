@@ -15,7 +15,7 @@ use IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer;
 use IdentificationBundle\Identification\Common\Pixel\PixelIdentVerifier;
 use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\DTO\ISPData;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\RouteProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkProcessException;
@@ -44,19 +44,25 @@ class PixelIdentController extends AbstractController
      * @var DataProvider
      */
     private $billingDataProvider;
+    /**
+     * @var IdentificationDataStorage
+     */
+    private $identificationDataStorage;
 
     public function __construct(
         PixelIdentVerifier $pixelIdentVerifier,
         PixelIdentConfirmer $confirmer,
         RouteProvider $routeProvider,
-        DataProvider $billingDataProvider
+        DataProvider $billingDataProvider,
+        IdentificationDataStorage $identificationDataStorage
     )
     {
 
-        $this->pixelIdentVerifier  = $pixelIdentVerifier;
-        $this->confirmer           = $confirmer;
-        $this->routeProvider       = $routeProvider;
-        $this->billingDataProvider = $billingDataProvider;
+        $this->pixelIdentVerifier        = $pixelIdentVerifier;
+        $this->confirmer                 = $confirmer;
+        $this->routeProvider             = $routeProvider;
+        $this->billingDataProvider       = $billingDataProvider;
+        $this->identificationDataStorage = $identificationDataStorage;
     }
 
 
@@ -68,10 +74,9 @@ class PixelIdentController extends AbstractController
      */
     public function showPixelAction(Request $request)
     {
-        $pixelUrl   = $request->get('pixelUrl', '');
-        $carrier    = $request->get('carrier', '');
-        $processId  = $request->get('processId', '');
-        $successUrl = $request->get('successUrl', '');
+        $pixelUrl  = $request->get('pixelUrl', '');
+        $carrier   = $request->get('carrier', '');
+        $processId = $request->get('processId', '');
 
 
         if (!$pixelUrl) {
@@ -88,6 +93,14 @@ class PixelIdentController extends AbstractController
         } catch (BillingFrameworkProcessException $exception) {
             throw new BadRequestHttpException("Pixel ident is not started yet");
         }
+
+        if ($this->identificationDataStorage->readValue('subscribeAfterIdent')) {
+            $this->identificationDataStorage->cleanValue('subscribeAfterIdent');
+            $successUrl = $this->generateUrl('subscription.subscribe');
+        } else {
+            $successUrl = $this->routeProvider->getLinkToHomepage();
+        }
+
 
         return $this->render('@Identification/pixelIdent/show_pixel.twig', [
             'pixelUrl'        => $pixelUrl,
@@ -135,7 +148,7 @@ class PixelIdentController extends AbstractController
      */
     public function confirmPixelIdentAction(Request $request, ISPData $ISPData, DeviceData $deviceData)
     {
-        $processId          = $request->get('processId', '');
+        $processId = $request->get('processId', '');
 
         try {
             $this->confirmer->confirmIdent($processId, $ISPData->getCarrierId(), $deviceData);

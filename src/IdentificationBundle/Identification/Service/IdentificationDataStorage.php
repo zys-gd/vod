@@ -31,12 +31,17 @@ class IdentificationDataStorage
         return $this->session->get("storage[$key]", '');
     }
 
-    public function storeValue(string $key, $value)
+    public function storeValue(string $key, $value): void
     {
         $this->session->set("storage[$key]", $value);
     }
 
-    public function storeOperationResult(string $key, $result)
+    public function cleanValue(string $key): void
+    {
+        $this->session->remove("storage[$key]");
+    }
+
+    public function storeOperationResult(string $key, $result): void
     {
         $this->session->set("results[$key]", serialize($result));
     }
@@ -51,7 +56,7 @@ class IdentificationDataStorage
         $this->session->remove("results[$key]");
     }
 
-    public function storeIdentificationToken(string $token)
+    public function storeIdentificationToken(string $token): void
     {
         $identificationData = $this->readIdentificationData();
 
