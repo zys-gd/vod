@@ -233,11 +233,12 @@ class ComplaintsAdminController extends CRUDController
 
                 /** @var Subscription $subscription */
                 $subscription = $subscriptionRepository->findOneBy(['user' => $user]);
-                $usersInfo[$msisdn]['subscription_date'] = empty($subscription) ? null : $subscription->getCreated();
-                $usersInfo[$msisdn]['unsubscription_date'] =
-                    $subscription->getCurrentStage() === Subscription::ACTION_UNSUBSCRIBE
-                        ? $subscription->getUpdated()
-                        : null;
+
+                if ($subscription->getCurrentStage() === Subscription::ACTION_SUBSCRIBE) {
+                    $usersInfo[$msisdn]['subscription_date'] = $subscription->getUpdated();
+                } else {
+                    $usersInfo[$msisdn]['unsubscription_date'] = $subscription->getUpdated();
+                }
 
                 /** @var AffiliateLog $affiliateLog */
                 $affiliateLog = $affiliateLogRepository->findOneBy(['userMsisdn' => $msisdn]);
@@ -313,6 +314,8 @@ class ComplaintsAdminController extends CRUDController
     private function getEmptyData(): array
     {
         return [
+            'subscription_date'        => null,
+            'unsubscription_date'      => null,
             'device_info'              => null,
             'aff_id'                   => null,
             'aff_name'                 => null,

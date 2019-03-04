@@ -133,25 +133,6 @@
         }
     },
     {
-        "uuid": "0d790e78-7f62-43aa-bef3-052ee3e2be07",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1550071064\/top_viral_videos\/69632fb1-f3e1-40aa-8df8-4da493c2e6e8.mp4",
-        "remoteId": "top_viral_videos\/69632fb1-f3e1-40aa-8df8-4da493c2e6e8",
-        "createdDate": "2019-02-13T15:17:49+00:00",
-        "expiredDate": null,
-        "title": "Klopp confused by Kyle Walker Twitter jibe after Liverpool drew with Leicester",
-        "description": "Klopp confused by Kyle Walker Twitter jibe after Liverpool drew with Leicester",
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_viral_videos\/69632fb1-f3e1-40aa-8df8-4da493c2e6e8.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_viral_videos\/69632fb1-f3e1-40aa-8df8-4da493c2e6e8.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_viral_videos\/69632fb1-f3e1-40aa-8df8-4da493c2e6e8.jpg"
-        ],
-        "options": [],
-        "subcategory": {
-            "uuid": "88450169-49a4-4823-a7f9-574ac1d7c89p"
-        }
-    },
-    {
         "uuid": "0f768a99-2260-45ac-885e-dcc713944876",
         "status": 2,
         "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1550072881\/top_qualifier_videos\/4f7a305b-6f4d-4c50-84d5-e4b4f67b52b4.mp4",
