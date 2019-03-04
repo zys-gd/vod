@@ -227,7 +227,7 @@
     {
         "uuid": "3f944e0f-0ddb-49d7-bff2-f774d7001fdc",
         "key": "terms.block_3.text.3",
-        "translation": "Your weekly subscription will be automatically renewed unless you would unsubscribe. You can terminate your subscription whenever you want from your personal menu by clicking on Leave 100% sport link. 100% sport reserves the right to end the subscription at any time.",
+        "translation": "Your %periodicity% subscription will be automatically renewed unless you would unsubscribe. You can terminate your subscription whenever you want from your personal menu by clicking on Leave 100% sport link. 100% sport reserves the right to end the subscription at any time.",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -461,7 +461,7 @@
     {
         "uuid": "7e5d7569-9e3a-4fb6-9429-20fb3ae5a670",
         "key": "terms.block_3.text.1",
-        "translation": "This subscription service allows you to watch unlimited sports videos every week your phone from 100% sport catalogue for %price% (+ WAP connection charges). As long as you are subscribed to 100% sport, you will be able to watch unlimited content every %period%.",
+        "translation": "This subscription service allows you to watch unlimited sports videos every %period% your phone from 100% sport catalogue for %price% (+ WAP connection charges). As long as you are subscribed to 100% sport, you will be able to watch unlimited content every %period%.",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -704,7 +704,7 @@
     {
         "uuid": "d8351203-c497-4096-91bf-acba910dc10e",
         "key": "terms.block_8.title.1",
-        "translation": "100% sport' liability",
+        "translation": "100% sport liability",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -776,7 +776,7 @@
     {
         "uuid": "ef884604-25a3-4004-a764-2e19f6864cda",
         "key": "terms.block_1.text.1",
-        "translation": "100% sport is a mobile service which provides mobile games.100% sport proposes this service:  - %period% subscription which will be automatically activated when you confirm your subscription on <a href='%home_url%'>100% sport mobile site</a>.",
+        "translation": "100% sport is a mobile service which provides mobile games. 100% sport proposes this service:  - %period% subscription which will be automatically activated when you confirm your subscription on <a href='%home_url%'>100% sport mobile site</a>.",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -1033,7 +1033,7 @@
     {
         "uuid": "262f1d56-4093-418d-8eb4-5da638b756d3",
         "key": "terms.block_1.text.1",
-        "translation": "100% sport is a mobile service which provides mobile games.100% sport proposes this service:  - day subscription which will be automatically activated when you confirm your subscription on <a href='%home_url%'>100% sport mobile site</a>.",
+        "translation": "100% sport is a mobile service which provides mobile games. 100% sport proposes this service:  - day subscription which will be automatically activated when you confirm your subscription on <a href='%home_url%'>100% sport mobile site</a>.",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },

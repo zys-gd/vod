@@ -905,7 +905,7 @@ class SubscriptionPack implements HasUuid
     /**
      * @return string
      */
-    public function convertPeriodicity2Text(): string
+    public function convertPeriod2Text(): string
     {
         switch ($this->getFinalPeriodForSubscription()){
             case self::DAILY:
@@ -916,6 +916,25 @@ class SubscriptionPack implements HasUuid
                 break;
             default:
                 $periodicityText = 'day';
+                break;
+        }
+        return $periodicityText;
+    }
+
+    /**
+     * @return string
+     */
+    public function convertPeriodicity2Text(): string
+    {
+        switch ($this->getFinalPeriodForSubscription()){
+            case self::DAILY:
+                $periodicityText = 'daily';
+                break;
+            case self::WEEKLY:
+                $periodicityText = 'weekly';
+                break;
+            default:
+                $periodicityText = 'daily';
                 break;
         }
         return $periodicityText;
