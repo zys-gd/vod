@@ -22,7 +22,11 @@ services:
             - { name: sonata.admin, manager_type: orm, group: content_management, label: Subcategories }
 
     App\Admin\Sonata\CountryCategoryPriorityOverrideAdmin:
-        arguments: [~, App\Domain\Entity\CountryCategoryPriorityOverride, ~]
+        arguments:
+            - ~
+            - App\Domain\Entity\CountryCategoryPriorityOverride
+            - ~
+            - '@App\Domain\Repository\CountryCategoryPriorityOverrideRepository'
         tags:
             - { name: sonata.admin, manager_type: orm, group: content_management, label: Country menu priorities }
 
