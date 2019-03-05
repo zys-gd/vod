@@ -2,9 +2,12 @@
 
 namespace App\Domain\Entity;
 
+use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 
-
-class AffiliateParameter
+/**
+ * Class AffiliateParameter
+ */
+class AffiliateParameter implements HasUuid
 {
     /**
      * @var string
@@ -41,6 +44,14 @@ class AffiliateParameter
     public function getUuid(): string
     {
         return $this->uuid;
+    }
+
+    /**
+     * @param string $uuid
+     */
+    public function setUuid(string $uuid)
+    {
+        $this->uuid = $uuid;
     }
 
     /**

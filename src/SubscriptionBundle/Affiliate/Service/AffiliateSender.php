@@ -91,8 +91,7 @@ class AffiliateSender
         }
 
 
-        $data = ['query' => $this->getPostBackParameters($campaign)]; // TODO implement _formAffiliateData
-
+        $data = ['query' => $this->getPostBackParameters($affiliate, $campaign, $campaignParams)]; // TODO implement _formAffiliateData
         $fullUrl = $affiliate->getPostbackUrl() . '?' . http_build_query($data['query']);
 
 
@@ -139,7 +138,7 @@ class AffiliateSender
         return in_array($carrier->getBillingCarrierId(), $ids);
     }
 
-    private function getPostBackParameters(Affiliate $affiliate, Campaign $campaign, array $campaignParams): array
+    private function getPostBackParameters(Affiliate $affiliate, CampaignInterface $campaign, array $campaignParams): array
     {
         $query = [];
 

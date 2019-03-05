@@ -2,7 +2,9 @@
 
 namespace App\Domain\Entity;
 
-class AffiliateConstant
+use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
+
+class AffiliateConstant implements HasUuid
 {
     /**
      * @var string
@@ -39,6 +41,14 @@ class AffiliateConstant
     public function getUuid(): string
     {
         return $this->uuid;
+    }
+
+    /**
+     * @param string $uuid
+     */
+    public function setUuid(string $uuid)
+    {
+        $this->uuid = $uuid;
     }
 
     /**
