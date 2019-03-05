@@ -1,6 +1,8 @@
 security:
     encoders:
-        FOS\UserBundle\Model\UserInterface: bcrypt
+        FOS\UserBundle\Model\UserInterface:
+            algorithm: bcrypt
+            cost: 8
 
     role_hierarchy:
         ROLE_SUPER_ADMIN:

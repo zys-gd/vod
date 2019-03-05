@@ -28,7 +28,7 @@ class LoadAdminData extends AbstractFixture implements ContainerAwareInterface
         $data = FixtureDataLoader::loadDataFromJSONFile('admins.json');
 
         $encoderFactory = new EncoderFactory([
-            Admin::class => new BCryptPasswordEncoder(rand(4, 31))
+            Admin::class => new BCryptPasswordEncoder(8)
         ]);
 
         foreach ($data as $row) {
