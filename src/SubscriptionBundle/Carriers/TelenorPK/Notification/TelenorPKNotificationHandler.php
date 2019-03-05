@@ -2,26 +2,29 @@
 /**
  * Created by PhpStorm.
  * User: dmitriy
- * Date: 12.11.18
- * Time: 14:25
+ * Date: 05.03.19
+ * Time: 17:17
  */
 
-namespace SubscriptionBundle\Service\Notification\Impl;
+namespace SubscriptionBundle\Carriers\TelenorPK\Notification;
 
 
+use App\Domain\Constants\ConstBillingCarrierId;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\LanguageInterface;
 use IdentificationBundle\Repository\LanguageRepositoryInterface;
+use SubscriptionBundle\Service\Notification\Impl\NotificationHandlerInterface;
 
-class DefaultHandler implements NotificationHandlerInterface
+class TelenorPKNotificationHandler implements NotificationHandlerInterface
 {
     /**
      * @var LanguageRepositoryInterface
      */
     private $languageRepository;
 
+
     /**
-     * DefaultHandler constructor.
+     * TelenorPKNotificationHandler constructor.
      * @param LanguageRepositoryInterface $languageRepository
      */
     public function __construct(LanguageRepositoryInterface $languageRepository)
@@ -31,7 +34,7 @@ class DefaultHandler implements NotificationHandlerInterface
 
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return true;
+        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::TELENOR_PAKISTAN_DOT;
     }
 
     public function isNotificationShouldBeSent(): bool
@@ -46,12 +49,11 @@ class DefaultHandler implements NotificationHandlerInterface
 
     public function getSmsLanguage(): LanguageInterface
     {
-        return $this->languageRepository->findByCode('en');
+        return $this->languageRepository->findByCode('ur');
     }
-
 
     public function getMessageNamespace(): ?string
     {
-        return null;
+        return 'dot.telenorpk';
     }
 }

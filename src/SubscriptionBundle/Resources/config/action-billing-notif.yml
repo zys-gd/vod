@@ -2,7 +2,9 @@ services:
   SubscriptionBundle\Service\Notification\Impl\NotificationHandlerProvider:
       arguments: ['@SubscriptionBundle\Service\Notification\Impl\DefaultHandler']
 
-  SubscriptionBundle\Service\Notification\Impl\DefaultHandler: ~
+  SubscriptionBundle\Service\Notification\Impl\DefaultHandler:
+      arguments:
+        - '@IdentificationBundle\Repository\LanguageRepositoryInterface'
 
   SubscriptionBundle\Service\Notification\Notifier:
       arguments:
@@ -10,10 +12,10 @@ services:
         - '@SubscriptionBundle\BillingFramework\Notification\API\RequestSender'
         - '@monolog.logger'
         - '@SubscriptionBundle\Service\Notification\Common\ProcessIdExtractor'
-        - '@router'
         - '@SubscriptionBundle\Service\Notification\Impl\NotificationHandlerProvider'
         - '@SubscriptionBundle\Service\Notification\Common\ShortUrlHashGenerator'
-        - '@SubscriptionBundle\Service\RenewDateCalculator'
+        - '@SubscriptionBundle\Service\Notification\Common\DefaultSMSVariablesProvider'
+        - '@SubscriptionBundle\Service\Notification\Common\SMSTextProvider'
 
   SubscriptionBundle\Service\Notification\Common\MessageCompiler:
         arguments:
@@ -26,4 +28,9 @@ services:
   SubscriptionBundle\Service\Notification\Common\ShortUrlHashGenerator: ~
 
   SubscriptionBundle\Service\Notification\Common\SMSTextProvider:
-          arguments: ['%sms.notification.messages%', '@IdentificationBundle\Repository\CarrierRepositoryInterface']
+          arguments: ['%sms.notification.messages%', '@IdentificationBundle\Repository\CarrierRepositoryInterface', '@IdentificationBundle\Repository\LanguageRepositoryInterface']
+
+  SubscriptionBundle\Service\Notification\Common\NamespaceResolver: ~
+
+  SubscriptionBundle\Service\Notification\Common\DefaultSMSVariablesProvider:
+    arguments: ['@router', '@SubscriptionBundle\Service\RenewDateCalculator']

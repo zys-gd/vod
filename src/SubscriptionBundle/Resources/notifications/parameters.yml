@@ -1,81 +1,17 @@
 parameters:
-    sms.notification.messages:
-        dot.mt.parameters:
-            message:
-                subscribe: "Welcome to Playwing! Click here to access store.playwing.com @ Rs 11.95/day. To un-sub or avoid auto renewal charges send UNSUBP to _shortcode_"
-                unsubscribe: "You have been unsubscribed from Playwing."
-
-        dot.mt.mtnsd.parameters:
-            message:
-                subscribe: "مرحبًا بك في Playwing. لتنزيل الألعاب ، انقر فوق store.playwing.com ، وستحمل 2.5 SDG / يوميًا. لإلغاء الاشتراك ، أرسل UNSUBP إلى 2040."
-                unsubscribe: "تم الغاء اشتراكك من Playwing"
-
-        dot.mt.zong.parameters:
-            message:
-                subscribe: "Welcome to Playwing! Click here to access store.playwing.com @ 23.9 PKR/week. To un-sub or avoid auto renewal charges send UNSUBP to _shortcode_"
-                unsubscribe: "You have been unsubscribed from Playwing Premium."
-                notify_renew: "Playwing Premium. Charge notification for 23.9 PKR/week. To access store.playwing.com"
-                unsub_by_insufficient_balance: "You have been unsubscribed from Playwing Premium due to insufficient balance."
-
-        dot.mt.ooredoo.parameters:
-            message:
-                subscribe: "Welcome to Playwing Premium! Click here to download your games at store.playwing.com OMR 0.25/day. To unsubscribe, send UNSUB PLAYWING to 91964"
-                unsubscribe: "You have been unsubscribed from Playwing. Playwing Premium. If you require any further assistance, please do not hesitate to contact us at store.playwing.com/contact_us"
-
-        dot.mt.hutch3.parameters:
-            message:
-                subscribe: "Terima kasih telah berlangganan Playwing Premium dengan tarif Rp 2200/hari selama 60 hari. Stop: UNSUBP. CS: 021-23585661"
-                unsubscribe: "Anda telah berhenti berlangganan dari Playwing. CS:021-23585661"
-                already_sub: "Anda sudah memiliki langganan aktif. CS:021-23585661"
-
-        dot.mt.ooredooqa.parameters:
-            message:
-                subscribe: "Welcome to Playwing, To download the games press store.playwing.com for QR 3/day. To unsubscribe, click on store.playwing.com/myaccount or send UNSUBP to 92069"
-                unsubscribe: "You have been unsubscribed from Playwing Premium store.playwing.com"
-
-        dot.mt.autologin.parameters.en:
-            message:
-                subscribe: "Welcome to Playwing! Click here to access and download games _autologin_url_. To unsubscribe, click on store.playwing.com/myaccount or send UNSUBP to _shortcode_"
-                unsubscribe: "You have been unsubscribed from Playwing"
-
-        dot.mt.autologin.parameters.ar:
-            message:
-                subscribe: "مرحبا بك في Playwing! انقر هنا لتتمكن من الوصول إلى الألعاب وتنزيلها _autologin_url_"
-                unsubscribe: "لقد تم إلغاء اشتراكك من Playwing"
-
-        dot.mt.autologin.parameters.fr:
-            message:
-                subscribe: "Bienveue à Playwing ! Cliquez ici pour accéder et télécharger vos jeux _autologin_url_"
-                unsubscribe: "Vous vous êtes désabonné de Playwing"
-
-        dot.mt.autologin.parameters.ru:
-            message:
-                subscribe: "Добро пожаловать в Playwing! Щелкните здесь для доступа и загрузки ваших игр: _autologin_url_"
-                unsubscribe: "Вы отменили подписку на Playwing"
-
-        dot.mt.autologin.parameters.th:
-            message:
-                subscribe: "ยินดีต้อนรับสู่ Playwing! คลิกที่นี่เพื่อเข้าถึงและดาวน์โหลดเกมของคุณ _autologin_url_"
-                unsubscribe: "คุณได้ยกเลิกการสมัครสมาชิกกับ Playwing"
-
-        dot.mt.smart.parameters.id:
-            message:
-                subscribe: "Selamat datang di Playwing Premium! Klik di sini untuk mengunduh game Anda di store.playwing.com Rp2,200/hari. Untuk berhenti berlangganan kirim UNREG PLAYWING ke 98686"
-                unsubscribe: "Anda telah berhenti berlangganan Playwing."
-
-        fortumo.telenorpk.parameters.en:
-            message:
-                subscribe: "Playwing Rs 20/Week kharednay ka shukriya. Agla charge _renew_telenor_date_ ko hoga.Istamal karne k liye _autologin_url_ Khatam karne k liye https://bit.ly/2MmZhWk"
-                unsubscribe: "Playwing Premium ki subcription khatam ker di gayi hai. Playwing phir sy hasil kernay ke liye store.playwing.com"
-                unsub_by_insufficient_balance: "Playwing Premium ko renew karnay ka balance nahi hay.Apki subscription khatam kar di gaye hai. Phir se hasil karne ke liye store.playwing.com"
-
-        fortumo.telenorpk.renew.alert.en:
-            message:
-                renewing: "Playwing Rs 20/week renew kar di gayi hai.Agla charge _renew_telenor_date_ ko hoga. Istamal karne k liye _autologin_url_ Khatam karne k liye https://bit.ly/2MmZhWk"
-                notify_renew: "Playwing Rs 20/week _renew_telenor_date_ ko renew kia jayega. Istamal karne ke liye _autologin_url_ Khatam karne ke liye https://bit.ly/2MmZhWk"
-                notify_renew_trial: "Playwing Premium. Your free trial week ends tomorrow, after that you'll be charged for 20 PKR/week. Download your games at _autologin_url_ . To cancel, https://bit.ly/2MmZhWk"
-
-        fortumo.cellcardkh.parameters.en:
-            message:
-                subscribe: "Welcome to Playwing! 0.15 USD daily. Download your games at _autologin_url_ To unsubscribe: https://bit.ly/2jMpyRF"
-                unsubscribe: "You have been unsubscribed from Playwing http://store.playwing.com"
+  sms.notification.messages:
+    dot.telenorpk:
+      en:
+        subscribe: "Successful subscription for _price_ _currency_/wk. Auto renewal on _renew_date_. To access, _home_url_. To cancel, _unsub_url_"
+        reminder: "Subscription reminder for _currency_ _price_ /wk. Auto renewal on _renew_date_. To access, _home_url_. To cancel, _unsub_url_"
+        unsubscribe: "Your subscription to 100% sport has been terminated. Thank you for your patronage. To subscribe again, _unsub_url_"
+        renewal: "100% sport. Successful subscription renewal for _price_ _currency_/wk. Auto renewal on _renew_date_. To access, _home_url_. To cancel, _unsub_url_."
+        renewal_failure: "We failed to renew your 100% sport subscription. We will attempt renewal over the next 6 days. To stop go to _unsub_url_"
+        renewal_failure_sub_terminate: "You have insufficient funds for subscription renewal. Your subscription to 100% sport has been terminated. Thank you for your patronage. To subscribe again, _unsub_url_"
+      ur:
+        subscribe: "100% sport _currency_ _price_/week kharednay ka shukriya,Agla charge _renew_date_ ko hoga.Istamal karne ke liye _home_url_.Khatam karne ke liye _unsub_url_"
+        reminder: "100% sport _currency_ _price_/week _renew_date_ ko renew ki jayay gi.Istamal karne ke liye _home_url_.Khatam karne ke liye _unsub_url_"
+        unsubscribe: "100% sport ki subcription khatam ker di gayi hai. 100% sport phir sy hasil kernay ke liye _unsub_url_"
+        renewal: "100% sport Rs _price_/week renew kar di gayi.Agla charge _renew_date_ ko hoga. Istamal karne ke liye _home_url_.Khatam karne ke liye _unsub_url_"
+        renewal_failure: "100% sport ki subscription renew nahi ho saki.Agley 6 dino main renewal ki koshish karainge.Khatam karne ke liye _unsub_url_"
+        renewal_failure_sub_terminate: "100% sport ko renew karnay ka balance nahi hay.Apki subscription khatam kar di gaye hai.Phir se hasil karne ke liye _unsub_url_"

@@ -10,6 +10,7 @@ namespace SubscriptionBundle\Service\Notification\Impl;
 
 
 use IdentificationBundle\Entity\CarrierInterface;
+use IdentificationBundle\Entity\LanguageInterface;
 
 interface NotificationHandlerInterface
 {
@@ -18,5 +19,9 @@ interface NotificationHandlerInterface
     public function isNotificationShouldBeSent(): bool;
 
     public function isProcessIdUsedInNotification(): bool;
+
+    public function getSmsLanguage(): LanguageInterface;
+
+    public function getMessageNamespace(): ?string;
 
 }

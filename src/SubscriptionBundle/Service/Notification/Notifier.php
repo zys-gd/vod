@@ -10,20 +10,19 @@ namespace SubscriptionBundle\Service\Notification;
 
 
 use IdentificationBundle\Entity\CarrierInterface;
+use IdentificationBundle\Repository\LanguageRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Notification\API\DTO\SMSRequest;
 use SubscriptionBundle\BillingFramework\Notification\API\RequestSender;
 use SubscriptionBundle\BillingFramework\Notification\Exception\MissingSMSTextException;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
+use SubscriptionBundle\Service\Notification\Common\DefaultSMSVariablesProvider;
 use SubscriptionBundle\Service\Notification\Common\MessageCompiler;
 use SubscriptionBundle\Service\Notification\Common\ProcessIdExtractor;
 use SubscriptionBundle\Service\Notification\Common\ShortUrlHashGenerator;
+use SubscriptionBundle\Service\Notification\Common\SMSTextProvider;
 use SubscriptionBundle\Service\Notification\Impl\NotificationHandlerProvider;
-use SubscriptionBundle\Service\RenewDateCalculator;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
-use UserBundle\Service\UsersService;
 
 class Notifier
 {
@@ -39,10 +38,7 @@ class Notifier
      * @var LoggerInterface
      */
     private $logger;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+
     /**
      * @var ProcessIdExtractor
      */
@@ -55,11 +51,15 @@ class Notifier
      * @var ShortUrlHashGenerator
      */
     private $shortUrlHashGenerator;
-    /**
-     * @var RenewDateCalculator
-     */
-    private $renewDateCalculator;
 
+    /**
+     * @var DefaultSMSVariablesProvider
+     */
+    private $defaultSMSVariablesProvider;
+    /**
+     * @var SMSTextProvider
+     */
+    private $SMSTextProvider;
 
     /**
      * Notifier constructor.
@@ -67,43 +67,43 @@ class Notifier
      * @param RequestSender               $sender
      * @param LoggerInterface             $logger
      * @param ProcessIdExtractor          $processIdExtractor
-     * @param RouterInterface             $router
      * @param NotificationHandlerProvider $notificationHandlerProvider
      * @param ShortUrlHashGenerator       $shortUrlHashGenerator
-     * @param RenewDateCalculator         $renewDateCalculator
+     * @param DefaultSMSVariablesProvider $defaultSMSVariablesProvider
+     * @param SMSTextProvider             $SMSTextProvider
+     * @param LanguageRepositoryInterface $languageRepository
      */
     public function __construct(
         MessageCompiler $messageCompiler,
         RequestSender $sender,
         LoggerInterface $logger,
         ProcessIdExtractor $processIdExtractor,
-        RouterInterface $router,
         NotificationHandlerProvider $notificationHandlerProvider,
         ShortUrlHashGenerator $shortUrlHashGenerator,
-        RenewDateCalculator $renewDateCalculator
+        DefaultSMSVariablesProvider $defaultSMSVariablesProvider,
+        SMSTextProvider $SMSTextProvider
     )
     {
         $this->messageCompiler             = $messageCompiler;
         $this->sender                      = $sender;
         $this->logger                      = $logger;
-        $this->router                      = $router;
         $this->processIdExtractor          = $processIdExtractor;
         $this->notificationHandlerProvider = $notificationHandlerProvider;
         $this->shortUrlHashGenerator       = $shortUrlHashGenerator;
-        $this->renewDateCalculator         = $renewDateCalculator;
+        $this->defaultSMSVariablesProvider = $defaultSMSVariablesProvider;
+        $this->SMSTextProvider             = $SMSTextProvider;
     }
 
+
     public function sendNotification(
-        string $type,
+        string $processType,
         Subscription $subscription,
         SubscriptionPack $subscriptionPack,
         CarrierInterface $carrier
     )
     {
-
         try {
-
-            $handler = $this->notificationHandlerProvider->get($type, $carrier);
+            $handler = $this->notificationHandlerProvider->get($processType, $carrier);
 
             if (!$handler->isNotificationShouldBeSent()) {
                 return;
@@ -123,15 +123,34 @@ class Notifier
                 $this->logger->debug('Generated auto-login URL for user. ', ['url' => $User->getUrlId()]);
             }
 
-            $url = $this->router->generate(
-                'identify_by_url',
-                ['urlId' => $User->getUrlId()],
-                UrlGeneratorInterface::ABSOLUTE_URL
+
+            $variables = $this->defaultSMSVariablesProvider->getDefaultSMSVariables(
+                $subscriptionPack,
+                $subscription,
+                $User
             );
 
+            try {
+                $body = $this->SMSTextProvider->getSMSText(
+                    $processType,
+                    (string)$handler->getMessageNamespace(),
+                    $subscriptionPack,
+                    $handler->getSmsLanguage()
+                );
+            } catch (MissingSMSTextException $exception) {
+                $this->logger->error($exception->getMessage(), ['pack' => $subscriptionPack]);
+                throw  $exception;
+            }
+
+
             $notification = $this->messageCompiler->compileNotification(
-                $type, $User, $subscriptionPack, $this->renewDateCalculator->calculateRenewDate($subscription), $processId, ['_autologin_url_' => $url]
+                $processType,
+                $User,
+                $body,
+                $processId,
+                $variables
             );
+
             $this->sender->sendNotification($notification, $carrier->getBillingCarrierId());
 
 
