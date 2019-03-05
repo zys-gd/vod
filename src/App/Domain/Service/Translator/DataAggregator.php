@@ -35,7 +35,8 @@ class DataAggregator
             '%price%' => $subscriptionPack->getPriceFromTier(),
             '%currency%' => $subscriptionPack->getCurrencyFromTier(),
             '%credits%' => $subscriptionPack->getCredits(),
-            '%period%' => $subscriptionPack->convertPeriodicity2Text(),
+            '%period%' => $subscriptionPack->convertPeriod2Text(),
+            '%periodicity%' => $subscriptionPack->convertPeriodicity2Text(),
             '%country%' => $subscriptionPack->getCountry()->getCountryName()
         ];
     }

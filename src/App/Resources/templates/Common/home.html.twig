@@ -54,7 +54,7 @@
             var errHandle = url.searchParams.get("err_handle");
             var message;
             if (errHandle && (message = resolveErrorMessage(errHandle))) {
-                showAlert({title: message})
+                showAlert({title: 'Error', message: message})
             }
         })
 
