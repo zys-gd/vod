@@ -11,7 +11,7 @@
             {{ translate('subscription.status.not_enough_credit') }}
         {% else %}
             {{ translate('subscription.status.error') }}
-        {% elseif %}
+        {% endif %}
 
     {% elseif not isSubscriptionExist() %}
         {{ translate('subscription.status.not_subscribe')|raw|nl2br }}
