@@ -6,8 +6,8 @@ class EmailComposer
 {
 
 
-    const SUPPORT_FROM = 'noreply@vod.net';
-    const SUPPORT_TO = 'support@vod.net';
+    const SUPPORT_FROM = 'support.form@origin-data.com';
+    const SUPPORT_TO = 'support.bot@origin-data.com';
 
     public function compose(string $content): \Swift_Mime_SimpleMessage
     {
