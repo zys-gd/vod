@@ -461,7 +461,7 @@
     {
         "uuid": "7e5d7569-9e3a-4fb6-9429-20fb3ae5a670",
         "key": "terms.block_3.text.1",
-        "translation": "This subscription service allows you to watch unlimited sports videos every %period% your phone from 100% sport catalogue for %price% (+ WAP connection charges). As long as you are subscribed to 100% sport, you will be able to watch unlimited content every %period%.",
+        "translation": "This subscription service allows you to watch unlimited sports videos every %period% your phone from 100% sport catalogue for %price% %currency%(+ WAP connection charges). As long as you are subscribed to 100% sport, you will be able to watch unlimited content every %period%.",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -740,7 +740,7 @@
     {
         "uuid": "dfe0d1ca-7e8a-4365-b17d-a64c4150769d",
         "key": "terms.block_5.text.1",
-        "translation": "The total cost of this subscription service will be advertised in each page where you can sign up 100% sport services. Total or partial amounts of the contracted service will be charged each week or day as specified by your mobile operator. However, the maximum price for subscription will be %price% per %period%.",
+        "translation": "The total cost of this subscription service will be advertised in each page where you can sign up 100% sport services. Total or partial amounts of the contracted service will be charged each week or day as specified by your mobile operator. However, the maximum price for subscription will be %price% %currency% per %period%.",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -835,17 +835,6 @@
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
-    },
-    {
-        "uuid": "079e0821-6c7e-4305-be24-70cd49158071",
-        "key": "offer.account",
-        "translation": "Watch unlimited sport videos for only 11.95 PKR per day",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": {
-            "uuid": "5142f9ec-ebd4-11e8-95c4-02bb250f0f22"
-        }
     },
     {
         "uuid": "9a6d587b-2e37-44c4-97e2-de1d0468100b",
@@ -963,94 +952,6 @@
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
-    },
-    {
-        "uuid": "a02b252f-4164-4535-8fed-1edf41967fef",
-        "key": "offer.annotation_block",
-        "translation": "Watch unlimited sport videos for only 11.95 PKR per day",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": {
-            "uuid": "5142f9ec-ebd4-11e8-95c4-02bb250f0f22"
-        }
-    },
-    {
-        "uuid": "55a95742-30e4-4b0b-b539-5da8431e48f1",
-        "key": "offer.account",
-        "translation": "Watch unlimited sport videos for only 11.95 PKR per day",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": {
-            "uuid": "5142f9ec-ebd4-11e8-95c4-02bb250f0f22"
-        }
-    },
-    {
-        "uuid": "10fa09e8-e37d-4650-b329-39f3ea944497",
-        "key": "offer.landing",
-        "translation": "Watch unlimited videos of your favourite sports and teams!<br>Only 11.95 PKR per day",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": {
-            "uuid": "5142f9ec-ebd4-11e8-95c4-02bb250f0f22"
-        }
-    },
-    {
-        "uuid": "c96c2e97-9481-453e-85c6-57ee722e9481",
-        "key": "terms.block_2.text.1",
-        "translation": "This service is only available for users in Pakistan. You must have permission from the carrier to use this service.",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": {
-            "uuid": "5142f9ec-ebd4-11e8-95c4-02bb250f0f22"
-        }
-    },
-    {
-        "uuid": "e5887912-b35e-4dbf-8671-eb60bd33d579",
-        "key": "terms.block_3.text.1",
-        "translation": "This subscription service allows you to watch unlimited sports videos every %period% your phone from 100% sport catalogue for 11.95 PKR(+ WAP connection charges). As long as you are subscribed to 100% sport, you will be able to watch unlimited content every day.",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": {
-            "uuid": "5142f9ec-ebd4-11e8-95c4-02bb250f0f22"
-        }
-    },
-    {
-        "uuid": "a8dcfaa5-1714-4c34-bc60-aed7b58d8a28",
-        "key": "terms.block_5.text.1",
-        "translation": "The total cost of this subscription service will be advertised in each page where you can sign up 100% sport services. Total or partial amounts of the contracted service will be charged each week or day as specified by your mobile operator. However, the maximum price for subscription will be 11.95 PKR per day.",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": {
-            "uuid": "5142f9ec-ebd4-11e8-95c4-02bb250f0f22"
-        }
-    },
-    {
-        "uuid": "262f1d56-4093-418d-8eb4-5da638b756d3",
-        "key": "terms.block_1.text.1",
-        "translation": "100% sport is a mobile service which provides mobile games. 100% sport proposes this service:  - day subscription which will be automatically activated when you confirm your subscription on <a href='%home_url%'>100% sport mobile site</a>.",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": {
-            "uuid": "5142f9ec-ebd4-11e8-95c4-02bb250f0f22"
-        }
-    },
-    {
-        "uuid": "483dd864-e0cf-4f83-89bd-fb2a2d85fc9e",
-        "key": "wifi.offer",
-        "translation": "11.95 PKR per day",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": {
-            "uuid": "5142f9ec-ebd4-11e8-95c4-02bb250f0f22"
-        }
     },
     {
         "uuid": "a9c727ed-ead3-4fcf-8a5c-cd1afa2914a7",
