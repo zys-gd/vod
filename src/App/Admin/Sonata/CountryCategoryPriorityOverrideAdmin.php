@@ -5,6 +5,7 @@ namespace App\Admin\Sonata;
 use App\Domain\Entity\Country;
 use App\Domain\Entity\CountryCategoryPriorityOverride;
 use App\Domain\Entity\MainCategory;
+use App\Domain\Repository\CountryCategoryPriorityOverrideRepository;
 use App\Utils\UuidGenerator;
 use Doctrine\ORM\EntityRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -14,7 +15,9 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Class CountryCategoryPriorityOverrideAdmin
@@ -29,6 +32,30 @@ class CountryCategoryPriorityOverrideAdmin extends AbstractAdmin
     ];
 
     /**
+     * @var CountryCategoryPriorityOverride
+     */
+    private $countryOverrideRepository;
+
+    /**
+     * CountryCategoryPriorityOverrideAdmin constructor
+     *
+     * @param string $code
+     * @param string $class
+     * @param string $baseControllerName
+     * @param CountryCategoryPriorityOverrideRepository $countryOverrideRepository
+     */
+    public function __construct(
+        string $code,
+        string $class,
+        string $baseControllerName,
+        CountryCategoryPriorityOverrideRepository $countryOverrideRepository
+    ) {
+        $this->countryOverrideRepository = $countryOverrideRepository;
+
+        parent::__construct($code, $class, $baseControllerName);
+    }
+
+    /**
      * @return CountryCategoryPriorityOverride
      *
      * @throws \Exception
@@ -36,6 +63,29 @@ class CountryCategoryPriorityOverrideAdmin extends AbstractAdmin
     public function getNewInstance(): CountryCategoryPriorityOverride
     {
         return new CountryCategoryPriorityOverride(UuidGenerator::generate());
+    }
+
+    /**
+     * @param int $menuPriority
+     * @param ExecutionContextInterface $context
+     */
+    public function validatePriority(
+        int $menuPriority,
+        ExecutionContextInterface $context
+    ): void
+    {
+        /** @var CountryCategoryPriorityOverride $countryPriorityOverride */
+        $countryPriorityOverride = $this->getSubject();
+
+        if ($this->countryOverrideRepository->checkForIdenticalOverrides(
+            $countryPriorityOverride->getMainCategory(),
+            $countryPriorityOverride->getCountry(),
+            $menuPriority)
+        ) {
+            $context
+                ->buildViolation('Identical override for category and country was found')
+                ->addViolation();
+        }
     }
 
     /**
@@ -104,7 +154,8 @@ class CountryCategoryPriorityOverrideAdmin extends AbstractAdmin
             ->add('menuPriority', IntegerType::class, [
                 'required' => true,
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank(),
+                    new Callback([$this, 'validatePriority'])
                 ]
             ]);
     }

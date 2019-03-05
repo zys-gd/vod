@@ -4,6 +4,7 @@ namespace App\Domain\Repository;
 
 use App\Domain\Entity\Carrier;
 use App\Domain\Entity\Country;
+use App\Domain\Entity\MainCategory;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -16,7 +17,7 @@ class CountryCategoryPriorityOverrideRepository extends EntityRepository
      *
      * @return array
      */
-    public function findByBillingCarrierId(int $carrierId)
+    public function findByBillingCarrierId(int $carrierId): array
     {
         $queryBuilder = $this->createQueryBuilder('cpo');
 
@@ -29,5 +30,30 @@ class CountryCategoryPriorityOverrideRepository extends EntityRepository
             ->getQuery();
 
         return $query->getResult();
+    }
+
+    /**
+     * @param MainCategory $mainCategory
+     * @param Country $country
+     * @param int $menuPriority
+     *
+     * @return bool
+     */
+    public function checkForIdenticalOverrides(MainCategory $mainCategory, Country $country, int $menuPriority): bool
+    {
+        $queryBuilder = $this->createQueryBuilder('cpo');
+
+        $query = $queryBuilder
+            ->select('cpo.uuid')
+            ->where($queryBuilder->expr()->andX('cpo.mainCategory = :mainCategory', 'cpo.country = :country'))
+            ->orWhere($queryBuilder->expr()->andX('cpo.menuPriority = :menuPriority', 'cpo.country = :country'))
+            ->setParameters([
+                'mainCategory' => $mainCategory,
+                'country' => $country,
+                'menuPriority' => $menuPriority
+            ])
+            ->getQuery();
+
+        return count($query->getResult()) > 0;
     }
 }
