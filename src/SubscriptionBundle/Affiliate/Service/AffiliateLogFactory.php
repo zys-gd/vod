@@ -1,21 +1,32 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 17.01.19
- * Time: 14:42
- */
 
 namespace SubscriptionBundle\Affiliate\Service;
 
-
+use App\Utils\UuidGenerator;
 use SubscriptionBundle\Affiliate\DTO\UserInfo;
 use SubscriptionBundle\Entity\Affiliate\AffiliateLog;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
 
+/**
+ * Class AffiliateLogFactory
+ */
 class AffiliateLogFactory
 {
+    /**
+     * @param int $event
+     * @param bool $isSuccess
+     * @param string $fullUrl
+     * @param UserInfo $info
+     * @param CampaignInterface $campaign
+     * @param Subscription $subscription
+     * @param array $campaignParams
+     * @param string|null $message
+     *
+     * @return AffiliateLog
+     *
+     * @throws \Exception
+     */
     public function create(
         int $event,
         bool $isSuccess,
@@ -27,14 +38,10 @@ class AffiliateLogFactory
         string $message = null
     ): AffiliateLog
     {
-
-        $affiliateLog = new AffiliateLog();
+        $affiliateLog = new AffiliateLog(UuidGenerator::generate());
 
         $affiliateLog->setEvent($event);
-        $affiliateLog->setStatus($isSuccess ?
-                                     AffiliateLog::STATUS_SUCCESS :
-                                     AffiliateLog::STATUS_FAILURE
-        );
+        $affiliateLog->setStatus($isSuccess ? AffiliateLog::STATUS_SUCCESS : AffiliateLog::STATUS_FAILURE);
         $affiliateLog->setUrl($fullUrl);
         $affiliateLog->setLog($message);
         $affiliateLog->setUserIp($info->getUserIp());
@@ -45,5 +52,4 @@ class AffiliateLogFactory
 
         return $affiliateLog;
     }
-
 }

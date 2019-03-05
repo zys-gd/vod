@@ -43,6 +43,11 @@ return [
 
     'CAMPAIGN_SESSION_NAME'      => 'campaignData',
 
+    'MAILER_HOST'                => 'aspmx.l.google.com',
+    'MAILER_USER'                => 'support.form@origin-data.com',
+    'MAILER_PASSWORD'            => 'sF!@2019@od!$Pw',
+    'MAILER_PORT'                => 25,
+    
     'MAILER_URL'          => 'MAILER_URL',
     'UPLOADS_PATH'        => 'uploads',
     'UPLOADS_BUILDS_PATH' => 'uploads/builds',

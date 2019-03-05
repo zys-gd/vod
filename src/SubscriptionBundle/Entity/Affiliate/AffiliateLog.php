@@ -104,10 +104,14 @@ class AffiliateLog implements HasUuid
     private $addedAt;
 
     /**
-     * constructor
+     * AffiliateLog constructor
+     *
+     * @param string $uuid
+     * @throws \Exception
      */
-    public function __construct()
+    public function __construct(string $uuid)
     {
+        $this->uuid = $uuid;
         $this->addedAt = new \DateTime();
     }
 
