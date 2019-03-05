@@ -1011,7 +1011,7 @@
     {
         "uuid": "e5887912-b35e-4dbf-8671-eb60bd33d579",
         "key": "terms.block_3.text.1",
-        "translation": "This subscription service allows you to watch unlimited sports videos every week your phone from 100% sport catalogue for 11.95 PKR(+ WAP connection charges). As long as you are subscribed to 100% sport, you will be able to watch unlimited content every day.",
+        "translation": "This subscription service allows you to watch unlimited sports videos every %period% your phone from 100% sport catalogue for 11.95 PKR(+ WAP connection charges). As long as you are subscribed to 100% sport, you will be able to watch unlimited content every day.",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
