@@ -45,6 +45,7 @@ class SubscriptionStatusExtension extends \Twig_Extension
             new \Twig_SimpleFunction('isSubscriptionExist', [$this, 'isSubscriptionExist']),
             new \Twig_SimpleFunction('isUnsubscribed', [$this, 'isUnsubscribed']),
             new \Twig_SimpleFunction('hasSubscriptionWithError', [$this, 'hasSubscriptionWithError']),
+            new \Twig_SimpleFunction('isNotEnoughCredit', [$this, 'isNotEnoughCredit']),
         ];
     }
 
@@ -104,6 +105,19 @@ class SubscriptionStatusExtension extends \Twig_Extension
     {
         if ($subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($this->session)) {
             return $subscription->hasError();
+        }
+        return false;
+    }
+
+    /**
+     * @return bool
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function isNotEnoughCredit(): bool
+    {
+        $subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($this->session);
+        if ($subscription && $subscription->hasError() && $subscription->getError() == 'not_enough_credit') {
+            return true;
         }
         return false;
     }
