@@ -3,9 +3,5 @@ services:
         class: SubscriptionBundle\Carriers\TelenorPK\Subscribe\TelenorPKSubscribeHandler
         tags:
           - {name: subscription.subscription_handler}
-    subscription.telenor_pk_notification_handler:
-        class: SubscriptionBundle\Carriers\TelenorPK\Notification\TelenorPKNotificationHandler
-        tags:
-          - {name: subscription.notification_handler, type: subscribe}
-          - {name: subscription.notification_handler, type: unsubscribe}
-          - {name: subscription.notification_handler, type: renew}
+        arguments:
+          ['@SubscriptionBundle\Service\Notification\Notifier']
