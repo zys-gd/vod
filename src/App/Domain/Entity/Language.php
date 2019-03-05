@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Domain\Entity;
+use IdentificationBundle\Entity\LanguageInterface;
 use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 
 /**
  * Languages
  */
-class Language implements HasUuid
+class Language implements HasUuid, LanguageInterface
 {
     /**
      * @var string
@@ -51,7 +52,7 @@ class Language implements HasUuid
     /**
      * @return string
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -59,7 +60,7 @@ class Language implements HasUuid
     /**
      * @return string
      */
-    public function getCode(): ?string
+    public function getCode(): string
     {
         return $this->code;
     }

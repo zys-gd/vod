@@ -13,10 +13,7 @@ use IdentificationBundle\Entity\User;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Notification\API\DTO\NotificationMessage;
 use SubscriptionBundle\BillingFramework\Notification\API\MessageCreator;
-use SubscriptionBundle\BillingFramework\Notification\Exception\MissingSMSTextException;
-use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
-use SubscriptionBundle\Service\Notification\Common\SMSTexts\MessageKeyHandlerProvider;
 
 class MessageCompiler
 {
@@ -52,42 +49,26 @@ class MessageCompiler
 
 
     /**
-     * @param string           $type
-     * @param User             $User
-     * @param SubscriptionPack $subscriptionPack
-     * @param \DateTime        $renewDate
-     * @param null             $billingProcessId
-     * @param array            $bodyVariables
+     * @param string $type
+     * @param User   $User
+     * @param string $template
+     * @param null   $billingProcessId
+     * @param array  $bodyVariables
      * @return NotificationMessage
-     * @throws MissingSMSTextException
      */
     public function compileNotification(
         string $type,
         User $User,
-        SubscriptionPack $subscriptionPack,
-        \DateTime $renewDate,
+        string $template,
         $billingProcessId = null,
         array $bodyVariables = []
     ): NotificationMessage
     {
 
-        //TODO Maybe we may move sms text resolving upper?
-        try {
-            $body = $this->SMSTextProvider->getSMSText($type, MessageKeyHandlerProvider::TYPE_SUBSCRIBE_3G, $subscriptionPack);
-        } catch (MissingSMSTextException $exception) {
-            $this->logger->error($exception->getMessage(), ['pack' => $subscriptionPack]);
-            throw  $exception;
-        }
-
         $identifier = $User->getIdentifier();
         $operatorId = $User->getCarrier()->getOperatorId();
-
-        $smsVariables = array_merge(
-            $this->getDefaultSMSVariables($subscriptionPack, $renewDate),
-            $bodyVariables
-        );
-        $body         = $this->compileSmsTextTemplate($smsVariables, $body);
-        $message      = $this->messageCreator->createMessage($identifier, $type, $body, $operatorId);
+        $body       = $this->compileSmsTextTemplate($bodyVariables, $template);
+        $message    = $this->messageCreator->createMessage($identifier, $type, $body, $operatorId);
 
         if ($billingProcessId) {
             $message->setBillingProccess($billingProcessId);
@@ -110,15 +91,4 @@ class MessageCompiler
         return $body;
     }
 
-    private function getDefaultSMSVariables(SubscriptionPack $pack, \DateTimeInterface $renewDate): array
-    {
-        return [
-            '_price_'      => $pack->getTierPrice(),
-            '_currency_'   => $pack->getTierCurrency(),
-            '_home_url_'   => 'home',
-            '_unsub_url_'  => 'myaccount',
-            '_renew_date_' => $renewDate->format(DATE_ISO8601)
-        ];
-
-    }
 }

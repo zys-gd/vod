@@ -2,10 +2,13 @@
 
 namespace App\Domain\Repository;
 
+use IdentificationBundle\Entity\LanguageInterface;
+use IdentificationBundle\Repository\LanguageRepositoryInterface;
+
 /**
  * Class LanguageRepository
  */
-class LanguageRepository extends \Doctrine\ORM\EntityRepository
+class LanguageRepository extends \Doctrine\ORM\EntityRepository implements LanguageRepositoryInterface
 {
     /**
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -17,5 +20,10 @@ class LanguageRepository extends \Doctrine\ORM\EntityRepository
             ->where("p2o.code = 'en'")
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    public function findByCode(string $code): ?LanguageInterface
+    {
+        return $this->findOneBy(['code' => $code]);
     }
 }

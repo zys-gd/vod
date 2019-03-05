@@ -5,3 +5,9 @@ services:
           - {name: subscription.subscription_handler}
         arguments:
           ['@SubscriptionBundle\Service\Notification\Notifier']
+
+    subscription.telenor_pk_notification_handler:
+        class: SubscriptionBundle\Carriers\TelenorPK\Notification\TelenorPKNotificationHandler
+        tags:
+          - {name: subscription.notification_handler, type: subscribe}
+        arguments: ['@App\Domain\Repository\LanguageRepository']

@@ -2,6 +2,7 @@ doctrine:
   orm:
     resolve_target_entities:
       IdentificationBundle\Entity\CarrierInterface: App\Domain\Entity\Carrier
+      IdentificationBundle\Entity\LanguageInterface: App\Domain\Entity\Language
 
 identification:
   wifi_flow_redirect_route: 'landing'

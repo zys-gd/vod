@@ -10,11 +10,13 @@ namespace SubscriptionBundle\Service\Notification\Common;
 
 
 use AppBundle\Service\Domain\Carrier\CarrierProvider;
+use IdentificationBundle\Entity\LanguageInterface;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
+use IdentificationBundle\Repository\LanguageRepositoryInterface;
 use SubscriptionBundle\BillingFramework\Listener\NotificationContentProvider;
 use SubscriptionBundle\BillingFramework\Notification\Exception\MissingSMSTextException;
-use SubscriptionBundle\Service\Notification\Common\SMSTexts\MessageKeyHandlerProvider;
 use SubscriptionBundle\Entity\SubscriptionPack;
+use SubscriptionBundle\Service\Notification\Common\SMSTexts\MessageKeyHandlerProvider;
 
 class SMSTextProvider
 {
@@ -26,42 +28,55 @@ class SMSTextProvider
      * @var CarrierRepositoryInterface
      */
     private $carrierProvider;
+    /**
+     * @var LanguageRepositoryInterface
+     */
+    private $languageRepository;
 
     /**
      * NotificationContentProvider constructor.
-     * @param array                      $predefinedMessages
-     * @param CarrierRepositoryInterface $carrierProvider
+     * @param array                       $predefinedMessages
+     * @param CarrierRepositoryInterface  $carrierProvider
+     * @param LanguageRepositoryInterface $languageRepository
      */
-    public function __construct(array $predefinedMessages, CarrierRepositoryInterface $carrierProvider)
+    public function __construct(
+        array $predefinedMessages,
+        CarrierRepositoryInterface $carrierProvider,
+        LanguageRepositoryInterface $languageRepository
+    )
     {
-        $this->hardcodedMessages = $predefinedMessages;
-        $this->carrierProvider   = $carrierProvider;
+        $this->hardcodedMessages  = $predefinedMessages;
+        $this->carrierProvider    = $carrierProvider;
+        $this->languageRepository = $languageRepository;
     }
 
 
-    public function getSMSText(string $notificationType, string $groupName, SubscriptionPack $subscriptionPack): string
+    public function getSMSText(
+        string $notificationType,
+        string $messageNamespace,
+        SubscriptionPack $subscriptionPack,
+        LanguageInterface $language
+    ): string
     {
         if ($textFromSubscriptionPack = $this->extractFromSubscriptionPack($notificationType, $subscriptionPack)) {
             return $textFromSubscriptionPack;
         }
 
-        $carrier = $this->carrierProvider->findOneByBillingId($subscriptionPack->getCarrierId());
+        if (!$messageNamespace) {
+            throw new MissingSMSTextException(sprintf('Both `message namespace` and `Subscription Pack texts` are not exist.'));
+        }
 
-        $namespaceProvider = MessageKeyHandlerProvider::getService($groupName);
-        $messageNamespace  = $namespaceProvider->getKey(
-            $carrier->getBillingCarrierId(),
-            ''
-        );
 
-        if (!isset($this->hardcodedMessages[$messageNamespace]['message'])) {
+        $code = $language->getCode();
+        if (!isset($this->hardcodedMessages[$messageNamespace][$code])) {
             throw new MissingSMSTextException(sprintf('Text for %s namespace is missing', $messageNamespace));
         }
 
-        if (!isset($this->hardcodedMessages[$messageNamespace]['message'][$notificationType])) {
+        if (!isset($this->hardcodedMessages[$messageNamespace][$code][$notificationType])) {
             throw new MissingSMSTextException(sprintf('Text for %s notification type is missing', $notificationType));
         }
 
-        return $this->hardcodedMessages[$messageNamespace]['message'][$notificationType];
+        return $this->hardcodedMessages[$messageNamespace][$code][$notificationType];
     }
 
     private function extractFromSubscriptionPack($notificationType, SubscriptionPack $subscriptionPack)
