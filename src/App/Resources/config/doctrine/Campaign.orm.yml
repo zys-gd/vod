@@ -71,6 +71,10 @@ App\Domain\Entity\Campaign:
             targetEntity: Affiliate
             joinColumn:
                 referencedColumnName: uuid
+        mainCategory:
+            targetEntity: MainCategory
+            joinColumn:
+                referencedColumnName: uuid
 
     manyToMany:
         carriers:
