@@ -3,5 +3,5 @@ fos_user:
     firewall_name: main
     user_class: App\Domain\Entity\Admin
     from_email:
-        address: noreply@origin-data.net
+        address: support.form@origin-data.com
         sender_name: origin-data
