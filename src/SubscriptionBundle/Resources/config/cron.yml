@@ -1,4 +1,15 @@
 services:
+
+  SubscriptionBundle\Command\MassRenewCommand:
+    arguments:
+      - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+      - '@cron.task'
+      - '@SubscriptionBundle\Service\Action\Renew\Handler\RenewHandlerProvider'
+      - '@SubscriptionBundle\Service\Action\Renew\Common\CommonFlowHandler'
+    tags:
+      - { name: console.command }
+
+
   #subscription.commands.general_renew:
   #  class: SubscriptionBundle\Command\GeneralRenewCommand
   #  arguments: ['@subscription.cron_running_history.repository', '@doctrine.orm.entity_manager']
@@ -27,6 +38,6 @@ services:
   #      - '@SubscriptionBundle\Service\Action\Renew\Renewer'
   #      - '@SubscriptionBundle\Service\SubscriptionExtractor'
 
-  #cron.task:
-  #    class: SubscriptionBundle\Service\Cron\CronTaskStatus
-  #    arguments: ['@doctrine.orm.default_entity_manager', '@SubscriptionBundle\Repository\CronTaskRepository']
+  cron.task:
+      class: SubscriptionBundle\Service\Cron\CronTaskStatus
+      arguments: ['@doctrine.orm.default_entity_manager', '@SubscriptionBundle\Repository\CronTaskRepository']

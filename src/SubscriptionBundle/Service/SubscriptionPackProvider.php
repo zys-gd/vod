@@ -37,7 +37,7 @@ class SubscriptionPackProvider
         /** @var SubscriptionPack $subscriptionPack */
         $subscriptionPack = $this->subscriptionPackRepository->findOneBy([
             'carrierId' => $user->getCarrier()->getBillingCarrierId(),
-            'status'  => SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK
+            'status'    => SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK
         ]);
 
         if (!$subscriptionPack) {
@@ -64,8 +64,8 @@ class SubscriptionPackProvider
 
         /** @var SubscriptionPack $subscriptionPack */
         $subscriptionPack = $this->subscriptionPackRepository->findOneBy([
-            'billingCarrierId' => $billingCarrierId,
-            'status'           => SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK
+            'carrierId' => $billingCarrierId,
+            'status'    => SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK
         ]);
 
         return $subscriptionPack;

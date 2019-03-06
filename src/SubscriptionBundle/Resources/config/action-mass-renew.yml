@@ -1,0 +1,14 @@
+services:
+  SubscriptionBundle\Service\Action\MassRenew\MassRenewer:
+    arguments:
+      - '@SubscriptionBundle\BillingFramework\Process\MassRenewProcess'
+      - '@SubscriptionBundle\Service\Action\MassRenew\MassRenewParametersProvider'
+      - '@SubscriptionBundle\Service\Action\Renew\OnRenewUpdater'
+      - '@SubscriptionBundle\Service\EntitySaveHelper'
+      - '@SubscriptionBundle\Service\Action\Renew\Handler\RenewHandlerProvider'
+
+  SubscriptionBundle\Service\Action\MassRenew\MassRenewParametersProvider:
+    arguments: ['%host%', '@router', '@SubscriptionBundle\Service\SubscriptionPackProvider']
+
+  SubscriptionBundle\Service\Action\Renew\Common\CommonFlowHandler:
+    arguments: ['@SubscriptionBundle\Service\Action\MassRenew\MassRenewer', '@SubscriptionBundle\Repository\SubscriptionRepository']

@@ -91,7 +91,5 @@ class Renewer
         } finally {
             $this->entitySaveHelper->persistAndSave($subscription);
         }
-
-
     }
 }

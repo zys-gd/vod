@@ -48,3 +48,11 @@ services:
 
     SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider:
         arguments: ['@SubscriptionBundle\BillingFramework\Process\API\Client']
+
+    SubscriptionBundle\BillingFramework\Process\MassRenewProcess:
+        arguments:
+            - '@logger'
+            - '@SubscriptionBundle\BillingFramework\Process\API\Client'
+            - '@SubscriptionBundle\BillingFramework\Process\API\RequestParametersExtractor'
+            - '@SubscriptionBundle\BillingFramework\Process\API\LinkCreator'
+

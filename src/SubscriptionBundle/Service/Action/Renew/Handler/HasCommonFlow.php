@@ -9,7 +9,11 @@
 namespace SubscriptionBundle\Service\Action\Renew\Handler;
 
 
+use SubscriptionBundle\Entity\Subscription;
+
 interface HasCommonFlow
 {
-    public function afterProcess(\SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult $result): void;
+    public function onSuccess(Subscription $subscription, int $processId): void;
+
+    public function onFailure(Subscription $subscription, string $errorText): void;
 }
