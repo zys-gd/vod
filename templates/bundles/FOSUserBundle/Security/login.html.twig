@@ -1,0 +1,10 @@
+{% import "bundles/FOSUserBundle/main.html.twig" as main %}
+{% import "bundles/FOSUserBundle/Security/login_form.html.twig" as login_form %}
+
+{% set errorMessage %}
+    {% if error %}
+        <div class="text-center text-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+{% endset %}
+
+{{ main.render(login_form.render(csrf_token, last_username, errorMessage)) }}

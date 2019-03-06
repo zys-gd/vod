@@ -1,0 +1,14 @@
+{% macro render() %}
+    <form action="{{ path('fos_user_resetting_send_email') }}" method="POST">
+        <div class="form-group">
+            <label for="username">Username or email address</label>
+            <input type="text" id="username" name="username" required="required" class="form-control" />
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Reset password" class="form-control btn btn-primary" />
+        </div>
+        <div class="text-right">
+            <a href="{{ path('fos_user_security_login') }}">Login</a>
+        </div>
+    </form>
+{% endmacro %}

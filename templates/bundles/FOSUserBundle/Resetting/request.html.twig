@@ -1,0 +1,4 @@
+{% import "bundles/FOSUserBundle/main.html.twig" as main %}
+{% import "bundles/FOSUserBundle/Resetting/request_form.html.twig" as request_form %}
+
+{{ main.render(request_form.render()) }}
