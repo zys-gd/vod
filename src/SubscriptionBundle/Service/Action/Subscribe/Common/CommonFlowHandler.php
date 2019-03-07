@@ -169,7 +169,8 @@ class CommonFlowHandler
         $UserIdentifier = $User->getIdentifier();
         $this->logger->debug('Processing `subscribe` action', [
             'UserId' => $UserId,
-            'msidsn' => $UserIdentifier
+            'msidsn' => $UserIdentifier,
+            'request' => $request
         ]);
 
         /** @var HasCommonFlow $subscriber */
@@ -197,14 +198,11 @@ class CommonFlowHandler
             throw new ExistingSubscriptionException('You already have an active subscription.', $subscription);
         }
 
-
         if (empty($subscription)) {
             return $this->handleSubscribe($request, $User, $subscriber);
         } else {
             return $this->handleResubscribe($request, $User, $subscription, $subscriber);
         }
-
-
     }
 
 
@@ -228,7 +226,6 @@ class CommonFlowHandler
         $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($User);
         $subpackId        = $subscriptionPack->getUuid();
         $subpackName      = $subscriptionPack->getName();
-
 
         // We have same property at Carrier.
         // Maybe we need to remove this duplicate?
@@ -254,7 +251,6 @@ class CommonFlowHandler
             }
         }
 
-
         if ($subscriber instanceof HasCustomTrackingRules) {
             $isNeedToBeTracked = $subscriber->isNeedToBeTrackedForResubscribe($result);
         } else {
@@ -269,8 +265,6 @@ class CommonFlowHandler
         $this->entitySaveHelper->saveAll();
 
         return $this->commonResponseCreator->createCommonHttpResponse($request, $User);
-
-
     }
 
     /**
