@@ -27,5 +27,10 @@ interface CarrierInterface
     /**
      * @return int
      */
-    public function getOperatorId(): int ;
+    public function getOperatorId(): int;
+
+    public function getSubscriptionPeriod(): int;
+
+    public function getTrialPeriod(): int;
+
 }

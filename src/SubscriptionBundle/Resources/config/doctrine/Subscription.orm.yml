@@ -57,6 +57,14 @@ SubscriptionBundle\Entity\Subscription:
             gedmo:
               - versioned
 
+        lastRenewAlertDate:
+            type: datetime
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+
         currentStage:
             type: smallint
             scale: 0

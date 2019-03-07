@@ -4,6 +4,7 @@ namespace SubscriptionBundle\Service;
 
 
 use App\Domain\Entity\Carrier;
+use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound;
@@ -51,10 +52,10 @@ class SubscriptionPackProvider
 
     /**
      * API Created for returning active subscription pack from carrier
-     * @param Carrier|bool $carrier
+     * @param CarrierInterface $carrier
      * @return null| SubscriptionPack
      */
-    public function getActiveSubscriptionPackFromCarrier(Carrier $carrier = null)
+    public function getActiveSubscriptionPackFromCarrier(CarrierInterface $carrier = null)
     {
         if (!$carrier) {
             return null;

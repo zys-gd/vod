@@ -23,3 +23,5 @@ services:
       arguments: ['@SubscriptionBundle\Service\Action\Renew\Handler\DefaultHandler']
 
   SubscriptionBundle\Service\Action\Renew\Handler\DefaultHandler: ~
+
+  SubscriptionBundle\Service\Action\Renew\Common\RenewAlertTypeProvider: ~

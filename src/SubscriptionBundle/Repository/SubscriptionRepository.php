@@ -4,6 +4,7 @@ namespace SubscriptionBundle\Repository;
 
 use App\Domain\Entity\Carrier;
 use Carbon\Carbon;
+use DateTime;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use IdentificationBundle\Entity\CarrierInterface;
@@ -140,7 +141,7 @@ class SubscriptionRepository extends EntityRepository
      */
     public function getExpiredSubscriptions(CarrierInterface $carrier)
     {
-        $startedLimit = new \DateTime('-' . $carrier->getTrialPeriod() . ' days');
+        $startedLimit = new DateTime('-' . $carrier->getTrialPeriod() . ' days');
 
         $qb    = $this->getEntityManager()->createQueryBuilder();
         $query = $qb->select('s')
@@ -152,11 +153,11 @@ class SubscriptionRepository extends EntityRepository
             ->andWhere('s.renewDate < :currentTime')
             ->andWhere('(carrier = :carrier )')
             ->setParameters([
-                'subStatus'    => Subscription::IS_ACTIVE,
-                'subAction'    => Subscription::ACTION_SUBSCRIBE,
-                'currentTime'  => new \DateTime(),
+                'subStatus'   => Subscription::IS_ACTIVE,
+                'subAction'   => Subscription::ACTION_SUBSCRIBE,
+                'currentTime' => new DateTime(),
                 /*'startedLimit' => $startedLimit,*/
-                'carrier'      => $carrier
+                'carrier'     => $carrier
             ])
             ->setMaxResults(100)
             ->getQuery();
@@ -181,6 +182,36 @@ class SubscriptionRepository extends EntityRepository
 
         return $query->getSingleScalarResult();
     }
+
+    /**
+     * @param CarrierInterface $carrier
+     * @return Subscription[]
+     * @throws \Exception
+     */
+    public function findExpiringTomorrowSubscriptions(CarrierInterface $carrier)
+    {
+        $startedLimit = new DateTime('-' . $carrier->getSubscriptionPeriod() . ' days');
+
+        $query = $this->createQueryBuilder('s')
+            ->join('s.user', 'user')
+            ->join('user.carrier', 'carrier')
+            ->andWhere('s.currentStage = :subAction')
+            ->andWhere('s.status = :subStatus')
+            ->andWhere("DATE(s.renewDate) = DATE_ADD(CURRENT_DATE(), 1, 'DAY')")
+            ->andWhere('(s.lastRenewAlertDate < :startedLimit) OR s.lastRenewAlertDate IS NULL')
+            ->andWhere('(carrier = :carrier )')
+            ->setParameters([
+                'subStatus'    => Subscription::IS_ACTIVE,
+                'subAction'    => Subscription::ACTION_SUBSCRIBE,
+                'carrier'      => $carrier,
+                'startedLimit' => $startedLimit
+            ])
+            ->setMaxResults(100)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
 }
 
 

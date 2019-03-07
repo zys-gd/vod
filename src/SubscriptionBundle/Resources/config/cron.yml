@@ -9,6 +9,10 @@ services:
     tags:
       - { name: console.command }
 
+  SubscriptionBundle\Command\IncomingRenewNotificationCommand:
+    arguments: ['@IdentificationBundle\Repository\CarrierRepositoryInterface', '@SubscriptionBundle\Service\Cron\RenewAlerter']
+    tags:
+      - { name: console.command }
 
   #subscription.commands.general_renew:
   #  class: SubscriptionBundle\Command\GeneralRenewCommand
@@ -41,3 +45,10 @@ services:
   cron.task:
       class: SubscriptionBundle\Service\Cron\CronTaskStatus
       arguments: ['@doctrine.orm.default_entity_manager', '@SubscriptionBundle\Repository\CronTaskRepository']
+
+
+  SubscriptionBundle\Service\Cron\RenewAlerter:
+    arguments:
+      - '@SubscriptionBundle\Repository\SubscriptionRepository'
+      - '@SubscriptionBundle\Service\Action\Renew\Handler\RenewHandlerProvider'
+      - '@SubscriptionBundle\Service\EntitySaveHelper'

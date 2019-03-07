@@ -2,8 +2,6 @@
 
 namespace SubscriptionBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use IdentificationBundle\Entity\User;
 use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 
@@ -113,13 +111,15 @@ class Subscription implements HasUuid
      */
     protected $error = null;
 
+    private $lastRenewAlertDate;
+
     /**
      * Subscription constructor.
      * @param string $uuid
      */
     public function __construct(string $uuid)
     {
-        $this->uuid = $uuid;
+        $this->uuid    = $uuid;
         $this->credits = 0;
         $this->created = new \DateTimeImmutable();
         $this->updated = new \DateTimeImmutable();
@@ -571,5 +571,25 @@ class Subscription implements HasUuid
     {
         return $this->uuid;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getLastRenewAlertDate(): ?\DateTime
+    {
+        return $this->lastRenewAlertDate;
+    }
+
+    /**
+     * @param mixed $lastRenewAlertDate
+     * @return Subscription
+     */
+    public function setLastRenewAlertDate(\DateTime $lastRenewAlertDate)
+    {
+        $this->lastRenewAlertDate = $lastRenewAlertDate;
+        return $this;
+    }
+
+
 }
 

@@ -16,3 +16,5 @@ services:
         class: SubscriptionBundle\Carriers\TelenorPK\Renew\TelenorPKRenewHandler
         tags:
           - {name: subscription.renew_handler}
+        arguments:
+          ['@SubscriptionBundle\Service\Notification\Notifier', '@SubscriptionBundle\Service\SubscriptionPackProvider']

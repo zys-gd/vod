@@ -34,3 +34,5 @@ doctrine:
         dql:
             numeric_functions:
                 rand: DoctrineExtensions\Query\Mysql\Rand
+                DATE_ADD: DoctrineExtensions\Query\Mysql\DateAdd
+                DATE: DoctrineExtensions\Query\Mysql\Date

@@ -47,6 +47,7 @@ class RenewHandlerProvider
     {
         $availableInterfaceString = json_encode([
             HasCommonFlow::class,
+            HasRenewAlerts::class,
         ]);
         $handlerClass             = get_class($handler);
 

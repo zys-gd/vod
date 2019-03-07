@@ -63,7 +63,7 @@ class MassRenewCommand extends Command
 
     public function configure()
     {
-        $this->setName('cron:mass-renew');
+        $this->setName('user:subscription:mass-renew');
         $this->addArgument('carrier_id', InputArgument::REQUIRED, 'Carrier ID');
         $this->setHelp("Command to renew expired subscriptions in batches.");
     }
