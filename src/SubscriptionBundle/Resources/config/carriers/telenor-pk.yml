@@ -10,6 +10,7 @@ services:
         class: SubscriptionBundle\Carriers\TelenorPK\Notification\TelenorPKNotificationHandler
         tags:
           - {name: subscription.notification_handler, type: subscribe}
+          - {name: subscription.notification_handler, type: notify_renew}
         arguments: ['@App\Domain\Repository\LanguageRepository']
 
     subscription.telenor_pk_renew_handler:
@@ -17,4 +18,6 @@ services:
         tags:
           - {name: subscription.renew_handler}
         arguments:
-          ['@SubscriptionBundle\Service\Notification\Notifier', '@SubscriptionBundle\Service\SubscriptionPackProvider']
+          - '@SubscriptionBundle\Service\Notification\Notifier'
+          - '@SubscriptionBundle\Service\SubscriptionPackProvider'
+          - '@SubscriptionBundle\Service\Action\Renew\Common\RenewAlertTypeProvider'
