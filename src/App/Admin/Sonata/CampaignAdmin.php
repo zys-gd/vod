@@ -5,6 +5,7 @@ namespace App\Admin\Sonata;
 use App\Admin\Sonata\Traits\InitDoctrine;
 use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Campaign;
+use App\Domain\Entity\MainCategory;
 use App\Domain\Service\AWSS3\S3Client;
 use App\Domain\Service\Campaign\CampaignService;
 use App\Utils\UuidGenerator;
@@ -272,6 +273,11 @@ class CampaignAdmin extends AbstractAdmin
         $formMapper
             ->tab('Landing page')
             ->with('', ['box_class' => 'box-solid'])
+            ->add('mainCategory', EntityType::class, [
+                'class' => MainCategory::class,
+                'placeholder' => 'Select main category',
+                'label' => 'Category to be displayed'
+            ])
             ->add('image_file', FileType::class, [
                 'required' => empty($imagePreview),
                 'label' => 'Main Image',
@@ -280,6 +286,7 @@ class CampaignAdmin extends AbstractAdmin
             ->add('bgColor', ColorType::class, [
                 'attr' => ['style' => 'width: 50px'],
                 'label' => 'Background color',
+                'data' => '#ffffff',
                 'required' => true
             ])
             ->add('textColor', ColorType::class, [

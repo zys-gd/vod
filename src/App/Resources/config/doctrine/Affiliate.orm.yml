@@ -1,6 +1,7 @@
 App\Domain\Entity\Affiliate:
     type: entity
     table: affiliates
+    repositoryClass: App\Domain\Repository\AffiliateRepository
     id:
         uuid:
             type: guid
@@ -8,6 +9,7 @@ App\Domain\Entity\Affiliate:
         name:
             type: string
             length: 255
+            unique: true
         type:
             type: integer
         url:

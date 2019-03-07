@@ -27,7 +27,7 @@ class OrangeTNSubscribeCallbackHandler implements CarrierCallbackHandlerInterfac
 
     public function afterProcess(Subscription $subscription, User $User, ProcessResult $processResponse)
     {
-        // TODO: Implement afterSuccess() method.
+        // TODO: Implement onSuccess() method.
     }
 
     public function isNeedToBeTracked(ProcessResult $result): bool

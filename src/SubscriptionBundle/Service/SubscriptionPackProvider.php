@@ -4,6 +4,7 @@ namespace SubscriptionBundle\Service;
 
 
 use App\Domain\Entity\Carrier;
+use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound;
@@ -37,7 +38,7 @@ class SubscriptionPackProvider
         /** @var SubscriptionPack $subscriptionPack */
         $subscriptionPack = $this->subscriptionPackRepository->findOneBy([
             'carrierId' => $user->getCarrier()->getBillingCarrierId(),
-            'status'  => SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK
+            'status'    => SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK
         ]);
 
         if (!$subscriptionPack) {
@@ -51,10 +52,10 @@ class SubscriptionPackProvider
 
     /**
      * API Created for returning active subscription pack from carrier
-     * @param Carrier|bool $carrier
+     * @param CarrierInterface $carrier
      * @return null| SubscriptionPack
      */
-    public function getActiveSubscriptionPackFromCarrier(Carrier $carrier = null)
+    public function getActiveSubscriptionPackFromCarrier(CarrierInterface $carrier = null)
     {
         if (!$carrier) {
             return null;
@@ -64,8 +65,8 @@ class SubscriptionPackProvider
 
         /** @var SubscriptionPack $subscriptionPack */
         $subscriptionPack = $this->subscriptionPackRepository->findOneBy([
-            'billingCarrierId' => $billingCarrierId,
-            'status'           => SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK
+            'carrierId' => $billingCarrierId,
+            'status'    => SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK
         ]);
 
         return $subscriptionPack;

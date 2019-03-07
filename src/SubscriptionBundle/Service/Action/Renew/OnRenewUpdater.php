@@ -9,13 +9,13 @@
 namespace SubscriptionBundle\Service\Action\Renew;
 
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater;
 use SubscriptionBundle\Service\CreditsCalculator;
 use SubscriptionBundle\Service\RenewDateCalculator;
 use SubscriptionBundle\Service\SubscriptionExtractor;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class OnRenewUpdater
 {
@@ -108,7 +108,7 @@ class OnRenewUpdater
         $subscription->setStatus(Subscription::IS_ACTIVE);
         $subscription->setRenewDate($this->renewDateCalculator->calculateRenewDate($subscription));
 
-        $User         = $subscription->getUser();
+        $User                 = $subscription->getUser();
         $existingSubscription = $this->subscriptionProvider->getExistingSubscriptionForUser($User);
 
         $newCredits = $this->creditsCalculator->calculateCredits($subscription, $subscription->getSubscriptionPack(), $existingSubscription);
@@ -126,5 +126,16 @@ class OnRenewUpdater
         }
 
 
+    }
+
+    public function updateSubscriptionOnSuccess(Subscription $subscription, int $processId)
+    {
+        $this->applySuccess($subscription);
+
+    }
+
+    public function updateSubscriptionOnFailure(Subscription $subscription, string $errorName)
+    {
+        $this->applyFailure($subscription, $errorName);
     }
 }

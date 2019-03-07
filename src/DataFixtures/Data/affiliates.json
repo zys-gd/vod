@@ -105,21 +105,6 @@
         }
     },
     {
-        "uuid": "514fdd62-ebd4-11e8-95c4-02bb250f0f22",
-        "name": "DIALOG",
-        "type": 2,
-        "url": "http:\/\/test.com",
-        "postbackUrl": "",
-        "commercialContact": "a.perezcassar@adcash.com",
-        "technicalContact": "c.grange@adcash.com",
-        "skypeId": "charly.adcash",
-        "enabled": true,
-        "subPriceName": null,
-        "country": {
-            "uuid": "5103cf67-ebd4-11e8-95c4-02bb250f0f22"
-        }
-    },
-    {
         "uuid": "514fddc4-ebd4-11e8-95c4-02bb250f0f22",
         "name": "Crossrider",
         "type": 2,
@@ -346,7 +331,7 @@
     },
     {
         "uuid": "514fe80f-ebd4-11e8-95c4-02bb250f0f22",
-        "name": "mopub",
+        "name": "mopub_new",
         "type": 1,
         "url": "http:\/\/mopub.com",
         "postbackUrl": "",
@@ -432,21 +417,6 @@
         "subPriceName": null,
         "country": {
             "uuid": "5103cf67-ebd4-11e8-95c4-02bb250f0f22"
-        }
-    },
-    {
-        "uuid": "514fec63-ebd4-11e8-95c4-02bb250f0f22",
-        "name": "Dialog",
-        "type": 2,
-        "url": "http:\/\/www.test.com",
-        "postbackUrl": "",
-        "commercialContact": "Sumudu",
-        "technicalContact": "Sumudu",
-        "skypeId": "sumudu.dialog",
-        "enabled": false,
-        "subPriceName": null,
-        "country": {
-            "uuid": "510419b4-ebd4-11e8-95c4-02bb250f0f22"
         }
     },
     {

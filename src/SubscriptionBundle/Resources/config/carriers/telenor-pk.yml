@@ -11,3 +11,10 @@ services:
         tags:
           - {name: subscription.notification_handler, type: subscribe}
         arguments: ['@App\Domain\Repository\LanguageRepository']
+
+    subscription.telenor_pk_renew_handler:
+        class: SubscriptionBundle\Carriers\TelenorPK\Renew\TelenorPKRenewHandler
+        tags:
+          - {name: subscription.renew_handler}
+        arguments:
+          ['@SubscriptionBundle\Service\Notification\Notifier', '@SubscriptionBundle\Service\SubscriptionPackProvider']

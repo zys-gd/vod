@@ -6,6 +6,7 @@ use App\Admin\Form\Type\AffiliateConstantType;
 use App\Admin\Form\Type\AffiliateParameterType;
 use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Country;
+use App\Domain\Repository\AffiliateRepository;
 use App\Utils\UuidGenerator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -17,13 +18,39 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Class AffiliateAdmin
  */
 class AffiliateAdmin extends AbstractAdmin
 {
+    /**
+     * @var AffiliateRepository
+     */
+    private $affiliateRepository;
+
+    /**
+     * AffiliateAdmin constructor
+     *
+     * @param string $code
+     * @param string $class
+     * @param string $baseControllerName
+     * @param AffiliateRepository $affiliateRepository
+     */
+    public function __construct(
+        string $code,
+        string $class,
+        string $baseControllerName,
+        AffiliateRepository $affiliateRepository
+    ) {
+        $this->affiliateRepository = $affiliateRepository;
+
+        parent::__construct($code, $class, $baseControllerName);
+    }
+
     /**
      * @return Affiliate
      *
@@ -116,7 +143,21 @@ class AffiliateAdmin extends AbstractAdmin
                 'label' => 'Type'
             ])
             ->add('name', TextType::class, [
-                'label' => 'Name'
+                'label' => 'Name',
+                'constraints' => [
+                    new Callback(function (string $name, ExecutionContextInterface $context) {
+                        $affiliates = $this->affiliateRepository->findBy(['name' => $name]);
+                        /** @var Affiliate $affiliate */
+                        $affiliate = empty($affiliates) ? null : $affiliates[0];
+                        $subject = $this->getSubject();
+
+                        if ($affiliate && $affiliate->getUuid() !== $subject->getUuid()) {
+                            $context
+                                ->buildViolation('Affiliate with the same name already exists')
+                                ->addViolation();
+                        }
+                    })
+                ]
             ])
             ->add('postbackUrl', UrlType::class, [
                 'required' => true,

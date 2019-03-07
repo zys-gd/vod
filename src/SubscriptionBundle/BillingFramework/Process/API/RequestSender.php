@@ -76,7 +76,7 @@ class RequestSender
         try {
 
             $preparedParams    = $this->extractor->extractParameters($processParameters);
-            $response          = $this->apiClient->sendPostRequest($preparedParams, $type);
+            $response          = $this->apiClient->sendPostProcessRequest($preparedParams, $type);
             $processedResponse = $this->responseMapper->map($type, $response);
             $this->logger->debug('Received response from billing', [
                 'status'  => $processedResponse->getStatus(),
@@ -98,7 +98,7 @@ class RequestSender
         try {
 
             $preparedParams = $this->extractor->extractParameters($processParameters);
-            $response       = $this->apiClient->sendPostRequest($preparedParams, $type);
+            $response       = $this->apiClient->sendPostProcessRequest($preparedParams, $type);
 
         } catch (BillingFrameworkProcessException $e) {
             $this->logger->debug('Bad response from BF', (array)$e->getRawResponse());

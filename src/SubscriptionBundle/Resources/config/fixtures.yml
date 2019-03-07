@@ -3,5 +3,9 @@ services:
 #        resource: '../../DataFixtures/ORM/*.php'
 #
 #        tags: ['doctrine.fixture.orm']
+
     SubscriptionBundle\DataFixtures\ORM\LoadSubscriptionPackData:
+        tags: ['doctrine.fixture.orm']
+
+    SubscriptionBundle\DataFixtures\ORM\LoadCronTasksData:
         tags: ['doctrine.fixture.orm']

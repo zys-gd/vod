@@ -18,3 +18,10 @@ services:
 
   SubscriptionBundle\Service\Action\Renew\RenewParametersProvider:
       arguments: ['@SubscriptionBundle\Service\Action\Common\RequestParametersProvider', '%host%', '@router']
+
+  SubscriptionBundle\Service\Action\Renew\Handler\RenewHandlerProvider:
+      arguments: ['@SubscriptionBundle\Service\Action\Renew\Handler\DefaultHandler']
+
+  SubscriptionBundle\Service\Action\Renew\Handler\DefaultHandler: ~
+
+  SubscriptionBundle\Service\Action\Renew\Common\RenewAlertTypeProvider: ~

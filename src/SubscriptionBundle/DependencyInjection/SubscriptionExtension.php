@@ -35,6 +35,7 @@ class SubscriptionExtension extends ConfigurableExtension
         $loader->load('action-subscribe.yml');
         $loader->load('action-unsubscribe.yml');
         $loader->load('action-renew.yml');
+        $loader->load('action-mass-renew.yml');
         $loader->load('action-subscribe-back.yml');
         $loader->load('admin.yml');
         $loader->load('billing-framework-integration.yml');

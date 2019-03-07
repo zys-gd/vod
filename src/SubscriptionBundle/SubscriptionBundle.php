@@ -2,6 +2,7 @@
 
 namespace SubscriptionBundle;
 
+use SubscriptionBundle\DependencyInjection\Compiler\RenewHandlerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use SubscriptionBundle\DependencyInjection\Compiler\CallbackHandlerPass;
@@ -18,5 +19,6 @@ class SubscriptionBundle extends Bundle
         $container->addCompilerPass(new CallbackHandlerPass());
         $container->addCompilerPass(new UnsubscriptionHandlerPass());
         $container->addCompilerPass(new NotificationHandlerPass());
+        $container->addCompilerPass(new RenewHandlerPass());
     }
 }

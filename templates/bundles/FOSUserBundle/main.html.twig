@@ -1,0 +1,17 @@
+{% macro render(form) %}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Admin</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
+    </head>
+    <body>
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6 p-4" style="max-width: 300px; border: 2px solid #0069d9; border-radius: 20px">
+            {{ form | raw }}
+        </div>
+    </div>
+    </body>
+    </html>
+{% endmacro %}

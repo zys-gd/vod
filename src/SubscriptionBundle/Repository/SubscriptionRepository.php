@@ -4,8 +4,10 @@ namespace SubscriptionBundle\Repository;
 
 use App\Domain\Entity\Carrier;
 use Carbon\Carbon;
+use DateTime;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
+use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Exception\SubscriptionException;
@@ -39,7 +41,7 @@ class SubscriptionRepository extends EntityRepository
     }
 
     /**
-     * @param User $user
+     * @param User         $user
      * @param Subscription $subscription
      * @return mixed
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -137,25 +139,25 @@ class SubscriptionRepository extends EntityRepository
      * @param Carrier $carrier
      * @return Subscription[]
      */
-    public function getExpiredSubscriptions(Carrier $carrier)
+    public function getExpiredSubscriptions(CarrierInterface $carrier)
     {
-        $startedLimit = new \DateTime('-' . $carrier->getTrialPeriod() . ' days');
+        $startedLimit = new DateTime('-' . $carrier->getTrialPeriod() . ' days');
 
         $qb    = $this->getEntityManager()->createQueryBuilder();
         $query = $qb->select('s')
             ->from($this->getEntityName(), 's')
-            ->join('s.owner', 'owner')
-            ->join('owner.carrier', 'carrier')
+            ->join('s.user', 'user')
+            ->join('user.carrier', 'carrier')
             ->andWhere('s.currentStage = :subAction')
             ->andWhere('s.status = :subStatus')
             ->andWhere('s.renewDate < :currentTime')
-            ->andWhere('(carrier = :carrier AND s.created >= :startedLimit)')
+            ->andWhere('(carrier = :carrier )')
             ->setParameters([
-                'subStatus'     => Subscription::IS_ACTIVE,
-                'subAction'     => Subscription::ACTION_SUBSCRIBE,
-                'currentTime'   => new \DateTime(),
-                'startedLimit'  => $startedLimit,
-                'carrier'       => $carrier
+                'subStatus'   => Subscription::IS_ACTIVE,
+                'subAction'   => Subscription::ACTION_SUBSCRIBE,
+                'currentTime' => new DateTime(),
+                /*'startedLimit' => $startedLimit,*/
+                'carrier'     => $carrier
             ])
             ->setMaxResults(100)
             ->getQuery();
@@ -180,6 +182,36 @@ class SubscriptionRepository extends EntityRepository
 
         return $query->getSingleScalarResult();
     }
+
+    /**
+     * @param CarrierInterface $carrier
+     * @return Subscription[]
+     * @throws \Exception
+     */
+    public function findExpiringTomorrowSubscriptions(CarrierInterface $carrier)
+    {
+        $startedLimit = new DateTime('-' . $carrier->getSubscriptionPeriod() . ' days');
+
+        $query = $this->createQueryBuilder('s')
+            ->join('s.user', 'user')
+            ->join('user.carrier', 'carrier')
+            ->andWhere('s.currentStage = :subAction')
+            ->andWhere('s.status = :subStatus')
+            ->andWhere("DATE(s.renewDate) = DATE_ADD(CURRENT_DATE(), 1, 'DAY')")
+            ->andWhere('(s.lastRenewAlertDate < :startedLimit) OR s.lastRenewAlertDate IS NULL')
+            ->andWhere('(carrier = :carrier )')
+            ->setParameters([
+                'subStatus'    => Subscription::IS_ACTIVE,
+                'subAction'    => Subscription::ACTION_SUBSCRIBE,
+                'carrier'      => $carrier,
+                'startedLimit' => $startedLimit
+            ])
+            ->setMaxResults(100)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
 }
 
 

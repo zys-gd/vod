@@ -29,6 +29,11 @@ class Campaign implements CampaignInterface
     private $affiliate;
 
     /**
+     * @var MainCategory
+     */
+    private $mainCategory;
+
+    /**
      * @var string
      */
     private $campaignToken;
@@ -230,6 +235,26 @@ class Campaign implements CampaignInterface
     public function getAffiliate(): ?Affiliate
     {
         return $this->affiliate;
+    }
+
+    /**
+     * @return MainCategory
+     */
+    public function getMainCategory(): ?MainCategory
+    {
+        return $this->mainCategory;
+    }
+
+    /**
+     * @param MainCategory $mainCategory
+     *
+     * @return Campaign
+     */
+    public function setMainCategory(MainCategory $mainCategory): Campaign
+    {
+        $this->mainCategory = $mainCategory;
+
+        return $this;
     }
 
     /**

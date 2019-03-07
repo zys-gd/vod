@@ -12,14 +12,15 @@ namespace SubscriptionBundle\BillingFramework\Process\API;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use stdClass;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use SubscriptionBundle\BillingFramework\Process\API\Exception\EmptyResponse;
 use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkException;
 use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkProcessException;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Client
 {
@@ -72,7 +73,7 @@ class Client
      * @throws BillingFrameworkException
      * @throws BillingFrameworkProcessException
      */
-    public function sendPostRequest(array $options, $method): ?stdClass
+    public function sendPostProcessRequest(array $options, $method): ?stdClass
     {
         $url      = $this->billingFrameworkLinkCreator->createProcessLink($method);
         $response = $this->makePostRequest($url, $options);
@@ -81,7 +82,7 @@ class Client
 
     /**
      * @param string $method
-     * @param array $options
+     * @param array  $options
      *
      * @return stdClass|stdClass[]|null
      *
@@ -147,7 +148,7 @@ class Client
 
         $resultData = property_exists($response, 'data') ? $response->data : [];
 
-        return (object) $resultData;
+        return (object)$resultData;
 
     }
 
@@ -181,17 +182,27 @@ class Client
     }
 
     /**
-     * @param $url
-     * @param $params
+     * @param       $url
+     * @param array $params
+     * @param bool  $isJson
      * @return null|stdClass|stdClass[]
-     * @throws BillingFrameworkProcessException
      * @throws BillingFrameworkException
+     * @throws BillingFrameworkProcessException
      */
-    private function makePostRequest($url, array $params): ?stdClass
+    public function makePostRequest($url, array $params, bool $isJson = false): ?stdClass
     {
         try {
 
-            $response         = $this->httpClient->request('POST', $url, [\GuzzleHttp\RequestOptions::FORM_PARAMS => $params]);
+            if ($isJson) {
+                $options = [
+                    RequestOptions::JSON => $params,
+                ];
+            } else {
+                $options = [
+                    RequestOptions::FORM_PARAMS => $params,
+                ];
+            }
+            $response         = $this->httpClient->request('POST', $url, $options);
             $preparedResponse = $this->extractContentFromResponse($response);
             return $preparedResponse;
         } catch (ClientException $e) {
