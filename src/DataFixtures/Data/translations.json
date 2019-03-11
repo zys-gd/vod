@@ -65,7 +65,7 @@
     {
         "uuid": "0f5cf82e-b95b-45d1-80aa-e971aef6f2ac",
         "key": "offer.account",
-        "translation": "Watch unlimited sport videos for only %price% %currency% per %period%",
+        "translation": "Watch unlimited videos of your favorite sports and teams!<br/>Only %price% %currency% per %period%",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -317,7 +317,7 @@
     {
         "uuid": "51136644-9be4-4eac-b466-f617e7238d00",
         "key": "offer.landing",
-        "translation": "Watch unlimited sport videos <br\/><small>for only %price% %currency% per %period%<\/small>",
+        "translation": "Watch unlimited videos of your favorite sports and teams!<br/>Only %price% %currency% per %period%",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },

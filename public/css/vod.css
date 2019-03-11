@@ -177,7 +177,7 @@ a button {
 }
 
 .button {
-    background-image: linear-gradient(#fd0505, #920a0d);
+    background-image: linear-gradient(#ff0000, #ca2529, #8a070a);
     color: #FFFFFF;
     font-size: 30px;
     font-family: 'Kanit', sans-serif;
