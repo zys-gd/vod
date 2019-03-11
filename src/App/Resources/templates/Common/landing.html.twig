@@ -53,11 +53,13 @@
         {#<div class="d-flex align-items-center justify-content-center">
             {{ subscribe_buttons.render(carriers, 'mh-90') }}
         </div>#}
-        <div class="lure_box_wrapper mb-0">
+        <div class="lure_box_wrapper">
             {{ red_lure_block.render(translate('lure_block.text')) }}
         </div>
     </div>
 {% endblock body %}
 
-{% block footer %}
-{% endblock footer %}
+{% block footer_content %}
+    {{ annotation.render() }}
+    {{ footer_menu.render() }}
+{% endblock footer_content %}

@@ -34,6 +34,7 @@ a button {
 .w-175px {
     width: 175px;
 }
+
 .m-55 {
     margin: 0 55px;
 }
@@ -45,7 +46,6 @@ a button {
 .mh-7 {
     margin: 7px 0;
 }
-
 
 
 .mt-10 {
@@ -62,12 +62,15 @@ a button {
 .max-vw-100 {
     max-width: 100vw !important;
 }
+
 .max-vw-75 {
     max-width: 75vw !important;
 }
+
 .max-vw-50 {
     max-width: 50vw !important;
 }
+
 .max-vw-25 {
     max-width: 25vw !important;
 }
@@ -75,6 +78,7 @@ a button {
 .red {
     color: #ff0000;
 }
+
 .bg-gray {
     background-color: #190000 !important;
     background-image: none !important;
@@ -171,6 +175,7 @@ a button {
     font-weight: bold;
     color: white;
 }
+
 .header-page-subscription_text small {
     line-height: 1.4;
     display: inline-block;
@@ -191,7 +196,13 @@ a button {
     border-radius: 48px;
     padding: 5px 30px;
     border-bottom: 1px solid #f96d6d;
+    outline: none;
 }
+
+.button:focus {
+    outline: 0;
+}
+
 .button:hover {
     color: #FFFFFF;
     text-decoration: none;
@@ -202,7 +213,7 @@ a button {
     background-color: #a90000;
 }
 
-.button-small{
+.button-small {
     padding: 6px 16px;
     border: 0;
     background-color: #ec0000;
@@ -210,7 +221,7 @@ a button {
     font-size: small;
 }
 
-.button-gray{
+.button-gray {
     padding: 6px 16px;
     border: 0;
     background-color: #190000;
@@ -220,10 +231,12 @@ a button {
 .button-confirm {
 
 }
+
 .button-confirm__no {
     padding: 0;
     width: 40%;
 }
+
 .button-confirm__yes {
     padding: 0;
     width: 40%;
@@ -325,33 +338,40 @@ a button {
     background-size: contain;
 
 }
-.listed-games-block{
+
+.listed-games-block {
     width: 100%;
     margin-bottom: 4px;
 }
-.listed-game{
+
+.listed-game {
     margin-bottom: 3px;
     border-bottom: 2px solid #c5c3c3;
 
 }
-.listed-game-image{
+
+.listed-game-image {
     width: 66%;
     cursor: pointer;
 }
-.listed-game-title{
+
+.listed-game-title {
     font-weight: 500;
-    color:#212529;
+    color: #212529;
 }
-.listed-game-text{
+
+.listed-game-text {
     background-color: #ebebeb;
     padding: 8px;
     width: 34%;
     text-underline: none;
 }
-.listed-game-image img{
+
+.listed-game-image img {
     width: 100%;
 }
-body{
+
+body {
     overflow-x: hidden;
 }
 
@@ -362,15 +382,17 @@ body{
     font-style: italic;
     position: relative;
 }
-    .separator-title .before {
-        content:  url("/img/separator.png");
-        max-width: 25%;
-    }
-    .separator-title .after {
-        content:  url("/img/separator-rotate.png");
-        /*transform: rotate(180deg);*/
-        max-width: 25%;
-    }
+
+.separator-title .before {
+    content: url("/img/separator.png");
+    max-width: 25%;
+}
+
+.separator-title .after {
+    content: url("/img/separator-rotate.png");
+    /*transform: rotate(180deg);*/
+    max-width: 25%;
+}
 
 .after-games-separator {
     background: url(../img/home/separator-left.png) left center no-repeat;
@@ -380,19 +402,20 @@ body{
     margin-bottom: 15px;
 }
 
-.copyright{
+.copyright {
     text-align: center;
 }
 
-.footer_menu_separator{
+.footer_menu_separator {
     margin-bottom: 15px;
 }
 
-.footer_menu_separator .separator_right{
+.footer_menu_separator .separator_right {
     margin-right: 0;
     margin-left: auto;
 }
-.footer_menu_separator .separator_left{
+
+.footer_menu_separator .separator_left {
     margin-left: 0;
 }
 
@@ -412,6 +435,7 @@ body{
     -ms-flex-wrap: wrap !important;
     flex-wrap: wrap !important;
 }
+
 #_loader__fill {
     position: fixed;
     width: 100%;
@@ -422,30 +446,39 @@ body{
     opacity: 0.5;
     z-index: 1;
 }
+
 #_loader__roll {
     background: url("/img/loader.png") no-repeat center;
     width: 25vw;
     height: 25vw;
 
     -webkit-animation-name: rotate;
-    -webkit-animation-duration:2s;
-    -webkit-animation-iteration-count:infinite;
-    -webkit-animation-timing-function:linear;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
     -moz-animation-name: rotate;
-    -moz-animation-duration:2s;
-    -moz-animation-iteration-count:infinite;
-    -moz-animation-timing-function:linear;
+    -moz-animation-duration: 2s;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-timing-function: linear;
     z-index: 2;
 }
 
 @-webkit-keyframes rotate {
-    from {-webkit-transform:rotate(0deg);}
-    to {  -webkit-transform:rotate(360deg);}
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+    }
 }
 
 @-moz-keyframes rotate {
-    from {-moz-transform:rotate(0deg);}
-    to {  -moz-transform:rotate(360deg);}
+    from {
+        -moz-transform: rotate(0deg);
+    }
+    to {
+        -moz-transform: rotate(360deg);
+    }
 }
 
 .select, .input {
