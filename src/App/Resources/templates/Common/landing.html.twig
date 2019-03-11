@@ -29,7 +29,7 @@
 
         <div class="d-flex align-items-center justify-content-center">
             {% if campaignBanner %}
-                {{  banner.render(campaignBanner, 'banner', 'w-100') }}
+                {{ banner.render(campaignBanner, 'banner', 'w-100') }}
             {% else %}
                 {{ banner.render(asset('img/lp/lp_subscribe_video.png'), 'banner', 'w-100') }}
             {% endif %}
@@ -60,6 +60,8 @@
 {% endblock body %}
 
 {% block footer_content %}
-    {{ annotation.render() }}
+    {% if isCarrierDetected() %}
+        {{ annotation.render() }}
+    {% endif %}
     {{ footer_menu.render() }}
 {% endblock footer_content %}

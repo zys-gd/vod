@@ -15,6 +15,7 @@ use App\Domain\Service\ContentStatisticSender;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -83,6 +84,19 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         return $this->render('@App/Common/landing.html.twig', [
             'campaignBanner' => $campaignBanner,
             'background' => $background
+        ]);
+    }
+
+    /**
+     * @Route("/get_annotation", name="ajax_annotation")
+     *
+     * @return JsonResponse
+     */
+    public function ajaxAnnotationAction()
+    {
+        return new JsonResponse([
+            'code' => 200,
+            'response' => $this->renderView('@App/Components/Ajax/annotation.html.twig')
         ]);
     }
 }

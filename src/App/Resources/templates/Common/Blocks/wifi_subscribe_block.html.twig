@@ -67,6 +67,7 @@
                     if (result.data.success) {
                         $wifi_form_step.html(params.html_wifi_phone);
                         form.attr('data-form', 'pin');
+                        insertAnnotation();
                     } else {
                         showAlert({title: result.data.message});
                     }
@@ -122,6 +123,7 @@
                             .append(input_phone);
                         form.attr('data-form', 'confirm');
                         $wifi_warning.html(params.pin_notif.replace(/%wifi_phone%/, phone));
+                        insertAnnotation();
                     } else {
                         showAlert({title: result.data.message});
                     }
@@ -182,5 +184,20 @@
                 $(this).val('');
             }
         });
+
+        function insertAnnotation() {
+            $._loader(false);
+            var $html;
+            $.ajax('{{ path('ajax_annotation') }}')
+                .done(function (result) {
+                    $html = result.response;
+                    $('footer').prepend($html);
+                    $._loader(true);
+                })
+                .fail(function () {
+                    $._loader(true);
+                    showAlert({title: "Server error"});
+                });
+        }
     </script>
 {% endmacro %}
