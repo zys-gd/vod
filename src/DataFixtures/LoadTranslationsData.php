@@ -30,7 +30,7 @@ class LoadTranslationsData extends AbstractFixture implements ContainerAwareInte
      */
     public function load(ObjectManager $manager)
     {
-        $data = \DataFixtures\Utils\FixtureDataLoader::loadDataFromJSONFile('tranlations.json');;
+        $data = \DataFixtures\Utils\FixtureDataLoader::loadDataFromJSONFile('translations.json');;
 
 
         foreach ($data as $row) {

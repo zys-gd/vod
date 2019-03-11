@@ -6,7 +6,7 @@ diff_tool:
           fileName: 'languages.json'
           ignoredProperties: []
        App\Domain\Entity\Translation:
-          fileName: 'tranlations.json'
+          fileName: 'translations.json'
           ignoredProperties: []
        App\Domain\Entity\UploadedVideo:
           fileName: 'uploaded_videos.json'
