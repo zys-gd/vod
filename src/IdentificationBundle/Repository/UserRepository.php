@@ -14,6 +14,19 @@ use IdentificationBundle\Entity\User;
 
 class UserRepository extends EntityRepository
 {
+    public function findOneByPartialMsisdnMatch(string $msisdn): ?User
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        $qb->where('u.identifier LIKE ":msisdn%"');
+
+        $qb->setParameter('msisdn', $msisdn);
+
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }
+
     public function findOneByMsisdn(string $msisdn): ?User
     {
         return $this->findOneBy(['identifier' => $msisdn]);

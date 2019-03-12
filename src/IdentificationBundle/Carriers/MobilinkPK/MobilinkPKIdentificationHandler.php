@@ -10,9 +10,11 @@ namespace IdentificationBundle\Carriers\MobilinkPK;
 
 
 use IdentificationBundle\Entity\CarrierInterface;
-use IdentificationBundle\Identification\Handler\HasCommonFlow;
+use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Handler\CommonFlow\HasCustomPixelIdent;
+use IdentificationBundle\Identification\Handler\HasCommonFlow;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerInterface;
+use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,6 +23,15 @@ class MobilinkPKIdentificationHandler implements
     HasCommonFlow,
     HasCustomPixelIdent
 {
+
+    private $repository;
+
+    public function __construct(UserRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+
     public function canHandle(CarrierInterface $carrier): bool
     {
         return $carrier->getBillingCarrierId() === 338;
@@ -34,5 +45,10 @@ class MobilinkPKIdentificationHandler implements
     public function onConfirm(ProcessResult $processResult): void
     {
         // TODO: Implement onConfirm() method.
+    }
+
+    public function getExistingUser(string $msisdn): ?User
+    {
+        return $this->repository->findOneByMsisdn($msisdn);
     }
 }

@@ -2,11 +2,11 @@
 /**
  * Created by PhpStorm.
  * User: dmitriy
- * Date: 04.02.19
- * Time: 12:57
+ * Date: 12.03.19
+ * Time: 12:29
  */
 
-namespace IdentificationBundle\Carriers\MobilinkPK;
+namespace IdentificationBundle\Carriers\TelenorPK;
 
 
 use App\Domain\Constants\ConstBillingCarrierId;
@@ -15,7 +15,7 @@ use IdentificationBundle\Entity\User;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
 
-class MobilinkPKWifiIdentificationHandler implements WifiIdentificationHandlerInterface
+class TelenorPKWifiIdentificationHandler implements WifiIdentificationHandlerInterface
 {
     /**
      * @var UserRepository
@@ -24,7 +24,7 @@ class MobilinkPKWifiIdentificationHandler implements WifiIdentificationHandlerIn
 
 
     /**
-     * MobilinkPKWifiIdentificationHandler constructor.
+     * TelenorPKWifiIdentificationHandler constructor.
      * @param UserRepository $repository
      */
     public function __construct(UserRepository $repository)
@@ -34,7 +34,7 @@ class MobilinkPKWifiIdentificationHandler implements WifiIdentificationHandlerIn
 
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::MOBILINK_PAKISTAN;
+        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::TELENOR_PAKISTAN_DOT;
     }
 
     public function getRedirectUrl()
@@ -49,6 +49,8 @@ class MobilinkPKWifiIdentificationHandler implements WifiIdentificationHandlerIn
 
     public function getExistingUser(string $msisdn): ?User
     {
-        return $this->repository->findOneByMsisdn($msisdn);
+        $modifiedMsisdn = mb_strcut($msisdn, 0, 15);
+
+        return $this->repository->findOneByPartialMsisdnMatch($modifiedMsisdn);
     }
 }

@@ -119,7 +119,10 @@ class WifiIdentConfirmator
      */
     public function confirm(int $carrierId, string $pinCode, string $mobileNumber, string $ip)
     {
-        if ($this->userRepository->findOneByMsisdn($mobileNumber)) {
+        $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
+        $handler = $this->handlerProvider->get($carrier);
+
+        if ($handler->getExistingUser($mobileNumber)) {
             throw new AlreadyIdentifiedException('User is already exists');
         }
 
@@ -129,9 +132,7 @@ class WifiIdentConfirmator
             throw new MissingIdentificationDataException('pinRequest data is missing');
         }
 
-        $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
-        $handler = $this->handlerProvider->get($carrier);
-        $msisdn  = $this->msisdnCleaner->clean($mobileNumber, $carrier);
+        $msisdn = $this->msisdnCleaner->clean($mobileNumber, $carrier);
 
         if (!$pinRequestResult->isNeedVerifyRequest()) {
             $isValid = $this->codeVerifier->verifyPinCode($pinCode);

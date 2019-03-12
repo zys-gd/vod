@@ -49,12 +49,15 @@ class WifiIdentConfirmatorTest extends TestCase
     /** @var IdentificationBundle\Repository\UserRepository | MockInterface */
     private $userRepository;
     private $session;
+    private $identificationHandler;
 
     protected function setUp()
     {
 
-        $this->session                = new Session(new MockArraySessionStorage());
-        $this->handlerProvider        = Mockery::spy(IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerProvider::class);
+        $this->session               = new Session(new MockArraySessionStorage());
+        $this->handlerProvider       = Mockery::spy(IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerProvider::class);
+        $this->identificationHandler = Mockery::spy(WifiIdentificationHandlerInterface::class);
+
         $this->codeVerifier           = Mockery::spy(IdentificationBundle\WifiIdentification\Common\InternalSMS\PinCodeVerifier::class);
         $this->carrierRepository      = Mockery::spy(IdentificationBundle\Repository\CarrierRepositoryInterface::class);
         $this->pinVerifyProcess       = Mockery::spy(IdentificationBundle\BillingFramework\Process\PinVerifyProcess::class);
@@ -80,8 +83,14 @@ class WifiIdentConfirmatorTest extends TestCase
 
     public function testExceptionThrownWhenUserIsAlreadyAdded()
     {
-        $this->userRepository->allows([
-            'findOneByMsisdn' => Mockery::spy(User::class)
+        $this->carrierRepository->allows([
+            'findOneByBillingId' => Mockery::spy(\IdentificationBundle\Entity\CarrierInterface::class)
+        ]);
+        $this->handlerProvider->allows([
+            'get' => $this->identificationHandler
+        ]);
+        $this->identificationHandler->allows([
+            'getExistingUser' => Mockery::spy(User::class)
         ]);
 
         $this->expectException(AlreadyIdentifiedException::class);
@@ -92,6 +101,16 @@ class WifiIdentConfirmatorTest extends TestCase
 
     public function testExceptionThrownWhenNoPreviousPinRequest()
     {
+        $this->carrierRepository->allows([
+            'findOneByBillingId' => Mockery::spy(\IdentificationBundle\Entity\CarrierInterface::class)
+        ]);
+        $this->handlerProvider->allows([
+            'get' => $this->identificationHandler
+        ]);
+        $this->identificationHandler->allows([
+            'getExistingUser' => null
+        ]);
+
         $this->userRepository->allows([
             'findOneByMsisdn' => null
         ]);

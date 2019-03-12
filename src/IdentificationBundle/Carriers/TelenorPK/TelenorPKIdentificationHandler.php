@@ -2,19 +2,22 @@
 /**
  * Created by PhpStorm.
  * User: dmitriy
- * Date: 08.01.19
- * Time: 18:40
+ * Date: 12.03.19
+ * Time: 12:17
  */
 
-namespace IdentificationBundle\Identification\Handler;
+namespace IdentificationBundle\Carriers\TelenorPK;
 
 
+use App\Domain\Constants\ConstBillingCarrierId;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
+use IdentificationBundle\Identification\Handler\HasCommonFlow;
+use IdentificationBundle\Identification\Handler\IdentificationHandlerInterface;
 use IdentificationBundle\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 
-class DefaultHandler implements IdentificationHandlerInterface, HasCommonFlow
+class TelenorPKIdentificationHandler implements IdentificationHandlerInterface, HasCommonFlow
 {
     /**
      * @var UserRepository
@@ -23,7 +26,8 @@ class DefaultHandler implements IdentificationHandlerInterface, HasCommonFlow
 
 
     /**
-     * DefaultHandler constructor.
+     * TelenorPKIdentificationHandler constructor.
+     * @param UserRepository $repository
      */
     public function __construct(UserRepository $repository)
     {
@@ -32,7 +36,7 @@ class DefaultHandler implements IdentificationHandlerInterface, HasCommonFlow
 
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return true;
+        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::TELENOR_PAKISTAN_DOT;
     }
 
     public function getAdditionalIdentificationParams(Request $request): array
@@ -42,6 +46,8 @@ class DefaultHandler implements IdentificationHandlerInterface, HasCommonFlow
 
     public function getExistingUser(string $msisdn): ?User
     {
-        return $this->repository->findOneByMsisdn($msisdn);
+        $modifiedMsisdn = mb_strcut($msisdn, 0, 15);
+
+        return $this->repository->findOneByPartialMsisdnMatch($modifiedMsisdn);
     }
 }
