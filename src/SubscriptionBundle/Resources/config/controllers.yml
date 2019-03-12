@@ -40,6 +40,18 @@ services:
         class: SubscriptionBundle\Controller\Actions\GetSubscriptionAction
         arguments: ['@SubscriptionBundle\Service\UserExtractor', '@SubscriptionBundle\Service\SubscriptionExtractor']
 
+    SubscriptionBundle\Controller\Actions\Fake\RenewAction:
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@SubscriptionBundle\Command\MassRenewCommand'
+            - '@twig'
+
+    SubscriptionBundle\Controller\Actions\Fake\AlertAction:
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@SubscriptionBundle\Command\IncomingRenewNotificationCommand'
+            - '@twig'
+
     SubscriptionBundle\Controller\Actions\Fake\SubscribeAction:
         tags: ['controller.service_arguments']
         arguments:

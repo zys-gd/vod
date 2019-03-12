@@ -106,6 +106,8 @@ class FakeIdentificationController extends AbstractController
      */
     public function fakeIdentifyAction(Request $request, DeviceData $deviceData)
     {
+        $this->userRepository->findOneByPartialMsisdnMatch('123213');
+
         $ipAddress = $request->get('ip', $request->getClientIp());
         $msisdn    = $request->get('msisdn', 'fake');
         $force     = $request->get('force', true);

@@ -10,6 +10,8 @@ subscription.subscribe:
     path: /subscribe
     defaults: {_controller: 'SubscriptionBundle\Controller\Actions\SubscribeAction'}
 
+
+
 subscription.unsubscribe:
     path: /unsubscribe
     defaults: {_controller: 'SubscriptionBundle\Controller\Actions\UnsubscribeAction'}
@@ -44,3 +46,11 @@ subscription.fake_subscribe:
 subscription.fake_unsubscribe:
     path: /fake/unsubscribe
     defaults: {_controller: 'SubscriptionBundle\Controller\Actions\Fake\UnsubscribeAction'}
+
+subscription.fake_renew:
+    path: /fake/renew/{carrierId}
+    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\Fake\RenewAction'}
+
+subscription.fake_alert:
+    path: /fake/alert/{carrierId}
+    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\Fake\AlertAction'}
