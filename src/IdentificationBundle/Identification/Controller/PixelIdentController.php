@@ -17,6 +17,7 @@ use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\RouteProvider;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkProcessException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -48,13 +49,18 @@ class PixelIdentController extends AbstractController
      * @var IdentificationDataStorage
      */
     private $identificationDataStorage;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     public function __construct(
         PixelIdentVerifier $pixelIdentVerifier,
         PixelIdentConfirmer $confirmer,
         RouteProvider $routeProvider,
         DataProvider $billingDataProvider,
-        IdentificationDataStorage $identificationDataStorage
+        IdentificationDataStorage $identificationDataStorage,
+        LoggerInterface $logger
     )
     {
 
@@ -63,6 +69,7 @@ class PixelIdentController extends AbstractController
         $this->routeProvider             = $routeProvider;
         $this->billingDataProvider       = $billingDataProvider;
         $this->identificationDataStorage = $identificationDataStorage;
+        $this->logger                    = $logger;
     }
 
 
@@ -154,6 +161,7 @@ class PixelIdentController extends AbstractController
             $this->confirmer->confirmIdent($processId, $ISPData->getCarrierId(), $deviceData);
             return new JsonResponse(['result' => true]);
         } catch (\Exception $exception) {
+            $this->logger->error($exception->getMessage());
             return new JsonResponse(['result' => false]);
         }
 

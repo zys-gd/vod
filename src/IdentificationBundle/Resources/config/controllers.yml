@@ -9,6 +9,7 @@ services:
             - '@IdentificationBundle\Identification\Service\RouteProvider'
             - '@IdentificationBundle\BillingFramework\Data\DataProvider'
             - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@logger'
 
     IdentificationBundle\Callback\Controller\CallbackController:
         arguments:
