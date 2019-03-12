@@ -10,6 +10,7 @@
     "ext-iconv": "*",
     "ext-json": "^1.6",
     "ext-redis": "*",
+    "ext-mbstring": "*",
     "aws/aws-sdk-php": "^3.84",
     "beberlei/DoctrineExtensions": "^1.2",
     "cloudinary/cloudinary_php": "1.13.0",
