@@ -44,9 +44,9 @@ return [
     'CAMPAIGN_SESSION_NAME'      => 'campaignData',
 
     'MAILER_TRANSPORT'           => 'smtp',
-    'MAILER_HOST'                => 'email-smtp.eu-west-1.amazonaws.com',
-    'MAILER_USER'                => 'AKIAJSGBBIGYKCTG2D6A',
-    'MAILER_PASSWORD'            => 'BCjVv8MEmA4IKrXF7Ps6T6VAbbdR5taVt3rNptvG365D',
+    'MAILER_HOST'                => 'aspmx.l.google.com',
+    'MAILER_USER'                => 'support.form@origin-data.com',
+    'MAILER_PASSWORD'            => 'sF!@2019@od!$Pw',
     'MAILER_PORT'                => 25,
     
     'MAILER_URL'          => 'MAILER_URL',

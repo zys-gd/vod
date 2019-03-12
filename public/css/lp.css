@@ -1,6 +1,6 @@
 .play-text{
     text-align: center;
-    font-size: 23px;
+    font-size: 20px;
     padding: 16px;
     font-style: italic;
     line-height: 23px;
@@ -46,6 +46,7 @@
 
 .lure_box .lure_box_title {
     font-size: 22px;
+    font-style: italic;
 }
 
 
