@@ -88,6 +88,7 @@ class OnSubscribeUpdater
             switch ($response->getError()) {
                 case 'not_enough_credit':
                     $subscription->setStatus(Subscription::IS_ON_HOLD);
+                    //TODO: remove?
                     if ($subscription->getCredits() >= 2) {
                         $subscription->setCredits($subscription->getCredits() - 2);
                     }

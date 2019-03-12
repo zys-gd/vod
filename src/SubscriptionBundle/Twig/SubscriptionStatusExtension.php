@@ -116,7 +116,7 @@ class SubscriptionStatusExtension extends \Twig_Extension
     public function isNotEnoughCredit(): bool
     {
         $subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($this->session);
-        if ($subscription && $subscription->hasError() && $subscription->getError() == 'not_enough_credit') {
+        if ($subscription && $subscription->isOnHold() && $subscription->getError() == 'not_enough_credit') {
             return true;
         }
         return false;
