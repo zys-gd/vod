@@ -95,6 +95,14 @@ class NewTracker
             'id' => 12,
             'name' => 'device_screen_width',
         ],
+        'game_name' => [
+            'id' => 13,
+            'name' => 'game_name'
+        ],
+        'game_uuid' => [
+            'id' => 14,
+            'name' => 'game_uuid'
+        ],
     ];
     /**
      * @var SubscriptionPackProvider
@@ -650,6 +658,9 @@ class NewTracker
     {
         $this->getApiClient()->clearCustomVariables();
         $this->addStandardVariables($user, $subscription);
+
+        $this->addVariable('game_name', $game->getName());
+        $this->addVariable('game_uuid', $game->getUuid());
 
         $oSubPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
 
