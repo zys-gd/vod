@@ -1,5 +1,7 @@
 services:
-  IdentificationBundle\Identification\Handler\DefaultHandler: ~
+  IdentificationBundle\Identification\Handler\DefaultHandler:
+    arguments:
+      - '@IdentificationBundle\Repository\UserRepository'
 
   IdentificationBundle\Identification\Handler\IdentificationHandlerProvider:
     arguments:

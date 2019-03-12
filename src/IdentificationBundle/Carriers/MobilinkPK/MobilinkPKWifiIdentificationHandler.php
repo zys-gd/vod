@@ -11,10 +11,26 @@ namespace IdentificationBundle\Carriers\MobilinkPK;
 
 use App\Domain\Constants\ConstBillingCarrierId;
 use IdentificationBundle\Entity\CarrierInterface;
+use IdentificationBundle\Entity\User;
+use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
 
 class MobilinkPKWifiIdentificationHandler implements WifiIdentificationHandlerInterface
 {
+    /**
+     * @var UserRepository
+     */
+    private $repository;
+
+
+    /**
+     * MobilinkPKWifiIdentificationHandler constructor.
+     * @param UserRepository $repository
+     */
+    public function __construct(UserRepository $repository)
+    {
+        $this->repository = $repository;
+    }
 
     public function canHandle(CarrierInterface $carrier): bool
     {
@@ -29,5 +45,10 @@ class MobilinkPKWifiIdentificationHandler implements WifiIdentificationHandlerIn
     public function areSMSSentByBilling(): bool
     {
         return false;
+    }
+
+    public function getExistingUser(string $msisdn): ?User
+    {
+        return $this->repository->findOneByMsisdn($msisdn);
     }
 }

@@ -106,12 +106,12 @@ class WifiIdentSMSSender
      */
     public function sendSMS(int $carrierId, string $mobileNumber): void
     {
-        if ($this->userRepository->findOneByMsisdn($mobileNumber)) {
-            throw new AlreadyIdentifiedException('User is already identified');
-        }
-
         $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
         $handler = $this->handlerProvider->get($carrier);
+
+        if ($handler->getExistingUser($mobileNumber)) {
+            throw new AlreadyIdentifiedException('User is already identified');
+        }
 
         $pinCode = '000000';
         if (!$handler->areSMSSentByBilling()) {

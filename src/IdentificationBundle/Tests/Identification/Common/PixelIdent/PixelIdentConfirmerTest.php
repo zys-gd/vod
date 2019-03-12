@@ -15,6 +15,9 @@ use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer;
 use IdentificationBundle\Identification\DTO\DeviceData;
+use IdentificationBundle\Identification\Handler\CommonFlow\HasCustomPixelIdent;
+use IdentificationBundle\Identification\Handler\HasCommonFlow;
+use IdentificationBundle\Identification\Handler\IdentificationHandlerInterface;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationStatus;
@@ -47,22 +50,30 @@ class PixelIdentConfirmerTest extends TestCase
     private $carrierRepository;
     private $tokenGenerator;
     private $userRepository;
+    private $identificationHandlerProvider;
+    private $identificationHandler;
 
     protected function setUp()
     {
 
-        $this->session             = new Session(new MockArraySessionStorage());
-        $this->dataStorage         = new IdentificationDataStorage($this->session);
-        $this->billingDataProvider = Mockery::spy(DataProvider::class);
-        $this->carrierRepository   = Mockery::spy(CarrierRepositoryInterface::class);
-        $this->tokenGenerator      = Mockery::spy(TokenGenerator::class);
-        $this->userRepository      = Mockery::spy(UserRepository::class);
-        $this->pixelIdentConfirmer = new PixelIdentConfirmer(
+        $this->session                       = new Session(new MockArraySessionStorage());
+        $this->dataStorage                   = new IdentificationDataStorage($this->session);
+        $this->billingDataProvider           = Mockery::spy(DataProvider::class);
+        $this->carrierRepository             = Mockery::spy(CarrierRepositoryInterface::class);
+        $this->tokenGenerator                = Mockery::spy(TokenGenerator::class);
+        $this->userRepository                = Mockery::spy(UserRepository::class);
+        $this->identificationHandlerProvider = Mockery::spy(IdentificationHandlerProvider::class);
+        $this->identificationHandler         = Mockery::spy(
+            IdentificationHandlerInterface::class,
+            HasCommonFlow::class,
+            HasCustomPixelIdent::class
+        );
+        $this->pixelIdentConfirmer           = new PixelIdentConfirmer(
             Mockery::spy(EntityManagerInterface::class),
             Mockery::spy(UserFactory::class),
             $this->carrierRepository,
             $this->billingDataProvider,
-            Mockery::spy(IdentificationHandlerProvider::class),
+            $this->identificationHandlerProvider,
             new IdentificationStatus($this->dataStorage),
             $this->tokenGenerator,
             $this->userRepository
@@ -89,10 +100,12 @@ class PixelIdentConfirmerTest extends TestCase
             'findOneByBillingId' => Mockery::spy(CarrierInterface::class)
         ]);
 
-        $this->userRepository->allows(['findOneByMsisdn' => null]);
+        $this->identificationHandlerProvider->allows(['get' => $this->identificationHandler]);
+        $this->identificationHandler->allows(['getExistingUser' => null]);
         $this->tokenGenerator->allows(['generateToken' => 'token']);
 
-        $this->pixelIdentConfirmer->confirmIdent('123456', 0,Mockery::spy(DeviceData::class));
+
+        $this->pixelIdentConfirmer->confirmIdent('123456', 0, Mockery::spy(DeviceData::class));
 
         $this->assertArraySubset(
             ['identification_token' => 'token'],
@@ -123,7 +136,10 @@ class PixelIdentConfirmerTest extends TestCase
         $user = Mockery::spy(User::class);
 
         $user->allows(['getIdentificationToken' => 555555]);
-        $this->userRepository->allows(['findOneByMsisdn' => $user]);
+
+        $this->identificationHandlerProvider->allows(['get' => $this->identificationHandler]);
+        $this->identificationHandler->allows(['getExistingUser' => $user]);
+
         $this->pixelIdentConfirmer->confirmIdent('123456', 0, Mockery::spy(DeviceData::class));
 
         $this->assertArraySubset(

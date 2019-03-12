@@ -2,4 +2,4 @@ services:
   IdentificationBundle\Carriers\EtisalatEG\EtisalatEGWifiIdentificationHandler:
       tags:
           - {name: identification.wifi_identification_handler}
-      arguments: ['@IdentificationBundle\Identification\Service\IdentificationDataStorage']
+      arguments: ['@IdentificationBundle\Identification\Service\IdentificationDataStorage', '@IdentificationBundle\Repository\UserRepository']

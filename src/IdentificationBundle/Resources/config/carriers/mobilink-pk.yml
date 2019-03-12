@@ -2,6 +2,8 @@ services:
   IdentificationBundle\Carriers\MobilinkPK\MobilinkPKIdentificationHandler:
       tags:
           - {name: identification.identification_handler}
+      arguments:
+        ['@IdentificationBundle\Repository\UserRepository']
 
   IdentificationBundle\Carriers\MobilinkPK\MobilinkPKIdentificationCallbackHandler:
       tags:
@@ -10,3 +12,5 @@ services:
   IdentificationBundle\Carriers\MobilinkPK\MobilinkPKWifiIdentificationHandler:
       tags:
         - { name: identification.wifi_identification_handler}
+      arguments:
+        ['@IdentificationBundle\Repository\UserRepository']

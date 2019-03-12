@@ -15,6 +15,7 @@ use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\Handler\CommonFlow\HasCustomPixelIdent;
+use IdentificationBundle\Identification\Handler\HasCommonFlow;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Identification\Service\IdentificationStatus;
 use IdentificationBundle\Identification\Service\TokenGenerator;
@@ -101,13 +102,14 @@ class PixelIdentConfirmer
 
         $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
         $handler = $this->identificationHandlerProvider->get($carrier);
+        /** @var HasCommonFlow $handler */
         if ($handler instanceof HasCustomPixelIdent) {
             $handler->onConfirm($result);
         }
 
-
         $msisdn = $result->getProviderUser();
-        $user   = $this->userRepository->findOneByMsisdn($msisdn);
+        $user   = $handler->getExistingUser($msisdn);
+
         if ($user) {
             $identificationToken = $user->getIdentificationToken();
         } else {
