@@ -329,7 +329,7 @@ class NewTracker
         if ($affiliate && $operator && $this->isAppropriateCampaign($campaign, $operator)) {
             $affiliateString = $affiliate->getUuid();
             if ($campaign) {
-                $affiliateString .= '-' . $campaign->getUuid();
+                $affiliateString .= '@' . $campaign->getUuid();
                 $this->campaign = $campaign;
             }
             $ret = $this->addVariable('affiliate', $affiliateString);
@@ -475,7 +475,7 @@ class NewTracker
 
         $eurPrice = $this->exchangeService->convert($oSubPack->getTierCurrency(), $oSubPack->getTierPrice());
         $subscriptionPrice = round($oSubPack->getPriceFromTier(), 2);
-        $name = $type . '-v2-subscription-test-' . ($bfSuccess ? 'ok' : 'failed');
+        $name = $type . '-' . ($bfSuccess ? 'ok' : 'failed');
 
         if (($bfResponse->getType() == 'subscribe' || $type == 'resubscribe') && $bfSuccess) {
             $this->subscriptionConstraintsByCarrier->handleCarrier($subscription);
@@ -602,7 +602,7 @@ class NewTracker
         $eurPrice = $this->exchangeService->convert($oSubPack->getTierCurrency(), $oSubPack->getPriceFromTier());
         $subscriptionPrice = round($oSubPack->getPriceFromTier(), 2);
 
-        $name = 'unsubscribe--v2-subscription-test-' . ($bfSuccess ? 'ok' : 'failed');
+        $name = 'unsubscribe-' . ($bfSuccess ? 'ok' : 'failed');
         $orderIdPieces = [
             $name,
             $subscription->getUuid(),
