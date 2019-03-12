@@ -18,13 +18,15 @@ class UserRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('u');
 
-        $qb->where('u.identifier LIKE ":msisdn%"');
+        $qb->where("u.identifier LIKE :msisdn");
 
-        $qb->setParameter('msisdn', $msisdn);
+        $qb->setParameter('msisdn', "$msisdn%");
+
+
 
         $query = $qb->getQuery();
 
-        return $query->getResult();
+        return $query->getOneOrNullResult();
     }
 
     public function findOneByMsisdn(string $msisdn): ?User
