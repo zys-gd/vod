@@ -54,7 +54,8 @@
         {% elseif hasInActiveSubscription() %}
 
 
-        {% elseif not isSubscriptionExist() %}
+        {#{% elseif not isSubscriptionExist() %}#}
+        {% else %}
             {#{{ translate('account.subscription.status.not_subscribe')|raw|nl2br }}#}
 
             <div class="d-flex align-items-center justify-content-center">
