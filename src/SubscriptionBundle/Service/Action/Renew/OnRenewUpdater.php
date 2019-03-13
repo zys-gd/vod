@@ -105,8 +105,9 @@ class OnRenewUpdater
     protected function applySuccess(Subscription $subscription)
     {
 
-        $subscription->setStatus(Subscription::IS_ACTIVE);
+        $subscription->setStatus(Subscription::IS_ON_HOLD);
         $subscription->setRenewDate($this->renewDateCalculator->calculateRenewDate($subscription));
+        $subscription->setError('not_fully_paid');
 
         $User                 = $subscription->getUser();
         $existingSubscription = $this->subscriptionProvider->getExistingSubscriptionForUser($User);
@@ -119,10 +120,11 @@ class OnRenewUpdater
     {
         switch ($errorName) {
             case 'batch_limit_exceeded':
-                $subscription->setStatus(Subscription::IS_ERROR);
+                $subscription->setStatus(Subscription::IS_INACTIVE);
+                $subscription->setCurrentStage(Subscription::ACTION_UNSUBSCRIBE);
                 break;
             default:
-                $subscription->setStatus(Subscription::IS_INACTIVE);
+                $subscription->setStatus(Subscription::IS_ERROR);
         }
 
 
