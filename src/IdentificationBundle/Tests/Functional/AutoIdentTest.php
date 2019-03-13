@@ -12,7 +12,9 @@ namespace IdentificationBundle\Tests\Functional;
 use DataFixtures\LoadCarriersData;
 use ExtrasBundle\Testing\Core\AbstractFunctionalTest;
 use IdentificationBundle\BillingFramework\Process\IdentProcess;
+use IdentificationBundle\Identification\Service\DeviceDataProvider;
 use Mockery;
+use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class AutoIdentTest extends AbstractFunctionalTest
@@ -40,7 +42,7 @@ class AutoIdentTest extends AbstractFunctionalTest
         $this->assertArrayHasKey('storage[is_wifi_flow]', $this->session->all(), 'wifi flow are not set');
     }
 
-    /*public function testIsRedirectTriggeredForPixelIdent()
+    public function testIsRedirectTriggeredForPixelIdent()
     {
         $client = $this->makeClient();
 
@@ -48,13 +50,13 @@ class AutoIdentTest extends AbstractFunctionalTest
             ->shouldReceive('doIdent')
             ->andReturn(new ProcessResult(null, 'pixel'));
 
-        $client->request('get', '/', [], [], ['REMOTE_ADDR' => '119.160.116.250']);
+        $client->request('get', '/', ['f' => 1], [], ['REMOTE_ADDR' => '119.160.116.250']);
 
         $location = $client->getResponse()->headers->get('Location');
         $this->assertContains('identification/pixel/show-page', $location, 'redirect is missing');
-    }*/
+    }
 
-    /*public function testIsRedirectTriggeredForRedirectIdent()
+    public function testIsRedirectTriggeredForRedirectIdent()
     {
         $client = $this->makeClient();
 
@@ -62,11 +64,11 @@ class AutoIdentTest extends AbstractFunctionalTest
             ->shouldReceive('doIdent')
             ->andReturn(new ProcessResult(null, 'redirect', null, 'test-redirect'));
 
-        $client->request('get', '/', [], [], ['REMOTE_ADDR' => '119.160.116.250']);
+        $client->request('get', '/', ['f' => 1], [], ['REMOTE_ADDR' => '119.160.116.250']);
 
         $location = $client->getResponse()->headers->get('Location');
         $this->assertContains('test-redirect', $location, 'redirect is missing');
-    }*/
+    }
 
     public function testRedirectIsPerformedWhenNoCarrierSelected()
     {
@@ -121,5 +123,7 @@ class AutoIdentTest extends AbstractFunctionalTest
     protected function configureWebClientClientContainer(ContainerInterface $container)
     {
         $container->set('IdentificationBundle\BillingFramework\Process\IdentProcess', $this->identProcess);
+
+        $container->set('IdentificationBundle\Identification\Service\DeviceDataProvider', Mockery::mock(DeviceDataProvider::class)->shouldIgnoreMissing());
     }
 }

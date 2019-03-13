@@ -59,13 +59,18 @@ class AndroidDeviceListener
         }
 
 
-
         $args = $event->getController();
         if (is_array($args)) {
             $controller = $args[0] ?? null;
+        } else {
+            $controller = $args;
         }
 
-        if (isset($controller) && !($controller instanceof AppControllerInterface)) {
+        if (!isset($controller)) {
+            return;
+        }
+
+        if (!($controller instanceof AppControllerInterface)) {
             return;
         }
 
