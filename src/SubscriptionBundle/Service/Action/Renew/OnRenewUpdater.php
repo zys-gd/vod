@@ -104,8 +104,8 @@ class OnRenewUpdater
      */
     protected function applySuccess(Subscription $subscription)
     {
-
         $subscription->setStatus(Subscription::IS_ACTIVE);
+        $subscription->setCurrentStage(Subscription::ACTION_SUBSCRIBE);
         $subscription->setRenewDate($this->renewDateCalculator->calculateRenewDate($subscription));
 
         $User                 = $subscription->getUser();
