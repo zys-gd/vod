@@ -284,6 +284,10 @@ class NewTracker
             if ($userMsisdn = $user->getIdentifier()) {
                 $msisdn = $userMsisdn;
             }
+
+            if ($userOperator = $user->getCarrier()) {
+                $operator = $userOperator->getBillingCarrierId();
+            }
         }
         if ($connection) {
             $ret = $this->addVariable('connection', $connection);
