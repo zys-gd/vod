@@ -25,6 +25,6 @@ class MobilinkPKIdentificationCallbackHandler implements
 
     public function afterSuccess(User $billableUser, ProcessResult $processResponse): void
     {
-        // TODO: Implement onRenewSend() method.
+        // TODO: Implement onRenewSendSuccess() method.
     }
 }

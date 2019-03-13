@@ -95,13 +95,12 @@ class MassRenewer
 
                 $subscription->setStatus(Subscription::IS_ON_HOLD);
                 if ($renewHandler instanceof HasCommonFlow) {
-                    $renewHandler->onRenewSend($subscription, $processId);
+                    $renewHandler->onRenewSendSuccess($subscription, $processId);
                 }
             } else {
                 $failed++;
-                $this->onRenewUpdater->updateSubscriptionOnFailure($subscription, $result);
                 if ($renewHandler instanceof HasCommonFlow) {
-                    $renewHandler->onFailure($subscription, $result);
+                    $renewHandler->onRenewSendFailure($subscription, $result);
                 }
             }
         }
