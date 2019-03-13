@@ -116,7 +116,7 @@ class CommonFlowHandler
 
         $subscriptionId = $processResponse->getClientId();
         if ($subscriptionId) {
-            $subscription = $this->subscriptionRepository->findOneBy(['id' => $subscriptionId]);
+            $subscription = $this->subscriptionRepository->findOneBy(['uuid' => $subscriptionId]);
         } else {
             /** @var User $User */
             $User = $this->UserRepository->findOneBy(['identifier' => $requestParams->provider_user]);
