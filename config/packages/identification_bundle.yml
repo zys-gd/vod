@@ -8,4 +8,4 @@ identification:
   wifi_flow_redirect_route: 'landing'
   homepage_route: 'index'
   landing_route: 'landing'
-  my_account_route: 'my_account'
+  my_account_route: 'account'
