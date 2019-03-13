@@ -105,9 +105,8 @@ class OnRenewUpdater
     protected function applySuccess(Subscription $subscription)
     {
 
-        $subscription->setStatus(Subscription::IS_ON_HOLD);
+        $subscription->setStatus(Subscription::IS_ACTIVE);
         $subscription->setRenewDate($this->renewDateCalculator->calculateRenewDate($subscription));
-        $subscription->setError('not_fully_paid');
 
         $User                 = $subscription->getUser();
         $existingSubscription = $this->subscriptionProvider->getExistingSubscriptionForUser($User);

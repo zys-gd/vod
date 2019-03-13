@@ -13,7 +13,7 @@ use SubscriptionBundle\Entity\Subscription;
 
 interface HasCommonFlow
 {
-    public function onSuccess(Subscription $subscription, int $processId): void;
+    public function onRenewSend(Subscription $subscription, int $processId): void;
 
     public function onFailure(Subscription $subscription, string $errorText): void;
 }

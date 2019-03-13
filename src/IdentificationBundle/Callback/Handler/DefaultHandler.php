@@ -21,7 +21,7 @@ class DefaultHandler implements IdentCallbackHandlerInterface, HasCommonFlow
 
     public function afterSuccess(User $billableUser, ProcessResult $processResponse): void
     {
-        // TODO: Implement onSuccess() method.
+        // TODO: Implement onRenewSend() method.
     }
 
 }

@@ -23,7 +23,7 @@ class DefaultHandler implements CarrierCallbackHandlerInterface, HasCommonFlow
 
     public function afterProcess(Subscription $subscription, User $User, ProcessResult $processResponse)
     {
-        // TODO: Implement onSuccess() method.
+        // TODO: Implement onRenewSend() method.
     }
 
 }

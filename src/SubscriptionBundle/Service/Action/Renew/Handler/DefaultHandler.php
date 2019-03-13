@@ -19,9 +19,9 @@ class DefaultHandler implements RenewHandlerInterface, HasCommonFlow
         return true;
     }
 
-    public function onSuccess(Subscription $subscription, int $processId): void
+    public function onRenewSend(Subscription $subscription, int $processId): void
     {
-        // TODO: Implement onSuccess() method.
+        // TODO: Implement onRenewSend() method.
     }
 
     public function onFailure(Subscription $subscription, string $errorText): void

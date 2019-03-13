@@ -28,7 +28,7 @@ class OrangeEGSubscribeCallbackHandler implements CarrierCallbackHandlerInterfac
 
     public function afterProcess(Subscription $subscription, User $User, ProcessResult $processResponse)
     {
-        // TODO: Implement onSuccess() method.
+        // TODO: Implement onRenewSend() method.
     }
 
     public function isNeedToBeTracked(ProcessResult $result): bool

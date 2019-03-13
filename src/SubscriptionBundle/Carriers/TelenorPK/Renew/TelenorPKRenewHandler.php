@@ -56,9 +56,9 @@ class TelenorPKRenewHandler implements
         return $carrier->getBillingCarrierId() === ConstBillingCarrierId::TELENOR_PAKISTAN_DOT;
     }
 
-    public function onSuccess(Subscription $subscription, int $processId): void
+    public function onRenewSend(Subscription $subscription, int $processId): void
     {
-        // TODO: Implement onSuccess() method.
+        // TODO: Implement onRenewSend() method.
     }
 
     public function onFailure(Subscription $subscription, string $errorText): void
