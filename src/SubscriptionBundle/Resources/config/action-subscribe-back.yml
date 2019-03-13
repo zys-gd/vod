@@ -5,13 +5,13 @@ services:
 
 
 
-  SubscriptionBundle\Service\Action\SubscribeBack\SubscribeBackHandlerProvider:
-      arguments:
-        - "@handler.subscribe_back.tim"
-        - "@handler.subscribe_back.robi"
-        - "@handler.subscribe_back.airtel"
-        - "@handler.subscribe_back.ooredoo"
-        - '@subscription.dialog_lk_subscribeback_handler'
+# SubscriptionBundle\Service\Action\SubscribeBack\SubscribeBackHandlerProvider:
+#     arguments:
+#       - "@handler.subscribe_back.tim"
+#       - "@handler.subscribe_back.robi"
+#       - "@handler.subscribe_back.airtel"
+#       - "@handler.subscribe_back.ooredoo"
+#       - '@subscription.dialog_lk_subscribeback_handler'
 
 
 

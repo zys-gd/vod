@@ -9,6 +9,7 @@
 namespace SubscriptionBundle\Controller\Actions;
 
 
+use ExtrasBundle\API\Controller\APIControllerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +19,7 @@ use SubscriptionBundle\Service\Callback\Common\CommonFlowHandler;
 use SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider;
 use SubscriptionBundle\Service\Callback\Impl\HasCustomFlow;
 
-class ListenAction extends Controller
+class ListenAction extends Controller implements APIControllerInterface
 {
     use ResponseTrait;
     /**
