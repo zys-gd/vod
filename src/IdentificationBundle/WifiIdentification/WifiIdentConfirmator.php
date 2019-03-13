@@ -137,7 +137,7 @@ class WifiIdentConfirmator
         if (!$pinRequestResult->isNeedVerifyRequest()) {
             $isValid = $this->codeVerifier->verifyPinCode($pinCode);
             if (!$isValid) {
-                throw new FailedIdentificationException('pinCode is not valid');
+                throw new FailedIdentificationException('You have entered a wrong PIN, please try again or re-send a new');
             }
 
             $this->identFinisher->finish($msisdn, $carrier, $ip);

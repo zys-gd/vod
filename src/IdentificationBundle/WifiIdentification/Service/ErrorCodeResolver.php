@@ -21,6 +21,9 @@ class ErrorCodeResolver
             case 103:
                 return 'Too many requests - please wait a bit';
                 break;
+            case 666:
+                return 'You entered the wrong phone number. Please enter the correct phone number with international calling code';
+                break;
             default:
                 return 'Internal Error';
                 break;
