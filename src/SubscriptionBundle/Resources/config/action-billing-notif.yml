@@ -33,4 +33,4 @@ services:
   SubscriptionBundle\Service\Notification\Common\NamespaceResolver: ~
 
   SubscriptionBundle\Service\Notification\Common\DefaultSMSVariablesProvider:
-    arguments: ['@router', '@SubscriptionBundle\Service\RenewDateCalculator']
+    arguments: ['@router', '@SubscriptionBundle\Service\RenewDateCalculator', '@IdentificationBundle\Identification\Service\RouteProvider']
