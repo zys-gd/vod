@@ -49,8 +49,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
     )
     {
         $this->contentStatisticSender = $contentStatisticSender;
-        $this->campaignRepository = $campaignRepository;
-        $this->imageBaseUrl = $imageBaseUrl;
+        $this->campaignRepository     = $campaignRepository;
+        $this->imageBaseUrl           = $imageBaseUrl;
     }
 
 
@@ -65,25 +65,26 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      */
     public function landingPageAction(Request $request)
     {
-        $session = $request->getSession();
+        $session        = $request->getSession();
         $campaignBanner = null;
-        $background = null;
+        $background     = null;
 
         if ($cid = $request->get('cid', '')) {
             // Useless method atm.
             AffiliateVisitSaver::saveCampaignId($cid, $session);
 
             /** @var Campaign $campaign */
-            $campaign = $this->campaignRepository->findOneBy(['campaignToken' => $cid]);
-            $campaignBanner = $this->imageBaseUrl . '/' . $campaign->getImagePath();
-            $background = $campaign->getBgColor();
+            if ($campaign = $this->campaignRepository->findOneBy(['campaignToken' => $cid])) {
+                $campaignBanner = $this->imageBaseUrl . '/' . $campaign->getImagePath();
+                $background     = $campaign->getBgColor();
+            }
         };
 
         AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
         $this->contentStatisticSender->trackVisit();
         return $this->render('@App/Common/landing.html.twig', [
             'campaignBanner' => $campaignBanner,
-            'background' => $background
+            'background'     => $background
         ]);
     }
 
@@ -95,7 +96,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
     public function ajaxAnnotationAction()
     {
         return new JsonResponse([
-            'code' => 200,
+            'code'     => 200,
             'response' => $this->renderView('@App/Components/Ajax/annotation.html.twig')
         ]);
     }
