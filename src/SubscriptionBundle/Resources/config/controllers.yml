@@ -1,6 +1,10 @@
 services:
-    SubscriptionBundle\Controller\Actions\SubscribeAction:
+
+    _defaults:
         tags: ['controller.service_arguments']
+
+
+    SubscriptionBundle\Controller\Actions\SubscribeAction:
         arguments:
             - '@SubscriptionBundle\Service\UserExtractor'
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler'
@@ -16,14 +20,13 @@ services:
     SubscriptionBundle\Controller\Actions\ListenAction:
         arguments: ['@SubscriptionBundle\Service\Callback\Common\CommonFlowHandler', '@logger', '@SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider']
 
-    SubscriptionBundle\Controller\Actions\SubscribeBackAction:
-        arguments: ['@SubscriptionBundle\Service\Action\SubscribeBack\SubscribeBackHandlerProvider', '@router']
+    #SubscriptionBundle\Controller\Actions\SubscribeBackAction:
+    #    arguments: ['@SubscriptionBundle\Service\Action\SubscribeBack\SubscribeBackHandlerProvider', '@router']
 
     SubscriptionBundle\Controller\Actions\RedirectAction:
         arguments: ['@SubscriptionBundle\Service\UserExtractor', '@monolog.logger', '@SubscriptionBundle\Service\SubscriptionExtractor']
 
     SubscriptionBundle\Controller\Actions\UnsubscribeAction:
-        tags: ['controller.service_arguments']
         arguments:
             - '@SubscriptionBundle\Service\UserExtractor'
             - '@SubscriptionBundle\Service\SubscriptionExtractor'
@@ -41,19 +44,16 @@ services:
         arguments: ['@SubscriptionBundle\Service\UserExtractor', '@SubscriptionBundle\Service\SubscriptionExtractor']
 
     SubscriptionBundle\Controller\Actions\Fake\RenewAction:
-        tags: ['controller.service_arguments']
         arguments:
             - '@SubscriptionBundle\Command\MassRenewCommand'
             - '@twig'
 
     SubscriptionBundle\Controller\Actions\Fake\AlertAction:
-        tags: ['controller.service_arguments']
         arguments:
             - '@SubscriptionBundle\Command\IncomingRenewNotificationCommand'
             - '@twig'
 
     SubscriptionBundle\Controller\Actions\Fake\SubscribeAction:
-        tags: ['controller.service_arguments']
         arguments:
             - '@SubscriptionBundle\Service\UserExtractor'
             - '@router.default'
@@ -63,7 +63,6 @@ services:
             - '@SubscriptionBundle\Service\EntitySaveHelper'
 
     SubscriptionBundle\Controller\Actions\Fake\UnsubscribeAction:
-        tags: ['controller.service_arguments']
         arguments:
             - '@SubscriptionBundle\Service\UserExtractor'
             - '@SubscriptionBundle\Service\SubscriptionExtractor'
@@ -71,7 +70,6 @@ services:
             - '@SubscriptionBundle\Service\EntitySaveHelper'
 
     SubscriptionBundle\Controller\Actions\ConsentPageSubscribeAction:
-        tags: ['controller.service_arguments']
         arguments:
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
             - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
@@ -82,18 +80,15 @@ services:
         calls: [['setContainer', ['@service_container']]]
 
     SubscriptionBundle\Admin\Controller\RefundAdminController:
-        tags: ['controller.service_arguments']
         arguments: ['@form.factory', '@SubscriptionBundle\Service\RefundService']
 
     SubscriptionBundle\Admin\Controller\UnsubscriptionAdminController:
-        tags: ['controller.service_arguments']
         arguments:
             - '@form.factory'
             - '@SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber'
             - '@SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
 
     SubscriptionBundle\Admin\Controller\ComplaintsAdminController:
-        tags: ['controller.service_arguments']
         arguments:
             - '@form.factory'
             - '@SubscriptionBundle\Service\ReportingToolService'

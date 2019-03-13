@@ -68,7 +68,7 @@ class RouteProvider
 
     public function getLinkToMyAccount()
     {
-        return $this->router->generate($this->landingRoute, [], RouterInterface::ABSOLUTE_URL);
+        return $this->router->generate($this->myAccountRoute, [], RouterInterface::ABSOLUTE_URL);
     }
 
 }

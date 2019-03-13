@@ -121,7 +121,7 @@ class CommonFlowHandler
             /** @var User $User */
             $User = $this->UserRepository->findOneBy(['identifier' => $requestParams->provider_user]);
             /** @var Subscription $subscription */
-            $subscription = $this->subscriptionRepository->findOneBy(['owner' => $User]);
+            $subscription = $this->subscriptionRepository->findOneBy(['user' => $User]);
         }
 
         if (!$subscription instanceof Subscription) {
