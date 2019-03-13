@@ -17,6 +17,7 @@ use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\Exception\FailedIdentificationException;
 use IdentificationBundle\Identification\Identifier;
 use IdentificationBundle\Identification\Service\CarrierSelector;
+use IdentificationBundle\Identification\Service\DeviceDataProvider;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationStatus;
 use IdentificationBundle\Identification\Service\ISPResolver;
@@ -71,6 +72,10 @@ class AutoIdentStartListener
      * @var CarrierSelector
      */
     private $carrierSelector;
+    /**
+     * @var DeviceDataProvider
+     */
+    private $deviceDataProvider;
 
 
     /**
@@ -85,6 +90,7 @@ class AutoIdentStartListener
      * @param IdentificationStatus                                       $identificationStatus
      * @param AnnotationReader                                           $annotationReader
      * @param CarrierSelector                                            $carrierSelector
+     * @param DeviceDataProvider                                         $deviceDataProvider
      */
     public function __construct(
         ICountryCarrierDetection $carrierDetection,
@@ -96,7 +102,8 @@ class AutoIdentStartListener
         IdentificationDataStorage $dataStorage,
         IdentificationStatus $identificationStatus,
         AnnotationReader $annotationReader,
-        CarrierSelector $carrierSelector
+        CarrierSelector $carrierSelector,
+        DeviceDataProvider $deviceDataProvider
     )
     {
         $this->carrierDetection     = $carrierDetection;
@@ -109,6 +116,7 @@ class AutoIdentStartListener
         $this->identificationStatus = $identificationStatus;
         $this->annotationReader     = $annotationReader;
         $this->carrierSelector      = $carrierSelector;
+        $this->deviceDataProvider   = $deviceDataProvider;
     }
 
     public function onKernelController(FilterControllerEvent $event)
@@ -232,7 +240,11 @@ class AutoIdentStartListener
         $response = null;
         try {
             $token    = $this->generator->generateToken();
-            $result   = $this->identifier->identify((int)$carrierId, $request, $token);
+            $result   = $this->identifier->identify(
+                (int)$carrierId, $request,
+                $token,
+                $this->deviceDataProvider->get()
+            );
             $response = $result->getOverridedResponse();
 
         } catch (FailedIdentificationException $exception) {

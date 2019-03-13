@@ -1,6 +1,7 @@
 <?php
 
 namespace PiwikBundle\Api;
+use ExtrasBundle\Utils\TimestampGenerator;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -47,9 +48,10 @@ class PhpClient extends ClientAbstract
 
         $args = func_get_args();
         $args[0] .= !empty($this->userAgent) ? ('&ua=' . urlencode($this->userAgent)) : '';
-        $this->rabbitMQProducer->sendEvent(json_encode(['piwikData' => $args]));
 
-        // TODO swap queue.
+        $dataForQueue = [$args[0], TimestampGenerator::generateMicrotime()];
+        $this->rabbitMQProducer->sendEvent(json_encode(['piwikData' => $dataForQueue]));
+
         return true;
     }
 }
