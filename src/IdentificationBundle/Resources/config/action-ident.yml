@@ -116,3 +116,6 @@ services:
     arguments:
       - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
       - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+
+  IdentificationBundle\Identification\Service\DeviceDataProvider:
+    arguments: ['@device_detection.service.device', '@CountryCarrierDetectionBundle\Service\ConnectionTypeService']

@@ -19,6 +19,7 @@ use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\UploadedVideoRepository;
 use App\Domain\Service\ContentStatisticSender;
 use ExtrasBundle\Utils\ArraySorter;
+use IdentificationBundle\Controller\ControllerWithIdentification;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
@@ -27,7 +28,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class HomeController extends AbstractController implements ControllerWithISPDetection, AppControllerInterface
+class HomeController extends AbstractController implements
+    ControllerWithISPDetection,
+    AppControllerInterface,
+    ControllerWithIdentification
 {
     /**
      * @var CarrierRepositoryInterface
@@ -114,8 +118,8 @@ class HomeController extends AbstractController implements ControllerWithISPDete
         /** @var UploadedVideo[] $videos */
         foreach ($videos as $video) {
 
-            $categoryEntity = $video->getSubcategory()->getParent();
-            $categoryKey    = $categoryEntity->getTitle();
+            $categoryEntity                                  = $video->getSubcategory()->getParent();
+            $categoryKey                                     = $categoryEntity->getTitle();
             $categoryVideos[$categoryKey][$video->getUuid()] = $video->getDataFormTemplate();
         }
 
