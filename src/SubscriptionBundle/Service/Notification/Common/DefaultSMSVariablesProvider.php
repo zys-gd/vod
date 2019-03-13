@@ -10,6 +10,7 @@ namespace SubscriptionBundle\Service\Notification\Common;
 
 
 use IdentificationBundle\Entity\User;
+use IdentificationBundle\Identification\Service\RouteProvider;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Service\RenewDateCalculator;
@@ -23,6 +24,10 @@ class DefaultSMSVariablesProvider
      */
     private $router;
     private $renewDateCalculator;
+    /**
+     * @var RouteProvider
+     */
+    private $provider;
 
 
     /**
@@ -30,11 +35,12 @@ class DefaultSMSVariablesProvider
      * @param RouterInterface     $router
      * @param RenewDateCalculator $renewDateCalculator
      */
-    public function __construct(RouterInterface $router, RenewDateCalculator $renewDateCalculator)
+    public function __construct(RouterInterface $router, RenewDateCalculator $renewDateCalculator, RouteProvider $provider)
     {
         $this->router              = $router;
         $this->renewDateCalculator = $renewDateCalculator;
 
+        $this->provider = $provider;
     }
 
     public function getDefaultSMSVariables(SubscriptionPack $pack, Subscription $subscription, User $user): array
@@ -51,9 +57,9 @@ class DefaultSMSVariablesProvider
         return [
             '_price_'         => $pack->getTierPrice(),
             '_currency_'      => $pack->getTierCurrency(),
-            '_home_url_'      => 'home',
-            '_unsub_url_'     => 'myaccount',
-            '_renew_date_'    => $renewDate->format(DATE_ISO8601),
+            '_home_url_'      => $this->provider->getLinkToHomepage(),
+            '_unsub_url_'     => $this->provider->getLinkToMyAccount(),
+            '_renew_date_'    => $renewDate->format('d-m-Y'),
             '_autologin_url_' => $url
         ];
 
