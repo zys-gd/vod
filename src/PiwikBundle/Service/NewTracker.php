@@ -16,6 +16,7 @@ use LegacyBundle\Service\SubscriptionConstraintsByCarrier;
 use PiwikBundle\Api\ClientAbstract;
 use PiwikBundle\Api\JsClient;
 use PiwikBundle\Api\PhpClient;
+use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\SubscriptionPackProvider;
@@ -243,8 +244,7 @@ class NewTracker
      *
      * @return ClientAbstract
      * @throws \Exception
-     */
-    protected function addStandardVariables(
+     */protected function addStandardVariables(
         User $user = null,
 
         $subscription = null,
@@ -314,20 +314,21 @@ class NewTracker
         }
 
         if (!$affiliate) {
-            $sessionContents = $this->session->get($this->campaignSessionName);
-            $campaignParams = $sessionContents ? json_decode($sessionContents, true) : null;
-            if (empty($campaignParams['cid']) && $subscription) {
+
+           $token = AffiliateVisitSaver::extractCampaignToken($this->session);
+
+            if (empty($token) && $subscription) {
 //                if ($subscription->isUnsubscribed() || $subscription->isRenew()) {
 //                    if ($lastInHistory = $subscription->getLastSubscriptionHistory()) {
 //                        $campaignParams = $lastInHistory->getAffiliateToken();
 //                    }
 //                }
-                if (empty($campaignParams['cid'])) {
-                    $campaignParams = $subscription->getAffiliateToken();
+                if (empty($token)) {
+                    $token = $subscription->getAffiliateToken();
                 }
             }
-            if (!empty($campaignParams['cid'])
-                && ($propCampaign = $this->campaignRepository->findOneBy(['campaignToken' => $campaignParams['cid']]))
+            if (!empty($token)
+                && ($propCampaign = $this->campaignRepository->findOneBy(['campaignToken' => $token]))
             ) {
                 $propAffiliate = $propCampaign->getAffiliate();
                 if ($propAffiliate) {

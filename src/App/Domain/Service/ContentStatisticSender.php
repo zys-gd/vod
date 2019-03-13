@@ -125,7 +125,7 @@ class ContentStatisticSender
 
             return $result;
         } catch (\Exception $ex) {
-            $this->logger->info('Exception on piwik sending', ['msg' => $ex->getMessage()]);
+            $this->logger->info('Exception on piwik sending', ['msg' => $ex->getMessage(), 'line' => $ex->getLine(), 'code' => $ex->getCode()]);
 
             return false;
         }
@@ -164,7 +164,7 @@ class ContentStatisticSender
 
             return $result;
         } catch (\Exception $ex) {
-            $this->logger->info('Exception on piwik sending', ['msg' => $ex->getMessage()]);
+            $this->logger->info('Exception on piwik sending', ['msg' => $ex->getMessage(), 'line' => $ex->getLine(), 'code' => $ex->getCode()]);
 
             return false;
         }
@@ -205,7 +205,7 @@ class ContentStatisticSender
 
             return $result;
         } catch (\Exception $ex) {
-            $this->logger->info('Exception on piwik sending', ['msg' => $ex->getMessage()]);
+            $this->logger->info('Exception on piwik sending', ['msg' => $ex->getMessage(), 'line' => $ex->getLine(), 'code' => $ex->getCode()]);
 
             return false;
         }
