@@ -9,3 +9,5 @@ services:
       class: SubscriptionBundle\Carriers\OrangeTN\Callback\OrangeTNSubscribeCallbackHandler
       tags:
         - {name: subscription.callback_carrier_handler, type: subscribe}
+      arguments:
+        ['@IdentificationBundle\Repository\UserRepository']

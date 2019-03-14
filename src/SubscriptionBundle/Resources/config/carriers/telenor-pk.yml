@@ -22,3 +22,11 @@ services:
           - '@SubscriptionBundle\Service\Notification\Notifier'
           - '@SubscriptionBundle\Service\SubscriptionPackProvider'
           - '@SubscriptionBundle\Service\Action\Renew\Common\RenewAlertTypeProvider'
+
+    SubscriptionBundle\Carriers\TelenorPK\Callback\TelenorPKCallbackHandler:
+      tags:
+        - { name: subscription.callback_carrier_handler, type: subscribe }
+        - { name: subscription.callback_carrier_handler, type: unsubscribe }
+        - { name: subscription.callback_carrier_handler, type: renew }
+      arguments:
+        ['@IdentificationBundle\Repository\UserRepository']

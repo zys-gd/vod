@@ -2,9 +2,9 @@
 
 namespace SubscriptionBundle\Service\Callback\Impl;
 
+use IdentificationBundle\Entity\User;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
-use IdentificationBundle\Entity\User;
 
 /**
  * Created by PhpStorm.
@@ -15,4 +15,6 @@ use IdentificationBundle\Entity\User;
 interface HasCommonFlow
 {
     public function afterProcess(Subscription $subscription, User $User, ProcessResult $processResponse);
+
+    public function getUser(string $msisdn): ?User;
 }

@@ -9,13 +9,11 @@
 namespace SubscriptionBundle\Service\Callback\Common;
 
 
+use IdentificationBundle\Entity\User;
 use IdentificationBundle\Repository\UserRepository;
+use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateSender;
 use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
-use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Exception\SubscriptionException;
@@ -28,7 +26,8 @@ use SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider;
 use SubscriptionBundle\Service\Callback\Impl\HasCommonFlow;
 use SubscriptionBundle\Service\Callback\Impl\HasCustomTrackingRules;
 use SubscriptionBundle\Service\EntitySaveHelper;
-use IdentificationBundle\Entity\User;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class CommonFlowHandler
 {
@@ -118,10 +117,11 @@ class CommonFlowHandler
         if ($subscriptionId) {
             $subscription = $this->subscriptionRepository->findOneBy(['uuid' => $subscriptionId]);
         } else {
+
             /** @var User $User */
-            $User = $this->UserRepository->findOneBy(['identifier' => $requestParams->provider_user]);
+            $user = $carrierHandler->getUser($requestParams->provider_user);
             /** @var Subscription $subscription */
-            $subscription = $this->subscriptionRepository->findOneBy(['user' => $User]);
+            $subscription = $this->subscriptionRepository->findOneBy(['user' => $user]);
         }
 
         if (!$subscription instanceof Subscription) {

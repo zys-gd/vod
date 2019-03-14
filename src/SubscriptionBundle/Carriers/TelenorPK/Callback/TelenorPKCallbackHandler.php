@@ -2,30 +2,32 @@
 /**
  * Created by PhpStorm.
  * User: dmitriy
- * Date: 01.11.18
- * Time: 11:17
+ * Date: 14.03.19
+ * Time: 17:04
  */
 
-namespace SubscriptionBundle\Carriers\OrangeEG\Callback;
+namespace SubscriptionBundle\Carriers\TelenorPK\Callback;
 
 
 use App\Domain\Constants\ConstBillingCarrierId;
-use AppBundle\Constant\Carrier;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerInterface;
 use SubscriptionBundle\Service\Callback\Impl\HasCommonFlow;
-use SubscriptionBundle\Service\Callback\Impl\HasCustomTrackingRules;
 use Symfony\Component\HttpFoundation\Request;
 
-class OrangeEGSubscribeCallbackHandler implements CarrierCallbackHandlerInterface, HasCommonFlow, HasCustomTrackingRules
+class TelenorPKCallbackHandler implements CarrierCallbackHandlerInterface, HasCommonFlow
 {
+    /**
+     * @var UserRepository
+     */
     private $userRepository;
 
+
     /**
-     * EtisalatEGCallbackSubscribe constructor.
+     * TelenorPKCallbackHandler constructor.
      * @param UserRepository $userRepository
      */
     public function __construct(UserRepository $userRepository)
@@ -33,23 +35,20 @@ class OrangeEGSubscribeCallbackHandler implements CarrierCallbackHandlerInterfac
         $this->userRepository = $userRepository;
     }
 
-    public function canHandle(Request $request, int $carrierId): bool
-    {
-        return $carrierId == ConstBillingCarrierId::ORANGE_EGYPT;
-    }
-
     public function afterProcess(Subscription $subscription, User $User, ProcessResult $processResponse)
     {
-        // TODO: Implement onRenewSendSuccess() method.
+        // TODO: Implement afterProcess() method.
     }
 
-    public function isNeedToBeTracked(ProcessResult $result): bool
+    public function canHandle(Request $request, int $carrierId): bool
     {
-        return true;
+        return $carrierId === ConstBillingCarrierId::TELENOR_PAKISTAN_DOT;
     }
 
     public function getUser(string $msisdn): ?User
     {
-        return $this->userRepository->findOneByMsisdn($msisdn);
+        $modifiedMsisdn = mb_strcut($msisdn, 0, 15);
+
+        return $this->userRepository->findOneByPartialMsisdnMatch($modifiedMsisdn);
     }
 }

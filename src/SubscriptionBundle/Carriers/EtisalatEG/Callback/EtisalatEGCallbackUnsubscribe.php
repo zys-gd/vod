@@ -11,16 +11,30 @@ namespace SubscriptionBundle\Carriers\EtisalatEG\Callback;
 
 use App\Domain\Constants\ConstBillingCarrierId;
 use AppBundle\Constant\Carrier;
-use Symfony\Component\HttpFoundation\Request;
+use IdentificationBundle\Entity\User;
+use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerInterface;
 use SubscriptionBundle\Service\Callback\Impl\HasCommonFlow;
 use SubscriptionBundle\Service\Callback\Impl\HasCustomTrackingRules;
-use IdentificationBundle\Entity\User;
+use Symfony\Component\HttpFoundation\Request;
 
 class EtisalatEGCallbackUnsubscribe implements CarrierCallbackHandlerInterface, HasCommonFlow, HasCustomTrackingRules
 {
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
+
+    /**
+     * EtisalatEGCallbackSubscribe constructor.
+     * @param UserRepository $userRepository
+     */
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
 
     public function canHandle(Request $request, int $carrierId): bool
     {
@@ -36,4 +50,10 @@ class EtisalatEGCallbackUnsubscribe implements CarrierCallbackHandlerInterface, 
     {
         return true;
     }
+
+    public function getUser(string $msisdn): ?User
+    {
+        return $this->userRepository->findOneByMsisdn($msisdn);
+    }
+
 }
