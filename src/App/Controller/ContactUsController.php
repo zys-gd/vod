@@ -9,9 +9,8 @@
 namespace App\Controller;
 
 
-use App\Domain\Service\ContactUsMessageSender;
+use App\Domain\Service\Forms\MessageSender;
 use App\Form\ContactUsType;
-use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\Service\UserExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -25,28 +24,22 @@ class ContactUsController extends AbstractController implements AppControllerInt
      */
     private $formFactory;
     /**
-     * @var ContactUsMessageSender
-     */
-    private $contactUsMessageSender;
-    /**
      * @var UserExtractor
      */
     private $userExtractor;
-
     /**
-     * ContactUsController constructor.
-     *
-     * @param FormFactoryInterface $formFactory
-     * @param ContactUsMessageSender $contactUsMessageSender
-     * @param UserExtractor $userExtractor
+     * @var MessageSender
      */
+    private $messageSender;
+
+
     public function __construct(FormFactoryInterface $formFactory,
-        ContactUsMessageSender $contactUsMessageSender,
-        UserExtractor $userExtractor)
+        UserExtractor $userExtractor,
+        MessageSender $messageSender)
     {
         $this->formFactory = $formFactory;
-        $this->contactUsMessageSender = $contactUsMessageSender;
         $this->userExtractor = $userExtractor;
+        $this->messageSender = $messageSender;
     }
 
 
@@ -62,8 +55,10 @@ class ContactUsController extends AbstractController implements AppControllerInt
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            $this->contactUsMessageSender->sendMessage($data['email'], $data['comment']);
-            return $this->render('@App/Mail/thank-you-mail.html.twig');
+            $twig = '@App/Mails/contact-us-notification.html.twig';
+            $this->messageSender->sendMessage($data, $twig);
+
+            return $this->render('@App/Mails/thank-you-mail.html.twig');
         }
 
         $user = $this->userExtractor->getUserFromRequest($request);

@@ -4,7 +4,7 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         public: false       # Allows optimizing the container by removing unused services; this also means
-          # fetching services directly from the container via $container->get() won't work.
+        # fetching services directly from the container via $container->get() won't work.
         # The best practice is to be explicit about your dependencies anyway.
 
         # makes classes in src/ available to be used as services
@@ -56,12 +56,11 @@ services:
     App\Domain\Service\AWSS3\S3Client:
         public: true
         arguments:
-            -
-              credentials:
-                  key: '%aws_s3_key%'
-                  secret: '%aws_s3_secret%'
-              version: '%aws_s3_version%'
-              region: '%aws_s3_region%'
+            -   credentials:
+                    key: '%aws_s3_key%'
+                    secret: '%aws_s3_secret%'
+                version: '%aws_s3_version%'
+                region: '%aws_s3_region%'
 
     App\Domain\Service\Campaign\CampaignService:
         public: true
@@ -77,8 +76,11 @@ services:
 
     App\Domain\Service\FaqProviderService: ~
 
-    App\Domain\Service\ContactUsMessageSender:
-      arguments: ['@App\Domain\Service\Email\EmailComposer', '@twig', '@mailer', '@subscription.subscription.service', '@App\Domain\Service\Campaign\CampaignService', '@SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository', '@App\Domain\Repository\CampaignRepository', '@device_detection.service.device', '@country_carrier_detection']
+    App\Domain\Service\Forms\MessageSender:
+        arguments:
+            - '@App\Domain\Service\Email\EmailComposer'
+            - '@twig'
+            - '@swiftmailer.mailer'
 
     App\Domain\Service\Email\EmailComposer: ~
 

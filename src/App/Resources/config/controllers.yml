@@ -50,7 +50,10 @@ services:
             - '@App\CarrierTemplate\TemplateConfigurator'
 
     App\Controller\ContactUsController:
-        arguments: ['@form.factory', '@App\Domain\Service\ContactUsMessageSender', '@SubscriptionBundle\Service\UserExtractor']
+        arguments:
+        - '@form.factory'
+        - '@SubscriptionBundle\Service\UserExtractor'
+        - '@App\Domain\Service\Forms\MessageSender'
 
     App\Controller\GamesController:
         arguments:

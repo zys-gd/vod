@@ -1,0 +1,4 @@
+services:
+    Tests\DataFixtures\:
+        resource: '%kernel.project_dir%/tests/DataFixtures/*.php'
+        tags: ['doctrine.fixture.orm']
