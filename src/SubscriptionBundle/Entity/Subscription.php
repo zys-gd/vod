@@ -517,7 +517,7 @@ class Subscription implements HasUuid
 
     public function isNotFullyPaid()
     {
-        return $this->currentStage == self::ACTION_RENEW && $this->status == self::IS_ON_HOLD;
+        return $this->currentStage == self::ACTION_SUBSCRIBE && $this->status == self::IS_ON_HOLD;
     }
 
     public function isError(): bool
