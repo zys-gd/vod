@@ -5,6 +5,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@SubscriptionBundle\Affiliate\Service\GuzzleClientFactory'
             - '@SubscriptionBundle\Affiliate\Service\AffiliateLogFactory'
+            - '@logger'
 
     SubscriptionBundle\Affiliate\Service\UserInfoMapper: ~
 
