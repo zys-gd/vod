@@ -65,6 +65,8 @@ class OnUnsubscribeUpdater
      */
     protected function applySuccess(Subscription $subscription)
     {
+        $subscription->setError('');
+
         $subscription->setStatus(Subscription::IS_INACTIVE);
     }
 
