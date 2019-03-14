@@ -59,12 +59,12 @@ class ContentStatisticSender
     /**
      * ContentStatisticSender constructor
      *
-     * @param NewTracker $newTracker
-     * @param UserRepository $userRepository
-     * @param LoggerInterface $logger
-     * @param MaxMindIpInfo $maxMindIpInfo
-     * @param Session $session
-     * @param CountryRepository $countryRepository
+     * @param NewTracker            $newTracker
+     * @param UserRepository        $userRepository
+     * @param LoggerInterface       $logger
+     * @param MaxMindIpInfo         $maxMindIpInfo
+     * @param Session               $session
+     * @param CountryRepository     $countryRepository
      * @param SubscriptionExtractor $subscriptionExtractor
      */
     public function __construct(
@@ -75,13 +75,14 @@ class ContentStatisticSender
         Session $session,
         CountryRepository $countryRepository,
         SubscriptionExtractor $subscriptionExtractor
-    ) {
-        $this->newTracker = $newTracker;
-        $this->userRepository = $userRepository;
-        $this->logger = $logger;
-        $this->maxMindIpInfo = $maxMindIpInfo;
-        $this->session = $session;
-        $this->countryRepository = $countryRepository;
+    )
+    {
+        $this->newTracker            = $newTracker;
+        $this->userRepository        = $userRepository;
+        $this->logger                = $logger;
+        $this->maxMindIpInfo         = $maxMindIpInfo;
+        $this->session               = $session;
+        $this->countryRepository     = $countryRepository;
         $this->subscriptionExtractor = $subscriptionExtractor;
     }
 
@@ -93,20 +94,29 @@ class ContentStatisticSender
     public function trackVisit(ISPData $data = null): bool
     {
         $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($this->session);
-        $user = null;
-        $country = null;
+        $user               = null;
+        $country            = null;
 
         if (!empty($identificationData['identification_token'])) {
             $token = $identificationData['identification_token'];
 
             /** @var User $user */
-            $user = $this->userRepository->findOneBy(['identificationToken' => $token]);
-            $country = $this->countryRepository->findOneBy(['countryCode' => $user->getCountry()]);
+            if (!$user = $this->userRepository->findOneBy([
+                'identificationToken' => $token
+            ])) {
+                return false;
+            }
+
+            if (!$country = $this->countryRepository->findOneBy([
+                'countryCode' => $user->getCountry()
+            ])) {
+                return false;
+            }
         }
 
-        $userIp = $this->getUserIp();
+        $userIp     = $this->getUserIp();
         $connection = $this->maxMindIpInfo->getConnectionType();
-        $operator = $data ? $data->getCarrierId() : null;
+        $operator   = $data ? $data->getCarrierId() : null;
 
         try {
             $this->logger->info('Trying to send piwik event', [
@@ -133,14 +143,14 @@ class ContentStatisticSender
 
     /**
      * @param Subscription $subscription
-     * @param Game $game
+     * @param Game         $game
      *
      * @return bool
      */
     public function trackDownload(Subscription $subscription, Game $game): bool
     {
         $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($this->session);
-        $user = null;
+        $user               = null;
 
         if (!empty($identificationData['identification_token'])) {
             $token = $identificationData['identification_token'];
@@ -180,8 +190,8 @@ class ContentStatisticSender
     public function trackPlayingVideo(UploadedVideo $uploadedVideo): bool
     {
         $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($this->session);
-        $subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($this->session);
-        $user = null;
+        $subscription       = $this->subscriptionExtractor->extractSubscriptionFromSession($this->session);
+        $user               = null;
 
         if (!empty($identificationData['identification_token'])) {
             $token = $identificationData['identification_token'];

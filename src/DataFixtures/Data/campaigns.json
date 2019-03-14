@@ -1,0 +1,52 @@
+[
+    {
+        "uuid": "1868d6bd-42fd-44f3-adff-6538a639fac0",
+        "imageName": "e0eb378256f5ef883a342a5acc64736816c7b483.jpeg",
+        "bgColor": "#ffffff",
+        "textColor": "#000000",
+        "campaignToken": "5c8a2d3b97891",
+        "testUrl": "\/lp?cid=5c8a2d3b97891&pk_campaign=514fdcf3-ebd4-11e8-95c4-02bb250f0f22&pk_kwd=1868d6bd-42fd-44f3-adff-6538a639fac0&click_id=testValue&publisher_id=testValue",
+        "isPause": false,
+        "counter": 0,
+        "flushDate": null,
+        "ppd": "0.00",
+        "sub": "0.00",
+        "click": "0.00",
+        "affiliate": {
+            "uuid": "514fdcf3-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "mainCategory": {
+            "uuid": "244b3d58-fb86-4ba1-b221-9a0f3916306d"
+        },
+        "carriers": [
+            {
+                "uuid": "97400b8f-722b-4339-a48e-a51419bbb143"
+            }
+        ]
+    },
+    {
+        "uuid": "d33da885-527b-4e81-af80-6bc44126cd2a",
+        "imageName": "c9b236fab954a651d5445b1354ae20f2fad1b143.jpeg",
+        "bgColor": "#ffffff",
+        "textColor": "#000000",
+        "campaignToken": "5c8a1a8b20afe",
+        "testUrl": "\/lp?cid=5c8a1a8b20afe&pk_campaign=514ff3ad-ebd4-11e8-95c4-02bb250f0f22&pk_kwd=d33da885-527b-4e81-af80-6bc44126cd2a&tracker=testValue&pub_id=testValue",
+        "isPause": false,
+        "counter": 0,
+        "flushDate": null,
+        "ppd": "0.00",
+        "sub": "0.00",
+        "click": "0.00",
+        "affiliate": {
+            "uuid": "514ff3ad-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "mainCategory": {
+            "uuid": "15157409-49a4-4823-a7f9-654ac1d7c12f"
+        },
+        "carriers": [
+            {
+                "uuid": "97400b8f-722b-4339-a48e-a51419bbb143"
+            }
+        ]
+    }
+]

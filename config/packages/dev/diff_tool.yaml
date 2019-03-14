@@ -17,3 +17,6 @@ diff_tool:
        App\Domain\Entity\Game:
           fileName: 'games.json'
           ignoredProperties: []
+       App\Domain\Entity\Campaign:
+          fileName: 'campaigns.json'
+          ignoredProperties: []

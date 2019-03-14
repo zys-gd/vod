@@ -4,6 +4,7 @@ namespace App\Domain\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints\Date;
@@ -11,7 +12,7 @@ use Symfony\Component\Validator\Constraints\Date;
 /**
  * Campaign
  */
-class Campaign implements CampaignInterface
+class Campaign implements CampaignInterface, HasUuid
 {
     /**
      * Path for saving campaign banner
@@ -492,5 +493,13 @@ class Campaign implements CampaignInterface
         return $this->carriers->filter(function (Carrier $carrier){
             return $carrier->getIsCampaignsOnPause();
         });
+    }
+
+    /**
+     * @param string $uuid
+     */
+    public function setUuid(string $uuid)
+    {
+        $this->uuid = $uuid;
     }
 }
