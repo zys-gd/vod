@@ -106,6 +106,7 @@ class OnRenewUpdater
     {
         $subscription->setStatus(Subscription::IS_ACTIVE);
         $subscription->setCurrentStage(Subscription::ACTION_SUBSCRIBE);
+        $subscription->setError('');
         $subscription->setRenewDate($this->renewDateCalculator->calculateRenewDate($subscription));
 
         $User                 = $subscription->getUser();
