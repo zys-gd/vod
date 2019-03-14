@@ -185,9 +185,7 @@ class Subscriber
      */
     public function resubscribe(Subscription $existingSubscription, SubscriptionPack $plan, $additionalData = []): ProcessResult
     {
-
-        $User         = $existingSubscription->getUser();
-        $subscription = $this->createPendingSubscription($User, $plan);
+        $subscription = $existingSubscription;
 
         $this->applyResubscribeTierChanges($subscription);
 
