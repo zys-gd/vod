@@ -9,6 +9,8 @@
         {{ translate('subscription.status.error') }}
     {% elseif isNotEnoughCredit() %}
         {{ translate('subscription.status.not_enough_credit') }}
+    {% elseif isNotFullyPaid() %}
+        {{ translate('subscription.status.subscribed')|raw|nl2br }}
     {% elseif not isSubscriptionExist() %}
         {{ translate('subscription.status.not_subscribe')|raw|nl2br }}
     {% endif %}

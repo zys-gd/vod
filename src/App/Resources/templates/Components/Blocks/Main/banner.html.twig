@@ -1,6 +1,6 @@
 {% macro render(src, alt, class) %}
 
-    {% set class = class ~ ' x-subscribe-button' %}
+    {#{% set class = class ~ ' x-subscribe-button' %}#}
 
     {% if isIdentified() %}
         {% set href = url('subscription.subscribe') %}
@@ -17,9 +17,15 @@
         <img {% if class %}class="{{ class }}"{% endif %} src="{{ src }}" alt="{{ alt }}"/>
     </a>
 
-    <script>
+    <script type="text/javascript">
         $(document).on('click', '.x-subscribe-image', function (e) {
-            $._loader(false);
+            if($('.x-otp-button').length) {
+                e.preventDefault();
+                $('.x-otp-button').click();
+            }
+            else {
+                $._loader(false);
+            }
         })
     </script>
 

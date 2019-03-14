@@ -7,13 +7,14 @@ use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 
 class Subscription implements HasUuid
 {
-
+    // status
     const IS_INACTIVE = 0;
     const IS_ACTIVE = 1;
     const IS_PENDING = 2;
     const IS_ERROR = 3;
     const IS_ON_HOLD = 4;
 
+    // stage
     const ACTION_SUBSCRIBE = 1;
     const ACTION_UNSUBSCRIBE = 2;
     const ACTION_RENEW = 3;
