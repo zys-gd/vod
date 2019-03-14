@@ -9,8 +9,12 @@
 namespace App\Controller;
 
 
+use App\Domain\Entity\Campaign;
+use App\Domain\Repository\CampaignRepository;
 use App\Domain\Service\Forms\MessageSender;
 use App\Form\ContactUsType;
+use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
+use SubscriptionBundle\Service\SubscriptionExtractor;
 use SubscriptionBundle\Service\UserExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -31,15 +35,27 @@ class ContactUsController extends AbstractController implements AppControllerInt
      * @var MessageSender
      */
     private $messageSender;
+    /**
+     * @var SubscriptionExtractor
+     */
+    private $subscriptionExtractor;
+    /**
+     * @var CampaignRepository
+     */
+    private $campaignRepository;
 
 
     public function __construct(FormFactoryInterface $formFactory,
         UserExtractor $userExtractor,
-        MessageSender $messageSender)
+        MessageSender $messageSender,
+        SubscriptionExtractor $subscriptionExtractor,
+        CampaignRepository $campaignRepository)
     {
         $this->formFactory = $formFactory;
         $this->userExtractor = $userExtractor;
         $this->messageSender = $messageSender;
+        $this->subscriptionExtractor = $subscriptionExtractor;
+        $this->campaignRepository = $campaignRepository;
     }
 
 
@@ -52,19 +68,30 @@ class ContactUsController extends AbstractController implements AppControllerInt
 
         $form->handleRequest($request);
 
+        $user = $this->userExtractor->getUserFromRequest($request);
+        $userIdentifier = is_null($user)
+            ? null
+            : $user->getIdentifier();
+
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
+
+            $subscription = $user ? $this->subscriptionExtractor->getExistingSubscriptionForUser($user) : null;
+            $campaignId = AffiliateVisitSaver::extractCampaignToken($request->getSession());
+            /** @var Campaign|null $campaign */
+            $campaign = $campaignId ? $this->campaignRepository->find($campaignId) : null;
+
+            $data['requestHeaders'] = $request->headers->all();
+            $data['user'] = $user;
+            $data['subscription'] = $subscription;
+            $data['campaign'] = $campaign;
+            $data['affiliate'] = $campaign ? $campaign->getAffiliate() : null;
 
             $twig = '@App/Mails/contact-us-notification.html.twig';
             $this->messageSender->sendMessage($data, $twig);
 
             return $this->render('@App/Mails/thank-you-mail.html.twig');
         }
-
-        $user = $this->userExtractor->getUserFromRequest($request);
-        $userIdentifier = is_null($user)
-            ? null
-            : $user->getIdentifier();
         return $this->render(
             '@App/Content/contact_us.html.twig', [
                 'form' => $form->createView(),

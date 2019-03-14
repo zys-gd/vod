@@ -54,6 +54,8 @@ services:
         - '@form.factory'
         - '@SubscriptionBundle\Service\UserExtractor'
         - '@App\Domain\Service\Forms\MessageSender'
+        - '@SubscriptionBundle\Service\SubscriptionExtractor'
+        - '@App\Domain\Repository\CampaignRepository'
 
     App\Controller\GamesController:
         arguments:
