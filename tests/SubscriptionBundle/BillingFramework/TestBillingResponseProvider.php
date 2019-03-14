@@ -6,7 +6,7 @@
  * Time: 13:29
  */
 
-namespace Tests\SubscriptionBundle;
+namespace Tests\SubscriptionBundle\BillingFramework;
 
 use GuzzleHttp\Psr7\Response;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
