@@ -4,14 +4,11 @@ namespace App\Domain\Service\Email;
 
 class EmailComposer
 {
-
-
     const SUPPORT_FROM = 'support.form@origin-data.com';
-    const SUPPORT_TO = 'support.bot@origin-data.com';
+    const SUPPORT_TO   = 'support@origin-data.com';
 
     public function compose(string $content): \Swift_Mime_SimpleMessage
     {
-
         $message = new \Swift_Message('Contact us form notification');
         $message->setFrom(self::SUPPORT_FROM)
             ->setTo(self::SUPPORT_TO)
@@ -20,6 +17,4 @@ class EmailComposer
 
         return $message;
     }
-
 }
-
