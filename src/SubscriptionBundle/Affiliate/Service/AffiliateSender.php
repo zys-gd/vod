@@ -13,6 +13,7 @@ use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Campaign;
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\CarrierInterface;
+use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\DTO\UserInfo;
 use SubscriptionBundle\Entity\Affiliate\AffiliateLog;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
@@ -38,26 +39,34 @@ class AffiliateSender
      * @var AffiliateLogFactory
      */
     private $affiliateLogFactory;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
 
     /**
      * AffiliateSender constructor.
+     *
      * @param CampaignRepositoryInterface $campaignRepository
      * @param EntityManagerInterface      $entityManager
      * @param GuzzleClientFactory         $clientFactory
      * @param AffiliateLogFactory         $affiliateLogFactory
+     * @param LoggerInterface             $logger
      */
     public function __construct(
         CampaignRepositoryInterface $campaignRepository,
         EntityManagerInterface $entityManager,
         GuzzleClientFactory $clientFactory,
-        AffiliateLogFactory $affiliateLogFactory
+        AffiliateLogFactory $affiliateLogFactory,
+        LoggerInterface $logger
     )
     {
-        $this->campaignRepository  = $campaignRepository;
-        $this->entityManager       = $entityManager;
-        $this->clientFactory       = $clientFactory;
+        $this->campaignRepository = $campaignRepository;
+        $this->entityManager = $entityManager;
+        $this->clientFactory = $clientFactory;
         $this->affiliateLogFactory = $affiliateLogFactory;
+        $this->logger = $logger;
     }
 
     public function checkAffiliateEligibilityAndSendEvent(
@@ -138,16 +147,28 @@ class AffiliateSender
         return in_array($carrier->getBillingCarrierId(), $ids);
     }
 
-    private function getPostBackParameters(Affiliate $affiliate, CampaignInterface $campaign, array $campaignParams): array
+    public function areParametersEqual(Affiliate $affiliate, array $campaignParams): bool
+    {
+        $paramsList = $affiliate->getParamsList();
+        if (!array_diff_key(array_flip($paramsList), $campaignParams)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function getPostBackParameters(Affiliate $affiliate,
+        CampaignInterface $campaign,
+        array $campaignParams): array
     {
         $query = [];
 
         /*if ($affiliate->isUniqueFlow()) {
             $query[] = $this->jumpIntoUniqueFlow($affiliate, $campaignParams);
         } else {*/
-        $paramsList    = $affiliate->getParamsList();
+        $paramsList = $affiliate->getParamsList();
         $constantsList = $affiliate->getConstantsList();
-        $query         = $this->jumpIntoStandartFlow($paramsList, $constantsList, $campaignParams, $query);
+        $query = $this->jumpIntoStandartFlow($paramsList, $constantsList, $campaignParams, $query);
         /*};*/
 
         if ($subPriceName = $affiliate->getSubPriceName()) {
@@ -161,27 +182,9 @@ class AffiliateSender
             'headers' => [
                 'User-Agent' => self::USER_AGENT
             ],
-            'query'   => $query,
-            'debug'   => false
+            'query' => $query,
+            'debug' => false
         ];
-    }
-
-    /**
-     * @param Affiliate $affiliate
-     * @param array     $campaignParams
-     *
-     * @return array|string
-     */
-    private function jumpIntoUniqueFlow(Affiliate $affiliate, array $campaignParams)
-    {
-        if (!empty($campaignParams) && array_key_exists($affiliate->getUniqueParameter(), $campaignParams)) {
-            $uniqueParameterValue = $campaignParams[$affiliate->getUniqueParameter()];
-            $url                  = $affiliate->getPostBackUrlUniqueFlow($uniqueParameterValue);
-
-            return $url;
-        }
-
-        return [];
     }
 
     /**
@@ -194,9 +197,13 @@ class AffiliateSender
      */
     private function jumpIntoStandartFlow(array $paramsList, array $constantsList, array $campaignParams, array $query)
     {
+        $this->logger->debug('debug AffiliateSender::jumpIntoStandartFlow()', [
+            'paramsList' => $paramsList,
+            'campaignParams' => $campaignParams,
+        ]);
         if (!empty($paramsList)) {
             foreach ($paramsList as $output => $input) {
-                $query[$output] = $campaignParams[$input];
+                $query[$output] = $campaignParams[$input] ?? '';
             }
         }
         if (!empty($constantsList)) {
@@ -208,14 +215,21 @@ class AffiliateSender
 
     }
 
-
-    public function areParametersEqual(Affiliate $affiliate, array $campaignParams): bool
+    /**
+     * @param Affiliate $affiliate
+     * @param array     $campaignParams
+     *
+     * @return array|string
+     */
+    private function jumpIntoUniqueFlow(Affiliate $affiliate, array $campaignParams)
     {
-        $paramsList = $affiliate->getParamsList();
-        if (!array_diff_key(array_flip($paramsList), $campaignParams)) {
-            return true;
+        if (!empty($campaignParams) && array_key_exists($affiliate->getUniqueParameter(), $campaignParams)) {
+            $uniqueParameterValue = $campaignParams[$affiliate->getUniqueParameter()];
+            $url = $affiliate->getPostBackUrlUniqueFlow($uniqueParameterValue);
+
+            return $url;
         }
 
-        return false;
+        return [];
     }
 }
