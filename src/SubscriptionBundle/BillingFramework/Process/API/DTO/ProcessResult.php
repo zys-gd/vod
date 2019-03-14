@@ -9,7 +9,6 @@
 namespace SubscriptionBundle\BillingFramework\Process\API\DTO;
 
 
-use Symfony\Component\HttpFoundation\JsonResponse;
 use SubscriptionBundle\BillingFramework\Process\RenewProcess;
 
 class ProcessResult
@@ -367,5 +366,9 @@ class ProcessResult
         return (array)$this->clientFields;
     }
 
+    public function isFailedOrSuccessful(): bool
+    {
+        return $this->isSuccessful() || $this->isFailed();
+    }
 
 }

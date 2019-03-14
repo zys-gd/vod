@@ -259,7 +259,7 @@ class CommonFlowHandler
         if ($subscriber instanceof HasCustomTrackingRules) {
             $isNeedToBeTracked = $subscriber->isNeedToBeTrackedForResubscribe($result);
         } else {
-            $isNeedToBeTracked = ($result->isSuccessful() && $result->isFinal());;
+            $isNeedToBeTracked = ($result->isFailedOrSuccessful() && $result->isFinal());;
         }
 
         if ($isNeedToBeTracked) {
@@ -291,7 +291,7 @@ class CommonFlowHandler
         if ($subscriber instanceof HasCustomTrackingRules) {
             $isNeedToBeTracked = $subscriber->isNeedToBeTrackedForSubscribe($result);
         } else {
-            $isNeedToBeTracked = $result->isFinal();
+            $isNeedToBeTracked = ($result->isFailedOrSuccessful() && $result->isFinal());
         }
 
         if ($isNeedToBeTracked) {
