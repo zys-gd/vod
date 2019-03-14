@@ -137,21 +137,21 @@ class CommonFlowHandler
         string $resubNotAllowedRoute
     )
     {
-        $this->subscriptionPackProvider        = $subscriptionPackProvider;
-        $this->subscriber                      = $subscriber;
-        $this->checker                         = $checker;
-        $this->subscriptionProvider            = $subscriptionProvider;
-        $this->logger                          = $logger;
-        $this->redirectUrlNullifier            = $redirectUrlNullifier;
-        $this->handlerProvider                 = $handlerProvider;
-        $this->commonResponseCreator           = $commonResponseCreator;
-        $this->urlParamAppender                = $urlParamAppender;
-        $this->router                          = $router;
-        $this->affiliateService                = $affiliateService;
-        $this->subscriptionStatisticSender     = $subscriptionStatisticSender;
-        $this->infoMapper                      = $infoMapper;
-        $this->entitySaveHelper                = $entitySaveHelper;
-        $this->resubNotAllowedRoute            = $resubNotAllowedRoute;
+        $this->subscriptionPackProvider    = $subscriptionPackProvider;
+        $this->subscriber                  = $subscriber;
+        $this->checker                     = $checker;
+        $this->subscriptionProvider        = $subscriptionProvider;
+        $this->logger                      = $logger;
+        $this->redirectUrlNullifier        = $redirectUrlNullifier;
+        $this->handlerProvider             = $handlerProvider;
+        $this->commonResponseCreator       = $commonResponseCreator;
+        $this->urlParamAppender            = $urlParamAppender;
+        $this->router                      = $router;
+        $this->affiliateService            = $affiliateService;
+        $this->subscriptionStatisticSender = $subscriptionStatisticSender;
+        $this->infoMapper                  = $infoMapper;
+        $this->entitySaveHelper            = $entitySaveHelper;
+        $this->resubNotAllowedRoute        = $resubNotAllowedRoute;
     }
 
 
@@ -168,8 +168,8 @@ class CommonFlowHandler
         $UserId         = $User->getUuid();
         $UserIdentifier = $User->getIdentifier();
         $this->logger->debug('Processing `subscribe` action', [
-            'UserId' => $UserId,
-            'msidsn' => $UserIdentifier,
+            'UserId'  => $UserId,
+            'msidsn'  => $UserIdentifier,
             'request' => $request
         ]);
 
@@ -177,11 +177,19 @@ class CommonFlowHandler
         $subscriber   = $this->handlerProvider->getSubscriber($User->getCarrier());
         $subscription = $this->subscriptionProvider->getExistingSubscriptionForUser($User);
 
-        if (!empty($subscription) && !$this->checker->isEligibleToSubscribe($subscription)) {
+        if (empty($subscription)) {
+            return $this->handleSubscribe($request, $User, $subscriber);
+        }
+
+        if ($this->checker->isStatusOkForResubscribe($subscription)) {
+            return $this->handleResubscribeAttempt($request, $User, $subscription, $subscriber);
+
+        } else {
             $this->logger->debug('`Subscribe` is not possible. User already have an active subscription.');
             if (
                 $subscriber instanceof HasCustomResponses &&
-                $response = $subscriber->createResponseForExistingSubscription($request, $User, $subscription)) {
+                $response = $subscriber->createResponseForExistingSubscription($request, $User, $subscription)
+            ) {
                 return $response;
             }
 
@@ -197,12 +205,6 @@ class CommonFlowHandler
 
             throw new ExistingSubscriptionException('You already have an active subscription.', $subscription);
         }
-
-        if (empty($subscription)) {
-            return $this->handleSubscribe($request, $User, $subscriber);
-        } else {
-            return $this->handleResubscribe($request, $User, $subscription, $subscriber);
-        }
     }
 
 
@@ -215,7 +217,7 @@ class CommonFlowHandler
      * @throws ActiveSubscriptionPackNotFound
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    private function handleResubscribe(
+    private function handleResubscribeAttempt(
         Request $request,
         User $User,
         Subscription $subscription,
@@ -229,7 +231,10 @@ class CommonFlowHandler
 
         // We have same property at Carrier.
         // Maybe we need to remove this duplicate?
-        if ($subscriptionPack->isResubAllowed() || $subscription->isOutOfCredits()) {
+        if (
+            $this->checker->isResubscriptionAfterUnsubscribeCase($subscription, $subscriptionPack) ||
+            $this->checker->isNotFullyPaidSubscriptionCase($subscription)
+        ) {
             $this->logger->debug('Resubscription is allowed. Doing resubscribe', [
                 'packId'      => $subpackId,
                 'carrierName' => $subpackName
