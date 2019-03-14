@@ -1,16 +1,26 @@
 {% extends '@App/base.html.twig' %}
 
+{% import "@App/Common/Blocks/header.html.twig" as  header %}
+{% import "@App/Components/Buttons/link.html.twig" as link %}
+
+{% block header_content %}
+    {{ header.render() }}
+{% endblock header_content %}
+
 {% block body %}
-    <div class="d-flex flex-column w-100">
-        <div class=" justify-content-center contact_us__disclaimer mt-4">
+    <div class="d-flex align-items-center justify-content-center flex-column w-100">
+        <div class=" contact_us__disclaimer mt-4">
             <div class=" text-center">
                 <p>Thanks for your interest on 100% sport! </p>
             </div>
         </div>
-        <div class=" justify-content-center contact_us__disclaimer">
+        <div class="contact_us__disclaimer">
             <div class=" text-center">
                 <p>We will contact you soon.</p>
             </div>
+        </div>
+        <div>
+            {{ link.render(path('index'), 'HOMEPAGE') }}
         </div>
     </div>
 {% endblock %}
