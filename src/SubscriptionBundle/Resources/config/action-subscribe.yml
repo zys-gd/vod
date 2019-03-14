@@ -10,7 +10,7 @@ services:
         - '@SubscriptionBundle\Service\Notification\Notifier'
         - '@SubscriptionBundle\BillingFramework\Process\SubscribeProcess'
         - '@SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater'
-        - '@SubscriptionBundle\Affiliate\Service\AffiliateSender'
+        - '@SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider'
         - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
         - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
         - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
@@ -36,6 +36,7 @@ services:
           - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
           - '@SubscriptionBundle\Service\EntitySaveHelper'
           - '_resub_not_allowed_route_placeholder_'
+          - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEventTracker'
 
   SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker: ~
 
@@ -68,3 +69,6 @@ services:
 
   SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider:
       arguments: ['@SubscriptionBundle\Service\Action\Common\RequestParametersProvider', '@request_stack', '@router']
+
+  SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEventTracker:
+    arguments: ['@SubscriptionBundle\Affiliate\Service\AffiliateSender', '@SubscriptionBundle\Affiliate\Service\UserInfoMapper', '@SubscriptionBundle\Piwik\SubscriptionStatisticSender', '@session']

@@ -68,25 +68,10 @@ class Subscriber
      */
     private $onSubscribeUpdater;
     /**
-     * @var AffiliateSender
-     */
-    private $affiliateService;
-    /**
-     * @var UserInfoMapper
-     */
-    private $userInfoMapper;
-    /**
-     * @var SubscriptionStatisticSender
-     */
-    private $subscriptionStatisticSender;
-    /**
-     * @var SubscriptionHandlerProvider
-     */
-    private $subscriptionHandlerProvider;
-    /**
      * @var SubscribeParametersProvider
      */
     private $subscribeParametersProvider;
+
 
     /**
      * Subscriber constructor.
@@ -99,10 +84,6 @@ class Subscriber
      * @param Notifier                    $notifier
      * @param SubscribeProcess            $subscribeProcess
      * @param OnSubscribeUpdater          $onSubscribeUpdater
-     * @param AffiliateSender             $affiliateService
-     * @param UserInfoMapper              $userInfoMapper
-     * @param SubscriptionStatisticSender $subscriptionStatisticSender
-     * @param SubscriptionHandlerProvider $subscriptionHandlerProvider
      * @param SubscribeParametersProvider $subscribeParametersProvider
      */
     public function __construct(
@@ -115,10 +96,6 @@ class Subscriber
         Notifier $notifier,
         SubscribeProcess $subscribeProcess,
         OnSubscribeUpdater $onSubscribeUpdater,
-        AffiliateSender $affiliateService,
-        UserInfoMapper $userInfoMapper,
-        SubscriptionStatisticSender $subscriptionStatisticSender,
-        SubscriptionHandlerProvider $subscriptionHandlerProvider,
         SubscribeParametersProvider $subscribeParametersProvider
     )
     {
@@ -131,13 +108,8 @@ class Subscriber
         $this->notifier                    = $notifier;
         $this->subscribeProcess            = $subscribeProcess;
         $this->onSubscribeUpdater          = $onSubscribeUpdater;
-        $this->affiliateService            = $affiliateService;
-        $this->userInfoMapper              = $userInfoMapper;
-        $this->subscriptionStatisticSender = $subscriptionStatisticSender;
-        $this->subscriptionHandlerProvider = $subscriptionHandlerProvider;
         $this->subscribeParametersProvider = $subscribeParametersProvider;
     }
-
 
     /**
      * Subscribe user to given subscription pack
@@ -264,33 +236,4 @@ class Subscriber
         return $subscription;
     }
 
-    public function trackEventsForSubscribe(Subscription $subscription, ProcessResult $response)
-    {
-        $this->affiliateService->checkAffiliateEligibilityAndSendEvent(
-            $subscription,
-            $this->userInfoMapper->mapFromUser($subscription->getUser()),
-            $subscription->getAffiliateToken(),
-            AffiliateVisitSaver::extractCampaignToken($this->session)
-        );
-        $this->subscriptionStatisticSender->trackSubscribe(
-            $subscription->getUser(),
-            $subscription,
-            $response
-        );
-    }
-
-    public function trackEventsForResubscribe(Subscription $subscription, ProcessResult $response)
-    {
-        $this->affiliateService->checkAffiliateEligibilityAndSendEvent(
-            $subscription,
-            $this->userInfoMapper->mapFromUser($subscription->getUser()),
-            $subscription->getAffiliateToken(),
-            AffiliateVisitSaver::extractCampaignToken($this->session)
-        );
-        $this->subscriptionStatisticSender->trackResubscribe(
-            $subscription->getUser(),
-            $subscription,
-            $response
-        );
-    }
 }

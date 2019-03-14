@@ -98,6 +98,10 @@ class CommonFlowHandler
      * @var string
      */
     private $resubNotAllowedRoute;
+    /**
+     * @var SubscriptionEventTracker
+     */
+    private $subscriptionEventTracker;
 
 
     /**
@@ -118,6 +122,7 @@ class CommonFlowHandler
      * @param UserInfoMapper                 $infoMapper
      * @param EntitySaveHelper               $entitySaveHelper
      * @param string                         $resubNotAllowedRoute
+     * @param SubscriptionEventTracker       $subscriptionEventTracker
      */
     public function __construct(
         SubscriptionExtractor $subscriptionProvider,
@@ -134,7 +139,8 @@ class CommonFlowHandler
         SubscriptionStatisticSender $subscriptionStatisticSender,
         UserInfoMapper $infoMapper,
         EntitySaveHelper $entitySaveHelper,
-        string $resubNotAllowedRoute
+        string $resubNotAllowedRoute,
+        SubscriptionEventTracker $subscriptionEventTracker
     )
     {
         $this->subscriptionPackProvider    = $subscriptionPackProvider;
@@ -152,6 +158,7 @@ class CommonFlowHandler
         $this->infoMapper                  = $infoMapper;
         $this->entitySaveHelper            = $entitySaveHelper;
         $this->resubNotAllowedRoute        = $resubNotAllowedRoute;
+        $this->subscriptionEventTracker    = $subscriptionEventTracker;
     }
 
 
@@ -263,7 +270,11 @@ class CommonFlowHandler
         }
 
         if ($isNeedToBeTracked) {
-            $this->subscriber->trackEventsForResubscribe($subscription, $result);
+            // TODO rework.
+            if ($result->isFailedOrSuccessful() && $result->isFinal()) {
+                $this->subscriptionEventTracker->trackAffiliate($subscription);
+            }
+            $this->subscriptionEventTracker->trackPiwikForResubscribe($subscription, $result);
         }
 
         $subscriber->afterProcess($subscription, $result);
@@ -295,7 +306,11 @@ class CommonFlowHandler
         }
 
         if ($isNeedToBeTracked) {
-            $this->subscriber->trackEventsForSubscribe($newSubscription, $result);
+            // TODO rework.
+            if ($result->isFailedOrSuccessful() && $result->isFinal()) {
+                $this->subscriptionEventTracker->trackAffiliate($newSubscription);
+            }
+            $this->subscriptionEventTracker->trackPiwikForSubscribe($newSubscription, $result);
         }
         $subscriber->afterProcess($newSubscription, $result);
         $this->entitySaveHelper->saveAll();
