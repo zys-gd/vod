@@ -1,5 +1,119 @@
 <div class="row">
     <div class="col-xs-12">
+    {#    <h1>Device, country and carrier detection info</h1>
+        <hr/>
+        <h2>User information</h2>
+        <ol>
+            {% if User is not null %}
+                <li>Country (stored value): {{ billableUser.getCountry() }}</li>
+                <li>Carrier (local name): {{ billableUser.getCarrier() }}</li>
+                <li>ALIAS {{ billableUser.getUsername() }}</li>
+                <li>IP (stored value): {{ billableUser.getIp() }}</li>
+                {% if baseCarrier is defined and baseCarrier.idCarrier in [338, 340, 348, 36] %}
+                    <li>Mobile number(only for dot): {{ billableUser.getUsername() }}</li>
+                {% endif %}
+            {% else %}
+                <li>User not detected</li>
+            {% endif %}
+        </ol>
+        <hr/>
+        <!-- DEVICE DETECTION -->
+        <h2>Device information</h2>
+        <ol>
+            <li>Manufacturer: {{ deviceDetection.deviceVendor | default('Unknown') }}</li>
+            <li>Model: {{ deviceDetection.deviceModel | default('Unknown') }}</li>
+            <li>Marketing name: {{ deviceDetection.deviceName | default('Unknown') }}</li>
+            <li>Device Atlas ID: {{ deviceDetection.deviceId | default('Unknown') }} </li>
+            <li>Language: {{ app.request.locale }}</li>
+        </ol>
+        <hr/>
+        <!-- COUNTRY & CARRIER DETECTION -->
+        <h2>Location information</h2>
+        <ol>
+            <li>IP: {{ app.request.clientIp }}</li>
+            <li>Country: {{ connectionInfo.getCountry() | default('Unknown') }}</li>
+            <li>Carrier: {{ connectionInfo.getCarrier() | default('Unknown') }} </li>
+            <li>Connection Type: {{ connectionInfo.getConnectionType()|default('Unknown') }} </li>
+        </ol>
+        <hr/>#}
+        <!-- REQUEST INFORMATION -->
+        <h2>Request information</h2>
+        <ol>
+            {% for header, value in requestHeaders %}
+                <li><strong>{{ header|capitalize }}</strong>: {{ value[0] }}</li>
+            {% endfor %}
+        </ol>
+        <!-- USER SUBSCRIPTION -->
+        {% if User is not null %}
+            <hr/>
+            <h2>User subscription</h2>
+            <ol>
+                {% if subscription %}
+                    <li>Subscribed</li>
+                    <li>
+                        id: {{ subscription.getId() }}{% if subscription.getBfProcessId() %} / process #{{ subscription.getBfProcessId() }}{% endif %}</li>
+                    <li>Status: {{ subscription.getHumanReadableStatus() }}
+                        {% if subscription.getError() %} / {{ subscription.getError() }}{% endif %}
+                    </li>
+                    <li>State: {{ subscription.getHumanReadableAction() }}</li>
+                    <li>Date of subscription: {{ subscription.getCreated("d.m.y") }}</li>
+                    <li>Expires at: {{ subscription.getRenewDate("d.m.y") }}</li>
+                    <li>Credits: {{ subscription.getCounterUsed() }} used and {{ subscription.getAllowedCount() }}
+                        available
+                    </li>
+                {% else %}
+                    <li>User do not have subscriptions</li>
+                {% endif %}
+            </ol>
+            <hr/>
+      {#      <h2>Products user subscribed to</h2>
+            <ol>
+                {% if subscriptionProducts %}
+                    {% for subscriptionProduct in subscriptionProducts %}
+                        <li>{{ subscriptionProduct.getGameName() }}
+                            ({{ subscriptionProduct.getId() }}
+                            {% if subscriptionProduct.getBfProcessId() %}/process
+                            #{{ subscriptionProduct.getBfProcessId() }}
+                            {% endif %}),
+                            {{ subscriptionProduct.getHumanReadableStatus() }}
+                            {% if subscriptionProduct.getError() %}/{{ subscriptionProduct.getError() }}
+                            {% endif %},
+                            from {{ subscriptionProduct.getStartedAt("d.m.y") }}
+                            to {{ subscriptionProduct.getExpiredAt("d.m.y") }}
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li>User do not have subscription/download products</li>
+                {% endif %}
+            </ol>#}
+
+            
+        {% endif %}
+        <ol>
+        <li>Number of games downloaded: {{ gameDownloadCount }} </li>
+        </ol>
+        <hr/>
+        <h2>Campaign information</h2>
+        <ol>
+            {% if campaign %}
+
+                <li>Сampaign URL: {{ campaignURL }} </li>
+                <li>Affiliate ID: {{ affiliateId }}</li>
+                <li>Affiliate: {{ campaign.getAffiliate() }}</li>
+            {% endif %}
+            <li>Сampaign ID: {{ campaignId }}</li>
+            <li>Notification URL: {{ notificationURL }}</li>
+
+
+            {% if subscription %}
+                <li>Total amount billed: {{ totalAmountBilled }} </li>
+            {% endif %}
+
+        </ol>
+
+        <hr/>
+
+
         <h2>Comment</h2>
         <ol>
             <li>User email: {{ email }}</li>

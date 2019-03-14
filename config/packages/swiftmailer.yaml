@@ -4,4 +4,6 @@ swiftmailer:
     port:      "%mailer_port%"
     username:  "%mailer_user%"
     password:  "%mailer_password%"
-    spool:     { type: memory }
+    encryption: "%mailer_encryption%"
+#    spool:     { type: memory }
+    logging:    '%kernel.debug%'

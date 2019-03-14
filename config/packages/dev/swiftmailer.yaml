@@ -1,4 +1,11 @@
 # See https://symfony.com/doc/current/email/dev_environment.html
 swiftmailer:
     # send all emails to a specific address
-    delivery_addresses: ['support.bot@origin-data.com']
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    port:      "%mailer_port%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    encryption: "%mailer_encryption%"
+#    spool:     { type: memory }
+    logging:    '%kernel.debug%'
