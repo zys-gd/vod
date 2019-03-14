@@ -130,7 +130,7 @@ class SubscriptionStatusExtension extends \Twig_Extension
     public function isNotFullyPaid(): bool
     {
         $subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($this->session);
-        if ($subscription && $subscription->isNotFullyPaid()) {
+        if ($subscription && $subscription->isNotFullyPaid() && $subscription->getError() == 'not_fully_paid') {
             return true;
         }
         return false;

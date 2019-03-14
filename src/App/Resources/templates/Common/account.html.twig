@@ -22,7 +22,7 @@
 {% block body %}
     <div class="d-flex flex-column align-items-center justify-content-center w-100 text-center account-page-container">
 
-        {% if hasActiveSubscription() %}
+        {% if hasActiveSubscription() or isNotFullyPaid() %}
             <div class="d-flex align-items-center justify-content-center">
                 <p class="red"> {{ translate('subscription.status.subscribed')|raw }}</p>
             </div>
