@@ -94,6 +94,8 @@ class MassRenewer
                 $succeeded++;
 
                 $subscription->setStatus(Subscription::IS_ON_HOLD);
+                $subscription->setError('not_fully_paid');
+
                 if ($renewHandler instanceof HasCommonFlow) {
                     $renewHandler->onRenewSendSuccess($subscription, $processId);
                 }
