@@ -16,7 +16,7 @@
                 {% if subscription %}
                     <li>Subscribed</li>
                     <li>
-                        id: {{ subscription.getUuid() }}{% if subscription.getBfProcessId() %} / process #{{ subscription.getBfProcessId() }}{% endif %}</li>
+                        id: {{ subscription.getUuid() }}</li>
                     <li>Status: {{ subscription.getHumanReadableStatus() }}
                         {% if subscription.getError() %} / {{ subscription.getError() }}{% endif %}
                     </li>
