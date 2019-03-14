@@ -63,6 +63,7 @@ class ContactUsController extends AbstractController implements AppControllerInt
             $data = $form->getData();
 
             $this->contactUsMessageSender->sendMessage($data['email'], $data['comment']);
+            return $this->render('@App/Mail/thank-you-mail.html.twig');
         }
 
         $user = $this->userExtractor->getUserFromRequest($request);

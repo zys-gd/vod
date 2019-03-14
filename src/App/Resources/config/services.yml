@@ -78,7 +78,7 @@ services:
     App\Domain\Service\FaqProviderService: ~
 
     App\Domain\Service\ContactUsMessageSender:
-        arguments: ['@App\Domain\Service\Email\EmailComposer', '@twig', '@swiftmailer.mailer']
+      arguments: ['@App\Domain\Service\Email\EmailComposer', '@twig', '@mailer', '@subscription.subscription.service', '@App\Domain\Service\Campaign\CampaignService', '@SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository', '@App\Domain\Repository\CampaignRepository', '@device_detection.service.device', '@country_carrier_detection']
 
     App\Domain\Service\Email\EmailComposer: ~
 
