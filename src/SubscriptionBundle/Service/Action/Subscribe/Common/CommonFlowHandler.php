@@ -271,7 +271,7 @@ class CommonFlowHandler
 
         if ($isNeedToBeTracked) {
             // TODO rework.
-            if ($result->isFailedOrSuccessful() && $result->isFinal()) {
+            if ($result->isSuccessful() && $result->isFinal()) {
                 $this->subscriptionEventTracker->trackAffiliate($subscription);
             }
             $this->subscriptionEventTracker->trackPiwikForResubscribe($subscription, $result);
@@ -307,7 +307,7 @@ class CommonFlowHandler
 
         if ($isNeedToBeTracked) {
             // TODO rework.
-            if ($result->isFailedOrSuccessful() && $result->isFinal()) {
+            if ($result->isSuccessful() && $result->isFinal()) {
                 $this->subscriptionEventTracker->trackAffiliate($newSubscription);
             }
             $this->subscriptionEventTracker->trackPiwikForSubscribe($newSubscription, $result);
