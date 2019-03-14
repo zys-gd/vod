@@ -21,8 +21,8 @@
                         {% if subscription.getError() %} / {{ subscription.getError() }}{% endif %}
                     </li>
                     <li>State: {{ subscription.getHumanReadableStage() }}</li>
-                    <li>Date of subscription: {{ subscription.getCreated() }}</li>
-                    <li>Expires at: {{ subscription.getRenewDate() }}</li>
+                    <li>Date of subscription: {{ subscription.getCreated()|date('d-m-Y') }}</li>
+                    <li>Expires at: {{ subscription.getRenewDate()|date('d-m-Y') }}</li>
                     {#<li>Credits: {{ subscription.getCounterUsed() }} used and {{ subscription.getAllowedCount() }}#}
                         {#available#}
                     {#</li>#}

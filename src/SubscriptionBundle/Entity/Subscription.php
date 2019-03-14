@@ -336,34 +336,6 @@ class Subscription implements HasUuid
         $this->updated = $updated;
     }
 
-
-    /**
-     * Added to support older subscription  API
-     *
-     * @return bool
-     */
-    public function isOutOfCredits()
-    {
-        return $this->isOnHold() && $this->currentStage == self::ACTION_SUBSCRIBE;
-
-    }
-
-    /**
-     * Added to support older subscription  API
-     */
-    public function isUnsubscribed()
-    {
-        return $this->isInActive() && $this->currentStage == self::ACTION_UNSUBSCRIBE;
-    }
-
-    /**
-     * Added to support older subscription  API
-     */
-    function isSuccessful()
-    {
-        return $this->isActive();
-    }
-
     /**
      * Added to support older subscription  API
      * @return int
@@ -503,22 +475,9 @@ class Subscription implements HasUuid
         return ($this->getCurrentStage() != self::IS_INACTIVE && $this->hasError()) ? true : false;
     }
 
-    /**
-     * @return bool
-     */
-    public function isSubscribed(): bool
-    {
-        return ($this->getCurrentStage() != self::IS_INACTIVE && $this->getStatus() == self::IS_ACTIVE);
-    }
-
     public function needShowCounter()
     {
         return ($this->getCredits() >= 0); // todo: change to write way
-    }
-
-    public function isNotFullyPaid()
-    {
-        return $this->currentStage == self::ACTION_SUBSCRIBE && $this->status == self::IS_ON_HOLD;
     }
 
     public function isError(): bool
@@ -591,6 +550,47 @@ class Subscription implements HasUuid
         return $this;
     }
 
+    /**
+     * statuses
+     */
 
+    /**
+     * 4/1
+     * @return bool
+     */
+    public function isNotFullyPaid()
+    {
+        return $this->currentStage == self::ACTION_SUBSCRIBE && $this->status == self::IS_ON_HOLD && $this->getError() == 'not_fully_paid';
+    }
+
+    /**
+     * 4/1
+     * @return bool
+     */
+    public function isNotEnoughCredit()
+    {
+        return $this->currentStage == self::ACTION_SUBSCRIBE && $this->status == self::IS_ON_HOLD && $this->getError() == 'not_enough_credit';
+    }
+
+    /**
+     * 1/2
+     * @return bool
+     */
+    public function isUnsubscribed()
+    {
+        return $this->isInActive() && $this->currentStage == self::ACTION_UNSUBSCRIBE;
+    }
+
+    /**
+     * 1/1
+     * @return bool
+     */
+    public function isSubscribed(): bool
+    {
+        return ($this->getCurrentStage() != self::IS_INACTIVE && $this->getStatus() == self::IS_ACTIVE);
+    }
+    /**
+     * /statuses/
+     */
 }
 
