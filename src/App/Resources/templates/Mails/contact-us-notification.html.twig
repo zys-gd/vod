@@ -20,12 +20,12 @@
                     <li>Status: {{ subscription.getHumanReadableStatus() }}
                         {% if subscription.getError() %} / {{ subscription.getError() }}{% endif %}
                     </li>
-                    <li>State: {{ subscription.getHumanReadableAction() }}</li>
-                    <li>Date of subscription: {{ subscription.getCreated("d.m.y") }}</li>
-                    <li>Expires at: {{ subscription.getRenewDate("d.m.y") }}</li>
-                    <li>Credits: {{ subscription.getCounterUsed() }} used and {{ subscription.getAllowedCount() }}
-                        available
-                    </li>
+                    <li>State: {{ subscription.getHumanReadableStage() }}</li>
+                    <li>Date of subscription: {{ subscription.getCreated() }}</li>
+                    <li>Expires at: {{ subscription.getRenewDate() }}</li>
+                    {#<li>Credits: {{ subscription.getCounterUsed() }} used and {{ subscription.getAllowedCount() }}#}
+                        {#available#}
+                    {#</li>#}
                 {% else %}
                     <li>User hasn't subscriptions</li>
                 {% endif %}
