@@ -39,10 +39,9 @@
             <hr/>
             <h2>Campaign information</h2>
             <ol>
-                <li>Сampaign ID: {{ campaignId }}</li>
+                <li>Сampaign ID: {{ campaign.getUuid() }}</li>
                 <li>Сampaign URL: {{ campaign.getLandingUrl() | default('-') }} </li>
                 <li>Affiliate ID: {{ campaign.getAffiliate().getUuid() | default('-') }}</li>
-                <li>Affiliate: {{ campaign.getAffiliate() | default('-') }}</li>
                 <li>Notification URL: {{ campaign.getAffiliate().getPostbackUrl() | default('-') }}</li>
             </ol>
         {% endif %}
