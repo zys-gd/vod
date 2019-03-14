@@ -3,11 +3,12 @@
 namespace App\Domain\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 
 /**
  * Affiliate
  */
-class Affiliate
+class Affiliate implements HasUuid
 {
     /**
      * Affiliate types
@@ -434,6 +435,14 @@ class Affiliate
     public function removeParameter(AffiliateParameter $affiliateParameters)
     {
         $this->parameters->removeElement($affiliateParameters);
+    }
+
+    /**
+     * @param string $uuid
+     */
+    public function setUuid(string $uuid)
+    {
+        $this->uuid = $uuid;
     }
 }
 

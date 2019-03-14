@@ -10,6 +10,8 @@
         "skypeId": "albertokimia",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103cf67-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -25,6 +27,8 @@
         "skypeId": "maya.go-rilla",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103f78d-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -40,6 +44,8 @@
         "skypeId": "viki.vaturi",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103f78d-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -55,6 +61,8 @@
         "skypeId": "michela.secci5",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103cc4f-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -70,6 +78,8 @@
         "skypeId": "sharon.nardea",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103f78d-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -85,6 +95,8 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103ce41-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -100,6 +112,8 @@
         "skypeId": "paloma.caballero.mob",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103cf67-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -115,6 +129,8 @@
         "skypeId": "erez.yerushalmi",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103f78d-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -130,6 +146,8 @@
         "skypeId": "yuval_4444",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103f78d-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -145,6 +163,8 @@
         "skypeId": "victor_edm",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103cf67-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -160,6 +180,8 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103cc4f-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -175,6 +197,8 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103d7ed-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -190,6 +214,8 @@
         "skypeId": "raulcruzarnelas_",
         "enabled": true,
         "subPriceName": "CESTA",
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103cf67-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -205,6 +231,8 @@
         "skypeId": "nadav_luxembourg",
         "enabled": true,
         "subPriceName": "amt",
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103f78d-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -220,6 +248,8 @@
         "skypeId": "karny.yosi",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103f78d-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -235,6 +265,8 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -250,6 +282,8 @@
         "skypeId": "hguesa",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "51043478-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -265,6 +299,8 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -280,6 +316,8 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -295,6 +333,8 @@
         "skypeId": "vasconcellos.bernardo",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "51044bcc-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -310,6 +350,8 @@
         "skypeId": "lgarcia.ama",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103cf67-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -325,6 +367,8 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -340,6 +384,8 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -355,6 +401,8 @@
         "skypeId": "dinah.saada",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103f78d-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -370,6 +418,8 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -385,6 +435,8 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -400,6 +452,8 @@
         "skypeId": "sharuna.flymob",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103f6ea-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -415,6 +469,8 @@
         "skypeId": "raulcruzarnelas_",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103cf67-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -430,6 +486,8 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -445,6 +503,8 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -460,6 +520,8 @@
         "skypeId": "manish.mishra6",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103fb7c-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -475,6 +537,8 @@
         "skypeId": "abhimanyu.chatterjee",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103fb7c-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -490,6 +554,8 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "51044bcc-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -505,6 +571,8 @@
         "skypeId": "raulcruzarnelas_",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103cf67-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -520,6 +588,8 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103fb7c-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -535,6 +605,8 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103fb7c-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -550,6 +622,8 @@
         "skypeId": "lyuba_84",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "510461e4-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -565,6 +639,8 @@
         "skypeId": "catia.gomes_9",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -580,6 +656,8 @@
         "skypeId": "jenna@sinozo",
         "enabled": true,
         "subPriceName": "payout",
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "51044fe9-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -595,6 +673,8 @@
         "skypeId": "jasperbanse@trafficcompany.com",
         "enabled": true,
         "subPriceName": "payout",
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5104403e-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -610,6 +690,8 @@
         "skypeId": "geoffrey_domdom",
         "enabled": true,
         "subPriceName": "payout",
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -625,6 +707,8 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -640,6 +724,8 @@
         "skypeId": null,
         "enabled": true,
         "subPriceName": "value",
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "51046d7f-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -655,6 +741,8 @@
         "skypeId": "awad.adjomo",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103cf67-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -670,6 +758,8 @@
         "skypeId": "Karny.yosi",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103f78d-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -685,6 +775,8 @@
         "skypeId": "vikrant.claym",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103fb7c-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -700,6 +792,8 @@
         "skypeId": "zoey@sparklemob.com",
         "enabled": true,
         "subPriceName": "payout",
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103e066-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -715,6 +809,8 @@
         "skypeId": "Khrystyna.Bykova@offerseven.com",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "510461e4-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -730,8 +826,27 @@
         "skypeId": "sol@toroadvertising.com",
         "enabled": true,
         "subPriceName": null,
+        "parameters": null,
+        "constants": null,
         "country": {
             "uuid": "5103cf67-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "acd29277-c054-4944-9329-a60fcd5ccdd8",
+        "name": "Tevel Media",
+        "type": 1,
+        "url": null,
+        "postbackUrl": "http:\/\/track.tlvperf.com\/postback",
+        "commercialContact": "Uri Shevel",
+        "technicalContact": "urishevel@tevelmedia.com",
+        "skypeId": "shevel_uri",
+        "enabled": true,
+        "subPriceName": null,
+        "parameters": null,
+        "constants": null,
+        "country": {
+            "uuid": "5103fb7c-ebd4-11e8-95c4-02bb250f0f22"
         }
     }
 ]

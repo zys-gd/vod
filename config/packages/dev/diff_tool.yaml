@@ -20,3 +20,6 @@ diff_tool:
        App\Domain\Entity\Campaign:
           fileName: 'campaigns.json'
           ignoredProperties: []
+       App\Domain\Entity\Affiliate:
+          fileName: 'affiliates.json'
+          ignoredProperties: []
