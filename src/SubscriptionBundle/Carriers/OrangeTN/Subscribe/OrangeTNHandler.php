@@ -9,6 +9,7 @@
 namespace SubscriptionBundle\Carriers\OrangeTN\Subscribe;
 
 
+use App\Domain\Constants\ConstBillingCarrierId;
 use AppBundle\Constant\Carrier as CarrierConst;
 use IdentificationBundle\Entity\CarrierInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -57,9 +58,9 @@ class OrangeTNHandler implements SubscriptionHandlerInterface, HasCustomResponse
         $this->router               = $router;
     }
 
-    public function canHandle(Carrier $carrier): bool
+    public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getIdCarrier() == CarrierConst::ORANGE_TUNISIA;
+        return $carrier->getBillingCarrierId() == ConstBillingCarrierId::ORANGE_TUNISIA;
     }
 
     public function getAdditionalSubscribeParams(Request $request, User $User): array

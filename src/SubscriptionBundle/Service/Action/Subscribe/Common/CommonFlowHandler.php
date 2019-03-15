@@ -22,8 +22,9 @@ use SubscriptionBundle\Exception\ExistingSubscriptionException;
 use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCommonFlow;
+use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomPiwikTrackingRules;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomResponses;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomTrackingRules;
+use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomAffiliateTrackingRules;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
 use SubscriptionBundle\Service\Action\Subscribe\Subscriber;
 use SubscriptionBundle\Service\EntitySaveHelper;
@@ -263,19 +264,26 @@ class CommonFlowHandler
             }
         }
 
-        if ($subscriber instanceof HasCustomTrackingRules) {
-            $isNeedToBeTracked = $subscriber->isNeedToBeTrackedForResubscribe($result);
+
+        if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
+            $isAffTracked = $subscriber->isAffiliateTrackedForResub($result);
         } else {
-            $isNeedToBeTracked = ($result->isFailedOrSuccessful() && $result->isFinal());;
+            $isAffTracked = ($result->isSuccessful() && $result->isFinal());;
+        }
+        if ($isAffTracked) {
+            $this->subscriptionEventTracker->trackAffiliate($subscription);
         }
 
-        if ($isNeedToBeTracked) {
-            // TODO rework.
-            if ($result->isSuccessful() && $result->isFinal()) {
-                $this->subscriptionEventTracker->trackAffiliate($subscription);
-            }
+
+        if ($subscriber instanceof HasCustomPiwikTrackingRules) {
+            $isPiwikTracked = $subscriber->isPiwikTrackedForResub($result);
+        } else {
+            $isPiwikTracked = ($result->isFailedOrSuccessful() && $result->isFinal());;
+        }
+        if ($isPiwikTracked) {
             $this->subscriptionEventTracker->trackPiwikForResubscribe($subscription, $result);
         }
+
 
         $subscriber->afterProcess($subscription, $result);
         $this->entitySaveHelper->saveAll();
@@ -299,19 +307,26 @@ class CommonFlowHandler
         /** @var ProcessResult $result */
         list($newSubscription, $result) = $this->subscriber->subscribe($User, $subscriptionPack, $additionalData);
 
-        if ($subscriber instanceof HasCustomTrackingRules) {
-            $isNeedToBeTracked = $subscriber->isNeedToBeTrackedForSubscribe($result);
+        if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
+            $isAffTracked = $subscriber->isAffiliateTrackedForSub($result);
         } else {
-            $isNeedToBeTracked = ($result->isFailedOrSuccessful() && $result->isFinal());
+            $isAffTracked = ($result->isSuccessful() && $result->isFinal());
         }
 
-        if ($isNeedToBeTracked) {
-            // TODO rework.
-            if ($result->isSuccessful() && $result->isFinal()) {
-                $this->subscriptionEventTracker->trackAffiliate($newSubscription);
-            }
+        if ($isAffTracked) {
+            $this->subscriptionEventTracker->trackAffiliate($newSubscription);
+        }
+
+
+        if ($subscriber instanceof HasCustomPiwikTrackingRules) {
+            $isPiwikTracked = $subscriber->isPiwikTrackedForSub($result);
+        } else {
+            $isPiwikTracked = ($result->isFailedOrSuccessful() && $result->isFinal());
+        }
+        if ($isPiwikTracked) {
             $this->subscriptionEventTracker->trackPiwikForSubscribe($newSubscription, $result);
         }
+
         $subscriber->afterProcess($newSubscription, $result);
         $this->entitySaveHelper->saveAll();
 

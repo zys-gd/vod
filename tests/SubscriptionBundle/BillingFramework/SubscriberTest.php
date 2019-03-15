@@ -1,23 +1,21 @@
 <?php
 
+use App\Utils\UuidGenerator;
 use IdentificationBundle\Entity\User;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateSender;
-use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
-use SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use SubscriptionBundle\Service\Action\Common\FakeResponseProvider;
 use SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
 use SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater;
+use SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\Notification\Notifier;
 use SubscriptionBundle\Service\SubscriptionCreator;
-use App\Utils\UuidGenerator;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Created by PhpStorm.
@@ -55,7 +53,7 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
 
         $subscriptionPack = new SubscriptionPack(UuidGenerator::generate());
         $subscriptionPack->setProviderManagedSubscriptions(true);
-        $user = new User(UuidGenerator::generate());
+        $user         = new User(UuidGenerator::generate());
         $subscription = new Subscription(UuidGenerator::generate());
         $subscription->setSubscriptionPack($subscriptionPack);
         $subscription->setUser($user);
@@ -76,20 +74,12 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
     public function testResubscribe()
     {
 
-        $user         = new User(UuidGenerator::generate());
+        $user                 = new User(UuidGenerator::generate());
         $existingSubscription = new Subscription(UuidGenerator::generate());
         $existingSubscription->setUser($user);
         $subscriptionPack = new SubscriptionPack(UuidGenerator::generate());
         $subscriptionPack->setProviderManagedSubscriptions(true);
-        $subscription = new Subscription(UuidGenerator::generate());
-
-        $subscription->setSubscriptionPack($subscriptionPack);
-        $subscription->setUser($user);
-
-        $this->subscriptionCreator->allows([
-            'create' => $subscription
-        ]);
-
+        $existingSubscription->setSubscriptionPack($subscriptionPack);
 
         $this->subscriber->resubscribe($existingSubscription, $subscriptionPack);
 
@@ -121,10 +111,6 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
             Mockery::spy(Notifier::class),
             $this->subscribeProcess,
             Mockery::spy(OnSubscribeUpdater::class),
-            $this->affiliateService,
-            Mockery::spy(UserInfoMapper::class),
-            $this->piwikSender,
-            Mockery::spy(SubscriptionHandlerProvider::class),
             Mockery::spy(SubscribeParametersProvider::class)
         );
 
