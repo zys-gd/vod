@@ -76,7 +76,11 @@ class AffiliateSender
         string $campaignToken = null
     ): void
     {
-
+        $this->logger->debug('start AffiliateSender::checkAffiliateEligibilityAndSendEvent()', [
+            'userInfo' => $userInfo,
+            'campaignParams' => $campaignParams,
+            '$campaignToken' => $campaignToken
+        ]);
         if (!$campaignToken) {
             return;
         }
@@ -103,6 +107,11 @@ class AffiliateSender
         $data = ['query' => $this->getPostBackParameters($affiliate, $campaign, $campaignParams)]; // TODO implement _formAffiliateData
         $fullUrl = $affiliate->getPostbackUrl() . '?' . http_build_query($data['query']);
 
+        $this->logger->debug('check content', [
+            'userInfo' => $data,
+            'campaignParams' => $fullUrl,
+            '$campaignToken' => $campaignToken
+        ]);
 
         try {
             $client = $this->clientFactory->getClient();
@@ -169,6 +178,9 @@ class AffiliateSender
         $paramsList = $affiliate->getParamsList();
         $constantsList = $affiliate->getConstantsList();
         $query = $this->jumpIntoStandartFlow($paramsList, $constantsList, $campaignParams, $query);
+        $this->logger->debug('check content in getPostBackParameters()', [
+            'query' => $query
+        ]);
         /*};*/
 
         if ($subPriceName = $affiliate->getSubPriceName()) {
@@ -177,6 +189,10 @@ class AffiliateSender
                 [$subPriceName => $campaign->getSub() ?? null]
             );
         }
+
+        $this->logger->debug('check content in getPostBackParameters()', [
+            'query' => $query
+        ]);
 
         return [
             'headers' => [
@@ -200,7 +216,9 @@ class AffiliateSender
         $this->logger->debug('debug AffiliateSender::jumpIntoStandartFlow()', [
             'paramsList' => $paramsList,
             'campaignParams' => $campaignParams,
+            'constantsList' => $constantsList,
         ]);
+
         if (!empty($paramsList)) {
             foreach ($paramsList as $output => $input) {
                 $query[$output] = $campaignParams[$input];
