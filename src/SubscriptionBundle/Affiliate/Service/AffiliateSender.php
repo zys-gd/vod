@@ -203,7 +203,7 @@ class AffiliateSender
         ]);
         if (!empty($paramsList)) {
             foreach ($paramsList as $output => $input) {
-                $query[$output] = $campaignParams[$input] ?? '';
+                $query[$output] = $campaignParams[$input];
             }
         }
         if (!empty($constantsList)) {
