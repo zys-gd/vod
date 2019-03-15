@@ -5580,24 +5580,6 @@
         }
     },
     {
-        "uuid": "6f3237d1-05fc-4083-875e-fc5c49de36b8",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552642763\/top_qualifier_videos\/cff50739-3aec-4281-ab29-e912c8cc99d5.mp4",
-        "remoteId": "top_qualifier_videos\/cff50739-3aec-4281-ab29-e912c8cc99d5",
-        "createdDate": "2019-03-15T09:37:40+02:00",
-        "expiredDate": null,
-        "title": "Reaction after Arsenal beat Rennes 3-0 to reach Europa League last eight",
-        "description": null,
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_qualifier_videos\/cff50739-3aec-4281-ab29-e912c8cc99d5.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_qualifier_videos\/cff50739-3aec-4281-ab29-e912c8cc99d5.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_qualifier_videos\/cff50739-3aec-4281-ab29-e912c8cc99d5.jpg"
-        ],
-        "subcategory": {
-            "uuid": "35987d69-49a4-4823-a7f9-574ac1d873hd"
-        }
-    },
-    {
         "uuid": "6fa506b7-e69a-43bc-a43d-2003680a3065",
         "status": 2,
         "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552580570\/top_extreme_sports_videos\/69f7cecf-27f3-4b8a-aae6-b6304990c6ea.mp4",
@@ -6462,24 +6444,6 @@
         }
     },
     {
-        "uuid": "cc6e095d-e19a-46d5-b74b-1222cc0c3736",
-        "status": 2,
-        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552643184\/top_qualifier_videos\/8fbbee7e-e1d0-43c2-a405-ea3e10f9d7da.mp4",
-        "remoteId": "top_qualifier_videos\/8fbbee7e-e1d0-43c2-a405-ea3e10f9d7da",
-        "createdDate": "2019-03-15T09:44:11+02:00",
-        "expiredDate": null,
-        "title": "Reaction after Arsenal beat Rennes 3-0 to reach Europa League last eight",
-        "description": null,
-        "thumbnails": [
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_qualifier_videos\/8fbbee7e-e1d0-43c2-a405-ea3e10f9d7da.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_qualifier_videos\/8fbbee7e-e1d0-43c2-a405-ea3e10f9d7da.jpg",
-            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_qualifier_videos\/8fbbee7e-e1d0-43c2-a405-ea3e10f9d7da.jpg"
-        ],
-        "subcategory": {
-            "uuid": "35987d69-49a4-4823-a7f9-574ac1d873hd"
-        }
-    },
-    {
         "uuid": "ce3a573d-9100-4ef6-a91a-56432ed277b9",
         "status": 2,
         "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552583877\/top_extreme_sports_videos\/c686191b-ae42-4415-9fef-aefebe777316.mp4",
@@ -6945,6 +6909,672 @@
         ],
         "subcategory": {
             "uuid": "fjh56169-49a4-4823-a7f9-574ac1kf54va"
+        }
+    },
+    {
+        "uuid": "0affa02c-e929-42ae-86fc-688731498a75",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552654098\/top_moto_sport_videos\/527cdaa5-3de4-4ecd-9c3c-89333b740e76.mp4",
+        "remoteId": "top_moto_sport_videos\/527cdaa5-3de4-4ecd-9c3c-89333b740e76",
+        "createdDate": "2019-03-15T12:47:11+02:00",
+        "expiredDate": null,
+        "title": "Vettel, Raikkonen and Leclerc give their verdicts after first practice ahead of Australian Grand Prix",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_moto_sport_videos\/527cdaa5-3de4-4ecd-9c3c-89333b740e76.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_moto_sport_videos\/527cdaa5-3de4-4ecd-9c3c-89333b740e76.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_moto_sport_videos\/527cdaa5-3de4-4ecd-9c3c-89333b740e76.jpg"
+        ],
+        "subcategory": {
+            "uuid": "fjh56169-49a4-4823-a7f9-574ac1kf54va"
+        }
+    },
+    {
+        "uuid": "15c4682a-0c63-4e4a-8b2a-c293b7919669",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552653739\/top_qualifier_videos\/99a9691c-7a6f-4675-84ef-4f95ff9a9942.mp4",
+        "remoteId": "top_qualifier_videos\/99a9691c-7a6f-4675-84ef-4f95ff9a9942",
+        "createdDate": "2019-03-15T12:40:38+02:00",
+        "expiredDate": null,
+        "title": "Reaction after Barcelona 5-1 thrashing of Lyon in the UCL round of 16 second leg",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_qualifier_videos\/99a9691c-7a6f-4675-84ef-4f95ff9a9942.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_qualifier_videos\/99a9691c-7a6f-4675-84ef-4f95ff9a9942.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_qualifier_videos\/99a9691c-7a6f-4675-84ef-4f95ff9a9942.jpg"
+        ],
+        "subcategory": {
+            "uuid": "35987d69-49a4-4823-a7f9-574ac1d873hd"
+        }
+    },
+    {
+        "uuid": "18f401fb-8cfa-4864-8357-d6183cda1b70",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552652128\/top_football_videos\/f690958d-78cc-4430-9100-1abf04da7f5f.mp4",
+        "remoteId": "top_football_videos\/f690958d-78cc-4430-9100-1abf04da7f5f",
+        "createdDate": "2019-03-15T12:15:08+02:00",
+        "expiredDate": null,
+        "title": "Lacazette inclusion stuns Rennes coach as they prepare to face Arsenal",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/f690958d-78cc-4430-9100-1abf04da7f5f.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/f690958d-78cc-4430-9100-1abf04da7f5f.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/f690958d-78cc-4430-9100-1abf04da7f5f.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "2bf7e25f-8eed-4d58-ab34-913633b309fa",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552653924\/top_football_videos\/9e5517d9-7b56-4d93-bdc6-37c89cdc8cb9.mp4",
+        "remoteId": "top_football_videos\/9e5517d9-7b56-4d93-bdc6-37c89cdc8cb9",
+        "createdDate": "2019-03-15T12:45:00+02:00",
+        "expiredDate": null,
+        "title": "Honda homecoming ruined by late Hiroshima winner in ACL",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/9e5517d9-7b56-4d93-bdc6-37c89cdc8cb9.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/9e5517d9-7b56-4d93-bdc6-37c89cdc8cb9.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/9e5517d9-7b56-4d93-bdc6-37c89cdc8cb9.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "31f747c1-5f5f-401c-90a6-38f3dd494968",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552655042\/top_moto_sport_videos\/69cd001e-a71c-40d3-9fa7-ec8754c9291b.mp4",
+        "remoteId": "top_moto_sport_videos\/69cd001e-a71c-40d3-9fa7-ec8754c9291b",
+        "createdDate": "2019-03-15T13:03:49+02:00",
+        "expiredDate": null,
+        "title": "\u2018Charlie Whiting saved lives\u2019 F1 team principals pay tribute to F1 racing director",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_moto_sport_videos\/69cd001e-a71c-40d3-9fa7-ec8754c9291b.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_moto_sport_videos\/69cd001e-a71c-40d3-9fa7-ec8754c9291b.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_moto_sport_videos\/69cd001e-a71c-40d3-9fa7-ec8754c9291b.jpg"
+        ],
+        "subcategory": {
+            "uuid": "fjh56169-49a4-4823-a7f9-574ac1kf54va"
+        }
+    },
+    {
+        "uuid": "355269f8-fd4d-4963-85d8-1868e7b4acd7",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552654113\/top_football_videos\/c6ecda8e-1046-412b-923d-4b338fd4b986.mp4",
+        "remoteId": "top_football_videos\/c6ecda8e-1046-412b-923d-4b338fd4b986",
+        "createdDate": "2019-03-15T12:47:40+02:00",
+        "expiredDate": null,
+        "title": "Ceres FC ease past Becamex Binh Duong 3-1 in AFC Cup Group G match",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/c6ecda8e-1046-412b-923d-4b338fd4b986.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/c6ecda8e-1046-412b-923d-4b338fd4b986.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/c6ecda8e-1046-412b-923d-4b338fd4b986.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "357273bf-a83d-4fda-83ff-b42077875bbb",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552653467\/top_football_videos\/c83b3381-3d1d-49d8-bc8c-2f1186eb9e89.mp4",
+        "remoteId": "top_football_videos\/c83b3381-3d1d-49d8-bc8c-2f1186eb9e89",
+        "createdDate": "2019-03-15T12:37:00+02:00",
+        "expiredDate": null,
+        "title": "Daegu FC beat Guangzhou Evergrande 3-1 to move top of Group F in the AC",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/c83b3381-3d1d-49d8-bc8c-2f1186eb9e89.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/c83b3381-3d1d-49d8-bc8c-2f1186eb9e89.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/c83b3381-3d1d-49d8-bc8c-2f1186eb9e89.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "3b19fc44-4876-497c-859c-605cad359268",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552650749\/top_football_videos\/fb1a08f2-8178-42c2-9c25-43ca6308e4a6.mp4",
+        "remoteId": "top_football_videos\/fb1a08f2-8178-42c2-9c25-43ca6308e4a6",
+        "createdDate": "2019-03-15T11:50:52+02:00",
+        "expiredDate": null,
+        "title": "Reaction after Arsenal move into fourth with 2-0 win over Manchester United in EPL",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/fb1a08f2-8178-42c2-9c25-43ca6308e4a6.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/fb1a08f2-8178-42c2-9c25-43ca6308e4a6.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/fb1a08f2-8178-42c2-9c25-43ca6308e4a6.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "465b6669-8814-4cbb-927d-e8e39193a03b",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552651855\/top_football_videos\/d66ad818-9df4-4b3b-8e4a-fc93df6ebba2.mp4",
+        "remoteId": "top_football_videos\/d66ad818-9df4-4b3b-8e4a-fc93df6ebba2",
+        "createdDate": "2019-03-15T12:10:44+02:00",
+        "expiredDate": null,
+        "title": "Hazard and Zidane links don't worry me' - Sarri",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/d66ad818-9df4-4b3b-8e4a-fc93df6ebba2.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/d66ad818-9df4-4b3b-8e4a-fc93df6ebba2.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/d66ad818-9df4-4b3b-8e4a-fc93df6ebba2.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "4a28eba1-a505-4464-87d7-cda7df114b07",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552652746\/top_winter_videos\/81631d8e-a628-4a91-a734-a323638f9039.mp4",
+        "remoteId": "top_winter_videos\/81631d8e-a628-4a91-a734-a323638f9039",
+        "createdDate": "2019-03-15T12:25:05+02:00",
+        "expiredDate": null,
+        "title": "Norway's Maren Lundby wins women's Ski Jumping World Cup HS 140",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_winter_videos\/81631d8e-a628-4a91-a734-a323638f9039.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_winter_videos\/81631d8e-a628-4a91-a734-a323638f9039.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_winter_videos\/81631d8e-a628-4a91-a734-a323638f9039.jpg"
+        ],
+        "subcategory": {
+            "uuid": "123sdf69-49a4-4823-a7f9-574ac1fdf458"
+        }
+    },
+    {
+        "uuid": "4bc18885-ef82-4cf4-a289-55ac1ab3a6b9",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552654386\/top_football_videos\/066d5b55-9b0d-463a-b3b5-0a0400ec5c69.mp4",
+        "remoteId": "top_football_videos\/066d5b55-9b0d-463a-b3b5-0a0400ec5c69",
+        "createdDate": "2019-03-15T12:52:26+02:00",
+        "expiredDate": null,
+        "title": "Shandong Luneng draw 2-2 with Kashima Antlers in ACL after Pelle double",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/066d5b55-9b0d-463a-b3b5-0a0400ec5c69.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/066d5b55-9b0d-463a-b3b5-0a0400ec5c69.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/066d5b55-9b0d-463a-b3b5-0a0400ec5c69.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "4dcacef0-2f64-4d79-8447-be42a498a880",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552655349\/top_moto_sport_videos\/4b147484-e32a-4dde-b46d-308ed8050e88.mp4",
+        "remoteId": "top_moto_sport_videos\/4b147484-e32a-4dde-b46d-308ed8050e88",
+        "createdDate": "2019-03-15T13:08:29+02:00",
+        "expiredDate": null,
+        "title": "F1 drivers pay tribute to former race director Charlie Whiting at season-opener",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_moto_sport_videos\/4b147484-e32a-4dde-b46d-308ed8050e88.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_moto_sport_videos\/4b147484-e32a-4dde-b46d-308ed8050e88.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_moto_sport_videos\/4b147484-e32a-4dde-b46d-308ed8050e88.jpg"
+        ],
+        "subcategory": {
+            "uuid": "fjh56169-49a4-4823-a7f9-574ac1kf54va"
+        }
+    },
+    {
+        "uuid": "63405a7b-be44-437a-93d9-8efd21e18940",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552654741\/top_moto_sport_videos\/fb866772-eab1-4915-9079-c1dc37fa5f88.mp4",
+        "remoteId": "top_moto_sport_videos\/fb866772-eab1-4915-9079-c1dc37fa5f88",
+        "createdDate": "2019-03-15T12:58:31+02:00",
+        "expiredDate": null,
+        "title": "Verstappen and Gasly perform doughnuts in 2019 Red Bull cars",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_moto_sport_videos\/fb866772-eab1-4915-9079-c1dc37fa5f88.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_moto_sport_videos\/fb866772-eab1-4915-9079-c1dc37fa5f88.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_moto_sport_videos\/fb866772-eab1-4915-9079-c1dc37fa5f88.jpg"
+        ],
+        "subcategory": {
+            "uuid": "fjh56169-49a4-4823-a7f9-574ac1kf54va"
+        }
+    },
+    {
+        "uuid": "67c1f4a1-94ea-4e49-a093-3ff23612f6bb",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552652052\/top_winter_videos\/99e3e4f9-3b1d-4578-b3d7-3e6f053b987c.mp4",
+        "remoteId": "top_winter_videos\/99e3e4f9-3b1d-4578-b3d7-3e6f053b987c",
+        "createdDate": "2019-03-15T12:13:24+02:00",
+        "expiredDate": null,
+        "title": "Shiffrin wins Super-G World Cup title in Andorra",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_winter_videos\/99e3e4f9-3b1d-4578-b3d7-3e6f053b987c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_winter_videos\/99e3e4f9-3b1d-4578-b3d7-3e6f053b987c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_winter_videos\/99e3e4f9-3b1d-4578-b3d7-3e6f053b987c.jpg"
+        ],
+        "subcategory": {
+            "uuid": "123sdf69-49a4-4823-a7f9-574ac1fdf458"
+        }
+    },
+    {
+        "uuid": "7072b12b-43c5-4b21-9f1a-d0bc5e3b6164",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552653191\/top_football_videos\/2a8a0f78-6143-4c34-bfbc-b0aae7af8395.mp4",
+        "remoteId": "top_football_videos\/2a8a0f78-6143-4c34-bfbc-b0aae7af8395",
+        "createdDate": "2019-03-15T12:32:56+02:00",
+        "expiredDate": null,
+        "title": "Shocking goal in Asian Champions League gives Ceres FC win over Binh Duong",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/2a8a0f78-6143-4c34-bfbc-b0aae7af8395.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/2a8a0f78-6143-4c34-bfbc-b0aae7af8395.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/2a8a0f78-6143-4c34-bfbc-b0aae7af8395.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "70733bda-c6a4-481f-950f-82fa3fed85ca",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552654459\/top_moto_sport_videos\/aa8970af-a426-419b-b500-97b11dadc344.mp4",
+        "remoteId": "top_moto_sport_videos\/aa8970af-a426-419b-b500-97b11dadc344",
+        "createdDate": "2019-03-15T12:53:49+02:00",
+        "expiredDate": null,
+        "title": "Floersch 'Vonn is my motivation' on International Women's Day",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_moto_sport_videos\/aa8970af-a426-419b-b500-97b11dadc344.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_moto_sport_videos\/aa8970af-a426-419b-b500-97b11dadc344.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_moto_sport_videos\/aa8970af-a426-419b-b500-97b11dadc344.jpg"
+        ],
+        "subcategory": {
+            "uuid": "fjh56169-49a4-4823-a7f9-574ac1kf54va"
+        }
+    },
+    {
+        "uuid": "72dcc694-6936-45c3-b749-dc2c4ce7612d",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552653332\/top_football_videos\/50e07050-9f72-4d43-afb1-03f8280e5c47.mp4",
+        "remoteId": "top_football_videos\/50e07050-9f72-4d43-afb1-03f8280e5c47",
+        "createdDate": "2019-03-15T12:34:39+02:00",
+        "expiredDate": null,
+        "title": "Naga World defeat Yangon United 2-1 to register their first ever win in AFC Cup",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/50e07050-9f72-4d43-afb1-03f8280e5c47.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/50e07050-9f72-4d43-afb1-03f8280e5c47.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/50e07050-9f72-4d43-afb1-03f8280e5c47.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "7590c130-9baf-453f-8bbc-9a481c301b0f",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552650461\/top_football_videos\/1b4f98ab-bf96-40ea-8462-972ab27ae710.mp4",
+        "remoteId": "top_football_videos\/1b4f98ab-bf96-40ea-8462-972ab27ae710",
+        "createdDate": "2019-03-15T11:46:51+02:00",
+        "expiredDate": null,
+        "title": "New Libertad coach Jose Chamot talks ahead of Copa Lib test v Gremio",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/1b4f98ab-bf96-40ea-8462-972ab27ae710.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/1b4f98ab-bf96-40ea-8462-972ab27ae710.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/1b4f98ab-bf96-40ea-8462-972ab27ae710.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "7c1d5c67-2af8-491b-b502-36dca6173976",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552650262\/top_football_videos\/c63f89da-bad4-4a48-ad1b-ef6728c131c1.mp4",
+        "remoteId": "top_football_videos\/c63f89da-bad4-4a48-ad1b-ef6728c131c1",
+        "createdDate": "2019-03-15T11:44:10+02:00",
+        "expiredDate": null,
+        "title": "'Grealish winner was Karma' - Gundogan",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/c63f89da-bad4-4a48-ad1b-ef6728c131c1.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/c63f89da-bad4-4a48-ad1b-ef6728c131c1.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/c63f89da-bad4-4a48-ad1b-ef6728c131c1.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "7c79c835-67ac-42d8-8869-34f541e08fc7",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552654322\/top_moto_sport_videos\/01dde83e-cb95-44de-b344-ff7481c539e0.mp4",
+        "remoteId": "top_moto_sport_videos\/01dde83e-cb95-44de-b344-ff7481c539e0",
+        "createdDate": "2019-03-15T12:51:22+02:00",
+        "expiredDate": null,
+        "title": "\u2018My dream is F1\u2019 Sophia Florsch returns to track after horrific crash",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_moto_sport_videos\/01dde83e-cb95-44de-b344-ff7481c539e0.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_moto_sport_videos\/01dde83e-cb95-44de-b344-ff7481c539e0.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_moto_sport_videos\/01dde83e-cb95-44de-b344-ff7481c539e0.jpg"
+        ],
+        "subcategory": {
+            "uuid": "fjh56169-49a4-4823-a7f9-574ac1kf54va"
+        }
+    },
+    {
+        "uuid": "885c7ffc-ef78-40ca-989f-1543c3450077",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552655321\/top_winter_videos\/4ba34952-7b9a-4c5a-9426-5e7a9b98f6a2.mp4",
+        "remoteId": "top_winter_videos\/4ba34952-7b9a-4c5a-9426-5e7a9b98f6a2",
+        "createdDate": "2019-03-15T13:07:54+02:00",
+        "expiredDate": null,
+        "title": "World Cup champion Ryoyu Kobayashi wins for 13th time this season in Trondheim",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_winter_videos\/4ba34952-7b9a-4c5a-9426-5e7a9b98f6a2.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_winter_videos\/4ba34952-7b9a-4c5a-9426-5e7a9b98f6a2.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_winter_videos\/4ba34952-7b9a-4c5a-9426-5e7a9b98f6a2.jpg"
+        ],
+        "subcategory": {
+            "uuid": "123sdf69-49a4-4823-a7f9-574ac1fdf458"
+        }
+    },
+    {
+        "uuid": "990680dc-ee1b-4a5c-9b60-9090317be2fc",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552652225\/top_football_videos\/dcb73d63-be1e-4aec-86e3-491bcb35f1fd.mp4",
+        "remoteId": "top_football_videos\/dcb73d63-be1e-4aec-86e3-491bcb35f1fd",
+        "createdDate": "2019-03-15T12:16:37+02:00",
+        "expiredDate": null,
+        "title": "Pakhtakor beat Al Ain 1-0 to top Group D of AFC Champions League",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/dcb73d63-be1e-4aec-86e3-491bcb35f1fd.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/dcb73d63-be1e-4aec-86e3-491bcb35f1fd.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/dcb73d63-be1e-4aec-86e3-491bcb35f1fd.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "9a8a4c3a-5e29-4a22-92fc-8c5131a07696",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552650862\/top_football_videos\/afb9b39f-06f0-4608-bc19-07a2dfe90011.mp4",
+        "remoteId": "top_football_videos\/afb9b39f-06f0-4608-bc19-07a2dfe90011",
+        "createdDate": "2019-03-15T11:54:05+02:00",
+        "expiredDate": null,
+        "title": "'Only God will judge me' says Klopp as he rejects potential need for a trophy to please supporters",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/afb9b39f-06f0-4608-bc19-07a2dfe90011.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/afb9b39f-06f0-4608-bc19-07a2dfe90011.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/afb9b39f-06f0-4608-bc19-07a2dfe90011.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "9bd13d61-ce92-474d-9b5d-7d265e9a22d6",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552652047\/top_football_videos\/9b437703-bfc0-45e5-a91d-e03104908865.mp4",
+        "remoteId": "top_football_videos\/9b437703-bfc0-45e5-a91d-e03104908865",
+        "createdDate": "2019-03-15T12:13:33+02:00",
+        "expiredDate": null,
+        "title": "Johor keep AFC CL campaign alive with draw v Gyeongnam in Group E",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/9b437703-bfc0-45e5-a91d-e03104908865.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/9b437703-bfc0-45e5-a91d-e03104908865.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/9b437703-bfc0-45e5-a91d-e03104908865.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "9dda68aa-26ad-455a-9dc1-56eea45747e9",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552654195\/top_moto_sport_videos\/4557d411-49ea-4cb7-a15f-92f59df77a0c.mp4",
+        "remoteId": "top_moto_sport_videos\/4557d411-49ea-4cb7-a15f-92f59df77a0c",
+        "createdDate": "2019-03-15T12:49:37+02:00",
+        "expiredDate": null,
+        "title": "\u2018It's how F1 cars are meant to be\u2019 Hamilton top in first Australian GP practice",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_moto_sport_videos\/4557d411-49ea-4cb7-a15f-92f59df77a0c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_moto_sport_videos\/4557d411-49ea-4cb7-a15f-92f59df77a0c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_moto_sport_videos\/4557d411-49ea-4cb7-a15f-92f59df77a0c.jpg"
+        ],
+        "subcategory": {
+            "uuid": "fjh56169-49a4-4823-a7f9-574ac1kf54va"
+        }
+    },
+    {
+        "uuid": "a18b0557-e3d9-4d1e-9dee-b67261ceb981",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552650335\/top_football_videos\/babebef9-456f-47b1-9c92-7389c797df5e.mp4",
+        "remoteId": "top_football_videos\/babebef9-456f-47b1-9c92-7389c797df5e",
+        "createdDate": "2019-03-15T11:45:16+02:00",
+        "expiredDate": null,
+        "title": "Lokomotiv train ahead of AFC Champions League game against Al Rayyan",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/babebef9-456f-47b1-9c92-7389c797df5e.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/babebef9-456f-47b1-9c92-7389c797df5e.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/babebef9-456f-47b1-9c92-7389c797df5e.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "a684e667-4c24-4df8-a061-c20a155a34b8",
+        "status": 1,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552655521\/top_qualifier_videos\/6671312e-ff22-45c4-a874-a67044a5996b.mp4",
+        "remoteId": "top_qualifier_videos\/6671312e-ff22-45c4-a874-a67044a5996b",
+        "createdDate": "2019-03-15T13:10:19+02:00",
+        "expiredDate": null,
+        "title": "Reaction after Manchester City thrash Schalke 7-0 in UCL round of 16 second leg",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_qualifier_videos\/6671312e-ff22-45c4-a874-a67044a5996b.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_qualifier_videos\/6671312e-ff22-45c4-a874-a67044a5996b.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_qualifier_videos\/6671312e-ff22-45c4-a874-a67044a5996b.jpg"
+        ],
+        "subcategory": {
+            "uuid": "35987d69-49a4-4823-a7f9-574ac1d873hd"
+        }
+    },
+    {
+        "uuid": "c0070a04-dc8c-495e-942a-d2783b4ef895",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552654238\/top_football_videos\/d8583b01-8039-41b3-8c80-469b31acee9d.mp4",
+        "remoteId": "top_football_videos\/d8583b01-8039-41b3-8c80-469b31acee9d",
+        "createdDate": "2019-03-15T12:50:10+02:00",
+        "expiredDate": null,
+        "title": "Pelle double and Fellaini miss as Shandong draw in AFC Champions League",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/d8583b01-8039-41b3-8c80-469b31acee9d.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/d8583b01-8039-41b3-8c80-469b31acee9d.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/d8583b01-8039-41b3-8c80-469b31acee9d.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "cd17949a-aead-496e-bbe0-ca2e5865b29b",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552653873\/top_qualifier_videos\/a4c4059f-d623-438c-a380-ac348022428c.mp4",
+        "remoteId": "top_qualifier_videos\/a4c4059f-d623-438c-a380-ac348022428c",
+        "createdDate": "2019-03-15T12:44:20+02:00",
+        "expiredDate": null,
+        "title": "Reaction after Chelsea put five past Dynamo Kiev to progress 8-0 on aggregate in UE",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_qualifier_videos\/a4c4059f-d623-438c-a380-ac348022428c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_qualifier_videos\/a4c4059f-d623-438c-a380-ac348022428c.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_qualifier_videos\/a4c4059f-d623-438c-a380-ac348022428c.jpg"
+        ],
+        "subcategory": {
+            "uuid": "35987d69-49a4-4823-a7f9-574ac1d873hd"
+        }
+    },
+    {
+        "uuid": "d1d9cc5e-70dd-4fef-a436-809edcc0b865",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552652482\/top_qualifier_videos\/8063f384-417d-46f1-b284-1e160a6d41d0.mp4",
+        "remoteId": "top_qualifier_videos\/8063f384-417d-46f1-b284-1e160a6d41d0",
+        "createdDate": "2019-03-15T12:19:27+02:00",
+        "expiredDate": null,
+        "title": "Reaction after Arsenal beat Rennes 3-0 to reach Europa League last eight",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_qualifier_videos\/8063f384-417d-46f1-b284-1e160a6d41d0.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_qualifier_videos\/8063f384-417d-46f1-b284-1e160a6d41d0.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_qualifier_videos\/8063f384-417d-46f1-b284-1e160a6d41d0.jpg"
+        ],
+        "subcategory": {
+            "uuid": "35987d69-49a4-4823-a7f9-574ac1d873hd"
+        }
+    },
+    {
+        "uuid": "d4d86631-5859-4787-87d5-9509b5800d29",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552654356\/top_qualifier_videos\/12585cd4-39ff-434f-b35f-7ae1b1a535f7.mp4",
+        "remoteId": "top_qualifier_videos\/12585cd4-39ff-434f-b35f-7ae1b1a535f7",
+        "createdDate": "2019-03-15T12:50:53+02:00",
+        "expiredDate": null,
+        "title": "Reaction after Liverpool beat Bayern Munich 3-1 to reach UCL quarters",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_qualifier_videos\/12585cd4-39ff-434f-b35f-7ae1b1a535f7.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_qualifier_videos\/12585cd4-39ff-434f-b35f-7ae1b1a535f7.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_qualifier_videos\/12585cd4-39ff-434f-b35f-7ae1b1a535f7.jpg"
+        ],
+        "subcategory": {
+            "uuid": "35987d69-49a4-4823-a7f9-574ac1d873hd"
+        }
+    },
+    {
+        "uuid": "dbb866b3-c01e-4815-9362-61529333ffa9",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552650515\/top_football_videos\/ceab5efd-5443-4696-97c6-1337ab0f80ca.mp4",
+        "remoteId": "top_football_videos\/ceab5efd-5443-4696-97c6-1337ab0f80ca",
+        "createdDate": "2019-03-15T11:48:23+02:00",
+        "expiredDate": null,
+        "title": "Pitch invasions can't happen' - Guardiola",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/ceab5efd-5443-4696-97c6-1337ab0f80ca.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/ceab5efd-5443-4696-97c6-1337ab0f80ca.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/ceab5efd-5443-4696-97c6-1337ab0f80ca.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "dcf2ecf2-547f-4230-991b-3f65aec070b3",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552654625\/top_moto_sport_videos\/6f68e830-efb0-41ce-89c2-0cf5d33a7a3b.mp4",
+        "remoteId": "top_moto_sport_videos\/6f68e830-efb0-41ce-89c2-0cf5d33a7a3b",
+        "createdDate": "2019-03-15T12:56:42+02:00",
+        "expiredDate": null,
+        "title": "Verstappen \u2018positively surprised\u2019 by Honda engine",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_moto_sport_videos\/6f68e830-efb0-41ce-89c2-0cf5d33a7a3b.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_moto_sport_videos\/6f68e830-efb0-41ce-89c2-0cf5d33a7a3b.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_moto_sport_videos\/6f68e830-efb0-41ce-89c2-0cf5d33a7a3b.jpg"
+        ],
+        "subcategory": {
+            "uuid": "fjh56169-49a4-4823-a7f9-574ac1kf54va"
+        }
+    },
+    {
+        "uuid": "e5b9c4c7-1f58-4019-a1c0-b1ccd5d44ba4",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552650199\/top_football_videos\/4868a266-6195-47d3-8128-87195b88e13d.mp4",
+        "remoteId": "top_football_videos\/4868a266-6195-47d3-8128-87195b88e13d",
+        "createdDate": "2019-03-15T11:43:11+02:00",
+        "expiredDate": null,
+        "title": "\u2018Nobody gets rid of Liverpool\u2019 Klopp\u2019s message to City",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/4868a266-6195-47d3-8128-87195b88e13d.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/4868a266-6195-47d3-8128-87195b88e13d.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/4868a266-6195-47d3-8128-87195b88e13d.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "e7e7e46b-5cd7-4a1b-9229-59c86f4554c2",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552654531\/top_moto_sport_videos\/d35c0769-dfc6-4448-8092-cbe49df3028d.mp4",
+        "remoteId": "top_moto_sport_videos\/d35c0769-dfc6-4448-8092-cbe49df3028d",
+        "createdDate": "2019-03-15T12:55:18+02:00",
+        "expiredDate": null,
+        "title": "Lecrec and Hamilton looking to improve after P1",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_moto_sport_videos\/d35c0769-dfc6-4448-8092-cbe49df3028d.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_moto_sport_videos\/d35c0769-dfc6-4448-8092-cbe49df3028d.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_moto_sport_videos\/d35c0769-dfc6-4448-8092-cbe49df3028d.jpg"
+        ],
+        "subcategory": {
+            "uuid": "fjh56169-49a4-4823-a7f9-574ac1kf54va"
+        }
+    },
+    {
+        "uuid": "ef0e2bf0-2750-4103-b57b-53ee4eddf500",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552651787\/top_football_videos\/a62cfab9-9c45-4667-bfa4-017099ee2f18.mp4",
+        "remoteId": "top_football_videos\/a62cfab9-9c45-4667-bfa4-017099ee2f18",
+        "createdDate": "2019-03-15T12:09:18+02:00",
+        "expiredDate": null,
+        "title": "Buriram stun Jeonbuk 1-0 in AFC Champions League Group G",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_football_videos\/a62cfab9-9c45-4667-bfa4-017099ee2f18.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_football_videos\/a62cfab9-9c45-4667-bfa4-017099ee2f18.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_football_videos\/a62cfab9-9c45-4667-bfa4-017099ee2f18.jpg"
+        ],
+        "subcategory": {
+            "uuid": "2125df69-5412-4823-a7f9-574ac1d749ke"
+        }
+    },
+    {
+        "uuid": "f389ab0d-499b-4c47-bd2a-71317a45c1ac",
+        "status": 1,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552655604\/top_winter_videos\/ff933129-b784-4ac5-9ab3-a7ebb4ccdcac.mp4",
+        "remoteId": "top_winter_videos\/ff933129-b784-4ac5-9ab3-a7ebb4ccdcac",
+        "createdDate": "2019-03-15T13:12:22+02:00",
+        "expiredDate": null,
+        "title": "American Mikaela Shiffrin wins Super-G World Cup title in Andorra",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_winter_videos\/ff933129-b784-4ac5-9ab3-a7ebb4ccdcac.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_winter_videos\/ff933129-b784-4ac5-9ab3-a7ebb4ccdcac.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_winter_videos\/ff933129-b784-4ac5-9ab3-a7ebb4ccdcac.jpg"
+        ],
+        "subcategory": {
+            "uuid": "123sdf69-49a4-4823-a7f9-574ac1fdf458"
         }
     }
 ]
