@@ -125,7 +125,8 @@ class GamesController extends AbstractController implements AppControllerInterfa
         /** @var Subscription $subscription */
         $subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($request->getSession());
         if (!$subscription
-            || !$subscription->isSubscribed()
+            || (!$subscription->isSubscribed()
+            && !$subscription->isNotFullyPaid())
         ) {
             return new RedirectResponse($this->generateUrl('landing'));
         }

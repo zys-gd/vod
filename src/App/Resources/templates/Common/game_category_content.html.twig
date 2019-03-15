@@ -63,7 +63,7 @@
             var loadMorePath          = '{{ path('load_more') }}';
             var downloadGamePath      = '{{ path('download_game') }}';
             var gameLink              = '{{ path('game_content') }}';
-            var hasActiveSubscription = '{{ hasActiveSubscription() }}';
+            var hasActiveSubscription = '{{ hasActiveSubscription() or isNotFullyPaid() }}';
 
             doLoadMore();
 

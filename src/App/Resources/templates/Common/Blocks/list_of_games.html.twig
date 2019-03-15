@@ -8,7 +8,7 @@
     <div class="listed-games-block d-flex flex-column">
         {% for game in games %}
 
-            {% if hasActiveSubscription() %}
+            {% if hasActiveSubscription() or isNotFullyPaid() %}
                 {% set href = path('game_content',{'gameUuid':game.uuid}) %}
             {% else %}
                 {% set href = path('landing') %}
@@ -26,7 +26,7 @@
                             {{ game.title }}
                         </div>
 
-                        {% if hasActiveSubscription() %}
+                        {% if hasActiveSubscription() or isNotFullyPaid() %}
                             <div class="align-self-center listed-game-download-button">
                                 {{ download_button.renderSmall('listed-game-download-button', game.uuid) }}
                             </div>

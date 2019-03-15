@@ -11,7 +11,7 @@
         {% endif %}
     {% endset %}
 
-    {% if not hasActiveSubscription() %}
+    {% if not hasActiveSubscription() or not isNotFullyPaid() %}
         {% if isIdentified() %}
             {{ link.render(url('subscription.subscribe'), translate('buttons.join.now'), class) }}
         {% elseif isConsentFlow() %}
