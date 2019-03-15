@@ -26,7 +26,7 @@ class LoadCronTasksData extends AbstractFixture
     public function load(ObjectManager $manager)
     {
         $data = [
-            ["1", "mobilinkPakistanCronTask", "0"],
+            ["1", "mobilinkPakistanMassRenewCronTask", "0"],
             ["7", "telenorPakistanDOTMassRenewCronTask", "0"],
 
         ];

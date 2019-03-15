@@ -23,3 +23,9 @@ diff_tool:
        App\Domain\Entity\Affiliate:
           fileName: 'affiliates.json'
           ignoredProperties: []
+       App\Domain\Entity\AffiliateParameter:
+          fileName: 'affiliate_parameters.json'
+          ignoredProperties: []
+       App\Domain\Entity\AffiliateConstant:
+          fileName: 'affiliate_constant.json'
+          ignoredProperties: []

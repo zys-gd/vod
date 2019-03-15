@@ -361,8 +361,8 @@
     },
     {
         "uuid": "519459f0-ebd4-11e8-95c4-02bb250f0f22",
-        "inputName": "mytracker",
-        "outputName": "tracker",
+        "inputName": "tracker",
+        "outputName": "mytracker",
         "affiliate": {
             "uuid": "514ff3ad-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -525,6 +525,22 @@
         "outputName": "aff_sub2",
         "affiliate": {
             "uuid": "514ff1e6-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "479b20d1-0f68-4027-a297-3a1c5df9e21e",
+        "inputName": "publisher_id",
+        "outputName": "publisher_id",
+        "affiliate": {
+            "uuid": "514fe22c-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "f1bd8965-882a-431a-bf19-652bce3a01b4",
+        "inputName": "pub_id",
+        "outputName": "pub_id",
+        "affiliate": {
+            "uuid": "514fea8a-ebd4-11e8-95c4-02bb250f0f22"
         }
     }
 ]
