@@ -6463,7 +6463,7 @@
     },
     {
         "uuid": "cc6e095d-e19a-46d5-b74b-1222cc0c3736",
-        "status": 1,
+        "status": 2,
         "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552643184\/top_qualifier_videos\/8fbbee7e-e1d0-43c2-a405-ea3e10f9d7da.mp4",
         "remoteId": "top_qualifier_videos\/8fbbee7e-e1d0-43c2-a405-ea3e10f9d7da",
         "createdDate": "2019-03-15T09:44:11+02:00",
@@ -6715,7 +6715,7 @@
     },
     {
         "uuid": "e8cf04d2-801b-4fb6-a668-7bb614abf554",
-        "status": 1,
+        "status": 2,
         "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552643089\/top_moto_sport_videos\/f388df76-78f0-44b6-94ba-dfd332f1616e.mp4",
         "remoteId": "top_moto_sport_videos\/f388df76-78f0-44b6-94ba-dfd332f1616e",
         "createdDate": "2019-03-15T09:43:14+02:00",
@@ -6927,6 +6927,24 @@
         ],
         "subcategory": {
             "uuid": "541d47f69-49a4-4823-a7f9-574ac1fl4hd"
+        }
+    },
+    {
+        "uuid": "60df91a6-e107-44a4-ab5a-87739f13c510",
+        "status": 2,
+        "remoteUrl": "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/v1552643456\/top_moto_sport_videos\/cd81728b-74fc-49d7-82d5-0463ef33ec0f.mp4",
+        "remoteId": "top_moto_sport_videos\/cd81728b-74fc-49d7-82d5-0463ef33ec0f",
+        "createdDate": "2019-03-15T09:50:41+02:00",
+        "expiredDate": null,
+        "title": "\u2018Gasly kept Red Bull busy before F1 season start\u2019 Horner",
+        "description": null,
+        "thumbnails": [
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_25p\/v1\/top_moto_sport_videos\/cd81728b-74fc-49d7-82d5-0463ef33ec0f.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_50p\/v1\/top_moto_sport_videos\/cd81728b-74fc-49d7-82d5-0463ef33ec0f.jpg",
+            "http:\/\/res.cloudinary.com\/origindata\/video\/upload\/c_scale,w_375\/so_75p\/v1\/top_moto_sport_videos\/cd81728b-74fc-49d7-82d5-0463ef33ec0f.jpg"
+        ],
+        "subcategory": {
+            "uuid": "fjh56169-49a4-4823-a7f9-574ac1kf54va"
         }
     }
 ]
