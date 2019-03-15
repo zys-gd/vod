@@ -30,6 +30,10 @@ class SubscriptionEligibilityChecker
             return false;
         }
 
+        if ($subscription->getError() == 'not_fully_paid') {
+            return false;
+        }
+
         return true;
     }
 
