@@ -194,13 +194,14 @@ class AffiliateSender
             'query' => $query
         ]);
 
-        return [
-            'headers' => [
-                'User-Agent' => self::USER_AGENT
-            ],
-            'query' => $query,
-            'debug' => false
-        ];
+        return $query;
+        // return [
+        //     'headers' => [
+        //         'User-Agent' => self::USER_AGENT
+        //     ],
+        //     'query' => $query,
+        //     'debug' => false
+        // ];
     }
 
     /**
