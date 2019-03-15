@@ -22,15 +22,16 @@ class SubscriptionEligibilityChecker
      */
     public function isStatusOkForResubscribe(Subscription $subscription): bool
     {
+
+        if ($subscription->isNotFullyPaid()) {
+            return false;
+        }
+
         if ($subscription->isActive()) {
             return false;
         }
 
         if ($subscription->isPending()) {
-            return false;
-        }
-
-        if ($subscription->getError() == 'not_fully_paid') {
             return false;
         }
 
