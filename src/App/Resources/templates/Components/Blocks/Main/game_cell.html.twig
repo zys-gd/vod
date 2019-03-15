@@ -14,7 +14,7 @@
                     {{ game.title }}
                 </div>
                 <div class="align-self-center game-download-button-block">
-                    {% if hasActiveSubscription() %}
+                    {% if hasActiveSubscription() or isNotFullyPaid() %}
                         {{ download_button.renderSmall('game-download-button',game.uuid) }}
                     {% endif %}
                 </div>
