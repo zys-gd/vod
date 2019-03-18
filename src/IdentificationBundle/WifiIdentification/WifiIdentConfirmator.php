@@ -122,10 +122,6 @@ class WifiIdentConfirmator
         $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
         $handler = $this->handlerProvider->get($carrier);
 
-        if ($handler->getExistingUser($mobileNumber)) {
-            throw new AlreadyIdentifiedException('User is already exists');
-        }
-
         /** @var PinRequestResult $pinRequestResult */
         $pinRequestResult = $this->dataStorage->readPreviousOperationResult('pinRequest');
         if (!$pinRequestResult) {
@@ -176,7 +172,13 @@ class WifiIdentConfirmator
                 $finalMsisdn = $msisdn;
             }
 
-            $this->identFinisher->finish($finalMsisdn, $carrier, $ip);
+            $user = $handler->getExistingUser($finalMsisdn);
+            if ($user) {
+                $this->identFinisher->finishForExistingUser($user, $msisdn, $ip);
+            } else {
+                $this->identFinisher->finish($finalMsisdn, $carrier, $ip);
+            }
+
             $this->dataStorage->cleanPreviousOperationResult('pinRequest');
 
         }

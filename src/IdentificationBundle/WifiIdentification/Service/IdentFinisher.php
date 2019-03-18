@@ -11,6 +11,7 @@ namespace IdentificationBundle\WifiIdentification\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\CarrierInterface;
+use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\TokenGenerator;
 use IdentificationBundle\Identification\Service\UserFactory;
@@ -50,7 +51,7 @@ class IdentFinisher
         $this->entityManager             = $entityManager;
     }
 
-    public function finish(string $msisdn, CarrierInterface $carrier, string $ip)
+    public function finish(string $msisdn, CarrierInterface $carrier, string $ip): void
     {
 
         $token = $this->tokenGenerator->generateToken();
@@ -58,6 +59,20 @@ class IdentFinisher
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
+        $this->identificationDataStorage->storeIdentificationToken($token);
+    }
+
+    public function finishForExistingUser(User $user, string $msisdn, string $ip): void
+    {
+        $token = $this->tokenGenerator->generateToken();
+
+        $user->setIdentifier($msisdn);
+        $user->setIdentificationToken($token);
+        $user->setIp($ip);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
         $this->identificationDataStorage->storeIdentificationToken($token);
     }
 }
