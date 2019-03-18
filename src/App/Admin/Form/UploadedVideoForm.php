@@ -71,7 +71,7 @@ class UploadedVideoForm extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please select file'
+                        'message' => 'Please fill out this field'
                     ]),
                     new File([
                         'maxSize' => '500M',
@@ -119,7 +119,7 @@ class UploadedVideoForm extends AbstractType
                 'class' => MainCategory::class,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please select main category'
+                        'message' => 'Please fill out this field'
                     ])
                 ],
                 'mapped' => false,
@@ -135,7 +135,7 @@ class UploadedVideoForm extends AbstractType
                 'class' => Subcategory::class,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please select subcategory'
+                        'message' => 'Please fill out this field'
                     ])
                 ],
                 'placeholder' => 'Select subcategory'

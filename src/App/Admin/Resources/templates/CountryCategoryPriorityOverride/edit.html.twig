@@ -1,0 +1,9 @@
+{% extends '@SonataAdmin/CRUD/edit.html.twig' %}
+{% block form %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+            $('.sonata-ba-form > form').attr('novalidate', 'novalidate');
+        })
+    </script>
+{% endblock %}
