@@ -70,6 +70,9 @@ class UploadedVideoForm extends AbstractType
                 'label' => 'File',
                 'mapped' => false,
                 'constraints' => [
+                    new NotBlank([
+                        'message' => 'Please select file'
+                    ]),
                     new File([
                         'maxSize' => '500M',
                         'mimeTypes' => [
@@ -114,7 +117,11 @@ class UploadedVideoForm extends AbstractType
         $form
             ->add('mainCategory', EntityType::class, [
                 'class' => MainCategory::class,
-                'required' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Please select main category'
+                    ])
+                ],
                 'mapped' => false,
                 'placeholder' => 'Select main category'
             ])
@@ -126,7 +133,11 @@ class UploadedVideoForm extends AbstractType
                         ->setParameter('mainId', $mainCategoryId);
                 },
                 'class' => Subcategory::class,
-                'required' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Please select subcategory'
+                    ])
+                ],
                 'placeholder' => 'Select subcategory'
             ]);
     }
