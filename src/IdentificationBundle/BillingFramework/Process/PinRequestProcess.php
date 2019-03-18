@@ -13,9 +13,7 @@ use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters;
-use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\API\RequestSender;
-use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkException;
 use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkProcessException;
 
 class PinRequestProcess
@@ -48,6 +46,11 @@ class PinRequestProcess
             $data              = (array)$rawResponse->data;
             $needVerifyRequest = $data['need_verify_request'] ?? false;
             $userIdentifier    = $data['user_identifier'] ?? false;
+
+            if (!$userIdentifier) {
+                throw new PinRequestProcessException('No user identifier provided', 400, '');
+            }
+
 
             $result = new PinRequestResult($userIdentifier, (bool)$needVerifyRequest, $data);
             return $result;

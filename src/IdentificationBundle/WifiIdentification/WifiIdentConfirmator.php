@@ -162,18 +162,23 @@ class WifiIdentConfirmator
 
             try {
                 $result = $this->pinVerifyProcess->doPinVerify($parameters);
-                if ($handler instanceof HasCustomPinVerifyRules) {
-                    $handler->afterSuccessfulPinVerify($result);
-                }
-                $this->identFinisher->finish($msisdn, $carrier, $ip);
-                $this->dataStorage->cleanPreviousOperationResult('pinRequest');
-
             } catch (PinVerifyProcessException $exception) {
                 if ($handler instanceof HasCustomPinVerifyRules) {
                     $handler->afterFailedPinVerify($exception);
                 }
                 throw $exception;
             }
+
+            if ($handler instanceof HasCustomPinVerifyRules) {
+                $handler->afterSuccessfulPinVerify($result);
+                $finalMsisdn = $handler->getMsisdnFromResult($result, $msisdn);
+            } else {
+                $finalMsisdn = $msisdn;
+            }
+
+            $this->identFinisher->finish($finalMsisdn, $carrier, $ip);
+            $this->dataStorage->cleanPreviousOperationResult('pinRequest');
+
         }
 
     }

@@ -11,6 +11,7 @@ namespace IdentificationBundle\Carriers\EtisalatEG;
 
 use App\Domain\Constants\ConstBillingCarrierId;
 use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
+use IdentificationBundle\BillingFramework\Process\DTO\PinVerifyResult;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
@@ -75,7 +76,7 @@ class EtisalatEGWifiIdentificationHandler implements
         ];
     }
 
-    public function afterSuccessfulPinVerify(ProcessResult $parameters): void
+    public function afterSuccessfulPinVerify(PinVerifyResult $parameters): void
     {
     }
 
@@ -86,5 +87,10 @@ class EtisalatEGWifiIdentificationHandler implements
     public function getExistingUser(string $msisdn): ?User
     {
         return $this->repository->findOneByMsisdn($msisdn);
+    }
+
+    public function getMsisdnFromResult(PinVerifyResult $pinVerifyResult, string $phoneNumber): string
+    {
+        return $phoneNumber;
     }
 }

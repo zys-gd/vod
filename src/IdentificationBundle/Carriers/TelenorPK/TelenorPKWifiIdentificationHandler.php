@@ -10,12 +10,16 @@ namespace IdentificationBundle\Carriers\TelenorPK;
 
 
 use App\Domain\Constants\ConstBillingCarrierId;
+use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
+use IdentificationBundle\BillingFramework\Process\DTO\PinVerifyResult;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Repository\UserRepository;
+use IdentificationBundle\WifiIdentification\Exception\WifiIdentConfirmException;
+use IdentificationBundle\WifiIdentification\Handler\HasCustomPinVerifyRules;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
 
-class TelenorPKWifiIdentificationHandler implements WifiIdentificationHandlerInterface
+class TelenorPKWifiIdentificationHandler implements WifiIdentificationHandlerInterface, HasCustomPinVerifyRules
 {
     /**
      * @var UserRepository
@@ -44,7 +48,7 @@ class TelenorPKWifiIdentificationHandler implements WifiIdentificationHandlerInt
 
     public function areSMSSentByBilling(): bool
     {
-        return false;
+        return true;
     }
 
     public function getExistingUser(string $msisdn): ?User
@@ -52,5 +56,29 @@ class TelenorPKWifiIdentificationHandler implements WifiIdentificationHandlerInt
         $modifiedMsisdn = mb_strcut($msisdn, 0, 15);
 
         return $this->repository->findOneByPartialMsisdnMatch($modifiedMsisdn);
+    }
+
+    public function getAdditionalPinVerifyParams(PinRequestResult $pinRequestResult): array
+    {
+        return ['otpId' => $pinRequestResult->getRawData()['otpId']];
+    }
+
+    public function afterSuccessfulPinVerify(PinVerifyResult $parameters): void
+    {
+        // TODO: Implement afterSuccessfulPinVerify() method.
+    }
+
+    public function afterFailedPinVerify(\Exception $exception): void
+    {
+        // TODO: Implement afterFailedPinVerify() method.
+    }
+
+    public function getMsisdnFromResult(PinVerifyResult $pinVerifyResult, string $phoneNumber): string
+    {
+        if (!isset($pinVerifyResult->getRawData()['user_identifier'])) {
+            throw new WifiIdentConfirmException('Missing user identifier in Telenor PK wifi pinVerify');
+        }
+
+        return $pinVerifyResult->getRawData()['user_identifier'];
     }
 }
