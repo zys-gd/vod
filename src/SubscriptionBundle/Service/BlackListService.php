@@ -94,29 +94,28 @@ class BlackListService
 
     /**
      * @param string $sessionToken
+     *
+     * @throws \Exception
      */
     public function addToBlackList(string $sessionToken): void
     {
         if (!empty($sessionToken)) {
-            try {
-                /** @var User $user */
-                $user = $this->userRepository->findOneByIdentificationToken($sessionToken);
+            /** @var User $user */
+            $user = $this->userRepository->findOneByIdentificationToken($sessionToken);
 
-                if ($user) {
-                    $blackList = new BlackList(UuidGenerator::generate());
-                    $blackList
-                        ->setAlias($user->getIdentifier())
-                        ->setBillingCarrierId($user->getCarrier()->getBillingCarrierId())
-                        ->setIsBlockedManually(false);
+            if ($user) {
+                $blackList = new BlackList(UuidGenerator::generate());
+                $blackList
+                    ->setAlias($user->getIdentifier())
+                    ->setBillingCarrierId($user->getCarrier()->getBillingCarrierId())
+                    ->setIsBlockedManually(false);
 
-                    $this->entityManager->persist($blackList);
+                $this->entityManager->persist($blackList);
 
-                    $this->postBlackListing($blackList);
+                $this->postBlackListing($blackList);
 
-                    $this->entityManager->flush();
-                    $this->entityManager->clear();
-                }
-            } catch (\Exception $e) {
+                $this->entityManager->flush();
+                $this->entityManager->clear();
             }
         }
     }
