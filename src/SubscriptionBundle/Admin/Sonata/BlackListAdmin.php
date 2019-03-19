@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Admin\Sonata;
+namespace SubscriptionBundle\Admin\Sonata;
 
-use App\Domain\Entity\BlackList;
+use SubscriptionBundle\Entity\BlackList;
 use App\Utils\UuidGenerator;
 use IdentificationBundle\Entity\User;
 use Sonata\AdminBundle\Admin\AbstractAdmin;

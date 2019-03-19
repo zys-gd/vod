@@ -1,4 +1,4 @@
-App\Domain\Entity\BlackList:
+SubscriptionBundle\Entity\BlackList:
     type: entity
     table: black_list
     indexes:

@@ -78,9 +78,9 @@ class BlacklistVoter
 
     public function checkIfSubscriptionRestricted(Request $request)
     {
-
         $session      = $request->getSession();
         $blockingTime = $session->get('subscription_not_allowed', false);
+
         if ($blockingTime && time() - strtotime($blockingTime) < self::TIME_LIMIT) {
             $session->set('subscription_not_allowed', date('Y-m-d H:i:s'));
             $this->logger->debug('Blocking time have not finished yet', [$blockingTime]);
@@ -88,13 +88,12 @@ class BlacklistVoter
             return $this->createNotAllowedResponse();
         }
 
-
         $data         = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
         $sessionToken = $data['identification_token'] ?? null;
 
         if (empty($sessionToken)) {
-
             $this->logger->debug('No identification token was found. Subscription is not allowed');
+
             return $this->createNotAllowedResponse();
         }
 
@@ -126,8 +125,8 @@ class BlacklistVoter
                 }
             } elseif (isset($savedValue['updated_at']) && \count($savedValue['updated_at']) >= self::ATTEMPTS_LIMIT - 2) {
                 $this->addToBlackList($sessionToken);
-                return $this->createNotAllowedResponse();
 
+                return $this->createNotAllowedResponse();
             }
 
             $savedValue['updated_at'][] = date('Y-m-d H:i:s');

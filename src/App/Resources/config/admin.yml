@@ -57,16 +57,6 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: store_text, label: Translations }
 
-    App\Admin\Sonata\BlackListAdmin:
-        arguments:
-            - ~
-            - App\Domain\Entity\BlackList
-            - ~
-            - '@SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
-            - '@SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber'
-        tags:
-            - { name: sonata.admin, manager_type: orm, group: black_list_management, label: Black list }
-
     App\Admin\Sonata\GameAdmin:
         arguments:
             - ~
