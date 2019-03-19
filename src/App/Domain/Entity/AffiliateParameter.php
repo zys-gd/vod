@@ -41,6 +41,14 @@ class AffiliateParameter implements HasUuid
     /**
      * @return string
      */
+    public function __toString(): string
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @return string
+     */
     public function getUuid(): string
     {
         return $this->uuid;

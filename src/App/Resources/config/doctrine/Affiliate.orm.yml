@@ -56,7 +56,9 @@ App\Domain\Entity\Affiliate:
             targetEntity: App\Domain\Entity\AffiliateParameter
             mappedBy: affiliate
             cascade: ["persist", "remove"]
+            orphanRemoval: true
         constants:
             targetEntity: App\Domain\Entity\AffiliateConstant
             mappedBy: affiliate
             cascade: ["persist", "remove"]
+            orphanRemoval: true
