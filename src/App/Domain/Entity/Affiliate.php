@@ -3,6 +3,7 @@
 namespace App\Domain\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 
 /**
@@ -67,12 +68,12 @@ class Affiliate implements HasUuid
     private $postbackUrl;
 
     /**
-     * @var ArrayCollection
+     * @var Collection
      */
     protected $parameters;
 
     /**
-     * @var ArrayCollection
+     * @var Collection
      */
     private $constants;
 
@@ -98,6 +99,14 @@ class Affiliate implements HasUuid
     public function __toString()
     {
         return $this->getName();
+    }
+
+    /**
+     * @param string $uuid
+     */
+    public function setUuid(string $uuid)
+    {
+        $this->uuid = $uuid;
     }
 
     /**
@@ -382,19 +391,22 @@ class Affiliate implements HasUuid
     }
 
     /**
-     * @param ArrayCollection $affiliateConstant
+     * @param Collection $affiliateConstants
+     *
+     * @return Affiliate
      */
-    public function setConstants($affiliateConstant)
+    public function setConstants(Collection $affiliateConstants): self
     {
-        $affiliateConstant->map(function (AffiliateConstant $affiliateConstant) {
-            $affiliateConstant->setAffiliate($this);
-        });
+        /** @var AffiliateConstant $affiliateConstant */
+        foreach ($affiliateConstants->getIterator() as $affiliateConstant) {
+            $this->addConstant($affiliateConstant);
+        }
 
-        $this->constants = $affiliateConstant;
+        return $this;
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
     public function getConstants()
     {
@@ -403,46 +415,86 @@ class Affiliate implements HasUuid
 
     /**
      * @param AffiliateConstant $affiliateConstant
+     *
+     * @return Affiliate
+     */
+    public function addConstant(AffiliateConstant $affiliateConstant): self
+    {
+        if (!$this->constants->contains($affiliateConstant)) {
+            $affiliateConstant->setAffiliate($this);
+            $this->constants->add($affiliateConstant);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param AffiliateConstant $affiliateConstant
      */
     public function removeConstant(AffiliateConstant $affiliateConstant)
     {
-        $this->constants->removeElement($affiliateConstant);
+        if ($this->constants->contains($affiliateConstant)) {
+            $this->constants->removeElement($affiliateConstant);
+
+            if ($affiliateConstant->getAffiliate() === $this) {
+                $affiliateConstant->setAffiliate($this);
+            }
+        }
     }
 
     /**
-     * @param ArrayCollection $affiliateParameters
+     * @param Collection $affiliateParameters
+     *
+     * @return Affiliate
      */
-    public function setParameters($affiliateParameters)
+    public function setParameters(Collection $affiliateParameters): self
     {
-        $affiliateParameters->map(function (AffiliateParameter $affiliateParameter) {
-            $affiliateParameter->setAffiliate($this);
-        });
+        /** @var AffiliateParameter $affiliateParameter */
+        foreach ($affiliateParameters->getIterator() as $affiliateParameter) {
+            $this->addParameter($affiliateParameter);
+        }
 
-        $this->parameters = $affiliateParameters;
+        return $this;
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getParameters()
+    public function getParameters(): Collection
     {
         return $this->parameters;
     }
 
     /**
-     * @param AffiliateParameter $affiliateParameters
+     * @param AffiliateParameter $affiliateParameter
+     *
+     * @return Affiliate
      */
-    public function removeParameter(AffiliateParameter $affiliateParameters)
+    public function addParameter(AffiliateParameter $affiliateParameter): self
     {
-        $this->parameters->removeElement($affiliateParameters);
+        if (!$this->parameters->contains($affiliateParameter)) {
+            $affiliateParameter->setAffiliate($this);
+            $this->parameters->add($affiliateParameter);
+        }
+
+        return $this;
     }
 
     /**
-     * @param string $uuid
+     * @param AffiliateParameter $affiliateParameter
+     *
+     * @return Affiliate
      */
-    public function setUuid(string $uuid)
+    public function removeParameter(AffiliateParameter $affiliateParameter): self
     {
-        $this->uuid = $uuid;
+        if ($this->parameters->contains($affiliateParameter)) {
+            $this->parameters->removeElement($affiliateParameter);
+
+            if ($affiliateParameter->getAffiliate() === $this) {
+                $affiliateParameter->setAffiliate(null);
+            }
+        }
+
+        return $this;
     }
 }
-

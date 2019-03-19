@@ -11,11 +11,13 @@ App\Domain\Entity\AffiliateParameter:
         outputName:
             type: string
             length: 255
+
     lifecycleCallbacks: {  }
 
     manyToOne:
         affiliate:
-            targetEntity: Affiliate
-            joinColumn:
-                referencedColumnName: uuid
+            targetEntity: App\Domain\Entity\Affiliate
             inversedBy: parameters
+            joinColumn:
+                name: affiliate_id
+                referencedColumnName: uuid

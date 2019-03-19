@@ -16,6 +16,7 @@ App\Domain\Entity\AffiliateConstant:
     manyToOne:
         affiliate:
             targetEntity: App\Domain\Entity\Affiliate
-            joinColumn:
-                referencedColumnName: uuid
             inversedBy: constants
+            joinColumn:
+                name: affiliate_id
+                referencedColumnName: uuid
