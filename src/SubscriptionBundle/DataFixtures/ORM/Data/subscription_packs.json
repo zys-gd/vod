@@ -22,7 +22,7 @@
     "preferred_renewal_end": "15:55:07",
     "welcome_sms_text": "",
     "renewal_sms_text": "",
-    "unsubscribe_sms_text": "You have been unsubscribed from Playwing.",
+    "unsubscribe_sms_text": "",
     "buy_strategy_name": "RTB Dotjo Mobilink instant",
     "buy_strategy_id": 13,
     "renew_strategy_name": "RTB Dotjo Mobilink",
