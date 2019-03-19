@@ -39,3 +39,8 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - SubscriptionBundle\Entity\Refund
+
+    SubscriptionBundle\Repository\BlackListRepository:
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - SubscriptionBundle\Entity\BlackList

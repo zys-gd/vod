@@ -1,18 +1,15 @@
 <?php
 
-namespace App\Admin\Sonata;
+namespace SubscriptionBundle\Admin\Sonata;
 
-use App\Domain\Entity\BlackList;
+use SubscriptionBundle\Entity\BlackList;
 use App\Utils\UuidGenerator;
-use IdentificationBundle\Entity\User;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider;
-use SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber;
+use SubscriptionBundle\Service\BlackListService;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
@@ -21,14 +18,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class BlackListAdmin extends AbstractAdmin
 {
     /**
-     * @var UnsubscriptionHandlerProvider
+     * @var BlackListService
      */
-    private $unsubscriptionHandlerProvider;
-
-    /**
-     * @var Unsubscriber
-     */
-    private $unsubscriber;
+    private $blackListService;
 
     /**
      * BlackListAdmin constructor
@@ -36,18 +28,15 @@ class BlackListAdmin extends AbstractAdmin
      * @param string $code
      * @param string $class
      * @param string $baseControllerName
-     * @param UnsubscriptionHandlerProvider $unsubscriptionHandlerProvider
-     * @param Unsubscriber $unsubscriber
+     * @param BlackListService $blackListService
      */
     public function __construct(
         string $code,
         string $class,
         string $baseControllerName,
-        UnsubscriptionHandlerProvider $unsubscriptionHandlerProvider,
-        Unsubscriber $unsubscriber
+        BlackListService $blackListService
     ) {
-        $this->unsubscriptionHandlerProvider = $unsubscriptionHandlerProvider;
-        $this->unsubscriber = $unsubscriber;
+        $this->blackListService = $blackListService;
 
         parent::__construct($code, $class, $baseControllerName);
     }
@@ -55,31 +44,9 @@ class BlackListAdmin extends AbstractAdmin
     /**
      * @param BlackList $blackList
      */
-    public function postPersist($blackList) {
-        $doctrine = $this->getConfigurationPool()->getContainer()->get('doctrine');
-
-        /** @var User $user */
-        $user = $doctrine
-            ->getRepository(User::class)
-            ->findOneBy(['identifier' => $blackList->getAlias()]);
-
-        if ($user) {
-            /** @var Subscription $subscription */
-            $subscription = $doctrine
-                ->getRepository(Subscription::class)
-                ->findOneBy(['user' => $user]);
-
-            if ($subscription && $subscription->getCurrentStage() != Subscription::ACTION_UNSUBSCRIBE) {
-                $unsubscriptionHandler = $this->unsubscriptionHandlerProvider->getUnsubscriptionHandler($user->getCarrier());
-
-                $response = $this->unsubscriber->unsubscribe($subscription, $subscription->getSubscriptionPack());
-                $unsubscriptionHandler->applyPostUnsubscribeChanges($subscription);
-
-                if ($unsubscriptionHandler->isPiwikNeedToBeTracked($response)) {
-                    $this->unsubscriber->trackEventsForUnsubscribe($subscription, $response);
-                }
-            }
-        }
+    public function postPersist($blackList)
+    {
+        $this->blackListService->postBlackListing($blackList);
     }
 
     /**
