@@ -66,21 +66,22 @@ class CountryCategoryPriorityOverrideAdmin extends AbstractAdmin
     }
 
     /**
-     * @param int $menuPriority
+     * @param int|null $menuPriority
      * @param ExecutionContextInterface $context
      */
     public function validatePriority(
-        int $menuPriority,
+        ?int $menuPriority,
         ExecutionContextInterface $context
     ): void
     {
         /** @var CountryCategoryPriorityOverride $countryPriorityOverride */
         $countryPriorityOverride = $this->getSubject();
 
-        if ($this->countryOverrideRepository->checkForIdenticalOverrides(
-            $countryPriorityOverride->getMainCategory(),
-            $countryPriorityOverride->getCountry(),
-            $menuPriority)
+        if ($menuPriority
+            && $this->countryOverrideRepository->checkForIdenticalOverrides(
+                $countryPriorityOverride->getMainCategory(),
+                $countryPriorityOverride->getCountry(),
+                $menuPriority)
         ) {
             $context
                 ->buildViolation('Identical override for category and country was found')
@@ -142,19 +143,28 @@ class CountryCategoryPriorityOverrideAdmin extends AbstractAdmin
     {
         $formMapper
             ->add('country', EntityType::class, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Please fill out this field'
+                    ])
+                ],
                 'class' => Country::class,
-                'required' => true,
                 'placeholder' => 'Select country'
             ])
             ->add('mainCategory', EntityType::class, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Please fill out this field'
+                    ])
+                ],
                 'class' => MainCategory::class,
-                'required' => true,
                 'placeholder' => 'Select main category'
             ])
             ->add('menuPriority', IntegerType::class, [
-                'required' => true,
                 'constraints' => [
-                    new NotBlank(),
+                    new NotBlank([
+                        'message' => 'Please fill out this field'
+                    ]),
                     new Callback([$this, 'validatePriority'])
                 ]
             ]);

@@ -4,6 +4,19 @@
     {{ 'Upload video' }}
 {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .errors {
+            color: #c10f04;
+        }
+
+        .trim-labels {
+            margin-right: 10px;
+        }
+    </style>
+{% endblock %}
+
 {% block form %}
     <span hidden id="subCategoryUrl">{{ path('admin_app_domain_subcategory_subcategoriesList', {'mainId': 'paramMainId'}) }}</span>
     <div class="sonata-ba-form">
@@ -19,60 +32,60 @@
                             </div>
                             <div class="box-body">
                                 <div class="sonata-ba-collapsed-fields">
-                                    {{ form_start(form) }}
-                                    <div class="form-group" style="margin: 15px 0">
+                                    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                                    <div class="form-group">
                                         <div class="row">
                                             <div class="col-lg-12">{{ form_label(form.title) }}</div>
-                                            <div class="col-lg-12">{{ form_errors(form.title) }}</div>
+                                            <div class="col-lg-12 errors">{{ form_errors(form.title) }}</div>
                                             <div class="col-lg-12">{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
                                         </div>
                                     </div>
-                                    <div class="form-group" style="margin: 15px 0">
+                                    <div class="form-group">
                                         <div class="row">
                                             <div class="col-lg-12">{{ form_label(form.mainCategory) }}</div>
-                                            <div class="col-lg-12">{{ form_errors(form.mainCategory) }}</div>
+                                            <div class="col-lg-12 errors">{{ form_errors(form.mainCategory) }}</div>
                                             <div class="col-lg-12">{{ form_widget(form.mainCategory, { 'attr': {'class': 'form-control'} }) }}</div>
                                         </div>
                                     </div>
-                                    <div class="form-group" style="margin: 15px 0">
+                                    <div class="form-group">
                                         <div class="row">
                                             <div class="col-lg-12">{{ form_label(form.subcategory) }}</div>
-                                            <div class="col-lg-12">{{ form_errors(form.subcategory) }}</div>
+                                            <div class="col-lg-12 errors">{{ form_errors(form.subcategory) }}</div>
                                             <div class="col-lg-12">{{ form_widget(form.subcategory, { 'attr': {'class': 'form-control'} }) }}</div>
                                         </div>
                                     </div>
-                                    <div class="form-group" style="margin: 15px 0">
+                                    <div class="form-group">
                                         <div class="row">
-                                            <div class="col-lg-12">{{ form_errors(form.description) }}</div>
                                             <div class="col-lg-12">{{ form_label(form.description) }}</div>
+                                            <div class="col-lg-12 errors">{{ form_errors(form.description) }}</div>
                                             <div class="col-lg-12">{{ form_widget(form.description, { 'attr': {'class': 'form-control', 'rows': '3'} }) }}</div>
                                         </div>
                                     </div>
-                                    <div class="form-group" style="margin: 15px 0">
+                                    <div class="form-group">
                                         <div class="row">
-                                            <div class="col-lg-12">{{ form_errors(form.expiredDate) }}</div>
                                             <div class="col-lg-12">{{ form_label(form.expiredDate) }}</div>
+                                            <div class="col-lg-12 errors">{{ form_errors(form.expiredDate) }}</div>
                                             <div class="col-lg-12">{{ form_widget(form.expiredDate, { 'attr': {'class': 'form-control'} }) }}</div>
                                         </div>
                                     </div>
-                                    <div class="form-group" style="margin: 15px 0">
+                                    <div class="form-group">
                                         <div class="row">
                                             <div class="col-lg-3" style="padding-bottom: 5px">
-                                                {{ form_errors(form.isTrim) }}
-                                                <span style="margin-right: 10px">{{ form_label(form.isTrim) }}</span>
+                                                <span class="errors">{{ form_errors(form.isTrim) }}</span>
+                                                <span class="trim-labels">{{ form_label(form.isTrim) }}</span>
                                                 {{ form_widget(form.isTrim) }}
                                             </div>
                                             <div class="col-lg-6" hidden>
-                                                {{ form_errors(form.startOffset) }}
-                                                <span style="margin-right: 10px">{{ form_label(form.startOffset) }}</span>
+                                                <span class="trim-labels">{{ form_label(form.startOffset) }}</span>
                                                 {{ form_widget(form.startOffset) }}
+                                                <span class="errors">{{ form_errors(form.startOffset) }}</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group" style="margin: 15px 0">
+                                    <div class="form-group">
                                         <div class="row">
-                                            <div class="col-lg-12">{{ form_errors(form.file) }}</div>
                                             <div class="col-lg-12">{{ form_label(form.file) }}</div>
+                                            <div class="col-lg-12 errors">{{ form_errors(form.file) }}</div>
                                             <div class="col-lg-12">{{ form_widget(form.file) }}</div>
                                         </div>
                                     </div>
