@@ -20,7 +20,7 @@
     "unlimited_grace_period": 0,
     "preferred_renewal_start": "15:55:07",
     "preferred_renewal_end": "15:55:07",
-    "welcome_sms_text": "Welcome to Playwing! Click here to access store.playwing.com @ Rs11.95/day. To un-sub or avoid auto renewal charges send UNSUBP to 6170",
+    "welcome_sms_text": "",
     "renewal_sms_text": "",
     "unsubscribe_sms_text": "You have been unsubscribed from Playwing.",
     "buy_strategy_name": "RTB Dotjo Mobilink instant",
