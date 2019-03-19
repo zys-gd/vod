@@ -47,7 +47,6 @@ class SubscriptionExtension extends ConfigurableExtension
         $loader->load('piwik-integration.yml');
         $loader->load('affiliate.yml');
         $loader->load('fixtures.yml');
-        $loader->load('blacklist.yml');
         $loader->load('twig.yml');
 
 

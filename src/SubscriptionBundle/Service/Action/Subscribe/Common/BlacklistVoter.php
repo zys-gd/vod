@@ -1,19 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 02.07.18
- * Time: 12:19
- */
 
 namespace SubscriptionBundle\Service\Action\Subscribe\Common;
-
 
 use ExtrasBundle\Cache\ICacheService;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\UserRepository;
 use Psr\Log\LoggerInterface;
-use SubscriptionBundle\Blacklist\BlacklistSaver;
+use SubscriptionBundle\Service\BlackListService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
@@ -39,43 +32,44 @@ class BlacklistVoter
      */
     private $logger;
     /**
-     * @var BlacklistSaver
-     */
-    private $blacklistSaver;
-    /**
      * @var string
      */
     private $subNotAllowedRoute;
-
+    /**
+     * @var BlackListService
+     */
+    private $blackListService;
 
     /**
      * BlacklistVoter constructor.
-     * @param ICacheService   $cacheService
+     * @param ICacheService $cacheService
      * @param RouterInterface $router
-     * @param BlacklistSaver  $blacklistSaver
-     * @param UserRepository  $userRepository
+     * @param UserRepository $userRepository
      * @param LoggerInterface $logger
-     * @param string          $subNotAllowedRoute
+     * @param string $subNotAllowedRoute
+     * @param BlackListService $blackListService
      */
     public function __construct(
         ICacheService $cacheService,
         RouterInterface $router,
-        BlacklistSaver $blacklistSaver,
         UserRepository $userRepository,
         LoggerInterface $logger,
-        string $subNotAllowedRoute
-
-
-    )
-    {
+        string $subNotAllowedRoute,
+        BlackListService $blackListService
+    ) {
         $this->cacheService       = $cacheService;
         $this->router             = $router;
         $this->userRepository     = $userRepository;
         $this->logger             = $logger;
-        $this->blacklistSaver     = $blacklistSaver;
         $this->subNotAllowedRoute = $subNotAllowedRoute;
+        $this->blackListService   = $blackListService;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return bool|RedirectResponse
+     */
     public function checkIfSubscriptionRestricted(Request $request)
     {
         $session      = $request->getSession();
@@ -93,6 +87,10 @@ class BlacklistVoter
 
         if (empty($sessionToken)) {
             $this->logger->debug('No identification token was found. Subscription is not allowed');
+
+            return $this->createNotAllowedResponse();
+        } elseif ($this->blackListService->isBlacklisted($sessionToken)) {
+            $this->logger->debug('User in black list. Subscription is not allowed');
 
             return $this->createNotAllowedResponse();
         }
@@ -124,7 +122,7 @@ class BlacklistVoter
                     }
                 }
             } elseif (isset($savedValue['updated_at']) && \count($savedValue['updated_at']) >= self::ATTEMPTS_LIMIT - 2) {
-                $this->addToBlackList($sessionToken);
+                $this->blackListService->addToBlackList($sessionToken);
 
                 return $this->createNotAllowedResponse();
             }
@@ -133,8 +131,9 @@ class BlacklistVoter
         }
 
         $this->cacheService->saveCache($sessionToken, $savedValue, self::TIME_LIMIT);
-    }
 
+        return false;
+    }
 
     /**
      * @return RedirectResponse
@@ -143,19 +142,5 @@ class BlacklistVoter
     {
         $response = new RedirectResponse($this->router->generate($this->subNotAllowedRoute));
         return $response;
-    }
-
-    /**
-     * @param string $sessionToken
-     */
-    private function addToBlackList(string $sessionToken)
-    {
-        if (!empty($sessionToken)) {
-            try {
-                $userIdentity = $this->userRepository->findOneByIdentificationToken($sessionToken);
-                $this->userRepository->addUserToBlackListByIdentity($userIdentity);
-            } catch (\Exception $e) {
-            }
-        }
     }
 }

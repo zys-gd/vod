@@ -40,7 +40,6 @@ services:
             - ~
             - SubscriptionBundle\Entity\BlackList
             - ~
-            - '@SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
-            - '@SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber'
+            - '@SubscriptionBundle\Service\BlackListService'
         tags:
             - { name: sonata.admin, manager_type: orm, group: black_list_management, label: Black list }
