@@ -104,44 +104,49 @@ class AffiliateSender
         }
 
 
-        $data = ['query' => $this->getPostBackParameters($affiliate, $campaign, $campaignParams)]; // TODO implement _formAffiliateData
-        $fullUrl = $affiliate->getPostbackUrl() . '?' . http_build_query($data['query']);
-
-        $this->logger->debug('check content', [
-            'userInfo' => $data,
-            'campaignParams' => $fullUrl,
-            '$campaignToken' => $campaignToken
-        ]);
-
         try {
-            $client = $this->clientFactory->getClient();
-            $client->request('GET', $affiliate->getPostbackUrl(), $data);
-            $entity = $this->affiliateLogFactory->create(
-                AffiliateLog::EVENT_SUBSCRIBE,
-                true,
-                $fullUrl,
-                $userInfo,
-                $campaign,
-                $subscription,
-                ['cid' => $campaignToken]
-            );
-        } catch (\Exception $ex) {
-            $entity = $this->affiliateLogFactory->create(
-                AffiliateLog::EVENT_SUBSCRIBE,
-                false,
-                $fullUrl,
-                $userInfo,
-                $campaign,
-                $subscription,
-                ['cid' => $campaignToken],
-                $ex->getMessage()
-            );
+            $data = ['query' => $this->getPostBackParameters($affiliate, $campaign, $campaignParams)]; // TODO implement _formAffiliateData
+
+            $fullUrl = $affiliate->getPostbackUrl() . '?' . http_build_query($data['query']);
+
+            $this->logger->debug('check content', [
+                'userInfo' => $data,
+                'campaignParams' => $fullUrl,
+                '$campaignToken' => $campaignToken
+            ]);
+
+            try {
+                $client = $this->clientFactory->getClient();
+                $client->request('GET', $affiliate->getPostbackUrl(), $data);
+                $entity = $this->affiliateLogFactory->create(
+                    AffiliateLog::EVENT_SUBSCRIBE,
+                    true,
+                    $fullUrl,
+                    $userInfo,
+                    $campaign,
+                    $subscription,
+                    ['cid' => $campaignToken]
+                );
+            } catch (\Exception $ex) {
+                $entity = $this->affiliateLogFactory->create(
+                    AffiliateLog::EVENT_SUBSCRIBE,
+                    false,
+                    $fullUrl,
+                    $userInfo,
+                    $campaign,
+                    $subscription,
+                    ['cid' => $campaignToken],
+                    $ex->getMessage()
+                );
+            }
+
+            $this->entityManager->persist($entity);
+            $this->entityManager->flush();
+
+            $this->logger->debug('end AffiliateSender::checkAffiliateEligibilityAndSendEvent(): success');
+        } catch (\ErrorException $e) {
+            $this->logger->debug('ending with error AffiliateSender::checkAffiliateEligibilityAndSendEvent(): not full data in request');
         }
-
-        $this->entityManager->persist($entity);
-        $this->entityManager->flush();
-
-
     }
 
     private function isCampaignConnectedToCarrier(CampaignInterface $campaign, CarrierInterface $carrier): bool
@@ -195,13 +200,6 @@ class AffiliateSender
         ]);
 
         return $query;
-        // return [
-        //     'headers' => [
-        //         'User-Agent' => self::USER_AGENT
-        //     ],
-        //     'query' => $query,
-        //     'debug' => false
-        // ];
     }
 
     /**
@@ -222,7 +220,7 @@ class AffiliateSender
 
         if (!empty($paramsList)) {
             foreach ($paramsList as $output => $input) {
-                $query[$output] = $campaignParams[$input];
+                $query[$output] = $campaignParams[$input]; // !isset($campaignParams[$input])
             }
         }
         if (!empty($constantsList)) {
