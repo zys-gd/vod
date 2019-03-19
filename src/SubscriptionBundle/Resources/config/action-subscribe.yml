@@ -49,9 +49,11 @@ services:
     arguments:
       - '@app.cache.default.translation'
       - '@router'
+      - '@SubscriptionBundle\Service\BlackListService'
       - '@IdentificationBundle\Repository\UserRepository'
       - '@logger'
       - '_sub_not_allowed_route_placeholder_'
+      - '_blacklisted_user_route_placeholder_'
 
   SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater:
       arguments:

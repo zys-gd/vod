@@ -1,6 +1,7 @@
 SubscriptionBundle\Entity\BlackList:
     type: entity
     table: black_list
+    repositoryClass: SubscriptionBundle\Repository\BlackListRepository
     indexes:
         alias_index:
             columns: [ alias ]

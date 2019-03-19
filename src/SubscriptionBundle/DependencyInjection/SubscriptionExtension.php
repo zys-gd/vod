@@ -70,6 +70,7 @@ class SubscriptionExtension extends ConfigurableExtension
         $definition = $container->getDefinition('SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter');
 
         $definition->replaceArgument(5, $mergedConfig['sub_not_allowed_route']);
+        $definition->replaceArgument(6, $mergedConfig['blacklisted_user_route']);
 
 
         $definition = $container->getDefinition('SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler');

@@ -36,26 +36,33 @@ class BlacklistVoter
      */
     private $subNotAllowedRoute;
     /**
+     * @var string
+     */
+    private $blacklistedUserRoute;
+    /**
      * @var BlackListService
      */
     private $blackListService;
 
     /**
-     * BlacklistVoter constructor.
+     * BlacklistVoter constructor
+     *
      * @param ICacheService $cacheService
      * @param RouterInterface $router
+     * @param BlackListService $blackListService
      * @param UserRepository $userRepository
      * @param LoggerInterface $logger
      * @param string $subNotAllowedRoute
-     * @param BlackListService $blackListService
+     * @param string $blacklistedUserRoute
      */
     public function __construct(
         ICacheService $cacheService,
         RouterInterface $router,
+        BlackListService $blackListService,
         UserRepository $userRepository,
         LoggerInterface $logger,
         string $subNotAllowedRoute,
-        BlackListService $blackListService
+        string $blacklistedUserRoute
     ) {
         $this->cacheService       = $cacheService;
         $this->router             = $router;
@@ -63,6 +70,7 @@ class BlacklistVoter
         $this->logger             = $logger;
         $this->subNotAllowedRoute = $subNotAllowedRoute;
         $this->blackListService   = $blackListService;
+        $this->blacklistedUserRoute = $blacklistedUserRoute;
     }
 
     /**
@@ -92,7 +100,7 @@ class BlacklistVoter
         } elseif ($this->blackListService->isBlacklisted($sessionToken)) {
             $this->logger->debug('User in black list. Subscription is not allowed');
 
-            return $this->createNotAllowedResponse();
+            return new RedirectResponse($this->router->generate($this->blacklistedUserRoute));
         }
 
         if (!$this->cacheService->hasCache($sessionToken)) {

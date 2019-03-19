@@ -1,0 +1,23 @@
+{% extends '@App/base.html.twig' %}
+{% import "@App/Common/Blocks/header.html.twig" as  header %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('/css/bkus.css') }}" rel="stylesheet">
+
+{% endblock %}
+
+{% block header_content %}
+    {{ header.render() }}
+{% endblock header_content %}
+
+{% block body %}
+    <div class="d-flex align-items-center justify-content-center w-100">
+        <div class="bkus-disclaimer-text">
+            <p>You can't subscribe to this service.
+               Your phone number has been blacklisted from subscribing to this service.
+                <br>
+               For more info please <a class="contact-us-link red" href="{{ url('contact_us') }}">Contact Us</a></p>
+        </div>
+    </div>
+{% endblock %}
