@@ -65,7 +65,7 @@
     {
         "uuid": "0f5cf82e-b95b-45d1-80aa-e971aef6f2ac",
         "key": "offer.account",
-        "translation": "Watch unlimited videos of your favorite sports and teams!<br/>Only %price% %currency% per %period% (tax included)",
+        "translation": "Watch unlimited videos of your favorite sports and teams!<br/>Only %price% %currency% per %period%",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -101,7 +101,7 @@
     {
         "uuid": "1afc25c9-e1bd-4520-ae58-c917f3434e65",
         "key": "annotation_block.text.2",
-        "translation": "Watch unlimited sports videos for only %price% %currency% per %period% (tax included). Access to hundreds of sport videos and news every day. Stay tuned!",
+        "translation": "Watch unlimited sports videos for only %price% %currency% per %period%. Access to hundreds of sport videos and news every day. Stay tuned!",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -317,7 +317,7 @@
     {
         "uuid": "51136644-9be4-4eac-b466-f617e7238d00",
         "key": "offer.landing",
-        "translation": "Watch unlimited videos of your favorite sports and teams!<br/>Only %price% %currency% per %period% (tax included)",
+        "translation": "Watch unlimited videos of your favorite sports and teams!<br/>Only %price% %currency% per %period%",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -452,7 +452,7 @@
     {
         "uuid": "7e52ca82-5c67-4df9-80b5-4131a56f7bbb",
         "key": "offer.annotation_block",
-        "translation": "Watch unlimited sport videos for only %price% %currency% per %period% (tax included)",
+        "translation": "Watch unlimited sport videos for only %price% %currency% per %period%",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -668,7 +668,7 @@
     {
         "uuid": "c4a1eb00-b547-47e6-8cb5-61901c4e9585",
         "key": "subscription.status.not_subscribe",
-        "translation": "Welcome to 100% Sport!\n<small>Get unlimited videos each %period% for only %price%/%currency% (tax included)</small>",
+        "translation": "Welcome to 100% Sport!\n<small>Get unlimited videos each %period% for only %price%/%currency%</small>",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -677,7 +677,7 @@
     {
         "uuid": "27f643fc-3e18-47d1-bbd7-8a3a14660af4",
         "key": "account.subscription.status.not_subscribe",
-        "translation": "Get unlimited videos each %period% for only %price%/%currency% (tax included)",
+        "translation": "Get unlimited videos each %period% for only %price%/%currency%",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -965,7 +965,7 @@
     {
         "uuid": "14c4c9bb-efbe-4ddb-a639-0f5ac27d4c88",
         "key": "wifi.offer",
-        "translation": "%price% %currency% per %period% (tax included)",
+        "translation": "%price% %currency% per %period%",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
