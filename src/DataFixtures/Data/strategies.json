@@ -1,0 +1,158 @@
+[
+    {
+        "name": "Full price",
+        "bfStrategyId": 1,
+        "uuid": "51c2ea9a-ebd4-11e8-95c4-02bb250f0f22",
+        "values": null
+    },
+    {
+        "name": "Rip the bucket with retry",
+        "bfStrategyId": 10,
+        "uuid": "51c2ec8c-ebd4-11e8-95c4-02bb250f0f22",
+        "values": null
+    },
+    {
+        "name": "Pakistan Strategy",
+        "bfStrategyId": 11,
+        "uuid": "51c2ed3f-ebd4-11e8-95c4-02bb250f0f22",
+        "values": null
+    },
+    {
+        "name": "Pakistan Zong",
+        "bfStrategyId": 14,
+        "uuid": "51c2ed92-ebd4-11e8-95c4-02bb250f0f22",
+        "values": null
+    },
+    {
+        "name": "Mobilink instant response",
+        "bfStrategyId": 13,
+        "uuid": "51c2edd4-ebd4-11e8-95c4-02bb250f0f22",
+        "values": null
+    },
+    {
+        "name": "Sudan MTN",
+        "bfStrategyId": 16,
+        "uuid": "51c2ee19-ebd4-11e8-95c4-02bb250f0f22",
+        "values": null
+    },
+    {
+        "name": "Sri Lanka Dialog",
+        "bfStrategyId": 15,
+        "uuid": "51c2ee5a-ebd4-11e8-95c4-02bb250f0f22",
+        "values": null
+    },
+    {
+        "name": "Sudan Zain",
+        "bfStrategyId": 21,
+        "uuid": "51c2ee9d-ebd4-11e8-95c4-02bb250f0f22",
+        "values": null
+    },
+    {
+        "name": "Full price Telenor PK",
+        "bfStrategyId": 23,
+        "uuid": "51c2eeda-ebd4-11e8-95c4-02bb250f0f22",
+        "values": null
+    },
+    {
+        "name": "Malaysia Celcom",
+        "bfStrategyId": 55,
+        "uuid": "51c2ef19-ebd4-11e8-95c4-02bb250f0f22",
+        "values": null
+    },
+    {
+        "name": "RTB Dot Smartfren IND",
+        "bfStrategyId": 27,
+        "uuid": "51c2ef58-ebd4-11e8-95c4-02bb250f0f22",
+        "values": null
+    },
+    {
+        "name": "Brazil Tim with retry",
+        "bfStrategyId": 10,
+        "uuid": "51c2efa6-ebd4-11e8-95c4-02bb250f0f22",
+        "values": null
+    },
+    {
+        "name": "Kenya Telkom",
+        "bfStrategyId": 32,
+        "uuid": "51c2efe6-ebd4-11e8-95c4-02bb250f0f22",
+        "values": null
+    },
+    {
+        "name": "Full price HN",
+        "bfStrategyId": 34,
+        "uuid": "51c2f020-ebd4-11e8-95c4-02bb250f0f22",
+        "values": null
+    },
+    {
+        "name": "Robi Bangladesh",
+        "bfStrategyId": 35,
+        "uuid": "51c2f05f-ebd4-11e8-95c4-02bb250f0f22",
+        "values": null
+    },
+    {
+        "name": "RTB Cellcard",
+        "bfStrategyId": 49,
+        "uuid": "51c2f09c-ebd4-11e8-95c4-02bb250f0f22",
+        "values": null
+    },
+    {
+        "name": "Claro NI Full price",
+        "bfStrategyId": 38,
+        "uuid": "51c2f0d8-ebd4-11e8-95c4-02bb250f0f22",
+        "values": null
+    },
+    {
+        "name": "Hutch3 fullprice",
+        "bfStrategyId": 41,
+        "uuid": "51c2f117-ebd4-11e8-95c4-02bb250f0f22",
+        "values": null
+    },
+    {
+        "name": "Full price KW",
+        "bfStrategyId": 39,
+        "uuid": "51c2f156-ebd4-11e8-95c4-02bb250f0f22",
+        "values": null
+    },
+    {
+        "name": "Ooredoo Oman",
+        "bfStrategyId": 47,
+        "uuid": "51c2f193-ebd4-11e8-95c4-02bb250f0f22",
+        "values": null
+    },
+    {
+        "name": "RTB Ooredoo Qatar",
+        "bfStrategyId": 46,
+        "uuid": "51c2f1d0-ebd4-11e8-95c4-02bb250f0f22",
+        "values": null
+    },
+    {
+        "name": "Ooredoo Myanmar",
+        "bfStrategyId": 52,
+        "uuid": "51c2f20e-ebd4-11e8-95c4-02bb250f0f22",
+        "values": null
+    },
+    {
+        "name": "Indosat fullprice",
+        "bfStrategyId": 45,
+        "uuid": "51c2f253-ebd4-11e8-95c4-02bb250f0f22",
+        "values": null
+    },
+    {
+        "name": "RTB Du UAE",
+        "bfStrategyId": 53,
+        "uuid": "51c2f293-ebd4-11e8-95c4-02bb250f0f22",
+        "values": null
+    },
+    {
+        "name": "Ooredoo Myanmar Weekly",
+        "bfStrategyId": 54,
+        "uuid": "60c02dd8-cb71-4994-9601-f613eded42dd",
+        "values": null
+    },
+    {
+        "name": "Movistar NI Full price",
+        "bfStrategyId": 57,
+        "uuid": "db86f815-21fb-4478-9d53-942bd8938316",
+        "values": null
+    }
+]
