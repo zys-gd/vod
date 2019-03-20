@@ -217,11 +217,11 @@ class Campaign implements CampaignInterface, HasUuid
     /**
      * Set affiliate
      *
-     * @param integer $affiliate
+     * @param Affiliate $affiliate
      *
      * @return Campaign
      */
-    public function setAffiliate($affiliate)
+    public function setAffiliate(Affiliate $affiliate): Campaign
     {
         $this->affiliate = $affiliate;
 

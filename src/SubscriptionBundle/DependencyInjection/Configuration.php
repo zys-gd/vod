@@ -31,6 +31,8 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->scalarNode('resub_not_allowed_route')
                 ->end()
+                ->scalarNode('blacklisted_user_route')
+                ->end()
             ->end();
 
         return $treeBuilder;

@@ -62,3 +62,8 @@ App\Domain\Entity\Affiliate:
             mappedBy: affiliate
             cascade: ["persist", "remove"]
             orphanRemoval: true
+        campaigns:
+            targetEntity: App\Domain\Entity\Campaign
+            mappedBy: affiliate
+            cascade: ["persist", "remove"]
+            orphanRemoval: true

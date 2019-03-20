@@ -1,3 +1,0 @@
-services:
-  SubscriptionBundle\Blacklist\BlacklistSaver:
-    arguments: ['@doctrine.orm.entity_manager']
