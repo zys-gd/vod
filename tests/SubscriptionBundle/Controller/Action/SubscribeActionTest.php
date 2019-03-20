@@ -109,14 +109,14 @@ class SubscribeActionTest extends AbstractFunctionalTest
     // }
     //
     //
-    // protected function configureWebClientClientContainer(ContainerInterface $container)
-    // {
-    //     // $container->set('subscription.http.client', $this->httpClient);
-    //     $container->set('talentica.billing_framework_subscription_data_provider', $this->subscriptionPackDataProvider);
-    //     $container->set('talentica.notification.service', $this->notificationService);
-    //     $container->set('talentica.piwic_statistic_sender', $this->piwikStatisticSender);
-    //
-    // }
+     protected function configureWebClientClientContainer(ContainerInterface $container)
+     {
+         // $container->set('subscription.http.client', $this->httpClient);
+         $container->set('talentica.billing_framework_subscription_data_provider', $this->subscriptionPackDataProvider);
+         $container->set('talentica.notification.service', $this->notificationService);
+         $container->set('talentica.piwic_statistic_sender', $this->piwikStatisticSender);
+
+     }
 
     protected function getFixturesListLoadedForEachTest(): array
     {
@@ -143,8 +143,4 @@ class SubscribeActionTest extends AbstractFunctionalTest
         return \VODKernel::class;
     }
 
-    protected function configureWebClientClientContainer(ContainerInterface $container)
-    {
-        // TODO: Implement configureWebClientClientContainer() method.
-    }
 }
