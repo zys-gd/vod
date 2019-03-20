@@ -83,6 +83,11 @@ class Affiliate implements HasUuid
     private $subPriceName;
 
     /**
+     * @var Collection
+     */
+    private $campaigns;
+
+    /**
      * Affiliate constructor.
      * @param string $uuid
      */
@@ -91,6 +96,7 @@ class Affiliate implements HasUuid
         $this->uuid       = $uuid;
         $this->constants  = new ArrayCollection();
         $this->parameters = new ArrayCollection();
+        $this->campaigns = new ArrayCollection();
     }
 
     /**
@@ -493,6 +499,44 @@ class Affiliate implements HasUuid
             if ($affiliateParameter->getAffiliate() === $this) {
                 $affiliateParameter->setAffiliate(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getCampaigns(): Collection
+    {
+        return $this->campaigns;
+    }
+
+    /**
+     * @param Collection $campaigns
+     *
+     * @return Affiliate
+     */
+    public function setCampaigns(Collection $campaigns): self
+    {
+        /** @var Campaign $campaign */
+        foreach ($campaigns->getIterator() as $campaign) {
+            $this->addCampaign($campaign);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Campaign $campaign
+     *
+     * @return Affiliate
+     */
+    public function addCampaign(Campaign $campaign): self
+    {
+        if (!$this->campaigns->contains($campaign)) {
+            $campaign->setAffiliate($this);
+            $this->campaigns->add($campaign);
         }
 
         return $this;
