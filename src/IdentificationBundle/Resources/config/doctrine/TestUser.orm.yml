@@ -1,0 +1,32 @@
+IdentificationBundle\Entity\TestUser:
+    type: entity
+    table: test_user
+    repositoryClass: IdentificationBundle\Repository\TestUserRepository
+
+    id:
+        uuid:
+            type: guid
+
+    fields:
+        msisdn:
+            type: string
+            nullable: false
+            unique: true
+            length: 255
+        status:
+            type: smallint
+            nullable: false
+        addedAt:
+            type: datetime
+            nullable: false
+            options:
+                default: CURRENT_TIMESTAMP
+        lastTimeUsedAt:
+            type: datetime
+            nullable: true
+
+    manyToOne:
+        carrier:
+            targetEntity: App\Domain\Entity\Carrier
+            joinColumn:
+                referencedColumnName: uuid

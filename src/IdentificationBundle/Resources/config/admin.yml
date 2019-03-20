@@ -1,0 +1,6 @@
+services:
+    SubscriptionBundle\Admin\Sonata\TestUserAdmin:
+        arguments:
+            - ~
+            - IdentificationBundle\Entity\TestUser
+            - '@IdentificationBundle\Admin\Controller\TestUserAdminController'
