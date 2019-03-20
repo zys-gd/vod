@@ -2,41 +2,50 @@
 
 namespace PriceBundle\Admin;
 
+use App\Utils\UuidGenerator;
+use PriceBundle\Entity\Strategy;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\CoreBundle\FlashMessage\FlashManager;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 /**
  * Class StrategyAdmin
- * @package PriceBundle\Admin
  */
 class StrategyAdmin extends AbstractAdmin
 {
     /**
-     * Generate the entries for entity's datagrid.
+     * @return Strategy
      *
+     * @throws \Exception
+     */
+    public function getNewInstance(): Strategy
+    {
+        return new Strategy(UuidGenerator::generate());
+    }
+
+    /**
      * @param DatagridMapper $datagridMapper
+     *
      * @return void
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('id')
+            ->add('uuid')
             ->add('name');
     }
 
     /**
-     * Generate listing fields for entity
-     *
      * @param ListMapper $listMapper
+     *
      * @return void
      */
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id')
+            ->add('uuid')
             ->add('name')
             ->add('bfStrategyId')
             ->add('_action', null, [
@@ -48,17 +57,17 @@ class StrategyAdmin extends AbstractAdmin
     }
 
     /**
-     * Generate editing fields for entity
-     *
      * @param FormMapper $formMapper
+     *
      * @return void
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
             ->add('name')
-            ->add('bfStrategyId')
+            ->add('bfStrategyId', IntegerType::class, [
+                'required' => true
+            ])
             ->end();
-
     }
 }
