@@ -1,0 +1,8 @@
+services:
+    PriceBundle\Admin\StrategyAdmin:
+        arguments: [~, PriceBundle\Entity\Strategy, ~]
+        tags:
+            -   name: sonata.admin
+                manager_type: orm
+                group: carrier_management
+                label: Price strategy
