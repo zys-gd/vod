@@ -1,5 +1,9 @@
+parameters:
+  doctrine.dbal.connection_factory.class: ExtrasBundle\Testing\Fastest\FastestConnectionFactory
+
 doctrine:
   dbal:
+    default_connection: default
     driver_class:   ExtrasBundle\Development\DBAL\Sqlite\ModifiedDriver
     path:     '%kernel.cache_dir%/__DBNAME__.db'
     dbname: testdb
