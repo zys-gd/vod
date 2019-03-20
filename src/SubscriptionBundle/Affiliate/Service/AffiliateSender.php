@@ -18,7 +18,7 @@ use SubscriptionBundle\Affiliate\DTO\UserInfo;
 use SubscriptionBundle\Entity\Affiliate\AffiliateLog;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Exception\WrongAffiliateParameters;
+use SubscriptionBundle\Exception\WrongIncomingParameters;
 use SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface;
 
 class AffiliateSender
@@ -145,7 +145,7 @@ class AffiliateSender
             $this->entityManager->flush();
 
             $this->logger->debug('end AffiliateSender::checkAffiliateEligibilityAndSendEvent(): success');
-        } catch (WrongAffiliateParameters $e) {
+        } catch (WrongIncomingParameters $e) {
             $this->logger->debug('ending with error AffiliateSender::checkAffiliateEligibilityAndSendEvent(): not full data in request');
         }
     }
@@ -210,7 +210,7 @@ class AffiliateSender
      * @param array $query
      *
      * @return array
-     * @throws WrongAffiliateParameters
+     * @throws WrongIncomingParameters
      */
     private function jumpIntoStandartFlow(array $paramsList, array $constantsList, array $campaignParams, array $query)
     {
@@ -225,7 +225,7 @@ class AffiliateSender
                 try{
                     $query[$output] = $campaignParams[$input]; // !isset($campaignParams[$input])
                 } catch (\ErrorException $e) {
-                    throw new WrongAffiliateParameters();
+                    throw new WrongIncomingParameters();
                 }
             }
         }

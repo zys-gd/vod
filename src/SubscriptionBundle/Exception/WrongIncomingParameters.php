@@ -11,7 +11,7 @@ namespace SubscriptionBundle\Exception;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class WrongAffiliateParameters extends \ErrorException
+class WrongIncomingParameters extends \ErrorException
 {
     /** @var  JsonResponse */
     protected  $response;
