@@ -65,4 +65,14 @@ class ErrorController extends AbstractController
     {
         return $this->render('@App/Error/resub_not_allowed.html.twig');
     }
+
+    /**
+     * @Route("/bkus",name="blacklisted_user")
+     * @param Request $request
+     * @return Response
+     */
+    public function blackListedUser(Request $request)
+    {
+        return $this->render('@App/Error/blacklisted_user.html.twig');
+    }
 }

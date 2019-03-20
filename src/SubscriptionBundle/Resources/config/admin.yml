@@ -34,3 +34,12 @@ services:
             - 'SubscriptionBundle\Admin\Controller\ComplaintsAdminController'
         tags:
             - { name: sonata.admin, manager_type: orm, group: user_management, label: Complaints }
+
+    SubscriptionBundle\Admin\Sonata\BlackListAdmin:
+        arguments:
+            - ~
+            - SubscriptionBundle\Entity\BlackList
+            - ~
+            - '@SubscriptionBundle\Service\BlackListService'
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: black_list_management, label: Black list }
