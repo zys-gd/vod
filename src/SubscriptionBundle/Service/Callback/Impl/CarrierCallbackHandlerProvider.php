@@ -10,6 +10,19 @@ class CarrierCallbackHandlerProvider
      * @var CarrierCallbackHandlerInterface[]
      */
     private $handlers = [];
+    /**
+     * @var DefaultHandler
+     */
+    private $defaultHandler;
+
+    /**
+     * CarrierCallbackHandlerProvider constructor.
+     */
+    public function __construct(DefaultHandler $defaultHandler)
+    {
+        $this->defaultHandler = $defaultHandler;
+    }
+
 
     /**
      * @param CarrierCallbackHandlerInterface $handler
@@ -36,7 +49,7 @@ class CarrierCallbackHandlerProvider
                 return $handler;
             }
         }
-        return new DefaultHandler();
+        return $this->defaultHandler;
     }
 
     private function ensureIsCorrect(CarrierCallbackHandlerInterface $handler)
