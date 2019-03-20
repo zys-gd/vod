@@ -18,6 +18,7 @@ use SubscriptionBundle\Affiliate\DTO\UserInfo;
 use SubscriptionBundle\Entity\Affiliate\AffiliateLog;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
+use SubscriptionBundle\Exception\WrongAffiliateParameters;
 use SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface;
 
 class AffiliateSender
@@ -144,7 +145,7 @@ class AffiliateSender
             $this->entityManager->flush();
 
             $this->logger->debug('end AffiliateSender::checkAffiliateEligibilityAndSendEvent(): success');
-        } catch (\ErrorException $e) {
+        } catch (WrongAffiliateParameters $e) {
             $this->logger->debug('ending with error AffiliateSender::checkAffiliateEligibilityAndSendEvent(): not full data in request');
         }
     }
@@ -209,18 +210,23 @@ class AffiliateSender
      * @param array $query
      *
      * @return array
+     * @throws WrongAffiliateParameters
      */
     private function jumpIntoStandartFlow(array $paramsList, array $constantsList, array $campaignParams, array $query)
     {
         $this->logger->debug('debug AffiliateSender::jumpIntoStandartFlow()', [
-            'paramsList' => $paramsList,
-            'campaignParams' => $campaignParams,
+            'paramsList (from DB)' => $paramsList,
+            'campaignParams (from url)' => $campaignParams,
             'constantsList' => $constantsList,
         ]);
 
         if (!empty($paramsList)) {
             foreach ($paramsList as $output => $input) {
-                $query[$output] = $campaignParams[$input]; // !isset($campaignParams[$input])
+                try{
+                    $query[$output] = $campaignParams[$input]; // !isset($campaignParams[$input])
+                } catch (\ErrorException $e) {
+                    throw new WrongAffiliateParameters();
+                }
             }
         }
         if (!empty($constantsList)) {
