@@ -10,7 +10,3 @@ services:
   ExtrasBundle\Utils\LocalExtractor:
       arguments:
           - '@request_stack'
-
-  ExtrasBundle\Testing\Liip\SqliteDatabaseBackupWrapper:
-    public: true
-    arguments: ['@liip_functional_test.services_database_backup.sqlite', '%kernel.cache_dir%']
