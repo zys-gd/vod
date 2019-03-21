@@ -3,7 +3,6 @@
 
 use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
 use IdentificationBundle\Entity\User;
-use IdentificationBundle\Identification\Exception\AlreadyIdentifiedException;
 use IdentificationBundle\Identification\Exception\MissingIdentificationDataException;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinVerifyRules;
@@ -79,23 +78,6 @@ class WifiIdentConfirmatorTest extends TestCase
             $this->subscriptionRepository,
             $this->userRepository
         );
-    }
-
-    public function testExceptionThrownWhenUserIsAlreadyAdded()
-    {
-        $this->carrierRepository->allows([
-            'findOneByBillingId' => Mockery::spy(\IdentificationBundle\Entity\CarrierInterface::class)
-        ]);
-        $this->handlerProvider->allows([
-            'get' => $this->identificationHandler
-        ]);
-        $this->identificationHandler->allows([
-            'getExistingUser' => Mockery::spy(User::class)
-        ]);
-
-        $this->expectException(AlreadyIdentifiedException::class);
-
-        $this->wifiIdentConfirmator->confirm(0, '1234', '123456789', '1237.0.0.1');
     }
 
 

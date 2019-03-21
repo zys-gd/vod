@@ -1,4 +1,6 @@
 services:
+  SubscriptionBundle\Service\Callback\Impl\DefaultHandler:
+    arguments: ['@IdentificationBundle\Repository\UserRepository']
 
   SubscriptionBundle\Service\Callback\Common\CommonFlowHandler:
       arguments:
@@ -16,7 +18,9 @@ services:
 
       public: false
 
-  SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider: ~
+  SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider:
+      arguments:
+        - '@SubscriptionBundle\Service\Callback\Impl\DefaultHandler'
 
   SubscriptionBundle\Service\Callback\Common\CallbackTypeHandlerProvider:
       arguments:

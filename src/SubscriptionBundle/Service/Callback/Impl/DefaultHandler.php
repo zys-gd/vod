@@ -9,13 +9,26 @@
 namespace SubscriptionBundle\Service\Callback\Impl;
 
 
-use Symfony\Component\HttpFoundation\Request;
+use IdentificationBundle\Entity\User;
+use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
-use IdentificationBundle\Entity\User;
+use Symfony\Component\HttpFoundation\Request;
 
 class DefaultHandler implements CarrierCallbackHandlerInterface, HasCommonFlow
 {
+    private $userRepository;
+
+
+    /**
+     * DefaultHandler constructor.
+     * @param UserRepository $userRepository
+     */
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     public function canHandle(Request $request, int $carrierId): bool
     {
         return true;
@@ -26,4 +39,8 @@ class DefaultHandler implements CarrierCallbackHandlerInterface, HasCommonFlow
         // TODO: Implement onRenewSendSuccess() method.
     }
 
+    public function getUser(string $msisdn): ?User
+    {
+        return $this->userRepository->findOneByMsisdn($msisdn);
+    }
 }

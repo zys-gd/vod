@@ -136,9 +136,16 @@ class WifiIdentConfirmator
                 throw new FailedIdentificationException('You have entered a wrong PIN, please try again or re-send a new');
             }
 
-            $this->identFinisher->finish($msisdn, $carrier, $ip);
+            $user = $handler->getExistingUser($msisdn);
+            if ($user) {
+                $this->identFinisher->finishForExistingUser($user, $msisdn, $ip);
+            } else {
+                $this->identFinisher->finish($msisdn, $carrier, $ip);
+            }
+
             $this->dataStorage->cleanPreviousOperationResult('pinRequest');
             return;
+
         } else {
 
             if ($handler instanceof HasCustomPinVerifyRules) {
@@ -180,7 +187,6 @@ class WifiIdentConfirmator
             }
 
             $this->dataStorage->cleanPreviousOperationResult('pinRequest');
-
         }
 
     }
