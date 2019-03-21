@@ -28,7 +28,7 @@ try {
     $response->send();
     $kernel->terminate($request, $response);
 } catch (\Throwable $exception) {
-    echo $exception->getMessage();
     http_response_code(500);
+    echo $exception->getMessage();
 }
 
