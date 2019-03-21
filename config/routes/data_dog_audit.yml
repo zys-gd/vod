@@ -1,0 +1,3 @@
+data_dog_audit:
+    resource: "@AuditBundle/Resources/config/routes.yml"
+    prefix: /admin/audit

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "052f87cf5c07047260c131bc0dcf2961",
+    "content-hash": "65158aff9427742f3c0115847651f59c",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -315,6 +315,76 @@
                 "tls"
             ],
             "time": "2018-10-18T06:09:13+00:00"
+        },
+        {
+            "name": "data-dog/audit-bundle",
+            "version": "v0.1.13",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DATA-DOG/DataDogAuditBundle.git",
+                "reference": "aacbc16e037650fa48e670fe1cc6c662a1820094"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DATA-DOG/DataDogAuditBundle/zipball/aacbc16e037650fa48e670fe1cc6c662a1820094",
+                "reference": "aacbc16e037650fa48e670fe1cc6c662a1820094",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/orm": "^2.4",
+                "php": ">=5.4.0",
+                "symfony/framework-bundle": "^2.6|^3.0|^4.0"
+            },
+            "require-dev": {
+                "data-dog/pager-bundle": "^0.2",
+                "doctrine/doctrine-bundle": "^1.6",
+                "doctrine/doctrine-fixtures-bundle": "^2.2",
+                "doctrine/orm": "^2.5",
+                "ext-pdo": "*",
+                "ext-pdo_sqlite": "*",
+                "knplabs/knp-menu-bundle": "^2.0",
+                "knplabs/knp-time-bundle": "^1.3",
+                "php": ">=5.6.0",
+                "phpunit/phpunit": "~4.7.0",
+                "sensio/framework-extra-bundle": "^3.0.2",
+                "symfony/symfony": "^3.0|^4.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "DataDog\\AuditBundle\\": "src/DataDog/AuditBundle"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "DataDog Team",
+                    "homepage": "http://datadog.lt"
+                },
+                {
+                    "name": "Symfony2 Community",
+                    "homepage": "http://github.com/DATA-DOG/DataDogAuditBundle/contributors"
+                }
+            ],
+            "description": "Audit bundle for symfony2 and doctrine orm, logs any database change",
+            "homepage": "http://github.com/DATA-DOG/DataDogAuditBundle",
+            "keywords": [
+                "Audit",
+                "Symfony2",
+                "bundle",
+                "doctrine",
+                "log",
+                "orm"
+            ],
+            "time": "2019-02-01T09:13:05+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -1912,6 +1982,75 @@
             "time": "2018-10-18T07:17:52+00:00"
         },
         {
+            "name": "granedirval/data-dog-pager-bundle",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/GraneDirval/DataDogPagerBundle.git",
+                "reference": "3017907dd7d672b38e8678e5c83aa701354a4987"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/GraneDirval/DataDogPagerBundle/zipball/3017907dd7d672b38e8678e5c83aa701354a4987",
+                "reference": "3017907dd7d672b38e8678e5c83aa701354a4987",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/orm": "~2.3",
+                "php": ">=5.4.0",
+                "symfony/framework-bundle": "2.3 - 4.2",
+                "twig/twig": "~1.5|~2.0"
+            },
+            "require-dev": {
+                "doctrine/doctrine-bundle": "^1.6",
+                "doctrine/doctrine-fixtures-bundle": "^2.3",
+                "doctrine/orm": "~2.5.0",
+                "ext-pdo": "*",
+                "ext-pdo_sqlite": "*",
+                "fzaninotto/faker": "~1.5",
+                "phpunit/phpunit": "~6.0.0",
+                "sensio/framework-extra-bundle": "^3.0.9",
+                "symfony/symfony": "~3.3.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "DataDog\\PagerBundle\\": "src/DataDog/PagerBundle"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "DataDog Team",
+                    "homepage": "http://datadog.lt"
+                },
+                {
+                    "name": "Symfony2 Community",
+                    "homepage": "http://github.com/DATA-DOG/DataDogPagerBundle/contributors"
+                }
+            ],
+            "description": "Paginator bundle for symfony2 and doctrine orm, allows customization with filters and sorters",
+            "homepage": "http://github.com/DATA-DOG/DataDogPagerBundle",
+            "keywords": [
+                "Symfony2",
+                "bundle",
+                "doctrine",
+                "orm",
+                "pager",
+                "pagination",
+                "paginator"
+            ],
+            "time": "2019-03-20T13:19:22+00:00"
+        },
+        {
             "name": "guzzlehttp/guzzle",
             "version": "6.3.3",
             "source": {
@@ -2397,6 +2536,63 @@
             ],
             "description": "Flysystem adapter for the AWS S3 SDK v3.x",
             "time": "2019-01-01T14:02:20+00:00"
+        },
+        {
+            "name": "liuggio/fastest",
+            "version": "v1.6.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/liuggio/fastest.git",
+                "reference": "f61c3b0936998dfb342e0882d510128212a5fe6f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/liuggio/fastest/zipball/f61c3b0936998dfb342e0882d510128212a5fe6f",
+                "reference": "f61c3b0936998dfb342e0882d510128212a5fe6f",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/collections": "^1.2",
+                "php": "^5.6|^7.0",
+                "symfony/console": "^2.7|^3.0|^4.0",
+                "symfony/process": "^2.7|^3.0|^4.0",
+                "symfony/stopwatch": "^2.7|^3.0|^4.0"
+            },
+            "require-dev": {
+                "behat/behat": "^3.3"
+            },
+            "suggest": {
+                "behat/behat": "Install it if you want to run tests with the provided Behat extension"
+            },
+            "bin": [
+                "fastest"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.6-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Liuggio\\Fastest\\": [
+                        "src",
+                        "adapters"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "liuggio",
+                    "email": "liuggio@gmail.com"
+                }
+            ],
+            "description": "Simple parallel testing execution... with some goodies for functional tests.",
+            "time": "2018-03-04T11:30:31+00:00"
         },
         {
             "name": "markbaker/complex",
@@ -6211,6 +6407,55 @@
             "time": "2018-09-21T13:07:52+00:00"
         },
         {
+            "name": "symfony/process",
+            "version": "v4.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/process.git",
+                "reference": "2b341009ccec76837a7f46f59641b431e4d4c2b0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/process/zipball/2b341009ccec76837a7f46f59641b431e4d4c2b0",
+                "reference": "2b341009ccec76837a7f46f59641b431e4d4c2b0",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Process\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Process Component",
+            "homepage": "https://symfony.com",
+            "time": "2018-11-20T16:22:05+00:00"
+        },
+        {
             "name": "symfony/property-access",
             "version": "v4.2.1",
             "source": {
@@ -7500,6 +7745,172 @@
         }
     ],
     "packages-dev": [
+        {
+            "name": "brianium/habitat",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/brianium/habitat.git",
+                "reference": "d0979e3bb379cbc78ecb42b3ac171bc2b7e06d96"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/brianium/habitat/zipball/d0979e3bb379cbc78ecb42b3ac171bc2b7e06d96",
+                "reference": "d0979e3bb379cbc78ecb42b3ac171bc2b7e06d96",
+                "shasum": ""
+            },
+            "require-dev": {
+                "monolog/monolog": ">=1.5.0",
+                "phpunit/phpunit": ">=3.7.21"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Habitat": [
+                        "src/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Brian",
+                    "email": "scaturrob@gmail.com",
+                    "homepage": "http://brianscaturro.com",
+                    "role": "Lead"
+                }
+            ],
+            "description": "A dependable php environment",
+            "time": "2013-06-08T04:42:29+00:00"
+        },
+        {
+            "name": "brianium/paratest",
+            "version": "2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paratestphp/paratest.git",
+                "reference": "57eab83115294c2fa513d02e69b557fd9391938c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paratestphp/paratest/zipball/57eab83115294c2fa513d02e69b557fd9391938c",
+                "reference": "57eab83115294c2fa513d02e69b557fd9391938c",
+                "shasum": ""
+            },
+            "require": {
+                "brianium/habitat": "1.0.0",
+                "composer/semver": "~1.2",
+                "ext-pcre": "*",
+                "ext-reflection": "*",
+                "ext-simplexml": "*",
+                "php": ">=7.1",
+                "phpunit/php-code-coverage": "^6.0",
+                "phpunit/php-timer": "^2.0",
+                "phpunit/phpunit": "^7.0",
+                "symfony/console": "^3.4|^4.0",
+                "symfony/process": "^3.4|^4.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.3.2"
+            },
+            "bin": [
+                "bin/paratest"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ParaTest\\": [
+                        "src/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Brian Scaturro",
+                    "email": "scaturrob@gmail.com",
+                    "homepage": "http://brianscaturro.com",
+                    "role": "Lead"
+                }
+            ],
+            "description": "Parallel testing for PHP",
+            "homepage": "https://github.com/paratestphp/paratest",
+            "keywords": [
+                "concurrent",
+                "parallel",
+                "phpunit",
+                "testing"
+            ],
+            "time": "2018-04-12T09:40:56+00:00"
+        },
+        {
+            "name": "composer/semver",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/composer/semver.git",
+                "reference": "46d9139568ccb8d9e7cdd4539cab7347568a5e2e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/composer/semver/zipball/46d9139568ccb8d9e7cdd4539cab7347568a5e2e",
+                "reference": "46d9139568ccb8d9e7cdd4539cab7347568a5e2e",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3.2 || ^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.5 || ^5.0.5",
+                "phpunit/phpunit-mock-objects": "2.3.0 || ^3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Composer\\Semver\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nils Adermann",
+                    "email": "naderman@naderman.de",
+                    "homepage": "http://www.naderman.de"
+                },
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be",
+                    "homepage": "http://seld.be"
+                },
+                {
+                    "name": "Rob Bast",
+                    "email": "rob.bast@gmail.com",
+                    "homepage": "http://robbast.nl"
+                }
+            ],
+            "description": "Semver library that offers utilities, version constraint parsing and validation.",
+            "keywords": [
+                "semantic",
+                "semver",
+                "validation",
+                "versioning"
+            ],
+            "time": "2019-03-19T17:25:45+00:00"
+        },
         {
             "name": "doctrine/data-fixtures",
             "version": "v1.3.1",
@@ -9732,55 +10143,6 @@
             "time": "2018-09-21T13:07:52+00:00"
         },
         {
-            "name": "symfony/process",
-            "version": "v4.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/process.git",
-                "reference": "2b341009ccec76837a7f46f59641b431e4d4c2b0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/2b341009ccec76837a7f46f59641b431e4d4c2b0",
-                "reference": "2b341009ccec76837a7f46f59641b431e4d4c2b0",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.2-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Process\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony Process Component",
-            "homepage": "https://symfony.com",
-            "time": "2018-11-20T16:22:05+00:00"
-        },
-        {
             "name": "symfony/profiler-pack",
             "version": "v1.0.4",
             "source": {
@@ -10212,6 +10574,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "granedirval/data-dog-pager-bundle": 20,
         "league/flysystem-aws-s3-v3": 20,
         "playwing/difftool": 20,
         "liip/functional-test-bundle": 20
@@ -10223,6 +10586,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "^1.6",
+        "ext-mbstring": "*",
         "ext-redis": "*"
     },
     "platform-dev": []

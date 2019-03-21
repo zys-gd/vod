@@ -1,0 +1,12 @@
+services:
+    twig.audit.extension:
+        class: AuditBundle\Twig\AuditExtension
+        tags:
+            - { name: twig.extension }
+    twig.extension.date:
+        class: Twig_Extensions_Extension_Date
+        tags:
+            - { name: twig.extension }
+    AuditBundle\EventSubscriber\AuditSubscriber:
+        decorates: datadog.event_subscriber.audit
+        arguments: ['@security.token_storage']

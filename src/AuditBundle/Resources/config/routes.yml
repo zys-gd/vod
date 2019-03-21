@@ -1,0 +1,9 @@
+audit:
+    path: /
+    defaults: { _controller: AuditBundle:Audit:index  }
+    methods: [GET]
+
+audit_diff:
+    path: /audit/diff/{id}
+    defaults: { _controller: AuditBundle:Audit:diff }
+    methods: [GET]

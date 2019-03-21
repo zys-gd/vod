@@ -143,8 +143,4 @@ class SubscribeActionTest extends AbstractFunctionalTest
         return \VODKernel::class;
     }
 
-    protected function configureWebClientClientContainer(ContainerInterface $container)
-    {
-        // TODO: Implement configureWebClientClientContainer() method.
-    }
 }

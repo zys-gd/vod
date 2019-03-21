@@ -31,6 +31,13 @@ sonata_admin:
             user_management:
                 label: User Management
                 icon: '<i class="fa fa-users"></i>'
+            audit.menu:
+                label: "Audit"
+                icon: '<i class="fa fa-list-alt"></i>'
+                items:
+                    -   route: audit
+                        label: Audit
+                        roles: [ROLE_SUPER_ADMIN]
         blocks:
             - { type: sonata.admin.block.admin_list, position: left }
 

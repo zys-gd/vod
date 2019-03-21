@@ -1,0 +1,6 @@
+data_dog_audit:
+    audited_entities:
+        - IdentificationBundle\Entity\User
+        - App\Domain\Entity\MainCategory
+    unaudited_entities:
+        - PriceBundle\Entity\Tier
