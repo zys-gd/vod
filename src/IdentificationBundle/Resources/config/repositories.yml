@@ -8,3 +8,8 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - IdentificationBundle\Entity\PinCode
+
+    IdentificationBundle\Repository\TestUserRepository:
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - IdentificationBundle\Entity\TestUser

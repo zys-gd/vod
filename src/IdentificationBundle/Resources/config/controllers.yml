@@ -49,3 +49,4 @@ services:
           - '@IdentificationBundle\Identification\Common\Async\AsyncIdentStatusProvider'
 
     IdentificationBundle\Admin\Controller\TestUserAdminController:
+        autowire: true

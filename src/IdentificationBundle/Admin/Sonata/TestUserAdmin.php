@@ -66,11 +66,11 @@ class TestUserAdmin extends AbstractAdmin
             ->add('userIdentifier')
             ->add('_action', null, [
                 'actions' => [
-                    'drop_user' => [
-                        'template' => '@IdentificationBundle/TestUser/drop_user_button.html.twig'
+                    'drop_user_data' => [
+                        'template' => '@IdentificationAdmin/TestUser/drop_user_data_button.html.twig'
                     ],
                     'set_status_for_renew' => [
-                        'template' => '@IdentificationBundle/TestUser/set_status_for_renew_button.html.twig'
+                        'template' => '@IdentificationAdmin/TestUser/set_status_for_renew_button.html.twig'
                     ]
                 ]
             ]);
@@ -84,7 +84,8 @@ class TestUserAdmin extends AbstractAdmin
         $formMapper
             ->add('userIdentifier')
             ->add('carrier', EntityType::class, [
-                'class' => Carrier::class
+                'class' => Carrier::class,
+                'placeholder' => 'Select carrier'
             ]);
     }
 
@@ -95,8 +96,8 @@ class TestUserAdmin extends AbstractAdmin
     {
         $collection->clearExcept(['create', 'list']);
 
-        $collection->add('drop_user', 'dropUser');
-        $collection->add('set_status_for_renew', 'setStatusForRenew');
+        $collection->add('drop_user_data', $this->getRouterIdParameter() . '/dropUserData');
+        $collection->add('set_status_for_renew', $this->getRouterIdParameter() . '/setStatusForRenew');
 
         parent::configureRoutes($collection);
     }

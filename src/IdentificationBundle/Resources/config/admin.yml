@@ -3,6 +3,6 @@ services:
         arguments:
             - ~
             - IdentificationBundle\Entity\TestUser
-            - '@IdentificationBundle\Admin\Controller\TestUserAdminController'
+            - 'IdentificationBundle\Admin\Controller\TestUserAdminController'
         tags:
             - { name: sonata.admin, manager_type: orm, group: user_management, label: Test users }

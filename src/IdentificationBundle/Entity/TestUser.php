@@ -66,9 +66,9 @@ class TestUser
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getUserIdentifier(): string
+    public function getUserIdentifier(): ?string
     {
         return $this->userIdentifier;
     }
@@ -106,9 +106,9 @@ class TestUser
     }
 
     /**
-     * @return CarrierInterface
+     * @return CarrierInterface|null
      */
-    public function getCarrier(): CarrierInterface
+    public function getCarrier(): ?CarrierInterface
     {
         return $this->carrier;
     }
