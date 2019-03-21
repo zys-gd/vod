@@ -2,15 +2,11 @@
 
 namespace IdentificationBundle\Entity;
 
-
 /**
  * Class TestUser
  */
 class TestUser
 {
-    const STATUS_PENDING = 1;
-    const STATUS_APPROVED = 2;
-
     /**
      * @var string
      */
@@ -19,17 +15,12 @@ class TestUser
     /**
      * @var string
      */
-    private $msisdn;
+    private $userIdentifier;
 
     /**
      * @var CarrierInterface
      */
     private $carrier;
-
-    /**
-     * @var int
-     */
-    private $status = self::STATUS_APPROVED;
 
     /**
      * @var \DateTime
@@ -44,12 +35,14 @@ class TestUser
     /**
      * TestUser constructor
      *
+     * @param string $uuid
+     *
      * @throws \Exception
      */
-    public function __construct()
+    public function __construct(string $uuid)
     {
         $this->addedAt = new \DateTime();
-        $this->uuid    = \Ramsey\Uuid\Uuid::uuid4()->toString();
+        $this->uuid = $uuid;
     }
 
     /**
@@ -75,39 +68,19 @@ class TestUser
     /**
      * @return string
      */
-    public function getMsisdn(): string
+    public function getUserIdentifier(): string
     {
-        return $this->msisdn;
+        return $this->userIdentifier;
     }
 
     /**
-     * @param mixed $msisdn
+     * @param string $userIdentifier
      *
      * @return TestUser
      */
-    public function setMsisdn($msisdn): TestUser
+    public function setUserIdentifier(string $userIdentifier): self
     {
-        $this->msisdn = $msisdn;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getStatus(): int
-    {
-        return $this->status;
-    }
-
-    /**
-     * @param int $status
-     *
-     * @return TestUser
-     */
-    public function setStatus(int $status): TestUser
-    {
-        $this->status = $status;
+        $this->userIdentifier = $userIdentifier;
 
         return $this;
     }
@@ -125,7 +98,7 @@ class TestUser
      *
      * @return TestUser
      */
-    public function setAddedAt(\DateTime $addedAt): TestUser
+    public function setAddedAt(\DateTime $addedAt): self
     {
         $this->addedAt = $addedAt;
 
@@ -142,9 +115,10 @@ class TestUser
 
     /**
      * @param CarrierInterface $carrier
+     *
      * @return TestUser
      */
-    public function setCarrier(CarrierInterface $carrier): TestUser
+    public function setCarrier(CarrierInterface $carrier): self
     {
         $this->carrier = $carrier;
 
@@ -152,9 +126,9 @@ class TestUser
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
-    public function getLastTimeUsedAt()
+    public function getLastTimeUsedAt(): \DateTime
     {
         return $this->lastTimeUsedAt;
     }
@@ -164,7 +138,7 @@ class TestUser
      *
      * @return TestUser
      */
-    public function setLastTimeUsedAt(\DateTimeInterface $lastTimeUsedAt)
+    public function setLastTimeUsedAt(\DateTimeInterface $lastTimeUsedAt): self
     {
         $this->lastTimeUsedAt = $lastTimeUsedAt;
 

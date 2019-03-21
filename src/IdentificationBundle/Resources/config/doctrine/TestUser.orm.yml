@@ -8,14 +8,11 @@ IdentificationBundle\Entity\TestUser:
             type: guid
 
     fields:
-        msisdn:
+        userIdentifier:
             type: string
             nullable: false
             unique: true
             length: 255
-        status:
-            type: smallint
-            nullable: false
         addedAt:
             type: datetime
             nullable: false
