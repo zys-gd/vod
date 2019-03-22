@@ -10,8 +10,10 @@ namespace App\Twig;
 
 
 use App\Domain\Service\Games\ImagePathProvider;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class GamesExtension extends \Twig_Extension
+class GamesExtension extends AbstractExtension
 {
     /**
      * @var ImagePathProvider
@@ -30,7 +32,7 @@ class GamesExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('getImageLink', function (string $image) {
+            new TwigFunction('getImageLink', function (string $image) {
                 return $this->provider->getFullPath($image);
             })
         ];

@@ -20,8 +20,10 @@ use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\Entity\CarrierInterface;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Repository\SubscriptionPackRepository;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class WifiFlowExtension extends \Twig_Extension
+class WifiFlowExtension extends AbstractExtension
 {
     /**
      * @var CarrierRepository
@@ -86,7 +88,7 @@ class WifiFlowExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('getCountryCarrierList', [$this, 'getCountryCarrierList'])
+            new TwigFunction('getCountryCarrierList', [$this, 'getCountryCarrierList'])
         ];
     }
 

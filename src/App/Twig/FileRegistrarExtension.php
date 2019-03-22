@@ -7,9 +7,10 @@
  */
 
 namespace App\Twig;
+use Twig\Extension\AbstractExtension;
+use \Twig\TwigFunction;
 
-
-class FileRegistrarExtension extends \Twig_Extension
+class FileRegistrarExtension extends AbstractExtension
 {
     /** @var array */
     private $css = [];
@@ -69,10 +70,10 @@ class FileRegistrarExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('addCss', [$this, 'addCss']),
-            new \Twig_SimpleFunction('addJs', [$this, 'addJs']),
-            new \Twig_SimpleFunction('compileCss', [$this, 'compileCss']),
-            new \Twig_SimpleFunction('compileJs', [$this, 'compileJs'])
+            new TwigFunction('addCss', [$this, 'addCss']),
+            new TwigFunction('addJs', [$this, 'addJs']),
+            new TwigFunction('compileCss', [$this, 'compileCss']),
+            new TwigFunction('compileJs', [$this, 'compileJs'])
         ];
     }
 }

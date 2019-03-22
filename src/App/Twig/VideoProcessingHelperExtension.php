@@ -11,8 +11,10 @@ namespace App\Twig;
 
 
 use App\Domain\Entity\UploadedVideo;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class VideoProcessingHelperExtension extends \Twig_Extension
+class VideoProcessingHelperExtension extends AbstractExtension
 {
     /**
      * @var string
@@ -32,13 +34,13 @@ class VideoProcessingHelperExtension extends \Twig_Extension
     {
 
         return [
-            new \Twig_SimpleFunction('isVideoReady', function (UploadedVideo $uploadedVideo) {
+            new TwigFunction('isVideoReady', function (UploadedVideo $uploadedVideo) {
                 return $uploadedVideo->getStatus() === UploadedVideo::STATUS_READY;
             }),
-            new \Twig_SimpleFunction('getCloudName', function () {
+            new TwigFunction('getCloudName', function () {
                 return $this->cloudName;
             }),
-            new \Twig_SimpleFunction('createPlaylistElement', function (UploadedVideo $uploadedVideo) {
+            new TwigFunction('createPlaylistElement', function (UploadedVideo $uploadedVideo) {
 
                 return json_encode([
                     'publicId' => $uploadedVideo->getRemoteId(),
