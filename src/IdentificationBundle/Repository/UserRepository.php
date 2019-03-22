@@ -58,4 +58,24 @@ class UserRepository extends EntityRepository
     {
         return $this->findOneBy(['urlId' => $urlId]);
     }
+
+    /**
+     * @param string $identifier
+     *
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function dropUserDataByIdentifier(string $identifier): void
+    {
+        $sql = "
+            SET @userId = (SELECT uuid FROM user WHERE identifier = :identifier);
+            DELETE FROM subscriptions WHERE user_id = @userId;
+            DELETE FROM refunds WHERE user_id = @userId;
+            DELETE FROM user WHERE uuid = @userId;
+            DELETE FROM affiliate_log WHERE user_msisdn = :identifier;
+        ";
+
+        $connection = $this->_em->getConnection();
+        $statement = $connection->prepare($sql);
+        $statement->execute(['identifier' => $identifier]);
+    }
 }

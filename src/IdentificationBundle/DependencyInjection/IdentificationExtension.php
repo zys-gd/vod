@@ -33,6 +33,7 @@ class IdentificationExtension extends ConfigurableExtension
         $loader->load('repositories.yml');
         $loader->load('profiler.yml');
         $loader->load('twig.yml');
+        $loader->load('admin.yml');
 
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config/carriers'));

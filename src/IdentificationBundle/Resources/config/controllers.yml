@@ -47,3 +47,6 @@ services:
           - '@IdentificationBundle\Identification\Service\RouteProvider'
           - '@IdentificationBundle\Identification\Common\Async\AsyncIdentFinisher'
           - '@IdentificationBundle\Identification\Common\Async\AsyncIdentStatusProvider'
+
+    IdentificationBundle\Admin\Controller\TestUserAdminController:
+        autowire: true
