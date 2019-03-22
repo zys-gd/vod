@@ -1,3 +1,9 @@
-data_dog_audit:
-    resource: "@AuditBundle/Resources/config/routes.yml"
-    prefix: /admin/audit
+audit:
+    path: /admin/audit
+    defaults: { _controller: App\Admin\Controller\AuditController:indexAction  }
+    methods: [GET]
+
+audit_diff:
+    path: /admin/audit/diff/{id}
+    defaults: { _controller: App\Admin\Controller\AuditController:diffAction }
+    methods: [GET]
