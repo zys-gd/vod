@@ -1,6 +1,6 @@
 <?php
 
-namespace AuditBundle\Controller;
+namespace App\Admin\Controller;
 
 use Doctrine\ORM\EntityManager;
 

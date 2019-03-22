@@ -7,6 +7,7 @@ use IdentificationBundle\Entity\TestUser;
 use IdentificationBundle\Repository\TestUserRepository;
 use IdentificationBundle\Repository\UserRepository;
 use Sonata\AdminBundle\Controller\CRUDController;
+use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Repository\SubscriptionRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -93,6 +94,8 @@ class TestUserAdminController extends CRUDController
      * @param string $id
      *
      * @return RedirectResponse
+     *
+     * @throws \Exception
      */
     public function setStatusForRenewAction(string $id)
     {
@@ -110,6 +113,7 @@ class TestUserAdminController extends CRUDController
             return $response;
         }
 
+        /** @var Subscription $subscription */
         $subscription = $this->subscriptionRepository->findOneBy(['user' => $user]);
 
         if (!$subscription) {
@@ -118,7 +122,13 @@ class TestUserAdminController extends CRUDController
             return $response;
         }
 
-        //TODO apply renew
+        $subscription->setRenewDate(new \DateTime('-1 day'));
+
+        $testUser->setLastTimeUsedAt(new \DateTime());
+
+        $this->entityManager->persist($testUser);
+        $this->entityManager->persist($subscription);
+        $this->entityManager->flush();
 
         $this->addFlash('success', sprintf('Subscription for user with identifier %s queued for renew', $userIdentifier));
 

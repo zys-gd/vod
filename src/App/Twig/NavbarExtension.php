@@ -9,11 +9,13 @@ use App\Domain\Repository\MainCategoryRepository;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\RouterInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * Class NavbarExtension
  */
-class NavbarExtension extends \Twig_Extension
+class NavbarExtension extends AbstractExtension
 {
     /**
      * @var MainCategoryRepository
@@ -59,7 +61,7 @@ class NavbarExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('getMenuElements', function () {
+            new TwigFunction('getMenuElements', function () {
                 /** @var MainCategory[] $categories */
                 $categories = $this->mainCategoryRepository->findWithSubcategories();
 

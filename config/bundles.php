@@ -35,6 +35,5 @@ return [
     LegacyBundle\LegacyBundle::class => ['all' => true],
     FOS\UserBundle\FOSUserBundle::class => ['all' => true],
     DataDog\AuditBundle\DataDogAuditBundle::class => ['all' => true],
-    AuditBundle\AuditBundle::class => ['all' => true],
     DataDog\PagerBundle\DataDogPagerBundle::class => ['all' => true],
 ];

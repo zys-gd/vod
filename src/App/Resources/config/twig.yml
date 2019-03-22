@@ -52,3 +52,12 @@ services:
             - '@ExtrasBundle\Utils\LocalExtractor'
         tags:
             - { name: twig.extension }
+
+    App\Twig\AuditExtension:
+        tags:
+            - { name: twig.extension }
+
+    twig.extension.date:
+        class: Twig_Extensions_Extension_Date
+        tags:
+            - { name: twig.extension }

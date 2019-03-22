@@ -9,12 +9,15 @@
 namespace App\Twig;
 
 
-class StringEncodingExtension extends \Twig_Extension
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
+
+class StringEncodingExtension extends AbstractExtension
 {
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('html2string', [$this, 'html2string'])
+            new TwigFunction('html2string', [$this, 'html2string'])
         ];
     }
 
