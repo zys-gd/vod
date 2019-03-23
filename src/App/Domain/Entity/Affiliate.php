@@ -5,11 +5,12 @@ namespace App\Domain\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
+use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 
 /**
  * Affiliate
  */
-class Affiliate implements HasUuid
+class Affiliate implements HasUuid, AffiliateInterface
 {
     /**
      * Affiliate types
@@ -104,7 +105,7 @@ class Affiliate implements HasUuid
      */
     public function __toString()
     {
-        return $this->getName();
+        return $this->name ?? '';
     }
 
     /**
@@ -140,11 +141,11 @@ class Affiliate implements HasUuid
     /**
      * Get name
      *
-     * @return string
+     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
-        return $this->name ?? '';
+        return $this->name;
     }
 
     /**
@@ -356,9 +357,9 @@ class Affiliate implements HasUuid
     /**
      * Get subPriceName
      *
-     * @return bool
+     * @return string
      */
-    public function getSubPriceName()
+    public function getSubPriceName(): ?string
     {
         return $this->subPriceName;
     }

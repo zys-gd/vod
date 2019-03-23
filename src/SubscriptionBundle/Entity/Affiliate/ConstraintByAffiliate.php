@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Domain\Entity;
+namespace SubscriptionBundle\Entity\Affiliate;
+
+use IdentificationBundle\Entity\CarrierInterface;
 
 /**
  * Campaign
@@ -19,12 +21,12 @@ class ConstraintByAffiliate
     private $uuid;
 
     /**
-     * @var Affiliate
+     * @var AffiliateInterface
      */
     private $affiliate;
 
     /**
-     * @var Carrier
+     * @var CarrierInterface
      */
     private $carrier;
 
@@ -90,11 +92,11 @@ class ConstraintByAffiliate
     }
 
     /**
-     * @param Affiliate $affiliate
+     * @param AffiliateInterface $affiliate
      *
      * @return ConstraintByAffiliate
      */
-    public function setAffiliate(Affiliate $affiliate): self
+    public function setAffiliate(AffiliateInterface $affiliate): self
     {
         $this->affiliate = $affiliate;
 
@@ -102,19 +104,19 @@ class ConstraintByAffiliate
     }
 
     /**
-     * @return Affiliate|null
+     * @return AffiliateInterface|null
      */
-    public function getAffiliate(): ?Affiliate
+    public function getAffiliate(): ?AffiliateInterface
     {
         return $this->affiliate;
     }
 
     /**
-     * @param Carrier $carrier
+     * @param CarrierInterface $carrier
      *
      * @return ConstraintByAffiliate
      */
-    public function setCarrier(Carrier $carrier): self
+    public function setCarrier(CarrierInterface $carrier): self
     {
         $this->carrier = $carrier;
 
@@ -122,9 +124,9 @@ class ConstraintByAffiliate
     }
 
     /**
-     * @return Carrier|null
+     * @return CarrierInterface|null
      */
-    public function getCarrier(): ?Carrier
+    public function getCarrier(): ?CarrierInterface
     {
         return $this->carrier;
     }

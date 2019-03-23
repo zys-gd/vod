@@ -1,7 +1,7 @@
-App\Domain\Entity\ConstraintByAffiliate:
+SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate:
     type: entity
     table: constraints_by_affiliate
-    repositoryClass: App\Domain\Repository\ConstraintByAffiliateRepository
+    repositoryClass: SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository
 
     id:
         uuid:

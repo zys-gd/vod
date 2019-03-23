@@ -57,8 +57,3 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - App\Domain\Entity\Affiliate
-
-    App\Domain\Repository\ConstraintByAffiliateRepository:
-        factory: ['@doctrine.orm.default_entity_manager', getRepository]
-        arguments:
-            - App\Domain\Entity\ConstraintByAffiliate
