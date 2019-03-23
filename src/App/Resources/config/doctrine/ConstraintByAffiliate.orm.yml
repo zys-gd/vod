@@ -1,0 +1,47 @@
+App\Domain\Entity\ConstraintByAffiliate:
+    type: entity
+    table: constraints_by_affiliate
+    repositoryClass: App\Domain\Repository\ConstraintByAffiliateRepository
+
+    id:
+        uuid:
+            type: guid
+
+    fields:
+        numberOfActions:
+            type: integer
+            nullable: true
+            options:
+                default: null
+        redirectUrl:
+            type: string
+            nullable: true
+            options:
+                default: null
+        counter:
+            type: integer
+            options:
+                default: 0
+        flushDate:
+            type: date
+            nullable: true
+            options:
+                default: null
+        isCapAlertDispatch:
+            type: boolean
+            nullable: false
+            options:
+                default: false
+        capType:
+            type: string
+            nullable: false
+
+    manyToOne:
+        affiliate:
+            targetEntity: App\Domain\Entity\Affiliate
+            joinColumn:
+                referencedColumnName: uuid
+        carrier:
+            targetEntity: App\Domain\Entity\Carrier
+            joinColumn:
+                referencedColumnName: uuid

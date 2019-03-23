@@ -42,6 +42,11 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: affiliate_management, label: Campaign }
 
+    App\Admin\Sonata\ConstraintsByAffiliateAdmin:
+        arguments: [~, App\Domain\Entity\ConstraintByAffiliate, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: affiliate_management, label: Constraints by affiliate }
+
     App\Admin\Sonata\CarrierAdmin:
         arguments: [~, App\Domain\Entity\Carrier, ~]
         tags:
