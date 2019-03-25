@@ -16,7 +16,8 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
 use PiwikBundle\Service\NewTracker;
 use Psr\Log\LoggerInterface;
-use SubscriptionBundle\BillingFramework\Notification\API\RequestSender;
+use SubscriptionBundle\BillingFramework\Notification\API\RequestSender as NotificationService;
+use SubscriptionBundle\BillingFramework\Process\API\RequestSender;
 use SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider;
 use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -48,6 +49,8 @@ class SubscribeActionTest extends AbstractFunctionalTest
      * @var SubscriptionStatisticSender|MockInterface
      */
     private $piwikStatisticSender;
+    /** @var  RequestSender|MockInterface */
+    private $requestSender;
 
     public function testSubscribeWithoutIdentWillFallIntoError()
     {
@@ -62,12 +65,7 @@ class SubscribeActionTest extends AbstractFunctionalTest
     //     $client = $this->makeClient();
     //
     //     $this->session->set('identification_token', 'token_for_user_without_subscription');
-    //     $this->httpClient->allows([
-    //         'request' => TestBillingResponseProvider::createSuccessfulRedirectResponse('renew', 'billing_redirect_url')
-    //     ]);
     //
-    //
-    //     // Set session data
     //     $this->session->set('identification_data', ['identification_token' => 'token_for_user_without_subscription']);
     //
     //     $ispDetectionData = [
@@ -75,6 +73,10 @@ class SubscribeActionTest extends AbstractFunctionalTest
     //         'carrier_id' => 338,
     //     ];
     //     $this->session->set('isp_detection_data', $ispDetectionData);
+    //
+    //     $this->httpClient->allows([
+    //         'request' => TestBillingResponseProvider::createSuccessfulRedirectResponse('renew', 'billing_redirect_url')
+    //     ]);
     //
     //     $client->request('GET', 'subscribe');
     //     $this->assertStatusCode(302, $client);
@@ -123,6 +125,7 @@ class SubscribeActionTest extends AbstractFunctionalTest
      {
          $container->set('SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider', $this->subscriptionPackDataProvider);
          $container->set('SubscriptionBundle\BillingFramework\Notification\API\RequestSender', $this->notificationService);
+         $container->set('SubscriptionBundle\BillingFramework\Process\API\RequestSender', $this->requestSender);
          $container->set('talentica.piwic_statistic_sender', $this->piwikStatisticSender);
 
      }
@@ -139,7 +142,8 @@ class SubscribeActionTest extends AbstractFunctionalTest
 
         $this->httpClient                   = \Mockery::spy(Client::class);
         $this->subscriptionPackDataProvider = \Mockery::spy(SubscriptionPackDataProvider::class);
-        $this->notificationService          = \Mockery::spy(RequestSender::class);
+        $this->notificationService          = \Mockery::spy(NotificationService::class);
+        $this->requestSender          = \Mockery::spy(RequestSender::class);
 
         $this->piwikStatisticSender = Mockery::spy(SubscriptionStatisticSender::class, [
             Mockery::spy(LoggerInterface::class),
