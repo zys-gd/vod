@@ -14,6 +14,7 @@ use App\Domain\Repository\CampaignRepository;
 use App\Domain\Service\ContentStatisticSender;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
+use SubscriptionBundle\Service\ConstraintByAffiliateService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,23 +35,30 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var string
      */
     private $imageBaseUrl;
+    /**
+     * @var ConstraintByAffiliateService
+     */
+    private $constraintByAffiliateService;
 
     /**
      * LPController constructor.
      *
-     * @param ContentStatisticSender $contentStatisticSender
-     * @param CampaignRepository     $campaignRepository
-     * @param string                 $imageBaseUrl
+     * @param ContentStatisticSender       $contentStatisticSender
+     * @param CampaignRepository           $campaignRepository
+     * @param ConstraintByAffiliateService $constraintByAffiliateService
+     * @param string                       $imageBaseUrl
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
         CampaignRepository $campaignRepository,
+        ConstraintByAffiliateService $constraintByAffiliateService,
         string $imageBaseUrl
     )
     {
-        $this->contentStatisticSender = $contentStatisticSender;
-        $this->campaignRepository     = $campaignRepository;
-        $this->imageBaseUrl           = $imageBaseUrl;
+        $this->contentStatisticSender       = $contentStatisticSender;
+        $this->campaignRepository           = $campaignRepository;
+        $this->constraintByAffiliateService = $constraintByAffiliateService;
+        $this->imageBaseUrl                 = $imageBaseUrl;
     }
 
 
@@ -61,7 +69,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param Request $request
      *
      * @return Response
-     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function landingPageAction(Request $request)
     {
@@ -73,15 +80,26 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             // Useless method atm.
             AffiliateVisitSaver::saveCampaignId($cid, $session);
 
+            $campaign = $this->campaignRepository->findOneBy(['campaignToken' => $cid]);
+
             /** @var Campaign $campaign */
-            if ($campaign = $this->campaignRepository->findOneBy(['campaignToken' => $cid])) {
+            if ($campaign) {
+                $constraintsCheckResult = $this->constraintByAffiliateService->handleLandingPageRequest($campaign);
+
+                if ($constraintsCheckResult) {
+                    return $constraintsCheckResult;
+                }
+
                 $campaignBanner = $this->imageBaseUrl . '/' . $campaign->getImagePath();
                 $background     = $campaign->getBgColor();
+
+                $this->constraintByAffiliateService->updateVisitCounter($campaign->getAffiliate());
             }
         };
 
         AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
         $this->contentStatisticSender->trackVisit();
+
         return $this->render('@App/Common/landing.html.twig', [
             'campaignBanner' => $campaignBanner,
             'background'     => $background

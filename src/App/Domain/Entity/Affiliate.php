@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
+use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 
 /**
  * Affiliate
@@ -89,6 +90,11 @@ class Affiliate implements HasUuid, AffiliateInterface
     private $campaigns;
 
     /**
+     * @var Collection
+     */
+    private $constraints;
+
+    /**
      * Affiliate constructor.
      * @param string $uuid
      */
@@ -98,6 +104,7 @@ class Affiliate implements HasUuid, AffiliateInterface
         $this->constants  = new ArrayCollection();
         $this->parameters = new ArrayCollection();
         $this->campaigns = new ArrayCollection();
+        $this->constraints = new ArrayCollection();
     }
 
     /**
@@ -221,11 +228,9 @@ class Affiliate implements HasUuid, AffiliateInterface
     }
 
     /**
-     * Get id
-     *
-     * @return int
+     * @return string|null
      */
-    public function getPostbackUrl()
+    public function getPostbackUrl(): ?string
     {
         return $this->postbackUrl;
     }
@@ -233,11 +238,11 @@ class Affiliate implements HasUuid, AffiliateInterface
     /**
      * Set name
      *
-     * @param string $postbackUrl
+     * @param string|null $postbackUrl
      *
      * @return Affiliate
      */
-    public function setPostbackUrl($postbackUrl)
+    public function setPostbackUrl($postbackUrl): ?string
     {
         $this->postbackUrl = $postbackUrl;
 
@@ -364,30 +369,44 @@ class Affiliate implements HasUuid, AffiliateInterface
         return $this->subPriceName;
     }
 
+    /**
+     * @return array
+     */
     public function getParamsList(): array
     {
         $list = [];
+
         if (isset($this->parameters) && !empty($this->parameters)) {
             foreach ($this->parameters as $parameter) {
                 $list[$parameter->getOutputName()] = $parameter->getInputName();
             }
         }
+
         return $list;
     }
 
-    public function getInputParamsList()
+    /**
+     * @return array
+     */
+    public function getInputParamsList(): array
     {
         $paramsList  = $this->getParamsList();
         $inputParams = [];
+
         foreach ($paramsList as $value) {
             $inputParams[] = $value;
         }
+
         return $inputParams;
     }
 
+    /**
+     * @return array
+     */
     public function getConstantsList(): array
     {
         $list = [];
+
         if (isset($this->constants) && !empty($this->constants)) {
             foreach ($this->constants as $parameter) {
                 $list[$parameter->getName()] = $parameter->getValue();
@@ -541,5 +560,39 @@ class Affiliate implements HasUuid, AffiliateInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getConstraints(): Collection
+    {
+        return $this->constraints;
+    }
+
+    /**
+     * @param Collection $constraints
+     *
+     * @return Affiliate
+     */
+    public function setConstraints(Collection $constraints):self
+    {
+        $this->constraints = $constraints;
+
+        return $this;
+    }
+
+    /**
+     * @param string $capType
+     *
+     * @return ConstraintByAffiliate|null
+     */
+    public function getConstraint(string $capType): ?ConstraintByAffiliate
+    {
+        $filteredByType = $this->constraints->filter(function (ConstraintByAffiliate $constraint) use ($capType) {
+            return $constraint->getCapType() === $capType;
+        });
+
+        return $filteredByType->first() ?? null;
     }
 }

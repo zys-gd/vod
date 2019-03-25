@@ -41,11 +41,6 @@ class ConstraintByAffiliate
     private $redirectUrl;
 
     /**
-     * @var integer
-     */
-    private $counter = 0;
-
-    /**
      * @var \DateTime
      */
     private $flushDate;
@@ -189,26 +184,6 @@ class ConstraintByAffiliate
     public function getRedirectUrl(): ?string
     {
         return $this->redirectUrl;
-    }
-
-    /**
-     * @param int $counter
-     *
-     * @return ConstraintByAffiliate
-     */
-    public function setCounter(int $counter): self
-    {
-        $this->counter = $counter;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getCounter(): int
-    {
-        return $this->counter;
     }
 
     /**

@@ -24,6 +24,7 @@ use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use SubscriptionBundle\Service\Action\Common\FakeResponseProvider;
 use SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
+use SubscriptionBundle\Service\ConstraintByAffiliateService;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\Notification\Notifier;
 use SubscriptionBundle\Service\SubscriptionCreator;
@@ -71,20 +72,22 @@ class Subscriber
      * @var SubscribeParametersProvider
      */
     private $subscribeParametersProvider;
+    private $constraintByAffiliateService;
 
 
     /**
      * Subscriber constructor.
-     * @param LoggerInterface             $logger
-     * @param EntitySaveHelper            $entitySaveHelper
-     * @param SessionInterface            $session
-     * @param SubscriptionCreator         $subscriptionCreator
-     * @param PromotionalResponseChecker  $promotionalResponseChecker
-     * @param FakeResponseProvider        $fakeResponseProvider
-     * @param Notifier                    $notifier
-     * @param SubscribeProcess            $subscribeProcess
-     * @param OnSubscribeUpdater          $onSubscribeUpdater
-     * @param SubscribeParametersProvider $subscribeParametersProvider
+     * @param LoggerInterface              $logger
+     * @param EntitySaveHelper             $entitySaveHelper
+     * @param SessionInterface             $session
+     * @param SubscriptionCreator          $subscriptionCreator
+     * @param PromotionalResponseChecker   $promotionalResponseChecker
+     * @param FakeResponseProvider         $fakeResponseProvider
+     * @param Notifier                     $notifier
+     * @param SubscribeProcess             $subscribeProcess
+     * @param OnSubscribeUpdater           $onSubscribeUpdater
+     * @param SubscribeParametersProvider  $subscribeParametersProvider
+     * @param ConstraintByAffiliateService $constraintByAffiliateService
      */
     public function __construct(
         LoggerInterface $logger,
@@ -96,19 +99,21 @@ class Subscriber
         Notifier $notifier,
         SubscribeProcess $subscribeProcess,
         OnSubscribeUpdater $onSubscribeUpdater,
-        SubscribeParametersProvider $subscribeParametersProvider
+        SubscribeParametersProvider $subscribeParametersProvider,
+        ConstraintByAffiliateService $constraintByAffiliateService
     )
     {
-        $this->logger                      = $logger;
-        $this->entitySaveHelper            = $entitySaveHelper;
-        $this->session                     = $session;
-        $this->subscriptionCreator         = $subscriptionCreator;
-        $this->promotionalResponseChecker  = $promotionalResponseChecker;
-        $this->fakeResponseProvider        = $fakeResponseProvider;
-        $this->notifier                    = $notifier;
-        $this->subscribeProcess            = $subscribeProcess;
-        $this->onSubscribeUpdater          = $onSubscribeUpdater;
-        $this->subscribeParametersProvider = $subscribeParametersProvider;
+        $this->logger                       = $logger;
+        $this->entitySaveHelper             = $entitySaveHelper;
+        $this->session                      = $session;
+        $this->subscriptionCreator          = $subscriptionCreator;
+        $this->promotionalResponseChecker   = $promotionalResponseChecker;
+        $this->fakeResponseProvider         = $fakeResponseProvider;
+        $this->notifier                     = $notifier;
+        $this->subscribeProcess             = $subscribeProcess;
+        $this->onSubscribeUpdater           = $onSubscribeUpdater;
+        $this->subscribeParametersProvider  = $subscribeParametersProvider;
+        $this->constraintByAffiliateService = $constraintByAffiliateService;
     }
 
     /**
@@ -136,6 +141,11 @@ class Subscriber
 
         try {
             $response = $this->performSubscribe($additionalData, $subscription);
+
+            if ($response->isSuccessful() && $response->isFinal()) {
+                $this->constraintByAffiliateService->updateSubscribeCounter($subscription);
+            }
+
             return [$subscription, $response];
 
         } catch (SubscribingProcessException $exception) {

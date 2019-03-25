@@ -18,10 +18,6 @@ SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate:
             nullable: true
             options:
                 default: null
-        counter:
-            type: integer
-            options:
-                default: 0
         flushDate:
             type: date
             nullable: true

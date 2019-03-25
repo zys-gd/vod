@@ -86,6 +86,11 @@ services:
     SubscriptionBundle\Service\BlackListService:
         autowire: true
 
+    SubscriptionBundle\Service\ConstraintByAffiliateService:
+        arguments:
+            - '@app.cache.redis.constraint_by_affiliate'
+            - '@App\Domain\Repository\CampaignRepository'
+
 parameters:
     subscription.subscription.class: SubscriptionBundle\Entity\SubscriptionPack
     guzzle.client.class: GuzzleHttp\Client

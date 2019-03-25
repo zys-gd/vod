@@ -30,6 +30,7 @@ services:
         arguments:
             - '@App\Domain\Service\ContentStatisticSender'
             - '@App\Domain\Repository\CampaignRepository'
+            - '@SubscriptionBundle\Service\ConstraintByAffiliateService'
             - '%images_base_url%'
 
     App\Controller\ErrorController:
