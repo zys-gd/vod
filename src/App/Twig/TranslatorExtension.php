@@ -17,8 +17,10 @@ use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class TranslatorExtension extends \Twig_Extension
+class TranslatorExtension extends AbstractExtension
 {
     /**
      * @var Translator
@@ -73,8 +75,8 @@ class TranslatorExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('translate', [$this, 'translate']),
-            new \Twig_SimpleFunction('translateWithoutReplace', [$this, 'translateWithoutReplace'])
+            new TwigFunction('translate', [$this, 'translate']),
+            new TwigFunction('translateWithoutReplace', [$this, 'translateWithoutReplace'])
         ];
     }
 

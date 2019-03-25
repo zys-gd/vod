@@ -1,15 +1,18 @@
 <?php
 
-namespace AuditBundle\Controller;
+namespace App\Admin\Controller;
 
 use App\Domain\Entity\Admin;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\QueryBuilder;
-use DataDog\PagerBundle\Pagination;
 use DataDog\AuditBundle\Entity\AuditLog;
+use DataDog\PagerBundle\Pagination;
+use Doctrine\ORM\QueryBuilder;
+use Sonata\AdminBundle\Admin\Pool;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
-class AuditController extends Controller
+
+class AuditController extends AbstractController
 {
     use DoctrineControllerTrait;
 
@@ -50,6 +53,12 @@ class AuditController extends Controller
         }
     }
 
+    /**
+     * @Route("/", name="audit")
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function indexAction(Request $request)
     {
         if (!$this->isGranted('ROLE_SUPER_ADMIN')) {
@@ -105,10 +114,11 @@ class AuditController extends Controller
             'users' => $users
         );
 
-        return $this->render('@Audit/Audit/index.html.twig', $parameters);
+        return $this->render('@Admin/Audit/index.html.twig', $parameters);
     }
 
     /**
+     * @Route("/diff/{id}", name="audit_diff")
      * @param AuditLog $log
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -120,7 +130,7 @@ class AuditController extends Controller
             'diff' => json_decode($log->getDiff(), true)
         ];
 
-        return $this->render('@Audit/Audit/diff.html.twig', $parameters);
+        return $this->render('@Admin/Audit/diff.html.twig', $parameters);
     }
 
     private function removeEmptyBlames()
