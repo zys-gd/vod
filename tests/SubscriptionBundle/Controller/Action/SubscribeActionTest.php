@@ -49,14 +49,14 @@ class SubscribeActionTest extends AbstractFunctionalTest
      */
     private $piwikStatisticSender;
 
-    // public function testSubscribeWithoutIdentWillRedirectToSbna()
-    // {
-    //     $client = $this->makeClient();
-    //     $client->request('GET', 'subscribe?f=1');
-    //
-    //     $this->assertTrue($client->getResponse()->isRedirect('/sbna'), 'redirect is missing');
-    // }
-    //
+    public function testSubscribeWithoutIdentWillFallIntoError()
+    {
+        $client = $this->makeClient();
+        $client->request('GET', 'subscribe?f=1');
+
+        $this->assertEquals(400, $client->getResponse()->getStatusCode(), 'error is missing');
+    }
+
     // public function testSubscribeActionWithRedirect()
     // {
     //     $client = $this->makeClient();
@@ -66,57 +66,66 @@ class SubscribeActionTest extends AbstractFunctionalTest
     //         'request' => TestBillingResponseProvider::createSuccessfulRedirectResponse('renew', 'billing_redirect_url')
     //     ]);
     //
-    //     $client->request('GET', 'subscribe?f=1');
     //
     //     // Set session data
+    //     $this->session->set('identification_data', ['identification_token' => 'token_for_user_without_subscription']);
+    //
     //     $ispDetectionData = [
-    //         'isp_name'   => $carrier->getName(),
-    //         'carrier_id' => $carrier->getBillingCarrierId(),
+    //         'isp_name'   => 'Jazz PK',
+    //         'carrier_id' => 338,
     //     ];
     //     $this->session->set('isp_detection_data', $ispDetectionData);
     //
-    //     $this->session->set('identification_data', ['identification_token' => $identificationRequestToken]);
-    //
+    //     $client->request('GET', 'subscribe');
     //     $this->assertStatusCode(302, $client);
     //     $this->assertTrue($client->getResponse()->isRedirect('billing_redirect_url'), 'redirect is missing');
     //
     // }
-    //
-    // public function testUserIsRedirectedOnNotAllowedResub()
-    // {
-    //     $client = $this->makeClient();
-    //
-    //     $this->session->set('identification_token', 'inactive_subscription_ident_request');
-    //
-    //     $client->request('GET', 'subscribe');
-    //
-    //     $this->assertTrue($client->getResponse()->isRedirect('/rsna'), 'redirect is missing');
-    //
-    // }
-    //
-    // public function testResubIsAllowedForOnHoldSubscription()
-    // {
-    //     $client = $this->makeClient();
-    //
-    //     $this->session->set('identification_token', 'onhold_subscription_ident_request');
-    //     $this->httpClient->allows([
-    //         'request' => TestBillingResponseProvider::createSuccessfulFinalResponse('subscribe')
-    //     ]);
-    //
-    //     $client->request('GET', 'subscribe');
-    //
-    //     $this->assertTrue($client->getResponse()->isRedirect('/'), 'redirect is missing');
-    // }
-    //
-    //
-    // protected function configureWebClientClientContainer(ContainerInterface $container)
-    // {
-    //     // $container->set('subscription.http.client', $this->httpClient);
-    //     $container->set('talentica.billing_framework_subscription_data_provider', $this->subscriptionPackDataProvider);
-    //     $container->set('talentica.notification.service', $this->notificationService);
-    //     $container->set('talentica.piwic_statistic_sender', $this->piwikStatisticSender);
-    //
-    // }
+
+    public function testUserIsRedirectedOnNotAllowedResub()
+    {
+        $client = $this->makeClient();
+
+        $this->session->set('identification_data', ['identification_token' => 'inactive_subscription_ident_request']);
+
+        $ispDetectionData = [
+            'isp_name'   => 'Jazz PK',
+            'carrier_id' => 338,
+        ];
+        $this->session->set('isp_detection_data', $ispDetectionData);
+
+        $client->request('GET', 'subscribe');
+
+        $this->assertTrue($client->getResponse()->isRedirect('/rsna'), 'redirect is missing');
+
+    }
+
+    public function testResubIsAllowedForNotFullyPaidSubscription()
+    {
+        $client = $this->makeClient();
+
+        $this->session->set('identification_data', ['identification_token' => 'onhold_subscription_ident_request']);
+        $ispDetectionData = [
+            'isp_name'   => 'Jazz PK',
+            'carrier_id' => 338,
+        ];
+        $this->session->set('isp_detection_data', $ispDetectionData);
+        $this->httpClient->allows([
+            'request' => TestBillingResponseProvider::createSuccessfulFinalResponse('subscribe')
+        ]);
+
+        $client->request('GET', 'subscribe');
+
+        $this->assertTrue($client->getResponse()->isRedirect('/'), 'redirect is missing');
+    }
+
+     protected function configureWebClientClientContainer(ContainerInterface $container)
+     {
+         $container->set('SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider', $this->subscriptionPackDataProvider);
+         $container->set('SubscriptionBundle\BillingFramework\Notification\API\RequestSender', $this->notificationService);
+         $container->set('talentica.piwic_statistic_sender', $this->piwikStatisticSender);
+
+     }
 
     protected function getFixturesListLoadedForEachTest(): array
     {
