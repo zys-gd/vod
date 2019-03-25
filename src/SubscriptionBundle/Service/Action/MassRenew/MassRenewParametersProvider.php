@@ -49,7 +49,7 @@ class MassRenewParametersProvider
 
         $params->listener = sprintf('http://%s%s', $this->host, $this->router->generate('subscription.listen'));
 
-        $params->client = 'store';
+        $params->client = 'vod-store';
 
 
         /** @var Subscription $subscription */
