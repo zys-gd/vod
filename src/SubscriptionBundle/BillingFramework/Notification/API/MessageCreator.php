@@ -10,8 +10,8 @@ namespace SubscriptionBundle\BillingFramework\Notification\API;
 
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Routing\RouterInterface;
 use SubscriptionBundle\BillingFramework\Notification\API\DTO\NotificationMessage;
+use Symfony\Component\Routing\RouterInterface;
 
 class MessageCreator
 {
@@ -42,6 +42,7 @@ class MessageCreator
     {
 
         $notificationMessage = new NotificationMessage();
+        $notificationMessage->setClient('vod-store');
         $notificationMessage->setType($type);
         $notificationMessage->setBody($body);
         $notificationMessage->setPhone($identifier);

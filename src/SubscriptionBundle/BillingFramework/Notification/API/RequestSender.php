@@ -57,6 +57,7 @@ class RequestSender
     private function extractNotificationData(NotificationMessage $notificationMessage): array
     {
         return [
+            'client'         => $notificationMessage->getClient(),
             'type'           => $notificationMessage->getType(),
             'body'           => $notificationMessage->getBody(),
             'msisdn'         => $notificationMessage->getPhone(),
