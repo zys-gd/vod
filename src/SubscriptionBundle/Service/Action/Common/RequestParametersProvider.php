@@ -68,7 +68,7 @@ class RequestParametersProvider
 
         $process               = new ProcessRequestParameters();
         $process->listener     = $this->router->generate('subscription.listen', [], UrlGeneratorInterface::ABSOLUTE_URL);
-        $process->client       = 'store';
+        $process->client       = 'vod-store';
         $process->listenerWait = $this->router->generate('subscription.wait_listen', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
         // Not sure if its acceptable to have Request parsing here.

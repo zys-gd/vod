@@ -57,7 +57,7 @@ class RequestParametersProvider
 
         $parameters               = new ProcessRequestParameters();
         $parameters->listener     = $this->router->generate('identify_callback', [], UrlGeneratorInterface::ABSOLUTE_URL);
-        $parameters->client       = 'store';
+        $parameters->client       = 'vod-store';
         $parameters->listenerWait = $this->router->generate('identify_callback', [], UrlGeneratorInterface::ABSOLUTE_URL);
         $parameters->clientId     = $identificationToken;
         $parameters->carrier      = $carrierId;
