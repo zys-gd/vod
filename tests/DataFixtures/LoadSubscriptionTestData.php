@@ -225,7 +225,7 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
 
         $manager->persist($user);
 
-        $subscription = TestEntityProvider::createSubscription($user, $randomSubscriptionPack, Subscription::IS_ON_HOLD, Subscription::ACTION_SUBSCRIBE);
+        $subscription = TestEntityProvider::createSubscription($user, $randomSubscriptionPack, Subscription::IS_ON_HOLD, Subscription::ACTION_SUBSCRIBE, 'not_enough_credit');
         $manager->persist($subscription);
 
         $this->addReference('onhold_subscription', $subscription);
