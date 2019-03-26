@@ -12,9 +12,9 @@ namespace App\Controller;
 use App\Domain\Entity\Campaign;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Service\ContentStatisticSender;
+use App\Domain\Service\VisitConstraintByAffiliate;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
-use SubscriptionBundle\Service\ConstraintByAffiliateService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,28 +36,28 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      */
     private $imageBaseUrl;
     /**
-     * @var ConstraintByAffiliateService
+     * @var VisitConstraintByAffiliate
      */
-    private $constraintByAffiliateService;
+    private $visitConstraintByAffiliate;
 
     /**
      * LPController constructor.
      *
-     * @param ContentStatisticSender       $contentStatisticSender
-     * @param CampaignRepository           $campaignRepository
-     * @param ConstraintByAffiliateService $constraintByAffiliateService
-     * @param string                       $imageBaseUrl
+     * @param ContentStatisticSender $contentStatisticSender
+     * @param CampaignRepository $campaignRepository
+     * @param VisitConstraintByAffiliate $visitConstraintByAffiliate
+     * @param string $imageBaseUrl
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
         CampaignRepository $campaignRepository,
-        ConstraintByAffiliateService $constraintByAffiliateService,
+        VisitConstraintByAffiliate $visitConstraintByAffiliate,
         string $imageBaseUrl
     )
     {
         $this->contentStatisticSender       = $contentStatisticSender;
         $this->campaignRepository           = $campaignRepository;
-        $this->constraintByAffiliateService = $constraintByAffiliateService;
+        $this->visitConstraintByAffiliate   = $visitConstraintByAffiliate;
         $this->imageBaseUrl                 = $imageBaseUrl;
     }
 
@@ -69,10 +69,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param Request $request
      *
      * @return Response
-     *
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
      */
     public function landingPageAction(Request $request)
     {
@@ -88,7 +84,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
             /** @var Campaign $campaign */
             if ($campaign) {
-                $constraintsCheckResult = $this->constraintByAffiliateService->handleLandingPageRequest($campaign);
+                $constraintsCheckResult = $this->visitConstraintByAffiliate->handleLandingPageRequest($campaign);
 
                 if ($constraintsCheckResult) {
                     return $constraintsCheckResult;

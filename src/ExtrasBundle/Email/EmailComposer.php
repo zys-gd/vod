@@ -1,15 +1,12 @@
 <?php
 
-namespace App\Domain\Service\Email;
+namespace ExtrasBundle\Email;
 
 /**
  * Class EmailComposer
  */
 class EmailComposer
 {
-    const SUPPORT_FROM = 'support.form@origin-data.com';
-    const SUPPORT_TO   = 'denis.lukash@origin-data.com';
-
     /**
      * @var \Twig_Environment
      */
@@ -29,19 +26,23 @@ class EmailComposer
      * @param string $twigPath
      * @param array $data
      *
+     * @param string $from
+     * @param string $to
+     *
      * @return \Swift_Message
      *
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function getContactUsMessage(string $twigPath, array $data): \Swift_Message
+    public function compose(string $twigPath, array $data, string $from, string $to): \Swift_Message
     {
         $body = $this->twig->render($twigPath, $data);
 
         $message = new \Swift_Message('Contact us form notification');
-        $message->setFrom(self::SUPPORT_FROM)
-            ->setTo(self::SUPPORT_TO)
+        $message
+            ->setFrom($from)
+            ->setTo($to)
             ->setBody($body)
             ->setContentType('text/html');
 

@@ -86,14 +86,15 @@ services:
     SubscriptionBundle\Service\BlackListService:
         autowire: true
 
-    SubscriptionBundle\Service\ConstraintByAffiliateService:
+    SubscriptionBundle\Service\Notification\Email\CAPNotificationSender:
+        arguments:
+            - '@ExtrasBundle\Email\EmailSender'
+            - '%cap_notification_mail_to%'
+            - '%cap_notification_mail_from%'
+
+    SubscriptionBundle\Service\AffiliateConstraint\ConstraintByAffiliateCache:
         arguments:
             - '@app.cache.redis.constraint_by_affiliate'
-            - '@App\Domain\Repository\CampaignRepository'
-            - '@App\Domain\Repository\CarrierRepository'
-            - '@session'
-            - '@service_container'
-            - '@twig'
 
 parameters:
     subscription.subscription.class: SubscriptionBundle\Entity\SubscriptionPack

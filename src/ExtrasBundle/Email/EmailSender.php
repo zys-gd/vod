@@ -15,20 +15,37 @@ class EmailSender
     private $mailer;
 
     /**
+     * @var EmailComposer
+     */
+    private $emailComposer;
+
+    /**
      * ContactUsMessageSender constructor.
      *
      * @param \Swift_Mailer $mailer
      */
-    public function __construct(Swift_Mailer $mailer)
+    public function __construct(Swift_Mailer $mailer, EmailComposer $emailComposer)
     {
         $this->mailer = $mailer;
+        $this->emailComposer = $emailComposer;
     }
 
     /**
-     * @param \Swift_Message $message
+     * @param string $twigPath
+     * @param array $data
+     * @param string $from
+     * @param string $to
+     *
+     * @return int
+     *
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
-    public function sendMessage(\Swift_Message $message): void
+    public function sendMessage(string $twigPath, array $data, string $from, string $to): int
     {
-        $this->mailer->send($message);
+        $message = $this->emailComposer->compose($twigPath, $data, $from, $to);
+
+        return $this->mailer->send($message);
     }
 }
