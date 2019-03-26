@@ -10,3 +10,7 @@ services:
   ExtrasBundle\Utils\LocalExtractor:
       arguments:
           - '@request_stack'
+
+  ExtrasBundle\Email\EmailSender:
+      arguments:
+          - '@swiftmailer.mailer'

@@ -76,13 +76,9 @@ services:
 
     App\Domain\Service\FaqProviderService: ~
 
-    App\Domain\Service\Forms\MessageSender:
+    App\Domain\Service\Email\EmailComposer:
         arguments:
-            - '@App\Domain\Service\Email\EmailComposer'
             - '@twig'
-            - '@swiftmailer.mailer'
-
-    App\Domain\Service\Email\EmailComposer: ~
 
     App\Domain\Service\Games\GameSerializer: ~
 
