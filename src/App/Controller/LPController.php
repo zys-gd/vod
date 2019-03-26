@@ -69,6 +69,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param Request $request
      *
      * @return Response
+     *
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
     public function landingPageAction(Request $request)
     {
@@ -92,8 +96,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
                 $campaignBanner = $this->imageBaseUrl . '/' . $campaign->getImagePath();
                 $background     = $campaign->getBgColor();
-
-                $this->constraintByAffiliateService->updateVisitCounter($campaign->getAffiliate());
             }
         };
 
