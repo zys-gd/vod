@@ -15,3 +15,4 @@ services:
       - '@annotations.reader'
       - '@IdentificationBundle\Identification\Service\CarrierSelector'
       - '@IdentificationBundle\Identification\Service\DeviceDataProvider'
+      - '@logger'
