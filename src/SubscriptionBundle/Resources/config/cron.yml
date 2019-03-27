@@ -1,54 +1,61 @@
 services:
+    SubscriptionBundle\Command\MassRenewCommand:
+        arguments:
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+            - '@cron.task'
+            - '@SubscriptionBundle\Service\Action\Renew\Handler\RenewHandlerProvider'
+            - '@SubscriptionBundle\Service\Action\Renew\Common\CommonFlowHandler'
+        tags:
+            - { name: console.command }
 
-  SubscriptionBundle\Command\MassRenewCommand:
-    arguments:
-      - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
-      - '@cron.task'
-      - '@SubscriptionBundle\Service\Action\Renew\Handler\RenewHandlerProvider'
-      - '@SubscriptionBundle\Service\Action\Renew\Common\CommonFlowHandler'
-    tags:
-      - { name: console.command }
+    SubscriptionBundle\Command\IncomingRenewNotificationCommand:
+        arguments: ['@IdentificationBundle\Repository\CarrierRepositoryInterface', '@SubscriptionBundle\Service\Cron\RenewAlerter']
+        tags:
+            - { name: console.command }
 
-  SubscriptionBundle\Command\IncomingRenewNotificationCommand:
-    arguments: ['@IdentificationBundle\Repository\CarrierRepositoryInterface', '@SubscriptionBundle\Service\Cron\RenewAlerter']
-    tags:
-      - { name: console.command }
+    #subscription.commands.general_renew:
+    #  class: SubscriptionBundle\Command\GeneralRenewCommand
+    #  arguments: ['@subscription.cron_running_history.repository', '@doctrine.orm.entity_manager']
+    #  tags:
+    #    - { name: console.command }
 
-  #subscription.commands.general_renew:
-  #  class: SubscriptionBundle\Command\GeneralRenewCommand
-  #  arguments: ['@subscription.cron_running_history.repository', '@doctrine.orm.entity_manager']
-  #  tags:
-  #    - { name: console.command }
+    #subscription.commands.renew:
+    #  class: SubscriptionBundle\Command\RenewCommand
+    #  arguments:
+    #    - '@doctrine.orm.entity_manager'
+    #    - '@logger'
+    #    - '@SubscriptionBundle\Repository\SubscriptionRepository'
+    #    - '@enqueue.client.producer'
+    #  tags:
+    #    - { name: console.command }
 
-  #subscription.commands.renew:
-  #  class: SubscriptionBundle\Command\RenewCommand
-  #  arguments:
-  #    - '@doctrine.orm.entity_manager'
-  #    - '@logger'
-  #    - '@SubscriptionBundle\Repository\SubscriptionRepository'
-  #    - '@enqueue.client.producer'
-  #  tags:
-  #    - { name: console.command }
+    #SubscriptionBundle\Command\RenewTrialSubscriptionCommand:
+    #  tags:
+    #    - { name: console.command }
+    #  arguments: ['@cron.trial_renew_service', '@cron.task', '@doctrine.orm.entity_manager']
 
-  #SubscriptionBundle\Command\RenewTrialSubscriptionCommand:
-  #  tags:
-  #    - { name: console.command }
-  #  arguments: ['@cron.trial_renew_service', '@cron.task', '@doctrine.orm.entity_manager']
+    #cron.trial_renew_service:
+    #    class: SubscriptionBundle\Service\Cron\TrialRenewer
+    #    arguments:
+    #      - '@SubscriptionBundle\Service\SubscriptionPackProvider'
+    #      - '@SubscriptionBundle\Service\Action\Renew\Renewer'
+    #      - '@SubscriptionBundle\Service\SubscriptionExtractor'
 
-  #cron.trial_renew_service:
-  #    class: SubscriptionBundle\Service\Cron\TrialRenewer
-  #    arguments:
-  #      - '@SubscriptionBundle\Service\SubscriptionPackProvider'
-  #      - '@SubscriptionBundle\Service\Action\Renew\Renewer'
-  #      - '@SubscriptionBundle\Service\SubscriptionExtractor'
-
-  cron.task:
-      class: SubscriptionBundle\Service\Cron\CronTaskStatus
-      arguments: ['@doctrine.orm.default_entity_manager', '@SubscriptionBundle\Repository\CronTaskRepository']
+    cron.task:
+        class: SubscriptionBundle\Service\Cron\CronTaskStatus
+        arguments: ['@doctrine.orm.default_entity_manager', '@SubscriptionBundle\Repository\CronTaskRepository']
 
 
-  SubscriptionBundle\Service\Cron\RenewAlerter:
-    arguments:
-      - '@SubscriptionBundle\Repository\SubscriptionRepository'
-      - '@SubscriptionBundle\Service\Action\Renew\Handler\RenewHandlerProvider'
-      - '@SubscriptionBundle\Service\EntitySaveHelper'
+    SubscriptionBundle\Service\Cron\RenewAlerter:
+        arguments:
+            - '@SubscriptionBundle\Repository\SubscriptionRepository'
+            - '@SubscriptionBundle\Service\Action\Renew\Handler\RenewHandlerProvider'
+            - '@SubscriptionBundle\Service\EntitySaveHelper'
+
+    SubscriptionBundle\Command\ResetConstraintsByAffiliateCounters:
+        arguments:
+            - '@SubscriptionBundle\Service\AffiliateConstraint\ConstraintByAffiliateCache'
+            - '@doctrine.orm.entity_manager'
+            - '@SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository'
+        tags:
+            - { name: console.command }

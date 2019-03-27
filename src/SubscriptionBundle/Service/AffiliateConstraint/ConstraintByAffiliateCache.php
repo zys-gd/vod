@@ -58,6 +58,14 @@ class ConstraintByAffiliateCache
 
     /**
      * @param ConstraintByAffiliate $constraintByAffiliate
+     */
+    public function resetCounter(ConstraintByAffiliate $constraintByAffiliate)
+    {
+        $this->cache->saveCache($this->getCacheKey($constraintByAffiliate), 0, 86400);
+    }
+
+    /**
+     * @param ConstraintByAffiliate $constraintByAffiliate
      *
      * @return string
      */
