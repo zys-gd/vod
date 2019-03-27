@@ -96,7 +96,7 @@ services:
         arguments:
             - '@app.cache.redis.constraint_by_affiliate'
 
-    SubscriptionBundle\Service\AffiliateConstraint\SubscriptionConstraintByAffiliate:
+    SubscriptionBundle\Service\AffiliateConstraint\SubscriptionCounterUpdater:
         arguments:
             - '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender'
             - '@SubscriptionBundle\Service\AffiliateConstraint\ConstraintByAffiliateCache'

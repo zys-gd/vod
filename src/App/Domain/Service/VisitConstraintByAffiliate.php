@@ -87,7 +87,8 @@ class VisitConstraintByAffiliate
             }
 
             $isLimitReached = $this->cache->hasCounter($constraint)
-                ?? $this->cache->getCounter($constraint) >= $constraint->getNumberOfActions();
+                ? $this->cache->getCounter($constraint) >= $constraint->getNumberOfActions()
+                : false;
 
             if ($isLimitReached) {
                 if (!$constraint->getIsCapAlertDispatch()) {

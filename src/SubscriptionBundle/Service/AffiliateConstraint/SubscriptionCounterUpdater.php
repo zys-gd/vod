@@ -9,9 +9,9 @@ use SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface;
 use SubscriptionBundle\Service\Notification\Email\CAPNotificationSender;
 
 /**
- * Class SubscriptionConstraintByAffiliate
+ * Class SubscriptionCounterUpdater
  */
-class SubscriptionConstraintByAffiliate
+class SubscriptionCounterUpdater
 {
     /**
      * @var CAPNotificationSender

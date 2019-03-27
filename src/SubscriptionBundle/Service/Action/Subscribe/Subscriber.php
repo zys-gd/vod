@@ -23,7 +23,7 @@ use SubscriptionBundle\Entity\SubscriptionPlanInterface;
 use SubscriptionBundle\Service\Action\Common\FakeResponseProvider;
 use SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
-use SubscriptionBundle\Service\AffiliateConstraint\SubscriptionConstraintByAffiliate;
+use SubscriptionBundle\Service\AffiliateConstraint\SubscriptionCounterUpdater;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\Notification\Notifier;
 use SubscriptionBundle\Service\SubscriptionCreator;
@@ -71,7 +71,10 @@ class Subscriber
      * @var SubscribeParametersProvider
      */
     private $subscribeParametersProvider;
-    private $constraintByAffiliateService;
+    /**
+     * @var SubscriptionCounterUpdater
+     */
+    private $subscriptionCounterUpdater;
 
 
     /**
@@ -86,7 +89,7 @@ class Subscriber
      * @param SubscribeProcess             $subscribeProcess
      * @param OnSubscribeUpdater           $onSubscribeUpdater
      * @param SubscribeParametersProvider  $subscribeParametersProvider
-     * @param SubscriptionConstraintByAffiliate $subscriptionConstraintByAffiliate
+     * @param SubscriptionCounterUpdater $subscriptionCounterUpdater
      */
     public function __construct(
         LoggerInterface $logger,
@@ -99,7 +102,7 @@ class Subscriber
         SubscribeProcess $subscribeProcess,
         OnSubscribeUpdater $onSubscribeUpdater,
         SubscribeParametersProvider $subscribeParametersProvider,
-        SubscriptionConstraintByAffiliate $subscriptionConstraintByAffiliate
+        SubscriptionCounterUpdater $subscriptionCounterUpdater
     )
     {
         $this->logger                       = $logger;
@@ -112,7 +115,7 @@ class Subscriber
         $this->subscribeProcess             = $subscribeProcess;
         $this->onSubscribeUpdater           = $onSubscribeUpdater;
         $this->subscribeParametersProvider  = $subscribeParametersProvider;
-        $this->constraintByAffiliateService = $subscriptionConstraintByAffiliate;
+        $this->subscriptionCounterUpdater = $subscriptionCounterUpdater;
     }
 
     /**
@@ -142,7 +145,7 @@ class Subscriber
             $response = $this->performSubscribe($additionalData, $subscription);
 
             if ($response->isSuccessful() && $response->isFinal() && $subscription->getAffiliateToken()) {
-                $this->constraintByAffiliateService->updateSubscriptionCounter($subscription);
+                $this->subscriptionCounterUpdater->updateSubscriptionCounter($subscription);
             }
 
             return [$subscription, $response];
