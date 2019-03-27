@@ -54,6 +54,10 @@ services:
             - { name: sonata.admin, manager_type: orm, group: affiliate_management, label: Affiliate log }
 
     SubscriptionBundle\Admin\Sonata\ConstraintsByAffiliateAdmin:
-        arguments: [~, SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate, ~]
+        arguments:
+            - ~
+            - SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate
+            - ~
+            - '@SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository'
         tags:
             - { name: sonata.admin, manager_type: orm, group: affiliate_management, label: Constraints by affiliate }

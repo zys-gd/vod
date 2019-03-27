@@ -5,6 +5,8 @@ namespace SubscriptionBundle\Admin\Sonata;
 use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Carrier;
 use App\Utils\UuidGenerator;
+use IdentificationBundle\Entity\CarrierInterface;
+use Symfony\Component\Validator\Constraints\Callback;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -12,17 +14,43 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\Form\Type\BooleanType;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
+use SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Class ConstraintsByAffiliateAdmin
  */
 class ConstraintsByAffiliateAdmin extends AbstractAdmin
 {
+    /**
+     * @var ConstraintByAffiliateRepository
+     */
+    private $constraintByAffiliateRepository;
+
+    /**
+     * ConstraintsByAffiliateAdmin constructor
+     *
+     * @param string $code
+     * @param string $class
+     * @param string $baseControllerName
+     * @param ConstraintByAffiliateRepository $constraintByAffiliateRepository
+     */
+    public function __construct(
+        string $code,
+        string $class,
+        string $baseControllerName,
+        ConstraintByAffiliateRepository $constraintByAffiliateRepository
+    ) {
+        $this->constraintByAffiliateRepository = $constraintByAffiliateRepository;
+
+        parent::__construct($code, $class, $baseControllerName);
+    }
+
     /**
      * @return ConstraintByAffiliate
      *
@@ -31,6 +59,27 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
     public function getNewInstance(): ConstraintByAffiliate
     {
         return new ConstraintByAffiliate(UuidGenerator::generate());
+    }
+
+    /**
+     * @param CarrierInterface|null $carrier
+     * @param ExecutionContextInterface $context
+     */
+    public function validateForIdenticalRecord(?CarrierInterface $carrier, ExecutionContextInterface $context): void
+    {
+        /** @var ConstraintByAffiliate $constraintsByAffiliate */
+        $constraintsByAffiliate = $this->getSubject();
+
+        $affiliate = $constraintsByAffiliate->getAffiliate();
+        $capType = $constraintsByAffiliate->getCapType();
+
+        $hasDuplicates = $this->constraintByAffiliateRepository->hasIdenticalConstraints($affiliate, $carrier, $capType);
+
+        if ($hasDuplicates) {
+            $context
+                ->buildViolation('Identical constraint for affiliate and carrier was found')
+                ->addViolation();
+        }
     }
 
     /**
@@ -82,6 +131,9 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
             ])
             ->add('carrier', EntityType::class, [
                 'class' => Carrier::class,
+                'constraints' => [
+                    new Callback([$this, 'validateForIdenticalRecord'])
+                ],
                 'placeholder' => 'Select carrier',
             ])
             ->add('numberOfActions', IntegerType::class, [
