@@ -49,6 +49,10 @@ class VODKernel extends BaseKernel
         $loader->load($confDir . '/{services}' . self::CONFIG_EXTS, 'glob');
         $loader->load($confDir . '/{services}_' . $this->environment . self::CONFIG_EXTS, 'glob');
 
+        if ($this->environment === 'stage') {
+            $loader->load($confDir . '/{packages}/prod/**/*' . self::CONFIG_EXTS, 'glob');
+        }
+
         $appConfDir = $this->getProjectDir() . '/src/App/Resources/config/';
         $loader->load($appConfDir . 'services.yml');
         $loader->load($appConfDir . 'admin.yml');
