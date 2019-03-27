@@ -22,7 +22,9 @@ class RequestProvider
     ): ProcessRequestParameters
     {
 
-        $parameters                 = new ProcessRequestParameters();
+        $parameters = new ProcessRequestParameters();
+
+        $parameters->client         = 'vod-store';
         $parameters->additionalData = array_merge(
             [
                 'body'    => $body,
@@ -46,6 +48,7 @@ class RequestProvider
     {
 
         $parameters                 = new ProcessRequestParameters();
+        $parameters->client         = 'vod-store';
         $parameters->additionalData = array_merge(
             [
                 'msisdn'      => $msisdn,

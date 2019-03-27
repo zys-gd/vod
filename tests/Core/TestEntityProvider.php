@@ -9,7 +9,6 @@
 namespace Tests\Core;
 
 
-
 use App\Domain\Entity\Carrier;
 use App\Utils\UuidGenerator;
 use IdentificationBundle\Entity\User;
@@ -45,6 +44,7 @@ class TestEntityProvider
      * @param SubscriptionPack $subscriptionPack
      * @param string           $status
      * @param string           $stage
+     * @param string|null      $error
      *
      * @return Subscription
      * @throws \Exception
@@ -53,7 +53,8 @@ class TestEntityProvider
         User $billableUser,
         SubscriptionPack $subscriptionPack,
         string $status = Subscription::IS_ACTIVE,
-        string $stage = Subscription::ACTION_SUBSCRIBE
+        string $stage = Subscription::ACTION_SUBSCRIBE,
+        string $error = null
     )
     {
 
@@ -64,6 +65,7 @@ class TestEntityProvider
         $subscription->setCurrentStage($stage);
         $subscription->setSubscriptionPack($subscriptionPack);
         $subscription->setAffiliateToken(json_encode(['cid' => 'example_cid']));
+        $error && $subscription->setError($error);
 
         return $subscription;
 

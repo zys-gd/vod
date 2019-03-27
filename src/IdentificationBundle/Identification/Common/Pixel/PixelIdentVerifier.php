@@ -47,7 +47,7 @@ class PixelIdentVerifier
     private function prepareParams(string $processId, $carrier): ProcessRequestParameters
     {
         $parameters                 = new ProcessRequestParameters();
-        $parameters->client         = 'store';
+        $parameters->client         = 'vod-store';
         $parameters->carrier        = $carrier;
         $parameters->additionalData = ['process' => $processId];
 

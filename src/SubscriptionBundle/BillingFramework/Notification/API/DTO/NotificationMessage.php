@@ -26,6 +26,8 @@ class NotificationMessage
     /** @var integer */
     private $billingProccess;
 
+    private $client;
+
     /**
      * @return string
      */
@@ -105,4 +107,22 @@ class NotificationMessage
     {
         return $this->billingProccess;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * @param mixed $client
+     */
+    public function setClient($client): void
+    {
+        $this->client = $client;
+    }
+
+
 }
