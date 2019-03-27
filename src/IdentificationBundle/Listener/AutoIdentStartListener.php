@@ -257,7 +257,10 @@ class AutoIdentStartListener
 
         } catch (FailedIdentificationException $exception) {
 
-            $this->logger->error('Autoident failed');
+            $this->logger->error('Autoident failed', [
+                'message' => $exception->getMessage(),
+                'line'    => sprintf('%s:%s', $exception->getCode(), $exception->getLine())
+            ]);
             $response = $this->startWifiFlow($request->getSession());
         }
 
