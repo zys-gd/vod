@@ -43,10 +43,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
     /**
      * LPController constructor.
      *
-     * @param ContentStatisticSender $contentStatisticSender
-     * @param CampaignRepository $campaignRepository
+     * @param ContentStatisticSender     $contentStatisticSender
+     * @param CampaignRepository         $campaignRepository
      * @param VisitConstraintByAffiliate $visitConstraintByAffiliate
-     * @param string $imageBaseUrl
+     * @param string                     $imageBaseUrl
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
@@ -69,6 +69,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param Request $request
      *
      * @return Response
+     *
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
     public function landingPageAction(Request $request)
     {
@@ -84,7 +88,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
             /** @var Campaign $campaign */
             if ($campaign) {
-                $constraintsCheckResult = $this->visitConstraintByAffiliate->handleLandingPageRequest($campaign);
+                $constraintsCheckResult = $this->visitConstraintByAffiliate->handleLandingPageRequest($campaign, $session);
 
                 if ($constraintsCheckResult) {
                     return $constraintsCheckResult;

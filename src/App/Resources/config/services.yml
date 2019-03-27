@@ -121,4 +121,4 @@ services:
             - '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender'
             - '@SubscriptionBundle\Service\AffiliateConstraint\ConstraintByAffiliateCache'
             - '@App\Domain\Repository\CarrierRepository'
-            - '@session'
+            - '@doctrine.orm.entity_manager'

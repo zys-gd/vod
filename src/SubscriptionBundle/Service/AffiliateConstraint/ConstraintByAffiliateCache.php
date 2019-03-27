@@ -30,7 +30,7 @@ class ConstraintByAffiliateCache
      *
      * @return int|null
      */
-    public function getCachedCounter(ConstraintByAffiliate $constraintByAffiliate): ?int
+    public function getCounter(ConstraintByAffiliate $constraintByAffiliate): ?int
     {
         return $this->cache->getValue($this->getCacheKey($constraintByAffiliate));
     }
@@ -40,7 +40,7 @@ class ConstraintByAffiliateCache
      *
      * @return bool
      */
-    public function hasCachedCounter(ConstraintByAffiliate $constraintByAffiliate): bool
+    public function hasCounter(ConstraintByAffiliate $constraintByAffiliate): bool
     {
         return $this->cache->hasCache($this->getCacheKey($constraintByAffiliate));
     }

@@ -23,6 +23,7 @@ class EmailSender
      * ContactUsMessageSender constructor.
      *
      * @param \Swift_Mailer $mailer
+     * @param EmailComposer $emailComposer
      */
     public function __construct(Swift_Mailer $mailer, EmailComposer $emailComposer)
     {
