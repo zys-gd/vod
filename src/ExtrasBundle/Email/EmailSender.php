@@ -34,6 +34,7 @@ class EmailSender
     /**
      * @param string $twigPath
      * @param array $data
+     * @param string $subject
      * @param string $from
      * @param string $to
      *
@@ -43,9 +44,9 @@ class EmailSender
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function sendMessage(string $twigPath, array $data, string $from, string $to): int
+    public function sendMessage(string $twigPath, array $data, string $subject, string $from, string $to): int
     {
-        $message = $this->emailComposer->compose($twigPath, $data, $from, $to);
+        $message = $this->emailComposer->compose($twigPath, $data, $subject, $from, $to);
 
         return $this->mailer->send($message);
     }

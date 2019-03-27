@@ -25,7 +25,7 @@ class EmailComposer
     /**
      * @param string $twigPath
      * @param array $data
-     *
+     * @param string $subject
      * @param string $from
      * @param string $to
      *
@@ -35,11 +35,11 @@ class EmailComposer
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function compose(string $twigPath, array $data, string $from, string $to): \Swift_Message
+    public function compose(string $twigPath, array $data, string $subject, string $from, string $to): \Swift_Message
     {
         $body = $this->twig->render($twigPath, $data);
 
-        $message = new \Swift_Message('Contact us form notification');
+        $message = new \Swift_Message($subject);
         $message
             ->setFrom($from)
             ->setTo($to)

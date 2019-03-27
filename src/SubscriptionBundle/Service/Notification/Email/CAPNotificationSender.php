@@ -11,6 +11,16 @@ use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
  */
 class CAPNotificationSender
 {
+    const DEFAULT_SUBJECT = '[Alert] CAP by affiliate reached';
+
+    /**
+     * @var array
+     */
+    private $subjects = [
+        ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE => '[Alert] Subscription CAP by affiliate reached',
+        ConstraintByAffiliate::CAP_TYPE_VISIT => '[Alert] Visit CAP by affiliate reached'
+    ];
+
     /**
      * @var EmailSender
      */
@@ -56,15 +66,20 @@ class CAPNotificationSender
     public function sendNotification(ConstraintByAffiliate $constraintByAffiliate, CarrierInterface $carrier): bool
     {
         $twig = '@Subscription/ConstraintByAffiliate/Mail/cap_alert_template.html.twig';
+
+        $capType = $constraintByAffiliate->getCapType();
+
         $data = [
             'affiliateName' => $constraintByAffiliate->getAffiliate()->getName(),
             'carrierName' => $carrier->getName(),
             'actionsLimit' => $constraintByAffiliate->getNumberOfActions(),
-            'capType' => $constraintByAffiliate->getCapType()
+            'capType' => $capType
         ];
+
+        $subject = array_key_exists($capType, $this->subjects) ? $this->subjects[$capType] : self::DEFAULT_SUBJECT;
 
         return (bool) $this
             ->emailSender
-            ->sendMessage($twig, $data, $this->notificationMailFrom, $this->notificationMailTo);
+            ->sendMessage($twig, $data, $subject, $this->notificationMailFrom, $this->notificationMailTo);
     }
 }

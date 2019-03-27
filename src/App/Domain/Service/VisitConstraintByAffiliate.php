@@ -6,6 +6,7 @@ use App\Domain\Entity\Campaign;
 use App\Domain\Repository\CarrierRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\CarrierInterface;
+use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Service\AffiliateConstraint\ConstraintByAffiliateCache;
 use SubscriptionBundle\Service\Notification\Email\CAPNotificationSender;
@@ -70,7 +71,7 @@ class VisitConstraintByAffiliate
      */
     public function handleLandingPageRequest(Campaign $campaign, SessionInterface $session): ?RedirectResponse
     {
-        $ispDetectionData = $session->get('isp_detection_data');
+        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($session);
 
         if (empty($ispDetectionData['carrier_id'])
             || !$carrier =  $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id'])

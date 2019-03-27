@@ -100,7 +100,9 @@ class ContactUsController extends AbstractController implements AppControllerInt
             $data['affiliate'] = $campaign ? $campaign->getAffiliate() : null;
 
             $twig = '@App/Mails/contact-us-notification.html.twig';
-            $this->emailSender->sendMessage($twig, $data, $this->contactUsMailFrom, $this->contactUsMailTo);
+            $subject = 'Contact us form notification';
+
+            $this->emailSender->sendMessage($twig, $data, $subject, $this->contactUsMailFrom, $this->contactUsMailTo);
 
             return $this->render('@App/Mails/thank-you-mail.html.twig');
         }
