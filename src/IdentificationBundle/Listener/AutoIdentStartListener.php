@@ -24,6 +24,7 @@ use IdentificationBundle\Identification\Service\ISPResolver;
 use IdentificationBundle\Identification\Service\RouteProvider;
 use IdentificationBundle\Identification\Service\TokenGenerator;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -76,6 +77,10 @@ class AutoIdentStartListener
      * @var DeviceDataProvider
      */
     private $deviceDataProvider;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
 
     /**
@@ -91,6 +96,7 @@ class AutoIdentStartListener
      * @param AnnotationReader                                           $annotationReader
      * @param CarrierSelector                                            $carrierSelector
      * @param DeviceDataProvider                                         $deviceDataProvider
+     * @param LoggerInterface                                            $logger
      */
     public function __construct(
         ICountryCarrierDetection $carrierDetection,
@@ -103,7 +109,8 @@ class AutoIdentStartListener
         IdentificationStatus $identificationStatus,
         AnnotationReader $annotationReader,
         CarrierSelector $carrierSelector,
-        DeviceDataProvider $deviceDataProvider
+        DeviceDataProvider $deviceDataProvider,
+        LoggerInterface $logger
     )
     {
         $this->carrierDetection     = $carrierDetection;
@@ -117,6 +124,7 @@ class AutoIdentStartListener
         $this->annotationReader     = $annotationReader;
         $this->carrierSelector      = $carrierSelector;
         $this->deviceDataProvider   = $deviceDataProvider;
+        $this->logger               = $logger;
     }
 
     public function onKernelController(FilterControllerEvent $event)
@@ -248,6 +256,11 @@ class AutoIdentStartListener
             $response = $result->getOverridedResponse();
 
         } catch (FailedIdentificationException $exception) {
+
+            $this->logger->error('Autoident failed', [
+                'message' => $exception->getMessage(),
+                'line'    => sprintf('%s:%s', $exception->getCode(), $exception->getLine())
+            ]);
             $response = $this->startWifiFlow($request->getSession());
         }
 
