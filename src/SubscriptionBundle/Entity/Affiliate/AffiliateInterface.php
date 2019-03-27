@@ -3,6 +3,7 @@
 namespace SubscriptionBundle\Entity\Affiliate;
 
 use Doctrine\Common\Collections\Collection;
+use IdentificationBundle\Entity\CarrierInterface;
 
 /**
  * Interface AffiliateInterface
@@ -51,8 +52,9 @@ interface AffiliateInterface
 
     /**
      * @param string $capType
+     * @param CarrierInterface $carrier
      *
      * @return ConstraintByAffiliate|null
      */
-    public function getConstraint(string $capType): ?ConstraintByAffiliate;
+    public function getConstraint(string $capType, CarrierInterface $carrier): ?ConstraintByAffiliate;
 }

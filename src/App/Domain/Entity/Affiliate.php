@@ -4,6 +4,7 @@ namespace App\Domain\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use IdentificationBundle\Entity\CarrierInterface;
 use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
@@ -584,13 +585,14 @@ class Affiliate implements HasUuid, AffiliateInterface
 
     /**
      * @param string $capType
+     * @param CarrierInterface $carrier
      *
      * @return ConstraintByAffiliate|null
      */
-    public function getConstraint(string $capType): ?ConstraintByAffiliate
+    public function getConstraint(string $capType, CarrierInterface $carrier): ?ConstraintByAffiliate
     {
-        $filteredByType = $this->constraints->filter(function (ConstraintByAffiliate $constraint) use ($capType) {
-            return $constraint->getCapType() === $capType;
+        $filteredByType = $this->constraints->filter(function (ConstraintByAffiliate $constraint) use ($capType, $carrier) {
+            return $constraint->getCapType() === $capType && $constraint->getCarrier()->getUuid() === $carrier->getUuid();
         });
 
         return $filteredByType->first() ?? null;

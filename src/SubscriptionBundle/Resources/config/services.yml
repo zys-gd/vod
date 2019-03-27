@@ -96,6 +96,13 @@ services:
         arguments:
             - '@app.cache.redis.constraint_by_affiliate'
 
+    SubscriptionBundle\Service\AffiliateConstraint\SubscriptionConstraintByAffiliate:
+        arguments:
+            - '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender'
+            - '@SubscriptionBundle\Service\AffiliateConstraint\ConstraintByAffiliateCache'
+            - '@doctrine.orm.entity_manager'
+            - '@App\Domain\Repository\CampaignRepository'
+
 parameters:
     subscription.subscription.class: SubscriptionBundle\Entity\SubscriptionPack
     guzzle.client.class: GuzzleHttp\Client

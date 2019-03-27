@@ -79,10 +79,9 @@ class VisitConstraintByAffiliate
         }
 
         $affiliate = $campaign->getAffiliate();
-        $constraints = $affiliate->getConstraints();
 
         /** @var ConstraintByAffiliate $constraint */
-        foreach ($constraints as $constraint) {
+        foreach ($affiliate->getConstraints()->getIterator() as $constraint) {
             if ($carrier && $carrier->getUuid() !== $constraint->getCarrier()->getUuid()) {
                 continue;
             }
