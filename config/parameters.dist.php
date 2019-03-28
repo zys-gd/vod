@@ -49,7 +49,12 @@ return [
     'MAILER_PASSWORD'            => 'BCjVv8MEmA4IKrXF7Ps6T6VAbbdR5taVt3rNptvG365D',
     'MAILER_PORT'                => 587,
     'MAILER_ENCRYPTION'          => 'tls',
-    
+
+    'CAP_NOTIFICATION_MAIL_TO'     => 'vod-cap-alert@origin-data.com',
+    'CAP_NOTIFICATION_MAIL_FROM'   => 'odintegrations@origin-data.com',
+    'CONTACT_US_MAIL_TO'           => 'support@origin-data.com',
+    'CONTACT_US_MAIL_FROM'         => 'support.form@origin-data.com',
+
     /*'MAILER_URL'          => 'MAILER_URL',*/
     'UPLOADS_PATH'        => 'uploads',
     'UPLOADS_BUILDS_PATH' => 'uploads/builds',

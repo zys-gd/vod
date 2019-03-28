@@ -2,7 +2,6 @@
 
 namespace SubscriptionBundle\Entity\Affiliate;
 
-use App\Domain\Entity\Affiliate;
 use Doctrine\Common\Collections\Collection;
 
 interface CampaignInterface
@@ -28,7 +27,7 @@ interface CampaignInterface
     public function getCarriers(): Collection;
 
     /**
-     * @return Affiliate|null
+     * @return AffiliateInterface|null
      */
-    public function getAffiliate(): ?Affiliate;
+    public function getAffiliate(): ?AffiliateInterface;
 }

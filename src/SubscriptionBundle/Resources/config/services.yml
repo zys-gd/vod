@@ -86,6 +86,23 @@ services:
     SubscriptionBundle\Service\BlackListService:
         autowire: true
 
+    SubscriptionBundle\Service\Notification\Email\CAPNotificationSender:
+        arguments:
+            - '@ExtrasBundle\Email\EmailSender'
+            - '%cap_notification_mail_to%'
+            - '%cap_notification_mail_from%'
+
+    SubscriptionBundle\Service\AffiliateConstraint\ConstraintByAffiliateCache:
+        arguments:
+            - '@app.cache.redis.constraint_by_affiliate'
+
+    SubscriptionBundle\Service\AffiliateConstraint\SubscriptionCounterUpdater:
+        arguments:
+            - '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender'
+            - '@SubscriptionBundle\Service\AffiliateConstraint\ConstraintByAffiliateCache'
+            - '@doctrine.orm.entity_manager'
+            - '@App\Domain\Repository\CampaignRepository'
+
 parameters:
     subscription.subscription.class: SubscriptionBundle\Entity\SubscriptionPack
     guzzle.client.class: GuzzleHttp\Client

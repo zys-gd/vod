@@ -8,13 +8,11 @@
 
 namespace SubscriptionBundle\Affiliate\Service;
 
-
-use App\Domain\Entity\Affiliate;
-use App\Domain\Entity\Campaign;
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\CarrierInterface;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\DTO\UserInfo;
+use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 use SubscriptionBundle\Entity\Affiliate\AffiliateLog;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
@@ -162,7 +160,7 @@ class AffiliateSender
         return in_array($carrier->getBillingCarrierId(), $ids);
     }
 
-    public function areParametersEqual(Affiliate $affiliate, array $campaignParams): bool
+    public function areParametersEqual(AffiliateInterface $affiliate, array $campaignParams): bool
     {
         $paramsList = $affiliate->getParamsList();
         if (!array_diff_key(array_flip($paramsList), $campaignParams)) {
@@ -172,7 +170,7 @@ class AffiliateSender
         return false;
     }
 
-    private function getPostBackParameters(Affiliate $affiliate,
+    private function getPostBackParameters(AffiliateInterface $affiliate,
         CampaignInterface $campaign,
         array $campaignParams): array
     {
@@ -239,12 +237,12 @@ class AffiliateSender
     }
 
     /**
-     * @param Affiliate $affiliate
+     * @param AffiliateInterface $affiliate
      * @param array     $campaignParams
      *
      * @return array|string
      */
-    private function jumpIntoUniqueFlow(Affiliate $affiliate, array $campaignParams)
+    private function jumpIntoUniqueFlow(AffiliateInterface $affiliate, array $campaignParams)
     {
         if (!empty($campaignParams) && array_key_exists($affiliate->getUniqueParameter(), $campaignParams)) {
             $uniqueParameterValue = $campaignParams[$affiliate->getUniqueParameter()];

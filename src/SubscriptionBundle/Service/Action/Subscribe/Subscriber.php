@@ -20,10 +20,10 @@ use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Entity\SubscriptionPlanInterface;
-use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use SubscriptionBundle\Service\Action\Common\FakeResponseProvider;
 use SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
+use SubscriptionBundle\Service\AffiliateConstraint\SubscriptionCounterUpdater;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\Notification\Notifier;
 use SubscriptionBundle\Service\SubscriptionCreator;
@@ -71,20 +71,25 @@ class Subscriber
      * @var SubscribeParametersProvider
      */
     private $subscribeParametersProvider;
+    /**
+     * @var SubscriptionCounterUpdater
+     */
+    private $subscriptionCounterUpdater;
 
 
     /**
      * Subscriber constructor.
-     * @param LoggerInterface             $logger
-     * @param EntitySaveHelper            $entitySaveHelper
-     * @param SessionInterface            $session
-     * @param SubscriptionCreator         $subscriptionCreator
-     * @param PromotionalResponseChecker  $promotionalResponseChecker
-     * @param FakeResponseProvider        $fakeResponseProvider
-     * @param Notifier                    $notifier
-     * @param SubscribeProcess            $subscribeProcess
-     * @param OnSubscribeUpdater          $onSubscribeUpdater
-     * @param SubscribeParametersProvider $subscribeParametersProvider
+     * @param LoggerInterface              $logger
+     * @param EntitySaveHelper             $entitySaveHelper
+     * @param SessionInterface             $session
+     * @param SubscriptionCreator          $subscriptionCreator
+     * @param PromotionalResponseChecker   $promotionalResponseChecker
+     * @param FakeResponseProvider         $fakeResponseProvider
+     * @param Notifier                     $notifier
+     * @param SubscribeProcess             $subscribeProcess
+     * @param OnSubscribeUpdater           $onSubscribeUpdater
+     * @param SubscribeParametersProvider  $subscribeParametersProvider
+     * @param SubscriptionCounterUpdater $subscriptionCounterUpdater
      */
     public function __construct(
         LoggerInterface $logger,
@@ -96,19 +101,21 @@ class Subscriber
         Notifier $notifier,
         SubscribeProcess $subscribeProcess,
         OnSubscribeUpdater $onSubscribeUpdater,
-        SubscribeParametersProvider $subscribeParametersProvider
+        SubscribeParametersProvider $subscribeParametersProvider,
+        SubscriptionCounterUpdater $subscriptionCounterUpdater
     )
     {
-        $this->logger                      = $logger;
-        $this->entitySaveHelper            = $entitySaveHelper;
-        $this->session                     = $session;
-        $this->subscriptionCreator         = $subscriptionCreator;
-        $this->promotionalResponseChecker  = $promotionalResponseChecker;
-        $this->fakeResponseProvider        = $fakeResponseProvider;
-        $this->notifier                    = $notifier;
-        $this->subscribeProcess            = $subscribeProcess;
-        $this->onSubscribeUpdater          = $onSubscribeUpdater;
-        $this->subscribeParametersProvider = $subscribeParametersProvider;
+        $this->logger                       = $logger;
+        $this->entitySaveHelper             = $entitySaveHelper;
+        $this->session                      = $session;
+        $this->subscriptionCreator          = $subscriptionCreator;
+        $this->promotionalResponseChecker   = $promotionalResponseChecker;
+        $this->fakeResponseProvider         = $fakeResponseProvider;
+        $this->notifier                     = $notifier;
+        $this->subscribeProcess             = $subscribeProcess;
+        $this->onSubscribeUpdater           = $onSubscribeUpdater;
+        $this->subscribeParametersProvider  = $subscribeParametersProvider;
+        $this->subscriptionCounterUpdater = $subscriptionCounterUpdater;
     }
 
     /**
@@ -136,6 +143,11 @@ class Subscriber
 
         try {
             $response = $this->performSubscribe($additionalData, $subscription);
+
+            if ($response->isSuccessful() && $response->isFinal() && $subscription->getAffiliateToken()) {
+                $this->subscriptionCounterUpdater->updateSubscriptionCounter($subscription);
+            }
+
             return [$subscription, $response];
 
         } catch (SubscribingProcessException $exception) {

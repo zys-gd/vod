@@ -44,3 +44,8 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - SubscriptionBundle\Entity\BlackList
+
+    SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository:
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate

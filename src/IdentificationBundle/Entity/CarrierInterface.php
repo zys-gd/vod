@@ -10,6 +10,11 @@ interface CarrierInterface
     public function getUuid(): string;
 
     /**
+     * @return string
+     */
+    public function getName(): ?string;
+
+    /**
      * @return string|null
      */
     public function getIsp(): ?string;
@@ -29,8 +34,13 @@ interface CarrierInterface
      */
     public function getOperatorId(): int;
 
+    /**
+     * @return int
+     */
     public function getSubscriptionPeriod(): int;
 
+    /**
+     * @return int
+     */
     public function getTrialPeriod(): int;
-
 }

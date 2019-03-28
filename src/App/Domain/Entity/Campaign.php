@@ -5,6 +5,7 @@ namespace App\Domain\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
+use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints\Date;
@@ -231,9 +232,9 @@ class Campaign implements CampaignInterface, HasUuid
     /**
      * Get affiliate
      *
-     * @return Affiliate
+     * @return AffiliateInterface
      */
-    public function getAffiliate(): ?Affiliate
+    public function getAffiliate(): ?AffiliateInterface
     {
         return $this->affiliate;
     }

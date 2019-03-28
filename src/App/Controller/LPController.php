@@ -12,6 +12,7 @@ namespace App\Controller;
 use App\Domain\Entity\Campaign;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Service\ContentStatisticSender;
+use App\Domain\Service\VisitConstraintByAffiliate;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,23 +35,30 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var string
      */
     private $imageBaseUrl;
+    /**
+     * @var VisitConstraintByAffiliate
+     */
+    private $visitConstraintByAffiliate;
 
     /**
      * LPController constructor.
      *
-     * @param ContentStatisticSender $contentStatisticSender
-     * @param CampaignRepository     $campaignRepository
-     * @param string                 $imageBaseUrl
+     * @param ContentStatisticSender     $contentStatisticSender
+     * @param CampaignRepository         $campaignRepository
+     * @param VisitConstraintByAffiliate $visitConstraintByAffiliate
+     * @param string                     $imageBaseUrl
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
         CampaignRepository $campaignRepository,
+        VisitConstraintByAffiliate $visitConstraintByAffiliate,
         string $imageBaseUrl
     )
     {
-        $this->contentStatisticSender = $contentStatisticSender;
-        $this->campaignRepository     = $campaignRepository;
-        $this->imageBaseUrl           = $imageBaseUrl;
+        $this->contentStatisticSender       = $contentStatisticSender;
+        $this->campaignRepository           = $campaignRepository;
+        $this->visitConstraintByAffiliate   = $visitConstraintByAffiliate;
+        $this->imageBaseUrl                 = $imageBaseUrl;
     }
 
 
@@ -61,7 +69,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param Request $request
      *
      * @return Response
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     *
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
     public function landingPageAction(Request $request)
     {
@@ -73,8 +84,16 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             // Useless method atm.
             AffiliateVisitSaver::saveCampaignId($cid, $session);
 
+            $campaign = $this->campaignRepository->findOneBy(['campaignToken' => $cid]);
+
             /** @var Campaign $campaign */
-            if ($campaign = $this->campaignRepository->findOneBy(['campaignToken' => $cid])) {
+            if ($campaign) {
+                $constraintsCheckResult = $this->visitConstraintByAffiliate->handleLandingPageRequest($campaign, $session);
+
+                if ($constraintsCheckResult) {
+                    return $constraintsCheckResult;
+                }
+
                 $campaignBanner = $this->imageBaseUrl . '/' . $campaign->getImagePath();
                 $background     = $campaign->getBgColor();
             }
@@ -82,6 +101,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
         $this->contentStatisticSender->trackVisit();
+
         return $this->render('@App/Common/landing.html.twig', [
             'campaignBanner' => $campaignBanner,
             'background'     => $background

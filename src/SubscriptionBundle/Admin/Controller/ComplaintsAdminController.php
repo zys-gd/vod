@@ -9,6 +9,7 @@ use IdentificationBundle\Entity\User;
 use PhpOffice\PhpSpreadsheet\Exception;
 use Sonata\AdminBundle\Controller\CRUDController;
 use SubscriptionBundle\Admin\Form\ComplaintsForm;
+use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 use SubscriptionBundle\Entity\Affiliate\AffiliateLog;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
@@ -253,7 +254,7 @@ class ComplaintsAdminController extends CRUDController
                     $usersInfo[$msisdn]['url'] = empty($affiliateParams['url']) ? null : $affiliateParams['url'];
                     $usersInfo[$msisdn]['aff_id'] = $affiliateParams['pk_campaign'];
 
-                    /** @var Affiliate $affiliate */
+                    /** @var AffiliateInterface $affiliate */
                     $affiliate = $affiliateRepository->findOneBy(['id' => $affiliateParams['pk_campaign']]);
                     $usersInfo[$msisdn]['aff_name'] = $affiliate ? $affiliate->getName() : null;
 
