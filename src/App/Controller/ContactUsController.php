@@ -11,8 +11,8 @@ namespace App\Controller;
 
 use App\Domain\Entity\Campaign;
 use App\Domain\Repository\CampaignRepository;
-use App\Domain\Service\Forms\MessageSender;
 use App\Form\ContactUsType;
+use ExtrasBundle\Email\EmailSender;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Service\SubscriptionExtractor;
 use SubscriptionBundle\Service\UserExtractor;
@@ -32,9 +32,9 @@ class ContactUsController extends AbstractController implements AppControllerInt
      */
     private $userExtractor;
     /**
-     * @var MessageSender
+     * @var EmailSender
      */
-    private $messageSender;
+    private $emailSender;
     /**
      * @var SubscriptionExtractor
      */
@@ -43,19 +43,31 @@ class ContactUsController extends AbstractController implements AppControllerInt
      * @var CampaignRepository
      */
     private $campaignRepository;
+    /**
+     * @var string
+     */
+    private $contactUsMailTo;
+    /**
+     * @var string
+     */
+    private $contactUsMailFrom;
 
 
     public function __construct(FormFactoryInterface $formFactory,
-        UserExtractor $userExtractor,
-        MessageSender $messageSender,
-        SubscriptionExtractor $subscriptionExtractor,
-        CampaignRepository $campaignRepository)
-    {
+                                UserExtractor $userExtractor,
+                                EmailSender $emailSender,
+                                SubscriptionExtractor $subscriptionExtractor,
+                                CampaignRepository $campaignRepository,
+                                string $contactUsMailTo,
+                                string $contactUsMailFrom
+    ) {
         $this->formFactory = $formFactory;
         $this->userExtractor = $userExtractor;
-        $this->messageSender = $messageSender;
+        $this->emailSender = $emailSender;
         $this->subscriptionExtractor = $subscriptionExtractor;
         $this->campaignRepository = $campaignRepository;
+        $this->contactUsMailTo = $contactUsMailTo;
+        $this->contactUsMailFrom = $contactUsMailFrom;
     }
 
 
@@ -88,7 +100,9 @@ class ContactUsController extends AbstractController implements AppControllerInt
             $data['affiliate'] = $campaign ? $campaign->getAffiliate() : null;
 
             $twig = '@App/Mails/contact-us-notification.html.twig';
-            $this->messageSender->sendMessage($data, $twig);
+            $subject = 'Contact us form notification';
+
+            $this->emailSender->sendMessage($twig, $data, $subject, $this->contactUsMailFrom, $this->contactUsMailTo);
 
             return $this->render('@App/Mails/thank-you-mail.html.twig');
         }

@@ -37,6 +37,8 @@ class RedisCacheService implements ICacheService
      * @param string $key
      * @param mixed $value
      * @param int $lifetime
+     *
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function saveCache(string $key, $value, int $lifetime)
     {
@@ -68,6 +70,8 @@ class RedisCacheService implements ICacheService
      *
      * @param string $key
      * @return mixed
+     *
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function getValue(string $key)
     {

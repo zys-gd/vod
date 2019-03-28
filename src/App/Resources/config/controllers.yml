@@ -30,6 +30,7 @@ services:
         arguments:
             - '@App\Domain\Service\ContentStatisticSender'
             - '@App\Domain\Repository\CampaignRepository'
+            - '@App\Domain\Service\VisitConstraintByAffiliate'
             - '%images_base_url%'
 
     App\Controller\ErrorController:
@@ -53,9 +54,11 @@ services:
         arguments:
         - '@form.factory'
         - '@SubscriptionBundle\Service\UserExtractor'
-        - '@App\Domain\Service\Forms\MessageSender'
+        - '@ExtrasBundle\Email\EmailSender'
         - '@SubscriptionBundle\Service\SubscriptionExtractor'
         - '@App\Domain\Repository\CampaignRepository'
+        - '%contact_us_mail_to%'
+        - '%contact_us_mail_from%'
 
     App\Controller\GamesController:
         arguments:

@@ -4,12 +4,15 @@ namespace App\Domain\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use IdentificationBundle\Entity\CarrierInterface;
 use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
+use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
+use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 
 /**
  * Affiliate
  */
-class Affiliate implements HasUuid
+class Affiliate implements HasUuid, AffiliateInterface
 {
     /**
      * Affiliate types
@@ -88,6 +91,11 @@ class Affiliate implements HasUuid
     private $campaigns;
 
     /**
+     * @var Collection
+     */
+    private $constraints;
+
+    /**
      * Affiliate constructor.
      * @param string $uuid
      */
@@ -97,6 +105,7 @@ class Affiliate implements HasUuid
         $this->constants  = new ArrayCollection();
         $this->parameters = new ArrayCollection();
         $this->campaigns = new ArrayCollection();
+        $this->constraints = new ArrayCollection();
     }
 
     /**
@@ -104,7 +113,7 @@ class Affiliate implements HasUuid
      */
     public function __toString()
     {
-        return $this->getName();
+        return $this->name ?? '';
     }
 
     /**
@@ -140,11 +149,11 @@ class Affiliate implements HasUuid
     /**
      * Get name
      *
-     * @return string
+     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
-        return $this->name ?? '';
+        return $this->name;
     }
 
     /**
@@ -220,11 +229,9 @@ class Affiliate implements HasUuid
     }
 
     /**
-     * Get id
-     *
-     * @return int
+     * @return string|null
      */
-    public function getPostbackUrl()
+    public function getPostbackUrl(): ?string
     {
         return $this->postbackUrl;
     }
@@ -232,11 +239,11 @@ class Affiliate implements HasUuid
     /**
      * Set name
      *
-     * @param string $postbackUrl
+     * @param string|null $postbackUrl
      *
      * @return Affiliate
      */
-    public function setPostbackUrl($postbackUrl)
+    public function setPostbackUrl($postbackUrl): ?string
     {
         $this->postbackUrl = $postbackUrl;
 
@@ -356,37 +363,51 @@ class Affiliate implements HasUuid
     /**
      * Get subPriceName
      *
-     * @return bool
+     * @return string
      */
-    public function getSubPriceName()
+    public function getSubPriceName(): ?string
     {
         return $this->subPriceName;
     }
 
+    /**
+     * @return array
+     */
     public function getParamsList(): array
     {
         $list = [];
+
         if (isset($this->parameters) && !empty($this->parameters)) {
             foreach ($this->parameters as $parameter) {
                 $list[$parameter->getOutputName()] = $parameter->getInputName();
             }
         }
+
         return $list;
     }
 
-    public function getInputParamsList()
+    /**
+     * @return array
+     */
+    public function getInputParamsList(): array
     {
         $paramsList  = $this->getParamsList();
         $inputParams = [];
+
         foreach ($paramsList as $value) {
             $inputParams[] = $value;
         }
+
         return $inputParams;
     }
 
+    /**
+     * @return array
+     */
     public function getConstantsList(): array
     {
         $list = [];
+
         if (isset($this->constants) && !empty($this->constants)) {
             foreach ($this->constants as $parameter) {
                 $list[$parameter->getName()] = $parameter->getValue();
@@ -540,5 +561,40 @@ class Affiliate implements HasUuid
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getConstraints(): Collection
+    {
+        return $this->constraints;
+    }
+
+    /**
+     * @param Collection $constraints
+     *
+     * @return Affiliate
+     */
+    public function setConstraints(Collection $constraints):self
+    {
+        $this->constraints = $constraints;
+
+        return $this;
+    }
+
+    /**
+     * @param string $capType
+     * @param CarrierInterface $carrier
+     *
+     * @return ConstraintByAffiliate|null
+     */
+    public function getConstraint(string $capType, CarrierInterface $carrier): ?ConstraintByAffiliate
+    {
+        $filteredByType = $this->constraints->filter(function (ConstraintByAffiliate $constraint) use ($capType, $carrier) {
+            return $constraint->getCapType() === $capType && $constraint->getCarrier()->getUuid() === $carrier->getUuid();
+        });
+
+        return $filteredByType->first() ?? null;
     }
 }

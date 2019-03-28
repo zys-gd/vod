@@ -67,3 +67,8 @@ App\Domain\Entity\Affiliate:
             mappedBy: affiliate
             cascade: ["persist", "remove"]
             orphanRemoval: true
+        constraints:
+            targetEntity: SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate
+            mappedBy: affiliate
+            cascade: ["persist", "remove"]
+            orphanRemoval: true

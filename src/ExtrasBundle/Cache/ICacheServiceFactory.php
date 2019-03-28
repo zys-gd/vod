@@ -25,4 +25,10 @@ interface ICacheServiceFactory
      * @return ICacheService
      */
     public function createUserSubscriptionCacheService(array $options = []): ICacheService;
+
+    /**
+     * @param array $options
+     * @return ICacheService
+     */
+    public function createConstraintsByAffiliateCacheService(array $options = []): ICacheService;
 }

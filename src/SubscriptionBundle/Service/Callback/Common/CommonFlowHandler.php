@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Maxim Nevstruev
- * Date: 23.02.2018
- * Time: 11:46
- */
 
 namespace SubscriptionBundle\Service\Callback\Common;
-
 
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Repository\UserRepository;
@@ -19,6 +12,7 @@ use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Exception\SubscriptionException;
 use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use SubscriptionBundle\Repository\SubscriptionRepository;
+use SubscriptionBundle\Service\AffiliateConstraint\SubscriptionCounterUpdater;
 use SubscriptionBundle\Service\Callback\Common\Type\RenewCallbackHandler;
 use SubscriptionBundle\Service\Callback\Common\Type\SubscriptionCallbackHandler;
 use SubscriptionBundle\Service\Callback\Common\Type\UnsubscriptionCallbackHandler;
@@ -29,25 +23,70 @@ use SubscriptionBundle\Service\EntitySaveHelper;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Class CommonFlowHandler
+ */
 class CommonFlowHandler
 {
+    /**
+     * @var LoggerInterface
+     */
     private $logger;
+
+    /**
+     * @var CallbackTypeHandlerProvider
+     */
     private $callbackTypeHandlerProvider;
+
+    /**
+     * @var ProcessResponseMapper
+     */
     private $processResponseMapper;
+
+    /**
+     * @var SubscriptionRepository
+     */
     private $subscriptionRepository;
+
+    /**
+     * @var UserRepository
+     */
     private $UserRepository;
+
+    /**
+     * @var EventDispatcherInterface
+     */
     private $eventDispatcher;
+
+    /**
+     * @var EntitySaveHelper
+     */
     private $entitySaveHelper;
+
+    /**
+     * @var AffiliateSender
+     */
     private $affiliateService;
+
+    /**
+     * @var SubscriptionStatisticSender
+     */
     private $subscriptionStatisticSender;
+
     /**
      * @var UserInfoMapper
      */
     private $infoMapper;
+
     /**
      * @var CarrierCallbackHandlerProvider
      */
     private $carrierCallbackHandlerProvider;
+
+    /**
+     * @var SubscriptionCounterUpdater
+     */
+    private $subscriptionCounterUpdater;
 
     /**
      * MainHandler constructor.
@@ -62,6 +101,7 @@ class CommonFlowHandler
      * @param SubscriptionStatisticSender    $subscriptionStatisticSender
      * @param UserInfoMapper                 $infoMapper
      * @param CarrierCallbackHandlerProvider $carrierCallbackHandlerProvider
+     * @param SubscriptionCounterUpdater     $subscriptionCounterUpdater
      */
     public function __construct(
         LoggerInterface $logger,
@@ -74,7 +114,8 @@ class CommonFlowHandler
         AffiliateSender $affiliateService,
         SubscriptionStatisticSender $subscriptionStatisticSender,
         UserInfoMapper $infoMapper,
-        CarrierCallbackHandlerProvider $carrierCallbackHandlerProvider
+        CarrierCallbackHandlerProvider $carrierCallbackHandlerProvider,
+        SubscriptionCounterUpdater $subscriptionCounterUpdater
     )
     {
         $this->logger                         = $logger;
@@ -88,6 +129,7 @@ class CommonFlowHandler
         $this->subscriptionStatisticSender    = $subscriptionStatisticSender;
         $this->infoMapper                     = $infoMapper;
         $this->carrierCallbackHandlerProvider = $carrierCallbackHandlerProvider;
+        $this->subscriptionCounterUpdater     = $subscriptionCounterUpdater;
     }
 
 
@@ -147,6 +189,9 @@ class CommonFlowHandler
         $carrierHandler->afterProcess($subscription, $subscription->getUser(), $processResponse);
         $this->entitySaveHelper->persistAndSave($subscription);
 
+        if ($processResponse->isSuccessful() && $processResponse->isFinal() && $subscription->getAffiliateToken()) {
+            $this->subscriptionCounterUpdater->updateSubscriptionCounter($subscription);
+        }
 
         if ($carrierHandler instanceof HasCustomTrackingRules) {
             $isNeedToBeTracked = $carrierHandler->isNeedToBeTracked($processResponse);
