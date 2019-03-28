@@ -33,8 +33,8 @@ class UnsubscribeByCampaignForm extends AbstractType
             ->add('period', DateTimeRangePickerType::class, [
                 'label' => 'and period of time when users has been subscribed',
                 'required' => true,
-                'field_options_start' => ['format' => 'yyyy-MM-dd'],
-                'field_options_end' => ['format' => 'yyyy-MM-dd']
+                'field_options_start' => ['format' => 'yyyy-MM-dd HH:mm:ss'],
+                'field_options_end' => ['format' => 'yyyy-MM-dd HH:mm:ss']
             ])
             ->add('usersCount', IntegerType::class, [
                 'label' => 'also you have to select amount of users to unsubscribe',

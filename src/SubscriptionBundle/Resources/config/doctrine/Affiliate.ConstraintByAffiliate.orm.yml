@@ -35,6 +35,7 @@ SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate:
     manyToOne:
         affiliate:
             targetEntity: App\Domain\Entity\Affiliate
+            inversedBy: constraints
             joinColumn:
                 referencedColumnName: uuid
         carrier:
