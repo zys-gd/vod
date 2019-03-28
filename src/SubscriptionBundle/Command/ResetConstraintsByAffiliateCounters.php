@@ -18,7 +18,7 @@ class ResetConstraintsByAffiliateCounters extends Command
     /**
      * @var ConstraintByAffiliateRedis
      */
-    private $cache;
+    private $constraintByAffiliateRedis;
 
     /**
      * @var EntityManagerInterface
@@ -31,11 +31,11 @@ class ResetConstraintsByAffiliateCounters extends Command
     private $constraintByAffiliateRepository;
 
     public function __construct(
-        ConstraintByAffiliateRedis $cache,
+        ConstraintByAffiliateRedis $constraintByAffiliateRedis,
         EntityManagerInterface $entityManager,
         ConstraintByAffiliateRepository $constraintByAffiliateRepository
     ) {
-        $this->cache = $cache;
+        $this->constraintByAffiliateRedis = $constraintByAffiliateRedis;
         $this->entityManager = $entityManager;
         $this->constraintByAffiliateRepository = $constraintByAffiliateRepository;
 
@@ -68,7 +68,7 @@ class ResetConstraintsByAffiliateCounters extends Command
 
         /** @var ConstraintByAffiliate $constraint */
         foreach ($constraints as $constraint) {
-            $this->cache->resetCounter($constraint);
+            $this->constraintByAffiliateRedis->resetCounter($constraint);
 
             $constraint
                 ->setIsCapAlertDispatch(false)

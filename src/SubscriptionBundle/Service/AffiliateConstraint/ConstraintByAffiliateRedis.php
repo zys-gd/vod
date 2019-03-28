@@ -61,7 +61,7 @@ class ConstraintByAffiliateRedis
      */
     public function resetCounter(ConstraintByAffiliate $constraintByAffiliate)
     {
-        $this->redisService->set($this->getCacheKey($constraintByAffiliate), 0, 86400);
+        $this->redisService->set($this->getCacheKey($constraintByAffiliate), 0);
     }
 
     /**
