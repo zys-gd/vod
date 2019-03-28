@@ -32,17 +32,19 @@
 
     <script type="text/javascript">
         $('.x-subscribe-image').removeAttr('href').removeAttr('class');
-        
+
         var form = $('#wifi_form');
 
-        // move form to designed position (the best designer ever)
-        var height = parseFloat(window.getComputedStyle(form.parent('div').prev().get(0)).height);
-        var padding_top = parseFloat(window.getComputedStyle(form.parent('div').get(0)).paddingTop);
-        var margin_top = parseFloat(window.getComputedStyle(form.parent('div').get(0)).marginTop);
-        var offset = height+padding_top+margin_top;
-        form.css({
-            'margin-top': '-' + offset + 'px',
-            'min-height': parseInt(form.parent('div').prev().height()) + 'px'
+        $(document).ready(function () {
+            // move form to designed position (the best designer ever)
+            var height = parseFloat(window.getComputedStyle(form.parent('div').prev().get(0)).height);
+            var padding_top = parseFloat(window.getComputedStyle(form.parent('div').get(0)).paddingTop);
+            var margin_top = parseFloat(window.getComputedStyle(form.parent('div').get(0)).marginTop);
+            var offset = height + padding_top + margin_top;
+            form.css({
+                'margin-top': '-' + offset + 'px',
+                'min-height': parseInt(form.parent('div').prev().height()) + 'px'
+            });
         });
 
         var $wifi_form_step = $('#wifi_form_step');
@@ -161,7 +163,7 @@
             event.preventDefault();
             $(this).closest('form').attr('data-form', 'pin').submit();
             $(document).ajaxSuccess(function (event, request, settings) {
-                if(settings.url === '{{ path('send_sms_pin_code') }}') {
+                if (settings.url === '{{ path('send_sms_pin_code') }}') {
                     showAlert({title: 'New PIN-code', message: 'has been successfully sent'});
                 }
             });
@@ -179,13 +181,13 @@
         });
 
         $(document).on('focus', 'input[name=mobile_number]', function () {
-            if($(this).val() === '') {
+            if ($(this).val() === '') {
                 $(this).val('+');
             }
         });
 
         $(document).on('blur', 'input[name=mobile_number]', function () {
-            if($(this).val() === '+') {
+            if ($(this).val() === '+') {
                 $(this).val('');
             }
         });
