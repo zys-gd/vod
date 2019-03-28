@@ -2,6 +2,7 @@
 
 namespace SubscriptionBundle\Repository\Affiliate;
 
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use IdentificationBundle\Entity\CarrierInterface;
 use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
@@ -16,13 +17,13 @@ class ConstraintByAffiliateRepository extends EntityRepository
      * @param CarrierInterface $carrier
      * @param string $capType
      *
-     * @return bool
+     * @return string|null
      */
-    public function hasIdenticalConstraints(
+    public function getIdenticalConstraintUuid(
         AffiliateInterface $affiliate,
         CarrierInterface $carrier,
         string $capType
-    ): bool
+    ): ?string
     {
         $queryBuilder = $this->createQueryBuilder('cba');
 
@@ -40,6 +41,8 @@ class ConstraintByAffiliateRepository extends EntityRepository
             ])
             ->getQuery();
 
-        return count($query->getResult()) > 0;
+        $result = array_column($query->getScalarResult(), 'uuid');
+
+        return count($result) > 0 ? $result[0] : null;
     }
 }

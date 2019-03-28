@@ -2,27 +2,27 @@
 
 namespace SubscriptionBundle\Service\AffiliateConstraint;
 
-use ExtrasBundle\Cache\ICacheService;
+use ExtrasBundle\Cache\Redis\PureRedisService;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 
 /**
- * Class ConstraintByAffiliateCache
+ * Class ConstraintByAffiliateRedis
  */
-class ConstraintByAffiliateCache
+class ConstraintByAffiliateRedis
 {
     /**
-     * @var ICacheService
+     * @var PureRedisService
      */
-    private $cache;
+    private $redisService;
 
     /**
-     * ConstraintByAffiliateCache constructor
+     * ConstraintByAffiliateRedis constructor
      *
-     * @param ICacheService $cacheService
+     * @param PureRedisService $redisService
      */
-    public function __construct(ICacheService $cacheService)
+    public function __construct(PureRedisService $redisService)
     {
-        $this->cache = $cacheService;
+        $this->redisService = $redisService;
     }
 
     /**
@@ -32,7 +32,7 @@ class ConstraintByAffiliateCache
      */
     public function getCounter(ConstraintByAffiliate $constraintByAffiliate): ?int
     {
-        return $this->cache->getValue($this->getCacheKey($constraintByAffiliate));
+        return $this->redisService->get($this->getCacheKey($constraintByAffiliate));
     }
 
     /**
@@ -42,7 +42,7 @@ class ConstraintByAffiliateCache
      */
     public function hasCounter(ConstraintByAffiliate $constraintByAffiliate): bool
     {
-        return $this->cache->hasCache($this->getCacheKey($constraintByAffiliate));
+        return $this->redisService->hasKey($this->getCacheKey($constraintByAffiliate));
     }
 
     /**
@@ -51,9 +51,9 @@ class ConstraintByAffiliateCache
     public function updateCounter(ConstraintByAffiliate $constraintByAffiliate): void
     {
         $cacheKey = $this->getCacheKey($constraintByAffiliate);
-        $counter = $this->cache->hasCache($cacheKey) ? $this->cache->getValue($cacheKey) + 1 : 1;
+        $counter = $this->redisService->hasKey($cacheKey) ? (int) $this->redisService->get($cacheKey) + 1 : 1;
 
-        $this->cache->saveCache($cacheKey, $counter, 86400);
+        $this->redisService->set($cacheKey, $counter);
     }
 
     /**
@@ -61,7 +61,7 @@ class ConstraintByAffiliateCache
      */
     public function resetCounter(ConstraintByAffiliate $constraintByAffiliate)
     {
-        $this->cache->saveCache($this->getCacheKey($constraintByAffiliate), 0, 86400);
+        $this->redisService->set($this->getCacheKey($constraintByAffiliate), 0, 86400);
     }
 
     /**

@@ -119,6 +119,6 @@ services:
     App\Domain\Service\VisitConstraintByAffiliate:
         arguments:
             - '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender'
-            - '@SubscriptionBundle\Service\AffiliateConstraint\ConstraintByAffiliateCache'
+            - '@SubscriptionBundle\Service\AffiliateConstraint\ConstraintByAffiliateRedis'
             - '@App\Domain\Repository\CarrierRepository'
             - '@doctrine.orm.entity_manager'
