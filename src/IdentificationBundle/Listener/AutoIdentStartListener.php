@@ -154,6 +154,12 @@ class AutoIdentStartListener
         $ipAddress = $request->getClientIp();
         $carrierId = $this->detectCarrier($ipAddress, $session);
 
+        $this->logger->debug('AutoIdent start', [
+            'request'    => $request,
+            'ipAddress'  => $ipAddress,
+            'carrierId' => $carrierId
+        ]);
+
         if (!$carrierId) {
             $response = $this->startWifiFlow($session);
             if ($this->isRedirectToWhoopsRequired($controller, $method)) {
@@ -165,18 +171,23 @@ class AutoIdentStartListener
         }
 
         if (!($controller instanceof ControllerWithIdentification)) {
+            $this->logger->debug('Autoident: not instanceof ControllerWithIdentification');
             return;
         }
         if ($this->identificationStatus->isIdentified()) {
+            $this->logger->debug('Autoident: isIdentified');
             return;
         }
         if ($this->identificationStatus->isWifiFlowStarted()) {
+            $this->logger->debug('Autoident: isWifiFlowStarted');
             return;
         }
         if ($this->identificationStatus->isAlreadyTriedToAutoIdent()) {
+            $this->logger->debug('Autoident: isAlreadyTriedToAutoIdent');
             return;
         }
 
+        $this->logger->debug('Autoident: startWifiFlow');
         $this->startWifiFlow($session);
         $this->identificationStatus->registerAutoIdentAttempt();
 
