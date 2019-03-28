@@ -67,15 +67,15 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
      */
     public function validateForIdenticalRecord(?CarrierInterface $carrier, ExecutionContextInterface $context): void
     {
-        /** @var ConstraintByAffiliate $constraintsByAffiliate */
-        $constraintsByAffiliate = $this->getSubject();
+        /** @var ConstraintByAffiliate $constraintByAffiliate */
+        $constraintByAffiliate = $this->getSubject();
 
-        $affiliate = $constraintsByAffiliate->getAffiliate();
-        $capType = $constraintsByAffiliate->getCapType();
+        $affiliate = $constraintByAffiliate->getAffiliate();
+        $capType = $constraintByAffiliate->getCapType();
 
-        $hasDuplicates = $this->constraintByAffiliateRepository->hasIdenticalConstraints($affiliate, $carrier, $capType);
+        $uuid = $this->constraintByAffiliateRepository->getIdenticalConstraintUuid($affiliate, $carrier, $capType);
 
-        if ($hasDuplicates) {
+        if ($uuid && $uuid !== $constraintByAffiliate->getUuid()) {
             $context
                 ->buildViolation('Identical constraint for affiliate and carrier was found')
                 ->addViolation();

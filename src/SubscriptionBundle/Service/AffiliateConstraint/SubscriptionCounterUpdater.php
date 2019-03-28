@@ -19,9 +19,9 @@ class SubscriptionCounterUpdater
     protected $notificationSender;
 
     /**
-     * @var ConstraintByAffiliateCache
+     * @var ConstraintByAffiliateRedis
      */
-    protected $cache;
+    protected $constraintByAffiliateRedis;
 
     /**
      * @var EntityManagerInterface
@@ -37,18 +37,18 @@ class SubscriptionCounterUpdater
      * AbstractConstraintByAffiliateService constructor
      *
      * @param CAPNotificationSender $notificationSender
-     * @param ConstraintByAffiliateCache $cache
+     * @param ConstraintByAffiliateRedis $constraintByAffiliateRedis
      * @param EntityManagerInterface $entityManager
      * @param CampaignRepositoryInterface $campaignRepository
      */
     public function __construct(
         CAPNotificationSender $notificationSender,
-        ConstraintByAffiliateCache $cache,
+        ConstraintByAffiliateRedis $constraintByAffiliateRedis,
         EntityManagerInterface $entityManager,
         CampaignRepositoryInterface $campaignRepository
     ) {
         $this->notificationSender = $notificationSender;
-        $this->cache = $cache;
+        $this->constraintByAffiliateRedis = $constraintByAffiliateRedis;
         $this->entityManager = $entityManager;
         $this->campaignRepository = $campaignRepository;
     }
@@ -69,7 +69,7 @@ class SubscriptionCounterUpdater
         $subscriptionConstraint = $affiliate->getConstraint(ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE, $carrier);
 
         if ($subscriptionConstraint) {
-            $this->cache->updateCounter($subscriptionConstraint);
+            $this->constraintByAffiliateRedis->updateCounter($subscriptionConstraint);
         }
     }
 }

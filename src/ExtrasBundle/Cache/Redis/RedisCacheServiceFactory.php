@@ -11,7 +11,6 @@ class RedisCacheServiceFactory implements ICacheServiceFactory
 {
     const PLACEHOLDER_DATABASE = 1;
     const USER_SUBSCRIPTION_DATABASE = 1;
-    const CONSTRAINTS_BY_AFFILIATE_SERVICE = 2;
 
     /**
      * @var RedisConnectionProvider
@@ -54,15 +53,6 @@ class RedisCacheServiceFactory implements ICacheServiceFactory
     public function createUserSubscriptionCacheService(array $options = []): ICacheService
     {
         return $this->createService(self::USER_SUBSCRIPTION_DATABASE, $options, sprintf('%s_%s_', $this->namespace, 'subscriptions'));
-    }
-
-    /**
-     * @param array $options
-     * @return ICacheService
-     */
-    public function createConstraintsByAffiliateCacheService(array $options = []): ICacheService
-    {
-        return $this->createService(self::CONSTRAINTS_BY_AFFILIATE_SERVICE, $options, sprintf('%s_%s_', $this->namespace, 'constraints'));
     }
 
     /**
