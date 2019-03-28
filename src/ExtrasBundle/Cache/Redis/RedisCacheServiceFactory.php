@@ -11,7 +11,7 @@ class RedisCacheServiceFactory implements ICacheServiceFactory
 {
     const PLACEHOLDER_DATABASE = 1;
     const USER_SUBSCRIPTION_DATABASE = 1;
-    const CONSTRAINTS_BY_AFFILIATE_SERVICE = 1;
+    const CONSTRAINTS_BY_AFFILIATE_SERVICE = 2;
 
     /**
      * @var RedisConnectionProvider
