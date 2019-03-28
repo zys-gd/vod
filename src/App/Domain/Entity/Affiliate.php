@@ -595,6 +595,6 @@ class Affiliate implements HasUuid, AffiliateInterface
             return $constraint->getCapType() === $capType && $constraint->getCarrier()->getUuid() === $carrier->getUuid();
         });
 
-        return $filteredByType->first() ?? null;
+        return $filteredByType->isEmpty() ? null : $filteredByType->first();
     }
 }
