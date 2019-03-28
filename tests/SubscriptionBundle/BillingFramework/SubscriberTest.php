@@ -4,6 +4,7 @@ use App\Utils\UuidGenerator;
 use IdentificationBundle\Entity\User;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateSender;
+use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
@@ -12,6 +13,7 @@ use SubscriptionBundle\Service\Action\Common\FakeResponseProvider;
 use SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker;
 use SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater;
 use SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider;
+use SubscriptionBundle\Service\AffiliateConstraint\SubscriptionCounterUpdater;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\Notification\Notifier;
 use SubscriptionBundle\Service\SubscriptionCreator;
@@ -63,6 +65,11 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
         ]);
 
 
+        $this->subscribeProcess->allows([
+            'doSubscribe' => new ProcessResult()
+        ]);
+
+
         $this->subscriber->subscribe($user, $subscriptionPack);
 
         $this->subscribeProcess->shouldHaveReceived('doSubscribe')->once();
@@ -111,7 +118,8 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
             Mockery::spy(Notifier::class),
             $this->subscribeProcess,
             Mockery::spy(OnSubscribeUpdater::class),
-            Mockery::spy(SubscribeParametersProvider::class)
+            Mockery::spy(SubscribeParametersProvider::class),
+            Mockery::spy(SubscriptionCounterUpdater::class)
         );
 
     }
