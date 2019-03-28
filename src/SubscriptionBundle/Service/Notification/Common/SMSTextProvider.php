@@ -58,7 +58,8 @@ class SMSTextProvider
         LanguageInterface $language
     ): string
     {
-        if ($textFromSubscriptionPack = $this->extractFromSubscriptionPack($notificationType, $subscriptionPack)) {
+        $str = $textFromSubscriptionPack = $this->extractFromSubscriptionPack($notificationType, $subscriptionPack);
+        if (trim($str)) {
             return $textFromSubscriptionPack;
         }
 
