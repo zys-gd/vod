@@ -3,6 +3,7 @@
 namespace ExtrasBundle\Cache\Redis;
 
 use Predis\Client as PureRedis;
+use Predis\ClientInterface;
 
 /**
  * Class PureRedisService
@@ -10,18 +11,18 @@ use Predis\Client as PureRedis;
 class PureRedisService
 {
     /**
-     * @var PureRedis
+     * @var ClientInterface
      */
     private $redis;
 
     /**
-     * PureRedisService constructor
+     * PureRedisService constructor.
      *
-     * @param RedisConnectionProvider $redisConnectionProvider
+     * @param ClientInterface $redis
      */
-    public function __construct(RedisConnectionProvider $redisConnectionProvider)
+    public function __construct(ClientInterface $redis)
     {
-        $this->redis = $redisConnectionProvider->getPureRedisConnection();
+        $this->redis = $redis;
     }
 
     /**

@@ -27,4 +27,4 @@ services:
             - "v%app_version_hash%"
 
     ExtrasBundle\Cache\Redis\PureRedisService:
-        arguments: ['@app.cache.redis_connection_provider']
+        arguments: ["@=service('app.cache.redis_connection_provider').createRedisConnection()"]
