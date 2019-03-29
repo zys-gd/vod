@@ -12,7 +12,6 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\Form\Type\BooleanType;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -104,10 +103,9 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
             ->add('carrier')
             ->add('numberOfActions')
             ->add('redirectUrl')
-            ->add('counter')
             ->add('capType')
             ->add('flushDate')
-            ->add('isCapAlertDispatch', BooleanType::class, [
+            ->add('isCapAlertDispatch', 'boolean', [
                 'label' => 'Is email sent today'
             ])
             ->add('_action', null, [
@@ -165,12 +163,11 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
             ->add('carrier')
             ->add('numberOfActions')
             ->add('redirectUrl')
-            ->add('counter')
             ->add('capType', TextType::class, [
                 'label' => 'CAP Type'
             ])
             ->add('flushDate')
-            ->add('isCapAlertDispatch', BooleanType::class, [
+            ->add('isCapAlertDispatch', 'boolean', [
                 'label' => 'Is email sent today'
             ]);
     }
