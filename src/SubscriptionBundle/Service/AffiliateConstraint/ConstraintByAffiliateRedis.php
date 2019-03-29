@@ -2,7 +2,7 @@
 
 namespace SubscriptionBundle\Service\AffiliateConstraint;
 
-use ExtrasBundle\Cache\Redis\PureRedisService;
+use ExtrasBundle\Cache\PureRedisInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 
 /**
@@ -11,16 +11,16 @@ use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 class ConstraintByAffiliateRedis
 {
     /**
-     * @var PureRedisService
+     * @var PureRedisInterface
      */
     private $redisService;
 
     /**
      * ConstraintByAffiliateRedis constructor
      *
-     * @param PureRedisService $redisService
+     * @param PureRedisInterface $redisService
      */
-    public function __construct(PureRedisService $redisService)
+    public function __construct(PureRedisInterface $redisService)
     {
         $this->redisService = $redisService;
     }

@@ -2,13 +2,14 @@
 
 namespace ExtrasBundle\Cache\Redis;
 
+use ExtrasBundle\Cache\PureRedisInterface;
 use Predis\Client as PureRedis;
 use Predis\ClientInterface;
 
 /**
  * Class PureRedisService
  */
-class PureRedisService
+class PureRedisService implements PureRedisInterface
 {
     /**
      * @var ClientInterface
@@ -40,7 +41,7 @@ class PureRedisService
      *
      * @return string
      */
-    public function get(string $key)
+    public function get(string $key): string
     {
         return $this->redis->get($key);
     }
@@ -49,7 +50,7 @@ class PureRedisService
      * @param string $key
      * @param $value
      */
-    public function set(string $key, $value)
+    public function set(string $key, $value): void
     {
         $this->redis->set($key, $value);
     }
