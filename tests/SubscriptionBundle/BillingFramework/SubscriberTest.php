@@ -13,7 +13,7 @@ use SubscriptionBundle\Service\Action\Common\FakeResponseProvider;
 use SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker;
 use SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater;
 use SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider;
-use SubscriptionBundle\Service\AffiliateConstraint\SubscriptionCounterUpdater;
+use SubscriptionBundle\Service\SubscriptionCounterUpdater;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\Notification\Notifier;
 use SubscriptionBundle\Service\SubscriptionCreator;

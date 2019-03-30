@@ -12,7 +12,7 @@ use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Exception\SubscriptionException;
 use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use SubscriptionBundle\Repository\SubscriptionRepository;
-use SubscriptionBundle\Service\AffiliateConstraint\SubscriptionCounterUpdater;
+use SubscriptionBundle\Service\SubscriptionCounterUpdater;
 use SubscriptionBundle\Service\Callback\Common\Type\RenewCallbackHandler;
 use SubscriptionBundle\Service\Callback\Common\Type\SubscriptionCallbackHandler;
 use SubscriptionBundle\Service\Callback\Common\Type\UnsubscriptionCallbackHandler;

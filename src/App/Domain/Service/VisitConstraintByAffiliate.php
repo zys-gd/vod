@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
-use SubscriptionBundle\Service\AffiliateConstraint\ConstraintByAffiliateRedis;
+use SubscriptionBundle\Service\ConstraintCounterRedis;
 use SubscriptionBundle\Service\Notification\Email\CAPNotificationSender;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -24,9 +24,9 @@ class VisitConstraintByAffiliate
     protected $notificationSender;
 
     /**
-     * @var ConstraintByAffiliateRedis
+     * @var ConstraintCounterRedis
      */
-    protected $constraintByAffiliateRedis;
+    protected $constraintCounterRedis;
 
     /**
      * @var CarrierRepository
@@ -42,18 +42,18 @@ class VisitConstraintByAffiliate
      * AbstractConstraintByAffiliateService constructor
      *
      * @param CAPNotificationSender $notificationSender
-     * @param ConstraintByAffiliateRedis $constraintByAffiliateRedis
+     * @param ConstraintCounterRedis $constraintCounterRedis
      * @param CarrierRepository $carrierRepository
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         CAPNotificationSender $notificationSender,
-        ConstraintByAffiliateRedis $constraintByAffiliateRedis,
+        ConstraintCounterRedis $constraintCounterRedis,
         CarrierRepository $carrierRepository,
         EntityManagerInterface $entityManager
     ) {
         $this->notificationSender = $notificationSender;
-        $this->constraintByAffiliateRedis = $constraintByAffiliateRedis;
+        $this->constraintCounterRedis = $constraintCounterRedis;
         $this->carrierRepository = $carrierRepository;
         $this->entityManager = $entityManager;
     }
@@ -87,8 +87,10 @@ class VisitConstraintByAffiliate
                 continue;
             }
 
-            $isLimitReached = $this->constraintByAffiliateRedis->hasCounter($constraint)
-                ? $this->constraintByAffiliateRedis->getCounter($constraint) >= $constraint->getNumberOfActions()
+            $counterIdentifier = $constraint->getUuid();
+
+            $isLimitReached = $this->constraintCounterRedis->hasCounter($counterIdentifier)
+                ? $this->constraintCounterRedis->getCounter($counterIdentifier) >= $constraint->getNumberOfActions()
                 : false;
 
             if ($isLimitReached) {
@@ -98,7 +100,7 @@ class VisitConstraintByAffiliate
 
                 return new RedirectResponse($constraint->getRedirectUrl());
             } elseif ($constraint->getCapType() === ConstraintByAffiliate::CAP_TYPE_VISIT) {
-                $this->constraintByAffiliateRedis->updateCounter($constraint);
+                $this->constraintCounterRedis->updateCounter($counterIdentifier);
             }
         }
 

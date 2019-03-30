@@ -5,7 +5,7 @@ namespace SubscriptionBundle\Command;
 use Doctrine\ORM\EntityManagerInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository;
-use SubscriptionBundle\Service\AffiliateConstraint\ConstraintByAffiliateRedis;
+use SubscriptionBundle\Service\ConstraintCounterRedis;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -16,9 +16,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ResetConstraintsByAffiliateCounters extends Command
 {
     /**
-     * @var ConstraintByAffiliateRedis
+     * @var ConstraintCounterRedis
      */
-    private $constraintByAffiliateRedis;
+    private $constraintCounterRedis;
 
     /**
      * @var EntityManagerInterface
@@ -30,12 +30,19 @@ class ResetConstraintsByAffiliateCounters extends Command
      */
     private $constraintByAffiliateRepository;
 
+    /**
+     * ResetConstraintsByAffiliateCounters constructor
+     *
+     * @param ConstraintCounterRedis $constraintCounterRedis
+     * @param EntityManagerInterface $entityManager
+     * @param ConstraintByAffiliateRepository $constraintByAffiliateRepository
+     */
     public function __construct(
-        ConstraintByAffiliateRedis $constraintByAffiliateRedis,
+        ConstraintCounterRedis $constraintCounterRedis,
         EntityManagerInterface $entityManager,
         ConstraintByAffiliateRepository $constraintByAffiliateRepository
     ) {
-        $this->constraintByAffiliateRedis = $constraintByAffiliateRedis;
+        $this->constraintCounterRedis = $constraintCounterRedis;
         $this->entityManager = $entityManager;
         $this->constraintByAffiliateRepository = $constraintByAffiliateRepository;
 
@@ -45,7 +52,7 @@ class ResetConstraintsByAffiliateCounters extends Command
     public function configure()
     {
         $this->setName('constraint-by-affiliate:reset');
-        $this->setHelp('Reset from cache all counters for constraints by affiliate');
+        $this->setHelp('Reset from redis all counters for constraints by affiliate');
     }
 
     /**
@@ -68,7 +75,7 @@ class ResetConstraintsByAffiliateCounters extends Command
 
         /** @var ConstraintByAffiliate $constraint */
         foreach ($constraints as $constraint) {
-            $this->constraintByAffiliateRedis->resetCounter($constraint);
+            $this->constraintCounterRedis->resetCounter($constraint->getUuid());
 
             $constraint
                 ->setIsCapAlertDispatch(false)

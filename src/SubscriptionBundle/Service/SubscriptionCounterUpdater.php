@@ -1,6 +1,6 @@
 <?php
 
-namespace SubscriptionBundle\Service\AffiliateConstraint;
+namespace SubscriptionBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
@@ -19,9 +19,9 @@ class SubscriptionCounterUpdater
     protected $notificationSender;
 
     /**
-     * @var ConstraintByAffiliateRedis
+     * @var ConstraintCounterRedis
      */
-    protected $constraintByAffiliateRedis;
+    protected $constraintCounterRedis;
 
     /**
      * @var EntityManagerInterface
@@ -37,18 +37,18 @@ class SubscriptionCounterUpdater
      * AbstractConstraintByAffiliateService constructor
      *
      * @param CAPNotificationSender $notificationSender
-     * @param ConstraintByAffiliateRedis $constraintByAffiliateRedis
+     * @param ConstraintCounterRedis $constraintCounterRedis
      * @param EntityManagerInterface $entityManager
      * @param CampaignRepositoryInterface $campaignRepository
      */
     public function __construct(
         CAPNotificationSender $notificationSender,
-        ConstraintByAffiliateRedis $constraintByAffiliateRedis,
+        ConstraintCounterRedis $constraintCounterRedis,
         EntityManagerInterface $entityManager,
         CampaignRepositoryInterface $campaignRepository
     ) {
         $this->notificationSender = $notificationSender;
-        $this->constraintByAffiliateRedis = $constraintByAffiliateRedis;
+        $this->constraintCounterRedis = $constraintCounterRedis;
         $this->entityManager = $entityManager;
         $this->campaignRepository = $campaignRepository;
     }
@@ -69,7 +69,7 @@ class SubscriptionCounterUpdater
         $subscriptionConstraint = $affiliate->getConstraint(ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE, $carrier);
 
         if ($subscriptionConstraint) {
-            $this->constraintByAffiliateRedis->updateCounter($subscriptionConstraint);
+            $this->constraintCounterRedis->updateCounter($subscriptionConstraint->getUuid());
         }
     }
 }
