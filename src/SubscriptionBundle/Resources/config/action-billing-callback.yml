@@ -15,7 +15,7 @@ services:
         - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
         - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
         - '@SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider'
-        - '@SubscriptionBundle\Service\SubscriptionCounterUpdater'
+        - '@SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater'
 
       public: false
 

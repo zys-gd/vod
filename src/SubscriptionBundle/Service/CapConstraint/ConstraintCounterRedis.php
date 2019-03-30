@@ -1,6 +1,6 @@
 <?php
 
-namespace SubscriptionBundle\Service;
+namespace SubscriptionBundle\Service\CapConstraint;
 
 use ExtrasBundle\Cache\PureRedisInterface;
 

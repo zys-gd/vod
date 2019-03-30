@@ -54,7 +54,7 @@ services:
 
     SubscriptionBundle\Command\ResetConstraintsByAffiliateCounters:
         arguments:
-            - '@SubscriptionBundle\Service\ConstraintCounterRedis'
+            - '@SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis'
             - '@doctrine.orm.entity_manager'
             - '@SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository'
         tags:

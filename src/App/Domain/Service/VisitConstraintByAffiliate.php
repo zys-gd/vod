@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
-use SubscriptionBundle\Service\ConstraintCounterRedis;
+use SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis;
 use SubscriptionBundle\Service\Notification\Email\CAPNotificationSender;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace SubscriptionBundle\Service;
+namespace SubscriptionBundle\Service\CapConstraint;
 
 use Doctrine\ORM\EntityManagerInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;

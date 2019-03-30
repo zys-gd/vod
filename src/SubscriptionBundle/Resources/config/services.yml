@@ -92,14 +92,14 @@ services:
             - '%cap_notification_mail_to%'
             - '%cap_notification_mail_from%'
 
-    SubscriptionBundle\Service\ConstraintCounterRedis:
+    SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis:
         arguments:
             - '@ExtrasBundle\Cache\Redis\PureRedisService'
 
-    SubscriptionBundle\Service\SubscriptionCounterUpdater:
+    SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater:
         arguments:
             - '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender'
-            - '@SubscriptionBundle\Service\ConstraintCounterRedis'
+            - '@SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis'
             - '@doctrine.orm.entity_manager'
             - '@App\Domain\Repository\CampaignRepository'
 
