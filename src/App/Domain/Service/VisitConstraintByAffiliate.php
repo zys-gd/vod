@@ -87,11 +87,9 @@ class VisitConstraintByAffiliate
                 continue;
             }
 
-            $counterIdentifier = $constraint->getUuid();
+            $counter = $this->constraintCounterRedis->getCounter($constraint->getUuid());
 
-            $isLimitReached = $this->constraintCounterRedis->hasCounter($counterIdentifier)
-                ? $this->constraintCounterRedis->getCounter($counterIdentifier) >= $constraint->getNumberOfActions()
-                : false;
+            $isLimitReached = $counter ? $counter >= $constraint->getNumberOfActions() : false;
 
             if ($isLimitReached) {
                 if (!$constraint->getIsCapAlertDispatch()) {
@@ -100,7 +98,7 @@ class VisitConstraintByAffiliate
 
                 return new RedirectResponse($constraint->getRedirectUrl());
             } elseif ($constraint->getCapType() === ConstraintByAffiliate::CAP_TYPE_VISIT) {
-                $this->constraintCounterRedis->updateCounter($counterIdentifier);
+                $this->constraintCounterRedis->updateCounter($constraint->getUuid());
             }
         }
 
@@ -117,7 +115,7 @@ class VisitConstraintByAffiliate
      */
     private function sendNotification(ConstraintByAffiliate $constraint, CarrierInterface $carrier)
     {
-        $result = $this->notificationSender->sendNotification($constraint, $carrier);
+        $result = $this->notificationSender->sendCapByAffiliateNotification($constraint, $carrier);
 
         if ($result) {
             $constraint->setIsCapAlertDispatch(true);

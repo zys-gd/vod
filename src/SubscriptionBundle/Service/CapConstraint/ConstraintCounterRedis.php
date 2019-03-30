@@ -58,9 +58,17 @@ class ConstraintCounterRedis
     /**
      * @param string $counterIdentifier
      */
-    public function resetCounter(string $counterIdentifier)
+    public function resetCounter(string $counterIdentifier): void
     {
         $this->redisService->set($this->getCacheKey($counterIdentifier), 0);
+    }
+
+    /**
+     * @param string $counterIdentifier
+     */
+    public function removeCounter(string $counterIdentifier): void
+    {
+        $this->redisService->remove($counterIdentifier);
     }
 
     /**

@@ -1,8 +1,3 @@
 services:
     LegacyBundle\Service\Exchanger:
         arguments: ['@LegacyBundle\Repository\ExchangeRateRepository']
-
-    LegacyBundle\Service\SubscriptionConstraintsByCarrier:
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@App\Domain\Repository\CarrierRepository'

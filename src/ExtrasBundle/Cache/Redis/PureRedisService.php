@@ -39,9 +39,9 @@ class PureRedisService implements PureRedisInterface
     /**
      * @param string $key
      *
-     * @return string
+     * @return string|null
      */
-    public function get(string $key): string
+    public function get(string $key): ?string
     {
         return $this->redis->get($key);
     }
@@ -53,5 +53,13 @@ class PureRedisService implements PureRedisInterface
     public function set(string $key, $value): void
     {
         $this->redis->set($key, $value);
+    }
+
+    /**
+     * @param string $key
+     */
+    public function remove(string $key): void
+    {
+        $this->redis->del([$key]);
     }
 }

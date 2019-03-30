@@ -54,7 +54,6 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $isCaptcha                               = $row['isCaptcha'];
             $numberOfAllowedSubscriptionByConstraint = $row['numberOfAllowedSubscriptionsByConstraint'];
             $redirectUrl                             = $row['redirectUrl'];
-            $counter                                 = $row['counter'];
             $flushdate                               = $row['flushDate'];
             $isCapAlertDispatch                      = $row['isCapAlertDispatch'];
             $flushdate                               = $row['flushDate'];
@@ -78,10 +77,9 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $carrier->setResubAllowed($resubAllowed);
             $carrier->setIsCampaignsOnPause($isCampaignsOnPause);
             $carrier->setNumberOfAllowedSubscription((int)$numberOfAllowedSubscription);
-            $carrier->setnumberOfAllowedSubscriptionsByConstraint($numberOfAllowedSubscriptionByConstraint);
+            $carrier->setNumberOfAllowedSubscriptionsByConstraint($numberOfAllowedSubscriptionByConstraint);
             $carrier->setIsCaptcha($isCaptcha);
             $carrier->setRedirectUrl($redirectUrl);
-            $carrier->setCounter($counter);
             $carrier->setFlushDate($flushdate ? \DateTime::createFromFormat('Y-m-d', $flushdate) : null);
             $carrier->setIsUnlimitedSubscriptionAttemptsAllowed($isUnlimitedSubscriptionAttemptsAllowed);
             $carrier->setUuid($uuid);

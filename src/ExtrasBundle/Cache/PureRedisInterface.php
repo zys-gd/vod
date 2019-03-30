@@ -20,13 +20,18 @@ interface PureRedisInterface
     /**
      * @param string $key
      *
-     * @return string
+     * @return string|null
      */
-    public function get(string $key): string;
+    public function get(string $key): ?string;
 
     /**
      * @param string $key
      * @param mixed  $value
      */
     public function set(string $key, $value): void;
+
+    /**
+     * @param string $key
+     */
+    public function remove(string $key): void;
 }

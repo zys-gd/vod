@@ -3,17 +3,17 @@
 namespace SubscriptionBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
-use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
-use SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository;
+use IdentificationBundle\Entity\CarrierInterface;
+use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class ResetConstraintsByAffiliateCounters
+ * Class ResetConstraintsByCarrierCounters
  */
-class ResetConstraintsByAffiliateCounters extends Command
+class ResetConstraintsByCarrierCounters extends Command
 {
     /**
      * @var ConstraintCounterRedis
@@ -26,32 +26,32 @@ class ResetConstraintsByAffiliateCounters extends Command
     private $entityManager;
 
     /**
-     * @var ConstraintByAffiliateRepository
+     * @var CarrierRepositoryInterface
      */
-    private $constraintByAffiliateRepository;
+    private $carrierRepository;
 
     /**
-     * ResetConstraintsByAffiliateCounters constructor
+     * ResetConstraintsByCarrierCounters constructor
      *
      * @param ConstraintCounterRedis $constraintCounterRedis
      * @param EntityManagerInterface $entityManager
-     * @param ConstraintByAffiliateRepository $constraintByAffiliateRepository
+     * @param CarrierRepositoryInterface $carrierRepository
      */
     public function __construct(
         ConstraintCounterRedis $constraintCounterRedis,
         EntityManagerInterface $entityManager,
-        ConstraintByAffiliateRepository $constraintByAffiliateRepository
+        CarrierRepositoryInterface $carrierRepository
     ) {
         $this->constraintCounterRedis = $constraintCounterRedis;
         $this->entityManager = $entityManager;
-        $this->constraintByAffiliateRepository = $constraintByAffiliateRepository;
+        $this->carrierRepository = $carrierRepository;
 
         parent::__construct();
     }
 
     public function configure()
     {
-        $this->setName('constraint-by-affiliate:reset');
+        $this->setName('constraint-by-carrier:reset');
         $this->setHelp('Reset from redis all counters for constraints by affiliate');
     }
 
@@ -65,27 +65,33 @@ class ResetConstraintsByAffiliateCounters extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $constraints = $this->constraintByAffiliateRepository->findAll();
+        $carriers = $this->carrierRepository->findAll();
 
-        if (empty($constraints)) {
-            $output->writeln('No constraints by affiliates were found');
+        if (empty($carriers)) {
+            $output->writeln('No carriers were found');
 
             return;
         }
 
-        /** @var ConstraintByAffiliate $constraint */
-        foreach ($constraints as $constraint) {
-            $this->constraintCounterRedis->resetCounter($constraint->getUuid());
+        /** @var CarrierInterface $carrier */
+        foreach ($carriers as $carrier) {
+            $allowedSubscriptions = $carrier->getNumberOfAllowedSubscriptionsByConstraint();
 
-            $constraint
+            if (empty($allowedSubscriptions)) {
+                continue;
+            }
+
+            $this->constraintCounterRedis->resetCounter($carrier->getUuid());
+
+            $carrier
                 ->setIsCapAlertDispatch(false)
                 ->setFlushDate(new \DateTime('now'));
 
-            $this->entityManager->persist($constraint);
+            $this->entityManager->persist($carrier);
         }
 
         $this->entityManager->flush();
 
-        $output->writeln('Constraint by affiliate counters successfully reset');
+        $output->writeln('Constraint by carrier counters successfully reset');
     }
 }

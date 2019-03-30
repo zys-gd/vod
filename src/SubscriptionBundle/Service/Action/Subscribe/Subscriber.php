@@ -144,7 +144,7 @@ class Subscriber
         try {
             $response = $this->performSubscribe($additionalData, $subscription);
 
-            if ($response->isSuccessful() && $response->isFinal() && $subscription->getAffiliateToken()) {
+            if ($response->isSuccessful() && $response->isFinal()) {
                 $this->subscriptionCounterUpdater->updateSubscriptionCounter($subscription);
             }
 

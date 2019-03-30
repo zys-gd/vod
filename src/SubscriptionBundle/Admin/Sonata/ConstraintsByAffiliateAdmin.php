@@ -122,6 +122,8 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $isCreate = $this->isCurrentRoute('create');
+
         $formMapper
             ->add('affiliate', EntityType::class, [
                 'class' => Affiliate::class,
@@ -142,15 +144,18 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
             ])
             ->add('redirectUrl', UrlType::class, [
                 'label' => 'Redirect url'
-            ])
-            ->add('capType', ChoiceType::class, [
-                'choices' => [
-                    'Subscribe' => ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE,
-                    'Visit' => ConstraintByAffiliate::CAP_TYPE_VISIT
-                ],
-                'label' => 'CAP type'
-            ])
-        ;
+            ]);
+
+        if ($isCreate) {
+            $formMapper
+                ->add('capType', ChoiceType::class, [
+                    'choices' => [
+                        'Subscribe' => ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE,
+                        'Visit' => ConstraintByAffiliate::CAP_TYPE_VISIT
+                    ],
+                    'label' => 'CAP type'
+                ]);
+        }
     }
 
     /**

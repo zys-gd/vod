@@ -256,10 +256,9 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
         $carrier->setResubAllowed(false);
         $carrier->setIsCampaignsOnPause(false);
         $carrier->setNumberOfAllowedSubscription(0);
-        $carrier->setnumberOfAllowedSubscriptionsByConstraint(0);
+        $carrier->setNumberOfAllowedSubscriptionsByConstraint(0);
         $carrier->setIsCaptcha(false);
         $carrier->setRedirectUrl(false);
-        $carrier->setCounter(0);
         $carrier->setFlushDate(null);
         $carrier->setIsUnlimitedSubscriptionAttemptsAllowed(true);
 

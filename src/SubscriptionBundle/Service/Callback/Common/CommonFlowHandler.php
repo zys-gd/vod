@@ -189,7 +189,7 @@ class CommonFlowHandler
         $carrierHandler->afterProcess($subscription, $subscription->getUser(), $processResponse);
         $this->entitySaveHelper->persistAndSave($subscription);
 
-        if ($processResponse->isSuccessful() && $processResponse->isFinal() && $subscription->getAffiliateToken()) {
+        if ($processResponse->isSuccessful() && $processResponse->isFinal()) {
             $this->subscriptionCounterUpdater->updateSubscriptionCounter($subscription);
         }
 

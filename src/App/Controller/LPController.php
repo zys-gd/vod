@@ -15,6 +15,7 @@ use App\Domain\Service\ContentStatisticSender;
 use App\Domain\Service\VisitConstraintByAffiliate;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
+use SubscriptionBundle\Service\CapConstraint\SubscriptionConstraintByCarrier;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,26 +40,33 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var VisitConstraintByAffiliate
      */
     private $visitConstraintByAffiliate;
+    /**
+     * @var SubscriptionConstraintByCarrier
+     */
+    private $subscriptionConstraintByCarrier;
 
     /**
      * LPController constructor.
      *
-     * @param ContentStatisticSender     $contentStatisticSender
-     * @param CampaignRepository         $campaignRepository
-     * @param VisitConstraintByAffiliate $visitConstraintByAffiliate
-     * @param string                     $imageBaseUrl
+     * @param ContentStatisticSender          $contentStatisticSender
+     * @param CampaignRepository              $campaignRepository
+     * @param VisitConstraintByAffiliate      $visitConstraintByAffiliate
+     * @param SubscriptionConstraintByCarrier $subscriptionConstraintByCarrier
+     * @param string                          $imageBaseUrl
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
         CampaignRepository $campaignRepository,
         VisitConstraintByAffiliate $visitConstraintByAffiliate,
+        SubscriptionConstraintByCarrier $subscriptionConstraintByCarrier,
         string $imageBaseUrl
     )
     {
-        $this->contentStatisticSender       = $contentStatisticSender;
-        $this->campaignRepository           = $campaignRepository;
-        $this->visitConstraintByAffiliate   = $visitConstraintByAffiliate;
-        $this->imageBaseUrl                 = $imageBaseUrl;
+        $this->contentStatisticSender          = $contentStatisticSender;
+        $this->campaignRepository              = $campaignRepository;
+        $this->visitConstraintByAffiliate      = $visitConstraintByAffiliate;
+        $this->subscriptionConstraintByCarrier = $subscriptionConstraintByCarrier;
+        $this->imageBaseUrl                    = $imageBaseUrl;
     }
 
 
@@ -76,6 +84,12 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      */
     public function landingPageAction(Request $request)
     {
+        $constraintByCarrierResult = $this->subscriptionConstraintByCarrier->handleRequest();
+
+        if ($constraintByCarrierResult) {
+            return $constraintByCarrierResult;
+        }
+
         $session        = $request->getSession();
         $campaignBanner = null;
         $background     = null;
@@ -88,10 +102,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
             /** @var Campaign $campaign */
             if ($campaign) {
-                $constraintsCheckResult = $this->visitConstraintByAffiliate->handleLandingPageRequest($campaign, $session);
+                $constraintsByAffiliate = $this->visitConstraintByAffiliate->handleLandingPageRequest($campaign, $session);
 
-                if ($constraintsCheckResult) {
-                    return $constraintsCheckResult;
+                if ($constraintsByAffiliate) {
+                    return $constraintsByAffiliate;
                 }
 
                 $campaignBanner = $this->imageBaseUrl . '/' . $campaign->getImagePath();

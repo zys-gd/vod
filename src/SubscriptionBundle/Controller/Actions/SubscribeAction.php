@@ -23,6 +23,7 @@ use SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter;
 use SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
+use SubscriptionBundle\Service\CapConstraint\SubscriptionConstraintByCarrier;
 use SubscriptionBundle\Service\UserExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -74,20 +75,25 @@ class SubscribeAction extends Controller
      * @var CarrierRepositoryInterface
      */
     private $carrierRepository;
-
+    /**
+     * @var SubscriptionConstraintByCarrier
+     */
+    private $subscriptionConstraintByCarrier;
 
     /**
      * SubscribeAction constructor.
      *
-     * @param UserExtractor                 $userExtractor
-     * @param CommonFlowHandler             $commonFlowHandler
-     * @param Router                        $router
-     * @param LoggerInterface               $logger
-     * @param UrlParamAppender              $urlParamAppender
-     * @param SubscriptionHandlerProvider   $handlerProvider
-     * @param BlacklistVoter                $blacklistVoter
-     * @param IdentificationDataStorage     $identificationDataStorage
-     * @param IdentificationHandlerProvider $identificationHandlerProvider
+     * @param UserExtractor                   $userExtractor
+     * @param CommonFlowHandler               $commonFlowHandler
+     * @param Router                          $router
+     * @param LoggerInterface                 $logger
+     * @param UrlParamAppender                $urlParamAppender
+     * @param SubscriptionHandlerProvider     $handlerProvider
+     * @param BlacklistVoter                  $blacklistVoter
+     * @param IdentificationDataStorage       $identificationDataStorage
+     * @param IdentificationHandlerProvider   $identificationHandlerProvider
+     * @param CarrierRepositoryInterface      $carrierRepository
+     * @param SubscriptionConstraintByCarrier $subscriptionConstraintByCarrier
      */
     public function __construct(
         UserExtractor $userExtractor,
@@ -99,19 +105,21 @@ class SubscribeAction extends Controller
         BlacklistVoter $blacklistVoter,
         IdentificationDataStorage $identificationDataStorage,
         IdentificationHandlerProvider $identificationHandlerProvider,
-        CarrierRepositoryInterface $carrierRepository
+        CarrierRepositoryInterface $carrierRepository,
+        SubscriptionConstraintByCarrier $subscriptionConstraintByCarrier
     )
     {
-        $this->userExtractor                 = $userExtractor;
-        $this->commonFlowHandler             = $commonFlowHandler;
-        $this->router                        = $router;
-        $this->logger                        = $logger;
-        $this->urlParamAppender              = $urlParamAppender;
-        $this->handlerProvider               = $handlerProvider;
-        $this->blacklistVoter                = $blacklistVoter;
-        $this->identificationDataStorage     = $identificationDataStorage;
-        $this->identificationHandlerProvider = $identificationHandlerProvider;
-        $this->carrierRepository             = $carrierRepository;
+        $this->userExtractor                   = $userExtractor;
+        $this->commonFlowHandler               = $commonFlowHandler;
+        $this->router                          = $router;
+        $this->logger                          = $logger;
+        $this->urlParamAppender                = $urlParamAppender;
+        $this->handlerProvider                 = $handlerProvider;
+        $this->blacklistVoter                  = $blacklistVoter;
+        $this->identificationDataStorage       = $identificationDataStorage;
+        $this->identificationHandlerProvider   = $identificationHandlerProvider;
+        $this->carrierRepository               = $carrierRepository;
+        $this->subscriptionConstraintByCarrier = $subscriptionConstraintByCarrier;
     }
 
     /**
@@ -124,7 +132,11 @@ class SubscribeAction extends Controller
      */
     public function __invoke(Request $request, IdentificationData $identificationData, ISPData $ISPData)
     {
+        $constraintByCarrierResult = $this->subscriptionConstraintByCarrier->handleRequest();
 
+        if ($constraintByCarrierResult) {
+            return $constraintByCarrierResult;
+        }
 
         /*if ($result = $this->handleRequestByLegacyService($request)) {
             return $result;

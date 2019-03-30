@@ -61,15 +61,21 @@ class SubscriptionCounterUpdater
         $user = $subscription->getUser();
         $carrier = $user->getCarrier();
 
+        if ($carrier->getNumberOfAllowedSubscriptionsByConstraint()) {
+            $this->constraintCounterRedis->updateCounter($carrier->getUuid());
+        }
+
         $affiliateToken = $subscription->getAffiliateToken();
 
-        $campaign = $this->campaignRepository->findOneByCampaignToken($affiliateToken['cid']);
-        $affiliate = $campaign->getAffiliate();
+        if ($affiliateToken) {
+            $campaign = $this->campaignRepository->findOneByCampaignToken($affiliateToken['cid']);
+            $affiliate = $campaign->getAffiliate();
 
-        $subscriptionConstraint = $affiliate->getConstraint(ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE, $carrier);
+            $subscriptionConstraint = $affiliate->getConstraint(ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE, $carrier);
 
-        if ($subscriptionConstraint) {
-            $this->constraintCounterRedis->updateCounter($subscriptionConstraint->getUuid());
+            if ($subscriptionConstraint) {
+                $this->constraintCounterRedis->updateCounter($subscriptionConstraint->getUuid());
+            }
         }
     }
 }

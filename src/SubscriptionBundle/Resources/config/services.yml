@@ -103,6 +103,14 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@App\Domain\Repository\CampaignRepository'
 
+    SubscriptionBundle\Service\CapConstraint\SubscriptionConstraintByCarrier:
+        arguments:
+            - '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender'
+            - '@SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis'
+            - '@App\Domain\Repository\CarrierRepository'
+            - '@session'
+            - '@doctrine.orm.entity_manager'
+
 parameters:
     subscription.subscription.class: SubscriptionBundle\Entity\SubscriptionPack
     guzzle.client.class: GuzzleHttp\Client
