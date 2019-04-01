@@ -573,7 +573,7 @@ class Subscription implements HasUuid
     }
 
     /**
-     * 1/2
+     * 0/2
      * @return bool
      */
     public function isUnsubscribed()

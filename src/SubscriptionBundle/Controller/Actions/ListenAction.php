@@ -38,8 +38,10 @@ class ListenAction extends Controller implements APIControllerInterface
 
     /**
      * ListenAction constructor.
-     * @param CommonFlowHandler $commonFlowHandler
-     * @param LoggerInterface   $logger
+     *
+     * @param CommonFlowHandler              $commonFlowHandler
+     * @param LoggerInterface                $logger
+     * @param CarrierCallbackHandlerProvider $carrierCallbackHandlerProvider
      */
     public function __construct(
         CommonFlowHandler $commonFlowHandler,
