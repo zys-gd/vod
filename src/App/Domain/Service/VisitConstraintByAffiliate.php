@@ -10,7 +10,6 @@ use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis;
 use SubscriptionBundle\Service\Notification\Email\CAPNotificationSender;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
@@ -63,13 +62,13 @@ class VisitConstraintByAffiliate
      *
      * @param SessionInterface $session
      *
-     * @return RedirectResponse|null
+     * @return string|null
      *
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function handleLandingPageRequest(Campaign $campaign, SessionInterface $session): ?RedirectResponse
+    public function isConstraintsLimitReached(Campaign $campaign, SessionInterface $session): ?string
     {
         $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($session);
 
@@ -96,7 +95,7 @@ class VisitConstraintByAffiliate
                     $this->sendNotification($constraint, $carrier);
                 }
 
-                return new RedirectResponse($constraint->getRedirectUrl());
+                return $constraint->getRedirectUrl();
             } elseif ($constraint->getCapType() === ConstraintByAffiliate::CAP_TYPE_VISIT) {
                 $this->constraintCounterRedis->updateCounter($constraint->getUuid());
             }

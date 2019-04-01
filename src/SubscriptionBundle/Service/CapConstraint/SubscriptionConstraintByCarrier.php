@@ -7,7 +7,6 @@ use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Service\Notification\Email\CAPNotificationSender;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
@@ -66,13 +65,13 @@ class SubscriptionConstraintByCarrier
     }
 
     /**
-     * @return RedirectResponse|null
+     * @return string|null
      *
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function handleRequest()
+    public function isSubscriptionLimitReached(): ?string
     {
         $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
 
@@ -87,7 +86,7 @@ class SubscriptionConstraintByCarrier
             return null;
         }
 
-        $counter = $this->constraintCounterRedis->getCounter($carrier->getUuid());
+        $counter = $this->constraintCounterRedis->getCounter($carrier->getBillingCarrierId());
 
         $isLimitReached = $counter ? $counter >= $allowedSubscriptions : false;
 
@@ -98,7 +97,7 @@ class SubscriptionConstraintByCarrier
 
             $redirectUrl = $carrier->getRedirectUrl() ?? self::DEFAULT_REDIRECT_URL;
 
-            return new RedirectResponse($redirectUrl);
+            return $redirectUrl;
         }
 
         return null;

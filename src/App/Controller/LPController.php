@@ -18,6 +18,7 @@ use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Service\CapConstraint\SubscriptionConstraintByCarrier;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -84,10 +85,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      */
     public function landingPageAction(Request $request)
     {
-        $constraintByCarrierResult = $this->subscriptionConstraintByCarrier->handleRequest();
+        $redirectUrlByCarrier = $this->subscriptionConstraintByCarrier->isSubscriptionLimitReached();
 
-        if ($constraintByCarrierResult) {
-            return $constraintByCarrierResult;
+        if ($redirectUrlByCarrier) {
+            return new RedirectResponse($redirectUrlByCarrier);
         }
 
         $session        = $request->getSession();
@@ -102,10 +103,12 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
             /** @var Campaign $campaign */
             if ($campaign) {
-                $constraintsByAffiliate = $this->visitConstraintByAffiliate->handleLandingPageRequest($campaign, $session);
+                $redirectUrlByAffiliate = $this
+                    ->visitConstraintByAffiliate
+                    ->isConstraintsLimitReached($campaign, $session);
 
-                if ($constraintsByAffiliate) {
-                    return $constraintsByAffiliate;
+                if ($redirectUrlByAffiliate) {
+                    return new RedirectResponse($redirectUrlByAffiliate);
                 }
 
                 $campaignBanner = $this->imageBaseUrl . '/' . $campaign->getImagePath();

@@ -62,7 +62,7 @@ class SubscriptionCounterUpdater
         $carrier = $user->getCarrier();
 
         if ($carrier->getNumberOfAllowedSubscriptionsByConstraint()) {
-            $this->constraintCounterRedis->updateCounter($carrier->getUuid());
+            $this->constraintCounterRedis->updateCounter($carrier->getBillingCarrierId());
         }
 
         $affiliateToken = $subscription->getAffiliateToken();

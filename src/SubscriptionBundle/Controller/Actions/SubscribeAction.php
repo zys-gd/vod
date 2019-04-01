@@ -28,6 +28,7 @@ use SubscriptionBundle\Service\UserExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Router;
 
@@ -123,19 +124,24 @@ class SubscribeAction extends Controller
     }
 
     /**
-     * @param Request            $request
+     * @param Request $request
      * @param IdentificationData $identificationData
-     * @return \Symfony\Component\HttpFoundation\JsonResponse|RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @throws ExistingSubscriptionException
+     * @param ISPData $ISPData
+     *
+     * @return Response
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
     public function __invoke(Request $request, IdentificationData $identificationData, ISPData $ISPData)
     {
-        $constraintByCarrierResult = $this->subscriptionConstraintByCarrier->handleRequest();
+        $redirectUrl = $this->subscriptionConstraintByCarrier->isSubscriptionLimitReached();
 
-        if ($constraintByCarrierResult) {
-            return $constraintByCarrierResult;
+        if ($redirectUrl) {
+            return new RedirectResponse($redirectUrl);
         }
 
         /*if ($result = $this->handleRequestByLegacyService($request)) {
