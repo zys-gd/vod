@@ -11,6 +11,7 @@ namespace App\Controller;
 
 use App\Domain\Entity\Campaign;
 use App\Domain\Repository\CampaignRepository;
+use App\Domain\Service\CarrierOTPVerifier;
 use App\Domain\Service\ContentStatisticSender;
 use App\Domain\Service\VisitConstraintByAffiliate;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
@@ -45,6 +46,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var SubscriptionConstraintByCarrier
      */
     private $subscriptionConstraintByCarrier;
+    /**
+     * @var CarrierOTPVerifier
+     */
+    private $OTPVerifier;
 
     /**
      * LPController constructor.
@@ -54,13 +59,15 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param VisitConstraintByAffiliate      $visitConstraintByAffiliate
      * @param SubscriptionConstraintByCarrier $subscriptionConstraintByCarrier
      * @param string                          $imageBaseUrl
+     * @param CarrierOTPVerifier              $OTPVerifier
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
         CampaignRepository $campaignRepository,
         VisitConstraintByAffiliate $visitConstraintByAffiliate,
         SubscriptionConstraintByCarrier $subscriptionConstraintByCarrier,
-        string $imageBaseUrl
+        string $imageBaseUrl,
+        CarrierOTPVerifier $OTPVerifier
     )
     {
         $this->contentStatisticSender          = $contentStatisticSender;
@@ -68,6 +75,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->visitConstraintByAffiliate      = $visitConstraintByAffiliate;
         $this->subscriptionConstraintByCarrier = $subscriptionConstraintByCarrier;
         $this->imageBaseUrl                    = $imageBaseUrl;
+        $this->OTPVerifier = $OTPVerifier;
     }
 
 
@@ -85,6 +93,9 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      */
     public function landingPageAction(Request $request)
     {
+        // TODO: do we need just only set flag to twig and call another macro?
+        $this->OTPVerifier->forceWifi($request->getSession());
+
         $redirectUrlByCarrier = $this->subscriptionConstraintByCarrier->isSubscriptionLimitReached();
 
         if ($redirectUrlByCarrier) {

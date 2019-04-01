@@ -122,3 +122,8 @@ services:
             - '@SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis'
             - '@App\Domain\Repository\CarrierRepository'
             - '@doctrine.orm.entity_manager'
+
+    App\Domain\Service\CarrierOTPVerifier:
+        arguments:
+            - '@App\Domain\Repository\CarrierRepository'
+            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'

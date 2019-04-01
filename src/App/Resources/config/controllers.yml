@@ -33,6 +33,7 @@ services:
             - '@App\Domain\Service\VisitConstraintByAffiliate'
             - '@SubscriptionBundle\Service\CapConstraint\SubscriptionConstraintByCarrier'
             - '%images_base_url%'
+            - '@App\Domain\Service\CarrierOTPVerifier'
 
     App\Controller\ErrorController:
         arguments:
