@@ -5,7 +5,9 @@ namespace SubscriptionBundle\Admin\Sonata;
 use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Carrier;
 use App\Utils\UuidGenerator;
+use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\CarrierInterface;
+use SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis;
 use Symfony\Component\Validator\Constraints\Callback;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -32,20 +34,36 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
     private $constraintByAffiliateRepository;
 
     /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
+     * @var ConstraintCounterRedis
+     */
+    private $constraintCounterRedis;
+
+    /**
      * ConstraintsByAffiliateAdmin constructor
      *
      * @param string $code
      * @param string $class
      * @param string $baseControllerName
      * @param ConstraintByAffiliateRepository $constraintByAffiliateRepository
+     * @param EntityManagerInterface $entityManager
+     * @param ConstraintCounterRedis $constraintCounterRedis
      */
     public function __construct(
         string $code,
         string $class,
         string $baseControllerName,
-        ConstraintByAffiliateRepository $constraintByAffiliateRepository
+        ConstraintByAffiliateRepository $constraintByAffiliateRepository,
+        EntityManagerInterface $entityManager,
+        ConstraintCounterRedis $constraintCounterRedis
     ) {
         $this->constraintByAffiliateRepository = $constraintByAffiliateRepository;
+        $this->entityManager = $entityManager;
+        $this->constraintCounterRedis = $constraintCounterRedis;
 
         parent::__construct($code, $class, $baseControllerName);
     }
@@ -58,6 +76,26 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
     public function getNewInstance(): ConstraintByAffiliate
     {
         return new ConstraintByAffiliate(UuidGenerator::generate());
+    }
+
+    /**
+     * @param ConstraintByAffiliate $object
+     */
+    public function preUpdate($object)
+    {
+        $originalData = $this->entityManager->getUnitOfWork()->getOriginalEntityData($object);
+
+        if ($originalData['numberOfActions'] !== $object->getNumberOfActions()) {
+            $object->setIsCapAlertDispatch(false);
+        }
+    }
+
+    /**
+     * @param ConstraintByAffiliate $object
+     */
+    public function postRemove($object)
+    {
+        $this->constraintCounterRedis->removeCounter($object->getUuid());
     }
 
     /**
@@ -124,18 +162,29 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
     {
         $isCreate = $this->isCurrentRoute('create');
 
+        if ($isCreate) {
+            $formMapper
+                ->add('affiliate', EntityType::class, [
+                    'class' => Affiliate::class,
+                    'placeholder' => 'Select affiliate',
+                ])
+                ->add('carrier', EntityType::class, [
+                    'class' => Carrier::class,
+                    'constraints' => [
+                        new Callback([$this, 'validateForIdenticalRecord'])
+                    ],
+                    'placeholder' => 'Select carrier',
+                ])
+                ->add('capType', ChoiceType::class, [
+                    'choices' => [
+                        'Subscribe' => ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE,
+                        'Visit' => ConstraintByAffiliate::CAP_TYPE_VISIT
+                    ],
+                    'label' => 'CAP type'
+                ]);
+        }
+
         $formMapper
-            ->add('affiliate', EntityType::class, [
-                'class' => Affiliate::class,
-                'placeholder' => 'Select affiliate',
-            ])
-            ->add('carrier', EntityType::class, [
-                'class' => Carrier::class,
-                'constraints' => [
-                    new Callback([$this, 'validateForIdenticalRecord'])
-                ],
-                'placeholder' => 'Select carrier',
-            ])
             ->add('numberOfActions', IntegerType::class, [
                 'attr' => [
                     'min' => 0
@@ -145,17 +194,6 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
             ->add('redirectUrl', UrlType::class, [
                 'label' => 'Redirect url'
             ]);
-
-        if ($isCreate) {
-            $formMapper
-                ->add('capType', ChoiceType::class, [
-                    'choices' => [
-                        'Subscribe' => ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE,
-                        'Visit' => ConstraintByAffiliate::CAP_TYPE_VISIT
-                    ],
-                    'label' => 'CAP type'
-                ]);
-        }
     }
 
     /**
