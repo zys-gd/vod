@@ -9,6 +9,7 @@
 namespace IdentificationBundle\Carriers\MobilinkPK;
 
 
+use App\Domain\Constants\ConstBillingCarrierId;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Callback\Handler\HasCommonFlow;
 use IdentificationBundle\Callback\Handler\IdentCallbackHandlerInterface;
@@ -20,7 +21,7 @@ class MobilinkPKIdentificationCallbackHandler implements
 {
     public function canHandle(int $carrierId): bool
     {
-        return $carrierId === 338;
+        return $carrierId === ConstBillingCarrierId::MOBILINK_PAKISTAN;
     }
 
     public function afterSuccess(User $billableUser, ProcessResult $processResponse): void
