@@ -64,7 +64,7 @@ class AuditController extends AbstractController
         if (!$this->isGranted('ROLE_SUPER_ADMIN')) {
             return $this->redirectToRoute('sonata_admin_dashboard');
         }
-        $this->removeEmptyBlames();
+
         $blocks = array(
             'top' => array(),
             'left' => array(),
@@ -133,18 +133,6 @@ class AuditController extends AbstractController
         return $this->render('@Admin/Audit/diff.html.twig', $parameters);
     }
 
-    private function removeEmptyBlames()
-    {
-        $res = $this->repo("DataDogAuditBundle:AuditLog")->createQueryBuilder('l')
-            ->where('l.blame is null')
-            ->getQuery()
-            ->getResult();
-        ;
-        if(!empty($res)){
-            $this->remove($res);
-            $this->flush();
-        }
-    }
 
     /**
      * @param Request $request
