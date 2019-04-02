@@ -72,4 +72,9 @@ interface CarrierInterface
      * @return CarrierInterface
      */
     public function setFlushDate(\DateTime $flushDate): self;
+
+    /**
+     * @return bool
+     */
+    public function getIsCampaignsOnPause(): bool;
 }

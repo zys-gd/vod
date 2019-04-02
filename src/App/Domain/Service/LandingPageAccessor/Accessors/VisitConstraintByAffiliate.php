@@ -1,16 +1,13 @@
 <?php
 
-namespace App\Domain\Service;
+namespace App\Domain\Service\LandingPageAccessor\Accessors;
 
 use App\Domain\Entity\Campaign;
-use App\Domain\Repository\CarrierRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\CarrierInterface;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis;
 use SubscriptionBundle\Service\Notification\Email\CAPNotificationSender;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class VisitConstraintByAffiliateService
@@ -20,17 +17,12 @@ class VisitConstraintByAffiliate
     /**
      * @var CAPNotificationSender
      */
-    protected $notificationSender;
+    private $notificationSender;
 
     /**
      * @var ConstraintCounterRedis
      */
-    protected $constraintCounterRedis;
-
-    /**
-     * @var CarrierRepository
-     */
-    protected $carrierRepository;
+    private $constraintCounterRedis;
 
     /**
      * @var EntityManagerInterface
@@ -42,42 +34,30 @@ class VisitConstraintByAffiliate
      *
      * @param CAPNotificationSender $notificationSender
      * @param ConstraintCounterRedis $constraintCounterRedis
-     * @param CarrierRepository $carrierRepository
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         CAPNotificationSender $notificationSender,
         ConstraintCounterRedis $constraintCounterRedis,
-        CarrierRepository $carrierRepository,
         EntityManagerInterface $entityManager
     ) {
         $this->notificationSender = $notificationSender;
         $this->constraintCounterRedis = $constraintCounterRedis;
-        $this->carrierRepository = $carrierRepository;
         $this->entityManager = $entityManager;
     }
 
     /**
      * @param Campaign $campaign
      *
-     * @param SessionInterface $session
-     *
+     * @param CarrierInterface $carrier
      * @return string|null
      *
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function isConstraintsLimitReached(Campaign $campaign, SessionInterface $session): ?string
+    public function isConstraintsLimitReached(Campaign $campaign, CarrierInterface $carrier): ?string
     {
-        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($session);
-
-        if (empty($ispDetectionData['carrier_id'])
-            || !$carrier =  $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id'])
-        ) {
-            return null;
-        }
-
         $affiliate = $campaign->getAffiliate();
 
         /** @var ConstraintByAffiliate $constraint */

@@ -14,8 +14,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  */
 class SubscriptionConstraintByCarrier
 {
-    const DEFAULT_REDIRECT_URL = 'https://www.google.com/';
-
     /**
      * @var CAPNotificationSender
      */
@@ -42,6 +40,11 @@ class SubscriptionConstraintByCarrier
     private $entityManager;
 
     /**
+     * @var string
+     */
+    private $defaultRedirectUrl;
+
+    /**
      * SubscriptionConstraintByCarrier constructor
      *
      * @param CAPNotificationSender $notificationSender
@@ -49,37 +52,44 @@ class SubscriptionConstraintByCarrier
      * @param CarrierRepositoryInterface $carrierRepository
      * @param SessionInterface $session
      * @param EntityManagerInterface $entityManager
+     * @param string $defaultRedirectUrl
      */
     public function __construct(
         CAPNotificationSender $notificationSender,
         ConstraintCounterRedis $constraintCounterRedis,
         CarrierRepositoryInterface $carrierRepository,
         SessionInterface $session,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        string $defaultRedirectUrl
     ) {
         $this->notificationSender = $notificationSender;
         $this->constraintCounterRedis = $constraintCounterRedis;
         $this->carrierRepository = $carrierRepository;
         $this->session = $session;
         $this->entityManager = $entityManager;
+        $this->defaultRedirectUrl = $defaultRedirectUrl;
     }
 
     /**
+     * @param CarrierInterface|null $carrier
      * @return string|null
      *
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function isSubscriptionLimitReached(): ?string
+    public function isSubscriptionLimitReached(CarrierInterface $carrier = null): ?string
     {
-        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
+        if (!$carrier) {
+            $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
 
-        if (empty($ispDetectionData['carrier_id'])) {
-            return null;
+            if (empty($ispDetectionData['carrier_id'])) {
+                return null;
+            }
+
+            $carrier =  $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id']);
         }
 
-        $carrier =  $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id']);
         $allowedSubscriptions = $carrier->getNumberOfAllowedSubscriptionsByConstraint();
 
         if (empty($allowedSubscriptions)) {
@@ -95,7 +105,7 @@ class SubscriptionConstraintByCarrier
                 $this->sendNotification($carrier);
             }
 
-            $redirectUrl = $carrier->getRedirectUrl() ?? self::DEFAULT_REDIRECT_URL;
+            $redirectUrl = $carrier->getRedirectUrl() ?? $this->defaultRedirectUrl;
 
             return $redirectUrl;
         }

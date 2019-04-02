@@ -110,6 +110,7 @@ services:
             - '@App\Domain\Repository\CarrierRepository'
             - '@session'
             - '@doctrine.orm.entity_manager'
+            - '%default_redirect_url%'
 
 parameters:
     subscription.subscription.class: SubscriptionBundle\Entity\SubscriptionPack
