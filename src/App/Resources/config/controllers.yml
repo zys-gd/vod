@@ -30,9 +30,10 @@ services:
         arguments:
             - '@App\Domain\Service\ContentStatisticSender'
             - '@App\Domain\Repository\CampaignRepository'
-            - '@App\Domain\Service\LandingPageAccessor\LandingPageAccessResolver'
+            - '@App\Domain\Service\LandingPageACL\LandingPageACL'
             - '%images_base_url%'
             - '@App\Domain\Service\CarrierOTPVerifier'
+            - '%default_redirect_url%'
 
     App\Controller\ErrorController:
         arguments:

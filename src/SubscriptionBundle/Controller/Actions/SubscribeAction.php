@@ -80,6 +80,10 @@ class SubscribeAction extends Controller
      * @var SubscriptionConstraintByCarrier
      */
     private $subscriptionConstraintByCarrier;
+    /**
+     * @var string
+     */
+    private $defaultRedirectUrl;
 
     /**
      * SubscribeAction constructor.
@@ -95,6 +99,7 @@ class SubscribeAction extends Controller
      * @param IdentificationHandlerProvider   $identificationHandlerProvider
      * @param CarrierRepositoryInterface      $carrierRepository
      * @param SubscriptionConstraintByCarrier $subscriptionConstraintByCarrier
+     * @param string                          $defaultRedirectUrl
      */
     public function __construct(
         UserExtractor $userExtractor,
@@ -107,7 +112,8 @@ class SubscribeAction extends Controller
         IdentificationDataStorage $identificationDataStorage,
         IdentificationHandlerProvider $identificationHandlerProvider,
         CarrierRepositoryInterface $carrierRepository,
-        SubscriptionConstraintByCarrier $subscriptionConstraintByCarrier
+        SubscriptionConstraintByCarrier $subscriptionConstraintByCarrier,
+        string $defaultRedirectUrl
     )
     {
         $this->userExtractor                   = $userExtractor;
@@ -121,6 +127,7 @@ class SubscribeAction extends Controller
         $this->identificationHandlerProvider   = $identificationHandlerProvider;
         $this->carrierRepository               = $carrierRepository;
         $this->subscriptionConstraintByCarrier = $subscriptionConstraintByCarrier;
+        $this->defaultRedirectUrl              = $defaultRedirectUrl;
     }
 
     /**
@@ -138,10 +145,8 @@ class SubscribeAction extends Controller
      */
     public function __invoke(Request $request, IdentificationData $identificationData, ISPData $ISPData)
     {
-        $redirectUrl = $this->subscriptionConstraintByCarrier->isSubscriptionLimitReached();
-
-        if ($redirectUrl) {
-            return new RedirectResponse($redirectUrl);
+        if ($this->subscriptionConstraintByCarrier->isSubscriptionLimitReached()) {
+            return new RedirectResponse($this->defaultRedirectUrl);
         }
 
         /*if ($result = $this->handleRequestByLegacyService($request)) {

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Domain\Service\LandingPageAccessor;
+namespace App\Domain\Service\LandingPageACL;
 
 use App\Domain\Entity\Campaign;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Repository\CarrierRepository;
-use App\Domain\Service\LandingPageAccessor\Accessors\VisitConstraintByAffiliate;
-use App\Domain\Service\LandingPageAccessor\Accessors\VisitAccessorByCampaign;
+use App\Domain\Service\LandingPageACL\Accessors\VisitConstraintByAffiliate;
+use App\Domain\Service\LandingPageACL\Accessors\VisitAccessorByCampaign;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use SubscriptionBundle\Service\CapConstraint\SubscriptionConstraintByCarrier;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 /**
  * Class LandingPageAccessResolver
  */
-class LandingPageAccessResolver
+class LandingPageACL
 {
     /**
      * @var CarrierRepository
@@ -86,35 +86,37 @@ class LandingPageAccessResolver
     {
         $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
 
-        if (empty($ispDetectionData['carrier_id'])
-            || !$carrier =  $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id'])
-        ) {
-            return null;
+        if (empty($ispDetectionData['carrier_id'])) {
+            return true;
         }
 
-        $redirectUrlByCarrier = $this->subscriptionConstraintByCarrier->isSubscriptionLimitReached($carrier);
+        $carrier =  $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id']);
 
-        if ($redirectUrlByCarrier) {
-            return $redirectUrlByCarrier;
+        if (empty($carrier)) {
+            return true;
         }
 
-        if ($campaignToken = $request->get('cid', '')) {
-            /** @var Campaign $campaign */
-            $campaign = $this->campaignRepository->findOneBy(['campaignToken' => $campaignToken]);
-
-            $redirectUrlByCampaign = $this->visitAccessorByCampaign->canVisitFromCampaign($campaign, $carrier);
-
-            if ($redirectUrlByCampaign) {
-                return $redirectUrlByCampaign;
-            }
-
-            $redirectUrlByAffiliate = $this->visitConstraintByAffiliate->isConstraintsLimitReached($campaign, $carrier);
-
-            if ($redirectUrlByAffiliate) {
-                return $redirectUrlByAffiliate;
-            }
+        if ($this->subscriptionConstraintByCarrier->isSubscriptionLimitReached($carrier)) {
+            return false;
         }
 
-        return null;
+        $campaignToken = $request->get('cid', '');
+
+        if (empty($campaignToken)) {
+            return true;
+        }
+
+        /** @var Campaign $campaign */
+        $campaign = $this->campaignRepository->findOneBy(['campaignToken' => $campaignToken]);
+
+        if (!$this->visitAccessorByCampaign->canVisit($campaign, $carrier)) {
+            return false;
+        }
+
+        if (!$this->visitConstraintByAffiliate->canVisit($campaign, $carrier)) {
+            return false;
+        }
+
+        return true;
     }
 }

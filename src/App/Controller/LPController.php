@@ -6,7 +6,7 @@ use App\Domain\Entity\Campaign;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Service\CarrierOTPVerifier;
 use App\Domain\Service\ContentStatisticSender;
-use App\Domain\Service\LandingPageAccessor\LandingPageAccessResolver;
+use App\Domain\Service\LandingPageACL\LandingPageACL;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,36 +34,43 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      */
     private $imageBaseUrl;
     /**
-     * @var LandingPageAccessResolver
+     * @var LandingPageACL
      */
     private $landingPageAccessResolver;
     /**
      * @var CarrierOTPVerifier
      */
     private $OTPVerifier;
+    /**
+     * @var string
+     */
+    private $defaultRedirectUrl;
 
     /**
      * LPController constructor.
      *
-     * @param ContentStatisticSender    $contentStatisticSender
-     * @param CampaignRepository        $campaignRepository
-     * @param LandingPageAccessResolver $landingPageAccessResolver
-     * @param string                    $imageBaseUrl
-     * @param CarrierOTPVerifier              $OTPVerifier
+     * @param ContentStatisticSender $contentStatisticSender
+     * @param CampaignRepository $campaignRepository
+     * @param LandingPageACL $landingPageAccessResolver
+     * @param string $imageBaseUrl
+     * @param CarrierOTPVerifier $OTPVerifier
+     * @param string $defaultRedirectUrl
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
         CampaignRepository $campaignRepository,
-        LandingPageAccessResolver $landingPageAccessResolver,
+        LandingPageACL $landingPageAccessResolver,
         string $imageBaseUrl,
-        CarrierOTPVerifier $OTPVerifier
+        CarrierOTPVerifier $OTPVerifier,
+        string $defaultRedirectUrl
     )
     {
         $this->contentStatisticSender    = $contentStatisticSender;
         $this->campaignRepository        = $campaignRepository;
         $this->landingPageAccessResolver = $landingPageAccessResolver;
         $this->imageBaseUrl              = $imageBaseUrl;
-        $this->OTPVerifier = $OTPVerifier;
+        $this->OTPVerifier               = $OTPVerifier;
+        $this->defaultRedirectUrl        = $defaultRedirectUrl;
     }
 
 
@@ -84,10 +91,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         // TODO: do we need just only set flag to twig and call another macro?
         $this->OTPVerifier->forceWifi($request->getSession());
 
-        $redirectUrl = $this->landingPageAccessResolver->canAccess($request);
-
-        if ($redirectUrl) {
-            return new RedirectResponse($redirectUrl);
+        if (!$this->landingPageAccessResolver->canAccess($request)) {
+            return new RedirectResponse($this->defaultRedirectUrl);
         }
 
         $session        = $request->getSession();

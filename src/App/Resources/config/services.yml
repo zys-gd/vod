@@ -116,19 +116,17 @@ services:
             - '@session'
             - '@App\Domain\Repository\CountryRepository'
 
-    App\Domain\Service\LandingPageAccessor\Accessors\VisitConstraintByAffiliate:
+    App\Domain\Service\LandingPageACL\Accessors\VisitConstraintByAffiliate:
         arguments:
             - '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender'
             - '@SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis'
             - '@doctrine.orm.entity_manager'
 
-    App\Domain\Service\LandingPageAccessor\Accessors\VisitAccessorByCampaign:
-        arguments:
-            - '%default_redirect_url%'
+    App\Domain\Service\LandingPageACL\Accessors\VisitAccessorByCampaign: ~
 
-    App\Domain\Service\LandingPageAccessor\LandingPageAccessResolver:
-        - '@App\Domain\Service\LandingPageAccessor\Accessors\VisitConstraintByAffiliate'
-        - '@App\Domain\Service\LandingPageAccessor\Accessors\VisitAccessorByCampaign'
+    App\Domain\Service\LandingPageACL\LandingPageACL:
+        - '@App\Domain\Service\LandingPageACL\Accessors\VisitConstraintByAffiliate'
+        - '@App\Domain\Service\LandingPageACL\Accessors\VisitAccessorByCampaign'
         - '@SubscriptionBundle\Service\CapConstraint\SubscriptionConstraintByCarrier'
         - '@App\Domain\Repository\CarrierRepository'
         - '@App\Domain\Repository\CampaignRepository'

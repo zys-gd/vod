@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Service\LandingPageAccessor\Accessors;
+namespace App\Domain\Service\LandingPageACL\Accessors;
 
 use App\Domain\Entity\Campaign;
 use Doctrine\ORM\EntityManagerInterface;
@@ -50,13 +50,13 @@ class VisitConstraintByAffiliate
      * @param Campaign $campaign
      *
      * @param CarrierInterface $carrier
-     * @return string|null
+     * @return bool
      *
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function isConstraintsLimitReached(Campaign $campaign, CarrierInterface $carrier): ?string
+    public function canVisit(Campaign $campaign, CarrierInterface $carrier): bool
     {
         $affiliate = $campaign->getAffiliate();
 
@@ -75,13 +75,13 @@ class VisitConstraintByAffiliate
                     $this->sendNotification($constraint, $carrier);
                 }
 
-                return $constraint->getRedirectUrl();
+                return false;
             } elseif ($constraint->getCapType() === ConstraintByAffiliate::CAP_TYPE_VISIT) {
                 $this->constraintCounterRedis->updateCounter($constraint->getUuid());
             }
         }
 
-        return null;
+        return true;
     }
 
     /**

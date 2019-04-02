@@ -40,11 +40,6 @@ class SubscriptionConstraintByCarrier
     private $entityManager;
 
     /**
-     * @var string
-     */
-    private $defaultRedirectUrl;
-
-    /**
      * SubscriptionConstraintByCarrier constructor
      *
      * @param CAPNotificationSender $notificationSender
@@ -52,22 +47,19 @@ class SubscriptionConstraintByCarrier
      * @param CarrierRepositoryInterface $carrierRepository
      * @param SessionInterface $session
      * @param EntityManagerInterface $entityManager
-     * @param string $defaultRedirectUrl
      */
     public function __construct(
         CAPNotificationSender $notificationSender,
         ConstraintCounterRedis $constraintCounterRedis,
         CarrierRepositoryInterface $carrierRepository,
         SessionInterface $session,
-        EntityManagerInterface $entityManager,
-        string $defaultRedirectUrl
+        EntityManagerInterface $entityManager
     ) {
         $this->notificationSender = $notificationSender;
         $this->constraintCounterRedis = $constraintCounterRedis;
         $this->carrierRepository = $carrierRepository;
         $this->session = $session;
         $this->entityManager = $entityManager;
-        $this->defaultRedirectUrl = $defaultRedirectUrl;
     }
 
     /**
@@ -84,7 +76,7 @@ class SubscriptionConstraintByCarrier
             $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
 
             if (empty($ispDetectionData['carrier_id'])) {
-                return null;
+                return false;
             }
 
             $carrier =  $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id']);
@@ -93,7 +85,7 @@ class SubscriptionConstraintByCarrier
         $allowedSubscriptions = $carrier->getNumberOfAllowedSubscriptionsByConstraint();
 
         if (empty($allowedSubscriptions)) {
-            return null;
+            return false;
         }
 
         $counter = $this->constraintCounterRedis->getCounter($carrier->getBillingCarrierId());
@@ -105,12 +97,10 @@ class SubscriptionConstraintByCarrier
                 $this->sendNotification($carrier);
             }
 
-            $redirectUrl = $carrier->getRedirectUrl() ?? $this->defaultRedirectUrl;
-
-            return $redirectUrl;
+            return true;
         }
 
-        return null;
+        return false;
     }
 
     /**
