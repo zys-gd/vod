@@ -5,3 +5,7 @@ services:
             - { name: console.command }
 
     App\Command\DeleteExpiredVideo:
+
+    App\Command\AuditClearOldLogEntriesCommand:
+
+    App\Command\AuditClearEmptyBlameLogsCommand:
