@@ -14,7 +14,6 @@ use App\Domain\Repository\CampaignRepository;
 use App\Domain\Service\CarrierOTPVerifier;
 use App\Domain\Service\ContentStatisticSender;
 use App\Domain\Service\VisitConstraintByAffiliate;
-use IdentificationBundle\Controller\ControllerWithIdentification;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Service\CapConstraint\SubscriptionConstraintByCarrier;
@@ -25,7 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class LPController extends AbstractController implements ControllerWithISPDetection, AppControllerInterface, ControllerWithIdentification
+class LPController extends AbstractController implements ControllerWithISPDetection, AppControllerInterface
 {
     /**
      * @var ContentStatisticSender
