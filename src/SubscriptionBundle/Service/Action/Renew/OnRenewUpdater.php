@@ -64,6 +64,12 @@ class OnRenewUpdater
         $this->commonSubscriptionUpdater = $commonSubscriptionUpdater;
     }
 
+    /**
+     * @param Subscription  $subscription
+     * @param ProcessResult $processResponse
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function updateSubscriptionByResponse(Subscription $subscription, ProcessResult $processResponse)
     {
         $this->updateSubscriptionByCallbackResponse($subscription, $processResponse);
@@ -73,6 +79,12 @@ class OnRenewUpdater
         }
     }
 
+    /**
+     * @param Subscription  $subscription
+     * @param ProcessResult $processResponse
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     final public function updateSubscriptionByCallbackResponse(Subscription $subscription, ProcessResult $processResponse)
     {
 
@@ -101,6 +113,8 @@ class OnRenewUpdater
 
     /**
      * @param Subscription $subscription
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     protected function applySuccess(Subscription $subscription)
     {
@@ -120,6 +134,7 @@ class OnRenewUpdater
     {
         switch ($errorName) {
             case 'batch_limit_exceeded':
+            case 'canceled':
                 $subscription->setStatus(Subscription::IS_INACTIVE);
                 $subscription->setCurrentStage(Subscription::ACTION_UNSUBSCRIBE);
                 break;
@@ -130,6 +145,12 @@ class OnRenewUpdater
 
     }
 
+    /**
+     * @param Subscription $subscription
+     * @param int          $processId
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function updateSubscriptionOnSuccess(Subscription $subscription, int $processId)
     {
         $this->applySuccess($subscription);

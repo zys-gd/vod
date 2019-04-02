@@ -101,11 +101,6 @@ class Carrier implements CarrierInterface
     private $redirectUrl = null;
 
     /**
-     * @var integer
-     */
-    private $counter = 0;
-
-    /**
      * @var \DateTime
      */
     private $flushDate;
@@ -545,7 +540,7 @@ class Carrier implements CarrierInterface
      *
      * @return Carrier
      */
-    public function setnumberOfAllowedSubscriptionsByConstraint($numberOfAllowedSubscriptionsByConstraint)
+    public function setNumberOfAllowedSubscriptionsByConstraint($numberOfAllowedSubscriptionsByConstraint)
     {
         $this->numberOfAllowedSubscriptionsByConstraint = $numberOfAllowedSubscriptionsByConstraint;
 
@@ -555,9 +550,9 @@ class Carrier implements CarrierInterface
     /**
      * Get numberOfAllowedSubscriptionsByConstraint
      *
-     * @return integer
+     * @return int|null
      */
-    public function getnumberOfAllowedSubscriptionsByConstraint()
+    public function getNumberOfAllowedSubscriptionsByConstraint(): ?int
     {
         return $this->numberOfAllowedSubscriptionsByConstraint;
     }
@@ -579,45 +574,19 @@ class Carrier implements CarrierInterface
     /**
      * Get redirectUrl
      *
-     * @return string
+     * @return string|null
      */
-    public function getRedirectUrl()
+    public function getRedirectUrl(): ?string
     {
         return $this->redirectUrl;
     }
 
     /**
-     * Set counter
-     *
-     * @param integer $counter
-     *
-     * @return Carrier
-     */
-    public function setCounter($counter)
-    {
-        $this->counter = $counter;
-
-        return $this;
-    }
-
-    /**
-     * Get counter
-     *
-     * @return integer
-     */
-    public function getCounter()
-    {
-        return $this->counter;
-    }
-
-    /**
-     * Set flushDate
-     *
      * @param \DateTime $flushDate
      *
-     * @return Carrier
+     * @return CarrierInterface
      */
-    public function setFlushDate($flushDate)
+    public function setFlushDate($flushDate): CarrierInterface
     {
         $this->flushDate = $flushDate;
 
@@ -625,17 +594,12 @@ class Carrier implements CarrierInterface
     }
 
     /**
-     * Get flushDate
-     *
      * @return \DateTime
+     *
+     * @throws \Exception
      */
     public function getFlushDate()
     {
-        if(is_null($this->flushDate)){
-
-            $this->flushDate = new \DateTime('now');
-
-        }
         return $this->flushDate;
     }
 
@@ -679,16 +643,20 @@ class Carrier implements CarrierInterface
 
     /**
      * @param bool $isCapAlertDispatch
+     *
+     * @return CarrierInterface
      */
-    public function setIsCapAlertDispatch(bool $isCapAlertDispatch)
+    public function setIsCapAlertDispatch(bool $isCapAlertDispatch): CarrierInterface
     {
         $this->isCapAlertDispatch = $isCapAlertDispatch;
+
+        return $this;
     }
 
     /**
      * @return bool
      */
-    public function isCapAlertDispatch(): bool
+    public function getIsCapAlertDispatch(): bool
     {
         return $this->isCapAlertDispatch;
     }

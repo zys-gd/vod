@@ -12,7 +12,7 @@ use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Exception\SubscriptionException;
 use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use SubscriptionBundle\Repository\SubscriptionRepository;
-use SubscriptionBundle\Service\AffiliateConstraint\SubscriptionCounterUpdater;
+use SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater;
 use SubscriptionBundle\Service\Callback\Common\Type\RenewCallbackHandler;
 use SubscriptionBundle\Service\Callback\Common\Type\SubscriptionCallbackHandler;
 use SubscriptionBundle\Service\Callback\Common\Type\UnsubscriptionCallbackHandler;
@@ -189,7 +189,7 @@ class CommonFlowHandler
         $carrierHandler->afterProcess($subscription, $subscription->getUser(), $processResponse);
         $this->entitySaveHelper->persistAndSave($subscription);
 
-        if ($processResponse->isSuccessful() && $processResponse->isFinal() && $subscription->getAffiliateToken()) {
+        if ($processResponse->isSuccessful() && $processResponse->isFinal()) {
             $this->subscriptionCounterUpdater->updateSubscriptionCounter($subscription);
         }
 

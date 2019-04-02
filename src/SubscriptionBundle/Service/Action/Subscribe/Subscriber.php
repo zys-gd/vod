@@ -23,7 +23,7 @@ use SubscriptionBundle\Entity\SubscriptionPlanInterface;
 use SubscriptionBundle\Service\Action\Common\FakeResponseProvider;
 use SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
-use SubscriptionBundle\Service\AffiliateConstraint\SubscriptionCounterUpdater;
+use SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\Notification\Notifier;
 use SubscriptionBundle\Service\SubscriptionCreator;
@@ -144,7 +144,7 @@ class Subscriber
         try {
             $response = $this->performSubscribe($additionalData, $subscription);
 
-            if ($response->isSuccessful() && $response->isFinal() && $subscription->getAffiliateToken()) {
+            if ($response->isSuccessful() && $response->isFinal()) {
                 $this->subscriptionCounterUpdater->updateSubscriptionCounter($subscription);
             }
 

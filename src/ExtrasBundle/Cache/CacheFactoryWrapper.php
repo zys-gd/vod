@@ -47,13 +47,4 @@ class CacheFactoryWrapper implements ICacheServiceFactory
     {
         return $this->ICacheServiceFactory->createUserSubscriptionCacheService($options);
     }
-
-    /**
-     * @param array $options
-     * @return ICacheService
-     */
-    public function createConstraintsByAffiliateCacheService(array $options = []): ICacheService
-    {
-        return $this->ICacheServiceFactory->createConstraintsByAffiliateCacheService($options);
-    }
 }

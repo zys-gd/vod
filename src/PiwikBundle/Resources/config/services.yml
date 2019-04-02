@@ -9,7 +9,6 @@ services:
             - '@session'
             - '%campaign_session_name%'
             - '@App\Domain\Repository\CampaignRepository'
-            - '@LegacyBundle\Service\SubscriptionConstraintsByCarrier'
             - '@device_detection.service.device'
 
     PiwikBundle\Twig\PiwikExtension:

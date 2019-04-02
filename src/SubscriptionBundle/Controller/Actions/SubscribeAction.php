@@ -23,10 +23,12 @@ use SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter;
 use SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
+use SubscriptionBundle\Service\CapConstraint\SubscriptionConstraintByCarrier;
 use SubscriptionBundle\Service\UserExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Router;
 
@@ -74,20 +76,30 @@ class SubscribeAction extends Controller
      * @var CarrierRepositoryInterface
      */
     private $carrierRepository;
-
+    /**
+     * @var SubscriptionConstraintByCarrier
+     */
+    private $subscriptionConstraintByCarrier;
+    /**
+     * @var string
+     */
+    private $defaultRedirectUrl;
 
     /**
      * SubscribeAction constructor.
      *
-     * @param UserExtractor                 $userExtractor
-     * @param CommonFlowHandler             $commonFlowHandler
-     * @param Router                        $router
-     * @param LoggerInterface               $logger
-     * @param UrlParamAppender              $urlParamAppender
-     * @param SubscriptionHandlerProvider   $handlerProvider
-     * @param BlacklistVoter                $blacklistVoter
-     * @param IdentificationDataStorage     $identificationDataStorage
-     * @param IdentificationHandlerProvider $identificationHandlerProvider
+     * @param UserExtractor                   $userExtractor
+     * @param CommonFlowHandler               $commonFlowHandler
+     * @param Router                          $router
+     * @param LoggerInterface                 $logger
+     * @param UrlParamAppender                $urlParamAppender
+     * @param SubscriptionHandlerProvider     $handlerProvider
+     * @param BlacklistVoter                  $blacklistVoter
+     * @param IdentificationDataStorage       $identificationDataStorage
+     * @param IdentificationHandlerProvider   $identificationHandlerProvider
+     * @param CarrierRepositoryInterface      $carrierRepository
+     * @param SubscriptionConstraintByCarrier $subscriptionConstraintByCarrier
+     * @param string                          $defaultRedirectUrl
      */
     public function __construct(
         UserExtractor $userExtractor,
@@ -99,32 +111,43 @@ class SubscribeAction extends Controller
         BlacklistVoter $blacklistVoter,
         IdentificationDataStorage $identificationDataStorage,
         IdentificationHandlerProvider $identificationHandlerProvider,
-        CarrierRepositoryInterface $carrierRepository
+        CarrierRepositoryInterface $carrierRepository,
+        SubscriptionConstraintByCarrier $subscriptionConstraintByCarrier,
+        string $defaultRedirectUrl
     )
     {
-        $this->userExtractor                 = $userExtractor;
-        $this->commonFlowHandler             = $commonFlowHandler;
-        $this->router                        = $router;
-        $this->logger                        = $logger;
-        $this->urlParamAppender              = $urlParamAppender;
-        $this->handlerProvider               = $handlerProvider;
-        $this->blacklistVoter                = $blacklistVoter;
-        $this->identificationDataStorage     = $identificationDataStorage;
-        $this->identificationHandlerProvider = $identificationHandlerProvider;
-        $this->carrierRepository             = $carrierRepository;
+        $this->userExtractor                   = $userExtractor;
+        $this->commonFlowHandler               = $commonFlowHandler;
+        $this->router                          = $router;
+        $this->logger                          = $logger;
+        $this->urlParamAppender                = $urlParamAppender;
+        $this->handlerProvider                 = $handlerProvider;
+        $this->blacklistVoter                  = $blacklistVoter;
+        $this->identificationDataStorage       = $identificationDataStorage;
+        $this->identificationHandlerProvider   = $identificationHandlerProvider;
+        $this->carrierRepository               = $carrierRepository;
+        $this->subscriptionConstraintByCarrier = $subscriptionConstraintByCarrier;
+        $this->defaultRedirectUrl              = $defaultRedirectUrl;
     }
 
     /**
-     * @param Request            $request
+     * @param Request $request
      * @param IdentificationData $identificationData
-     * @return \Symfony\Component\HttpFoundation\JsonResponse|RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @throws ExistingSubscriptionException
+     * @param ISPData $ISPData
+     *
+     * @return Response
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
     public function __invoke(Request $request, IdentificationData $identificationData, ISPData $ISPData)
     {
-
+        if ($this->subscriptionConstraintByCarrier->isSubscriptionLimitReached()) {
+            return new RedirectResponse($this->defaultRedirectUrl);
+        }
 
         /*if ($result = $this->handleRequestByLegacyService($request)) {
             return $result;

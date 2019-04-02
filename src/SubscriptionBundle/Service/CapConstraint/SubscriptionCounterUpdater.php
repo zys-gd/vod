@@ -1,6 +1,6 @@
 <?php
 
-namespace SubscriptionBundle\Service\AffiliateConstraint;
+namespace SubscriptionBundle\Service\CapConstraint;
 
 use Doctrine\ORM\EntityManagerInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
@@ -19,9 +19,9 @@ class SubscriptionCounterUpdater
     protected $notificationSender;
 
     /**
-     * @var ConstraintByAffiliateCache
+     * @var ConstraintCounterRedis
      */
-    protected $cache;
+    protected $constraintCounterRedis;
 
     /**
      * @var EntityManagerInterface
@@ -37,18 +37,18 @@ class SubscriptionCounterUpdater
      * AbstractConstraintByAffiliateService constructor
      *
      * @param CAPNotificationSender $notificationSender
-     * @param ConstraintByAffiliateCache $cache
+     * @param ConstraintCounterRedis $constraintCounterRedis
      * @param EntityManagerInterface $entityManager
      * @param CampaignRepositoryInterface $campaignRepository
      */
     public function __construct(
         CAPNotificationSender $notificationSender,
-        ConstraintByAffiliateCache $cache,
+        ConstraintCounterRedis $constraintCounterRedis,
         EntityManagerInterface $entityManager,
         CampaignRepositoryInterface $campaignRepository
     ) {
         $this->notificationSender = $notificationSender;
-        $this->cache = $cache;
+        $this->constraintCounterRedis = $constraintCounterRedis;
         $this->entityManager = $entityManager;
         $this->campaignRepository = $campaignRepository;
     }
@@ -61,15 +61,21 @@ class SubscriptionCounterUpdater
         $user = $subscription->getUser();
         $carrier = $user->getCarrier();
 
+        if ($carrier->getNumberOfAllowedSubscriptionsByConstraint()) {
+            $this->constraintCounterRedis->updateCounter($carrier->getBillingCarrierId());
+        }
+
         $affiliateToken = $subscription->getAffiliateToken();
 
-        $campaign = $this->campaignRepository->findOneByCampaignToken($affiliateToken['cid']);
-        $affiliate = $campaign->getAffiliate();
+        if ($affiliateToken) {
+            $campaign = $this->campaignRepository->findOneByCampaignToken($affiliateToken['cid']);
+            $affiliate = $campaign->getAffiliate();
 
-        $subscriptionConstraint = $affiliate->getConstraint(ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE, $carrier);
+            $subscriptionConstraint = $affiliate->getConstraint(ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE, $carrier);
 
-        if ($subscriptionConstraint) {
-            $this->cache->updateCounter($subscriptionConstraint);
+            if ($subscriptionConstraint) {
+                $this->constraintCounterRedis->updateCounter($subscriptionConstraint->getUuid());
+            }
         }
     }
 }

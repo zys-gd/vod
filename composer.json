@@ -33,6 +33,7 @@
         "phpoffice/phpspreadsheet": "^1.6",
         "piwik/piwik-php-tracker": "1.0",
         "playwing/difftool": "dev-master",
+        "predis/predis": "^1.1",
         "queue-interop/queue-interop": "0.8.0",
         "ramsey/uuid": "3.8.0",
         "sensio/framework-extra-bundle": "v5.2.4",

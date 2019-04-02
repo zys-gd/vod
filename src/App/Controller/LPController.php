@@ -1,26 +1,24 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 10.01.19
- * Time: 17:45
- */
 
 namespace App\Controller;
 
-
 use App\Domain\Entity\Campaign;
 use App\Domain\Repository\CampaignRepository;
+use App\Domain\Service\CarrierOTPVerifier;
 use App\Domain\Service\ContentStatisticSender;
-use App\Domain\Service\VisitConstraintByAffiliate;
+use App\Domain\Service\LandingPageACL\LandingPageACL;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class LPController
+ */
 class LPController extends AbstractController implements ControllerWithISPDetection, AppControllerInterface
 {
     /**
@@ -36,29 +34,43 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      */
     private $imageBaseUrl;
     /**
-     * @var VisitConstraintByAffiliate
+     * @var LandingPageACL
      */
-    private $visitConstraintByAffiliate;
+    private $landingPageAccessResolver;
+    /**
+     * @var CarrierOTPVerifier
+     */
+    private $OTPVerifier;
+    /**
+     * @var string
+     */
+    private $defaultRedirectUrl;
 
     /**
      * LPController constructor.
      *
-     * @param ContentStatisticSender     $contentStatisticSender
-     * @param CampaignRepository         $campaignRepository
-     * @param VisitConstraintByAffiliate $visitConstraintByAffiliate
-     * @param string                     $imageBaseUrl
+     * @param ContentStatisticSender $contentStatisticSender
+     * @param CampaignRepository $campaignRepository
+     * @param LandingPageACL $landingPageAccessResolver
+     * @param string $imageBaseUrl
+     * @param CarrierOTPVerifier $OTPVerifier
+     * @param string $defaultRedirectUrl
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
         CampaignRepository $campaignRepository,
-        VisitConstraintByAffiliate $visitConstraintByAffiliate,
-        string $imageBaseUrl
+        LandingPageACL $landingPageAccessResolver,
+        string $imageBaseUrl,
+        CarrierOTPVerifier $OTPVerifier,
+        string $defaultRedirectUrl
     )
     {
-        $this->contentStatisticSender       = $contentStatisticSender;
-        $this->campaignRepository           = $campaignRepository;
-        $this->visitConstraintByAffiliate   = $visitConstraintByAffiliate;
-        $this->imageBaseUrl                 = $imageBaseUrl;
+        $this->contentStatisticSender    = $contentStatisticSender;
+        $this->campaignRepository        = $campaignRepository;
+        $this->landingPageAccessResolver = $landingPageAccessResolver;
+        $this->imageBaseUrl              = $imageBaseUrl;
+        $this->OTPVerifier               = $OTPVerifier;
+        $this->defaultRedirectUrl        = $defaultRedirectUrl;
     }
 
 
@@ -69,16 +81,22 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param Request $request
      *
      * @return Response
-     *
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
     public function landingPageAction(Request $request)
     {
-        $session        = $request->getSession();
+        // TODO: do we need just only set flag to twig and call another macro?
+        $this->OTPVerifier->forceWifi($request->getSession());
+
+        if (!$this->landingPageAccessResolver->canAccess($request)) {
+            return new RedirectResponse($this->defaultRedirectUrl);
+        }
+
+        $session = $request->getSession();
         $campaignBanner = null;
-        $background     = null;
+        $background = null;
 
         if ($cid = $request->get('cid', '')) {
             // Useless method atm.
@@ -88,14 +106,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
             /** @var Campaign $campaign */
             if ($campaign) {
-                $constraintsCheckResult = $this->visitConstraintByAffiliate->handleLandingPageRequest($campaign, $session);
-
-                if ($constraintsCheckResult) {
-                    return $constraintsCheckResult;
-                }
-
                 $campaignBanner = $this->imageBaseUrl . '/' . $campaign->getImagePath();
-                $background     = $campaign->getBgColor();
+                $background = $campaign->getBgColor();
             }
         };
 
@@ -110,7 +122,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
     /**
      * @Route("/get_annotation", name="ajax_annotation")
-     *
      * @return JsonResponse
      */
     public function ajaxAnnotationAction()

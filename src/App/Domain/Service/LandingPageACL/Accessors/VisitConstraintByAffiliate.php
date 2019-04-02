@@ -1,17 +1,13 @@
 <?php
 
-namespace App\Domain\Service;
+namespace App\Domain\Service\LandingPageACL\Accessors;
 
 use App\Domain\Entity\Campaign;
-use App\Domain\Repository\CarrierRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\CarrierInterface;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
-use SubscriptionBundle\Service\AffiliateConstraint\ConstraintByAffiliateCache;
+use SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis;
 use SubscriptionBundle\Service\Notification\Email\CAPNotificationSender;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class VisitConstraintByAffiliateService
@@ -21,17 +17,12 @@ class VisitConstraintByAffiliate
     /**
      * @var CAPNotificationSender
      */
-    protected $notificationSender;
+    private $notificationSender;
 
     /**
-     * @var ConstraintByAffiliateCache
+     * @var ConstraintCounterRedis
      */
-    protected $cache;
-
-    /**
-     * @var CarrierRepository
-     */
-    protected $carrierRepository;
+    private $constraintCounterRedis;
 
     /**
      * @var EntityManagerInterface
@@ -42,43 +33,31 @@ class VisitConstraintByAffiliate
      * AbstractConstraintByAffiliateService constructor
      *
      * @param CAPNotificationSender $notificationSender
-     * @param ConstraintByAffiliateCache $cache
-     * @param CarrierRepository $carrierRepository
+     * @param ConstraintCounterRedis $constraintCounterRedis
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         CAPNotificationSender $notificationSender,
-        ConstraintByAffiliateCache $cache,
-        CarrierRepository $carrierRepository,
+        ConstraintCounterRedis $constraintCounterRedis,
         EntityManagerInterface $entityManager
     ) {
         $this->notificationSender = $notificationSender;
-        $this->cache = $cache;
-        $this->carrierRepository = $carrierRepository;
+        $this->constraintCounterRedis = $constraintCounterRedis;
         $this->entityManager = $entityManager;
     }
 
     /**
      * @param Campaign $campaign
      *
-     * @param SessionInterface $session
-     *
-     * @return RedirectResponse|null
+     * @param CarrierInterface $carrier
+     * @return bool
      *
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function handleLandingPageRequest(Campaign $campaign, SessionInterface $session): ?RedirectResponse
+    public function canVisit(Campaign $campaign, CarrierInterface $carrier): bool
     {
-        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($session);
-
-        if (empty($ispDetectionData['carrier_id'])
-            || !$carrier =  $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id'])
-        ) {
-            return null;
-        }
-
         $affiliate = $campaign->getAffiliate();
 
         /** @var ConstraintByAffiliate $constraint */
@@ -87,22 +66,22 @@ class VisitConstraintByAffiliate
                 continue;
             }
 
-            $isLimitReached = $this->cache->hasCounter($constraint)
-                ? $this->cache->getCounter($constraint) >= $constraint->getNumberOfActions()
-                : false;
+            $counter = $this->constraintCounterRedis->getCounter($constraint->getUuid());
+
+            $isLimitReached = $counter ? $counter >= $constraint->getNumberOfActions() : false;
 
             if ($isLimitReached) {
                 if (!$constraint->getIsCapAlertDispatch()) {
                     $this->sendNotification($constraint, $carrier);
                 }
 
-                return new RedirectResponse($constraint->getRedirectUrl());
+                return false;
             } elseif ($constraint->getCapType() === ConstraintByAffiliate::CAP_TYPE_VISIT) {
-                $this->cache->updateCounter($constraint);
+                $this->constraintCounterRedis->updateCounter($constraint->getUuid());
             }
         }
 
-        return null;
+        return true;
     }
 
     /**
@@ -115,7 +94,7 @@ class VisitConstraintByAffiliate
      */
     private function sendNotification(ConstraintByAffiliate $constraint, CarrierInterface $carrier)
     {
-        $result = $this->notificationSender->sendNotification($constraint, $carrier);
+        $result = $this->notificationSender->sendCapByAffiliateNotification($constraint, $carrier);
 
         if ($result) {
             $constraint->setIsCapAlertDispatch(true);

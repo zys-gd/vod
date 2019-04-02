@@ -92,16 +92,24 @@ services:
             - '%cap_notification_mail_to%'
             - '%cap_notification_mail_from%'
 
-    SubscriptionBundle\Service\AffiliateConstraint\ConstraintByAffiliateCache:
+    SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis:
         arguments:
-            - '@app.cache.redis.constraint_by_affiliate'
+            - '@ExtrasBundle\Cache\Redis\PureRedisService'
 
-    SubscriptionBundle\Service\AffiliateConstraint\SubscriptionCounterUpdater:
+    SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater:
         arguments:
             - '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender'
-            - '@SubscriptionBundle\Service\AffiliateConstraint\ConstraintByAffiliateCache'
+            - '@SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis'
             - '@doctrine.orm.entity_manager'
             - '@App\Domain\Repository\CampaignRepository'
+
+    SubscriptionBundle\Service\CapConstraint\SubscriptionConstraintByCarrier:
+        arguments:
+            - '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender'
+            - '@SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis'
+            - '@App\Domain\Repository\CarrierRepository'
+            - '@session'
+            - '@doctrine.orm.entity_manager'
 
 parameters:
     subscription.subscription.class: SubscriptionBundle\Entity\SubscriptionPack

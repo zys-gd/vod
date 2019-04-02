@@ -54,8 +54,16 @@ services:
 
     SubscriptionBundle\Command\ResetConstraintsByAffiliateCounters:
         arguments:
-            - '@SubscriptionBundle\Service\AffiliateConstraint\ConstraintByAffiliateCache'
+            - '@SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis'
             - '@doctrine.orm.entity_manager'
             - '@SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository'
+        tags:
+            - { name: console.command }
+
+    SubscriptionBundle\Command\ResetConstraintsByCarrierCounters:
+        arguments:
+            - '@SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis'
+            - '@doctrine.orm.entity_manager'
+            - '@App\Domain\Repository\CarrierRepository'
         tags:
             - { name: console.command }

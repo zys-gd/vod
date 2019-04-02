@@ -42,6 +42,7 @@ return [
     'RABBIT_MQ_VHOST'            => '/',
 
     'CAMPAIGN_SESSION_NAME'      => 'campaignData',
+    'DEFAULT_REDIRECT_URL'       => 'https://www.google.com/',
 
     'MAILER_TRANSPORT'           => 'smtp',
     'MAILER_HOST'                => 'email-smtp.eu-west-1.amazonaws.com',

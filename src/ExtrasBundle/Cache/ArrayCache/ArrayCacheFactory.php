@@ -45,13 +45,4 @@ class ArrayCacheFactory implements ICacheServiceFactory
     {
         return new ArrayCacheService();
     }
-
-    /**
-     * @param array $options
-     * @return ICacheService
-     */
-    public function createConstraintsByAffiliateCacheService(array $options = []): ICacheService
-    {
-        return new ArrayCacheService();
-    }
 }

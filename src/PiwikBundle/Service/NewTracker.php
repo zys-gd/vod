@@ -12,7 +12,6 @@ use App\Domain\Repository\CampaignRepository;
 use DeviceDetectionBundle\Service\Device;
 use IdentificationBundle\Entity\User;
 use LegacyBundle\Service\Exchanger;
-use LegacyBundle\Service\SubscriptionConstraintsByCarrier;
 use PiwikBundle\Api\ClientAbstract;
 use PiwikBundle\Api\JsClient;
 use PiwikBundle\Api\PhpClient;
@@ -45,7 +44,6 @@ class NewTracker
     protected $connection;
     protected $country;
     protected $ip;
-    protected $subscriptionConstraintsByCarrier;
     protected $customVars = [
         'operator' => [
             'id' => 6,
@@ -135,7 +133,6 @@ class NewTracker
      * @param SessionInterface                 $session
      * @param string                           $campaignSessionName
      * @param CampaignRepository               $campaignRepository
-     * @param SubscriptionConstraintsByCarrier $subscriptionConstraintsByCarrier
      * @param Device                           $device
      */
     public function __construct(
@@ -147,7 +144,6 @@ class NewTracker
         SessionInterface $session,
         string $campaignSessionName,
         CampaignRepository $campaignRepository,
-        SubscriptionConstraintsByCarrier $subscriptionConstraintsByCarrier,
         Device $device
     )
     {
@@ -159,7 +155,6 @@ class NewTracker
         $this->session = $session;
         $this->campaignSessionName = $campaignSessionName;
         $this->campaignRepository = $campaignRepository;
-        $this->subscriptionConstraintsByCarrier = $subscriptionConstraintsByCarrier;
         $this->device = $device;
     }
 
@@ -489,10 +484,6 @@ class NewTracker
         $eurPrice = $this->exchangeService->convert($oSubPack->getTierCurrency(), $oSubPack->getTierPrice());
         $subscriptionPrice = round($oSubPack->getPriceFromTier(), 2);
         $name = $type . '-' . ($bfSuccess ? 'ok' : 'failed');
-
-        if (($bfResponse->getType() == 'subscribe' || $type == 'resubscribe') && $bfSuccess) {
-            $this->subscriptionConstraintsByCarrier->handleCarrier($subscription);
-        }
 
         $orderIdPieces = [
             $name,

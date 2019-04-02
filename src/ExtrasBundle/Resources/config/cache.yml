@@ -26,6 +26,5 @@ services:
             - "%redis_port%"
             - "v%app_version_hash%"
 
-    app.cache.redis.constraint_by_affiliate:
-        class: ExtrasBundle\Cache\Redis\RedisCacheService
-        factory: [ '@app.cache.redis_factory', 'createConstraintsByAffiliateCacheService']
+    ExtrasBundle\Cache\Redis\PureRedisService:
+        arguments: ["@=service('app.cache.redis_connection_provider').createRedisConnection()"]

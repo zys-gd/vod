@@ -245,34 +245,22 @@ class ComplaintsAdminController extends CRUDController
                 $affiliateLog = $affiliateLogRepository->findOneBy(['userMsisdn' => $msisdn]);
 
                 if (!empty($affiliateLog)) {
-                    $affiliateRepository = $doctrine->getRepository(Affiliate::class);
                     $campaignRepository = $doctrine->getRepository(Campaign::class);
 
                     $usersInfo[$msisdn]['device_info'] = $affiliateLog->getFullDeviceInfo();
-
-                    $affiliateParams = $affiliateLog->getCampaignParams();
-                    $usersInfo[$msisdn]['url'] = empty($affiliateParams['url']) ? null : $affiliateParams['url'];
-                    $usersInfo[$msisdn]['aff_id'] = $affiliateParams['pk_campaign'];
-
-                    /** @var AffiliateInterface $affiliate */
-                    $affiliate = $affiliateRepository->findOneBy(['id' => $affiliateParams['pk_campaign']]);
-                    $usersInfo[$msisdn]['aff_name'] = $affiliate ? $affiliate->getName() : null;
-
-                    unset($affiliateParams['cid']);
-                    unset($affiliateParams['pk_campaign']);
-                    unset($affiliateParams['pk_kwd']);
-                    unset($affiliateParams['url']);
-                    unset($affiliateParams['sub_price']);
-
-                    $usersInfo[$msisdn]['campaignParams'] = json_encode($affiliateParams);
 
                     /** @var CampaignInterface $campaign */
                     $campaign = $campaignRepository->findOneBy(['campaignToken' => $affiliateLog->getCampaignToken()]);
 
                     if (!empty($campaign)) {
+                        /** @var AffiliateInterface $affiliate */
+                        $affiliate = $campaign->getAffiliate();
+
+                        $usersInfo[$msisdn]['url'] = $affiliateLog->getUrl();
                         $usersInfo[$msisdn]['aff_id'] = $campaign->getAffiliate()->getUuid();
-                        $usersInfo[$msisdn]['aff_name'] = $campaign->getAffiliate()->getName();
+                        $usersInfo[$msisdn]['aff_name'] = $affiliate->getName();
                         $usersInfo[$msisdn]['campaign_id'] = $campaign->getUuid();
+                        $usersInfo[$msisdn]['campaignParams'] = json_encode($affiliateLog->getCampaignParams());
                     }
                 }
 

@@ -43,4 +43,38 @@ interface CarrierInterface
      * @return int
      */
     public function getTrialPeriod(): int;
+
+    /**
+     * @return int|null
+     */
+    public function getNumberOfAllowedSubscriptionsByConstraint(): ?int;
+
+    /**
+     * @return string|null
+     */
+    public function getRedirectUrl(): ?string;
+
+    /**
+     * @param bool $isCapAlertDispatch
+     *
+     * @return CarrierInterface
+     */
+    public function setIsCapAlertDispatch(bool $isCapAlertDispatch): self;
+
+    /**
+     * @return bool
+     */
+    public function getIsCapAlertDispatch(): bool;
+
+    /**
+     * @param \DateTime $flushDate
+     *
+     * @return CarrierInterface
+     */
+    public function setFlushDate(\DateTime $flushDate): self;
+
+    /**
+     * @return bool
+     */
+    public function getIsCampaignsOnPause(): bool;
 }

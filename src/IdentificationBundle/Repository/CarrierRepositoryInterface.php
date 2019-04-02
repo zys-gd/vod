@@ -1,19 +1,19 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 08.01.19
- * Time: 17:14
- */
 
 namespace IdentificationBundle\Repository;
 
-
 use IdentificationBundle\Entity\CarrierInterface;
 
+/**
+ * Interface CarrierRepositoryInterface
+ */
 interface CarrierRepositoryInterface
 {
-
+    /**
+     * @param int $billingCarrierId
+     *
+     * @return CarrierInterface|null
+     */
     public function findOneByBillingId(int $billingCarrierId): ?CarrierInterface;
 
     /**
@@ -21,4 +21,8 @@ interface CarrierRepositoryInterface
      */
     public function findEnabledCarriers(): array;
 
+    /**
+     * @return array
+     */
+    public function findAll();
 }

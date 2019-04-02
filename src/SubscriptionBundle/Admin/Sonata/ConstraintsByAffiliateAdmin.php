@@ -5,14 +5,15 @@ namespace SubscriptionBundle\Admin\Sonata;
 use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Carrier;
 use App\Utils\UuidGenerator;
+use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\CarrierInterface;
+use SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis;
 use Symfony\Component\Validator\Constraints\Callback;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\Form\Type\BooleanType;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -33,20 +34,36 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
     private $constraintByAffiliateRepository;
 
     /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
+     * @var ConstraintCounterRedis
+     */
+    private $constraintCounterRedis;
+
+    /**
      * ConstraintsByAffiliateAdmin constructor
      *
      * @param string $code
      * @param string $class
      * @param string $baseControllerName
      * @param ConstraintByAffiliateRepository $constraintByAffiliateRepository
+     * @param EntityManagerInterface $entityManager
+     * @param ConstraintCounterRedis $constraintCounterRedis
      */
     public function __construct(
         string $code,
         string $class,
         string $baseControllerName,
-        ConstraintByAffiliateRepository $constraintByAffiliateRepository
+        ConstraintByAffiliateRepository $constraintByAffiliateRepository,
+        EntityManagerInterface $entityManager,
+        ConstraintCounterRedis $constraintCounterRedis
     ) {
         $this->constraintByAffiliateRepository = $constraintByAffiliateRepository;
+        $this->entityManager = $entityManager;
+        $this->constraintCounterRedis = $constraintCounterRedis;
 
         parent::__construct($code, $class, $baseControllerName);
     }
@@ -62,20 +79,40 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
     }
 
     /**
+     * @param ConstraintByAffiliate $object
+     */
+    public function preUpdate($object)
+    {
+        $originalData = $this->entityManager->getUnitOfWork()->getOriginalEntityData($object);
+
+        if ($originalData['numberOfActions'] !== $object->getNumberOfActions()) {
+            $object->setIsCapAlertDispatch(false);
+        }
+    }
+
+    /**
+     * @param ConstraintByAffiliate $object
+     */
+    public function postRemove($object)
+    {
+        $this->constraintCounterRedis->removeCounter($object->getUuid());
+    }
+
+    /**
      * @param CarrierInterface|null $carrier
      * @param ExecutionContextInterface $context
      */
     public function validateForIdenticalRecord(?CarrierInterface $carrier, ExecutionContextInterface $context): void
     {
-        /** @var ConstraintByAffiliate $constraintsByAffiliate */
-        $constraintsByAffiliate = $this->getSubject();
+        /** @var ConstraintByAffiliate $constraintByAffiliate */
+        $constraintByAffiliate = $this->getSubject();
 
-        $affiliate = $constraintsByAffiliate->getAffiliate();
-        $capType = $constraintsByAffiliate->getCapType();
+        $affiliate = $constraintByAffiliate->getAffiliate();
+        $capType = $constraintByAffiliate->getCapType();
 
-        $hasDuplicates = $this->constraintByAffiliateRepository->hasIdenticalConstraints($affiliate, $carrier, $capType);
+        $uuid = $this->constraintByAffiliateRepository->getIdenticalConstraintUuid($affiliate, $carrier, $capType);
 
-        if ($hasDuplicates) {
+        if ($uuid && $uuid !== $constraintByAffiliate->getUuid()) {
             $context
                 ->buildViolation('Identical constraint for affiliate and carrier was found')
                 ->addViolation();
@@ -104,10 +141,9 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
             ->add('carrier')
             ->add('numberOfActions')
             ->add('redirectUrl')
-            ->add('counter')
             ->add('capType')
             ->add('flushDate')
-            ->add('isCapAlertDispatch', BooleanType::class, [
+            ->add('isCapAlertDispatch', 'boolean', [
                 'label' => 'Is email sent today'
             ])
             ->add('_action', null, [
@@ -124,18 +160,31 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $isCreate = $this->isCurrentRoute('create');
+
+        if ($isCreate) {
+            $formMapper
+                ->add('affiliate', EntityType::class, [
+                    'class' => Affiliate::class,
+                    'placeholder' => 'Select affiliate',
+                ])
+                ->add('carrier', EntityType::class, [
+                    'class' => Carrier::class,
+                    'constraints' => [
+                        new Callback([$this, 'validateForIdenticalRecord'])
+                    ],
+                    'placeholder' => 'Select carrier',
+                ])
+                ->add('capType', ChoiceType::class, [
+                    'choices' => [
+                        'Subscribe' => ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE,
+                        'Visit' => ConstraintByAffiliate::CAP_TYPE_VISIT
+                    ],
+                    'label' => 'CAP type'
+                ]);
+        }
+
         $formMapper
-            ->add('affiliate', EntityType::class, [
-                'class' => Affiliate::class,
-                'placeholder' => 'Select affiliate',
-            ])
-            ->add('carrier', EntityType::class, [
-                'class' => Carrier::class,
-                'constraints' => [
-                    new Callback([$this, 'validateForIdenticalRecord'])
-                ],
-                'placeholder' => 'Select carrier',
-            ])
             ->add('numberOfActions', IntegerType::class, [
                 'attr' => [
                     'min' => 0
@@ -144,15 +193,7 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
             ])
             ->add('redirectUrl', UrlType::class, [
                 'label' => 'Redirect url'
-            ])
-            ->add('capType', ChoiceType::class, [
-                'choices' => [
-                    'Subscribe' => ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE,
-                    'Visit' => ConstraintByAffiliate::CAP_TYPE_VISIT
-                ],
-                'label' => 'CAP type'
-            ])
-        ;
+            ]);
     }
 
     /**
@@ -165,12 +206,11 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
             ->add('carrier')
             ->add('numberOfActions')
             ->add('redirectUrl')
-            ->add('counter')
             ->add('capType', TextType::class, [
                 'label' => 'CAP Type'
             ])
             ->add('flushDate')
-            ->add('isCapAlertDispatch', BooleanType::class, [
+            ->add('isCapAlertDispatch', 'boolean', [
                 'label' => 'Is email sent today'
             ]);
     }

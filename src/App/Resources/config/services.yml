@@ -116,9 +116,23 @@ services:
             - '@session'
             - '@App\Domain\Repository\CountryRepository'
 
-    App\Domain\Service\VisitConstraintByAffiliate:
+    App\Domain\Service\LandingPageACL\Accessors\VisitConstraintByAffiliate:
         arguments:
             - '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender'
-            - '@SubscriptionBundle\Service\AffiliateConstraint\ConstraintByAffiliateCache'
-            - '@App\Domain\Repository\CarrierRepository'
+            - '@SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis'
             - '@doctrine.orm.entity_manager'
+
+    App\Domain\Service\LandingPageACL\Accessors\VisitAccessorByCampaign: ~
+
+    App\Domain\Service\LandingPageACL\LandingPageACL:
+        - '@App\Domain\Service\LandingPageACL\Accessors\VisitConstraintByAffiliate'
+        - '@App\Domain\Service\LandingPageACL\Accessors\VisitAccessorByCampaign'
+        - '@SubscriptionBundle\Service\CapConstraint\SubscriptionConstraintByCarrier'
+        - '@App\Domain\Repository\CarrierRepository'
+        - '@App\Domain\Repository\CampaignRepository'
+        - '@session'
+
+    App\Domain\Service\CarrierOTPVerifier:
+        arguments:
+            - '@App\Domain\Repository\CarrierRepository'
+            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
