@@ -62,4 +62,12 @@ class PureRedisService implements PureRedisInterface
     {
         $this->redis->del([$key]);
     }
+
+    /**
+     * @return ClientInterface
+     */
+    public function getClient(): ClientInterface
+    {
+        return $this->redis;
+    }
 }

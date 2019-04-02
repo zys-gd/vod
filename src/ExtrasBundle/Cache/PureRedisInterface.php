@@ -8,6 +8,8 @@
 
 namespace ExtrasBundle\Cache;
 
+use Predis\ClientInterface;
+
 interface PureRedisInterface
 {
     /**
@@ -34,4 +36,9 @@ interface PureRedisInterface
      * @param string $key
      */
     public function remove(string $key): void;
+
+    /**
+     * @return ClientInterface
+     */
+    public function getClient(): ClientInterface;
 }
