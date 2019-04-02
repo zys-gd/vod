@@ -127,7 +127,6 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
         $datagridMapper
             ->add('affiliate')
             ->add('carrier')
-            ->add('redirectUrl')
             ->add('capType');
     }
 
@@ -140,7 +139,6 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
             ->add('affiliate')
             ->add('carrier')
             ->add('numberOfActions')
-            ->add('redirectUrl')
             ->add('capType')
             ->add('flushDate')
             ->add('isCapAlertDispatch', 'boolean', [
@@ -190,9 +188,6 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
                     'min' => 0
                 ],
                 'label' => 'Number of allowed actions by constraint'
-            ])
-            ->add('redirectUrl', UrlType::class, [
-                'label' => 'Redirect url'
             ]);
     }
 
@@ -205,7 +200,6 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
             ->add('affiliate')
             ->add('carrier')
             ->add('numberOfActions')
-            ->add('redirectUrl')
             ->add('capType', TextType::class, [
                 'label' => 'CAP Type'
             ])

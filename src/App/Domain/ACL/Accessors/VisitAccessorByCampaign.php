@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Service\LandingPageACL\Accessors;
+namespace App\Domain\ACL\Accessors;
 
 use App\Domain\Entity\Campaign;
 use IdentificationBundle\Entity\CarrierInterface;
