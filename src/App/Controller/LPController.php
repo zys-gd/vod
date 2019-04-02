@@ -14,6 +14,7 @@ use App\Domain\Repository\CampaignRepository;
 use App\Domain\Service\CarrierOTPVerifier;
 use App\Domain\Service\ContentStatisticSender;
 use App\Domain\Service\VisitConstraintByAffiliate;
+use IdentificationBundle\Controller\ControllerWithIdentification;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Service\CapConstraint\SubscriptionConstraintByCarrier;
@@ -24,7 +25,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class LPController extends AbstractController implements ControllerWithISPDetection, AppControllerInterface
+class LPController extends AbstractController implements ControllerWithISPDetection, AppControllerInterface, ControllerWithIdentification
 {
     /**
      * @var ContentStatisticSender
@@ -70,11 +71,11 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         CarrierOTPVerifier $OTPVerifier
     )
     {
-        $this->contentStatisticSender          = $contentStatisticSender;
-        $this->campaignRepository              = $campaignRepository;
-        $this->visitConstraintByAffiliate      = $visitConstraintByAffiliate;
+        $this->contentStatisticSender = $contentStatisticSender;
+        $this->campaignRepository = $campaignRepository;
+        $this->visitConstraintByAffiliate = $visitConstraintByAffiliate;
         $this->subscriptionConstraintByCarrier = $subscriptionConstraintByCarrier;
-        $this->imageBaseUrl                    = $imageBaseUrl;
+        $this->imageBaseUrl = $imageBaseUrl;
         $this->OTPVerifier = $OTPVerifier;
     }
 
@@ -86,7 +87,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param Request $request
      *
      * @return Response
-     *
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
@@ -102,9 +102,9 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             return new RedirectResponse($redirectUrlByCarrier);
         }
 
-        $session        = $request->getSession();
+        $session = $request->getSession();
         $campaignBanner = null;
-        $background     = null;
+        $background = null;
 
         if ($cid = $request->get('cid', '')) {
             // Useless method atm.
@@ -123,7 +123,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
                 }
 
                 $campaignBanner = $this->imageBaseUrl . '/' . $campaign->getImagePath();
-                $background     = $campaign->getBgColor();
+                $background = $campaign->getBgColor();
             }
         };
 
@@ -138,7 +138,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
     /**
      * @Route("/get_annotation", name="ajax_annotation")
-     *
      * @return JsonResponse
      */
     public function ajaxAnnotationAction()
