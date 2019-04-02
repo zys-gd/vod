@@ -13,11 +13,6 @@ SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate:
             nullable: true
             options:
                 default: null
-        redirectUrl:
-            type: string
-            nullable: true
-            options:
-                default: null
         flushDate:
             type: date
             nullable: true

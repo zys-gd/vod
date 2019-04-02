@@ -36,11 +36,6 @@ class ConstraintByAffiliate
     private $numberOfActions;
 
     /**
-     * @var string
-     */
-    private $redirectUrl;
-
-    /**
      * @var \DateTime
      */
     private $flushDate;
@@ -164,26 +159,6 @@ class ConstraintByAffiliate
     public function getNumberOfActions(): ?int
     {
         return $this->numberOfActions;
-    }
-
-    /**
-     * @param string $redirectUrl
-     *
-     * @return ConstraintByAffiliate
-     */
-    public function setRedirectUrl(string $redirectUrl): self
-    {
-        $this->redirectUrl = $redirectUrl;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getRedirectUrl(): ?string
-    {
-        return $this->redirectUrl;
     }
 
     /**

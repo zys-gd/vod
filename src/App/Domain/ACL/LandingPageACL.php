@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Domain\Service\LandingPageACL;
+namespace App\Domain\ACL;
 
 use App\Domain\Entity\Campaign;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Repository\CarrierRepository;
-use App\Domain\Service\LandingPageACL\Accessors\VisitConstraintByAffiliate;
-use App\Domain\Service\LandingPageACL\Accessors\VisitAccessorByCampaign;
+use App\Domain\ACL\Accessors\VisitConstraintByAffiliate;
+use App\Domain\ACL\Accessors\VisitAccessorByCampaign;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use SubscriptionBundle\Service\CapConstraint\SubscriptionConstraintByCarrier;
 use Symfony\Component\HttpFoundation\Request;
