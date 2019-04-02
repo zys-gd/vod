@@ -81,7 +81,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param Request $request
      *
      * @return Response
-     *
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
@@ -95,9 +94,9 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             return new RedirectResponse($this->defaultRedirectUrl);
         }
 
-        $session        = $request->getSession();
+        $session = $request->getSession();
         $campaignBanner = null;
-        $background     = null;
+        $background = null;
 
         if ($cid = $request->get('cid', '')) {
             // Useless method atm.
@@ -108,7 +107,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             /** @var Campaign $campaign */
             if ($campaign) {
                 $campaignBanner = $this->imageBaseUrl . '/' . $campaign->getImagePath();
-                $background     = $campaign->getBgColor();
+                $background = $campaign->getBgColor();
             }
         };
 
@@ -123,7 +122,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
     /**
      * @Route("/get_annotation", name="ajax_annotation")
-     *
      * @return JsonResponse
      */
     public function ajaxAnnotationAction()
