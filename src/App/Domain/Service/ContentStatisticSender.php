@@ -4,6 +4,7 @@ namespace App\Domain\Service;
 
 use App\Domain\Entity\Game;
 use App\Domain\Entity\UploadedVideo;
+use App\Domain\Repository\CarrierRepository;
 use App\Domain\Repository\CountryRepository;
 use CountryCarrierDetectionBundle\Service\MaxMindIpInfo;
 use IdentificationBundle\Entity\User;
@@ -57,15 +58,21 @@ class ContentStatisticSender
     private $subscriptionExtractor;
 
     /**
+     * @var CarrierRepository
+     */
+    private $carrierRepository;
+
+    /**
      * ContentStatisticSender constructor
      *
-     * @param NewTracker            $newTracker
-     * @param UserRepository        $userRepository
-     * @param LoggerInterface       $logger
-     * @param MaxMindIpInfo         $maxMindIpInfo
-     * @param Session               $session
-     * @param CountryRepository     $countryRepository
+     * @param NewTracker $newTracker
+     * @param UserRepository $userRepository
+     * @param LoggerInterface $logger
+     * @param MaxMindIpInfo $maxMindIpInfo
+     * @param Session $session
+     * @param CountryRepository $countryRepository
      * @param SubscriptionExtractor $subscriptionExtractor
+     * @param CarrierRepository $carrierRepository
      */
     public function __construct(
         NewTracker $newTracker,
@@ -74,7 +81,8 @@ class ContentStatisticSender
         MaxMindIpInfo $maxMindIpInfo,
         Session $session,
         CountryRepository $countryRepository,
-        SubscriptionExtractor $subscriptionExtractor
+        SubscriptionExtractor $subscriptionExtractor,
+        CarrierRepository $carrierRepository
     )
     {
         $this->newTracker            = $newTracker;
@@ -84,6 +92,7 @@ class ContentStatisticSender
         $this->session               = $session;
         $this->countryRepository     = $countryRepository;
         $this->subscriptionExtractor = $subscriptionExtractor;
+        $this->carrierRepository     = $carrierRepository;
     }
 
     /**
@@ -94,29 +103,30 @@ class ContentStatisticSender
     public function trackVisit(ISPData $data = null): bool
     {
         $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($this->session);
-        $user               = null;
-        $country            = null;
+
+        $billingCarrierId = $data ? $data->getCarrierId() : null;
+        $userIp = $this->getUserIp();
+        $connection = $this->maxMindIpInfo->getConnectionType();
+        $user = null;
+        $countryCode = null;
 
         if (!empty($identificationData['identification_token'])) {
             $token = $identificationData['identification_token'];
 
             /** @var User $user */
-            if (!$user = $this->userRepository->findOneBy([
-                'identificationToken' => $token
-            ])) {
-                return false;
-            }
+            $user = $this->userRepository->findOneBy(['identificationToken' => $token]);
 
-            if (!$country = $this->countryRepository->findOneBy([
-                'countryCode' => $user->getCountry()
-            ])) {
-                return false;
+            if (!empty($user)) {
+                $countryCode = $user->getCountry();
             }
         }
 
-        $userIp     = $this->getUserIp();
-        $connection = $this->maxMindIpInfo->getConnectionType();
-        $operator   = $data ? $data->getCarrierId() : null;
+        if (empty($countryCode) && !empty($billingCarrierId)) {
+            $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
+            $countryCode = $carrier->getCountryCode();
+        }
+
+        $country = $this->countryRepository->findOneBy(['countryCode' => $countryCode]);
 
         try {
             $this->logger->info('Trying to send piwik event', [
@@ -126,7 +136,7 @@ class ContentStatisticSender
             $result = $this->newTracker->trackPage(
                 $user,
                 $connection,
-                $operator,
+                $billingCarrierId,
                 $country,
                 $userIp
             );

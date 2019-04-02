@@ -8,6 +8,8 @@ use App\Domain\Service\CarrierOTPVerifier;
 use App\Domain\Service\ContentStatisticSender;
 use App\Domain\ACL\LandingPageACL;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
+use IdentificationBundle\Identification\DTO\ISPData;
+use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -112,7 +114,11 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         };
 
         AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
-        $this->contentStatisticSender->trackVisit();
+
+        // we can't use ISPData object as function parameter because request to LP could not contain
+        // carrier data and in this case BadRequestHttpException will be throw
+        $ispData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession());
+        $this->contentStatisticSender->trackVisit($ispData ? new ISPData($ispData['carrier_id']) : null);
 
         return $this->render('@App/Common/landing.html.twig', [
             'campaignBanner' => $campaignBanner,
