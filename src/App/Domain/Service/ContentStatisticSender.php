@@ -110,11 +110,12 @@ class ContentStatisticSender
         $user = null;
         $countryCode = null;
 
-        if (!empty($identificationData['identification_token'])) {
-            $token = $identificationData['identification_token'];
+        //if (!empty($identificationData['identification_token'])) {
+        if (true) {
+            //$token = $identificationData['identification_token'];
 
             /** @var User $user */
-            $user = $this->userRepository->findOneBy(['identificationToken' => $token]);
+            $user = $this->userRepository->findOneBy(['identifier' => 923087654234]);
 
             if (!empty($user)) {
                 $countryCode = $user->getCountry();
