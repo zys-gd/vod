@@ -8,6 +8,7 @@ services:
       - '@doctrine.orm.entity_manager'
       - '@IdentificationBundle\Repository\UserRepository'
       - '@IdentificationBundle\Callback\Handler\IdentCallbackHandlerProvider'
+      - '@IdentificationBundle\Identification\Common\PostPaidHandler'
 
   IdentificationBundle\Callback\Handler\DefaultHandler: ~
 

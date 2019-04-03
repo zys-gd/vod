@@ -13,6 +13,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\BillingFramework\Process\IdentProcess;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
+use IdentificationBundle\Identification\Common\PostPaidHandler;
+use IdentificationBundle\Identification\Handler\HasPostPaidRestriction;
 use IdentificationBundle\Identification\Service\UserFactory;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Repository\UserRepository;
@@ -55,10 +57,15 @@ class IdentCallbackProcessor
      * @var IdentCallbackHandlerProvider
      */
     private $handlerProvider;
+    /**
+     * @var PostPaidHandler
+     */
+    private $postPaidHandler;
 
 
     /**
      * IdentCallbackProcessor constructor.
+     *
      * @param ProcessResponseMapper        $mapper
      * @param UserFactory                  $userFactory
      * @param CarrierRepositoryInterface   $carrierRepository
@@ -66,6 +73,7 @@ class IdentCallbackProcessor
      * @param EntityManagerInterface       $entityManager
      * @param UserRepository               $userRepository
      * @param IdentCallbackHandlerProvider $handlerProvider
+     * @param PostPaidHandler              $postPaidHandler
      */
     public function __construct(
         ProcessResponseMapper $mapper,
@@ -74,7 +82,8 @@ class IdentCallbackProcessor
         LoggerInterface $logger,
         EntityManagerInterface $entityManager,
         UserRepository $userRepository,
-        IdentCallbackHandlerProvider $handlerProvider
+        IdentCallbackHandlerProvider $handlerProvider,
+        PostPaidHandler $postPaidHandler
     )
     {
         $this->mapper            = $mapper;
@@ -84,6 +93,7 @@ class IdentCallbackProcessor
         $this->entityManager     = $entityManager;
         $this->userRepository    = $userRepository;
         $this->handlerProvider   = $handlerProvider;
+        $this->postPaidHandler = $postPaidHandler;
     }
 
     /**
@@ -110,6 +120,10 @@ class IdentCallbackProcessor
             if ($result->isSuccessful()) {
                 $user = $this->handleSuccess($result, $carrier);
                 $handler->afterSuccess($user, $result);
+
+                if ($handler instanceof HasPostPaidRestriction) {
+                    $this->postPaidHandler->process($user->getIdentifier(), $carrier->getBillingCarrierId());
+                }
             } else {
 
             }

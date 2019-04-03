@@ -14,6 +14,7 @@ use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Handler\CommonFlow\HasCustomPixelIdent;
 use IdentificationBundle\Identification\Handler\HasCommonFlow;
+use IdentificationBundle\Identification\Handler\HasPostPaidRestriction;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerInterface;
 use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
@@ -22,7 +23,8 @@ use Symfony\Component\HttpFoundation\Request;
 class MobilinkPKIdentificationHandler implements
     IdentificationHandlerInterface,
     HasCommonFlow,
-    HasCustomPixelIdent
+    HasCustomPixelIdent,
+    HasPostPaidRestriction
 {
 
     private $repository;

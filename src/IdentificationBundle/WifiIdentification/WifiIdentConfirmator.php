@@ -12,9 +12,11 @@ namespace IdentificationBundle\WifiIdentification;
 use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
 use IdentificationBundle\BillingFramework\Process\Exception\PinVerifyProcessException;
 use IdentificationBundle\BillingFramework\Process\PinVerifyProcess;
+use IdentificationBundle\Identification\Common\PostPaidHandler;
 use IdentificationBundle\Identification\Exception\AlreadyIdentifiedException;
 use IdentificationBundle\Identification\Exception\FailedIdentificationException;
 use IdentificationBundle\Identification\Exception\MissingIdentificationDataException;
+use IdentificationBundle\Identification\Handler\HasPostPaidRestriction;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Repository\UserRepository;
@@ -68,10 +70,15 @@ class WifiIdentConfirmator
      * @var UserRepository
      */
     private $userRepository;
+    /**
+     * @var PostPaidHandler
+     */
+    private $postPaidHandler;
 
 
     /**
      * WifiIdentConfirmator constructor.
+     *
      * @param WifiIdentificationHandlerProvider $handlerProvider
      * @param PinCodeVerifier                   $codeVerifier
      * @param CarrierRepositoryInterface        $carrierRepository
@@ -82,6 +89,7 @@ class WifiIdentConfirmator
      * @param IdentFinisher                     $identFinisher
      * @param SubscriptionRepository            $subscriptionRepository
      * @param UserRepository                    $userRepository
+     * @param PostPaidHandler                   $postPaidHandler
      */
     public function __construct(
         WifiIdentificationHandlerProvider $handlerProvider,
@@ -93,7 +101,8 @@ class WifiIdentConfirmator
         IdentificationDataStorage $dataStorage,
         IdentFinisher $identFinisher,
         SubscriptionRepository $subscriptionRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        PostPaidHandler $postPaidHandler
     )
     {
         $this->handlerProvider        = $handlerProvider;
@@ -106,6 +115,7 @@ class WifiIdentConfirmator
         $this->identFinisher          = $identFinisher;
         $this->subscriptionRepository = $subscriptionRepository;
         $this->userRepository         = $userRepository;
+        $this->postPaidHandler = $postPaidHandler;
     }
 
     /**
@@ -144,6 +154,10 @@ class WifiIdentConfirmator
             }
 
             $this->dataStorage->cleanPreviousOperationResult('pinRequest');
+
+            if ($handler instanceof HasPostPaidRestriction) {
+                $this->postPaidHandler->process($msisdn, $carrier->getBillingCarrierId());
+            }
             return;
 
         } else {
@@ -187,6 +201,10 @@ class WifiIdentConfirmator
             }
 
             $this->dataStorage->cleanPreviousOperationResult('pinRequest');
+
+            if ($handler instanceof HasPostPaidRestriction) {
+                $this->postPaidHandler->process($finalMsisdn, $carrier->getBillingCarrierId());
+            }
         }
 
     }

@@ -18,6 +18,7 @@ services:
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
             - '@SubscriptionBundle\Service\CapConstraint\SubscriptionConstraintByCarrier'
             - '%default_redirect_url%'
+            - '@IdentificationBundle\Identification\Common\PostPaidHandler'
 
     SubscriptionBundle\Controller\Actions\ListenAction:
         arguments: ['@SubscriptionBundle\Service\Callback\Common\CommonFlowHandler', '@logger', '@SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider']

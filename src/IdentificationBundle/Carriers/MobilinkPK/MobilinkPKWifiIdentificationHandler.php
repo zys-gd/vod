@@ -12,10 +12,11 @@ namespace IdentificationBundle\Carriers\MobilinkPK;
 use App\Domain\Constants\ConstBillingCarrierId;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
+use IdentificationBundle\Identification\Handler\HasPostPaidRestriction;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
 
-class MobilinkPKWifiIdentificationHandler implements WifiIdentificationHandlerInterface
+class MobilinkPKWifiIdentificationHandler implements WifiIdentificationHandlerInterface, HasPostPaidRestriction
 {
     /**
      * @var UserRepository

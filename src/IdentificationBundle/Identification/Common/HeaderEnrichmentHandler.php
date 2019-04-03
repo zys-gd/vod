@@ -14,6 +14,7 @@ use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\Exception\FailedIdentificationException;
 use IdentificationBundle\Identification\Handler\HasHeaderEnrichment;
+use IdentificationBundle\Identification\Handler\HasPostPaidRestriction;
 use IdentificationBundle\Identification\Service\IdentificationStatus;
 use IdentificationBundle\Identification\Service\UserFactory;
 use IdentificationBundle\Repository\UserRepository;
@@ -37,26 +38,34 @@ class HeaderEnrichmentHandler
      * @var IdentificationStatus
      */
     private $identificationStatus;
+    /**
+     * @var PostPaidHandler
+     */
+    private $postPaidHandler;
 
 
     /**
      * HeaderEnrichmentHandler constructor.
+     *
      * @param UserFactory            $userFactory
      * @param EntityManagerInterface $entityManager
      * @param UserRepository         $userRepository
      * @param IdentificationStatus   $identificationStatus
+     * @param PostPaidHandler        $postPaidHandler
      */
     public function __construct(
         UserFactory $userFactory,
         EntityManagerInterface $entityManager,
         UserRepository $userRepository,
-        IdentificationStatus $identificationStatus
+        IdentificationStatus $identificationStatus,
+        PostPaidHandler $postPaidHandler
     )
     {
         $this->userFactory          = $userFactory;
         $this->entityManager        = $entityManager;
         $this->userRepository       = $userRepository;
         $this->identificationStatus = $identificationStatus;
+        $this->postPaidHandler = $postPaidHandler;
     }
 
     /**
@@ -80,6 +89,10 @@ class HeaderEnrichmentHandler
             $this->entityManager->persist($user);
         } else {
             $user->setIdentificationToken($token);
+        }
+
+        if ($handler instanceof HasPostPaidRestriction) {
+            $this->postPaidHandler->process($msisdn, $carrier->getBillingCarrierId());
         }
 
         $this->entityManager->flush();

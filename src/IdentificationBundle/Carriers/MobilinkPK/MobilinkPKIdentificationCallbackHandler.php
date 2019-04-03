@@ -13,11 +13,13 @@ use App\Domain\Constants\ConstBillingCarrierId;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Callback\Handler\HasCommonFlow;
 use IdentificationBundle\Callback\Handler\IdentCallbackHandlerInterface;
+use IdentificationBundle\Identification\Handler\HasPostPaidRestriction;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 
 class MobilinkPKIdentificationCallbackHandler implements
     IdentCallbackHandlerInterface,
-    HasCommonFlow
+    HasCommonFlow,
+    HasPostPaidRestriction
 {
     public function canHandle(int $carrierId): bool
     {

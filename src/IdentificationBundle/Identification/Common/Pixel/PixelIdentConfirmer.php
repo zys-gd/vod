@@ -13,9 +13,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\BillingFramework\Data\DataProvider;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
+use IdentificationBundle\Identification\Common\PostPaidHandler;
 use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\Handler\CommonFlow\HasCustomPixelIdent;
 use IdentificationBundle\Identification\Handler\HasCommonFlow;
+use IdentificationBundle\Identification\Handler\HasPostPaidRestriction;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Identification\Service\IdentificationStatus;
 use IdentificationBundle\Identification\Service\TokenGenerator;
@@ -58,10 +60,15 @@ class PixelIdentConfirmer
      * @var UserRepository
      */
     private $userRepository;
+    /**
+     * @var PostPaidHandler
+     */
+    private $postPaidHandler;
 
 
     /**
      * PixelIdentConfirmer constructor.
+     *
      * @param EntityManagerInterface        $entityManager
      * @param UserFactory                   $userFactory
      * @param CarrierRepositoryInterface    $carrierRepository
@@ -70,6 +77,7 @@ class PixelIdentConfirmer
      * @param IdentificationStatus          $identificationStatus
      * @param TokenGenerator                $tokenGenerator
      * @param UserRepository                $userRepository
+     * @param PostPaidHandler               $postPaidHandler
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -79,8 +87,8 @@ class PixelIdentConfirmer
         IdentificationHandlerProvider $identificationHandlerProvider,
         IdentificationStatus $identificationStatus,
         TokenGenerator $tokenGenerator,
-        UserRepository $userRepository
-
+        UserRepository $userRepository,
+        PostPaidHandler $postPaidHandler
     )
     {
         $this->entityManager                 = $entityManager;
@@ -91,6 +99,7 @@ class PixelIdentConfirmer
         $this->identificationStatus          = $identificationStatus;
         $this->tokenGenerator                = $tokenGenerator;
         $this->userRepository                = $userRepository;
+        $this->postPaidHandler               = $postPaidHandler;
     }
 
     public function confirmIdent(string $processId, int $carrierId, DeviceData $deviceData): void
@@ -121,6 +130,10 @@ class PixelIdentConfirmer
                 $identificationToken,
                 $deviceData
             );
+        }
+
+        if ($handler instanceof HasPostPaidRestriction) {
+            $this->postPaidHandler->process($msisdn, $carrier->getBillingCarrierId());
         }
 
         $this->identificationStatus->finishIdent($identificationToken, $user);

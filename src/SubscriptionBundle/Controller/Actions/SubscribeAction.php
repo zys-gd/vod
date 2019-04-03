@@ -10,6 +10,7 @@ namespace SubscriptionBundle\Controller\Actions;
 
 
 use ExtrasBundle\Utils\UrlParamAppender;
+use IdentificationBundle\Identification\Common\PostPaidHandler;
 use IdentificationBundle\Identification\DTO\IdentificationData;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Handler\HasConsentPageFlow;
@@ -84,6 +85,10 @@ class SubscribeAction extends Controller
      * @var string
      */
     private $defaultRedirectUrl;
+    /**
+     * @var PostPaidHandler
+     */
+    private $postPaidHandler;
 
     /**
      * SubscribeAction constructor.
@@ -100,6 +105,7 @@ class SubscribeAction extends Controller
      * @param CarrierRepositoryInterface      $carrierRepository
      * @param SubscriptionConstraintByCarrier $subscriptionConstraintByCarrier
      * @param string                          $defaultRedirectUrl
+     * @param PostPaidHandler                 $postPaidHandler
      */
     public function __construct(
         UserExtractor $userExtractor,
@@ -113,7 +119,8 @@ class SubscribeAction extends Controller
         IdentificationHandlerProvider $identificationHandlerProvider,
         CarrierRepositoryInterface $carrierRepository,
         SubscriptionConstraintByCarrier $subscriptionConstraintByCarrier,
-        string $defaultRedirectUrl
+        string $defaultRedirectUrl,
+        PostPaidHandler $postPaidHandler
     )
     {
         $this->userExtractor                   = $userExtractor;
@@ -128,6 +135,7 @@ class SubscribeAction extends Controller
         $this->carrierRepository               = $carrierRepository;
         $this->subscriptionConstraintByCarrier = $subscriptionConstraintByCarrier;
         $this->defaultRedirectUrl              = $defaultRedirectUrl;
+        $this->postPaidHandler = $postPaidHandler;
     }
 
     /**
@@ -145,6 +153,11 @@ class SubscribeAction extends Controller
      */
     public function __invoke(Request $request, IdentificationData $identificationData, ISPData $ISPData)
     {
+        if($this->postPaidHandler->isPostPaidRestricted())
+        {
+            return new RedirectResponse($this->generateUrl('index', ['err' => 'postpaid_restricted']));
+        }
+
         if ($this->subscriptionConstraintByCarrier->isSubscriptionLimitReached()) {
             return new RedirectResponse($this->defaultRedirectUrl);
         }
