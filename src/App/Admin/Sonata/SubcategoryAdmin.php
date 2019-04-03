@@ -3,6 +3,8 @@
 namespace App\Admin\Sonata;
 
 use App\Domain\Entity\MainCategory;
+use App\Domain\Entity\Subcategory;
+use App\Domain\Repository\SubcategoryRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -11,6 +13,8 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Class CategoryAdmin
@@ -18,11 +22,53 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class SubcategoryAdmin extends AbstractAdmin
 {
     /**
+     * @var SubcategoryRepository
+     */
+    private $subcategoryRepository;
+
+    /**
+     * SubcategoryAdmin constructor
+     *
+     * @param string $code
+     * @param string $class
+     * @param string $baseControllerName
+     * @param SubcategoryRepository $subcategoryRepository
+     */
+    public function __construct(
+        string $code,
+        string $class,
+        string $baseControllerName,
+        SubcategoryRepository $subcategoryRepository
+    ) {
+        $this->subcategoryRepository = $subcategoryRepository;
+
+        parent::__construct($code, $class, $baseControllerName);
+    }
+
+    /**
      * @return array
      */
     public function getBatchActions(): array
     {
         return [];
+    }
+
+    /**
+     * @param string|null $title
+     * @param ExecutionContextInterface $context
+     */
+    public function validateTitle(?string $title, ExecutionContextInterface $context): void
+    {
+        /** @var Subcategory $subcategory */
+        $subcategory = $this->getSubject();
+
+        $uuid = $this->subcategoryRepository->getIdenticalSubcategoryUuid(trim($title));
+
+        if ($uuid && $uuid !== $subcategory->getUuid()) {
+            $context
+                ->buildViolation('Identical subcategory title was found')
+                ->addViolation();
+        }
     }
 
     /**
@@ -88,7 +134,10 @@ class SubcategoryAdmin extends AbstractAdmin
     {
         $formMapper
             ->add('title', TextType::class, [
-                'required' => true
+                'required' => true,
+                'constraints' => [
+                    new Callback([$this, 'validateTitle'])
+                ]
             ]);
     }
 }

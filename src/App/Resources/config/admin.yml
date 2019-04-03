@@ -17,7 +17,11 @@ services:
             - { name: sonata.admin, manager_type: orm, group: content_management, label: Main categories }
 
     App\Admin\Sonata\SubcategoryAdmin:
-        arguments: [~, App\Domain\Entity\Subcategory, 'App\Admin\Controller\SubcategoryAdminController']
+        arguments:
+            - ~
+            - App\Domain\Entity\Subcategory
+            - 'App\Admin\Controller\SubcategoryAdminController'
+            - '@App\Domain\Repository\SubcategoryRepository'
         tags:
             - { name: sonata.admin, manager_type: orm, group: content_management, label: Subcategories }
 

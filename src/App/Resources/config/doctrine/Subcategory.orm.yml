@@ -9,6 +9,7 @@ App\Domain\Entity\Subcategory:
         title:
             type: string
             length: null
+            unique: true
         alias:
             type: string
             length: null
