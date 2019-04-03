@@ -1,21 +1,22 @@
 services:
-  ExtrasBundle\SignatureCheck\SignatureHandler:
-      arguments: ['@ExtrasBundle\SignatureCheck\ParametersProvider']
+    ExtrasBundle\SignatureCheck\SignatureHandler:
+        arguments: ['@ExtrasBundle\SignatureCheck\ParametersProvider']
 
-  ExtrasBundle\SignatureCheck\ParametersProvider:
-      arguments: ['_request_parameter_','_secret_key_']
+    ExtrasBundle\SignatureCheck\ParametersProvider:
+        arguments: ['_request_parameter_','_secret_key_']
 
-  ExtrasBundle\Utils\UrlParamAppender: ~
+    ExtrasBundle\Utils\UrlParamAppender: ~
 
-  ExtrasBundle\Utils\LocalExtractor:
-      arguments:
-          - '@request_stack'
+    ExtrasBundle\Utils\LocalExtractor:
+        arguments:
+            - '@request_stack'
 
-  ExtrasBundle\Email\EmailComposer:
-      arguments:
-          - '@twig'
+    ExtrasBundle\Email\EmailComposer:
+        arguments:
+            - '@twig'
 
-  ExtrasBundle\Email\EmailSender:
-      arguments:
-          - '@swiftmailer.mailer'
-          - '@ExtrasBundle\Email\EmailComposer'
+    ExtrasBundle\Email\EmailSender:
+        arguments:
+            - '@swiftmailer.mailer'
+            - '@ExtrasBundle\Email\EmailComposer'
+

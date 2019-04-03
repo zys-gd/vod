@@ -2,7 +2,7 @@
 
 namespace SubscriptionBundle\Service\CapConstraint;
 
-use ExtrasBundle\Cache\PureRedisInterface;
+use Predis\ClientInterface;
 
 /**
  * Class ConstraintCounterRedis
@@ -10,16 +10,16 @@ use ExtrasBundle\Cache\PureRedisInterface;
 class ConstraintCounterRedis
 {
     /**
-     * @var PureRedisInterface
+     * @var ClientInterface
      */
     private $redisService;
 
     /**
      * ConstraintCounterRedis constructor
      *
-     * @param PureRedisInterface $redisService
+     * @param ClientInterface $redisService
      */
-    public function __construct(PureRedisInterface $redisService)
+    public function __construct(ClientInterface $redisService)
     {
         $this->redisService = $redisService;
     }
@@ -41,7 +41,7 @@ class ConstraintCounterRedis
      */
     public function hasCounter(string $counterIdentifier): bool
     {
-        return $this->redisService->hasKey($this->getCacheKey($counterIdentifier));
+        return $this->redisService->exists($this->getCacheKey($counterIdentifier));
     }
 
     /**
@@ -50,7 +50,7 @@ class ConstraintCounterRedis
     public function updateCounter(string $counterIdentifier): void
     {
         $cacheKey = $this->getCacheKey($counterIdentifier);
-        $counter = $this->redisService->hasKey($cacheKey) ? (int) $this->redisService->get($cacheKey) + 1 : 1;
+        $counter = $this->redisService->exists($cacheKey) ? (int) $this->redisService->get($cacheKey) + 1 : 1;
 
         $this->redisService->set($cacheKey, $counter);
     }
@@ -68,7 +68,7 @@ class ConstraintCounterRedis
      */
     public function removeCounter(string $counterIdentifier): void
     {
-        $this->redisService->remove($counterIdentifier);
+        $this->redisService->del([$counterIdentifier]);
     }
 
     /**

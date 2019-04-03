@@ -26,5 +26,6 @@ services:
             - "%redis_port%"
             - "v%app_version_hash%"
 
-    ExtrasBundle\Cache\Redis\PureRedisService:
-        arguments: ["@=service('app.cache.redis_connection_provider').createRedisConnection()"]
+    Predis\Client:
+        arguments:
+            - {scheme: 'tcp', host: "%redis_host%", port: "%redis_port%"}

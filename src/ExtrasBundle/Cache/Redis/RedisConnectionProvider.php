@@ -9,9 +9,7 @@
 namespace ExtrasBundle\Cache\Redis;
 
 
-use Predis\ClientInterface;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
-use Predis\Client as PureRedis;
 
 class RedisConnectionProvider
 {
@@ -61,17 +59,5 @@ class RedisConnectionProvider
         $connection = $this->create($database, $options);
 
         return new RedisAdapter($connection, $this->namespace);
-    }
-
-    /**
-     * @return ClientInterface
-     */
-    public function createRedisConnection(): ClientInterface
-    {
-        return new PureRedis([
-            'scheme' => 'tcp',
-            'host' => $this->host,
-            'port' => $this->port
-        ]);
     }
 }
