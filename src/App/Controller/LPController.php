@@ -89,9 +89,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      */
     public function landingPageAction(Request $request)
     {
-        // TODO: do we need just only set flag to twig and call another macro?
-        $this->OTPVerifier->forceWifi($request->getSession());
-
         if (!$this->landingPageAccessResolver->canAccess($request)) {
             return new RedirectResponse($this->defaultRedirectUrl);
         }
@@ -111,7 +108,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
                 $campaignBanner = $this->imageBaseUrl . '/' . $campaign->getImagePath();
                 $background = $campaign->getBgColor();
             }
-        };
+        }
+        else {
+            $this->OTPVerifier->forceWifi($request->getSession());
+        }
 
         AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
 

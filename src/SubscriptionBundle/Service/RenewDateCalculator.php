@@ -49,7 +49,16 @@ class RenewDateCalculator
         $preferredRenewalEnd->setDate($renewDate->year, $renewDate->month, $renewDate->day);
         if (!$renewDate->between($preferredRenewalStart, $preferredRenewalEnd)) {
             if ($subscriptionPack->getPreferredRenewalStart()) {
-                $renewDate->setTime($preferredRenewalStart->hour, $preferredRenewalStart->minute);
+
+                $min_epoch = strtotime($preferredRenewalStart);
+                $max_epoch = strtotime($preferredRenewalEnd);
+
+                $rand_epoch = rand($min_epoch, $max_epoch);
+
+                $renewInterval =  new \DateTime();
+                $renewInterval->setTimestamp($rand_epoch);
+
+                $renewDate->setTime($renewInterval->format('h'), $renewInterval->format('i'));
             } else if ($subscriptionPack->getPreferredRenewalEnd()) {
                 $renewDate->setTime(0, 0);
             }
