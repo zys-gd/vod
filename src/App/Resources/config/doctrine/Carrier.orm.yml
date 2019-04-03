@@ -70,12 +70,6 @@ App\Domain\Entity\Carrier:
             type: boolean
             options:
                 default: true
-
-        isCaptcha:
-            type: boolean
-            options:
-                default: false
-
         numberOfAllowedSubscriptionsByConstraint:
             type: integer
             nullable: true

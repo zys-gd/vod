@@ -111,11 +111,6 @@ class Carrier implements CarrierInterface
     private $isUnlimitedSubscriptionAttemptsAllowed = true;
 
     /**
-     * @var bool
-     */
-    private $isCaptcha = false;
-
-    /**
      * @var Campaign[] | ArrayCollection
      */
     private $campaigns;
@@ -515,22 +510,6 @@ class Carrier implements CarrierInterface
     public function isUnlimitedSubscriptionAttemptsAllowed(): bool
     {
         return $this->isUnlimitedSubscriptionAttemptsAllowed;
-    }
-
-    /**
-     * @param bool $isCaptcha
-     */
-    public function setIsCaptcha(bool $isCaptcha)
-    {
-        $this->isCaptcha = $isCaptcha;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isCaptcha(): bool
-    {
-        return $this->isCaptcha;
     }
 
     /**
