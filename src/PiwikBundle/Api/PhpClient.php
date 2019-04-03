@@ -44,12 +44,13 @@ class PhpClient extends ClientAbstract
      */
     protected function sendRequest($url, $method = 'GET', $data = null, $force = false)
     {
-        $this->logger->info('Sending Piwik event',func_get_args());
-
         $args = func_get_args();
         $args[0] .= !empty($this->userAgent) ? ('&ua=' . urlencode($this->userAgent)) : '';
 
         $dataForQueue = [$args[0], TimestampGenerator::generateMicrotime()];
+
+        $this->logger->info('Sending Piwik event', ['piwikData' => $dataForQueue]);
+
         $this->rabbitMQProducer->sendEvent(json_encode(['piwikData' => $dataForQueue]));
 
         return true;
