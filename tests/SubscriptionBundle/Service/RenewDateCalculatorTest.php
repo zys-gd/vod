@@ -3,17 +3,9 @@
 
 namespace App\Tests\SubscriptionBundle\Service;
 
-use App\Domain\Entity\Language;
-use App\Domain\Entity\Translation;
-use App\Domain\Repository\CarrierRepository;
-use App\Domain\Repository\LanguageRepository;
-use App\Domain\Repository\TranslationRepository;
-use App\Domain\Service\Translator\Translator;
 use App\Utils\UuidGenerator;
 use Carbon\Carbon;
-use ExtrasBundle\Cache\ICacheService;
 use PHPUnit\Framework\TestCase;
-use Mockery;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Service\RenewDateCalculator;
