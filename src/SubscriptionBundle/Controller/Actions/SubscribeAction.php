@@ -155,7 +155,7 @@ class SubscribeAction extends Controller
     {
         if($this->postPaidHandler->isPostPaidRestricted())
         {
-            return new RedirectResponse($this->generateUrl('index', ['err' => 'postpaid_restricted']));
+            return new RedirectResponse($this->generateUrl('index', ['err_handle' => 'postpaid_restricted']));
         }
 
         if ($this->subscriptionConstraintByCarrier->isSubscriptionLimitReached()) {

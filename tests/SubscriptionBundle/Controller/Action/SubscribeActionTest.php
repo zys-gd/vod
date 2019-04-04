@@ -64,8 +64,6 @@ class SubscribeActionTest extends AbstractFunctionalTest
     // {
     //     $client = $this->makeClient();
     //
-    //     $this->session->set('identification_token', 'token_for_user_without_subscription');
-    //
     //     $this->session->set('identification_data', ['identification_token' => 'token_for_user_without_subscription']);
     //
     //     $ispDetectionData = [
@@ -121,6 +119,22 @@ class SubscribeActionTest extends AbstractFunctionalTest
         $this->assertTrue($client->getResponse()->isRedirect('/'), 'redirect is missing');
     }
 
+    public function testPostPaidRestrictedRedirect()
+    {
+        $client = $this->makeClient();
+        $this->session->set('storage[isPostPaidRestricted]', 1);
+        $this->session->set('identification_data', ['identification_token' => 'token_for_user_without_subscription']);
+
+        $ispDetectionData = [
+            'isp_name'   => 'Jazz PK',
+            'carrier_id' => 338,
+        ];
+        $this->session->set('isp_detection_data', $ispDetectionData);
+
+        $client->request('GET', 'subscribe');
+        $this->assertTrue($client->getResponse()->isRedirect('/?err_handle=postpaid_restricted'), 'redirect is missing');
+    }
+
      protected function configureWebClientClientContainer(ContainerInterface $container)
      {
          $container->set('SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider', $this->subscriptionPackDataProvider);
@@ -128,7 +142,7 @@ class SubscribeActionTest extends AbstractFunctionalTest
          $container->set('SubscriptionBundle\BillingFramework\Process\API\RequestSender', $this->requestSender);
          $container->set('talentica.piwic_statistic_sender', $this->piwikStatisticSender);
 
-     }
+    }
 
     protected function getFixturesListLoadedForEachTest(): array
     {
@@ -140,10 +154,10 @@ class SubscribeActionTest extends AbstractFunctionalTest
     protected function initializeServices(ContainerInterface $container)
     {
 
-        $this->httpClient                   = \Mockery::spy(Client::class);
+        $this->httpClient = \Mockery::spy(Client::class);
         $this->subscriptionPackDataProvider = \Mockery::spy(SubscriptionPackDataProvider::class);
-        $this->notificationService          = \Mockery::spy(NotificationService::class);
-        $this->requestSender          = \Mockery::spy(RequestSender::class);
+        $this->notificationService = \Mockery::spy(NotificationService::class);
+        $this->requestSender = \Mockery::spy(RequestSender::class);
 
         $this->piwikStatisticSender = Mockery::spy(SubscriptionStatisticSender::class, [
             Mockery::spy(LoggerInterface::class),
