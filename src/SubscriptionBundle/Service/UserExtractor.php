@@ -36,10 +36,14 @@ class UserExtractor
         /** @var User $user */
         $user = $this->userRepository->findOneByIdentificationToken($identificationData->getIdentificationToken());
 
-        $this->logger->debug('Obtained user', [
-            'userUuid' => $user->getUuid(),
-            'msidsn'   => $user->getIdentifier()
-        ]);
+        try{
+            $this->logger->debug('Obtained user', [
+                'userUuid' => $user->getUuid(),
+                'msidsn'   => $user->getIdentifier()
+            ]);
+        } catch (\Throwable $e) {
+            echo '<pre>'; print_r($e); echo '</pre>';
+        }
 
         return $user;
     }
