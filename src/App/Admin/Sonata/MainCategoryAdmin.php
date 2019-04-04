@@ -2,6 +2,8 @@
 
 namespace App\Admin\Sonata;
 
+use App\Domain\Entity\MainCategory;
+use App\Domain\Repository\MainCategoryRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -10,6 +12,8 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Class MainCategoryAdmin
@@ -17,11 +21,53 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class MainCategoryAdmin extends AbstractAdmin
 {
     /**
+     * @var MainCategoryRepository
+     */
+    private $mainCategoryRepository;
+
+    /**
+     * MainCategoryAdmin constructor
+     *
+     * @param string $code
+     * @param string $class
+     * @param string $baseControllerName
+     * @param MainCategoryRepository $mainCategoryRepository
+     */
+    public function __construct(
+        string $code,
+        string $class,
+        string $baseControllerName,
+        MainCategoryRepository $mainCategoryRepository
+    ) {
+        $this->mainCategoryRepository = $mainCategoryRepository;
+
+        parent::__construct($code, $class, $baseControllerName);
+    }
+
+    /**
      * @return array
      */
     public function getBatchActions(): array
     {
         return [];
+    }
+
+    /**
+     * @param int|null $menuPriority
+     * @param ExecutionContextInterface $context
+     */
+    public function validateMenuPriority(?int $menuPriority, ExecutionContextInterface $context): void
+    {
+        /** @var MainCategory $mainCategory */
+        $mainCategory = $this->getSubject();
+
+        $duplicatedRecord = $this->mainCategoryRepository->findOneBy(['menuPriority' => $menuPriority]);
+
+        if ($duplicatedRecord && $mainCategory->getUuid() !== $duplicatedRecord->getUuid()) {
+            $context
+                ->buildViolation('Identical menu priority was found')
+                ->addViolation();
+        }
     }
 
     /**
@@ -83,7 +129,10 @@ class MainCategoryAdmin extends AbstractAdmin
                 'required' => true
             ])
             ->add('menuPriority', IntegerType::class, [
-                'required' => true
+                'required' => true,
+                'constraints' => [
+                    new Callback([$this, 'validateMenuPriority'])
+                ]
             ]);
     }
 }

@@ -12,7 +12,11 @@ services:
             - [ setTemplate, [edit, '@@Admin\UploadedVideo\edit.html.twig'] ]
 
     App\Admin\Sonata\MainCategoryAdmin:
-        arguments: [~, App\Domain\Entity\MainCategory, ~]
+        arguments:
+            - ~
+            - App\Domain\Entity\MainCategory
+            - ~
+            - '@App\Domain\Repository\MainCategoryRepository'
         tags:
             - { name: sonata.admin, manager_type: orm, group: content_management, label: Main categories }
 

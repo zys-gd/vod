@@ -13,8 +13,8 @@ App\Domain\Entity\MainCategory:
         menuPriority:
             type: integer
             length: 3
-            options:
-                default: 0
+            unique: true
+            nullable: false
 
     lifecycleCallbacks: {  }
 
