@@ -50,25 +50,24 @@ class AuditClearOldLogEntriesCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-//        $io->success('Start transaction');
-//        $this->entityManager->getConnection()->beginTransaction();
-//        try {
+        $this->entityManager->getConnection()->beginTransaction();
+        try {
             $queryBuilder = $this->entityManager->createQueryBuilder();
-            $io->comment('Start delete');
+
             $queryBuilder->delete(AuditLog::class, 'a')
                 ->where("a.loggedAt < :month_ago")
                 ->setParameters(['month_ago' => new DateTime('- 1 month')])
                 ->getQuery()
                 ->execute();
 
-//            $this->entityManager->getConnection()->commit();
+            $this->entityManager->getConnection()->commit();
 
             $io->success('Successfully deleted log entries older than a month');
 
-//        } catch (Throwable $e) {
-//            $this->entityManager->getConnection()->rollBack();
-//
-//            $io->error($e->getMessage());
-//        }
+        } catch (Throwable $e) {
+            $this->entityManager->getConnection()->rollBack();
+
+            $io->error($e->getMessage());
+        }
     }
 }
