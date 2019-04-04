@@ -155,11 +155,21 @@ class SubscribeAction extends Controller
     {
         if($this->postPaidHandler->isPostPaidRestricted())
         {
-            return new RedirectResponse($this->generateUrl('index', ['err_handle' => 'postpaid_restricted']));
+            try{
+                return new RedirectResponse($this->generateUrl('index', ['err_handle' => 'postpaid_restricted']));
+            } catch (\Throwable $e) {
+                echo '<pre>'; print_r('postPaidHandler'); echo '</pre>';
+                echo '<pre>'; print_r($e->getMessage()); echo '</pre>';
+            }
         }
 
         if ($this->subscriptionConstraintByCarrier->isSubscriptionLimitReached()) {
-            return new RedirectResponse($this->defaultRedirectUrl);
+            try{
+                return new RedirectResponse($this->defaultRedirectUrl);
+            } catch (\Throwable $e) {
+                echo '<pre>'; print_r('subscriptionConstraintByCarrier'); echo '</pre>';
+                echo '<pre>'; print_r($e->getMessage()); echo '</pre>';
+            }
         }
 
         /*if ($result = $this->handleRequestByLegacyService($request)) {
