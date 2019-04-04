@@ -17,6 +17,7 @@ use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Identification\Service\RouteProvider;
 use IdentificationBundle\Identification\Service\TokenGenerator;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,21 +46,28 @@ class IdentificationController extends AbstractController
      * @var IdentificationDataStorage
      */
     private $identificationDataStorage;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * IdentificationController constructor.
+     *
      * @param Identifier                $identifier
      * @param TokenGenerator            $generator
      * @param IdentifierByUrl           $identifierByUrl
      * @param RouteProvider             $provider
      * @param IdentificationDataStorage $identificationDataStorage
+     * @param LoggerInterface           $logger
      */
     public function __construct(
         Identifier $identifier,
         TokenGenerator $generator,
         IdentifierByUrl $identifierByUrl,
         RouteProvider $provider,
-        IdentificationDataStorage $identificationDataStorage
+        IdentificationDataStorage $identificationDataStorage,
+        LoggerInterface $logger
     )
     {
         $this->identifier                = $identifier;
@@ -67,6 +75,7 @@ class IdentificationController extends AbstractController
         $this->identifierByUrl           = $identifierByUrl;
         $this->routeProvider             = $provider;
         $this->identificationDataStorage = $identificationDataStorage;
+        $this->logger = $logger;
     }
 
     /**
@@ -93,14 +102,14 @@ class IdentificationController extends AbstractController
 
         $token = $this->tokenGenerator->generateToken();
 
-
+        $this->logger->debug('Start ident from action', []);
         $result = $this->identifier->identify(
             (int)$ispData['carrier_id'],
             $request,
             $token,
             $deviceData
         );
-
+        $this->logger->debug('Finish ident from action', ['result' => $result]);
         $this->identificationDataStorage->storeValue('subscribeAfterIdent', true);
 
         if ($customResponse = $result->getOverridedResponse()) {

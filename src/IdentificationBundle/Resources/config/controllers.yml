@@ -22,6 +22,7 @@ services:
             - '@IdentificationBundle\Identification\IdentifierByUrl'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
             - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@logger'
 
     IdentificationBundle\Identification\Controller\FakeIdentificationController:
         arguments:
