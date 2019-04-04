@@ -61,7 +61,7 @@ class AuditClearOldLogEntriesCommand extends Command
                 ->getQuery()
                 ->execute();
 
-            $this->entityManager->getConnection()->commit();
+//            $this->entityManager->getConnection()->commit();
 
             $io->success('Successfully deleted log entries older than a month');
 
