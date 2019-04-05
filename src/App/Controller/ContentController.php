@@ -35,7 +35,7 @@ class ContentController extends AbstractController implements AppControllerInter
     public function faqAction()
     {
         return $this->render(
-            '@App/Content/faq.html.twig',
+            '@App/Common/faq.html.twig',
             [
                 'questions' => $this->faqProviderService->getSortedQuestions(),
                 'answers'   => $this->faqProviderService->getSortedAnswers(),
@@ -49,7 +49,7 @@ class ContentController extends AbstractController implements AppControllerInter
     public function termsAndConditionsAction()
     {
         return $this->render(
-            '@App/Content/terms_and_conditions.html.twig'
+            '@App/Common/terms_and_conditions.html.twig'
         );
     }
 }

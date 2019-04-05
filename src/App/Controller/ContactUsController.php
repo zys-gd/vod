@@ -107,7 +107,7 @@ class ContactUsController extends AbstractController implements AppControllerInt
             return $this->render('@App/Mails/thank-you-mail.html.twig');
         }
         return $this->render(
-            '@App/Content/contact_us.html.twig', [
+            '@App/Common/contact_us.html.twig', [
                 'form' => $form->createView(),
                 'userIdentifier' => $userIdentifier
             ]
