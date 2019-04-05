@@ -25,7 +25,3 @@ services:
             - "%redis_host%"
             - "%redis_port%"
             - "v%app_version_hash%"
-
-    Predis\Client:
-        arguments:
-            - {scheme: 'tcp', host: "%redis_host%", port: "%redis_port%"}

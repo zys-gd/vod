@@ -43,7 +43,12 @@ class RedisConnectionProvider
         $this->namespace = $namespace;
     }
 
-
+    /**
+     * @param       $database
+     * @param array $options
+     *
+     * @return \Predis\Client|\Redis|\RedisCluster
+     */
     public function create($database, $options = [])
     {
         $options = array_merge($this->defaultOptions, $options);

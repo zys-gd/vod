@@ -2,24 +2,22 @@
 
 namespace SubscriptionBundle\Service\CapConstraint;
 
-use Predis\ClientInterface;
-
 /**
  * Class ConstraintCounterRedis
  */
 class ConstraintCounterRedis
 {
     /**
-     * @var ClientInterface
+     * @var \Predis\Client|\Redis|\RedisCluster
      */
     private $redisService;
 
     /**
      * ConstraintCounterRedis constructor
      *
-     * @param ClientInterface $redisService
+     * @param \Predis\Client|\Redis|\RedisCluster $redisService
      */
-    public function __construct(ClientInterface $redisService)
+    public function __construct($redisService)
     {
         $this->redisService = $redisService;
     }
