@@ -37,9 +37,6 @@ try {
     $kernel->terminate($request, $response);
 } catch (\Throwable $exception) {
     http_response_code(500);
-    echo '<pre>'; print_r($exception->getFile()); echo '</pre>';
-    echo '<pre>'; print_r($exception->getLine()); echo '</pre>';
-    echo '<pre>'; print_r($exception->getTraceAsString()); echo '</pre>';
     echo $exception->getMessage();
 }
 
