@@ -51,6 +51,14 @@ class ConstraintByAffiliate
     private $capType;
 
     /**
+     * Counter of actions, field is not mapped to db,
+     * created for displaying counter from redis in admin panel
+     *
+     * @var int
+     */
+    private $counter;
+
+    /**
      * ConstraintByAffiliate constructor
      *
      * @param string $uuid
@@ -199,5 +207,31 @@ class ConstraintByAffiliate
     public function getCapType(): string
     {
         return $this->capType;
+    }
+
+    /**
+     * Setter is related to field which is not mapped to db and created
+     * for displaying counter from redis in admin panel
+     *
+     * @param int $counter
+     *
+     * @return ConstraintByAffiliate
+     */
+    public function setCounter(int $counter): self
+    {
+        $this->counter = $counter;
+
+        return $this;
+    }
+
+    /**
+     * Getter is related to field which is not mapped to db and created
+     * for displaying counter from redis in admin panel
+     *
+     * @return int|null
+     */
+    public function getCounter(): ?int
+    {
+        return isset($this->counter) ? $this->counter : null;
     }
 }
