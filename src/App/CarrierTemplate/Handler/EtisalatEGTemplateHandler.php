@@ -9,19 +9,17 @@
 namespace App\CarrierTemplate\Handler;
 
 
-use App\CarrierTemplate\Handler\TemplateHandlerInterface;
 use App\Domain\Constants\ConstBillingCarrierId;
-use IdentificationBundle\Entity\CarrierInterface;
 
 class EtisalatEGTemplateHandler implements TemplateHandlerInterface
 {
-    public function canHandle(CarrierInterface $carrier): bool
+    public function canHandle(int $billingCarrierId): bool
     {
-        return ConstBillingCarrierId::ETISALAT_EGYPT === $carrier->getBillingCarrierId();
+        return ConstBillingCarrierId::ETISALAT_EGYPT === $billingCarrierId;
     }
 
     public function getFullTemplatePath(string $templateName): string
     {
-        return '@App/EtisalatEgypt/' . $templateName;
+        return '@App/Impl/EtisalatEgypt/' . $templateName . '.html.twig';
     }
 }

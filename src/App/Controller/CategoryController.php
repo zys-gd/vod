@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\CarrierTemplate\TemplateConfigurator;
 use App\Domain\Entity\UploadedVideo;
 use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\SubcategoryRepository;
@@ -34,24 +35,32 @@ class CategoryController extends AbstractController implements AppControllerInte
      * @var ContentStatisticSender
      */
     private $contentStatisticSender;
+    /**
+     * @var TemplateConfigurator
+     */
+    private $templateConfigurator;
 
     /**
      * CategoryController constructor.
-     * @param MainCategoryRepository $mainCategoryRepository
+     *
+     * @param MainCategoryRepository  $mainCategoryRepository
      * @param UploadedVideoRepository $uploadedVideoRepository
-     * @param SubcategoryRepository $subcategoryRepository
-     * @param ContentStatisticSender $contentStatisticSender
+     * @param SubcategoryRepository   $subcategoryRepository
+     * @param ContentStatisticSender  $contentStatisticSender
+     * @param TemplateConfigurator    $templateConfigurator
      */
     public function __construct(
         MainCategoryRepository $mainCategoryRepository,
         UploadedVideoRepository $uploadedVideoRepository,
         SubcategoryRepository $subcategoryRepository,
-        ContentStatisticSender $contentStatisticSender
+        ContentStatisticSender $contentStatisticSender,
+        TemplateConfigurator $templateConfigurator
     ) {
         $this->mainCategoryRepository  = $mainCategoryRepository;
         $this->uploadedVideoRepository = $uploadedVideoRepository;
         $this->subcategoryRepository   = $subcategoryRepository;
         $this->contentStatisticSender  = $contentStatisticSender;
+        $this->templateConfigurator = $templateConfigurator;
     }
 
 
@@ -95,7 +104,8 @@ class CategoryController extends AbstractController implements AppControllerInte
 
         $this->contentStatisticSender->trackVisit($data);
 
-        return $this->render('@App/Common/category.html.twig', [
+        $template = $this->templateConfigurator->getTemplate('category', $data->getCarrierId());
+        return $this->render($template, [
             'videos'              => $videos,
             'category'            => $category,
             'subcategories'       => $subcategories,

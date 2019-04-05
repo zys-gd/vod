@@ -22,7 +22,6 @@ use ExtrasBundle\Utils\ArraySorter;
 use IdentificationBundle\Controller\ControllerWithIdentification;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
-use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,10 +32,6 @@ class HomeController extends AbstractController implements
     AppControllerInterface,
     ControllerWithIdentification
 {
-    /**
-     * @var CarrierRepositoryInterface
-     */
-    private $carrierRepository;
     /**
      * @var TemplateConfigurator
      */
@@ -67,7 +62,6 @@ class HomeController extends AbstractController implements
     /**
      * HomeController constructor.
      *
-     * @param CarrierRepositoryInterface                $carrierRepository
      * @param TemplateConfigurator                      $templateConfigurator
      * @param MainCategoryRepository                    $mainCategoryRepository
      * @param UploadedVideoRepository                   $videoRepository
@@ -76,7 +70,6 @@ class HomeController extends AbstractController implements
      * @param ContentStatisticSender                    $contentStatisticSender
      */
     public function __construct(
-        CarrierRepositoryInterface $carrierRepository,
         TemplateConfigurator $templateConfigurator,
         MainCategoryRepository $mainCategoryRepository,
         UploadedVideoRepository $videoRepository,
@@ -85,7 +78,6 @@ class HomeController extends AbstractController implements
         ContentStatisticSender $contentStatisticSender
     )
     {
-        $this->carrierRepository          = $carrierRepository;
         $this->templateConfigurator       = $templateConfigurator;
         $this->mainCategoryRepository     = $mainCategoryRepository;
         $this->videoRepository            = $videoRepository;
@@ -107,7 +99,6 @@ class HomeController extends AbstractController implements
      */
     public function indexAction(Request $request, ISPData $data)
     {
-        $carrier           = $this->carrierRepository->findOneByBillingId($data->getCarrierId());
         $videos            = $this->videoRepository->findNotExpiredWithCategories();
         $categoryOverrides = $this->categoryOverrideRepository->findByBillingCarrierId($data->getCarrierId());
         $categories        = $this->mainCategoryRepository->findAll();
@@ -130,8 +121,8 @@ class HomeController extends AbstractController implements
 
         $this->contentStatisticSender->trackVisit($data);
 
-        return $this->render('@App/Common/home.html.twig', [
-            'templateHandler' => $this->templateConfigurator->getTemplateHandler($carrier),
+        $template = $this->templateConfigurator->getTemplate('home', $data->getCarrierId());
+        return $this->render($template, [
             'categoryVideos'  => array_slice($categoryVideos, 1, 3),
             'categories'      => $indexedCategoryData,
             'sliderVideos'    => array_slice($categoryVideos, 0, 1),
