@@ -55,7 +55,6 @@ class Translator
             }
         } else {
             $this->initializeDefaultTexts()
-                ->initializeCarrierTexts($billingCarrierId, self::DEFAULT_LOCALE)
                 ->initializeCarrierTexts($billingCarrierId, $languageCode)
                 ->pushTexts2Cache($cacheKey);
         }
@@ -126,13 +125,20 @@ class Translator
      */
     private function initializeCarrierTexts($billingCarrierId, string $languageCode)
     {
+        /** @var Carrier $oCarrier */
         $oCarrier = $this->carrierRepository->findOneBy(['billingCarrierId' => $billingCarrierId]);
-        $oLanguage = $this->languageRepository->findOneBy(['code' => $languageCode]);
-        /** @var Translation[] $translations */
-        $translations = $this->translationRepository->findBy([
-            'language' => $oLanguage,
-            'carrier'  => $oCarrier
+        $oCarrierDefaultLangCode = ($oCarrier != null) ? $oCarrier->getDefaultLanguage()->getCode() : null;
+
+        $oLanguages = $this->languageRepository->getOrderedLanguagesByCodes([
+            self::DEFAULT_LOCALE,
+            $languageCode,
+            $oCarrierDefaultLangCode,
         ]);
+
+
+        /** @var Translation[] $translations */
+        $translations = $this->translationRepository->findTranslationByCarrierAndOrderedLanguages($oCarrier, $oLanguages);
+
         foreach ($translations ?? [] as $translation) {
             $this->texts[$translation->getKey()] = $translation->getTranslation();
         }
