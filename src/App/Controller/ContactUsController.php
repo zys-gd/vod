@@ -9,10 +9,12 @@
 namespace App\Controller;
 
 
+use App\CarrierTemplate\TemplateConfigurator;
 use App\Domain\Entity\Campaign;
 use App\Domain\Repository\CampaignRepository;
 use App\Form\ContactUsType;
 use ExtrasBundle\Email\EmailSender;
+use IdentificationBundle\Identification\DTO\ISPData;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Service\SubscriptionExtractor;
 use SubscriptionBundle\Service\UserExtractor;
@@ -51,16 +53,33 @@ class ContactUsController extends AbstractController implements AppControllerInt
      * @var string
      */
     private $contactUsMailFrom;
+    /**
+     * @var TemplateConfigurator
+     */
+    private $templateConfigurator;
 
-
+    /**
+     * ContactUsController constructor.
+     *
+     * @param FormFactoryInterface  $formFactory
+     * @param UserExtractor         $userExtractor
+     * @param EmailSender           $emailSender
+     * @param SubscriptionExtractor $subscriptionExtractor
+     * @param CampaignRepository    $campaignRepository
+     * @param string                $contactUsMailTo
+     * @param string                $contactUsMailFrom
+     * @param TemplateConfigurator  $templateConfigurator
+     */
     public function __construct(FormFactoryInterface $formFactory,
-                                UserExtractor $userExtractor,
-                                EmailSender $emailSender,
-                                SubscriptionExtractor $subscriptionExtractor,
-                                CampaignRepository $campaignRepository,
-                                string $contactUsMailTo,
-                                string $contactUsMailFrom
-    ) {
+        UserExtractor $userExtractor,
+        EmailSender $emailSender,
+        SubscriptionExtractor $subscriptionExtractor,
+        CampaignRepository $campaignRepository,
+        string $contactUsMailTo,
+        string $contactUsMailFrom,
+        TemplateConfigurator $templateConfigurator
+    )
+    {
         $this->formFactory = $formFactory;
         $this->userExtractor = $userExtractor;
         $this->emailSender = $emailSender;
@@ -68,13 +87,22 @@ class ContactUsController extends AbstractController implements AppControllerInt
         $this->campaignRepository = $campaignRepository;
         $this->contactUsMailTo = $contactUsMailTo;
         $this->contactUsMailFrom = $contactUsMailFrom;
+        $this->templateConfigurator = $templateConfigurator;
     }
 
 
     /**
      * @Route("/contact-us",name="contact_us")
+     * @param Request $request
+     * @param ISPData $data
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
-    public function contactUsAction(Request $request)
+    public function contactUsAction(Request $request, ISPData $data)
     {
         $form = $this->formFactory->create(ContactUsType::class);
 
@@ -106,9 +134,9 @@ class ContactUsController extends AbstractController implements AppControllerInt
 
             return $this->render('@App/Mails/thank-you-mail.html.twig');
         }
-        return $this->render(
-            '@App/Common/contact_us.html.twig', [
-                'form' => $form->createView(),
+        $template = $this->templateConfigurator->getTemplate('contact_us', $data->getCarrierId());
+        return $this->render($template, [
+                'form'           => $form->createView(),
                 'userIdentifier' => $userIdentifier
             ]
         );

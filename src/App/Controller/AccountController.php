@@ -53,16 +53,13 @@ class AccountController extends AbstractController implements ControllerWithISPD
      */
     public function accountAction(Request $request, ISPData $data)
     {
-        $carrier = $this->carrierRepository->findOneByBillingId($data->getCarrierId());
-
         $subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($request->getSession());
 
-        $templateParams = [
-            'templateHandler' => $this->templateConfigurator->getTemplateHandler($carrier)
-        ];
+        $templateParams = [];
         if (!is_null($subscription)) {
             $templateParams['subscriptionCreatedDate'] = $subscription->getCreated();
         }
-        return $this->render('@App/Common/account.html.twig', $templateParams);
+        $template = $this->templateConfigurator->getTemplate('account', $data->getCarrierId());
+        return $this->render($template, $templateParams);
     }
 }

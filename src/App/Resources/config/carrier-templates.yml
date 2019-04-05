@@ -1,9 +1,15 @@
 services:
-  App\CarrierTemplate\TemplateConfigurator:
-    arguments:
-      - '@App\CarrierTemplate\Handler\CommonHandler'
+    App\CarrierTemplate\TemplateConfigurator:
+        arguments:
+            - '@twig'
+            - '@App\CarrierTemplate\Handler\CommonTemplateHandler'
 
-  App\CarrierTemplate\Handler\CommonHandler: ~
+    App\CarrierTemplate\Handler\CommonTemplateHandler: ~
 
-  App\CarrierTemplate\Handler\EtisalatEGTemplateHandler:
-    - { name: app.carrier_template_handler }
+    App\CarrierTemplate\Handler\EtisalatEGTemplateHandler:
+        tags:
+            - { name: app.carrier_template_handler }
+
+    App\CarrierTemplate\Handler\TelenorPKDotTemplateHandler:
+        tags:
+            - { name: app.carrier_template_handler }
