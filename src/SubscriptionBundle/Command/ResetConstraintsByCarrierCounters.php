@@ -81,7 +81,7 @@ class ResetConstraintsByCarrierCounters extends Command
                 continue;
             }
 
-            $this->constraintCounterRedis->resetCounter($carrier->getUuid());
+            $this->constraintCounterRedis->resetCounter($carrier->getBillingCarrierId());
 
             $carrier
                 ->setIsCapAlertDispatch(false)
