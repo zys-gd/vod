@@ -17,7 +17,7 @@ services:
 
     app.cache.redis_factory:
         class: ExtrasBundle\Cache\Redis\RedisCacheServiceFactory
-        arguments: ['@app.cache.redis_connection_provider','v%app_version_hash%']
+        arguments: ['@app.cache.redis_connection_provider','v%app_version_hash%', '@logger']
 
     app.cache.redis_connection_provider:
         class: ExtrasBundle\Cache\Redis\RedisConnectionProvider

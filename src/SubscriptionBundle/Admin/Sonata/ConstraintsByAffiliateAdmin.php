@@ -205,7 +205,8 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
     {
         /** @var ConstraintByAffiliate $subject */
         $subject = $this->getSubject();
-        $this->logger->info('Get counter');
+
+        $this->logger->info('Get counter in admin class');
 
         $counter = $this->constraintCounterRedis->getCounter($subject->getUuid());
 

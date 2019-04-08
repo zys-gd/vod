@@ -2,8 +2,6 @@
 
 namespace SubscriptionBundle\Service\CapConstraint;
 
-use Psr\Log\LoggerInterface;
-
 /**
  * Class ConstraintCounterRedis
  */
@@ -15,19 +13,13 @@ class ConstraintCounterRedis
     private $redisService;
 
     /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
      * ConstraintCounterRedis constructor
      *
      * @param \Predis\Client|\Redis|\RedisCluster $redisService
      */
-    public function __construct($redisService, LoggerInterface $logger)
+    public function __construct($redisService)
     {
         $this->redisService = $redisService;
-        $this->logger = $logger;
     }
 
     /**
@@ -37,14 +29,6 @@ class ConstraintCounterRedis
      */
     public function getCounter(string $counterIdentifier): ?int
     {
-        $this->logger->info('Counter key', [
-            $this->getCacheKey($counterIdentifier)
-        ]);
-
-        $this->logger->info('Counter value', [
-            $this->redisService->get($this->getCacheKey($counterIdentifier))
-        ]);
-
         return $this->redisService->get($this->getCacheKey($counterIdentifier));
     }
 
