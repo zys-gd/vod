@@ -104,7 +104,8 @@ class Translator
      */
     private function initializeDefaultTexts()
     {
-        $oLanguage = $this->languageRepository->findOneBy(['code' => self::DEFAULT_LOCALE]);
+        $locale = self::DEFAULT_LOCALE;
+        $oLanguage = $this->languageRepository->findOneBy(['code' => $locale]);
         /** @var Translation[] $translations */
         $translations = $this->translationRepository->findBy([
             'language' => $oLanguage,
@@ -123,24 +124,23 @@ class Translator
      *
      * @return $this
      */
-    private function initializeCarrierTexts($billingCarrierId, string $languageCode)
+    private function initializeCarrierTexts(int $billingCarrierId, string $languageCode)
     {
         /** @var Carrier $oCarrier */
-        $oCarrier = $this->carrierRepository->findOneBy(['billingCarrierId' => $billingCarrierId]);
-        $oCarrierDefaultLangCode = ($oCarrier != null) ? $oCarrier->getDefaultLanguage()->getCode() : null;
-
-        $oLanguages = $this->languageRepository->getOrderedLanguagesByCodes([
-            self::DEFAULT_LOCALE,
-            $languageCode,
-            $oCarrierDefaultLangCode,
+        $oCarrier = $this->carrierRepository->findOneBy([
+            'billingCarrierId' => $billingCarrierId
         ]);
+
+        $selectedCode = ($oCarrier != null)
+            ? $oCarrier->getDefaultLanguage()->getCode()
+            : $languageCode;
 
 
         /** @var Translation[] $translations */
-        $translations = $this->translationRepository->findTranslationByCarrierAndOrderedLanguages($oCarrier, $oLanguages);
+        $translations = $this->translationRepository->findTranslationForCarrier($oCarrier, $selectedCode);
 
         foreach ($translations ?? [] as $translation) {
-            $this->texts[$translation->getKey()] = $translation->getTranslation();
+            $this->texts[$translation['key']] = $translation['translation'];
         }
         return $this;
     }

@@ -3,11 +3,13 @@
 namespace App\Domain\Repository;
 
 use App\Domain\Entity\Carrier;
+use App\Domain\Entity\Translation;
 use App\Domain\Service\FaqProviderService;
 use App\Exception\WrongTranslationRecordType;
 use AppBundle\Entity\Language;
 use Doctrine\ORM\NativeQuery;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
 class TranslationRepository extends \Doctrine\ORM\EntityRepository
 {
@@ -55,28 +57,17 @@ class TranslationRepository extends \Doctrine\ORM\EntityRepository
      *
      * @return array
      */
-    public function findTranslationByCarrierAndOrderedLanguages(string $carrierUuid, array $languageUuids)
+    public function findTranslationForCarrier(string $carrierUuid = null, string $language)
     {
-        $rsm = new ResultSetMapping();
-        /** @var NativeQuery $query */
-        $query = $this->getEntityManager()->createNativeQuery("
-                SELECT * FROM translations
-                        WHERE language_id in (?)
-                        ORDER BY FIELD(language_id, ?)",$rsm);
-//        $query->setParameter(0, $carrierUuid);
-        $query->setParameter(0, "'5179f17c-ebd4-11e8-95c4-02bb250f0f22', '5179ee29-ebd4-11e8-95c4-02bb250f0f22'");
-        $query->setParameter(1, "'5179f17c-ebd4-11e8-95c4-02bb250f0f22', '5179ee29-ebd4-11e8-95c4-02bb250f0f22'");
 
-//        $query = $this->createQueryBuilder('t');
-//        $query->where('t.carrier = :carrierUuid')
-//            ->orWhere('t.language IN (:languageUuids)')
-//            ->setParameters([
-//               'carrierUuid' => $carrierUuid,
-//               'languageUuids' => $languageUuids
-//            ])
-//            ->add('orderBy', "FIELD(t.language, '" . implode("', '", $languageUuids) . "')");
+        $query = $this->createQueryBuilder('p2o')
+            ->addSelect('language')
+            ->join('p2o.language','language')
+            ->where('language.code = :code')
+            ->setParameter('code', $language)
+            ->getQuery();
 
 
-        return $query->getResult();
+        return $query->getArrayResult();
     }
 }
