@@ -18,7 +18,6 @@ class ProcessResult
     const STATUS_WAITING_PROVIDER = 'waiting_provider';
     const STATUS_RETRYING = 'retrying';
 
-
     const ERROR_ALREADY_DONE = 'already_done';
     const ERROR_INTERNAL = 'internal';
     const ERROR_REJECTED = 'rejected';
@@ -40,6 +39,9 @@ class ProcessResult
     const PROCESS_STATUS_SUCCESSFUL = 'successful';
     const PROCESS_STATUS_WAITING_PROVIDER = 'waiting_provider';
     const PROCESS_STATUS_RETRYING = 'retrying';
+
+    const PROCESS_TYPE_SUBSCRIBE = 'subscribe';
+    const PROCESS_TYPE_RENEW = 'renew';
 
     /** @var  integer */
     private $id;
