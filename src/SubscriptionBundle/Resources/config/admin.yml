@@ -61,6 +61,5 @@ services:
             - '@SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository'
             - '@doctrine.orm.entity_manager'
             - '@SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis'
-            - '@logger'
         tags:
             - { name: sonata.admin, manager_type: orm, group: affiliate_management, label: Constraints by affiliate }
