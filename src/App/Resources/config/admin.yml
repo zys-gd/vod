@@ -114,3 +114,11 @@ services:
             - '@fos_user.user_manager'
         tags:
             - { name: sonata.admin, manager_type: orm, group: user_management, label: Administrators}
+
+    App\Admin\Sonata\VideoPartnerAdmin:
+        arguments:
+            - ~
+            - App\Domain\Entity\VideoPartner
+            - ~
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: content_management, label: Video partners }
