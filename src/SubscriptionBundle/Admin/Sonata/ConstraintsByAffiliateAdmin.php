@@ -20,7 +20,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
@@ -196,10 +195,18 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
      */
     protected function configureShowFields(ShowMapper $showMapper)
     {
+        /** @var ConstraintByAffiliate $subject */
+        $subject = $this->getSubject();
+
+        $counter = $this->constraintCounterRedis->getCounter($subject->getUuid());
+
+        $subject->setCounter((int) $counter);
+
         $showMapper
             ->add('affiliate')
             ->add('carrier')
             ->add('numberOfActions')
+            ->add('counter')
             ->add('capType', TextType::class, [
                 'label' => 'CAP Type'
             ])
