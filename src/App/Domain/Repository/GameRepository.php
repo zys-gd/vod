@@ -25,7 +25,8 @@ class GameRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('a');
 
-        $qb->where('a.deletedAt is NULL');
+        $qb->where('a.deletedAt is NULL')
+            ->andWhere('a.published = 1');
 
         $qb->setMaxResults($count);
         $qb->setFirstResult($offset);
@@ -46,6 +47,7 @@ class GameRepository extends EntityRepository
         $qb = $this->createQueryBuilder('a')
             ->where('a.deletedAt is NULL')
             ->andWhere('a.uuid != :gameUuid')
+            ->andWhere('a.published = 1')
             ->setMaxResults($count)
             ->orderBy('RAND()')
             ->setParameter('gameUuid', $game->getUuid());
