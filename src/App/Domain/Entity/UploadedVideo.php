@@ -74,6 +74,11 @@ class UploadedVideo implements HasUuid
     private $thumbnails = [];
 
     /**
+     * @var VideoPartner
+     */
+    private $videoPartner;
+
+    /**
      * UploadedVideo constructor
      *
      * @param string $uuid
@@ -279,6 +284,26 @@ class UploadedVideo implements HasUuid
     public function setUuid(string $uuid)
     {
         $this->uuid = $uuid;
+    }
+
+    /**
+     * @param VideoPartner $videoPartner
+     *
+     * @return UploadedVideo
+     */
+    public function setVideoPartner(VideoPartner $videoPartner): UploadedVideo
+    {
+        $this->videoPartner = $videoPartner;
+
+        return $this;
+    }
+
+    /**
+     * @return VideoPartner
+     */
+    public function getVideoPartner(): VideoPartner
+    {
+        return $this->videoPartner;
     }
 
     /**

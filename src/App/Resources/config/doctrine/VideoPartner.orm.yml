@@ -1,0 +1,17 @@
+App\Domain\Entity\VideoPartner:
+    type: entity
+    table: null
+    id:
+        uuid:
+            type: guid
+    fields:
+        name:
+            type: string
+            nullable: false
+
+    lifecycleCallbacks: {  }
+
+    oneToMany:
+        uploadedVideos:
+            targetEntity: App\Domain\Entity\UploadedVideo
+            mappedBy: videoPartner
