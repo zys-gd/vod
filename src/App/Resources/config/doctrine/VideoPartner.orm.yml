@@ -1,6 +1,7 @@
 App\Domain\Entity\VideoPartner:
     type: entity
     table: video_partners
+    repositoryClass: App\Domain\Repository\VideoPartnerRepository
     id:
         uuid:
             type: guid
