@@ -95,6 +95,7 @@ services:
     SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis:
         arguments:
             - '@=service("app.cache.redis_factory").createCounterConnection()'
+            - '@logger'
 
     SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater:
         arguments:

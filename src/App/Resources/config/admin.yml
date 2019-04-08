@@ -51,7 +51,7 @@ services:
             - { name: sonata.admin, manager_type: orm, group: affiliate_management, label: Campaign }
 
     App\Admin\Sonata\CarrierAdmin:
-        arguments: [~, App\Domain\Entity\Carrier, ~]
+        arguments: [~, App\Domain\Entity\Carrier, ~, '@SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis']
         tags:
             - { name: sonata.admin, manager_type: orm, group: carrier_management, label: Carriers }
 

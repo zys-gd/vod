@@ -25,3 +25,4 @@ services:
             - "%redis_host%"
             - "%redis_port%"
             - "v%app_version_hash%"
+            - '@logger'
