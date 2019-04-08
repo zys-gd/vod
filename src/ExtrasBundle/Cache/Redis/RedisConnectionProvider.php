@@ -9,6 +9,7 @@
 namespace ExtrasBundle\Cache\Redis;
 
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 
 class RedisConnectionProvider
@@ -31,16 +32,22 @@ class RedisConnectionProvider
     private $namespace;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * RedisConnectionProvider constructor.
      * @param string $host
      * @param string $port
      * @param string $namespace
      */
-    public function __construct(string $host, string $port, string $namespace)
+    public function __construct(string $host, string $port, string $namespace,  LoggerInterface $logger)
     {
         $this->host      = $host;
         $this->port      = $port;
         $this->namespace = $namespace;
+        $this->logger = $logger;
     }
 
     /**
@@ -52,6 +59,10 @@ class RedisConnectionProvider
     public function create($database, $options = [])
     {
         $options = array_merge($this->defaultOptions, $options);
+        $this->logger->info('Create redis adapter', [
+            'databse' => $database,
+            'url' => sprintf('redis://%s:%s/' . $database, $this->host, $this->port)
+        ]);
 
         return RedisAdapter::createConnection(
             sprintf('redis://%s:%s/' . $database, $this->host, $this->port),
