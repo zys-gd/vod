@@ -1,6 +1,6 @@
 App\Domain\Entity\VideoPartner:
     type: entity
-    table: null
+    table: video_partners
     id:
         uuid:
             type: guid
