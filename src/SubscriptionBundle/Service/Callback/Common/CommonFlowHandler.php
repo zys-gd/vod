@@ -7,6 +7,7 @@ use IdentificationBundle\Repository\UserRepository;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateSender;
 use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
+use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Exception\SubscriptionException;
@@ -189,7 +190,10 @@ class CommonFlowHandler
         $carrierHandler->afterProcess($subscription, $subscription->getUser(), $processResponse);
         $this->entitySaveHelper->persistAndSave($subscription);
 
-        if ($processResponse->isSuccessful() && $processResponse->isFinal()) {
+        if ($processResponse->isSuccessful()
+            && $processResponse->isFinal()
+            && $processResponse->getType() === ProcessResult::PROCESS_TYPE_SUBSCRIBE
+        ) {
             $this->subscriptionCounterUpdater->updateSubscriptionCounter($subscription);
         }
 

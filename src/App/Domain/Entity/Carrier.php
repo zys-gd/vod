@@ -96,6 +96,14 @@ class Carrier implements CarrierInterface
     private $numberOfAllowedSubscriptionsByConstraint = null;
 
     /**
+     * Counter of subscriptions by carrier, field is not mapped to db,
+     * created for displaying counter from redis in admin panel
+     *
+     * @var int
+     */
+    private $counter;
+
+    /**
      * @var string
      */
     private $redirectUrl = null;
@@ -638,6 +646,32 @@ class Carrier implements CarrierInterface
     public function getIsCapAlertDispatch(): bool
     {
         return $this->isCapAlertDispatch;
+    }
+
+    /**
+     * Setter is related to field which is not mapped to db and created
+     * for displaying counter from redis in admin panel
+     *
+     * @param int $counter
+     *
+     * @return CarrierInterface
+     */
+    public function setCounter(int $counter): CarrierInterface
+    {
+        $this->counter = $counter;
+
+        return $this;
+    }
+
+    /**
+     * Getter is related to field which is not mapped to db and created
+     * for displaying counter from redis in admin panel
+     *
+     * @return int|null
+     */
+    public function getCounter(): ?int
+    {
+        return isset($this->counter) ? $this->counter : null;
     }
 
 }
