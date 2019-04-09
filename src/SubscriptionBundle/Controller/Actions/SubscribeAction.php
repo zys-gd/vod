@@ -24,16 +24,18 @@ use SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter;
 use SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
+use SubscriptionBundle\Service\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
+use SubscriptionBundle\Service\CampaignConfirmation\Handler\CustomPage;
 use SubscriptionBundle\Service\CapConstraint\SubscriptionConstraintByCarrier;
 use SubscriptionBundle\Service\UserExtractor;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Router;
 
-class SubscribeAction extends Controller
+class SubscribeAction extends AbstractController
 {
     use ResponseTrait;
 
@@ -89,23 +91,28 @@ class SubscribeAction extends Controller
      * @var PostPaidHandler
      */
     private $postPaidHandler;
+    /**
+     * @var CampaignConfirmationHandlerProvider
+     */
+    private $campaignConfirmationHandlerProvider;
 
     /**
      * SubscribeAction constructor.
      *
-     * @param UserExtractor                   $userExtractor
-     * @param CommonFlowHandler               $commonFlowHandler
-     * @param Router                          $router
-     * @param LoggerInterface                 $logger
-     * @param UrlParamAppender                $urlParamAppender
-     * @param SubscriptionHandlerProvider     $handlerProvider
-     * @param BlacklistVoter                  $blacklistVoter
-     * @param IdentificationDataStorage       $identificationDataStorage
-     * @param IdentificationHandlerProvider   $identificationHandlerProvider
-     * @param CarrierRepositoryInterface      $carrierRepository
-     * @param SubscriptionConstraintByCarrier $subscriptionConstraintByCarrier
-     * @param string                          $defaultRedirectUrl
-     * @param PostPaidHandler                 $postPaidHandler
+     * @param UserExtractor                       $userExtractor
+     * @param CommonFlowHandler                   $commonFlowHandler
+     * @param Router                              $router
+     * @param LoggerInterface                     $logger
+     * @param UrlParamAppender                    $urlParamAppender
+     * @param SubscriptionHandlerProvider         $handlerProvider
+     * @param BlacklistVoter                      $blacklistVoter
+     * @param IdentificationDataStorage           $identificationDataStorage
+     * @param IdentificationHandlerProvider       $identificationHandlerProvider
+     * @param CarrierRepositoryInterface          $carrierRepository
+     * @param SubscriptionConstraintByCarrier     $subscriptionConstraintByCarrier
+     * @param string                              $defaultRedirectUrl
+     * @param PostPaidHandler                     $postPaidHandler
+     * @param CampaignConfirmationHandlerProvider $campaignConfirmationHandlerProvider
      */
     public function __construct(
         UserExtractor $userExtractor,
@@ -120,31 +127,32 @@ class SubscribeAction extends Controller
         CarrierRepositoryInterface $carrierRepository,
         SubscriptionConstraintByCarrier $subscriptionConstraintByCarrier,
         string $defaultRedirectUrl,
-        PostPaidHandler $postPaidHandler
+        PostPaidHandler $postPaidHandler,
+        CampaignConfirmationHandlerProvider $campaignConfirmationHandlerProvider
     )
     {
-        $this->userExtractor                   = $userExtractor;
-        $this->commonFlowHandler               = $commonFlowHandler;
-        $this->router                          = $router;
-        $this->logger                          = $logger;
-        $this->urlParamAppender                = $urlParamAppender;
-        $this->handlerProvider                 = $handlerProvider;
-        $this->blacklistVoter                  = $blacklistVoter;
-        $this->identificationDataStorage       = $identificationDataStorage;
-        $this->identificationHandlerProvider   = $identificationHandlerProvider;
-        $this->carrierRepository               = $carrierRepository;
-        $this->subscriptionConstraintByCarrier = $subscriptionConstraintByCarrier;
-        $this->defaultRedirectUrl              = $defaultRedirectUrl;
-        $this->postPaidHandler = $postPaidHandler;
+        $this->userExtractor                       = $userExtractor;
+        $this->commonFlowHandler                   = $commonFlowHandler;
+        $this->router                              = $router;
+        $this->logger                              = $logger;
+        $this->urlParamAppender                    = $urlParamAppender;
+        $this->handlerProvider                     = $handlerProvider;
+        $this->blacklistVoter                      = $blacklistVoter;
+        $this->identificationDataStorage           = $identificationDataStorage;
+        $this->identificationHandlerProvider       = $identificationHandlerProvider;
+        $this->carrierRepository                   = $carrierRepository;
+        $this->subscriptionConstraintByCarrier     = $subscriptionConstraintByCarrier;
+        $this->defaultRedirectUrl                  = $defaultRedirectUrl;
+        $this->postPaidHandler                     = $postPaidHandler;
+        $this->campaignConfirmationHandlerProvider = $campaignConfirmationHandlerProvider;
     }
 
     /**
-     * @param Request $request
+     * @param Request            $request
      * @param IdentificationData $identificationData
-     * @param ISPData $ISPData
+     * @param ISPData            $ISPData
      *
      * @return Response
-     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound
      * @throws \Twig_Error_Loader
@@ -153,13 +161,19 @@ class SubscribeAction extends Controller
      */
     public function __invoke(Request $request, IdentificationData $identificationData, ISPData $ISPData)
     {
-        if($this->postPaidHandler->isPostPaidRestricted())
-        {
+        if ($this->postPaidHandler->isPostPaidRestricted()) {
             return new RedirectResponse($this->generateUrl('index', ['err_handle' => 'postpaid_restricted']));
         }
 
         if ($this->subscriptionConstraintByCarrier->isSubscriptionLimitReached()) {
             return new RedirectResponse($this->defaultRedirectUrl);
+        }
+
+        if (($campaignConfirmationHandler = $this->campaignConfirmationHandlerProvider->provideHandler($request->getSession())) instanceof CustomPage) {
+            $result = $campaignConfirmationHandler->proceedCustomPage($request);
+            if($result instanceof RedirectResponse) {
+                return $result;
+            }
         }
 
         /*if ($result = $this->handleRequestByLegacyService($request)) {
@@ -180,7 +194,8 @@ class SubscribeAction extends Controller
             $subscriber = $this->handlerProvider->getSubscriber($user->getCarrier());
             if ($subscriber instanceof HasCustomFlow) {
                 return $subscriber->process($request, $request->getSession(), $user);
-            } else {
+            }
+            else {
                 return $this->commonFlowHandler->process($request, $user);
             }
         } catch (ExistingSubscriptionException $exception) {
