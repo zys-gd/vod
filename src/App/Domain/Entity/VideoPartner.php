@@ -39,6 +39,14 @@ class VideoPartner
     /**
      * @return string
      */
+    public function __toString()
+    {
+        return $this->name ?? '';
+    }
+
+    /**
+     * @return string
+     */
     public function getUuid(): string
     {
         return $this->uuid;
