@@ -119,12 +119,12 @@ class Translator
     }
 
     /**
-     * @param        $billingCarrierId
+     * @param int|null $billingCarrierId
      * @param string $languageCode
      *
      * @return $this
      */
-    private function initializeCarrierTexts(int $billingCarrierId, string $languageCode)
+    private function initializeCarrierTexts($billingCarrierId, string $languageCode)
     {
         /** @var Carrier $oCarrier */
         $oCarrier = $this->carrierRepository->findOneBy([
@@ -137,7 +137,7 @@ class Translator
 
 
         /** @var Translation[] $translations */
-        $translations = $this->translationRepository->findTranslationForCarrier($oCarrier, $selectedCode);
+        $translations = $this->translationRepository->findTranslationForCarrier($selectedCode, $oCarrier);
 
         foreach ($translations ?? [] as $translation) {
             $this->texts[$translation['key']] = $translation['translation'];

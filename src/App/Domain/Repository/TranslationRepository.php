@@ -52,19 +52,23 @@ class TranslationRepository extends \Doctrine\ORM\EntityRepository
     }
 
     /**
+     * @param string $language
      * @param string $carrierUuid
-     * @param array $languageUuids
      *
      * @return array
      */
-    public function findTranslationForCarrier(string $carrierUuid = null, string $language)
+    public function findTranslationForCarrier(string $language, string $carrierUuid = null)
     {
 
-        $query = $this->createQueryBuilder('p2o')
+        $query = $this->createQueryBuilder('t')
             ->addSelect('language')
-            ->join('p2o.language','language')
+            ->join('t.language','language')
             ->where('language.code = :code')
-            ->setParameter('code', $language)
+            ->orWhere('t.carrier = :carrierUuid')
+            ->setParameters([
+                'code' => $language,
+                'carrierUuid' => $carrierUuid
+            ])
             ->getQuery();
 
 
