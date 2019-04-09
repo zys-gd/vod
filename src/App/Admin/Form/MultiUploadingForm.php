@@ -4,32 +4,22 @@ namespace App\Admin\Form;
 
 use App\Domain\Entity\MainCategory;
 use App\Domain\Entity\Subcategory;
-use App\Domain\Entity\UploadedVideo;
 use App\Domain\Entity\VideoPartner;
 use App\Domain\Repository\SubcategoryRepository;
-use App\Utils\UuidGenerator;
 use Sonata\Form\Type\DateTimePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\Validator\Constraints\GreaterThan;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Class UploadVideoForm
  */
-class UploadedVideoForm extends AbstractType
+class MultiUploadingForm extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -38,55 +28,19 @@ class UploadedVideoForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', TextType::class, [
-                'constraints' => [
-                    new NotBlank(),
-                    new Length([
-                        'max' => 255
-                    ])
-                ]
-            ])
             ->add('videoPartner', EntityType::class, [
                 'class' => VideoPartner::class,
                 'placeholder' => 'Select video partner'
-            ])
-            ->add('description', TextareaType::class, [
-                'required' => false
             ])
             ->add('expiredDate', DateTimePickerType::class, [
                 'required' => false,
                 'format' => 'Y-MM-dd HH:mm',
                 'attr' => ['autocomplete' => 'off']
             ])
-            ->add('isTrim', CheckboxType::class, [
-                'label' => 'Trim video',
-                'mapped' => false,
-                'required' => false
-            ])
-            ->add('startOffset', IntegerType::class, [
-                'constraints' => [
-                    new GreaterThan(1)
-                ],
-                'mapped' => false,
-                'label' => 'Seconds to trim from start',
-                'required' => false
-            ])
-            ->add('file', FileType::class, [
-                'label' => 'File',
-                'mapped' => false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please fill out this field'
-                    ]),
-                    new File([
-                        'maxSize' => '500M',
-                        'mimeTypes' => [
-                            'video/mp4'
-                        ],
-                        'mimeTypesMessage' => 'Please upload a valid MP4 file',
-                        'uploadFormSizeErrorMessage' => 'Maximum file size exceeded, allowed size - 500M'
-                    ])
-                ]
+            ->add('preset', ChoiceType::class, [
+                'choices' => $options['presets'],
+                'label' => 'Preset',
+                'placeholder' => 'Select uploading preset'
             ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
@@ -106,10 +60,7 @@ class UploadedVideoForm extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => UploadedVideo::class,
-            'empty_data' => function (FormInterface $form) {
-                return new UploadedVideo(UuidGenerator::generate());
-            }
+            'presets' => []
         ]);
     }
 
@@ -122,11 +73,6 @@ class UploadedVideoForm extends AbstractType
         $form
             ->add('mainCategory', EntityType::class, [
                 'class' => MainCategory::class,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please fill out this field'
-                    ])
-                ],
                 'mapped' => false,
                 'placeholder' => 'Select main category'
             ])
@@ -138,11 +84,6 @@ class UploadedVideoForm extends AbstractType
                         ->setParameter('mainId', $mainCategoryId);
                 },
                 'class' => Subcategory::class,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please fill out this field'
-                    ])
-                ],
                 'placeholder' => 'Select subcategory'
             ]);
     }

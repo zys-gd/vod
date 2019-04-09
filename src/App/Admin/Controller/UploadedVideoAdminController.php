@@ -2,20 +2,27 @@
 
 namespace App\Admin\Controller;
 
-use App\Domain\Entity\UploadedVideo;
 use App\Domain\Service\VideoProcessing\VideoManager;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Form\FormFactory;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use App\Admin\Form\UploadedVideoForm;
+use App\Admin\Form\MultiUploadingForm;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class UploadedVideoAdminController
  */
 class UploadedVideoAdminController extends CRUDController
 {
+    const PRESET_WITH_TRIM = '';
+    const PRESET_DEFAULT = 'efmyyi7p';
+
+    private $presets = [
+        'Default' => self::PRESET_DEFAULT,
+        'Trim' => self::PRESET_WITH_TRIM
+    ];
+
     /**
      * @var FormFactory
      */
@@ -47,25 +54,13 @@ class UploadedVideoAdminController extends CRUDController
      */
     public function uploadAction(Request $request)
     {
-        $form = $this->formFactory->create(UploadedVideoForm::class);
+        $form = $this->formFactory->create(MultiUploadingForm::class, null, [
+            'presets' => $this->presets
+        ]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UploadedVideo $uploadedVideo */
-            $uploadedVideo = $form->getData();
-            /** @var UploadedFile $uploadedFile */
-            $uploadedFile = $form->get('file')->getData();
-
-            $options = [
-                'start_offset' => $form->get('startOffset')->getData()
-            ];
-
-            $uploadResult = $this
-                ->videoManager
-                ->uploadVideoFileToStorage($uploadedFile, $uploadedVideo->getSubcategory()->getAlias(), $options);
-
-            $this->videoManager->persistUploadedVideo($uploadResult, $uploadedVideo);
 
             return new RedirectResponse($this->admin->generateUrl('list'));
         }
@@ -73,5 +68,35 @@ class UploadedVideoAdminController extends CRUDController
         return $this->renderWithExtraParams('@Admin/UploadedVideo/upload.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+//    public function uploadAction(Request $request)
+//    {
+//        $test = $request;
+//
+//        return $this->renderWithExtraParams('@Admin/UploadedVideo/create.html.twig');
+//    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function signatureAction(Request $request)
+    {
+        $requestData = $request->query->get('data');
+        ksort($requestData);
+
+        $preparedSignature = '';
+
+        foreach ($requestData as $key => $value) {
+            $preparedSignature .= empty($preparedSignature) ? $key . '=' . $value : '&' . $key . '=' . $value;
+        }
+
+        $preparedSignature .= 'sHmSwu7rTZqiAmfqFMM-XLl-r0k';
+
+        $signature = sha1($preparedSignature);
+
+        return new Response($signature);
     }
 }
