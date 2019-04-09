@@ -243,6 +243,7 @@ class UploadedVideoAdmin extends AbstractAdmin
     {
         $collection->clearExcept(['show', 'list', 'edit', 'delete']);
         $collection->add('upload', 'upload');
+        $collection->add('signature', 'signature');
 
         parent::configureRoutes($collection);
     }
