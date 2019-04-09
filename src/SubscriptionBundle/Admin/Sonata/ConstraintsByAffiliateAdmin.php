@@ -7,7 +7,6 @@ use App\Domain\Entity\Carrier;
 use App\Utils\UuidGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\CarrierInterface;
-use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis;
 use Symfony\Component\Validator\Constraints\Callback;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -44,11 +43,6 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
     private $constraintCounterRedis;
 
     /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
      * ConstraintsByAffiliateAdmin constructor
      *
      * @param string $code
@@ -64,13 +58,11 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
         string $baseControllerName,
         ConstraintByAffiliateRepository $constraintByAffiliateRepository,
         EntityManagerInterface $entityManager,
-        ConstraintCounterRedis $constraintCounterRedis,
-        LoggerInterface $logger
+        ConstraintCounterRedis $constraintCounterRedis
     ) {
         $this->constraintByAffiliateRepository = $constraintByAffiliateRepository;
         $this->entityManager = $entityManager;
         $this->constraintCounterRedis = $constraintCounterRedis;
-        $this->logger = $logger;
 
         parent::__construct($code, $class, $baseControllerName);
     }
@@ -206,13 +198,7 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
         /** @var ConstraintByAffiliate $subject */
         $subject = $this->getSubject();
 
-        $this->logger->info('Get counter in admin class');
-
         $counter = $this->constraintCounterRedis->getCounter($subject->getUuid());
-
-        $this->logger->info('Counter', [
-            $counter
-        ]);
 
         $subject->setCounter((int) $counter);
 
