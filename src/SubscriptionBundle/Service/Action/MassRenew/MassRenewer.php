@@ -13,8 +13,6 @@ use IdentificationBundle\Entity\CarrierInterface;
 use SubscriptionBundle\BillingFramework\Process\MassRenewProcess;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\Action\Renew\DTO\MassRenewResult;
-use SubscriptionBundle\Service\Action\Renew\Handler\HasCommonFlow;
-use SubscriptionBundle\Service\Action\Renew\Handler\RenewHandlerProvider;
 use SubscriptionBundle\Service\Action\Renew\OnRenewUpdater;
 use SubscriptionBundle\Service\EntitySaveHelper;
 
@@ -36,10 +34,6 @@ class MassRenewer
      * @var EntitySaveHelper
      */
     private $entitySaveHelper;
-    /**
-     * @var RenewHandlerProvider
-     */
-    private $renewHandlerProvider;
 
 
     /**
@@ -48,29 +42,26 @@ class MassRenewer
      * @param MassRenewParametersProvider $parametersProvider
      * @param OnRenewUpdater              $onRenewUpdater
      * @param EntitySaveHelper            $entitySaveHelper
-     * @param RenewHandlerProvider        $renewHandlerProvider
      */
     public function __construct(
         MassRenewProcess $massRenewProcess,
         MassRenewParametersProvider $parametersProvider,
         OnRenewUpdater $onRenewUpdater,
-        EntitySaveHelper $entitySaveHelper,
-        RenewHandlerProvider $renewHandlerProvider
+        EntitySaveHelper $entitySaveHelper
     )
     {
-        $this->massRenewProcess     = $massRenewProcess;
-        $this->parametersProvider   = $parametersProvider;
-        $this->onRenewUpdater       = $onRenewUpdater;
-        $this->entitySaveHelper     = $entitySaveHelper;
-        $this->renewHandlerProvider = $renewHandlerProvider;
+        $this->massRenewProcess   = $massRenewProcess;
+        $this->parametersProvider = $parametersProvider;
+        $this->onRenewUpdater     = $onRenewUpdater;
+        $this->entitySaveHelper   = $entitySaveHelper;
     }
 
     public function massRenew(array $subscriptions, CarrierInterface $carrier): MassRenewResult
     {
         $processed = 0;
-        $succeeded = 0;
-        $failed    = 0;
         $error     = null;
+        $failed    = [];
+        $succeeded = [];
 
         /** @var Subscription[] $indexedSubscriptions */
         $indexedSubscriptions = [];
@@ -82,31 +73,19 @@ class MassRenewer
         }
 
 
-        $renewHandler = $this->renewHandlerProvider->getRenewer($carrier);
-        $parameters   = $this->parametersProvider->provideParameters($subscriptions);
-        $response     = $this->massRenewProcess->doMassRenew($parameters, $carrier);
+        $parameters = $this->parametersProvider->provideParameters($subscriptions);
+        $response   = $this->massRenewProcess->doMassRenew($parameters, $carrier);
 
         foreach ($response->data as $uuid => $result) {
             $subscription = $indexedSubscriptions[$uuid];
             $processId    = intval($result);
             $processed++;
             if ($processId) {
-                $succeeded++;
-
-                $subscription->setStatus(Subscription::IS_ON_HOLD);
-                $subscription->setError('not_fully_paid');
-
-                if ($renewHandler instanceof HasCommonFlow) {
-                    $renewHandler->onRenewSendSuccess($subscription, $processId);
-                }
+                $succeeded[$processId] = $subscription;
             } else {
-                $failed++;
-                if ($renewHandler instanceof HasCommonFlow) {
-                    $renewHandler->onRenewSendFailure($subscription, $result);
-                }
+                $failed[$processId] = $subscription;
             }
         }
-        $this->entitySaveHelper->saveAll();
 
         return new MassRenewResult($processed, $succeeded, $failed, $error);
     }

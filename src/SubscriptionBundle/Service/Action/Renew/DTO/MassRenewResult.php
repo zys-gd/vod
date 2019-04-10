@@ -9,6 +9,8 @@
 namespace SubscriptionBundle\Service\Action\Renew\DTO;
 
 
+use SubscriptionBundle\Entity\Subscription;
+
 class MassRenewResult
 {
     /**
@@ -16,13 +18,13 @@ class MassRenewResult
      */
     private $processed;
     /**
-     * @var int
+     * @var array|Subscription[]
      */
-    private $succeeded;
+    private $succeededSubscriptions;
     /**
      * @var int
      */
-    private $failed;
+    private $failedSubscriptions;
     /**
      * @var string|null
      */
@@ -30,17 +32,17 @@ class MassRenewResult
 
     /**
      * MassRenewResult constructor.
-     * @param int         $processed
-     * @param int         $succeeded
-     * @param int         $failed
-     * @param string|null $error
+     * @param int                  $processed
+     * @param array|Subscription[] $succeededSubscriptions
+     * @param array|Subscription[] $failedSubscriptions
+     * @param string|null          $error
      */
-    public function __construct(int $processed, int $succeeded, int $failed, string $error = null)
+    public function __construct(int $processed, array $succeededSubscriptions, array $failedSubscriptions, string $error = null)
     {
-        $this->processed = $processed;
-        $this->succeeded = $succeeded;
-        $this->failed    = $failed;
-        $this->error     = $error;
+        $this->processed              = $processed;
+        $this->succeededSubscriptions = $succeededSubscriptions;
+        $this->failedSubscriptions    = $failedSubscriptions;
+        $this->error                  = $error;
     }
 
     /**
@@ -52,19 +54,19 @@ class MassRenewResult
     }
 
     /**
-     * @return int
+     * @return array|Subscription[]
      */
-    public function getSucceeded(): int
+    public function getSucceededSubscriptions(): array
     {
-        return $this->succeeded;
+        return $this->succeededSubscriptions;
     }
 
     /**
-     * @return int
+     * @return array|Subscription[]
      */
-    public function getFailed(): int
+    public function getFailedSubscriptions(): array
     {
-        return $this->failed;
+        return $this->failedSubscriptions;
     }
 
     /**
