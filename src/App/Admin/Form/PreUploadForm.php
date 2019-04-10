@@ -19,7 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class UploadVideoForm
  */
-class MultiUploadingForm extends AbstractType
+class PreUploadForm extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -39,6 +39,7 @@ class MultiUploadingForm extends AbstractType
             ])
             ->add('preset', ChoiceType::class, [
                 'choices' => $options['presets'],
+                'mapped' => false,
                 'label' => 'Preset',
                 'placeholder' => 'Select uploading preset'
             ]);

@@ -242,8 +242,9 @@ class UploadedVideoAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->clearExcept(['show', 'list', 'edit', 'delete']);
-        $collection->add('upload', 'upload');
+        $collection->add('preUpload', 'preUpload');
         $collection->add('signature', 'signature');
+        $collection->add('saveBaseVideoData', 'saveBaseVideoData');
 
         parent::configureRoutes($collection);
     }
@@ -257,7 +258,7 @@ class UploadedVideoAdmin extends AbstractAdmin
     public function configureActionButtons($action, $object = null): array
     {
         $list = parent::configureActionButtons($action, $object);
-        $list['import']['template'] = '@Admin/UploadedVideo/upload_button.html.twig';
+        $list['import']['template'] = '@Admin/UploadedVideo/PreUpload/pre_upload_button.html.twig';
 
         return $list;
     }
