@@ -20,7 +20,10 @@ class UploadedVideoForm extends PreUploadForm
 
         $builder
             ->add('title', TextType::class)
-            ->add('description', TextType::class);
+            ->add('description', TextType::class)
+            ->add('remoteId', TextType::class)
+            ->add('remoteUrl', TextType::class)
+            ->add('thumbnails');
     }
 
     /**
@@ -33,7 +36,8 @@ class UploadedVideoForm extends PreUploadForm
             'data_class' => UploadedVideo::class,
             'empty_data' => function (FormInterface $form) {
                 return new UploadedVideo(UuidGenerator::generate());
-            }
+            },
+            'csrf_protection' => false
         ]);
     }
 }

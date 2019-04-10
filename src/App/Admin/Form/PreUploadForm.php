@@ -61,7 +61,8 @@ class PreUploadForm extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'presets' => []
+            'presets' => [],
+            'csrf_protection' => false,
         ]);
     }
 

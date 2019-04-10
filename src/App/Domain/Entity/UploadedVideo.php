@@ -100,9 +100,17 @@ class UploadedVideo implements HasUuid
     }
 
     /**
-     * @return string
+     * @param string $uuid
      */
-    public function getTitle(): string
+    public function setUuid(string $uuid)
+    {
+        $this->uuid = $uuid;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -159,9 +167,9 @@ class UploadedVideo implements HasUuid
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getRemoteUrl(): string
+    public function getRemoteUrl(): ?string
     {
         return $this->remoteUrl;
     }
@@ -179,9 +187,9 @@ class UploadedVideo implements HasUuid
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getRemoteId(): string
+    public function getRemoteId(): ?string
     {
         return $this->remoteId;
     }
@@ -239,9 +247,9 @@ class UploadedVideo implements HasUuid
     }
 
     /**
-     * @return array
+     * @return array|null
      */
-    public function getThumbnails(): array
+    public function getThumbnails(): ?array
     {
         return $this->thumbnails;
     }
@@ -279,14 +287,6 @@ class UploadedVideo implements HasUuid
     }
 
     /**
-     * @param string $uuid
-     */
-    public function setUuid(string $uuid)
-    {
-        $this->uuid = $uuid;
-    }
-
-    /**
      * @param VideoPartner $videoPartner
      *
      * @return UploadedVideo
@@ -299,9 +299,9 @@ class UploadedVideo implements HasUuid
     }
 
     /**
-     * @return VideoPartner
+     * @return VideoPartner|null
      */
-    public function getVideoPartner(): VideoPartner
+    public function getVideoPartner(): ?VideoPartner
     {
         return $this->videoPartner;
     }

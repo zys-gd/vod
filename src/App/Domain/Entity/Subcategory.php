@@ -26,7 +26,7 @@ class Subcategory implements JsonSerializable, HasUuid
     private $alias;
 
     /**
-     * @var Subcategory
+     * @var MainCategory
      */
     private $parent;
 
@@ -118,10 +118,7 @@ class Subcategory implements JsonSerializable, HasUuid
 
     public function jsonSerialize()
     {
-        return [
-            'id' => $this->getUuid(),
-            'title' => $this->getTitle(),
-        ];
+        return $this->uuid;
     }
 
     /**
