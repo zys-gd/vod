@@ -1,13 +1,7 @@
 {% extends base_template %}
 
 {% block title %}
-    {{ 'Upload video' }}
-{% endblock %}
-
-{% block stylesheets %}
-    {{ parent() }}
-    <style>
-    </style>
+    {{ 'Upload video - select general options to uploading ' }}
 {% endblock %}
 
 {% block javascripts %}
@@ -16,182 +10,59 @@
 {% endblock %}
 
 {% block form %}
-    <span hidden id="subCategoryUrl">{{ path('admin_app_domain_subcategory_subcategoriesList', {'mainId': 'paramMainId'}) }}</span>
     <a href="{{ admin.generateUrl('signature') }}" hidden id="signature"></a>
-    <div class="sonata-ba-form">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="box box-primary">
-                            <div class="box-header">
-                                <h4 class="box-title">
-                                    {{ block('title') }}
-                                </h4>
-                            </div>
-                            <div class="box-body">
-                                <div class="sonata-ba-collapsed-fields">
-                                    {{ form_start(form, {'attr': {'id': 'multi_uploading'}}) }}
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-lg-12">{{ form_label(form.mainCategory) }}</div>
-                                            <div class="col-lg-12 errors">{{ form_errors(form.mainCategory) }}</div>
-                                            <div class="col-lg-12">{{ form_widget(form.mainCategory, { 'attr': {'class': 'form-control'} }) }}</div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-lg-12">{{ form_label(form.subcategory) }}</div>
-                                            <div class="col-lg-12 errors">{{ form_errors(form.subcategory) }}</div>
-                                            <div class="col-lg-12">{{ form_widget(form.subcategory, { 'attr': {'class': 'form-control'} }) }}</div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-lg-12">{{ form_label(form.videoPartner) }}</div>
-                                            <div class="col-lg-12 errors">{{ form_errors(form.videoPartner) }}</div>
-                                            <div class="col-lg-12">{{ form_widget(form.videoPartner, { 'attr': {'class': 'form-control'} }) }}</div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-lg-12">{{ form_label(form.preset) }}</div>
-                                            <div class="col-lg-12 errors">{{ form_errors(form.preset) }}</div>
-                                            <div class="col-lg-12">{{ form_widget(form.preset) }}</div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-lg-12">{{ form_label(form.expiredDate) }}</div>
-                                            <div class="col-lg-12 errors">{{ form_errors(form.expiredDate) }}</div>
-                                            <div class="col-lg-12">{{ form_widget(form.expiredDate, { 'attr': {'class': 'form-control'} }) }}</div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-success" name="btn_update_and_edit"><i class="fa fa-save"></i>
-                                            Upload
-                                        </button>
-                                    </div>
-                                    {{ form_end(form) }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {% block sonata_page_content %}
-        <div id="upload_widget_opener"></div>
-
-        <script type="text/javascript">
-
-
-            $('#upload_widget_opener').cloudinary_upload_widget({
-                cloudName: 'origindata',
-                apiKey: '187818276162186',
-                uploadSignature: generateSignature,
-                folder: 'folder_for_tests',
-                showAdvancedOptions: true,
-                uploadPreset: 'efmyyi7p',
-                buttonCaption: 'Upload videos'
-            }, (error, result) => {
-                console.log(result);
-            });
-        </script>
-    {% endblock %}
+    <button id="upload_widget_opener" hidden></button>
     <script>
-
         $(document).ready(function() {
-            var formControl = new FormControl();
+            var uploader = new CloudinaryUploader();
 
-            $(formControl.mainCategory).change(function() {
-                formControl.clearSubcategoryOptions();
+            var widgetOptions = '{{ widgetOptions|raw }}';
+            widgetOptions = JSON.parse(widgetOptions);
+            widgetOptions['uploadSignature'] = uploader.getSignatureCallback();
+            console.log(widgetOptions);
 
-                if ($(this).val().length > 0) {
-                    var url = $('#subCategoryUrl').text().replace('paramMainId', $(this).val());
+           var widjet = cloudinary.createUploadWidget(widgetOptions, function (error, result) {
+               console.log(result);
+               console.log(error);
+           });
 
-                    formControl.loadSubCategories(url);
-                }
-            });
+           widjet.open();
 
-            $('#multi_uploading').submit(function (event) {
-                event.preventDefault();
-
-                var formData = $(this).serializeArray();
-
-            });
-
-            $('.js-datepicker').datetimepicker();
+            var formData = '{{ formData|raw }}';
+           formData = JSON.parse(formData);
+           console.log(formData);
         });
 
-        function FormControl() {
-            /**
-             * Selectors for form fields
-             */
-            this.mainCategory = '#multi_uploading_form_mainCategory';
-            this.subcategory = '#multi_uploading_form_subcategory';
+        function CloudinaryUploader() {
 
             /**
-             * Load subcategories list and pass options to select field
+             * Save general video data from widget callback
              *
-             * @param {string} url
+             * @param {object} formData
              */
-            this.loadSubCategories = function(url) {
-                var self = this;
-                var loader = $('<i>Loading subcategories...</i>');
+            this.saveBaseVideoData = function (formData) {
 
-                $(this.mainCategory).closest('div').append(loader);
-                this.clearSubcategoryOptions();
-
-                $.ajax({
-                    url: url,
-                    method: 'GET',
-                    success: function(data) {
-                        var subcategories = JSON.parse(data);
-                        var subcategoriesSelect = $(self.subcategory);
-
-                        subcategories.forEach(function(subcategory) {
-                            subcategoriesSelect.append(new Option(subcategory.title, subcategory.id));
-                        });
-                    }
-                })
-                    .fail(function() {
-                        $(self.mainCategory).closest('div').effect('highlight', {'color': '#C43C35'}, 2000);
-                    })
-                    .always(function () {
-                        loader.remove();
-                    })
             };
 
             /**
-             * Remove all options from subcategory select and set default
-             */
-            this.clearSubcategoryOptions = function() {
-                $(this.subcategory).html('').append(new Option('Select subcategory'));
-            }
-        }
-
-        function CloudinaryUploader() {
-            /**
-             * Get signature for signed upload
+             * Get callback for generate signature
              *
-             * @param callback
-             * @param paramsToSign
+             * @returns {Function}
              */
-            this.generateSignature = function (callback, paramsToSign) {
-                var url = $('#signature').attr('href');
+            this.getSignatureCallback = function () {
+                return function (callback, paramsToSign) {
+                    var url = $('#signature').attr('href');
 
-                $.ajax({
-                    url     : url,
-                    type    : "GET",
-                    dataType: "text",
-                    data    : { data: paramsToSign},
-                    complete: function() {},
-                    success : function(signature, textStatus, xhr) { callback(signature); },
-                    error   : function(xhr, status, error) {}
-                });
+                    $.ajax({
+                        url     : url,
+                        type    : "GET",
+                        dataType: "text",
+                        data    : { data: paramsToSign},
+                        complete: function() {},
+                        success : function(signature, textStatus, xhr) { callback(signature); },
+                        error   : function(xhr, status, error) {}
+                    });
+                }
             }
         }
     </script>

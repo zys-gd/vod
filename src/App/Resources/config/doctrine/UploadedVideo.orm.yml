@@ -24,7 +24,7 @@ App\Domain\Entity\UploadedVideo:
             nullable: true
         title:
             type: string
-            nullable: false
+            nullable: true
         description:
             type: text
             nullable: true

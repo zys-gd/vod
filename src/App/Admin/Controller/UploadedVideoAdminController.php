@@ -2,12 +2,13 @@
 
 namespace App\Admin\Controller;
 
+use App\Domain\Entity\Subcategory;
 use App\Domain\Service\VideoProcessing\VideoManager;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use App\Admin\Form\MultiUploadingForm;
+use App\Admin\Form\PreUploadForm;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -15,12 +16,12 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class UploadedVideoAdminController extends CRUDController
 {
-    const PRESET_WITH_TRIM = '';
-    const PRESET_DEFAULT = 'efmyyi7p';
+    const PRESET_TRIM = 'trim_sntv_stage';
+    const PRESET_DEFAULT = 'default_stage';
 
     private $presets = [
         'Default' => self::PRESET_DEFAULT,
-        'Trim' => self::PRESET_WITH_TRIM
+        'Trim for SNTV' => self::PRESET_TRIM
     ];
 
     /**
@@ -52,30 +53,43 @@ class UploadedVideoAdminController extends CRUDController
      *
      * @throws \Exception
      */
-    public function uploadAction(Request $request)
+    public function preUploadAction(Request $request)
     {
-        $form = $this->formFactory->create(MultiUploadingForm::class, null, [
+        $form = $this->formFactory->create(PreUploadForm::class, null, [
             'presets' => $this->presets
         ]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $formData = $form->getData();
 
-            return new RedirectResponse($this->admin->generateUrl('list'));
+            /** @var Subcategory $subcategory */
+            $subcategory = $formData['subcategory'];
+
+            $widgetOptions = [
+                'cloudName' => 'origindata',
+                'apiKey' => '187818276162186',
+                'folder' => 'testWidgetFolder', //$subcategory->getAlias(),
+                'uploadPreset' => $formData['preset'],
+                'sources' => ['local']
+            ];
+
+            return $this->renderWithExtraParams('@Admin/UploadedVideo/upload.html.twig', [
+                'widgetOptions' => json_encode($widgetOptions),
+                'formData' => json_encode($formData)
+            ]);
         }
 
-        return $this->renderWithExtraParams('@Admin/UploadedVideo/upload.html.twig', [
+        return $this->renderWithExtraParams('@Admin/UploadedVideo/PreUpload/pre_upload.html.twig', [
             'form' => $form->createView()
         ]);
     }
 
-//    public function uploadAction(Request $request)
-//    {
-//        $test = $request;
-//
-//        return $this->renderWithExtraParams('@Admin/UploadedVideo/create.html.twig');
-//    }
+    public function saveBaseVideoDataAction(Request $request)
+    {
+
+    }
 
     /**
      * @param Request $request
