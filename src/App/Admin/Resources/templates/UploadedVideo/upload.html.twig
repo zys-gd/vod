@@ -1,7 +1,7 @@
 {% extends base_template %}
 
 {% block title %}
-    {{ 'Upload video - select general options to uploading ' }}
+    {{ 'Upload video - upload and edit videos' }}
 {% endblock %}
 
 {% block javascripts %}
@@ -10,38 +10,82 @@
 {% endblock %}
 
 {% block form %}
-    <a href="{{ admin.generateUrl('signature') }}" hidden id="signature"></a>
-    <button id="upload_widget_opener" hidden></button>
+    <div class="sonata-ba-form">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box box-primary">
+                            <div class="box-header">
+                                <h4 class="box-title">
+                                    {{ block('title') }}
+                                </h4>
+                            </div>
+                            <div class="box-body">
+                                <div class="sonata-ba-collapsed-fields">
+                                    <span>Uploaded videos woll be here....</span>
+                                    <button id="upload_widget_opener">Open widget</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         $(document).ready(function() {
-            var uploader = new CloudinaryUploader();
+            var signatureUrl = "{{ admin.generateUrl('signature') }}";
+            var saveBaseVideoDataUrl = "{{ admin.generateUrl('saveBaseVideoData') }}";
+            var savePostUploadVideoDataUrl = "{{ admin.generateUrl('savePostUploadVideoData') }}";
 
-            var widgetOptions = '{{ widgetOptions|raw }}';
-            widgetOptions = JSON.parse(widgetOptions);
-            widgetOptions['uploadSignature'] = uploader.getSignatureCallback();
-            console.log(widgetOptions);
+            var uploadHelper = new UploadHelper(signatureUrl, saveBaseVideoDataUrl, savePostUploadVideoDataUrl);
+            var videoDataCollector = new VideoDataCollector();
 
-           var widjet = cloudinary.createUploadWidget(widgetOptions, function (error, result) {
-               console.log(result);
-               console.log(error);
-           });
+            var preUploadFormData = JSON.parse('{{ preUploadFormData|raw }}');
 
-           widjet.open();
+            var widgetOptions = JSON.parse('{{ widgetOptions|raw }}');
+            widgetOptions['uploadSignature'] = uploadHelper.getSignatureCallback();
 
-            var formData = '{{ formData|raw }}';
-           formData = JSON.parse(formData);
-           console.log(formData);
+            var widjet = cloudinary.createUploadWidget(widgetOptions, function (error, result) {
+                if (result.event === 'success') {
+                    uploadHelper.saveBaseVideoData(preUploadFormData, result.info);
+                }
+
+                console.log(result);
+                console.log(error);
+            });
+
+            widjet.open();
         });
 
-        function CloudinaryUploader() {
+        function UploadHelper(signatureUrl, saveBaseVideoDataUrl, savePostUploadVideoDataUrl) {
+            /**
+             * Endpoint urls
+             */
+            this.signatureUrl = signatureUrl;
+            this.saveBaseVideoDataUrl = saveBaseVideoDataUrl;
+            this.savePostUploadVideoDataUrl = savePostUploadVideoDataUrl;
 
             /**
-             * Save general video data from widget callback
+             * Save general video data from widget callback and pre-upload form data
              *
-             * @param {object} formData
+             * @param {object} preUploadFormData
+             * @param {object} widgetCallbackData
              */
-            this.saveBaseVideoData = function (formData) {
+            this.saveBaseVideoData = function (preUploadFormData, widgetCallbackData) {
+                var uploadedVideoData = Object.assign({}, preUploadFormData);
 
+                uploadedVideoData['title'] = widgetCallbackData.original_filename;
+                uploadedVideoData['remoteId'] = widgetCallbackData.public_id;
+                uploadedVideoData['remoteUrl'] = widgetCallbackData.url;
+                uploadedVideoData['thumbnails'] = [widgetCallbackData.thumbnail_url];
+
+                $.ajax({
+                    url: this.saveBaseVideoDataUrl,
+                    type: 'POST',
+                    data: JSON.stringify(uploadedVideoData)
+                })
             };
 
             /**
@@ -50,20 +94,33 @@
              * @returns {Function}
              */
             this.getSignatureCallback = function () {
-                return function (callback, paramsToSign) {
-                    var url = $('#signature').attr('href');
+                var self = this;
 
+                return function (callback, paramsToSign) {
                     $.ajax({
-                        url     : url,
-                        type    : "GET",
-                        dataType: "text",
-                        data    : { data: paramsToSign},
-                        complete: function() {},
-                        success : function(signature, textStatus, xhr) { callback(signature); },
-                        error   : function(xhr, status, error) {}
+                        url : self.signatureUrl,
+                        type : 'GET',
+                        dataType: 'text',
+                        data : { data: paramsToSign },
+                        success : function(signature) {
+                            callback(signature);
+                        }
                     });
                 }
             }
+        }
+
+        function VideoDataCollector() {
+            this.successfullyUploaded = [];
+            this.notUploaded = [];
+
+            this.addSuccessful = function (uploadedVideoData) {
+                this.successfullyUploaded.push(uploadedVideoData);
+            };
+
+            this.addNotUploaded = function (uploadedVideoData) {
+                this.notUploaded.push(uploadedVideoData);
+            };
         }
     </script>
 {% endblock %}

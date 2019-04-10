@@ -4,10 +4,6 @@
     {{ 'Upload video - select general options for uploading' }}
 {% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-{% endblock %}
-
 {% block form %}
     <span hidden id="subCategoryUrl">{{ path('admin_app_domain_subcategory_subcategoriesList', {'mainId': 'paramMainId'}) }}</span>
     <div class="sonata-ba-form">

@@ -8,7 +8,13 @@ services:
     App\Admin\Controller\UploadedVideoAdminController:
         calls:
             - [setContainer, ['@service_container']]
-        arguments: ['@form.factory', '@App\Domain\Service\VideoProcessing\VideoManager']
+        arguments:
+            - '@form.factory'
+            - '@App\Domain\Service\VideoProcessing\VideoManager'
+            - '@doctrine.orm.entity_manager'
+            - '%cloudinary_api_key%'
+            - '%cloudinary_cloud_name%'
+            - '%cloudinary_api_secret%'
 
     App\Admin\Controller\SubcategoryAdminController:
         arguments: ['@doctrine.orm.entity_manager']

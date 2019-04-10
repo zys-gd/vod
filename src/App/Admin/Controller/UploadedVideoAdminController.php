@@ -2,14 +2,17 @@
 
 namespace App\Admin\Controller;
 
+use App\Admin\Form\UploadedVideoForm;
 use App\Domain\Entity\Subcategory;
+use App\Domain\Entity\UploadedVideo;
 use App\Domain\Service\VideoProcessing\VideoManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Form\FormFactory;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use App\Admin\Form\PreUploadForm;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * Class UploadedVideoAdminController
@@ -35,21 +38,55 @@ class UploadedVideoAdminController extends CRUDController
     private $videoManager;
 
     /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
+     * @var string
+     */
+    private $cloudinaryApiKey;
+
+    /**
+     * @var string
+     */
+    private $cloudinaryCloudName;
+
+    /**
+     * @var string
+     */
+    private $cloudinaryApiSecret;
+
+    /**
      * UploadedVideoAdminController constructor
      *
      * @param FormFactory $formFactory
      * @param VideoManager $videoManager
+     * @param EntityManagerInterface $entityManager
+     * @param string $cloudinaryApiKey
+     * @param string $cloudinaryCloudName
+     * @param string $cloudinaryApiSecret
      */
-    public function __construct(FormFactory $formFactory, VideoManager $videoManager)
-    {
+    public function __construct(
+        FormFactory $formFactory,
+        VideoManager $videoManager,
+        EntityManagerInterface $entityManager,
+        string $cloudinaryApiKey,
+        string $cloudinaryCloudName,
+        string $cloudinaryApiSecret
+    ) {
         $this->formFactory  = $formFactory;
         $this->videoManager = $videoManager;
+        $this->entityManager = $entityManager;
+        $this->cloudinaryApiKey = $cloudinaryApiKey;
+        $this->cloudinaryCloudName = $cloudinaryCloudName;
+        $this->cloudinaryApiSecret = $cloudinaryApiSecret;
     }
 
     /**
      * @param Request $request
      *
-     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return Response
      *
      * @throws \Exception
      */
@@ -62,22 +99,28 @@ class UploadedVideoAdminController extends CRUDController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $formData = $form->getData();
+            $preUploadFormData = $form->getData();
+
+            $preset = $form->get('preset')->getData();
+            $mainCategory = $form->get('mainCategory')->getData();
+
+            $preUploadFormData['preset'] = $preset;
+            $preUploadFormData['mainCategory'] = $mainCategory;
 
             /** @var Subcategory $subcategory */
-            $subcategory = $formData['subcategory'];
+            $subcategory = $preUploadFormData['subcategory'];
 
             $widgetOptions = [
-                'cloudName' => 'origindata',
-                'apiKey' => '187818276162186',
+                'cloudName' => $this->cloudinaryCloudName,
+                'apiKey' => $this->cloudinaryApiKey,
                 'folder' => 'testWidgetFolder', //$subcategory->getAlias(),
-                'uploadPreset' => $formData['preset'],
+                'uploadPreset' => $preset,
                 'sources' => ['local']
             ];
 
             return $this->renderWithExtraParams('@Admin/UploadedVideo/upload.html.twig', [
                 'widgetOptions' => json_encode($widgetOptions),
-                'formData' => json_encode($formData)
+                'preUploadFormData' => json_encode($preUploadFormData)
             ]);
         }
 
@@ -86,7 +129,39 @@ class UploadedVideoAdminController extends CRUDController
         ]);
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return Response|BadRequestHttpException
+     */
     public function saveBaseVideoDataAction(Request $request)
+    {
+        $form = $this->formFactory->create(UploadedVideoForm::class, null, [
+            'presets' => $this->presets
+        ]);
+
+        $formData = json_decode($request->getContent(), true);
+
+        $form->submit($formData);
+
+        if ($form->isValid()) {
+            /** @var UploadedVideo $uploadedVideo */
+            $uploadedVideo = $form->getData();
+
+            try {
+                $this->entityManager->persist($uploadedVideo);
+                $this->entityManager->flush();
+            } catch (\Exception $exception) {
+                return new Response('Error while saving uploaded video', 500);
+            }
+
+            return new Response('Uploaded video saved successfully');
+        }
+
+        return new BadRequestHttpException('Video data is invalid');
+    }
+
+    public function savePostUploadVideoData(Request $request)
     {
 
     }
@@ -107,7 +182,7 @@ class UploadedVideoAdminController extends CRUDController
             $preparedSignature .= empty($preparedSignature) ? $key . '=' . $value : '&' . $key . '=' . $value;
         }
 
-        $preparedSignature .= 'sHmSwu7rTZqiAmfqFMM-XLl-r0k';
+        $preparedSignature .= $this->cloudinaryApiSecret;
 
         $signature = sha1($preparedSignature);
 
