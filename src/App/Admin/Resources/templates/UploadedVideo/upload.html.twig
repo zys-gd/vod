@@ -23,7 +23,7 @@
                             </div>
                             <div class="box-body">
                                 <div class="sonata-ba-collapsed-fields">
-                                    <span>Uploaded videos woll be here....</span>
+                                    <span>Uploaded videos will be here....</span>
                                     <button id="upload_widget_opener">Open widget</button>
                                 </div>
                             </div>
@@ -48,11 +48,29 @@
             widgetOptions['uploadSignature'] = uploadHelper.getSignatureCallback();
 
             var widjet = cloudinary.createUploadWidget(widgetOptions, function (error, result) {
-                if (result.event === 'success') {
-                    uploadHelper.saveBaseVideoData(preUploadFormData, result.info);
+                switch (result.event) {
+                    case 'upload-added':
+                        videoDataCollector.increaseUploadsCounter();
+                        break;
+                    case 'success':
+                        uploadHelper
+                            .saveBaseVideoData(preUploadFormData, result.info)
+                            .then(
+                                function(uploadedVideoData) {
+                                    videoDataCollector.addSuccessfullySaved(uploadedVideoData)
+                                },
+                                function(uploadedVideoData) {
+                                    videoDataCollector.addNotSaved(uploadedVideoData)
+                                }
+                            );
+                        break;
+                    case 'close':
+                        break;
                 }
 
+                console.log('result');
                 console.log(result);
+                console.log('error');
                 console.log(error);
             });
 
@@ -74,6 +92,7 @@
              * @param {object} widgetCallbackData
              */
             this.saveBaseVideoData = function (preUploadFormData, widgetCallbackData) {
+                var url = this.saveBaseVideoDataUrl;
                 var uploadedVideoData = Object.assign({}, preUploadFormData);
 
                 uploadedVideoData['title'] = widgetCallbackData.original_filename;
@@ -81,11 +100,25 @@
                 uploadedVideoData['remoteUrl'] = widgetCallbackData.url;
                 uploadedVideoData['thumbnails'] = [widgetCallbackData.thumbnail_url];
 
-                $.ajax({
-                    url: this.saveBaseVideoDataUrl,
-                    type: 'POST',
-                    data: JSON.stringify(uploadedVideoData)
-                })
+                return new Promise(function (resolve, reject) {
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: JSON.stringify(uploadedVideoData),
+                        success: function (data, textStatus, jqXHR) {
+                            console.log('success');
+                            console.log(data);
+                            console.log(textStatus);
+                            resolve(uploadedVideoData);
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.log('error');
+                            console.log(textStatus);
+                            console.log(errorThrown);
+                            reject(uploadedVideoData);
+                        }
+                    })
+                });
             };
 
             /**
@@ -111,15 +144,24 @@
         }
 
         function VideoDataCollector() {
-            this.successfullyUploaded = [];
-            this.notUploaded = [];
+            /**
+             * Uploads data
+             *
+             * @type {Array}
+             */
+            this.successfullySaved = [];
+            this.notSaved = [];
 
-            this.addSuccessful = function (uploadedVideoData) {
-                this.successfullyUploaded.push(uploadedVideoData);
+            this.render = function() {
+
             };
 
-            this.addNotUploaded = function (uploadedVideoData) {
-                this.notUploaded.push(uploadedVideoData);
+            this.addSuccessfullySaved = function (uploadedVideoData) {
+                this.successfullySaved.push(uploadedVideoData);
+            };
+
+            this.addNotSaved = function (uploadedVideoData) {
+                this.notSaved.push(uploadedVideoData);
             };
         }
     </script>

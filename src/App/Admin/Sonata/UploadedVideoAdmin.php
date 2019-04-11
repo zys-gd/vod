@@ -6,7 +6,7 @@ use App\Domain\Entity\MainCategory;
 use App\Domain\Entity\Subcategory;
 use App\Domain\Entity\VideoPartner;
 use App\Domain\Repository\SubcategoryRepository;
-use App\Domain\Service\VideoProcessing\VideoManager;
+use App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector;
 use App\Utils\UuidGenerator;
 use Doctrine\ORM\EntityManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -31,9 +31,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class UploadedVideoAdmin extends AbstractAdmin
 {
     /**
-     * @var VideoManager
+     * @var CloudinaryConnector
      */
-    private $videoManager;
+    private $cloudinaryConnector;
 
     /**
      * @var EntityManager
@@ -46,17 +46,17 @@ class UploadedVideoAdmin extends AbstractAdmin
      * @param string $code
      * @param string $class
      * @param string $baseControllerName
-     * @param VideoManager $videoManager
+     * @param CloudinaryConnector $cloudinaryConnector
      * @param EntityManager $entityManager
      */
     public function __construct(
         string $code,
         string $class,
         string $baseControllerName,
-        VideoManager $videoManager,
+        CloudinaryConnector $cloudinaryConnector,
         EntityManager $entityManager
     ) {
-        $this->videoManager = $videoManager;
+        $this->cloudinaryConnector = $cloudinaryConnector;
         $this->entityManager = $entityManager;
 
         parent::__construct($code, $class, $baseControllerName);
@@ -75,7 +75,7 @@ class UploadedVideoAdmin extends AbstractAdmin
      */
     public function postRemove($uploadedVideo)
     {
-        $this->videoManager->destroyUploadedVideo($uploadedVideo);
+        $this->cloudinaryConnector->destroyVideo($uploadedVideo);
     }
 
     /**

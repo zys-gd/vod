@@ -10,7 +10,6 @@ services:
             - [setContainer, ['@service_container']]
         arguments:
             - '@form.factory'
-            - '@App\Domain\Service\VideoProcessing\VideoManager'
             - '@doctrine.orm.entity_manager'
             - '%cloudinary_api_key%'
             - '%cloudinary_cloud_name%'
