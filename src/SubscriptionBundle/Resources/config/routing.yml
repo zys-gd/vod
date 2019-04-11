@@ -54,3 +54,7 @@ subscription.fake_renew:
 subscription.fake_alert:
     path: /fake/alert/{carrierId}
     defaults: {_controller: 'SubscriptionBundle\Controller\Actions\Fake\AlertAction'}
+
+google_campaign:
+    path: /google_campaign
+    defaults: {_controller: SubscriptionBundle\Service\CampaignConfirmation\Controller\CampaignConfirmationController::googlePageAction}

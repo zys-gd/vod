@@ -1,0 +1,15 @@
+services:
+    SubscriptionBundle\Service\CampaignConfirmation\Controller\CampaignConfirmationController: ~
+
+    SubscriptionBundle\Service\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider:
+        arguments:
+            - '@SubscriptionBundle\Service\CampaignConfirmation\Handler\Common\CommonCampaignConfirmationHandler'
+            - '@SubscriptionBundle\Service\CampaignExtractor'
+
+    SubscriptionBundle\Service\CampaignConfirmation\Handler\Common\CommonCampaignConfirmationHandler: ~
+
+    SubscriptionBundle\Service\CampaignConfirmation\Handler\Google\GoogleCampaignHandler:
+        tags:
+            - {name: 'subscription.campaign_confirmation_handler'}
+        arguments:
+            - '@router.default'

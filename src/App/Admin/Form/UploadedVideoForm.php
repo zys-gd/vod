@@ -5,6 +5,7 @@ namespace App\Admin\Form;
 use App\Domain\Entity\MainCategory;
 use App\Domain\Entity\Subcategory;
 use App\Domain\Entity\UploadedVideo;
+use App\Domain\Entity\VideoPartner;
 use App\Domain\Repository\SubcategoryRepository;
 use App\Utils\UuidGenerator;
 use Sonata\Form\Type\DateTimePickerType;
@@ -44,6 +45,10 @@ class UploadedVideoForm extends AbstractType
                         'max' => 255
                     ])
                 ]
+            ])
+            ->add('videoPartner', EntityType::class, [
+                'class' => VideoPartner::class,
+                'placeholder' => 'Select video partner'
             ])
             ->add('description', TextareaType::class, [
                 'required' => false

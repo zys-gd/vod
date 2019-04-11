@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\CarrierTemplate\TemplateConfigurator;
 use App\Domain\Entity\Game;
 use App\Domain\Entity\GameBuild;
 use App\Domain\Entity\GameImage;
@@ -57,18 +58,23 @@ class GamesController extends AbstractController implements AppControllerInterfa
      * @var ContentStatisticSender
      */
     private $contentStatisticSender;
+    /**
+     * @var TemplateConfigurator
+     */
+    private $templateConfigurator;
 
     /**
      * GamesController constructor.
      *
-     * @param GameRepository $gameRepository
-     * @param GameSerializer $gameSerializer
-     * @param GameBuildRepository $gameBuildRepository
-     * @param DrmApkProvider $drmApkProvider
-     * @param SubscriptionExtractor $extractor
-     * @param GameImagesSerializer $gameImagesSerializer
-     * @param ExcludedGamesProvider $excludedGamesProvider
+     * @param GameRepository         $gameRepository
+     * @param GameSerializer         $gameSerializer
+     * @param GameBuildRepository    $gameBuildRepository
+     * @param DrmApkProvider         $drmApkProvider
+     * @param SubscriptionExtractor  $extractor
+     * @param GameImagesSerializer   $gameImagesSerializer
+     * @param ExcludedGamesProvider  $excludedGamesProvider
      * @param ContentStatisticSender $contentStatisticSender
+     * @param TemplateConfigurator   $templateConfigurator
      */
     public function __construct(
         GameRepository $gameRepository,
@@ -78,24 +84,25 @@ class GamesController extends AbstractController implements AppControllerInterfa
         SubscriptionExtractor $extractor,
         GameImagesSerializer $gameImagesSerializer,
         ExcludedGamesProvider $excludedGamesProvider,
-        ContentStatisticSender $contentStatisticSender
+        ContentStatisticSender $contentStatisticSender,
+        TemplateConfigurator $templateConfigurator
     )
     {
-        $this->gameRepository        = $gameRepository;
-        $this->gameSerializer        = $gameSerializer;
-        $this->gameBuildRepository   = $gameBuildRepository;
-        $this->drmApkProvider        = $drmApkProvider;
+        $this->gameRepository = $gameRepository;
+        $this->gameSerializer = $gameSerializer;
+        $this->gameBuildRepository = $gameBuildRepository;
+        $this->drmApkProvider = $drmApkProvider;
         $this->subscriptionExtractor = $extractor;
-        $this->gameImagesSerializer  = $gameImagesSerializer;
+        $this->gameImagesSerializer = $gameImagesSerializer;
         $this->excludedGamesProvider = $excludedGamesProvider;
-        $this->contentStatisticSender  = $contentStatisticSender;
+        $this->contentStatisticSender = $contentStatisticSender;
+        $this->templateConfigurator = $templateConfigurator;
     }
 
 
     /**
      * @Route("/games/",name="game_category")
      * @Method("GET")
-     *
      * @param ISPData $data
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -106,7 +113,8 @@ class GamesController extends AbstractController implements AppControllerInterfa
 
         $this->contentStatisticSender->trackVisit($data);
 
-        return $this->render('@App/Common/game_category_content.html.twig', [
+        $template = $this->templateConfigurator->getTemplate('game_category_content', $data->getCarrierId());
+        return $this->render($template, [
             'games' => $games
         ]);
     }
@@ -115,18 +123,19 @@ class GamesController extends AbstractController implements AppControllerInterfa
      * @Route("game/{gameUuid}", name="game_content")
      * @Method("GET")
      * @param Request $request
-     * @param string $gameUuid
+     * @param ISPData $data
+     * @param string  $gameUuid
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function showGameContentAction(Request $request, string $gameUuid = '')
+    public function showGameContentAction(Request $request, ISPData $data, string $gameUuid = '')
     {
         /** @var Subscription $subscription */
         $subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($request->getSession());
         if (!$subscription
             || (!$subscription->isSubscribed()
-            && !$subscription->isNotFullyPaid())
+                && !$subscription->isNotFullyPaid())
         ) {
             return new RedirectResponse($this->generateUrl('landing'));
         }
@@ -137,15 +146,16 @@ class GamesController extends AbstractController implements AppControllerInterfa
         /** @var GameImage[] $images */
         $images = $this->gameImagesSerializer->serializeGameImages($game->getImages()->getValues());
 
-        $excluded      = $this->excludedGamesProvider->get();
-        $similarGames  = $this->gameRepository->getSimilarGames($game, $excluded);
+        $excluded = $this->excludedGamesProvider->get();
+        $similarGames = $this->gameRepository->getSimilarGames($game, $excluded);
         $aSimilarGames = [];
 
         foreach ($similarGames ?? [] as $similarGame) {
             $aSimilarGames[] = $this->gameSerializer->serializeGame($similarGame);
         }
 
-        return $this->render('@App/Common/game.html.twig', [
+        $template = $this->templateConfigurator->getTemplate('game', $data->getCarrierId());
+        return $this->render($template, [
             'game'         => $this->gameSerializer->serializeGame($game),
             'images'       => $images,
             'similarGames' => $aSimilarGames

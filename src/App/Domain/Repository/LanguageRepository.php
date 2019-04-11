@@ -2,6 +2,7 @@
 
 namespace App\Domain\Repository;
 
+use Doctrine\ORM\AbstractQuery;
 use IdentificationBundle\Entity\LanguageInterface;
 use IdentificationBundle\Repository\LanguageRepositoryInterface;
 

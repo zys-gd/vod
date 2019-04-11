@@ -102,6 +102,14 @@ class NewTracker
             'id' => 14,
             'name' => 'game_uuid'
         ],
+        'video_name' => [
+            'id' => 15,
+            'name' => 'video_name'
+        ],
+        'video_uuid' => [
+            'id' => 16,
+            'name' => 'video_uuid'
+        ]
     ];
     /**
      * @var SubscriptionPackProvider
@@ -737,6 +745,9 @@ class NewTracker
     ) {
         $this->getApiClient()->clearCustomVariables();
         $this->addStandardVariables($user, $subscription);
+
+        $this->addVariable('video_name', $uploadedVideo->getTitle());
+        $this->addVariable('video_uuid', $uploadedVideo->getUuid());
 
         if ($conversionMode) {
             $this->addVariable('conversion_mode', $conversionMode);

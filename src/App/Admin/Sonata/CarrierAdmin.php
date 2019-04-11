@@ -2,12 +2,14 @@
 
 namespace App\Admin\Sonata;
 
+use App\Domain\Entity\Carrier;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
+use SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -17,6 +19,30 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
  */
 class CarrierAdmin extends AbstractAdmin
 {
+    /**
+     * @var ConstraintCounterRedis
+     */
+    private $constraintCounterRedis;
+
+    /**
+     * CarrierAdmin constructor
+     *
+     * @param string $code
+     * @param string $class
+     * @param string $baseControllerName
+     * @param ConstraintCounterRedis $constraintCounterRedis
+     */
+    public function __construct(
+        string $code,
+        string $class,
+        string $baseControllerName,
+        ConstraintCounterRedis $constraintCounterRedis
+    ) {
+        $this->constraintCounterRedis = $constraintCounterRedis;
+
+        parent::__construct($code, $class, $baseControllerName);
+    }
+
     /**
      * @param DatagridMapper $datagridMapper
      */
@@ -114,6 +140,13 @@ class CarrierAdmin extends AbstractAdmin
      */
     protected function configureShowFields (ShowMapper $showMapper)
     {
+        /** @var Carrier $subject */
+        $subject = $this->getSubject();
+
+        $counter = $this->constraintCounterRedis->getCounter($subject->getBillingCarrierId());
+
+        $subject->setCounter((int) $counter);
+
         $showMapper
             ->add('uuid')
             ->add('billingCarrierId')
@@ -133,6 +166,7 @@ class CarrierAdmin extends AbstractAdmin
             ->add('isUnlimitedSubscriptionAttemptsAllowed')
             ->add('numberOfAllowedSubscription')
             ->add('numberOfAllowedSubscriptionsByConstraint')
+            ->add('counter')
             ->add('redirectUrl');
     }
 

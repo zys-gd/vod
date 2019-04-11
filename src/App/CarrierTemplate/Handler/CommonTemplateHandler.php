@@ -8,17 +8,15 @@
 
 namespace App\CarrierTemplate\Handler;
 
-use IdentificationBundle\Entity\CarrierInterface;
-
-class CommonHandler implements TemplateHandlerInterface
+class CommonTemplateHandler implements TemplateHandlerInterface
 {
-    public function canHandle(CarrierInterface $carrier): bool
+    public function canHandle(int $billingCarrierId): bool
     {
         return true;
     }
 
     public function getFullTemplatePath(string $templateName): string
     {
-        return '@App/Common/' . $templateName;
+        return '@App/Common/' . $templateName . '.html.twig';
     }
 }

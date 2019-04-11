@@ -49,6 +49,9 @@ services:
     SubscriptionBundle\Service\SubscriptionExtractor:
         arguments: ['@SubscriptionBundle\Repository\SubscriptionRepository', '@IdentificationBundle\Repository\UserRepository']
 
+    SubscriptionBundle\Service\CampaignExtractor:
+        arguments:
+            - '@App\Domain\Repository\CampaignRepository'
 
     SubscriptionBundle\Service\SubscriptionCreator:
         arguments: ['@SubscriptionBundle\Service\EntitySaveHelper']
@@ -94,7 +97,7 @@ services:
 
     SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis:
         arguments:
-            - '@Predis\Client'
+            - '@=service("app.cache.redis_factory").createCounterConnection()'
 
     SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater:
         arguments:

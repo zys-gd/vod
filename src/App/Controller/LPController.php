@@ -52,11 +52,11 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * LPController constructor.
      *
      * @param ContentStatisticSender $contentStatisticSender
-     * @param CampaignRepository $campaignRepository
-     * @param LandingPageACL $landingPageAccessResolver
-     * @param string $imageBaseUrl
-     * @param CarrierOTPVerifier $OTPVerifier
-     * @param string $defaultRedirectUrl
+     * @param CampaignRepository     $campaignRepository
+     * @param LandingPageACL         $landingPageAccessResolver
+     * @param string                 $imageBaseUrl
+     * @param CarrierOTPVerifier     $OTPVerifier
+     * @param string                 $defaultRedirectUrl
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
@@ -100,7 +100,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         if ($cid = $request->get('cid', '')) {
             // Useless method atm.
             AffiliateVisitSaver::saveCampaignId($cid, $session);
-
+            /** @var Campaign $campaign */
             $campaign = $this->campaignRepository->findOneBy(['campaignToken' => $cid]);
 
             /** @var Campaign $campaign */

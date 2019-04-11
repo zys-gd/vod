@@ -14,11 +14,10 @@ services:
         arguments: ['@doctrine.orm.entity_manager']
 
     App\Controller\ContentController:
-        arguments: ['@App\Domain\Service\FaqProviderService']
+        arguments: ['@App\Domain\Service\FaqProviderService', '@App\CarrierTemplate\TemplateConfigurator']
 
     App\Controller\HomeController:
         arguments:
-            - '@App\Domain\Repository\CarrierRepository'
             - '@App\CarrierTemplate\TemplateConfigurator'
             - '@App\Domain\Repository\MainCategoryRepository'
             - '@App\Domain\Repository\UploadedVideoRepository'
@@ -45,6 +44,7 @@ services:
             - '@App\Domain\Repository\UploadedVideoRepository'
             - '@App\Domain\Repository\SubcategoryRepository'
             - '@App\Domain\Service\ContentStatisticSender'
+            - '@App\CarrierTemplate\TemplateConfigurator'
 
     App\Controller\AccountController:
         arguments:
@@ -61,6 +61,7 @@ services:
         - '@App\Domain\Repository\CampaignRepository'
         - '%contact_us_mail_to%'
         - '%contact_us_mail_from%'
+        - '@App\CarrierTemplate\TemplateConfigurator'
 
     App\Controller\GamesController:
         arguments:
@@ -72,6 +73,7 @@ services:
             - '@App\Domain\Service\Games\GameImagesSerializer'
             - '@App\Domain\Service\Games\ExcludedGamesProvider'
             - '@App\Domain\Service\ContentStatisticSender'
+            - '@App\CarrierTemplate\TemplateConfigurator'
 
     App\Controller\TrackEventController:
         arguments:

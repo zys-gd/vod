@@ -8,11 +8,9 @@
 
 namespace App\CarrierTemplate\Handler;
 
-use IdentificationBundle\Entity\CarrierInterface;
-
 interface TemplateHandlerInterface
 {
-    public function canHandle(CarrierInterface $carrier): bool;
+    public function canHandle(int $billingCarrierId): bool;
 
     public function getFullTemplatePath(string $templateName): string;
 }
