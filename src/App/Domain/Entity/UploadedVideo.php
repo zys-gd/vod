@@ -299,9 +299,9 @@ class UploadedVideo implements HasUuid
     }
 
     /**
-     * @return VideoPartner
+     * @return VideoPartner|null
      */
-    public function getVideoPartner(): VideoPartner
+    public function getVideoPartner(): ?VideoPartner
     {
         return $this->videoPartner;
     }
