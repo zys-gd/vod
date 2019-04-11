@@ -6,9 +6,22 @@ namespace SubscriptionBundle\Service\CampaignConfirmation\Handler\Google;
 
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CampaignConfirmationInterface;
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CustomPage;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouterInterface;
 
 class GoogleCampaignHandler implements CampaignConfirmationInterface, CustomPage
 {
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    public function __construct(RouterInterface $router)
+    {
+        $this->router = $router;
+    }
+
     /**
      * @param string $affiliateUuid
      *
@@ -19,8 +32,17 @@ class GoogleCampaignHandler implements CampaignConfirmationInterface, CustomPage
         return $affiliateUuid == "514fe478-ebd4-11e8-95c4-02bb250f0f22";
     }
 
-    public function getCustomPage(): bool
+    /**
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    public function proceedCustomPage(Request $request)
     {
-        return '';
+        if(is_null($request->getSession()->get('GoogleCampaignHandler'))) {
+            $request->getSession()->set('GoogleCampaignHandler', true);
+            return new RedirectResponse($this->router->generate('google_campaign'));
+        }
+        return null;
     }
 }

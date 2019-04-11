@@ -4,7 +4,6 @@ namespace ExtrasBundle\Cache\Redis;
 
 use ExtrasBundle\Cache\ICacheService;
 use ExtrasBundle\Cache\ICacheServiceFactory;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Component\Cache\Exception\InvalidArgumentException;
 
@@ -24,11 +23,6 @@ class RedisCacheServiceFactory implements ICacheServiceFactory
     private $namespace;
 
     /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
      * RedisCacheServiceFactory constructor.
      *
      * @param string $host
@@ -36,11 +30,10 @@ class RedisCacheServiceFactory implements ICacheServiceFactory
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct(RedisConnectionProvider $connectionProvider, string $namespace, LoggerInterface $logger)
+    public function __construct(RedisConnectionProvider $connectionProvider, string $namespace)
     {
         $this->connectionProvider = $connectionProvider;
         $this->namespace = $namespace;
-        $this->logger = $logger;
     }
 
     /**
@@ -70,10 +63,6 @@ class RedisCacheServiceFactory implements ICacheServiceFactory
      */
     public function createCounterConnection()
     {
-        $this->logger->info('get counter connection', [
-            self::COUNTERS_DATABASE
-        ]);
-
         $connection = $this->connectionProvider->create(self::COUNTERS_DATABASE);
         return $connection;
     }
