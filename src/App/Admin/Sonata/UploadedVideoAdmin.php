@@ -4,6 +4,7 @@ namespace App\Admin\Sonata;
 
 use App\Domain\Entity\MainCategory;
 use App\Domain\Entity\Subcategory;
+use App\Domain\Entity\VideoPartner;
 use App\Domain\Repository\SubcategoryRepository;
 use App\Domain\Service\VideoProcessing\VideoManager;
 use App\Utils\UuidGenerator;
@@ -114,6 +115,7 @@ class UploadedVideoAdmin extends AbstractAdmin
             ->add('remoteId')
             ->add('title')
             ->add('subcategory')
+            ->add('videoPartner')
             ->add('status', 'choice', [
                 'editable' => false,
                 'choices' => UploadedVideo::STATUSES
@@ -143,9 +145,11 @@ class UploadedVideoAdmin extends AbstractAdmin
             ->add('remoteId')
             ->add('title')
             ->add('description')
+            ->add('videoPartner')
             ->add('createdDate', 'datetime', [
                 'format' => 'Y-m-d H:i',
-            ])->add('expiredDate', 'datetime', [
+            ])
+            ->add('expiredDate', 'datetime', [
                 'format' => 'Y-m-d H:i',
             ])
             ->add('status', 'choice', [
@@ -181,6 +185,9 @@ class UploadedVideoAdmin extends AbstractAdmin
                         'max' => 255
                     ])
                 ]
+            ])
+            ->add('videoPartner', EntityType::class, [
+                'class' => VideoPartner::class
             ])
             ->add('description', TextareaType::class, [
                 'required' => false

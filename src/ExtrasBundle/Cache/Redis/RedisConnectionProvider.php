@@ -8,7 +8,6 @@
 
 namespace ExtrasBundle\Cache\Redis;
 
-
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 
 class RedisConnectionProvider
@@ -51,8 +50,6 @@ class RedisConnectionProvider
      */
     public function create($database, $options = [])
     {
-        $options = array_merge($this->defaultOptions, $options);
-
         return RedisAdapter::createConnection(
             sprintf('redis://%s:%s/' . $database, $this->host, $this->port),
             $options

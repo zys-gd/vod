@@ -43,3 +43,9 @@ App\Domain\Entity\UploadedVideo:
                 subcategory_id:
                     referencedColumnName: uuid
             orphanRemoval: false
+        videoPartner:
+            targetEntity: App\Domain\Entity\VideoPartner
+            inversedBy: uploadedVideos
+            nullable: true
+            joinColumn:
+                referencedColumnName: uuid
