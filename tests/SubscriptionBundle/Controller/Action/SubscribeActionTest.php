@@ -16,11 +16,14 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
 use PiwikBundle\Service\NewTracker;
 use Psr\Log\LoggerInterface;
+use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\BillingFramework\Notification\API\RequestSender as NotificationService;
 use SubscriptionBundle\BillingFramework\Process\API\RequestSender;
 use SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider;
 use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
+use SubscriptionBundle\Service\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Tests\DataFixtures\LoadCampaignTestData;
 use Tests\DataFixtures\LoadSubscriptionTestData;
 use Tests\SubscriptionBundle\BillingFramework\TestBillingResponseProvider;
 
@@ -51,6 +54,10 @@ class SubscribeActionTest extends AbstractFunctionalTest
     private $piwikStatisticSender;
     /** @var  RequestSender|MockInterface */
     private $requestSender;
+    /**
+     * @var MockInterface|CampaignConfirmationHandlerProvider
+     */
+    private $campaignConfirmationHandlerProvider;
 
     public function testSubscribeWithoutIdentWillFallIntoError()
     {
@@ -135,29 +142,46 @@ class SubscribeActionTest extends AbstractFunctionalTest
         $this->assertTrue($client->getResponse()->isRedirect('/?err_handle=postpaid_restricted'), 'redirect is missing');
     }
 
-     protected function configureWebClientClientContainer(ContainerInterface $container)
-     {
-         $container->set('SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider', $this->subscriptionPackDataProvider);
-         $container->set('SubscriptionBundle\BillingFramework\Notification\API\RequestSender', $this->notificationService);
-         $container->set('SubscriptionBundle\BillingFramework\Process\API\RequestSender', $this->requestSender);
-         $container->set('talentica.piwic_statistic_sender', $this->piwikStatisticSender);
+    public function testCampaignConfirmationCustomPage()
+    {
+        $client = $this->makeClient();
+        AffiliateVisitSaver::saveCampaignId('google_campaign_token', $this->session);
+        $this->session->set('identification_data', ['identification_token' => 'token_for_user_without_subscription']);
+
+        $ispDetectionData = [
+            'isp_name'   => 'Jazz PK',
+            'carrier_id' => 338,
+        ];
+        $this->session->set('isp_detection_data', $ispDetectionData);
+
+        $client->request('GET', 'subscribe');
+        $this->assertTrue($client->getResponse()->isRedirect('/google_campaign'));
+    }
+
+    protected function configureWebClientClientContainer(ContainerInterface $container)
+    {
+        $container->set('SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider', $this->subscriptionPackDataProvider);
+        $container->set('SubscriptionBundle\BillingFramework\Notification\API\RequestSender', $this->notificationService);
+        $container->set('SubscriptionBundle\BillingFramework\Process\API\RequestSender', $this->requestSender);
+        $container->set('talentica.piwic_statistic_sender', $this->piwikStatisticSender);
 
     }
 
     protected function getFixturesListLoadedForEachTest(): array
     {
         return [
-            LoadSubscriptionTestData::class
+            LoadSubscriptionTestData::class,
+            LoadCampaignTestData::class
         ];
     }
 
     protected function initializeServices(ContainerInterface $container)
     {
 
-        $this->httpClient = \Mockery::spy(Client::class);
-        $this->subscriptionPackDataProvider = \Mockery::spy(SubscriptionPackDataProvider::class);
-        $this->notificationService = \Mockery::spy(NotificationService::class);
-        $this->requestSender = \Mockery::spy(RequestSender::class);
+        $this->httpClient                          = \Mockery::spy(Client::class);
+        $this->subscriptionPackDataProvider        = \Mockery::spy(SubscriptionPackDataProvider::class);
+        $this->notificationService                 = \Mockery::spy(NotificationService::class);
+        $this->requestSender                       = \Mockery::spy(RequestSender::class);
 
         $this->piwikStatisticSender = Mockery::spy(SubscriptionStatisticSender::class, [
             Mockery::spy(LoggerInterface::class),

@@ -48,6 +48,7 @@ class SubscriptionExtension extends ConfigurableExtension
         $loader->load('affiliate.yml');
         $loader->load('fixtures.yml');
         $loader->load('twig.yml');
+        $loader->load('campaign_confirmation.yml');
 
 
         $loader = new YamlFileLoader(

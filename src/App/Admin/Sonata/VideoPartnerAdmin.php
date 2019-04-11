@@ -51,7 +51,7 @@ class VideoPartnerAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('uud')
+            ->add('uuid')
             ->add('name');
     }
 
