@@ -3,9 +3,10 @@
 namespace App\Admin\Controller;
 
 use App\Admin\Form\UploadedVideoForm;
+use App\Domain\Entity\MainCategory;
 use App\Domain\Entity\Subcategory;
 use App\Domain\Entity\UploadedVideo;
-use App\Domain\Service\VideoProcessing\VideoManager;
+use App\Domain\Entity\VideoPartner;
 use Doctrine\ORM\EntityManagerInterface;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Form\FormFactory;
@@ -33,11 +34,6 @@ class UploadedVideoAdminController extends CRUDController
     private $formFactory;
 
     /**
-     * @var VideoManager
-     */
-    private $videoManager;
-
-    /**
      * @var EntityManagerInterface
      */
     private $entityManager;
@@ -61,7 +57,6 @@ class UploadedVideoAdminController extends CRUDController
      * UploadedVideoAdminController constructor
      *
      * @param FormFactory $formFactory
-     * @param VideoManager $videoManager
      * @param EntityManagerInterface $entityManager
      * @param string $cloudinaryApiKey
      * @param string $cloudinaryCloudName
@@ -69,14 +64,12 @@ class UploadedVideoAdminController extends CRUDController
      */
     public function __construct(
         FormFactory $formFactory,
-        VideoManager $videoManager,
         EntityManagerInterface $entityManager,
         string $cloudinaryApiKey,
         string $cloudinaryCloudName,
         string $cloudinaryApiSecret
     ) {
         $this->formFactory  = $formFactory;
-        $this->videoManager = $videoManager;
         $this->entityManager = $entityManager;
         $this->cloudinaryApiKey = $cloudinaryApiKey;
         $this->cloudinaryCloudName = $cloudinaryCloudName;
@@ -102,20 +95,27 @@ class UploadedVideoAdminController extends CRUDController
             $preUploadFormData = $form->getData();
 
             $preset = $form->get('preset')->getData();
+            /** @var MainCategory $mainCategory */
             $mainCategory = $form->get('mainCategory')->getData();
-
-            $preUploadFormData['preset'] = $preset;
-            $preUploadFormData['mainCategory'] = $mainCategory;
-
             /** @var Subcategory $subcategory */
             $subcategory = $preUploadFormData['subcategory'];
+            /** @var VideoPartner $videoPartner */
+            $videoPartner = $preUploadFormData['videoPartner'];
+
+            $preUploadFormData['preset'] = $preset;
+            $preUploadFormData['mainCategory'] = $mainCategory->getUuid();
+            $preUploadFormData['subcategory'] = $subcategory->getUuid();
+            $preUploadFormData['videoPartner'] = $videoPartner->getUuid();
 
             $widgetOptions = [
                 'cloudName' => $this->cloudinaryCloudName,
                 'apiKey' => $this->cloudinaryApiKey,
                 'folder' => 'testWidgetFolder', //$subcategory->getAlias(),
                 'uploadPreset' => $preset,
-                'sources' => ['local']
+                'sources' => ['local'],
+                'resourceType' => 'video',
+                'clientAllowedFormats' => ['mp4'],
+                'maxFileSize' => 3000000
             ];
 
             return $this->renderWithExtraParams('@Admin/UploadedVideo/upload.html.twig', [
@@ -158,7 +158,7 @@ class UploadedVideoAdminController extends CRUDController
             return new Response('Uploaded video saved successfully');
         }
 
-        return new BadRequestHttpException('Video data is invalid');
+        return new Response('Video data is invalid', 400);
     }
 
     public function savePostUploadVideoData(Request $request)

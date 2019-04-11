@@ -4,12 +4,11 @@ namespace App\Domain\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use JsonSerializable;
 
 /**
  * Subcategory
  */
-class MainCategory implements JsonSerializable
+class MainCategory
 {
     /**
      * @var string
@@ -101,10 +100,5 @@ class MainCategory implements JsonSerializable
     public function getSubcategories(): Collection
     {
         return $this->subcategories;
-    }
-
-    public function jsonSerialize()
-    {
-        return $this->uuid;
     }
 }

@@ -118,7 +118,10 @@ class Subcategory implements JsonSerializable, HasUuid
 
     public function jsonSerialize()
     {
-        return $this->uuid;
+        return [
+            'id' => $this->getUuid(),
+            'title' => $this->getTitle(),
+        ];
     }
 
     /**
