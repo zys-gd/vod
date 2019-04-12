@@ -2,24 +2,29 @@
 
 namespace App\Domain\Entity;
 
+use JsonSerializable;
 use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 
 /**
  * UploadedVideo
  */
-class UploadedVideo implements HasUuid
+class UploadedVideo implements HasUuid, JsonSerializable
 {
     /**
      * transformation video statuses
      */
     const STATUS_IN_PROCESSING = 1;
-    const STATUS_READY = 2;
+    const TRANSFORMATION_READY = 2;
+    const CONFIRMED_BY_ADMIN = 3;
+    const STATUS_READY = 4;
 
     /**
      * Statuses array
      */
     const STATUSES = [
         self::STATUS_IN_PROCESSING => 'Processing',
+        self::TRANSFORMATION_READY => 'Transformation ready',
+        self::CONFIRMED_BY_ADMIN => 'Confirmed by admin',
         self::STATUS_READY => 'Ready'
     ];
 
@@ -89,6 +94,14 @@ class UploadedVideo implements HasUuid
     {
         $this->uuid = $uuid;
         $this->createdDate = new \DateTime('now');
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->title ?? '';
     }
 
     /**
@@ -315,6 +328,25 @@ class UploadedVideo implements HasUuid
             'uuid'       => $this->getUuid(),
             'title'      => $this->getTitle(),
             'publicId'   => $this->getRemoteId(),
+            'thumbnails' => $this->getThumbnails()
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'uuid' => $this->getUuid(),
+            'mainCategory' => $this->getSubcategory()->getParent()->getUuid(),
+            'subcategory' => $this->getSubcategory()->getUuid(),
+            'videoPartner' => $this->getVideoPartner()->getUuid(),
+            'title' => $this->getTitle(),
+            'description' => $this->getDescription(),
+            'expiredDate' => $this->getExpiredDate() ? $this->getExpiredDate()->format('Y-MM-dd HH:mm') : null,
+            'remoteId' => $this->getRemoteId(),
+            'remoteUrl' => $this->getRemoteUrl(),
             'thumbnails' => $this->getThumbnails()
         ];
     }

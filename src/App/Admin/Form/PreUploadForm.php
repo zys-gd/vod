@@ -4,9 +4,10 @@ namespace App\Admin\Form;
 
 use App\Domain\Entity\MainCategory;
 use App\Domain\Entity\Subcategory;
+use App\Domain\Entity\UploadedVideo;
 use App\Domain\Entity\VideoPartner;
 use App\Domain\Repository\SubcategoryRepository;
-use Sonata\Form\Type\DateTimePickerType;
+use App\Utils\UuidGenerator;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -31,11 +32,6 @@ class PreUploadForm extends AbstractType
             ->add('videoPartner', EntityType::class, [
                 'class' => VideoPartner::class,
                 'placeholder' => 'Select video partner'
-            ])
-            ->add('expiredDate', DateTimePickerType::class, [
-                'required' => false,
-                'format' => 'Y-MM-dd HH:mm',
-                'attr' => ['autocomplete' => 'off']
             ])
             ->add('preset', ChoiceType::class, [
                 'choices' => $options['presets'],
@@ -62,6 +58,10 @@ class PreUploadForm extends AbstractType
     {
         $resolver->setDefaults([
             'presets' => [],
+            'data_class' => UploadedVideo::class,
+            'empty_data' => function (FormInterface $form) {
+                return new UploadedVideo(UuidGenerator::generate());
+            },
             'csrf_protection' => false,
         ]);
     }

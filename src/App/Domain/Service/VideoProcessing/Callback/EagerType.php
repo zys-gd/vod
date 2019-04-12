@@ -55,12 +55,17 @@ class EagerType implements CallbackHandlerInterface
         $video = $this->repository->findOneBy([
             'remoteId' => $publicId
         ]);
+
         if (!$video) {
             throw new NotFoundHttpException(sprintf('%s not found', $publicId));
         }
 
+        $newStatus = $video->getStatus() === UploadedVideo::CONFIRMED_BY_ADMIN
+            ? UploadedVideo::STATUS_READY
+            : UploadedVideo::TRANSFORMATION_READY;
 
-        $video->setStatus(UploadedVideo::STATUS_READY);
+        $video->setStatus($newStatus);
+
         $this->entityManager->flush();
     }
 }

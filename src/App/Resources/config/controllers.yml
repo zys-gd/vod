@@ -11,6 +11,7 @@ services:
         arguments:
             - '@form.factory'
             - '@doctrine.orm.entity_manager'
+            - '@App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector'
             - '%cloudinary_api_key%'
             - '%cloudinary_cloud_name%'
             - '%cloudinary_api_secret%'

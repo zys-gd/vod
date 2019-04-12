@@ -75,7 +75,7 @@ class UploadedVideoAdmin extends AbstractAdmin
      */
     public function postRemove($uploadedVideo)
     {
-        $this->cloudinaryConnector->destroyVideo($uploadedVideo);
+        $this->cloudinaryConnector->destroyVideo($uploadedVideo->getRemoteId());
     }
 
     /**
