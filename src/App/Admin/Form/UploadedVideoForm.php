@@ -4,6 +4,7 @@ namespace App\Admin\Form;
 
 use App\Domain\Entity\UploadedVideo;
 use App\Utils\UuidGenerator;
+use Sonata\Form\Type\DateTimePickerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -21,9 +22,11 @@ class UploadedVideoForm extends PreUploadForm
         $builder
             ->add('title', TextType::class)
             ->add('description', TextType::class)
+            ->add('expiredDate', DateTimePickerType::class, [
+                'format' => 'Y-MM-dd HH:mm'
+            ])
             ->add('remoteId', TextType::class)
-            ->add('remoteUrl', TextType::class)
-            ->add('thumbnails');
+            ->add('remoteUrl', TextType::class);
     }
 
     /**

@@ -3,10 +3,8 @@
 namespace App\Admin\Controller;
 
 use App\Admin\Form\UploadedVideoForm;
-use App\Domain\Entity\MainCategory;
-use App\Domain\Entity\Subcategory;
 use App\Domain\Entity\UploadedVideo;
-use App\Domain\Entity\VideoPartner;
+use App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector;
 use Doctrine\ORM\EntityManagerInterface;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Form\FormFactory;
@@ -39,6 +37,11 @@ class UploadedVideoAdminController extends CRUDController
     private $entityManager;
 
     /**
+     * @var CloudinaryConnector
+     */
+    private $cloudinaryConnector;
+
+    /**
      * @var string
      */
     private $cloudinaryApiKey;
@@ -58,6 +61,7 @@ class UploadedVideoAdminController extends CRUDController
      *
      * @param FormFactory $formFactory
      * @param EntityManagerInterface $entityManager
+     * @param CloudinaryConnector $cloudinaryConnector
      * @param string $cloudinaryApiKey
      * @param string $cloudinaryCloudName
      * @param string $cloudinaryApiSecret
@@ -65,12 +69,14 @@ class UploadedVideoAdminController extends CRUDController
     public function __construct(
         FormFactory $formFactory,
         EntityManagerInterface $entityManager,
+        CloudinaryConnector $cloudinaryConnector,
         string $cloudinaryApiKey,
         string $cloudinaryCloudName,
         string $cloudinaryApiSecret
     ) {
         $this->formFactory  = $formFactory;
         $this->entityManager = $entityManager;
+        $this->cloudinaryConnector = $cloudinaryConnector;
         $this->cloudinaryApiKey = $cloudinaryApiKey;
         $this->cloudinaryCloudName = $cloudinaryCloudName;
         $this->cloudinaryApiSecret = $cloudinaryApiSecret;
@@ -92,35 +98,24 @@ class UploadedVideoAdminController extends CRUDController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $preUploadFormData = $form->getData();
+            /** @var UploadedVideo $uploadedVideo */
+            $uploadedVideo = $form->getData();
 
             $preset = $form->get('preset')->getData();
-            /** @var MainCategory $mainCategory */
-            $mainCategory = $form->get('mainCategory')->getData();
-            /** @var Subcategory $subcategory */
-            $subcategory = $preUploadFormData['subcategory'];
-            /** @var VideoPartner $videoPartner */
-            $videoPartner = $preUploadFormData['videoPartner'];
-
-            $preUploadFormData['preset'] = $preset;
-            $preUploadFormData['mainCategory'] = $mainCategory->getUuid();
-            $preUploadFormData['subcategory'] = $subcategory->getUuid();
-            $preUploadFormData['videoPartner'] = $videoPartner->getUuid();
 
             $widgetOptions = [
                 'cloudName' => $this->cloudinaryCloudName,
                 'apiKey' => $this->cloudinaryApiKey,
-                'folder' => 'testWidgetFolder', //$subcategory->getAlias(),
+                'folder' => 'testWidgetFolder', //$uploadedVideo->getSubcategory()->getAlias(),
                 'uploadPreset' => $preset,
                 'sources' => ['local'],
                 'resourceType' => 'video',
-                'clientAllowedFormats' => ['mp4'],
-                'maxFileSize' => 3000000
+                'clientAllowedFormats' => ['mp4']
             ];
 
             return $this->renderWithExtraParams('@Admin/UploadedVideo/upload.html.twig', [
                 'widgetOptions' => json_encode($widgetOptions),
-                'preUploadFormData' => json_encode($preUploadFormData)
+                'preUploadFormData' => json_encode($uploadedVideo)
             ]);
         }
 
@@ -148,6 +143,9 @@ class UploadedVideoAdminController extends CRUDController
             /** @var UploadedVideo $uploadedVideo */
             $uploadedVideo = $form->getData();
 
+            $thumbnails = $this->cloudinaryConnector->getThumbnails($uploadedVideo->getRemoteId());
+            $uploadedVideo->setThumbnails($thumbnails);
+
             try {
                 $this->entityManager->persist($uploadedVideo);
                 $this->entityManager->flush();
@@ -155,7 +153,7 @@ class UploadedVideoAdminController extends CRUDController
                 return new Response('Error while saving uploaded video', 500);
             }
 
-            return new Response('Uploaded video saved successfully');
+            return new Response(json_encode($uploadedVideo));
         }
 
         return new Response('Video data is invalid', 400);
