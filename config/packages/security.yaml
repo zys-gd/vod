@@ -9,6 +9,129 @@ security:
             - ROLE_ADMIN
             - ROLE_SONATA_ADMIN
 
+        ROLE_COMMON_ADMIN:
+            - ROLE_ADMIN
+            - ROLE_SONATA_ADMIN
+
+            #--------Content management---------
+            - ROLE_APP\ADMIN\SONATA\UPLOADEDVIDEOADMIN_ALL
+            - ROLE_APP\ADMIN\SONATA\MAINCATEGORYADMIN_ALL
+            - ROLE_APP\ADMIN\SONATA\SUBCATEGORYADMIN_ALL
+            - ROLE_APP\ADMIN\SONATA\COUNTRYCATEGORYPRIORITYOVERRIDEADMIN_ALL
+            - ROLE_APP\ADMIN\SONATA\VIDEOPARTNERADMIN_ALL
+
+            #--------Affiliate management---------
+            - ROLE_APP\ADMIN\SONATA\AFFILIATEADMIN_ALL
+            - ROLE_APP\ADMIN\SONATA\CAMPAIGNADMIN_ALL
+            - ROLE_SUBSCRIPTIONBUNDLE\ADMIN\SONATA\AFFILIATELOGADMIN_ALL
+            - ROLE_SUBSCRIPTIONBUNDLE\ADMIN\SONATA\CONSTRAINTSBYAFFILIATEADMIN_ALL
+
+            #--------Carrier management---------
+            - ROLE_APP\ADMIN\SONATA\CARRIERADMIN_ALL
+            - ROLE_SUBSCRIPTIONBUNDLE\ADMIN\SONATA\SUBSCRIPTIONPACKADMIN_ALL
+            - ROLE_PRICEBUNDLE\ADMIN\STRATEGYADMIN_ALL
+
+            #--------Store text---------
+            - ROLE_APP\ADMIN\SONATA\LANGUAGESADMIN_ALL
+            - ROLE_APP\ADMIN\SONATA\TRANSLATIONSADMIN_ALL
+
+            #--------Black list management---------
+            - ROLE_SUBSCRIPTIONBUNDLE\ADMIN\SONATA\BLACKLISTADMIN_ALL
+
+            #--------Game management---------
+            - ROLE_APP\ADMIN\SONATA\GAMEADMIN_ALL
+            - ROLE_APP\ADMIN\SONATA\DEVELOPERADMIN_ALL
+
+            #--------Refunds---------
+            - ROLE_SUBSCRIPTIONBUNDLE\ADMIN\SONATA\REFUNDADMIN_ALL
+
+            #--------User management---------
+            - ROLE_APP\ADMIN\SONATA\ADMIN_LIST
+            - ROLE_APP\ADMIN\SONATA\ADMIN_VIEW
+            - ROLE_IDENTIFICATIONBUNDLE\ADMIN\SONATA\TESTUSERADMIN_ALL
+            - ROLE_SUBSCRIPTIONBUNDLE\ADMIN\SONATA\UNSUBSCRIPTIONADMIN_ALL
+            - ROLE_SUBSCRIPTIONBUNDLE\ADMIN\SONATA\COMPLAINTSADMIN_ALL
+
+            #--------Audit---------
+            - ROLE_APP\ADMIN\CONTROLLER\AUDITCONTROLLER_ALL
+
+        ROLE_SUPPORT:
+            - ROLE_ADMIN
+            - ROLE_SONATA_ADMIN
+
+            #--------Content management---------
+            - ROLE_APP\ADMIN\SONATA\UPLOADEDVIDEOADMIN_ALL
+
+            #--------Black list management---------
+            - ROLE_SUBSCRIPTIONBUNDLE\ADMIN\SONATA\BLACKLISTADMIN_ALL
+
+            #--------Game management---------
+            - ROLE_APP\ADMIN\SONATA\GAMEADMIN_ALL
+            - ROLE_APP\ADMIN\SONATA\DEVELOPERADMIN_ALL
+
+            #--------Refunds---------
+            - ROLE_SUBSCRIPTIONBUNDLE\ADMIN\SONATA\REFUNDADMIN_ALL
+
+            #--------User management---------
+            - ROLE_SUBSCRIPTIONBUNDLE\ADMIN\SONATA\UNSUBSCRIPTIONADMIN_ALL
+            - ROLE_SUBSCRIPTIONBUNDLE\ADMIN\SONATA\COMPLAINTSADMIN_ALL
+
+        ROLE_DEVELOPMENT:
+            - ROLE_ADMIN
+            - ROLE_SONATA_ADMIN
+
+            #--------Content management---------
+            - ROLE_APP\ADMIN\SONATA\UPLOADEDVIDEOADMIN_ALL
+            - ROLE_APP\ADMIN\SONATA\MAINCATEGORYADMIN_ALL
+            - ROLE_APP\ADMIN\SONATA\SUBCATEGORYADMIN_ALL
+            - ROLE_APP\ADMIN\SONATA\COUNTRYCATEGORYPRIORITYOVERRIDEADMIN_ALL
+            - ROLE_APP\ADMIN\SONATA\VIDEOPARTNERADMIN_ALL
+
+            #--------Affiliate management---------
+            - ROLE_APP\ADMIN\SONATA\AFFILIATEADMIN_ALL
+            - ROLE_APP\ADMIN\SONATA\CAMPAIGNADMIN_ALL
+            - ROLE_SUBSCRIPTIONBUNDLE\ADMIN\SONATA\AFFILIATELOGADMIN_ALL
+            - ROLE_SUBSCRIPTIONBUNDLE\ADMIN\SONATA\CONSTRAINTSBYAFFILIATEADMIN_ALL
+
+            #--------Carrier management---------
+            - ROLE_APP\ADMIN\SONATA\CARRIERADMIN_ALL
+            - ROLE_SUBSCRIPTIONBUNDLE\ADMIN\SONATA\SUBSCRIPTIONPACKADMIN_ALL
+            - ROLE_PRICEBUNDLE\ADMIN\STRATEGYADMIN_ALL
+
+            #--------Store text---------
+            - ROLE_APP\ADMIN\SONATA\LANGUAGESADMIN_ALL
+            - ROLE_APP\ADMIN\SONATA\TRANSLATIONSADMIN_ALL
+
+            #--------Black list management---------
+            - ROLE_SUBSCRIPTIONBUNDLE\ADMIN\SONATA\BLACKLISTADMIN_ALL
+
+            #--------Game management---------
+            - ROLE_APP\ADMIN\SONATA\GAMEADMIN_ALL
+            - ROLE_APP\ADMIN\SONATA\DEVELOPERADMIN_ALL
+
+            #--------Refunds---------
+            - ROLE_SUBSCRIPTIONBUNDLE\ADMIN\SONATA\REFUNDADMIN_ALL
+
+            #--------User management---------
+            - ROLE_APP\ADMIN\SONATA\ADMIN_LIST
+            - ROLE_APP\ADMIN\SONATA\ADMIN_VIEW
+            - ROLE_IDENTIFICATIONBUNDLE\ADMIN\SONATA\TESTUSERADMIN_ALL
+            - ROLE_SUBSCRIPTIONBUNDLE\ADMIN\SONATA\UNSUBSCRIPTIONADMIN_ALL
+            - ROLE_SUBSCRIPTIONBUNDLE\ADMIN\SONATA\COMPLAINTSADMIN_ALL
+
+        ROLE_ADVERTISEMENT:
+            - ROLE_ADMIN
+            - ROLE_SONATA_ADMIN
+
+            #--------Affiliate management---------
+            - ROLE_APP\ADMIN\SONATA\AFFILIATEADMIN_ALL
+            - ROLE_APP\ADMIN\SONATA\CAMPAIGNADMIN_ALL
+            - ROLE_SUBSCRIPTIONBUNDLE\ADMIN\SONATA\AFFILIATELOGADMIN_ALL
+            - ROLE_SUBSCRIPTIONBUNDLE\ADMIN\SONATA\CONSTRAINTSBYAFFILIATEADMIN_ALL
+
+            #--------Carrier management---------
+            - ROLE_APP\ADMIN\SONATA\CARRIERADMIN_ALL
+
     access_decision_manager:
         strategy: unanimous
 
