@@ -62,6 +62,11 @@ class AuditController extends AbstractController
     public function indexAction(Request $request)
     {
 
+
+        if (!$this->isGranted('ROLE_APP\ADMIN\CONTROLLER\AUDITCONTROLLER_ALL')) {
+            return $this->redirectToRoute('sonata_admin_dashboard');
+        }
+
         $blocks = array(
             'top' => array(),
             'left' => array(),

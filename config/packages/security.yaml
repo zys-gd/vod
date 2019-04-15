@@ -9,6 +9,9 @@ security:
             - ROLE_ADMIN
             - ROLE_SONATA_ADMIN
 
+            #--------Audit---------
+            - ROLE_APP\ADMIN\CONTROLLER\AUDITCONTROLLER_ALL
+
         ROLE_COMMON_ADMIN:
             - ROLE_ADMIN
             - ROLE_SONATA_ADMIN
