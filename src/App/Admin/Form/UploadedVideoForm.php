@@ -26,7 +26,8 @@ class UploadedVideoForm extends PreUploadForm
                 'format' => 'Y-MM-dd HH:mm'
             ])
             ->add('remoteId', TextType::class)
-            ->add('remoteUrl', TextType::class);
+            ->add('remoteUrl', TextType::class)
+            ->add('thumbnails');
     }
 
     /**

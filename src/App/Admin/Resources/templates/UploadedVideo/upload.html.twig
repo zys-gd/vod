@@ -7,7 +7,11 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+    <script type="text/javascript" src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
+    <script
+        type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.min.js"
+    ></script>
 {% endblock %}
 
 {% block stylesheets %}
@@ -25,61 +29,64 @@
                         </h4>
                     </div>
                     <div class="box-body">
-                        <div class="sonata-ba-collapsed-fields">
-                            <button id="upload_widget_opener" hidden>Open widget</button>
-
+                        <div class="sonata-ba-collapsed-fields text-center">
+                            <span style="font-size: 18px; margin-bottom: 15px; display: inline-block">No videos have been uploaded...</span> <br>
+                            <button id="upload_widget_opener" class="btn btn-primary">Upload</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script id="post-upload-form" type="text/x-handlebars">
-        <div class="row">
-            <div class="col-md-3">
-                <div class="row">
-                    <div class="col-md-12 text-center" style="margin-bottom: 2px">
-                        <img src="{{ startThumbnail }}" alt="" width="150" height="80">
-                    </div>
-                    <div class="col-md-12 text-center image-container">
-                        <img src="{{ endThumbnail }}" alt="" width="150" height="80">
+    <script id="post-upload-form-template" type="text/x-handlebars">
+        {% verbatim %}
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="row">
+                        <div class="col-md-12 text-center" style="margin-bottom: 2px">
+                            <img src="{{ startThumbnail }}" alt="" width="150" height="80">
+                        </div>
+                        <div class="col-md-12 text-center image-container">
+                            <img src="{{ endThumbnail }}" alt="" width="150" height="80">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-9">
-                <form action="#" id="{{ uploadedVideo.uuid }}">
-                    <div class="row">
-                        <div class="col-md-9">
-                            <div class="form-group">
-                                <label for="title">Title</label>
-                                <input type="text" class="form-control" id="title" value="{{ uploadedVideo.title }}">
+                <div class="col-md-9">
+                    <form action="#" id="{{ uuid }}">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <label for="title">Title</label>
+                                    <input type="text" class="form-control" id="title" name="title" value="{{ title }}">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="expired-date">Expired date</label>
+                                    <input size="16" type="text" id="expired-date" name="expired-date" class="js-datepicker form-control">
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="expired-date">Expired date</label>
-                                <input size="16" type="text" id="expired-date" class="js-datepicker form-control">
-                            </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" rows="2" id="description" name="description" form="{{ uuid }}"></textarea>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <textarea class="form-control" rows="2" id="description" form="form"></textarea>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
+        {% endverbatim %}
     </script>
     <script>
         $(document).ready(function() {
-            $('.js-datepicker').datetimepicker({format: 'Y-MM-DD HH:mm'});
-
             var signatureUrl = "{{ admin.generateUrl('signature') }}";
             var saveBaseVideoDataUrl = "{{ admin.generateUrl('saveBaseVideoData') }}";
             var savePostUploadVideoDataUrl = "{{ admin.generateUrl('savePostUploadVideoData') }}";
 
+            var uploadedVideoTemplateSource = $('#post-upload-form-template').first().html();
+            var uploadedVideoTemplate = Handlebars.compile(uploadedVideoTemplateSource);
+
             var uploadHelper = new UploadHelper(signatureUrl, saveBaseVideoDataUrl, savePostUploadVideoDataUrl);
-            var videoDataCollector = new VideoDataCollector();
+            var videoDataCollector = new VideoDataCollector(uploadedVideoTemplate);
 
             var preUploadFormData = JSON.parse('{{ preUploadFormData|raw }}');
 
@@ -101,13 +108,33 @@
                             );
                         break;
                     case 'close':
+                        if (videoDataCollector.hasElementsToRender()) {
+                            var container = $('.box-body > .sonata-ba-collapsed-fields').first();
+
+                            videoDataCollector.render(container);
+
+                            $('#confirm-all-button').click(function() {
+                                var preparedVideos = {};
+
+                                $('.box-body > .sonata-ba-collapsed-fields form').each(function() {
+                                    var uuid = $(this).attr('id');
+
+                                    preparedVideos[uuid] = {};
+
+                                    $(this).serializeArray().each(function(index, formFieldData) {
+                                        preparedVideos[uuid][formFieldData['name']] = formFieldData['value'];
+                                    });
+                                });
+
+                                console.log(preparedVideos);
+                            })
+                        }
                         break;
                 }
+            });
 
-                console.log('result');
-                console.log(result);
-                console.log('error');
-                console.log(error);
+            $('#upload_widget_opener').click(function () {
+                widjet.open();
             });
 
             widjet.open();
@@ -126,20 +153,45 @@
              *
              * @param {object} preUploadFormData
              * @param {object} widgetCallbackData
+             *
+             * @return Promise
              */
-            this.saveBaseVideoData = function (preUploadFormData, widgetCallbackData) {
-                var url = this.saveBaseVideoDataUrl;
+            this.saveBaseVideoData = function(preUploadFormData, widgetCallbackData) {
                 var uploadedVideoData = Object.assign({}, preUploadFormData);
 
                 uploadedVideoData['title'] = widgetCallbackData.original_filename;
                 uploadedVideoData['remoteId'] = widgetCallbackData.public_id;
                 uploadedVideoData['remoteUrl'] = widgetCallbackData.url;
 
-                return new Promise(function (resolve, reject) {
+                // delete uuid to prevent form handling errors
+                delete uploadedVideoData.uuid;
+
+                return this.sendPostRequest(this.saveBaseVideoDataUrl, uploadedVideoData);
+            };
+
+            /**
+             * @param {Object} confirmedVideoData
+             *
+             * @return Promise
+             */
+            this.confirmAllUploadedVideos = function(confirmedVideoData) {
+                return this.sendPostRequest(this.savePostUploadVideoDataUrl, confirmedVideoData);
+            };
+
+            /**
+             * Send post request
+             *
+             * @param {string} url
+             * @param {Object} data
+             *
+             * @return Promise
+             */
+            this.sendPostRequest = function(url, data) {
+                return new Promise(function(resolve, reject) {
                     $.ajax({
                         url: url,
                         type: 'POST',
-                        data: JSON.stringify(uploadedVideoData),
+                        data: JSON.stringify(data),
                         dataType: 'json',
                         success: function (data, textStatus, jqXHR) {
                             resolve(data);
@@ -148,7 +200,7 @@
                             // TODO not saved data handler
                         }
                     })
-                });
+                })
             };
 
             /**
@@ -173,11 +225,11 @@
             }
         }
 
-        function VideoDataCollector() {
+        function VideoDataCollector(uploadedVideoTemplate) {
             /**
              * Upload video data
              *
-             * @type { [{ uuid: {string}, title: {string}, thumbnails: {array} }] }
+             * @type {Object[]}
              */
             this.successfullySaved = [];
 
@@ -188,17 +240,78 @@
              */
             this.notSaved = [];
 
-            this.render = function() {
+            /**
+             * Handlebars library template
+             * 
+             * @type {Function}
+             */
+            this.uploadedVideoTemplate = uploadedVideoTemplate;
 
+            /**
+             * Render uploaded and saved videos
+             *
+             * @param parentElement - container for append list
+             */
+            this.render = function(parentElement) {
+                var container = $('<div></div>');
+                var self = this;
+
+                this.successfullySaved.forEach(function (uploadedVideo, index) {
+                    var startThumbnail = uploadedVideo.thumbnails.shift();
+                    var endThumbnail = uploadedVideo.thumbnails.pop();
+
+                    if (index > 0) {
+                        container.append($('<hr/>'));
+                    }
+
+                    var html = self.uploadedVideoTemplate({
+                        uuid: uploadedVideo.uuid,
+                        title: uploadedVideo.title,
+                        startThumbnail: startThumbnail,
+                        endThumbnail: endThumbnail
+                    });
+
+                    container.append(html);
+                });
+
+                var saveButton = $('<button></button>')
+                    .addClass('btn btn-primary')
+                    .attr('id', 'confirm-all-button')
+                    .html('Confirm all');
+
+                container.append(saveButton);
+
+                parentElement.html(container);
+
+                $('.js-datepicker').datetimepicker({format: 'Y-MM-DD HH:mm'});
             };
 
+            /**
+             * Add uploaded and saved video data to collection
+             *
+             * @param {Object} uploadedVideoData
+             */
             this.addSuccessfullySaved = function (uploadedVideoData) {
                 this.successfullySaved.push(uploadedVideoData);
             };
 
+            /**
+             * Add uploaded but saved with error video data
+             *
+             * @param {Object} uploadedVideoData
+             */
             this.addNotSaved = function (uploadedVideoData) {
                 this.notSaved.push(uploadedVideoData);
             };
+
+            /**
+             * Check if there is at least one item in the collection
+             *
+             * @returns {boolean}
+             */
+            this.hasElementsToRender = function () {
+                return this.successfullySaved.length > 0 || this.notSaved.length > 0;
+            }
         }
     </script>
 {% endblock %}

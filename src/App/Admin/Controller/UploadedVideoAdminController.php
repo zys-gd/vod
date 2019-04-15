@@ -161,7 +161,17 @@ class UploadedVideoAdminController extends CRUDController
 
     public function savePostUploadVideoData(Request $request)
     {
+        $confirmedVideos = json_decode($request->getContent(), true);
 
+        $uploadedVideoRepository = $this->entityManager->getRepository(UploadedVideo::class);
+
+        foreach ($confirmedVideos as $uuid => $confirmedData) {
+            $uploadedVideo = $uploadedVideoRepository->find($uuid);
+
+            if (empty($uploadedVideo)) {
+                continue;
+            }
+        }
     }
 
     /**
