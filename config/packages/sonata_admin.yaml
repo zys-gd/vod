@@ -2,6 +2,7 @@ sonata_admin:
     title: 'Sport videos'
     security:
         handler: sonata.admin.security.handler.role
+
         role_super_admin: ROLE_SUPER_ADMIN
         role_admin: ROLE_ADMIN
     templates:
@@ -37,7 +38,7 @@ sonata_admin:
                 items:
                     -   route: audit
                         label: Audit
-                        roles: [ROLE_SUPER_ADMIN]
+                        roles: [ROLE_SUPER_ADMIN, ROLE_COMMON_ADMIN]
         blocks:
             - { type: sonata.admin.block.admin_list, position: left }
 
