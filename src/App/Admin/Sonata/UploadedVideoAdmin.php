@@ -245,7 +245,7 @@ class UploadedVideoAdmin extends AbstractAdmin
         $collection->add('preUpload', 'preUpload');
         $collection->add('signature', 'signature');
         $collection->add('saveBaseVideoData', 'saveBaseVideoData');
-        $collection->add('savePostUploadVideoData', 'savePostUploadVideoData');
+        $collection->add('confirmVideos', 'confirmVideos');
 
         parent::configureRoutes($collection);
     }

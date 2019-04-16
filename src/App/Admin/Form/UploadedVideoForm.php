@@ -41,7 +41,7 @@ class UploadedVideoForm extends PreUploadForm
             'empty_data' => function (FormInterface $form) {
                 return new UploadedVideo(UuidGenerator::generate());
             },
-            'csrf_protection' => false
+            'csrf_token_id' => 'uploading-video'
         ]);
     }
 }

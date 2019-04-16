@@ -60,11 +60,7 @@ class EagerType implements CallbackHandlerInterface
             throw new NotFoundHttpException(sprintf('%s not found', $publicId));
         }
 
-        $newStatus = $video->getStatus() === UploadedVideo::CONFIRMED_BY_ADMIN
-            ? UploadedVideo::STATUS_READY
-            : UploadedVideo::TRANSFORMATION_READY;
-
-        $video->setStatus($newStatus);
+        $video->updateStatus(UploadedVideo::STATUS_TRANSFORMATION_READY);
 
         $this->entityManager->flush();
     }
