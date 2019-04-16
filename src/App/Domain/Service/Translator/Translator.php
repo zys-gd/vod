@@ -55,7 +55,6 @@ class Translator
             }
         } else {
             $this->initializeDefaultTexts()
-                ->initializeCarrierTexts($billingCarrierId, self::DEFAULT_LOCALE)
                 ->initializeCarrierTexts($billingCarrierId, $languageCode)
                 ->pushTexts2Cache($cacheKey);
         }
@@ -105,7 +104,8 @@ class Translator
      */
     private function initializeDefaultTexts()
     {
-        $oLanguage = $this->languageRepository->findOneBy(['code' => self::DEFAULT_LOCALE]);
+        $locale = self::DEFAULT_LOCALE;
+        $oLanguage = $this->languageRepository->findOneBy(['code' => $locale]);
         /** @var Translation[] $translations */
         $translations = $this->translationRepository->findBy([
             'language' => $oLanguage,
@@ -119,22 +119,28 @@ class Translator
     }
 
     /**
-     * @param        $billingCarrierId
+     * @param int|null $billingCarrierId
      * @param string $languageCode
      *
      * @return $this
      */
     private function initializeCarrierTexts($billingCarrierId, string $languageCode)
     {
-        $oCarrier = $this->carrierRepository->findOneBy(['billingCarrierId' => $billingCarrierId]);
-        $oLanguage = $this->languageRepository->findOneBy(['code' => $languageCode]);
-        /** @var Translation[] $translations */
-        $translations = $this->translationRepository->findBy([
-            'language' => $oLanguage,
-            'carrier'  => $oCarrier
+        /** @var Carrier $oCarrier */
+        $oCarrier = $this->carrierRepository->findOneBy([
+            'billingCarrierId' => $billingCarrierId
         ]);
+
+        $selectedCode = ($oCarrier != null)
+            ? $oCarrier->getDefaultLanguage()->getCode()
+            : $languageCode;
+
+
+        /** @var Translation[] $translations */
+        $translations = $this->translationRepository->findTranslationForCarrier($selectedCode, $oCarrier);
+
         foreach ($translations ?? [] as $translation) {
-            $this->texts[$translation->getKey()] = $translation->getTranslation();
+            $this->texts[$translation['key']] = $translation['translation'];
         }
         return $this;
     }
