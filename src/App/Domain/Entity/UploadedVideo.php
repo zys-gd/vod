@@ -11,11 +11,11 @@ use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 class UploadedVideo implements HasUuid, JsonSerializable
 {
     /**
-     * transformation video statuses
+     * Video statuses
      */
     const STATUS_IN_PROCESSING = 1;
-    const TRANSFORMATION_READY = 2;
-    const CONFIRMED_BY_ADMIN = 3;
+    const STATUS_TRANSFORMATION_READY = 2;
+    const STATUS_CONFIRMED_BY_ADMIN = 3;
     const STATUS_READY = 4;
 
     /**
@@ -23,8 +23,8 @@ class UploadedVideo implements HasUuid, JsonSerializable
      */
     const STATUSES = [
         self::STATUS_IN_PROCESSING => 'Processing',
-        self::TRANSFORMATION_READY => 'Transformation ready',
-        self::CONFIRMED_BY_ADMIN => 'Confirmed by admin',
+        self::STATUS_TRANSFORMATION_READY => 'Transformation ready',
+        self::STATUS_CONFIRMED_BY_ADMIN => 'Confirmed by admin',
         self::STATUS_READY => 'Ready'
     ];
 
@@ -175,6 +175,22 @@ class UploadedVideo implements HasUuid, JsonSerializable
     public function setStatus(int $status): UploadedVideo
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @param int $status
+     *
+     * @return UploadedVideo
+     */
+    public function updateStatus(int $status): UploadedVideo
+    {
+        if ($status === self::STATUS_TRANSFORMATION_READY || $status === self::STATUS_CONFIRMED_BY_ADMIN) {
+            $status = $this->getStatus() !== self::STATUS_IN_PROCESSING ? self::STATUS_READY : $status;
+        }
+
+        $this->setStatus($status);
 
         return $this;
     }

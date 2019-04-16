@@ -63,7 +63,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="expired-date">Expired date</label>
-                                    <input size="16" type="text" id="expired-date" name="expired-date" class="js-datepicker form-control">
+                                    <input size="16" type="text" id="expired-date" name="expiredDate" class="js-datepicker form-control">
                                 </div>
                             </div>
                         </div>
@@ -80,12 +80,14 @@
         $(document).ready(function() {
             var signatureUrl = "{{ admin.generateUrl('signature') }}";
             var saveBaseVideoDataUrl = "{{ admin.generateUrl('saveBaseVideoData') }}";
-            var savePostUploadVideoDataUrl = "{{ admin.generateUrl('savePostUploadVideoData') }}";
+            var confirmVideosUrl = "{{ admin.generateUrl('confirmVideos') }}";
+
+            var csrfToken = '{{ csrf_token('uploading-video') }}';
 
             var uploadedVideoTemplateSource = $('#post-upload-form-template').first().html();
             var uploadedVideoTemplate = Handlebars.compile(uploadedVideoTemplateSource);
 
-            var uploadHelper = new UploadHelper(signatureUrl, saveBaseVideoDataUrl, savePostUploadVideoDataUrl);
+            var uploadHelper = new UploadHelper(signatureUrl, saveBaseVideoDataUrl, confirmVideosUrl, csrfToken);
             var videoDataCollector = new VideoDataCollector(uploadedVideoTemplate);
 
             var preUploadFormData = JSON.parse('{{ preUploadFormData|raw }}');
@@ -96,14 +98,20 @@
             var widjet = cloudinary.createUploadWidget(widgetOptions, function (error, result) {
                 switch (result.event) {
                     case 'success':
+                        var uploadedVideoData = Object.assign({}, preUploadFormData);
+
+                        uploadedVideoData['title'] = result.info.original_filename;
+                        uploadedVideoData['remoteId'] = result.info.public_id;
+                        uploadedVideoData['remoteUrl'] = result.info.url;
+
                         uploadHelper
-                            .saveBaseVideoData(preUploadFormData, result.info)
+                            .saveBaseVideoData(uploadedVideoData)
                             .then(
                                 function(uploadedVideo) {
                                     videoDataCollector.addSuccessfullySaved(uploadedVideo)
                                 },
-                                function() {
-                                    // TODO not saved data handler
+                                function(jqXHR) {
+                                    videoDataCollector.addNotSaved(uploadedVideoData);
                                 }
                             );
                         break;
@@ -121,12 +129,21 @@
 
                                     preparedVideos[uuid] = {};
 
-                                    $(this).serializeArray().each(function(index, formFieldData) {
+                                    $(this).serializeArray().forEach(function(formFieldData) {
                                         preparedVideos[uuid][formFieldData['name']] = formFieldData['value'];
                                     });
                                 });
 
-                                console.log(preparedVideos);
+                                uploadHelper
+                                    .confirmAllUploadedVideos(preparedVideos)
+                                    .then(
+                                        function() {
+
+                                        },
+                                        function(jqXHR) {
+
+                                        }
+                                    );
                             })
                         }
                         break;
@@ -140,29 +157,27 @@
             widjet.open();
         });
 
-        function UploadHelper(signatureUrl, saveBaseVideoDataUrl, savePostUploadVideoDataUrl) {
+        function UploadHelper(signatureUrl, saveBaseVideoDataUrl, confirmVideosUrl, csrfToken) {
             /**
              * Endpoint urls
              */
             this.signatureUrl = signatureUrl;
             this.saveBaseVideoDataUrl = saveBaseVideoDataUrl;
-            this.savePostUploadVideoDataUrl = savePostUploadVideoDataUrl;
+            this.confirmVideosUrl = confirmVideosUrl;
+
+            /**
+             * CSRF protection token
+             */
+            this.token = csrfToken;
 
             /**
              * Save general video data from widget callback and pre-upload form data
              *
-             * @param {object} preUploadFormData
-             * @param {object} widgetCallbackData
+             * @param {Object} uploadedVideoData
              *
              * @return Promise
              */
-            this.saveBaseVideoData = function(preUploadFormData, widgetCallbackData) {
-                var uploadedVideoData = Object.assign({}, preUploadFormData);
-
-                uploadedVideoData['title'] = widgetCallbackData.original_filename;
-                uploadedVideoData['remoteId'] = widgetCallbackData.public_id;
-                uploadedVideoData['remoteUrl'] = widgetCallbackData.url;
-
+            this.saveBaseVideoData = function(uploadedVideoData) {
                 // delete uuid to prevent form handling errors
                 delete uploadedVideoData.uuid;
 
@@ -175,7 +190,7 @@
              * @return Promise
              */
             this.confirmAllUploadedVideos = function(confirmedVideoData) {
-                return this.sendPostRequest(this.savePostUploadVideoDataUrl, confirmedVideoData);
+                return this.sendPostRequest(this.confirmVideosUrl, confirmedVideoData);
             };
 
             /**
@@ -187,17 +202,19 @@
              * @return Promise
              */
             this.sendPostRequest = function(url, data) {
+                data['_token'] = this.token;
+
                 return new Promise(function(resolve, reject) {
                     $.ajax({
                         url: url,
                         type: 'POST',
                         data: JSON.stringify(data),
                         dataType: 'json',
-                        success: function (data, textStatus, jqXHR) {
+                        success: function (data) {
                             resolve(data);
                         },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            // TODO not saved data handler
+                        error: function (jqXHR) {
+                            reject(jqXHR);
                         }
                     })
                 })

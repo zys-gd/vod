@@ -11,6 +11,7 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use App\Admin\Form\PreUploadForm;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
@@ -159,19 +160,48 @@ class UploadedVideoAdminController extends CRUDController
         return new Response('Video data is invalid', 400);
     }
 
-    public function savePostUploadVideoData(Request $request)
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @throws \Exception
+     */
+    public function confirmVideosAction(Request $request)
     {
         $confirmedVideos = json_decode($request->getContent(), true);
+
+        $token = empty($confirmedVideos['_token']) ? null : $confirmedVideos['_token'];
+
+        if (!$token || !$this->isCsrfTokenValid('uploading-video', $token)) {
+            throw new AccessDeniedHttpException('Invalid csrf token');
+        }
+
+        unset($confirmedVideos['_token']);
 
         $uploadedVideoRepository = $this->entityManager->getRepository(UploadedVideo::class);
 
         foreach ($confirmedVideos as $uuid => $confirmedData) {
+            /** @var UploadedVideo $uploadedVideo */
             $uploadedVideo = $uploadedVideoRepository->find($uuid);
 
             if (empty($uploadedVideo)) {
                 continue;
             }
+
+            $uploadedVideo
+                ->setTitle($confirmedData['title'])
+                // todo handle date in correct timezone
+                ->setExpiredDate(new \DateTime($confirmedData['expiredDate']))
+                ->setDescription($confirmedData['description'])
+                ->updateStatus(UploadedVideo::STATUS_CONFIRMED_BY_ADMIN);
+
+            $this->entityManager->persist($uploadedVideo);
         }
+
+        $this->entityManager->flush();
+
+        return new Response();
     }
 
     /**
