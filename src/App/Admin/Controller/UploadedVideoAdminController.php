@@ -181,27 +181,31 @@ class UploadedVideoAdminController extends CRUDController
 
         $uploadedVideoRepository = $this->entityManager->getRepository(UploadedVideo::class);
 
-        foreach ($confirmedVideos as $uuid => $confirmedData) {
-            /** @var UploadedVideo $uploadedVideo */
-            $uploadedVideo = $uploadedVideoRepository->find($uuid);
+        try {
+            foreach ($confirmedVideos as $uuid => $confirmedData) {
+                /** @var UploadedVideo $uploadedVideo */
+                $uploadedVideo = $uploadedVideoRepository->find($uuid);
 
-            if (empty($uploadedVideo)) {
-                continue;
+                if (empty($uploadedVideo)) {
+                    continue;
+                }
+
+                $uploadedVideo
+                    ->setTitle($confirmedData['title'])
+                    // todo handle date in correct timezone
+                    ->setExpiredDate(new \DateTime($confirmedData['expiredDate']))
+                    ->setDescription($confirmedData['description'])
+                    ->updateStatus(UploadedVideo::STATUS_CONFIRMED_BY_ADMIN);
+
+                $this->entityManager->persist($uploadedVideo);
             }
 
-            $uploadedVideo
-                ->setTitle($confirmedData['title'])
-                // todo handle date in correct timezone
-                ->setExpiredDate(new \DateTime($confirmedData['expiredDate']))
-                ->setDescription($confirmedData['description'])
-                ->updateStatus(UploadedVideo::STATUS_CONFIRMED_BY_ADMIN);
-
-            $this->entityManager->persist($uploadedVideo);
+            $this->entityManager->flush();
+        } catch (\Exception $exception) {
+            return new Response('An error occurred while saving the video', 500);
         }
 
-        $this->entityManager->flush();
-
-        return new Response();
+        return new Response(json_encode(['result' => 'ok']));
     }
 
     /**
