@@ -190,13 +190,6 @@ class CommonFlowHandler
         $carrierHandler->afterProcess($subscription, $subscription->getUser(), $processResponse);
         $this->entitySaveHelper->persistAndSave($subscription);
 
-        if ($processResponse->isSuccessful()
-            && $processResponse->isFinal()
-            && $processResponse->getType() === ProcessResult::PROCESS_TYPE_SUBSCRIBE
-        ) {
-            $this->subscriptionCounterUpdater->updateSubscriptionCounter($subscription);
-        }
-
         if ($carrierHandler instanceof HasCustomTrackingRules) {
             $isNeedToBeTracked = $carrierHandler->isNeedToBeTracked($processResponse);
         } else {

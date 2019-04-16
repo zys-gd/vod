@@ -1,0 +1,22 @@
+services:
+    SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter:
+        arguments:
+        - '@SubscriptionBundle\Service\CampaignExtractor'
+        - '@SubscriptionBundle\Service\SubscriptionExtractor'
+        - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\Limiter'
+
+    SubscriptionBundle\Service\SubscriptionLimiter\Limiter\Limiter:
+        arguments:
+            - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterPerformer'
+
+    SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterPerformer:
+        arguments:
+            - '@app.predis'
+            - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterStructureGear'
+            - '@SubscriptionBundle\Service\SubscriptionLimiter\Locker\LockerFactory'
+
+    SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterStructureGear: ~
+
+    SubscriptionBundle\Service\SubscriptionLimiter\Locker\LockerFactory:
+        arguments:
+            - '@app.predis'

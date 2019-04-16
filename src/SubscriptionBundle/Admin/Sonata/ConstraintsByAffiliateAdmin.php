@@ -8,6 +8,9 @@ use App\Utils\UuidGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\CarrierInterface;
 use SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis;
+use SubscriptionBundle\Service\SubscriptionLimiter\DTO\LimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\Limiter;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterPerformer;
 use Symfony\Component\Validator\Constraints\Callback;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -41,16 +44,21 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
      * @var ConstraintCounterRedis
      */
     private $constraintCounterRedis;
+    /**
+     * @var LimiterPerformer
+     */
+    private $limiterPerformer;
 
     /**
      * ConstraintsByAffiliateAdmin constructor
      *
-     * @param string $code
-     * @param string $class
-     * @param string $baseControllerName
+     * @param string                          $code
+     * @param string                          $class
+     * @param string                          $baseControllerName
      * @param ConstraintByAffiliateRepository $constraintByAffiliateRepository
-     * @param EntityManagerInterface $entityManager
-     * @param ConstraintCounterRedis $constraintCounterRedis
+     * @param EntityManagerInterface          $entityManager
+     * @param ConstraintCounterRedis          $constraintCounterRedis
+     * @param LimiterPerformer                $limiterPerformer
      */
     public function __construct(
         string $code,
@@ -58,13 +66,15 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
         string $baseControllerName,
         ConstraintByAffiliateRepository $constraintByAffiliateRepository,
         EntityManagerInterface $entityManager,
-        ConstraintCounterRedis $constraintCounterRedis
+        ConstraintCounterRedis $constraintCounterRedis,
+        LimiterPerformer $limiterPerformer
     ) {
         $this->constraintByAffiliateRepository = $constraintByAffiliateRepository;
         $this->entityManager = $entityManager;
         $this->constraintCounterRedis = $constraintCounterRedis;
 
         parent::__construct($code, $class, $baseControllerName);
+        $this->limiterPerformer = $limiterPerformer;
     }
 
     /**
@@ -214,5 +224,29 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
             ->add('isCapAlertDispatch', 'boolean', [
                 'label' => 'Is email sent today'
             ]);
+    }
+
+    /**
+     * @param ConstraintByAffiliate $constraintByAffiliate
+     */
+    public function postPersist($constraintByAffiliate)
+    {
+        $limiterData = new LimiterData($constraintByAffiliate->getCarrier());
+        $limiterData->setAffiliate($constraintByAffiliate->getAffiliate());
+        $limiterData->setSubscriptionConstraint($constraintByAffiliate);
+        $this->limiterPerformer->setCarrierConstraint($limiterData);
+        $this->limiterPerformer->setCarrierAffiliateConstraint($limiterData);
+    }
+
+    /**
+     * @param ConstraintByAffiliate $constraintByAffiliate
+     */
+    public function postUpdate($constraintByAffiliate)
+    {
+        $limiterData = new LimiterData($constraintByAffiliate->getCarrier());
+        $limiterData->setAffiliate($constraintByAffiliate->getAffiliate());
+        $limiterData->setSubscriptionConstraint($constraintByAffiliate);
+        $this->limiterPerformer->setCarrierConstraint($limiterData);
+        $this->limiterPerformer->setCarrierAffiliateConstraint($limiterData);
     }
 }

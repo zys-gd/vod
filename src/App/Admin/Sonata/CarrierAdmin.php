@@ -10,6 +10,9 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis;
+use SubscriptionBundle\Service\SubscriptionLimiter\DTO\LimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterPerformer;
+use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -23,24 +26,38 @@ class CarrierAdmin extends AbstractAdmin
      * @var ConstraintCounterRedis
      */
     private $constraintCounterRedis;
+    /**
+     * @var SubscriptionLimiter
+     */
+    private $subscriptionLimiter;
+    /**
+     * @var LimiterPerformer
+     */
+    private $limiterPerformer;
 
     /**
      * CarrierAdmin constructor
      *
-     * @param string $code
-     * @param string $class
-     * @param string $baseControllerName
+     * @param string                 $code
+     * @param string                 $class
+     * @param string                 $baseControllerName
      * @param ConstraintCounterRedis $constraintCounterRedis
+     * @param SubscriptionLimiter    $subscriptionLimiter
+     * @param LimiterPerformer       $limiterPerformer
      */
     public function __construct(
         string $code,
         string $class,
         string $baseControllerName,
-        ConstraintCounterRedis $constraintCounterRedis
+        ConstraintCounterRedis $constraintCounterRedis,
+        SubscriptionLimiter $subscriptionLimiter,
+        LimiterPerformer $limiterPerformer
     ) {
         $this->constraintCounterRedis = $constraintCounterRedis;
 
         parent::__construct($code, $class, $baseControllerName);
+        $this->subscriptionLimiter = $subscriptionLimiter;
+        $this->limiterPerformer = $limiterPerformer;
     }
 
     /**
@@ -178,5 +195,17 @@ class CarrierAdmin extends AbstractAdmin
         $collection->clearExcept(['list', 'edit', 'delete', 'show']);
 
         parent::configureRoutes($collection);
+    }
+
+    public function postUpdate($carrier)
+    {
+        $limiterData = new LimiterData($carrier);
+        $this->limiterPerformer->setCarrierConstraint($limiterData);
+    }
+
+    public function postPersist($carrier)
+    {
+        $limiterData = new LimiterData($carrier);
+        $this->limiterPerformer->setCarrierConstraint($limiterData);
     }
 }

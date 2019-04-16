@@ -9,14 +9,16 @@
 namespace SubscriptionBundle\Service\Action\Subscribe;
 
 
+use SubscriptionBundle\Service\SubscriptionLimiter\DTO\LimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Event\SubscriptionSubscribeEvent;
 use SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater;
 use SubscriptionBundle\Service\CreditsCalculator;
 use SubscriptionBundle\Service\RenewDateCalculator;
 use SubscriptionBundle\Service\SubscriptionExtractor;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class OnSubscribeUpdater
 {
@@ -37,6 +39,10 @@ class OnSubscribeUpdater
      */
     private $commonSubscriptionUpdater;
     private $eventDispatcher;
+    /**
+     * @var SubscriptionLimiter
+     */
+    private $subscriptionLimiter;
 
 
     /**
@@ -47,13 +53,15 @@ class OnSubscribeUpdater
      * @param \SubscriptionBundle\Service\RenewDateCalculator $renewDateCalculator
      * @param EventDispatcherInterface                        $eventDispatcher
      * @param CommonSubscriptionUpdater                       $commonSubscriptionUpdater
+     * @param SubscriptionLimiter                             $subscriptionLimiter
      */
     public function __construct(
         SubscriptionExtractor $subscriptionProvider,
         CreditsCalculator $creditsCalculator,
         RenewDateCalculator $renewDateCalculator,
         EventDispatcherInterface $eventDispatcher,
-        CommonSubscriptionUpdater $commonSubscriptionUpdater
+        CommonSubscriptionUpdater $commonSubscriptionUpdater,
+        SubscriptionLimiter $subscriptionLimiter
     )
     {
         $this->subscriptionProvider      = $subscriptionProvider;
@@ -61,11 +69,19 @@ class OnSubscribeUpdater
         $this->renewDateCalculator       = $renewDateCalculator;
         $this->eventDispatcher           = $eventDispatcher;
         $this->commonSubscriptionUpdater = $commonSubscriptionUpdater;
+        $this->subscriptionLimiter       = $subscriptionLimiter;
     }
 
-    public function updateSubscriptionByResponse(Subscription $subscription, ProcessResult $processResponse)
+    /**
+     * @param Subscription     $subscription
+     * @param ProcessResult    $processResponse
+     * @param SessionInterface $session
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function updateSubscriptionByResponse(Subscription $subscription, ProcessResult $processResponse, SessionInterface $session)
     {
-        $this->updateSubscriptionByCallbackResponse($subscription, $processResponse);
+        $this->updateSubscriptionByCallbackResponse($subscription, $processResponse, $session);
 
         if ($processResponse->isRedirectRequired()) {
             $subscription->setRedirectUrl($processResponse->getUrl());
@@ -73,10 +89,22 @@ class OnSubscribeUpdater
 
     }
 
-    public function updateSubscriptionByCallbackResponse(Subscription $subscription, ProcessResult $response)
+    /**
+     * @param Subscription     $subscription
+     * @param ProcessResult    $response
+     * @param SessionInterface $session
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function updateSubscriptionByCallbackResponse(Subscription $subscription, ProcessResult $response, SessionInterface $session)
     {
+        $limiterData = new LimiterData($subscription->getUser()->getCarrier());
+        $this->subscriptionLimiter->setLimiterData($session, $limiterData);
+
         if ($response->isSuccessful()) {
             $this->applySuccess($subscription);
+
+            $this->subscriptionLimiter->finishLimitingProcess($limiterData);
         }
 
         $this->commonSubscriptionUpdater->updateSubscriptionByCallbackResponse($subscription, $response);
@@ -95,12 +123,14 @@ class OnSubscribeUpdater
                     break;
                 default:
                     $this->applyFailure($subscription, $response->getError());
+                    $this->subscriptionLimiter->cancelLimitingProcess($limiterData);
             }
         }
     }
 
     /**
      * @param Subscription $subscription
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     protected function applySuccess(Subscription $subscription)
@@ -113,7 +143,7 @@ class OnSubscribeUpdater
         $subscription->setRenewDate($renewDate);
 
         if (intval($subscription->getCredits()) === 0) {
-            $User         = $subscription->getUser();
+            $User                 = $subscription->getUser();
             $existingSubscription = $this->subscriptionProvider->getExistingSubscriptionForUser($User);
 
             $newCredits = $this->creditsCalculator->calculateCredits($subscription, $subscription->getSubscriptionPack(), $existingSubscription);

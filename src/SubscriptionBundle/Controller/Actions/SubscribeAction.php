@@ -27,6 +27,8 @@ use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvi
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CustomPage;
 use SubscriptionBundle\Service\CapConstraint\SubscriptionConstraintByCarrier;
+use SubscriptionBundle\Service\SubscriptionLimiter\DTO\LimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter;
 use SubscriptionBundle\Service\UserExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -80,10 +82,6 @@ class SubscribeAction extends AbstractController
      */
     private $carrierRepository;
     /**
-     * @var SubscriptionConstraintByCarrier
-     */
-    private $subscriptionConstraintByCarrier;
-    /**
      * @var string
      */
     private $defaultRedirectUrl;
@@ -95,6 +93,10 @@ class SubscribeAction extends AbstractController
      * @var CampaignConfirmationHandlerProvider
      */
     private $campaignConfirmationHandlerProvider;
+    /**
+     * @var SubscriptionLimiter
+     */
+    private $subscriptionLimiter;
 
     /**
      * SubscribeAction constructor.
@@ -109,10 +111,10 @@ class SubscribeAction extends AbstractController
      * @param IdentificationDataStorage           $identificationDataStorage
      * @param IdentificationHandlerProvider       $identificationHandlerProvider
      * @param CarrierRepositoryInterface          $carrierRepository
-     * @param SubscriptionConstraintByCarrier     $subscriptionConstraintByCarrier
      * @param string                              $defaultRedirectUrl
      * @param PostPaidHandler                     $postPaidHandler
      * @param CampaignConfirmationHandlerProvider $campaignConfirmationHandlerProvider
+     * @param SubscriptionLimiter                 $subscriptionLimiter
      */
     public function __construct(
         UserExtractor $userExtractor,
@@ -125,10 +127,10 @@ class SubscribeAction extends AbstractController
         IdentificationDataStorage $identificationDataStorage,
         IdentificationHandlerProvider $identificationHandlerProvider,
         CarrierRepositoryInterface $carrierRepository,
-        SubscriptionConstraintByCarrier $subscriptionConstraintByCarrier,
         string $defaultRedirectUrl,
         PostPaidHandler $postPaidHandler,
-        CampaignConfirmationHandlerProvider $campaignConfirmationHandlerProvider
+        CampaignConfirmationHandlerProvider $campaignConfirmationHandlerProvider,
+        SubscriptionLimiter $subscriptionLimiter
     )
     {
         $this->userExtractor                       = $userExtractor;
@@ -141,10 +143,10 @@ class SubscribeAction extends AbstractController
         $this->identificationDataStorage           = $identificationDataStorage;
         $this->identificationHandlerProvider       = $identificationHandlerProvider;
         $this->carrierRepository                   = $carrierRepository;
-        $this->subscriptionConstraintByCarrier     = $subscriptionConstraintByCarrier;
         $this->defaultRedirectUrl                  = $defaultRedirectUrl;
         $this->postPaidHandler                     = $postPaidHandler;
         $this->campaignConfirmationHandlerProvider = $campaignConfirmationHandlerProvider;
+        $this->subscriptionLimiter                 = $subscriptionLimiter;
     }
 
     /**
@@ -165,13 +167,9 @@ class SubscribeAction extends AbstractController
             return new RedirectResponse($this->generateUrl('index', ['err_handle' => 'postpaid_restricted']));
         }
 
-        if ($this->subscriptionConstraintByCarrier->isSubscriptionLimitReached()) {
-            return new RedirectResponse($this->defaultRedirectUrl);
-        }
-
         if (($campaignConfirmationHandler = $this->campaignConfirmationHandlerProvider->provideHandler($request->getSession())) instanceof CustomPage) {
             $result = $campaignConfirmationHandler->proceedCustomPage($request);
-            if($result instanceof RedirectResponse) {
+            if ($result instanceof RedirectResponse) {
                 return $result;
             }
         }
@@ -188,6 +186,17 @@ class SubscribeAction extends AbstractController
 
         $user = $this->userExtractor->getUserByIdentificationData($identificationData);
 
+
+        $limiterData = new LimiterData($user->getCarrier());
+        $this->subscriptionLimiter->setLimiterData($request->getSession(), $limiterData);
+
+        if ($this->subscriptionLimiter->isLimitReached($limiterData)) {
+            return RedirectResponse::create('google.com');
+        }
+
+        if ($this->subscriptionLimiter->need2BeLimited($user) && !$this->subscriptionLimiter->isLimitReached($limiterData)) {
+            $this->subscriptionLimiter->startLimitingProcess($limiterData);
+        }
 
         try {
 

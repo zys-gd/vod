@@ -11,18 +11,14 @@ namespace SubscriptionBundle\Service\Action\Subscribe;
 
 use IdentificationBundle\Entity\User;
 use Psr\Log\LoggerInterface;
-use SubscriptionBundle\Affiliate\Service\AffiliateSender;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
-use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException;
 use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
-use SubscriptionBundle\Entity\SubscriptionPlanInterface;
 use SubscriptionBundle\Service\Action\Common\FakeResponseProvider;
 use SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
 use SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\Notification\Notifier;
@@ -164,8 +160,9 @@ class Subscriber
      * @param Subscription     $existingSubscription
      * @param SubscriptionPack $plan
      * @param array            $additionalData
+     *
      * @return ProcessResult
-     * @throws \SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function resubscribe(Subscription $existingSubscription, SubscriptionPack $plan, $additionalData = []): ProcessResult
     {
@@ -176,7 +173,7 @@ class Subscriber
         try {
 
             $response = $this->performSubscribe($additionalData, $subscription);
-            $this->onSubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
+            $this->onSubscribeUpdater->updateSubscriptionByResponse($subscription, $response, $this->session);
             return $response;
 
         } catch (SubscribingProcessException $exception) {
@@ -216,7 +213,7 @@ class Subscriber
             $response   = $this->subscribeProcess->doSubscribe($parameters);
         }
 
-        $this->onSubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
+        $this->onSubscribeUpdater->updateSubscriptionByResponse($subscription, $response, $this->session);
         return $response;
     }
 
