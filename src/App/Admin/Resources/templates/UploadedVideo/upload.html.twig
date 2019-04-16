@@ -8,14 +8,40 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
-    <script
-        type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.min.js"
-    ></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.min.js"></script>
 {% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
+    <style>
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .confirm-text {
+            display: inline-block;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .confirm-success {
+            color: green;
+        }
+
+        .confirm-error {
+            color: red;
+        }
+    </style>
 {% endblock %}
 
 {% block form %}
@@ -30,7 +56,10 @@
                     </div>
                     <div class="box-body">
                         <div class="sonata-ba-collapsed-fields text-center">
-                            <span style="font-size: 18px; margin-bottom: 15px; display: inline-block">No videos have been uploaded...</span> <br>
+                            <span style="font-size: 18px; margin-bottom: 15px; display: inline-block">
+                                No videos have been uploaded...
+                            </span>
+                            <br>
                             <button id="upload_widget_opener" class="btn btn-primary">Upload</button>
                         </div>
                     </div>
@@ -76,11 +105,23 @@
             </div>
         {% endverbatim %}
     </script>
+    <script id="confirm-template" type="text/x-handlebars">
+        {% verbatim %}
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <span class="{{ className }}">{{ text }}</span>
+                     <br/>
+                    <a href="{{ listUrl }}"><button class="btn btn-primary">Return to list</button></a>
+                </div>
+            </div>
+        {% endverbatim %}
+    </script>
     <script>
         $(document).ready(function() {
             var signatureUrl = "{{ admin.generateUrl('signature') }}";
             var saveBaseVideoDataUrl = "{{ admin.generateUrl('saveBaseVideoData') }}";
             var confirmVideosUrl = "{{ admin.generateUrl('confirmVideos') }}";
+            var listUrl = "{{ admin.generateUrl('list') }}";
 
             var csrfToken = '{{ csrf_token('uploading-video') }}';
 
@@ -122,6 +163,8 @@
                             videoDataCollector.render(container);
 
                             $('#confirm-all-button').click(function() {
+                                $(this).replaceWith('<div class="loader"></div>');
+
                                 var preparedVideos = {};
 
                                 $('.box-body > .sonata-ba-collapsed-fields form').each(function() {
@@ -134,14 +177,30 @@
                                     });
                                 });
 
+                                var confirmTemplate = $('#confirm-template').first().html();
+                                var compiledConfirmTemplate = Handlebars.compile(confirmTemplate);
+
                                 uploadHelper
                                     .confirmAllUploadedVideos(preparedVideos)
                                     .then(
                                         function() {
+                                            var html = compiledConfirmTemplate({
+                                                listUrl: listUrl,
+                                                text: 'Videos saved successfully',
+                                                className: 'confirm-success confirm-text'
+                                            });
 
+                                            container.html(html);
                                         },
                                         function(jqXHR) {
+                                            var html = compiledConfirmTemplate({
+                                                listUrl: listUrl,
+                                                text: 'An error occurred while saving the data,' +
+                                                    ' please try to edit the video in the Videos section',
+                                                className: 'confirm-error confirm-text'
+                                            });
 
+                                            container.html(html);
                                         }
                                     );
                             })
@@ -211,9 +270,11 @@
                         data: JSON.stringify(data),
                         dataType: 'json',
                         success: function (data) {
+                            console.log('success request');
                             resolve(data);
                         },
                         error: function (jqXHR) {
+                            console.log('error request');
                             reject(jqXHR);
                         }
                     })

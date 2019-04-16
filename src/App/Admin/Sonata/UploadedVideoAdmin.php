@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use App\Domain\Entity\UploadedVideo;
 use Sonata\Form\Type\DateTimePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormEvent;
@@ -188,6 +189,9 @@ class UploadedVideoAdmin extends AbstractAdmin
             ])
             ->add('videoPartner', EntityType::class, [
                 'class' => VideoPartner::class
+            ])
+            ->add('status', ChoiceType::class, [
+                'choices' => array_flip(UploadedVideo::STATUSES)
             ])
             ->add('description', TextareaType::class, [
                 'required' => false
