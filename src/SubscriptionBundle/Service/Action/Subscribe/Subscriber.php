@@ -141,6 +141,7 @@ class Subscriber
 
         try {
             $response = $this->performSubscribe($additionalData, $subscription);
+            $this->onSubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
 
             if ($response->isSuccessful() && $response->isFinal()) {
                 $this->subscriptionCounterUpdater->updateSubscriptionCounter($subscription);
@@ -195,6 +196,7 @@ class Subscriber
      * @param $additionalData
      * @param $subscription
      * @return ProcessResult
+     * @throws SubscribingProcessException
      */
     protected function performSubscribe(array $additionalData, Subscription $subscription): ProcessResult
     {
@@ -217,11 +219,7 @@ class Subscriber
                 );
 
             } catch (NotificationSendFailedException $e) {
-                return $this->fakeResponseProvider->getDummyResult(
-                    $subscription,
-                    SubscribeProcess::PROCESS_METHOD_SUBSCRIBE,
-                    ProcessResult::STATUS_FAILED
-                );
+                throw new SubscribingProcessException('Error while trying to subscribe', 0, $e);
             }
 
         } else {
