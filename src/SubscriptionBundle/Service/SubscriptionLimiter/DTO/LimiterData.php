@@ -8,6 +8,7 @@ use App\Domain\Entity\Affiliate;
 use IdentificationBundle\Entity\CarrierInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 
+//TODO: cut this and remove setters
 class LimiterData
 {
 
