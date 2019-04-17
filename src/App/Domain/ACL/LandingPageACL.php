@@ -8,6 +8,7 @@ use App\Domain\Repository\CarrierRepository;
 use App\Domain\ACL\Accessors\VisitConstraintByAffiliate;
 use App\Domain\ACL\Accessors\VisitAccessorByCampaign;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\LimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter;
 use Symfony\Component\HttpFoundation\Request;
@@ -87,13 +88,6 @@ class LandingPageACL
             return true;
         }
 
-        $limiterData = new LimiterData($carrier);
-        $this->subscriptionLimiter->setLimiterData($request->getSession(), $limiterData);
-
-        if ($this->subscriptionLimiter->isLimitReached($limiterData)) {
-            return false;
-        }
-
         $campaignToken = $request->get('cid', '');
 
         if (empty($campaignToken)) {
@@ -108,6 +102,14 @@ class LandingPageACL
         }
 
         if (!$this->visitConstraintByAffiliate->canVisit($campaign, $carrier)) {
+            return false;
+        }
+
+        $limiterData = new LimiterData($carrier);
+        $limiterData->setAffiliate($campaign->getAffiliate());
+        $limiterData->setSubscriptionConstraint($campaign->getAffiliate()->getConstraint(ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE, $carrier));
+
+        if ($this->subscriptionLimiter->isLimitReached($limiterData)) {
             return false;
         }
 

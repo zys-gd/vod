@@ -46,7 +46,7 @@ class SubscriptionLimiter implements SubscriptionLimiterInterface
      */
     public function isLimitReached(?LimiterData $limiterData): bool
     {
-        return $this->limiter->getCarrierProcessingSlots($limiterData) === 0 || $this->limiter->getAffiliateProcessingSlots($limiterData);
+        return $this->limiter->getCarrierProcessingSlots($limiterData) === 0 || $this->limiter->getAffiliateProcessingSlots($limiterData) === 0;
     }
 
     public function startLimitingProcess(LimiterData $limiterData)
