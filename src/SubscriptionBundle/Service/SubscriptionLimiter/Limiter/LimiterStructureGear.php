@@ -28,7 +28,7 @@ class LimiterStructureGear/* implements LimiterInterface*/
      *
      * @return array
      */
-    public function setCarrierConstraint(LimiterData $limiterData): array
+    public function saveCarrierConstraint(LimiterData $limiterData): array
     {
         $slots = $this->filterFromNull([
             self::SLOTS                   => $limiterData->getCarrier()->getNumberOfAllowedSubscriptionsByConstraint(),
@@ -49,7 +49,7 @@ class LimiterStructureGear/* implements LimiterInterface*/
      *
      * @return array
      */
-    public function setCarrierAffiliateConstraint(LimiterData $limiterData): array
+    public function saveCarrierAffiliateConstraint(LimiterData $limiterData): array
     {
         $slots = $this->filterFromNull([
             self::SLOTS                   => $limiterData->getSubscriptionConstraint()->getNumberOfActions(),

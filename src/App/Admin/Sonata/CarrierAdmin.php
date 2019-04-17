@@ -197,15 +197,21 @@ class CarrierAdmin extends AbstractAdmin
         parent::configureRoutes($collection);
     }
 
+    /**
+     * @param Carrier $carrier
+     */
     public function postUpdate($carrier)
     {
         $limiterData = new LimiterData($carrier);
-        $this->limiterPerformer->setCarrierConstraint($limiterData);
+        $this->limiterPerformer->saveCarrierConstraint($limiterData);
     }
 
+    /**
+     * @param Carrier $carrier
+     */
     public function postPersist($carrier)
     {
         $limiterData = new LimiterData($carrier);
-        $this->limiterPerformer->setCarrierConstraint($limiterData);
+        $this->limiterPerformer->saveCarrierConstraint($limiterData);
     }
 }

@@ -6,6 +6,7 @@ namespace SubscriptionBundle\Service\SubscriptionLimiter\Limiter;
 
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\LimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\Locker\LockerFactory;
+use Symfony\Component\Lock\Lock;
 
 class LimiterPerformer/* implements LimiterInterface*/
 {
@@ -34,9 +35,9 @@ class LimiterPerformer/* implements LimiterInterface*/
      *
      * @return array
      */
-    public function setCarrierConstraint(LimiterData $limiterData): array
+    public function saveCarrierConstraint(LimiterData $limiterData): array
     {
-        $data = $this->limiterStructureGear->setCarrierConstraint($limiterData);
+        $data = $this->limiterStructureGear->saveCarrierConstraint($limiterData);
 
         return $this->set2Storage($data);
     }
@@ -46,9 +47,9 @@ class LimiterPerformer/* implements LimiterInterface*/
      *
      * @return array
      */
-    public function setCarrierAffiliateConstraint(LimiterData $limiterData): array
+    public function saveCarrierAffiliateConstraint(LimiterData $limiterData): array
     {
-        $data = $this->limiterStructureGear->setCarrierAffiliateConstraint($limiterData);
+        $data = $this->limiterStructureGear->saveCarrierAffiliateConstraint($limiterData);
 
         return $this->set2Storage($data);
     }
@@ -125,111 +126,119 @@ class LimiterPerformer/* implements LimiterInterface*/
 
     public function decrCarrierProcessingSlotsWithLock(LimiterData $limiterData)
     {
-        $lockerFactory = $this->lockerFactory->createLockFactory();
-        $lock          = $lockerFactory->createLock(LimiterStructureGear::KEY);
-        $lock->acquire();
+        $lock = $this->lock();
 
-        try{
+        try {
             $slots = $this->getCarrierSlots($limiterData);
             if ($slots[LimiterStructureGear::PROCESSING_SLOTS] > 0) {
-                $limiterData->setCarrierProcessingSlots($slots[LimiterStructureGear::PROCESSING_SLOTS]-1);
+                $limiterData->setCarrierProcessingSlots($slots[LimiterStructureGear::PROCESSING_SLOTS] - 1);
                 $this->updateCarrierSlots($limiterData);
             }
         } catch (\Throwable $e) {
             // smth throw
         } finally {
-            $lock->release();
+            $this->unlock($lock);
         }
     }
 
     public function decrAffiliateProcessingSlotsWithLock(LimiterData $limiterData)
     {
-        $lockerFactory = $this->lockerFactory->createLockFactory();
-        $lock          = $lockerFactory->createLock(LimiterStructureGear::KEY);
-        $lock->acquire();
+        $lock = $this->lock();
 
-        try{
+        try {
             $slots = $this->getCarrierAffiliateConstraintSlots($limiterData);
             if ($slots[LimiterStructureGear::PROCESSING_SLOTS] > 0) {
-                $limiterData->setAffiliateProcessingSlots($slots[LimiterStructureGear::PROCESSING_SLOTS]-1);
+                $limiterData->setAffiliateProcessingSlots($slots[LimiterStructureGear::PROCESSING_SLOTS] - 1);
                 $this->updateCarrierAffiliateConstraintSlots($limiterData);
             }
         } catch (\Throwable $e) {
             // smth throw
         } finally {
-            $lock->release();
+            $this->unlock($lock);
         }
     }
 
     public function incrAffiliateProcessingSlotsWithLock(LimiterData $limiterData)
     {
-        $lockerFactory = $this->lockerFactory->createLockFactory();
-        $lock          = $lockerFactory->createLock(LimiterStructureGear::KEY);
-        $lock->acquire();
+        $lock = $this->lock();
 
-        try{
+        try {
             $slots = $this->getCarrierAffiliateConstraintSlots($limiterData);
-            $limiterData->setAffiliateProcessingSlots($slots[LimiterStructureGear::PROCESSING_SLOTS]+1);
+            $limiterData->setAffiliateProcessingSlots($slots[LimiterStructureGear::PROCESSING_SLOTS] + 1);
             $this->updateCarrierAffiliateConstraintSlots($limiterData);
         } catch (\Throwable $e) {
             // smth throw
         } finally {
-            $lock->release();
+            $this->unlock($lock);
         }
     }
 
     public function incrCarrierProcessingSlotsWithLock(LimiterData $limiterData)
     {
-        $lockerFactory = $this->lockerFactory->createLockFactory();
-        $lock          = $lockerFactory->createLock(LimiterStructureGear::KEY);
-        $lock->acquire();
+        $lock = $this->lock();
 
-        try{
+        try {
             $slots = $this->getCarrierSlots($limiterData);
-            $limiterData->setCarrierProcessingSlots($slots[LimiterStructureGear::PROCESSING_SLOTS]+1);
+            $limiterData->setCarrierProcessingSlots($slots[LimiterStructureGear::PROCESSING_SLOTS] + 1);
             $this->updateCarrierSlots($limiterData);
         } catch (\Throwable $e) {
             // smth throw
         } finally {
-            $lock->release();
+            $this->unlock($lock);
         }
     }
 
     public function decrAffiliateSubscriptionSlotsWithLock(LimiterData $limiterData)
     {
-        $lockerFactory = $this->lockerFactory->createLockFactory();
-        $lock          = $lockerFactory->createLock(LimiterStructureGear::KEY);
-        $lock->acquire();
+        $lock = $this->lock();
 
-        try{
+        try {
             $slots = $this->getCarrierAffiliateConstraintSlots($limiterData);
             if ($slots[LimiterStructureGear::OPEN_SUBSCRIPTION_SLOTS] > 0) {
-                $limiterData->setAffiliateOpenSubscriptionSlots($slots[LimiterStructureGear::OPEN_SUBSCRIPTION_SLOTS]-1);
+                $limiterData->setAffiliateOpenSubscriptionSlots($slots[LimiterStructureGear::OPEN_SUBSCRIPTION_SLOTS] - 1);
                 $this->updateCarrierAffiliateConstraintSlots($limiterData);
             }
         } catch (\Throwable $e) {
             // smth throw
         } finally {
-            $lock->release();
+            $this->unlock($lock);
         }
     }
 
     public function decrCarrierSubscriptionSlotsWithLock(LimiterData $limiterData)
     {
-        $lockerFactory = $this->lockerFactory->createLockFactory();
-        $lock          = $lockerFactory->createLock(LimiterStructureGear::KEY);
-        $lock->acquire();
+        $lock = $this->lock();
 
-        try{
+        try {
             $slots = $this->getCarrierSlots($limiterData);
             if ($slots[LimiterStructureGear::OPEN_SUBSCRIPTION_SLOTS] > 0) {
-                $limiterData->setCarrierOpenSubscriptionSlots($slots[LimiterStructureGear::OPEN_SUBSCRIPTION_SLOTS]-1);
+                $limiterData->setCarrierOpenSubscriptionSlots($slots[LimiterStructureGear::OPEN_SUBSCRIPTION_SLOTS] - 1);
                 $this->updateCarrierSlots($limiterData);
             }
         } catch (\Throwable $e) {
             // smth throw
         } finally {
-            $lock->release();
+            $this->unlock($lock);
         }
+    }
+
+    /**
+     * @return Lock
+     */
+    private function lock(): Lock
+    {
+        $lockerFactory = $this->lockerFactory->createLockFactory();
+        $lock          = $lockerFactory->createLock(LimiterStructureGear::KEY, 2);
+        // $lock->acquire();
+
+        return $lock;
+    }
+
+    /**
+     * @param Lock $lock
+     */
+    private function unlock(Lock $lock)
+    {
+        $lock->release();
     }
 }

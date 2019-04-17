@@ -191,7 +191,7 @@ class SubscribeAction extends AbstractController
         $this->subscriptionLimiter->setLimiterData($request->getSession(), $limiterData);
 
         if ($this->subscriptionLimiter->isLimitReached($limiterData)) {
-            return RedirectResponse::create('google.com');
+            return RedirectResponse::create($this->defaultRedirectUrl);
         }
 
         if ($this->subscriptionLimiter->need2BeLimited($user) && !$this->subscriptionLimiter->isLimitReached($limiterData)) {

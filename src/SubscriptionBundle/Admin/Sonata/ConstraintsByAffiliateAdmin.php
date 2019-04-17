@@ -234,8 +234,8 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
         $limiterData = new LimiterData($constraintByAffiliate->getCarrier());
         $limiterData->setAffiliate($constraintByAffiliate->getAffiliate());
         $limiterData->setSubscriptionConstraint($constraintByAffiliate);
-        $this->limiterPerformer->setCarrierConstraint($limiterData);
-        $this->limiterPerformer->setCarrierAffiliateConstraint($limiterData);
+        $this->limiterPerformer->saveCarrierConstraint($limiterData);
+        $this->limiterPerformer->saveCarrierAffiliateConstraint($limiterData);
     }
 
     /**
@@ -246,7 +246,7 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
         $limiterData = new LimiterData($constraintByAffiliate->getCarrier());
         $limiterData->setAffiliate($constraintByAffiliate->getAffiliate());
         $limiterData->setSubscriptionConstraint($constraintByAffiliate);
-        $this->limiterPerformer->setCarrierConstraint($limiterData);
-        $this->limiterPerformer->setCarrierAffiliateConstraint($limiterData);
+        $this->limiterPerformer->saveCarrierConstraint($limiterData);
+        $this->limiterPerformer->saveCarrierAffiliateConstraint($limiterData);
     }
 }
