@@ -45,11 +45,11 @@ class LandingPageACL
     /**
      * LandingPageAccessResolver constructor
      *
-     * @param VisitConstraintByAffiliate      $visitConstraintByAffiliate
-     * @param VisitAccessorByCampaign         $visitAccessorByCampaign
-     * @param CarrierRepository               $carrierRepository
-     * @param CampaignRepository              $campaignRepository
-     * @param SubscriptionLimiter             $subscriptionLimiter
+     * @param VisitConstraintByAffiliate $visitConstraintByAffiliate
+     * @param VisitAccessorByCampaign    $visitAccessorByCampaign
+     * @param CarrierRepository          $carrierRepository
+     * @param CampaignRepository         $campaignRepository
+     * @param SubscriptionLimiter        $subscriptionLimiter
      */
     public function __construct(
         VisitConstraintByAffiliate $visitConstraintByAffiliate,
@@ -59,11 +59,11 @@ class LandingPageACL
         SubscriptionLimiter $subscriptionLimiter
     )
     {
-        $this->carrierRepository               = $carrierRepository;
-        $this->campaignRepository              = $campaignRepository;
-        $this->visitConstraintByAffiliate      = $visitConstraintByAffiliate;
-        $this->visitAccessorByCampaign         = $visitAccessorByCampaign;
-        $this->subscriptionLimiter             = $subscriptionLimiter;
+        $this->carrierRepository          = $carrierRepository;
+        $this->campaignRepository         = $campaignRepository;
+        $this->visitConstraintByAffiliate = $visitConstraintByAffiliate;
+        $this->visitAccessorByCampaign    = $visitAccessorByCampaign;
+        $this->subscriptionLimiter        = $subscriptionLimiter;
     }
 
     /**
@@ -106,8 +106,12 @@ class LandingPageACL
         }
 
         $limiterData = new LimiterData($carrier);
-        $limiterData->setAffiliate($campaign->getAffiliate());
-        $limiterData->setSubscriptionConstraint($campaign->getAffiliate()->getConstraint(ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE, $carrier));
+
+        $subscriptionConstraint = $campaign->getAffiliate()->getConstraint(ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE, $carrier);
+        if ($subscriptionConstraint) {
+            $limiterData->setAffiliate($campaign->getAffiliate());
+            $limiterData->setSubscriptionConstraint($subscriptionConstraint);
+        }
 
         if ($this->subscriptionLimiter->isLimitReached($limiterData)) {
             return false;
