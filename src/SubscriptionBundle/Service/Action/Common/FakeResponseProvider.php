@@ -10,10 +10,10 @@ namespace SubscriptionBundle\Service\Action\Common;
 
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\Event\SubscriptionEvent;
 use SubscriptionBundle\Entity\Subscription;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class FakeResponseProvider
 {
@@ -37,7 +37,11 @@ class FakeResponseProvider
     }
 
 
-    public function getDummyResult(Subscription $subscription, $type): ProcessResult
+    public function getDummyResult(
+        Subscription $subscription,
+        string $type,
+        string $status = ProcessResult::STATUS_SUCCESSFUL
+    ): ProcessResult
     {
         $this->logger->info('Using promotional response');
 
@@ -45,7 +49,6 @@ class FakeResponseProvider
         $subtype        = 'final';
         $clientId       = $subscription->getUuid();
         $url            = null;
-        $status         = "successful";
         $error          = null;
         $chargeValue    = null;
         $chargeCurrency = null;
