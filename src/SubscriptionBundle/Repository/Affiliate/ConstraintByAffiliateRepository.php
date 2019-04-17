@@ -6,6 +6,7 @@ use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use IdentificationBundle\Entity\CarrierInterface;
 use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
+use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 
 /**
  * Class ConstraintByAffiliateRepository
@@ -44,5 +45,16 @@ class ConstraintByAffiliateRepository extends EntityRepository
         $result = array_column($query->getScalarResult(), 'uuid');
 
         return count($result) > 0 ? $result[0] : null;
+    }
+
+    public function getSubscriptionConstraints()
+    {
+        $queryBuilder = $this->createQueryBuilder('cba');
+
+        $query = $queryBuilder
+            ->where('cba.capType = :capType')
+            ->setParameter('capType', ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE)
+            ->getQuery();
+        return $query->getResult();
     }
 }

@@ -206,7 +206,7 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
         $limiterData = new LimiterData($subject->getCarrier());
         $limiterData->setAffiliate($subject->getAffiliate());
         $limiterData->setSubscriptionConstraint($subject);
-        $counter = $this->limiterPerformer->getCarrierAffiliateConstraintSlots($limiterData)[LimiterStructureGear::OPEN_SUBSCRIPTION_SLOTS];
+        $counter = $this->limiterPerformer->getCarrierAffiliateConstraintSlots($limiterData)[LimiterStructureGear::OPEN_SUBSCRIPTION_SLOTS] ?? 0;
 
         $subject->setCounter($subject->getNumberOfActions() - $counter);
 

@@ -123,8 +123,8 @@ class LimiterStructureGear/* implements LimiterInterface*/
     {
         try {
             return [
-                self::PROCESSING_SLOTS        => $limiter[self::KEY][$limiterData->getCarrier()->getBillingCarrierId()][self::PROCESSING_SLOTS],
-                self::OPEN_SUBSCRIPTION_SLOTS => $limiter[self::KEY][$limiterData->getCarrier()->getBillingCarrierId()][self::OPEN_SUBSCRIPTION_SLOTS]
+                self::PROCESSING_SLOTS        => $limiter[self::KEY][$limiterData->getCarrier()->getBillingCarrierId()][self::PROCESSING_SLOTS] ?? null,
+                self::OPEN_SUBSCRIPTION_SLOTS => $limiter[self::KEY][$limiterData->getCarrier()->getBillingCarrierId()][self::OPEN_SUBSCRIPTION_SLOTS] ?? null
             ];
         } catch (\ErrorException $e) {
             // smth throw
@@ -141,8 +141,8 @@ class LimiterStructureGear/* implements LimiterInterface*/
     {
         try {
             return [
-                self::PROCESSING_SLOTS        => $limiter[self::KEY][$limiterData->getCarrier()->getBillingCarrierId()][$limiterData->getAffiliate()->getUuid()][$limiterData->getSubscriptionConstraint()->getUuid()][self::PROCESSING_SLOTS],
-                self::OPEN_SUBSCRIPTION_SLOTS => $limiter[self::KEY][$limiterData->getCarrier()->getBillingCarrierId()][$limiterData->getAffiliate()->getUuid()][$limiterData->getSubscriptionConstraint()->getUuid()][self::OPEN_SUBSCRIPTION_SLOTS]
+                self::PROCESSING_SLOTS        => $limiter[self::KEY][$limiterData->getCarrier()->getBillingCarrierId()][$limiterData->getAffiliate()->getUuid()][$limiterData->getSubscriptionConstraint()->getUuid()][self::PROCESSING_SLOTS] ?? null,
+                self::OPEN_SUBSCRIPTION_SLOTS => $limiter[self::KEY][$limiterData->getCarrier()->getBillingCarrierId()][$limiterData->getAffiliate()->getUuid()][$limiterData->getSubscriptionConstraint()->getUuid()][self::OPEN_SUBSCRIPTION_SLOTS] ?? null
             ];
         } catch (\ErrorException $e) {
             // smth throw
@@ -151,7 +151,7 @@ class LimiterStructureGear/* implements LimiterInterface*/
 
     private function filterFromNull(array $array): array
     {
-        return array_filter($array, function ($value){
+        return array_filter($array, function ($value) {
             return !is_null($value);
         });
     }
