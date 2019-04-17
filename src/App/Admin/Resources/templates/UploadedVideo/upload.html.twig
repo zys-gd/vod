@@ -1,7 +1,7 @@
 {% extends base_template %}
 {% import "@SonataCore/Form/datepicker.html.twig" as datePicker %}
 
-{% block title %}
+{% block navbar_title %}
     {{ 'Upload and edit videos' }}
 {% endblock %}
 
@@ -34,12 +34,10 @@
             font-size: 18px;
         }
 
-        .confirm-success {
-            color: green;
-        }
-
-        .confirm-error {
-            color: red;
+        .not-saved-container {
+            padding-bottom: 20px;
+            margin: 0 auto;
+            width: 80%;
         }
     </style>
 {% endblock %}
@@ -49,11 +47,6 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
-                    <div class="box-header">
-                        <h4 class="box-title">
-                            {{ block('title') }}
-                        </h4>
-                    </div>
                     <div class="box-body">
                         <div class="sonata-ba-collapsed-fields text-center">
                             <span style="font-size: 18px; margin-bottom: 15px; display: inline-block">
@@ -67,7 +60,7 @@
             </div>
         </div>
     </div>
-    <script id="post-upload-form-template" type="text/x-handlebars">
+    <script id="post-upload-saved-template" type="text/x-handlebars">
         {% verbatim %}
             <div class="row">
                 <div class="col-md-3">
@@ -105,6 +98,15 @@
             </div>
         {% endverbatim %}
     </script>
+    <script id="post-upload-not-saved-template" type="text/x-handlebars">
+        {% verbatim %}
+            <div>
+                <div class="alert alert-danger not-saved-container">
+                    <span class="text-white">Errors was occurred while saving videos: {{ videos }}</span>
+                </div>
+            </div>
+        {% endverbatim %}
+    </script>
     <script id="confirm-template" type="text/x-handlebars">
         {% verbatim %}
             <div class="row">
@@ -125,11 +127,13 @@
 
             var csrfToken = '{{ csrf_token('uploading-video') }}';
 
-            var uploadedVideoTemplateSource = $('#post-upload-form-template').first().html();
-            var uploadedVideoTemplate = Handlebars.compile(uploadedVideoTemplateSource);
+            var savedVideoTemplateSource = $('#post-upload-saved-template').first().html();
+            var notSavedVideoTemplateSource = $('#post-upload-not-saved-template').first().html();
+            var savedVideoTemplate = Handlebars.compile(savedVideoTemplateSource);
+            var notSavedVideoTemplate = Handlebars.compile(notSavedVideoTemplateSource);
 
             var uploadHelper = new UploadHelper(signatureUrl, saveBaseVideoDataUrl, confirmVideosUrl, csrfToken);
-            var videoDataCollector = new VideoDataCollector(uploadedVideoTemplate);
+            var videoDataCollector = new VideoDataCollector(savedVideoTemplate, notSavedVideoTemplate);
 
             var preUploadFormData = JSON.parse('{{ preUploadFormData|raw }}');
 
@@ -152,7 +156,7 @@
                                     videoDataCollector.addSuccessfullySaved(uploadedVideo)
                                 },
                                 function(jqXHR) {
-                                    videoDataCollector.addNotSaved(uploadedVideoData);
+                                    videoDataCollector.addNotSaved(uploadedVideoData.title);
                                 }
                             );
                         break;
@@ -187,7 +191,7 @@
                                             var html = compiledConfirmTemplate({
                                                 listUrl: listUrl,
                                                 text: 'Videos saved successfully',
-                                                className: 'confirm-success confirm-text'
+                                                className: 'text-success confirm-text'
                                             });
 
                                             container.html(html);
@@ -197,7 +201,7 @@
                                                 listUrl: listUrl,
                                                 text: 'An error occurred while saving the data,' +
                                                     ' please try to edit the video in the Videos section',
-                                                className: 'confirm-error confirm-text'
+                                                className: 'text-danger confirm-text'
                                             });
 
                                             container.html(html);
@@ -270,11 +274,9 @@
                         data: JSON.stringify(data),
                         dataType: 'json',
                         success: function (data) {
-                            console.log('success request');
                             resolve(data);
                         },
                         error: function (jqXHR) {
-                            console.log('error request');
                             reject(jqXHR);
                         }
                     })
@@ -303,18 +305,18 @@
             }
         }
 
-        function VideoDataCollector(uploadedVideoTemplate) {
+        function VideoDataCollector(uploadedVideoTemplate, notSavedTemplate) {
             /**
-             * Upload video data
+             * Uploaded and saved video data
              *
              * @type {Object[]}
              */
             this.successfullySaved = [];
 
             /**
-             * Uploaded, but not saved videos
+             * Uploaded, but not saved video titles
              *
-             * @type {Array}
+             * @type {String[]}
              */
             this.notSaved = [];
 
@@ -326,6 +328,13 @@
             this.uploadedVideoTemplate = uploadedVideoTemplate;
 
             /**
+             * Handlebars library template
+             *
+             * @type {Function}
+             */
+            this.notSavedTemplate = notSavedTemplate;
+
+            /**
              * Render uploaded and saved videos
              *
              * @param parentElement - container for append list
@@ -333,6 +342,16 @@
             this.render = function(parentElement) {
                 var container = $('<div></div>');
                 var self = this;
+
+                if (this.notSaved.length > 0) {
+                    var notSavedTitles = this.notSaved.join(', ');
+
+                    var html = self.notSavedTemplate({
+                        videos: notSavedTitles
+                    });
+
+                    container.append(html);
+                }
 
                 this.successfullySaved.forEach(function (uploadedVideo, index) {
                     var startThumbnail = uploadedVideo.thumbnails.shift();
@@ -352,12 +371,14 @@
                     container.append(html);
                 });
 
-                var saveButton = $('<button></button>')
-                    .addClass('btn btn-primary')
-                    .attr('id', 'confirm-all-button')
-                    .html('Confirm all');
+                if (this.successfullySaved.length > 0) {
+                    var saveButton = $('<button></button>')
+                        .addClass('btn btn-primary')
+                        .attr('id', 'confirm-all-button')
+                        .html('Confirm all');
 
-                container.append(saveButton);
+                    container.append(saveButton);
+                }
 
                 parentElement.html(container);
 
@@ -376,10 +397,10 @@
             /**
              * Add uploaded but saved with error video data
              *
-             * @param {Object} uploadedVideoData
+             * @param {string} uploadedVideoTitle
              */
-            this.addNotSaved = function (uploadedVideoData) {
-                this.notSaved.push(uploadedVideoData);
+            this.addNotSaved = function (uploadedVideoTitle) {
+                this.notSaved.push(uploadedVideoTitle);
             };
 
             /**
