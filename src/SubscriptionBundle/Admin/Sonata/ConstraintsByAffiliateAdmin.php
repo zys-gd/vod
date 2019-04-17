@@ -7,11 +7,6 @@ use App\Domain\Entity\Carrier;
 use App\Utils\UuidGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\CarrierInterface;
-use SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis;
-use SubscriptionBundle\Service\SubscriptionLimiter\DTO\LimiterData;
-use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\Limiter;
-use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterPerformer;
-use Symfony\Component\Validator\Constraints\Callback;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -19,10 +14,14 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository;
+use SubscriptionBundle\Service\SubscriptionLimiter\DTO\LimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterPerformer;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterStructureGear;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
@@ -39,11 +38,6 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
      * @var EntityManagerInterface
      */
     private $entityManager;
-
-    /**
-     * @var ConstraintCounterRedis
-     */
-    private $constraintCounterRedis;
     /**
      * @var LimiterPerformer
      */
@@ -57,7 +51,6 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
      * @param string                          $baseControllerName
      * @param ConstraintByAffiliateRepository $constraintByAffiliateRepository
      * @param EntityManagerInterface          $entityManager
-     * @param ConstraintCounterRedis          $constraintCounterRedis
      * @param LimiterPerformer                $limiterPerformer
      */
     public function __construct(
@@ -66,15 +59,13 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
         string $baseControllerName,
         ConstraintByAffiliateRepository $constraintByAffiliateRepository,
         EntityManagerInterface $entityManager,
-        ConstraintCounterRedis $constraintCounterRedis,
         LimiterPerformer $limiterPerformer
     ) {
         $this->constraintByAffiliateRepository = $constraintByAffiliateRepository;
         $this->entityManager = $entityManager;
-        $this->constraintCounterRedis = $constraintCounterRedis;
+        $this->limiterPerformer = $limiterPerformer;
 
         parent::__construct($code, $class, $baseControllerName);
-        $this->limiterPerformer = $limiterPerformer;
     }
 
     /**
@@ -104,7 +95,11 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
      */
     public function postRemove($object)
     {
-        $this->constraintCounterRedis->removeCounter($object->getUuid());
+        $limiterData = new LimiterData($object->getCarrier());
+        $limiterData->setAffiliate($object->getAffiliate());
+        $limiterData->setSubscriptionConstraint($object);
+
+        $this->limiterPerformer->removeAffiliateConstraint($limiterData);
     }
 
     /**
@@ -208,9 +203,12 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
         /** @var ConstraintByAffiliate $subject */
         $subject = $this->getSubject();
 
-        $counter = $this->constraintCounterRedis->getCounter($subject->getUuid());
+        $limiterData = new LimiterData($subject->getCarrier());
+        $limiterData->setAffiliate($subject->getAffiliate());
+        $limiterData->setSubscriptionConstraint($subject);
+        $counter = $this->limiterPerformer->getCarrierAffiliateConstraintSlots($limiterData)[LimiterStructureGear::OPEN_SUBSCRIPTION_SLOTS];
 
-        $subject->setCounter((int) $counter);
+        $subject->setCounter($subject->getNumberOfActions() - $counter);
 
         $showMapper
             ->add('affiliate')

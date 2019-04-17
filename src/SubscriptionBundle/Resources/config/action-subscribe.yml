@@ -11,11 +11,6 @@ services:
         - '@SubscriptionBundle\BillingFramework\Process\SubscribeProcess'
         - '@SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater'
         - '@SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider'
-        - '@SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater'
-        - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
-        - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
-        - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
-        - '@SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider'
 
   SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider:
       arguments: ['@SubscriptionBundle\Service\Action\Subscribe\Handler\DefaultHandler']

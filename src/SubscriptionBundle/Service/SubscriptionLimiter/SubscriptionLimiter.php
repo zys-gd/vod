@@ -39,9 +39,14 @@ class SubscriptionLimiter implements SubscriptionLimiterInterface
         $this->limiter               = $Limiter;
     }
 
-    public function isLimitReached(LimiterData $limiterData): bool
+    /**
+     * @param LimiterData|null $limiterData
+     *
+     * @return bool
+     */
+    public function isLimitReached(?LimiterData $limiterData): bool
     {
-        return $this->limiter->getCarrierProcessingSlots($limiterData) === 0;
+        return $this->limiter->getCarrierProcessingSlots($limiterData) === 0 || $this->limiter->getAffiliateProcessingSlots($limiterData);
     }
 
     public function startLimitingProcess(LimiterData $limiterData)

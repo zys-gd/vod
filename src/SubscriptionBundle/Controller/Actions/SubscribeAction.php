@@ -26,7 +26,6 @@ use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CustomPage;
-use SubscriptionBundle\Service\CapConstraint\SubscriptionConstraintByCarrier;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\LimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter;
 use SubscriptionBundle\Service\UserExtractor;

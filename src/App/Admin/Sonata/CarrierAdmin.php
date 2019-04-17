@@ -9,9 +9,9 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
-use SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\LimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterPerformer;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterStructureGear;
 use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -22,10 +22,6 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
  */
 class CarrierAdmin extends AbstractAdmin
 {
-    /**
-     * @var ConstraintCounterRedis
-     */
-    private $constraintCounterRedis;
     /**
      * @var SubscriptionLimiter
      */
@@ -41,7 +37,6 @@ class CarrierAdmin extends AbstractAdmin
      * @param string                 $code
      * @param string                 $class
      * @param string                 $baseControllerName
-     * @param ConstraintCounterRedis $constraintCounterRedis
      * @param SubscriptionLimiter    $subscriptionLimiter
      * @param LimiterPerformer       $limiterPerformer
      */
@@ -49,15 +44,12 @@ class CarrierAdmin extends AbstractAdmin
         string $code,
         string $class,
         string $baseControllerName,
-        ConstraintCounterRedis $constraintCounterRedis,
         SubscriptionLimiter $subscriptionLimiter,
         LimiterPerformer $limiterPerformer
     ) {
-        $this->constraintCounterRedis = $constraintCounterRedis;
-
-        parent::__construct($code, $class, $baseControllerName);
         $this->subscriptionLimiter = $subscriptionLimiter;
         $this->limiterPerformer = $limiterPerformer;
+        parent::__construct($code, $class, $baseControllerName);
     }
 
     /**
@@ -160,9 +152,10 @@ class CarrierAdmin extends AbstractAdmin
         /** @var Carrier $subject */
         $subject = $this->getSubject();
 
-        $counter = $this->constraintCounterRedis->getCounter($subject->getBillingCarrierId());
+        $limiterData = new LimiterData($subject);
+        $counter = $this->limiterPerformer->getCarrierSlots($limiterData)[LimiterStructureGear::OPEN_SUBSCRIPTION_SLOTS];
 
-        $subject->setCounter((int) $counter);
+        $subject->setCounter($subject->getNumberOfAllowedSubscriptionsByConstraint() - $counter);
 
         $showMapper
             ->add('uuid')

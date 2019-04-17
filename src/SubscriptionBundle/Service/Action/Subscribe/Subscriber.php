@@ -19,7 +19,6 @@ use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Service\Action\Common\FakeResponseProvider;
 use SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker;
-use SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\Notification\Notifier;
 use SubscriptionBundle\Service\SubscriptionCreator;
@@ -67,10 +66,6 @@ class Subscriber
      * @var SubscribeParametersProvider
      */
     private $subscribeParametersProvider;
-    /**
-     * @var SubscriptionCounterUpdater
-     */
-    private $subscriptionCounterUpdater;
 
 
     /**
@@ -85,7 +80,6 @@ class Subscriber
      * @param SubscribeProcess             $subscribeProcess
      * @param OnSubscribeUpdater           $onSubscribeUpdater
      * @param SubscribeParametersProvider  $subscribeParametersProvider
-     * @param SubscriptionCounterUpdater $subscriptionCounterUpdater
      */
     public function __construct(
         LoggerInterface $logger,
@@ -97,8 +91,7 @@ class Subscriber
         Notifier $notifier,
         SubscribeProcess $subscribeProcess,
         OnSubscribeUpdater $onSubscribeUpdater,
-        SubscribeParametersProvider $subscribeParametersProvider,
-        SubscriptionCounterUpdater $subscriptionCounterUpdater
+        SubscribeParametersProvider $subscribeParametersProvider
     )
     {
         $this->logger                       = $logger;
@@ -111,7 +104,6 @@ class Subscriber
         $this->subscribeProcess             = $subscribeProcess;
         $this->onSubscribeUpdater           = $onSubscribeUpdater;
         $this->subscribeParametersProvider  = $subscribeParametersProvider;
-        $this->subscriptionCounterUpdater = $subscriptionCounterUpdater;
     }
 
     /**
@@ -139,11 +131,6 @@ class Subscriber
 
         try {
             $response = $this->performSubscribe($additionalData, $subscription);
-
-            if ($response->isSuccessful() && $response->isFinal()) {
-                $this->subscriptionCounterUpdater->updateSubscriptionCounter($subscription);
-            }
-
             return [$subscription, $response];
 
         } catch (SubscribingProcessException $exception) {

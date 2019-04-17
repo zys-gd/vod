@@ -102,6 +102,17 @@ class LimiterPerformer/* implements LimiterInterface*/
         return $data;
     }
 
+    public function removeAffiliateConstraint(LimiterData $limiterData)
+    {
+        try{
+            $data = $this->getDataFromRedisAsArray();
+            unset($data[LimiterStructureGear::KEY][$limiterData->getCarrier()->getBillingCarrierId()][$limiterData->getAffiliate()->getUuid()][$limiterData->getSubscriptionConstraint()->getUuid()]);
+            $this->redis->set(LimiterStructureGear::KEY, json_encode($data));
+        } catch (\Throwable $e) {
+            echo "Cant remove from redis, reason: " . $e->getMessage();
+        }
+    }
+
     /**
      * @param array $data
      *

@@ -66,4 +66,14 @@ class Limiter
     {
         return $this->limiterPerformer->getCarrierSlots($limiterData)[LimiterStructureGear::PROCESSING_SLOTS];
     }
+
+    /**
+     * @param LimiterData $limiterData
+     *
+     * @return int
+     */
+    public function getAffiliateProcessingSlots(LimiterData $limiterData): int
+    {
+        return $this->limiterPerformer->getCarrierAffiliateConstraintSlots($limiterData)[LimiterStructureGear::PROCESSING_SLOTS];
+    }
 }
