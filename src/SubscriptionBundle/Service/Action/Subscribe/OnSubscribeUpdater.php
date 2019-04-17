@@ -9,7 +9,7 @@
 namespace SubscriptionBundle\Service\Action\Subscribe;
 
 
-use SubscriptionBundle\Service\SubscriptionLimiter\DTO\LimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
@@ -98,13 +98,13 @@ class OnSubscribeUpdater
      */
     public function updateSubscriptionByCallbackResponse(Subscription $subscription, ProcessResult $response, SessionInterface $session)
     {
-        $limiterData = new LimiterData($subscription->getUser()->getCarrier());
-        $this->subscriptionLimiter->setLimiterData($session, $limiterData);
+        $carrierLimiterData = new CarrierLimiterData($subscription->getUser()->getCarrier());
+        $this->subscriptionLimiter->setLimiterData($session, $carrierLimiterData);
 
         if ($response->isSuccessful()) {
             $this->applySuccess($subscription);
 
-            $this->subscriptionLimiter->finishLimitingProcess($limiterData);
+            $this->subscriptionLimiter->finishLimitingProcess($carrierLimiterData);
         }
 
         $this->commonSubscriptionUpdater->updateSubscriptionByCallbackResponse($subscription, $response);
@@ -123,7 +123,7 @@ class OnSubscribeUpdater
                     break;
                 default:
                     $this->applyFailure($subscription, $response->getError());
-                    $this->subscriptionLimiter->cancelLimitingProcess($limiterData);
+                    $this->subscriptionLimiter->cancelLimitingProcess($carrierLimiterData);
             }
         }
     }

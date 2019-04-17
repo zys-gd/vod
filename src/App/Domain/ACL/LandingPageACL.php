@@ -9,7 +9,7 @@ use App\Domain\ACL\Accessors\VisitConstraintByAffiliate;
 use App\Domain\ACL\Accessors\VisitAccessorByCampaign;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
-use SubscriptionBundle\Service\SubscriptionLimiter\DTO\LimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -45,11 +45,11 @@ class LandingPageACL
     /**
      * LandingPageAccessResolver constructor
      *
-     * @param VisitConstraintByAffiliate $visitConstraintByAffiliate
-     * @param VisitAccessorByCampaign    $visitAccessorByCampaign
-     * @param CarrierRepository          $carrierRepository
-     * @param CampaignRepository         $campaignRepository
-     * @param SubscriptionLimiter        $subscriptionLimiter
+     * @param VisitConstraintByAffiliate      $visitConstraintByAffiliate
+     * @param VisitAccessorByCampaign         $visitAccessorByCampaign
+     * @param CarrierRepository               $carrierRepository
+     * @param CampaignRepository              $campaignRepository
+     * @param SubscriptionLimiter             $subscriptionLimiter
      */
     public function __construct(
         VisitConstraintByAffiliate $visitConstraintByAffiliate,
@@ -59,11 +59,11 @@ class LandingPageACL
         SubscriptionLimiter $subscriptionLimiter
     )
     {
-        $this->carrierRepository          = $carrierRepository;
-        $this->campaignRepository         = $campaignRepository;
-        $this->visitConstraintByAffiliate = $visitConstraintByAffiliate;
-        $this->visitAccessorByCampaign    = $visitAccessorByCampaign;
-        $this->subscriptionLimiter        = $subscriptionLimiter;
+        $this->carrierRepository               = $carrierRepository;
+        $this->campaignRepository              = $campaignRepository;
+        $this->visitConstraintByAffiliate      = $visitConstraintByAffiliate;
+        $this->visitAccessorByCampaign         = $visitAccessorByCampaign;
+        $this->subscriptionLimiter             = $subscriptionLimiter;
     }
 
     /**
@@ -105,15 +105,12 @@ class LandingPageACL
             return false;
         }
 
-        $limiterData = new LimiterData($carrier);
-
-        $subscriptionConstraint = $campaign->getAffiliate()->getConstraint(ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE, $carrier);
-        if ($subscriptionConstraint) {
-            $limiterData->setAffiliate($campaign->getAffiliate());
-            $limiterData->setSubscriptionConstraint($subscriptionConstraint);
-        }
-
-        if ($this->subscriptionLimiter->isLimitReached($limiterData)) {
+        $carrierLimiterData = new CarrierLimiterData($carrier);
+        try{
+            $carrierLimiterData->setSubscriptionConstraint($campaign->getAffiliate()->getConstraint(ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE, $carrier));
+            $carrierLimiterData->setAffiliate($campaign->getAffiliate());
+        } catch (\Throwable $e) { }
+        if ($this->subscriptionLimiter->isLimitReached($carrierLimiterData)) {
             return false;
         }
 

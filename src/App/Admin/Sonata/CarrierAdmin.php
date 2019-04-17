@@ -9,9 +9,9 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
-use SubscriptionBundle\Service\SubscriptionLimiter\DTO\LimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterPerformer;
-use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterStructureGear;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataMapper;
 use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -152,8 +152,8 @@ class CarrierAdmin extends AbstractAdmin
         /** @var Carrier $subject */
         $subject = $this->getSubject();
 
-        $limiterData = new LimiterData($subject);
-        $counter = $this->limiterPerformer->getCarrierSlots($limiterData)[LimiterStructureGear::OPEN_SUBSCRIPTION_SLOTS];
+        $carrierLimiterData = new CarrierLimiterData($subject);
+        $counter = $this->limiterPerformer->getCarrierSlots($carrierLimiterData)[LimiterDataMapper::OPEN_SUBSCRIPTION_SLOTS];
 
         $subject->setCounter($subject->getNumberOfAllowedSubscriptionsByConstraint() - $counter);
 
@@ -195,8 +195,8 @@ class CarrierAdmin extends AbstractAdmin
      */
     public function postUpdate($carrier)
     {
-        $limiterData = new LimiterData($carrier);
-        $this->limiterPerformer->saveCarrierConstraint($limiterData);
+        $carrierLimiterData = new CarrierLimiterData($carrier);
+        $this->limiterPerformer->saveCarrierConstraint($carrierLimiterData);
     }
 
     /**
@@ -204,7 +204,7 @@ class CarrierAdmin extends AbstractAdmin
      */
     public function postPersist($carrier)
     {
-        $limiterData = new LimiterData($carrier);
-        $this->limiterPerformer->saveCarrierConstraint($limiterData);
+        $carrierLimiterData = new CarrierLimiterData($carrier);
+        $this->limiterPerformer->saveCarrierConstraint($carrierLimiterData);
     }
 }

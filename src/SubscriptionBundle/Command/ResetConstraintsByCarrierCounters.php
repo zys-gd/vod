@@ -5,7 +5,7 @@ namespace SubscriptionBundle\Command;
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
-use SubscriptionBundle\Service\SubscriptionLimiter\DTO\LimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterPerformer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -83,8 +83,8 @@ class ResetConstraintsByCarrierCounters extends Command
             }
             $output->writeln($carrier->getName());
 
-            $limiterData = new LimiterData($carrier);
-            $this->limiterPerformer->saveCarrierConstraint($limiterData);
+            $carrierLimiterData = new CarrierLimiterData($carrier);
+            $this->limiterPerformer->saveCarrierConstraint($carrierLimiterData);
 
             $carrier
                 ->setIsCapAlertDispatch(false)

@@ -4,7 +4,8 @@
 namespace SubscriptionBundle\Service\SubscriptionLimiter\Limiter;
 
 
-use SubscriptionBundle\Service\SubscriptionLimiter\DTO\LimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\DTO\AffiliateLimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
 
 class Limiter
 {
@@ -19,61 +20,67 @@ class Limiter
     }
 
     /**
-     * @param LimiterData $limiterData
+     * @param CarrierLimiterData|null   $carrierLimiterData
+     * @param AffiliateLimiterData|null $affiliateLimiterData
      */
-    public function decrProcessingSlots(LimiterData $limiterData): void
+    public function decrProcessingSlots(?CarrierLimiterData $carrierLimiterData,
+        ?AffiliateLimiterData $affiliateLimiterData): void
     {
-        if($limiterData->getSubscriptionConstraint()) {
-            $this->limiterPerformer->decrAffiliateProcessingSlotsWithLock($limiterData);
+        if ($carrierLimiterData) {
+            $this->limiterPerformer->decrCarrierProcessingSlotsWithLock($carrierLimiterData);
         }
-        if($limiterData->getCarrier()) {
-            $this->limiterPerformer->decrCarrierProcessingSlotsWithLock($limiterData);
+        if ($affiliateLimiterData) {
+            $this->limiterPerformer->decrAffiliateProcessingSlotsWithLock($affiliateLimiterData);
         }
     }
 
     /**
-     * @param LimiterData $limiterData
+     * @param CarrierLimiterData|null   $carrierLimiterData
+     * @param AffiliateLimiterData|null $affiliateLimiterData
      */
-    public function incrProcessingSlots(LimiterData $limiterData)
+    public function incrProcessingSlots(?CarrierLimiterData $carrierLimiterData,
+        ?AffiliateLimiterData $affiliateLimiterData)
     {
-        if($limiterData->getSubscriptionConstraint()) {
-            $this->limiterPerformer->incrAffiliateProcessingSlotsWithLock($limiterData);
+        if ($carrierLimiterData) {
+            $this->limiterPerformer->incrCarrierProcessingSlotsWithLock($carrierLimiterData);
         }
-        if($limiterData->getCarrier()) {
-            $this->limiterPerformer->incrCarrierProcessingSlotsWithLock($limiterData);
+        if ($affiliateLimiterData) {
+            $this->limiterPerformer->incrAffiliateProcessingSlotsWithLock($affiliateLimiterData);
         }
     }
 
     /**
-     * @param LimiterData $limiterData
+     * @param CarrierLimiterData|null   $carrierLimiterData
+     * @param AffiliateLimiterData|null $affiliateLimiterData
      */
-    public function decrSubscriptionSlots(LimiterData $limiterData)
+    public function decrSubscriptionSlots(?CarrierLimiterData $carrierLimiterData,
+        ?AffiliateLimiterData $affiliateLimiterData)
     {
-        if($limiterData->getSubscriptionConstraint()) {
-            $this->limiterPerformer->decrAffiliateSubscriptionSlotsWithLock($limiterData);
+        if ($carrierLimiterData) {
+            $this->limiterPerformer->decrCarrierSubscriptionSlotsWithLock($carrierLimiterData);
         }
-        if($limiterData->getCarrier()) {
-            $this->limiterPerformer->decrCarrierSubscriptionSlotsWithLock($limiterData);
+        if ($affiliateLimiterData) {
+            $this->limiterPerformer->decrAffiliateSubscriptionSlotsWithLock($affiliateLimiterData);
         }
     }
 
     /**
-     * @param LimiterData $limiterData
+     * @param CarrierLimiterData $carrierLimiterData
      *
      * @return mixed
      */
-    public function getCarrierProcessingSlots(LimiterData $limiterData): int
+    public function getCarrierProcessingSlots(CarrierLimiterData $carrierLimiterData): int
     {
-        return $this->limiterPerformer->getCarrierSlots($limiterData)[LimiterStructureGear::PROCESSING_SLOTS];
+        return $this->limiterPerformer->getCarrierSlots($carrierLimiterData)[LimiterDataMapper::PROCESSING_SLOTS];
     }
 
     /**
-     * @param LimiterData $limiterData
+     * @param AffiliateLimiterData $affiliateLimiterData
      *
      * @return int
      */
-    public function getAffiliateProcessingSlots(LimiterData $limiterData): int
+    public function getAffiliateProcessingSlots(AffiliateLimiterData $affiliateLimiterData): int
     {
-        return $this->limiterPerformer->getCarrierAffiliateConstraintSlots($limiterData)[LimiterStructureGear::PROCESSING_SLOTS];
+        return $this->limiterPerformer->getCarrierAffiliateConstraintSlots($affiliateLimiterData)[LimiterDataMapper::PROCESSING_SLOTS];
     }
 }

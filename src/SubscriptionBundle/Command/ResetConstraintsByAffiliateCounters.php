@@ -5,7 +5,7 @@ namespace SubscriptionBundle\Command;
 use Doctrine\ORM\EntityManagerInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository;
-use SubscriptionBundle\Service\SubscriptionLimiter\DTO\LimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterPerformer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -77,11 +77,11 @@ class ResetConstraintsByAffiliateCounters extends Command
         foreach ($constraints as $constraint) {
 
 
-            $limiterData = new LimiterData($constraint->getCarrier());
-            $limiterData->setAffiliate($constraint->getAffiliate());
-            $limiterData->setSubscriptionConstraint($constraint);
+            $carrierLimiterData = new CarrierLimiterData($constraint->getCarrier());
+            $carrierLimiterData->setAffiliate($constraint->getAffiliate());
+            $carrierLimiterData->setSubscriptionConstraint($constraint);
 
-            $this->limiterPerformer->saveCarrierAffiliateConstraint($limiterData);
+            $this->limiterPerformer->saveCarrierAffiliateConstraint($carrierLimiterData);
 
             $constraint
                 ->setIsCapAlertDispatch(false)

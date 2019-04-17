@@ -14,9 +14,9 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository;
-use SubscriptionBundle\Service\SubscriptionLimiter\DTO\LimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterPerformer;
-use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterStructureGear;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -95,11 +95,11 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
      */
     public function postRemove($object)
     {
-        $limiterData = new LimiterData($object->getCarrier());
-        $limiterData->setAffiliate($object->getAffiliate());
-        $limiterData->setSubscriptionConstraint($object);
+        $carrierLimiterData = new CarrierLimiterData($object->getCarrier());
+        $carrierLimiterData->setAffiliate($object->getAffiliate());
+        $carrierLimiterData->setSubscriptionConstraint($object);
 
-        $this->limiterPerformer->removeAffiliateConstraint($limiterData);
+        $this->limiterPerformer->removeAffiliateConstraint($carrierLimiterData);
     }
 
     /**
@@ -203,10 +203,10 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
         /** @var ConstraintByAffiliate $subject */
         $subject = $this->getSubject();
 
-        $limiterData = new LimiterData($subject->getCarrier());
-        $limiterData->setAffiliate($subject->getAffiliate());
-        $limiterData->setSubscriptionConstraint($subject);
-        $counter = $this->limiterPerformer->getCarrierAffiliateConstraintSlots($limiterData)[LimiterStructureGear::OPEN_SUBSCRIPTION_SLOTS] ?? 0;
+        $carrierLimiterData = new CarrierLimiterData($subject->getCarrier());
+        $carrierLimiterData->setAffiliate($subject->getAffiliate());
+        $carrierLimiterData->setSubscriptionConstraint($subject);
+        $counter = $this->limiterPerformer->getCarrierAffiliateConstraintSlots($carrierLimiterData)[LimiterDataMapper::OPEN_SUBSCRIPTION_SLOTS] ?? 0;
 
         $subject->setCounter($subject->getNumberOfActions() - $counter);
 
@@ -229,11 +229,11 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
      */
     public function postPersist($constraintByAffiliate)
     {
-        $limiterData = new LimiterData($constraintByAffiliate->getCarrier());
-        $limiterData->setAffiliate($constraintByAffiliate->getAffiliate());
-        $limiterData->setSubscriptionConstraint($constraintByAffiliate);
-        $this->limiterPerformer->saveCarrierConstraint($limiterData);
-        $this->limiterPerformer->saveCarrierAffiliateConstraint($limiterData);
+        $carrierLimiterData = new CarrierLimiterData($constraintByAffiliate->getCarrier());
+        $carrierLimiterData->setAffiliate($constraintByAffiliate->getAffiliate());
+        $carrierLimiterData->setSubscriptionConstraint($constraintByAffiliate);
+        $this->limiterPerformer->saveCarrierConstraint($carrierLimiterData);
+        $this->limiterPerformer->saveCarrierAffiliateConstraint($carrierLimiterData);
     }
 
     /**
@@ -241,10 +241,10 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
      */
     public function postUpdate($constraintByAffiliate)
     {
-        $limiterData = new LimiterData($constraintByAffiliate->getCarrier());
-        $limiterData->setAffiliate($constraintByAffiliate->getAffiliate());
-        $limiterData->setSubscriptionConstraint($constraintByAffiliate);
-        $this->limiterPerformer->saveCarrierConstraint($limiterData);
-        $this->limiterPerformer->saveCarrierAffiliateConstraint($limiterData);
+        $carrierLimiterData = new CarrierLimiterData($constraintByAffiliate->getCarrier());
+        $carrierLimiterData->setAffiliate($constraintByAffiliate->getAffiliate());
+        $carrierLimiterData->setSubscriptionConstraint($constraintByAffiliate);
+        $this->limiterPerformer->saveCarrierConstraint($carrierLimiterData);
+        $this->limiterPerformer->saveCarrierAffiliateConstraint($carrierLimiterData);
     }
 }

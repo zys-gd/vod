@@ -26,7 +26,7 @@ use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CustomPage;
-use SubscriptionBundle\Service\SubscriptionLimiter\DTO\LimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter;
 use SubscriptionBundle\Service\UserExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -186,15 +186,15 @@ class SubscribeAction extends AbstractController
         $user = $this->userExtractor->getUserByIdentificationData($identificationData);
 
 
-        $limiterData = new LimiterData($user->getCarrier());
-        $this->subscriptionLimiter->setLimiterData($request->getSession(), $limiterData);
+        $carrierLimiterData = new CarrierLimiterData($user->getCarrier());
+        $this->subscriptionLimiter->setLimiterData($request->getSession(), $carrierLimiterData);
 
-        if ($this->subscriptionLimiter->isLimitReached($limiterData)) {
+        if ($this->subscriptionLimiter->isLimitReached($carrierLimiterData)) {
             return RedirectResponse::create($this->defaultRedirectUrl);
         }
 
-        if ($this->subscriptionLimiter->need2BeLimited($user) && !$this->subscriptionLimiter->isLimitReached($limiterData)) {
-            $this->subscriptionLimiter->startLimitingProcess($limiterData);
+        if ($this->subscriptionLimiter->need2BeLimited($user) && !$this->subscriptionLimiter->isLimitReached($carrierLimiterData)) {
+            $this->subscriptionLimiter->startLimitingProcess($carrierLimiterData);
         }
 
         try {

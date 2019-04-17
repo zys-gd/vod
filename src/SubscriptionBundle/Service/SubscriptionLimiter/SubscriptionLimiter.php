@@ -6,13 +6,12 @@ namespace SubscriptionBundle\Service\SubscriptionLimiter;
 use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Campaign;
 use IdentificationBundle\Entity\User;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Service\CampaignExtractor;
 use SubscriptionBundle\Service\SubscriptionExtractor;
-use SubscriptionBundle\Service\SubscriptionLimiter\DTO\LimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\DTO\AffiliateLimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\Limiter;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SubscriptionLimiter implements SubscriptionLimiterInterface
@@ -40,28 +39,39 @@ class SubscriptionLimiter implements SubscriptionLimiterInterface
     }
 
     /**
-     * @param LimiterData|null $limiterData
+     * @param CarrierLimiterData|null   $carrierLimiterData
+     * @param AffiliateLimiterData|null $affiliateLimiterData
      *
      * @return bool
      */
-    public function isLimitReached(?LimiterData $limiterData): bool
+    public function isLimitReached(?CarrierLimiterData $carrierLimiterData,
+        ?AffiliateLimiterData $affiliateLimiterData): bool
     {
-        return $this->limiter->getCarrierProcessingSlots($limiterData) === 0 || $this->limiter->getAffiliateProcessingSlots($limiterData) === 0;
+        if ($carrierLimiterData && $this->limiter->getCarrierProcessingSlots($carrierLimiterData) === 0) {
+            return true;
+        }
+        if ($affiliateLimiterData && $this->limiter->getAffiliateProcessingSlots($affiliateLimiterData) === 0) {
+            return true;
+        }
+        return false;
     }
 
-    public function startLimitingProcess(LimiterData $limiterData)
+    public function startLimitingProcess(?CarrierLimiterData $carrierLimiterData,
+        ?AffiliateLimiterData $affiliateLimiterData)
     {
-        $this->limiter->decrProcessingSlots($limiterData);
+        $this->limiter->decrProcessingSlots($carrierLimiterData, $affiliateLimiterData);
     }
 
-    public function finishLimitingProcess(LimiterData $limiterData)
+    public function finishLimitingProcess(?CarrierLimiterData $carrierLimiterData,
+        ?AffiliateLimiterData $affiliateLimiterData)
     {
-        $this->limiter->decrSubscriptionSlots($limiterData);
+        $this->limiter->decrSubscriptionSlots($carrierLimiterData, $affiliateLimiterData);
     }
 
-    public function cancelLimitingProcess(LimiterData $limiterData)
+    public function cancelLimitingProcess(?CarrierLimiterData $carrierLimiterData,
+        ?AffiliateLimiterData $affiliateLimiterData)
     {
-        $this->limiter->incrProcessingSlots($limiterData);
+        $this->limiter->incrProcessingSlots($carrierLimiterData, $affiliateLimiterData);
     }
 
     /**
@@ -76,22 +86,25 @@ class SubscriptionLimiter implements SubscriptionLimiterInterface
     }
 
     /**
-     * @param SessionInterface $session
-     * @param LimiterData      $limiterData
+     * @param SessionInterface          $session
+     * @param CarrierLimiterData        $carrierLimiterData
+     * @param AffiliateLimiterData|null $affiliateLimiterData
      */
-    public function setLimiterData(SessionInterface $session, LimiterData $limiterData): void
+    public function setLimiterData(SessionInterface $session,
+        ?CarrierLimiterData $carrierLimiterData,
+        ?AffiliateLimiterData $affiliateLimiterData): void
     {
         /** @var Campaign $campaign */
         $campaign = $this->campaignExtractor->getCampaignFromSession($session);
-        if($campaign) {
+        if ($campaign) {
             /** @var Affiliate $affiliate */
             $affiliate = $campaign->getAffiliate();
 
             /** @var ConstraintByAffiliate $subscriptionConstraint */
-            $subscriptionConstraint = $affiliate->getConstraint(ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE, $limiterData->getCarrier());
+            $subscriptionConstraint = $affiliate->getConstraint(ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE, $carrierLimiterData->getCarrier());
 
-            $affiliate && $limiterData->setAffiliate($affiliate);
-            $subscriptionConstraint && $limiterData->setSubscriptionConstraint($subscriptionConstraint);
+            $affiliate && $carrierLimiterData->setAffiliate($affiliate);
+            $subscriptionConstraint && $carrierLimiterData->setSubscriptionConstraint($subscriptionConstraint);
         }
     }
 }
