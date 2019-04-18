@@ -12,6 +12,7 @@ namespace SubscriptionBundle\Service\Action\Subscribe;
 use IdentificationBundle\Entity\User;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
+use SubscriptionBundle\BillingFramework\Notification\API\Exception\NotificationSendFailedException;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException;
 use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
@@ -161,6 +162,7 @@ class Subscriber
 
             $response = $this->performSubscribe($additionalData, $subscription);
             $this->onSubscribeUpdater->updateSubscriptionByResponse($subscription, $response, $this->session);
+            $subscription->setCurrentStage(Subscription::ACTION_SUBSCRIBE);
             return $response;
 
         } catch (SubscribingProcessException $exception) {
@@ -185,23 +187,31 @@ class Subscriber
     protected function performSubscribe(array $additionalData, Subscription $subscription): ProcessResult
     {
         if ($this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription)) {
-            $response = $this->fakeResponseProvider->getDummyResult($subscription, SubscribeProcess::PROCESS_METHOD_SUBSCRIBE);
 
             $carrier = $subscription->getUser()->getCarrier();
-            $this->notifier->sendNotification(
-                SubscribeProcess::PROCESS_METHOD_SUBSCRIBE,
+
+            try {
+                $this->notifier->sendNotification(
+                    SubscribeProcess::PROCESS_METHOD_SUBSCRIBE,
+                    $subscription,
+                    $subscription->getSubscriptionPack(),
+                    $carrier
+                );
+
+            } catch (NotificationSendFailedException $e) {
+                throw new SubscribingProcessException('Error while trying to subscribe', 0, $e);
+            }
+
+            return $this->fakeResponseProvider->getDummyResult(
                 $subscription,
-                $subscription->getSubscriptionPack(),
-                $carrier
+                SubscribeProcess::PROCESS_METHOD_SUBSCRIBE,
+                ProcessResult::STATUS_SUCCESSFUL
             );
 
         } else {
             $parameters = $this->subscribeParametersProvider->provideParameters($subscription, $additionalData);
-            $response   = $this->subscribeProcess->doSubscribe($parameters);
+            return $this->subscribeProcess->doSubscribe($parameters);
         }
-
-        $this->onSubscribeUpdater->updateSubscriptionByResponse($subscription, $response, $this->session);
-        return $response;
     }
 
     /**
