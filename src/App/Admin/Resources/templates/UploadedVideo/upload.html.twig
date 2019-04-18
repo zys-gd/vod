@@ -9,6 +9,8 @@
     {{ parent() }}
     <script type="text/javascript" src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.min.js"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/uploadedVideo/UploadHelper.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/uploadedVideo/VideoDataCollector.js') }}"></script>
 {% endblock %}
 
 {% block stylesheets %}
@@ -166,6 +168,8 @@
 
                             videoDataCollector.render(container);
 
+                            $('.js-datepicker').datetimepicker({format: 'Y-MM-DD HH:mm'});
+
                             $('#confirm-all-button').click(function() {
                                 $(this).replaceWith('<div class="loader"></div>');
 
@@ -219,198 +223,5 @@
 
             widjet.open();
         });
-
-        function UploadHelper(signatureUrl, saveBaseVideoDataUrl, confirmVideosUrl, csrfToken) {
-            /**
-             * Endpoint urls
-             */
-            this.signatureUrl = signatureUrl;
-            this.saveBaseVideoDataUrl = saveBaseVideoDataUrl;
-            this.confirmVideosUrl = confirmVideosUrl;
-
-            /**
-             * CSRF protection token
-             */
-            this.token = csrfToken;
-
-            /**
-             * Save general video data from widget callback and pre-upload form data
-             *
-             * @param {Object} uploadedVideoData
-             *
-             * @return Promise
-             */
-            this.saveBaseVideoData = function(uploadedVideoData) {
-                // delete uuid to prevent form handling errors
-                delete uploadedVideoData.uuid;
-
-                return this.sendPostRequest(this.saveBaseVideoDataUrl, uploadedVideoData);
-            };
-
-            /**
-             * @param {Object} confirmedVideoData
-             *
-             * @return Promise
-             */
-            this.confirmAllUploadedVideos = function(confirmedVideoData) {
-                return this.sendPostRequest(this.confirmVideosUrl, confirmedVideoData);
-            };
-
-            /**
-             * Send post request
-             *
-             * @param {string} url
-             * @param {Object} data
-             *
-             * @return Promise
-             */
-            this.sendPostRequest = function(url, data) {
-                data['_token'] = this.token;
-
-                return new Promise(function(resolve, reject) {
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        data: JSON.stringify(data),
-                        dataType: 'json',
-                        success: function (data) {
-                            resolve(data);
-                        },
-                        error: function (jqXHR) {
-                            reject(jqXHR);
-                        }
-                    })
-                })
-            };
-
-            /**
-             * Get callback for generate signature
-             *
-             * @returns {Function}
-             */
-            this.getSignatureCallback = function () {
-                var self = this;
-
-                return function (callback, paramsToSign) {
-                    $.ajax({
-                        url : self.signatureUrl,
-                        type : 'GET',
-                        dataType: 'text',
-                        data : { data: paramsToSign },
-                        success : function(signature) {
-                            callback(signature);
-                        }
-                    });
-                }
-            }
-        }
-
-        function VideoDataCollector(uploadedVideoTemplate, notSavedTemplate) {
-            /**
-             * Uploaded and saved video data
-             *
-             * @type {Object[]}
-             */
-            this.successfullySaved = [];
-
-            /**
-             * Uploaded, but not saved video titles
-             *
-             * @type {String[]}
-             */
-            this.notSaved = [];
-
-            /**
-             * Handlebars library template
-             * 
-             * @type {Function}
-             */
-            this.uploadedVideoTemplate = uploadedVideoTemplate;
-
-            /**
-             * Handlebars library template
-             *
-             * @type {Function}
-             */
-            this.notSavedTemplate = notSavedTemplate;
-
-            /**
-             * Render uploaded and saved videos
-             *
-             * @param parentElement - container for append list
-             */
-            this.render = function(parentElement) {
-                var container = $('<div></div>');
-                var self = this;
-
-                if (this.notSaved.length > 0) {
-                    var notSavedTitles = this.notSaved.join(', ');
-
-                    var html = self.notSavedTemplate({
-                        videos: notSavedTitles
-                    });
-
-                    container.append(html);
-                }
-
-                this.successfullySaved.forEach(function (uploadedVideo, index) {
-                    var startThumbnail = uploadedVideo.thumbnails.shift();
-                    var endThumbnail = uploadedVideo.thumbnails.pop();
-
-                    if (index > 0) {
-                        container.append($('<hr/>'));
-                    }
-
-                    var html = self.uploadedVideoTemplate({
-                        uuid: uploadedVideo.uuid,
-                        title: uploadedVideo.title,
-                        startThumbnail: startThumbnail,
-                        endThumbnail: endThumbnail
-                    });
-
-                    container.append(html);
-                });
-
-                if (this.successfullySaved.length > 0) {
-                    var saveButton = $('<button></button>')
-                        .addClass('btn btn-primary')
-                        .attr('id', 'confirm-all-button')
-                        .html('Confirm all');
-
-                    container.append(saveButton);
-                }
-
-                parentElement.html(container);
-
-                $('.js-datepicker').datetimepicker({format: 'Y-MM-DD HH:mm'});
-            };
-
-            /**
-             * Add uploaded and saved video data to collection
-             *
-             * @param {Object} uploadedVideoData
-             */
-            this.addSuccessfullySaved = function (uploadedVideoData) {
-                this.successfullySaved.push(uploadedVideoData);
-            };
-
-            /**
-             * Add uploaded but saved with error video data
-             *
-             * @param {string} uploadedVideoTitle
-             */
-            this.addNotSaved = function (uploadedVideoTitle) {
-                this.notSaved.push(uploadedVideoTitle);
-            };
-
-            /**
-             * Check if there is at least one item in the collection
-             *
-             * @returns {boolean}
-             */
-            this.hasElementsToRender = function () {
-                return this.successfullySaved.length > 0 || this.notSaved.length > 0;
-            }
-        }
     </script>
 {% endblock %}

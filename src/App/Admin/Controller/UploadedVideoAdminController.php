@@ -107,7 +107,7 @@ class UploadedVideoAdminController extends CRUDController
             $widgetOptions = [
                 'cloudName' => $this->cloudinaryCloudName,
                 'apiKey' => $this->cloudinaryApiKey,
-                'folder' => 'testWidgetFolder', //$uploadedVideo->getSubcategory()->getAlias(),
+                'folder' => $uploadedVideo->getSubcategory()->getAlias(),
                 'uploadPreset' => $preset,
                 'sources' => ['local'],
                 'resourceType' => 'video',
