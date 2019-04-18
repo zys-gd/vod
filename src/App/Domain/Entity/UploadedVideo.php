@@ -186,6 +186,10 @@ class UploadedVideo implements HasUuid, JsonSerializable
      */
     public function updateStatus(int $status): UploadedVideo
     {
+        if ($this->getStatus() === self::STATUS_READY) {
+            return $this;
+        }
+
         if ($status === self::STATUS_TRANSFORMATION_READY || $status === self::STATUS_CONFIRMED_BY_ADMIN) {
             $status = $this->getStatus() !== self::STATUS_IN_PROCESSING ? self::STATUS_READY : $status;
         }
