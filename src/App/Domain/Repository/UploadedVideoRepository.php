@@ -3,6 +3,7 @@
 namespace App\Domain\Repository;
 
 use App\Domain\Entity\Subcategory;
+use App\Domain\Entity\UploadedVideo;
 
 /**
  * UploadedVideoRepository
@@ -21,7 +22,10 @@ class UploadedVideoRepository extends \Doctrine\ORM\EntityRepository
             ->leftJoin('v.subcategory', 'subcategory')
             ->leftJoin('subcategory.parent', 'category')
             ->where($queryBuilder->expr()->orX('v.expiredDate > :currentDateTime', 'v.expiredDate IS NULL'))
+            ->andWhere('v.status = :status')
+            ->orderBy('v.createdDate', 'DESC')
             ->setParameter('currentDateTime', new \DateTime())
+            ->setParameter('status', UploadedVideo::STATUS_READY)
             ->addSelect('subcategory', 'category');
 
         return $q->getQuery()->getResult();
@@ -40,9 +44,12 @@ class UploadedVideoRepository extends \Doctrine\ORM\EntityRepository
         $query = $queryBuilder
             ->where($queryBuilder->expr()->orX('v.expiredDate > :currentDateTime', 'v.expiredDate IS NULL'))
             ->andWhere('v.subcategory = :subcategory')
+            ->andWhere('v.status = :status')
+            ->orderBy('v.createdDate', 'DESC')
             ->setParameters([
                 'subcategory' => $subcategories,
-                'currentDateTime' => new \DateTime()
+                'currentDateTime' => new \DateTime(),
+                'status' => UploadedVideo::STATUS_READY
             ])
             ->getQuery();
 

@@ -64,13 +64,13 @@ class SubscriptionConstraintByCarrier
 
     /**
      * @param CarrierInterface|null $carrier
-     * @return string|null
+     * @return bool|null
      *
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function isSubscriptionLimitReached(CarrierInterface $carrier = null): ?string
+    public function isSubscriptionLimitReached(CarrierInterface $carrier = null): ?bool
     {
         if (!$carrier) {
             $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
