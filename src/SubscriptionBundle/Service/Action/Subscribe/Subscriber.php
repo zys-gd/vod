@@ -176,6 +176,7 @@ class Subscriber
 
             $response = $this->performSubscribe($additionalData, $subscription);
             $this->onSubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
+            $subscription->setCurrentStage(Subscription::ACTION_SUBSCRIBE);
             return $response;
 
         } catch (SubscribingProcessException $exception) {
@@ -212,15 +213,15 @@ class Subscriber
                     $carrier
                 );
 
-                return $this->fakeResponseProvider->getDummyResult(
-                    $subscription,
-                    SubscribeProcess::PROCESS_METHOD_SUBSCRIBE,
-                    ProcessResult::STATUS_SUCCESSFUL
-                );
-
             } catch (NotificationSendFailedException $e) {
                 throw new SubscribingProcessException('Error while trying to subscribe', 0, $e);
             }
+
+            return $this->fakeResponseProvider->getDummyResult(
+                $subscription,
+                SubscribeProcess::PROCESS_METHOD_SUBSCRIBE,
+                ProcessResult::STATUS_SUCCESSFUL
+            );
 
         } else {
             $parameters = $this->subscribeParametersProvider->provideParameters($subscription, $additionalData);

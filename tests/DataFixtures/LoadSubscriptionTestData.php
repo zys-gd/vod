@@ -282,7 +282,7 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
         $pack->setName('Generic');
         $pack->setIsResubAllowed(false);
         $pack->setStatus(SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK);
-        $pack->setCarrier('Generic Carrier');
+        $pack->setCarrierName('Generic Carrier');
         $pack->setTier('Generic Carrier Tier');
         $pack->setTierId(10241024);
         $pack->setTierCurrency('Common');

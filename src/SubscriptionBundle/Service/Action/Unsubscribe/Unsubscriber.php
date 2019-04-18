@@ -10,6 +10,7 @@ namespace SubscriptionBundle\Service\Action\Unsubscribe;
 
 
 use Psr\Log\LoggerInterface;
+use SubscriptionBundle\BillingFramework\Notification\API\Exception\NotificationSendFailedException;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\Exception\UnsubscribingProcessException;
 use SubscriptionBundle\BillingFramework\Process\UnsubscribeProcess;
@@ -91,35 +92,52 @@ class Unsubscriber
 
     public function unsubscribe(Subscription $subscription, SubscriptionPack $subscriptionPack)
     {
+        $previousStatus = $subscription->getStatus();
+        $previousStage = $subscription->getCurrentStage();
 
         $subscription->setStatus(Subscription::IS_PENDING);
         $subscription->setCurrentStage(Subscription::ACTION_UNSUBSCRIBE);
         $this->entitySaveHelper->persistAndSave($subscription);
 
-        try {
-            if (!$subscriptionPack->isProviderManagedSubscriptions()) {
-                $response = $this->fakeResponseProvider->getDummyResult($subscription, UnsubscribeProcess::PROCESS_METHOD_UNSUBSCRIBE);
+        if (!$subscriptionPack->isProviderManagedSubscriptions()) {
+            $response = $this->fakeResponseProvider->getDummyResult(
+                $subscription,
+                UnsubscribeProcess::PROCESS_METHOD_UNSUBSCRIBE
+            );
+
+            try {
                 $this->notifier->sendNotification(
                     UnsubscribeProcess::PROCESS_METHOD_UNSUBSCRIBE,
                     $subscription,
                     $subscriptionPack,
                     $subscription->getUser()->getCarrier()
                 );
-            } else {
-                $parameters = $this->parametersProvider->provideParameters($subscription);
-                $response   = $this->unsubscribeProcess->doUnsubscribe($parameters);
+
+            } catch (NotificationSendFailedException $exception) {
+                $subscription->setStatus($previousStatus);
+                $subscription->setCurrentStage($previousStage);
+                throw $exception;
+            } finally {
+                $this->entitySaveHelper->persistAndSave($subscription);
             }
 
-            $this->onUnsubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
-
-            return $response;
-
-        } catch (UnsubscribingProcessException $exception) {
-            $subscription->setStatus(Subscription::IS_ERROR);
-            throw $exception;
-        } finally {
-            $this->entitySaveHelper->persistAndSave($subscription);
+        } else {
+            $parameters = $this->parametersProvider->provideParameters($subscription);
+            try {
+                $response = $this->unsubscribeProcess->doUnsubscribe($parameters);
+            } catch (UnsubscribingProcessException $exception) {
+                $subscription->setStatus(Subscription::IS_ERROR);
+                throw $exception;
+            } finally {
+                $this->entitySaveHelper->persistAndSave($subscription);
+            }
         }
+
+        $this->onUnsubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
+
+        return $response;
+
+
     }
 
     /**

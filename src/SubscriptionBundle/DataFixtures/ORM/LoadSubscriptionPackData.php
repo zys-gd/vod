@@ -2,6 +2,7 @@
 
 namespace SubscriptionBundle\DataFixtures\ORM;
 
+use App\Domain\Entity\Carrier;
 use DataFixtures\LoadCountriesData;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -75,19 +76,23 @@ class LoadSubscriptionPackData extends AbstractFixture implements ContainerAware
             $pack->setStatus($status);
             $pack->setName($name);
             $pack->setDescription($description);
+
+            /** @var Carrier $carrier */
+            $carrier = $this->getReference(sprintf('carrier_with_internal_id_%s', $carrier_id));
             $pack->setCarrierId($carrier_id);
-            $pack->setCarrier($carrier_name);
+            $pack->setCarrier($carrier);
+            $pack->setCarrierName($carrier_name);
+            $pack->setCarrierUuid($carrier->getUuid());
 
             $tierParts = explode(' ', $tier_name);
-
             if (!isset($tierParts[1])) {
                 echo $tier_name;
             }
-
             $pack->setTierPrice($tierParts[0]);
             $pack->setTierCurrency($tierParts[1]);
             $pack->setTier($tier_name);
             $pack->setTierId($tier_id);
+
             $pack->setCredits($credits);
             $pack->setPeriodicity($periodicity);
             $pack->setCustomRenewPeriod($custom_renew_period);

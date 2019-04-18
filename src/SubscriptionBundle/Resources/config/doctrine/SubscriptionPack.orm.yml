@@ -37,7 +37,7 @@ SubscriptionBundle\Entity\SubscriptionPack:
             options:
                 default: 0
             column: is_resub_allowed
-        carrier:
+        carrierName:
             type: string
             scale: 0
             length: null
@@ -45,6 +45,10 @@ SubscriptionBundle\Entity\SubscriptionPack:
             nullable: false
             precision: 0
             column: carrier_name
+        carrierUuid:
+            type: guid
+            nullable: false
+            column: carrier_uuid
         carrierId:
             type: integer
             scale: 0
@@ -313,3 +317,9 @@ SubscriptionBundle\Entity\SubscriptionPack:
                 country_id:
                     referencedColumnName: uuid
             orphanRemoval: false
+
+        carrier:
+            targetEntity: App\Domain\Entity\Carrier
+            joinColumns:
+                carrier_uuid:
+                    referencedColumnName: uuid

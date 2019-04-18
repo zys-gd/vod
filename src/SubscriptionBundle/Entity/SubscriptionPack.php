@@ -2,8 +2,10 @@
 
 namespace SubscriptionBundle\Entity;
 
+use App\Domain\Entity\Carrier;
 use App\Domain\Entity\Country;
 use Doctrine\Common\Collections\ArrayCollection;
+use IdentificationBundle\Entity\CarrierInterface;
 use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 
 /**
@@ -71,7 +73,17 @@ class SubscriptionPack implements HasUuid
     private $carrierId;
 
     /**
-     * @var
+     * @var string
+     */
+    private $carrierName;
+
+    /**
+     * @var string
+     */
+    private $carrierUuid;
+
+    /**
+     * @var Carrier
      */
     private $carrier;
 
@@ -400,18 +412,47 @@ class SubscriptionPack implements HasUuid
     }
 
     /**
-     * @param string $carrier
-     * @return $this
+     * @return string
      */
-    public function setCarrier($carrier)
+    public function getCarrierName(): string
     {
-        $this->carrier = $carrier;
+        return $this->carrierName;
+    }
 
-        return $this;
+    /**
+     * @param string $carrierName
+     */
+    public function setCarrierName(string $carrierName): void
+    {
+        $this->carrierName = $carrierName;
     }
 
     /**
      * @return string
+     */
+    public function getCarrierUuid(): string
+    {
+        return $this->carrierUuid;
+    }
+
+    /**
+     * @param string $carrierUuid
+     */
+    public function setCarrierUuid(string $carrierUuid): void
+    {
+        $this->carrierUuid = $carrierUuid;
+    }
+
+    /**
+     * @param Carrier $carrier
+     */
+    public function setCarrier(CarrierInterface $carrier)
+    {
+        $this->carrier = $carrier;
+    }
+
+    /**
+     * @return CarrierInterface string
      */
     public function getCarrier()
     {
