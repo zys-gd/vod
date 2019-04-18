@@ -9,7 +9,7 @@ use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\Locker\LockerFactory;
 use Symfony\Component\Lock\Lock;
 
-class LimiterPerformer/* implements LimiterInterface*/
+class LimiterPerformer
 {
     /**
      * @var \Predis\Client|\Redis|\RedisCluster
@@ -83,6 +83,11 @@ class LimiterPerformer/* implements LimiterInterface*/
         return $data;
     }
 
+    /**
+     * @param int    $billingCarrierId
+     * @param string $affiliateUuid
+     * @param string $constraintUuid
+     */
     public function removeAffiliateConstraint(int $billingCarrierId, string $affiliateUuid, string $constraintUuid)
     {
         try {
@@ -94,6 +99,9 @@ class LimiterPerformer/* implements LimiterInterface*/
         }
     }
 
+    /**
+     * @param int $billingCarrierId
+     */
     public function removeCarrierConstraint(int $billingCarrierId)
     {
         try {
@@ -123,11 +131,17 @@ class LimiterPerformer/* implements LimiterInterface*/
         return $data;
     }
 
+    /**
+     * @return array
+     */
     private function getDataFromRedisAsArray(): array
     {
         return json_decode($this->redis->get(LimiterDataMapper::KEY), true) ?? [];
     }
 
+    /**
+     * @param int $billingCarrierId
+     */
     public function decrCarrierProcessingSlotsWithLock(int $billingCarrierId)
     {
         $lock = $this->lock();
@@ -147,6 +161,11 @@ class LimiterPerformer/* implements LimiterInterface*/
         }
     }
 
+    /**
+     * @param int    $billingCarrierId
+     * @param string $affiliateUuid
+     * @param string $constraintUuid
+     */
     public function decrAffiliateProcessingSlotsWithLock(int $billingCarrierId,
         string $affiliateUuid,
         string $constraintUuid)
@@ -193,6 +212,9 @@ class LimiterPerformer/* implements LimiterInterface*/
         }
     }
 
+    /**
+     * @param int $billingCarrierId
+     */
     public function incrCarrierProcessingSlotsWithLock(int $billingCarrierId)
     {
         $lock = $this->lock();
@@ -211,6 +233,11 @@ class LimiterPerformer/* implements LimiterInterface*/
         }
     }
 
+    /**
+     * @param int    $billingCarrierId
+     * @param string $affiliateUuid
+     * @param string $constraintUuid
+     */
     public function decrAffiliateSubscriptionSlotsWithLock(int $billingCarrierId,
         string $affiliateUuid,
         string $constraintUuid)
@@ -232,6 +259,9 @@ class LimiterPerformer/* implements LimiterInterface*/
         }
     }
 
+    /**
+     * @param int $billingCarrierId
+     */
     public function decrCarrierSubscriptionSlotsWithLock(int $billingCarrierId)
     {
         $lock = $this->lock();

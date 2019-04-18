@@ -13,6 +13,11 @@ class LimiterDataMapper
     const PROCESSING_SLOTS        = 'processing_slots';
     const OPEN_SUBSCRIPTION_SLOTS = 'open_subscription_slots';
 
+    /**
+     * @param CarrierLimiterData $carrierLimiterData
+     *
+     * @return array
+     */
     public function convertCarrierLimiterData2Array(CarrierLimiterData $carrierLimiterData): array
     {
         $slots = $this->filterFromNull([
@@ -29,6 +34,11 @@ class LimiterDataMapper
         return $limiterStructure;
     }
 
+    /**
+     * @param AffiliateLimiterData $affiliateLimiterData
+     *
+     * @return array
+     */
     public function convertCarrierAffiliateConstraint(AffiliateLimiterData $affiliateLimiterData): array
     {
         $slots = $this->filterFromNull([
@@ -92,43 +102,6 @@ class LimiterDataMapper
             ]
         ];
         return $limiterStructure;
-    }
-
-    /**
-     * @param array              $limiter
-     * @param CarrierLimiterData $carrierLimiterData
-     *
-     * @return array
-     */
-    public function getCarrierSlots(array $limiter, CarrierLimiterData $carrierLimiterData): array
-    {
-        try {
-            return [
-                self::PROCESSING_SLOTS        => $limiter[self::KEY][$carrierLimiterData->getCarrier()->getBillingCarrierId()][self::PROCESSING_SLOTS] ?? null,
-                self::OPEN_SUBSCRIPTION_SLOTS => $limiter[self::KEY][$carrierLimiterData->getCarrier()->getBillingCarrierId()][self::OPEN_SUBSCRIPTION_SLOTS] ?? null
-            ];
-        } catch (\ErrorException $e) {
-            // smth throw
-        }
-    }
-
-    /**
-     * @param array                $limiter
-     * @param AffiliateLimiterData $affiliateLimiterData
-     *
-     * @return array
-     */
-    public function getCarrierAffiliateConstraintSlots(array $limiter,
-        AffiliateLimiterData $affiliateLimiterData): array
-    {
-        try {
-            return [
-                self::PROCESSING_SLOTS        => $limiter[self::KEY][$affiliateLimiterData->getBillingCarrierId()][$affiliateLimiterData->getAffiliate()->getUuid()][$affiliateLimiterData->getConstraintByAffiliate()->getUuid()][self::PROCESSING_SLOTS] ?? null,
-                self::OPEN_SUBSCRIPTION_SLOTS => $limiter[self::KEY][$affiliateLimiterData->getBillingCarrierId()][$affiliateLimiterData->getAffiliate()->getUuid()][$affiliateLimiterData->getConstraintByAffiliate()->getUuid()][self::OPEN_SUBSCRIPTION_SLOTS] ?? null
-            ];
-        } catch (\ErrorException $e) {
-            // smth throw
-        }
     }
 
     /**

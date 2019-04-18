@@ -3,17 +3,8 @@
 
 namespace SubscriptionBundle\Service\SubscriptionLimiter;
 
-use App\Domain\Entity\Affiliate;
-use App\Domain\Entity\Campaign;
-use App\Domain\Entity\Carrier;
 use IdentificationBundle\Entity\User;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
-use IdentificationBundle\Repository\CarrierRepositoryInterface;
-use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
-use SubscriptionBundle\Service\CampaignExtractor;
 use SubscriptionBundle\Service\SubscriptionExtractor;
-use SubscriptionBundle\Service\SubscriptionLimiter\DTO\AffiliateLimiterData;
-use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\Limiter;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
