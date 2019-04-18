@@ -92,14 +92,16 @@ class Unsubscriber
 
     public function unsubscribe(Subscription $subscription, SubscriptionPack $subscriptionPack)
     {
-        $previousStatus = $subscription->getStatus();
-        $previousStage = $subscription->getCurrentStage();
+
 
         $subscription->setStatus(Subscription::IS_PENDING);
         $subscription->setCurrentStage(Subscription::ACTION_UNSUBSCRIBE);
         $this->entitySaveHelper->persistAndSave($subscription);
 
         if (!$subscriptionPack->isProviderManagedSubscriptions()) {
+
+            $previousStatus = $subscription->getStatus();
+            $previousStage  = $subscription->getCurrentStage();
             $response = $this->fakeResponseProvider->getDummyResult(
                 $subscription,
                 UnsubscribeProcess::PROCESS_METHOD_UNSUBSCRIBE
@@ -112,6 +114,8 @@ class Unsubscriber
                     $subscriptionPack,
                     $subscription->getUser()->getCarrier()
                 );
+                $this->onUnsubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
+                return $response;
 
             } catch (NotificationSendFailedException $exception) {
                 $subscription->setStatus($previousStatus);
@@ -122,9 +126,13 @@ class Unsubscriber
             }
 
         } else {
+
             $parameters = $this->parametersProvider->provideParameters($subscription);
             try {
                 $response = $this->unsubscribeProcess->doUnsubscribe($parameters);
+                $this->onUnsubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
+                return $response;
+
             } catch (UnsubscribingProcessException $exception) {
                 $subscription->setStatus(Subscription::IS_ERROR);
                 throw $exception;
@@ -132,12 +140,6 @@ class Unsubscriber
                 $this->entitySaveHelper->persistAndSave($subscription);
             }
         }
-
-        $this->onUnsubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
-
-        return $response;
-
-
     }
 
     /**
