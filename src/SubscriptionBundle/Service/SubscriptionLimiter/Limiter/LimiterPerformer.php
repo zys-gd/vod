@@ -23,10 +23,6 @@ class LimiterPerformer
      * @var LockerFactory
      */
     private $lockerFactory;
-    /**
-     * @var LimiterDataExtractor
-     */
-    private $limiterDataExtractor;
 
     /**
      * LimiterPerformer constructor.
@@ -34,17 +30,14 @@ class LimiterPerformer
      * @param                      $redis
      * @param LimiterDataConverter $limiterDataConverter
      * @param LockerFactory        $lockerFactory
-     * @param LimiterDataExtractor $limiterDataExtractor
      */
     public function __construct($redis,
         LimiterDataConverter $limiterDataConverter,
-        LockerFactory $lockerFactory,
-        LimiterDataExtractor $limiterDataExtractor)
+        LockerFactory $lockerFactory)
     {
         $this->redis                = $redis;
         $this->limiterDataConverter = $limiterDataConverter;
         $this->lockerFactory        = $lockerFactory;
-        $this->limiterDataExtractor = $limiterDataExtractor;
     }
 
     /**
@@ -128,91 +121,15 @@ class LimiterPerformer
     }
 
     /**
-     * @param int $billingCarrierId
+     * @param int   $billingCarrierId
+     * @param array $slots
      */
-    public function decrCarrierProcessingSlotsWithLock(int $billingCarrierId)
+    public function updateCarrierConstraintsWithLock(int $billingCarrierId, array $slots)
     {
         $lock = $this->lock();
 
         try {
-            $redisData = $this->getDataFromRedisAsArray();
-            $slots     = $this->limiterDataExtractor->extractCarrierSlots($redisData, $billingCarrierId);
-
-            if ($slots[LimiterDataConverter::PROCESSING_SLOTS]-- >= 0) {
-                $data = $this->limiterDataConverter->convertCarrierSlots2Array($billingCarrierId, $slots);
-                $this->set2Storage($data);
-            }
-        } catch (\Throwable $e) {
-            // smth throw
-        } finally {
-            $this->unlock($lock);
-        }
-    }
-
-    /**
-     * @param int    $billingCarrierId
-     * @param string $affiliateUuid
-     * @param string $constraintUuid
-     */
-    public function decrAffiliateProcessingSlotsWithLock(int $billingCarrierId,
-        string $affiliateUuid,
-        string $constraintUuid)
-    {
-        $lock = $this->lock();
-
-        try {
-            $redisData = $this->getDataFromRedisAsArray();
-            $slots     = $this->limiterDataExtractor->extractAffiliateSlots($redisData, $billingCarrierId, $affiliateUuid, $constraintUuid);
-
-            if ($slots[LimiterDataConverter::PROCESSING_SLOTS]-- >= 0) {
-                $data = $this->limiterDataConverter->convertCarrierAffiliateConstraintSlots2Array($billingCarrierId, $affiliateUuid, $constraintUuid, $slots);
-                $this->set2Storage($data);
-            }
-        } catch (\Throwable $e) {
-            // smth throw
-        } finally {
-            $this->unlock($lock);
-        }
-    }
-
-    /**
-     * @param int    $billingCarrierId
-     * @param string $affiliateUuid
-     * @param string $constraintUuid
-     */
-    public function incrAffiliateProcessingSlotsWithLock(int $billingCarrierId,
-        string $affiliateUuid,
-        string $constraintUuid)
-    {
-        $lock = $this->lock();
-
-        try {
-            $redisData = $this->getDataFromRedisAsArray();
-            $slots     = $this->limiterDataExtractor->extractAffiliateSlots($redisData, $billingCarrierId, $affiliateUuid, $constraintUuid);
-            $slots[LimiterDataConverter::PROCESSING_SLOTS]++;
             $data = $this->limiterDataConverter->convertCarrierSlots2Array($billingCarrierId, $slots);
-
-            $this->set2Storage($data);
-        } catch (\Throwable $e) {
-            // smth throw
-        } finally {
-            $this->unlock($lock);
-        }
-    }
-
-    /**
-     * @param int $billingCarrierId
-     */
-    public function incrCarrierProcessingSlotsWithLock(int $billingCarrierId)
-    {
-        $lock = $this->lock();
-
-        try {
-            $redisData = $this->getDataFromRedisAsArray();
-            $slots     = $this->limiterDataExtractor->extractCarrierSlots($redisData, $billingCarrierId);
-            $slots[LimiterDataConverter::PROCESSING_SLOTS]++;
-            $data = $this->limiterDataConverter->convertCarrierSlots2Array($billingCarrierId, $slots);
-
             $this->set2Storage($data);
         } catch (\Throwable $e) {
             // smth throw
@@ -225,43 +142,18 @@ class LimiterPerformer
      * @param int    $billingCarrierId
      * @param string $affiliateUuid
      * @param string $constraintUuid
+     * @param array  $slots
      */
-    public function decrAffiliateSubscriptionSlotsWithLock(int $billingCarrierId,
+    public function updateAffiliateConstraintsWithLock(int $billingCarrierId,
         string $affiliateUuid,
-        string $constraintUuid)
+        string $constraintUuid,
+        array $slots)
     {
         $lock = $this->lock();
 
         try {
-            $redisData = $this->getDataFromRedisAsArray();
-            $slots     = $this->limiterDataExtractor->extractAffiliateSlots($redisData, $billingCarrierId, $affiliateUuid, $constraintUuid);
-
-            if ($slots[LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS]-- >= 0) {
-                $data = $this->limiterDataConverter->convertCarrierSlots2Array($billingCarrierId, $slots);
-                $this->set2Storage($data);
-            }
-        } catch (\Throwable $e) {
-            // smth throw
-        } finally {
-            $this->unlock($lock);
-        }
-    }
-
-    /**
-     * @param int $billingCarrierId
-     */
-    public function decrCarrierSubscriptionSlotsWithLock(int $billingCarrierId)
-    {
-        $lock = $this->lock();
-
-        try {
-            $redisData = $this->getDataFromRedisAsArray();
-            $slots     = $this->limiterDataExtractor->extractCarrierSlots($redisData, $billingCarrierId);
-
-            if ($slots[LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS]-- >= 0) {
-                $data = $this->limiterDataConverter->convertCarrierSlots2Array($billingCarrierId, $slots);
-                $this->set2Storage($data);
-            }
+            $data = $this->limiterDataConverter->convertCarrierAffiliateConstraintSlots2Array($billingCarrierId, $affiliateUuid, $constraintUuid, $slots);
+            $this->set2Storage($data);
         } catch (\Throwable $e) {
             // smth throw
         } finally {
