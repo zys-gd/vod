@@ -177,7 +177,7 @@ class LimiterPerformer
             $slots     = $this->limiterDataMapper->extractAffiliateSlots($redisData, $billingCarrierId, $affiliateUuid, $constraintUuid);
 
             if ($slots[LimiterDataMapper::PROCESSING_SLOTS]-- >= 0) {
-                $data = $this->limiterDataMapper->updateCarrierSlots($billingCarrierId, $slots);
+                $data = $this->limiterDataMapper->updateCarrierAffiliateConstraintSlots($billingCarrierId,  $affiliateUuid, $constraintUuid, $slots);
                 $this->set2Storage($data);
             }
         } catch (\Throwable $e) {

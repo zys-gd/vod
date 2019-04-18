@@ -81,22 +81,28 @@ class LimiterDataMapper
     }
 
     /**
-     * @param AffiliateLimiterData $affiliateLimiterData
+     * @param int    $billingCarrierId
+     * @param string $affiliateUuid
+     * @param string $constraintUuid
+     * @param array  $slots
      *
      * @return array
      */
-    public function updateCarrierAffiliateConstraintSlots(AffiliateLimiterData $affiliateLimiterData): array
+    public function updateCarrierAffiliateConstraintSlots(int $billingCarrierId,
+        string $affiliateUuid,
+        string $constraintUuid,
+        array $slots): array
     {
         $slots = $this->filterFromNull([
-            self::PROCESSING_SLOTS        => $affiliateLimiterData->getProcessingSlots(),
-            self::OPEN_SUBSCRIPTION_SLOTS => $affiliateLimiterData->getOpenSubscriptionSlots()
+            self::PROCESSING_SLOTS        => $slots[self::PROCESSING_SLOTS],
+            self::OPEN_SUBSCRIPTION_SLOTS => $slots[self::OPEN_SUBSCRIPTION_SLOTS]
         ]);
 
         $limiterStructure = [
             self::KEY => [
-                $affiliateLimiterData->getBillingCarrierId() => [
-                    $affiliateLimiterData->getAffiliate()->getUuid() => [
-                        $affiliateLimiterData->getConstraintByAffiliate()->getUuid() => $slots
+                $billingCarrierId => [
+                    $affiliateUuid => [
+                        $constraintUuid => $slots
                     ]
                 ]
             ]

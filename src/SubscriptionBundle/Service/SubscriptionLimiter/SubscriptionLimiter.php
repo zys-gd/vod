@@ -42,10 +42,10 @@ class SubscriptionLimiter implements SubscriptionLimiterInterface
 
         $affiliateLimiterData = $this->limiter->createAffiliateLimiterDataFromSession($session);
 
-        if ($carrierLimiterData && $this->limiter->getCarrierProcessingSlots($carrierLimiterData) === 0) {
+        if ($affiliateLimiterData && count(array_filter($this->limiter->getAffiliateSlots($affiliateLimiterData))) === 0) {
             return true;
         }
-        if ($affiliateLimiterData && $this->limiter->getAffiliateProcessingSlots($affiliateLimiterData) === 0) {
+        if ($carrierLimiterData && count(array_filter($this->limiter->getCarrierSlots($carrierLimiterData))) === 0) {
             return true;
         }
         return false;

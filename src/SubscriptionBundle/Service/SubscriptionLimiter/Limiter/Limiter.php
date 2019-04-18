@@ -93,21 +93,21 @@ class Limiter
     /**
      * @param CarrierLimiterData $carrierLimiterData
      *
-     * @return mixed
+     * @return array
      */
-    public function getCarrierProcessingSlots(CarrierLimiterData $carrierLimiterData): int
+    public function getCarrierSlots(CarrierLimiterData $carrierLimiterData): array
     {
-        return $this->limiterPerformer->getCarrierSlots($carrierLimiterData->getCarrier()->getBillingCarrierId())[LimiterDataMapper::PROCESSING_SLOTS];
+        return $this->limiterPerformer->getCarrierSlots($carrierLimiterData->getCarrier()->getBillingCarrierId());
     }
 
     /**
      * @param AffiliateLimiterData $affiliateLimiterData
      *
-     * @return int
+     * @return array
      */
-    public function getAffiliateProcessingSlots(AffiliateLimiterData $affiliateLimiterData): int
+    public function getAffiliateSlots(AffiliateLimiterData $affiliateLimiterData): array
     {
-        return $this->limiterPerformer->getCarrierAffiliateConstraintSlots($affiliateLimiterData->getBillingCarrierId(), $affiliateLimiterData->getAffiliate()->getUuid(), $affiliateLimiterData->getConstraintByAffiliate()->getUuid())[LimiterDataMapper::PROCESSING_SLOTS];
+        return $this->limiterPerformer->getCarrierAffiliateConstraintSlots($affiliateLimiterData->getBillingCarrierId(), $affiliateLimiterData->getAffiliate()->getUuid(), $affiliateLimiterData->getConstraintByAffiliate()->getUuid());
     }
 
     /**
