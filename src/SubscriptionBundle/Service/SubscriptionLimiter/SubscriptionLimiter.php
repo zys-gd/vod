@@ -38,9 +38,9 @@ class SubscriptionLimiter implements SubscriptionLimiterInterface
      * @param LimiterDataExtractor  $limiterDataExtractor
      */
     public function __construct(Limiter $Limiter,
-        SubscriptionExtractor $subscriptionExtractor,
-        LimiterDataMapper $limiterDataMapper,
-        LimiterDataExtractor $limiterDataExtractor)
+                                SubscriptionExtractor $subscriptionExtractor,
+                                LimiterDataMapper $limiterDataMapper,
+                                LimiterDataExtractor $limiterDataExtractor)
     {
         $this->limiter               = $Limiter;
         $this->subscriptionExtractor = $subscriptionExtractor;
