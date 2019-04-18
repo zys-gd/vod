@@ -16,19 +16,19 @@ class LimiterPerformer
      */
     private $redis;
     /**
-     * @var LimiterDataMapper
+     * @var LimiterDataConverter
      */
-    private $limiterDataMapper;
+    private $limiterDataConverter;
     /**
      * @var LockerFactory
      */
     private $lockerFactory;
 
-    public function __construct($redis, LimiterDataMapper $limiterDataMapper, LockerFactory $lockerFactory)
+    public function __construct($redis, LimiterDataConverter $limiterDataConverter, LockerFactory $lockerFactory)
     {
-        $this->redis             = $redis;
-        $this->limiterDataMapper = $limiterDataMapper;
-        $this->lockerFactory     = $lockerFactory;
+        $this->redis                = $redis;
+        $this->limiterDataConverter = $limiterDataConverter;
+        $this->lockerFactory        = $lockerFactory;
     }
 
     /**
@@ -38,7 +38,7 @@ class LimiterPerformer
      */
     public function saveCarrierConstraint(CarrierLimiterData $carrierLimiterData): array
     {
-        $data = $this->limiterDataMapper->convertCarrierLimiterData2Array($carrierLimiterData);
+        $data = $this->limiterDataConverter->convertCarrierLimiterData2Array($carrierLimiterData);
 
         return $this->set2Storage($data);
     }
@@ -50,7 +50,7 @@ class LimiterPerformer
      */
     public function saveCarrierAffiliateConstraint(AffiliateLimiterData $affiliateLimiterData): array
     {
-        $data = $this->limiterDataMapper->convertCarrierAffiliateConstraint($affiliateLimiterData);
+        $data = $this->limiterDataConverter->convertCarrierAffiliateConstraint($affiliateLimiterData);
 
         return $this->set2Storage($data);
     }
@@ -62,7 +62,7 @@ class LimiterPerformer
      */
     public function getCarrierSlots(int $billingCarrierId): array
     {
-        $data = $this->limiterDataMapper->extractCarrierSlots($this->getDataFromRedisAsArray(), $billingCarrierId);
+        $data = $this->limiterDataConverter->extractCarrierSlots($this->getDataFromRedisAsArray(), $billingCarrierId);
 
         return $data;
     }
@@ -78,7 +78,7 @@ class LimiterPerformer
         string $affiliateUuid,
         string $constraintUuid): array
     {
-        $data = $this->limiterDataMapper->extractAffiliateSlots($this->getDataFromRedisAsArray(), $billingCarrierId, $affiliateUuid, $constraintUuid);
+        $data = $this->limiterDataConverter->extractAffiliateSlots($this->getDataFromRedisAsArray(), $billingCarrierId, $affiliateUuid, $constraintUuid);
 
         return $data;
     }
@@ -92,8 +92,8 @@ class LimiterPerformer
     {
         try {
             $data = $this->getDataFromRedisAsArray();
-            unset($data[LimiterDataMapper::KEY][$billingCarrierId][$affiliateUuid][$constraintUuid]);
-            $this->redis->set(LimiterDataMapper::KEY, json_encode($data));
+            unset($data[LimiterDataConverter::KEY][$billingCarrierId][$affiliateUuid][$constraintUuid]);
+            $this->redis->set(LimiterDataConverter::KEY, json_encode($data));
         } catch (\Throwable $e) {
             echo "Cant remove from redis, reason: " . $e->getMessage();
         }
@@ -106,9 +106,9 @@ class LimiterPerformer
     {
         try {
             $data = $this->getDataFromRedisAsArray();
-            unset($data[LimiterDataMapper::KEY][$billingCarrierId][LimiterDataMapper::PROCESSING_SLOTS]);
-            unset($data[LimiterDataMapper::KEY][$billingCarrierId][LimiterDataMapper::OPEN_SUBSCRIPTION_SLOTS]);
-            $this->redis->set(LimiterDataMapper::KEY, json_encode($data));
+            unset($data[LimiterDataConverter::KEY][$billingCarrierId][LimiterDataConverter::PROCESSING_SLOTS]);
+            unset($data[LimiterDataConverter::KEY][$billingCarrierId][LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS]);
+            $this->redis->set(LimiterDataConverter::KEY, json_encode($data));
         } catch (\Throwable $e) {
             echo "Cant remove from redis, reason: " . $e->getMessage();
         }
@@ -121,13 +121,13 @@ class LimiterPerformer
      */
     private function set2Storage(array $data): array
     {
-        if ($this->redis->exists(LimiterDataMapper::KEY)) {
+        if ($this->redis->exists(LimiterDataConverter::KEY)) {
             $data = array_replace_recursive(
                 $this->getDataFromRedisAsArray(),
                 $data
             );
         }
-        $this->redis->set(LimiterDataMapper::KEY, json_encode($data));
+        $this->redis->set(LimiterDataConverter::KEY, json_encode($data));
         return $data;
     }
 
@@ -136,7 +136,7 @@ class LimiterPerformer
      */
     private function getDataFromRedisAsArray(): array
     {
-        return json_decode($this->redis->get(LimiterDataMapper::KEY), true) ?? [];
+        return json_decode($this->redis->get(LimiterDataConverter::KEY), true) ?? [];
     }
 
     /**
@@ -148,10 +148,10 @@ class LimiterPerformer
 
         try {
             $redisData = $this->getDataFromRedisAsArray();
-            $slots     = $this->limiterDataMapper->extractCarrierSlots($redisData, $billingCarrierId);
+            $slots     = $this->limiterDataConverter->extractCarrierSlots($redisData, $billingCarrierId);
 
-            if ($slots[LimiterDataMapper::PROCESSING_SLOTS]-- >= 0) {
-                $data = $this->limiterDataMapper->updateCarrierSlots($billingCarrierId, $slots);
+            if ($slots[LimiterDataConverter::PROCESSING_SLOTS]-- >= 0) {
+                $data = $this->limiterDataConverter->updateCarrierSlots($billingCarrierId, $slots);
                 $this->set2Storage($data);
             }
         } catch (\Throwable $e) {
@@ -174,10 +174,10 @@ class LimiterPerformer
 
         try {
             $redisData = $this->getDataFromRedisAsArray();
-            $slots     = $this->limiterDataMapper->extractAffiliateSlots($redisData, $billingCarrierId, $affiliateUuid, $constraintUuid);
+            $slots     = $this->limiterDataConverter->extractAffiliateSlots($redisData, $billingCarrierId, $affiliateUuid, $constraintUuid);
 
-            if ($slots[LimiterDataMapper::PROCESSING_SLOTS]-- >= 0) {
-                $data = $this->limiterDataMapper->updateCarrierAffiliateConstraintSlots($billingCarrierId,  $affiliateUuid, $constraintUuid, $slots);
+            if ($slots[LimiterDataConverter::PROCESSING_SLOTS]-- >= 0) {
+                $data = $this->limiterDataConverter->updateCarrierAffiliateConstraintSlots($billingCarrierId,  $affiliateUuid, $constraintUuid, $slots);
                 $this->set2Storage($data);
             }
         } catch (\Throwable $e) {
@@ -200,9 +200,9 @@ class LimiterPerformer
 
         try {
             $redisData = $this->getDataFromRedisAsArray();
-            $slots     = $this->limiterDataMapper->extractAffiliateSlots($redisData, $billingCarrierId, $affiliateUuid, $constraintUuid);
-            $slots[LimiterDataMapper::PROCESSING_SLOTS]++;
-            $data = $this->limiterDataMapper->updateCarrierSlots($billingCarrierId, $slots);
+            $slots     = $this->limiterDataConverter->extractAffiliateSlots($redisData, $billingCarrierId, $affiliateUuid, $constraintUuid);
+            $slots[LimiterDataConverter::PROCESSING_SLOTS]++;
+            $data = $this->limiterDataConverter->updateCarrierSlots($billingCarrierId, $slots);
 
             $this->set2Storage($data);
         } catch (\Throwable $e) {
@@ -221,9 +221,9 @@ class LimiterPerformer
 
         try {
             $redisData = $this->getDataFromRedisAsArray();
-            $slots     = $this->limiterDataMapper->extractCarrierSlots($redisData, $billingCarrierId);
-            $slots[LimiterDataMapper::PROCESSING_SLOTS]++;
-            $data = $this->limiterDataMapper->updateCarrierSlots($billingCarrierId, $slots);
+            $slots     = $this->limiterDataConverter->extractCarrierSlots($redisData, $billingCarrierId);
+            $slots[LimiterDataConverter::PROCESSING_SLOTS]++;
+            $data = $this->limiterDataConverter->updateCarrierSlots($billingCarrierId, $slots);
 
             $this->set2Storage($data);
         } catch (\Throwable $e) {
@@ -246,10 +246,10 @@ class LimiterPerformer
 
         try {
             $redisData = $this->getDataFromRedisAsArray();
-            $slots     = $this->limiterDataMapper->extractAffiliateSlots($redisData, $billingCarrierId, $affiliateUuid, $constraintUuid);
+            $slots     = $this->limiterDataConverter->extractAffiliateSlots($redisData, $billingCarrierId, $affiliateUuid, $constraintUuid);
 
-            if ($slots[LimiterDataMapper::OPEN_SUBSCRIPTION_SLOTS]-- >= 0) {
-                $data = $this->limiterDataMapper->updateCarrierSlots($billingCarrierId, $slots);
+            if ($slots[LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS]-- >= 0) {
+                $data = $this->limiterDataConverter->updateCarrierSlots($billingCarrierId, $slots);
                 $this->set2Storage($data);
             }
         } catch (\Throwable $e) {
@@ -268,10 +268,10 @@ class LimiterPerformer
 
         try {
             $redisData = $this->getDataFromRedisAsArray();
-            $slots     = $this->limiterDataMapper->extractCarrierSlots($redisData, $billingCarrierId);
+            $slots     = $this->limiterDataConverter->extractCarrierSlots($redisData, $billingCarrierId);
 
-            if ($slots[LimiterDataMapper::OPEN_SUBSCRIPTION_SLOTS]-- >= 0) {
-                $data = $this->limiterDataMapper->updateCarrierSlots($billingCarrierId, $slots);
+            if ($slots[LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS]-- >= 0) {
+                $data = $this->limiterDataConverter->updateCarrierSlots($billingCarrierId, $slots);
                 $this->set2Storage($data);
             }
         } catch (\Throwable $e) {
@@ -287,7 +287,7 @@ class LimiterPerformer
     private function lock(): Lock
     {
         $lockerFactory = $this->lockerFactory->createLockFactory();
-        $lock          = $lockerFactory->createLock(LimiterDataMapper::KEY, 2);
+        $lock          = $lockerFactory->createLock(LimiterDataConverter::KEY, 2);
         // $lock->acquire();
 
         return $lock;

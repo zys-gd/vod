@@ -14,10 +14,10 @@ services:
     SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterPerformer:
         arguments:
             - '@app.predis'
-            - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataMapper'
+            - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataConverter'
             - '@SubscriptionBundle\Service\SubscriptionLimiter\Locker\LockerFactory'
 
-    SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataMapper: ~
+    SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataConverter: ~
 
     SubscriptionBundle\Service\SubscriptionLimiter\Locker\LockerFactory:
         arguments:

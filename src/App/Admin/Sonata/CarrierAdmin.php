@@ -11,7 +11,7 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterPerformer;
-use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataMapper;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataConverter;
 use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -153,7 +153,7 @@ class CarrierAdmin extends AbstractAdmin
         /** @var Carrier $subject */
         $subject = $this->getSubject();
 
-        $counter = $this->limiterPerformer->getCarrierSlots($subject->getBillingCarrierId())[LimiterDataMapper::OPEN_SUBSCRIPTION_SLOTS];
+        $counter = $this->limiterPerformer->getCarrierSlots($subject->getBillingCarrierId())[LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS];
 
         $subject->setCounter($subject->getNumberOfAllowedSubscriptionsByConstraint() - $counter);
 

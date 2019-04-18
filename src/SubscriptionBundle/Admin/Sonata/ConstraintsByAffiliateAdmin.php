@@ -16,7 +16,7 @@ use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\AffiliateLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
-use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataMapper;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataConverter;
 use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterPerformer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -192,10 +192,7 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
         /** @var ConstraintByAffiliate $subject */
         $subject = $this->getSubject();
 
-        $carrierLimiterData = new CarrierLimiterData($subject->getCarrier());
-        $carrierLimiterData->setAffiliate($subject->getAffiliate());
-        $carrierLimiterData->setSubscriptionConstraint($subject);
-        $counter = $this->limiterPerformer->getCarrierAffiliateConstraintSlots($carrierLimiterData)[LimiterDataMapper::OPEN_SUBSCRIPTION_SLOTS] ?? 0;
+        $counter = $this->limiterPerformer->getCarrierAffiliateConstraintSlots($subject->getCarrier()->getBillingCarrierId(), $subject->getAffiliate()->getUuid(), $subject->getUuid())[LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS] ?? 0;
 
         $subject->setCounter($subject->getNumberOfActions() - $counter);
 

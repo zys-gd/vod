@@ -6,7 +6,7 @@ namespace SubscriptionBundle\Service\SubscriptionLimiter\Limiter;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\AffiliateLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
 
-class LimiterDataMapper
+class LimiterDataConverter
 {
     const KEY                     = 'subscription_limiter';
     const SLOTS                   = 'slots';
