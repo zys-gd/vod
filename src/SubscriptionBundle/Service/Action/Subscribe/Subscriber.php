@@ -141,6 +141,7 @@ class Subscriber
 
         try {
             $response = $this->performSubscribe($additionalData, $subscription);
+            $this->onSubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
 
             if ($response->isSuccessful() && $response->isFinal()) {
                 $this->subscriptionCounterUpdater->updateSubscriptionCounter($subscription);
@@ -175,6 +176,7 @@ class Subscriber
 
             $response = $this->performSubscribe($additionalData, $subscription);
             $this->onSubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
+            $subscription->setCurrentStage(Subscription::ACTION_SUBSCRIBE);
             return $response;
 
         } catch (SubscribingProcessException $exception) {
@@ -195,6 +197,7 @@ class Subscriber
      * @param $additionalData
      * @param $subscription
      * @return ProcessResult
+     * @throws SubscribingProcessException
      */
     protected function performSubscribe(array $additionalData, Subscription $subscription): ProcessResult
     {
@@ -210,19 +213,15 @@ class Subscriber
                     $carrier
                 );
 
-                return $this->fakeResponseProvider->getDummyResult(
-                    $subscription,
-                    SubscribeProcess::PROCESS_METHOD_SUBSCRIBE,
-                    ProcessResult::STATUS_SUCCESSFUL
-                );
-
             } catch (NotificationSendFailedException $e) {
-                return $this->fakeResponseProvider->getDummyResult(
-                    $subscription,
-                    SubscribeProcess::PROCESS_METHOD_SUBSCRIBE,
-                    ProcessResult::STATUS_FAILED
-                );
+                throw new SubscribingProcessException('Error while trying to subscribe', 0, $e);
             }
+
+            return $this->fakeResponseProvider->getDummyResult(
+                $subscription,
+                SubscribeProcess::PROCESS_METHOD_SUBSCRIBE,
+                ProcessResult::STATUS_SUCCESSFUL
+            );
 
         } else {
             $parameters = $this->subscribeParametersProvider->provideParameters($subscription, $additionalData);

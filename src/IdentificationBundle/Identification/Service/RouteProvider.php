@@ -61,6 +61,11 @@ class RouteProvider
         return $this->router->generate($this->homepageRoute, $parameters, RouterInterface::ABSOLUTE_URL);
     }
 
+    public function getShortLinkToHomepage(array $parameters = []): string
+    {
+        return $this->router->generate($this->homepageRoute, $parameters, RouterInterface::NETWORK_PATH);
+    }
+
     public function getLinkToLanding()
     {
         return $this->router->generate($this->landingRoute, [], RouterInterface::ABSOLUTE_URL);
