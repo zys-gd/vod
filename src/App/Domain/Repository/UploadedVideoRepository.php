@@ -21,6 +21,7 @@ class UploadedVideoRepository extends \Doctrine\ORM\EntityRepository
             ->leftJoin('v.subcategory', 'subcategory')
             ->leftJoin('subcategory.parent', 'category')
             ->where($queryBuilder->expr()->orX('v.expiredDate > :currentDateTime', 'v.expiredDate IS NULL'))
+            ->orderBy('v.createdDate', 'DESC')
             ->setParameter('currentDateTime', new \DateTime())
             ->addSelect('subcategory', 'category');
 
