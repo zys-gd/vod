@@ -57,14 +57,20 @@ final class Version20190417130943 extends AbstractMigration implements Container
         /** @var array $allPacksWithCarrierUuids */
         $allPacksWithCarrierUuids = $this->getAllSubscriptionPacksWithCarrierUuids();
 
-        /** @var array(SubscriptionPack, carrierUuid) $packWithCarrierUuid */
-        foreach ($allPacksWithCarrierUuids as $packWithCarrierUuid) {
-            /** @var SubscriptionPack $pack */
-            $pack = $packWithCarrierUuid[0];
-            /** @var string $carrierUuid */
-            $carrierUuid = $packWithCarrierUuid['joinedCarrierUuid'];
+        $index = 0;
 
-            $pack->setCarrierUuid($carrierUuid);
+        /** @var array(SubscriptionPack, carrierUuid) $packWithCarrierUuid */
+        foreach ($allPacksWithCarrierUuids as $key => $subscriptionPack) {
+            if (gettype($key) === 'integer') {
+                continue;
+            }
+
+            /** @var SubscriptionPack $pack */
+            $pack = $subscriptionPack;
+            /** @var string $carrierUuid */
+            $carrier = $allPacksWithCarrierUuids[$index++];
+
+            $pack->setCarrier($carrier);
 
             $this->entityManager->persist($pack);
         }
@@ -78,7 +84,7 @@ final class Version20190417130943 extends AbstractMigration implements Container
     private function getAllSubscriptionPacksWithCarrierUuids()
     {
         $query = $this->entityManager->createQueryBuilder()
-            ->select('sp', 'c.uuid AS joinedCarrierUuid')
+            ->select('sp', 'c')
             ->from(SubscriptionPack::class, 'sp','sp.uuid')
             ->join(Carrier::class,'c', Join::WITH, 'sp.carrierId = c.billingCarrierId')
             ->getQuery();

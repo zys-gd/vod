@@ -82,7 +82,6 @@ class LoadSubscriptionPackData extends AbstractFixture implements ContainerAware
             $pack->setCarrierId($carrier_id);
             $pack->setCarrier($carrier);
             $pack->setCarrierName($carrier_name);
-            $pack->setCarrierUuid($carrier->getUuid());
 
             $tierParts = explode(' ', $tier_name);
             if (!isset($tierParts[1])) {

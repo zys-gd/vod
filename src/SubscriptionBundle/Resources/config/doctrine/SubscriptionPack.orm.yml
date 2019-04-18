@@ -45,10 +45,6 @@ SubscriptionBundle\Entity\SubscriptionPack:
             nullable: false
             precision: 0
             column: carrier_name
-        carrierUuid:
-            type: guid
-            nullable: false
-            column: carrier_uuid
         carrierId:
             type: integer
             scale: 0
