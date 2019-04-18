@@ -41,8 +41,8 @@ class AffiliateLimiterData
     public function __construct(AffiliateInterface $affiliate,
         ConstraintByAffiliate $constraintByAffiliate,
         int $billingCarrierId,
-        ?int $processingSlots,
-        ?int $openSubscriptionSlots)
+        ?int $processingSlots = null,
+        ?int $openSubscriptionSlots = null)
     {
         $this->affiliate             = $affiliate;
         $this->constraintByAffiliate = $constraintByAffiliate;

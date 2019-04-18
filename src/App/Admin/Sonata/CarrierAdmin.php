@@ -34,11 +34,11 @@ class CarrierAdmin extends AbstractAdmin
     /**
      * CarrierAdmin constructor
      *
-     * @param string                 $code
-     * @param string                 $class
-     * @param string                 $baseControllerName
-     * @param SubscriptionLimiter    $subscriptionLimiter
-     * @param LimiterPerformer       $limiterPerformer
+     * @param string              $code
+     * @param string              $class
+     * @param string              $baseControllerName
+     * @param SubscriptionLimiter $subscriptionLimiter
+     * @param LimiterPerformer    $limiterPerformer
      */
     public function __construct(
         string $code,
@@ -46,16 +46,17 @@ class CarrierAdmin extends AbstractAdmin
         string $baseControllerName,
         SubscriptionLimiter $subscriptionLimiter,
         LimiterPerformer $limiterPerformer
-    ) {
+    )
+    {
         $this->subscriptionLimiter = $subscriptionLimiter;
-        $this->limiterPerformer = $limiterPerformer;
+        $this->limiterPerformer    = $limiterPerformer;
         parent::__construct($code, $class, $baseControllerName);
     }
 
     /**
      * @param DatagridMapper $datagridMapper
      */
-    protected function configureDatagridFilters (DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
             ->add('uuid')
@@ -82,7 +83,7 @@ class CarrierAdmin extends AbstractAdmin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields (ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
             ->add('uuid')
@@ -100,13 +101,13 @@ class CarrierAdmin extends AbstractAdmin
             ->add('subscriptionPeriod')
             ->add('resubAllowed')
             ->add('isCampaignsOnPause')
-            ->add('_action', null, array(
-                'actions' => array(
-                    'show' => array(),
-                    'edit' => array(),
-                    'delete' => array(),
-                )
-            ));
+            ->add('_action', null, [
+                'actions' => [
+                    'show'   => [],
+                    'edit'   => [],
+                    'delete' => [],
+                ]
+            ]);
     }
 
     /**
@@ -114,7 +115,7 @@ class CarrierAdmin extends AbstractAdmin
      *
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields (FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
             ->add('uuid', TextType::class, [
@@ -136,7 +137,7 @@ class CarrierAdmin extends AbstractAdmin
             ->add('redirectUrl', UrlType::class, ['required' => false])
             ->add('resubAllowed')
             ->add('isCampaignsOnPause')
-            ->add('isUnlimitedSubscriptionAttemptsAllowed', null,[
+            ->add('isUnlimitedSubscriptionAttemptsAllowed', null, [
                 'attr' => ["class" => "unlimited-games"]
             ])
             ->add('numberOfAllowedSubscription', null, [
@@ -147,13 +148,12 @@ class CarrierAdmin extends AbstractAdmin
     /**
      * @param ShowMapper $showMapper
      */
-    protected function configureShowFields (ShowMapper $showMapper)
+    protected function configureShowFields(ShowMapper $showMapper)
     {
         /** @var Carrier $subject */
         $subject = $this->getSubject();
 
-        $carrierLimiterData = new CarrierLimiterData($subject);
-        $counter = $this->limiterPerformer->getCarrierSlots($carrierLimiterData)[LimiterDataMapper::OPEN_SUBSCRIPTION_SLOTS];
+        $counter = $this->limiterPerformer->getCarrierSlots($subject->getBillingCarrierId())[LimiterDataMapper::OPEN_SUBSCRIPTION_SLOTS];
 
         $subject->setCounter($subject->getNumberOfAllowedSubscriptionsByConstraint() - $counter);
 
@@ -195,8 +195,14 @@ class CarrierAdmin extends AbstractAdmin
      */
     public function postUpdate($carrier)
     {
-        $carrierLimiterData = new CarrierLimiterData($carrier);
-        $this->limiterPerformer->saveCarrierConstraint($carrierLimiterData);
+        if ($carrier->getNumberOfAllowedSubscriptionsByConstraint() > 0) {
+            $carrierLimiterData = new CarrierLimiterData($carrier, $carrier->getNumberOfAllowedSubscriptionsByConstraint(), $carrier->getNumberOfAllowedSubscriptionsByConstraint());
+            $this->limiterPerformer->saveCarrierConstraint($carrierLimiterData);
+        }
+
+        if ($carrier->getNumberOfAllowedSubscriptionsByConstraint() === null) {
+            $this->limiterPerformer->removeCarrierConstraint($carrier->getBillingCarrierId());
+        }
     }
 
     /**
@@ -204,7 +210,9 @@ class CarrierAdmin extends AbstractAdmin
      */
     public function postPersist($carrier)
     {
-        $carrierLimiterData = new CarrierLimiterData($carrier);
-        $this->limiterPerformer->saveCarrierConstraint($carrierLimiterData);
+        if ($carrier->getNumberOfAllowedSubscriptionsByConstraint() > 0) {
+            $carrierLimiterData = new CarrierLimiterData($carrier, $carrier->getNumberOfAllowedSubscriptionsByConstraint(), $carrier->getNumberOfAllowedSubscriptionsByConstraint());
+            $this->limiterPerformer->saveCarrierConstraint($carrierLimiterData);
+        }
     }
 }

@@ -52,9 +52,9 @@ interface AffiliateInterface
 
     /**
      * @param string $capType
-     * @param CarrierInterface $carrier
+     * @param int    $billingCarrierId
      *
      * @return ConstraintByAffiliate|null
      */
-    public function getConstraint(string $capType, CarrierInterface $carrier): ?ConstraintByAffiliate;
+    public function getConstraint(string $capType, int $billingCarrierId): ?ConstraintByAffiliate;
 }

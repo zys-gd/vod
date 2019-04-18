@@ -98,13 +98,10 @@ class OnSubscribeUpdater
      */
     public function updateSubscriptionByCallbackResponse(Subscription $subscription, ProcessResult $response, SessionInterface $session)
     {
-        $carrierLimiterData = new CarrierLimiterData($subscription->getUser()->getCarrier());
-        $this->subscriptionLimiter->setLimiterData($session, $carrierLimiterData);
-
         if ($response->isSuccessful()) {
             $this->applySuccess($subscription);
 
-            $this->subscriptionLimiter->finishLimitingProcess($carrierLimiterData);
+            $this->subscriptionLimiter->finishLimitingProcess($session);
         }
 
         $this->commonSubscriptionUpdater->updateSubscriptionByCallbackResponse($subscription, $response);
@@ -123,7 +120,7 @@ class OnSubscribeUpdater
                     break;
                 default:
                     $this->applyFailure($subscription, $response->getError());
-                    $this->subscriptionLimiter->cancelLimitingProcess($carrierLimiterData);
+                    $this->subscriptionLimiter->cancelLimitingProcess($session);
             }
         }
     }

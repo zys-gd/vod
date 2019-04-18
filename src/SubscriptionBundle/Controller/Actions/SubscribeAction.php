@@ -186,15 +186,12 @@ class SubscribeAction extends AbstractController
         $user = $this->userExtractor->getUserByIdentificationData($identificationData);
 
 
-        $carrierLimiterData = new CarrierLimiterData($user->getCarrier());
-        $this->subscriptionLimiter->setLimiterData($request->getSession(), $carrierLimiterData);
-
-        if ($this->subscriptionLimiter->isLimitReached($carrierLimiterData)) {
+        if ($this->subscriptionLimiter->isLimitReached($request->getSession())) {
             return RedirectResponse::create($this->defaultRedirectUrl);
         }
 
-        if ($this->subscriptionLimiter->need2BeLimited($user) && !$this->subscriptionLimiter->isLimitReached($carrierLimiterData)) {
-            $this->subscriptionLimiter->startLimitingProcess($carrierLimiterData);
+        if ($this->subscriptionLimiter->need2BeLimited($user) && !$this->subscriptionLimiter->isLimitReached($request->getSession())) {
+            $this->subscriptionLimiter->startLimitingProcess($request->getSession());
         }
 
         try {

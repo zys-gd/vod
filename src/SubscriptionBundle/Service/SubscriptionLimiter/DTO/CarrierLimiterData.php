@@ -29,8 +29,8 @@ class CarrierLimiterData
      * @param int|null         $openSubscriptionSlots
      */
     public function __construct(CarrierInterface $carrier,
-        ?int $processingSlots,
-        ?int $openSubscriptionSlots)
+        ?int $processingSlots = null,
+        ?int $openSubscriptionSlots = null)
     {
         $this->carrier               = $carrier;
         $this->processingSlots       = $processingSlots;

@@ -5,6 +5,7 @@ namespace SubscriptionBundle\Command;
 use Doctrine\ORM\EntityManagerInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository;
+use SubscriptionBundle\Service\SubscriptionLimiter\DTO\AffiliateLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterPerformer;
 use Symfony\Component\Console\Command\Command;
@@ -77,11 +78,14 @@ class ResetConstraintsByAffiliateCounters extends Command
         foreach ($constraints as $constraint) {
 
 
-            $carrierLimiterData = new CarrierLimiterData($constraint->getCarrier());
-            $carrierLimiterData->setAffiliate($constraint->getAffiliate());
-            $carrierLimiterData->setSubscriptionConstraint($constraint);
+            $carrier = $constraint->getCarrier();
 
-            $this->limiterPerformer->saveCarrierAffiliateConstraint($carrierLimiterData);
+            $carrierLimiterData = new CarrierLimiterData($carrier, $carrier->getNumberOfAllowedSubscriptionsByConstraint(), $carrier->getNumberOfAllowedSubscriptionsByConstraint());
+
+            $affiliateLimiterData = new AffiliateLimiterData($constraint->getAffiliate(), $constraint, $carrier->getBillingCarrierId(), $constraint->getNumberOfActions(), $constraint->getNumberOfActions());
+
+            $this->limiterPerformer->saveCarrierConstraint($carrierLimiterData);
+            $this->limiterPerformer->saveCarrierAffiliateConstraint($affiliateLimiterData);
 
             $constraint
                 ->setIsCapAlertDispatch(false)

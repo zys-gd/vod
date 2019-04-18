@@ -83,7 +83,7 @@ class ResetConstraintsByCarrierCounters extends Command
             }
             $output->writeln($carrier->getName());
 
-            $carrierLimiterData = new CarrierLimiterData($carrier);
+            $carrierLimiterData = new CarrierLimiterData($carrier, $allowedSubscriptions, $allowedSubscriptions);
             $this->limiterPerformer->saveCarrierConstraint($carrierLimiterData);
 
             $carrier

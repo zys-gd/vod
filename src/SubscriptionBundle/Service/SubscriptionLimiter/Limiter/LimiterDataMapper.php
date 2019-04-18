@@ -13,17 +13,12 @@ class LimiterDataMapper
     const PROCESSING_SLOTS        = 'processing_slots';
     const OPEN_SUBSCRIPTION_SLOTS = 'open_subscription_slots';
 
-    /**
-     * @param CarrierLimiterData $carrierLimiterData
-     *
-     * @return array
-     */
-    public function saveCarrierConstraint(CarrierLimiterData $carrierLimiterData): array
+    public function convertCarrierLimiterData2Array(CarrierLimiterData $carrierLimiterData): array
     {
         $slots = $this->filterFromNull([
             self::SLOTS                   => $carrierLimiterData->getCarrier()->getNumberOfAllowedSubscriptionsByConstraint(),
-            self::PROCESSING_SLOTS        => $carrierLimiterData->getProcessingSlots() ?? $carrierLimiterData->getCarrier()->getNumberOfAllowedSubscriptionsByConstraint(),
-            self::OPEN_SUBSCRIPTION_SLOTS => $carrierLimiterData->getOpenSubscriptionSlots() ?? $carrierLimiterData->getCarrier()->getNumberOfAllowedSubscriptionsByConstraint()
+            self::PROCESSING_SLOTS        => $carrierLimiterData->getProcessingSlots(),
+            self::OPEN_SUBSCRIPTION_SLOTS => $carrierLimiterData->getOpenSubscriptionSlots()
         ]);
 
         $limiterStructure = [
@@ -34,17 +29,12 @@ class LimiterDataMapper
         return $limiterStructure;
     }
 
-    /**
-     * @param AffiliateLimiterData $affiliateLimiterData
-     *
-     * @return array
-     */
-    public function saveCarrierAffiliateConstraint(AffiliateLimiterData $affiliateLimiterData): array
+    public function convertCarrierAffiliateConstraint(AffiliateLimiterData $affiliateLimiterData): array
     {
         $slots = $this->filterFromNull([
             self::SLOTS                   => $affiliateLimiterData->getConstraintByAffiliate()->getNumberOfActions(),
-            self::PROCESSING_SLOTS        => $affiliateLimiterData->getProcessingSlots() ?? $affiliateLimiterData->getConstraintByAffiliate()->getNumberOfActions(),
-            self::OPEN_SUBSCRIPTION_SLOTS => $affiliateLimiterData->getOpenSubscriptionSlots() ?? $affiliateLimiterData->getConstraintByAffiliate()->getNumberOfActions()
+            self::PROCESSING_SLOTS        => $affiliateLimiterData->getProcessingSlots(),
+            self::OPEN_SUBSCRIPTION_SLOTS => $affiliateLimiterData->getOpenSubscriptionSlots()
         ]);
 
         $limiterStructure = [
@@ -60,20 +50,21 @@ class LimiterDataMapper
     }
 
     /**
-     * @param CarrierLimiterData $carrierLimiterData
+     * @param int   $billingCarrierId
+     * @param array $slots
      *
      * @return array
      */
-    public function updateCarrierSlots(CarrierLimiterData $carrierLimiterData): array
+    public function updateCarrierSlots(int $billingCarrierId, array $slots): array
     {
         $slots = $this->filterFromNull([
-            self::PROCESSING_SLOTS        => $carrierLimiterData->getProcessingSlots(),
-            self::OPEN_SUBSCRIPTION_SLOTS => $carrierLimiterData->getOpenSubscriptionSlots()
+            self::PROCESSING_SLOTS        => $slots[self::PROCESSING_SLOTS],
+            self::OPEN_SUBSCRIPTION_SLOTS => $slots[self::OPEN_SUBSCRIPTION_SLOTS]
         ]);
 
         $limiterStructure = [
             self::KEY => [
-                $carrierLimiterData->getCarrier()->getBillingCarrierId() => $slots
+                $billingCarrierId => $slots
             ]
         ];
         return $limiterStructure;
@@ -150,5 +141,46 @@ class LimiterDataMapper
         return array_filter($array, function ($value) {
             return !is_null($value);
         });
+    }
+
+    /**
+     * @param array $redisData
+     * @param int   $billingCarrierId
+     *
+     * @return array
+     */
+    public function extractCarrierSlots(array $redisData, int $billingCarrierId): array
+    {
+        try {
+            return [
+                self::PROCESSING_SLOTS        => $redisData[self::KEY][$billingCarrierId][self::PROCESSING_SLOTS] ?? null,
+                self::OPEN_SUBSCRIPTION_SLOTS => $redisData[self::KEY][$billingCarrierId][self::OPEN_SUBSCRIPTION_SLOTS] ?? null
+            ];
+        } catch (\ErrorException $e) {
+            // smth throw
+        }
+    }
+
+    /**
+     * @param array  $redisData
+     * @param int    $billingCarrierId
+     * @param string $affiliateUuid
+     * @param string $constraintUuid
+     *
+     * @return array
+     */
+    public function extractAffiliateSlots(array $redisData,
+        int $billingCarrierId,
+        string $affiliateUuid,
+        string $constraintUuid): array
+    {
+        try {
+            return [
+                self::PROCESSING_SLOTS        => $redisData[self::KEY][$billingCarrierId][$affiliateUuid][$constraintUuid][self::PROCESSING_SLOTS] ?? null,
+                self::OPEN_SUBSCRIPTION_SLOTS => $redisData[self::KEY][$billingCarrierId][$affiliateUuid][$constraintUuid][self::OPEN_SUBSCRIPTION_SLOTS] ?? null
+            ];
+        } catch (\ErrorException $e) {
+            // smth throw
+        }
     }
 }

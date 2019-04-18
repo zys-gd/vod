@@ -5,7 +5,10 @@ namespace SubscriptionBundle\Service\SubscriptionLimiter;
 
 use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Campaign;
+use App\Domain\Entity\Carrier;
 use IdentificationBundle\Entity\User;
+use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Service\CampaignExtractor;
 use SubscriptionBundle\Service\SubscriptionExtractor;
@@ -17,10 +20,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class SubscriptionLimiter implements SubscriptionLimiterInterface
 {
     /**
-     * @var CampaignExtractor
-     */
-    private $campaignExtractor;
-    /**
      * @var Limiter
      */
     private $limiter;
@@ -29,24 +28,29 @@ class SubscriptionLimiter implements SubscriptionLimiterInterface
      */
     private $subscriptionExtractor;
 
-    public function __construct(CampaignExtractor $campaignExtractor,
-        SubscriptionExtractor $subscriptionExtractor,
-        Limiter $Limiter)
+    /**
+     * SubscriptionLimiter constructor.
+     *
+     * @param Limiter               $Limiter
+     * @param SubscriptionExtractor $subscriptionExtractor
+     */
+    public function __construct(Limiter $Limiter, SubscriptionExtractor $subscriptionExtractor)
     {
-        $this->campaignExtractor     = $campaignExtractor;
-        $this->subscriptionExtractor = $subscriptionExtractor;
         $this->limiter               = $Limiter;
+        $this->subscriptionExtractor = $subscriptionExtractor;
     }
 
     /**
-     * @param CarrierLimiterData|null   $carrierLimiterData
-     * @param AffiliateLimiterData|null $affiliateLimiterData
+     * @param SessionInterface $session
      *
      * @return bool
      */
-    public function isLimitReached(?CarrierLimiterData $carrierLimiterData,
-        ?AffiliateLimiterData $affiliateLimiterData): bool
+    public function isLimitReached(SessionInterface $session): bool
     {
+        $carrierLimiterData = $this->limiter->createCarrierLimiterDataFromSession($session);
+
+        $affiliateLimiterData = $this->limiter->createAffiliateLimiterDataFromSession($session);
+
         if ($carrierLimiterData && $this->limiter->getCarrierProcessingSlots($carrierLimiterData) === 0) {
             return true;
         }
@@ -56,21 +60,39 @@ class SubscriptionLimiter implements SubscriptionLimiterInterface
         return false;
     }
 
-    public function startLimitingProcess(?CarrierLimiterData $carrierLimiterData,
-        ?AffiliateLimiterData $affiliateLimiterData)
+    /**
+     * @param SessionInterface $session
+     */
+    public function startLimitingProcess(SessionInterface $session)
     {
+        $carrierLimiterData = $this->limiter->createCarrierLimiterDataFromSession($session);
+
+        $affiliateLimiterData = $this->limiter->createAffiliateLimiterDataFromSession($session);
+
         $this->limiter->decrProcessingSlots($carrierLimiterData, $affiliateLimiterData);
     }
 
-    public function finishLimitingProcess(?CarrierLimiterData $carrierLimiterData,
-        ?AffiliateLimiterData $affiliateLimiterData)
+    /**
+     * @param SessionInterface $session
+     */
+    public function finishLimitingProcess(SessionInterface $session)
     {
+        $carrierLimiterData = $this->limiter->createCarrierLimiterDataFromSession($session);
+
+        $affiliateLimiterData = $this->limiter->createAffiliateLimiterDataFromSession($session);
+
         $this->limiter->decrSubscriptionSlots($carrierLimiterData, $affiliateLimiterData);
     }
 
-    public function cancelLimitingProcess(?CarrierLimiterData $carrierLimiterData,
-        ?AffiliateLimiterData $affiliateLimiterData)
+    /**
+     * @param SessionInterface $session
+     */
+    public function cancelLimitingProcess(SessionInterface $session)
     {
+        $carrierLimiterData = $this->limiter->createCarrierLimiterDataFromSession($session);
+
+        $affiliateLimiterData = $this->limiter->createAffiliateLimiterDataFromSession($session);
+
         $this->limiter->incrProcessingSlots($carrierLimiterData, $affiliateLimiterData);
     }
 
@@ -83,28 +105,5 @@ class SubscriptionLimiter implements SubscriptionLimiterInterface
     public function need2BeLimited(User $user): bool
     {
         return !(bool)$this->subscriptionExtractor->getExistingSubscriptionForUser($user);
-    }
-
-    /**
-     * @param SessionInterface          $session
-     * @param CarrierLimiterData        $carrierLimiterData
-     * @param AffiliateLimiterData|null $affiliateLimiterData
-     */
-    public function setLimiterData(SessionInterface $session,
-        ?CarrierLimiterData $carrierLimiterData,
-        ?AffiliateLimiterData $affiliateLimiterData): void
-    {
-        /** @var Campaign $campaign */
-        $campaign = $this->campaignExtractor->getCampaignFromSession($session);
-        if ($campaign) {
-            /** @var Affiliate $affiliate */
-            $affiliate = $campaign->getAffiliate();
-
-            /** @var ConstraintByAffiliate $subscriptionConstraint */
-            $subscriptionConstraint = $affiliate->getConstraint(ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE, $carrierLimiterData->getCarrier());
-
-            $affiliate && $carrierLimiterData->setAffiliate($affiliate);
-            $subscriptionConstraint && $carrierLimiterData->setSubscriptionConstraint($subscriptionConstraint);
-        }
     }
 }

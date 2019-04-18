@@ -11,15 +11,13 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 interface SubscriptionLimiterInterface
 {
-    public function isLimitReached(?CarrierLimiterData $carrierLimiterData, ?AffiliateLimiterData $affiliateLimiterData): bool;
+    public function isLimitReached(SessionInterface $session): bool;
 
     public function need2BeLimited(User $user): bool;
 
-    public function startLimitingProcess(?CarrierLimiterData $carrierLimiterData, ?AffiliateLimiterData $affiliateLimiterData);
+    public function startLimitingProcess(SessionInterface $session);
 
-    public function finishLimitingProcess(?CarrierLimiterData $carrierLimiterData, ?AffiliateLimiterData $affiliateLimiterData);
+    public function finishLimitingProcess(SessionInterface $session);
 
-    public function cancelLimitingProcess(?CarrierLimiterData $carrierLimiterData, ?AffiliateLimiterData $affiliateLimiterData);
-
-    public function setLimiterData(SessionInterface $session, ?CarrierLimiterData $carrierLimiterData, ?AffiliateLimiterData $affiliateLimiterData);
+    public function cancelLimitingProcess(SessionInterface $session);
 }
