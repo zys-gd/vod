@@ -109,10 +109,13 @@ class Subscriber
 
     /**
      * Subscribe user to given subscription pack
+     *
      * @param User             $user
      * @param SubscriptionPack $plan
      * @param array            $additionalData
+     *
      * @return array
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function subscribe(User $user, SubscriptionPack $plan, $additionalData = []): array
     {
@@ -132,6 +135,8 @@ class Subscriber
 
         try {
             $response = $this->performSubscribe($additionalData, $subscription);
+            $this->onSubscribeUpdater->updateSubscriptionByResponse($subscription, $response, $this->session);
+
             return [$subscription, $response];
 
         } catch (SubscribingProcessException $exception) {
@@ -183,6 +188,7 @@ class Subscriber
      * @param $additionalData
      * @param $subscription
      * @return ProcessResult
+     * @throws SubscribingProcessException
      */
     protected function performSubscribe(array $additionalData, Subscription $subscription): ProcessResult
     {
