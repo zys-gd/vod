@@ -52,7 +52,7 @@ services:
 
     App\Admin\Sonata\CarrierAdmin:
         autowire: true
-        arguments: [~, App\Domain\Entity\Carrier, ~,  '@SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter', '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterPerformer']
+        arguments: [~, App\Domain\Entity\Carrier, ~,  '@SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter', '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterPerformer', '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataExtractor']
         tags:
             - { name: sonata.admin, manager_type: orm, group: carrier_management, label: Carriers }
 

@@ -65,7 +65,7 @@ class LimiterDataConverter
      *
      * @return array
      */
-    public function updateCarrierSlots(int $billingCarrierId, array $slots): array
+    public function convertCarrierSlots2Array(int $billingCarrierId, array $slots): array
     {
         $slots = $this->filterFromNull([
             self::PROCESSING_SLOTS        => $slots[self::PROCESSING_SLOTS],
@@ -88,7 +88,7 @@ class LimiterDataConverter
      *
      * @return array
      */
-    public function updateCarrierAffiliateConstraintSlots(int $billingCarrierId,
+    public function convertCarrierAffiliateConstraintSlots2Array(int $billingCarrierId,
         string $affiliateUuid,
         string $constraintUuid,
         array $slots): array
@@ -120,46 +120,5 @@ class LimiterDataConverter
         return array_filter($array, function ($value) {
             return !is_null($value);
         });
-    }
-
-    /**
-     * @param array $redisData
-     * @param int   $billingCarrierId
-     *
-     * @return array
-     */
-    public function extractCarrierSlots(array $redisData, int $billingCarrierId): array
-    {
-        try {
-            return [
-                self::PROCESSING_SLOTS        => $redisData[self::KEY][$billingCarrierId][self::PROCESSING_SLOTS] ?? null,
-                self::OPEN_SUBSCRIPTION_SLOTS => $redisData[self::KEY][$billingCarrierId][self::OPEN_SUBSCRIPTION_SLOTS] ?? null
-            ];
-        } catch (\ErrorException $e) {
-            // smth throw
-        }
-    }
-
-    /**
-     * @param array  $redisData
-     * @param int    $billingCarrierId
-     * @param string $affiliateUuid
-     * @param string $constraintUuid
-     *
-     * @return array
-     */
-    public function extractAffiliateSlots(array $redisData,
-        int $billingCarrierId,
-        string $affiliateUuid,
-        string $constraintUuid): array
-    {
-        try {
-            return [
-                self::PROCESSING_SLOTS        => $redisData[self::KEY][$billingCarrierId][$affiliateUuid][$constraintUuid][self::PROCESSING_SLOTS] ?? null,
-                self::OPEN_SUBSCRIPTION_SLOTS => $redisData[self::KEY][$billingCarrierId][$affiliateUuid][$constraintUuid][self::OPEN_SUBSCRIPTION_SLOTS] ?? null
-            ];
-        } catch (\ErrorException $e) {
-            // smth throw
-        }
     }
 }

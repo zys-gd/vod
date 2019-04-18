@@ -17,6 +17,7 @@ use SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\AffiliateLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataConverter;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataExtractor;
 use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterPerformer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -43,6 +44,10 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
      * @var LimiterPerformer
      */
     private $limiterPerformer;
+    /**
+     * @var LimiterDataExtractor
+     */
+    private $limiterDataExtractor;
 
     /**
      * ConstraintsByAffiliateAdmin constructor
@@ -53,6 +58,7 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
      * @param ConstraintByAffiliateRepository $constraintByAffiliateRepository
      * @param EntityManagerInterface          $entityManager
      * @param LimiterPerformer                $limiterPerformer
+     * @param LimiterDataExtractor            $limiterDataExtractor
      */
     public function __construct(
         string $code,
@@ -60,12 +66,14 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
         string $baseControllerName,
         ConstraintByAffiliateRepository $constraintByAffiliateRepository,
         EntityManagerInterface $entityManager,
-        LimiterPerformer $limiterPerformer
+        LimiterPerformer $limiterPerformer,
+        LimiterDataExtractor $limiterDataExtractor
     )
     {
         $this->constraintByAffiliateRepository = $constraintByAffiliateRepository;
         $this->entityManager                   = $entityManager;
         $this->limiterPerformer                = $limiterPerformer;
+        $this->limiterDataExtractor = $limiterDataExtractor;
 
         parent::__construct($code, $class, $baseControllerName);
     }
@@ -192,7 +200,8 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
         /** @var ConstraintByAffiliate $subject */
         $subject = $this->getSubject();
 
-        $counter = $this->limiterPerformer->getCarrierAffiliateConstraintSlots($subject->getCarrier()->getBillingCarrierId(), $subject->getAffiliate()->getUuid(), $subject->getUuid())[LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS] ?? 0;
+        $affiliateLimiterData = new AffiliateLimiterData($subject->getAffiliate(), $subject, $subject->getCarrier()->getBillingCarrierId());
+        $counter = $this->limiterDataExtractor->getAffiliateSlots($affiliateLimiterData)[LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS] ?? 0;
 
         $subject->setCounter($subject->getNumberOfActions() - $counter);
 

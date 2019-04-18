@@ -10,6 +10,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataExtractor;
 use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterPerformer;
 use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataConverter;
 use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter;
@@ -30,27 +31,34 @@ class CarrierAdmin extends AbstractAdmin
      * @var LimiterPerformer
      */
     private $limiterPerformer;
+    /**
+     * @var LimiterDataExtractor
+     */
+    private $limiterDataExtractor;
 
     /**
      * CarrierAdmin constructor
      *
-     * @param string              $code
-     * @param string              $class
-     * @param string              $baseControllerName
-     * @param SubscriptionLimiter $subscriptionLimiter
-     * @param LimiterPerformer    $limiterPerformer
+     * @param string               $code
+     * @param string               $class
+     * @param string               $baseControllerName
+     * @param SubscriptionLimiter  $subscriptionLimiter
+     * @param LimiterPerformer     $limiterPerformer
+     * @param LimiterDataExtractor $limiterDataExtractor
      */
     public function __construct(
         string $code,
         string $class,
         string $baseControllerName,
         SubscriptionLimiter $subscriptionLimiter,
-        LimiterPerformer $limiterPerformer
+        LimiterPerformer $limiterPerformer,
+        LimiterDataExtractor $limiterDataExtractor
     )
     {
         $this->subscriptionLimiter = $subscriptionLimiter;
         $this->limiterPerformer    = $limiterPerformer;
         parent::__construct($code, $class, $baseControllerName);
+        $this->limiterDataExtractor = $limiterDataExtractor;
     }
 
     /**
@@ -153,7 +161,8 @@ class CarrierAdmin extends AbstractAdmin
         /** @var Carrier $subject */
         $subject = $this->getSubject();
 
-        $counter = $this->limiterPerformer->getCarrierSlots($subject->getBillingCarrierId())[LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS];
+        $carrierLimiterData = new CarrierLimiterData($subject);
+        $counter = $this->limiterDataExtractor->getCarrierSlots($carrierLimiterData)[LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS];
 
         $subject->setCounter($subject->getNumberOfAllowedSubscriptionsByConstraint() - $counter);
 
