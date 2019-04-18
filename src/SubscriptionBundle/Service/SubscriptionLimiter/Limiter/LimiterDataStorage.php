@@ -7,9 +7,8 @@ namespace SubscriptionBundle\Service\SubscriptionLimiter\Limiter;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\AffiliateLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\Locker\LockerFactory;
-use Symfony\Component\Lock\Lock;
 
-class LimiterPerformer
+class LimiterDataStorage
 {
     /**
      * @var \Predis\Client|\Redis|\RedisCluster
@@ -25,7 +24,7 @@ class LimiterPerformer
     private $lockerFactory;
 
     /**
-     * LimiterPerformer constructor.
+     * LimiterDataStorage constructor.
      *
      * @param                      $redis
      * @param LimiterDataConverter $limiterDataConverter
@@ -124,18 +123,10 @@ class LimiterPerformer
      * @param int   $billingCarrierId
      * @param array $slots
      */
-    public function updateCarrierConstraintsWithLock(int $billingCarrierId, array $slots)
+    public function updateCarrierConstraints(int $billingCarrierId, array $slots): void
     {
-        $lock = $this->lock();
-
-        try {
-            $data = $this->limiterDataConverter->convertCarrierSlots2Array($billingCarrierId, $slots);
-            $this->set2Storage($data);
-        } catch (\Throwable $e) {
-            // smth throw
-        } finally {
-            $this->unlock($lock);
-        }
+        $data = $this->limiterDataConverter->convertCarrierSlots2Array($billingCarrierId, $slots);
+        $this->set2Storage($data);
     }
 
     /**
@@ -144,40 +135,12 @@ class LimiterPerformer
      * @param string $constraintUuid
      * @param array  $slots
      */
-    public function updateAffiliateConstraintsWithLock(int $billingCarrierId,
+    public function updateAffiliateConstraints(int $billingCarrierId,
         string $affiliateUuid,
         string $constraintUuid,
-        array $slots)
+        array $slots): void
     {
-        $lock = $this->lock();
-
-        try {
-            $data = $this->limiterDataConverter->convertCarrierAffiliateConstraintSlots2Array($billingCarrierId, $affiliateUuid, $constraintUuid, $slots);
-            $this->set2Storage($data);
-        } catch (\Throwable $e) {
-            // smth throw
-        } finally {
-            $this->unlock($lock);
-        }
-    }
-
-    /**
-     * @return Lock
-     */
-    private function lock(): Lock
-    {
-        $lockerFactory = $this->lockerFactory->createLockFactory();
-        $lock          = $lockerFactory->createLock(LimiterDataConverter::KEY, 2);
-        // $lock->acquire();
-
-        return $lock;
-    }
-
-    /**
-     * @param Lock $lock
-     */
-    private function unlock(Lock $lock)
-    {
-        $lock->release();
+        $data = $this->limiterDataConverter->convertCarrierAffiliateConstraintSlots2Array($billingCarrierId, $affiliateUuid, $constraintUuid, $slots);
+        $this->set2Storage($data);
     }
 }

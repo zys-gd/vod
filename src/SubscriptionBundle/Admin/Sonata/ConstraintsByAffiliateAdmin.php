@@ -18,7 +18,7 @@ use SubscriptionBundle\Service\SubscriptionLimiter\DTO\AffiliateLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataConverter;
 use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataExtractor;
-use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterPerformer;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataStorage;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -41,9 +41,9 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
      */
     private $entityManager;
     /**
-     * @var LimiterPerformer
+     * @var LimiterDataStorage
      */
-    private $limiterPerformer;
+    private $limiterDataStorage;
     /**
      * @var LimiterDataExtractor
      */
@@ -57,7 +57,7 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
      * @param string                          $baseControllerName
      * @param ConstraintByAffiliateRepository $constraintByAffiliateRepository
      * @param EntityManagerInterface          $entityManager
-     * @param LimiterPerformer                $limiterPerformer
+     * @param LimiterDataStorage              $limiterDataStorage
      * @param LimiterDataExtractor            $limiterDataExtractor
      */
     public function __construct(
@@ -66,14 +66,14 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
         string $baseControllerName,
         ConstraintByAffiliateRepository $constraintByAffiliateRepository,
         EntityManagerInterface $entityManager,
-        LimiterPerformer $limiterPerformer,
+        LimiterDataStorage $limiterDataStorage,
         LimiterDataExtractor $limiterDataExtractor
     )
     {
         $this->constraintByAffiliateRepository = $constraintByAffiliateRepository;
         $this->entityManager                   = $entityManager;
-        $this->limiterPerformer                = $limiterPerformer;
-        $this->limiterDataExtractor = $limiterDataExtractor;
+        $this->limiterDataStorage              = $limiterDataStorage;
+        $this->limiterDataExtractor            = $limiterDataExtractor;
 
         parent::__construct($code, $class, $baseControllerName);
     }
@@ -230,8 +230,8 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
 
         $affiliateLimiterData = new AffiliateLimiterData($constraintByAffiliate->getAffiliate(), $constraintByAffiliate, $carrier->getBillingCarrierId());
 
-        $this->limiterPerformer->saveCarrierConstraint($carrierLimiterData);
-        $this->limiterPerformer->saveCarrierAffiliateConstraint($affiliateLimiterData);
+        $this->limiterDataStorage->saveCarrierConstraint($carrierLimiterData);
+        $this->limiterDataStorage->saveCarrierAffiliateConstraint($affiliateLimiterData);
     }
 
     /**
@@ -245,8 +245,8 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
 
         $affiliateLimiterData = new AffiliateLimiterData($constraintByAffiliate->getAffiliate(), $constraintByAffiliate, $carrier->getBillingCarrierId());
 
-        $this->limiterPerformer->saveCarrierConstraint($carrierLimiterData);
-        $this->limiterPerformer->saveCarrierAffiliateConstraint($affiliateLimiterData);
+        $this->limiterDataStorage->saveCarrierConstraint($carrierLimiterData);
+        $this->limiterDataStorage->saveCarrierAffiliateConstraint($affiliateLimiterData);
     }
 
     /**
@@ -254,7 +254,7 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
      */
     public function postRemove($object)
     {
-        $this->limiterPerformer->removeAffiliateConstraint($object->getCarrier()->getBillingCarrierId(),
+        $this->limiterDataStorage->removeAffiliateConstraint($object->getCarrier()->getBillingCarrierId(),
             $object->getAffiliate()->getUuid(),
             $object->getUuid()
         );

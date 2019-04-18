@@ -11,7 +11,7 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataExtractor;
-use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterPerformer;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataStorage;
 use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataConverter;
 use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -28,9 +28,9 @@ class CarrierAdmin extends AbstractAdmin
      */
     private $subscriptionLimiter;
     /**
-     * @var LimiterPerformer
+     * @var LimiterDataStorage
      */
-    private $limiterPerformer;
+    private $limiterDataStorage;
     /**
      * @var LimiterDataExtractor
      */
@@ -43,7 +43,7 @@ class CarrierAdmin extends AbstractAdmin
      * @param string               $class
      * @param string               $baseControllerName
      * @param SubscriptionLimiter  $subscriptionLimiter
-     * @param LimiterPerformer     $limiterPerformer
+     * @param LimiterDataStorage   $limiterDataStorage
      * @param LimiterDataExtractor $limiterDataExtractor
      */
     public function __construct(
@@ -51,14 +51,14 @@ class CarrierAdmin extends AbstractAdmin
         string $class,
         string $baseControllerName,
         SubscriptionLimiter $subscriptionLimiter,
-        LimiterPerformer $limiterPerformer,
+        LimiterDataStorage $limiterDataStorage,
         LimiterDataExtractor $limiterDataExtractor
     )
     {
         $this->subscriptionLimiter = $subscriptionLimiter;
-        $this->limiterPerformer    = $limiterPerformer;
-        parent::__construct($code, $class, $baseControllerName);
+        $this->limiterDataStorage  = $limiterDataStorage;
         $this->limiterDataExtractor = $limiterDataExtractor;
+        parent::__construct($code, $class, $baseControllerName);
     }
 
     /**
@@ -206,11 +206,11 @@ class CarrierAdmin extends AbstractAdmin
     {
         if ($carrier->getNumberOfAllowedSubscriptionsByConstraint() > 0) {
             $carrierLimiterData = new CarrierLimiterData($carrier, $carrier->getNumberOfAllowedSubscriptionsByConstraint(), $carrier->getNumberOfAllowedSubscriptionsByConstraint());
-            $this->limiterPerformer->saveCarrierConstraint($carrierLimiterData);
+            $this->limiterDataStorage->saveCarrierConstraint($carrierLimiterData);
         }
 
         if ($carrier->getNumberOfAllowedSubscriptionsByConstraint() === null) {
-            $this->limiterPerformer->removeCarrierConstraint($carrier->getBillingCarrierId());
+            $this->limiterDataStorage->removeCarrierConstraint($carrier->getBillingCarrierId());
         }
     }
 
@@ -221,7 +221,7 @@ class CarrierAdmin extends AbstractAdmin
     {
         if ($carrier->getNumberOfAllowedSubscriptionsByConstraint() > 0) {
             $carrierLimiterData = new CarrierLimiterData($carrier, $carrier->getNumberOfAllowedSubscriptionsByConstraint(), $carrier->getNumberOfAllowedSubscriptionsByConstraint());
-            $this->limiterPerformer->saveCarrierConstraint($carrierLimiterData);
+            $this->limiterDataStorage->saveCarrierConstraint($carrierLimiterData);
         }
     }
 }

@@ -10,9 +10,9 @@ use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
 class Limiter
 {
     /**
-     * @var LimiterPerformer
+     * @var LimiterDataStorage
      */
-    private $limiterPerformer;
+    private $limiterDataStorage;
     /**
      * @var LimiterDataExtractor
      */
@@ -25,15 +25,15 @@ class Limiter
     /**
      * Limiter constructor.
      *
-     * @param LimiterPerformer     $limiterPerformer
+     * @param LimiterDataStorage   $limiterDataStorage
      * @param LimiterDataExtractor $limiterDataExtractor
      * @param LimiterDataConverter $limiterDataConverter
      */
-    public function __construct(LimiterPerformer $limiterPerformer,
+    public function __construct(LimiterDataStorage $limiterDataStorage,
         LimiterDataExtractor $limiterDataExtractor,
         LimiterDataConverter $limiterDataConverter)
     {
-        $this->limiterPerformer     = $limiterPerformer;
+        $this->limiterDataStorage   = $limiterDataStorage;
         $this->limiterDataExtractor = $limiterDataExtractor;
         $this->limiterDataConverter = $limiterDataConverter;
     }
@@ -48,14 +48,14 @@ class Limiter
         if ($carrierLimiterData) {
             $slots = $this->limiterDataExtractor->getCarrierSlots($carrierLimiterData);
             if ($slots[LimiterDataConverter::PROCESSING_SLOTS]-- >= 0) {
-                $this->limiterPerformer->updateCarrierConstraintsWithLock($carrierLimiterData->getCarrier()->getBillingCarrierId(), $slots);
+                $this->limiterDataStorage->updateCarrierConstraints($carrierLimiterData->getCarrier()->getBillingCarrierId(), $slots);
             }
         }
 
         if ($affiliateLimiterData) {
             $slots = $this->limiterDataExtractor->getAffiliateSlots($affiliateLimiterData);
             if ($slots[LimiterDataConverter::PROCESSING_SLOTS]-- >= 0) {
-                $this->limiterPerformer->updateAffiliateConstraintsWithLock($affiliateLimiterData->getBillingCarrierId(), $affiliateLimiterData->getAffiliate()->getUuid(), $affiliateLimiterData->getConstraintByAffiliate()->getUuid(), $slots);
+                $this->limiterDataStorage->updateAffiliateConstraints($affiliateLimiterData->getBillingCarrierId(), $affiliateLimiterData->getAffiliate()->getUuid(), $affiliateLimiterData->getConstraintByAffiliate()->getUuid(), $slots);
             }
         }
     }
@@ -70,13 +70,13 @@ class Limiter
         if ($carrierLimiterData) {
             $slots = $this->limiterDataExtractor->getCarrierSlots($carrierLimiterData);
             $slots[LimiterDataConverter::PROCESSING_SLOTS]++;
-            $this->limiterPerformer->updateCarrierConstraintsWithLock($carrierLimiterData->getCarrier()->getBillingCarrierId(), $slots);
+            $this->limiterDataStorage->updateCarrierConstraints($carrierLimiterData->getCarrier()->getBillingCarrierId(), $slots);
         }
 
         if ($affiliateLimiterData) {
             $slots = $this->limiterDataExtractor->getAffiliateSlots($affiliateLimiterData);
             $slots[LimiterDataConverter::PROCESSING_SLOTS]++;
-            $this->limiterPerformer->updateAffiliateConstraintsWithLock($affiliateLimiterData->getBillingCarrierId(), $affiliateLimiterData->getAffiliate()->getUuid(), $affiliateLimiterData->getConstraintByAffiliate()->getUuid(), $slots);
+            $this->limiterDataStorage->updateAffiliateConstraints($affiliateLimiterData->getBillingCarrierId(), $affiliateLimiterData->getAffiliate()->getUuid(), $affiliateLimiterData->getConstraintByAffiliate()->getUuid(), $slots);
         }
     }
 
@@ -90,14 +90,14 @@ class Limiter
         if ($carrierLimiterData) {
             $slots = $this->limiterDataExtractor->getCarrierSlots($carrierLimiterData);
             if ($slots[LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS]-- >= 0) {
-                $this->limiterPerformer->updateCarrierConstraintsWithLock($carrierLimiterData->getCarrier()->getBillingCarrierId(), $slots);
+                $this->limiterDataStorage->updateCarrierConstraints($carrierLimiterData->getCarrier()->getBillingCarrierId(), $slots);
             }
         }
 
         if ($affiliateLimiterData) {
             $slots = $this->limiterDataExtractor->getAffiliateSlots($affiliateLimiterData);
             if ($slots[LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS]-- >= 0) {
-                $this->limiterPerformer->updateAffiliateConstraintsWithLock($affiliateLimiterData->getBillingCarrierId(), $affiliateLimiterData->getAffiliate()->getUuid(), $affiliateLimiterData->getConstraintByAffiliate()->getUuid(), $slots);
+                $this->limiterDataStorage->updateAffiliateConstraints($affiliateLimiterData->getBillingCarrierId(), $affiliateLimiterData->getAffiliate()->getUuid(), $affiliateLimiterData->getConstraintByAffiliate()->getUuid(), $slots);
             }
         }
     }

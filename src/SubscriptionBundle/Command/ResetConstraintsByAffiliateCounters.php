@@ -7,7 +7,7 @@ use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\AffiliateLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
-use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterPerformer;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataStorage;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,28 +27,28 @@ class ResetConstraintsByAffiliateCounters extends Command
      */
     private $constraintByAffiliateRepository;
     /**
-     * @var LimiterPerformer
+     * @var LimiterDataStorage
      */
-    private $limiterPerformer;
+    private $limiterDataStorage;
 
     /**
      * ResetConstraintsByAffiliateCounters constructor
      *
      * @param EntityManagerInterface          $entityManager
      * @param ConstraintByAffiliateRepository $constraintByAffiliateRepository
-     * @param LimiterPerformer                $limiterPerformer
+     * @param LimiterDataStorage              $limiterDataStorage
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         ConstraintByAffiliateRepository $constraintByAffiliateRepository,
-        LimiterPerformer $limiterPerformer
+        LimiterDataStorage $limiterDataStorage
     )
     {
         $this->entityManager                   = $entityManager;
         $this->constraintByAffiliateRepository = $constraintByAffiliateRepository;
 
         parent::__construct();
-        $this->limiterPerformer = $limiterPerformer;
+        $this->limiterDataStorage = $limiterDataStorage;
     }
 
     public function configure()
@@ -85,7 +85,7 @@ class ResetConstraintsByAffiliateCounters extends Command
             $affiliateLimiterData = new AffiliateLimiterData($constraint->getAffiliate(), $constraint, $carrier->getBillingCarrierId(), $constraint->getNumberOfActions(), $constraint->getNumberOfActions());
 
             // $this->limiterPerformer->saveCarrierConstraint($carrierLimiterData);
-            $this->limiterPerformer->saveCarrierAffiliateConstraint($affiliateLimiterData);
+            $this->limiterDataStorage->saveCarrierAffiliateConstraint($affiliateLimiterData);
 
             $constraint
                 ->setIsCapAlertDispatch(false)

@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
-use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterPerformer;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataStorage;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,27 +27,27 @@ class ResetConstraintsByCarrierCounters extends Command
      */
     private $carrierRepository;
     /**
-     * @var LimiterPerformer
+     * @var LimiterDataStorage
      */
-    private $limiterPerformer;
+    private $limiterDataStorage;
 
     /**
      * ResetConstraintsByCarrierCounters constructor
      *
      * @param EntityManagerInterface     $entityManager
      * @param CarrierRepositoryInterface $carrierRepository
-     * @param LimiterPerformer           $limiterPerformer
+     * @param LimiterDataStorage         $limiterDataStorage
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         CarrierRepositoryInterface $carrierRepository,
-        LimiterPerformer $limiterPerformer
+        LimiterDataStorage $limiterDataStorage
     ) {
         $this->entityManager = $entityManager;
         $this->carrierRepository = $carrierRepository;
 
         parent::__construct();
-        $this->limiterPerformer = $limiterPerformer;
+        $this->limiterDataStorage = $limiterDataStorage;
     }
 
     public function configure()
@@ -84,7 +84,7 @@ class ResetConstraintsByCarrierCounters extends Command
             $output->writeln($carrier->getName());
 
             $carrierLimiterData = new CarrierLimiterData($carrier, $allowedSubscriptions, $allowedSubscriptions);
-            $this->limiterPerformer->saveCarrierConstraint($carrierLimiterData);
+            $this->limiterDataStorage->saveCarrierConstraint($carrierLimiterData);
 
             $carrier
                 ->setIsCapAlertDispatch(false)

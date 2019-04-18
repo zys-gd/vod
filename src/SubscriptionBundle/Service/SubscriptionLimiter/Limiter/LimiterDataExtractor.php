@@ -10,18 +10,18 @@ use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
 class LimiterDataExtractor
 {
     /**
-     * @var LimiterPerformer
+     * @var LimiterDataStorage
      */
-    private $limiterPerformer;
+    private $limiterDataStorage;
 
     /**
      * LimiterDataExtractor constructor.
      *
-     * @param LimiterPerformer $limiterPerformer
+     * @param LimiterDataStorage $limiterDataStorage
      */
-    public function __construct(LimiterPerformer $limiterPerformer)
+    public function __construct(LimiterDataStorage $limiterDataStorage)
     {
-        $this->limiterPerformer = $limiterPerformer;
+        $this->limiterDataStorage = $limiterDataStorage;
     }
 
     /**
@@ -31,7 +31,7 @@ class LimiterDataExtractor
      */
     public function getCarrierSlots(CarrierLimiterData $carrierLimiterData): array
     {
-        $redisData = $this->limiterPerformer->getDataFromRedisAsArray();
+        $redisData = $this->limiterDataStorage->getDataFromRedisAsArray();
 
         $billingCarrierId = $carrierLimiterData->getCarrier()->getBillingCarrierId();
 
@@ -48,7 +48,7 @@ class LimiterDataExtractor
      */
     public function getAffiliateSlots(AffiliateLimiterData $affiliateLimiterData): array
     {
-        $redisData = $this->limiterPerformer->getDataFromRedisAsArray();
+        $redisData = $this->limiterDataStorage->getDataFromRedisAsArray();
 
         $billingCarrierId = $affiliateLimiterData->getBillingCarrierId();
         $affiliateUuid    = $affiliateLimiterData->getAffiliate()->getUuid();
