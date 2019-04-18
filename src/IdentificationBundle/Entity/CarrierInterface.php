@@ -2,6 +2,8 @@
 
 namespace IdentificationBundle\Entity;
 
+use App\Domain\Entity\Carrier;
+
 interface CarrierInterface
 {
     /**
@@ -77,4 +79,11 @@ interface CarrierInterface
      * @return bool
      */
     public function getIsCampaignsOnPause(): bool;
+
+    /**
+     * Get resubAllowed
+     *
+     * @return boolean
+     */
+    public function getResubAllowed(): bool;
 }
