@@ -12,6 +12,8 @@ return [
     'CLOUDINARY_API_KEY'    => '187818276162186',
     'CLOUDINARY_API_SECRET' => 'sHmSwu7rTZqiAmfqFMM-XLl-r0k',
     'CLOUDINARY_CLOUD_NAME' => 'origindata',
+    'DEFAULT_PRESET'        => 'default_stage',
+    'TRIM_PRESET'           => 'trim_stage',
 
     'HOST' => 'vod.local',
 
