@@ -79,6 +79,11 @@ class UploadedVideo implements HasUuid, JsonSerializable
     private $thumbnails = [];
 
     /**
+     * @var array
+     */
+    private $options = [];
+
+    /**
      * @var VideoPartner
      */
     private $videoPartner;
@@ -300,6 +305,39 @@ class UploadedVideo implements HasUuid, JsonSerializable
     }
 
     /**
+     * @return array|null
+     */
+    public function getOptions(): ?array
+    {
+        return $this->options;
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return UploadedVideo
+     */
+    public function setOptions(array $options): UploadedVideo
+    {
+        $this->options = $options;
+
+        return $this;
+    }
+
+    /**
+     * @param string $name
+     * @param string $value
+     *
+     * @return UploadedVideo
+     */
+    public function addOption(string $name, string $value): UploadedVideo
+    {
+        $this->options[$name] = $value;
+
+        return $this;
+    }
+
+    /**
      * @return string|null
      */
     public function getDescription(): ?string
@@ -348,7 +386,8 @@ class UploadedVideo implements HasUuid, JsonSerializable
             'uuid'       => $this->getUuid(),
             'title'      => $this->getTitle(),
             'publicId'   => $this->getRemoteId(),
-            'thumbnails' => $this->getThumbnails()
+            'thumbnails' => $this->getThumbnails(),
+            'options'    => $this->getOptions()
         ];
     }
 
