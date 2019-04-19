@@ -69,7 +69,8 @@ class LimiterDataConverter
     {
         $slots = $this->filterFromNull([
             self::PROCESSING_SLOTS        => $slots[self::PROCESSING_SLOTS],
-            self::OPEN_SUBSCRIPTION_SLOTS => $slots[self::OPEN_SUBSCRIPTION_SLOTS]
+            self::OPEN_SUBSCRIPTION_SLOTS => $slots[self::OPEN_SUBSCRIPTION_SLOTS],
+            self::SLOTS                   => $slots[self::SLOTS] ?? null
         ]);
 
         $limiterStructure = [

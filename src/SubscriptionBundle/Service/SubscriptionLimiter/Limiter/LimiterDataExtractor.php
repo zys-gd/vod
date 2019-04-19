@@ -36,8 +36,8 @@ class LimiterDataExtractor
         $billingCarrierId = $carrierLimiterData->getCarrier()->getBillingCarrierId();
 
         return [
-            LimiterDataConverter::PROCESSING_SLOTS        => $redisData[LimiterDataConverter::KEY][$billingCarrierId][LimiterDataConverter::PROCESSING_SLOTS] ?? null,
-            LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS => $redisData[LimiterDataConverter::KEY][$billingCarrierId][LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS] ?? null
+            LimiterDataConverter::PROCESSING_SLOTS        => $redisData[LimiterDataConverter::KEY][$billingCarrierId][LimiterDataConverter::PROCESSING_SLOTS] ?? $carrierLimiterData->getCarrier()->getNumberOfAllowedSubscriptionsByConstraint(),
+            LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS => $redisData[LimiterDataConverter::KEY][$billingCarrierId][LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS] ?? $carrierLimiterData->getCarrier()->getNumberOfAllowedSubscriptionsByConstraint()
         ];
     }
 
@@ -55,41 +55,8 @@ class LimiterDataExtractor
         $constraintUuid   = $affiliateLimiterData->getConstraintByAffiliate()->getUuid();
 
         return [
-            LimiterDataConverter::PROCESSING_SLOTS        => $redisData[LimiterDataConverter::KEY][$billingCarrierId][$affiliateUuid][$constraintUuid][LimiterDataConverter::PROCESSING_SLOTS] ?? null,
-            LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS => $redisData[LimiterDataConverter::KEY][$billingCarrierId][$affiliateUuid][$constraintUuid][LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS] ?? null
-        ];
-    }
-
-    /**
-     * @param array $redisData
-     * @param int   $billingCarrierId
-     *
-     * @return array
-     */
-    public function extractCarrierSlots(array $redisData, int $billingCarrierId): array
-    {
-        return [
-            LimiterDataConverter::PROCESSING_SLOTS        => $redisData[LimiterDataConverter::KEY][$billingCarrierId][LimiterDataConverter::PROCESSING_SLOTS] ?? null,
-            LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS => $redisData[LimiterDataConverter::KEY][$billingCarrierId][LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS] ?? null
-        ];
-    }
-
-    /**
-     * @param array  $redisData
-     * @param int    $billingCarrierId
-     * @param string $affiliateUuid
-     * @param string $constraintUuid
-     *
-     * @return array
-     */
-    public function extractAffiliateSlots(array $redisData,
-        int $billingCarrierId,
-        string $affiliateUuid,
-        string $constraintUuid): array
-    {
-        return [
-            LimiterDataConverter::PROCESSING_SLOTS        => $redisData[LimiterDataConverter::KEY][$billingCarrierId][$affiliateUuid][$constraintUuid][LimiterDataConverter::PROCESSING_SLOTS] ?? null,
-            LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS => $redisData[LimiterDataConverter::KEY][$billingCarrierId][$affiliateUuid][$constraintUuid][LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS] ?? null
+            LimiterDataConverter::PROCESSING_SLOTS        => $redisData[LimiterDataConverter::KEY][$billingCarrierId][$affiliateUuid][$constraintUuid][LimiterDataConverter::PROCESSING_SLOTS] ?? $affiliateLimiterData->getConstraintByAffiliate()->getNumberOfActions(),
+            LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS => $redisData[LimiterDataConverter::KEY][$billingCarrierId][$affiliateUuid][$constraintUuid][LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS] ?? $affiliateLimiterData->getConstraintByAffiliate()->getNumberOfActions()
         ];
     }
 }
