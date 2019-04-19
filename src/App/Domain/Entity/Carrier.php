@@ -437,7 +437,7 @@ class Carrier implements CarrierInterface
      *
      * @return boolean
      */
-    public function getResubAllowed()
+    public function getResubAllowed(): bool
     {
         return $this->resubAllowed;
     }
