@@ -53,7 +53,9 @@ class Limiter
             $slots           = $this->limiterDataExtractor->getCarrierSlots($carrierLimiterData);
             $processingSlots = $slots[LimiterDataConverter::PROCESSING_SLOTS]--;
 
-            !isset($slots[LimiterDataConverter::SLOTS]) && $slots[LimiterDataConverter::SLOTS] = $carrierLimiterData->getCarrier()->getNumberOfAllowedSubscriptionsByConstraint();
+            if (!isset($slots[LimiterDataConverter::SLOTS])) {
+                $slots[LimiterDataConverter::SLOTS] = $carrierLimiterData->getCarrier()->getNumberOfAllowedSubscriptionsByConstraint();
+            };
 
             if ($processingSlots >= 0) {
                 $this->limiterDataStorage->updateCarrierConstraints(
@@ -90,7 +92,9 @@ class Limiter
             $slots = $this->limiterDataExtractor->getCarrierSlots($carrierLimiterData);
             $slots[LimiterDataConverter::PROCESSING_SLOTS]++;
 
-            !isset($slots[LimiterDataConverter::SLOTS]) && $slots[LimiterDataConverter::SLOTS] = $carrierLimiterData->getCarrier()->getNumberOfAllowedSubscriptionsByConstraint();
+            if (!isset($slots[LimiterDataConverter::SLOTS])) {
+                $slots[LimiterDataConverter::SLOTS] = $carrierLimiterData->getCarrier()->getNumberOfAllowedSubscriptionsByConstraint();
+            }
 
             $this->limiterDataStorage->updateCarrierConstraints(
                 $carrierLimiterData->getCarrier()->getBillingCarrierId(),
@@ -123,7 +127,9 @@ class Limiter
             $slots     = $this->limiterDataExtractor->getCarrierSlots($carrierLimiterData);
             $openSlots = $slots[LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS]--;
 
-            !isset($slots[LimiterDataConverter::SLOTS]) && $slots[LimiterDataConverter::SLOTS] = $carrierLimiterData->getCarrier()->getNumberOfAllowedSubscriptionsByConstraint();
+            if (!isset($slots[LimiterDataConverter::SLOTS])) {
+                $slots[LimiterDataConverter::SLOTS] = $carrierLimiterData->getCarrier()->getNumberOfAllowedSubscriptionsByConstraint();
+            }
 
             if ($openSlots >= 0) {
                 $this->limiterDataStorage->updateCarrierConstraints(
