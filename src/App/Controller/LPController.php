@@ -89,10 +89,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      */
     public function landingPageAction(Request $request)
     {
-        if (!$this->landingPageAccessResolver->canAccess($request)) {
-            return new RedirectResponse($this->defaultRedirectUrl);
-        }
-
         $session = $request->getSession();
         $campaignBanner = null;
         $background = null;
@@ -111,6 +107,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         }
         else {
             $this->OTPVerifier->forceWifi($request->getSession());
+        }
+
+        if (!$this->landingPageAccessResolver->canAccess($request)) {
+            return new RedirectResponse($this->defaultRedirectUrl);
         }
 
         AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
