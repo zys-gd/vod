@@ -27,6 +27,14 @@ class EagerType implements CallbackHandlerInterface
      */
     private $entityManager;
 
+    /**
+     * Array of options which should save to "options" field
+     *
+     * @var array
+     */
+    private $optionsTobeSaved = [
+        'so' => 'start_offset'
+    ];
 
     /**
      * EagerType constructor.
@@ -61,8 +69,44 @@ class EagerType implements CallbackHandlerInterface
             throw new NotFoundHttpException(sprintf('%s not found', $publicId));
         }
 
-        $video->updateStatus(UploadedVideo::STATUS_TRANSFORMATION_READY);
+        $options = $this->getOptionsFromRequest($request);
+
+        $video
+            ->updateStatus(UploadedVideo::STATUS_TRANSFORMATION_READY)
+            ->setOptions($options);
 
         $this->entityManager->flush();
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return array
+     */
+    private function getOptionsFromRequest(Request $request)
+    {
+        $eager = $request->request->get('eager');
+        $transformation = array_shift($eager);
+        $options = [];
+
+        if (!empty($transformation)) {
+            $transformationChain = explode('/', $transformation['transformation']);
+
+            foreach ($transformationChain as $transformation) {
+                $transformationParams = explode(',', $transformation);
+
+                foreach ($transformationParams as $param) {
+                    $key = explode('_', $param)[0];
+                    $value = explode('_', $param)[1];
+
+                    if (!empty($this->optionsTobeSaved[$key])) {
+                        $fullName = $this->optionsTobeSaved[$key];
+                        $options[$fullName] = $value;
+                    }
+                }
+            }
+        }
+
+        return $options;
     }
 }
