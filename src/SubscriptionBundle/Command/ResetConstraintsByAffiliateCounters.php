@@ -84,7 +84,7 @@ class ResetConstraintsByAffiliateCounters extends Command
 
             $affiliateLimiterData = new AffiliateLimiterData($constraint->getAffiliate(), $constraint, $carrier->getBillingCarrierId(), $constraint->getNumberOfActions(), $constraint->getNumberOfActions());
 
-            // $this->limiterPerformer->saveCarrierConstraint($carrierLimiterData);
+            // $this->LimiterDataStorage->saveCarrierConstraint($carrierLimiterData);
             $this->limiterDataStorage->saveCarrierAffiliateConstraint($affiliateLimiterData);
 
             $constraint

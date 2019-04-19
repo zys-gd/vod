@@ -61,7 +61,7 @@ services:
             - ~
             - '@SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository'
             - '@doctrine.orm.entity_manager'
-            - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterPerformer'
+            - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataStorage'
             - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataExtractor'
         tags:
             - { name: sonata.admin, manager_type: orm, group: affiliate_management, label: Constraints by affiliate }

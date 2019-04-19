@@ -79,9 +79,9 @@ class OnSubscribeUpdater
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function updateSubscriptionByResponse(Subscription $subscription, ProcessResult $processResponse, SessionInterface $session)
+    public function updateSubscriptionByResponse(Subscription $subscription, ProcessResult $processResponse)
     {
-        $this->updateSubscriptionByCallbackResponse($subscription, $processResponse, $session);
+        $this->updateSubscriptionByCallbackResponse($subscription, $processResponse);
 
         if ($processResponse->isRedirectRequired()) {
             $subscription->setRedirectUrl($processResponse->getUrl());
@@ -96,12 +96,10 @@ class OnSubscribeUpdater
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function updateSubscriptionByCallbackResponse(Subscription $subscription, ProcessResult $response, SessionInterface $session)
+    public function updateSubscriptionByCallbackResponse(Subscription $subscription, ProcessResult $response)
     {
         if ($response->isSuccessful()) {
             $this->applySuccess($subscription);
-
-            $this->subscriptionLimiter->finishLimitingProcess($session);
         }
 
         $this->commonSubscriptionUpdater->updateSubscriptionByCallbackResponse($subscription, $response);
@@ -120,7 +118,6 @@ class OnSubscribeUpdater
                     break;
                 default:
                     $this->applyFailure($subscription, $response->getError());
-                    $this->subscriptionLimiter->cancelLimitingProcess($session);
             }
         }
     }

@@ -23,6 +23,7 @@ use SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\Notification\Notifier;
 use SubscriptionBundle\Service\SubscriptionCreator;
+use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimitCompleter;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class Subscriber
@@ -67,20 +68,26 @@ class Subscriber
      * @var SubscribeParametersProvider
      */
     private $subscribeParametersProvider;
+    /**
+     * @var SubscriptionLimitCompleter
+     */
+    private $subscriptionLimitCompleter;
 
 
     /**
      * Subscriber constructor.
-     * @param LoggerInterface              $logger
-     * @param EntitySaveHelper             $entitySaveHelper
-     * @param SessionInterface             $session
-     * @param SubscriptionCreator          $subscriptionCreator
-     * @param PromotionalResponseChecker   $promotionalResponseChecker
-     * @param FakeResponseProvider         $fakeResponseProvider
-     * @param Notifier                     $notifier
-     * @param SubscribeProcess             $subscribeProcess
-     * @param OnSubscribeUpdater           $onSubscribeUpdater
-     * @param SubscribeParametersProvider  $subscribeParametersProvider
+     *
+     * @param LoggerInterface             $logger
+     * @param EntitySaveHelper            $entitySaveHelper
+     * @param SessionInterface            $session
+     * @param SubscriptionCreator         $subscriptionCreator
+     * @param PromotionalResponseChecker  $promotionalResponseChecker
+     * @param FakeResponseProvider        $fakeResponseProvider
+     * @param Notifier                    $notifier
+     * @param SubscribeProcess            $subscribeProcess
+     * @param OnSubscribeUpdater          $onSubscribeUpdater
+     * @param SubscribeParametersProvider $subscribeParametersProvider
+     * @param SubscriptionLimitCompleter  $subscriptionLimitCompleter
      */
     public function __construct(
         LoggerInterface $logger,
@@ -92,19 +99,21 @@ class Subscriber
         Notifier $notifier,
         SubscribeProcess $subscribeProcess,
         OnSubscribeUpdater $onSubscribeUpdater,
-        SubscribeParametersProvider $subscribeParametersProvider
+        SubscribeParametersProvider $subscribeParametersProvider,
+        SubscriptionLimitCompleter $subscriptionLimitCompleter
     )
     {
-        $this->logger                       = $logger;
-        $this->entitySaveHelper             = $entitySaveHelper;
-        $this->session                      = $session;
-        $this->subscriptionCreator          = $subscriptionCreator;
-        $this->promotionalResponseChecker   = $promotionalResponseChecker;
-        $this->fakeResponseProvider         = $fakeResponseProvider;
-        $this->notifier                     = $notifier;
-        $this->subscribeProcess             = $subscribeProcess;
-        $this->onSubscribeUpdater           = $onSubscribeUpdater;
-        $this->subscribeParametersProvider  = $subscribeParametersProvider;
+        $this->logger                      = $logger;
+        $this->entitySaveHelper            = $entitySaveHelper;
+        $this->session                     = $session;
+        $this->subscriptionCreator         = $subscriptionCreator;
+        $this->promotionalResponseChecker  = $promotionalResponseChecker;
+        $this->fakeResponseProvider        = $fakeResponseProvider;
+        $this->notifier                    = $notifier;
+        $this->subscribeProcess            = $subscribeProcess;
+        $this->onSubscribeUpdater          = $onSubscribeUpdater;
+        $this->subscribeParametersProvider = $subscribeParametersProvider;
+        $this->subscriptionLimitCompleter  = $subscriptionLimitCompleter;
     }
 
     /**
@@ -135,7 +144,8 @@ class Subscriber
 
         try {
             $response = $this->performSubscribe($additionalData, $subscription);
-            $this->onSubscribeUpdater->updateSubscriptionByResponse($subscription, $response, $this->session);
+            $this->onSubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
+            $this->subscriptionLimitCompleter->finishProcess($response, $this->session);
 
             return [$subscription, $response];
 
@@ -157,7 +167,9 @@ class Subscriber
      * @return ProcessResult
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function resubscribe(Subscription $existingSubscription, SubscriptionPack $plan, $additionalData = []): ProcessResult
+    public function resubscribe(Subscription $existingSubscription,
+        SubscriptionPack $plan,
+        $additionalData = []): ProcessResult
     {
         $subscription = $existingSubscription;
 
@@ -166,7 +178,7 @@ class Subscriber
         try {
 
             $response = $this->performSubscribe($additionalData, $subscription);
-            $this->onSubscribeUpdater->updateSubscriptionByResponse($subscription, $response, $this->session);
+            $this->onSubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
             $subscription->setCurrentStage(Subscription::ACTION_SUBSCRIBE);
             return $response;
 
@@ -187,6 +199,7 @@ class Subscriber
     /**
      * @param $additionalData
      * @param $subscription
+     *
      * @return ProcessResult
      * @throws SubscribingProcessException
      */
@@ -214,7 +227,8 @@ class Subscriber
                 ProcessResult::STATUS_SUCCESSFUL
             );
 
-        } else {
+        }
+        else {
             $parameters = $this->subscribeParametersProvider->provideParameters($subscription, $additionalData);
             return $this->subscribeProcess->doSubscribe($parameters);
         }
@@ -237,6 +251,7 @@ class Subscriber
     /**
      * @param User             $User
      * @param SubscriptionPack $plan
+     *
      * @return Subscription
      */
     private function createPendingSubscription(User $User, SubscriptionPack $plan): Subscription
