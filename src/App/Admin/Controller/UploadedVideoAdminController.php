@@ -19,14 +19,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class UploadedVideoAdminController extends CRUDController
 {
-    const PRESET_TRIM = 'trim_sntv_stage';
-    const PRESET_DEFAULT = 'default_stage';
-
-    private $presets = [
-        'Default' => self::PRESET_DEFAULT,
-        'Trim for SNTV' => self::PRESET_TRIM
-    ];
-
     /**
      * @var FormFactory
      */
@@ -58,6 +50,11 @@ class UploadedVideoAdminController extends CRUDController
     private $cloudinaryApiSecret;
 
     /**
+     * @var array
+     */
+    private $presets;
+
+    /**
      * UploadedVideoAdminController constructor
      *
      * @param FormFactory $formFactory
@@ -66,6 +63,8 @@ class UploadedVideoAdminController extends CRUDController
      * @param string $cloudinaryApiKey
      * @param string $cloudinaryCloudName
      * @param string $cloudinaryApiSecret
+     * @param string $defaultPreset
+     * @param string $trimPreset
      */
     public function __construct(
         FormFactory $formFactory,
@@ -73,7 +72,9 @@ class UploadedVideoAdminController extends CRUDController
         CloudinaryConnector $cloudinaryConnector,
         string $cloudinaryApiKey,
         string $cloudinaryCloudName,
-        string $cloudinaryApiSecret
+        string $cloudinaryApiSecret,
+        string $defaultPreset,
+        string $trimPreset
     ) {
         $this->formFactory  = $formFactory;
         $this->entityManager = $entityManager;
@@ -81,6 +82,11 @@ class UploadedVideoAdminController extends CRUDController
         $this->cloudinaryApiKey = $cloudinaryApiKey;
         $this->cloudinaryCloudName = $cloudinaryCloudName;
         $this->cloudinaryApiSecret = $cloudinaryApiSecret;
+
+        $this->presets = [
+            'Default' => $defaultPreset,
+            'Trim for SNTV' => $trimPreset
+        ];
     }
 
     /**
@@ -107,7 +113,7 @@ class UploadedVideoAdminController extends CRUDController
             $widgetOptions = [
                 'cloudName' => $this->cloudinaryCloudName,
                 'apiKey' => $this->cloudinaryApiKey,
-                'folder' => 'testWidgetFolder', //$uploadedVideo->getSubcategory()->getAlias(),
+                'folder' => $uploadedVideo->getSubcategory()->getAlias(),
                 'uploadPreset' => $preset,
                 'sources' => ['local'],
                 'resourceType' => 'video',
@@ -192,10 +198,12 @@ class UploadedVideoAdminController extends CRUDController
 
                 $uploadedVideo
                     ->setTitle($confirmedData['title'])
-                    // todo handle date in correct timezone
-                    ->setExpiredDate(new \DateTime($confirmedData['expiredDate']))
                     ->setDescription($confirmedData['description'])
                     ->updateStatus(UploadedVideo::STATUS_CONFIRMED_BY_ADMIN);
+
+                if (!empty($confirmedData['expiredDate'])) {
+                    $uploadedVideo->setExpiredDate(new \DateTime($confirmedData['expiredDate']));
+                }
 
                 $this->entityManager->persist($uploadedVideo);
             }

@@ -47,6 +47,7 @@ class EagerType implements CallbackHandlerInterface
     public function handle(Request $request)
     {
         $publicId = $request->get('public_id', null);
+
         if (!$publicId) {
             throw new BadRequestHttpException(sprintf('Bad Request - missing parameters'));
         }
