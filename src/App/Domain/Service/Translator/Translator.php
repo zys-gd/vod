@@ -3,11 +3,13 @@
 namespace App\Domain\Service\Translator;
 
 use App\Domain\Entity\Carrier;
+use App\Domain\Entity\Language;
 use App\Domain\Entity\Translation;
 use App\Domain\Repository\CarrierRepository;
 use App\Domain\Repository\LanguageRepository;
 use App\Domain\Repository\TranslationRepository;
 use ExtrasBundle\Cache\ICacheService;
+use IdentificationBundle\Entity\CarrierInterface;
 
 class Translator
 {
@@ -53,9 +55,9 @@ class Translator
                 $this->doTranslate($translationKey, $billingCarrierId, $languageCode)
                     ->pushTexts2Cache($cacheKey);
             }
-        } else {
-            $this->initializeDefaultTexts()
-                ->initializeCarrierTexts($billingCarrierId, $languageCode)
+        }
+        else {
+            $this->initializeTexts($billingCarrierId, $languageCode)
                 ->pushTexts2Cache($cacheKey);
         }
 
@@ -88,7 +90,7 @@ class Translator
     private function receiveFromDb($translationKey, $billingCarrierId, $languageCode): ?Translation
     {
         /** @var Carrier $oCarrier */
-        $oCarrier = $this->carrierRepository->findOneBy(['billingCarrierId' => $billingCarrierId]);
+        $oCarrier  = $this->carrierRepository->findOneBy(['billingCarrierId' => $billingCarrierId]);
         $oLanguage = $this->languageRepository->findOneBy(['code' => $languageCode]);
         /** @var Translation $translation */
         $translation = $this->translationRepository->findOneBy([
@@ -100,48 +102,42 @@ class Translator
     }
 
     /**
-     * @return $this
-     */
-    private function initializeDefaultTexts()
-    {
-        $locale = self::DEFAULT_LOCALE;
-        $oLanguage = $this->languageRepository->findOneBy(['code' => $locale]);
-        /** @var Translation[] $translations */
-        $translations = $this->translationRepository->findBy([
-            'language' => $oLanguage,
-            'carrier'  => null
-        ]);
-        foreach ($translations ?? [] as $translation) {
-            $this->texts[$translation->getKey()] = $translation->getTranslation();
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param int|null $billingCarrierId
+     * @param        $billingCarrierId
      * @param string $languageCode
      *
      * @return $this
      */
-    private function initializeCarrierTexts($billingCarrierId, string $languageCode)
+    private function initializeTexts($billingCarrierId, string $languageCode)
     {
         /** @var Carrier $oCarrier */
-        $oCarrier = $this->carrierRepository->findOneBy([
-            'billingCarrierId' => $billingCarrierId
+        $oCarrier = $this->carrierRepository->findOneBy(['billingCarrierId' => $billingCarrierId]);
+
+        /** @var Language $defaultLanguage */
+        $defaultLanguage = $this->languageRepository->findOneBy(['code' => self::DEFAULT_LOCALE]);
+        /** @var Language $currentLanguage */
+        $currentLanguage = $oCarrier->getDefaultLanguage() ?? $this->languageRepository->findOneBy(['code' => $languageCode]);
+
+        $defaultTexts = $this->translationRepository->findBy([
+            'language' => $defaultLanguage,
+            'carrier'  => null
         ]);
 
-        $selectedCode = ($oCarrier != null)
-            ? $oCarrier->getDefaultLanguage()->getCode()
-            : $languageCode;
+        $defaultCarrierTexts = $this->translationRepository->findBy([
+            'carrier'  => $oCarrier,
+            'language' => $defaultLanguage
+        ]);
 
+        $currentCarrierTexts = $this->translationRepository->findBy([
+            'carrier'  => $oCarrier,
+            'language' => $currentLanguage
+        ]);
 
-        /** @var Translation[] $translations */
-        $translations = $this->translationRepository->findTranslationForCarrier($selectedCode, $oCarrier);
+        $translations = array_merge($defaultTexts, $defaultCarrierTexts, $currentCarrierTexts);
 
         foreach ($translations ?? [] as $translation) {
-            $this->texts[$translation['key']] = $translation['translation'];
+            $this->texts[$translation->getKey()] = $translation->getTranslation();
         }
+
         return $this;
     }
 

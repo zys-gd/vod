@@ -10,11 +10,12 @@ use AppBundle\Entity\Language;
 use Doctrine\ORM\NativeQuery;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
+use IdentificationBundle\Entity\CarrierInterface;
 
 class TranslationRepository extends \Doctrine\ORM\EntityRepository
 {
     const FAQ_QUESTIONS_KEY_PATTERN = 'faq.q%';
-    const FAQ_ANSWERS_KEY_PATTERN = 'faq.a%';
+    const FAQ_ANSWERS_KEY_PATTERN   = 'faq.a%';
 
     /**
      * @param string $type
@@ -49,29 +50,5 @@ class TranslationRepository extends \Doctrine\ORM\EntityRepository
             ->where('t.carrier is not NULL');
 
         return $query->getQuery()->execute();
-    }
-
-    /**
-     * @param string $language
-     * @param string $carrierUuid
-     *
-     * @return array
-     */
-    public function findTranslationForCarrier(string $language, string $carrierUuid = null)
-    {
-
-        $query = $this->createQueryBuilder('t')
-            ->addSelect('language')
-            ->join('t.language','language')
-            ->where('language.code = :code')
-            ->orWhere('t.carrier = :carrierUuid')
-            ->setParameters([
-                'code' => $language,
-                'carrierUuid' => $carrierUuid
-            ])
-            ->getQuery();
-
-
-        return $query->getArrayResult();
     }
 }
