@@ -2,9 +2,9 @@
 
 namespace App\Command;
 
+use App\Domain\Entity\UploadedVideo;
 use App\Domain\Repository\UploadedVideoRepository;
 use App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector;
-use App\Domain\Service\VideoProcessing\VideoManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,25 +31,25 @@ class DeleteExpiredVideo extends Command
     private $uploadedVideoRepository;
 
     /**
-     * @var VideoManager
+     * @var CloudinaryConnector
      */
-    private $videoManager;
+    private $cloudinaryConnector;
 
     /**
      * DeleteExpiredVideos constructor
      *
      * @param EntityManagerInterface $entityManager
      * @param UploadedVideoRepository $uploadedVideoRepository
-     * @param VideoManager $videoManager
+     * @param CloudinaryConnector $cloudinaryConnector
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         UploadedVideoRepository $uploadedVideoRepository,
-        VideoManager $videoManager
+        CloudinaryConnector $cloudinaryConnector
     ) {
         $this->entityManager = $entityManager;
         $this->uploadedVideoRepository = $uploadedVideoRepository;
-        $this->videoManager = $videoManager;
+        $this->cloudinaryConnector = $cloudinaryConnector;
 
         parent::__construct();
     }
@@ -71,9 +71,10 @@ class DeleteExpiredVideo extends Command
     {
         $expiredVideos = $this->uploadedVideoRepository->findExpiredVideo();
 
+        /** @var UploadedVideo $expiredVideo */
         foreach ($expiredVideos as $expiredVideo) {
             try {
-                $response = $this->videoManager->destroyUploadedVideo($expiredVideo);
+                $response = $this->cloudinaryConnector->destroyVideo($expiredVideo->getRemoteId());
                 $result = $response['result'];
 
                 if (

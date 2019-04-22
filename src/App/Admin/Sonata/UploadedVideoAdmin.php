@@ -6,7 +6,7 @@ use App\Domain\Entity\MainCategory;
 use App\Domain\Entity\Subcategory;
 use App\Domain\Entity\VideoPartner;
 use App\Domain\Repository\SubcategoryRepository;
-use App\Domain\Service\VideoProcessing\VideoManager;
+use App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector;
 use App\Utils\UuidGenerator;
 use Doctrine\ORM\EntityManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use App\Domain\Entity\UploadedVideo;
 use Sonata\Form\Type\DateTimePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormEvent;
@@ -31,9 +32,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class UploadedVideoAdmin extends AbstractAdmin
 {
     /**
-     * @var VideoManager
+     * @var CloudinaryConnector
      */
-    private $videoManager;
+    private $cloudinaryConnector;
 
     /**
      * @var EntityManager
@@ -46,17 +47,17 @@ class UploadedVideoAdmin extends AbstractAdmin
      * @param string $code
      * @param string $class
      * @param string $baseControllerName
-     * @param VideoManager $videoManager
+     * @param CloudinaryConnector $cloudinaryConnector
      * @param EntityManager $entityManager
      */
     public function __construct(
         string $code,
         string $class,
         string $baseControllerName,
-        VideoManager $videoManager,
+        CloudinaryConnector $cloudinaryConnector,
         EntityManager $entityManager
     ) {
-        $this->videoManager = $videoManager;
+        $this->cloudinaryConnector = $cloudinaryConnector;
         $this->entityManager = $entityManager;
 
         parent::__construct($code, $class, $baseControllerName);
@@ -75,7 +76,7 @@ class UploadedVideoAdmin extends AbstractAdmin
      */
     public function postRemove($uploadedVideo)
     {
-        $this->videoManager->destroyUploadedVideo($uploadedVideo);
+        $this->cloudinaryConnector->destroyVideo($uploadedVideo->getRemoteId());
     }
 
     /**
@@ -189,6 +190,9 @@ class UploadedVideoAdmin extends AbstractAdmin
             ->add('videoPartner', EntityType::class, [
                 'class' => VideoPartner::class
             ])
+            ->add('status', ChoiceType::class, [
+                'choices' => array_flip(UploadedVideo::STATUSES)
+            ])
             ->add('description', TextareaType::class, [
                 'required' => false
             ])
@@ -242,7 +246,10 @@ class UploadedVideoAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->clearExcept(['show', 'list', 'edit', 'delete']);
-        $collection->add('upload', 'upload');
+        $collection->add('preUpload', 'preUpload');
+        $collection->add('signature', 'signature');
+        $collection->add('saveBaseVideoData', 'saveBaseVideoData');
+        $collection->add('confirmVideos', 'confirmVideos');
 
         parent::configureRoutes($collection);
     }
@@ -256,7 +263,7 @@ class UploadedVideoAdmin extends AbstractAdmin
     public function configureActionButtons($action, $object = null): array
     {
         $list = parent::configureActionButtons($action, $object);
-        $list['import']['template'] = '@Admin/UploadedVideo/upload_button.html.twig';
+        $list['import']['template'] = '@Admin/UploadedVideo/PreUpload/pre_upload_button.html.twig';
 
         return $list;
     }

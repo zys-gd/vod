@@ -1,195 +1,227 @@
 {% extends base_template %}
+{% import "@SonataCore/Form/datepicker.html.twig" as datePicker %}
 
-{% block title %}
-    {{ 'Upload video' }}
+{% block navbar_title %}
+    {{ 'Upload and edit videos' }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.min.js"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/uploadedVideo/UploadHelper.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/uploadedVideo/VideoDataCollector.js') }}"></script>
 {% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
     <style>
-        .errors {
-            color: #c10f04;
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            animation: spin 2s linear infinite;
         }
 
-        .trim-labels {
-            margin-right: 10px;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .confirm-text {
+            display: inline-block;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .not-saved-container {
+            padding-bottom: 20px;
+            margin: 0 auto;
+            width: 80%;
         }
     </style>
 {% endblock %}
 
 {% block form %}
-    <span hidden id="subCategoryUrl">{{ path('admin_app_domain_subcategory_subcategoriesList', {'mainId': 'paramMainId'}) }}</span>
     <div class="sonata-ba-form">
         <div class="row">
             <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="box box-primary">
-                            <div class="box-header">
-                                <h4 class="box-title">
-                                    {{ block('title') }}
-                                </h4>
-                            </div>
-                            <div class="box-body">
-                                <div class="sonata-ba-collapsed-fields">
-                                    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-lg-12">{{ form_label(form.title) }}</div>
-                                            <div class="col-lg-12 errors">{{ form_errors(form.title) }}</div>
-                                            <div class="col-lg-12">{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-lg-12">{{ form_label(form.mainCategory) }}</div>
-                                            <div class="col-lg-12 errors">{{ form_errors(form.mainCategory) }}</div>
-                                            <div class="col-lg-12">{{ form_widget(form.mainCategory, { 'attr': {'class': 'form-control'} }) }}</div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-lg-12">{{ form_label(form.subcategory) }}</div>
-                                            <div class="col-lg-12 errors">{{ form_errors(form.subcategory) }}</div>
-                                            <div class="col-lg-12">{{ form_widget(form.subcategory, { 'attr': {'class': 'form-control'} }) }}</div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-lg-12">{{ form_label(form.videoPartner) }}</div>
-                                            <div class="col-lg-12 errors">{{ form_errors(form.videoPartner) }}</div>
-                                            <div class="col-lg-12">{{ form_widget(form.videoPartner, { 'attr': {'class': 'form-control'} }) }}</div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-lg-12">{{ form_label(form.description) }}</div>
-                                            <div class="col-lg-12 errors">{{ form_errors(form.description) }}</div>
-                                            <div class="col-lg-12">{{ form_widget(form.description, { 'attr': {'class': 'form-control', 'rows': '3'} }) }}</div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-lg-12">{{ form_label(form.expiredDate) }}</div>
-                                            <div class="col-lg-12 errors">{{ form_errors(form.expiredDate) }}</div>
-                                            <div class="col-lg-12">{{ form_widget(form.expiredDate, { 'attr': {'class': 'form-control'} }) }}</div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-lg-3" style="padding-bottom: 5px">
-                                                <span class="errors">{{ form_errors(form.isTrim) }}</span>
-                                                <span class="trim-labels">{{ form_label(form.isTrim) }}</span>
-                                                {{ form_widget(form.isTrim) }}
-                                            </div>
-                                            <div class="col-lg-6" hidden>
-                                                <span class="trim-labels">{{ form_label(form.startOffset) }}</span>
-                                                {{ form_widget(form.startOffset) }}
-                                                <span class="errors">{{ form_errors(form.startOffset) }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-lg-12">{{ form_label(form.file) }}</div>
-                                            <div class="col-lg-12 errors">{{ form_errors(form.file) }}</div>
-                                            <div class="col-lg-12">{{ form_widget(form.file) }}</div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-success" name="btn_update_and_edit"><i class="fa fa-save"></i>
-                                            Upload
-                                        </button>
-                                    </div>
-                                    {{ form_end(form) }}
-                                </div>
-                            </div>
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="sonata-ba-collapsed-fields text-center">
+                            <span style="font-size: 18px; margin-bottom: 15px; display: inline-block">
+                                No videos have been uploaded...
+                            </span>
+                            <br>
+                            <button id="upload_widget_opener" class="btn btn-primary">Upload</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script id="post-upload-saved-template" type="text/x-handlebars">
+        {% verbatim %}
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="row">
+                        <div class="col-md-12 text-center" style="margin-bottom: 2px">
+                            <img src="{{ startThumbnail }}" alt="" width="150" height="80">
+                        </div>
+                        <div class="col-md-12 text-center image-container">
+                            <img src="{{ endThumbnail }}" alt="" width="150" height="80">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <form action="#" id="{{ uuid }}">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <label for="title">Title</label>
+                                    <input type="text" class="form-control" id="title" name="title" value="{{ title }}">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="expired-date">Expired date</label>
+                                    <input size="16" type="text" id="expired-date" name="expiredDate" class="js-datepicker form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" rows="2" id="description" name="description" form="{{ uuid }}"></textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        {% endverbatim %}
+    </script>
+    <script id="post-upload-not-saved-template" type="text/x-handlebars">
+        {% verbatim %}
+            <div>
+                <div class="alert alert-danger not-saved-container">
+                    <span class="text-white">Errors was occurred while saving videos: {{ videos }}</span>
+                </div>
+            </div>
+        {% endverbatim %}
+    </script>
+    <script id="confirm-template" type="text/x-handlebars">
+        {% verbatim %}
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <span class="{{ className }}">{{ text }}</span>
+                     <br/>
+                    <a href="{{ listUrl }}"><button class="btn btn-primary">Return to list</button></a>
+                </div>
+            </div>
+        {% endverbatim %}
+    </script>
     <script>
-        function FormControl() {
-            /**
-             * Selectors for form fields
-             */
-            this.mainCategory = '#uploaded_video_form_mainCategory';
-            this.subcategory = '#uploaded_video_form_subcategory';
-            this.title = '#uploaded_video_form_title';
-
-            /**
-             * Load subcategories list and pass options to select field
-             *
-             * @param {string} url
-             */
-            this.loadSubCategories = function(url) {
-                var self = this;
-                var loader = $('<i>Loading subcategories...</i>');
-
-                $(this.mainCategory).closest('div').append(loader);
-                this.clearSubcategoryOptions();
-
-                $.ajax({
-                    url: url,
-                    method: 'GET',
-                    success: function(data) {
-                        var subcategories = JSON.parse(data);
-                        var subcategoriesSelect = $(self.subcategory);
-
-                        subcategories.forEach(function(subcategory) {
-                            subcategoriesSelect.append(new Option(subcategory.title, subcategory.id));
-                        });
-                    }
-                })
-                    .fail(function() {
-                        $(self.mainCategory).closest('div').effect('highlight', {'color': '#C43C35'}, 2000);
-                    })
-                    .always(function () {
-                        loader.remove();
-                    })
-            };
-
-            /**
-             * Remove all options from subcategory select and set default
-             */
-            this.clearSubcategoryOptions = function() {
-                $(this.subcategory).html('').append(new Option('Select subcategory'));
-            }
-        }
-
         $(document).ready(function() {
-            var formControl = new FormControl();
+            var signatureUrl = "{{ admin.generateUrl('signature') }}";
+            var saveBaseVideoDataUrl = "{{ admin.generateUrl('saveBaseVideoData') }}";
+            var confirmVideosUrl = "{{ admin.generateUrl('confirmVideos') }}";
+            var listUrl = "{{ admin.generateUrl('list') }}";
 
-            $(formControl.mainCategory).change(function() {
-                formControl.clearSubcategoryOptions();
+            var csrfToken = '{{ csrf_token('uploading-video') }}';
 
-                if ($(this).val().length > 0) {
-                    var url = $('#subCategoryUrl').text().replace('paramMainId', $(this).val());
+            var savedVideoTemplateSource = $('#post-upload-saved-template').first().html();
+            var notSavedVideoTemplateSource = $('#post-upload-not-saved-template').first().html();
+            var savedVideoTemplate = Handlebars.compile(savedVideoTemplateSource);
+            var notSavedVideoTemplate = Handlebars.compile(notSavedVideoTemplateSource);
 
-                    formControl.loadSubCategories(url);
+            var uploadHelper = new UploadHelper(signatureUrl, saveBaseVideoDataUrl, confirmVideosUrl, csrfToken);
+            var videoDataCollector = new VideoDataCollector(savedVideoTemplate, notSavedVideoTemplate);
+
+            var preUploadFormData = JSON.parse('{{ preUploadFormData|raw }}');
+
+            var widgetOptions = JSON.parse('{{ widgetOptions|raw }}');
+            widgetOptions['uploadSignature'] = uploadHelper.getSignatureCallback();
+
+            var widjet = cloudinary.createUploadWidget(widgetOptions, function (error, result) {
+                switch (result.event) {
+                    case 'success':
+                        var uploadedVideoData = Object.assign({}, preUploadFormData);
+
+                        uploadedVideoData['title'] = result.info.original_filename;
+                        uploadedVideoData['remoteId'] = result.info.public_id;
+                        uploadedVideoData['remoteUrl'] = result.info.url;
+
+                        uploadHelper
+                            .saveBaseVideoData(uploadedVideoData)
+                            .then(
+                                function(uploadedVideo) {
+                                    videoDataCollector.addSuccessfullySaved(uploadedVideo)
+                                },
+                                function(jqXHR) {
+                                    videoDataCollector.addNotSaved(uploadedVideoData.title);
+                                }
+                            );
+                        break;
+                    case 'close':
+                        if (videoDataCollector.hasElementsToRender()) {
+                            var container = $('.box-body > .sonata-ba-collapsed-fields').first();
+
+                            videoDataCollector.render(container);
+
+                            $('.js-datepicker').datetimepicker({format: 'Y-MM-DD HH:mm'});
+
+                            $('#confirm-all-button').click(function() {
+                                $(this).replaceWith('<div class="loader"></div>');
+
+                                var preparedVideos = {};
+
+                                $('.box-body > .sonata-ba-collapsed-fields form').each(function() {
+                                    var uuid = $(this).attr('id');
+
+                                    preparedVideos[uuid] = {};
+
+                                    $(this).serializeArray().forEach(function(formFieldData) {
+                                        preparedVideos[uuid][formFieldData['name']] = formFieldData['value'];
+                                    });
+                                });
+
+                                var confirmTemplate = $('#confirm-template').first().html();
+                                var compiledConfirmTemplate = Handlebars.compile(confirmTemplate);
+
+                                uploadHelper
+                                    .confirmAllUploadedVideos(preparedVideos)
+                                    .then(
+                                        function() {
+                                            var html = compiledConfirmTemplate({
+                                                listUrl: listUrl,
+                                                text: 'Videos saved successfully',
+                                                className: 'text-success confirm-text'
+                                            });
+
+                                            container.html(html);
+                                        },
+                                        function(jqXHR) {
+                                            var html = compiledConfirmTemplate({
+                                                listUrl: listUrl,
+                                                text: 'An error occurred while saving the data,' +
+                                                    ' please try to edit the video in the Videos section',
+                                                className: 'text-danger confirm-text'
+                                            });
+
+                                            container.html(html);
+                                        }
+                                    );
+                            })
+                        }
+                        break;
                 }
             });
 
-            var isTrimField = $('#uploaded_video_form_isTrim');
-            var startOffsetField = $('#uploaded_video_form_startOffset');
-            var startOffsetContainer = startOffsetField.closest('div');
-
-            if (isTrimField.prop('checked')) {
-                startOffsetContainer.removeAttr('hidden');
-            }
-
-            isTrimField.change(function(event) {
-                if ($(this).prop('checked')) {
-                    startOffsetContainer.removeAttr('hidden');
-                } else {
-                    startOffsetContainer.attr('hidden', true);
-                    startOffsetField.val('');
-                }
+            $('#upload_widget_opener').click(function () {
+                widjet.open();
             });
 
-            $('.js-datepicker').datetimepicker();
-        })
+            widjet.open();
+        });
     </script>
 {% endblock %}

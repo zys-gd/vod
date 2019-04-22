@@ -52,43 +52,6 @@ class CloudinaryConnector
     }
 
     /**
-     * Upload video to cloudinary storage
-     *
-     * @param string $alias
-     * @param string $filePath
-     * @param string $folderName
-     * @param string $callbackUrl
-     * @param array $options
-     *
-     * @return array
-     *
-     * @throws \Exception
-     */
-    public function uploadVideo(
-        string $alias,
-        string $filePath,
-        string $folderName,
-        string $callbackUrl,
-        array $options
-    ): array
-    {
-        $defaultOptions = [
-            'eager'                  => [['streaming_profile' => 'hd', 'format' => 'm3u8']],
-            'eager_async'            => true,
-            'eager_notification_url' => $callbackUrl,
-            'cloud_name'             => $this->cloudName,
-            'api_key'                => $this->apiKey,
-            'api_secret'             => $this->apiSecret,
-            'folder'                 => $folderName,
-            'public_id'              => $alias,
-            'overwrite'              => true,
-            'resource_type'          => 'video'
-        ];
-
-        return \Cloudinary\Uploader::upload_large($filePath, array_merge($defaultOptions, $options));
-    }
-
-    /**
      * @param string $publicId
      *
      * @return array

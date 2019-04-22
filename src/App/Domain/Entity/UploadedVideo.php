@@ -2,24 +2,29 @@
 
 namespace App\Domain\Entity;
 
+use JsonSerializable;
 use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 
 /**
  * UploadedVideo
  */
-class UploadedVideo implements HasUuid
+class UploadedVideo implements HasUuid, JsonSerializable
 {
     /**
-     * transformation video statuses
+     * Video statuses
      */
     const STATUS_IN_PROCESSING = 1;
-    const STATUS_READY = 2;
+    const STATUS_TRANSFORMATION_READY = 2;
+    const STATUS_CONFIRMED_BY_ADMIN = 3;
+    const STATUS_READY = 4;
 
     /**
      * Statuses array
      */
     const STATUSES = [
         self::STATUS_IN_PROCESSING => 'Processing',
+        self::STATUS_TRANSFORMATION_READY => 'Transformation ready',
+        self::STATUS_CONFIRMED_BY_ADMIN => 'Confirmed by admin',
         self::STATUS_READY => 'Ready'
     ];
 
@@ -74,6 +79,11 @@ class UploadedVideo implements HasUuid
     private $thumbnails = [];
 
     /**
+     * @var array
+     */
+    private $options = [];
+
+    /**
      * @var VideoPartner
      */
     private $videoPartner;
@@ -94,15 +104,31 @@ class UploadedVideo implements HasUuid
     /**
      * @return string
      */
+    public function __toString()
+    {
+        return $this->title ?? '';
+    }
+
+    /**
+     * @return string
+     */
     public function getUuid(): string
     {
         return $this->uuid;
     }
 
     /**
-     * @return string
+     * @param string $uuid
      */
-    public function getTitle(): string
+    public function setUuid(string $uuid)
+    {
+        $this->uuid = $uuid;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -159,9 +185,29 @@ class UploadedVideo implements HasUuid
     }
 
     /**
-     * @return string
+     * @param int $status
+     *
+     * @return UploadedVideo
      */
-    public function getRemoteUrl(): string
+    public function updateStatus(int $status): UploadedVideo
+    {
+        if ($this->getStatus() === self::STATUS_READY) {
+            return $this;
+        }
+
+        if ($status === self::STATUS_TRANSFORMATION_READY || $status === self::STATUS_CONFIRMED_BY_ADMIN) {
+            $status = $this->getStatus() !== self::STATUS_IN_PROCESSING ? self::STATUS_READY : $status;
+        }
+
+        $this->setStatus($status);
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRemoteUrl(): ?string
     {
         return $this->remoteUrl;
     }
@@ -179,9 +225,9 @@ class UploadedVideo implements HasUuid
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getRemoteId(): string
+    public function getRemoteId(): ?string
     {
         return $this->remoteId;
     }
@@ -239,9 +285,9 @@ class UploadedVideo implements HasUuid
     }
 
     /**
-     * @return array
+     * @return array|null
      */
-    public function getThumbnails(): array
+    public function getThumbnails(): ?array
     {
         return $this->thumbnails;
     }
@@ -254,6 +300,39 @@ class UploadedVideo implements HasUuid
     public function setThumbnails(array $thumbnails): UploadedVideo
     {
         $this->thumbnails = $thumbnails;
+
+        return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getOptions(): ?array
+    {
+        return $this->options;
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return UploadedVideo
+     */
+    public function setOptions(array $options): UploadedVideo
+    {
+        $this->options = $options;
+
+        return $this;
+    }
+
+    /**
+     * @param string $name
+     * @param string $value
+     *
+     * @return UploadedVideo
+     */
+    public function addOption(string $name, string $value): UploadedVideo
+    {
+        $this->options[$name] = $value;
 
         return $this;
     }
@@ -276,14 +355,6 @@ class UploadedVideo implements HasUuid
         $this->description = $description;
 
         return $this;
-    }
-
-    /**
-     * @param string $uuid
-     */
-    public function setUuid(string $uuid)
-    {
-        $this->uuid = $uuid;
     }
 
     /**
@@ -315,6 +386,26 @@ class UploadedVideo implements HasUuid
             'uuid'       => $this->getUuid(),
             'title'      => $this->getTitle(),
             'publicId'   => $this->getRemoteId(),
+            'thumbnails' => $this->getThumbnails(),
+            'options'    => $this->getOptions()
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'uuid' => $this->getUuid(),
+            'mainCategory' => $this->getSubcategory()->getParent()->getUuid(),
+            'subcategory' => $this->getSubcategory()->getUuid(),
+            'videoPartner' => $this->getVideoPartner()->getUuid(),
+            'title' => $this->getTitle(),
+            'description' => $this->getDescription(),
+            'expiredDate' => $this->getExpiredDate() ? $this->getExpiredDate()->format('Y-MM-dd HH:mm') : null,
+            'remoteId' => $this->getRemoteId(),
+            'remoteUrl' => $this->getRemoteUrl(),
             'thumbnails' => $this->getThumbnails()
         ];
     }
