@@ -109,32 +109,37 @@ class Translator
      */
     private function initializeTexts($billingCarrierId, string $languageCode)
     {
-        /** @var Carrier $oCarrier */
-        $oCarrier = $this->carrierRepository->findOneBy(['billingCarrierId' => $billingCarrierId]);
-
         /** @var Language $defaultLanguage */
         $defaultLanguage = $this->languageRepository->findOneBy(['code' => self::DEFAULT_LOCALE]);
-        /** @var Language $currentLanguage */
-        $currentLanguage = $oCarrier->getDefaultLanguage() ?? $this->languageRepository->findOneBy(['code' => $languageCode]);
 
+        /** @var Translation[] $defaultTexts */
         $defaultTexts = $this->translationRepository->findBy([
             'language' => $defaultLanguage,
             'carrier'  => null
         ]);
 
-        $defaultCarrierTexts = $this->translationRepository->findBy([
-            'carrier'  => $oCarrier,
-            'language' => $defaultLanguage
-        ]);
+        try{
+            /** @var Carrier $oCarrier */
+            $oCarrier = $this->carrierRepository->findOneBy(['billingCarrierId' => $billingCarrierId]);
+            /** @var Language $currentLanguage */
+            $currentLanguage = $oCarrier->getDefaultLanguage() ?? $this->languageRepository->findOneBy(['code' => $languageCode]);
 
-        $currentCarrierTexts = $this->translationRepository->findBy([
-            'carrier'  => $oCarrier,
-            'language' => $currentLanguage
-        ]);
+            $defaultCarrierTexts = $this->translationRepository->findBy([
+                'carrier'  => $oCarrier,
+                'language' => $defaultLanguage
+            ]);
 
-        $translations = array_merge($defaultTexts, $defaultCarrierTexts, $currentCarrierTexts);
+            $currentCarrierTexts = $this->translationRepository->findBy([
+                'carrier'  => $oCarrier,
+                'language' => $currentLanguage
+            ]);
 
-        foreach ($translations ?? [] as $translation) {
+            $translations = array_merge($defaultTexts, $defaultCarrierTexts, $currentCarrierTexts);
+        } catch (\Throwable $e) {
+            $translations = $defaultTexts;
+        }
+
+        foreach ($translations as $translation) {
             $this->texts[$translation->getKey()] = $translation->getTranslation();
         }
 
