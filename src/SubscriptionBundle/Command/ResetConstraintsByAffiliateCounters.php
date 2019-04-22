@@ -5,7 +5,9 @@ namespace SubscriptionBundle\Command;
 use Doctrine\ORM\EntityManagerInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository;
-use SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis;
+use SubscriptionBundle\Service\SubscriptionLimiter\DTO\AffiliateLimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataStorage;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -16,11 +18,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ResetConstraintsByAffiliateCounters extends Command
 {
     /**
-     * @var ConstraintCounterRedis
-     */
-    private $constraintCounterRedis;
-
-    /**
      * @var EntityManagerInterface
      */
     private $entityManager;
@@ -29,24 +26,29 @@ class ResetConstraintsByAffiliateCounters extends Command
      * @var ConstraintByAffiliateRepository
      */
     private $constraintByAffiliateRepository;
+    /**
+     * @var LimiterDataStorage
+     */
+    private $limiterDataStorage;
 
     /**
      * ResetConstraintsByAffiliateCounters constructor
      *
-     * @param ConstraintCounterRedis $constraintCounterRedis
-     * @param EntityManagerInterface $entityManager
+     * @param EntityManagerInterface          $entityManager
      * @param ConstraintByAffiliateRepository $constraintByAffiliateRepository
+     * @param LimiterDataStorage              $limiterDataStorage
      */
     public function __construct(
-        ConstraintCounterRedis $constraintCounterRedis,
         EntityManagerInterface $entityManager,
-        ConstraintByAffiliateRepository $constraintByAffiliateRepository
-    ) {
-        $this->constraintCounterRedis = $constraintCounterRedis;
-        $this->entityManager = $entityManager;
+        ConstraintByAffiliateRepository $constraintByAffiliateRepository,
+        LimiterDataStorage $limiterDataStorage
+    )
+    {
+        $this->entityManager                   = $entityManager;
         $this->constraintByAffiliateRepository = $constraintByAffiliateRepository;
 
         parent::__construct();
+        $this->limiterDataStorage = $limiterDataStorage;
     }
 
     public function configure()
@@ -56,16 +58,15 @@ class ResetConstraintsByAffiliateCounters extends Command
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      *
      * @return int|void|null
-     *
      * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $constraints = $this->constraintByAffiliateRepository->findAll();
+        $constraints = $this->constraintByAffiliateRepository->getSubscriptionConstraints();
 
         if (empty($constraints)) {
             $output->writeln('No constraints by affiliates were found');
@@ -75,7 +76,16 @@ class ResetConstraintsByAffiliateCounters extends Command
 
         /** @var ConstraintByAffiliate $constraint */
         foreach ($constraints as $constraint) {
-            $this->constraintCounterRedis->resetCounter($constraint->getUuid());
+
+
+            $carrier = $constraint->getCarrier();
+
+            // $carrierLimiterData = new CarrierLimiterData($carrier, $carrier->getNumberOfAllowedSubscriptionsByConstraint(), $carrier->getNumberOfAllowedSubscriptionsByConstraint());
+
+            $affiliateLimiterData = new AffiliateLimiterData($constraint->getAffiliate(), $constraint, $carrier->getBillingCarrierId(), $constraint->getNumberOfActions(), $constraint->getNumberOfActions());
+
+            // $this->LimiterDataStorage->saveCarrierConstraint($carrierLimiterData);
+            $this->limiterDataStorage->saveCarrierAffiliateConstraint($affiliateLimiterData);
 
             $constraint
                 ->setIsCapAlertDispatch(false)

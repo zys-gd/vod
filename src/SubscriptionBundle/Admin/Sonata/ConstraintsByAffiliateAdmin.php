@@ -7,8 +7,6 @@ use App\Domain\Entity\Carrier;
 use App\Utils\UuidGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\CarrierInterface;
-use SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis;
-use Symfony\Component\Validator\Constraints\Callback;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -16,10 +14,16 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository;
+use SubscriptionBundle\Service\SubscriptionLimiter\DTO\AffiliateLimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataConverter;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataExtractor;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataStorage;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
@@ -36,21 +40,25 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
      * @var EntityManagerInterface
      */
     private $entityManager;
-
     /**
-     * @var ConstraintCounterRedis
+     * @var LimiterDataStorage
      */
-    private $constraintCounterRedis;
+    private $limiterDataStorage;
+    /**
+     * @var LimiterDataExtractor
+     */
+    private $limiterDataExtractor;
 
     /**
      * ConstraintsByAffiliateAdmin constructor
      *
-     * @param string $code
-     * @param string $class
-     * @param string $baseControllerName
+     * @param string                          $code
+     * @param string                          $class
+     * @param string                          $baseControllerName
      * @param ConstraintByAffiliateRepository $constraintByAffiliateRepository
-     * @param EntityManagerInterface $entityManager
-     * @param ConstraintCounterRedis $constraintCounterRedis
+     * @param EntityManagerInterface          $entityManager
+     * @param LimiterDataStorage              $limiterDataStorage
+     * @param LimiterDataExtractor            $limiterDataExtractor
      */
     public function __construct(
         string $code,
@@ -58,18 +66,20 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
         string $baseControllerName,
         ConstraintByAffiliateRepository $constraintByAffiliateRepository,
         EntityManagerInterface $entityManager,
-        ConstraintCounterRedis $constraintCounterRedis
-    ) {
+        LimiterDataStorage $limiterDataStorage,
+        LimiterDataExtractor $limiterDataExtractor
+    )
+    {
         $this->constraintByAffiliateRepository = $constraintByAffiliateRepository;
-        $this->entityManager = $entityManager;
-        $this->constraintCounterRedis = $constraintCounterRedis;
+        $this->entityManager                   = $entityManager;
+        $this->limiterDataStorage              = $limiterDataStorage;
+        $this->limiterDataExtractor            = $limiterDataExtractor;
 
         parent::__construct($code, $class, $baseControllerName);
     }
 
     /**
      * @return ConstraintByAffiliate
-     *
      * @throws \Exception
      */
     public function getNewInstance(): ConstraintByAffiliate
@@ -90,15 +100,7 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
     }
 
     /**
-     * @param ConstraintByAffiliate $object
-     */
-    public function postRemove($object)
-    {
-        $this->constraintCounterRedis->removeCounter($object->getUuid());
-    }
-
-    /**
-     * @param CarrierInterface|null $carrier
+     * @param CarrierInterface|null     $carrier
      * @param ExecutionContextInterface $context
      */
     public function validateForIdenticalRecord(?CarrierInterface $carrier, ExecutionContextInterface $context): void
@@ -107,7 +109,7 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
         $constraintByAffiliate = $this->getSubject();
 
         $affiliate = $constraintByAffiliate->getAffiliate();
-        $capType = $constraintByAffiliate->getCapType();
+        $capType   = $constraintByAffiliate->getCapType();
 
         $uuid = $this->constraintByAffiliateRepository->getIdenticalConstraintUuid($affiliate, $carrier, $capType);
 
@@ -145,8 +147,8 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
             ])
             ->add('_action', null, [
                 'actions' => [
-                    'show' => [],
-                    'edit' => [],
+                    'show'   => [],
+                    'edit'   => [],
                     'delete' => [],
                 ]
             ]);
@@ -162,11 +164,11 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
         if ($isCreate) {
             $formMapper
                 ->add('affiliate', EntityType::class, [
-                    'class' => Affiliate::class,
+                    'class'       => Affiliate::class,
                     'placeholder' => 'Select affiliate',
                 ])
                 ->add('carrier', EntityType::class, [
-                    'class' => Carrier::class,
+                    'class'       => Carrier::class,
                     'constraints' => [
                         new Callback([$this, 'validateForIdenticalRecord'])
                     ],
@@ -175,15 +177,15 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
                 ->add('capType', ChoiceType::class, [
                     'choices' => [
                         'Subscribe' => ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE,
-                        'Visit' => ConstraintByAffiliate::CAP_TYPE_VISIT
+                        'Visit'     => ConstraintByAffiliate::CAP_TYPE_VISIT
                     ],
-                    'label' => 'CAP type'
+                    'label'   => 'CAP type'
                 ]);
         }
 
         $formMapper
             ->add('numberOfActions', IntegerType::class, [
-                'attr' => [
+                'attr'  => [
                     'min' => 0
                 ],
                 'label' => 'Number of allowed actions by constraint'
@@ -198,9 +200,10 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
         /** @var ConstraintByAffiliate $subject */
         $subject = $this->getSubject();
 
-        $counter = $this->constraintCounterRedis->getCounter($subject->getUuid());
+        $affiliateLimiterData = new AffiliateLimiterData($subject->getAffiliate(), $subject, $subject->getCarrier()->getBillingCarrierId());
+        $counter = $this->limiterDataExtractor->getAffiliateSlots($affiliateLimiterData)[LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS] ?? 0;
 
-        $subject->setCounter((int) $counter);
+        $subject->setCounter($subject->getNumberOfActions() - $counter);
 
         $showMapper
             ->add('affiliate')
@@ -214,5 +217,46 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
             ->add('isCapAlertDispatch', 'boolean', [
                 'label' => 'Is email sent today'
             ]);
+    }
+
+    /**
+     * @param ConstraintByAffiliate $constraintByAffiliate
+     */
+    public function postPersist($constraintByAffiliate)
+    {
+        $carrier = $constraintByAffiliate->getCarrier();
+
+        $carrierLimiterData = new CarrierLimiterData($carrier, $carrier->getNumberOfAllowedSubscriptionsByConstraint(), $carrier->getNumberOfAllowedSubscriptionsByConstraint());
+
+        $affiliateLimiterData = new AffiliateLimiterData($constraintByAffiliate->getAffiliate(), $constraintByAffiliate, $carrier->getBillingCarrierId());
+
+        $this->limiterDataStorage->saveCarrierConstraint($carrierLimiterData);
+        $this->limiterDataStorage->saveCarrierAffiliateConstraint($affiliateLimiterData);
+    }
+
+    /**
+     * @param ConstraintByAffiliate $constraintByAffiliate
+     */
+    public function postUpdate($constraintByAffiliate)
+    {
+        $carrier = $constraintByAffiliate->getCarrier();
+
+        $carrierLimiterData = new CarrierLimiterData($carrier, $carrier->getNumberOfAllowedSubscriptionsByConstraint(), $carrier->getNumberOfAllowedSubscriptionsByConstraint());
+
+        $affiliateLimiterData = new AffiliateLimiterData($constraintByAffiliate->getAffiliate(), $constraintByAffiliate, $carrier->getBillingCarrierId());
+
+        $this->limiterDataStorage->saveCarrierConstraint($carrierLimiterData);
+        $this->limiterDataStorage->saveCarrierAffiliateConstraint($affiliateLimiterData);
+    }
+
+    /**
+     * @param ConstraintByAffiliate $object
+     */
+    public function postRemove($object)
+    {
+        $this->limiterDataStorage->removeAffiliateConstraint($object->getCarrier()->getBillingCarrierId(),
+            $object->getAffiliate()->getUuid(),
+            $object->getUuid()
+        );
     }
 }
