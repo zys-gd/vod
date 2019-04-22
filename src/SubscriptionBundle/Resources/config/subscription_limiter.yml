@@ -36,3 +36,8 @@ services:
     SubscriptionBundle\Service\SubscriptionLimiter\Locker\LockerFactory:
         arguments:
             - '@app.predis'
+
+    SubscriptionBundle\Service\SubscriptionLimiter\LimiterNotifier:
+        arguments:
+            - '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender'
+            - '@SubscriptionBundle\Service\EntitySaveHelper'

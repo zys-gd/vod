@@ -59,4 +59,24 @@ class LimiterDataExtractor
             LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS => $redisData[LimiterDataConverter::KEY][$billingCarrierId][$affiliateUuid][$constraintUuid][LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS] ?? $affiliateLimiterData->getConstraintByAffiliate()->getNumberOfActions()
         ];
     }
+
+    /**
+     * @param CarrierLimiterData $carrierLimiterData
+     *
+     * @return int|null
+     */
+    public function getCarrierProcessingSlots(CarrierLimiterData $carrierLimiterData): ?int
+    {
+        return $this->getCarrierSlots($carrierLimiterData)[LimiterDataConverter::PROCESSING_SLOTS];
+    }
+
+    /**
+     * @param AffiliateLimiterData $affiliateLimiterData
+     *
+     * @return int|null
+     */
+    public function getAffiliateProcessingSlots(AffiliateLimiterData $affiliateLimiterData): ?int
+    {
+        return $this->getAffiliateSlots($affiliateLimiterData)[LimiterDataConverter::PROCESSING_SLOTS];
+    }
 }
