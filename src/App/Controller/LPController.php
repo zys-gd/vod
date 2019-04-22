@@ -98,19 +98,19 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $background = null;
 
         if ($cid = $request->get('cid', '')) {
-            // Useless method atm.
-            AffiliateVisitSaver::saveCampaignId($cid, $session);
             /** @var Campaign $campaign */
             $campaign = $this->campaignRepository->findOneBy(['campaignToken' => $cid]);
 
             /** @var Campaign $campaign */
             if ($campaign) {
+                // Useless method atm.
+                AffiliateVisitSaver::saveCampaignId($cid, $session);
                 $campaignBanner = $this->imageBaseUrl . '/' . $campaign->getImagePath();
                 $background = $campaign->getBgColor();
             }
         }
         else {
-            $this->OTPVerifier->forceWifi($request->getSession());
+            $this->OTPVerifier->forceWifi($session);
         }
 
         AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
