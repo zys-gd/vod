@@ -96,8 +96,10 @@ class EagerType implements CallbackHandlerInterface
                 $transformationParams = explode(',', $transformation);
 
                 foreach ($transformationParams as $param) {
-                    $key = explode('_', $param)[0];
-                    $value = explode('_', $param)[1];
+                    $params = explode('_', $param);
+
+                    $key = $params[0];
+                    $value = empty($params[1]) ? null : $params[1];
 
                     if (!empty($this->optionsTobeSaved[$key])) {
                         $fullName = $this->optionsTobeSaved[$key];
