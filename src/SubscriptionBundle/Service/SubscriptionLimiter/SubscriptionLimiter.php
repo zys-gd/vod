@@ -38,9 +38,9 @@ class SubscriptionLimiter implements SubscriptionLimiterInterface
      * @param LimiterDataExtractor  $limiterDataExtractor
      */
     public function __construct(Limiter $Limiter,
-                                SubscriptionExtractor $subscriptionExtractor,
-                                LimiterDataMapper $limiterDataMapper,
-                                LimiterDataExtractor $limiterDataExtractor)
+        SubscriptionExtractor $subscriptionExtractor,
+        LimiterDataMapper $limiterDataMapper,
+        LimiterDataExtractor $limiterDataExtractor)
     {
         $this->limiter               = $Limiter;
         $this->subscriptionExtractor = $subscriptionExtractor;
@@ -66,6 +66,28 @@ class SubscriptionLimiter implements SubscriptionLimiterInterface
             return true;
         }
         return false;
+    }
+
+    /**
+     * @param SessionInterface $session
+     *
+     * @return bool
+     */
+    public function canStartProcess(SessionInterface $session): bool
+    {
+        $carrierLimiterData = $this->limiterDataMapper->createCarrierLimiterDataFromSession($session);
+
+        $affiliateLimiterData = $this->limiterDataMapper->createAffiliateLimiterDataFromSession($session);
+
+        if ($affiliateLimiterData && $this->limiterDataExtractor->getAffiliateProcessingSlots($affiliateLimiterData) == 0) {
+            return false;
+        }
+
+        if ($carrierLimiterData && $this->limiterDataExtractor->getCarrierProcessingSlots($carrierLimiterData) == 0) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

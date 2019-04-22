@@ -8,9 +8,8 @@ use App\Domain\Repository\CarrierRepository;
 use App\Domain\ACL\Accessors\VisitConstraintByAffiliate;
 use App\Domain\ACL\Accessors\VisitAccessorByCampaign;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
-use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
-use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter;
+use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiterInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -45,25 +44,25 @@ class LandingPageACL
     /**
      * LandingPageAccessResolver constructor
      *
-     * @param VisitConstraintByAffiliate      $visitConstraintByAffiliate
-     * @param VisitAccessorByCampaign         $visitAccessorByCampaign
-     * @param CarrierRepository               $carrierRepository
-     * @param CampaignRepository              $campaignRepository
-     * @param SubscriptionLimiter             $subscriptionLimiter
+     * @param VisitConstraintByAffiliate   $visitConstraintByAffiliate
+     * @param VisitAccessorByCampaign      $visitAccessorByCampaign
+     * @param CarrierRepository            $carrierRepository
+     * @param CampaignRepository           $campaignRepository
+     * @param SubscriptionLimiterInterface $subscriptionLimiter
      */
     public function __construct(
         VisitConstraintByAffiliate $visitConstraintByAffiliate,
         VisitAccessorByCampaign $visitAccessorByCampaign,
         CarrierRepository $carrierRepository,
         CampaignRepository $campaignRepository,
-        SubscriptionLimiter $subscriptionLimiter
+        SubscriptionLimiterInterface $subscriptionLimiter
     )
     {
-        $this->carrierRepository               = $carrierRepository;
-        $this->campaignRepository              = $campaignRepository;
-        $this->visitConstraintByAffiliate      = $visitConstraintByAffiliate;
-        $this->visitAccessorByCampaign         = $visitAccessorByCampaign;
-        $this->subscriptionLimiter             = $subscriptionLimiter;
+        $this->carrierRepository          = $carrierRepository;
+        $this->campaignRepository         = $campaignRepository;
+        $this->visitConstraintByAffiliate = $visitConstraintByAffiliate;
+        $this->visitAccessorByCampaign    = $visitAccessorByCampaign;
+        $this->subscriptionLimiter        = $subscriptionLimiter;
     }
 
     /**

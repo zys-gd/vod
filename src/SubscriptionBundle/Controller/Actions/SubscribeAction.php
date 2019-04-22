@@ -26,8 +26,9 @@ use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CustomPage;
-use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\LimiterNotifier;
 use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter;
+use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiterInterface;
 use SubscriptionBundle\Service\UserExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -96,6 +97,10 @@ class SubscribeAction extends AbstractController
      * @var SubscriptionLimiter
      */
     private $subscriptionLimiter;
+    /**
+     * @var LimiterNotifier
+     */
+    private $limiterNotifier;
 
     /**
      * SubscribeAction constructor.
@@ -113,7 +118,8 @@ class SubscribeAction extends AbstractController
      * @param string                              $defaultRedirectUrl
      * @param PostPaidHandler                     $postPaidHandler
      * @param CampaignConfirmationHandlerProvider $campaignConfirmationHandlerProvider
-     * @param SubscriptionLimiter                 $subscriptionLimiter
+     * @param SubscriptionLimiterInterface        $subscriptionLimiter
+     * @param LimiterNotifier                     $limiterNotifier
      */
     public function __construct(
         UserExtractor $userExtractor,
@@ -129,7 +135,8 @@ class SubscribeAction extends AbstractController
         string $defaultRedirectUrl,
         PostPaidHandler $postPaidHandler,
         CampaignConfirmationHandlerProvider $campaignConfirmationHandlerProvider,
-        SubscriptionLimiter $subscriptionLimiter
+        SubscriptionLimiterInterface $subscriptionLimiter,
+        LimiterNotifier $limiterNotifier
     )
     {
         $this->userExtractor                       = $userExtractor;
@@ -146,6 +153,7 @@ class SubscribeAction extends AbstractController
         $this->postPaidHandler                     = $postPaidHandler;
         $this->campaignConfirmationHandlerProvider = $campaignConfirmationHandlerProvider;
         $this->subscriptionLimiter                 = $subscriptionLimiter;
+        $this->limiterNotifier                     = $limiterNotifier;
     }
 
     /**
@@ -187,10 +195,11 @@ class SubscribeAction extends AbstractController
 
 
         if ($this->subscriptionLimiter->isLimitReached($request->getSession())) {
+            $this->limiterNotifier->notifyLimitReached($user->getCarrier());
             return RedirectResponse::create($this->defaultRedirectUrl);
         }
 
-        if ($this->subscriptionLimiter->need2BeLimited($user) && !$this->subscriptionLimiter->isLimitReached($request->getSession())) {
+        if ($this->subscriptionLimiter->need2BeLimited($user) && $this->subscriptionLimiter->canStartProcess($request->getSession())) {
             $this->subscriptionLimiter->startLimitingProcess($request->getSession());
         }
 
