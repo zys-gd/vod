@@ -5,7 +5,8 @@ namespace SubscriptionBundle\Command;
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
-use SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis;
+use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataStorage;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,10 +16,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ResetConstraintsByCarrierCounters extends Command
 {
-    /**
-     * @var ConstraintCounterRedis
-     */
-    private $constraintCounterRedis;
 
     /**
      * @var EntityManagerInterface
@@ -29,24 +26,28 @@ class ResetConstraintsByCarrierCounters extends Command
      * @var CarrierRepositoryInterface
      */
     private $carrierRepository;
+    /**
+     * @var LimiterDataStorage
+     */
+    private $limiterDataStorage;
 
     /**
      * ResetConstraintsByCarrierCounters constructor
      *
-     * @param ConstraintCounterRedis $constraintCounterRedis
-     * @param EntityManagerInterface $entityManager
+     * @param EntityManagerInterface     $entityManager
      * @param CarrierRepositoryInterface $carrierRepository
+     * @param LimiterDataStorage         $limiterDataStorage
      */
     public function __construct(
-        ConstraintCounterRedis $constraintCounterRedis,
         EntityManagerInterface $entityManager,
-        CarrierRepositoryInterface $carrierRepository
+        CarrierRepositoryInterface $carrierRepository,
+        LimiterDataStorage $limiterDataStorage
     ) {
-        $this->constraintCounterRedis = $constraintCounterRedis;
         $this->entityManager = $entityManager;
         $this->carrierRepository = $carrierRepository;
 
         parent::__construct();
+        $this->limiterDataStorage = $limiterDataStorage;
     }
 
     public function configure()
@@ -80,8 +81,10 @@ class ResetConstraintsByCarrierCounters extends Command
             if (empty($allowedSubscriptions)) {
                 continue;
             }
+            $output->writeln($carrier->getName());
 
-            $this->constraintCounterRedis->resetCounter($carrier->getBillingCarrierId());
+            $carrierLimiterData = new CarrierLimiterData($carrier, $allowedSubscriptions, $allowedSubscriptions);
+            $this->limiterDataStorage->saveCarrierConstraint($carrierLimiterData);
 
             $carrier
                 ->setIsCapAlertDispatch(false)

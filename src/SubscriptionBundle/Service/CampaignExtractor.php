@@ -30,7 +30,9 @@ class CampaignExtractor
     public function getCampaignFromSession(SessionInterface $session): ?CampaignInterface
     {
         $campaignToken = AffiliateVisitSaver::extractCampaignToken($session);
-        return $this->campaignRepository->findOneByCampaignToken($campaignToken);
+        return $campaignToken ?
+            $this->campaignRepository->findOneByCampaignToken($campaignToken)
+            : null;
     }
 
     /**

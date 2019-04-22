@@ -11,11 +11,7 @@ services:
         - '@SubscriptionBundle\BillingFramework\Process\SubscribeProcess'
         - '@SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater'
         - '@SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider'
-        - '@SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater'
-        - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
-        - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
-        - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
-        - '@SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider'
+        - '@SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimitCompleter'
 
   SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider:
       arguments: ['@SubscriptionBundle\Service\Action\Subscribe\Handler\DefaultHandler']
@@ -63,6 +59,7 @@ services:
         - '@SubscriptionBundle\Service\RenewDateCalculator'
         - '@event_dispatcher'
         - '@SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater'
+        - '@SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter'
 
   SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator:
       arguments: ['@SubscriptionBundle\Service\SubscriptionExtractor', '@SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier']

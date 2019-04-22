@@ -9,7 +9,11 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
-use SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis;
+use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataExtractor;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataStorage;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataConverter;
+use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -20,33 +24,47 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 class CarrierAdmin extends AbstractAdmin
 {
     /**
-     * @var ConstraintCounterRedis
+     * @var SubscriptionLimiter
      */
-    private $constraintCounterRedis;
+    private $subscriptionLimiter;
+    /**
+     * @var LimiterDataStorage
+     */
+    private $limiterDataStorage;
+    /**
+     * @var LimiterDataExtractor
+     */
+    private $limiterDataExtractor;
 
     /**
      * CarrierAdmin constructor
      *
-     * @param string $code
-     * @param string $class
-     * @param string $baseControllerName
-     * @param ConstraintCounterRedis $constraintCounterRedis
+     * @param string               $code
+     * @param string               $class
+     * @param string               $baseControllerName
+     * @param SubscriptionLimiter  $subscriptionLimiter
+     * @param LimiterDataStorage   $limiterDataStorage
+     * @param LimiterDataExtractor $limiterDataExtractor
      */
     public function __construct(
         string $code,
         string $class,
         string $baseControllerName,
-        ConstraintCounterRedis $constraintCounterRedis
-    ) {
-        $this->constraintCounterRedis = $constraintCounterRedis;
-
+        SubscriptionLimiter $subscriptionLimiter,
+        LimiterDataStorage $limiterDataStorage,
+        LimiterDataExtractor $limiterDataExtractor
+    )
+    {
+        $this->subscriptionLimiter = $subscriptionLimiter;
+        $this->limiterDataStorage  = $limiterDataStorage;
+        $this->limiterDataExtractor = $limiterDataExtractor;
         parent::__construct($code, $class, $baseControllerName);
     }
 
     /**
      * @param DatagridMapper $datagridMapper
      */
-    protected function configureDatagridFilters (DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
             ->add('uuid')
@@ -73,7 +91,7 @@ class CarrierAdmin extends AbstractAdmin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields (ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
             ->add('uuid')
@@ -91,13 +109,13 @@ class CarrierAdmin extends AbstractAdmin
             ->add('subscriptionPeriod')
             ->add('resubAllowed')
             ->add('isCampaignsOnPause')
-            ->add('_action', null, array(
-                'actions' => array(
-                    'show' => array(),
-                    'edit' => array(),
-                    'delete' => array(),
-                )
-            ));
+            ->add('_action', null, [
+                'actions' => [
+                    'show'   => [],
+                    'edit'   => [],
+                    'delete' => [],
+                ]
+            ]);
     }
 
     /**
@@ -105,7 +123,7 @@ class CarrierAdmin extends AbstractAdmin
      *
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields (FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
             ->add('uuid', TextType::class, [
@@ -127,7 +145,7 @@ class CarrierAdmin extends AbstractAdmin
             ->add('redirectUrl', UrlType::class, ['required' => false])
             ->add('resubAllowed')
             ->add('isCampaignsOnPause')
-            ->add('isUnlimitedSubscriptionAttemptsAllowed', null,[
+            ->add('isUnlimitedSubscriptionAttemptsAllowed', null, [
                 'attr' => ["class" => "unlimited-games"]
             ])
             ->add('numberOfAllowedSubscription', null, [
@@ -138,14 +156,15 @@ class CarrierAdmin extends AbstractAdmin
     /**
      * @param ShowMapper $showMapper
      */
-    protected function configureShowFields (ShowMapper $showMapper)
+    protected function configureShowFields(ShowMapper $showMapper)
     {
         /** @var Carrier $subject */
         $subject = $this->getSubject();
 
-        $counter = $this->constraintCounterRedis->getCounter($subject->getBillingCarrierId());
+        $carrierLimiterData = new CarrierLimiterData($subject);
+        $counter = $this->limiterDataExtractor->getCarrierSlots($carrierLimiterData)[LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS];
 
-        $subject->setCounter((int) $counter);
+        $subject->setCounter($subject->getNumberOfAllowedSubscriptionsByConstraint() - $counter);
 
         $showMapper
             ->add('uuid')
@@ -178,5 +197,31 @@ class CarrierAdmin extends AbstractAdmin
         $collection->clearExcept(['list', 'edit', 'delete', 'show']);
 
         parent::configureRoutes($collection);
+    }
+
+    /**
+     * @param Carrier $carrier
+     */
+    public function postUpdate($carrier)
+    {
+        if ($carrier->getNumberOfAllowedSubscriptionsByConstraint() > 0) {
+            $carrierLimiterData = new CarrierLimiterData($carrier, $carrier->getNumberOfAllowedSubscriptionsByConstraint(), $carrier->getNumberOfAllowedSubscriptionsByConstraint());
+            $this->limiterDataStorage->saveCarrierConstraint($carrierLimiterData);
+        }
+
+        if ($carrier->getNumberOfAllowedSubscriptionsByConstraint() === null) {
+            $this->limiterDataStorage->removeCarrierConstraint($carrier->getBillingCarrierId());
+        }
+    }
+
+    /**
+     * @param Carrier $carrier
+     */
+    public function postPersist($carrier)
+    {
+        if ($carrier->getNumberOfAllowedSubscriptionsByConstraint() > 0) {
+            $carrierLimiterData = new CarrierLimiterData($carrier, $carrier->getNumberOfAllowedSubscriptionsByConstraint(), $carrier->getNumberOfAllowedSubscriptionsByConstraint());
+            $this->limiterDataStorage->saveCarrierConstraint($carrierLimiterData);
+        }
     }
 }

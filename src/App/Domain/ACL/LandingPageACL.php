@@ -8,9 +8,10 @@ use App\Domain\Repository\CarrierRepository;
 use App\Domain\ACL\Accessors\VisitConstraintByAffiliate;
 use App\Domain\ACL\Accessors\VisitAccessorByCampaign;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
-use SubscriptionBundle\Service\CapConstraint\SubscriptionConstraintByCarrier;
+use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
+use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class LandingPageAccessResolver
@@ -28,11 +29,6 @@ class LandingPageACL
     private $campaignRepository;
 
     /**
-     * @var SessionInterface
-     */
-    private $session;
-
-    /**
      * @var VisitConstraintByAffiliate
      */
     private $visitConstraintByAffiliate;
@@ -41,62 +37,58 @@ class LandingPageACL
      * @var VisitAccessorByCampaign
      */
     private $visitAccessorByCampaign;
-
     /**
-     * @var SubscriptionConstraintByCarrier
+     * @var SubscriptionLimiter
      */
-    private $subscriptionConstraintByCarrier;
+    private $subscriptionLimiter;
 
     /**
      * LandingPageAccessResolver constructor
      *
-     * @param VisitConstraintByAffiliate $visitConstraintByAffiliate
-     * @param VisitAccessorByCampaign $visitAccessorByCampaign
-     * @param SubscriptionConstraintByCarrier $subscriptionConstraintByCarrier
-     * @param CarrierRepository $carrierRepository
-     * @param CampaignRepository $campaignRepository
-     * @param SessionInterface $session
+     * @param VisitConstraintByAffiliate      $visitConstraintByAffiliate
+     * @param VisitAccessorByCampaign         $visitAccessorByCampaign
+     * @param CarrierRepository               $carrierRepository
+     * @param CampaignRepository              $campaignRepository
+     * @param SubscriptionLimiter             $subscriptionLimiter
      */
     public function __construct(
         VisitConstraintByAffiliate $visitConstraintByAffiliate,
         VisitAccessorByCampaign $visitAccessorByCampaign,
-        SubscriptionConstraintByCarrier $subscriptionConstraintByCarrier,
         CarrierRepository $carrierRepository,
         CampaignRepository $campaignRepository,
-        SessionInterface $session
-    ) {
-        $this->carrierRepository = $carrierRepository;
-        $this->campaignRepository = $campaignRepository;
-        $this->session = $session;
-        $this->visitConstraintByAffiliate = $visitConstraintByAffiliate;
-        $this->visitAccessorByCampaign = $visitAccessorByCampaign;
-        $this->subscriptionConstraintByCarrier = $subscriptionConstraintByCarrier;
+        SubscriptionLimiter $subscriptionLimiter
+    )
+    {
+        $this->carrierRepository               = $carrierRepository;
+        $this->campaignRepository              = $campaignRepository;
+        $this->visitConstraintByAffiliate      = $visitConstraintByAffiliate;
+        $this->visitAccessorByCampaign         = $visitAccessorByCampaign;
+        $this->subscriptionLimiter             = $subscriptionLimiter;
     }
 
     /**
      * @param Request $request
      *
      * @return string|null
-     *
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
     public function canAccess(Request $request): ?string
     {
-        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
+        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession());
 
         if (empty($ispDetectionData['carrier_id'])) {
             return true;
         }
 
-        $carrier =  $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id']);
+        $carrier = $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id']);
 
         if (empty($carrier)) {
             return true;
         }
 
-        if ($this->subscriptionConstraintByCarrier->isSubscriptionLimitReached($carrier)) {
+        if ($this->subscriptionLimiter->isLimitReached($request->getSession())) {
             return false;
         }
 

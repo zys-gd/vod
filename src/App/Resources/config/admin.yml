@@ -52,7 +52,7 @@ services:
 
     App\Admin\Sonata\CarrierAdmin:
         autowire: true
-        arguments: [~, App\Domain\Entity\Carrier, ~]
+        arguments: [~, App\Domain\Entity\Carrier, ~,  '@SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter', '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataStorage', '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataExtractor']
         tags:
             - { name: sonata.admin, manager_type: orm, group: carrier_management, label: Carriers }
 
@@ -66,9 +66,9 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: store_text, label: Translations }
 
-#    App\Admin\Controller\AuditController:
-#        tags:
-#            - { name: sonata.admin, manager_type: orm, group: audit.menu, label: Audit }
+    #    App\Admin\Controller\AuditController:
+    #        tags:
+    #            - { name: sonata.admin, manager_type: orm, group: audit.menu, label: Audit }
 
     App\Admin\Sonata\GameAdmin:
         arguments:

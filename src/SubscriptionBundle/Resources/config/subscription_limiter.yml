@@ -1,0 +1,38 @@
+services:
+    SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimitCompleter:
+        arguments:
+            - '@SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter'
+            -
+    SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter:
+        arguments:
+        - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\Limiter'
+        - '@SubscriptionBundle\Service\SubscriptionExtractor'
+        - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataMapper'
+        - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataExtractor'
+
+    SubscriptionBundle\Service\SubscriptionLimiter\Limiter\Limiter:
+        arguments:
+            - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataStorage'
+            - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataExtractor'
+            - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataConverter'
+
+    SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataStorage:
+        arguments:
+            - '@app.predis'
+            - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataConverter'
+            - '@SubscriptionBundle\Service\SubscriptionLimiter\Locker\LockerFactory'
+
+    SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataConverter: ~
+
+    SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataExtractor:
+        arguments:
+            - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataStorage'
+
+    SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataMapper:
+        arguments:
+            - '@SubscriptionBundle\Service\CampaignExtractor'
+            - '@App\Domain\Repository\CarrierRepository'
+
+    SubscriptionBundle\Service\SubscriptionLimiter\Locker\LockerFactory:
+        arguments:
+            - '@app.predis'
