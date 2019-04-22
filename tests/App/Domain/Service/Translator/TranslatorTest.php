@@ -73,10 +73,10 @@ class TranslatorTest extends TestCase
     {
         $oTranslation = Mockery::spy(Translation::class);
         $oTranslation->allows([
-            'getKey' => 'terms.block_2.text.1',
+            'getKey'         => 'terms.block_2.text.1',
             'getTranslation' => 'This service is only available for users in [Country]. You must have permission from the carrier to use this service.',
-            'getCarrier' => null,
-            'getLanguage' => $oLanguage
+            'getCarrier'     => null,
+            'getLanguage'    => $oLanguage
         ]);
         return $oTranslation;
     }
@@ -85,9 +85,9 @@ class TranslatorTest extends TestCase
     {
         $this->cache->shouldReceive('hasCache')->andReturn(true);
 
-        $oLanguage = $this->mockeLanguageEntity();
+        $oLanguage    = $this->mockeLanguageEntity();
         $oTranslation = $this->mockeTranslationEntity($oLanguage);
-        $aTexts = [
+        $aTexts       = [
             "{$oTranslation->getKey()}" => $oTranslation->getTranslation()
         ];
         $this->cache->shouldReceive('getValue')->andReturn($aTexts);
@@ -96,9 +96,9 @@ class TranslatorTest extends TestCase
     protected function setUp()
     {
         $this->translationRepository = Mockery::spy(TranslationRepository::class);
-        $this->carrierRepository = Mockery::spy(CarrierRepository::class);
-        $this->cache = Mockery::spy(ICacheService::class);
-        $this->languagesRepository = Mockery::spy(LanguageRepository::class);
+        $this->carrierRepository     = Mockery::spy(CarrierRepository::class);
+        $this->cache                 = Mockery::spy(ICacheService::class);
+        $this->languagesRepository   = Mockery::spy(LanguageRepository::class);
 
         $this->translatorProvider = new Translator(
             $this->translationRepository,
@@ -114,7 +114,10 @@ class TranslatorTest extends TestCase
     private function mockeLanguageEntity()
     {
         $oLanguage = Mockery::spy(Language::class);
-        $oLanguage->shouldReceive('getUuid')->andReturn('5179f17c-ebd4-11e8-95c4-02bb250f0f22');
+        $oLanguage->allows([
+            'getUuid' => '5179f17c-ebd4-11e8-95c4-02bb250f0f22',
+            'getCode' => 'en'
+        ]);
         return $oLanguage;
     }
 }
