@@ -260,4 +260,9 @@ class AffiliateAdmin extends AbstractAdmin
             ->end()
             ->end();
     }
+
+    public function postUpdate($object)
+    {
+        $this->affiliateRepository->switchStatusRelatedCampaigns($object);
+    }
 }
