@@ -1,5 +1,6 @@
 {% extends '@App/base.html.twig' %}
 {% import "@App/Common/Blocks/header.html.twig" as  header %}
+{%  import "@App/Components/Blocks/Main/faq_element.html.twig" as  faq_element %}
 
 
 {% block stylesheets %}
@@ -17,36 +18,8 @@
 {% block body %}
     <div class="w-100 accordion" id="accordionExample">
 
-        {% for question in questions %}
-
-            <div class="card faq-accordion_card">
-                <div class="faq-accordion_card_header" id="card_{{ loop.index }}">
-
-                    <div class="d-flex flex-row align-items-center">
-                        <div class="faq-accordion_card_header_button"
-                             href="#" data-toggle="collapse" data-target="#card_collapse_{{ loop.index }}"
-                             aria-expanded="false" aria-controls="card_collapse_{{ loop.index }}">
-                        </div>
-                        <div class="faq-accordion_card_header_title" data-toggle="collapse" data-target="#card_collapse_{{ loop.index }}"
-                             aria-expanded="false" aria-controls="card_collapse_{{ loop.index }}">
-                            {{ loop.index }}/ {{ translate(question.key)}}
-                        </div>
-                    </div>
-                    <div>
-                        <div class="faq-accordion_card__delimiter"></div>
-                    </div>
-
-                </div>
-
-
-                <div id="card_collapse_{{ loop.index }}" class="collapse" aria-labelledby="card_{{ loop.index }}"
-                     data-parent="#accordionExample">
-                    <div class="card-body faq-accordion_card_body">
-                        {{ translate(answers[loop.index0].key, {'%home_url%': path('index')}) | raw}}
-                    </div>
-                </div>
-            </div>
-
+        {% for i in 1..6 %}
+            {{ faq_element.render(i, 'faq.q.'~i, 'faq.a.'~i) }}
         {% endfor %}
 
     </div>
