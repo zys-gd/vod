@@ -1,7 +1,7 @@
 services:
   SubscriptionBundle\Service\Action\Subscribe\Subscriber:
       arguments:
-        - '@logger'
+        - '@monolog.logger.subscription'
         - '@SubscriptionBundle\Service\EntitySaveHelper'
         - '@session'
         - '@SubscriptionBundle\Service\SubscriptionCreator'
@@ -12,6 +12,7 @@ services:
         - '@SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater'
         - '@SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider'
         - '@SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater'
+        - '@SubscriptionBundle\Service\SubscriptionSerializer'
         - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
         - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
         - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
@@ -26,7 +27,7 @@ services:
           - '@SubscriptionBundle\Service\SubscriptionPackProvider'
           - '@SubscriptionBundle\Service\Action\Subscribe\Subscriber'
           - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker'
-          - '@logger'
+          - '@monolog.logger.subscription'
           - '@SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier'
           - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
           - '@SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator'
@@ -52,7 +53,7 @@ services:
       - '@router'
       - '@SubscriptionBundle\Service\BlackListService'
       - '@IdentificationBundle\Repository\UserRepository'
-      - '@logger'
+      - '@monolog.logger.subscription'
       - '_sub_not_allowed_route_placeholder_'
       - '_blacklisted_user_route_placeholder_'
 

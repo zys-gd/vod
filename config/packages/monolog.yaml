@@ -1,0 +1,15 @@
+monolog:
+    channels: [identification, subscription]
+    handlers:
+      identification:
+        type: stream
+        path: "%kernel.logs_dir%/%kernel.environment%.identification.log"
+        buffer_size: 100
+        max_files: 1
+        channels: identification
+      subscription:
+        type: stream
+        path: "%kernel.logs_dir%/%kernel.environment%.subscription.log"
+        buffer_size: 100
+        max_files: 1
+        channels: identification
