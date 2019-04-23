@@ -171,7 +171,7 @@ class CommonFlowHandler
             throw new SubscriptionException("There is no such subscription");
         }
 
-        if ($carrierId != $subscription->getSubscriptionPack()->getCarrierId()) {
+        if ($carrierId != $subscription->getSubscriptionPack()->getBillingCarrierId()) {
             throw new SubscriptionException("Selected carrier does not fit to selected subscription");
         }
 
