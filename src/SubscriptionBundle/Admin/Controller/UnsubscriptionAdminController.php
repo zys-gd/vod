@@ -132,7 +132,7 @@ class UnsubscriptionAdminController extends CRUDController
             /** @var SubscriptionPack $subscriptionPack */
             $subscriptionPack = $subscription->getSubscriptionPack();
             /** @var Carrier $carrier */
-            $carrier = $carrierRepository->findOneBy(['billingCarrierId' => $subscriptionPack->getCarrierId()]);
+            $carrier = $carrierRepository->findOneBy(['billingCarrierId' => $subscriptionPack->getBillingCarrierId()]);
 
             try {
                 $response = $this->unsubscriber->unsubscribe($subscription, $subscriptionPack);
@@ -147,7 +147,7 @@ class UnsubscriptionAdminController extends CRUDController
                 if ((int) $user['toBlacklist']) {
                     $blackList = new BlackList(UuidGenerator::generate());
                     $blackList
-                        ->setBillingCarrierId($subscriptionPack->getCarrierId())
+                        ->setBillingCarrierId($subscriptionPack->getBillingCarrierId())
                         ->setAlias($subscription->getUser()->getIdentifier());
 
                     $entityManager->persist($blackList);

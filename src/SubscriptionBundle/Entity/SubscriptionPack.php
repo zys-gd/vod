@@ -69,13 +69,12 @@ class SubscriptionPack implements HasUuid
     /**
      * @var integer
      */
-    private $carrierId;
+    private $billingCarrierId;
 
     /**
      * @var string
      */
     private $carrierName;
-
 
     /**
      * @var CarrierInterface
@@ -389,9 +388,9 @@ class SubscriptionPack implements HasUuid
     /**
      * @return integer
      */
-    public function getCarrierId()
+    public function getBillingCarrierId()
     {
-        return $this->carrierId;
+        return $this->billingCarrierId;
     }
 
     /**
@@ -399,9 +398,9 @@ class SubscriptionPack implements HasUuid
      *
      * @return SubscriptionPack
      */
-    public function setCarrierId($carrierId)
+    public function setBillingCarrierId($carrierId)
     {
-        $this->carrierId = $carrierId;
+        $this->billingCarrierId = $carrierId;
 
         return $this;
     }
@@ -409,7 +408,7 @@ class SubscriptionPack implements HasUuid
     /**
      * @return string
      */
-    public function getCarrierName(): string
+    public function getCarrierName(): ?string
     {
         return $this->carrierName;
     }

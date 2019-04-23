@@ -6,6 +6,7 @@ services:
             - 'SubscriptionBundle\Admin\Controller\SubscriptionPackAdminController'
             - '@SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider'
             - '@SubscriptionBundle\Service\SubscriptionTextService'
+            - '@App\Domain\Repository\CarrierRepository'
         tags:
             -   name: sonata.admin
                 manager_type: orm

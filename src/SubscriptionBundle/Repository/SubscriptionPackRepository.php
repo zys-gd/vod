@@ -26,11 +26,11 @@ class SubscriptionPackRepository extends EntityRepository
 
         $query = $qb
             ->where('sp.status = :status ')
-            ->andWhere('sp.carrierId = :carrierId')
+            ->andWhere('sp.billingCarrierId = :billingCarrierId')
             ->andWhere('sp.uuid != :uuid')
             ->setParameters([
                 'status' => SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK,
-                'carrierId' => $subscriptionPack->getCarrierId(),
+                'billingCarrierId' => $subscriptionPack->getBillingCarrierId(),
                 'uuid' => $subscriptionPack->getUuid()
             ])
             ->getQuery();
@@ -49,7 +49,7 @@ class SubscriptionPackRepository extends EntityRepository
             ->select('c')
             ->from('App\Domain\Entity\Carrier', 'c')
             ->where('c.id_carrier = :idCarrier')
-            ->setParameter('idCarrier', $subscriptionPack->getCarrierId())
+            ->setParameter('idCarrier', $subscriptionPack->getBillingCarrierId())
         ;
         $oCarrier = $qb->getQuery()->getOneOrNullResult(AbstractQuery::HYDRATE_SINGLE_SCALAR);
         return $oCarrier;

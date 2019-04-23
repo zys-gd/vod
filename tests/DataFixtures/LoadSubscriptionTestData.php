@@ -69,7 +69,7 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
     {
         /** @var SubscriptionPack $randomSubscriptionPack */
         $randomSubscriptionPack = $this->getReference('subscription_pack_with_name_Jazz PK');
-        $carrier                = $this->getReference(sprintf('carrier_with_internal_id_%s', $randomSubscriptionPack->getCarrierId()));
+        $carrier                = $this->getReference(sprintf('carrier_with_internal_id_%s', $randomSubscriptionPack->getBillingCarrierId()));
 
         $user = TestEntityProvider::createUserWithIdentificationRequest($carrier, 'identtoken');
 
@@ -112,7 +112,7 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
 
         /** @var SubscriptionPack $randomSubscriptionPack */
         $randomSubscriptionPack = $this->getReference('subscription_pack_with_name_Orange TN'); // Orange Tunis.
-        $carrier                = $this->getReference(sprintf('carrier_with_internal_id_%s', $randomSubscriptionPack->getCarrierId()));
+        $carrier                = $this->getReference(sprintf('carrier_with_internal_id_%s', $randomSubscriptionPack->getBillingCarrierId()));
 
         $user = TestEntityProvider::createUserWithIdentificationRequest($carrier, 'token_for_user_without_subscription');
 
@@ -171,7 +171,7 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
     {
         /** @var SubscriptionPack $randomSubscriptionPack */
         $randomSubscriptionPack = $this->getReference('subscription_pack_with_name_Jazz PK');
-        $carrier                = $this->getReference(sprintf('carrier_with_internal_id_%s', $randomSubscriptionPack->getCarrierId()));
+        $carrier                = $this->getReference(sprintf('carrier_with_internal_id_%s', $randomSubscriptionPack->getBillingCarrierId()));
 
         $user = TestEntityProvider::createUserWithIdentificationRequest($carrier, 'inactive_subscription_ident_request');
 
@@ -195,7 +195,7 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
     {
         /** @var SubscriptionPack $randomSubscriptionPack */
         $randomSubscriptionPack = $this->getReference('subscription_pack_with_name_Jazz PK');
-        $carrier                = $this->getReference(sprintf('carrier_with_internal_id_%s', $randomSubscriptionPack->getCarrierId()));
+        $carrier                = $this->getReference(sprintf('carrier_with_internal_id_%s', $randomSubscriptionPack->getBillingCarrierId()));
 
         $user = TestEntityProvider::createUserWithIdentificationRequest($carrier, 'active_subscription_ident_request');
 
@@ -219,7 +219,7 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
     {
         /** @var SubscriptionPack $randomSubscriptionPack */
         $randomSubscriptionPack = $this->getReference('subscription_pack_with_name_Jazz PK');
-        $carrier                = $this->getReference(sprintf('carrier_with_internal_id_%s', $randomSubscriptionPack->getCarrierId()));
+        $carrier                = $this->getReference(sprintf('carrier_with_internal_id_%s', $randomSubscriptionPack->getBillingCarrierId()));
 
         $user = TestEntityProvider::createUserWithIdentificationRequest($carrier, 'onhold_subscription_ident_request');
 
@@ -277,7 +277,7 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
     private function createGenericSubscriptionPack(ObjectManager $manager): SubscriptionPack
     {
         $pack = new SubscriptionPack(UuidGenerator::generate());
-        $pack->setCarrierId(self::GENERIC_CARRIER);
+        $pack->setBillingCarrierId(self::GENERIC_CARRIER);
         $pack->setCredits(2);
         $pack->setName('Generic');
         $pack->setIsResubAllowed(false);

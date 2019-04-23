@@ -39,7 +39,7 @@ class SubscriptionTextProvider
      */
     public function provideQuery(SubscriptionPack $oSubPack): string
     {
-        $billingCarrierId = $oSubPack->getCarrierId();
+        $billingCarrierId = $oSubPack->getBillingCarrierId();
         $subPackId = $oSubPack->getUuid();
         $engLangId = $this->languageRepository->getEnglishLanguageId();
         $oPeriodicity = $this->getSubscriptionPeriodicity($oSubPack);

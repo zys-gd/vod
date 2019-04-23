@@ -477,7 +477,7 @@ class NewTracker
             return false;
         }
 
-        if ($oSubPack->getCarrierId() == ConstBillingCarrierId::HUTCH3_INDONESIA
+        if ($oSubPack->getBillingCarrierId() == ConstBillingCarrierId::HUTCH3_INDONESIA
             && $bfResponse->getStatus() === ProcessResult::STATUS_FAILED
             && $bfResponse->getError() === ProcessResult::ERROR_CANCELED) {
             return false;
@@ -590,7 +590,7 @@ class NewTracker
         $bfWrong = $bfResponse
             && $bfResponse->getError() != ProcessResult::ERROR_BATCH_LIMIT_EXCEEDED
             && $bfResponse->getError() != ProcessResult::ERROR_USER_TIMEOUT
-            && !($bfResponse->getError() == ProcessResult::ERROR_CANCELED && $oSubPack->getCarrierId() == ConstBillingCarrierId::ROBI_BANGLADESH)
+            && !($bfResponse->getError() == ProcessResult::ERROR_CANCELED && $oSubPack->getBillingCarrierId() == ConstBillingCarrierId::ROBI_BANGLADESH)
             &&
             (
                 $bfResponse->getType() !== 'unsubscribe'
@@ -604,7 +604,7 @@ class NewTracker
         if ($bfResponse) {
             $bfSuccess = $bfResponse->getError() == ProcessResult::ERROR_BATCH_LIMIT_EXCEEDED ||
             $bfResponse->getError() == ProcessResult::ERROR_USER_TIMEOUT ||
-            ($bfResponse->getError() == ProcessResult::ERROR_CANCELED && $oSubPack->getCarrierId() == ConstBillingCarrierId::ROBI_BANGLADESH)
+            ($bfResponse->getError() == ProcessResult::ERROR_CANCELED && $oSubPack->getBillingCarrierId() == ConstBillingCarrierId::ROBI_BANGLADESH)
                 ? true : ($bfResponse->getStatus() === 'successful' || $bfResponse->getStatus() === 'ok');
             $bfId = $bfResponse->getId();
             $bfProvider = $bfResponse->getProvider();

@@ -79,7 +79,7 @@ class LoadSubscriptionPackData extends AbstractFixture implements ContainerAware
 
             /** @var Carrier $carrier */
             $carrier = $this->getReference(sprintf('carrier_with_internal_id_%s', $carrier_id));
-            $pack->setCarrierId($carrier_id);
+            $pack->setBillingCarrierId($carrier_id);
             $pack->setCarrier($carrier);
             $pack->setCarrierName($carrier_name);
 
