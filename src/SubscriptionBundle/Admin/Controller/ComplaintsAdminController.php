@@ -2,12 +2,15 @@
 
 namespace SubscriptionBundle\Admin\Controller;
 
-use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Country;
 use IdentificationBundle\Entity\User;
 use PhpOffice\PhpSpreadsheet\Exception;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Sonata\AdminBundle\Controller\CRUDController;
+use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use SubscriptionBundle\Admin\Form\ComplaintsForm;
 use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 use SubscriptionBundle\Entity\Affiliate\AffiliateLog;
@@ -18,11 +21,10 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 /**
  * Class ComplaintsAdminController
@@ -334,5 +336,10 @@ class ComplaintsAdminController extends CRUDController
             ->add('msisdns', HiddenType::class, ['data' => implode(',', $msisdns)])
             ->getForm()
             ->createView();
+    }
+
+    public function listAction()
+    {
+        return RedirectResponse::create($this->admin->generateUrl('create'));
     }
 }

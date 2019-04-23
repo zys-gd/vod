@@ -22,7 +22,8 @@ services:
         arguments: ['@doctrine.orm.entity_manager']
 
     App\Controller\ContentController:
-        arguments: ['@App\Domain\Service\FaqProviderService', '@App\CarrierTemplate\TemplateConfigurator']
+        arguments:
+        - '@App\CarrierTemplate\TemplateConfigurator'
 
     App\Controller\HomeController:
         arguments:

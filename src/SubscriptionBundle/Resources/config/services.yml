@@ -114,6 +114,8 @@ services:
             - '@session'
             - '@doctrine.orm.entity_manager'
 
+    SubscriptionBundle\Service\SubscriptionSerializer: ~
+
 parameters:
     subscription.subscription.class: SubscriptionBundle\Entity\SubscriptionPack
     guzzle.client.class: GuzzleHttp\Client

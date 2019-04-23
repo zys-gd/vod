@@ -24,6 +24,7 @@ use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\Notification\Notifier;
 use SubscriptionBundle\Service\SubscriptionCreator;
 use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimitCompleter;
+use SubscriptionBundle\Service\SubscriptionSerializer;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class Subscriber
@@ -72,6 +73,10 @@ class Subscriber
      * @var SubscriptionLimitCompleter
      */
     private $subscriptionLimitCompleter;
+    /**
+     * @var SubscriptionSerializer
+     */
+    private $subscriptionSerializer;
 
 
     /**
@@ -88,6 +93,7 @@ class Subscriber
      * @param OnSubscribeUpdater          $onSubscribeUpdater
      * @param SubscribeParametersProvider $subscribeParametersProvider
      * @param SubscriptionLimitCompleter  $subscriptionLimitCompleter
+     * @param SubscriptionSerializer      $subscriptionSerializer
      */
     public function __construct(
         LoggerInterface $logger,
@@ -100,7 +106,8 @@ class Subscriber
         SubscribeProcess $subscribeProcess,
         OnSubscribeUpdater $onSubscribeUpdater,
         SubscribeParametersProvider $subscribeParametersProvider,
-        SubscriptionLimitCompleter $subscriptionLimitCompleter
+        SubscriptionLimitCompleter $subscriptionLimitCompleter,
+        SubscriptionSerializer $subscriptionSerializer
     )
     {
         $this->logger                      = $logger;
@@ -114,6 +121,7 @@ class Subscriber
         $this->onSubscribeUpdater          = $onSubscribeUpdater;
         $this->subscribeParametersProvider = $subscribeParametersProvider;
         $this->subscriptionLimitCompleter  = $subscriptionLimitCompleter;
+        $this->subscriptionSerializer      = $subscriptionSerializer;
     }
 
     /**
@@ -168,8 +176,8 @@ class Subscriber
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function resubscribe(Subscription $existingSubscription,
-        SubscriptionPack $plan,
-        $additionalData = []): ProcessResult
+                                SubscriptionPack $plan,
+                                $additionalData = []): ProcessResult
     {
         $subscription = $existingSubscription;
 
@@ -218,6 +226,11 @@ class Subscriber
                 );
 
             } catch (NotificationSendFailedException $e) {
+
+                $this->logger->error($e->getMessage(), [
+                    'subscription' => $this->subscriptionSerializer->serializeShort($subscription)
+                ]);
+
                 throw new SubscribingProcessException('Error while trying to subscribe', 0, $e);
             }
 
@@ -227,8 +240,7 @@ class Subscriber
                 ProcessResult::STATUS_SUCCESSFUL
             );
 
-        }
-        else {
+        } else {
             $parameters = $this->subscribeParametersProvider->provideParameters($subscription, $additionalData);
             return $this->subscribeProcess->doSubscribe($parameters);
         }
