@@ -28,7 +28,7 @@ class GameSerializer
         $this->provider = $provider;
     }
 
-    public function serializeGame(Game $game): array
+    public function serialize(Game $game): array
     {
         return [
             'uuid' => $game->getUuid(),

@@ -21,6 +21,7 @@ services:
     App\Admin\Controller\SubcategoryAdminController:
         arguments: ['@doctrine.orm.entity_manager']
 
+
     App\Controller\ContentController:
         arguments:
         - '@App\CarrierTemplate\TemplateConfigurator'
@@ -30,6 +31,7 @@ services:
             - '@App\CarrierTemplate\TemplateConfigurator'
             - '@App\Domain\Repository\MainCategoryRepository'
             - '@App\Domain\Repository\UploadedVideoRepository'
+            - '@App\Domain\Service\VideoProcessing\VideoSerializer'
             - '@App\Domain\Repository\GameRepository'
             - '@App\Domain\Repository\CountryCategoryPriorityOverrideRepository'
             - '@App\Domain\Service\ContentStatisticSender'
@@ -54,6 +56,7 @@ services:
             - '@App\Domain\Repository\SubcategoryRepository'
             - '@App\Domain\Service\ContentStatisticSender'
             - '@App\CarrierTemplate\TemplateConfigurator'
+            - '@App\Domain\Service\VideoProcessing\VideoSerializer'
 
     App\Controller\AccountController:
         arguments:
@@ -84,7 +87,17 @@ services:
             - '@App\Domain\Service\ContentStatisticSender'
             - '@App\CarrierTemplate\TemplateConfigurator'
 
+    App\Controller\VideosController:
+        arguments:
+            - '@App\Domain\Repository\UploadedVideoRepository'
+            - '@App\Domain\Repository\MainCategoryRepository'
+            - '@App\Domain\Service\VideoProcessing\VideoSerializer'
+
     App\Controller\TrackEventController:
         arguments:
             - '@App\Domain\Repository\UploadedVideoRepository'
             - '@App\Domain\Service\ContentStatisticSender'
+
+
+    App\Controller\PlayerController:
+        arguments: ['@App\Domain\Repository\UploadedVideoRepository', '@App\Domain\Repository\MainCategoryRepository']

@@ -18,6 +18,7 @@ use App\Domain\Repository\GameRepository;
 use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\UploadedVideoRepository;
 use App\Domain\Service\ContentStatisticSender;
+use App\Domain\Service\VideoProcessing\VideoSerializer;
 use ExtrasBundle\Utils\ArraySorter;
 use IdentificationBundle\Controller\ControllerWithIdentification;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
@@ -40,6 +41,7 @@ class HomeController extends AbstractController implements
      * @var MainCategoryRepository
      */
     private $mainCategoryRepository;
+
     /**
      * @var UploadedVideoRepository
      */
@@ -60,11 +62,17 @@ class HomeController extends AbstractController implements
     private $contentStatisticSender;
 
     /**
+     * @var VideoSerializer
+     */
+    private $videoSerializer;
+
+    /**
      * HomeController constructor.
      *
      * @param TemplateConfigurator                      $templateConfigurator
      * @param MainCategoryRepository                    $mainCategoryRepository
      * @param UploadedVideoRepository                   $videoRepository
+     * @param VideoSerializer                           $videoSerializer
      * @param GameRepository                            $gameRepository
      * @param CountryCategoryPriorityOverrideRepository $categoryOverrideRepository
      * @param ContentStatisticSender                    $contentStatisticSender
@@ -73,6 +81,7 @@ class HomeController extends AbstractController implements
         TemplateConfigurator $templateConfigurator,
         MainCategoryRepository $mainCategoryRepository,
         UploadedVideoRepository $videoRepository,
+        VideoSerializer $videoSerializer,
         GameRepository $gameRepository,
         CountryCategoryPriorityOverrideRepository $categoryOverrideRepository,
         ContentStatisticSender $contentStatisticSender
@@ -81,6 +90,7 @@ class HomeController extends AbstractController implements
         $this->templateConfigurator       = $templateConfigurator;
         $this->mainCategoryRepository     = $mainCategoryRepository;
         $this->videoRepository            = $videoRepository;
+        $this->videoSerializer            = $videoSerializer;
         $this->gameRepository             = $gameRepository;
         $this->categoryOverrideRepository = $categoryOverrideRepository;
         $this->contentStatisticSender     = $contentStatisticSender;
@@ -90,7 +100,6 @@ class HomeController extends AbstractController implements
     /**
      * @Route("/",name="index")
      * @param Request $request
-     *
      * @param ISPData $data
      *
      * @return Response
@@ -100,6 +109,7 @@ class HomeController extends AbstractController implements
     public function indexAction(Request $request, ISPData $data)
     {
         $videos            = $this->videoRepository->findNotExpiredWithCategories();
+        $games             = $this->gameRepository->findBatchOfGames(0, 2);
         $categoryOverrides = $this->categoryOverrideRepository->findByBillingCarrierId($data->getCarrierId());
         $categories        = $this->mainCategoryRepository->findAll();
 
@@ -111,7 +121,7 @@ class HomeController extends AbstractController implements
 
             $categoryEntity                                  = $video->getSubcategory()->getParent();
             $categoryKey                                     = $categoryEntity->getTitle();
-            $categoryVideos[$categoryKey][$video->getUuid()] = $video->getDataFormTemplate();
+            $categoryVideos[$categoryKey][$video->getUuid()] = $this->videoSerializer->serialize($video);
         }
 
         $categoryVideos = array_slice(ArraySorter::sortArrayByKeys(
@@ -126,13 +136,14 @@ class HomeController extends AbstractController implements
             'categoryVideos'  => array_slice($categoryVideos, 1, 3),
             'categories'      => $indexedCategoryData,
             'sliderVideos'    => array_slice($categoryVideos, 0, 1),
-            'games'           => $this->gameRepository->findBatchOfGames(0, 2)
+            'games'           => $games
         ]);
     }
 
     /**
      * @param array $categories
      * @param array $categoryOverrides
+     *
      * @return array
      */
     private function getIndexedCategoryData(array $categories, array $categoryOverrides): array

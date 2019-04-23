@@ -1,4 +1,4 @@
-{% macro render(videos) %}
+{% macro render() %}
 
     {% import "@App/Components/Blocks/Header/header_main.html.twig" as  header_main %}
 
@@ -63,50 +63,13 @@
             </div>
         </div>#}
     </div>
-    <script>
-        Handlebars.registerHelper('ifEquals', function (arg1, arg2, options) {
-            return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
-        });
-
-        Handlebars.registerHelper('ifNotEquals', function (arg1, arg2, options) {
-            return (arg1 != arg2) ? options.fn(this) : options.inverse(this);
-        });
-
-    </script>
-    <script id="related-videos-block-template" type="text/x-handlebars">
-        {% verbatim %}
-
-            {{#each videos}}
-                <div class="d-flex flex-row modal-related-video my-2 {{#ifEquals uuid ../current.uuid}}currently-playing{{/ifEquals}}" data-uuid="{{ uuid }}">
-                        {{#each thumbnails}}
-                            <div class="modal-related-video-thumbnail-wrapper">
-                                {{#if @first}}
-                                    <img src="{{ this }}"
-                                        class="x-modal-play-button w-175px"
-                                        data-uuid="{{ ../uuid }}"
-                                        data-category="{{ ../../category }}"
-                                    />
-                                    <div class="category__related__box-play"></div>
-                                {{/if}}
-                            </div>
-                        {{/each}}
-                        <div class="align-items-center d-flex modal-related-video-title x-modal-play-button" data-uuid="{{ uuid }}" data-category="{{ ../category }}">
-                            {{ title }}
-                        </div>
-                    </div>
-                </div>
-            {{/each}}
-        {% endverbatim %}
 
 
-
-    </script>
 
     {% if hasActiveSubscription() or isNotFullyPaid() %}
         <script>
 
 
-            var videos = {{ videos | json_encode | raw }};
             var trackEventRoute = '{{ url('track_video_percent_event') }}';
 
             $(window).on('load', function () {
@@ -134,56 +97,47 @@
                     demoplayer.stop();
                 }
 
-                var cld = cloudinary.Cloudinary.new({cloud_name: '{{ getCloudName() }}'});
+                function changeVideo(element) {
+                    demoplayer.source(element);
+                }
+
+                var cld        = cloudinary.Cloudinary.new({cloud_name: '{{ getCloudName() }}'});
                 var demoplayer = cld.videoPlayer('video-player-frame', {playedEventPercents: [50]})
                     .sourceTypes(['hls'])
                     .transformation({streaming_profile: 'hd'});
-
-                var changeVideo = function (element) {
-                    demoplayer.source(element.publicId, element.options);
-                };
 
 
                 demoplayer.on('percentsplayed', function (event) {
 
                     $.post(trackEventRoute, {
                         percent: event.eventData.percent,
-                        video: demoplayer.currentPublicId()
+                        video  : demoplayer.currentPublicId()
                     });
                 });
 
 
                 $(document).on('click', '.x-play-button', function () {
-
                     openModal();
 
-                    var index = $(this).attr('data-uuid');
-                    var category = $(this).attr('data-category');
+                    let category                = $(this).attr('data-category');
+                    let batchRelatedVideosRoute = '{{ url('load_more_related_videos') }}';
 
-                    let videoElement = videos[category][index];
-                    let relatedVideos = videos[category];
-
-                    changeVideo(videoElement);
-                    demoplayer.play();
-
-                    var source = document.getElementById("related-videos-block-template").innerHTML;
-                    var template = Handlebars.compile(source);
-                    var html = template({
-                        'videos': relatedVideos,
-                        'category': category,
-                        'current': videoElement,
+                    $.get(batchRelatedVideosRoute + '?categoryUuid=' + category, function (html) {
+                        $('.modal-related-videos-block').html(html);
                     });
-                    $('.modal-related-videos-block').html(html);
 
+                    let indexVideo = $(this).attr('data-public-id')
+
+                    changeVideo(indexVideo);
+                    demoplayer.play();
                 });
 
                 $(document).on('click', '.x-modal-play-button', function () {
-                    var index = $(this).attr('data-uuid');
-                    var category = $(this).attr('data-category');
+                    let index    = $(this).attr('data-uuid');
+                    let indexVideo = $(this).attr('data-public-id')
 
-                    let videoElement = videos[category][index];
 
-                    changeVideo(videoElement);
+                    changeVideo(indexVideo);
                     makeCurrentlyPlaying(index);
                     demoplayer.play();
 

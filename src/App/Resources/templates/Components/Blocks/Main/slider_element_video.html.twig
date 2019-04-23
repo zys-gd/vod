@@ -1,5 +1,6 @@
 {% macro render(video, category) %}
     <div class="d-flex flex-column video-element x-play-button"
+         data-public-id="{{ video.publicId }}"
          data-uuid="{{ video.uuid }}"
          data-category="{{ category }}">
         {# this div for flex working same column height #}
