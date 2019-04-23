@@ -74,8 +74,6 @@ services:
 
     App\Domain\Service\Translator\ShortcodeReplacer: ~
 
-    App\Domain\Service\FaqProviderService: ~
-
     App\Domain\Service\Games\GameSerializer: ~
 
     App\Domain\Service\Games\ExcludedGamesProvider:

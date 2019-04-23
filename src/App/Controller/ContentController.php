@@ -9,15 +9,12 @@
 namespace App\Controller;
 
 use App\CarrierTemplate\TemplateConfigurator;
-use App\Domain\Service\FaqProviderService;
 use IdentificationBundle\Identification\DTO\ISPData;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ContentController extends AbstractController implements AppControllerInterface
 {
-    /** @var FaqProviderService $faqProviderService */
-    protected $faqProviderService;
     /**
      * @var TemplateConfigurator
      */
@@ -26,12 +23,10 @@ class ContentController extends AbstractController implements AppControllerInter
     /**
      * ContentController constructor.
      *
-     * @param FaqProviderService   $faqProviderService
      * @param TemplateConfigurator $templateConfigurator
      */
-    public function __construct(FaqProviderService $faqProviderService, TemplateConfigurator $templateConfigurator)
+    public function __construct(TemplateConfigurator $templateConfigurator)
     {
-        $this->faqProviderService = $faqProviderService;
         $this->templateConfigurator = $templateConfigurator;
     }
 
@@ -45,11 +40,7 @@ class ContentController extends AbstractController implements AppControllerInter
     public function faqAction(ISPData $data)
     {
         $template = $this->templateConfigurator->getTemplate('faq', $data->getCarrierId());
-        return $this->render($template, [
-                'questions' => $this->faqProviderService->getSortedQuestions(),
-                'answers'   => $this->faqProviderService->getSortedAnswers(),
-            ]
-        );
+        return $this->render($template);
     }
 
     /**
