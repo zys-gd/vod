@@ -10,8 +10,9 @@ namespace App\Controller;
 
 use App\CarrierTemplate\TemplateConfigurator;
 use IdentificationBundle\Identification\DTO\ISPData;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ContentController extends AbstractController implements AppControllerInterface
 {
@@ -34,8 +35,7 @@ class ContentController extends AbstractController implements AppControllerInter
      * @Route("/faq",name="faq")
      * @param ISPData $data
      *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \App\Exception\WrongTranslationRecordType
+     * @return Response
      */
     public function faqAction(ISPData $data)
     {
@@ -47,7 +47,7 @@ class ContentController extends AbstractController implements AppControllerInter
      * @Route("/terms-and-conditions",name="terms_and_conditions")
      * @param ISPData $data
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function termsAndConditionsAction(ISPData $data)
     {
