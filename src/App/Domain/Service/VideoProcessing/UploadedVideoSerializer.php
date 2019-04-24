@@ -6,7 +6,7 @@ namespace App\Domain\Service\VideoProcessing;
 
 use App\Domain\Entity\UploadedVideo;
 
-class VideoSerializer
+class UploadedVideoSerializer
 {
     /**
      * @param UploadedVideo $video

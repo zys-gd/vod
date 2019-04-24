@@ -18,7 +18,7 @@ use App\Domain\Repository\GameRepository;
 use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\UploadedVideoRepository;
 use App\Domain\Service\ContentStatisticSender;
-use App\Domain\Service\VideoProcessing\VideoSerializer;
+use App\Domain\Service\VideoProcessing\UploadedVideoSerializer;
 use ExtrasBundle\Utils\ArraySorter;
 use IdentificationBundle\Controller\ControllerWithIdentification;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
@@ -62,7 +62,7 @@ class HomeController extends AbstractController implements
     private $contentStatisticSender;
 
     /**
-     * @var VideoSerializer
+     * @var UploadedVideoSerializer
      */
     private $videoSerializer;
 
@@ -72,7 +72,7 @@ class HomeController extends AbstractController implements
      * @param TemplateConfigurator                      $templateConfigurator
      * @param MainCategoryRepository                    $mainCategoryRepository
      * @param UploadedVideoRepository                   $videoRepository
-     * @param VideoSerializer                           $videoSerializer
+     * @param UploadedVideoSerializer                   $videoSerializer
      * @param GameRepository                            $gameRepository
      * @param CountryCategoryPriorityOverrideRepository $categoryOverrideRepository
      * @param ContentStatisticSender                    $contentStatisticSender
@@ -81,7 +81,7 @@ class HomeController extends AbstractController implements
         TemplateConfigurator $templateConfigurator,
         MainCategoryRepository $mainCategoryRepository,
         UploadedVideoRepository $videoRepository,
-        VideoSerializer $videoSerializer,
+        UploadedVideoSerializer $videoSerializer,
         GameRepository $gameRepository,
         CountryCategoryPriorityOverrideRepository $categoryOverrideRepository,
         ContentStatisticSender $contentStatisticSender

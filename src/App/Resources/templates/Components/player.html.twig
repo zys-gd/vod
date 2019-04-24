@@ -115,16 +115,47 @@
                     });
                 });
 
-
+                //TODO: Refactor this
                 $(document).on('click', '.x-play-button', function () {
                     openModal();
 
-                    let category                = $(this).attr('data-category');
+                    let isLast = false;
+                    let offset = 0;
+                    let category = $(this).attr('data-category');
                     let batchRelatedVideosRoute = '{{ url('load_more_related_videos') }}';
+                    let options = ($(this).attr('data-options')) ? JSON.parse($(this).attr('data-options')) : undefined;
+                    let publicId = $(this).attr('data-public-id');
+                    let uri = `${batchRelatedVideosRoute}?categoryUuid=${category}&offser=${offset}`;
 
-                    $.get(batchRelatedVideosRoute + '?categoryUuid=' + category, function (html) {
-                        $('.modal-related-videos-block').html(html);
+                    $.get(uri, (data) => {
+                        $('.modal-related-videos-block').append(data.html);
+                        isLast = Boolean(data.isLast)
+                    }).then(() => {
+                        let isAllowRequest = true;
+                        let modalRelatedVideosBlock = document.querySelector('.modal-related-videos-block');
+                        if (modalRelatedVideosBlock.childNodes.length > 0) {
+
+                            modalRelatedVideosBlock.addEventListener('scroll', () => {
+                                let mrvbScrollTop = modalRelatedVideosBlock.scrollTop;
+                                let mrvbHeight = modalRelatedVideosBlock.scrollHeight;
+
+                                if (Math.round(mrvbScrollTop) >= Math.round(mrvbHeight - modalRelatedVideosBlock.offsetHeight)
+                                    && isAllowRequest
+                                    && !isLast
+                                ) {
+                                    uri = `${batchRelatedVideosRoute}?categoryUuid=${category}&offser=${offset}`;
+                                    isAllowRequest = false;
+                                    offset += 20;
+                                    $.get(uri, (html) => {
+                                        $('.modal-related-videos-block').append(html);
+                                        isAllowRequest = true
+                                    });
+                                }
+                            });
+                        }
                     });
+
+
 
                     let indexVideo = $(this).attr('data-public-id')
 
@@ -142,6 +173,19 @@
                     demoplayer.play();
 
                 });
+
+                {#$(window).scroll(function() {#}
+                {#    if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {#}
+
+                {#        let category                = $(this).attr('data-category');#}
+                {#        let batchRelatedVideosRoute = '{{ url('load_more_related_videos') }}';#}
+                {#        console.log(1)#}
+                {#        $.get(batchRelatedVideosRoute + '?categoryUuid=' + category, function (html) {#}
+                {#            console.log(2)#}
+                {#            $('.modal-related-videos-block').html(html);#}
+                {#        });#}
+                {#    }#}
+                {#});#}
 
                 $(document).on('click', '.x-close-modal-button', function () {
                     closeModal()

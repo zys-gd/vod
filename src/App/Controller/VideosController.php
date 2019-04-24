@@ -7,7 +7,7 @@ use App\Domain\Entity\MainCategory;
 use App\Domain\Entity\UploadedVideo;
 use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\UploadedVideoRepository;
-use App\Domain\Service\VideoProcessing\VideoSerializer;
+use App\Domain\Service\VideoProcessing\UploadedVideoSerializer;
 use IdentificationBundle\Identification\DTO\IdentificationData;
 use IdentificationBundle\Identification\DTO\ISPData;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,7 +22,7 @@ class VideosController extends AbstractController implements AppControllerInterf
     /** @var UploadedVideoRepository */
     private $videoRepository;
 
-    /** @var VideoSerializer */
+    /** @var UploadedVideoSerializer */
     private $videoSerializer;
 
     /** @var MainCategoryRepository */
@@ -32,12 +32,12 @@ class VideosController extends AbstractController implements AppControllerInterf
      * VideosController constructor.
      * @param UploadedVideoRepository $videoRepository
      * @param MainCategoryRepository $mainCategoryRepository
-     * @param VideoSerializer $videoSerializer
+     * @param UploadedVideoSerializer $videoSerializer
      */
     public function __construct(
         UploadedVideoRepository $videoRepository,
         MainCategoryRepository $mainCategoryRepository,
-        VideoSerializer $videoSerializer
+        UploadedVideoSerializer $videoSerializer
     )
     {
         $this->videoRepository = $videoRepository;
@@ -81,7 +81,6 @@ class VideosController extends AbstractController implements AppControllerInterf
             $serializedData[] = $this->videoSerializer->serialize($video);
         }
 
-
         return $this->render('@App/Components/category_player_related_videos.html.twig', [
             'videos'   => $serializedData,
             'category' => $category
@@ -94,6 +93,9 @@ class VideosController extends AbstractController implements AppControllerInterf
      * @param ISPData $data
      * @param IdentificationData $identificationData
      * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function loadMoreRelatedVideoAction(ISPData $data, IdentificationData $identificationData, Request $request)
     {
@@ -111,7 +113,8 @@ class VideosController extends AbstractController implements AppControllerInterf
 
         $videos = $this->videoRepository->findNotExpiredBySubcategories(
             $category->getSubcategories()->toArray(),
-            $offset
+            $offset,
+            20
         );
 
         $serializedData = [];
@@ -121,11 +124,14 @@ class VideosController extends AbstractController implements AppControllerInterf
             $serializedData[] = $this->videoSerializer->serialize($video);
         }
 
-
         $html = $this->renderView('@App/Components/player_related_videos.html.twig', [
             'videos' => $serializedData,
             'category' => $category
         ]);
-        return new JsonResponse(['html'=>$html, 'data']);
+
+        return new JsonResponse([
+            'html' => $html,
+            'isLast' => count($serializedData) < 20
+        ]);
     }
 }

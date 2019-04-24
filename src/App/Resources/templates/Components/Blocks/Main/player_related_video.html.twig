@@ -1,0 +1,19 @@
+{% macro render(video, category) %}
+    <div class="d-flex flex-row modal-related-video my-2"
+         data-uuid="{{ video.uuid }}">
+        <div class="modal-related-video-thumbnail-wrapper">
+            <img src="{{ video.thumbnails[0] }}"
+                 class="x-modal-play-button w-175px"
+                 data-uuid="{{ video.uuid }}"
+                 data-category="{{ category.uuid }}"/>
+            <div class="category__related__box-play"></div>
+        </div>
+        <div class="align-items-center d-flex modal-related-video-title x-modal-play-button"
+             data-uuid="{{ video.uuid }}"
+             data-category="{{ category.uuid }}"
+             data-public-id="{{ video.publicId }}"
+             data-options="{{ video.jsonOptions }}">
+            {{ video.title }}
+        </div>
+    </div>
+{% endmacro %}

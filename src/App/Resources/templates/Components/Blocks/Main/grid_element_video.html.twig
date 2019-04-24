@@ -1,5 +1,9 @@
 {% macro render(video, category) %}
-    <div class="video-element x-play-button" data-uuid="{{ video.uuid }}" data-category="{{ category.uuid }}">
+    <div class="video-element x-play-button"
+         data-public-id="{{ video.publicId }}"
+         data-uuid="{{ video.uuid }}"
+         data-options="{{ video.jsonOptions }}"
+         data-category="{{ category.uuid }}">
         <div class="thumbnail-wrapper " >
             <img src="{{ video.thumbnails[0] }}"
                  width="100%"

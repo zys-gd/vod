@@ -8,7 +8,7 @@ use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\SubcategoryRepository;
 use App\Domain\Repository\UploadedVideoRepository;
 use App\Domain\Service\ContentStatisticSender;
-use App\Domain\Service\VideoProcessing\VideoSerializer;
+use App\Domain\Service\VideoProcessing\UploadedVideoSerializer;
 use IdentificationBundle\Identification\DTO\ISPData;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +35,7 @@ class CategoryController extends AbstractController implements AppControllerInte
     /** @var TemplateConfigurator */
     private $templateConfigurator;
 
-    /** @var VideoSerializer */
+    /** @var UploadedVideoSerializer */
     private $videoSerializer;
 
     /**
@@ -46,7 +46,7 @@ class CategoryController extends AbstractController implements AppControllerInte
      * @param SubcategoryRepository $subcategoryRepository
      * @param ContentStatisticSender $contentStatisticSender
      * @param TemplateConfigurator $templateConfigurator
-     * @param VideoSerializer $videoSerializer
+     * @param UploadedVideoSerializer $videoSerializer
      */
     public function __construct(
         MainCategoryRepository $mainCategoryRepository,
@@ -54,7 +54,7 @@ class CategoryController extends AbstractController implements AppControllerInte
         SubcategoryRepository $subcategoryRepository,
         ContentStatisticSender $contentStatisticSender,
         TemplateConfigurator $templateConfigurator,
-        VideoSerializer $videoSerializer
+        UploadedVideoSerializer $videoSerializer
     ) {
         $this->mainCategoryRepository  = $mainCategoryRepository;
         $this->uploadedVideoRepository = $uploadedVideoRepository;

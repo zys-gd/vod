@@ -31,7 +31,7 @@ services:
             - '@App\CarrierTemplate\TemplateConfigurator'
             - '@App\Domain\Repository\MainCategoryRepository'
             - '@App\Domain\Repository\UploadedVideoRepository'
-            - '@App\Domain\Service\VideoProcessing\VideoSerializer'
+            - '@App\Domain\Service\VideoProcessing\UploadedVideoSerializer'
             - '@App\Domain\Repository\GameRepository'
             - '@App\Domain\Repository\CountryCategoryPriorityOverrideRepository'
             - '@App\Domain\Service\ContentStatisticSender'
@@ -56,7 +56,7 @@ services:
             - '@App\Domain\Repository\SubcategoryRepository'
             - '@App\Domain\Service\ContentStatisticSender'
             - '@App\CarrierTemplate\TemplateConfigurator'
-            - '@App\Domain\Service\VideoProcessing\VideoSerializer'
+            - '@App\Domain\Service\VideoProcessing\UploadedVideoSerializer'
 
     App\Controller\AccountController:
         arguments:
@@ -91,7 +91,7 @@ services:
         arguments:
             - '@App\Domain\Repository\UploadedVideoRepository'
             - '@App\Domain\Repository\MainCategoryRepository'
-            - '@App\Domain\Service\VideoProcessing\VideoSerializer'
+            - '@App\Domain\Service\VideoProcessing\UploadedVideoSerializer'
 
     App\Controller\TrackEventController:
         arguments:
