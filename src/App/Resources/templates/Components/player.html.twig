@@ -76,7 +76,7 @@
 
                 function makeCurrentlyPlaying(index) {
                     $('.modal-related-video').each(function () {
-                        var elementIndex = $(this).attr('data-uuid');
+                        let elementIndex = $(this).attr('data-uuid');
 
                         if (index != elementIndex) {
                             $(this).removeClass('currently-playing')
@@ -97,12 +97,12 @@
                     demoplayer.stop();
                 }
 
-                function changeVideo(element) {
-                    demoplayer.source(element);
+                function changeVideo(publicId, options) {
+                    demoplayer.source(publicId, options);
                 }
 
-                var cld        = cloudinary.Cloudinary.new({cloud_name: '{{ getCloudName() }}'});
-                var demoplayer = cld.videoPlayer('video-player-frame', {playedEventPercents: [50]})
+                const cld        = cloudinary.Cloudinary.new({cloud_name: '{{ getCloudName() }}'});
+                const demoplayer = cld.videoPlayer('video-player-frame', {playedEventPercents: [50]})
                     .sourceTypes(['hls'])
                     .transformation({streaming_profile: 'hd'});
 
@@ -125,7 +125,7 @@
                     let batchRelatedVideosRoute = '{{ url('load_more_related_videos') }}';
                     let options = ($(this).attr('data-options')) ? JSON.parse($(this).attr('data-options')) : undefined;
                     let publicId = $(this).attr('data-public-id');
-                    let uri = `${batchRelatedVideosRoute}?categoryUuid=${category}&offser=${offset}`;
+                    let uri = `${batchRelatedVideosRoute}?categoryUuid=${category}&offset=${offset}`;
 
                     $.get(uri, (data) => {
                         $('.modal-related-videos-block').append(data.html);
@@ -143,7 +143,7 @@
                                     && isAllowRequest
                                     && !isLast
                                 ) {
-                                    uri = `${batchRelatedVideosRoute}?categoryUuid=${category}&offser=${offset}`;
+                                    uri = `${batchRelatedVideosRoute}?categoryUuid=${category}&offset=${offset}`;
                                     isAllowRequest = false;
                                     offset += 20;
                                     $.get(uri, (html) => {
@@ -157,35 +157,20 @@
 
 
 
-                    let indexVideo = $(this).attr('data-public-id')
-
-                    changeVideo(indexVideo);
+                    changeVideo(publicId, options);
                     demoplayer.play();
                 });
 
                 $(document).on('click', '.x-modal-play-button', function () {
                     let index    = $(this).attr('data-uuid');
-                    let indexVideo = $(this).attr('data-public-id')
+                    let publicId = $(this).attr('data-public-id');
+                    let options = ($(this).attr('data-options')) ? JSON.parse($(this).attr('data-options')) : undefined;
 
-
-                    changeVideo(indexVideo);
+                    changeVideo(publicId, options);
                     makeCurrentlyPlaying(index);
                     demoplayer.play();
 
                 });
-
-                {#$(window).scroll(function() {#}
-                {#    if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {#}
-
-                {#        let category                = $(this).attr('data-category');#}
-                {#        let batchRelatedVideosRoute = '{{ url('load_more_related_videos') }}';#}
-                {#        console.log(1)#}
-                {#        $.get(batchRelatedVideosRoute + '?categoryUuid=' + category, function (html) {#}
-                {#            console.log(2)#}
-                {#            $('.modal-related-videos-block').html(html);#}
-                {#        });#}
-                {#    }#}
-                {#});#}
 
                 $(document).on('click', '.x-close-modal-button', function () {
                     closeModal()

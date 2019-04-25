@@ -376,4 +376,37 @@ class UploadedVideo implements HasUuid, JsonSerializable
     {
         return $this->videoPartner;
     }
+
+    /**
+     * @return array
+     */
+    public function getDataFormTemplate(): array
+    {
+        return [
+            'uuid'       => $this->getUuid(),
+            'title'      => $this->getTitle(),
+            'publicId'   => $this->getRemoteId(),
+            'thumbnails' => $this->getThumbnails(),
+            'options'    => $this->getOptions()
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'uuid' => $this->getUuid(),
+            'mainCategory' => $this->getSubcategory()->getParent()->getUuid(),
+            'subcategory' => $this->getSubcategory()->getUuid(),
+            'videoPartner' => $this->getVideoPartner()->getUuid(),
+            'title' => $this->getTitle(),
+            'description' => $this->getDescription(),
+            'expiredDate' => $this->getExpiredDate() ? $this->getExpiredDate()->format('Y-MM-dd HH:mm') : null,
+            'remoteId' => $this->getRemoteId(),
+            'remoteUrl' => $this->getRemoteUrl(),
+            'thumbnails' => $this->getThumbnails()
+        ];
+    }
 }

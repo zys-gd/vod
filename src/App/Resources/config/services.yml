@@ -117,3 +117,5 @@ services:
         arguments:
             - '@App\Domain\Repository\CarrierRepository'
             - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+
+    App\Domain\Service\VideoProcessing\UploadedVideoSerializer: ~

@@ -18,7 +18,9 @@ class UploadedVideoSerializer
             'uuid'       => $video->getUuid(),
             'title'      => $video->getTitle(),
             'publicId'   => $video->getRemoteId(),
-            'thumbnails' => $video->getThumbnails()
+            'thumbnails' => $video->getThumbnails(),
+            'options'    => $video->getOptions(),
+            'jsonOptions' => json_encode($video->getOptions())
         ];
     }
 }
