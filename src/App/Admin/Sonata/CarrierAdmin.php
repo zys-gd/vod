@@ -3,6 +3,7 @@
 namespace App\Admin\Sonata;
 
 use App\Domain\Entity\Carrier;
+use Doctrine\ORM\EntityManagerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -25,22 +26,44 @@ class CarrierAdmin extends AbstractAdmin
     private $constraintCounterRedis;
 
     /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
      * CarrierAdmin constructor
      *
      * @param string $code
      * @param string $class
      * @param string $baseControllerName
      * @param ConstraintCounterRedis $constraintCounterRedis
+     * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         string $code,
         string $class,
         string $baseControllerName,
-        ConstraintCounterRedis $constraintCounterRedis
+        ConstraintCounterRedis $constraintCounterRedis,
+        EntityManagerInterface $entityManager
     ) {
         $this->constraintCounterRedis = $constraintCounterRedis;
+        $this->entityManager = $entityManager;
 
         parent::__construct($code, $class, $baseControllerName);
+    }
+
+    /**
+     * @param Carrier $object
+     */
+    public function preUpdate($object)
+    {
+        $originalData = $this->entityManager->getUnitOfWork()->getOriginalEntityData($object);
+
+        if ($originalData['numberOfAllowedSubscriptionsByConstraint']
+            !== $object->getNumberOfAllowedSubscriptionsByConstraint()
+        ) {
+            $object->setIsCapAlertDispatch(false);
+        }
     }
 
     /**
