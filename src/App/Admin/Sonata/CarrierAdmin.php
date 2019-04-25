@@ -76,7 +76,6 @@ class CarrierAdmin extends AbstractAdmin
     protected function configureListFields (ListMapper $listMapper)
     {
         $listMapper
-            ->add('uuid')
             ->add('billingCarrierId')
             ->add('operatorId')
             ->add('name')
@@ -167,6 +166,8 @@ class CarrierAdmin extends AbstractAdmin
             ->add('numberOfAllowedSubscription')
             ->add('numberOfAllowedSubscriptionsByConstraint')
             ->add('counter')
+            ->add('isCapAlertDispatch')
+            ->add('flushDate')
             ->add('redirectUrl');
     }
 
