@@ -11,6 +11,9 @@ use App\Domain\Entity\UploadedVideo;
 class UploadedVideoRepository extends \Doctrine\ORM\EntityRepository
 {
     /**
+     * @param int $offset
+     * @param int $count
+     *
      * @return array
      *
      * @throws \Exception
@@ -34,11 +37,13 @@ class UploadedVideoRepository extends \Doctrine\ORM\EntityRepository
     /**
      * @param Subcategory[] $subcategories
      *
+     * @param int $offset
+     * @param int $count
      * @return array
      *
      * @throws \Exception
      */
-    public function findNotExpiredBySubcategories(array $subcategories): array
+    public function findNotExpiredBySubcategories(array $subcategories, int $offset = 0, int $count = 20): array
     {
         $queryBuilder = $this->createQueryBuilder('v');
         $query = $queryBuilder
@@ -51,6 +56,8 @@ class UploadedVideoRepository extends \Doctrine\ORM\EntityRepository
                 'currentDateTime' => new \DateTime(),
                 'status' => UploadedVideo::STATUS_READY
             ])
+            ->setMaxResults($count)
+            ->setFirstResult($offset)
             ->getQuery();
 
         return $query->getResult();

@@ -25,6 +25,7 @@ use SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\Notification\Notifier;
 use SubscriptionBundle\Service\SubscriptionCreator;
+use SubscriptionBundle\Service\SubscriptionSerializer;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class Subscriber
@@ -73,6 +74,10 @@ class Subscriber
      * @var SubscriptionCounterUpdater
      */
     private $subscriptionCounterUpdater;
+    /**
+     * @var SubscriptionSerializer
+     */
+    private $subscriptionSerializer;
 
 
     /**
@@ -88,6 +93,7 @@ class Subscriber
      * @param OnSubscribeUpdater          $onSubscribeUpdater
      * @param SubscribeParametersProvider $subscribeParametersProvider
      * @param SubscriptionCounterUpdater  $subscriptionCounterUpdater
+     * @param SubscriptionSerializer      $subscriptionSerializer
      */
     public function __construct(
         LoggerInterface $logger,
@@ -100,7 +106,8 @@ class Subscriber
         SubscribeProcess $subscribeProcess,
         OnSubscribeUpdater $onSubscribeUpdater,
         SubscribeParametersProvider $subscribeParametersProvider,
-        SubscriptionCounterUpdater $subscriptionCounterUpdater
+        SubscriptionCounterUpdater $subscriptionCounterUpdater,
+        SubscriptionSerializer $subscriptionSerializer
     )
     {
         $this->logger                      = $logger;
@@ -114,6 +121,7 @@ class Subscriber
         $this->onSubscribeUpdater          = $onSubscribeUpdater;
         $this->subscribeParametersProvider = $subscribeParametersProvider;
         $this->subscriptionCounterUpdater  = $subscriptionCounterUpdater;
+        $this->subscriptionSerializer      = $subscriptionSerializer;
     }
 
     /**
@@ -214,6 +222,11 @@ class Subscriber
                 );
 
             } catch (NotificationSendFailedException $e) {
+
+                $this->logger->error($e->getMessage(), [
+                    'subscription' => $this->subscriptionSerializer->serializeShort($subscription)
+                ]);
+
                 throw new SubscribingProcessException('Error while trying to subscribe', 0, $e);
             }
 
@@ -238,7 +251,7 @@ class Subscriber
         if ($subscriptionPack->isFirstSubscriptionPeriodIsFree() /*&&*/
             /*$subscriptionPack->isFirstSubscriptionPeriodIsFreeMultiple()*/
         ) {
-            $tierIdWithZeroValue = $this->getPriceTierIdWithZeroValue($subscriptionPack->getCarrierId());
+            $tierIdWithZeroValue = $this->getPriceTierIdWithZeroValue($subscriptionPack->getBillingCarrierId());
             $subscription->setPromotionTierId($tierIdWithZeroValue);
         }
     }

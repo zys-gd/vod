@@ -6,6 +6,7 @@ use App\Domain\Entity\Carrier;
 use App\Domain\Entity\Country;
 use App\Utils\UuidGenerator;
 use Doctrine\ORM\EntityManager;
+use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use PriceBundle\Entity\Strategy;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -47,21 +48,29 @@ class SubscriptionPackAdmin extends AbstractAdmin
     private $subscriptionPackDataProvider;
 
     /**
+     * @var CarrierRepositoryInterface
+     */
+    private $carrierRepository;
+
+    /**
      * @param string $code
      * @param string $class
      * @param string $baseControllerName
      * @param SubscriptionPackDataProvider $subscriptionPackDataProvider
      * @param SubscriptionTextService $subscriptionTextService
+     * @param CarrierRepositoryInterface $carrierRepository
      */
     public function __construct(
         $code,
         $class,
         $baseControllerName,
         SubscriptionPackDataProvider $subscriptionPackDataProvider,
-        SubscriptionTextService $subscriptionTextService
+        SubscriptionTextService $subscriptionTextService,
+        CarrierRepositoryInterface $carrierRepository
     ) {
         $this->subscriptionTextService = $subscriptionTextService;
         $this->subscriptionPackDataProvider = $subscriptionPackDataProvider;
+        $this->carrierRepository = $carrierRepository;
 
         parent::__construct($code, $class, $baseControllerName);
     }
@@ -89,18 +98,14 @@ class SubscriptionPackAdmin extends AbstractAdmin
     /**
      * @param SubscriptionPack $object
      *
-//     * @throws \Doctrine\DBAL\DBALException
-//     * @throws \Doctrine\ORM\NoResultException
-//     * @throws \Doctrine\ORM\NonUniqueResultException
-     *
      * @throws \Exception
      */
     public function preUpdate($object)
     {
-//        $this->subscriptionTextService->insertDefaultPlaceholderTexts($object);
         $object->setUpdated(new \DateTime('now'));
 
         $this->markSubscriptionPacksWithSameCarrierAsInactive($object);
+        $this->setCarrier($object);
 
         parent::preUpdate($object);
     }
@@ -114,6 +119,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
     public function prePersist($object)
     {
         $this->markSubscriptionPacksWithSameCarrierAsInactive($object);
+        $this->setCarrier($object);
     }
 
     /**
@@ -154,7 +160,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
             ->add('buyStrategy', null, [
                 'editable' => false
             ])
-            ->add('carrier')
+            ->add('carrierName')
             ->add('unlimited', null, [
                 'editable' => false,
                 'label'    => 'Unlimited Downloads'
@@ -187,7 +193,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
          $datagridMapper
              ->add('name')
              ->add('country')
-             ->add('carrier', null, [], ChoiceType::class, [
+             ->add('carrierName', null, [], ChoiceType::class, [
                  'choices' => $carriers,
                  'choice_label' => 'name',
                  'choice_value' => 'id'
@@ -238,8 +244,10 @@ class SubscriptionPackAdmin extends AbstractAdmin
                 'required' => false
             ])
             ->add('country', EntityType::class, [
-                'class'    => Country::class, 'expanded' => false,
-                'required' => true, 'placeholder' => 'Please select country'
+                'class'    => Country::class,
+                'expanded' => false,
+                'required' => true,
+                'placeholder' => 'Please select country'
             ]);
 
         $builder = $formMapper->getFormBuilder();
@@ -250,13 +258,13 @@ class SubscriptionPackAdmin extends AbstractAdmin
 
             if ($subscriptionPack) {
                 $this->appendCarrierField($event->getForm(), $subscriptionPack->getCountry());
-                $this->appendTierField($event->getForm(), $subscriptionPack->getCarrierId());
+                $this->appendTierField($event->getForm(), $subscriptionPack->getBillingCarrierId());
             }
         });
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($builder) {
             $formValues = $this->getRequest()->request->get($builder->getFormConfig()->getName());
-            $carrier  = isset($formValues['carrierId']) ? $formValues['carrierId'] : null;
+            $carrier  = isset($formValues['billingCarrierId']) ? $formValues['billingCarrierId'] : null;
             $this->appendTierField($event->getForm(), $carrier);
         }, 899);
 
@@ -389,11 +397,15 @@ class SubscriptionPackAdmin extends AbstractAdmin
         $formMapper
             ->with('Billing strategy', [''])
             ->add('buyStrategy', ChoiceType::class, $buyStrategyOptions)
-            ->add('buyStrategyId', HiddenType::class, ['required' => false]);
+            ->add('buyStrategyId', HiddenType::class, [
+                'required' => false
+            ]);
 
         $formMapper
             ->add('renewStrategy', ChoiceType::class, $renewStrategyOptions)
-            ->add('renewStrategyId', HiddenType::class, ['required' => false]);
+            ->add('renewStrategyId', HiddenType::class, [
+                'required' => false
+            ]);
 
         $formMapper
             ->add('providerManagedSubscriptions', CheckboxType::class, [
@@ -472,7 +484,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
 
         if (count($carriers) > 0) {
             $form
-                ->add('carrier', ChoiceType::class, [
+                ->add('carrierName', ChoiceType::class, [
                     'choices' => $carriers,
                     'choice_label' => 'name',
                     'choice_attr' => function ($carrier) {
@@ -484,7 +496,12 @@ class SubscriptionPackAdmin extends AbstractAdmin
                     'placeholder' => 'Please select carrier',
                     'required' => true
                 ])
-                ->add('carrierId', HiddenType::class, ['required' => false]);
+                ->add('billingCarrierId', TextType::class, [
+                    'required' => false,
+                    'attr' => [
+                        'style' => 'display:none;'
+                    ]
+                ]);
         }
     }
 
@@ -534,7 +551,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    private function markSubscriptionPacksWithSameCarrierAsInactive(SubscriptionPack $subscriptionPack)
+    private function markSubscriptionPacksWithSameCarrierAsInactive(SubscriptionPack $subscriptionPack): void
     {
         if ($subscriptionPack->getStatus() == SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK) {
             /** @var EntityManager $em */
@@ -552,6 +569,18 @@ class SubscriptionPackAdmin extends AbstractAdmin
 
                 $em->flush();
             }
+        }
+    }
+
+    /**
+     * @param SubscriptionPack $subscriptionPack
+     */
+    private function setCarrier(SubscriptionPack $subscriptionPack): void
+    {
+        $carrier = $this->carrierRepository->findOneByBillingId($subscriptionPack->getBillingCarrierId());
+
+        if ($carrier) {
+            $subscriptionPack->setCarrier($carrier);
         }
     }
 }

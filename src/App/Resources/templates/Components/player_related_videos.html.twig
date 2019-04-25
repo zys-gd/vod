@@ -1,0 +1,5 @@
+{% import "@App/Components/Blocks/Main/player_related_video.html.twig" as related_video %}
+
+{% for video in videos %}
+    {{ related_video.render(video, category) }}
+{% endfor %}

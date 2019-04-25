@@ -27,6 +27,14 @@ class EagerType implements CallbackHandlerInterface
      */
     private $entityManager;
 
+    /**
+     * Array of options which should save to "options" field
+     *
+     * @var array
+     */
+    private $optionsTobeSaved = [
+        'so' => 'start_offset'
+    ];
 
     /**
      * EagerType constructor.
@@ -47,6 +55,7 @@ class EagerType implements CallbackHandlerInterface
     public function handle(Request $request)
     {
         $publicId = $request->get('public_id', null);
+
         if (!$publicId) {
             throw new BadRequestHttpException(sprintf('Bad Request - missing parameters'));
         }
@@ -55,12 +64,51 @@ class EagerType implements CallbackHandlerInterface
         $video = $this->repository->findOneBy([
             'remoteId' => $publicId
         ]);
+
         if (!$video) {
             throw new NotFoundHttpException(sprintf('%s not found', $publicId));
         }
 
+        $options = $this->getOptionsFromRequest($request);
 
-        $video->setStatus(UploadedVideo::STATUS_READY);
+        $video
+            ->updateStatus(UploadedVideo::STATUS_TRANSFORMATION_READY)
+            ->setOptions($options);
+
         $this->entityManager->flush();
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return array
+     */
+    private function getOptionsFromRequest(Request $request)
+    {
+        $eager = $request->request->get('eager');
+        $transformation = array_shift($eager);
+        $options = [];
+
+        if (!empty($transformation)) {
+            $transformationChain = explode('/', $transformation['transformation']);
+
+            foreach ($transformationChain as $transformation) {
+                $transformationParams = explode(',', $transformation);
+
+                foreach ($transformationParams as $param) {
+                    $params = explode('_', $param);
+
+                    $key = $params[0];
+                    $value = empty($params[1]) ? null : $params[1];
+
+                    if (!empty($this->optionsTobeSaved[$key])) {
+                        $fullName = $this->optionsTobeSaved[$key];
+                        $options[$fullName] = $value;
+                    }
+                }
+            }
+        }
+
+        return $options;
     }
 }

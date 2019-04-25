@@ -1,0 +1,121 @@
+{% extends base_template %}
+
+{% block navbar_title %}
+    {{ 'Select general options for uploading' }}
+{% endblock %}
+
+{% block form %}
+    <span hidden id="subCategoryUrl">{{ path('admin_app_domain_subcategory_subcategoriesList', {'mainId': 'paramMainId'}) }}</span>
+    <div class="sonata-ba-form">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="sonata-ba-collapsed-fields">
+                            {{ form_start(form) }}
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-12">{{ form_label(form.mainCategory) }}</div>
+                                    <div class="col-lg-12 errors">{{ form_errors(form.mainCategory) }}</div>
+                                    <div class="col-lg-12">{{ form_widget(form.mainCategory, { 'attr': {'class': 'form-control'} }) }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-12">{{ form_label(form.subcategory) }}</div>
+                                    <div class="col-lg-12 errors">{{ form_errors(form.subcategory) }}</div>
+                                    <div class="col-lg-12">{{ form_widget(form.subcategory, { 'attr': {'class': 'form-control'} }) }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-12">{{ form_label(form.videoPartner) }}</div>
+                                    <div class="col-lg-12 errors">{{ form_errors(form.videoPartner) }}</div>
+                                    <div class="col-lg-12">{{ form_widget(form.videoPartner, { 'attr': {'class': 'form-control'} }) }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-12">{{ form_label(form.preset) }}</div>
+                                    <div class="col-lg-12 errors">{{ form_errors(form.preset) }}</div>
+                                    <div class="col-lg-12">{{ form_widget(form.preset, { 'attr': {'class': 'form-control'} }) }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success" name="btn_update_and_edit">
+                                    Next
+                                    <i class="fa fa-arrow-right"></i>
+                                </button>
+                            </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            var formControl = new FormControl();
+
+            $(formControl.mainCategory).change(function() {
+                formControl.clearSubcategoryOptions();
+
+                if ($(this).val().length > 0) {
+                    var url = $('#subCategoryUrl').text().replace('paramMainId', $(this).val());
+
+                    formControl.loadSubCategories(url);
+                }
+            });
+
+            $('.js-datepicker').datetimepicker();
+        });
+
+        function FormControl() {
+            /**
+             * Selectors for form fields
+             */
+            this.mainCategory = '#pre_upload_form_mainCategory';
+            this.subcategory = '#pre_upload_form_subcategory';
+
+            /**
+             * Load subcategories list and pass options to select field
+             *
+             * @param {string} url
+             */
+            this.loadSubCategories = function(url) {
+                var self = this;
+                var loader = $('<i>Loading subcategories...</i>');
+
+                $(this.mainCategory).closest('div').append(loader);
+                this.clearSubcategoryOptions();
+
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    success: function(data) {
+                        var subcategories = JSON.parse(data);
+                        var subcategoriesSelect = $(self.subcategory);
+
+                        subcategories.forEach(function(subcategory) {
+                            subcategoriesSelect.append(new Option(subcategory.title, subcategory.id));
+                        });
+                    }
+                })
+                    .fail(function() {
+                        $(self.mainCategory).closest('div').effect('highlight', {'color': '#C43C35'}, 2000);
+                    })
+                    .always(function () {
+                        loader.remove();
+                    })
+            };
+
+            /**
+             * Remove all options from subcategory select and set default
+             */
+            this.clearSubcategoryOptions = function() {
+                $(this.subcategory).html('').append(new Option('Select subcategory'));
+            }
+        }
+    </script>
+{% endblock %}

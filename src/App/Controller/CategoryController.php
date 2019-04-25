@@ -8,6 +8,7 @@ use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\SubcategoryRepository;
 use App\Domain\Repository\UploadedVideoRepository;
 use App\Domain\Service\ContentStatisticSender;
+use App\Domain\Service\VideoProcessing\UploadedVideoSerializer;
 use IdentificationBundle\Identification\DTO\ISPData;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,48 +20,48 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CategoryController extends AbstractController implements AppControllerInterface
 {
-    /**
-     * @var CategoryController
-     */
+    /** @var CategoryController */
     private $mainCategoryRepository;
-    /**
-     * @var UploadedVideoRepository
-     */
+
+    /** @var UploadedVideoRepository */
     private $uploadedVideoRepository;
-    /**
-     * @var SubcategoryRepository
-     */
+
+    /** @var SubcategoryRepository */
     private $subcategoryRepository;
-    /**
-     * @var ContentStatisticSender
-     */
+
+    /** @var ContentStatisticSender */
     private $contentStatisticSender;
-    /**
-     * @var TemplateConfigurator
-     */
+
+    /** @var TemplateConfigurator */
     private $templateConfigurator;
+
+    /** @var UploadedVideoSerializer */
+    private $videoSerializer;
 
     /**
      * CategoryController constructor.
      *
-     * @param MainCategoryRepository  $mainCategoryRepository
+     * @param MainCategoryRepository $mainCategoryRepository
      * @param UploadedVideoRepository $uploadedVideoRepository
-     * @param SubcategoryRepository   $subcategoryRepository
-     * @param ContentStatisticSender  $contentStatisticSender
-     * @param TemplateConfigurator    $templateConfigurator
+     * @param SubcategoryRepository $subcategoryRepository
+     * @param ContentStatisticSender $contentStatisticSender
+     * @param TemplateConfigurator $templateConfigurator
+     * @param UploadedVideoSerializer $videoSerializer
      */
     public function __construct(
         MainCategoryRepository $mainCategoryRepository,
         UploadedVideoRepository $uploadedVideoRepository,
         SubcategoryRepository $subcategoryRepository,
         ContentStatisticSender $contentStatisticSender,
-        TemplateConfigurator $templateConfigurator
+        TemplateConfigurator $templateConfigurator,
+        UploadedVideoSerializer $videoSerializer
     ) {
         $this->mainCategoryRepository  = $mainCategoryRepository;
         $this->uploadedVideoRepository = $uploadedVideoRepository;
         $this->subcategoryRepository   = $subcategoryRepository;
         $this->contentStatisticSender  = $contentStatisticSender;
-        $this->templateConfigurator = $templateConfigurator;
+        $this->templateConfigurator    = $templateConfigurator;
+        $this->videoSerializer         = $videoSerializer;
     }
 
 
@@ -99,7 +100,7 @@ class CategoryController extends AbstractController implements AppControllerInte
         foreach ($videos as $video) {
             $categoryEntity                                  = $video->getSubcategory()->getParent();
             $categoryKey                                     = $categoryEntity->getUuid();
-            $categoryVideos[$categoryKey][$video->getUuid()] = $video->getDataFormTemplate();
+            $categoryVideos[$categoryKey][$video->getUuid()] = $this->videoSerializer->serialize($video);
         }
 
         $this->contentStatisticSender->trackVisit($data);
@@ -109,7 +110,6 @@ class CategoryController extends AbstractController implements AppControllerInte
             'videos'              => $videos,
             'category'            => $category,
             'subcategories'       => $subcategories,
-            'categoryVideos'      => $categoryVideos,
             'selectedSubcategory' => $selectedSubcategory ?? null
         ]);
     }

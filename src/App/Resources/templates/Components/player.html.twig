@@ -1,4 +1,4 @@
-{% macro render(videos) %}
+{% macro render() %}
 
     {% import "@App/Components/Blocks/Header/header_main.html.twig" as  header_main %}
 
@@ -63,57 +63,20 @@
             </div>
         </div>#}
     </div>
-    <script>
-        Handlebars.registerHelper('ifEquals', function (arg1, arg2, options) {
-            return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
-        });
-
-        Handlebars.registerHelper('ifNotEquals', function (arg1, arg2, options) {
-            return (arg1 != arg2) ? options.fn(this) : options.inverse(this);
-        });
-
-    </script>
-    <script id="related-videos-block-template" type="text/x-handlebars">
-        {% verbatim %}
-
-            {{#each videos}}
-                <div class="d-flex flex-row modal-related-video my-2 {{#ifEquals uuid ../current.uuid}}currently-playing{{/ifEquals}}" data-uuid="{{ uuid }}">
-                        {{#each thumbnails}}
-                            <div class="modal-related-video-thumbnail-wrapper">
-                                {{#if @first}}
-                                    <img src="{{ this }}"
-                                        class="x-modal-play-button w-175px"
-                                        data-uuid="{{ ../uuid }}"
-                                        data-category="{{ ../../category }}"
-                                    />
-                                    <div class="category__related__box-play"></div>
-                                {{/if}}
-                            </div>
-                        {{/each}}
-                        <div class="align-items-center d-flex modal-related-video-title x-modal-play-button" data-uuid="{{ uuid }}" data-category="{{ ../category }}">
-                            {{ title }}
-                        </div>
-                    </div>
-                </div>
-            {{/each}}
-        {% endverbatim %}
 
 
-
-    </script>
 
     {% if hasActiveSubscription() or isNotFullyPaid() %}
         <script>
 
 
-            var videos = {{ videos | json_encode | raw }};
             var trackEventRoute = '{{ url('track_video_percent_event') }}';
 
             $(window).on('load', function () {
 
                 function makeCurrentlyPlaying(index) {
                     $('.modal-related-video').each(function () {
-                        var elementIndex = $(this).attr('data-uuid');
+                        let elementIndex = $(this).attr('data-uuid');
 
                         if (index != elementIndex) {
                             $(this).removeClass('currently-playing')
@@ -134,56 +97,75 @@
                     demoplayer.stop();
                 }
 
-                var cld = cloudinary.Cloudinary.new({cloud_name: '{{ getCloudName() }}'});
-                var demoplayer = cld.videoPlayer('video-player-frame', {playedEventPercents: [50]})
+                function changeVideo(publicId, options) {
+                    demoplayer.source(publicId, options);
+                }
+
+                const cld        = cloudinary.Cloudinary.new({cloud_name: '{{ getCloudName() }}'});
+                const demoplayer = cld.videoPlayer('video-player-frame', {playedEventPercents: [50]})
                     .sourceTypes(['hls'])
                     .transformation({streaming_profile: 'hd'});
-
-                var changeVideo = function (element) {
-                    demoplayer.source(element);
-                };
 
 
                 demoplayer.on('percentsplayed', function (event) {
 
                     $.post(trackEventRoute, {
                         percent: event.eventData.percent,
-                        video: demoplayer.currentPublicId()
+                        video  : demoplayer.currentPublicId()
                     });
                 });
 
-
-                $(document).on('click', '.x-play-button', function () {
-
+                //TODO: Refactor this
+                $(document).on('click', '.x-play-button, .modal-related-video-thumbnail-wrapper', function () {
                     openModal();
 
-                    var index = $(this).attr('data-uuid');
-                    var category = $(this).attr('data-category');
+                    let isLast = false;
+                    let offset = 0;
+                    let category = $(this).attr('data-category');
+                    let batchRelatedVideosRoute = '{{ url('load_more_related_videos') }}';
+                    let options = ($(this).attr('data-options')) ? JSON.parse($(this).attr('data-options')) : undefined;
+                    let publicId = $(this).attr('data-public-id');
+                    let uri = `${batchRelatedVideosRoute}?categoryUuid=${category}&offset=${offset}`;
 
-                    let videoElement = videos[category][index];
-                    let relatedVideos = videos[category];
+                    $.get(uri, (data) => {
+                        $('.modal-related-videos-block').append(data.html);
+                        isLast = Boolean(data.isLast);
+                    }).then(() => {
+                        let isAllowRequest = true;
+                        let modalRelatedVideosBlock = document.querySelector('.modal-related-videos-block');
+                        if (modalRelatedVideosBlock.childNodes.length > 0) {
 
-                    changeVideo(videoElement);
-                    demoplayer.play();
+                            modalRelatedVideosBlock.addEventListener('scroll', () => {
+                                let mrvbScrollTop = modalRelatedVideosBlock.scrollTop;
+                                let mrvbHeight = modalRelatedVideosBlock.scrollHeight;
 
-                    var source = document.getElementById("related-videos-block-template").innerHTML;
-                    var template = Handlebars.compile(source);
-                    var html = template({
-                        'videos': relatedVideos,
-                        'category': category,
-                        'current': videoElement,
+                                if (Math.round(mrvbScrollTop) >= Math.round(mrvbHeight - modalRelatedVideosBlock.offsetHeight)
+                                    && isAllowRequest
+                                    && !isLast
+                                ) {
+                                    offset += 20;
+                                    uri = `${batchRelatedVideosRoute}?categoryUuid=${category}&offset=${offset}`;
+                                    isAllowRequest = false;
+                                    $.get(uri, (data) => {
+                                        $('.modal-related-videos-block').append(data.html);
+                                        isAllowRequest = true;
+                                        isLast = Boolean(data.isLast);
+                                    });
+                                }
+                            });
+                        }
                     });
-                    $('.modal-related-videos-block').html(html);
 
+                    changeVideo(publicId, options);
+                    demoplayer.play();
                 });
 
                 $(document).on('click', '.x-modal-play-button', function () {
-                    var index = $(this).attr('data-uuid');
-                    var category = $(this).attr('data-category');
+                    let index    = $(this).attr('data-uuid');
+                    let publicId = $(this).attr('data-public-id');
+                    let options = ($(this).attr('data-options')) ? JSON.parse($(this).attr('data-options')) : undefined;
 
-                    let videoElement = videos[category][index];
-
-                    changeVideo(videoElement);
+                    changeVideo(publicId, options);
                     makeCurrentlyPlaying(index);
                     demoplayer.play();
 

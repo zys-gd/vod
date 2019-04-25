@@ -21,6 +21,7 @@ use SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository;
 use SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider;
 use SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -132,7 +133,7 @@ class UnsubscriptionAdminController extends CRUDController
             /** @var SubscriptionPack $subscriptionPack */
             $subscriptionPack = $subscription->getSubscriptionPack();
             /** @var Carrier $carrier */
-            $carrier = $carrierRepository->findOneBy(['billingCarrierId' => $subscriptionPack->getCarrierId()]);
+            $carrier = $carrierRepository->findOneBy(['billingCarrierId' => $subscriptionPack->getBillingCarrierId()]);
 
             try {
                 $response = $this->unsubscriber->unsubscribe($subscription, $subscriptionPack);
@@ -147,7 +148,7 @@ class UnsubscriptionAdminController extends CRUDController
                 if ((int) $user['toBlacklist']) {
                     $blackList = new BlackList(UuidGenerator::generate());
                     $blackList
-                        ->setBillingCarrierId($subscriptionPack->getCarrierId())
+                        ->setBillingCarrierId($subscriptionPack->getBillingCarrierId())
                         ->setAlias($subscription->getUser()->getIdentifier());
 
                     $entityManager->persist($blackList);
@@ -351,5 +352,10 @@ class UnsubscriptionAdminController extends CRUDController
         $requestFormName = empty($postData) ? UnsubscribeByMsisdnForm::NAME : array_keys($postData)[0];
 
         return empty($this->tabList[$requestFormName]) ? null : $requestFormName;
+    }
+
+    public function listAction()
+    {
+        return RedirectResponse::create($this->admin->generateUrl('create'));
     }
 }

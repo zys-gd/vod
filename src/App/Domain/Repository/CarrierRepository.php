@@ -46,7 +46,7 @@ class CarrierRepository extends \Doctrine\ORM\EntityRepository implements Carrie
         $qb = $this->getEntityManager()
             ->getRepository('SubscriptionBundle:SubscriptionPack')
             ->createQueryBuilder('sp')
-            ->where('sp.carrierId = :billingCarrierId')
+            ->where('sp.billingCarrierId = :billingCarrierId')
             ->andWhere('sp.status = :status')
             ->setParameters([
                 'status'           => SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK,

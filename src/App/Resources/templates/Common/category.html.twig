@@ -6,6 +6,7 @@
 {% import "@App/Components/Blocks/Main/subscription_status.html.twig" as  subscription_status %}
 {% import "@App/Components/player.html.twig" as  player %}
 {% import "@App/Components/Blocks/Footer/menu.html.twig" as  footer_menu %}
+{% import '@App/Components/Buttons/gray_button.html.twig' as button_gray %}
 {% import "@App/Components/Blocks/Main/mirror_separator.html.twig" as  mirror_separator %}
 
 {% block stylesheets %}
@@ -84,7 +85,10 @@
 
                         <div class="d-flex flex-column related-videos-block">
                             {% for video in videos | slice(1) %}
-                                <div class="d-flex flex-row related-video x-play-button" data-uuid="{{ video.uuid }}" data-category="{{ category.uuid }}">
+                                <div class="d-flex flex-row related-video x-play-button"
+                                     data-uuid="{{ video.uuid }}"
+                                     data-category="{{ category.uuid }}"
+                                     data-public-id="{{ video.remoteId }}">
                                     <div class="related-video-thumbnail-wrapper">
                                         {% for thumbnail in video.thumbnails | slice(0,1) %}
                                             <img src="{{ thumbnail }}" />
@@ -99,6 +103,12 @@
                                 </div>
                             {% endfor %}
                         </div>
+                        <div class="games-page-container">
+                            <div class="d-flex flex-wrap align-items-center justify-content-around x-games-block"></div>
+                            <div class="load-more-button-block d-flex align-items-center justify-content-center">
+                                <div>{{ button_gray.render('Load More', 'load-more-button x-load-more-videos-button') }}</div>
+                            </div>
+                        </div>
                     </div>
                 {% endif %}
             </div>
@@ -108,13 +118,18 @@
     </div>
 
 
-    {{ player.render(categoryVideos) }}
+    {{ player.render(category) }}
     {{ slider.render() }}
     {{ elect.render() }}
 
 
     <script>
-        $(document).on('click', '.x-show-subcategory-button', function (e) {
+        let offset = 20
+        const batchSize = 20
+        const categoryUuid = '{{ category.uuid }}'
+        const loadMoreCategoryVideosLink = '{{ path('load_more_category_videos') }}'
+
+        $(document).on('click', '.x-show-subcategory-button', (e) =>  {
             e.preventDefault();
 
             var elem = $(this);
@@ -124,6 +139,36 @@
 
             parent.find('.category-content').toggleClass('d-none');
         })
+
+        $(document).on('click', '.x-load-more-videos-button', () => {
+            let link = getLoadMoreCategoryVideosFullLink(loadMoreCategoryVideosLink, {categoryUuid, offset})
+            let button = $(this)
+
+            $.ajax({
+                url: link,
+                method: 'GET',
+                beforeSend: () => {
+                    button.attr('disabled', true)
+                },
+                complete  : () => {
+                    button.attr('disabled', false)
+                },
+                success   : (data) => {
+                    console.log(222, link, data)
+                    $('.related-videos-block').append(data)
+
+                    offset += batchSize
+                },
+                error: (e) => {
+                  console.log(111, e)
+                }
+
+            })
+        })
+
+        function getLoadMoreCategoryVideosFullLink(baseLink, {categoryUuid, offset}) {
+            return `${baseLink}?categoryUuid=${categoryUuid}&offset=${Number(offset)}`
+        }
     </script>
 
 

@@ -45,14 +45,13 @@ SubscriptionBundle\Entity\SubscriptionPack:
             nullable: false
             precision: 0
             column: carrier_name
-        carrierId:
+        billingCarrierId:
             type: integer
             scale: 0
             length: null
             unique: false
             nullable: false
             precision: 0
-            column: carrier_id
         tier:
             type: string
             scale: 0
