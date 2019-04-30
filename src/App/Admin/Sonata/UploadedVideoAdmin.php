@@ -250,6 +250,7 @@ class UploadedVideoAdmin extends AbstractAdmin
         $collection->add('signature', 'signature');
         $collection->add('saveBaseVideoData', 'saveBaseVideoData');
         $collection->add('confirmVideos', 'confirmVideos');
+        $collection->add('ping', 'ping');
 
         parent::configureRoutes($collection);
     }

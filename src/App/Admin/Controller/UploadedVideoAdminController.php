@@ -177,14 +177,6 @@ class UploadedVideoAdminController extends CRUDController
     {
         $confirmedVideos = json_decode($request->getContent(), true);
 
-        $token = empty($confirmedVideos['_token']) ? null : $confirmedVideos['_token'];
-
-        if (!$token || !$this->isCsrfTokenValid('uploading-video', $token)) {
-            throw new AccessDeniedHttpException('Invalid csrf token');
-        }
-
-        unset($confirmedVideos['_token']);
-
         $uploadedVideoRepository = $this->entityManager->getRepository(UploadedVideo::class);
 
         try {
@@ -237,5 +229,15 @@ class UploadedVideoAdminController extends CRUDController
         $signature = sha1($preparedSignature);
 
         return new Response($signature);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function pingAction(Request $request)
+    {
+        return new Response();
     }
 }
