@@ -25,19 +25,6 @@
 
             </div>
         </div>
-
-        <script type="application/javascript">
-
-            $(function(){
-                $("#modal").modal();
-            });
-            $(document).on('click', '#modal-button-go', function(){
-                var linkToRedirect = '{{ admin.generateUrl('texts',{id:object.id}) }}';
-                window.location = linkToRedirect;
-            });
-
-        </script>
-
     {% endif %}
 {% endblock %}
 
