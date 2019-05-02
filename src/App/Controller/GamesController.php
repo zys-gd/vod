@@ -8,11 +8,11 @@ use App\Domain\Entity\GameBuild;
 use App\Domain\Entity\GameImage;
 use App\Domain\Repository\GameBuildRepository;
 use App\Domain\Repository\GameRepository;
+use App\Domain\Service\ContentStatisticSender;
 use App\Domain\Service\Games\DrmApkProvider;
 use App\Domain\Service\Games\ExcludedGamesProvider;
 use App\Domain\Service\Games\GameImagesSerializer;
 use App\Domain\Service\Games\GameSerializer;
-use App\Domain\Service\ContentStatisticSender;
 use IdentificationBundle\Identification\DTO\ISPData;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\Entity\Subscription;
@@ -151,12 +151,12 @@ class GamesController extends AbstractController implements AppControllerInterfa
         $aSimilarGames = [];
 
         foreach ($similarGames ?? [] as $similarGame) {
-            $aSimilarGames[] = $this->gameSerializer->serializeGame($similarGame);
+            $aSimilarGames[] = $this->gameSerializer->serialize($similarGame);
         }
 
         $template = $this->templateConfigurator->getTemplate('game', $data->getCarrierId());
         return $this->render($template, [
-            'game'         => $this->gameSerializer->serializeGame($game),
+            'game'         => $this->gameSerializer->serialize($game),
             'images'       => $images,
             'similarGames' => $aSimilarGames
         ]);
@@ -178,7 +178,7 @@ class GamesController extends AbstractController implements AppControllerInterfa
         $serializedData = [];
 
         foreach ($games as $game) {
-            $serializedData[] = $this->gameSerializer->serializeGame($game);
+            $serializedData[] = $this->gameSerializer->serialize($game);
         }
 
         return new JsonResponse([

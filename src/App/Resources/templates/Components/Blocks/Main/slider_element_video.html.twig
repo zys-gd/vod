@@ -1,7 +1,9 @@
 {% macro render(video, category) %}
     <div class="d-flex flex-column video-element x-play-button"
+         data-public-id="{{ video.publicId }}"
          data-uuid="{{ video.uuid }}"
-         data-category="{{ category }}">
+         data-options="{{ video.jsonOptions }}"
+         data-category="{{ category.uuid }}">
         {# this div for flex working same column height #}
         <div class="thumbnail-wrapper">
             <img src="{{ video.thumbnails[0] }}"

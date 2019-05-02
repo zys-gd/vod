@@ -26,7 +26,7 @@ class Subcategory implements JsonSerializable, HasUuid
     private $alias;
 
     /**
-     * @var Subcategory
+     * @var MainCategory
      */
     private $parent;
 

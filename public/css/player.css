@@ -61,6 +61,7 @@
 
 .modal-related-videos-block {
     overflow-y: scroll;
+    height: 95%;
 }
 
 .modal-related-video-thumbnail-wrapper {

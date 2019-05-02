@@ -1,0 +1,29 @@
+{% macro render(loop, question, answers) %}
+    <div class="card faq-accordion_card">
+        <div class="faq-accordion_card_header" id="card_{{ loop }}">
+
+            <div class="d-flex flex-row align-items-center">
+                <div class="faq-accordion_card_header_button"
+                     href="#" data-toggle="collapse" data-target="#card_collapse_{{ loop }}"
+                     aria-expanded="false" aria-controls="card_collapse_{{ loop }}">
+                </div>
+                <div class="faq-accordion_card_header_title" data-toggle="collapse" data-target="#card_collapse_{{ loop }}"
+                     aria-expanded="false" aria-controls="card_collapse_{{ loop }}">
+                    {{ loop }}/ {{ translate(question)}}
+                </div>
+            </div>
+            <div>
+                <div class="faq-accordion_card__delimiter"></div>
+            </div>
+
+        </div>
+
+
+        <div id="card_collapse_{{ loop }}" class="collapse" aria-labelledby="card_{{ loop }}"
+             data-parent="#accordionExample">
+            <div class="card-body faq-accordion_card_body">
+                {{ translate(answers, {'%home_url%': path('index')}) | raw}}
+            </div>
+        </div>
+    </div>
+{% endmacro %}

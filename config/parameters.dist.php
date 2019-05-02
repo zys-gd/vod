@@ -12,6 +12,8 @@ return [
     'CLOUDINARY_API_KEY'    => '187818276162186',
     'CLOUDINARY_API_SECRET' => 'sHmSwu7rTZqiAmfqFMM-XLl-r0k',
     'CLOUDINARY_CLOUD_NAME' => 'origindata',
+    'DEFAULT_PRESET'        => 'default_stage',
+    'TRIM_PRESET'           => 'trim_stage',
 
     'HOST' => 'vod.local',
 
@@ -35,34 +37,34 @@ return [
     'PIWIK_ENABLE_JS_TRACKER'    => false,
     'PIWIK_ENABLE_LINK_TRACKING' => true,
 
-    'RABBIT_MQ_HOST'             => 'rabbitmq.playwing.com',
-    'RABBIT_MQ_PORT'             => 5672,
-    'RABBIT_MQ_USER'             => 'admin',
-    'RABBIT_MQ_PASSWORD'         => 'Pass1234',
-    'RABBIT_MQ_VHOST'            => '/',
+    'RABBIT_MQ_HOST'     => 'rabbitmq.playwing.com',
+    'RABBIT_MQ_PORT'     => 5672,
+    'RABBIT_MQ_USER'     => 'admin',
+    'RABBIT_MQ_PASSWORD' => 'Pass1234',
+    'RABBIT_MQ_VHOST'    => '/',
 
-    'CAMPAIGN_SESSION_NAME'      => 'campaignData',
-    'DEFAULT_REDIRECT_URL'       => 'https://www.google.com/',
+    'CAMPAIGN_SESSION_NAME' => 'campaignData',
+    'DEFAULT_REDIRECT_URL'  => 'https://www.google.com/',
 
-    'MAILER_TRANSPORT'           => 'smtp',
-    'MAILER_HOST'                => 'email-smtp.eu-west-1.amazonaws.com',
-    'MAILER_USER'                => 'AKIAJSGBBIGYKCTG2D6A',
-    'MAILER_PASSWORD'            => 'BCjVv8MEmA4IKrXF7Ps6T6VAbbdR5taVt3rNptvG365D',
-    'MAILER_PORT'                => 587,
-    'MAILER_ENCRYPTION'          => 'tls',
+    'MAILER_TRANSPORT'  => 'smtp',
+    'MAILER_HOST'       => 'email-smtp.eu-west-1.amazonaws.com',
+    'MAILER_USER'       => 'AKIAJSGBBIGYKCTG2D6A',
+    'MAILER_PASSWORD'   => 'BCjVv8MEmA4IKrXF7Ps6T6VAbbdR5taVt3rNptvG365D',
+    'MAILER_PORT'       => 587,
+    'MAILER_ENCRYPTION' => 'tls',
 
-    'CAP_NOTIFICATION_MAIL_TO'     => 'vod-cap-alert@origin-data.com',
-    'CAP_NOTIFICATION_MAIL_FROM'   => 'odintegrations@origin-data.com',
-    'CONTACT_US_MAIL_TO'           => 'support@origin-data.com',
-    'CONTACT_US_MAIL_FROM'         => 'support.form@origin-data.com',
+    'CAP_NOTIFICATION_MAIL_TO'   => 'vod-cap-alert@origin-data.com',
+    'CAP_NOTIFICATION_MAIL_FROM' => 'odintegrations@origin-data.com',
+    'CONTACT_US_MAIL_TO'         => 'support@origin-data.com',
+    'CONTACT_US_MAIL_FROM'       => 'support.form@origin-data.com',
 
     /*'MAILER_URL'          => 'MAILER_URL',*/
-    'UPLOADS_PATH'        => 'uploads',
-    'UPLOADS_BUILDS_PATH' => 'uploads/builds',
+    'UPLOADS_PATH'               => 'uploads',
+    'UPLOADS_BUILDS_PATH'        => 'uploads/builds',
 
-    'DRM_AUTHORIZE_KEY' =>  'NEbozf9AeS',
-    'DRM_API_URL' =>  'http://drm-api-dev-env.utbtaavpnd.eu-west-1.elasticbeanstalk.com/web/api/',
-    'S3_ROOT_URL' =>  'https://s3.eu-central-1.amazonaws.com/playwing-appstore',
+    'DRM_AUTHORIZE_KEY' => 'NEbozf9AeS',
+    'DRM_API_URL'       => 'http://drm-api-dev-env.utbtaavpnd.eu-west-1.elasticbeanstalk.com/web/api/',
+    'S3_ROOT_URL'       => 'https://s3.eu-central-1.amazonaws.com/playwing-appstore',
 
     'REPORTING_STATS_API_HOST' => 'http://reporting.100sport.tv/a/api'
 ];

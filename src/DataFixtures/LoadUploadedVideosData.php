@@ -37,7 +37,7 @@ class LoadUploadedVideosData extends AbstractFixture implements DependentFixture
 
             $video = new UploadedVideo($uuid);
 
-            $video->setStatus($status);
+            $video->setStatus(UploadedVideo::STATUS_READY);
             $video->setRemoteUrl($remoteUrl);
             $video->setRemoteId($remoteId);
             $video->setCreatedDate(new \DateTime($createdDate));

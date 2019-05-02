@@ -25,19 +25,6 @@
 
             </div>
         </div>
-
-        <script type="application/javascript">
-
-            $(function(){
-                $("#modal").modal();
-            });
-            $(document).on('click', '#modal-button-go', function(){
-                var linkToRedirect = '{{ admin.generateUrl('texts',{id:object.id}) }}';
-                window.location = linkToRedirect;
-            });
-
-        </script>
-
     {% endif %}
 {% endblock %}
 
@@ -184,8 +171,8 @@
             var $countryTag = getField("country");
             var $form       = $countryTag.closest('form');
 
-            var carrierId = "#" + uniqueId + "_carrierId";
-            var carrier   = "#" + uniqueId + "_carrier";
+            var carrierId = "#" + uniqueId + "_billingCarrierId";
+            var carrier   = "#" + uniqueId + "_carrierName";
 
             var tier   = "#" + uniqueId + "_tier";
             var tierId = "#" + uniqueId + "_tierId";

@@ -103,8 +103,8 @@ class MassRenewCommand extends Command
 
         $output->write(implode("\n", [
             sprintf('Processed: %s', $result->getProcessed()),
-            sprintf('Succeeded: %s', $result->getSucceeded()),
-            sprintf('Failed: %s', $result->getFailed()),
+            sprintf('Succeeded: %s', count($result->getSucceededSubscriptions())),
+            sprintf('Failed: %s', count($result->getFailedSubscriptions())),
             sprintf('Error: %s', $result->getError() ?? 'No errors'),
         ]));
     }

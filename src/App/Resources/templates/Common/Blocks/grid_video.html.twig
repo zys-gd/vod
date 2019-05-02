@@ -10,7 +10,7 @@
 
             <div class="categories-content d-flex flex-row felx-wrap justify-content-between">
                 {% for video in videos | slice(0, 2) %}
-                    {{ grid_element_video.render(video, category) }}
+                    {{ grid_element_video.render(video, categoryData) }}
                 {% endfor %}
 
             </div>

@@ -4,7 +4,7 @@ services:
             - ~
             - App\Domain\Entity\UploadedVideo
             - 'App\Admin\Controller\UploadedVideoAdminController'
-            - '@App\Domain\Service\VideoProcessing\VideoManager'
+            - '@App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector'
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: sonata.admin, manager_type: orm, group: content_management, label: Videos }

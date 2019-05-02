@@ -10,7 +10,7 @@ services:
       arguments:
         - '@SubscriptionBundle\Service\Notification\Common\MessageCompiler'
         - '@SubscriptionBundle\BillingFramework\Notification\API\RequestSender'
-        - '@monolog.logger'
+        - '@monolog.logger.subscription'
         - '@SubscriptionBundle\Service\Notification\Common\ProcessIdExtractor'
         - '@SubscriptionBundle\Service\Notification\Impl\NotificationHandlerProvider'
         - '@SubscriptionBundle\Service\Notification\Common\ShortUrlHashGenerator'
@@ -19,7 +19,7 @@ services:
 
   SubscriptionBundle\Service\Notification\Common\MessageCompiler:
         arguments:
-          - '@logger'
+          - '@monolog.logger.subscription'
           - '@SubscriptionBundle\BillingFramework\Notification\API\MessageCreator'
           - '@SubscriptionBundle\Service\Notification\Common\SMSTextProvider'
 

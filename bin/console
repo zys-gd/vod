@@ -35,6 +35,7 @@ if ($_SERVER['APP_DEBUG']) {
     }
 }
 
+
 $kernel      = new VODKernel($_SERVER['APP_ENV'], (bool)$_SERVER['APP_DEBUG']);
 $application = new Application($kernel);
 $application->run($input);
