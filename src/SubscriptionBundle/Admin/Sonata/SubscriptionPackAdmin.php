@@ -115,6 +115,8 @@ class SubscriptionPackAdmin extends AbstractAdmin
     public function preUpdate($object)
     {
         $object->setUpdated(new \DateTime('now'));
+        $object->setBuyStrategyId($object->getBuyStrategyId()->id);
+        $object->setRenewStrategyId($object->getRenewStrategyId()->id);
 
         $this->markSubscriptionPacksWithSameCarrierAsInactive($object);
 
@@ -129,6 +131,8 @@ class SubscriptionPackAdmin extends AbstractAdmin
      */
     public function prePersist($object)
     {
+        $object->setBuyStrategyId($object->getBuyStrategyId()->id);
+        $object->setRenewStrategyId($object->getRenewStrategyId()->id);
         $this->markSubscriptionPacksWithSameCarrierAsInactive($object);
     }
 
@@ -262,17 +266,21 @@ class SubscriptionPackAdmin extends AbstractAdmin
 
         if ($country) {
             $formMapper
-                ->add('country', TextType::class, [
+                ->add('country', EntityType::class, [
                     'attr' => [
                         'readonly' => true,
                     ],
+                    'choices' => [$country],
+                    'class'   => Country::class
                 ]);
 
             $formMapper
-                ->add('carrier', TextType::class, [
-                    'attr' => [
+                ->add('carrier', EntityType::class, [
+                    'attr'    => [
                         'readonly' => true,
                     ],
+                    'choices' => [$subject->getCarrier()],
+                    'class'   => Carrier::class,
                 ]);
         }
         else {
