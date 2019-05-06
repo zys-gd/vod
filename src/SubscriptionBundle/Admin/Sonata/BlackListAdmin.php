@@ -2,14 +2,18 @@
 
 namespace SubscriptionBundle\Admin\Sonata;
 
-use SubscriptionBundle\Entity\BlackList;
 use App\Utils\UuidGenerator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\Form\Type\DatePickerType;
+use Sonata\Form\Type\DateTimePickerType;
+use SubscriptionBundle\Entity\BlackList;
 use SubscriptionBundle\Service\BlackListService;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
@@ -25,9 +29,9 @@ class BlackListAdmin extends AbstractAdmin
     /**
      * BlackListAdmin constructor
      *
-     * @param string $code
-     * @param string $class
-     * @param string $baseControllerName
+     * @param string           $code
+     * @param string           $class
+     * @param string           $baseControllerName
      * @param BlackListService $blackListService
      */
     public function __construct(
@@ -35,7 +39,8 @@ class BlackListAdmin extends AbstractAdmin
         string $class,
         string $baseControllerName,
         BlackListService $blackListService
-    ) {
+    )
+    {
         $this->blackListService = $blackListService;
 
         parent::__construct($code, $class, $baseControllerName);
@@ -52,13 +57,13 @@ class BlackListAdmin extends AbstractAdmin
     /**
      * @param BlackList $blacklist
      */
-    public function postUpdate($blacklist) {
+    public function postUpdate($blacklist)
+    {
         $this->postPersist($blacklist);
     }
 
     /**
      * @return BlackList
-     *
      * @throws \Exception
      */
     public function getNewInstance(): BlackList
@@ -86,13 +91,16 @@ class BlackListAdmin extends AbstractAdmin
             ->add('uuid')
             ->add('billingCarrierId')
             ->add('alias')
-            ->add('_action', null, array(
-                'actions' => array(
-                    'show' => array(),
-                    'edit' => array(),
-                    'delete' => array(),
-                )
-            ));
+            ->add('duration', 'choice', [
+                'choices' => array_flip(array_change_key_case(BlackList::PERIODICITY_TYPE, CASE_UPPER)),
+            ])
+            ->add('_action', null, [
+                'actions' => [
+                    'show'   => [],
+                    'edit'   => [],
+                    'delete' => [],
+                ]
+            ]);
     }
 
     /**
@@ -104,7 +112,27 @@ class BlackListAdmin extends AbstractAdmin
             ->add('billingCarrierId')
             ->add('alias', TextType::class, [
                 'required' => true
+            ])
+            ->add('duration', ChoiceFieldMaskType::class, [
+                'choices'  => array_change_key_case(BlackList::PERIODICITY_TYPE, CASE_UPPER),
+                'required' => true,
+                'map'      => [
+                    1 => ['ban_start', 'ban_end'],
+                ],
+            ])
+            ->add('ban_start', DateType::class, [
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'input'  => 'datetime',
+                'attr'   => ['style' => 'width: 12vw'],
+            ])
+            ->add('ban_end', DateType::class, [
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'input'  => 'datetime',
+                'attr'   => ['style' => 'width: 12vw'],
             ]);
+        // ->add('ban_end', DatePickerType::class, ['input' => 'datetime',]);
     }
 
     /**
@@ -112,9 +140,18 @@ class BlackListAdmin extends AbstractAdmin
      */
     protected function configureShowFields(ShowMapper $showMapper)
     {
+
         $showMapper
             ->add('uuid')
             ->add('billingCarrierId')
-            ->add('alias');
+            ->add('alias')
+            ->add('duration', 'choice', [
+                'choices' => array_flip(array_change_key_case(BlackList::PERIODICITY_TYPE, CASE_UPPER)),
+                'map'     => [
+                    1 => ['ban_start', 'ban_end'],
+                ],
+            ])
+            ->add('ban_start')
+            ->add('ban_end');
     }
 }
