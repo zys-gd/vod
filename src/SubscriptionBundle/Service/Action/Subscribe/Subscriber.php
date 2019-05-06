@@ -110,7 +110,6 @@ class Subscriber
         SubscriptionLimitCompleter $subscriptionLimitCompleter,
         SubscriptionSerializer $subscriptionSerializer
 
-
     )
     {
         $this->logger                      = $logger;
@@ -179,8 +178,8 @@ class Subscriber
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function resubscribe(Subscription $existingSubscription,
-        SubscriptionPack $plan,
-        $additionalData = []): ProcessResult
+                                SubscriptionPack $plan,
+                                $additionalData = []): ProcessResult
     {
         $subscription = $existingSubscription;
 
@@ -243,8 +242,7 @@ class Subscriber
                 ProcessResult::STATUS_SUCCESSFUL
             );
 
-        }
-        else {
+        } else {
             $parameters = $this->subscribeParametersProvider->provideParameters($subscription, $additionalData);
             return $this->subscribeProcess->doSubscribe($parameters);
         }

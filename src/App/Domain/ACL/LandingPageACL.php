@@ -75,6 +75,19 @@ class LandingPageACL
      */
     public function canAccess(Request $request): ?string
     {
+        $campaignToken = $request->get('cid', '');
+
+        if (empty($campaignToken)) {
+            return true;
+        }
+
+        /** @var Campaign $campaign */
+        $campaign = $this->campaignRepository->findOneBy(['campaignToken' => $campaignToken]);
+
+        if($campaign && $campaign->getIsPause()) {
+            return false;
+        }
+
         $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession());
 
         if (empty($ispDetectionData['carrier_id'])) {
@@ -91,20 +104,11 @@ class LandingPageACL
             return false;
         }
 
-        $campaignToken = $request->get('cid', '');
-
-        if (empty($campaignToken)) {
-            return true;
-        }
-
-        /** @var Campaign $campaign */
-        $campaign = $this->campaignRepository->findOneBy(['campaignToken' => $campaignToken]);
-
-        if (!$this->visitAccessorByCampaign->canVisit($campaign, $carrier)) {
+        if ($campaign && !$this->visitAccessorByCampaign->canVisit($campaign, $carrier)) {
             return false;
         }
 
-        if (!$this->visitConstraintByAffiliate->canVisit($campaign, $carrier)) {
+        if ($campaign && !$this->visitConstraintByAffiliate->canVisit($campaign, $carrier)) {
             return false;
         }
 

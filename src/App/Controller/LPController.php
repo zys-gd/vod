@@ -95,7 +95,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         if ($cid = $request->get('cid', '')) {
             /** @var Campaign $campaign */
-            $campaign = $this->campaignRepository->findOneBy(['campaignToken' => $cid]);
+            $campaign = $this->campaignRepository->findOneBy(['campaignToken' => $cid, 'isPause' => false]);
 
             /** @var Campaign $campaign */
             if ($campaign) {
