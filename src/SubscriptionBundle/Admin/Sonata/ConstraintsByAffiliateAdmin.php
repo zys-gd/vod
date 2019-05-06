@@ -18,7 +18,7 @@ use SubscriptionBundle\Service\SubscriptionLimiter\DTO\AffiliateLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataConverter;
 use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataExtractor;
-use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataStorage;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterStorage;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -41,13 +41,9 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
      */
     private $entityManager;
     /**
-     * @var LimiterDataStorage
+     * @var LimiterStorage
      */
     private $limiterDataStorage;
-    /**
-     * @var LimiterDataExtractor
-     */
-    private $limiterDataExtractor;
 
     /**
      * ConstraintsByAffiliateAdmin constructor
@@ -57,8 +53,7 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
      * @param string                          $baseControllerName
      * @param ConstraintByAffiliateRepository $constraintByAffiliateRepository
      * @param EntityManagerInterface          $entityManager
-     * @param LimiterDataStorage              $limiterDataStorage
-     * @param LimiterDataExtractor            $limiterDataExtractor
+     * @param LimiterStorage                  $limiterDataStorage
      */
     public function __construct(
         string $code,
@@ -66,14 +61,12 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
         string $baseControllerName,
         ConstraintByAffiliateRepository $constraintByAffiliateRepository,
         EntityManagerInterface $entityManager,
-        LimiterDataStorage $limiterDataStorage,
-        LimiterDataExtractor $limiterDataExtractor
+        LimiterStorage $limiterDataStorage
     )
     {
         $this->constraintByAffiliateRepository = $constraintByAffiliateRepository;
         $this->entityManager                   = $entityManager;
         $this->limiterDataStorage              = $limiterDataStorage;
-        $this->limiterDataExtractor            = $limiterDataExtractor;
 
         parent::__construct($code, $class, $baseControllerName);
     }
@@ -199,11 +192,7 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
     {
         /** @var ConstraintByAffiliate $subject */
         $subject = $this->getSubject();
-
-        $affiliateLimiterData = new AffiliateLimiterData($subject->getAffiliate(), $subject, $subject->getCarrier()->getBillingCarrierId());
-        $counter = $this->limiterDataExtractor->getAffiliateSlots($affiliateLimiterData)[LimiterDataConverter::OPEN_SUBSCRIPTION_SLOTS] ?? 0;
-
-        $subject->setCounter($subject->getNumberOfActions() - $counter);
+        $subject->setCounter(0);
 
         $showMapper
             ->add('affiliate')
@@ -219,44 +208,4 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
             ]);
     }
 
-    /**
-     * @param ConstraintByAffiliate $constraintByAffiliate
-     */
-    public function postPersist($constraintByAffiliate)
-    {
-        $carrier = $constraintByAffiliate->getCarrier();
-
-        $carrierLimiterData = new CarrierLimiterData($carrier, $carrier->getNumberOfAllowedSubscriptionsByConstraint(), $carrier->getNumberOfAllowedSubscriptionsByConstraint());
-
-        $affiliateLimiterData = new AffiliateLimiterData($constraintByAffiliate->getAffiliate(), $constraintByAffiliate, $carrier->getBillingCarrierId());
-
-        $this->limiterDataStorage->saveCarrierConstraint($carrierLimiterData);
-        $this->limiterDataStorage->saveCarrierAffiliateConstraint($affiliateLimiterData);
-    }
-
-    /**
-     * @param ConstraintByAffiliate $constraintByAffiliate
-     */
-    public function postUpdate($constraintByAffiliate)
-    {
-        $carrier = $constraintByAffiliate->getCarrier();
-
-        $carrierLimiterData = new CarrierLimiterData($carrier, $carrier->getNumberOfAllowedSubscriptionsByConstraint(), $carrier->getNumberOfAllowedSubscriptionsByConstraint());
-
-        $affiliateLimiterData = new AffiliateLimiterData($constraintByAffiliate->getAffiliate(), $constraintByAffiliate, $carrier->getBillingCarrierId());
-
-        $this->limiterDataStorage->saveCarrierConstraint($carrierLimiterData);
-        $this->limiterDataStorage->saveCarrierAffiliateConstraint($affiliateLimiterData);
-    }
-
-    /**
-     * @param ConstraintByAffiliate $object
-     */
-    public function postRemove($object)
-    {
-        $this->limiterDataStorage->removeAffiliateConstraint($object->getCarrier()->getBillingCarrierId(),
-            $object->getAffiliate()->getUuid(),
-            $object->getUuid()
-        );
-    }
 }

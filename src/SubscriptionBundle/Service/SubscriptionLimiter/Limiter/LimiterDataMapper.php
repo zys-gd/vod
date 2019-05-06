@@ -6,12 +6,14 @@ namespace SubscriptionBundle\Service\SubscriptionLimiter\Limiter;
 
 use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Campaign;
+use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Service\CampaignExtractor;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\AffiliateLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
+use SubscriptionBundle\Service\SubscriptionLimiter\DTO\LimiterData;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class LimiterDataMapper
@@ -31,32 +33,35 @@ class LimiterDataMapper
         $this->carrierRepository = $carrierRepository;
     }
 
-    /**
-     * @param SessionInterface $session
-     *
-     * @return CarrierLimiterData|null
-     */
-    public function createCarrierLimiterDataFromSession(SessionInterface $session): ?CarrierLimiterData
+    public function mapFromSession(SessionInterface $session): LimiterData
     {
-        $ispData          = IdentificationFlowDataExtractor::extractIspDetectionData($session);
-        $billingCarrierId = $ispData['carrier_id'];
-        $carrier          = $this->carrierRepository->findOneByBillingId($billingCarrierId);
+        $carrier = $this->extractCarrierFromSession($session);
 
-        if ($carrier->getNumberOfAllowedSubscriptionsByConstraint() > 0) {
-            $carrierLimiterData = new CarrierLimiterData($carrier);
+        $constraint = $this->extractAffiliateConstraintFromSession($session);
 
-            return $carrierLimiterData;
-        }
-
-        return null;
+        return new LimiterData($carrier, $constraint);
     }
 
     /**
      * @param SessionInterface $session
      *
-     * @return AffiliateLimiterData|null
+     * @return CarrierInterface
      */
-    public function createAffiliateLimiterDataFromSession(SessionInterface $session): ?AffiliateLimiterData
+    private function extractCarrierFromSession(SessionInterface $session): CarrierInterface
+    {
+        $ispData          = IdentificationFlowDataExtractor::extractIspDetectionData($session);
+        $billingCarrierId = $ispData['carrier_id'];
+        $carrier          = $this->carrierRepository->findOneByBillingId($billingCarrierId);
+
+        return $carrier;
+    }
+
+    /**
+     * @param SessionInterface $session
+     *
+     * @return ConstraintByAffiliate|null
+     */
+    private function extractAffiliateConstraintFromSession(SessionInterface $session): ?ConstraintByAffiliate
     {
         try {
             $ispData          = IdentificationFlowDataExtractor::extractIspDetectionData($session);
@@ -69,11 +74,8 @@ class LimiterDataMapper
             $affiliate = $campaign->getAffiliate();
 
             /** @var ConstraintByAffiliate $subscriptionConstraint */
-            $subscriptionConstraint = $affiliate->getConstraint(ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE, $billingCarrierId);
+            return $affiliate->getConstraint(ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE, $billingCarrierId);
 
-            $affiliateLimiterData = new AffiliateLimiterData($affiliate, $subscriptionConstraint, $billingCarrierId);
-
-            return $affiliateLimiterData;
         } catch (\Throwable $e) {
             return null;
         }

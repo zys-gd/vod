@@ -13,7 +13,6 @@ use ExtrasBundle\API\Controller\APIControllerInterface;
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\BillingFramework\Process\Exception\PinVerifyProcessException;
 use IdentificationBundle\Identification\DTO\ISPData;
-use IdentificationBundle\Identification\Exception\AlreadyIdentifiedException;
 use IdentificationBundle\Identification\Exception\MissingCarrierException;
 use IdentificationBundle\Identification\Service\CarrierSelector;
 use IdentificationBundle\WifiIdentification\Service\ErrorCodeResolver;
@@ -21,6 +20,7 @@ use IdentificationBundle\WifiIdentification\WifiIdentConfirmator;
 use IdentificationBundle\WifiIdentification\WifiIdentSMSSender;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
+use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -46,6 +46,10 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @var CarrierSelector
      */
     private $carrierSelector;
+    /**
+     * @var SubscriptionLimiter
+     */
+    private $limiter;
 
     /**
      * PinIdentificationController constructor.
@@ -53,12 +57,14 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @param WifiIdentConfirmator $identConfirmator
      * @param ErrorCodeResolver    $errorCodeResolver
      * @param CarrierSelector      $carrierSelector
+     * @param SubscriptionLimiter  $limiter
      */
     public function __construct(
         WifiIdentSMSSender $identSMSSender,
         WifiIdentConfirmator $identConfirmator,
         ErrorCodeResolver $errorCodeResolver,
-        CarrierSelector $carrierSelector
+        CarrierSelector $carrierSelector,
+        SubscriptionLimiter $limiter
 
     )
     {
@@ -66,6 +72,7 @@ class PinIdentificationController extends AbstractController implements APIContr
         $this->identConfirmator  = $identConfirmator;
         $this->errorCodeResolver = $errorCodeResolver;
         $this->carrierSelector   = $carrierSelector;
+        $this->limiter           = $limiter;
     }
 
 
@@ -102,6 +109,13 @@ class PinIdentificationController extends AbstractController implements APIContr
         if (!$mobileNumber = $request->get('mobile_number', '')) {
             throw new BadRequestHttpException('`mobile_number` is required');
         }
+
+
+        if ($this->limiter->isSubscriptionLimitReached($request->getSession())) {
+            return $this->getSimpleJsonResponse('Subscription limit has been reached', 200, [], ['success' => false]);
+        }
+
+        $this->limiter->reserveSlotForSubscription($request->getSession());
 
         $carrierId = $ispData->getCarrierId();
         try {
@@ -176,6 +190,11 @@ class PinIdentificationController extends AbstractController implements APIContr
         if (!$mobileNumber = $request->get('mobile_number', '')) {
             throw new BadRequestHttpException('`mobile_number` is required');
         }
+
+        if ($this->limiter->isSubscriptionLimitReached($request->getSession())) {
+            return $this->getSimpleJsonResponse('Subscription limit has been reached', 200, [], ['success' => false]);
+        }
+        $this->limiter->reserveSlotForSubscription($request->getSession());
 
         try {
             $this->identSMSSender->sendSMS($carrierId, $mobileNumber);

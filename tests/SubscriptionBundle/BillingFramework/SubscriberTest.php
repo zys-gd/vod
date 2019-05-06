@@ -118,7 +118,9 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
             Mockery::spy(Notifier::class),
             $this->subscribeProcess,
             Mockery::spy(OnSubscribeUpdater::class),
-            Mockery::spy(SubscribeParametersProvider::class)
+            Mockery::spy(SubscribeParametersProvider::class),
+            Mockery::spy(\SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimitCompleter::class),
+            Mockery::spy(\SubscriptionBundle\Service\SubscriptionSerializer::class)
         );
 
     }

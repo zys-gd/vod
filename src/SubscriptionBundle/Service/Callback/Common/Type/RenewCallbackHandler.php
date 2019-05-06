@@ -10,18 +10,16 @@ namespace SubscriptionBundle\Service\Callback\Common\Type;
 
 
 use PiwikBundle\Service\NewTracker;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\RenewProcess;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\Action\Renew\OnRenewUpdater;
 use SubscriptionBundle\Service\Callback\Common\SubscriptionStatusChanger;
+use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimitCompleter;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RenewCallbackHandler extends AbstractCallbackHandler
 {
-    /**
-     * @var \SubscriptionBundle\BillingFramework\\SubscriptionBundle\Service\Action\Common\\SubscriptionBundle\Service\Action\Renew\OnRenewUpdater
-     */
     private $onRenewUpdater;
     /**
      * @var EventDispatcherInterface
@@ -30,12 +28,12 @@ class RenewCallbackHandler extends AbstractCallbackHandler
 
     /**
      * RenewCallbackHandler constructor.
-     * @param OnRenewUpdater $onRenewUpdater
-     * @param EventDispatcherInterface $eventDispatcher
+     * @param OnRenewUpdater             $onRenewUpdater
+     * @param EventDispatcherInterface   $eventDispatcher
      */
     public function __construct(OnRenewUpdater $onRenewUpdater, EventDispatcherInterface $eventDispatcher)
     {
-        $this->onRenewUpdater = $onRenewUpdater;
+        $this->onRenewUpdater  = $onRenewUpdater;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -56,5 +54,9 @@ class RenewCallbackHandler extends AbstractCallbackHandler
     public function getPiwikEventName(): string
     {
         return NewTracker::TRACK_RENEW;
+    }
+
+    public function afterProcess(Subscription $subscription, ProcessResult $response): void
+    {
     }
 }

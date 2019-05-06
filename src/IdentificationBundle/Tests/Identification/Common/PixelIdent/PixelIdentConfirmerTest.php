@@ -14,6 +14,7 @@ use IdentificationBundle\BillingFramework\Data\DataProvider;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer;
+use IdentificationBundle\Identification\Common\PostPaidHandler;
 use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\Handler\CommonFlow\HasCustomPixelIdent;
 use IdentificationBundle\Identification\Handler\HasCommonFlow;
@@ -76,7 +77,8 @@ class PixelIdentConfirmerTest extends TestCase
             $this->identificationHandlerProvider,
             new IdentificationStatus($this->dataStorage),
             $this->tokenGenerator,
-            $this->userRepository
+            $this->userRepository,
+            Mockery::spy(PostPaidHandler::class)
         );
 
         parent::setUp();

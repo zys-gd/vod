@@ -5,7 +5,7 @@ namespace SubscriptionBundle\Service\SubscriptionLimiter;
 
 
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use SubscriptionBundle\Entity\Subscription;
 
 class SubscriptionLimitCompleter
 {
@@ -17,21 +17,23 @@ class SubscriptionLimitCompleter
     /**
      * SubscriptionLimitCompleter constructor.
      *
-     * @param SubscriptionLimiterInterface $subscriptionLimiter
+     * @param SubscriptionLimiter $subscriptionLimiter
      */
-    public function __construct(SubscriptionLimiterInterface $subscriptionLimiter)
+    public function __construct(SubscriptionLimiter $subscriptionLimiter)
     {
         $this->subscriptionLimiter = $subscriptionLimiter;
     }
 
     /**
-     * @param ProcessResult    $response
-     * @param SessionInterface $session
+     * @param ProcessResult $response
+     * @param Subscription  $subscription
      */
-    public function finishProcess(ProcessResult $response, SessionInterface $session): void
+    public function finishProcess(ProcessResult $response, Subscription $subscription): void
     {
-        if ($response->isSuccessful()) {
-            $this->subscriptionLimiter->finishLimitingProcess($session);
+        $user = $subscription->getUser();
+
+        if ($response->isSuccessful() && $response->isFinal()) {
+            $this->subscriptionLimiter->finishSubscription($user->getCarrier(), $subscription);
         }
 
         if ($response->isFailed()) {
@@ -40,7 +42,7 @@ class SubscriptionLimitCompleter
                     //TODO: remove?
                     break;
                 default:
-                    $this->subscriptionLimiter->cancelLimitingProcess($session);
+                    $this->subscriptionLimiter->releasePendingSlot($user->getCarrier());
             }
         }
     }

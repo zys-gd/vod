@@ -7,7 +7,8 @@ use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\AffiliateLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
-use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataStorage;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterStorage;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\StorageKeyGenerator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,28 +28,34 @@ class ResetConstraintsByAffiliateCounters extends Command
      */
     private $constraintByAffiliateRepository;
     /**
-     * @var LimiterDataStorage
+     * @var LimiterStorage
      */
     private $limiterDataStorage;
+    /**
+     * @var StorageKeyGenerator
+     */
+    private $storageKeyGenerator;
 
     /**
      * ResetConstraintsByAffiliateCounters constructor
      *
      * @param EntityManagerInterface          $entityManager
      * @param ConstraintByAffiliateRepository $constraintByAffiliateRepository
-     * @param LimiterDataStorage              $limiterDataStorage
+     * @param LimiterStorage                  $limiterDataStorage
+     * @param StorageKeyGenerator             $storageKeyGenerator
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         ConstraintByAffiliateRepository $constraintByAffiliateRepository,
-        LimiterDataStorage $limiterDataStorage
+        LimiterStorage $limiterDataStorage,
+        StorageKeyGenerator $storageKeyGenerator
     )
     {
         $this->entityManager                   = $entityManager;
         $this->constraintByAffiliateRepository = $constraintByAffiliateRepository;
-
+        $this->limiterDataStorage              = $limiterDataStorage;
+        $this->storageKeyGenerator             = $storageKeyGenerator;
         parent::__construct();
-        $this->limiterDataStorage = $limiterDataStorage;
     }
 
     public function configure()
@@ -77,15 +84,10 @@ class ResetConstraintsByAffiliateCounters extends Command
         /** @var ConstraintByAffiliate $constraint */
         foreach ($constraints as $constraint) {
 
+            $key = $this->storageKeyGenerator->generateAffiliateConstraintKey($constraint);
 
-            $carrier = $constraint->getCarrier();
-
-            // $carrierLimiterData = new CarrierLimiterData($carrier, $carrier->getNumberOfAllowedSubscriptionsByConstraint(), $carrier->getNumberOfAllowedSubscriptionsByConstraint());
-
-            $affiliateLimiterData = new AffiliateLimiterData($constraint->getAffiliate(), $constraint, $carrier->getBillingCarrierId(), $constraint->getNumberOfActions(), $constraint->getNumberOfActions());
-
-            // $this->LimiterDataStorage->saveCarrierConstraint($carrierLimiterData);
-            $this->limiterDataStorage->saveCarrierAffiliateConstraint($affiliateLimiterData);
+            $this->limiterDataStorage->resetFinishedCounter($key);
+            $this->limiterDataStorage->resetPendingCounter($key);
 
             $constraint
                 ->setIsCapAlertDispatch(false)

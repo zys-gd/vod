@@ -156,7 +156,7 @@ class Subscriber
         try {
             $response = $this->performSubscribe($additionalData, $subscription);
             $this->onSubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
-            $this->subscriptionLimitCompleter->finishProcess($response, $this->session);
+            $this->subscriptionLimitCompleter->finishProcess($response, $subscription);
 
             return [$subscription, $response];
 

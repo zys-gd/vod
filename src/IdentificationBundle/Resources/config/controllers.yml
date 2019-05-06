@@ -42,6 +42,7 @@ services:
         - '@IdentificationBundle\WifiIdentification\WifiIdentConfirmator'
         - '@IdentificationBundle\WifiIdentification\Service\ErrorCodeResolver'
         - '@IdentificationBundle\Identification\Service\CarrierSelector'
+        - '@SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter'
 
     IdentificationBundle\Identification\Controller\AsyncIdentController:
       arguments:

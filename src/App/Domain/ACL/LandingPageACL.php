@@ -2,11 +2,11 @@
 
 namespace App\Domain\ACL;
 
+use App\Domain\ACL\Accessors\VisitAccessorByCampaign;
+use App\Domain\ACL\Accessors\VisitConstraintByAffiliate;
 use App\Domain\Entity\Campaign;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Repository\CarrierRepository;
-use App\Domain\ACL\Accessors\VisitConstraintByAffiliate;
-use App\Domain\ACL\Accessors\VisitAccessorByCampaign;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter;
 use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiterInterface;
@@ -44,18 +44,18 @@ class LandingPageACL
     /**
      * LandingPageAccessResolver constructor
      *
-     * @param VisitConstraintByAffiliate   $visitConstraintByAffiliate
-     * @param VisitAccessorByCampaign      $visitAccessorByCampaign
-     * @param CarrierRepository            $carrierRepository
-     * @param CampaignRepository           $campaignRepository
-     * @param SubscriptionLimiterInterface $subscriptionLimiter
+     * @param VisitConstraintByAffiliate $visitConstraintByAffiliate
+     * @param VisitAccessorByCampaign    $visitAccessorByCampaign
+     * @param CarrierRepository          $carrierRepository
+     * @param CampaignRepository         $campaignRepository
+     * @param SubscriptionLimiter        $subscriptionLimiter
      */
     public function __construct(
         VisitConstraintByAffiliate $visitConstraintByAffiliate,
         VisitAccessorByCampaign $visitAccessorByCampaign,
         CarrierRepository $carrierRepository,
         CampaignRepository $campaignRepository,
-        SubscriptionLimiterInterface $subscriptionLimiter
+        SubscriptionLimiter $subscriptionLimiter
     )
     {
         $this->carrierRepository          = $carrierRepository;
@@ -87,7 +87,7 @@ class LandingPageACL
             return true;
         }
 
-        if ($this->subscriptionLimiter->isLimitReached($request->getSession())) {
+        if ($this->subscriptionLimiter->isSubscriptionLimitReached($request->getSession())) {
             return false;
         }
 

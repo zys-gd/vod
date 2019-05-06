@@ -18,15 +18,12 @@ use SubscriptionBundle\Service\Callback\Common\SubscriptionStatusChanger;
 
 class UnsubscriptionCallbackHandler extends AbstractCallbackHandler
 {
-    /**
-     * @var \SubscriptionBundle\BillingFramework\\SubscriptionBundle\Service\Action\Common\OnUnsubscribeUpdater
-     */
     private $onUnsubscribeUpdater;
 
 
     /**
      * UnsubscriptionCallbackHandler constructor.
-     * @param \SubscriptionBundle\BillingFramework\\SubscriptionBundle\Service\Action\Common\OnUnsubscribeUpdater $onUnsubscribeUpdater
+     * @param OnUnsubscribeUpdater $onUnsubscribeUpdater
      */
     public function __construct(
         OnUnsubscribeUpdater $onUnsubscribeUpdater
@@ -56,4 +53,8 @@ class UnsubscriptionCallbackHandler extends AbstractCallbackHandler
         $this->onUnsubscribeUpdater->updateSubscriptionByCallbackResponse($subscription, $response);
     }
 
+    public function afterProcess(Subscription $subscription, ProcessResult $response): void
+    {
+        // TODO: Implement afterProcess() method.
+    }
 }

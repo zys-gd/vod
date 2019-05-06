@@ -118,7 +118,7 @@ class SubscribeAction extends AbstractController
      * @param string                              $defaultRedirectUrl
      * @param PostPaidHandler                     $postPaidHandler
      * @param CampaignConfirmationHandlerProvider $campaignConfirmationHandlerProvider
-     * @param SubscriptionLimiterInterface        $subscriptionLimiter
+     * @param SubscriptionLimiter                 $subscriptionLimiter
      * @param LimiterNotifier                     $limiterNotifier
      */
     public function __construct(
@@ -135,7 +135,7 @@ class SubscribeAction extends AbstractController
         string $defaultRedirectUrl,
         PostPaidHandler $postPaidHandler,
         CampaignConfirmationHandlerProvider $campaignConfirmationHandlerProvider,
-        SubscriptionLimiterInterface $subscriptionLimiter,
+        SubscriptionLimiter $subscriptionLimiter,
         LimiterNotifier $limiterNotifier
     )
     {
@@ -174,7 +174,8 @@ class SubscribeAction extends AbstractController
             return new RedirectResponse($this->generateUrl('index', ['err_handle' => 'postpaid_restricted']));
         }
 
-        if (($campaignConfirmationHandler = $this->campaignConfirmationHandlerProvider->provideHandler($request->getSession())) instanceof CustomPage) {
+        $campaignConfirmationHandler = $this->campaignConfirmationHandlerProvider->provideHandler($request->getSession());
+        if ($campaignConfirmationHandler instanceof CustomPage) {
             $result = $campaignConfirmationHandler->proceedCustomPage($request);
             if ($result instanceof RedirectResponse) {
                 return $result;
@@ -194,13 +195,13 @@ class SubscribeAction extends AbstractController
         $user = $this->userExtractor->getUserByIdentificationData($identificationData);
 
 
-        if ($this->subscriptionLimiter->isLimitReached($request->getSession())) {
+        if ($this->subscriptionLimiter->isSubscriptionLimitReached($request->getSession())) {
             $this->limiterNotifier->notifyLimitReached($user->getCarrier());
             return RedirectResponse::create($this->defaultRedirectUrl);
         }
 
-        if ($this->subscriptionLimiter->need2BeLimited($user) && $this->subscriptionLimiter->canStartProcess($request->getSession())) {
-            $this->subscriptionLimiter->startLimitingProcess($request->getSession());
+        if ($this->subscriptionLimiter->need2BeLimited($user)) {
+            $this->subscriptionLimiter->reserveSlotForSubscription($request->getSession());
         }
 
         try {
@@ -208,8 +209,7 @@ class SubscribeAction extends AbstractController
             $subscriber = $this->handlerProvider->getSubscriber($user->getCarrier());
             if ($subscriber instanceof HasCustomFlow) {
                 return $subscriber->process($request, $request->getSession(), $user);
-            }
-            else {
+            } else {
                 return $this->commonFlowHandler->process($request, $user);
             }
         } catch (ExistingSubscriptionException $exception) {

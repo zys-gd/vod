@@ -6,7 +6,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
-use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataStorage;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterStorage;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\StorageKeyGenerator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,27 +28,35 @@ class ResetConstraintsByCarrierCounters extends Command
      */
     private $carrierRepository;
     /**
-     * @var LimiterDataStorage
+     * @var LimiterStorage
      */
     private $limiterDataStorage;
+    /**
+     * @var StorageKeyGenerator
+     */
+    private $storageKeyGenerator;
 
     /**
      * ResetConstraintsByCarrierCounters constructor
      *
      * @param EntityManagerInterface     $entityManager
      * @param CarrierRepositoryInterface $carrierRepository
-     * @param LimiterDataStorage         $limiterDataStorage
+     * @param LimiterStorage             $limiterDataStorage
+     * @param StorageKeyGenerator        $storageKeyGenerator
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         CarrierRepositoryInterface $carrierRepository,
-        LimiterDataStorage $limiterDataStorage
-    ) {
-        $this->entityManager = $entityManager;
-        $this->carrierRepository = $carrierRepository;
+        LimiterStorage $limiterDataStorage,
+        StorageKeyGenerator $storageKeyGenerator
+    )
+    {
+        $this->entityManager       = $entityManager;
+        $this->carrierRepository   = $carrierRepository;
+        $this->limiterDataStorage  = $limiterDataStorage;
+        $this->storageKeyGenerator = $storageKeyGenerator;
 
         parent::__construct();
-        $this->limiterDataStorage = $limiterDataStorage;
     }
 
     public function configure()
@@ -57,7 +66,7 @@ class ResetConstraintsByCarrierCounters extends Command
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      *
      * @return int|void|null
@@ -83,8 +92,10 @@ class ResetConstraintsByCarrierCounters extends Command
             }
             $output->writeln($carrier->getName());
 
-            $carrierLimiterData = new CarrierLimiterData($carrier, $allowedSubscriptions, $allowedSubscriptions);
-            $this->limiterDataStorage->saveCarrierConstraint($carrierLimiterData);
+            $key = $this->storageKeyGenerator->generateKey($carrier);
+
+            $this->limiterDataStorage->resetPendingCounter($key);
+            $this->limiterDataStorage->resetFinishedCounter($key);
 
             $carrier
                 ->setIsCapAlertDispatch(false)

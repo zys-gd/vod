@@ -56,7 +56,8 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository'
-            - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataStorage'
+            - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterStorage'
+            - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\StorageKeyGenerator'
         tags:
             - { name: console.command }
 
@@ -64,6 +65,7 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@App\Domain\Repository\CarrierRepository'
-            - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataStorage'
+            - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterStorage'
+            - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\StorageKeyGenerator'
         tags:
             - { name: console.command }
