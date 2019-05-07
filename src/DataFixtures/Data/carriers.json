@@ -10318,5 +10318,57 @@
                 "uuid": "51ab29fa-ebd4-11e8-95c4-02bb250f0f22"
             }
         ]
+    },
+    {
+        "uuid": "7c8385df-8d56-464a-98ff-66c55a7a5741",
+        "id_carrier": 2254,
+        "operatorId": 0,
+        "name": "Orange EG via TPAY",
+        "countryCode": "EG",
+        "isp": "Orange Egypt",
+        "published": true,
+        "lpOtp": true,
+        "pinIdentSupport": true,
+        "trialInitializer": "carrier",
+        "trialPeriod": 0,
+        "subscriptionPeriod": 1,
+        "resubAllowed": false,
+        "isCampaignsOnPause": false,
+        "numberOfAllowedSubscription": 5,
+        "isUnlimitedSubscriptionAttemptsAllowed": true,
+        "numberOfAllowedSubscriptionsByConstraint": null,
+        "redirectUrl": null,
+        "flushDate": null,
+        "isCapAlertDispatch": false,
+        "defaultLanguage": {
+            "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "campaigns": []
+    },
+    {
+        "uuid": "99a362ea-72cd-45d5-bbcc-18f16b8451ed",
+        "id_carrier": 2253,
+        "operatorId": 0,
+        "name": "Vodafone EG via TPAY",
+        "countryCode": "EG",
+        "isp": "Vodafone Egypt",
+        "published": true,
+        "lpOtp": true,
+        "pinIdentSupport": true,
+        "trialInitializer": "carrier",
+        "trialPeriod": 0,
+        "subscriptionPeriod": 1,
+        "resubAllowed": false,
+        "isCampaignsOnPause": false,
+        "numberOfAllowedSubscription": 5,
+        "isUnlimitedSubscriptionAttemptsAllowed": true,
+        "numberOfAllowedSubscriptionsByConstraint": null,
+        "redirectUrl": null,
+        "flushDate": null,
+        "isCapAlertDispatch": false,
+        "defaultLanguage": {
+            "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "campaigns": []
     }
 ]
