@@ -34,8 +34,8 @@ class DataAggregator
         $subscriptionPack = $this->carrierRepository->findActiveSubscriptionPack($carrier);
 
         return [
-            '%price%' => $subscriptionPack->getPriceFromTier(),
-            '%currency%' => $subscriptionPack->getCurrencyFromTier(),
+            '%price%' => $subscriptionPack->getTierPrice(),
+            '%currency%' => $subscriptionPack->getFinalCurrency(),
             '%credits%' => $subscriptionPack->getCredits(),
             '%period%' => $subscriptionPack->convertPeriod2Text(),
             '%periodicity%' => $subscriptionPack->convertPeriodicity2Text(),

@@ -821,22 +821,17 @@ class SubscriptionPack implements HasUuid
         $this->updated = $updated;
     }
 
-    public function getPriceFromTier()
-    {
-        $price = $this->getTierPrice() > 0 ? $this->getTierPrice() : filter_var($this->tier, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-        return (float)$price;
-    }
-
-    public function getCurrencyFromTier()
+    /**
+     * @return string
+     */
+    public function getFinalCurrency(): string
     {
         if (strlen($this->getDisplayCurrency()) > 0) {
             return $this->getDisplayCurrency();
-        } elseif (strlen($this->getTierCurrency()) == 3) {
-            return $this->getTierCurrency();
-        } else {
-            return preg_replace('/[\.\s0-9]*/', '', $this->tier);
         }
+        return $this->getTierCurrency();
     }
+
     /**
      * @return int
      */
