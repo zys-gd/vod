@@ -13,10 +13,8 @@ services:
         - '@SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider'
         - '@SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater'
         - '@SubscriptionBundle\Service\SubscriptionSerializer'
-        - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
-        - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
-        - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
-        - '@SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider'
+        - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePerformer'
+        - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePromotionalPerformer'
 
   SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider:
       arguments: ['@SubscriptionBundle\Service\Action\Subscribe\Handler\DefaultHandler']
@@ -67,6 +65,18 @@ services:
 
   SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator:
       arguments: ['@SubscriptionBundle\Service\SubscriptionExtractor', '@SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier']
+
+  SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePerformer:
+    arguments:
+      - '@SubscriptionBundle\BillingFramework\Process\SubscribeProcess'
+      - '@SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider'
+
+  SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePromotionalPerformer:
+    arguments:
+      - '@Psr\Log\LoggerInterface'
+      - '@SubscriptionBundle\Service\Notification\Notifier'
+      - '@SubscriptionBundle\Service\Action\Common\FakeResponseProvider'
+      - '@SubscriptionBundle\Service\SubscriptionSerializer'
 
   SubscriptionBundle\Service\Action\Subscribe\Handler\DefaultHandler: ~
 
