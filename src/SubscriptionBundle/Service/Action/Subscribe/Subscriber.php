@@ -12,7 +12,6 @@ namespace SubscriptionBundle\Service\Action\Subscribe;
 use IdentificationBundle\Entity\User;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
-use SubscriptionBundle\BillingFramework\Notification\API\Exception\NotificationSendFailedException;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException;
 use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
@@ -164,9 +163,9 @@ class Subscriber
         }
 
         try {
-            $response = $this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription) ?
-                $this->subscribePromotionalPerformer->doSubscribe($subscription) :
-                $this->subscribePerformer->doSubscribe($subscription, $additionalData);
+            $response = $this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription)
+                ? $this->subscribePromotionalPerformer->doSubscribe($subscription)
+                : $this->subscribePerformer->doSubscribe($subscription, $additionalData);
 
             $this->onSubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
 
@@ -191,7 +190,7 @@ class Subscriber
      * @param SubscriptionPack $plan
      * @param array            $additionalData
      * @return ProcessResult
-     * @throws \SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException
+     * @throws SubscribingProcessException
      */
     public function resubscribe(Subscription $existingSubscription, SubscriptionPack $plan, $additionalData = []): ProcessResult
     {
@@ -200,9 +199,9 @@ class Subscriber
         $this->applyResubscribeTierChanges($subscription);
 
         try {
-            $response = $this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription) ?
-                $this->subscribePromotionalPerformer->doSubscribe($subscription) :
-                $this->subscribePerformer->doSubscribe($subscription, $additionalData);
+            $response = $this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription)
+                ? $this->subscribePromotionalPerformer->doSubscribe($subscription)
+                : $this->subscribePerformer->doSubscribe($subscription, $additionalData);
 
             if ($subscription->getUser()->getCarrier()->getResubAllowed()) {
                 $this->notifier->sendNotification(SubscribeProcess::PROCESS_METHOD_SUBSCRIBE,
@@ -228,47 +227,6 @@ class Subscriber
     private function getPriceTierIdWithZeroValue($carrierId)
     {
         return 0;
-    }
-
-    /**
-     * @param $additionalData
-     * @param $subscription
-     * @return ProcessResult
-     * @throws SubscribingProcessException
-     */
-    protected function performSubscribe(array $additionalData, Subscription $subscription): ProcessResult
-    {
-        if ($this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription)) {
-
-            $carrier = $subscription->getUser()->getCarrier();
-
-            try {
-                $this->notifier->sendNotification(
-                    SubscribeProcess::PROCESS_METHOD_SUBSCRIBE,
-                    $subscription,
-                    $subscription->getSubscriptionPack(),
-                    $carrier
-                );
-
-            } catch (NotificationSendFailedException $e) {
-
-                $this->logger->error($e->getMessage(), [
-                    'subscription' => $this->subscriptionSerializer->serializeShort($subscription)
-                ]);
-
-                throw new SubscribingProcessException('Error while trying to subscribe', 0, $e);
-            }
-
-            return $this->fakeResponseProvider->getDummyResult(
-                $subscription,
-                SubscribeProcess::PROCESS_METHOD_SUBSCRIBE,
-                ProcessResult::STATUS_SUCCESSFUL
-            );
-
-        } else {
-            $parameters = $this->subscribeParametersProvider->provideParameters($subscription, $additionalData);
-            return $this->subscribeProcess->doSubscribe($parameters);
-        }
     }
 
     /**

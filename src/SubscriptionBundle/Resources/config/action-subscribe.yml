@@ -73,7 +73,7 @@ services:
 
   SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePromotionalPerformer:
     arguments:
-      - '@Psr\Log\LoggerInterface'
+      - '@logger'
       - '@SubscriptionBundle\Service\Notification\Notifier'
       - '@SubscriptionBundle\Service\Action\Common\FakeResponseProvider'
       - '@SubscriptionBundle\Service\SubscriptionSerializer'
