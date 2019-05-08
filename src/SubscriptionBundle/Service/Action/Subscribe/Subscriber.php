@@ -163,9 +163,16 @@ class Subscriber
         }
 
         try {
-            $response = $this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription)
-                ? $this->subscribePromotionalPerformer->doSubscribe($subscription)
-                : $this->subscribePerformer->doSubscribe($subscription, $additionalData);
+
+            if($this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription)){
+                $response = $this->subscribePromotionalPerformer->doSubscribe($subscription);
+                if (!$plan->isFirstSubscriptionPeriodIsFree()) {
+                    $this->subscribePerformer->doSubscribe($subscription, $additionalData);
+                }
+            }else{
+                $response =  $this->subscribePerformer->doSubscribe($subscription, $additionalData);
+
+            }
 
             $this->onSubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
 
@@ -199,17 +206,14 @@ class Subscriber
         $this->applyResubscribeTierChanges($subscription);
 
         try {
-            $response = $this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription)
-                ? $this->subscribePromotionalPerformer->doSubscribe($subscription)
-                : $this->subscribePerformer->doSubscribe($subscription, $additionalData);
 
-            if ($subscription->getUser()->getCarrier()->getResubAllowed()) {
-                $this->notifier->sendNotification(SubscribeProcess::PROCESS_METHOD_SUBSCRIBE,
-                    $subscription,
-                    $subscription->getSubscriptionPack(),
-                    $subscription->getUser()->getCarrier()
-                );
+            if($this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription)){
+                $response = $this->subscribePromotionalPerformer->doSubscribe($subscription);
+                $this->subscribePerformer->doSubscribe($subscription, $additionalData);
+            }else{
+                $response =  $this->subscribePerformer->doSubscribe($subscription, $additionalData);
             }
+
 
             $this->onSubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
             $subscription->setCurrentStage(Subscription::ACTION_SUBSCRIBE);
