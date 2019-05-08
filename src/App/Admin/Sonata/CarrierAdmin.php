@@ -4,7 +4,6 @@ namespace App\Admin\Sonata;
 
 use App\Domain\Entity\Carrier;
 use Doctrine\ORM\EntityManagerInterface;
-use IdentificationBundle\Entity\CarrierInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -59,13 +58,16 @@ class CarrierAdmin extends AbstractAdmin
         string $baseControllerName,
         SubscriptionLimiter $subscriptionLimiter,
         LimiterStorage $limiterDataStorage,
-        StorageKeyGenerator $storageKeyGenerator
+        StorageKeyGenerator $storageKeyGenerator,
+        EntityManagerInterface $entityManager
     )
     {
         $this->subscriptionLimiter = $subscriptionLimiter;
         $this->limiterDataStorage  = $limiterDataStorage;
         parent::__construct($code, $class, $baseControllerName);
         $this->storageKeyGenerator = $storageKeyGenerator;
+        $this->code                = $code;
+        $this->entityManager = $entityManager;
     }
 
     /**

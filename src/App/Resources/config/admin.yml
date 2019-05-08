@@ -52,7 +52,7 @@ services:
 
     App\Admin\Sonata\CarrierAdmin:
         autowire: true
-        arguments: [~, App\Domain\Entity\Carrier, ~,  '@SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter', '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterStorage', '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\StorageKeyGenerator']
+        arguments: [~, App\Domain\Entity\Carrier, ~,  '@SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter', '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterStorage', '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\StorageKeyGenerator', '@doctrine.orm.entity_manager']
         tags:
             - { name: sonata.admin, manager_type: orm, group: carrier_management, label: Carriers }
 
