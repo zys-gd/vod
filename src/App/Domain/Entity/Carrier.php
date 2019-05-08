@@ -136,6 +136,11 @@ class Carrier implements CarrierInterface
     private $defaultLanguage;
 
     /**
+     * @var bool
+     */
+    private $isLpOff = false;
+
+    /**
      * Carrier constructor.
      * @param string $uuid
      */
@@ -662,6 +667,22 @@ class Carrier implements CarrierInterface
     public function setIsConfirmationClick(bool $isConfirmationClick): void
     {
         $this->isConfirmationClick = $isConfirmationClick;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLpOff(): bool
+    {
+        return $this->isLpOff;
+    }
+
+    /**
+     * @param bool $isLpOff
+     */
+    public function setIsLpOff(bool $isLpOff): void
+    {
+        $this->isLpOff = $isLpOff;
     }
 
 }

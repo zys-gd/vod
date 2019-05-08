@@ -99,6 +99,10 @@ App\Domain\Entity\Carrier:
             nullable: false
             options:
                 default: false
+        isLpOff:
+            type: boolean
+            options:
+                default: false
 
     lifecycleCallbacks: {  }
 

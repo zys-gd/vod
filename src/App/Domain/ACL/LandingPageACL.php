@@ -3,6 +3,7 @@
 namespace App\Domain\ACL;
 
 use App\Domain\Entity\Campaign;
+use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Repository\CarrierRepository;
 use App\Domain\ACL\Accessors\VisitConstraintByAffiliate;
@@ -50,12 +51,12 @@ class LandingPageACL
     /**
      * LandingPageAccessResolver constructor
      *
-     * @param VisitConstraintByAffiliate $visitConstraintByAffiliate
-     * @param VisitAccessorByCampaign $visitAccessorByCampaign
+     * @param VisitConstraintByAffiliate      $visitConstraintByAffiliate
+     * @param VisitAccessorByCampaign         $visitAccessorByCampaign
      * @param SubscriptionConstraintByCarrier $subscriptionConstraintByCarrier
-     * @param CarrierRepository $carrierRepository
-     * @param CampaignRepository $campaignRepository
-     * @param SessionInterface $session
+     * @param CarrierRepository               $carrierRepository
+     * @param CampaignRepository              $campaignRepository
+     * @param SessionInterface                $session
      */
     public function __construct(
         VisitConstraintByAffiliate $visitConstraintByAffiliate,
@@ -64,12 +65,13 @@ class LandingPageACL
         CarrierRepository $carrierRepository,
         CampaignRepository $campaignRepository,
         SessionInterface $session
-    ) {
-        $this->carrierRepository = $carrierRepository;
-        $this->campaignRepository = $campaignRepository;
-        $this->session = $session;
-        $this->visitConstraintByAffiliate = $visitConstraintByAffiliate;
-        $this->visitAccessorByCampaign = $visitAccessorByCampaign;
+    )
+    {
+        $this->carrierRepository               = $carrierRepository;
+        $this->campaignRepository              = $campaignRepository;
+        $this->session                         = $session;
+        $this->visitConstraintByAffiliate      = $visitConstraintByAffiliate;
+        $this->visitAccessorByCampaign         = $visitAccessorByCampaign;
         $this->subscriptionConstraintByCarrier = $subscriptionConstraintByCarrier;
     }
 
@@ -77,7 +79,6 @@ class LandingPageACL
      * @param Request $request
      *
      * @return string|null
-     *
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
@@ -90,7 +91,7 @@ class LandingPageACL
             return true;
         }
 
-        $carrier =  $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id']);
+        $carrier = $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id']);
 
         if (empty($carrier)) {
             return true;
@@ -109,14 +110,36 @@ class LandingPageACL
         /** @var Campaign $campaign */
         $campaign = $this->campaignRepository->findOneBy(['campaignToken' => $campaignToken]);
 
-        if (!$this->visitAccessorByCampaign->canVisit($campaign, $carrier)) {
+        if ($campaign && !$this->visitAccessorByCampaign->canVisit($campaign, $carrier)) {
             return false;
         }
 
-        if (!$this->visitConstraintByAffiliate->canVisit($campaign, $carrier)) {
+        if ($campaign && !$this->visitConstraintByAffiliate->canVisit($campaign, $carrier)) {
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return bool
+     */
+    public function isLandingDisabled(Request $request): bool
+    {
+        try {
+            $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
+            $campaignToken    = $request->get('cid', '');
+            /** @var Carrier $carrier */
+            $carrier = $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id']);
+
+            /** @var Campaign $campaign */
+            $campaign = $this->campaignRepository->findOneBy(['campaignToken' => $campaignToken]);
+            // $campaign->getAffiliate()
+            return $carrier->isLpOff() || $campaign->isLpOff() || $campaign->getAffiliate()->isLpOff();
+        } catch (\Throwable $e) {
+            return false;
+        }
     }
 }

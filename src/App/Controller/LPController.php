@@ -9,6 +9,7 @@ use App\Domain\Service\ContentStatisticSender;
 use App\Domain\ACL\LandingPageACL;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
+use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -47,16 +48,21 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var string
      */
     private $defaultRedirectUrl;
+    /**
+     * @var IdentificationDataStorage
+     */
+    private $dataStorage;
 
     /**
      * LPController constructor.
      *
-     * @param ContentStatisticSender $contentStatisticSender
-     * @param CampaignRepository     $campaignRepository
-     * @param LandingPageACL         $landingPageAccessResolver
-     * @param string                 $imageBaseUrl
-     * @param CarrierOTPVerifier     $OTPVerifier
-     * @param string                 $defaultRedirectUrl
+     * @param ContentStatisticSender    $contentStatisticSender
+     * @param CampaignRepository        $campaignRepository
+     * @param LandingPageACL            $landingPageAccessResolver
+     * @param string                    $imageBaseUrl
+     * @param CarrierOTPVerifier        $OTPVerifier
+     * @param string                    $defaultRedirectUrl
+     * @param IdentificationDataStorage $dataStorage
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
@@ -64,7 +70,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         LandingPageACL $landingPageAccessResolver,
         string $imageBaseUrl,
         CarrierOTPVerifier $OTPVerifier,
-        string $defaultRedirectUrl
+        string $defaultRedirectUrl,
+        IdentificationDataStorage $dataStorage
     )
     {
         $this->contentStatisticSender    = $contentStatisticSender;
@@ -73,6 +80,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->imageBaseUrl              = $imageBaseUrl;
         $this->OTPVerifier               = $OTPVerifier;
         $this->defaultRedirectUrl        = $defaultRedirectUrl;
+        $this->dataStorage = $dataStorage;
     }
 
 
@@ -109,7 +117,12 @@ class LPController extends AbstractController implements ControllerWithISPDetect
                 $background = $campaign->getBgColor();
             }
         }
-        else {
+
+        if(!(bool)$this->dataStorage->readValue('is_wifi_flow') && $this->landingPageAccessResolver->isLandingDisabled($request)) {
+            return new RedirectResponse($this->generateUrl('identify_and_subscribe'));
+        }
+
+        if(!$cid) {
             $this->OTPVerifier->forceWifi($session);
         }
 
