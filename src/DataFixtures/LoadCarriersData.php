@@ -71,7 +71,7 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $carrier->setTrialPeriod($trialPeriod);
             $carrier->setSubscriptionPeriod($subscriptionPeriod);
             $carrier->setOperatorId($operatorId);
-            $carrier->setLpOtp($lpOtp);
+            $carrier->setIsConfirmationClick($lpOtp);
             $carrier->setPinIdentSupport($pinIdentSupport);
             $carrier->setResubAllowed($resubAllowed);
             $carrier->setIsCampaignsOnPause($isCampaignsOnPause);

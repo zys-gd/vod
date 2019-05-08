@@ -42,9 +42,11 @@ class Carrier implements CarrierInterface
     private $published = false;
 
     /**
-     * @var boolean
+     * former lpOtp
+     * is needed subscribe confirmation click
+     * @var bool
      */
-    private $lpOtp = false;
+    private $isConfirmationClick = false;
 
     /**
      * Is carrier supports wi-fi flow identification via sms pin code
@@ -362,34 +364,6 @@ class Carrier implements CarrierInterface
         return $this->published;
     }
 
-
-    /**
-     * @param bool $lpOtp
-     */
-    public function setLpOtp($lpOtp)
-    {
-        $this->lpOtp = $lpOtp;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isLpOtp()
-    {
-        return $this->lpOtp;
-    }
-
-
-    /**
-     * Get published
-     *
-     * @return boolean
-     */
-    public function getLpOtp()
-    {
-        return $this->lpOtp;
-    }
-
     /**
      * @return bool
      */
@@ -672,6 +646,22 @@ class Carrier implements CarrierInterface
     public function getCounter(): ?int
     {
         return isset($this->counter) ? $this->counter : null;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isConfirmationClick(): bool
+    {
+        return $this->isConfirmationClick;
+    }
+
+    /**
+     * @param bool $isConfirmationClick
+     */
+    public function setIsConfirmationClick(bool $isConfirmationClick): void
+    {
+        $this->isConfirmationClick = $isConfirmationClick;
     }
 
 }
