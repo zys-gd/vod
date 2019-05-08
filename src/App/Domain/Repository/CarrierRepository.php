@@ -49,7 +49,7 @@ class CarrierRepository extends \Doctrine\ORM\EntityRepository implements Carrie
             ->where('sp.carrier = :carrier')
             ->andWhere('sp.status = :status')
             ->setParameters([
-                'status'           => SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK,
+                'status'  => SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK,
                 'carrier' => $carrier
             ]);
         /** @var SubscriptionPack $subscriptionPack */

@@ -115,8 +115,13 @@ class SubscriptionPackAdmin extends AbstractAdmin
     public function preUpdate($object)
     {
         $object->setUpdated(new \DateTime('now'));
-        $object->setBuyStrategyId($object->getBuyStrategyId()->id);
-        $object->setRenewStrategyId($object->getRenewStrategyId()->id);
+        // resolve problems with form save and inline list save
+        try{
+            $object->setBuyStrategyId($object->getBuyStrategyId()->id);
+            $object->setRenewStrategyId($object->getRenewStrategyId()->id);
+        } catch (\Throwable $e) {
+            // then save by default behavior
+        }
 
         $this->markSubscriptionPacksWithSameCarrierAsInactive($object);
 

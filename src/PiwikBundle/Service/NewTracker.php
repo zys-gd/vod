@@ -490,7 +490,7 @@ class NewTracker
         $subscriptionPackId = abs($oSubPack->getUuid());
 
         $eurPrice = $this->exchangeService->convert($oSubPack->getTierCurrency(), $oSubPack->getTierPrice());
-        $subscriptionPrice = round($oSubPack->getPriceFromTier(), 2);
+        $subscriptionPrice = round($oSubPack->getTierPrice(), 2);
         $name = $type . '-' . ($bfSuccess ? 'ok' : 'failed');
 
         $orderIdPieces = [
@@ -611,8 +611,8 @@ class NewTracker
         }
 
         $subscriptionPlanId = abs($oSubPack->getUuid());
-        $eurPrice = $this->exchangeService->convert($oSubPack->getTierCurrency(), $oSubPack->getPriceFromTier());
-        $subscriptionPrice = round($oSubPack->getPriceFromTier(), 2);
+        $eurPrice = $this->exchangeService->convert($oSubPack->getTierCurrency(), $oSubPack->getTierPrice());
+        $subscriptionPrice = round($oSubPack->getTierPrice(), 2);
 
         $name = 'unsubscribe-' . ($bfSuccess ? 'ok' : 'failed');
         $orderIdPieces = [
