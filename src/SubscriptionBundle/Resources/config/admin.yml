@@ -44,6 +44,8 @@ services:
             - '@SubscriptionBundle\Service\BlackListService'
         tags:
             - { name: sonata.admin, manager_type: orm, group: black_list_management, label: Black list }
+        calls:
+            - [ setTemplate, [edit, '@@SubscriptionAdmin/BlackList/edit.html.twig']]
 
     SubscriptionBundle\Admin\Sonata\AffiliateLogAdmin:
         arguments:

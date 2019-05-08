@@ -125,6 +125,7 @@ class BlackListAdmin extends AbstractAdmin
                 'format' => 'yyyy-MM-dd',
                 'input'  => 'datetime',
                 'attr'   => ['style' => 'width: 12vw'],
+                'required' => false
             ])
             ->add('ban_end', DateType::class, [
                 'widget' => 'single_text',

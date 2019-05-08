@@ -41,10 +41,10 @@ class BlackList
     private $duration = 0;
 
     /** @var \DateTime */
-    private $banStart;
+    private $banStart = null;
 
     /** @var \DateTime */
-    private $banEnd;
+    private $banEnd = null;
 
     /**
      * BlackList constructor.
@@ -166,7 +166,7 @@ class BlackList
     /**
      * @param \DateTime $banStart
      */
-    public function setBanStart(\DateTime $banStart): void
+    public function setBanStart(?\DateTime $banStart): void
     {
         $this->banStart = $banStart;
     }
@@ -182,7 +182,7 @@ class BlackList
     /**
      * @param \DateTime $banEnd
      */
-    public function setBanEnd(\DateTime $banEnd): void
+    public function setBanEnd(?\DateTime $banEnd): void
     {
         $this->banEnd = $banEnd;
     }
