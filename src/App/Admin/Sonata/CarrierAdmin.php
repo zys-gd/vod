@@ -90,7 +90,8 @@ class CarrierAdmin extends AbstractAdmin
             ->add('resubAllowed')
             ->add('isCampaignsOnPause')
             ->add('isUnlimitedSubscriptionAttemptsAllowed')
-            ->add('numberOfAllowedSubscription');
+            ->add('numberOfAllowedSubscription')
+            ->add('isLpOff');
     }
 
     /**
@@ -113,6 +114,7 @@ class CarrierAdmin extends AbstractAdmin
             ->add('subscriptionPeriod')
             ->add('resubAllowed')
             ->add('isCampaignsOnPause')
+            ->add('isLpOff')
             ->add('_action', null, array(
                 'actions' => array(
                     'show' => array(),
@@ -142,6 +144,10 @@ class CarrierAdmin extends AbstractAdmin
             ->add('published')
             ->add('isConfirmationClick')
             ->add('pinIdentSupport')
+            ->add('isLpOff', null, [
+                'label' => 'Turn off LP showing',
+                'help' => 'If consent page exist, then show it. Otherwise will try to subscribe'
+            ])
             ->add('trialInitializer')
             ->add('trialPeriod')
             ->add('subscriptionPeriod')
@@ -180,6 +186,10 @@ class CarrierAdmin extends AbstractAdmin
             ->add('published')
             ->add('isConfirmationClick')
             ->add('pinIdentSupport')
+            ->add('isLpOff', null, [
+                'label' => 'Turn off LP showing',
+                'help' => 'If consent page exist, then show it. Otherwise will try to subscribe'
+            ])
             ->add('trialInitializer')
             ->add('trialPeriod')
             ->add('subscriptionPeriod')
