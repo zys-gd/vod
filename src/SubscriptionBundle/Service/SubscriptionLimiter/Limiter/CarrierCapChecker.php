@@ -55,7 +55,7 @@ class CarrierCapChecker
             'carrierLimit' => $carrierLimit
         ]);
 
-        return $totalCount > $carrierLimit;
+        return $totalCount >= $carrierLimit;
 
     }
 
@@ -76,6 +76,6 @@ class CarrierCapChecker
         ]);
 
 
-        return $totalCount > $affiliateLimit;
+        return $totalCount >= $affiliateLimit;
     }
 }
