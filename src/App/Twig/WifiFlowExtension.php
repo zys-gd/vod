@@ -105,7 +105,7 @@ class WifiFlowExtension extends AbstractExtension
 
         $subpackCarriers = [];
         foreach ($subpacks as $subpack) {
-            $subpackCarriers[] = $subpack->getBillingCarrierId();
+            $subpackCarriers[] = $subpack->getCarrier()->getBillingCarrierId();
         }
 
         $carrierInterfaces = array_filter($carrierInterfaces, function (CarrierInterface $carrier) use ($subpackCarriers

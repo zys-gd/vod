@@ -477,7 +477,7 @@ class NewTracker
             return false;
         }
 
-        if ($oSubPack->getBillingCarrierId() == ConstBillingCarrierId::HUTCH3_INDONESIA
+        if ($oSubPack->getCarrier()->getBillingCarrierId() == ConstBillingCarrierId::HUTCH3_INDONESIA
             && $bfResponse->getStatus() === ProcessResult::STATUS_FAILED
             && $bfResponse->getError() === ProcessResult::ERROR_CANCELED) {
             return false;
@@ -490,7 +490,7 @@ class NewTracker
         $subscriptionPackId = abs($oSubPack->getUuid());
 
         $eurPrice = $this->exchangeService->convert($oSubPack->getTierCurrency(), $oSubPack->getTierPrice());
-        $subscriptionPrice = round($oSubPack->getPriceFromTier(), 2);
+        $subscriptionPrice = round($oSubPack->getTierPrice(), 2);
         $name = $type . '-' . ($bfSuccess ? 'ok' : 'failed');
 
         $orderIdPieces = [
@@ -590,7 +590,7 @@ class NewTracker
         $bfWrong = $bfResponse
             && $bfResponse->getError() != ProcessResult::ERROR_BATCH_LIMIT_EXCEEDED
             && $bfResponse->getError() != ProcessResult::ERROR_USER_TIMEOUT
-            && !($bfResponse->getError() == ProcessResult::ERROR_CANCELED && $oSubPack->getBillingCarrierId() == ConstBillingCarrierId::ROBI_BANGLADESH)
+            && !($bfResponse->getError() == ProcessResult::ERROR_CANCELED && $oSubPack->getCarrier()->getBillingCarrierId() == ConstBillingCarrierId::ROBI_BANGLADESH)
             &&
             (
                 $bfResponse->getType() !== 'unsubscribe'
@@ -604,15 +604,15 @@ class NewTracker
         if ($bfResponse) {
             $bfSuccess = $bfResponse->getError() == ProcessResult::ERROR_BATCH_LIMIT_EXCEEDED ||
             $bfResponse->getError() == ProcessResult::ERROR_USER_TIMEOUT ||
-            ($bfResponse->getError() == ProcessResult::ERROR_CANCELED && $oSubPack->getBillingCarrierId() == ConstBillingCarrierId::ROBI_BANGLADESH)
+            ($bfResponse->getError() == ProcessResult::ERROR_CANCELED && $oSubPack->getCarrier()->getBillingCarrierId() == ConstBillingCarrierId::ROBI_BANGLADESH)
                 ? true : ($bfResponse->getStatus() === 'successful' || $bfResponse->getStatus() === 'ok');
             $bfId = $bfResponse->getId();
             $bfProvider = $bfResponse->getProvider();
         }
 
         $subscriptionPlanId = abs($oSubPack->getUuid());
-        $eurPrice = $this->exchangeService->convert($oSubPack->getTierCurrency(), $oSubPack->getPriceFromTier());
-        $subscriptionPrice = round($oSubPack->getPriceFromTier(), 2);
+        $eurPrice = $this->exchangeService->convert($oSubPack->getTierCurrency(), $oSubPack->getTierPrice());
+        $subscriptionPrice = round($oSubPack->getTierPrice(), 2);
 
         $name = 'unsubscribe-' . ($bfSuccess ? 'ok' : 'failed');
         $orderIdPieces = [

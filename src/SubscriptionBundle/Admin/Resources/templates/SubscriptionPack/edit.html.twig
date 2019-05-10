@@ -5,7 +5,6 @@
     {% set successfullySaved = app.session.flashBag.get('subscription_pack_save_success') %}
     {% if successfullySaved %}
 
-
         <div id="modal" class="modal fade" role="dialog">
             <div class="modal-dialog" style="margin-top: 30px">
 
@@ -37,209 +36,28 @@
         }
     </style>
     <script type="text/javascript">
-        var uniqueId                  = "{{ admin.uniqId }}";
-        var sendRequest               = function ($form) {
-            return function (data) {
-                return $.ajax({
-                    url : $form.attr('action'),
-                    type: $form.attr('method'),
-                    data: data
-                });
-            }
-        };
-        var getFieldWithFormUninqueId = function (formUninqueId) {
-            return function (fieldName) {
-                return $("#" + formUninqueId + "_" + fieldName);
-            }
-        };
-        var getField                  = getFieldWithFormUninqueId(uniqueId);
-        var getCarrierOptions         = function (sendRequestWithForm) {
-            return function (countryId, attributeName) {
-                var data            = {};
-                data[attributeName] = countryId;
-                return sendRequestWithForm(data)
-            }
-        };
-
-        var getTierOptions = function (sendRequestWithForm) {
-            return function (carrierId, attributeName) {
-                var data            = {};
-                data[attributeName] = carrierId;
-                return sendRequestWithForm(data)
-            }
-        };
-
-        var attachIdCaputreListener = function ($sourceEle, $targetEle, eventName, attributeName) {
-            eventName     = eventName || "select2-selecting";
-            attributeName = attributeName || "data";
-
-            $sourceEle.on(eventName, function (e) {
-                $targetEle.val($(e.choice.element).attr(attributeName))
-            });
-        };
-        var captureId               = function ($sourceEle, $targetEle, attributeName) {
-            attributeName = attributeName || "data";
-            var $source   = $sourceEle.select2('data') && $sourceEle.select2('data').element &&
-                $($sourceEle.select2('data').element[0]) || null;
-            var targetVal = $targetEle.val();
-            if (!targetVal && $source) {
-                $targetEle.val($source.attr(attributeName))
-            }
-        };
-
-        var attachTierFetchingEvent = function (carrier,
-                                                carrierId,
-                                                tier,
-                                                tierId,
-                                                getTierOptionsWithSendRequest) {
-            $carrierTag   = $(carrier);
-            $carrierIdTag = $(carrierId);
-
-            $carrierTag.on("select2-selecting", function (e) {
-
-                var $loader = $("<i>{{ 'Loading tiers  ...'| trans }}</i>");
-                //Displayed loading for the carrier
-                $carrierTag.closest(".form-group").append($loader);
-
-
-                //removed existing tier inputs
-                $(tier).closest(".form-group").remove();
-                $(tierId).remove();
-
-                var carrierIdValue = e.choice.element.length && $(e.choice.element[0]).attr("data");
-                return getTierOptionsWithSendRequest(carrierIdValue, $carrierIdTag.attr('name'))
-                    .done(function (html) {
-                        //added carrier dropdown
-                        $carrierTag.closest(".form-group").after(
-                            $(html).find(tier).closest(".form-group")
-                        );
-                        //added carrier id hidden field dropdown
-                        $carrierTag.closest(".form-group").after(
-                            $(html).find(tierId)
-                        );
-
-                        var $tierTag   = $(tier).select2();
-                        var $tierIdTag = $(tierId);
-
-                        attachIdCaputreListener($tierTag, $tierIdTag);
-                        captureId($tierTag, $tierIdTag);
-
-                        attachIdCaputreListener($tierTag, $('input[name*="\[tierPrice\]"]'), null, 'data-price');
-                        attachIdCaputreListener($tierTag, $('input[name*="\[tierCurrency\]"]'), null, 'data-currency');
-                        attachIdCaputreListener($tierTag, $('input[name*="\[displayCurrency\]"]'), null, 'data-currency');
-                        captureId($tierTag, $('input[name*="\[tierPrice\]"]'), 'data-price');
-                        captureId($tierTag, $('input[name*="\[tierCurrency\]"]'), 'data-currency');
-                        captureId($tierTag, $('input[name*="\[displayCurrency\]"]'), 'data-currency');
-                        $('div[id*="displayCurrency"]').show();
-
-                        $tierTag.closest('.form-group').effect("highlight", {'color': '#57A957'}, 2000);
-
-
-                    }).fail(function (error) {
-
-                        $carrierTag.closest('.form-group').effect("highlight", {'color': '#C43C35'}, 2000);
-                        Admin.log("Error while fetching tier for carrier", error);
-
-                    }).always(function () {
-                        $loader.remove();
-                    })
-            });
-
-        };
+        var uniqueId = "{{ admin.uniqId }}";
 
         $(document).ready(function () {
 
-            // TODO: Add custom validation.
+            var country = "#" + uniqueId + "_country";
 
+            var carrierId = "#" + uniqueId + "_carrier";
+            var carrierSelect = $(carrierId);
 
-            ["tier", "buyStrategy", "renewStrategy", "carrier"].map(function (field) {
-                var fieldId   = field + "Id",
-                    $eleTag   = getField(field),
-                    $eleIdTag = getField(fieldId);
-                attachIdCaputreListener($eleTag, $eleIdTag);
-                attachIdCaputreListener($eleTag, $('input[name*="\[tierPrice\]"]'), null, 'data-price');
-                attachIdCaputreListener($eleTag, $('input[name*="\[tierCurrency\]"]'), null, 'data-currency');
-                attachIdCaputreListener($eleTag, $('input[name*="\[displayCurrency\]"]'), null, 'data-currency');
-                captureId($eleTag, $('input[name*="\[tierPrice\]"]'), 'data-price');
-                captureId($eleTag, $('input[name*="\[tierCurrency\]"]'), 'data-currency');
-                captureId($eleTag, $('input[name*="\[displayCurrency\]"]'), 'data-currency');
-                $('div[id*="displayCurrency"]').show();
-                captureId($eleTag, $eleIdTag);
+            $(document).on('change', country, function () {
 
-            });
-
-            var $countryTag = getField("country");
-            var $form       = $countryTag.closest('form');
-
-            var carrierId = "#" + uniqueId + "_billingCarrierId";
-            var carrier   = "#" + uniqueId + "_carrierName";
-
-            var tier   = "#" + uniqueId + "_tier";
-            var tierId = "#" + uniqueId + "_tierId";
-
-
-            var sendRequestWithForm              = sendRequest($form);
-            var getCarrierOptionsWithSendRequest = getCarrierOptions(sendRequestWithForm);
-
-            var getTierOptionsWithSendRequest = getTierOptions(sendRequestWithForm);
-
-            $countryTag.closest(".form-group")
-                .after($(carrier).closest(".form-group"));
-
-            $(carrier).closest(".form-group").after($(tier).closest(".form-group"));
-
-
-            attachTierFetchingEvent(carrier, carrierId, tier, tierId, getTierOptionsWithSendRequest);
-
-            $countryTag.on("select2-selecting", function (e) {
-                //removed existing carrier inputs
-                $(carrier).closest(".form-group").remove();
-                $(carrierId).remove();
-
-                $(tier).closest(".form-group").remove();
-                $(tierId).remove();
-
-                $('input[name*="\[tierPrice\]"]').val('0');
-                $('input[name*="\[tierCurrency\]"]').val('');
-
-                $('div[id*="displayCurrency"]').hide();
-                $('input[name*="\[displayCurrency\]"]').val('');
-
-                if (e.choice.id) {
-                    var $loader = $("<i>{{ 'Loading carriers ...'| trans }}</i>");
-                    //Displayed loading for the carrier
-                    $countryTag.closest(".form-group").append($loader);
-
-                    getCarrierOptionsWithSendRequest(e.choice.id, $countryTag.attr('name'))
-                        .done(function (html) {
-                            //added carrier dropdown
-                            $countryTag.closest(".form-group").after(
-                                $(html).find(carrier).closest(".form-group")
-                            );
-                            //added carrier id hidden field dropdown
-                            $countryTag.closest(".form-group").after(
-                                $(html).find(carrierId)
-                            );
-
-                            var $carrierTag   = $(carrier).select2();
-                            var $carrierIdTag = $(carrierId);
-
-                            attachIdCaputreListener($carrierTag, $carrierIdTag);
-                            captureId($carrierTag, $carrierIdTag);
-
-                            $carrierTag.closest('.form-group').effect("highlight", {'color': '#57A957'}, 2000);
-
-                            attachTierFetchingEvent(carrier, carrierId, tier, tierId, getTierOptionsWithSendRequest);
-
-
-                        }).fail(function (error) {
-                        $countryTag.closest('.form-group').effect("highlight", {'color': '#C43C35'}, 2000);
-                        Admin.log("Error while fetching carriers for country", error);
-                    }).always(function () {
-                        $loader.remove();
-                    })
+                carrierSelect.val('').trigger('change');
+                carrierSelect.empty()
+                    .append("<option value selected>Please select carrier</option>");
+                var carriers = JSON.parse($(this).find(':selected').attr('data'));
+                for (billingCarrierId in carriers) {
+                    var _carrier = carriers[billingCarrierId];
+                    carrierSelect.append("<option value='" + _carrier.uuid + "'>" + _carrier.name + "</option>");
                 }
             });
+
+            carrierSelect.val().length === 0 && $(country).change();
         });
     </script>
 {% endblock %}

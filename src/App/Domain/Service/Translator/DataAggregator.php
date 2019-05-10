@@ -30,10 +30,12 @@ class DataAggregator
      */
     public function getGlobalParameters(int $billingCarrierId): array
     {
-        $subscriptionPack = $this->carrierRepository->findActiveSubscriptionPack($billingCarrierId);
+        $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
+        $subscriptionPack = $this->carrierRepository->findActiveSubscriptionPack($carrier);
+
         return [
-            '%price%' => $subscriptionPack->getPriceFromTier(),
-            '%currency%' => $subscriptionPack->getCurrencyFromTier(),
+            '%price%' => $subscriptionPack->getTierPrice(),
+            '%currency%' => $subscriptionPack->getFinalCurrency(),
             '%credits%' => $subscriptionPack->getCredits(),
             '%period%' => $subscriptionPack->convertPeriod2Text(),
             '%periodicity%' => $subscriptionPack->convertPeriodicity2Text(),

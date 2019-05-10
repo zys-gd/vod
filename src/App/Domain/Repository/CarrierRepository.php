@@ -36,21 +36,21 @@ class CarrierRepository extends \Doctrine\ORM\EntityRepository implements Carrie
     }
 
     /**
-     * @param int $billingCarrierId
+     * @param CarrierInterface $carrier
      *
      * @return SubscriptionPack|null
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findActiveSubscriptionPack(int $billingCarrierId): ?SubscriptionPack
+    public function findActiveSubscriptionPack(CarrierInterface $carrier): ?SubscriptionPack
     {
         $qb = $this->getEntityManager()
             ->getRepository('SubscriptionBundle:SubscriptionPack')
             ->createQueryBuilder('sp')
-            ->where('sp.billingCarrierId = :billingCarrierId')
+            ->where('sp.carrier = :carrier')
             ->andWhere('sp.status = :status')
             ->setParameters([
-                'status'           => SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK,
-                'billingCarrierId' => $billingCarrierId
+                'status'  => SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK,
+                'carrier' => $carrier
             ]);
         /** @var SubscriptionPack $subscriptionPack */
         $subscriptionPack = $qb->getQuery()->getOneOrNullResult();

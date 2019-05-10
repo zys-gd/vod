@@ -37,35 +37,39 @@ SubscriptionBundle\Entity\SubscriptionPack:
             options:
                 default: 0
             column: is_resub_allowed
+#            remove
         carrierName:
             type: string
             scale: 0
             length: null
             unique: false
-            nullable: false
+            nullable: true
             precision: 0
             column: carrier_name
+#            remove
         billingCarrierId:
             type: integer
             scale: 0
             length: null
             unique: false
-            nullable: false
+            nullable: true
             precision: 0
+#            remove
         tier:
             type: string
             scale: 0
             length: null
             unique: false
-            nullable: false
+            nullable: true
             precision: 0
             column: tier_name
+#            remove
         tierId:
             type: integer
             scale: 0
             length: null
             unique: false
-            nullable: false
+            nullable: true
             precision: 0
             column: tier_id
         tierPrice:
@@ -170,12 +174,13 @@ SubscriptionBundle\Entity\SubscriptionPack:
             nullable: true
             precision: 0
             column: unsubscribe_sms_text
+#            remove
         buyStrategy:
             type: string
             scale: 0
             length: null
             unique: false
-            nullable: false
+            nullable: true
             precision: 0
             column: buy_strategy_name
         buyStrategyId:
@@ -186,18 +191,20 @@ SubscriptionBundle\Entity\SubscriptionPack:
             nullable: false
             precision: 0
             column: buy_strategy_id
+
+#         remove
         renewStrategy:
             type: string
             scale: 0
             length: null
             unique: false
-            nullable: false
+            nullable: true
             precision: 0
             column: renew_strategy_name
         renewStrategyId:
-            type: integer
+            type: string
             scale: 0
-            length: null
+            length: 36
             unique: false
             nullable: false
             precision: 0
@@ -315,6 +322,9 @@ SubscriptionBundle\Entity\SubscriptionPack:
 
         carrier:
             targetEntity: App\Domain\Entity\Carrier
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
             joinColumns:
                 carrier_uuid:
                     referencedColumnName: uuid
