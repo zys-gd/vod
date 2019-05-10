@@ -136,14 +136,15 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             return RedirectResponse::create($this->defaultRedirectUrl);
         }
 
-        if ($this->limiter->isSubscriptionLimitReached($request->getSession())) {
-            $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession());
-            $billingCarrierId = (int)$ispDetectionData['carrier_id'] ?? null;
-            if (!empty($billingCarrierId)) {
-                $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
-                $this->limiterNotifier->notifyLimitReached($carrier);
-                return RedirectResponse::create($this->defaultRedirectUrl);
-            }
+        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession());
+        $billingCarrierId = (int)$ispDetectionData['carrier_id'] ?? null;
+        if (
+            !empty($billingCarrierId) &&
+            $this->limiter->isSubscriptionLimitReached($request->getSession())
+        ) {
+            $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
+            $this->limiterNotifier->notifyLimitReached($carrier);
+            return RedirectResponse::create($this->defaultRedirectUrl);
         }
 
         AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
