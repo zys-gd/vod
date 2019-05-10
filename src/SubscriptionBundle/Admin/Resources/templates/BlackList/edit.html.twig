@@ -1,0 +1,24 @@
+{% extends '@SonataAdmin/CRUD/edit.html.twig' %}
+
+{% block form %}
+    {{ parent() }}
+    <script type="text/javascript">
+        var uniqueId = "{{ admin.uniqId }}";
+        var duration = "#" + uniqueId + "_duration";
+        var banStart = "#" + uniqueId + "_ban_start";
+        var banEnd = "#" + uniqueId + "_ban_end";
+
+        $(document).on('change', duration, function () {
+            if($(this).find(':selected').val() > 0) {
+                $(banStart).attr('required', 'required');
+                $(banEnd).attr('required', 'required');
+            }
+            else {
+                $(banStart).removeAttr('required');
+                $(banEnd).removeAttr('required');
+            }
+
+        });
+        $(duration).change();
+    </script>
+{% endblock form %}

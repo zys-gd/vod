@@ -11,6 +11,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.min.js"></script>
     <script type="text/javascript" src="{{ asset('js/admin/uploadedVideo/UploadHelper.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/admin/uploadedVideo/VideoDataCollector.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/admin/uploadedVideo/SessionRefresher.js') }}"></script>
 {% endblock %}
 
 {% block stylesheets %}
@@ -126,16 +127,16 @@
             var saveBaseVideoDataUrl = "{{ admin.generateUrl('saveBaseVideoData') }}";
             var confirmVideosUrl = "{{ admin.generateUrl('confirmVideos') }}";
             var listUrl = "{{ admin.generateUrl('list') }}";
-
-            var csrfToken = '{{ csrf_token('uploading-video') }}';
+            var pingUrl = "{{ admin.generateUrl('ping') }}";
 
             var savedVideoTemplateSource = $('#post-upload-saved-template').first().html();
             var notSavedVideoTemplateSource = $('#post-upload-not-saved-template').first().html();
             var savedVideoTemplate = Handlebars.compile(savedVideoTemplateSource);
             var notSavedVideoTemplate = Handlebars.compile(notSavedVideoTemplateSource);
 
-            var uploadHelper = new UploadHelper(signatureUrl, saveBaseVideoDataUrl, confirmVideosUrl, csrfToken);
+            var uploadHelper = new UploadHelper(signatureUrl, saveBaseVideoDataUrl, confirmVideosUrl);
             var videoDataCollector = new VideoDataCollector(savedVideoTemplate, notSavedVideoTemplate);
+            var sessionRefresher = new SessionRefresher();
 
             var preUploadFormData = JSON.parse('{{ preUploadFormData|raw }}');
 
@@ -144,6 +145,12 @@
 
             var widjet = cloudinary.createUploadWidget(widgetOptions, function (error, result) {
                 switch (result.event) {
+                    case 'queues-start':
+                        sessionRefresher.start(pingUrl);
+                        break;
+                    case 'queues-end':
+                        sessionRefresher.stop();
+                        break;
                     case 'success':
                         var uploadedVideoData = Object.assign({}, preUploadFormData);
 
@@ -213,6 +220,9 @@
                                     );
                             })
                         }
+
+                        sessionRefresher.stop();
+
                         break;
                 }
             });
