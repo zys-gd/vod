@@ -118,7 +118,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             }
         }
         else {
-            //$this->OTPVerifier->forceWifi($session);
+            $this->OTPVerifier->forceWifi($session);
         }
 
         AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
