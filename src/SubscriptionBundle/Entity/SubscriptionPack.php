@@ -386,42 +386,6 @@ class SubscriptionPack implements HasUuid
     }
 
     /**
-     * @return integer
-     */
-    public function getBillingCarrierId()
-    {
-        return $this->billingCarrierId;
-    }
-
-    /**
-     * @param integer $carrierId
-     *
-     * @return SubscriptionPack
-     */
-    public function setBillingCarrierId($carrierId)
-    {
-        $this->billingCarrierId = $carrierId;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCarrierName(): ?string
-    {
-        return $this->carrierName;
-    }
-
-    /**
-     * @param string $carrierName
-     */
-    public function setCarrierName(string $carrierName): void
-    {
-        $this->carrierName = $carrierName;
-    }
-
-    /**
      * @param CarrierInterface $carrier
      */
     public function setCarrier(CarrierInterface $carrier)
@@ -682,22 +646,6 @@ class SubscriptionPack implements HasUuid
     }
 
     /**
-     * @return string
-     */
-    public function getBuyStrategy()
-    {
-        return $this->buyStrategy;
-    }
-
-    /**
-     * @param string $buyStrategy
-     */
-    public function setBuyStrategy($buyStrategy)
-    {
-        $this->buyStrategy = $buyStrategy;
-    }
-
-    /**
      * @return int
      */
     public function getBuyStrategyId()
@@ -711,22 +659,6 @@ class SubscriptionPack implements HasUuid
     public function setBuyStrategyId($buyStrategyId)
     {
         $this->buyStrategyId = $buyStrategyId;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRenewStrategy()
-    {
-        return $this->renewStrategy;
-    }
-
-    /**
-     * @param string $renewStrategy
-     */
-    public function setRenewStrategy($renewStrategy)
-    {
-        $this->renewStrategy = $renewStrategy;
     }
 
     /**
@@ -889,22 +821,17 @@ class SubscriptionPack implements HasUuid
         $this->updated = $updated;
     }
 
-    public function getPriceFromTier()
-    {
-        $price = $this->getTierPrice() > 0 ? $this->getTierPrice() : filter_var($this->tier, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-        return (float)$price;
-    }
-
-    public function getCurrencyFromTier()
+    /**
+     * @return string
+     */
+    public function getFinalCurrency(): string
     {
         if (strlen($this->getDisplayCurrency()) > 0) {
             return $this->getDisplayCurrency();
-        } elseif (strlen($this->getTierCurrency()) == 3) {
-            return $this->getTierCurrency();
-        } else {
-            return preg_replace('/[\.\s0-9]*/', '', $this->tier);
         }
+        return $this->getTierCurrency();
     }
+
     /**
      * @return int
      */

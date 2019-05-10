@@ -31,12 +31,19 @@ if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? $_ENV['TRUSTED_HOSTS'] ?? false
 $kernel  = new VODKernel($_SERVER['APP_ENV'], (bool)$_SERVER['APP_DEBUG']);
 $request = Request::createFromGlobals();
 
-try {
+if($_ENV['APP_ENV'] ?? [] == 'prod') {
+    try {
+        $response = $kernel->handle($request);
+        $response->send();
+        $kernel->terminate($request, $response);
+    } catch (\Throwable $exception) {
+        http_response_code(500);
+        echo $exception->getMessage();
+    }
+}
+else {
     $response = $kernel->handle($request);
     $response->send();
     $kernel->terminate($request, $response);
-} catch (\Throwable $exception) {
-    http_response_code(500);
-    echo $exception->getMessage();
 }
 
