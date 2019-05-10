@@ -33,17 +33,15 @@ class SubscriptionPackProvider
      */
     public function getActiveSubscriptionPack(User $user): SubscriptionPack
     {
-        $billingCarrierId = $user->getCarrier()->getBillingCarrierId();
-
         /** @var SubscriptionPack $subscriptionPack */
         $subscriptionPack = $this->subscriptionPackRepository->findOneBy([
-            'billingCarrierId' => $user->getCarrier()->getBillingCarrierId(),
+            'carrier' => $user->getCarrier(),
             'status'    => SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK
         ]);
 
         if (!$subscriptionPack) {
             throw new ActiveSubscriptionPackNotFound(
-                "Active subscription pack not found for carrier id {$billingCarrierId}"
+                "Active subscription pack not found for carrier {$user->getCarrier()}"
             );
         }
         return $subscriptionPack;
