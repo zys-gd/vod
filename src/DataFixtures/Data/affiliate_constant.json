@@ -1,0 +1,250 @@
+[
+    {
+        "uuid": "510c8cd7-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "security_code",
+        "value": "d6ffaf86f6edd7db55913bfc37d3d944",
+        "affiliate": {
+            "uuid": "514fda89-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c8f79-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "adv_id",
+        "value": "21",
+        "affiliate": {
+            "uuid": "514fda89-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c901d-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "master",
+        "value": "36b1e76c-8c85-11e7-8145-005056a90ce7",
+        "affiliate": {
+            "uuid": "514fdb2a-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c906d-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "advid",
+        "value": "22193",
+        "affiliate": {
+            "uuid": "514fdb97-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c90cb-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "service",
+        "value": "4491",
+        "affiliate": {
+            "uuid": "514fdcf3-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c9160-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "security_token",
+        "value": "cad2b0ea3b5a892ba11095324d9804e0",
+        "affiliate": {
+            "uuid": "514fdfd7-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c91ee-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "security_token",
+        "value": "d5886de2a1874db1ae1cd3e03987ac25",
+        "affiliate": {
+            "uuid": "514fe099-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c9277-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "PID",
+        "value": "768",
+        "affiliate": {
+            "uuid": "514fe164-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c946d-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "STAGE",
+        "value": "2",
+        "affiliate": {
+            "uuid": "514fe164-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c94d5-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "service",
+        "value": "1",
+        "affiliate": {
+            "uuid": "514fe3a5-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c952d-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "provider",
+        "value": "1",
+        "affiliate": {
+            "uuid": "514fe3a5-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c9577-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "tracker",
+        "value": "playwing_tracker",
+        "affiliate": {
+            "uuid": "514fea13-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c95ba-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "tid",
+        "value": "27696",
+        "affiliate": {
+            "uuid": "514feaf5-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c95ff-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "aid",
+        "value": "114999",
+        "affiliate": {
+            "uuid": "514feaf5-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c9642-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "pid",
+        "value": "",
+        "affiliate": {
+            "uuid": "514feaf5-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c9685-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "a",
+        "value": "7360",
+        "affiliate": {
+            "uuid": "514feb9d-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c96c5-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "e",
+        "value": "5913",
+        "affiliate": {
+            "uuid": "514feb9d-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c9707-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "f",
+        "value": "pb",
+        "affiliate": {
+            "uuid": "514feb9d-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c974d-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "aid",
+        "value": "14",
+        "affiliate": {
+            "uuid": "514feec2-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c978f-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "chMode",
+        "value": "ACT",
+        "affiliate": {
+            "uuid": "514feec2-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c97d5-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "a",
+        "value": "7360",
+        "affiliate": {
+            "uuid": "514ff007-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c981a-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "e",
+        "value": "5913",
+        "affiliate": {
+            "uuid": "514ff007-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c989c-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "f",
+        "value": "pb",
+        "affiliate": {
+            "uuid": "514ff007-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c9932-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "token",
+        "value": "Ds9Tibt60VvkGHBHexL1ogRmhVuaz197",
+        "affiliate": {
+            "uuid": "514ff15b-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c99ad-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "idcallback",
+        "value": "a31e5db729c3ba8bda39ee2ff7cae11a",
+        "affiliate": {
+            "uuid": "514ff272-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c9bb1-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "currency",
+        "value": "EUR",
+        "affiliate": {
+            "uuid": "514ff3ad-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c9c24-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "handler",
+        "value": "10522",
+        "affiliate": {
+            "uuid": "514ff3ad-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c9caa-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "hash",
+        "value": "2632f2b25d85bdb4c21ed95028be7d08",
+        "affiliate": {
+            "uuid": "514ff3ad-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c9d2f-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "token",
+        "value": "Ds9Tibt60VvkGHBHexL1ogRmhVuaz197",
+        "affiliate": {
+            "uuid": "514ff1e6-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c9db6-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "a",
+        "value": "5b72dee00e3692051",
+        "affiliate": {
+            "uuid": "514ff619-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "510c9e3d-ebd4-11e8-95c4-02bb250f0f22",
+        "name": "token",
+        "value": "QAr0a1K5ZpB9YXCdnu4V3cdhDq50RIC4",
+        "affiliate": {
+            "uuid": "514ff8df-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    }
+]

@@ -1,0 +1,2 @@
+services:
+  SubscriptionBundle\Service\SubscriptionVoter\BatchSubscriptionVoter: ~

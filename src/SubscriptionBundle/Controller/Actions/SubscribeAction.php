@@ -27,6 +27,7 @@ use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvi
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CustomPage;
 use SubscriptionBundle\Service\CapConstraint\SubscriptionConstraintByCarrier;
+use SubscriptionBundle\Service\SubscriptionVoter\BatchSubscriptionVoter;
 use SubscriptionBundle\Service\UserExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -95,6 +96,10 @@ class SubscribeAction extends AbstractController
      * @var CampaignConfirmationHandlerProvider
      */
     private $campaignConfirmationHandlerProvider;
+    /**
+     * @var BatchSubscriptionVoter
+     */
+    private $subscriptionVoter;
 
     /**
      * SubscribeAction constructor.
@@ -113,6 +118,7 @@ class SubscribeAction extends AbstractController
      * @param string                              $defaultRedirectUrl
      * @param PostPaidHandler                     $postPaidHandler
      * @param CampaignConfirmationHandlerProvider $campaignConfirmationHandlerProvider
+     * @param BatchSubscriptionVoter              $subscriptionVoter
      */
     public function __construct(
         UserExtractor $userExtractor,
@@ -128,7 +134,8 @@ class SubscribeAction extends AbstractController
         SubscriptionConstraintByCarrier $subscriptionConstraintByCarrier,
         string $defaultRedirectUrl,
         PostPaidHandler $postPaidHandler,
-        CampaignConfirmationHandlerProvider $campaignConfirmationHandlerProvider
+        CampaignConfirmationHandlerProvider $campaignConfirmationHandlerProvider,
+        BatchSubscriptionVoter $subscriptionVoter
     )
     {
         $this->userExtractor                       = $userExtractor;
@@ -145,6 +152,7 @@ class SubscribeAction extends AbstractController
         $this->defaultRedirectUrl                  = $defaultRedirectUrl;
         $this->postPaidHandler                     = $postPaidHandler;
         $this->campaignConfirmationHandlerProvider = $campaignConfirmationHandlerProvider;
+        $this->subscriptionVoter                   = $subscriptionVoter;
     }
 
     /**
@@ -161,6 +169,10 @@ class SubscribeAction extends AbstractController
      */
     public function __invoke(Request $request, IdentificationData $identificationData, ISPData $ISPData)
     {
+        if (!$this->subscriptionVoter->checkIfSubscriptionAllowed($request, $identificationData, $ISPData)) {
+            return new RedirectResponse($this->generateUrl('index', ['err_handle' => 'subscription_restricted']));
+        }
+
         if ($this->postPaidHandler->isPostPaidRestricted()) {
             return new RedirectResponse($this->generateUrl('index', ['err_handle' => 'postpaid_restricted']));
         }
@@ -171,7 +183,7 @@ class SubscribeAction extends AbstractController
 
         if (($campaignConfirmationHandler = $this->campaignConfirmationHandlerProvider->provideHandler($request->getSession())) instanceof CustomPage) {
             $result = $campaignConfirmationHandler->proceedCustomPage($request);
-            if($result instanceof RedirectResponse) {
+            if ($result instanceof RedirectResponse) {
                 return $result;
             }
         }
@@ -194,8 +206,7 @@ class SubscribeAction extends AbstractController
             $subscriber = $this->handlerProvider->getSubscriber($user->getCarrier());
             if ($subscriber instanceof HasCustomFlow) {
                 return $subscriber->process($request, $request->getSession(), $user);
-            }
-            else {
+            } else {
                 return $this->commonFlowHandler->process($request, $user);
             }
         } catch (ExistingSubscriptionException $exception) {
