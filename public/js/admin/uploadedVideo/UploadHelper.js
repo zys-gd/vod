@@ -2,17 +2,14 @@
  * @param {string} signatureUrl
  * @param {string} saveBaseVideoDataUrl
  * @param {string} confirmVideosUrl
- * @param {string} csrfToken
  *
  * @constructor
  */
-function UploadHelper(signatureUrl, saveBaseVideoDataUrl, confirmVideosUrl, csrfToken) {
+function UploadHelper(signatureUrl, saveBaseVideoDataUrl, confirmVideosUrl) {
 
     this.signatureUrl = signatureUrl;
     this.saveBaseVideoDataUrl = saveBaseVideoDataUrl;
     this.confirmVideosUrl = confirmVideosUrl;
-
-    this.token = csrfToken;
 
     /**
      * Save general video data from widget callback and pre-upload form data
@@ -46,8 +43,6 @@ function UploadHelper(signatureUrl, saveBaseVideoDataUrl, confirmVideosUrl, csrf
      * @return Promise
      */
     this.sendPostRequest = function(url, data) {
-        data['_token'] = this.token;
-
         return new Promise(function(resolve, reject) {
             $.ajax({
                 url: url,

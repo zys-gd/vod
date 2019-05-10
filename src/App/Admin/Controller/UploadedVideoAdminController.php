@@ -5,9 +5,11 @@ namespace App\Admin\Controller;
 use App\Admin\Form\UploadedVideoForm;
 use App\Domain\Entity\UploadedVideo;
 use App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector;
+use App\Domain\Service\VideoProcessing\UploadedVideoSerializer;
 use Doctrine\ORM\EntityManagerInterface;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use App\Admin\Form\PreUploadForm;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,6 +37,11 @@ class UploadedVideoAdminController extends CRUDController
     private $cloudinaryConnector;
 
     /**
+     * @var UploadedVideoSerializer
+     */
+    private $uploadedVideoSerializer;
+
+    /**
      * @var string
      */
     private $cloudinaryApiKey;
@@ -60,6 +67,7 @@ class UploadedVideoAdminController extends CRUDController
      * @param FormFactory $formFactory
      * @param EntityManagerInterface $entityManager
      * @param CloudinaryConnector $cloudinaryConnector
+     * @param UploadedVideoSerializer $uploadedVideoSerializer
      * @param string $cloudinaryApiKey
      * @param string $cloudinaryCloudName
      * @param string $cloudinaryApiSecret
@@ -70,6 +78,7 @@ class UploadedVideoAdminController extends CRUDController
         FormFactory $formFactory,
         EntityManagerInterface $entityManager,
         CloudinaryConnector $cloudinaryConnector,
+        UploadedVideoSerializer $uploadedVideoSerializer,
         string $cloudinaryApiKey,
         string $cloudinaryCloudName,
         string $cloudinaryApiSecret,
@@ -79,6 +88,7 @@ class UploadedVideoAdminController extends CRUDController
         $this->formFactory  = $formFactory;
         $this->entityManager = $entityManager;
         $this->cloudinaryConnector = $cloudinaryConnector;
+        $this->uploadedVideoSerializer = $uploadedVideoSerializer;
         $this->cloudinaryApiKey = $cloudinaryApiKey;
         $this->cloudinaryCloudName = $cloudinaryCloudName;
         $this->cloudinaryApiSecret = $cloudinaryApiSecret;
@@ -122,7 +132,7 @@ class UploadedVideoAdminController extends CRUDController
 
             return $this->renderWithExtraParams('@Admin/UploadedVideo/upload.html.twig', [
                 'widgetOptions' => json_encode($widgetOptions),
-                'preUploadFormData' => json_encode($uploadedVideo)
+                'preUploadFormData' => $this->uploadedVideoSerializer->jsonSerialize($uploadedVideo)
             ]);
         }
 
@@ -134,7 +144,7 @@ class UploadedVideoAdminController extends CRUDController
     /**
      * @param Request $request
      *
-     * @return Response|BadRequestHttpException
+     * @return JsonResponse|Response|BadRequestHttpException
      */
     public function saveBaseVideoDataAction(Request $request)
     {
@@ -160,7 +170,7 @@ class UploadedVideoAdminController extends CRUDController
                 return new Response('Error while saving uploaded video', 500);
             }
 
-            return new Response(json_encode($uploadedVideo));
+            return new JsonResponse($uploadedVideo);
         }
 
         return new Response('Video data is invalid', 400);
@@ -169,21 +179,13 @@ class UploadedVideoAdminController extends CRUDController
     /**
      * @param Request $request
      *
-     * @return Response
+     * @return JsonResponse|Response
      *
      * @throws \Exception
      */
     public function confirmVideosAction(Request $request)
     {
         $confirmedVideos = json_decode($request->getContent(), true);
-
-        $token = empty($confirmedVideos['_token']) ? null : $confirmedVideos['_token'];
-
-        if (!$token || !$this->isCsrfTokenValid('uploading-video', $token)) {
-            throw new AccessDeniedHttpException('Invalid csrf token');
-        }
-
-        unset($confirmedVideos['_token']);
 
         $uploadedVideoRepository = $this->entityManager->getRepository(UploadedVideo::class);
 
@@ -213,7 +215,7 @@ class UploadedVideoAdminController extends CRUDController
             return new Response('An error occurred while saving the video', 500);
         }
 
-        return new Response(json_encode(['result' => 'ok']));
+        return new JsonResponse(['result' => 'ok']);
     }
 
     /**
@@ -237,5 +239,15 @@ class UploadedVideoAdminController extends CRUDController
         $signature = sha1($preparedSignature);
 
         return new Response($signature);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function pingAction(Request $request)
+    {
+        return new Response();
     }
 }
