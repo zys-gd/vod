@@ -10,6 +10,8 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\Form\Type\BooleanType;
+use Sonata\Form\Type\EqualType;
 use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataConverter;
 use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataExtractor;
@@ -43,6 +45,13 @@ class CarrierAdmin extends AbstractAdmin
      */
     private $storageKeyGenerator;
 
+    protected $datagridValues = [
+        'published' => [
+            'type'  => EqualType::TYPE_IS_EQUAL, // => 1
+            'value' => BooleanType::TYPE_YES     // => 1
+        ]
+    ];
+
     /**
      * CarrierAdmin constructor
      *
@@ -67,7 +76,7 @@ class CarrierAdmin extends AbstractAdmin
         parent::__construct($code, $class, $baseControllerName);
         $this->storageKeyGenerator = $storageKeyGenerator;
         $this->code                = $code;
-        $this->entityManager = $entityManager;
+        $this->entityManager       = $entityManager;
     }
 
     /**
@@ -189,7 +198,7 @@ class CarrierAdmin extends AbstractAdmin
 
         $finished = $this->limiterDataStorage->getFinishedSubscriptionAmount($key);
 
-        $available = $subject->getNumberOfAllowedSubscriptionsByConstraint() - $pending - $finished;
+        $available = $pending + $finished;
 
         $subject->setCounter($available);
 

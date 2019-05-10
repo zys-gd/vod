@@ -19,6 +19,7 @@ use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
 use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataConverter;
 use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataExtractor;
 use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterStorage;
+use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\StorageKeyGenerator;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -44,6 +45,10 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
      * @var LimiterStorage
      */
     private $limiterDataStorage;
+    /**
+     * @var StorageKeyGenerator
+     */
+    private $storageKeyGenerator;
 
     /**
      * ConstraintsByAffiliateAdmin constructor
@@ -61,7 +66,8 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
         string $baseControllerName,
         ConstraintByAffiliateRepository $constraintByAffiliateRepository,
         EntityManagerInterface $entityManager,
-        LimiterStorage $limiterDataStorage
+        LimiterStorage $limiterDataStorage,
+        StorageKeyGenerator $storageKeyGenerator
     )
     {
         $this->constraintByAffiliateRepository = $constraintByAffiliateRepository;
@@ -69,6 +75,7 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
         $this->limiterDataStorage              = $limiterDataStorage;
 
         parent::__construct($code, $class, $baseControllerName);
+        $this->storageKeyGenerator = $storageKeyGenerator;
     }
 
     /**
@@ -190,9 +197,15 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
      */
     protected function configureShowFields(ShowMapper $showMapper)
     {
+
         /** @var ConstraintByAffiliate $subject */
-        $subject = $this->getSubject();
-        $subject->setCounter(0);
+        $subject   = $this->getSubject();
+        $key       = $this->storageKeyGenerator->generateAffiliateConstraintKey($subject);
+        $pending   = $this->limiterDataStorage->getPendingSubscriptionAmount($key);
+        $finished  = $this->limiterDataStorage->getFinishedSubscriptionAmount($key);
+        $available = $pending + $finished;
+
+        $subject->setCounter($available);
 
         $showMapper
             ->add('affiliate')
