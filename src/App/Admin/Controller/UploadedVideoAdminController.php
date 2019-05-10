@@ -170,7 +170,9 @@ class UploadedVideoAdminController extends CRUDController
                 return new Response('Error while saving uploaded video', 500);
             }
 
-            return new JsonResponse($uploadedVideo);
+            return new JsonResponse(
+                $this->uploadedVideoSerializer->jsonSerialize($uploadedVideo)
+            );
         }
 
         return new Response('Video data is invalid', 400);
