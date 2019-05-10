@@ -6,6 +6,7 @@ namespace SubscriptionBundle\Service\SubscriptionLimiter;
 use App\Domain\Entity\Affiliate;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
+use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\CampaignExtractor;
@@ -43,6 +44,10 @@ class SubscriptionLimiter
      * @var CampaignExtractor
      */
     private $campaignExtractor;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * SubscriptionLimiter constructor.
@@ -60,7 +65,8 @@ class SubscriptionLimiter
         LimiterDataMapper $limiterDataMapper,
         CarrierCapChecker $carrierCapChecker,
         StorageKeyGenerator $storageKeyGenerator,
-        CampaignExtractor $campaignExtractor
+        CampaignExtractor $campaignExtractor,
+        LoggerInterface $logger
     )
     {
         $this->subscriptionExtractor = $subscriptionExtractor;
@@ -69,6 +75,7 @@ class SubscriptionLimiter
         $this->carrierCapChecker     = $carrierCapChecker;
         $this->storageKeyGenerator   = $storageKeyGenerator;
         $this->campaignExtractor     = $campaignExtractor;
+        $this->logger                = $logger;
     }
 
     /**
@@ -79,6 +86,7 @@ class SubscriptionLimiter
     public function isSubscriptionLimitReached(SessionInterface $session): bool
     {
         if ($this->limiterDataStorage->isSubscriptionAlreadyPending($session->getId())) {
+            $this->logger->debug('Already pending subscription', ['id' => $session->getId()]);
             return false;
         }
 

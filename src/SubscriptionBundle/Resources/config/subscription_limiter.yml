@@ -11,6 +11,7 @@ services:
         - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\CarrierCapChecker'
         - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\StorageKeyGenerator'
         - '@SubscriptionBundle\Service\CampaignExtractor'
+        - '@logger'
 
 
     SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterStorage:
