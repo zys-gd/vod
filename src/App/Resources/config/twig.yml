@@ -14,7 +14,6 @@ services:
             - '@ExtrasBundle\Utils\LocalExtractor'
             - '@App\Domain\Service\Translator\ShortcodeReplacer'
             - '@App\Domain\Service\Translator\DataAggregator'
-            - '@logger'
     App\Twig\NavbarExtension:
         arguments:
             - '@App\Domain\Repository\MainCategoryRepository'
