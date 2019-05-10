@@ -12,6 +12,16 @@ body {
     margin: 0 auto;
 }
 
+.right-text-direction {
+    text-align: right;
+    direction: RTL;
+}
+
+.right-text-direction div {
+    text-align: right;
+    direction: RTL;
+}
+
 a button {
     border: none;
     font-family: 'Kanit', sans-serif;

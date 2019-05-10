@@ -56,6 +56,7 @@ volumes:
 
 networks:
   dev-env:
+   driver: bridge
    ipam:
      config:
         - subnet: 192.168.101.0/24

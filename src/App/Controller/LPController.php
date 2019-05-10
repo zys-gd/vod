@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\CarrierTemplate\TemplateConfigurator;
 use App\Domain\Entity\Campaign;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Service\CarrierOTPVerifier;
@@ -47,16 +48,21 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var string
      */
     private $defaultRedirectUrl;
+    /**
+     * @var TemplateConfigurator
+     */
+    private $templateConfigurator;
 
     /**
      * LPController constructor.
      *
      * @param ContentStatisticSender $contentStatisticSender
-     * @param CampaignRepository     $campaignRepository
-     * @param LandingPageACL         $landingPageAccessResolver
-     * @param string                 $imageBaseUrl
-     * @param CarrierOTPVerifier     $OTPVerifier
-     * @param string                 $defaultRedirectUrl
+     * @param CampaignRepository $campaignRepository
+     * @param LandingPageACL $landingPageAccessResolver
+     * @param string $imageBaseUrl
+     * @param CarrierOTPVerifier $OTPVerifier
+     * @param string $defaultRedirectUrl
+     * @param TemplateConfigurator $templateConfigurator
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
@@ -64,7 +70,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         LandingPageACL $landingPageAccessResolver,
         string $imageBaseUrl,
         CarrierOTPVerifier $OTPVerifier,
-        string $defaultRedirectUrl
+        string $defaultRedirectUrl,
+        TemplateConfigurator $templateConfigurator
     )
     {
         $this->contentStatisticSender    = $contentStatisticSender;
@@ -73,6 +80,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->imageBaseUrl              = $imageBaseUrl;
         $this->OTPVerifier               = $OTPVerifier;
         $this->defaultRedirectUrl        = $defaultRedirectUrl;
+        $this->templateConfigurator      = $templateConfigurator;
     }
 
 
@@ -110,7 +118,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             }
         }
         else {
-            $this->OTPVerifier->forceWifi($session);
+            //$this->OTPVerifier->forceWifi($session);
         }
 
         AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
@@ -118,9 +126,15 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         // we can't use ISPData object as function parameter because request to LP could not contain
         // carrier data and in this case BadRequestHttpException will be throw
         $ispData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession());
-        $this->contentStatisticSender->trackVisit($ispData ? new ISPData($ispData['carrier_id']) : null);
 
-        return $this->render('@App/Common/landing.html.twig', [
+        $carrierId = $ispData ? $ispData['carrier_id'] : null;
+        $ispDataInstance = $carrierId ? new ISPData($carrierId) : null;
+
+        $this->contentStatisticSender->trackVisit($ispDataInstance);
+
+        $template = $this->templateConfigurator->getTemplate('landing', (int) $carrierId);
+
+        return $this->render($template, [
             'campaignBanner' => $campaignBanner,
             'background'     => $background
         ]);

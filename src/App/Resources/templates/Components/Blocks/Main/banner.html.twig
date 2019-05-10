@@ -1,32 +1,37 @@
-{% macro render(src, alt, class) %}
+{% macro render(src, alt, class, isClickable) %}
 
     {#{% set class = class ~ ' x-subscribe-button' %}#}
 
-    {% if isIdentified() %}
-        {% set href = url('subscription.subscribe') %}
-    {% elseif isConsentFlow() %}
-        {% set href = url('subscription.consent_page_subscribe') %}
-    {% elseif isWifiFlow() %}
-        {% set href = url('landing') %}
+    {% if isClickable %}
+        {% if isIdentified() %}
+            {% set href = url('subscription.subscribe') %}
+        {% elseif isConsentFlow() %}
+            {% set href = url('subscription.consent_page_subscribe') %}
+        {% elseif isWifiFlow() %}
+            {% set href = url('landing') %}
+        {% else %}
+            {% set href = url('identify_and_subscribe') %}
+        {% endif %}
+
+        <a href="{{ href }}" class="x-subscribe-image">
+            <img {% if class %}class="{{ class }}"{% endif %} src="{{ src }}" alt="{{ alt }}"/>
+        </a>
     {% else %}
-        {% set href = url('identify_and_subscribe') %}
+        <img {% if class %}class="{{ class }}"{% endif %} src="{{ src }}" alt="{{ alt }}"/>
     {% endif %}
 
-
-    <a href="{{ href }}" class="x-subscribe-image">
-        <img {% if class %}class="{{ class }}"{% endif %} src="{{ src }}" alt="{{ alt }}"/>
-    </a>
-
-    <script type="text/javascript">
-        $(document).on('click', '.x-subscribe-image', function (e) {
-            if($('.x-otp-button').length) {
-                e.preventDefault();
-                $('.x-otp-button').click();
-            }
-            else {
-                $._loader(false);
-            }
-        })
-    </script>
+    {% if isClickable %}
+        <script type="text/javascript">
+            $(document).on('click', '.x-subscribe-image', function (e) {
+                if($('.x-otp-button').length) {
+                    e.preventDefault();
+                    $('.x-otp-button').click();
+                }
+                else {
+                    $._loader(false);
+                }
+            })
+        </script>
+    {% endif %}
 
 {% endmacro render %}

@@ -29,14 +29,14 @@
 
         <div class="d-flex align-items-center justify-content-center">
             {% if campaignBanner %}
-                {{ banner.render(campaignBanner, 'banner', 'w-100') }}
+                {{ banner.render(campaignBanner, 'banner', 'w-100', 1) }}
             {% else %}
-                {{ banner.render(asset('img/lp/lp_subscribe_video.png'), 'banner', 'w-100') }}
+                {{ banner.render(asset('img/lp/lp_subscribe_video.png'), 'banner', 'w-100', 1) }}
             {% endif %}
         </div>
 
         <div class="d-flex align-items-start justify-content-center mt-4 mb-n-2">
-            {{ subscribe_buttons.render( 'btn-lp_big') }}
+            {{ subscribe_buttons.render('buttons.join.now', 'btn-lp_big') }}
         </div>
 
         <div class="d-flex align-items-center justify-content-center mh-7">

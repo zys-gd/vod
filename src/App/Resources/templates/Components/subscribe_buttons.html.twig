@@ -1,4 +1,4 @@
-{% macro render(class) %}
+{% macro render(placeholder, class) %}
     {% import "@App/Components/Buttons/link.html.twig" as  link %}
     {% import "@App/Common/Blocks/wifi_subscribe_block.html.twig" as wifi_subscribe_block %}
 
@@ -17,19 +17,19 @@
             {% if app.request.get('_route') == 'landing' %}
                 {{ wifi_subscribe_block.render() }}
             {% else %}
-                {{ link.render(url('landing'), translate('buttons.join.now')) }}
+                {{ link.render(url('landing'), translate(placeholder)) }}
             {% endif %}
         {% elseif isIdentified() %}
-            {{ link.render(url('subscription.subscribe'), translate('buttons.join.now'), class) }}
+            {{ link.render(url('subscription.subscribe'), translate(placeholder), class) }}
         {% elseif isConsentFlow() %}
-            {{ link.render(url('subscription.consent_page_subscribe'), translate('buttons.join.now'), class) }}
+            {{ link.render(url('subscription.consent_page_subscribe'), translate(placeholder), class) }}
         {% else %}
             {#Ident && Subscribe Me#}
-            {{ link.render(url('identify_and_subscribe'), translate('buttons.join.now'), class) }}
+            {{ link.render(url('identify_and_subscribe'), translate(placeholder), class) }}
         {% endif %}
 
     {% else %}
-        {{ link.render(url('subscription.subscribe'), translate('buttons.join.now'), class) }}
+        {{ link.render(url('subscription.subscribe'), translate(placeholder), class) }}
     {% endif %}
 
     <script type="text/javascript">

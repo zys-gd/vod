@@ -103,3 +103,13 @@
     text-decoration: underline;
     display: inline-block;
 }
+
+.right-text-direction {
+    text-align: right;
+    direction: RTL;
+}
+
+.right-text-direction div {
+    text-align: right;
+    direction: RTL;
+}
