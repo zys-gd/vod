@@ -21,7 +21,7 @@ class SubscriptionSerializer
             'stage'            => $subscription->getCurrentStage(),
             'credits'          => $subscription->getCredits(),
             'subscriptionPack' => [
-                'carrierId' => $subscription->getSubscriptionPack()->getBillingCarrierId(),
+                'carrierId' => $subscription->getSubscriptionPack()->getCarrier()->getBillingCarrierId(),
             ]
         ];
     }

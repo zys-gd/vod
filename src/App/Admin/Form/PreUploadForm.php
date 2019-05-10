@@ -62,7 +62,7 @@ class PreUploadForm extends AbstractType
             'empty_data' => function (FormInterface $form) {
                 return new UploadedVideo(UuidGenerator::generate());
             },
-            'csrf_token_id' => 'uploading-video'
+            'csrf_protection' => false
         ]);
     }
 

@@ -51,12 +51,12 @@ class BlackListService
     /**
      * BlackListService constructor
      *
-     * @param UserRepository $userRepository
-     * @param BlackListRepository $blackListRepository
-     * @param SubscriptionRepository $subscriptionRepository
-     * @param EntityManagerInterface $entityManager
+     * @param UserRepository                $userRepository
+     * @param BlackListRepository           $blackListRepository
+     * @param SubscriptionRepository        $subscriptionRepository
+     * @param EntityManagerInterface        $entityManager
      * @param UnsubscriptionHandlerProvider $unsubscriptionHandlerProvider
-     * @param Unsubscriber $unsubscriber
+     * @param Unsubscriber                  $unsubscriber
      */
     public function __construct(
         UserRepository $userRepository,
@@ -65,13 +65,14 @@ class BlackListService
         EntityManagerInterface $entityManager,
         UnsubscriptionHandlerProvider $unsubscriptionHandlerProvider,
         Unsubscriber $unsubscriber
-    ) {
-        $this->userRepository = $userRepository;
-        $this->blackListRepository = $blackListRepository;
-        $this->subscriptionRepository = $subscriptionRepository;
-        $this->entityManager = $entityManager;
+    )
+    {
+        $this->userRepository                = $userRepository;
+        $this->blackListRepository           = $blackListRepository;
+        $this->subscriptionRepository        = $subscriptionRepository;
+        $this->entityManager                 = $entityManager;
         $this->unsubscriptionHandlerProvider = $unsubscriptionHandlerProvider;
-        $this->unsubscriber = $unsubscriber;
+        $this->unsubscriber                  = $unsubscriber;
     }
 
     /**
@@ -81,12 +82,20 @@ class BlackListService
      */
     public function isBlacklisted(string $sessionToken): bool
     {
-        $user = $this->userRepository->findOneByIdentificationToken($sessionToken);
-
-        if ($user) {
+        try {
+            $user = $this->userRepository->findOneByIdentificationToken($sessionToken);
+            /** @var BlackList $blackList */
             $blackList = $this->blackListRepository->findOneBy(['alias' => $user->getIdentifier()]);
-
-            return !empty($blackList);
+            $today     = new \DateTime();
+            if ($blackList->getDuration() > 0
+                && $blackList->getBanStart() < $today
+                && $today < $blackList->getBanEnd()
+                || $blackList->getDuration() == 0
+            ) {
+                return true;
+            }
+        } catch (\Throwable $e) {
+            return false;
         }
 
         return false;
@@ -109,6 +118,8 @@ class BlackListService
                     ->setAlias($user->getIdentifier())
                     ->setBillingCarrierId($user->getCarrier()->getBillingCarrierId())
                     ->setIsBlockedManually(false);
+
+                $blackList->setDuration(0); // permanently
 
                 $this->entityManager->persist($blackList);
 
