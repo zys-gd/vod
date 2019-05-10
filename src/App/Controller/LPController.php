@@ -2,15 +2,18 @@
 
 namespace App\Controller;
 
+use App\Domain\ACL\LandingPageACL;
 use App\Domain\Entity\Campaign;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Service\CarrierOTPVerifier;
 use App\Domain\Service\ContentStatisticSender;
-use App\Domain\ACL\LandingPageACL;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
+use SubscriptionBundle\Service\SubscriptionLimiter\LimiterNotifier;
+use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -47,6 +50,18 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var string
      */
     private $defaultRedirectUrl;
+    /**
+     * @var SubscriptionLimiter
+     */
+    private $limiter;
+    /**
+     * @var CarrierRepositoryInterface
+     */
+    private $carrierRepository;
+    /**
+     * @var LimiterNotifier
+     */
+    private $limiterNotifier;
 
     /**
      * LPController constructor.
@@ -57,6 +72,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param string                 $imageBaseUrl
      * @param CarrierOTPVerifier     $OTPVerifier
      * @param string                 $defaultRedirectUrl
+     * @param SubscriptionLimiter    $limiter
+     * @param LimiterNotifier        $limiterNotifier
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
@@ -64,7 +81,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         LandingPageACL $landingPageAccessResolver,
         string $imageBaseUrl,
         CarrierOTPVerifier $OTPVerifier,
-        string $defaultRedirectUrl
+        string $defaultRedirectUrl,
+        SubscriptionLimiter $limiter,
+        LimiterNotifier $limiterNotifier,
+        CarrierRepositoryInterface $carrierRepository
     )
     {
         $this->contentStatisticSender    = $contentStatisticSender;
@@ -73,6 +93,9 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->imageBaseUrl              = $imageBaseUrl;
         $this->OTPVerifier               = $OTPVerifier;
         $this->defaultRedirectUrl        = $defaultRedirectUrl;
+        $this->limiter                   = $limiter;
+        $this->carrierRepository         = $carrierRepository;
+        $this->limiterNotifier           = $limiterNotifier;
     }
 
 
@@ -89,9 +112,9 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      */
     public function landingPageAction(Request $request)
     {
-        $session = $request->getSession();
+        $session        = $request->getSession();
         $campaignBanner = null;
-        $background = null;
+        $background     = null;
 
         if ($cid = $request->get('cid', '')) {
             /** @var Campaign $campaign */
@@ -102,15 +125,25 @@ class LPController extends AbstractController implements ControllerWithISPDetect
                 // Useless method atm.
                 AffiliateVisitSaver::saveCampaignId($cid, $session);
                 $campaignBanner = $this->imageBaseUrl . '/' . $campaign->getImagePath();
-                $background = $campaign->getBgColor();
+                $background     = $campaign->getBgColor();
             }
-        }
-        else {
+        } else {
             $this->OTPVerifier->forceWifi($session);
         }
 
+
         if (!$this->landingPageAccessResolver->canAccess($request)) {
-            return new RedirectResponse($this->defaultRedirectUrl);
+            return RedirectResponse::create($this->defaultRedirectUrl);
+        }
+
+        if ($this->limiter->isSubscriptionLimitReached($request->getSession())) {
+            $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession());
+            $billingCarrierId = (int)$ispDetectionData['carrier_id'] ?? null;
+            if (!empty($billingCarrierId)) {
+                $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
+                $this->limiterNotifier->notifyLimitReached($carrier);
+                return RedirectResponse::create($this->defaultRedirectUrl);
+            }
         }
 
         AffiliateVisitSaver::savePageVisitData($session, $request->query->all());

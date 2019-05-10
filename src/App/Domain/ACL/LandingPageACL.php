@@ -36,10 +36,6 @@ class LandingPageACL
      * @var VisitAccessorByCampaign
      */
     private $visitAccessorByCampaign;
-    /**
-     * @var SubscriptionLimiter
-     */
-    private $subscriptionLimiter;
 
     /**
      * LandingPageAccessResolver constructor
@@ -48,21 +44,18 @@ class LandingPageACL
      * @param VisitAccessorByCampaign    $visitAccessorByCampaign
      * @param CarrierRepository          $carrierRepository
      * @param CampaignRepository         $campaignRepository
-     * @param SubscriptionLimiter        $subscriptionLimiter
      */
     public function __construct(
         VisitConstraintByAffiliate $visitConstraintByAffiliate,
         VisitAccessorByCampaign $visitAccessorByCampaign,
         CarrierRepository $carrierRepository,
-        CampaignRepository $campaignRepository,
-        SubscriptionLimiter $subscriptionLimiter
+        CampaignRepository $campaignRepository
     )
     {
         $this->carrierRepository          = $carrierRepository;
         $this->campaignRepository         = $campaignRepository;
         $this->visitConstraintByAffiliate = $visitConstraintByAffiliate;
         $this->visitAccessorByCampaign    = $visitAccessorByCampaign;
-        $this->subscriptionLimiter        = $subscriptionLimiter;
     }
 
     /**
@@ -98,10 +91,6 @@ class LandingPageACL
 
         if (empty($carrier)) {
             return true;
-        }
-
-        if ($this->subscriptionLimiter->isSubscriptionLimitReached($request->getSession())) {
-            return false;
         }
 
         if ($campaign && !$this->visitAccessorByCampaign->canVisit($campaign, $carrier)) {

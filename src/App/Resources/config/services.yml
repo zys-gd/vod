@@ -109,7 +109,6 @@ services:
             - '@App\Domain\ACL\Accessors\VisitAccessorByCampaign'
             - '@App\Domain\Repository\CarrierRepository'
             - '@App\Domain\Repository\CampaignRepository'
-            - '@SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter'
 
     App\Domain\Service\CarrierOTPVerifier:
         arguments:
