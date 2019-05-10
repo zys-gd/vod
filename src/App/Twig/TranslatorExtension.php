@@ -15,6 +15,7 @@ use App\Domain\Service\Translator\ShortcodeReplacer;
 use App\Exception\WrongTranslationKey;
 use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Twig\Extension\AbstractExtension;
@@ -54,6 +55,11 @@ class TranslatorExtension extends AbstractExtension
     ];
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * TranslatorExtension constructor.
      *
      * @param Translator        $translator
@@ -68,7 +74,9 @@ class TranslatorExtension extends AbstractExtension
         KernelInterface $kernel,
         LocalExtractor $localExtractor,
         ShortcodeReplacer $replacer,
-        DataAggregator $dataAggregator)
+        DataAggregator $dataAggregator,
+        LoggerInterface $logger
+    )
     {
         $this->translator = $translator;
         $this->session = $session;
@@ -76,6 +84,7 @@ class TranslatorExtension extends AbstractExtension
         $this->localExtractor = $localExtractor;
         $this->replacer = $replacer;
         $this->dataAggregator = $dataAggregator;
+        $this->logger = $logger;
     }
 
     public function getFunctions()
@@ -124,6 +133,7 @@ class TranslatorExtension extends AbstractExtension
         $translation = $this->translator->translate($translationKey, $detectionData['billingCarrierId'], $detectionData['languageCode']);
 
         if (is_null($translation) && $this->kernel->isDebug()) {
+            $this->logger->info('Translate error', ['key' => $translationKey, 'carrierId' => $detectionData['billingCarrierId'], 'lang_code' => $detectionData['languageCode']]);
             throw new WrongTranslationKey("Translation key doesn't exist: \"{$translationKey}\"");
         }
 
