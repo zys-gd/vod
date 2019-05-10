@@ -79,9 +79,7 @@ class LoadSubscriptionPackData extends AbstractFixture implements ContainerAware
 
             /** @var Carrier $carrier */
             $carrier = $this->getReference(sprintf('carrier_with_internal_id_%s', $carrier_id));
-            $pack->setBillingCarrierId($carrier_id);
             $pack->setCarrier($carrier);
-            $pack->setCarrierName($carrier_name);
 
             $tierParts = explode(' ', $tier_name);
             if (!isset($tierParts[1])) {
@@ -102,9 +100,7 @@ class LoadSubscriptionPackData extends AbstractFixture implements ContainerAware
             $pack->setWelcomeSMSText($welcome_sms_text);
             $pack->setRenewalSMSText($renewal_sms_text);
             $pack->setUnsubscribeSMSText($unsubscribe_sms_text);
-            $pack->setBuyStrategy($buy_strategy_name);
             $pack->setBuyStrategyId($buy_strategy_id);
-            $pack->setRenewStrategy($renew_strategy_name);
             $pack->setRenewStrategyId($renew_strategy_id);
             $pack->setUnlimited($unlimited);
             $pack->setFirstSubscriptionPeriodIsFree($is_first_subscription_free);
