@@ -29,6 +29,12 @@ final class Version20190507142021 extends AbstractMigration
         $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('4aos524b-f755-4a9f-a344-a3f512sl83f6', '5179f17c-ebd4-11e8-95c4-02bb250f0f22', 'category.games', 'Sport games')");
         $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('4aos524b-f755-4a9f-a344-a3f512sl4521', '5179f17c-ebd4-11e8-95c4-02bb250f0f22', 'buttons.yes', 'Yes')");
         $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('4aos524b-f755-4a9f-a344-a3f512s3as52', '5179f17c-ebd4-11e8-95c4-02bb250f0f22', 'buttons.no', 'No')");
+
+        $this->addSql("INSERT INTO translations (uuid, language_id, carrier_id, `key`, translation) VALUES ('ffs3d74c-9df9-4fe7-9508-fa54da7d4db3', '5179f17c-ebd4-11e8-95c4-02bb250f0f22', '99a362ea-72cd-45d5-bbcc-18f16b8451ed', 'landing.renew_info.eg_tpay.1', '<a href=\"mailto:support@origin-data.com\">Contact US</a> / To cancel: <a href=\"%my_account_url%\">My Account</a>')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, carrier_id, `key`, translation) VALUES ('ff7sas5c-9df9-4fe7-9508-f3827a7d547s', '5179f17c-ebd4-11e8-95c4-02bb250f0f22', '99a362ea-72cd-45d5-bbcc-18f16b8451ed', 'landing.renew_info.eg_tpay.2', 'Subscription will be renewed daily unless you unsubscribe')");
+
+        $this->addSql("INSERT INTO translations (uuid, language_id, carrier_id, `key`, translation) VALUES ('ffs514dc-9df9-4fe7-9508-f3827a7d4db3', '5179f17c-ebd4-11e8-95c4-02bb250f0f22', '7c8385df-8d56-464a-98ff-66c55a7a5741', 'landing.renew_info.eg_tpay.1', '<a href=\"mailto:support@origin-data.com\">Contact US</a> / To cancel: <a href=\"%my_account_url%\">My Account</a>')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, carrier_id, `key`, translation) VALUES ('ff7sa45c-9df9-4fe7-9508-fa45d87d547s', '5179f17c-ebd4-11e8-95c4-02bb250f0f22', '7c8385df-8d56-464a-98ff-66c55a7a5741', 'landing.renew_info.eg_tpay.2', 'Subscription will be renewed daily unless you unsubscribe')");
     }
 
     public function down(Schema $schema) : void
