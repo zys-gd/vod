@@ -1,0 +1,5 @@
+services:
+    IdentificationBundle\Carriers\VodafoneEG\VodafoneEGWifiIdentificationHandler:
+        arguments: ['@IdentificationBundle\Repository\UserRepository']
+        tags:
+            - { name: identification.wifi_identification_handler }
