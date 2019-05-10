@@ -32,5 +32,6 @@ services:
         arguments:
             - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterStorage'
             - '@SubscriptionBundle\Service\SubscriptionLimiter\Limiter\StorageKeyGenerator'
+            - '@logger'
 
     SubscriptionBundle\Service\SubscriptionLimiter\Limiter\StorageKeyGenerator: ~
