@@ -15,11 +15,13 @@ use IdentificationBundle\BillingFramework\Process\Exception\PinVerifyProcessExce
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Exception\MissingCarrierException;
 use IdentificationBundle\Identification\Service\CarrierSelector;
+use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\WifiIdentification\Service\ErrorCodeResolver;
 use IdentificationBundle\WifiIdentification\WifiIdentConfirmator;
 use IdentificationBundle\WifiIdentification\WifiIdentSMSSender;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
+use SubscriptionBundle\Service\SubscriptionLimiter\LimiterNotifier;
 use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,14 +56,25 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @var string
      */
     private $defaultRedirectUrl;
+    /**
+     * @var CarrierRepositoryInterface
+     */
+    private $carrierRepository;
+    /**
+     * @var LimiterNotifier
+     */
+    private $limiterNotifier;
 
     /**
      * PinIdentificationController constructor.
-     * @param WifiIdentSMSSender   $identSMSSender
-     * @param WifiIdentConfirmator $identConfirmator
-     * @param ErrorCodeResolver    $errorCodeResolver
-     * @param CarrierSelector      $carrierSelector
-     * @param SubscriptionLimiter  $limiter
+     * @param WifiIdentSMSSender         $identSMSSender
+     * @param WifiIdentConfirmator       $identConfirmator
+     * @param ErrorCodeResolver          $errorCodeResolver
+     * @param CarrierSelector            $carrierSelector
+     * @param SubscriptionLimiter        $limiter
+     * @param string                     $defaultRedirectUrl
+     * @param CarrierRepositoryInterface $carrierRepository
+     * @param LimiterNotifier            $limiterNotifier
      */
     public function __construct(
         WifiIdentSMSSender $identSMSSender,
@@ -69,7 +82,9 @@ class PinIdentificationController extends AbstractController implements APIContr
         ErrorCodeResolver $errorCodeResolver,
         CarrierSelector $carrierSelector,
         SubscriptionLimiter $limiter,
-        string $defaultRedirectUrl
+        string $defaultRedirectUrl,
+        CarrierRepositoryInterface $carrierRepository,
+        LimiterNotifier $limiterNotifier
 
     )
     {
@@ -79,6 +94,8 @@ class PinIdentificationController extends AbstractController implements APIContr
         $this->carrierSelector    = $carrierSelector;
         $this->limiter            = $limiter;
         $this->defaultRedirectUrl = $defaultRedirectUrl;
+        $this->carrierRepository  = $carrierRepository;
+        $this->limiterNotifier    = $limiterNotifier;
     }
 
 
@@ -109,6 +126,9 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @param Request $request
      * @param ISPData $ispData
      * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
     public function sendSMSPinCodeAction(Request $request, ISPData $ispData)
     {
@@ -118,6 +138,10 @@ class PinIdentificationController extends AbstractController implements APIContr
 
 
         if ($this->limiter->isSubscriptionLimitReached($request->getSession())) {
+
+            $carrier = $this->carrierRepository->findOneByBillingId($ispData->getCarrierId());
+            $this->limiterNotifier->notifyLimitReached($carrier);
+
             return $this->getSimpleJsonResponse('Subscription limit has been reached', 200, [], [
                 'success' => false, 'redirectUrl' => $this->defaultRedirectUrl
             ]);
@@ -182,6 +206,9 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
     public function selectCarrierWithSendSMSPinCodeAction(Request $request)
     {
@@ -200,6 +227,10 @@ class PinIdentificationController extends AbstractController implements APIContr
         }
 
         if ($this->limiter->isSubscriptionLimitReached($request->getSession())) {
+
+            $carrier = $this->carrierRepository->findOneByBillingId((int)$carrierId);
+            $this->limiterNotifier->notifyLimitReached($carrier);
+
             return $this->getSimpleJsonResponse('Subscription limit has been reached', 200, [], [
                 'success' => false, 'redirectUrl' => $this->defaultRedirectUrl
             ]);
