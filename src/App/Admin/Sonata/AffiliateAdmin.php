@@ -15,6 +15,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -125,6 +126,7 @@ class AffiliateAdmin extends AbstractAdmin
         $this->buildMiscSection($formMapper);
         $this->buildConstantSection($formMapper);
         $this->buildParametersSection($formMapper);
+        $this->buildUniqueFlowSection($formMapper);
     }
 
     /**
@@ -258,6 +260,22 @@ class AffiliateAdmin extends AbstractAdmin
                 'allow_add' => true
             ])
             ->end()
+            ->end();
+    }
+
+    private function buildUniqueFlowSection(FormMapper $formMapper)
+    {
+        $formMapper
+            ->tab('Unique Flow')
+            ->with('Affiliate', ['box_class' => 'box box-primary'])
+            ->add('uniqueFlow', CheckboxType::class, [
+                'required' => false,
+                'label' => 'Unique Flow'
+            ])
+            ->add('uniqueParameter', TextType::class, [
+                'required' => false,
+                'label' => 'Unique Parameter'
+            ])
             ->end();
     }
 

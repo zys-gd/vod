@@ -41,6 +41,16 @@ class Affiliate implements HasUuid, AffiliateInterface
     private $url;
 
     /**
+     * @var bool
+     */
+    private $uniqueFlow = false;
+
+    /**
+     * @var string|null $uniqueParameter
+     */
+    private $uniqueParameter;
+
+    /**
      * @var string
      */
     private $country;
@@ -202,6 +212,47 @@ class Affiliate implements HasUuid, AffiliateInterface
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUniqueFlow(): bool
+    {
+        return $this->uniqueFlow;
+    }
+
+    /**
+     * @param bool $uniqueFlow
+     */
+    public function setUniqueFlow(bool $uniqueFlow): void
+    {
+        $this->uniqueFlow = $uniqueFlow;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getUniqueParameter(): ?string
+    {
+        return $this->uniqueParameter;
+    }
+
+    /**
+     * @param string|null $uniqueParameter
+     */
+    public function setUniqueParameter(?string $uniqueParameter): void
+    {
+        $this->uniqueParameter = $uniqueParameter;
+    }
+
+    /**
+     * @param $param
+     * @return string
+     */
+    public function getPostBackUrlUniqueFlow($param)
+    {
+        return sprintf('%s/%s', $this->postbackUrl, $param);
     }
 
     /**
