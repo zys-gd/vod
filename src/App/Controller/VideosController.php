@@ -78,7 +78,7 @@ class VideosController extends AbstractController implements AppControllerInterf
 
         /** @var UploadedVideo[] $videos */
         foreach ($videos as $video) {
-            $serializedData[] = $this->videoSerializer->serialize($video);
+            $serializedData[] = $this->videoSerializer->serializeShort($video);
         }
 
         return $this->render('@App/Components/category_player_related_videos.html.twig', [
@@ -121,7 +121,7 @@ class VideosController extends AbstractController implements AppControllerInterf
 
         /** @var UploadedVideo[] $videos */
         foreach ($videos as $video) {
-            $serializedData[] = $this->videoSerializer->serialize($video);
+            $serializedData[] = $this->videoSerializer->serializeShort($video);
         }
 
         $html = $this->renderView('@App/Components/player_related_videos.html.twig', [

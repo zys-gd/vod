@@ -100,7 +100,7 @@ class CategoryController extends AbstractController implements AppControllerInte
         foreach ($videos as $video) {
             $categoryEntity                                  = $video->getSubcategory()->getParent();
             $categoryKey                                     = $categoryEntity->getUuid();
-            $categoryVideos[$categoryKey][$video->getUuid()] = $this->videoSerializer->serialize($video);
+            $categoryVideos[$categoryKey][$video->getUuid()] = $this->videoSerializer->serializeShort($video);
         }
 
         $this->contentStatisticSender->trackVisit($data);
