@@ -8,8 +8,8 @@ use App\Domain\Entity\Campaign;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Repository\CarrierRepository;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
-use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter;
-use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiterInterface;
+use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
+use SubscriptionBundle\Service\CAPTool\SubscriptionLimiterInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

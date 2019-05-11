@@ -11,7 +11,7 @@ services:
         - '@SubscriptionBundle\BillingFramework\Process\SubscribeProcess'
         - '@SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater'
         - '@SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider'
-        - '@SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimitCompleter'
+        - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitCompleter'
         - '@SubscriptionBundle\Service\SubscriptionSerializer'
         - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePerformer'
         - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePromotionalPerformer'
@@ -63,7 +63,7 @@ services:
         - '@SubscriptionBundle\Service\RenewDateCalculator'
         - '@event_dispatcher'
         - '@SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater'
-        - '@SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter'
+        - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
 
   SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator:
       arguments: ['@SubscriptionBundle\Service\SubscriptionExtractor', '@SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier']

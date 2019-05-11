@@ -1,7 +1,7 @@
 <?php
 
 
-namespace SubscriptionBundle\Service\SubscriptionLimiter;
+namespace SubscriptionBundle\Service\CAPTool;
 
 use App\Domain\Entity\Affiliate;
 use IdentificationBundle\Entity\CarrierInterface;
@@ -11,10 +11,10 @@ use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\CampaignExtractor;
 use SubscriptionBundle\Service\SubscriptionExtractor;
-use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\CarrierCapChecker;
-use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterDataMapper;
-use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\LimiterStorage;
-use SubscriptionBundle\Service\SubscriptionLimiter\Limiter\StorageKeyGenerator;
+use SubscriptionBundle\Service\CAPTool\Limiter\CarrierCapChecker;
+use SubscriptionBundle\Service\CAPTool\Limiter\LimiterDataMapper;
+use SubscriptionBundle\Service\CAPTool\Limiter\LimiterStorage;
+use SubscriptionBundle\Service\CAPTool\Limiter\StorageKeyGenerator;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SubscriptionLimiter

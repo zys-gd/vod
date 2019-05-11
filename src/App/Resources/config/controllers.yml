@@ -45,8 +45,8 @@ services:
             - '%images_base_url%'
             - '@App\Domain\Service\CarrierOTPVerifier'
             - '%default_redirect_url%'
-            - '@SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter'
-            - '@SubscriptionBundle\Service\SubscriptionLimiter\LimiterNotifier'
+            - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
+            - '@SubscriptionBundle\Service\CAPTool\LimiterNotifier'
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
 
     App\Controller\ErrorController:

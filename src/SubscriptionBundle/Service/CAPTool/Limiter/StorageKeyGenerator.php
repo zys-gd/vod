@@ -6,7 +6,7 @@
  * Time: 16:15
  */
 
-namespace SubscriptionBundle\Service\SubscriptionLimiter\Limiter;
+namespace SubscriptionBundle\Service\CAPTool\Limiter;
 
 
 use IdentificationBundle\Entity\CarrierInterface;

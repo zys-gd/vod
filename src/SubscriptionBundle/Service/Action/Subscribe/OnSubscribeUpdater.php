@@ -9,8 +9,8 @@
 namespace SubscriptionBundle\Service\Action\Subscribe;
 
 
-use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
-use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter;
+use SubscriptionBundle\Service\CAPTool\DTO\CarrierLimiterData;
+use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;

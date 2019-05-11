@@ -6,7 +6,7 @@
  * Time: 13:18
  */
 
-namespace SubscriptionBundle\Service\SubscriptionLimiter\DTO;
+namespace SubscriptionBundle\Service\CAPTool\DTO;
 
 
 use IdentificationBundle\Entity\CarrierInterface;

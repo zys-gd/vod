@@ -37,7 +37,7 @@ services:
   SubscriptionBundle\Service\Callback\Common\Type\SubscriptionCallbackHandler:
       arguments:
           - '@SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater'
-          - '@SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimitCompleter'
+          - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitCompleter'
 
   SubscriptionBundle\Service\Callback\Common\Type\RenewCallbackHandler:
       arguments:

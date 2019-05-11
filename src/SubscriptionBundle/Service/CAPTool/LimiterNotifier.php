@@ -1,7 +1,7 @@
 <?php
 
 
-namespace SubscriptionBundle\Service\SubscriptionLimiter;
+namespace SubscriptionBundle\Service\CAPTool;
 
 
 use IdentificationBundle\Entity\CarrierInterface;

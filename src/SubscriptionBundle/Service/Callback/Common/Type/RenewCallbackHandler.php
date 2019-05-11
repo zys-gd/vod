@@ -15,7 +15,7 @@ use SubscriptionBundle\BillingFramework\Process\RenewProcess;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\Action\Renew\OnRenewUpdater;
 use SubscriptionBundle\Service\Callback\Common\SubscriptionStatusChanger;
-use SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimitCompleter;
+use SubscriptionBundle\Service\CAPTool\SubscriptionLimitCompleter;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RenewCallbackHandler extends AbstractCallbackHandler

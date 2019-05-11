@@ -19,8 +19,8 @@ services:
             - '%default_redirect_url%'
             - '@IdentificationBundle\Identification\Common\PostPaidHandler'
             - '@SubscriptionBundle\Service\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider'
-            - '@SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter'
-            - '@SubscriptionBundle\Service\SubscriptionLimiter\LimiterNotifier'
+            - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
+            - '@SubscriptionBundle\Service\CAPTool\LimiterNotifier'
 
     SubscriptionBundle\Controller\Actions\ListenAction:
         arguments: ['@SubscriptionBundle\Service\Callback\Common\CommonFlowHandler', '@logger', '@SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider']

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace SubscriptionBundle\Service\SubscriptionLimiter\Limiter;
+namespace SubscriptionBundle\Service\CAPTool\Limiter;
 
 
 use App\Domain\Entity\Affiliate;
@@ -11,9 +11,9 @@ use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Service\CampaignExtractor;
-use SubscriptionBundle\Service\SubscriptionLimiter\DTO\AffiliateLimiterData;
-use SubscriptionBundle\Service\SubscriptionLimiter\DTO\CarrierLimiterData;
-use SubscriptionBundle\Service\SubscriptionLimiter\DTO\LimiterData;
+use SubscriptionBundle\Service\CAPTool\DTO\AffiliateLimiterData;
+use SubscriptionBundle\Service\CAPTool\DTO\CarrierLimiterData;
+use SubscriptionBundle\Service\CAPTool\DTO\LimiterData;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class LimiterDataMapper

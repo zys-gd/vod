@@ -1,7 +1,7 @@
 <?php
 
 
-namespace SubscriptionBundle\Service\SubscriptionLimiter\Limiter;
+namespace SubscriptionBundle\Service\CAPTool\Limiter;
 
 
 use Redis;
