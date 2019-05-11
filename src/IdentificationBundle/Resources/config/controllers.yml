@@ -44,6 +44,8 @@ services:
         - '@IdentificationBundle\Identification\Service\CarrierSelector'
         - '@SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter'
         - '%default_redirect_url%'
+        - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+        - '@SubscriptionBundle\Service\SubscriptionLimiter\LimiterNotifier'
 
     IdentificationBundle\Identification\Controller\AsyncIdentController:
       arguments:
