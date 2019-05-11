@@ -105,11 +105,13 @@
 }
 
 .right-text-direction {
-    text-align: right;
     direction: RTL;
 }
 
 .right-text-direction div {
-    text-align: right;
     direction: RTL;
+}
+
+.right-text-direction li {
+    text-align: right;
 }
