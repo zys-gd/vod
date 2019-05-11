@@ -50,6 +50,10 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @var SubscriptionLimiter
      */
     private $limiter;
+    /**
+     * @var string
+     */
+    private $defaultRedirectUrl;
 
     /**
      * PinIdentificationController constructor.
@@ -64,15 +68,17 @@ class PinIdentificationController extends AbstractController implements APIContr
         WifiIdentConfirmator $identConfirmator,
         ErrorCodeResolver $errorCodeResolver,
         CarrierSelector $carrierSelector,
-        SubscriptionLimiter $limiter
+        SubscriptionLimiter $limiter,
+        string $defaultRedirectUrl
 
     )
     {
-        $this->identSMSSender    = $identSMSSender;
-        $this->identConfirmator  = $identConfirmator;
-        $this->errorCodeResolver = $errorCodeResolver;
-        $this->carrierSelector   = $carrierSelector;
-        $this->limiter           = $limiter;
+        $this->identSMSSender     = $identSMSSender;
+        $this->identConfirmator   = $identConfirmator;
+        $this->errorCodeResolver  = $errorCodeResolver;
+        $this->carrierSelector    = $carrierSelector;
+        $this->limiter            = $limiter;
+        $this->defaultRedirectUrl = $defaultRedirectUrl;
     }
 
 
@@ -112,7 +118,9 @@ class PinIdentificationController extends AbstractController implements APIContr
 
 
         if ($this->limiter->isSubscriptionLimitReached($request->getSession())) {
-            return $this->getSimpleJsonResponse('Subscription limit has been reached', 200, [], ['success' => false]);
+            return $this->getSimpleJsonResponse('Subscription limit has been reached', 200, [], [
+                'success' => false, 'redirectUrl' => $this->defaultRedirectUrl
+            ]);
         }
 
         $this->limiter->reserveSlotForSubscription($request->getSession());
@@ -192,7 +200,9 @@ class PinIdentificationController extends AbstractController implements APIContr
         }
 
         if ($this->limiter->isSubscriptionLimitReached($request->getSession())) {
-            return $this->getSimpleJsonResponse('Subscription limit has been reached', 200, [], ['success' => false]);
+            return $this->getSimpleJsonResponse('Subscription limit has been reached', 200, [], [
+                'success' => false, 'redirectUrl' => $this->defaultRedirectUrl
+            ]);
         }
         $this->limiter->reserveSlotForSubscription($request->getSession());
 

@@ -37,10 +37,10 @@
 
         $(document).ready(function () {
             // move form to designed position (the best designer ever)
-            var height = parseFloat(window.getComputedStyle(form.parent('div').prev().get(0)).height);
+            var height      = parseFloat(window.getComputedStyle(form.parent('div').prev().get(0)).height);
             var padding_top = parseFloat(window.getComputedStyle(form.parent('div').get(0)).paddingTop);
-            var margin_top = parseFloat(window.getComputedStyle(form.parent('div').get(0)).marginTop);
-            var offset = height + padding_top + margin_top;
+            var margin_top  = parseFloat(window.getComputedStyle(form.parent('div').get(0)).marginTop);
+            var offset      = height + padding_top + margin_top;
             form.css({
                 'margin-top': '-' + offset + 'px',
                 'min-height': parseInt(form.parent('div').prev().height()) + 'px'
@@ -48,15 +48,15 @@
         });
 
         var $wifi_form_step = $('#wifi_form_step');
-        var $wifi_warning = $('.wifi_form__warning');
+        var $wifi_warning   = $('.wifi_form__warning');
         var phone;
-        var input_phone = $('input[name=mobile_number]');
+        var input_phone     = $('input[name=mobile_number]');
 
         var params = {
             html_wifi_phone: $('<div />').html('{{ html2string(wifi_phone.render()) }}').text(),
-            html_wifi_pin: $('<div />').html('{{ html2string(wifi_pin.render()) }}').text(),
-            pin_notif: $('<div />').html('{{ html2string(translate('wifi.pin_notif')|nl2br) }}').text(),
-            warning: $('<div />').html('{{ html2string(translate('wifi.warning')|nl2br) }}').text()
+            html_wifi_pin  : $('<div />').html('{{ html2string(wifi_pin.render()) }}').text(),
+            pin_notif      : $('<div />').html('{{ html2string(translate('wifi.pin_notif')|nl2br) }}').text(),
+            warning        : $('<div />').html('{{ html2string(translate('wifi.warning')|nl2br) }}').text()
         };
 
         // set carrier to IdentificationDataStorage
@@ -66,11 +66,17 @@
             phone = input_phone.val();
 
             $.ajax({
-                url: "{{ path('select_carrier_for_pin_code_form') }}",
-                method: "POST",
-                data: form.serialize(),
+                url    : "{{ path('select_carrier_for_pin_code_form') }}",
+                method : "POST",
+                data   : form.serialize(),
                 success: function (result) {
                     $._loader(true);
+
+                    if (result.data.redirectUrl) {
+                        window.location = result.data.redirectUrl
+                        return;
+                    }
+
                     if (result.data.success) {
                         $wifi_form_step.html(params.html_wifi_phone);
                         form.attr('data-form', 'pin');
@@ -91,11 +97,17 @@
             $(document).unbind("ajaxSuccess"); // hook for re-send pin
 
             $.ajax({
-                url: "{{ path('send_sms_pin_code') }}",
-                method: "POST",
-                data: form.serialize(),
+                url    : "{{ path('send_sms_pin_code') }}",
+                method : "POST",
+                data   : form.serialize(),
                 success: function (result) {
                     $._loader(true);
+
+                    if (result.data.redirectUrl) {
+                        window.location = result.data.redirectUrl;
+                        return;
+                    }
+                    
                     if (result.data.success) {
                         input_phone.addClass('d-none');
                         $wifi_form_step
@@ -117,11 +129,17 @@
             phone = input_phone.val();
 
             $.ajax({
-                url: "{{ path('select_carrier_with_send_pin_code') }}",
-                method: "POST",
-                data: form.serialize(),
+                url    : "{{ path('select_carrier_with_send_pin_code') }}",
+                method : "POST",
+                data   : form.serialize(),
                 success: function (result) {
                     $._loader(true);
+
+                    if (result.data.redirectUrl) {
+                        window.location = result.data.redirectUrl;
+                        return;
+                    }
+                    
                     if (result.data.success) {
                         var input_phone = $('input[name=mobile_number]');
                         input_phone.addClass('d-none');
@@ -144,9 +162,9 @@
             $._loader();
 
             $.ajax({
-                url: "{{ path('confirm_sms_pin_code') }}",
-                method: "POST",
-                data: form.serialize(),
+                url    : "{{ path('confirm_sms_pin_code') }}",
+                method : "POST",
+                data   : form.serialize(),
                 success: function (result) {
                     $._loader(true);
                     if (result.data.success) {

@@ -43,6 +43,7 @@ services:
         - '@IdentificationBundle\WifiIdentification\Service\ErrorCodeResolver'
         - '@IdentificationBundle\Identification\Service\CarrierSelector'
         - '@SubscriptionBundle\Service\SubscriptionLimiter\SubscriptionLimiter'
+        - '%default_redirect_url%'
 
     IdentificationBundle\Identification\Controller\AsyncIdentController:
       arguments:
