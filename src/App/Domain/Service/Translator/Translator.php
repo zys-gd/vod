@@ -55,10 +55,12 @@ class Translator
      */
     public function translate(string $translationKey, $billingCarrierId, string $languageCode): ?string
     {
+        $this->loger->info('translate', [$translationKey, $billingCarrierId, $languageCode]);
         $cacheKey = $this->generateCacheKey($billingCarrierId, $languageCode);
         // if cache exist
         if ($this->isCacheExist($cacheKey)) {
             $this->extractCache($cacheKey);
+            $this->loger->info('translate with cache', [$cacheKey, $this->texts]);
             if (!isset($this->texts[$translationKey])) {
                 $this->doTranslate($translationKey, $billingCarrierId, $languageCode)
                     ->pushTexts2Cache($cacheKey);
