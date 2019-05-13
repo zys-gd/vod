@@ -2,8 +2,10 @@
 
 namespace App\Domain\Repository;
 
+use App\Domain\DTO\BatchOfNotExpiredVideos;
 use App\Domain\Entity\Subcategory;
 use App\Domain\Entity\UploadedVideo;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * UploadedVideoRepository
@@ -39,14 +41,15 @@ class UploadedVideoRepository extends \Doctrine\ORM\EntityRepository
      *
      * @param int $offset
      * @param int $count
-     * @return array
+     * @return BatchOfNotExpiredVideos
      *
      * @throws \Exception
      */
-    public function findNotExpiredBySubcategories(array $subcategories, int $offset = 0, int $count = 20): array
+    public function findNotExpiredBySubcategories(array $subcategories, int $offset = 0, int $count = 20): BatchOfNotExpiredVideos
     {
         $queryBuilder = $this->createQueryBuilder('v');
-        $query = $queryBuilder
+
+        $queryBuilder
             ->where($queryBuilder->expr()->orX('v.expiredDate > :currentDateTime', 'v.expiredDate IS NULL'))
             ->andWhere('v.subcategory = :subcategory')
             ->andWhere('v.status = :status')
@@ -55,12 +58,18 @@ class UploadedVideoRepository extends \Doctrine\ORM\EntityRepository
                 'subcategory' => $subcategories,
                 'currentDateTime' => new \DateTime(),
                 'status' => UploadedVideo::STATUS_READY
-            ])
-            ->setMaxResults($count)
-            ->setFirstResult($offset)
-            ->getQuery();
+            ]);
 
-        return $query->getResult();
+        $queryBuilder->setMaxResults($count);
+        $queryBuilder->setFirstResult($offset);
+
+        $paginator = new Paginator($queryBuilder);
+        $total = $paginator->count();
+
+        return new BatchOfNotExpiredVideos(
+            $queryBuilder->getQuery()->getResult() ?? [],
+            $total <= ($count + $offset)
+        );
     }
 
     /**
