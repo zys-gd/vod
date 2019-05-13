@@ -151,7 +151,7 @@ class TranslatorExtension extends AbstractExtension
 
         return [
             'billingCarrierId' => $billingCarrierId,
-            'languageCode' => 'en' // todo !!!
+            'languageCode' => $languageCode
         ];
     }
 }

@@ -2833,5 +2833,41 @@
         "carrier": {
             "uuid": "7c8385df-8d56-464a-98ff-66c55a7a5741"
         }
+    },
+    {
+        "uuid": "4aa5s23b-f755-4a9f-a344-a3f512sl8123",
+        "key": "period.day",
+        "translation": "day",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "4aos524b-f755-4a9f-a344-a3f51s58a653",
+        "key": "period.day",
+        "translation": "\u064a\u0648\u0645",
+        "language": {
+            "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "4aos524b-f755-4aas-a344-a3f512sl8a53",
+        "key": "period.week",
+        "translation": "week",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "as85a44b-f755-4a9f-a344-a3f512sl8123",
+        "key": "period.week",
+        "translation": "\u0623\u0633\u0628\u0648\u0639",
+        "language": {
+            "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
     }
 ]

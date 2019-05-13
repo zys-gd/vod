@@ -114,4 +114,5 @@
 
 .right-text-direction li {
     text-align: right;
+    list-style-type: disc;
 }
