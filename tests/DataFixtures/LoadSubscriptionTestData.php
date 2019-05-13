@@ -28,6 +28,7 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
 {
 
     const GENERIC_CARRIER = 10241024;
+    const ALLOWED_RESUB_CARRIER = 10241027;
 
     /**
      * Load data fixtures with the passed EntityManager
@@ -54,6 +55,10 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
         $pack = $this->createGenericSubscriptionPack($manager);
         $pack = $this->createGenericCarrier($manager);
 
+        $allowedResubCarrier = $this->createCarrierWithAllowedResub($manager);
+        $allowedResubCarrierPack = $this->createSubscriptionPackForCarrierWithAllowedResub($manager);
+
+        $this->createUserWithInactiveSubscriptionForCarrierWithAllowedResub($manager);
 
         $manager->flush();
     }
@@ -182,6 +187,38 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
         $manager->persist($subscription);
 
         $this->addReference('inactive_subscription', $subscription);
+        return $subscription;
+    }
+
+    /**
+     * @TODO: It will be better to came up with more pretty name of function)))
+     * @param ObjectManager $manager
+     * @return Subscription
+     * @throws \Exception
+     */
+    private function createUserWithInactiveSubscriptionForCarrierWithAllowedResub(ObjectManager $manager)
+    {
+        /** @var SubscriptionPack $subscriptionPackForCarrierWithAllowedResub */
+        /** @var Carrier $carrier */
+        $subscriptionPackForCarrierWithAllowedResub = $this->getReference('subscription_pack_for_carrier_with_allowed_resub');
+        $carrier = $this->getReference(sprintf('carrier_with_internal_id_%s', $subscriptionPackForCarrierWithAllowedResub
+            ->getCarrier()->getBillingCarrierId()));
+
+        $user = TestEntityProvider::createUserWithIdentificationRequest($carrier, 'inactive_subscription_ident_for_carrier_with_allowed_resub_request');
+
+        $manager->persist($user);
+
+        $subscription = TestEntityProvider::createSubscription(
+            $user,
+            $subscriptionPackForCarrierWithAllowedResub,
+            Subscription::IS_INACTIVE,
+            Subscription::ACTION_SUBSCRIBE
+        );
+        $subscription->setCredits(0);
+
+        $manager->persist($subscription);
+
+        $this->addReference('inactive_subscription_for_carrier_with_allowed_resub', $subscription);
         return $subscription;
     }
 

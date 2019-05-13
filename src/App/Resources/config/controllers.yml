@@ -12,6 +12,7 @@ services:
             - '@form.factory'
             - '@doctrine.orm.entity_manager'
             - '@App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector'
+            - '@App\Domain\Service\VideoProcessing\UploadedVideoSerializer'
             - '%cloudinary_api_key%'
             - '%cloudinary_cloud_name%'
             - '%cloudinary_api_secret%'

@@ -121,7 +121,7 @@ class HomeController extends AbstractController implements
 
             $categoryEntity                                  = $video->getSubcategory()->getParent();
             $categoryKey                                     = $categoryEntity->getTitle();
-            $categoryVideos[$categoryKey][$video->getUuid()] = $this->videoSerializer->serialize($video);
+            $categoryVideos[$categoryKey][$video->getUuid()] = $this->videoSerializer->serializeShort($video);
         }
 
         $categoryVideos = array_slice(ArraySorter::sortArrayByKeys(
