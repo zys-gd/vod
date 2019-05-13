@@ -2,19 +2,21 @@
 
 namespace SubscriptionBundle\Service\Action\Subscribe\Common;
 
+use App\Domain\Entity\Carrier;
+use App\Domain\Repository\CarrierRepository;
 use ExtrasBundle\Cache\ICacheService;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\UserRepository;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Service\BlackListService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class BlacklistVoter
 {
     const TIME_LIMIT = 3600;    //in seconds
-    const ATTEMPTS_LIMIT = 5;
+
     /**
      * @var ICacheService
      */
@@ -36,24 +38,24 @@ class BlacklistVoter
      */
     private $subNotAllowedRoute;
     /**
-     * @var string
-     */
-    private $blacklistedUserRoute;
-    /**
      * @var BlackListService
      */
     private $blackListService;
+    /**
+     * @var CarrierRepository
+     */
+    private $carrierRepository;
 
     /**
      * BlacklistVoter constructor
      *
-     * @param ICacheService $cacheService
-     * @param RouterInterface $router
-     * @param BlackListService $blackListService
-     * @param UserRepository $userRepository
-     * @param LoggerInterface $logger
-     * @param string $subNotAllowedRoute
-     * @param string $blacklistedUserRoute
+     * @param ICacheService     $cacheService
+     * @param RouterInterface   $router
+     * @param BlackListService  $blackListService
+     * @param UserRepository    $userRepository
+     * @param LoggerInterface   $logger
+     * @param string            $subNotAllowedRoute
+     * @param CarrierRepository $carrierRepository
      */
     public function __construct(
         ICacheService $cacheService,
@@ -62,93 +64,76 @@ class BlacklistVoter
         UserRepository $userRepository,
         LoggerInterface $logger,
         string $subNotAllowedRoute,
-        string $blacklistedUserRoute
-    ) {
+        CarrierRepository $carrierRepository
+    )
+    {
         $this->cacheService       = $cacheService;
         $this->router             = $router;
         $this->userRepository     = $userRepository;
         $this->logger             = $logger;
         $this->subNotAllowedRoute = $subNotAllowedRoute;
         $this->blackListService   = $blackListService;
-        $this->blacklistedUserRoute = $blacklistedUserRoute;
+        $this->carrierRepository  = $carrierRepository;
+    }
+
+    public function isInBlacklist(SessionInterface $session)
+    {
+        $data         = IdentificationFlowDataExtractor::extractIdentificationData($session);
+        $sessionToken = $data['identification_token'] ?? null;
+
+        return $this->blackListService->isBlacklisted($sessionToken);
     }
 
     /**
-     * @param Request $request
+     * @param SessionInterface $session
      *
-     * @return bool|RedirectResponse
+     * @return bool
+     * @throws \Exception
      */
-    public function checkIfSubscriptionRestricted(Request $request)
+    public function deductSubscriptionAttempt(SessionInterface $session): bool
     {
-        $session      = $request->getSession();
-        $blockingTime = $session->get('subscription_not_allowed', false);
-
-        if ($blockingTime && time() - strtotime($blockingTime) < self::TIME_LIMIT) {
-            $session->set('subscription_not_allowed', date('Y-m-d H:i:s'));
-            $this->logger->debug('Blocking time have not finished yet', [$blockingTime]);
-
-            return $this->createNotAllowedResponse();
-        }
-
-        $data         = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
+        $data         = IdentificationFlowDataExtractor::extractIdentificationData($session);
         $sessionToken = $data['identification_token'] ?? null;
+        $ispData      = IdentificationFlowDataExtractor::extractIspDetectionData($session);
 
-        if (empty($sessionToken)) {
-            $this->logger->debug('No identification token was found. Subscription is not allowed');
-
-            return $this->createNotAllowedResponse();
-        } elseif ($this->blackListService->isBlacklisted($sessionToken)) {
-            $this->logger->debug('User in black list. Subscription is not allowed');
-
-            return new RedirectResponse($this->router->generate($this->blacklistedUserRoute));
+        /** @var Carrier $carrier */
+        $carrier = $this->carrierRepository->findOneByBillingId($ispData['carrier_id']);
+        if ($carrier->getSubscribeAttempts() === 0) { // unlimited attempts
+            return true;
         }
 
-        if (!$this->cacheService->hasCache($sessionToken)) {
-            $savedValue = [
-                'added_at' => date('Y-m-d H:i:s'),
-            ];
-        } else {
-            $savedValue = $this->cacheService->getValue($sessionToken);
+        $subscriptionTries = $this->cacheService->hasCache($sessionToken)
+            ? $this->cacheService->getValue($sessionToken)
+            : [];
 
-            if (empty($savedValue['added_at']) || !strtotime($savedValue['added_at'])) {
-                return $this->createNotAllowedResponse();
-            }
-
-            $dateDiff = time() - strtotime($savedValue['added_at']);
-            if ($dateDiff >= self::TIME_LIMIT) {
-                if (isset($savedValue['updated_at'])
-                    && \is_array($savedValue['updated_at'])
-                    && strtotime($savedValue['updated_at'][0])
-                ) {
-                    $savedValue['added_at'] = array_shift($savedValue['updated_at']);
-                    while ($savedValue['updated_at']) {
-                        if (time() - strtotime($savedValue['updated_at'][0]) >= self::TIME_LIMIT) {
-                            array_shift($savedValue['updated_at']);
-                            continue;
-                        }
-                        break;
-                    }
-                }
-            } elseif (isset($savedValue['updated_at']) && \count($savedValue['updated_at']) >= self::ATTEMPTS_LIMIT - 2) {
-                $this->blackListService->addToBlackList($sessionToken);
-
-                return $this->createNotAllowedResponse();
-            }
-
-            $savedValue['updated_at'][] = date('Y-m-d H:i:s');
+        $subscriptionTries[] = time();
+        $subscriptionTries   = $this->removeOldTimestamps($subscriptionTries);
+        if (count($subscriptionTries) > $carrier->getSubscribeAttempts()) {
+            $this->blackListService->addToBlackList($sessionToken);
+            return false;
         }
 
-        $this->cacheService->saveCache($sessionToken, $savedValue, self::TIME_LIMIT);
+        $this->cacheService->saveCache($sessionToken, $subscriptionTries, self::TIME_LIMIT);
 
-        return false;
+        return true;
     }
 
     /**
      * @return RedirectResponse
      */
-    private function createNotAllowedResponse()
+    public function createNotAllowedResponse()
     {
         $response = new RedirectResponse($this->router->generate($this->subNotAllowedRoute));
         return $response;
+    }
+
+    private function removeOldTimestamps($savedValue)
+    {
+        if (count($savedValue) > 1) {
+            while ($savedValue[0] < (time() - self::TIME_LIMIT)) {
+                array_shift($savedValue);
+            }
+        }
+        return $savedValue;
     }
 }

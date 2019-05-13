@@ -255,7 +255,7 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
         $carrier->setPinIdentSupport(false);
         $carrier->setResubAllowed(false);
         $carrier->setIsCampaignsOnPause(false);
-        $carrier->setNumberOfAllowedSubscription(0);
+        $carrier->setSubscribeAttempts(0);
         $carrier->setNumberOfAllowedSubscriptionsByConstraint(0);
         $carrier->setRedirectUrl(false);
         $carrier->setFlushDate(null);
@@ -300,5 +300,68 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
         return $pack;
     }
 
+    /**
+     * @param ObjectManager $manager
+     *
+     * @return Carrier
+     * @throws \Exception
+     */
+    private function createCarrierWithAllowedResub(ObjectManager $manager): Carrier
+    {
+        $carrier = new Carrier(UuidGenerator::generate());
+
+        $carrier->setBillingCarrierId(self::ALLOWED_RESUB_CARRIER);
+        $carrier->setName('Allowed Resub Carrier');
+        $carrier->setCountryCode('AB');
+        $carrier->setIsp('Generic');
+        $carrier->setPublished(true);
+        $carrier->setTrialInitializer('store');
+        $carrier->setTrialPeriod(0);
+        $carrier->setSubscriptionPeriod(7);
+        $carrier->setOperatorId('');
+        $carrier->setLpOtp(false);
+        $carrier->setPinIdentSupport(false);
+        $carrier->setResubAllowed(true);
+        $carrier->setIsCampaignsOnPause(false);
+        $carrier->setSubscribeAttempts(0);
+        $carrier->setNumberOfAllowedSubscriptionsByConstraint(0);
+        $carrier->setRedirectUrl(false);
+        $carrier->setFlushDate(null);
+        $carrier->setIsUnlimitedSubscriptionAttemptsAllowed(true);
+
+        $this->addReference('allowed_resub_carrier', $carrier);
+        $this->addReference(sprintf('carrier_with_internal_id_%s', self::ALLOWED_RESUB_CARRIER), $carrier);
+        $manager->persist($carrier);
+
+        return $carrier;
+    }
+
+    /**
+     * @param ObjectManager $manager
+     *
+     * @return SubscriptionPack
+     * @throws \Exception
+     */
+    private function createSubscriptionPackForCarrierWithAllowedResub(ObjectManager $manager): SubscriptionPack
+    {
+        $pack = new SubscriptionPack(UuidGenerator::generate());
+        $pack->setCredits(2);
+        $pack->setName('Allowed Resub Carrier');
+        $pack->setIsResubAllowed(true);
+        $pack->setStatus(SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK);
+        $pack->setTier('Allowed Resub Carrier Tier');
+        $pack->setTierId(10241027);
+        $pack->setCarrier($this->getReference('allowed_resub_carrier'));
+        $pack->setTierCurrency('Common');
+        $pack->setBuyStrategyId(10241027 + 1);
+        $pack->setRenewStrategyId(10241027 + 2);
+        $pack->setCreated(new \DateTime());
+        $pack->setUpdated(new \DateTime());
+        $this->addReference('subscription_pack_for_carrier_with_allowed_resub', $pack);
+
+        $manager->persist($pack);
+
+        return $pack;
+    }
 
 }
