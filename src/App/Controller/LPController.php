@@ -118,6 +118,13 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             }
         }
 
+        AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
+
+        // we can't use ISPData object as function parameter because request to LP could not contain
+        // carrier data and in this case BadRequestHttpException will be throw
+        $ispData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession());
+        $this->contentStatisticSender->trackVisit($ispData ? new ISPData($ispData['carrier_id']) : null);
+
         if(!(bool)$this->dataStorage->readValue('is_wifi_flow') && $this->landingPageAccessResolver->isLandingDisabled($request)) {
             return new RedirectResponse($this->generateUrl('identify_and_subscribe'));
         }
@@ -125,13 +132,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         if(!$cid) {
             $this->OTPVerifier->forceWifi($session);
         }
-
-        AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
-
-        // we can't use ISPData object as function parameter because request to LP could not contain
-        // carrier data and in this case BadRequestHttpException will be throw
-        $ispData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession());
-        $this->contentStatisticSender->trackVisit($ispData ? new ISPData($ispData['carrier_id']) : null);
 
         return $this->render('@App/Common/landing.html.twig', [
             'campaignBanner' => $campaignBanner,
