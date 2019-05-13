@@ -1,4 +1,8 @@
 services:
+    IdentificationBundle\Carriers\OrangeEG\OrangeEGIdentificationHandler:
+        arguments: ['@IdentificationBundle\Repository\UserRepository']
+        tags:
+            - {name: identification.identification_handler}
     IdentificationBundle\Carriers\OrangeEG\OrangeEGWifiIdentificationHandler:
         arguments: ['@IdentificationBundle\Repository\UserRepository']
         tags:
