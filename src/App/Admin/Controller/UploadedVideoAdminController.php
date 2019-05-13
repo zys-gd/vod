@@ -132,7 +132,7 @@ class UploadedVideoAdminController extends CRUDController
 
             return $this->renderWithExtraParams('@Admin/UploadedVideo/upload.html.twig', [
                 'widgetOptions' => json_encode($widgetOptions),
-                'preUploadFormData' => $this->uploadedVideoSerializer->jsonSerialize($uploadedVideo)
+                'preUploadFormData' => $this->uploadedVideoSerializer->serializeJson($uploadedVideo)
             ]);
         }
 
@@ -170,9 +170,7 @@ class UploadedVideoAdminController extends CRUDController
                 return new Response('Error while saving uploaded video', 500);
             }
 
-            return new JsonResponse(
-                $this->uploadedVideoSerializer->jsonSerialize($uploadedVideo)
-            );
+            return new Response($this->uploadedVideoSerializer->serializeJson($uploadedVideo));
         }
 
         return new Response('Video data is invalid', 400);
