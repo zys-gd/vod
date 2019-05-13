@@ -10,7 +10,6 @@ use App\Domain\Repository\LanguageRepository;
 use App\Domain\Repository\TranslationRepository;
 use ExtrasBundle\Cache\ICacheService;
 use IdentificationBundle\Entity\CarrierInterface;
-use Psr\Log\LoggerInterface;
 
 class Translator
 {
@@ -26,24 +25,17 @@ class Translator
 
     private $texts = [];
 
-    /**
-     * @var LoggerInterface
-     */
-    private $loger;
-
     public function __construct(
         TranslationRepository $translationRepository,
         CarrierRepository $carrierRepository,
         LanguageRepository $languageRepository,
-        ICacheService $cache,
-        LoggerInterface $logger
+        ICacheService $cache
     )
     {
         $this->translationRepository = $translationRepository;
         $this->carrierRepository     = $carrierRepository;
         $this->cache                 = $cache;
         $this->languageRepository    = $languageRepository;
-        $this->loger = $logger;
     }
 
     /**
@@ -55,12 +47,10 @@ class Translator
      */
     public function translate(string $translationKey, $billingCarrierId, string $languageCode): ?string
     {
-        $this->loger->info('translate', [$translationKey, $billingCarrierId, $languageCode]);
         $cacheKey = $this->generateCacheKey($billingCarrierId, $languageCode);
         // if cache exist
         if ($this->isCacheExist($cacheKey)) {
             $this->extractCache($cacheKey);
-            $this->loger->info('translate with cache', [$cacheKey, $this->texts]);
             if (!isset($this->texts[$translationKey])) {
                 $this->doTranslate($translationKey, $billingCarrierId, $languageCode)
                     ->pushTexts2Cache($cacheKey);
@@ -119,10 +109,8 @@ class Translator
      */
     private function initializeTexts($billingCarrierId, string $languageCode)
     {
-        $this->loger->info('initializeTexts', [$billingCarrierId, $languageCode]);
         /** @var Language $defaultLanguage */
         $defaultLanguage = $this->languageRepository->findOneBy(['code' => self::DEFAULT_LOCALE]);
-
 
         /** @var Translation[] $defaultTexts */
         $defaultTexts = $this->translationRepository->findBy([
@@ -130,28 +118,11 @@ class Translator
             'carrier'  => null
         ]);
 
-        $this->loger->info('default texts', $defaultTexts);
-
-        /** @var Language $defaultLanguage */
-        $userLanguage = $defaultLanguage;
-
-        /** @var Translation[] $defaultTextsForCurrentLang */
-        $defaultTextsForCurrentLang = [];
-        if ($languageCode != self::DEFAULT_LOCALE) {
-            $userLanguage = $this->languageRepository->findOneBy(['code' => $languageCode]);
-            $defaultTextsForCurrentLang = $this->translationRepository->findBy([
-                'language' => $userLanguage,
-                'carrier'  => null
-            ]) ?? [];
-
-            $this->loger->info('default texts for current language', $defaultTextsForCurrentLang);
-        }
-
-        try {
+        try{
             /** @var Carrier $oCarrier */
             $oCarrier = $this->carrierRepository->findOneBy(['billingCarrierId' => $billingCarrierId]);
             /** @var Language $currentLanguage */
-            $currentLanguage = $oCarrier->getDefaultLanguage() ?? $this->languageRepository->findOneBy(['code' => $userLanguage]);
+            $currentLanguage = $oCarrier->getDefaultLanguage() ?? $this->languageRepository->findOneBy(['code' => $languageCode]);
 
             $defaultCarrierTexts = $this->translationRepository->findBy([
                 'carrier'  => $oCarrier,
@@ -163,14 +134,10 @@ class Translator
                 'language' => $currentLanguage
             ]);
 
-            $translations = array_merge($defaultTexts, $defaultTextsForCurrentLang, $defaultCarrierTexts, $currentCarrierTexts);
+            $translations = array_merge($defaultTexts, $defaultCarrierTexts, $currentCarrierTexts);
         } catch (\Throwable $e) {
-            $translations = array_merge($defaultTexts, $defaultTextsForCurrentLang);
+            $translations = $defaultTexts;
         }
-
-        $this->loger->info('result translations', array_map(function (Translation $item) {
-            return $item->getKey();
-        }, $translations));
 
         foreach ($translations as $translation) {
             $this->texts[$translation->getKey()] = $translation->getTranslation();
