@@ -80,7 +80,7 @@ class RequestParametersProvider
         }
 
         $process->clientId = $subscription->getUuid();
-        $process->carrier  = $subscription->getSubscriptionPack()->getBillingCarrierId();
+        $process->carrier  = $subscription->getSubscriptionPack()->getCarrier()->getBillingCarrierId();
         $process->userIp   = $subscription->getUser()->getIp();
 
         // The request headers of the end user.

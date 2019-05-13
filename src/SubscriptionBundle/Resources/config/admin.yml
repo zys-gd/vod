@@ -3,10 +3,12 @@ services:
         arguments:
             - ~
             - SubscriptionBundle\Entity\SubscriptionPack
-            - 'SubscriptionBundle\Admin\Controller\SubscriptionPackAdminController'
+            - ~ #'SubscriptionBundle\Admin\Controller\SubscriptionPackAdminController'
             - '@SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider'
             - '@SubscriptionBundle\Service\SubscriptionTextService'
             - '@App\Domain\Repository\CarrierRepository'
+            - '@SubscriptionBundle\Repository\SubscriptionPackRepository'
+            - '@App\Domain\Repository\CountryRepository'
         tags:
             -   name: sonata.admin
                 manager_type: orm

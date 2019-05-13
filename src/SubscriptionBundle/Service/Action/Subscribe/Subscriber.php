@@ -251,7 +251,7 @@ class Subscriber
         if ($subscriptionPack->isFirstSubscriptionPeriodIsFree() /*&&*/
             /*$subscriptionPack->isFirstSubscriptionPeriodIsFreeMultiple()*/
         ) {
-            $tierIdWithZeroValue = $this->getPriceTierIdWithZeroValue($subscriptionPack->getBillingCarrierId());
+            $tierIdWithZeroValue = $this->getPriceTierIdWithZeroValue($subscriptionPack->getCarrier()->getBillingCarrierId());
             $subscription->setPromotionTierId($tierIdWithZeroValue);
         }
     }
