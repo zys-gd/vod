@@ -48,19 +48,7 @@ class JazzPKSubscribeHandler implements SubscriptionHandlerInterface, HasCommonF
 
     public function afterProcess(Subscription $subscription, \SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult $result)
     {
-        if ($result->isFailed()) {
-            return;
-        }
-
-        $subscriptionPack = $subscription->getSubscriptionPack();
-        $carrier          = $subscription->getUser()->getCarrier();
-
-        if ($subscriptionPack->isFirstSubscriptionPeriodIsFree()) {
-            return;
-        }
-
-        $this->notifier->sendNotification(SubscribeProcess::PROCESS_METHOD_SUBSCRIBE, $subscription, $subscriptionPack, $carrier);
-
+        // TODO: Implement afterProcess() method.
     }
 
 
