@@ -26,6 +26,10 @@ class BlacklistVoter
      */
     private $router;
     /**
+     * @var BlackListService
+     */
+    private $blackListService;
+    /**
      * @var UserRepository
      */
     private $userRepository;
@@ -37,10 +41,6 @@ class BlacklistVoter
      * @var string
      */
     private $subNotAllowedRoute;
-    /**
-     * @var BlackListService
-     */
-    private $blackListService;
     /**
      * @var CarrierRepository
      */
@@ -67,13 +67,13 @@ class BlacklistVoter
         CarrierRepository $carrierRepository
     )
     {
-        $this->cacheService       = $cacheService;
-        $this->router             = $router;
-        $this->userRepository     = $userRepository;
-        $this->logger             = $logger;
+        $this->cacheService = $cacheService;
+        $this->router = $router;
+        $this->blackListService = $blackListService;
+        $this->userRepository = $userRepository;
+        $this->logger = $logger;
         $this->subNotAllowedRoute = $subNotAllowedRoute;
-        $this->blackListService   = $blackListService;
-        $this->carrierRepository  = $carrierRepository;
+        $this->carrierRepository = $carrierRepository;
     }
 
     public function isInBlacklist(SessionInterface $session)
