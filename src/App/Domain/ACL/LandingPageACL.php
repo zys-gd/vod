@@ -4,28 +4,17 @@ namespace App\Domain\ACL;
 
 use App\Domain\ACL\Accessors\VisitAccessorByCampaign;
 use App\Domain\ACL\Accessors\VisitConstraintByAffiliate;
+use App\Domain\ACL\Exception\AffiliateConstraintAccessException;
+use App\Domain\ACL\Exception\CampaignAccessException;
+use App\Domain\ACL\Exception\CampaignPausedException;
 use App\Domain\Entity\Campaign;
-use App\Domain\Repository\CampaignRepository;
-use App\Domain\Repository\CarrierRepository;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
-use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
-use SubscriptionBundle\Service\CAPTool\SubscriptionLimiterInterface;
-use Symfony\Component\HttpFoundation\Request;
+use App\Domain\Entity\Carrier;
 
 /**
  * Class LandingPageAccessResolver
  */
 class LandingPageACL
 {
-    /**
-     * @var CarrierRepository
-     */
-    private $carrierRepository;
-
-    /**
-     * @var CampaignRepository
-     */
-    private $campaignRepository;
 
     /**
      * @var VisitConstraintByAffiliate
@@ -42,65 +31,40 @@ class LandingPageACL
      *
      * @param VisitConstraintByAffiliate $visitConstraintByAffiliate
      * @param VisitAccessorByCampaign    $visitAccessorByCampaign
-     * @param CarrierRepository          $carrierRepository
-     * @param CampaignRepository         $campaignRepository
      */
     public function __construct(
         VisitConstraintByAffiliate $visitConstraintByAffiliate,
-        VisitAccessorByCampaign $visitAccessorByCampaign,
-        CarrierRepository $carrierRepository,
-        CampaignRepository $campaignRepository
+        VisitAccessorByCampaign $visitAccessorByCampaign
     )
     {
-        $this->carrierRepository          = $carrierRepository;
-        $this->campaignRepository         = $campaignRepository;
         $this->visitConstraintByAffiliate = $visitConstraintByAffiliate;
         $this->visitAccessorByCampaign    = $visitAccessorByCampaign;
     }
 
     /**
-     * @param Request $request
-     *
-     * @return string|null
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @param Campaign $campaign
+     * @param Carrier  $carrier
+     * @return void
      */
-    public function canAccess(Request $request): ?string
+    public function ensureCanAccess(Campaign $campaign, Carrier $carrier): void
     {
-        $campaignToken = $request->get('cid', '');
-
-        if (empty($campaignToken)) {
-            return true;
+        if ($campaign->getIsPause()) {
+            throw new CampaignPausedException();
         }
 
-        /** @var Campaign $campaign */
-        $campaign = $this->campaignRepository->findOneBy(['campaignToken' => $campaignToken]);
-
-        if($campaign && $campaign->getIsPause()) {
-            return false;
+        if (!$this->visitAccessorByCampaign->canVisit($campaign, $carrier)) {
+            throw new CampaignAccessException($campaign);
         }
 
-        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession());
+        $affiliate = $campaign->getAffiliate();
+        foreach ($affiliate->getConstraints() as $constraint) {
+            if ($carrier && $carrier->getUuid() !== $constraint->getCarrier()->getUuid()) {
+                continue;
+            }
 
-        if (empty($ispDetectionData['carrier_id'])) {
-            return true;
+            if (!$this->visitConstraintByAffiliate->canVisit($carrier, $constraint)) {
+                throw new AffiliateConstraintAccessException($constraint);
+            }
         }
-
-        $carrier = $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id']);
-
-        if (empty($carrier)) {
-            return true;
-        }
-
-        if ($campaign && !$this->visitAccessorByCampaign->canVisit($campaign, $carrier)) {
-            return false;
-        }
-
-        if ($campaign && !$this->visitConstraintByAffiliate->canVisit($campaign, $carrier)) {
-            return false;
-        }
-
-        return true;
     }
 }

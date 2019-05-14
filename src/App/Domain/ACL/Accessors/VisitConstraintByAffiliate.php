@@ -2,7 +2,6 @@
 
 namespace App\Domain\ACL\Accessors;
 
-use App\Domain\Entity\Campaign;
 use IdentificationBundle\Entity\CarrierInterface;
 use SubscriptionBundle\Affiliate\CapConstraint\VisitChecker;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
@@ -27,32 +26,17 @@ class VisitConstraintByAffiliate
         VisitChecker $checker
     )
     {
-        $this->checker                = $checker;
+        $this->checker = $checker;
     }
 
     /**
-     * @param Campaign         $campaign
-     *
-     * @param CarrierInterface $carrier
+     * @param CarrierInterface      $carrier
+     * @param ConstraintByAffiliate $constraint
      * @return bool
-     *
      */
-    public function canVisit(Campaign $campaign, CarrierInterface $carrier): bool
+    public function canVisit(CarrierInterface $carrier, ConstraintByAffiliate $constraint): bool
     {
-        $affiliate = $campaign->getAffiliate();
-
-        /** @var ConstraintByAffiliate $constraint */
-        foreach ($affiliate->getConstraints()->getIterator() as $constraint) {
-            if ($carrier && $carrier->getUuid() !== $constraint->getCarrier()->getUuid()) {
-                continue;
-            }
-
-            if ($this->checker->isCapReached($carrier, $constraint)) {
-                return false;
-            }
-        }
-
-        return true;
+        return !$this->checker->isCapReached($carrier, $constraint);
     }
 
 }

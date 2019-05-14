@@ -61,7 +61,7 @@ class ResetConstraintsByCarrierCounters extends Command
 
     public function configure()
     {
-        $this->setName('constraint-by-carrier:reset');
+        $this->setName('cap:constraint-by-carrier:reset');
         $this->setHelp('Reset from redis all counters for constraints by affiliate');
     }
 

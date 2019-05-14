@@ -69,3 +69,9 @@ services:
             - '@SubscriptionBundle\Service\CAPTool\Limiter\StorageKeyGenerator'
         tags:
             - { name: console.command }
+
+    SubscriptionBundle\Command\ResetVisitConstraints:
+        arguments:
+            - '@SubscriptionBundle\Affiliate\CapConstraint\VisitStorage'
+        tags:
+            - { name: console.command }

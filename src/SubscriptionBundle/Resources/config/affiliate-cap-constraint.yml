@@ -1,0 +1,19 @@
+services:
+  SubscriptionBundle\Affiliate\CapConstraint\VisitStorage:
+    arguments: ['@app.predis', '@SubscriptionBundle\Affiliate\CapConstraint\ConstraintValidityChecker']
+
+  SubscriptionBundle\Affiliate\CapConstraint\ConstraintValidityChecker: ~
+
+  SubscriptionBundle\Affiliate\CapConstraint\VisitChecker:
+    arguments: ['@SubscriptionBundle\Affiliate\CapConstraint\VisitStorage', '@SubscriptionBundle\Affiliate\CapConstraint\KeyGenerator']
+
+  SubscriptionBundle\Affiliate\CapConstraint\VisitTracker:
+    arguments:
+      - '@SubscriptionBundle\Affiliate\CapConstraint\ConstraintValidityChecker'
+      - '@SubscriptionBundle\Affiliate\CapConstraint\VisitStorage'
+      - '@SubscriptionBundle\Affiliate\CapConstraint\KeyGenerator'
+
+  SubscriptionBundle\Affiliate\CapConstraint\VisitNotifier:
+    arguments: ['@SubscriptionBundle\Affiliate\CapConstraint\ConstraintValidityChecker', '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender', '@SubscriptionBundle\Service\EntitySaveHelper']
+
+  SubscriptionBundle\Affiliate\CapConstraint\KeyGenerator: ~

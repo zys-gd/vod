@@ -60,7 +60,7 @@ class ResetConstraintsByAffiliateCounters extends Command
 
     public function configure()
     {
-        $this->setName('constraint-by-affiliate:reset');
+        $this->setName('cap:constraint-by-affiliate:reset');
         $this->setHelp('Reset from redis all counters for constraints by affiliate');
     }
 

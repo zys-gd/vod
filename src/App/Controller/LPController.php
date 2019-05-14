@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Domain\ACL\Exception\AccessException;
+use App\Domain\ACL\Exception\AffiliateConstraintAccessException;
 use App\Domain\ACL\LandingPageACL;
 use App\Domain\Entity\Campaign;
+use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Service\CarrierOTPVerifier;
 use App\Domain\Service\ContentStatisticSender;
@@ -11,6 +14,8 @@ use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
+use SubscriptionBundle\Affiliate\CapConstraint\VisitNotifier;
+use SubscriptionBundle\Affiliate\CapConstraint\VisitTracker;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Service\CAPTool\LimiterNotifier;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
@@ -62,18 +67,29 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var LimiterNotifier
      */
     private $limiterNotifier;
+    /**
+     * @var VisitTracker
+     */
+    private $visitTracker;
+    /**
+     * @var VisitNotifier
+     */
+    private $visitNotifier;
 
     /**
      * LPController constructor.
      *
-     * @param ContentStatisticSender $contentStatisticSender
-     * @param CampaignRepository     $campaignRepository
-     * @param LandingPageACL         $landingPageAccessResolver
-     * @param string                 $imageBaseUrl
-     * @param CarrierOTPVerifier     $OTPVerifier
-     * @param string                 $defaultRedirectUrl
-     * @param SubscriptionLimiter    $limiter
-     * @param LimiterNotifier        $limiterNotifier
+     * @param ContentStatisticSender     $contentStatisticSender
+     * @param CampaignRepository         $campaignRepository
+     * @param LandingPageACL             $landingPageAccessResolver
+     * @param string                     $imageBaseUrl
+     * @param CarrierOTPVerifier         $OTPVerifier
+     * @param string                     $defaultRedirectUrl
+     * @param SubscriptionLimiter        $limiter
+     * @param LimiterNotifier            $limiterNotifier
+     * @param CarrierRepositoryInterface $carrierRepository
+     * @param VisitTracker               $visitTracker
+     * @param VisitNotifier              $notifier
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
@@ -84,7 +100,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         string $defaultRedirectUrl,
         SubscriptionLimiter $limiter,
         LimiterNotifier $limiterNotifier,
-        CarrierRepositoryInterface $carrierRepository
+        CarrierRepositoryInterface $carrierRepository,
+        VisitTracker $visitTracker,
+        VisitNotifier $notifier
+
     )
     {
         $this->contentStatisticSender    = $contentStatisticSender;
@@ -96,6 +115,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->limiter                   = $limiter;
         $this->carrierRepository         = $carrierRepository;
         $this->limiterNotifier           = $limiterNotifier;
+        $this->visitTracker              = $visitTracker;
+        $this->visitNotifier             = $notifier;
     }
 
 
@@ -116,36 +137,40 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $campaignBanner = null;
         $background     = null;
 
-        if ($cid = $request->get('cid', '')) {
-            /** @var Campaign $campaign */
-            $campaign = $this->campaignRepository->findOneBy(['campaignToken' => $cid, 'isPause' => false]);
+        $cid      = $request->get('cid', '');
+        $campaign = $this->resolveCampaignFromRequest($cid);
+        if ($cid && !$campaign) {
+            return RedirectResponse::create($this->defaultRedirectUrl);
+        }
 
-            /** @var Campaign $campaign */
-            if ($campaign) {
-                // Useless method atm.
-                AffiliateVisitSaver::saveCampaignId($cid, $session);
-                $campaignBanner = $this->imageBaseUrl . '/' . $campaign->getImagePath();
-                $background     = $campaign->getBgColor();
-            }
+        if ($campaign) {
+            // Useless method atm.
+            AffiliateVisitSaver::saveCampaignId($cid, $session);
+            $campaignBanner = $this->imageBaseUrl . '/' . $campaign->getImagePath();
+            $background     = $campaign->getBgColor();
         } else {
             $this->OTPVerifier->forceWifi($session);
         }
 
+        $carrier = $this->resolveCarrierFromRequest($request);
+        if ($carrier && $campaign) {
+            try {
+                $this->landingPageAccessResolver->ensureCanAccess($campaign, $carrier);
+            } catch (AffiliateConstraintAccessException $exception) {
+                $this->visitNotifier->notifyLimitReached($exception->getConstraint(), $carrier);
+                return RedirectResponse::create($this->defaultRedirectUrl);
+            } catch (AccessException $exception) {
+                return RedirectResponse::create($this->defaultRedirectUrl);
+            }
 
-        if (!$this->landingPageAccessResolver->canAccess($request)) {
-            return RedirectResponse::create($this->defaultRedirectUrl);
+            if ($this->limiter->isSubscriptionLimitReached($request->getSession())) {
+                $this->limiterNotifier->notifyLimitReached($carrier);
+                return RedirectResponse::create($this->defaultRedirectUrl);
+            }
+
+            $this->visitTracker->trackVisit($carrier, $campaign, $session->getId());
         }
 
-        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession());
-        $billingCarrierId = (int)$ispDetectionData['carrier_id'] ?? null;
-        if (
-            !empty($billingCarrierId) &&
-            $this->limiter->isSubscriptionLimitReached($request->getSession())
-        ) {
-            $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
-            $this->limiterNotifier->notifyLimitReached($carrier);
-            return RedirectResponse::create($this->defaultRedirectUrl);
-        }
 
         AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
 
@@ -170,5 +195,36 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             'code'     => 200,
             'response' => $this->renderView('@App/Components/Ajax/annotation.html.twig')
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return Carrier|null
+     */
+    private function resolveCarrierFromRequest(Request $request): ?Carrier
+    {
+        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession());
+        $billingCarrierId = (int)$ispDetectionData['carrier_id'] ?? null;
+        if (!empty($billingCarrierId)) {
+            return $this->carrierRepository->findOneByBillingId($billingCarrierId);
+        } else {
+            return null;
+        }
+    }
+
+    private function resolveCampaignFromRequest($cid): ?Campaign
+    {
+        /** @var Campaign $campaign */
+        $campaign = $this->campaignRepository->findOneBy([
+            'campaignToken' => $cid,
+            'isPause'       => false
+        ]);
+
+        if ($campaign) {
+            return $campaign;
+        } else {
+            return null;
+        }
+
     }
 }

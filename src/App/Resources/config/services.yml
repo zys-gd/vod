@@ -97,7 +97,7 @@ services:
 
   App\Domain\ACL\Accessors\VisitConstraintByAffiliate:
     arguments:
-      - '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender'
+      - '@SubscriptionBundle\Affiliate\CapConstraint\VisitChecker'
 
   App\Domain\ACL\Accessors\VisitAccessorByCampaign: ~
 
@@ -105,8 +105,6 @@ services:
     arguments:
       - '@App\Domain\ACL\Accessors\VisitConstraintByAffiliate'
       - '@App\Domain\ACL\Accessors\VisitAccessorByCampaign'
-      - '@App\Domain\Repository\CarrierRepository'
-      - '@App\Domain\Repository\CampaignRepository'
 
   App\Domain\Service\CarrierOTPVerifier:
     arguments:
