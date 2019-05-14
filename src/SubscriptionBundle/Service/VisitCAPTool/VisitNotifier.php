@@ -13,6 +13,7 @@ use App\Domain\Entity\Carrier;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\Notification\Email\CAPNotificationSender;
+use SubscriptionBundle\Service\VisitCAPTool\Exception\InvalidConstraintException;
 
 class VisitNotifier
 {

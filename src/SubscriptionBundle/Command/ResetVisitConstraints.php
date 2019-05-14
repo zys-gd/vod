@@ -9,7 +9,7 @@
 namespace SubscriptionBundle\Command;
 
 
-use SubscriptionBundle\Affiliate\CapConstraint\VisitStorage;
+use SubscriptionBundle\Service\VisitCAPTool\VisitStorage;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

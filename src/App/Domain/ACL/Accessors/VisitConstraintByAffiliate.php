@@ -3,7 +3,7 @@
 namespace App\Domain\ACL\Accessors;
 
 use IdentificationBundle\Entity\CarrierInterface;
-use SubscriptionBundle\Affiliate\CapConstraint\VisitChecker;
+use SubscriptionBundle\Service\VisitCAPTool\VisitChecker;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 
 /**

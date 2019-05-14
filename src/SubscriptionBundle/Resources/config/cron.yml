@@ -72,6 +72,6 @@ services:
 
     SubscriptionBundle\Command\ResetVisitConstraints:
         arguments:
-            - '@SubscriptionBundle\Affiliate\CapConstraint\VisitStorage'
+            - '@SubscriptionBundle\Service\VisitCAPTool\VisitStorage'
         tags:
             - { name: console.command }

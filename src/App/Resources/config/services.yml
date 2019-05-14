@@ -97,7 +97,7 @@ services:
 
   App\Domain\ACL\Accessors\VisitConstraintByAffiliate:
     arguments:
-      - '@SubscriptionBundle\Affiliate\CapConstraint\VisitChecker'
+      - '@SubscriptionBundle\Service\VisitCAPTool\VisitChecker'
 
   App\Domain\ACL\Accessors\VisitAccessorByCampaign: ~
 

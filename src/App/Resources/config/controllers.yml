@@ -48,8 +48,8 @@ services:
             - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
             - '@SubscriptionBundle\Service\CAPTool\LimiterNotifier'
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
-            - '@SubscriptionBundle\Affiliate\CapConstraint\VisitTracker'
-            - '@SubscriptionBundle\Affiliate\CapConstraint\VisitNotifier'
+            - '@SubscriptionBundle\Service\VisitCAPTool\VisitTracker'
+            - '@SubscriptionBundle\Service\VisitCAPTool\VisitNotifier'
 
     App\Controller\ErrorController:
         arguments:

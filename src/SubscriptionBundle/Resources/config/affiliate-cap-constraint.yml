@@ -1,19 +1,19 @@
 services:
-  SubscriptionBundle\Affiliate\CapConstraint\VisitStorage:
-    arguments: ['@app.predis', '@SubscriptionBundle\Affiliate\CapConstraint\ConstraintValidityChecker']
+  SubscriptionBundle\Service\VisitCAPTool\VisitStorage:
+    arguments: ['@app.predis', '@SubscriptionBundle\Service\VisitCAPTool\ConstraintValidityChecker']
 
-  SubscriptionBundle\Affiliate\CapConstraint\ConstraintValidityChecker: ~
+  SubscriptionBundle\Service\VisitCAPTool\ConstraintValidityChecker: ~
 
-  SubscriptionBundle\Affiliate\CapConstraint\VisitChecker:
-    arguments: ['@SubscriptionBundle\Affiliate\CapConstraint\VisitStorage', '@SubscriptionBundle\Affiliate\CapConstraint\KeyGenerator']
+  SubscriptionBundle\Service\VisitCAPTool\VisitChecker:
+    arguments: ['@SubscriptionBundle\Service\VisitCAPTool\VisitStorage', '@SubscriptionBundle\Service\VisitCAPTool\KeyGenerator']
 
-  SubscriptionBundle\Affiliate\CapConstraint\VisitTracker:
+  SubscriptionBundle\Service\VisitCAPTool\VisitTracker:
     arguments:
-      - '@SubscriptionBundle\Affiliate\CapConstraint\ConstraintValidityChecker'
-      - '@SubscriptionBundle\Affiliate\CapConstraint\VisitStorage'
-      - '@SubscriptionBundle\Affiliate\CapConstraint\KeyGenerator'
+      - '@SubscriptionBundle\Service\VisitCAPTool\ConstraintValidityChecker'
+      - '@SubscriptionBundle\Service\VisitCAPTool\VisitStorage'
+      - '@SubscriptionBundle\Service\VisitCAPTool\KeyGenerator'
 
-  SubscriptionBundle\Affiliate\CapConstraint\VisitNotifier:
-    arguments: ['@SubscriptionBundle\Affiliate\CapConstraint\ConstraintValidityChecker', '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender', '@SubscriptionBundle\Service\EntitySaveHelper']
+  SubscriptionBundle\Service\VisitCAPTool\VisitNotifier:
+    arguments: ['@SubscriptionBundle\Service\VisitCAPTool\ConstraintValidityChecker', '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender', '@SubscriptionBundle\Service\EntitySaveHelper']
 
-  SubscriptionBundle\Affiliate\CapConstraint\KeyGenerator: ~
+  SubscriptionBundle\Service\VisitCAPTool\KeyGenerator: ~
