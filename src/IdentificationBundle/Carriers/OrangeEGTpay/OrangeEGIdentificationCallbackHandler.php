@@ -3,6 +3,8 @@
 namespace IdentificationBundle\Carriers\OrangeEGTpay;
 
 use App\Domain\Constants\ConstBillingCarrierId;
+use IdentificationBundle\Callback\Handler\HasCommonFlow;
+use IdentificationBundle\Callback\Handler\IdentCallbackHandlerInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
@@ -10,7 +12,7 @@ use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 /**
  * Class OrangeEGIdentificationCallbackHandler
  */
-class OrangeEGIdentificationCallbackHandler
+class OrangeEGIdentificationCallbackHandler implements IdentCallbackHandlerInterface, HasCommonFlow
 {
     /**
      * @var IdentificationDataStorage
