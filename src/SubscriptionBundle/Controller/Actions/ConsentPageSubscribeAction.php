@@ -4,17 +4,15 @@ namespace SubscriptionBundle\Controller\Actions;
 
 use Doctrine\ORM\NonUniqueResultException;
 use IdentificationBundle\Entity\CarrierInterface;
-use IdentificationBundle\Identification\DTO\IdentificationData;
-use IdentificationBundle\Identification\DTO\ISPData;
+use IdentificationBundle\Identification\DTO\{IdentificationData, ISPData};
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
+use IdentificationBundle\Identification\Handler\HasConsentPageFlow as IdentConsentPageFlow;
 use SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound;
-use SubscriptionBundle\Service\Action\Subscribe\Consent\ConsentFlowHandler;
-use SubscriptionBundle\Service\Action\Subscribe\Consent\HasConsentPageFlow;
+use SubscriptionBundle\Service\Action\Subscribe\Consent\{ConsentFlowHandler, HasConsentPageFlow};
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
 use SubscriptionBundle\Service\UserExtractor;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
@@ -103,7 +101,7 @@ class ConsentPageSubscribeAction
     {
         $handler = $this->identificationHandlerProvider->get($carrier);
 
-        if (!$handler instanceof \IdentificationBundle\Identification\Handler\HasConsentPageFlow) {
+        if (!$handler instanceof IdentConsentPageFlow) {
             throw new BadRequestHttpException('This action is available only for identification `ConsentPageFlow`');
         }
     }
