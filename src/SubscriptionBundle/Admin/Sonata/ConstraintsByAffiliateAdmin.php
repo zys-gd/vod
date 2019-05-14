@@ -113,19 +113,6 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
 
         if ($originalData['numberOfActions'] !== $object->getNumberOfActions()) {
             $object->setIsCapAlertDispatch(false);
-
-            if ($object->getCapType() === ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE) {
-                $key = $this->storageKeyGenerator->generateAffiliateConstraintKey($object);
-                $this->limiterDataStorage->resetFinishedCounter($key);
-                $this->limiterDataStorage->resetPendingCounter($key);
-            } else {
-                $key = $this->keyGenerator->generateVisitKey(
-                    $object->getCarrier(),
-                    $object->getAffiliate()
-                );
-                $this->visitStorage->cleanVisits($key);
-
-            }
         }
     }
 
