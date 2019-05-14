@@ -78,7 +78,7 @@ services:
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
             - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
             - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
-            - '@IdentificationBundle\Identification\Service\UserFactory'
+            - '@SubscriptionBundle\Service\UserExtractor'
 
     SubscriptionBundle\Admin\Controller\SubscriptionPackAdminController:
         calls: [['setContainer', ['@service_container']]]
