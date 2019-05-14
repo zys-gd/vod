@@ -1,23 +1,20 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 23.01.19
- * Time: 13:58
- */
 
 namespace IdentificationBundle\Identification\Common;
 
-
+use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Handler\HasConsentPageFlow;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\RouteProvider;
 use IdentificationBundle\Identification\Service\TokenGenerator;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class ConsentPageFlowHandler
+ */
 class ConsentPageFlowHandler
 {
-
     /**
      * @var IdentificationDataStorage
      */
@@ -30,7 +27,6 @@ class ConsentPageFlowHandler
      * @var RouteProvider
      */
     private $router;
-
 
     /**
      * ConsentPageFlowHandler constructor.
@@ -49,10 +45,12 @@ class ConsentPageFlowHandler
         $this->router      = $router;
     }
 
-    public function process(Request $request, HasConsentPageFlow $handler): void
+    public function process(Request $request, HasConsentPageFlow $handler, CarrierInterface $carrier, string $token): Response
     {
-        $handler->onProcess($request);
+        $response = $handler->onProcess($request, $carrier, $token);
 
         $this->dataStorage->storeValue('consentFlow[token]', $this->generator->generateToken());
+
+        return $response;
     }
 }

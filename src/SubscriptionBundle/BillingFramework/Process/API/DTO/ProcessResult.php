@@ -337,7 +337,7 @@ class ProcessResult
     }
 
     /**
-     * @return null
+     * @return string|null
      */
     public function getProviderId()
     {

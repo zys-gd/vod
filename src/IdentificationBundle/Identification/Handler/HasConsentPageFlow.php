@@ -1,17 +1,22 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 23.01.19
- * Time: 13:44
- */
 
 namespace IdentificationBundle\Identification\Handler;
 
-
+use IdentificationBundle\Entity\CarrierInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Interface HasConsentPageFlow
+ */
 interface HasConsentPageFlow
 {
-    public function onProcess(Request $request): void;
+    /**
+     * @param Request $request
+     * @param CarrierInterface $carrier
+     * @param string $token
+     *
+     * @return RedirectResponse
+     */
+    public function onProcess(Request $request, CarrierInterface $carrier, string $token): RedirectResponse;
 }

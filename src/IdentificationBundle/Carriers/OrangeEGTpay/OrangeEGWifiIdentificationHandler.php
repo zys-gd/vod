@@ -1,6 +1,6 @@
 <?php
 
-namespace IdentificationBundle\Carriers\VodafoneEG;
+namespace IdentificationBundle\Carriers\OrangeEGTpay;
 
 use App\Domain\Constants\ConstBillingCarrierId;
 use IdentificationBundle\Entity\CarrierInterface;
@@ -9,9 +9,9 @@ use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
 
 /**
- * Class VodafonePKWifiIdentificationHandler
+ * Class OrangeEGWifiIdentificationHandler
  */
-class VodafoneEGWifiIdentificationHandler implements WifiIdentificationHandlerInterface
+class OrangeEGWifiIdentificationHandler implements WifiIdentificationHandlerInterface
 {
     /**
      * @var UserRepository
@@ -35,7 +35,7 @@ class VodafoneEGWifiIdentificationHandler implements WifiIdentificationHandlerIn
      */
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::VODAFONE_EGYPT_TPAY;
+        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::ORANGE_EGYPT_TPAY;
     }
 
     public function getRedirectUrl()

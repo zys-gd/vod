@@ -90,4 +90,14 @@ class IdentificationDataStorage
     {
         $this->session->set('isp_detection_data', ['carrier_id' => $carrierId]);
     }
+
+    public function storeSubscriptionContractId(string $subscriptionContractId)
+    {
+        $this->session->set('subscription_contract_id', $subscriptionContractId);
+    }
+
+    public function readSubscriptionContractId(): ?string
+    {
+        return $this->session->get('subscription_contract_id', null);
+    }
 }

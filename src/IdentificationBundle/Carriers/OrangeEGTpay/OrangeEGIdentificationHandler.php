@@ -1,8 +1,6 @@
 <?php
 
-
-namespace IdentificationBundle\Carriers\VodafoneEG;
-
+namespace IdentificationBundle\Carriers\OrangeEGTpay;
 
 use App\Domain\Constants\ConstBillingCarrierId;
 use IdentificationBundle\Entity\CarrierInterface;
@@ -13,9 +11,9 @@ use IdentificationBundle\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class VodafoneEGIdentificationHandler
+ * Class OrangeEGIdentificationHandler
  */
-class VodafoneEGIdentificationHandler implements IdentificationHandlerInterface, HasCommonFlow
+class OrangeEGIdentificationHandler implements IdentificationHandlerInterface, HasCommonFlow
 {
     /**
      * @var UserRepository
@@ -34,11 +32,12 @@ class VodafoneEGIdentificationHandler implements IdentificationHandlerInterface,
 
     /**
      * @param CarrierInterface $carrier
+     *
      * @return bool
      */
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::VODAFONE_EGYPT_TPAY;
+        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::ORANGE_EGYPT_TPAY;
     }
 
     /**

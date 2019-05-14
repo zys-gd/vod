@@ -1,9 +1,16 @@
 services:
-    IdentificationBundle\Carriers\OrangeEG\OrangeEGIdentificationHandler:
+    IdentificationBundle\Carriers\OrangeEGTpay\OrangeEGIdentificationHandler:
         arguments: ['@IdentificationBundle\Repository\UserRepository']
         tags:
             - {name: identification.identification_handler}
-    IdentificationBundle\Carriers\OrangeEG\OrangeEGWifiIdentificationHandler:
+
+    IdentificationBundle\Carriers\OrangeEGTpay\OrangeEGWifiIdentificationHandler:
         arguments: ['@IdentificationBundle\Repository\UserRepository']
         tags:
             - { name: identification.wifi_identification_handler }
+
+    IdentificationBundle\Carriers\OrangeEGTpay\OrangeEGIdentificationCallbackHandler:
+        tags:
+            - { name: identification.identification_callback_handler }
+        arguments:
+            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'

@@ -13,12 +13,19 @@ use App\Domain\Constants\ConstBillingCarrierId;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Handler\HasConsentPageFlow;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class AirtelINIdentificationHandler implements HasConsentPageFlow, IdentificationHandlerInterface
 {
-
-    public function onProcess(Request $request): void
+    /**
+     * @param Request $request
+     * @param CarrierInterface $carrier
+     * @param string $token
+     *
+     * @return RedirectResponse
+     */
+    public function onProcess(Request $request, CarrierInterface $carrier, string $token): RedirectResponse
     {
         // TODO: Implement onProcess() method.
     }

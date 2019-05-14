@@ -1,0 +1,6 @@
+services:
+    SubscriptionBundle\Carriers\VodafoneEGTpay\Subscribe\VodafoneEGSubscriptionHandler:
+        arguments:
+            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+        tags:
+            - { name: subscription.subscription_handler }

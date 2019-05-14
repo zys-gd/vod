@@ -92,8 +92,8 @@ class Identifier
             return new IdentifyResult();
 
         } else if ($handler instanceof HasConsentPageFlow) {
-            $this->consentPageFlowHandler->process($request, $handler);
-            return new IdentifyResult();
+            $response = $this->consentPageFlowHandler->process($request, $handler, $carrier, $token);
+            return new IdentifyResult($response);
 
         } else if ($handler instanceof HasCustomFlow) {
             $handler->process($request);
