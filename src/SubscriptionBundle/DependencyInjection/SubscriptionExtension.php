@@ -66,6 +66,7 @@ class SubscriptionExtension extends ConfigurableExtension
         $loader->load('etisalat-eg.yml');
         $loader->load('telenor-pk.yml');
         $loader->load('jazz-pk.yml');
+        $loader->load('vodafone-eg-tpay.yml');
 
 
         $definition = $container->getDefinition('SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter');
