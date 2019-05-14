@@ -20,6 +20,8 @@ use SubscriptionBundle\Service\CAPTool\Limiter\LimiterDataConverter;
 use SubscriptionBundle\Service\CAPTool\Limiter\LimiterDataExtractor;
 use SubscriptionBundle\Service\CAPTool\Limiter\LimiterStorage;
 use SubscriptionBundle\Service\CAPTool\Limiter\StorageKeyGenerator;
+use SubscriptionBundle\Service\VisitCAPTool\KeyGenerator;
+use SubscriptionBundle\Service\VisitCAPTool\VisitStorage;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -49,6 +51,14 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
      * @var StorageKeyGenerator
      */
     private $storageKeyGenerator;
+    /**
+     * @var VisitStorage
+     */
+    private $visitStorage;
+    /**
+     * @var KeyGenerator
+     */
+    private $keyGenerator;
 
     /**
      * ConstraintsByAffiliateAdmin constructor
@@ -59,6 +69,9 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
      * @param ConstraintByAffiliateRepository $constraintByAffiliateRepository
      * @param EntityManagerInterface          $entityManager
      * @param LimiterStorage                  $limiterDataStorage
+     * @param StorageKeyGenerator             $storageKeyGenerator
+     * @param VisitStorage                    $visitStorage
+     * @param KeyGenerator                    $keyGenerator
      */
     public function __construct(
         string $code,
@@ -67,7 +80,9 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
         ConstraintByAffiliateRepository $constraintByAffiliateRepository,
         EntityManagerInterface $entityManager,
         LimiterStorage $limiterDataStorage,
-        StorageKeyGenerator $storageKeyGenerator
+        StorageKeyGenerator $storageKeyGenerator,
+        VisitStorage $visitStorage,
+        KeyGenerator $keyGenerator
     )
     {
         $this->constraintByAffiliateRepository = $constraintByAffiliateRepository;
@@ -76,6 +91,8 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
 
         parent::__construct($code, $class, $baseControllerName);
         $this->storageKeyGenerator = $storageKeyGenerator;
+        $this->visitStorage        = $visitStorage;
+        $this->keyGenerator        = $keyGenerator;
     }
 
     /**
@@ -199,11 +216,20 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
     {
 
         /** @var ConstraintByAffiliate $subject */
-        $subject   = $this->getSubject();
-        $key       = $this->storageKeyGenerator->generateAffiliateConstraintKey($subject);
-        $pending   = $this->limiterDataStorage->getPendingSubscriptionAmount($key);
-        $finished  = $this->limiterDataStorage->getFinishedSubscriptionAmount($key);
-        $available = $pending + $finished;
+        $subject = $this->getSubject();
+
+        if ($subject->getCapType() === ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE) {
+            $key       = $this->storageKeyGenerator->generateAffiliateConstraintKey($subject);
+            $pending   = $this->limiterDataStorage->getPendingSubscriptionAmount($key);
+            $finished  = $this->limiterDataStorage->getFinishedSubscriptionAmount($key);
+            $available = $pending + $finished;
+        } else {
+            $key       = $this->keyGenerator->generateVisitKey(
+                $subject->getCarrier(),
+                $subject->getAffiliate()
+            );
+            $available = $this->visitStorage->getVisitCount($key);
+        }
 
         $subject->setCounter($available);
 

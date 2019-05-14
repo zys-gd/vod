@@ -45,9 +45,9 @@ class LimiterStorage
 
     public function storePendingSubscription(string $key, string $sessionId): void
     {
-        $this->redis->set(sprintf('pending_%s_%s', $key, $sessionId), $sessionId, 180);
+        $this->redis->set(sprintf('pending_%s_%s', $key, $sessionId), $sessionId, 60);
 
-        $this->redis->set(sprintf('session_%s', $sessionId), $key, 180);
+        $this->redis->set(sprintf('session_%s', $sessionId), $key, 60);
     }
 
 
