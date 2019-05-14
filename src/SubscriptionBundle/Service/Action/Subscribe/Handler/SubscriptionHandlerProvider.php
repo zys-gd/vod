@@ -3,7 +3,7 @@
 namespace SubscriptionBundle\Service\Action\Subscribe\Handler;
 
 use IdentificationBundle\Entity\CarrierInterface;
-use SubscriptionBundle\Service\Action\Subscribe\Consent\HasConsentPageFlow;
+use SubscriptionBundle\Service\Action\Subscribe\Handler\HasConsentPageFlow;
 
 /**
  * Class SubscriptionHandlerProvider

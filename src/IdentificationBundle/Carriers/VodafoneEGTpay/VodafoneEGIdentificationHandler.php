@@ -45,7 +45,6 @@ class VodafoneEGIdentificationHandler implements IdentificationHandlerInterface,
      */
     private $asyncIdentStarter;
 
-
     /**
      * VodafoneEGIdentificationHandler constructor
      *

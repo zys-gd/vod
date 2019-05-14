@@ -1,6 +1,11 @@
 services:
     IdentificationBundle\Carriers\OrangeEGTpay\OrangeEGIdentificationHandler:
-        arguments: ['@IdentificationBundle\Repository\UserRepository']
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@router.default'
+            - '@IdentificationBundle\Identification\Common\RequestParametersProvider'
+            - '@IdentificationBundle\BillingFramework\Process\IdentProcess'
+            - '@IdentificationBundle\Identification\Common\Async\AsyncIdentStarter'
         tags:
             - {name: identification.identification_handler}
 
@@ -10,7 +15,7 @@ services:
             - { name: identification.wifi_identification_handler }
 
     IdentificationBundle\Carriers\OrangeEGTpay\OrangeEGIdentificationCallbackHandler:
+        arguments:
+            - '@doctrine.orm.entity_manager'
         tags:
             - { name: identification.identification_callback_handler }
-        arguments:
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'

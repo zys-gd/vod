@@ -1,6 +1,6 @@
 <?php
 
-namespace SubscriptionBundle\Service\Action\Subscribe\Consent;
+namespace SubscriptionBundle\Service\Action\Subscribe\Handler;
 
 use IdentificationBundle\Entity\User;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;

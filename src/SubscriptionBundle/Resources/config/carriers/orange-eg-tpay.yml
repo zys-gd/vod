@@ -1,0 +1,4 @@
+services:
+    SubscriptionBundle\Carriers\OrangeEGTpay\Subscribe\OrangeEGSubscriptionHandler:
+        tags:
+            - { name: subscription.subscription_handler }

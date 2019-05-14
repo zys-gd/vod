@@ -1,6 +1,6 @@
 <?php
 
-namespace SubscriptionBundle\Carriers\VodafoneEGTpay\Subscribe;
+namespace SubscriptionBundle\Carriers\OrangeEGTpay\Subscribe;
 
 use App\Domain\Constants\ConstBillingCarrierId;
 use IdentificationBundle\Entity\CarrierInterface;
@@ -12,9 +12,9 @@ use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerInter
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class VodafoneEGTpaySubscriptionHandler
+ * Class OrangeEGSubscriptionHandler
  */
-class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, HasConsentPageFlow
+class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasConsentPageFlow
 {
     /**
      * @param CarrierInterface $carrier
