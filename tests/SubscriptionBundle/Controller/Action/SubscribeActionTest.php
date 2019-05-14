@@ -22,6 +22,7 @@ use SubscriptionBundle\BillingFramework\Process\API\RequestSender;
 use SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider;
 use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
+use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Tests\DataFixtures\LoadCampaignTestData;
 use Tests\DataFixtures\LoadSubscriptionTestData;
@@ -59,6 +60,7 @@ class SubscribeActionTest extends AbstractFunctionalTest
      * @var MockInterface|CampaignConfirmationHandlerProvider
      */
     private $campaignConfirmationHandlerProvider;
+    private $subscriptionLimiter;
 
     public function testSubscribeWithoutIdentWillFallIntoError()
     {
@@ -116,8 +118,8 @@ class SubscribeActionTest extends AbstractFunctionalTest
 
 
         $ispDetectionData = [
-          'isp_name' => 'Allowed Resub Carrier',
-          'carrier_id' => 10241027
+            'isp_name'   => 'Allowed Resub Carrier',
+            'carrier_id' => 10241027
         ];
 
         $this->session->set('isp_detection_data', $ispDetectionData);
@@ -128,7 +130,7 @@ class SubscribeActionTest extends AbstractFunctionalTest
 
         $client->request('GET', 'subscribe');
 
-        $this->assertTrue($client->getResponse()->isRedirect('/'),'Failed resub');
+        $this->assertTrue($client->getResponse()->isRedirect('/'), 'Failed resub');
     }
 
     public function testResubIsAllowedForNotFullyPaidSubscription()
@@ -189,6 +191,7 @@ class SubscribeActionTest extends AbstractFunctionalTest
         $container->set('SubscriptionBundle\BillingFramework\Process\API\RequestSender', $this->requestSender);
         $container->set('talentica.piwic_statistic_sender', $this->piwikStatisticSender);
         $container->set('subscription.http.client', $this->httpClient);
+        $container->set('SubscriptionBundle\Service\CAPTool\SubscriptionLimiter', $this->subscriptionLimiter);
     }
 
     protected function getFixturesListLoadedForEachTest(): array
@@ -202,11 +205,11 @@ class SubscribeActionTest extends AbstractFunctionalTest
     protected function initializeServices(ContainerInterface $container)
     {
 
-        $this->httpClient                          = \Mockery::spy(Client::class);
-        $this->subscriptionPackDataProvider        = \Mockery::spy(SubscriptionPackDataProvider::class);
-        $this->notificationService                 = \Mockery::spy(NotificationService::class);
-
-        $this->piwikStatisticSender = Mockery::spy(SubscriptionStatisticSender::class, [
+        $this->httpClient                   = \Mockery::spy(Client::class);
+        $this->subscriptionPackDataProvider = \Mockery::spy(SubscriptionPackDataProvider::class);
+        $this->notificationService          = \Mockery::spy(NotificationService::class);
+        $this->subscriptionLimiter          = Mockery::spy(SubscriptionLimiter::class);
+        $this->piwikStatisticSender         = Mockery::spy(SubscriptionStatisticSender::class, [
             Mockery::spy(LoggerInterface::class),
             Mockery::spy(NewTracker::class),
         ])->makePartial();
