@@ -79,6 +79,7 @@ services:
             - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
             - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
             - '@SubscriptionBundle\Service\UserExtractor'
+            - '@SubscriptionBundle\Service\Action\Subscribe\Consent\ConsentFlowHandler'
 
     SubscriptionBundle\Admin\Controller\SubscriptionPackAdminController:
         calls: [['setContainer', ['@service_container']]]
