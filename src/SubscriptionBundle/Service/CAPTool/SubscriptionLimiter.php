@@ -10,11 +10,11 @@ use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\CampaignExtractor;
-use SubscriptionBundle\Service\SubscriptionExtractor;
 use SubscriptionBundle\Service\CAPTool\Limiter\CarrierCapChecker;
 use SubscriptionBundle\Service\CAPTool\Limiter\LimiterDataMapper;
 use SubscriptionBundle\Service\CAPTool\Limiter\LimiterStorage;
 use SubscriptionBundle\Service\CAPTool\Limiter\StorageKeyGenerator;
+use SubscriptionBundle\Service\SubscriptionExtractor;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SubscriptionLimiter
@@ -139,8 +139,8 @@ class SubscriptionLimiter
             );
             if ($constraint) {
                 /** @var ConstraintByAffiliate $subscriptionConstraint */
-                $this->storageKeyGenerator->generateAffiliateConstraintKey($constraint);
-                $this->limiterDataStorage->storeFinishedSubscription($key, $subscription->getUuid());
+                $affKey = $this->storageKeyGenerator->generateAffiliateConstraintKey($constraint);
+                $this->limiterDataStorage->storeFinishedSubscription($affKey, $subscription->getUuid());
             }
         }
 
