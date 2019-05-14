@@ -533,19 +533,6 @@ class SubscriptionPackAdmin extends AbstractAdmin
     {
         $carrierInterfaces = $this->carrierRepository->findEnabledCarriers();
 
-        /** @var SubscriptionPack[] $subpacks */
-        $subpacks = $this->subscriptionPackRepository->findAll();
-
-        $subpackCarriers = [];
-        foreach ($subpacks as $subpack) {
-            $subpackCarriers[] = $subpack->getCarrier()->getBillingCarrierId();
-        }
-
-        $carrierInterfaces = array_filter($carrierInterfaces, function (CarrierInterface $carrier) use ($subpackCarriers
-        ) {
-            return in_array($carrier->getBillingCarrierId(), $subpackCarriers);
-        });
-
         $countriesCarriers = [];
         /** @var Carrier $carrier */
         foreach ($carrierInterfaces as $carrier) {
@@ -558,21 +545,6 @@ class SubscriptionPackAdmin extends AbstractAdmin
     private function getCountryCarriersAsJson(Country $country)
     {
         $carrierInterfaces = $this->carrierRepository->findEnabledCarriers();
-
-        /** @var SubscriptionPack[] $subpacks */
-        $subpacks = $this->subscriptionPackRepository->findAll();
-
-        $subpackCarriers = [];
-        foreach ($subpacks as $subpack) {
-            $subpackCarriers[] = $subpack->getCarrier()->getBillingCarrierId();
-        }
-
-        $carrierInterfaces = array_filter($carrierInterfaces, function (CarrierInterface $carrier) use (
-            $subpackCarriers,
-            $country
-        ) {
-            return in_array($carrier->getBillingCarrierId(), $subpackCarriers) && $carrier->getCountryCode() == $country->getCountryCode();
-        });
 
         $aCarriers = [];
         foreach ($carrierInterfaces as $carrier) {

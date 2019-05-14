@@ -13,6 +13,8 @@ use App\CarrierTemplate\TemplateConfigurator;
 use App\Domain\Entity\Campaign;
 use App\Domain\Repository\CampaignRepository;
 use App\Form\ContactUsType;
+use CountryCarrierDetectionBundle\Service\MaxMindIpInfo;
+use DeviceDetectionBundle\Service\Device;
 use ExtrasBundle\Email\EmailSender;
 use IdentificationBundle\Identification\DTO\ISPData;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
@@ -57,6 +59,14 @@ class ContactUsController extends AbstractController implements AppControllerInt
      * @var TemplateConfigurator
      */
     private $templateConfigurator;
+    /**
+     * @var Device
+     */
+    private $device;
+    /**
+     * @var MaxMindIpInfo
+     */
+    private $maxMindIpInfo;
 
     /**
      * ContactUsController constructor.
@@ -69,6 +79,8 @@ class ContactUsController extends AbstractController implements AppControllerInt
      * @param string                $contactUsMailTo
      * @param string                $contactUsMailFrom
      * @param TemplateConfigurator  $templateConfigurator
+     * @param Device                $device
+     * @param MaxMindIpInfo         $maxMindIpInfo
      */
     public function __construct(FormFactoryInterface $formFactory,
         UserExtractor $userExtractor,
@@ -77,17 +89,21 @@ class ContactUsController extends AbstractController implements AppControllerInt
         CampaignRepository $campaignRepository,
         string $contactUsMailTo,
         string $contactUsMailFrom,
-        TemplateConfigurator $templateConfigurator
+        TemplateConfigurator $templateConfigurator,
+        Device $device,
+        MaxMindIpInfo $maxMindIpInfo
     )
     {
-        $this->formFactory = $formFactory;
-        $this->userExtractor = $userExtractor;
-        $this->emailSender = $emailSender;
+        $this->formFactory           = $formFactory;
+        $this->userExtractor         = $userExtractor;
+        $this->emailSender           = $emailSender;
         $this->subscriptionExtractor = $subscriptionExtractor;
-        $this->campaignRepository = $campaignRepository;
-        $this->contactUsMailTo = $contactUsMailTo;
-        $this->contactUsMailFrom = $contactUsMailFrom;
-        $this->templateConfigurator = $templateConfigurator;
+        $this->campaignRepository    = $campaignRepository;
+        $this->contactUsMailTo       = $contactUsMailTo;
+        $this->contactUsMailFrom     = $contactUsMailFrom;
+        $this->templateConfigurator  = $templateConfigurator;
+        $this->device                = $device;
+        $this->maxMindIpInfo         = $maxMindIpInfo;
     }
 
 
@@ -108,7 +124,7 @@ class ContactUsController extends AbstractController implements AppControllerInt
 
         $form->handleRequest($request);
 
-        $user = $this->userExtractor->getUserFromRequest($request);
+        $user           = $this->userExtractor->getUserFromRequest($request);
         $userIdentifier = is_null($user)
             ? null
             : $user->getIdentifier();
@@ -117,17 +133,20 @@ class ContactUsController extends AbstractController implements AppControllerInt
             $data = $form->getData();
 
             $subscription = $user ? $this->subscriptionExtractor->getExistingSubscriptionForUser($user) : null;
-            $campaignId = AffiliateVisitSaver::extractCampaignToken($request->getSession());
+            $campaignId   = AffiliateVisitSaver::extractCampaignToken($request->getSession());
             /** @var Campaign|null $campaign */
-            $campaign = $campaignId ? $this->campaignRepository->find($campaignId) : null;
+            $campaign = $campaignId ? $this->campaignRepository->findOneBy(['campaignToken' => $campaignId]) : null;
 
             $data['requestHeaders'] = $request->headers->all();
-            $data['user'] = $user;
-            $data['subscription'] = $subscription;
-            $data['campaign'] = $campaign;
-            $data['affiliate'] = $campaign ? $campaign->getAffiliate() : null;
+            $data['user']           = $user;
+            $data['subscription']   = $subscription;
+            $data['campaign']       = $campaign;
+            $data['affiliate']      = $campaign ? $campaign->getAffiliate() : null;
+            $data['device']         = $this->device;
+            $data['maxMindIpInfo']  = $this->maxMindIpInfo;
 
-            $twig = '@App/Mails/contact-us-notification.html.twig';
+
+            $twig    = '@App/Mails/contact-us-notification.html.twig';
             $subject = 'Contact us form notification';
 
             $this->emailSender->sendMessage($twig, $data, $subject, $this->contactUsMailFrom, $this->contactUsMailTo);
