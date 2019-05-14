@@ -108,8 +108,8 @@ class VodafoneEGIdentificationHandler implements IdentificationHandlerInterface,
     public function onProcess(Request $request, CarrierInterface $carrier, string $token): RedirectResponse
     {
         $additionalParams = $this->getAdditionalIdentificationParams($request);
-        $successUrl = $this->router->generate('subscription.consent_page_subscribe');
-        $waitPageUrl = $this->router->generate('wait_for_callback', ['successUrl' => $successUrl]);
+        $successUrl = $this->router->generate('subscription.consent_page_subscribe', [], RouterInterface::ABSOLUTE_URL);
+        $waitPageUrl = $this->router->generate('wait_for_callback', ['successUrl' => $successUrl], RouterInterface::ABSOLUTE_URL);
 
         $parameters = $this->parametersProvider->prepareRequestParameters(
             $token,
