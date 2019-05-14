@@ -103,7 +103,7 @@ class ConsentPageSubscribeAction
     {
         $handler = $this->identificationHandlerProvider->get($carrier);
 
-        if (!$handler instanceof HasConsentPageFlow) {
+        if (!$handler instanceof \IdentificationBundle\Identification\Handler\HasConsentPageFlow) {
             throw new BadRequestHttpException('This action is available only for identification `ConsentPageFlow`');
         }
     }
