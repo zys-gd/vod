@@ -45,10 +45,6 @@ class OrangeEGIdentificationCallbackHandler implements IdentCallbackHandlerInter
      */
     public function afterSuccess(User $user, ProcessResult $processResponse): void
     {
-        $subscriptionContractId = $processResponse->getProviderId();
 
-        if ($subscriptionContractId) {
-            $this->identificationDataStorage->storeSubscriptionContractId($subscriptionContractId);
-        }
     }
 }

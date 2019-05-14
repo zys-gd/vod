@@ -19,4 +19,4 @@ services:
         tags:
             - { name: identification.identification_callback_handler }
         arguments:
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@doctrine.orm.entity_manager'

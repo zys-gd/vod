@@ -3,10 +3,10 @@
 namespace IdentificationBundle\Carriers\VodafoneEGTpay;
 
 use App\Domain\Constants\ConstBillingCarrierId;
+use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Callback\Handler\HasCommonFlow;
 use IdentificationBundle\Callback\Handler\IdentCallbackHandlerInterface;
 use IdentificationBundle\Entity\User;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 
 /**
@@ -15,18 +15,18 @@ use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 class VodafoneEGIdentificationCallbackHandler implements IdentCallbackHandlerInterface, HasCommonFlow
 {
     /**
-     * @var IdentificationDataStorage
+     * @var EntityManagerInterface
      */
-    private $identificationDataStorage;
+    private $entityManager;
 
     /**
      * VodafoneEGIdentificationCallbackHandler constructor
      *
-     * @param IdentificationDataStorage $identificationDataStorage
+     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(IdentificationDataStorage $identificationDataStorage)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->identificationDataStorage = $identificationDataStorage;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -47,8 +47,8 @@ class VodafoneEGIdentificationCallbackHandler implements IdentCallbackHandlerInt
     {
         $subscriptionContractId = $processResponse->getProviderId();
 
-        if ($subscriptionContractId) {
-            $this->identificationDataStorage->storeSubscriptionContractId($subscriptionContractId);
-        }
+        $user->setIdentificationUrl($subscriptionContractId);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
     }
 }

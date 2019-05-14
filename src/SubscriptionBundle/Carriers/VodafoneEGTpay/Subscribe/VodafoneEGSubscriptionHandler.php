@@ -50,7 +50,7 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
      */
     public function getAdditionalSubscribeParams(Request $request, User $user): array
     {
-        return ['subscription_contract_id' => $this->identificationDataStorage->readSubscriptionContractId()];
+        return ['subscription_contract_id' => $user->getIdentificationUrl()];
     }
 
     /**
