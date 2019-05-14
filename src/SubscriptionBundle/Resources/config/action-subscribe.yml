@@ -51,9 +51,9 @@ services:
             - '@router'
             - '@SubscriptionBundle\Service\BlackListService'
             - '@IdentificationBundle\Repository\UserRepository'
-            - '@monolog.logger.subscription'
+            - '@logger'
             - '_sub_not_allowed_route_placeholder_'
-            - '_blacklisted_user_route_placeholder_'
+            - '@App\Domain\Repository\CarrierRepository'
 
     SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater:
         arguments:

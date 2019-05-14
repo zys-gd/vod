@@ -76,6 +76,8 @@ services:
         - '%contact_us_mail_to%'
         - '%contact_us_mail_from%'
         - '@App\CarrierTemplate\TemplateConfigurator'
+        - '@device_detection.service.device'
+        - '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
 
     App\Controller\GamesController:
         arguments:

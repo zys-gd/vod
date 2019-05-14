@@ -89,7 +89,7 @@ class Carrier implements CarrierInterface, HasUuid
     /**
      * @var integer
      */
-    private $numberOfAllowedSubscription = null;
+    private $subscribeAttempts = null;
 
     /**
      * @var integer
@@ -509,13 +509,11 @@ class Carrier implements CarrierInterface, HasUuid
     }
 
     /**
-     * @param integer $numberOfAllowedSubscription
-     *
-     * @return Carrier
+     * @param integer $subscribeAttempts
      */
-    public function setNumberOfAllowedSubscription($numberOfAllowedSubscription)
+    public function setSubscribeAttempts($subscribeAttempts)
     {
-        $this->numberOfAllowedSubscription = $numberOfAllowedSubscription;
+        $this->subscribeAttempts = $subscribeAttempts;
 
         return $this;
     }
@@ -523,9 +521,9 @@ class Carrier implements CarrierInterface, HasUuid
     /**
      * @return integer
      */
-    public function getNumberOfAllowedSubscription()
+    public function getSubscribeAttempts()
     {
-        return $this->numberOfAllowedSubscription;
+        return $this->subscribeAttempts;
     }
 
     /**

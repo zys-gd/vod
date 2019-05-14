@@ -109,11 +109,11 @@ class LandingPageACL
         /** @var Campaign $campaign */
         $campaign = $this->campaignRepository->findOneBy(['campaignToken' => $campaignToken]);
 
-        if (!$this->visitAccessorByCampaign->canVisit($campaign, $carrier)) {
+        if ($campaign && !$this->visitAccessorByCampaign->canVisit($campaign, $carrier)) {
             return false;
         }
 
-        if (!$this->visitConstraintByAffiliate->canVisit($campaign, $carrier)) {
+        if ($campaign && !$this->visitConstraintByAffiliate->canVisit($campaign, $carrier)) {
             return false;
         }
 

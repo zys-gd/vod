@@ -49,7 +49,7 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $subscriptionPeriod                      = $row['subscription_period'];
             $resubAllowed                            = $row['resubAllowed'];
             $isCampaignsOnPause                      = $row['isCampaignsOnPause'];
-            $numberOfAllowedSubscription             = $row['numberOfAllowedSubscription'];
+            $subscribeAttempts             = $row['subscribeAttempts'];
             $isUnlimitedSubscriptionAttemptsAllowed  = $row['isUnlimitedSubscriptionAttemptsAllowed'];
             $numberOfAllowedSubscriptionByConstraint = $row['numberOfAllowedSubscriptionsByConstraint'];
             $redirectUrl                             = $row['redirectUrl'];
@@ -75,7 +75,7 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $carrier->setPinIdentSupport($pinIdentSupport);
             $carrier->setResubAllowed($resubAllowed);
             $carrier->setIsCampaignsOnPause($isCampaignsOnPause);
-            $carrier->setNumberOfAllowedSubscription((int)$numberOfAllowedSubscription);
+            $carrier->setSubscribeAttempts((int)$subscribeAttempts);
             $carrier->setNumberOfAllowedSubscriptionsByConstraint($numberOfAllowedSubscriptionByConstraint);
             $carrier->setRedirectUrl($redirectUrl);
             $carrier->setFlushDate($flushdate ? \DateTime::createFromFormat('Y-m-d', $flushdate) : null);
