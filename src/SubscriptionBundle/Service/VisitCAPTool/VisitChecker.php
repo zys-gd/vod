@@ -6,7 +6,7 @@
  * Time: 13:34
  */
 
-namespace SubscriptionBundle\Affiliate\CapConstraint;
+namespace SubscriptionBundle\Service\VisitCAPTool;
 
 
 use IdentificationBundle\Entity\CarrierInterface;

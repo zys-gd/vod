@@ -6,7 +6,7 @@
  * Time: 13:53
  */
 
-namespace SubscriptionBundle\Affiliate\CapConstraint;
+namespace SubscriptionBundle\Service\VisitCAPTool;
 
 
 class KeyGenerator

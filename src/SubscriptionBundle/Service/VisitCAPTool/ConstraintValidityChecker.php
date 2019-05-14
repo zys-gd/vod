@@ -6,7 +6,7 @@
  * Time: 14:16
  */
 
-namespace SubscriptionBundle\Affiliate\CapConstraint;
+namespace SubscriptionBundle\Service\VisitCAPTool;
 
 
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;

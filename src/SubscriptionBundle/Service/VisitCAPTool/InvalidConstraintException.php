@@ -6,7 +6,7 @@
  * Time: 14:55
  */
 
-namespace SubscriptionBundle\Affiliate\CapConstraint;
+namespace SubscriptionBundle\Service\VisitCAPTool;
 
 
 class InvalidConstraintException extends \RuntimeException

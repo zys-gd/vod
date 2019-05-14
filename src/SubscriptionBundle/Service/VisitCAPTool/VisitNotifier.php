@@ -6,7 +6,7 @@
  * Time: 16:45
  */
 
-namespace SubscriptionBundle\Affiliate\CapConstraint;
+namespace SubscriptionBundle\Service\VisitCAPTool;
 
 
 use App\Domain\Entity\Carrier;

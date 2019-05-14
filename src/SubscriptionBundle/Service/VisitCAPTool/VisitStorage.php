@@ -6,7 +6,7 @@
  * Time: 14:08
  */
 
-namespace SubscriptionBundle\Affiliate\CapConstraint;
+namespace SubscriptionBundle\Service\VisitCAPTool;
 
 
 class VisitStorage
