@@ -1,13 +1,5 @@
 [
     {
-        "uuid": "1927326d-9d21-4866-9597-5fca446168a7",
-        "inputName": "pub_id",
-        "outputName": "p",
-        "affiliate": {
-            "uuid": "514ff3ad-ebd4-11e8-95c4-02bb250f0f22"
-        }
-    },
-    {
         "uuid": "51944d35-ebd4-11e8-95c4-02bb250f0f22",
         "inputName": "kp",
         "outputName": "kp",
@@ -360,14 +352,6 @@
         }
     },
     {
-        "uuid": "519459f0-ebd4-11e8-95c4-02bb250f0f22",
-        "inputName": "tracker",
-        "outputName": "mytracker",
-        "affiliate": {
-            "uuid": "514ff3ad-ebd4-11e8-95c4-02bb250f0f22"
-        }
-    },
-    {
         "uuid": "51945a34-ebd4-11e8-95c4-02bb250f0f22",
         "inputName": "pubid",
         "outputName": "pid",
@@ -426,7 +410,7 @@
     {
         "uuid": "51945bfb-ebd4-11e8-95c4-02bb250f0f22",
         "inputName": "clickid",
-        "outputName": "clickid",
+        "outputName": "click_id",
         "affiliate": {
             "uuid": "514ff757-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -434,7 +418,7 @@
     {
         "uuid": "51945c3c-ebd4-11e8-95c4-02bb250f0f22",
         "inputName": "publisherid",
-        "outputName": "pid_sub1",
+        "outputName": "aff_id",
         "affiliate": {
             "uuid": "514ff757-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -465,8 +449,8 @@
     },
     {
         "uuid": "51945d53-ebd4-11e8-95c4-02bb250f0f22",
-        "inputName": "impressionid",
-        "outputName": "cid",
+        "inputName": "sub2",
+        "outputName": "sub2",
         "affiliate": {
             "uuid": "514ff448-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -541,6 +525,110 @@
         "outputName": "pub_id",
         "affiliate": {
             "uuid": "514fea8a-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "1d9e44fd-d3a8-4527-bc50-f2baeac55636",
+        "inputName": "sub3",
+        "outputName": "sub3",
+        "affiliate": {
+            "uuid": "514ff448-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "2e2e1ba2-9311-4412-9e1b-f24c3771f5df",
+        "inputName": "pubid",
+        "outputName": "pubid",
+        "affiliate": {
+            "uuid": "c7d52909-4b5f-469b-ba4d-8943575d1d1a"
+        }
+    },
+    {
+        "uuid": "51f75152-9078-4492-b24a-c88086142980",
+        "inputName": "clickid",
+        "outputName": "clickid",
+        "affiliate": {
+            "uuid": "c7d52909-4b5f-469b-ba4d-8943575d1d1a"
+        }
+    },
+    {
+        "uuid": "55899c08-8ea9-4494-8397-08ec26d3ca42",
+        "inputName": "mytrackingparameter",
+        "outputName": "tracker",
+        "affiliate": {
+            "uuid": "514ff3ad-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "807a921e-cd5d-479f-8724-c62684d88a22",
+        "inputName": "pid",
+        "outputName": "pid",
+        "affiliate": {
+            "uuid": "514ff448-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "898cdd03-3d96-4b6a-ae6d-8c98e3c48f68",
+        "inputName": "pubid",
+        "outputName": "AFFILIATE_ID",
+        "affiliate": {
+            "uuid": "514ff272-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "9c507ab9-593d-4fcc-be42-12755737f78a",
+        "inputName": "test",
+        "outputName": "test",
+        "affiliate": {
+            "uuid": "2a5f3b0a-b5ac-4128-a910-d3063162cdda"
+        }
+    },
+    {
+        "uuid": "ad889463-fab9-4d73-bb7c-463d49189a43",
+        "inputName": "clickid",
+        "outputName": "clickid",
+        "affiliate": {
+            "uuid": "514ff448-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "aed34942-c1e4-4dab-964e-f410b53dbd1e",
+        "inputName": "clickid",
+        "outputName": "hwdid",
+        "affiliate": {
+            "uuid": "ef2f3f22-ed3f-455f-847e-fe528466aa41"
+        }
+    },
+    {
+        "uuid": "bad71e5c-d554-45b1-8ddb-1adb3abf3eaa",
+        "inputName": "pub_id",
+        "outputName": "p",
+        "affiliate": {
+            "uuid": "514ff3ad-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "be5a6a68-9fe0-4325-94c1-2d17270441ef",
+        "inputName": "publisher_id",
+        "outputName": "p",
+        "affiliate": {
+            "uuid": "ef2f3f22-ed3f-455f-847e-fe528466aa41"
+        }
+    },
+    {
+        "uuid": "ce9aa857-59d3-4e9b-91e6-55cddddaba5d",
+        "inputName": "google",
+        "outputName": "google",
+        "affiliate": {
+            "uuid": "514fe478-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "d0e12d3f-2ec3-40dc-af2c-11f806a74fb1",
+        "inputName": "pubid",
+        "outputName": "subid",
+        "affiliate": {
+            "uuid": "514fda89-ebd4-11e8-95c4-02bb250f0f22"
         }
     }
 ]

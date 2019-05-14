@@ -90,7 +90,7 @@ class CarrierAdmin extends AbstractAdmin
             ->add('resubAllowed')
             ->add('isCampaignsOnPause')
             ->add('isUnlimitedSubscriptionAttemptsAllowed')
-            ->add('numberOfAllowedSubscription');
+            ->add('subscribeAttempts');
     }
 
     /**
@@ -152,7 +152,7 @@ class CarrierAdmin extends AbstractAdmin
             ->add('isUnlimitedSubscriptionAttemptsAllowed', null,[
                 'attr' => ["class" => "unlimited-games"]
             ])
-            ->add('numberOfAllowedSubscription', null, [
+            ->add('subscribeAttempts', null, [
                 'attr' => ["class" => "count-of-subs"]
             ]);
     }
@@ -186,7 +186,7 @@ class CarrierAdmin extends AbstractAdmin
             ->add('resubAllowed')
             ->add('isCampaignsOnPause')
             ->add('isUnlimitedSubscriptionAttemptsAllowed')
-            ->add('numberOfAllowedSubscription')
+            ->add('subscribeAttempts')
             ->add('numberOfAllowedSubscriptionsByConstraint')
             ->add('counter')
             ->add('isCapAlertDispatch')

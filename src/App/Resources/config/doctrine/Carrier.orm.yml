@@ -62,7 +62,7 @@ App\Domain\Entity\Carrier:
             type: boolean
             options:
                 default: false
-        numberOfAllowedSubscription:
+        subscribeAttempts:
             type: integer
             options:
                 default: 1

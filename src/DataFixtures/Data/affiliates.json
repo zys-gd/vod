@@ -684,12 +684,12 @@
         "name": "Origindata MarketPlace",
         "type": 2,
         "url": "http:\/\/playwing.com",
-        "postbackUrl": "http:\/\/lautigned-morminois.com\/postback",
+        "postbackUrl": "http:\/\/offers.origindata.affise.com\/postback",
         "commercialContact": "Geoffrey Dommergue",
         "technicalContact": null,
         "skypeId": "geoffrey_domdom",
         "enabled": true,
-        "subPriceName": "payout",
+        "subPriceName": null,
         "parameters": null,
         "constants": null,
         "country": {
@@ -769,7 +769,7 @@
         "name": "Claymotion",
         "type": 2,
         "url": "http:\/\/claymotion.in\/",
-        "postbackUrl": "http:\/\/offers.dynamyn.affise.com\/postback",
+        "postbackUrl": "http:\/\/wrtual18.offerstrack.net\/advBack.php",
         "commercialContact": "Vikrant Dhiman",
         "technicalContact": "vikrant@claymotion.in",
         "skypeId": "vikrant.claym",
@@ -847,6 +847,82 @@
         "constants": null,
         "country": {
             "uuid": "5103fb7c-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "2a5f3b0a-b5ac-4128-a910-d3063162cdda",
+        "name": "QA-TEST",
+        "type": 2,
+        "url": "https:\/\/qa-test.com",
+        "postbackUrl": "https:\/\/qa-test.com",
+        "commercialContact": "Dmitry Kulaksidis",
+        "technicalContact": "Dmitry Kulaksidis",
+        "skypeId": "Dmitry.Kulaksidis",
+        "enabled": true,
+        "subPriceName": null,
+        "parameters": null,
+        "constants": null,
+        "campaigns": null,
+        "constraints": null,
+        "country": {
+            "uuid": "510460cf-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "9e86809b-c059-4a53-9e82-d3567feb33c2",
+        "name": "QA-TEST1",
+        "type": 1,
+        "url": null,
+        "postbackUrl": "http:\/\/pixel.leadzu.com\/pixel.php",
+        "commercialContact": null,
+        "technicalContact": null,
+        "skypeId": null,
+        "enabled": true,
+        "subPriceName": null,
+        "parameters": null,
+        "constants": null,
+        "campaigns": null,
+        "constraints": null,
+        "country": {
+            "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "c7d52909-4b5f-469b-ba4d-8943575d1d1a",
+        "name": "Revlinker",
+        "type": 2,
+        "url": null,
+        "postbackUrl": "http:\/\/www.mypostback.com\/562aabdd-0abf-4dc0-8245-3d7e06aaf2f3",
+        "commercialContact": "Nidia Teiga",
+        "technicalContact": null,
+        "skypeId": null,
+        "enabled": true,
+        "subPriceName": "payout",
+        "parameters": null,
+        "constants": null,
+        "campaigns": null,
+        "constraints": null,
+        "country": {
+            "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "ef2f3f22-ed3f-455f-847e-fe528466aa41",
+        "name": "Mobrain (Headway)",
+        "type": 2,
+        "url": null,
+        "postbackUrl": "https:\/\/lead.mobra.in\/",
+        "commercialContact": "Octavio Perez",
+        "technicalContact": "Octavio Perez",
+        "skypeId": "octavio.perez_5",
+        "enabled": true,
+        "subPriceName": null,
+        "parameters": null,
+        "constants": null,
+        "campaigns": null,
+        "constraints": null,
+        "country": {
+            "uuid": "5103a293-ebd4-11e8-95c4-02bb250f0f22"
         }
     }
 ]

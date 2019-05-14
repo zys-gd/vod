@@ -34,11 +34,9 @@ SubscriptionBundle\Entity\BlackList:
                 default: 0
         banStart:
             type: datetime
-            options:
-                default: '0000-00-00 00:00:00'
+            nullable: true
         banEnd:
             type: datetime
-            options:
-                default: '0000-00-00 00:00:00'
+            nullable: true
 
     lifecycleCallbacks: {  }

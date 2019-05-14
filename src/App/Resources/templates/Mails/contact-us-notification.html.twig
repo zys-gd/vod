@@ -11,7 +11,33 @@
         <!-- USER SUBSCRIPTION -->
         {% if user is not null %}
             <hr/>
-            <h2>User subscription</h2>
+                <h2>User information</h2>
+                <ol>
+                    <li>Country: {{ user.getCountry() }}</li>
+                    <li>Carrier: {{ user.getCarrier().getName() }}</li>
+                    <li>ALIAS: {{ user.getIdentifier() }}</li>
+                    <li>IP: {{ user.getIp() }}</li>
+                </ol>
+            <hr/>
+                <h2>Device information</h2>
+                <ol>
+                    <li>Manufacturer: {{ deviceDetection.deviceVendor | default('Unknown') }}</li>
+                    <li>Model: {{ deviceDetection.deviceModel | default('Unknown') }}</li>
+                    <li>Marketing name: {{ deviceDetection.deviceName | default('Unknown') }}</li>
+                    <li>Device Atlas ID: {{ deviceDetection.deviceId | default('Unknown') }} </li>
+                    <li>Language: {{ app.request.locale }}</li>
+                </ol>
+            <hr/>
+                <h2>Location information</h2>
+                <ol>
+                    <li>IP: {{ app.request.clientIp }}</li>
+                    <li>Country: {{ maxMindIpInfo.getCountry() | default('Unknown') }}</li>
+                    <li>Carrier: {{ maxMindIpInfo.getCarrier() | default('Unknown') }} </li>
+                    <li>Connection Type: {{ maxMindIpInfo.getConnectionType()|default('Unknown') }} </li>
+                </ol>
+            <hr/>
+
+                <h2>User subscription</h2>
             <ol>
                 {% if subscription %}
                     <li>Subscribed</li>
@@ -30,9 +56,8 @@
                     <li>User hasn't subscriptions</li>
                 {% endif %}
             </ol>
-            <hr/>
 
-            
+
         {% endif %}
 
         {% if campaign %}
@@ -42,6 +67,7 @@
                 <li>Сampaign ID: {{ campaign.getUuid() }}</li>
                 <li>Сampaign URL: {{ campaign.getLandingUrl() | default('-') }} </li>
                 <li>Affiliate ID: {{ campaign.getAffiliate().getUuid() | default('-') }}</li>
+                <li>Affiliate name: {{ campaign.getAffiliate().getName() | default('-') }}</li>
                 <li>Notification URL: {{ campaign.getAffiliate().getPostbackUrl() | default('-') }}</li>
             </ol>
         {% endif %}
