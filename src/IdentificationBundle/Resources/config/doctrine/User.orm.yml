@@ -65,6 +65,9 @@ IdentificationBundle\Entity\User:
         identificationUrl:
             type: text
             nullable: true
+        providerId:
+            type: text
+            nullable: true
 
     manyToOne:
         carrier:
