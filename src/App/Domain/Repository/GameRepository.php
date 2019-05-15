@@ -9,8 +9,10 @@
 namespace App\Domain\Repository;
 
 
+use App\Domain\DTO\BatchOfGames;
 use App\Domain\Entity\Game;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\FrameworkBundle\Tests\Fixtures\Validation\Category;
 
 class GameRepository extends EntityRepository
@@ -19,7 +21,7 @@ class GameRepository extends EntityRepository
      * @param int $offset
      * @param int $count
      *
-     * @return mixed
+     * @return BatchOfGames
      */
     public function findBatchOfGames(int $offset = 0, int $count = 4)
     {
@@ -31,8 +33,13 @@ class GameRepository extends EntityRepository
         $qb->setMaxResults($count);
         $qb->setFirstResult($offset);
 
+        $paginator = new Paginator($qb);
+        $total = $paginator->count();
 
-        return $qb->getQuery()->execute();
+        return new BatchOfGames(
+            $qb->getQuery()->execute() ?? [],
+            $total <= ($count + $offset)
+        );
     }
 
     /**

@@ -69,7 +69,7 @@ class PlayerController extends AbstractController
         );
 
         return $this->render('@App/Components/player_related_videos.html.twig', [
-            'videos'   => $videos,
+            'videos'   => $videos->getVideos(),
             'category' => $category
         ]);
     }
