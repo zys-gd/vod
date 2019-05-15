@@ -45,10 +45,7 @@ class VodafoneEGIdentificationCallbackHandler implements IdentCallbackHandlerInt
      */
     public function afterSuccess(User $user, ProcessResult $processResponse): void
     {
-        $subscriptionContractId = $processResponse->getProviderId();
-
-        $user->setIdentificationUrl($subscriptionContractId);
-        $this->entityManager->persist($user);
+        $user->setProviderId($processResponse->getProviderId());
         $this->entityManager->flush();
     }
 }

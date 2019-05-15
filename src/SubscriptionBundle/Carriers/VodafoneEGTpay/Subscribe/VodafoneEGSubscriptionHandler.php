@@ -10,6 +10,7 @@ use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasConsentPageFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * Class VodafoneEGTpaySubscriptionHandler
@@ -34,7 +35,13 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
      */
     public function getAdditionalSubscribeParams(Request $request, User $user): array
     {
-        return ['subscription_contract_id' => $user->getIdentificationUrl()];
+        $subscriptionContractId = $user->getProviderId();
+
+        if (empty($subscriptionContractId)) {
+            throw new BadRequestHttpException("Can't process subscribe, required parameter `subscription_contract_id` not found");
+        }
+
+        return ['subscription_contract_id' => $user->getProviderId()];
     }
 
     /**

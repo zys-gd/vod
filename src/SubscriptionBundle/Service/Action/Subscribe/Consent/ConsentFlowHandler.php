@@ -10,6 +10,7 @@ use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound;
 use SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEventTracker;
+use SubscriptionBundle\Service\Action\Subscribe\Handler\HasConsentPageFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomAffiliateTrackingRules;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomPiwikTrackingRules;
 use SubscriptionBundle\Service\Action\Subscribe\Subscriber;
@@ -133,10 +134,6 @@ class ConsentFlowHandler
     public function handleSubscribe(Request $request, User $user, HasConsentPageFlow $subscriber): Response
     {
         $additionalData = $subscriber->getAdditionalSubscribeParams($request, $user);
-
-        if (empty($additionalData['subscription_contract_id'])) {
-            throw new BadRequestHttpException("Can't process subscribe, required parameter `subscription_contract_id` not found");
-        }
 
         $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
 
