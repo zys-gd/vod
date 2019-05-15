@@ -18,7 +18,7 @@ class RenewDateCalculatorTest extends TestCase
     /**
      * @var RenewDateCalculator
      */
-    private $translatorProvider;
+    private $renewDateCalculator;
 
     /**
      * @throws \Exception
@@ -36,7 +36,7 @@ class RenewDateCalculatorTest extends TestCase
         $subscription = new Subscription(UuidGenerator::generate());
         $subscription->setSubscriptionPack($subscriptionPack);
 
-        $renewDate = $this->translatorProvider->calculateRenewDate($subscription);
+        $renewDate = $this->renewDateCalculator->calculateRenewDate($subscription);
 
         $this->assertTrue(
             $renewDate->between(
@@ -48,6 +48,6 @@ class RenewDateCalculatorTest extends TestCase
 
     protected function setUp()
     {
-        $this->translatorProvider = new RenewDateCalculator();
+        $this->renewDateCalculator = new RenewDateCalculator();
     }
 }
