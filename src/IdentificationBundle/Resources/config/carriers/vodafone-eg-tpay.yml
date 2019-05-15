@@ -12,6 +12,8 @@ services:
     IdentificationBundle\Carriers\VodafoneEGTpay\VodafoneEGWifiIdentificationHandler:
         arguments:
             - '@IdentificationBundle\Repository\UserRepository'
+            - '@doctrine.orm.entity_manager'
+            - '@router'
         tags:
             - { name: identification.wifi_identification_handler }
 

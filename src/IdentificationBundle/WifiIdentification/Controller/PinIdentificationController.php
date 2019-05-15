@@ -136,17 +136,14 @@ class PinIdentificationController extends AbstractController implements APIContr
         $carrierId = $ispData->getCarrierId();
 
         try {
-            $this->identConfirmator->confirm(
+            $response = $this->identConfirmator->confirm(
                 $carrierId,
                 $pinCode,
                 $mobileNumber,
                 $request->getClientIp()
             );
-            return $this->getSimpleJsonResponse('Confirmed', 200, [], [
-                'success'     => true,
-                'redirectUrl' => $this->generateUrl('subscription.subscribe')
-            ]);
 
+            return $response;
         } catch (PinVerifyProcessException $exception) {
             return $this->getSimpleJsonResponse($exception->getBillingMessage(), 200, [], ['success' => false]);
         } catch (\Exception $exception) {

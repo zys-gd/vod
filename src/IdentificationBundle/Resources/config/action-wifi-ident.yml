@@ -25,6 +25,7 @@ services:
         - '@SubscriptionBundle\Repository\SubscriptionRepository'
         - '@IdentificationBundle\Repository\UserRepository'
         - '@IdentificationBundle\Identification\Common\PostPaidHandler'
+        - '@router'
 
   IdentificationBundle\WifiIdentification\WifiIdentSMSSender:
       arguments:
