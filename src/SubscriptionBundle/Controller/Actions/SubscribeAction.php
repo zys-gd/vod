@@ -26,7 +26,7 @@ use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CustomPage;
-use SubscriptionBundle\Service\CAPTool\LimiterNotifier;
+use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiterInterface;
 use SubscriptionBundle\Service\UserExtractor;
@@ -98,9 +98,9 @@ class SubscribeAction extends AbstractController
      */
     private $subscriptionLimiter;
     /**
-     * @var LimiterNotifier
+     * @var SubscriptionLimitNotifier
      */
-    private $limiterNotifier;
+    private $subscriptionLimitNotifier;
 
     /**
      * SubscribeAction constructor.
@@ -119,7 +119,7 @@ class SubscribeAction extends AbstractController
      * @param PostPaidHandler                     $postPaidHandler
      * @param CampaignConfirmationHandlerProvider $campaignConfirmationHandlerProvider
      * @param SubscriptionLimiter                 $subscriptionLimiter
-     * @param LimiterNotifier                     $limiterNotifier
+     * @param SubscriptionLimitNotifier                     $subscriptionLimitNotifier
      */
     public function __construct(
         UserExtractor $userExtractor,
@@ -136,7 +136,7 @@ class SubscribeAction extends AbstractController
         PostPaidHandler $postPaidHandler,
         CampaignConfirmationHandlerProvider $campaignConfirmationHandlerProvider,
         SubscriptionLimiter $subscriptionLimiter,
-        LimiterNotifier $limiterNotifier
+        SubscriptionLimitNotifier $subscriptionLimitNotifier
     )
     {
         $this->userExtractor                       = $userExtractor;
@@ -153,7 +153,7 @@ class SubscribeAction extends AbstractController
         $this->postPaidHandler                     = $postPaidHandler;
         $this->campaignConfirmationHandlerProvider = $campaignConfirmationHandlerProvider;
         $this->subscriptionLimiter                 = $subscriptionLimiter;
-        $this->limiterNotifier                     = $limiterNotifier;
+        $this->subscriptionLimitNotifier                     = $subscriptionLimitNotifier;
     }
 
     /**
@@ -196,7 +196,7 @@ class SubscribeAction extends AbstractController
 
 
         if ($this->subscriptionLimiter->isSubscriptionLimitReached($request->getSession())) {
-            $this->limiterNotifier->notifyLimitReachedForCarrier($user->getCarrier());
+            $this->subscriptionLimitNotifier->notifyLimitReachedForCarrier($user->getCarrier());
             return RedirectResponse::create($this->defaultRedirectUrl);
         }
 

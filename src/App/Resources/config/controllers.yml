@@ -46,7 +46,7 @@ services:
             - '@App\Domain\Service\CarrierOTPVerifier'
             - '%default_redirect_url%'
             - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
-            - '@SubscriptionBundle\Service\CAPTool\LimiterNotifier'
+            - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier'
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
             - '@SubscriptionBundle\Service\VisitCAPTool\VisitTracker'
             - '@SubscriptionBundle\Service\VisitCAPTool\VisitNotifier'

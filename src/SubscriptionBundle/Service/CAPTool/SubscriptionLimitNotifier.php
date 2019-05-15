@@ -9,7 +9,7 @@ use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\Notification\Email\CAPNotificationSender;
 
-class LimiterNotifier
+class SubscriptionLimitNotifier
 {
     /**
      * @var CAPNotificationSender

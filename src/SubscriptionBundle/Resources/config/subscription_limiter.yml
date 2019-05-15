@@ -24,7 +24,7 @@ services:
             - '@SubscriptionBundle\Service\CampaignExtractor'
             - '@App\Domain\Repository\CarrierRepository'
 
-    SubscriptionBundle\Service\CAPTool\LimiterNotifier:
+    SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier:
         arguments:
             - '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender'
             - '@SubscriptionBundle\Service\EntitySaveHelper'

@@ -21,7 +21,7 @@ use IdentificationBundle\WifiIdentification\WifiIdentConfirmator;
 use IdentificationBundle\WifiIdentification\WifiIdentSMSSender;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
-use SubscriptionBundle\Service\CAPTool\LimiterNotifier;
+use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,9 +61,9 @@ class PinIdentificationController extends AbstractController implements APIContr
      */
     private $carrierRepository;
     /**
-     * @var LimiterNotifier
+     * @var SubscriptionLimitNotifier
      */
-    private $limiterNotifier;
+    private $subscriptionLimitNotifier;
 
     /**
      * PinIdentificationController constructor.
@@ -74,7 +74,7 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @param SubscriptionLimiter        $limiter
      * @param string                     $defaultRedirectUrl
      * @param CarrierRepositoryInterface $carrierRepository
-     * @param LimiterNotifier            $limiterNotifier
+     * @param SubscriptionLimitNotifier            $subscriptionLimitNotifier
      */
     public function __construct(
         WifiIdentSMSSender $identSMSSender,
@@ -84,7 +84,7 @@ class PinIdentificationController extends AbstractController implements APIContr
         SubscriptionLimiter $limiter,
         string $defaultRedirectUrl,
         CarrierRepositoryInterface $carrierRepository,
-        LimiterNotifier $limiterNotifier
+        SubscriptionLimitNotifier $subscriptionLimitNotifier
 
     )
     {
@@ -95,7 +95,7 @@ class PinIdentificationController extends AbstractController implements APIContr
         $this->limiter            = $limiter;
         $this->defaultRedirectUrl = $defaultRedirectUrl;
         $this->carrierRepository  = $carrierRepository;
-        $this->limiterNotifier    = $limiterNotifier;
+        $this->subscriptionLimitNotifier    = $subscriptionLimitNotifier;
     }
 
 
@@ -140,7 +140,7 @@ class PinIdentificationController extends AbstractController implements APIContr
         if ($this->limiter->isSubscriptionLimitReached($request->getSession())) {
 
             $carrier = $this->carrierRepository->findOneByBillingId($ispData->getCarrierId());
-            $this->limiterNotifier->notifyLimitReachedForCarrier($carrier);
+            $this->subscriptionLimitNotifier->notifyLimitReachedForCarrier($carrier);
 
             return $this->getSimpleJsonResponse('Subscription limit has been reached', 200, [], [
                 'success' => false, 'redirectUrl' => $this->defaultRedirectUrl
@@ -229,7 +229,7 @@ class PinIdentificationController extends AbstractController implements APIContr
         if ($this->limiter->isSubscriptionLimitReached($request->getSession())) {
 
             $carrier = $this->carrierRepository->findOneByBillingId((int)$carrierId);
-            $this->limiterNotifier->notifyLimitReachedForCarrier($carrier);
+            $this->subscriptionLimitNotifier->notifyLimitReachedForCarrier($carrier);
 
             return $this->getSimpleJsonResponse('Subscription limit has been reached', 200, [], [
                 'success' => false, 'redirectUrl' => $this->defaultRedirectUrl

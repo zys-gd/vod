@@ -17,7 +17,7 @@ use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
-use SubscriptionBundle\Service\CAPTool\LimiterNotifier;
+use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
 use SubscriptionBundle\Service\VisitCAPTool\VisitNotifier;
 use SubscriptionBundle\Service\VisitCAPTool\VisitTracker;
@@ -66,9 +66,9 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      */
     private $carrierRepository;
     /**
-     * @var LimiterNotifier
+     * @var SubscriptionLimitNotifier
      */
-    private $limiterNotifier;
+    private $subscriptionLimitNotifier;
     /**
      * @var VisitTracker
      */
@@ -88,7 +88,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param CarrierOTPVerifier         $OTPVerifier
      * @param string                     $defaultRedirectUrl
      * @param SubscriptionLimiter        $limiter
-     * @param LimiterNotifier            $limiterNotifier
+     * @param SubscriptionLimitNotifier            $subscriptionLimitNotifier
      * @param CarrierRepositoryInterface $carrierRepository
      * @param VisitTracker               $visitTracker
      * @param VisitNotifier              $notifier
@@ -101,7 +101,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         CarrierOTPVerifier $OTPVerifier,
         string $defaultRedirectUrl,
         SubscriptionLimiter $limiter,
-        LimiterNotifier $limiterNotifier,
+        SubscriptionLimitNotifier $subscriptionLimitNotifier,
         CarrierRepositoryInterface $carrierRepository,
         VisitTracker $visitTracker,
         VisitNotifier $notifier
@@ -116,7 +116,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->defaultRedirectUrl        = $defaultRedirectUrl;
         $this->limiter                   = $limiter;
         $this->carrierRepository         = $carrierRepository;
-        $this->limiterNotifier           = $limiterNotifier;
+        $this->subscriptionLimitNotifier           = $subscriptionLimitNotifier;
         $this->visitTracker              = $visitTracker;
         $this->visitNotifier             = $notifier;
     }
@@ -161,11 +161,11 @@ class LPController extends AbstractController implements ControllerWithISPDetect
                 $this->landingPageAccessResolver->ensureCanAccess($campaign, $carrier);
 
             } catch (SubscriptionCapReachedOnCarrier $e) {
-                $this->limiterNotifier->notifyLimitReachedForCarrier($e->getCarrier());
+                $this->subscriptionLimitNotifier->notifyLimitReachedForCarrier($e->getCarrier());
                 return RedirectResponse::create($this->defaultRedirectUrl);
 
             } catch (SubscriptionCapReachedOnAffiliate $e) {
-                $this->limiterNotifier->notifyLimitReachedByAffiliate($e->getConstraint(), $e->getCarrier());
+                $this->subscriptionLimitNotifier->notifyLimitReachedByAffiliate($e->getConstraint(), $e->getCarrier());
                 return RedirectResponse::create($this->defaultRedirectUrl);
 
             } catch (VisitCapReached $exception) {
