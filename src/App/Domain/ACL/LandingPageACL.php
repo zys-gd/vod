@@ -9,6 +9,7 @@ use App\Domain\ACL\Exception\CampaignAccessException;
 use App\Domain\ACL\Exception\CampaignPausedException;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
+use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 
 /**
  * Class LandingPageAccessResolver
@@ -57,8 +58,13 @@ class LandingPageACL
         }
 
         $affiliate = $campaign->getAffiliate();
+        /** @var ConstraintByAffiliate $constraint */
         foreach ($affiliate->getConstraints() as $constraint) {
             if ($carrier && $carrier->getUuid() !== $constraint->getCarrier()->getUuid()) {
+                continue;
+            }
+
+            if ($constraint->getCapType() !== ConstraintByAffiliate::CAP_TYPE_VISIT) {
                 continue;
             }
 
