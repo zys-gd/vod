@@ -12,7 +12,7 @@ namespace SubscriptionBundle\Service\CAPTool\Limiter;
 use IdentificationBundle\Entity\CarrierInterface;
 use Psr\Log\LoggerInterface;
 
-class CarrierCapChecker
+class SubscriptionCapChecker
 {
     /**
      * @var LimiterStorage
@@ -28,7 +28,7 @@ class CarrierCapChecker
     private $logger;
 
     /**
-     * CarrierCapChecker constructor.
+     * SubscriptionCapChecker constructor.
      * @param LimiterStorage      $limiterDataStorage
      * @param StorageKeyGenerator $storageKeyGenerator
      * @param LoggerInterface     $logger

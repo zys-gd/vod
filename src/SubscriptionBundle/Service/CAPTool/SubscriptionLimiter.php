@@ -10,7 +10,7 @@ use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\CampaignExtractor;
-use SubscriptionBundle\Service\CAPTool\Limiter\CarrierCapChecker;
+use SubscriptionBundle\Service\CAPTool\Limiter\SubscriptionCapChecker;
 use SubscriptionBundle\Service\CAPTool\Limiter\LimiterDataMapper;
 use SubscriptionBundle\Service\CAPTool\Limiter\LimiterStorage;
 use SubscriptionBundle\Service\CAPTool\Limiter\StorageKeyGenerator;
@@ -33,7 +33,7 @@ class SubscriptionLimiter
      */
     private $limiterDataStorage;
     /**
-     * @var CarrierCapChecker
+     * @var SubscriptionCapChecker
      */
     private $carrierCapChecker;
     /**
@@ -52,18 +52,18 @@ class SubscriptionLimiter
     /**
      * SubscriptionLimiter constructor.
      *
-     * @param LimiterStorage        $limiterDataStorage
-     * @param SubscriptionExtractor $subscriptionExtractor
-     * @param LimiterDataMapper     $limiterDataMapper
-     * @param CarrierCapChecker     $carrierCapChecker
-     * @param StorageKeyGenerator   $storageKeyGenerator
-     * @param CampaignExtractor     $campaignExtractor
+     * @param LimiterStorage         $limiterDataStorage
+     * @param SubscriptionExtractor  $subscriptionExtractor
+     * @param LimiterDataMapper      $limiterDataMapper
+     * @param SubscriptionCapChecker $carrierCapChecker
+     * @param StorageKeyGenerator    $storageKeyGenerator
+     * @param CampaignExtractor      $campaignExtractor
      */
     public function __construct(
         LimiterStorage $limiterDataStorage,
         SubscriptionExtractor $subscriptionExtractor,
         LimiterDataMapper $limiterDataMapper,
-        CarrierCapChecker $carrierCapChecker,
+        SubscriptionCapChecker $carrierCapChecker,
         StorageKeyGenerator $storageKeyGenerator,
         CampaignExtractor $campaignExtractor,
         LoggerInterface $logger

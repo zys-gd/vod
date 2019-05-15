@@ -196,7 +196,7 @@ class SubscribeAction extends AbstractController
 
 
         if ($this->subscriptionLimiter->isSubscriptionLimitReached($request->getSession())) {
-            $this->limiterNotifier->notifyLimitReached($user->getCarrier());
+            $this->limiterNotifier->notifyLimitReachedForCarrier($user->getCarrier());
             return RedirectResponse::create($this->defaultRedirectUrl);
         }
 

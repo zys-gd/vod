@@ -140,7 +140,7 @@ class PinIdentificationController extends AbstractController implements APIContr
         if ($this->limiter->isSubscriptionLimitReached($request->getSession())) {
 
             $carrier = $this->carrierRepository->findOneByBillingId($ispData->getCarrierId());
-            $this->limiterNotifier->notifyLimitReached($carrier);
+            $this->limiterNotifier->notifyLimitReachedForCarrier($carrier);
 
             return $this->getSimpleJsonResponse('Subscription limit has been reached', 200, [], [
                 'success' => false, 'redirectUrl' => $this->defaultRedirectUrl
@@ -229,7 +229,7 @@ class PinIdentificationController extends AbstractController implements APIContr
         if ($this->limiter->isSubscriptionLimitReached($request->getSession())) {
 
             $carrier = $this->carrierRepository->findOneByBillingId((int)$carrierId);
-            $this->limiterNotifier->notifyLimitReached($carrier);
+            $this->limiterNotifier->notifyLimitReachedForCarrier($carrier);
 
             return $this->getSimpleJsonResponse('Subscription limit has been reached', 200, [], [
                 'success' => false, 'redirectUrl' => $this->defaultRedirectUrl

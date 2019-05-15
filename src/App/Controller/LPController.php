@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Domain\ACL\Exception\AccessException;
-use App\Domain\ACL\Exception\AffiliateConstraintAccessException;
+use App\Domain\ACL\Exception\SubscriptionCapReachedOnAffiliate;
+use App\Domain\ACL\Exception\SubscriptionCapReachedOnCarrier;
+use App\Domain\ACL\Exception\VisitCapReached;
 use App\Domain\ACL\LandingPageACL;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
@@ -14,11 +16,11 @@ use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
-use SubscriptionBundle\Service\VisitCAPTool\VisitNotifier;
-use SubscriptionBundle\Service\VisitCAPTool\VisitTracker;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Service\CAPTool\LimiterNotifier;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
+use SubscriptionBundle\Service\VisitCAPTool\VisitNotifier;
+use SubscriptionBundle\Service\VisitCAPTool\VisitTracker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -154,19 +156,27 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         $carrier = $this->resolveCarrierFromRequest($request);
         if ($carrier && $campaign) {
+
             try {
                 $this->landingPageAccessResolver->ensureCanAccess($campaign, $carrier);
-            } catch (AffiliateConstraintAccessException $exception) {
+
+            } catch (SubscriptionCapReachedOnCarrier $e) {
+                $this->limiterNotifier->notifyLimitReachedForCarrier($e->getCarrier());
+                return RedirectResponse::create($this->defaultRedirectUrl);
+
+            } catch (SubscriptionCapReachedOnAffiliate $e) {
+                $this->limiterNotifier->notifyLimitReachedByAffiliate($e->getConstraint(), $e->getCarrier());
+                return RedirectResponse::create($this->defaultRedirectUrl);
+
+            } catch (VisitCapReached $exception) {
                 $this->visitNotifier->notifyLimitReached($exception->getConstraint(), $carrier);
                 return RedirectResponse::create($this->defaultRedirectUrl);
+
             } catch (AccessException $exception) {
                 return RedirectResponse::create($this->defaultRedirectUrl);
+
             }
 
-            if ($this->limiter->isSubscriptionLimitReached($request->getSession())) {
-                $this->limiterNotifier->notifyLimitReached($carrier);
-                return RedirectResponse::create($this->defaultRedirectUrl);
-            }
 
             $this->visitTracker->trackVisit($carrier, $campaign, $session->getId());
         }

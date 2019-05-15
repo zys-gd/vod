@@ -11,7 +11,7 @@ namespace App\Domain\ACL\Exception;
 
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 
-class AffiliateConstraintAccessException extends AccessException
+class VisitCapReached extends AccessException
 {
     /**
      * @var ConstraintByAffiliate
@@ -20,7 +20,7 @@ class AffiliateConstraintAccessException extends AccessException
 
 
     /**
-     * AffiliateConstraintAccessException constructor.
+     * VisitCapReached constructor.
      * @param ConstraintByAffiliate $constraint
      */
     public function __construct(ConstraintByAffiliate $constraint)
