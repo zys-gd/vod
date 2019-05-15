@@ -166,6 +166,7 @@ class CommonFlowHandler
     /**
      * @param Request $request
      * @param User    $User
+     *
      * @return Response
      * @throws ActiveSubscriptionPackNotFound
      * @throws ExistingSubscriptionException
@@ -192,7 +193,8 @@ class CommonFlowHandler
         if ($this->checker->isStatusOkForResubscribe($subscription)) {
             return $this->handleResubscribeAttempt($request, $User, $subscription, $subscriber);
 
-        } else {
+        }
+        else {
             $this->logger->debug('`Subscribe` is not possible. User already have an active subscription.');
             if (
                 $subscriber instanceof HasCustomResponses &&
@@ -221,6 +223,7 @@ class CommonFlowHandler
      * @param User         $User
      * @param Subscription $subscription
      * @param              $subscriber
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse|RedirectResponse|Response
      * @throws ActiveSubscriptionPackNotFound
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -251,7 +254,8 @@ class CommonFlowHandler
             $additionalData = $subscriber->getAdditionalSubscribeParams($request, $User);
             $result         = $this->subscriber->resubscribe($subscription, $subscriptionPack, $additionalData);
 
-        } else {
+        }
+        else {
             $this->logger->debug('Resubscription is not allowed.', [
                 'packId'      => $subpackId,
                 'carrierName' => $subpackName
@@ -259,7 +263,8 @@ class CommonFlowHandler
 
             if ($request->get('is_ajax_request', null)) {
                 return $this->getSimpleJsonResponse('', 200, [], ['resub_not_allowed' => true]);
-            } else {
+            }
+            else {
                 return new RedirectResponse($this->router->generate($this->resubNotAllowedRoute));
             }
         }
@@ -267,8 +272,13 @@ class CommonFlowHandler
 
         if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
             $isAffTracked = $subscriber->isAffiliateTrackedForResub($result);
-        } else {
-            $isAffTracked = ($result->isSuccessful() && $result->isFinal());;
+        }
+        else {
+            $isAffTracked = ($result->isSuccessful() && $result->isFinal());
+            $this->logger->debug('Is need to track affiliate log?', [
+                'result'       => $result,
+                'isAffTracked' => $isAffTracked
+            ]);
         }
         if ($isAffTracked) {
             $this->subscriptionEventTracker->trackAffiliate($subscription);
@@ -277,7 +287,8 @@ class CommonFlowHandler
 
         if ($subscriber instanceof HasCustomPiwikTrackingRules) {
             $isPiwikTracked = $subscriber->isPiwikTrackedForResub($result);
-        } else {
+        }
+        else {
             $isPiwikTracked = ($result->isFailedOrSuccessful() && $result->isFinal());;
         }
         if ($isPiwikTracked) {
@@ -295,6 +306,7 @@ class CommonFlowHandler
      * @param Request       $request
      * @param User          $User
      * @param HasCommonFlow $subscriber
+     *
      * @return null|Response
      * @throws ActiveSubscriptionPackNotFound
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -309,7 +321,8 @@ class CommonFlowHandler
 
         if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
             $isAffTracked = $subscriber->isAffiliateTrackedForSub($result);
-        } else {
+        }
+        else {
             $isAffTracked = ($result->isSuccessful() && $result->isFinal());
         }
 
@@ -320,7 +333,8 @@ class CommonFlowHandler
 
         if ($subscriber instanceof HasCustomPiwikTrackingRules) {
             $isPiwikTracked = $subscriber->isPiwikTrackedForSub($result);
-        } else {
+        }
+        else {
             $isPiwikTracked = ($result->isFailedOrSuccessful() && $result->isFinal());
         }
         if ($isPiwikTracked) {
