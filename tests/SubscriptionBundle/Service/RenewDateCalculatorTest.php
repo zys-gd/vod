@@ -25,7 +25,7 @@ class RenewDateCalculatorTest extends TestCase
      */
     public function testCalculateRenewDate()
     {
-        $knownDate = Carbon::create(2019, 4, 3, 01);
+        $knownDate = Carbon::create(date('Y'), date('m'), date('d'), 01);
         Carbon::setTestNow($knownDate);
 
         $subscriptionPack = new SubscriptionPack(UuidGenerator::generate());
