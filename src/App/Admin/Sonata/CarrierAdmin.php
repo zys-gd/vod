@@ -48,16 +48,6 @@ class CarrierAdmin extends AbstractAdmin
     private $storageKeyGenerator;
 
     /**
-     * @var array
-     */
-    protected $datagridValues = [
-        'published' => [
-            'type'  => EqualType::TYPE_IS_EQUAL, // => 1
-            'value' => BooleanType::TYPE_YES     // => 1
-        ]
-    ];
-
-    /**
      * CarrierAdmin constructor
      *
      * @param string $code
