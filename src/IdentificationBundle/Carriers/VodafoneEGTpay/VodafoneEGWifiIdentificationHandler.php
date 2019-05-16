@@ -85,11 +85,11 @@ class VodafoneEGWifiIdentificationHandler implements WifiIdentificationHandlerIn
     {
         $data = $pinRequestResult->getRawData();
 
-        if (empty($data['subscription_contract_id'])) {
-            throw new WifiIdentConfirmException("Can't process pin verification. Missing required parameter `subscription_contract_id`");
+        if (empty($data['subscription_contract_id']) || empty($data['transactionId'])) {
+            throw new WifiIdentConfirmException("Can't process pin verification. Missing required parameters");
         }
 
-        return ['client_user' => $data['subscription_contract_id']];
+        return ['client_user' => $data['subscription_contract_id'], 'transactionId' => $data['transactionId']];
     }
 
     /**
