@@ -106,11 +106,6 @@
                     .sourceTypes(['hls'])
                     .transformation({streaming_profile: 'hd'});
 
-                var changeVideo = function (element) {
-                    demoplayer.source(element.publicId, element.options);
-                };
-
-
                 demoplayer.on('percentsplayed', function (event) {
 
                     $.post(trackEventRoute, {
