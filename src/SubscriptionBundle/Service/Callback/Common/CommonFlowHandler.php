@@ -178,7 +178,7 @@ class CommonFlowHandler
         );
 
         $carrierHandler->afterProcess($subscription, $subscription->getUser(), $processResponse);
-        $callbackTypeHandler->afterProcess($processResponse, $subscription);
+        $callbackTypeHandler->afterProcess($subscription, $processResponse);
         $this->entitySaveHelper->persistAndSave($subscription);
 
         if ($carrierHandler instanceof HasCustomTrackingRules) {
