@@ -42,12 +42,16 @@ class SubscriptionCapChecker
 
     public function isCapReachedForCarrier(CarrierInterface $carrier): bool
     {
+        $carrierLimit = $carrier->getNumberOfAllowedSubscriptionsByConstraint();
+        if(!$carrierLimit) {
+            return false;
+        }
+
         $key = $this->storageKeyGenerator->generateKey($carrier);
 
         $pending      = $this->limiterDataStorage->getPendingSubscriptionAmount($key);
         $finished     = $this->limiterDataStorage->getFinishedSubscriptionAmount($key);
         $totalCount   = $pending + $finished;
-        $carrierLimit = $carrier->getNumberOfAllowedSubscriptionsByConstraint();
 
         $this->logger->debug('Carrier cap check', [
             'pending'      => $pending,
