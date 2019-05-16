@@ -10,7 +10,10 @@ services:
             - {name: identification.identification_handler}
 
     IdentificationBundle\Carriers\OrangeEGTpay\OrangeEGWifiIdentificationHandler:
-        arguments: ['@IdentificationBundle\Repository\UserRepository']
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@doctrine.orm.entity_manager'
+            - '@router'
         tags:
             - { name: identification.wifi_identification_handler }
 
