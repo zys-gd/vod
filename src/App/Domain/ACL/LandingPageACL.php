@@ -99,17 +99,17 @@ class LandingPageACL
     public function ensureCanAccess(Campaign $campaign, Carrier $carrier): void
     {
         if ($campaign->getIsPause()) {
-            $this->logger->debug('Campaign on pause');
+            $this->logger->debug('CAP checking on LP', ['message' => 'Campaign on pause']);
             throw new CampaignPausedException();
         }
 
         if (!$this->visitAccessorByCampaign->canVisit($campaign, $carrier)) {
-            $this->logger->debug('visitAccessorByCampaign say: cant visit');
+            $this->logger->debug('CAP checking on LP', ['message' => 'visitAccessorByCampaign say: cant visit']);
             throw new CampaignAccessException($campaign);
         }
 
         if ($this->carrierCapChecker->isCapReachedForCarrier($carrier)) {
-            $this->logger->debug('isCapReachedForCarrier say: isCapReachedForCarrier = true');
+            $this->logger->debug('CAP checking on LP', ['message' => 'isCapReachedForCarrier say: isCapReachedForCarrier = true']);
             throw new SubscriptionCapReachedOnCarrier($carrier);
         }
 
@@ -123,7 +123,8 @@ class LandingPageACL
 
             if ($constraint->getCapType() == ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE) {
                 if ($this->carrierCapChecker->isCapReachedForAffiliate($constraint)) {
-                    $this->logger->debug('Constraint by aff say: isCapReachedForAffiliate = true', [
+                    $this->logger->debug('CAP checking on LP', [
+                        'message' => 'Constraint by aff say: isCapReachedForAffiliate = true',
                         'constraint' => $constraint
                     ]);
                     throw new SubscriptionCapReachedOnAffiliate($constraint, $carrier);
@@ -132,7 +133,8 @@ class LandingPageACL
 
             if ($constraint->getCapType() == ConstraintByAffiliate::CAP_TYPE_VISIT) {
                 if (!$this->visitConstraintByAffiliate->canVisit($carrier, $constraint)) {
-                    $this->logger->debug('Constraint by aff say: CanVisit = false', [
+                    $this->logger->debug('CAP checking on LP', [
+                        'message' => 'Constraint by aff say: CanVisit = false',
                         'constraint' => $constraint
                     ]);
                     throw new VisitCapReached($constraint);

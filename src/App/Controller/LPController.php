@@ -17,6 +17,7 @@ use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
+use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
@@ -82,6 +83,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var VisitNotifier
      */
     private $visitNotifier;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * LPController constructor.
@@ -98,6 +103,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param CarrierRepositoryInterface $carrierRepository
      * @param VisitTracker               $visitTracker
      * @param VisitNotifier              $notifier
+     * @param LoggerInterface            $logger
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
@@ -111,7 +117,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         SubscriptionLimitNotifier $subscriptionLimitNotifier,
         CarrierRepositoryInterface $carrierRepository,
         VisitTracker $visitTracker,
-        VisitNotifier $notifier
+        VisitNotifier $notifier,
+        LoggerInterface $logger
     )
     {
         $this->contentStatisticSender    = $contentStatisticSender;
@@ -126,6 +133,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->subscriptionLimitNotifier = $subscriptionLimitNotifier;
         $this->visitTracker              = $visitTracker;
         $this->visitNotifier             = $notifier;
+        $this->logger                    = $logger;
     }
 
 
@@ -157,34 +165,38 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             // Useless method atm.
             AffiliateVisitSaver::saveCampaignId($cid, $session);
             $campaignBanner = $this->imageBaseUrl . '/' . $campaign->getImagePath();
-            $background = $campaign->getBgColor();
+            $background     = $campaign->getBgColor();
         }
 
         $carrier = $this->resolveCarrierFromRequest($request);
         if ($carrier && $campaign) {
-
+            $this->logger->debug('Start CAP checking');
             try {
                 $this->landingPageAccessResolver->ensureCanAccess($campaign, $carrier);
 
             } catch (SubscriptionCapReachedOnCarrier $e) {
+                $this->logger->debug('CAP checking throw SubscriptionCapReachedOnCarrier');
                 $this->subscriptionLimitNotifier->notifyLimitReachedForCarrier($e->getCarrier());
                 return RedirectResponse::create($this->defaultRedirectUrl);
 
             } catch (SubscriptionCapReachedOnAffiliate $e) {
+                $this->logger->debug('CAP checking throw SubscriptionCapReachedOnAffiliate');
                 $this->subscriptionLimitNotifier->notifyLimitReachedByAffiliate($e->getConstraint(), $e->getCarrier());
                 return RedirectResponse::create($this->defaultRedirectUrl);
 
             } catch (VisitCapReached $exception) {
+                $this->logger->debug('CAP checking throw VisitCapReached');
                 $this->visitNotifier->notifyLimitReached($exception->getConstraint(), $carrier);
                 return RedirectResponse::create($this->defaultRedirectUrl);
 
             } catch (AccessException $exception) {
+                $this->logger->debug('CAP checking throw AccessException');
                 return RedirectResponse::create($this->defaultRedirectUrl);
 
             }
 
-
             $this->visitTracker->trackVisit($carrier, $campaign, $session->getId());
+            $this->logger->debug('Finish CAP checking');
         }
 
 
@@ -195,11 +207,11 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $ispData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession());
         $this->contentStatisticSender->trackVisit($ispData ? new ISPData($ispData['carrier_id']) : null);
 
-        if(!(bool)$this->dataStorage->readValue('is_wifi_flow') && $this->landingPageAccessResolver->isLandingDisabled($request)) {
+        if (!(bool)$this->dataStorage->readValue('is_wifi_flow') && $this->landingPageAccessResolver->isLandingDisabled($request)) {
             return new RedirectResponse($this->generateUrl('identify_and_subscribe'));
         }
 
-        if(!$cid) {
+        if (!$cid) {
             $this->OTPVerifier->forceWifi($session);
         }
 
@@ -223,6 +235,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
     /**
      * @param Request $request
+     *
      * @return Carrier|null
      */
     private function resolveCarrierFromRequest(Request $request): ?Carrier
@@ -231,7 +244,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $billingCarrierId = (int)$ispDetectionData['carrier_id'] ?? null;
         if (!empty($billingCarrierId)) {
             return $this->carrierRepository->findOneByBillingId($billingCarrierId);
-        } else {
+        }
+        else {
             return null;
         }
     }
@@ -246,7 +260,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         if ($campaign) {
             return $campaign;
-        } else {
+        }
+        else {
             return null;
         }
 
