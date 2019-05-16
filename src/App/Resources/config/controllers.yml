@@ -45,6 +45,7 @@ services:
             - '%images_base_url%'
             - '@App\Domain\Service\CarrierOTPVerifier'
             - '%default_redirect_url%'
+            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
             - '@App\CarrierTemplate\TemplateConfigurator'
 
     App\Controller\ErrorController:

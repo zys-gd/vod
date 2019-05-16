@@ -27,7 +27,13 @@ App\Domain\Entity\Carrier:
             type: boolean
             options:
                 default: false
-        lpOtp:
+#        remove (deprecated)
+#        lpOtp:
+#            type: boolean
+#            nullable: true
+#            options:
+#                default: false
+        isConfirmationClick:
             type: boolean
             options:
                 default: false
@@ -91,6 +97,10 @@ App\Domain\Entity\Carrier:
         isCapAlertDispatch:
             type: boolean
             nullable: false
+            options:
+                default: false
+        isLpOff:
+            type: boolean
             options:
                 default: false
 

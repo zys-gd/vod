@@ -42,7 +42,7 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $countryCode                             = $row['countryCode'];
             $isp                                     = $row['isp'];
             $published                               = $row['published'];
-            $lpOtp                                   = $row['lpOtp'];
+            $isConfirmationClick                                  = $row['isConfirmationClick'];
             $pinIdentSupport                         = $row['pinIdentSupport'];
             $trialInitializer                        = $row['trial_initializer'];
             $trialPeriod                             = $row['trial_period'];
@@ -71,7 +71,7 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $carrier->setTrialPeriod($trialPeriod);
             $carrier->setSubscriptionPeriod($subscriptionPeriod);
             $carrier->setOperatorId($operatorId);
-            $carrier->setLpOtp($lpOtp);
+            $carrier->setIsConfirmationClick($isConfirmationClick);
             $carrier->setPinIdentSupport($pinIdentSupport);
             $carrier->setResubAllowed($resubAllowed);
             $carrier->setIsCampaignsOnPause($isCampaignsOnPause);

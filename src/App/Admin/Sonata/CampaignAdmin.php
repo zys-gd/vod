@@ -134,7 +134,8 @@ class CampaignAdmin extends AbstractAdmin
             ->add('bgColor')
             ->add('campaignToken')
             ->add('textColor')
-            ->add('isPause');
+            ->add('isPause')
+            ->add('isLpOff');
     }
 
     /**
@@ -160,6 +161,7 @@ class CampaignAdmin extends AbstractAdmin
             ->add('landingUrl', null, [
                 'label' => 'Landing page'
             ])
+            ->add('isLpOff')
             ->add('carriers')
             ->add('_action', null, [
                 'actions' => [
@@ -185,6 +187,10 @@ class CampaignAdmin extends AbstractAdmin
             ->add('carriers')
             ->add('bgColor')
             ->add('textColor')
+            ->add('isLpOff', null, [
+                'label' => 'Turn off LP showing',
+                'help' => 'If consent page exist, then show it. Otherwise will try to subscribe'
+            ])
             ->add('isPause', null,
                 ['label' => 'Pause'])
             ->add('pausedCampaigns', null, [
@@ -258,6 +264,10 @@ class CampaignAdmin extends AbstractAdmin
             ])
             ->add('isPause', null, [
                 'label' => 'Pause',
+            ])
+            ->add('isLpOff', null, [
+                'label' => 'Turn off LP showing',
+                'help' => 'If consent page exist, then show it. Otherwise will try to subscribe'
             ])
             ->end()
             ->end();

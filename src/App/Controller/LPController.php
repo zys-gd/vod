@@ -10,6 +10,7 @@ use App\Domain\Service\ContentStatisticSender;
 use App\Domain\ACL\LandingPageACL;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
+use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -52,6 +53,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var TemplateConfigurator
      */
     private $templateConfigurator;
+    /**
+     * @var IdentificationDataStorage
+     */
+    private $dataStorage;
 
     /**
      * LPController constructor.
@@ -63,6 +68,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param CarrierOTPVerifier $OTPVerifier
      * @param string $defaultRedirectUrl
      * @param TemplateConfigurator $templateConfigurator
+     * @param IdentificationDataStorage $dataStorage
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
@@ -71,7 +77,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         string $imageBaseUrl,
         CarrierOTPVerifier $OTPVerifier,
         string $defaultRedirectUrl,
-        TemplateConfigurator $templateConfigurator
+        TemplateConfigurator $templateConfigurator,
+        IdentificationDataStorage $dataStorage
     )
     {
         $this->contentStatisticSender    = $contentStatisticSender;
@@ -81,6 +88,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->OTPVerifier               = $OTPVerifier;
         $this->defaultRedirectUrl        = $defaultRedirectUrl;
         $this->templateConfigurator      = $templateConfigurator;
+        $this->dataStorage = $dataStorage;
     }
 
 
@@ -117,9 +125,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
                 $background = $campaign->getBgColor();
             }
         }
-        else {
-            $this->OTPVerifier->forceWifi($session);
-        }
 
         AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
 
@@ -131,6 +136,14 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $ispDataInstance = $carrierId ? new ISPData($carrierId) : null;
 
         $this->contentStatisticSender->trackVisit($ispDataInstance);
+
+        if(!(bool)$this->dataStorage->readValue('is_wifi_flow') && $this->landingPageAccessResolver->isLandingDisabled($request)) {
+            return new RedirectResponse($this->generateUrl('identify_and_subscribe'));
+        }
+
+        if(!$cid) {
+            $this->OTPVerifier->forceWifi($session);
+        }
 
         $template = $this->templateConfigurator->getTemplate('landing', (int) $carrierId);
 

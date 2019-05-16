@@ -42,10 +42,13 @@ class Carrier implements CarrierInterface, HasUuid
      */
     private $published = false;
 
+    private $lpOtp = null;
     /**
-     * @var boolean
+     * former lpOtp
+     * is needed subscribe confirmation click
+     * @var bool
      */
-    private $lpOtp = false;
+    private $isConfirmationClick = false;
 
     /**
      * Is carrier supports wi-fi flow identification via sms pin code
@@ -133,6 +136,11 @@ class Carrier implements CarrierInterface, HasUuid
      * @var \App\Domain\Entity\Language
      */
     private $defaultLanguage;
+
+    /**
+     * @var bool
+     */
+    private $isLpOff = false;
 
     /**
      * Carrier constructor.
@@ -375,38 +383,6 @@ class Carrier implements CarrierInterface, HasUuid
     public function isPublished()
     {
         return $this->published;
-    }
-
-
-    /**
-     * @param bool $lpOtp
-     *
-     * @return Carrier
-     */
-    public function setLpOtp($lpOtp): Carrier
-    {
-        $this->lpOtp = $lpOtp;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isLpOtp()
-    {
-        return $this->lpOtp;
-    }
-
-
-    /**
-     * Get published
-     *
-     * @return boolean
-     */
-    public function getLpOtp()
-    {
-        return $this->lpOtp;
     }
 
     /**
@@ -694,6 +670,38 @@ class Carrier implements CarrierInterface, HasUuid
     public function getCounter(): ?int
     {
         return isset($this->counter) ? $this->counter : null;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isConfirmationClick(): bool
+    {
+        return $this->isConfirmationClick;
+    }
+
+    /**
+     * @param bool $isConfirmationClick
+     */
+    public function setIsConfirmationClick(bool $isConfirmationClick): void
+    {
+        $this->isConfirmationClick = $isConfirmationClick;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLpOff(): bool
+    {
+        return $this->isLpOff;
+    }
+
+    /**
+     * @param bool $isLpOff
+     */
+    public function setIsLpOff(bool $isLpOff): void
+    {
+        $this->isLpOff = $isLpOff;
     }
 
 }
