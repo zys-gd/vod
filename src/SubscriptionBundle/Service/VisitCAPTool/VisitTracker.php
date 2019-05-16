@@ -11,6 +11,7 @@ namespace SubscriptionBundle\Service\VisitCAPTool;
 
 use App\Domain\Entity\Campaign;
 use IdentificationBundle\Entity\CarrierInterface;
+use Psr\Log\LoggerInterface;
 
 class VisitTracker
 {
@@ -26,19 +27,29 @@ class VisitTracker
      * @var KeyGenerator
      */
     private $keyGenerator;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
 
     /**
      * VisitTracker constructor.
+     *
      * @param ConstraintValidityChecker $constraintValidityChecker
      * @param VisitStorage              $visitStorage
      * @param KeyGenerator              $keyGenerator
+     * @param LoggerInterface           $logger
      */
-    public function __construct(ConstraintValidityChecker $constraintValidityChecker, VisitStorage $visitStorage, KeyGenerator $keyGenerator)
+    public function __construct(ConstraintValidityChecker $constraintValidityChecker,
+        VisitStorage $visitStorage,
+        KeyGenerator $keyGenerator,
+        LoggerInterface $logger)
     {
         $this->constraintValidityChecker = $constraintValidityChecker;
         $this->visitStorage              = $visitStorage;
         $this->keyGenerator              = $keyGenerator;
+        $this->logger                    = $logger;
     }
 
     public function trackVisit(CarrierInterface $carrier, Campaign $campaign, string $visitInfo)
@@ -48,6 +59,7 @@ class VisitTracker
 
         $key = $this->keyGenerator->generateVisitKey($carrier, $affiliate);
         $this->visitStorage->storeVisit($key, $visitInfo);
+        $this->logger->debug('CAP Track visit', ['key' => $key]);
     }
 
 }

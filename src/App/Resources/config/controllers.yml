@@ -51,6 +51,7 @@ services:
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
             - '@SubscriptionBundle\Service\VisitCAPTool\VisitTracker'
             - '@SubscriptionBundle\Service\VisitCAPTool\VisitNotifier'
+            - '@logger'
 
     App\Controller\ErrorController:
         arguments:
