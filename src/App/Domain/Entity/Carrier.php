@@ -90,7 +90,7 @@ class Carrier implements CarrierInterface
     /**
      * @var integer
      */
-    private $numberOfAllowedSubscription = null;
+    private $subscribeAttempts = null;
 
     /**
      * @var integer
@@ -468,19 +468,19 @@ class Carrier implements CarrierInterface
     }
 
     /**
-     * @param integer $numberOfAllowedSubscription
+     * @param integer $subscribeAttempts
      */
-    public function setNumberOfAllowedSubscription($numberOfAllowedSubscription)
+    public function setSubscribeAttempts($subscribeAttempts)
     {
-        $this->numberOfAllowedSubscription = $numberOfAllowedSubscription;
+        $this->subscribeAttempts = $subscribeAttempts;
     }
 
     /**
      * @return integer
      */
-    public function getNumberOfAllowedSubscription()
+    public function getSubscribeAttempts()
     {
-        return $this->numberOfAllowedSubscription;
+        return $this->subscribeAttempts;
     }
 
     /**
