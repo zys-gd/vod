@@ -96,6 +96,11 @@ class Affiliate implements HasUuid, AffiliateInterface
     private $constraints;
 
     /**
+     * @var bool
+     */
+    private $isLpOff = false;
+
+    /**
      * Affiliate constructor.
      * @param string $uuid
      */
@@ -596,5 +601,21 @@ class Affiliate implements HasUuid, AffiliateInterface
         });
 
         return $filteredByType->isEmpty() ? null : $filteredByType->first();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLpOff(): bool
+    {
+        return $this->isLpOff;
+    }
+
+    /**
+     * @param bool $isLpOff
+     */
+    public function setIsLpOff(bool $isLpOff): void
+    {
+        $this->isLpOff = $isLpOff;
     }
 }

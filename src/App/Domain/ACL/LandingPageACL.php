@@ -2,6 +2,11 @@
 
 namespace App\Domain\ACL;
 
+use App\Domain\Entity\Campaign;
+use App\Domain\Entity\Carrier;
+use App\Domain\Repository\CampaignRepository;
+use App\Domain\Repository\CarrierRepository;
+use App\Domain\ACL\Accessors\VisitConstraintByAffiliate;
 use App\Domain\ACL\Accessors\VisitAccessorByCampaign;
 use App\Domain\ACL\Accessors\VisitConstraintByAffiliate;
 use App\Domain\ACL\Exception\CampaignAccessException;
@@ -44,12 +49,18 @@ class LandingPageACL
      *
      * @param VisitConstraintByAffiliate $visitConstraintByAffiliate
      * @param VisitAccessorByCampaign    $visitAccessorByCampaign
+     * @param CarrierRepository          $carrierRepository
+     * @param CampaignRepository         $campaignRepository
+     * @param SessionInterface           $session
      * @param SubscriptionCapChecker     $subscriptionCapChecker
      * @param LoggerInterface            $logger
      */
     public function __construct(
         VisitConstraintByAffiliate $visitConstraintByAffiliate,
         VisitAccessorByCampaign $visitAccessorByCampaign,
+        CarrierRepository $carrierRepository,
+        CampaignRepository $campaignRepository,
+        SessionInterface $session
         SubscriptionCapChecker $subscriptionCapChecker,
         LoggerInterface $logger
     )
@@ -57,7 +68,10 @@ class LandingPageACL
         $this->visitConstraintByAffiliate = $visitConstraintByAffiliate;
         $this->visitAccessorByCampaign    = $visitAccessorByCampaign;
         $this->carrierCapChecker          = $subscriptionCapChecker;
-        $this->logger = $logger;
+        $this->logger                     = $logger;
+        $this->carrierRepository          = $carrierRepository;
+        $this->campaignRepository         = $campaignRepository;
+        $this->session                    = $session;
     }
 
     /**
@@ -108,6 +122,28 @@ class LandingPageACL
                     throw new VisitCapReached($constraint);
                 }
             }
+        }
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return bool
+     */
+    public function isLandingDisabled(Request $request): bool
+    {
+        try {
+            $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
+            $campaignToken    = $request->get('cid', '');
+            /** @var Carrier $carrier */
+            $carrier = $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id']);
+
+            /** @var Campaign $campaign */
+            $campaign = $this->campaignRepository->findOneBy(['campaignToken' => $campaignToken]);
+            // $campaign->getAffiliate()
+            return $carrier->isLpOff() || $campaign->isLpOff() || $campaign->getAffiliate()->isLpOff();
+        } catch (\Throwable $e) {
+            return false;
         }
     }
 }

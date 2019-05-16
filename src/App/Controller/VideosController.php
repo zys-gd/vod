@@ -3,6 +3,7 @@
 
 namespace App\Controller;
 
+use App\Domain\DTO\BatchOfNotExpiredVideos;
 use App\Domain\Entity\MainCategory;
 use App\Domain\Entity\UploadedVideo;
 use App\Domain\Repository\MainCategoryRepository;
@@ -69,6 +70,7 @@ class VideosController extends AbstractController implements AppControllerInterf
 
         $offset = $request->get('offset', 0);
 
+        /** @var BatchOfNotExpiredVideos $videos */
         $videos = $this->videoRepository->findNotExpiredBySubcategories(
             $category->getSubcategories()->toArray(),
             $offset
@@ -76,14 +78,18 @@ class VideosController extends AbstractController implements AppControllerInterf
 
         $serializedData = [];
 
-        /** @var UploadedVideo[] $videos */
-        foreach ($videos as $video) {
-            $serializedData[] = $this->videoSerializer->serialize($video);
+        foreach ($videos->getVideos() as $video) {
+            $serializedData[] = $this->videoSerializer->serializeShort($video);
         }
 
-        return $this->render('@App/Components/category_player_related_videos.html.twig', [
+        $html = $this->renderView('@App/Components/category_player_related_videos.html.twig', [
             'videos'   => $serializedData,
             'category' => $category
+        ]);
+
+        return new JsonResponse([
+            'html' => $html,
+            'isLast' => $videos->isLast()
         ]);
     }
 
@@ -111,6 +117,7 @@ class VideosController extends AbstractController implements AppControllerInterf
 
         $offset = $request->get('offset', 0);
 
+        /** @var BatchOfNotExpiredVideos $videos */
         $videos = $this->videoRepository->findNotExpiredBySubcategories(
             $category->getSubcategories()->toArray(),
             $offset,
@@ -119,9 +126,8 @@ class VideosController extends AbstractController implements AppControllerInterf
 
         $serializedData = [];
 
-        /** @var UploadedVideo[] $videos */
-        foreach ($videos as $video) {
-            $serializedData[] = $this->videoSerializer->serialize($video);
+        foreach ($videos->getVideos() as $video) {
+            $serializedData[] = $this->videoSerializer->serializeShort($video);
         }
 
         $html = $this->renderView('@App/Components/player_related_videos.html.twig', [
@@ -131,7 +137,7 @@ class VideosController extends AbstractController implements AppControllerInterf
 
         return new JsonResponse([
             'html' => $html,
-            'isLast' => count($serializedData) < 20
+            'isLast' => $videos->isLast()
         ]);
     }
 }

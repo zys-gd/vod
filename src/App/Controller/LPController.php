@@ -14,6 +14,7 @@ use App\Domain\Service\CarrierOTPVerifier;
 use App\Domain\Service\ContentStatisticSender;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
+use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
@@ -58,6 +59,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      */
     private $defaultRedirectUrl;
     /**
+     * @var IdentificationDataStorage
+     */
+    private $dataStorage;
+    /**
      * @var SubscriptionLimiter
      */
     private $limiter;
@@ -87,8 +92,9 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param string                     $imageBaseUrl
      * @param CarrierOTPVerifier         $OTPVerifier
      * @param string                     $defaultRedirectUrl
+     * @param IdentificationDataStorage  $dataStorage
      * @param SubscriptionLimiter        $limiter
-     * @param SubscriptionLimitNotifier            $subscriptionLimitNotifier
+     * @param SubscriptionLimitNotifier  $subscriptionLimitNotifier
      * @param CarrierRepositoryInterface $carrierRepository
      * @param VisitTracker               $visitTracker
      * @param VisitNotifier              $notifier
@@ -100,12 +106,12 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         string $imageBaseUrl,
         CarrierOTPVerifier $OTPVerifier,
         string $defaultRedirectUrl,
+        IdentificationDataStorage $dataStorage,
         SubscriptionLimiter $limiter,
         SubscriptionLimitNotifier $subscriptionLimitNotifier,
         CarrierRepositoryInterface $carrierRepository,
         VisitTracker $visitTracker,
         VisitNotifier $notifier
-
     )
     {
         $this->contentStatisticSender    = $contentStatisticSender;
@@ -114,9 +120,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->imageBaseUrl              = $imageBaseUrl;
         $this->OTPVerifier               = $OTPVerifier;
         $this->defaultRedirectUrl        = $defaultRedirectUrl;
+        $this->dataStorage               = $dataStorage;
         $this->limiter                   = $limiter;
         $this->carrierRepository         = $carrierRepository;
-        $this->subscriptionLimitNotifier           = $subscriptionLimitNotifier;
+        $this->subscriptionLimitNotifier = $subscriptionLimitNotifier;
         $this->visitTracker              = $visitTracker;
         $this->visitNotifier             = $notifier;
     }
@@ -145,13 +152,12 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             return RedirectResponse::create($this->defaultRedirectUrl);
         }
 
+        /** @var Campaign $campaign */
         if ($campaign) {
             // Useless method atm.
             AffiliateVisitSaver::saveCampaignId($cid, $session);
             $campaignBanner = $this->imageBaseUrl . '/' . $campaign->getImagePath();
-            $background     = $campaign->getBgColor();
-        } else {
-            $this->OTPVerifier->forceWifi($session);
+            $background = $campaign->getBgColor();
         }
 
         $carrier = $this->resolveCarrierFromRequest($request);
@@ -188,6 +194,14 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         // carrier data and in this case BadRequestHttpException will be throw
         $ispData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession());
         $this->contentStatisticSender->trackVisit($ispData ? new ISPData($ispData['carrier_id']) : null);
+
+        if(!(bool)$this->dataStorage->readValue('is_wifi_flow') && $this->landingPageAccessResolver->isLandingDisabled($request)) {
+            return new RedirectResponse($this->generateUrl('identify_and_subscribe'));
+        }
+
+        if(!$cid) {
+            $this->OTPVerifier->forceWifi($session);
+        }
 
         return $this->render('@App/Common/landing.html.twig', [
             'campaignBanner' => $campaignBanner,

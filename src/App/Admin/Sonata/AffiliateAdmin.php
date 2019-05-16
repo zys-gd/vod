@@ -75,6 +75,7 @@ class AffiliateAdmin extends AbstractAdmin
             ->add('commercialContact')
             ->add('technicalContact')
             ->add('skypeId')
+            ->add('isLpOff')
             ->add('enabled');
     }
 
@@ -87,6 +88,7 @@ class AffiliateAdmin extends AbstractAdmin
             ->add('name')
             ->add('uuid')
             ->add('url')
+            ->add('isLpOff')
             ->add('enabled', null, [
                 'label' => 'Is Enabled?'
             ])
@@ -112,6 +114,10 @@ class AffiliateAdmin extends AbstractAdmin
             ->add('commercialContact')
             ->add('technicalContact')
             ->add('skypeId')
+            ->add('isLpOff', null, [
+                'label' => 'Turn off LP showing',
+                'help' => 'If consent page exist, then show it. Otherwise will try to subscribe'
+            ])
             ->add('enabled');
     }
 
@@ -165,6 +171,10 @@ class AffiliateAdmin extends AbstractAdmin
                 'constraints' => [
                     new NotBlank()
                 ]
+            ])
+            ->add('isLpOff', null, [
+                'label' => 'Turn off LP showing',
+                'help' => 'If consent page exist, then show it. Otherwise will try to subscribe'
             ])
             ->end()
             ->end();

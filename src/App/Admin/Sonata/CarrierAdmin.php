@@ -107,7 +107,7 @@ class CarrierAdmin extends AbstractAdmin
             ->add('defaultLanguage')
             ->add('isp')
             ->add('published')
-            ->add('lpOtp')
+            ->add('isConfirmationClick')
             ->add('pinIdentSupport')
             ->add('trialInitializer')
             ->add('trialPeriod')
@@ -117,7 +117,8 @@ class CarrierAdmin extends AbstractAdmin
             ->add('resubAllowed')
             ->add('isCampaignsOnPause')
             ->add('isUnlimitedSubscriptionAttemptsAllowed')
-            ->add('numberOfAllowedSubscription');
+            ->add('subscribeAttempts')
+            ->add('isLpOff');
     }
 
     /**
@@ -133,13 +134,14 @@ class CarrierAdmin extends AbstractAdmin
             ->add('defaultLanguage', TextType::class)
             ->add('isp')
             ->add('published')
-            ->add('lpOtp')
+            ->add('isConfirmationClick')
             ->add('pinIdentSupport')
             ->add('trialInitializer')
             ->add('trialPeriod')
             ->add('subscriptionPeriod')
             ->add('resubAllowed')
             ->add('isCampaignsOnPause')
+            ->add('isLpOff')
             ->add('_action', null, [
                 'actions' => [
                     'show'   => [],
@@ -167,8 +169,12 @@ class CarrierAdmin extends AbstractAdmin
             ->add('defaultLanguage')
             ->add('isp')
             ->add('published')
-            ->add('lpOtp')
+            ->add('isConfirmationClick')
             ->add('pinIdentSupport')
+            ->add('isLpOff', null, [
+                'label' => 'Turn off LP showing',
+                'help' => 'If consent page exist, then show it. Otherwise will try to subscribe'
+            ])
             ->add('trialInitializer')
             ->add('trialPeriod')
             ->add('subscriptionPeriod')
@@ -179,7 +185,7 @@ class CarrierAdmin extends AbstractAdmin
             ->add('isUnlimitedSubscriptionAttemptsAllowed', null, [
                 'attr' => ["class" => "unlimited-games"]
             ])
-            ->add('numberOfAllowedSubscription', null, [
+            ->add('subscribeAttempts', null, [
                 'attr' => ["class" => "count-of-subs"]
             ]);
     }
@@ -211,15 +217,19 @@ class CarrierAdmin extends AbstractAdmin
             ->add('default_language')
             ->add('isp')
             ->add('published')
-            ->add('lpOtp')
+            ->add('isConfirmationClick')
             ->add('pinIdentSupport')
+            ->add('isLpOff', null, [
+                'label' => 'Turn off LP showing',
+                'help' => 'If consent page exist, then show it. Otherwise will try to subscribe'
+            ])
             ->add('trialInitializer')
             ->add('trialPeriod')
             ->add('subscriptionPeriod')
             ->add('resubAllowed')
             ->add('isCampaignsOnPause')
             ->add('isUnlimitedSubscriptionAttemptsAllowed')
-            ->add('numberOfAllowedSubscription')
+            ->add('subscribeAttempts')
             ->add('numberOfAllowedSubscriptionsByConstraint')
             ->add('counter')
             ->add('isCapAlertDispatch')

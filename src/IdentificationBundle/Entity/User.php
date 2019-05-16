@@ -78,6 +78,10 @@ class User
      * @var string
      */
     private $deviceModel;
+    /**
+     * @var string
+     */
+    private $providerId;
 
     /**
      * User constructor
@@ -361,4 +365,23 @@ class User
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
+    public function getProviderId(): ?string
+    {
+        return $this->providerId;
+    }
+
+    /**
+     * @param string $providerId
+     *
+     * @return User
+     */
+    public function setProviderId(string $providerId): User
+    {
+        $this->providerId = $providerId;
+
+        return $this;
+    }
 }

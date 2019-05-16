@@ -288,11 +288,11 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
         $carrier->setTrialPeriod(0);
         $carrier->setSubscriptionPeriod(7);
         $carrier->setOperatorId('');
-        $carrier->setLpOtp(false);
+        $carrier->setIsConfirmationClick(false);
         $carrier->setPinIdentSupport(false);
         $carrier->setResubAllowed(false);
         $carrier->setIsCampaignsOnPause(false);
-        $carrier->setNumberOfAllowedSubscription(0);
+        $carrier->setSubscribeAttempts(0);
         $carrier->setNumberOfAllowedSubscriptionsByConstraint(0);
         $carrier->setRedirectUrl(false);
         $carrier->setFlushDate(null);
@@ -356,7 +356,7 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
         $carrier->setPinIdentSupport(false);
         $carrier->setResubAllowed(true);
         $carrier->setIsCampaignsOnPause(false);
-        $carrier->setNumberOfAllowedSubscription(0);
+        $carrier->setSubscribeAttempts(0);
         $carrier->setNumberOfAllowedSubscriptionsByConstraint(0);
         $carrier->setRedirectUrl(false);
         $carrier->setFlushDate(null);

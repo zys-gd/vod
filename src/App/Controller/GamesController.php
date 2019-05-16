@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\CarrierTemplate\TemplateConfigurator;
+use App\Domain\DTO\BatchOfGames;
 use App\Domain\Entity\Game;
 use App\Domain\Entity\GameBuild;
 use App\Domain\Entity\GameImage;
@@ -13,6 +14,7 @@ use App\Domain\Service\Games\DrmApkProvider;
 use App\Domain\Service\Games\ExcludedGamesProvider;
 use App\Domain\Service\Games\GameImagesSerializer;
 use App\Domain\Service\Games\GameSerializer;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use IdentificationBundle\Identification\DTO\ISPData;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\Entity\Subscription;
@@ -173,17 +175,18 @@ class GamesController extends AbstractController implements AppControllerInterfa
     {
         $offset = $request->get('offset', 0);
 
+        /** @var BatchOfGames $games */
         $games = $this->gameRepository->findBatchOfGames((int)$offset, 8);
 
         $serializedData = [];
 
-        foreach ($games as $game) {
+        foreach ($games->getGames() as $game) {
             $serializedData[] = $this->gameSerializer->serialize($game);
         }
 
         return new JsonResponse([
             'games'  => $serializedData,
-            'isLast' => count($games) < 8
+            'isLast' => $games->isLast()
         ]);
     }
 

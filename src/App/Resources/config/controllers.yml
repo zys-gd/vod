@@ -45,6 +45,7 @@ services:
             - '%images_base_url%'
             - '@App\Domain\Service\CarrierOTPVerifier'
             - '%default_redirect_url%'
+            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
             - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
             - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier'
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
@@ -80,6 +81,8 @@ services:
         - '%contact_us_mail_to%'
         - '%contact_us_mail_from%'
         - '@App\CarrierTemplate\TemplateConfigurator'
+        - '@device_detection.service.device'
+        - '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
 
     App\Controller\GamesController:
         arguments:
