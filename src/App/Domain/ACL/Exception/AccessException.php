@@ -1,14 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 14.05.19
- * Time: 11:33
- */
 
 namespace App\Domain\ACL\Exception;
 
-
+/**
+ * Class AccessException
+ */
 class AccessException extends \RuntimeException
 {
 

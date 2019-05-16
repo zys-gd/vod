@@ -1,28 +1,24 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 15.05.19
- * Time: 14:04
- */
 
 namespace App\Domain\ACL\Exception;
-
 
 use App\Domain\Entity\Carrier;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 
+/**
+ * Class SubscriptionCapReachedOnAffiliate
+ */
 class SubscriptionCapReachedOnAffiliate extends AccessException
 {
     /**
      * @var ConstraintByAffiliate
      */
     private $constraint;
+
     /**
      * @var Carrier
      */
     private $carrier;
-
 
     /**
      * SubscriptionCapReachedOnAffiliate constructor.
@@ -50,6 +46,4 @@ class SubscriptionCapReachedOnAffiliate extends AccessException
     {
         return $this->carrier;
     }
-
-
 }

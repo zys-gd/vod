@@ -1,23 +1,18 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 13.05.19
- * Time: 16:26
- */
 
 namespace App\Domain\ACL\Exception;
 
-
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 
+/**
+ * Class VisitCapReached
+ */
 class VisitCapReached extends AccessException
 {
     /**
      * @var ConstraintByAffiliate
      */
     private $constraint;
-
 
     /**
      * VisitCapReached constructor.
@@ -35,6 +30,4 @@ class VisitCapReached extends AccessException
     {
         return $this->constraint;
     }
-
-
 }

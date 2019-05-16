@@ -1,14 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 13.05.19
- * Time: 16:23
- */
 
 namespace App\Domain\ACL\Exception;
 
-
+/**
+ * Class CampaignPausedException
+ */
 class CampaignPausedException extends AccessException
 {
 

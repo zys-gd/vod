@@ -11,7 +11,6 @@ use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
  */
 class VisitConstraintByAffiliate
 {
-
     /**
      * @var VisitChecker
      */
@@ -22,9 +21,7 @@ class VisitConstraintByAffiliate
      *
      * @param VisitChecker $checker
      */
-    public function __construct(
-        VisitChecker $checker
-    )
+    public function __construct(VisitChecker $checker)
     {
         $this->checker = $checker;
     }
@@ -38,5 +35,4 @@ class VisitConstraintByAffiliate
     {
         return !$this->checker->isCapReached($carrier, $constraint);
     }
-
 }

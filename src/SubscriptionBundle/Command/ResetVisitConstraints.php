@@ -1,19 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 14.05.19
- * Time: 13:20
- */
 
 namespace SubscriptionBundle\Command;
-
 
 use SubscriptionBundle\Service\VisitCAPTool\VisitStorage;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Class ResetVisitConstraints
+ */
 class ResetVisitConstraints extends Command
 {
     /**
@@ -21,16 +17,16 @@ class ResetVisitConstraints extends Command
      */
     private $visitStorage;
 
-
     /**
-     * ResetVisitConstraints constructor.
+     * ResetVisitConstraints constructor
+     *
+     * @param VisitStorage $visitStorage
      */
     public function __construct(VisitStorage $visitStorage)
     {
         $this->visitStorage = $visitStorage;
 
         parent::__construct();
-
     }
 
     public function configure()
@@ -43,6 +39,4 @@ class ResetVisitConstraints extends Command
     {
         $this->visitStorage->cleanVisits();
     }
-
-
 }

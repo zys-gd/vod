@@ -2,11 +2,8 @@
 
 namespace App\Domain\ACL;
 
-use App\Domain\Entity\Campaign;
-use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Repository\CarrierRepository;
-use App\Domain\ACL\Accessors\VisitConstraintByAffiliate;
 use App\Domain\ACL\Accessors\VisitAccessorByCampaign;
 use App\Domain\ACL\Accessors\VisitConstraintByAffiliate;
 use App\Domain\ACL\Exception\CampaignAccessException;
@@ -16,16 +13,18 @@ use App\Domain\ACL\Exception\SubscriptionCapReachedOnCarrier;
 use App\Domain\ACL\Exception\VisitCapReached;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
+use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Service\CAPTool\Limiter\SubscriptionCapChecker;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class LandingPageAccessResolver
  */
 class LandingPageACL
 {
-
     /**
      * @var VisitConstraintByAffiliate
      */
@@ -35,14 +34,31 @@ class LandingPageACL
      * @var VisitAccessorByCampaign
      */
     private $visitAccessorByCampaign;
+
     /**
      * @var SubscriptionCapChecker
      */
     private $carrierCapChecker;
+
     /**
      * @var LoggerInterface
      */
     private $logger;
+
+    /**
+     * @var CarrierRepository
+     */
+    private $carrierRepository;
+
+    /**
+     * @var CampaignRepository
+     */
+    private $campaignRepository;
+
+    /**
+     * @var SessionInterface
+     */
+    private $session;
 
     /**
      * LandingPageAccessResolver constructor
@@ -60,7 +76,7 @@ class LandingPageACL
         VisitAccessorByCampaign $visitAccessorByCampaign,
         CarrierRepository $carrierRepository,
         CampaignRepository $campaignRepository,
-        SessionInterface $session
+        SessionInterface $session,
         SubscriptionCapChecker $subscriptionCapChecker,
         LoggerInterface $logger
     )

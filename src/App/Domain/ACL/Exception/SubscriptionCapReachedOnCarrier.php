@@ -1,16 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 15.05.19
- * Time: 14:00
- */
 
 namespace App\Domain\ACL\Exception;
 
-
 use App\Domain\Entity\Carrier;
 
+/**
+ * Class SubscriptionCapReachedOnCarrier
+ */
 class SubscriptionCapReachedOnCarrier extends AccessException
 {
     /**
@@ -18,10 +14,13 @@ class SubscriptionCapReachedOnCarrier extends AccessException
      */
     private $carrier;
 
+    /**
+     * SubscriptionCapReachedOnCarrier constructor
+     *
+     * @param Carrier $carrier
+     */
     public function __construct(Carrier $carrier)
     {
-
-
         $this->carrier = $carrier;
     }
 
@@ -32,6 +31,4 @@ class SubscriptionCapReachedOnCarrier extends AccessException
     {
         return $this->carrier;
     }
-
-
 }

@@ -31,6 +31,7 @@ class CarrierAdmin extends AbstractAdmin
      * @var SubscriptionLimiter
      */
     private $subscriptionLimiter;
+
     /**
      * @var LimiterStorage
      */
@@ -40,11 +41,15 @@ class CarrierAdmin extends AbstractAdmin
      * @var EntityManagerInterface
      */
     private $entityManager;
+
     /**
      * @var StorageKeyGenerator
      */
     private $storageKeyGenerator;
 
+    /**
+     * @var array
+     */
     protected $datagridValues = [
         'published' => [
             'type'  => EqualType::TYPE_IS_EQUAL, // => 1
@@ -55,11 +60,13 @@ class CarrierAdmin extends AbstractAdmin
     /**
      * CarrierAdmin constructor
      *
-     * @param string              $code
-     * @param string              $class
-     * @param string              $baseControllerName
+     * @param string $code
+     * @param string $class
+     * @param string $baseControllerName
      * @param SubscriptionLimiter $subscriptionLimiter
-     * @param LimiterStorage      $limiterDataStorage
+     * @param LimiterStorage $limiterDataStorage
+     * @param StorageKeyGenerator $storageKeyGenerator
+     * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         string $code,
@@ -69,8 +76,7 @@ class CarrierAdmin extends AbstractAdmin
         LimiterStorage $limiterDataStorage,
         StorageKeyGenerator $storageKeyGenerator,
         EntityManagerInterface $entityManager
-    )
-    {
+    ) {
         $this->subscriptionLimiter = $subscriptionLimiter;
         $this->limiterDataStorage  = $limiterDataStorage;
         parent::__construct($code, $class, $baseControllerName);

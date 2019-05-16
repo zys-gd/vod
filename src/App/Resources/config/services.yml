@@ -105,6 +105,9 @@ services:
     arguments:
       - '@App\Domain\ACL\Accessors\VisitConstraintByAffiliate'
       - '@App\Domain\ACL\Accessors\VisitAccessorByCampaign'
+      - '@App\Domain\Repository\CarrierRepository'
+      - '@App\Domain\Repository\CampaignRepository'
+      - '@session'
       - '@SubscriptionBundle\Service\CAPTool\Limiter\SubscriptionCapChecker'
       - '@logger'
 

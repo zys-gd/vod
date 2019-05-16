@@ -1,16 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 13.05.19
- * Time: 16:21
- */
 
 namespace App\Domain\ACL\Exception;
 
-
 use App\Domain\Entity\Campaign;
 
+/**
+ * Class CampaignAccessException
+ */
 class CampaignAccessException extends AccessException
 {
     /**
@@ -34,6 +30,4 @@ class CampaignAccessException extends AccessException
     {
         return $this->campaign;
     }
-
-
 }
