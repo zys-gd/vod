@@ -42,6 +42,10 @@ services:
         - '@IdentificationBundle\WifiIdentification\WifiIdentConfirmator'
         - '@IdentificationBundle\WifiIdentification\Service\ErrorCodeResolver'
         - '@IdentificationBundle\Identification\Service\CarrierSelector'
+        - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
+        - '%default_redirect_url%'
+        - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+        - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier'
 
     IdentificationBundle\Identification\Controller\AsyncIdentController:
       arguments:

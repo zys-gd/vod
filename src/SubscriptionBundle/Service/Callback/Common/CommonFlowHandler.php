@@ -7,13 +7,11 @@ use IdentificationBundle\Repository\UserRepository;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateSender;
 use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
-use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Exception\SubscriptionException;
 use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use SubscriptionBundle\Repository\SubscriptionRepository;
-use SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater;
 use SubscriptionBundle\Service\Callback\Common\Type\RenewCallbackHandler;
 use SubscriptionBundle\Service\Callback\Common\Type\SubscriptionCallbackHandler;
 use SubscriptionBundle\Service\Callback\Common\Type\UnsubscriptionCallbackHandler;
@@ -85,11 +83,6 @@ class CommonFlowHandler
     private $carrierCallbackHandlerProvider;
 
     /**
-     * @var SubscriptionCounterUpdater
-     */
-    private $subscriptionCounterUpdater;
-
-    /**
      * MainHandler constructor.
      * @param LoggerInterface                $logger
      * @param CallbackTypeHandlerProvider    $callbackTypeHandlerProvider
@@ -102,7 +95,6 @@ class CommonFlowHandler
      * @param SubscriptionStatisticSender    $subscriptionStatisticSender
      * @param UserInfoMapper                 $infoMapper
      * @param CarrierCallbackHandlerProvider $carrierCallbackHandlerProvider
-     * @param SubscriptionCounterUpdater     $subscriptionCounterUpdater
      */
     public function __construct(
         LoggerInterface $logger,
@@ -115,8 +107,7 @@ class CommonFlowHandler
         AffiliateSender $affiliateService,
         SubscriptionStatisticSender $subscriptionStatisticSender,
         UserInfoMapper $infoMapper,
-        CarrierCallbackHandlerProvider $carrierCallbackHandlerProvider,
-        SubscriptionCounterUpdater $subscriptionCounterUpdater
+        CarrierCallbackHandlerProvider $carrierCallbackHandlerProvider
     )
     {
         $this->logger                         = $logger;
@@ -130,7 +121,6 @@ class CommonFlowHandler
         $this->subscriptionStatisticSender    = $subscriptionStatisticSender;
         $this->infoMapper                     = $infoMapper;
         $this->carrierCallbackHandlerProvider = $carrierCallbackHandlerProvider;
-        $this->subscriptionCounterUpdater     = $subscriptionCounterUpdater;
     }
 
 
@@ -188,14 +178,8 @@ class CommonFlowHandler
         );
 
         $carrierHandler->afterProcess($subscription, $subscription->getUser(), $processResponse);
+        $callbackTypeHandler->afterProcess($processResponse, $subscription);
         $this->entitySaveHelper->persistAndSave($subscription);
-
-        if ($processResponse->isSuccessful()
-            && $processResponse->isFinal()
-            && $processResponse->getType() === ProcessResult::PROCESS_TYPE_SUBSCRIBE
-        ) {
-            $this->subscriptionCounterUpdater->updateSubscriptionCounter($subscription);
-        }
 
         if ($carrierHandler instanceof HasCustomTrackingRules) {
             $isNeedToBeTracked = $carrierHandler->isNeedToBeTracked($processResponse);

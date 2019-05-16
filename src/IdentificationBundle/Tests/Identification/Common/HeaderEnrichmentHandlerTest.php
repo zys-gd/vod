@@ -67,7 +67,9 @@ class HeaderEnrichmentHandlerTest extends \PHPUnit\Framework\TestCase
             $this->userFactory,
             $this->entityManager,
             $this->userRepository,
-            $this->identificationStatus
+            $this->identificationStatus,
+            Mockery::spy(\IdentificationBundle\Identification\Common\PostPaidHandler::class)
+
         );
 
 

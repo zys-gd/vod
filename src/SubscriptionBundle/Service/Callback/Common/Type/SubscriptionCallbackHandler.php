@@ -14,6 +14,7 @@ use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater;
+use SubscriptionBundle\Service\CAPTool\SubscriptionLimitCompleter;
 
 class SubscriptionCallbackHandler extends AbstractCallbackHandler
 {
@@ -23,17 +24,24 @@ class SubscriptionCallbackHandler extends AbstractCallbackHandler
      * @var \SubscriptionBundle\Service\Action\Common\\SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater
      */
     private $onSubscribeUpdater;
+    /**
+     * @var SubscriptionLimitCompleter
+     */
+    private $completer;
 
 
     /**
      * SubscriptionCallbackHandler constructor.
      * @param \SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater $onSubscribeUpdater
+     * @param SubscriptionLimitCompleter                                      $completer
      */
     public function __construct(
-        OnSubscribeUpdater $onSubscribeUpdater
+        OnSubscribeUpdater $onSubscribeUpdater,
+        SubscriptionLimitCompleter $completer
     )
     {
         $this->onSubscribeUpdater = $onSubscribeUpdater;
+        $this->completer          = $completer;
     }
 
     public function updateSubscriptionByCallbackData(Subscription $subscription, ProcessResult $response)
@@ -55,4 +63,8 @@ class SubscriptionCallbackHandler extends AbstractCallbackHandler
     }
 
 
+    public function afterProcess(Subscription $subscription, ProcessResult $response): void
+    {
+        $this->completer->finishProcess($response, $subscription);
+    }
 }

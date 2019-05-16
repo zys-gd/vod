@@ -25,3 +25,7 @@ services:
             - "%redis_host%"
             - "%redis_port%"
             - "v%app_version_hash%"
+
+    app.predis:
+        class: Predis\Client
+        factory: 'app.cache.redis_factory:createCounterConnection'

@@ -46,6 +46,11 @@ services:
             - '@App\Domain\Service\CarrierOTPVerifier'
             - '%default_redirect_url%'
             - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
+            - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier'
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+            - '@SubscriptionBundle\Service\VisitCAPTool\VisitTracker'
+            - '@SubscriptionBundle\Service\VisitCAPTool\VisitNotifier'
 
     App\Controller\ErrorController:
         arguments:

@@ -17,7 +17,6 @@ use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessExce
 use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
-use SubscriptionBundle\Entity\SubscriptionPlanInterface;
 use SubscriptionBundle\Service\Action\Common\FakeResponseProvider;
 use SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker;
 use SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePerformer;
@@ -26,6 +25,7 @@ use SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\Notification\Notifier;
 use SubscriptionBundle\Service\SubscriptionCreator;
+use SubscriptionBundle\Service\CAPTool\SubscriptionLimitCompleter;
 use SubscriptionBundle\Service\SubscriptionSerializer;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -72,9 +72,9 @@ class Subscriber
      */
     private $subscribeParametersProvider;
     /**
-     * @var SubscriptionCounterUpdater
+     * @var SubscriptionLimitCompleter
      */
-    private $subscriptionCounterUpdater;
+    private $subscriptionLimitCompleter;
     /**
      * @var SubscriptionSerializer
      */
@@ -91,6 +91,7 @@ class Subscriber
 
     /**
      * Subscriber constructor.
+     *
      * @param LoggerInterface                   $logger
      * @param EntitySaveHelper                  $entitySaveHelper
      * @param SessionInterface                  $session
@@ -101,6 +102,7 @@ class Subscriber
      * @param SubscribeProcess                  $subscribeProcess
      * @param OnSubscribeUpdater                $onSubscribeUpdater
      * @param SubscribeParametersProvider       $subscribeParametersProvider
+     * @param SubscriptionLimitCompleter  $subscriptionLimitCompleter
      * @param SubscriptionCounterUpdater        $subscriptionCounterUpdater
      * @param SubscriptionSerializer            $subscriptionSerializer
      * @param SubscribePerformer                $subscribePerformer
@@ -117,8 +119,9 @@ class Subscriber
         SubscribeProcess $subscribeProcess,
         OnSubscribeUpdater $onSubscribeUpdater,
         SubscribeParametersProvider $subscribeParametersProvider,
-        SubscriptionCounterUpdater $subscriptionCounterUpdater,
-        SubscriptionSerializer $subscriptionSerializer,
+        SubscriptionLimitCompleter $subscriptionLimitCompleter,
+        SubscriptionSerializer $subscriptionSerializer
+,
         SubscribePerformer $subscribePerformer,
         SubscribePromotionalPerformer $subscribePromotionalPerformer
     )
@@ -133,7 +136,7 @@ class Subscriber
         $this->subscribeProcess                 = $subscribeProcess;
         $this->onSubscribeUpdater               = $onSubscribeUpdater;
         $this->subscribeParametersProvider      = $subscribeParametersProvider;
-        $this->subscriptionCounterUpdater       = $subscriptionCounterUpdater;
+        $this->subscriptionLimitCompleter  = $subscriptionLimitCompleter;
         $this->subscriptionSerializer           = $subscriptionSerializer;
         $this->subscribePerformer               = $subscribePerformer;
         $this->subscribePromotionalPerformer    = $subscribePromotionalPerformer;
@@ -141,10 +144,13 @@ class Subscriber
 
     /**
      * Subscribe user to given subscription pack
+     *
      * @param User             $user
      * @param SubscriptionPack $plan
      * @param array            $additionalData
+     *
      * @return array
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function subscribe(User $user, SubscriptionPack $plan, $additionalData = []): array
     {
@@ -175,10 +181,7 @@ class Subscriber
             }
 
             $this->onSubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
-
-            if ($response->isSuccessful() && $response->isFinal()) {
-                $this->subscriptionCounterUpdater->updateSubscriptionCounter($subscription);
-            }
+            $this->subscriptionLimitCompleter->finishProcess($response, $subscription);
 
             return [$subscription, $response];
 
@@ -196,10 +199,14 @@ class Subscriber
      * @param Subscription     $existingSubscription
      * @param SubscriptionPack $plan
      * @param array            $additionalData
+     *
      * @return ProcessResult
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws SubscribingProcessException
      */
-    public function resubscribe(Subscription $existingSubscription, SubscriptionPack $plan, $additionalData = []): ProcessResult
+    public function resubscribe(Subscription $existingSubscription,
+                                SubscriptionPack $plan,
+                                $additionalData = []): ProcessResult
     {
         $subscription = $existingSubscription;
 
@@ -250,6 +257,7 @@ class Subscriber
     /**
      * @param User             $User
      * @param SubscriptionPack $plan
+     *
      * @return Subscription
      */
     private function createPendingSubscription(User $User, SubscriptionPack $plan): Subscription

@@ -2,16 +2,26 @@
 
 namespace App\Controller;
 
+use App\Domain\ACL\Exception\AccessException;
+use App\Domain\ACL\Exception\SubscriptionCapReachedOnAffiliate;
+use App\Domain\ACL\Exception\SubscriptionCapReachedOnCarrier;
+use App\Domain\ACL\Exception\VisitCapReached;
+use App\Domain\ACL\LandingPageACL;
 use App\Domain\Entity\Campaign;
+use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Service\CarrierOTPVerifier;
 use App\Domain\Service\ContentStatisticSender;
-use App\Domain\ACL\LandingPageACL;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
+use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
+use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
+use SubscriptionBundle\Service\VisitCAPTool\VisitNotifier;
+use SubscriptionBundle\Service\VisitCAPTool\VisitTracker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -52,17 +62,42 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var IdentificationDataStorage
      */
     private $dataStorage;
+    /**
+     * @var SubscriptionLimiter
+     */
+    private $limiter;
+    /**
+     * @var CarrierRepositoryInterface
+     */
+    private $carrierRepository;
+    /**
+     * @var SubscriptionLimitNotifier
+     */
+    private $subscriptionLimitNotifier;
+    /**
+     * @var VisitTracker
+     */
+    private $visitTracker;
+    /**
+     * @var VisitNotifier
+     */
+    private $visitNotifier;
 
     /**
      * LPController constructor.
      *
-     * @param ContentStatisticSender    $contentStatisticSender
-     * @param CampaignRepository        $campaignRepository
-     * @param LandingPageACL            $landingPageAccessResolver
-     * @param string                    $imageBaseUrl
-     * @param CarrierOTPVerifier        $OTPVerifier
-     * @param string                    $defaultRedirectUrl
-     * @param IdentificationDataStorage $dataStorage
+     * @param ContentStatisticSender     $contentStatisticSender
+     * @param CampaignRepository         $campaignRepository
+     * @param LandingPageACL             $landingPageAccessResolver
+     * @param string                     $imageBaseUrl
+     * @param CarrierOTPVerifier         $OTPVerifier
+     * @param string                     $defaultRedirectUrl
+     * @param IdentificationDataStorage  $dataStorage
+     * @param SubscriptionLimiter        $limiter
+     * @param SubscriptionLimitNotifier  $subscriptionLimitNotifier
+     * @param CarrierRepositoryInterface $carrierRepository
+     * @param VisitTracker               $visitTracker
+     * @param VisitNotifier              $notifier
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
@@ -71,7 +106,12 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         string $imageBaseUrl,
         CarrierOTPVerifier $OTPVerifier,
         string $defaultRedirectUrl,
-        IdentificationDataStorage $dataStorage
+        IdentificationDataStorage $dataStorage,
+        SubscriptionLimiter $limiter,
+        SubscriptionLimitNotifier $subscriptionLimitNotifier,
+        CarrierRepositoryInterface $carrierRepository,
+        VisitTracker $visitTracker,
+        VisitNotifier $notifier
     )
     {
         $this->contentStatisticSender    = $contentStatisticSender;
@@ -80,7 +120,12 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->imageBaseUrl              = $imageBaseUrl;
         $this->OTPVerifier               = $OTPVerifier;
         $this->defaultRedirectUrl        = $defaultRedirectUrl;
-        $this->dataStorage = $dataStorage;
+        $this->dataStorage               = $dataStorage;
+        $this->limiter                   = $limiter;
+        $this->carrierRepository         = $carrierRepository;
+        $this->subscriptionLimitNotifier = $subscriptionLimitNotifier;
+        $this->visitTracker              = $visitTracker;
+        $this->visitNotifier             = $notifier;
     }
 
 
@@ -97,26 +142,51 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      */
     public function landingPageAction(Request $request)
     {
-        if (!$this->landingPageAccessResolver->canAccess($request)) {
-            return new RedirectResponse($this->defaultRedirectUrl);
-        }
-
-        $session = $request->getSession();
+        $session        = $request->getSession();
         $campaignBanner = null;
-        $background = null;
+        $background     = null;
 
-        if ($cid = $request->get('cid', '')) {
-            /** @var Campaign $campaign */
-            $campaign = $this->campaignRepository->findOneBy(['campaignToken' => $cid]);
-
-            /** @var Campaign $campaign */
-            if ($campaign) {
-                // Useless method atm.
-                AffiliateVisitSaver::saveCampaignId($cid, $session);
-                $campaignBanner = $this->imageBaseUrl . '/' . $campaign->getImagePath();
-                $background = $campaign->getBgColor();
-            }
+        $cid      = $request->get('cid', '');
+        $campaign = $this->resolveCampaignFromRequest($cid);
+        if ($cid && !$campaign) {
+            return RedirectResponse::create($this->defaultRedirectUrl);
         }
+
+        /** @var Campaign $campaign */
+        if ($campaign) {
+            // Useless method atm.
+            AffiliateVisitSaver::saveCampaignId($cid, $session);
+            $campaignBanner = $this->imageBaseUrl . '/' . $campaign->getImagePath();
+            $background = $campaign->getBgColor();
+        }
+
+        $carrier = $this->resolveCarrierFromRequest($request);
+        if ($carrier && $campaign) {
+
+            try {
+                $this->landingPageAccessResolver->ensureCanAccess($campaign, $carrier);
+
+            } catch (SubscriptionCapReachedOnCarrier $e) {
+                $this->subscriptionLimitNotifier->notifyLimitReachedForCarrier($e->getCarrier());
+                return RedirectResponse::create($this->defaultRedirectUrl);
+
+            } catch (SubscriptionCapReachedOnAffiliate $e) {
+                $this->subscriptionLimitNotifier->notifyLimitReachedByAffiliate($e->getConstraint(), $e->getCarrier());
+                return RedirectResponse::create($this->defaultRedirectUrl);
+
+            } catch (VisitCapReached $exception) {
+                $this->visitNotifier->notifyLimitReached($exception->getConstraint(), $carrier);
+                return RedirectResponse::create($this->defaultRedirectUrl);
+
+            } catch (AccessException $exception) {
+                return RedirectResponse::create($this->defaultRedirectUrl);
+
+            }
+
+
+            $this->visitTracker->trackVisit($carrier, $campaign, $session->getId());
+        }
+
 
         AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
 
@@ -149,5 +219,36 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             'code'     => 200,
             'response' => $this->renderView('@App/Components/Ajax/annotation.html.twig')
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return Carrier|null
+     */
+    private function resolveCarrierFromRequest(Request $request): ?Carrier
+    {
+        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession());
+        $billingCarrierId = (int)$ispDetectionData['carrier_id'] ?? null;
+        if (!empty($billingCarrierId)) {
+            return $this->carrierRepository->findOneByBillingId($billingCarrierId);
+        } else {
+            return null;
+        }
+    }
+
+    private function resolveCampaignFromRequest($cid): ?Campaign
+    {
+        /** @var Campaign $campaign */
+        $campaign = $this->campaignRepository->findOneBy([
+            'campaignToken' => $cid,
+            'isPause'       => false
+        ]);
+
+        if ($campaign) {
+            return $campaign;
+        } else {
+            return null;
+        }
+
     }
 }
