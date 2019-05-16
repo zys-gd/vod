@@ -86,7 +86,7 @@ class LandingPageACL
             }
 
             if ($constraint->getCapType() == ConstraintByAffiliate::CAP_TYPE_VISIT) {
-                if ($this->visitConstraintByAffiliate->canVisit($carrier, $constraint)) {
+                if (!$this->visitConstraintByAffiliate->canVisit($carrier, $constraint)) {
                     throw new VisitCapReached($constraint);
                 }
             }
