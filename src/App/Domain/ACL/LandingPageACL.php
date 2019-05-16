@@ -67,7 +67,7 @@ class LandingPageACL
             throw new CampaignAccessException($campaign);
         }
 
-        if (!$this->carrierCapChecker->isCapReachedForCarrier($carrier)) {
+        if ($this->carrierCapChecker->isCapReachedForCarrier($carrier)) {
             throw new SubscriptionCapReachedOnCarrier($carrier);
         }
 
@@ -80,13 +80,13 @@ class LandingPageACL
             }
 
             if ($constraint->getCapType() == ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE) {
-                if (!$this->carrierCapChecker->isCapReachedForAffiliate($constraint)) {
+                if ($this->carrierCapChecker->isCapReachedForAffiliate($constraint)) {
                     throw new SubscriptionCapReachedOnAffiliate($constraint, $carrier);
                 }
             }
 
             if ($constraint->getCapType() == ConstraintByAffiliate::CAP_TYPE_VISIT) {
-                if (!$this->visitConstraintByAffiliate->canVisit($carrier, $constraint)) {
+                if ($this->visitConstraintByAffiliate->canVisit($carrier, $constraint)) {
                     throw new VisitCapReached($constraint);
                 }
             }
