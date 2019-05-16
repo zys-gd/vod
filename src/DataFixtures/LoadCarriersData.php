@@ -14,7 +14,6 @@ use DataFixtures\Utils\FixtureDataLoader;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use JsonMapper;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
@@ -42,14 +41,14 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $countryCode                             = $row['countryCode'];
             $isp                                     = $row['isp'];
             $published                               = $row['published'];
-            $isConfirmationClick                                  = $row['isConfirmationClick'];
+            $isConfirmationClick                     = $row['isConfirmationClick'];
             $pinIdentSupport                         = $row['pinIdentSupport'];
             $trialInitializer                        = $row['trial_initializer'];
             $trialPeriod                             = $row['trial_period'];
             $subscriptionPeriod                      = $row['subscription_period'];
             $resubAllowed                            = $row['resubAllowed'];
             $isCampaignsOnPause                      = $row['isCampaignsOnPause'];
-            $subscribeAttempts             = $row['subscribeAttempts'];
+            $subscribeAttempts                       = $row['subscribeAttempts'];
             $isUnlimitedSubscriptionAttemptsAllowed  = $row['isUnlimitedSubscriptionAttemptsAllowed'];
             $numberOfAllowedSubscriptionByConstraint = $row['numberOfAllowedSubscriptionsByConstraint'];
             $redirectUrl                             = $row['redirectUrl'];
@@ -100,7 +99,6 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
     /**
      * This method must return an array of fixtures classes
      * on which the implementing class depends on
-     *
      * @return array
      */
     function getDependencies()
