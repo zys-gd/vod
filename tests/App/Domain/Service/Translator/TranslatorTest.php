@@ -87,6 +87,7 @@ class TranslatorTest extends TestCase
         $this->setCacheData();
         $result = $this->translatorProvider->translate('terms.block_2.text.1', null, 'en');
 
+        // default text
         $this->assertEquals('This service is only available for users in [Country]. You must have permission from the carrier to use this service.', $result);
     }
 
