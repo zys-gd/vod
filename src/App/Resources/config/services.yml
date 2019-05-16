@@ -106,6 +106,7 @@ services:
       - '@App\Domain\ACL\Accessors\VisitConstraintByAffiliate'
       - '@App\Domain\ACL\Accessors\VisitAccessorByCampaign'
       - '@SubscriptionBundle\Service\CAPTool\Limiter\SubscriptionCapChecker'
+      - '@logger'
 
   App\Domain\Service\CarrierOTPVerifier:
     arguments:
