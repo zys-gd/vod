@@ -41,6 +41,7 @@ class Carrier implements CarrierInterface
      */
     private $published = false;
 
+    private $lpOtp = null;
     /**
      * former lpOtp
      * is needed subscribe confirmation click
