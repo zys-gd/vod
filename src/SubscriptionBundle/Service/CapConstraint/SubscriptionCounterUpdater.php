@@ -67,7 +67,7 @@ class SubscriptionCounterUpdater
 
         $affiliateToken = $subscription->getAffiliateToken();
 
-        if ($affiliateToken) {
+        if (!empty($affiliateToken['cid'])) {
             $campaign = $this->campaignRepository->findOneByCampaignToken($affiliateToken['cid']);
             $affiliate = $campaign->getAffiliate();
 
