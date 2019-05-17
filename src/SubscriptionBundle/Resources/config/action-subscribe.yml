@@ -101,3 +101,8 @@ services:
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEventTracker'
             - '@SubscriptionBundle\Service\EntitySaveHelper'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
+            - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker'
+            - '@ExtrasBundle\Utils\UrlParamAppender'
+            - '@router.default'
+            - '_resub_not_allowed_route_placeholder_'
+            - '@SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator'

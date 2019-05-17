@@ -45,6 +45,17 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
     }
 
     /**
+     * @param Request $request
+     * @param User $user
+     *
+     * @return array
+     */
+    public function getAdditionalResubscribeParams(Request $request, User $user): array
+    {
+        return [];
+    }
+
+    /**
      * @param Subscription $subscription
      * @param ProcessResult $result
      */

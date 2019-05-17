@@ -3,16 +3,22 @@
 namespace SubscriptionBundle\Service\Action\Subscribe\Consent;
 
 use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
+use ExtrasBundle\Utils\UrlParamAppender;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Service\RouteProvider;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
+use SubscriptionBundle\Controller\Traits\ResponseTrait;
+use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound;
+use SubscriptionBundle\Exception\ExistingSubscriptionException;
+use SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator;
+use SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker;
 use SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEventTracker;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasConsentPageFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomAffiliateTrackingRules;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomPiwikTrackingRules;
+use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomResponses;
 use SubscriptionBundle\Service\Action\Subscribe\Subscriber;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\SubscriptionExtractor;
@@ -20,13 +26,15 @@ use SubscriptionBundle\Service\SubscriptionPackProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Class ConsentFlowHandler
  */
 class ConsentFlowHandler
 {
+    use ResponseTrait;
+
     /**
      * @var LoggerInterface
      */
@@ -58,9 +66,34 @@ class ConsentFlowHandler
     private $routeProvider;
 
     /**
-     * @var EntityManagerHelper
+     * @var EntitySaveHelper
      */
-    private $entityManagerHelper;
+    private $entitySaveHelper;
+
+    /**
+     * @var SubscriptionEligibilityChecker
+     */
+    private $subscriptionEligibilityChecker;
+
+    /**
+     * @var UrlParamAppender
+     */
+    private $urlParamAppender;
+
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
+     * @var string
+     */
+    private $resubNotAllowedRoute;
+
+    /**
+     * @var CommonResponseCreator
+     */
+    private $commonResponseCreator;
 
     /**
      * ConsentFlowHandler constructor
@@ -70,8 +103,13 @@ class ConsentFlowHandler
      * @param SubscriptionPackProvider $subscriptionPackProvider
      * @param Subscriber $subscriber
      * @param SubscriptionEventTracker $subscriptionEventTracker
-     * @param EntitySaveHelper $entityManagerHelper
+     * @param EntitySaveHelper $entitySaveHelper
      * @param RouteProvider $routeProvider
+     * @param SubscriptionEligibilityChecker $subscriptionEligibilityChecker
+     * @param UrlParamAppender $urlParamAppender
+     * @param RouterInterface $router
+     * @param string $resubNotAllowedRoute
+     * @param CommonResponseCreator $commonResponseCreator
      */
     public function __construct(
         LoggerInterface $logger,
@@ -79,16 +117,26 @@ class ConsentFlowHandler
         SubscriptionPackProvider $subscriptionPackProvider,
         Subscriber $subscriber,
         SubscriptionEventTracker $subscriptionEventTracker,
-        EntitySaveHelper $entityManagerHelper,
-        RouteProvider $routeProvider
+        EntitySaveHelper $entitySaveHelper,
+        RouteProvider $routeProvider,
+        SubscriptionEligibilityChecker $subscriptionEligibilityChecker,
+        UrlParamAppender $urlParamAppender,
+        RouterInterface $router,
+        string $resubNotAllowedRoute,
+        CommonResponseCreator $commonResponseCreator
     ) {
         $this->logger = $logger;
         $this->subscriptionExtractor = $subscriptionExtractor;
         $this->subscriptionPackProvider = $subscriptionPackProvider;
         $this->subscriber = $subscriber;
         $this->subscriptionEventTracker = $subscriptionEventTracker;
-        $this->entityManagerHelper = $entityManagerHelper;
+        $this->entitySaveHelper = $entitySaveHelper;
         $this->routeProvider = $routeProvider;
+        $this->subscriptionEligibilityChecker = $subscriptionEligibilityChecker;
+        $this->urlParamAppender = $urlParamAppender;
+        $this->router = $router;
+        $this->resubNotAllowedRoute = $resubNotAllowedRoute;
+        $this->commonResponseCreator = $commonResponseCreator;
     }
 
     /**
@@ -100,6 +148,7 @@ class ConsentFlowHandler
      *
      * @throws ActiveSubscriptionPackNotFound
      * @throws NonUniqueResultException
+     * @throws ExistingSubscriptionException
      */
     public function process(Request $request, User $user, HasConsentPageFlow $subscriber): Response
     {
@@ -112,13 +161,36 @@ class ConsentFlowHandler
             ]);
 
             return $this->handleSubscribe($request, $user, $subscriber);
-        } else {
-            $this->logger->debug('Processing `consent resubscribe` action', [
+        }
+
+        if ($this->subscriptionEligibilityChecker->isStatusOkForResubscribe($subscription)) {
+            $this->logger->debug('Processing `consent subscribe` action', [
                 'user' => $user,
                 'request' => $request
             ]);
 
-            return new RedirectResponse($this->routeProvider->getLinkToHomepage());
+            return $this->handleResubscribe($request, $user, $subscriber, $subscription);
+        } else {
+            $this->logger->debug('`Subscribe` is not possible. User already have an active subscription.');
+
+            if (
+                $subscriber instanceof HasCustomResponses &&
+                $response = $subscriber->createResponseForExistingSubscription($request, $user, $subscription)
+            ) {
+                return $response;
+            }
+
+            $redirect = $request->get('redirect', false);
+            $redirect_url = $request->get('location', '/');
+            $updatedUrl = $this->urlParamAppender->appendUrl($redirect_url, [
+                'err_handle' => 'already_subscribed'
+            ]);
+
+            if ($redirect) {
+                return new RedirectResponse($updatedUrl);
+            }
+
+            throw new ExistingSubscriptionException('You already have an active subscription.', $subscription);
         }
     }
 
@@ -161,8 +233,81 @@ class ConsentFlowHandler
         }
 
         $subscriber->afterProcess($newSubscription, $result);
-        $this->entityManagerHelper->saveAll();
+        $this->entitySaveHelper->saveAll();
 
         return new RedirectResponse($this->routeProvider->getLinkToHomepage());
+    }
+
+    /**
+     * @param Request $request
+     * @param User $user
+     * @param HasConsentPageFlow $subscriber
+     * @param Subscription $subscription
+     *
+     * @return Response
+     *
+     * @throws ActiveSubscriptionPackNotFound
+     * @throws NonUniqueResultException
+     */
+    public function handleResubscribe(
+        Request $request,
+        User $user,
+        HasConsentPageFlow $subscriber,
+        Subscription $subscription
+    ): Response
+    {
+        $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
+
+        if ($this->subscriptionEligibilityChecker->isResubscriptionAfterUnsubscribeCase($subscription, $subscriptionPack)
+            || $this->subscriptionEligibilityChecker->isNotFullyPaidSubscriptionCase($subscription)
+        ) {
+            $this->logger->debug('Resubscription is allowed. Doing resubscribe', [
+                'packId'      => $subscriptionPack->getUuid(),
+                'carrierName' => $subscriptionPack->getName()
+            ]);
+
+            $additionalData = $subscriber->getAdditionalResubscribeParams($request, $user);
+            $result = $this->subscriber->resubscribe($subscription, $subscriptionPack, $additionalData);
+        } else {
+            $this->logger->debug('Resubscription is not allowed.', [
+                'packId' => $subscriptionPack->getUuid(),
+                'carrierName' => $subscriptionPack->getName()
+            ]);
+
+            if ($request->get('is_ajax_request', null)) {
+                return $this->getSimpleJsonResponse('', 200, [], ['resub_not_allowed' => true]);
+            } else {
+                return new RedirectResponse($this->router->generate($this->resubNotAllowedRoute));
+            }
+        }
+
+        if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
+            $isAffTracked = $subscriber->isAffiliateTrackedForResub($result);
+        } else {
+            $isAffTracked = ($result->isSuccessful() && $result->isFinal());
+            $this->logger->debug('Is need to track affiliate log?', [
+                'result'       => $result,
+                'isAffTracked' => $isAffTracked
+            ]);
+        }
+
+        if ($isAffTracked) {
+            $this->subscriptionEventTracker->trackAffiliate($subscription);
+        }
+
+        if ($subscriber instanceof HasCustomPiwikTrackingRules) {
+            $isPiwikTracked = $subscriber->isPiwikTrackedForResub($result);
+        } else {
+            $isPiwikTracked = ($result->isFailedOrSuccessful() && $result->isFinal());;
+        }
+
+        if ($isPiwikTracked) {
+            $this->subscriptionEventTracker->trackPiwikForResubscribe($subscription, $result);
+        }
+
+        $subscriber->afterProcess($subscription, $result);
+        $this->entitySaveHelper->saveAll();
+
+        return $this->commonResponseCreator->createCommonHttpResponse($request, $user);
     }
 }

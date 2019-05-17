@@ -21,6 +21,14 @@ interface HasConsentPageFlow
     public function getAdditionalSubscribeParams(Request $request, User $user): array;
 
     /**
+     * @param Request $request
+     * @param User $user
+     *
+     * @return array
+     */
+    public function getAdditionalResubscribeParams(Request $request, User $user): array;
+
+    /**
      * @param Subscription $subscription
      * @param ProcessResult $result
      */
