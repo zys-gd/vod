@@ -2,6 +2,10 @@
 
 namespace IdentificationBundle\Entity;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * Class TestUser
  */
@@ -42,7 +46,15 @@ class TestUser
     public function __construct(string $uuid)
     {
         $this->addedAt = new \DateTime();
-        $this->uuid = $uuid;
+        $this->uuid    = $uuid;
+    }
+
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addConstraint(new UniqueEntity([
+            'fields'  => 'userIdentifier',
+            'message' => 'This user is already in use',
+        ]));
     }
 
     /**
