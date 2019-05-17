@@ -19,7 +19,7 @@
             {% else %}
                 {{ link.render(url('landing'), translate(placeholder)) }}
             {% endif %}
-        {% elseif isIdentified() %}
+        {% elseif isIdentified() and not isConsentFlow() %}
             {{ link.render(url('subscription.subscribe'), translate(placeholder), class) }}
         {% elseif isConsentFlow() %}
             {{ link.render(url('subscription.consent_page_subscribe'), translate(placeholder), class) }}
