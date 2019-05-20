@@ -152,7 +152,7 @@ class PinIdentificationController extends AbstractController implements APIContr
         $carrierId = $ispData->getCarrierId();
         try {
             $this->identSMSSender->sendSMS($carrierId, $mobileNumber);
-            return $this->getSimpleJsonResponse('Sent', 200, [], ['success' => true]);
+            return $this->getSimpleJsonResponse('Sent', 200, [], ['success' => true, 'carrierId' => $carrierId]);
 
         } catch (PinRequestProcessException $exception) {
             $message = $this->errorCodeResolver->resolveMessage($exception->getCode());
@@ -236,7 +236,7 @@ class PinIdentificationController extends AbstractController implements APIContr
 
         try {
             $this->identSMSSender->sendSMS($carrierId, $mobileNumber);
-            return $this->getSimpleJsonResponse('Sent', 200, [], ['success' => true]);
+            return $this->getSimpleJsonResponse('Sent', 200, [], ['success' => true, 'carrierId' => $carrierId]);
 
         } catch (PinRequestProcessException $exception) {
             $message = $this->errorCodeResolver->resolveMessage($exception->getCode());

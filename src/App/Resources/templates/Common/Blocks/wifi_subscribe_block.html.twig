@@ -113,6 +113,7 @@
                         $wifi_form_step
                             .html(params.html_wifi_pin)
                             .append(input_phone);
+                        addValidationAttributes(result.data.carrierId);
                         form.attr('data-form', 'confirm');
                         $wifi_warning.html(params.pin_notif.replace(/%wifi_phone%/, phone));
                     } else {
@@ -146,6 +147,7 @@
                         $wifi_form_step
                             .html(params.html_wifi_pin)
                             .append(input_phone);
+                        addValidationAttributes(result.data.carrierId);
                         form.attr('data-form', 'confirm');
                         $wifi_warning.html(params.pin_notif.replace(/%wifi_phone%/, phone));
                         insertAnnotation();
@@ -223,6 +225,18 @@
                     $._loader(true);
                     showAlert({title: "Server error"});
                 });
+        }
+
+        // TODO find more flexible way to apply validation attributes
+        function addValidationAttributes(carrierId) {
+            var pinPatterns = {
+                2253: '^[1-9][0-9]{5}$',
+                2254: '^[1-9][0-9]{5}$'
+            };
+
+            if (pinPatterns[carrierId]) {
+                $("input[name='pin_code']").attr('pattern', pinPatterns[carrierId])
+            }
         }
     </script>
 {% endmacro %}
