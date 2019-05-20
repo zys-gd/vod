@@ -135,7 +135,7 @@ class Translator
             /** @var Carrier $oCarrier */
             $oCarrier = $this->carrierRepository->findOneBy(['billingCarrierId' => $billingCarrierId]);
             /** @var Language $currentLanguage */
-            $currentLanguage = $oCarrier->getDefaultLanguage() ?? $this->languageRepository->findOneBy(['code' => $userLanguage]);
+            $currentLanguage = $oCarrier->getDefaultLanguage() ?? $userLanguage;
 
             $defaultCarrierTexts = $this->translationRepository->findBy([
                 'carrier'  => $oCarrier,
