@@ -38,7 +38,7 @@ class CarrierOTPVerifier
     public function __construct(CarrierRepository $carrierRepository, IdentificationDataStorage $dataStorage)
     {
         $this->carrierRepository = $carrierRepository;
-        $this->dataStorage = $dataStorage;
+        $this->dataStorage       = $dataStorage;
     }
 
     /**
@@ -50,7 +50,8 @@ class CarrierOTPVerifier
     {
         $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($session);
 
-        in_array($ispDetectionData['carrier_id'] ?? '', $this->otpCarriers)
-        && $this->dataStorage->storeValue('is_wifi_flow', true);
+        if (in_array($ispDetectionData['carrier_id'] ?? '', $this->otpCarriers)) {
+            $this->dataStorage->storeValue('is_wifi_flow', true);
+        }
     }
 }

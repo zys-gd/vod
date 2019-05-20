@@ -26,7 +26,9 @@ use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CustomPage;
-use SubscriptionBundle\Service\CapConstraint\SubscriptionConstraintByCarrier;
+use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
+use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
+use SubscriptionBundle\Service\CAPTool\SubscriptionLimiterInterface;
 use SubscriptionBundle\Service\UserExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -80,10 +82,6 @@ class SubscribeAction extends AbstractController
      */
     private $carrierRepository;
     /**
-     * @var SubscriptionConstraintByCarrier
-     */
-    private $subscriptionConstraintByCarrier;
-    /**
      * @var string
      */
     private $defaultRedirectUrl;
@@ -95,6 +93,14 @@ class SubscribeAction extends AbstractController
      * @var CampaignConfirmationHandlerProvider
      */
     private $campaignConfirmationHandlerProvider;
+    /**
+     * @var SubscriptionLimiter
+     */
+    private $subscriptionLimiter;
+    /**
+     * @var SubscriptionLimitNotifier
+     */
+    private $subscriptionLimitNotifier;
 
     /**
      * SubscribeAction constructor.
@@ -109,10 +115,11 @@ class SubscribeAction extends AbstractController
      * @param IdentificationDataStorage           $identificationDataStorage
      * @param IdentificationHandlerProvider       $identificationHandlerProvider
      * @param CarrierRepositoryInterface          $carrierRepository
-     * @param SubscriptionConstraintByCarrier     $subscriptionConstraintByCarrier
      * @param string                              $defaultRedirectUrl
      * @param PostPaidHandler                     $postPaidHandler
      * @param CampaignConfirmationHandlerProvider $campaignConfirmationHandlerProvider
+     * @param SubscriptionLimiter                 $subscriptionLimiter
+     * @param SubscriptionLimitNotifier                     $subscriptionLimitNotifier
      */
     public function __construct(
         UserExtractor $userExtractor,
@@ -125,10 +132,11 @@ class SubscribeAction extends AbstractController
         IdentificationDataStorage $identificationDataStorage,
         IdentificationHandlerProvider $identificationHandlerProvider,
         CarrierRepositoryInterface $carrierRepository,
-        SubscriptionConstraintByCarrier $subscriptionConstraintByCarrier,
         string $defaultRedirectUrl,
         PostPaidHandler $postPaidHandler,
-        CampaignConfirmationHandlerProvider $campaignConfirmationHandlerProvider
+        CampaignConfirmationHandlerProvider $campaignConfirmationHandlerProvider,
+        SubscriptionLimiter $subscriptionLimiter,
+        SubscriptionLimitNotifier $subscriptionLimitNotifier
     )
     {
         $this->userExtractor                       = $userExtractor;
@@ -141,10 +149,11 @@ class SubscribeAction extends AbstractController
         $this->identificationDataStorage           = $identificationDataStorage;
         $this->identificationHandlerProvider       = $identificationHandlerProvider;
         $this->carrierRepository                   = $carrierRepository;
-        $this->subscriptionConstraintByCarrier     = $subscriptionConstraintByCarrier;
         $this->defaultRedirectUrl                  = $defaultRedirectUrl;
         $this->postPaidHandler                     = $postPaidHandler;
         $this->campaignConfirmationHandlerProvider = $campaignConfirmationHandlerProvider;
+        $this->subscriptionLimiter                 = $subscriptionLimiter;
+        $this->subscriptionLimitNotifier                     = $subscriptionLimitNotifier;
     }
 
     /**
@@ -165,13 +174,10 @@ class SubscribeAction extends AbstractController
             return new RedirectResponse($this->generateUrl('index', ['err_handle' => 'postpaid_restricted']));
         }
 
-        if ($this->subscriptionConstraintByCarrier->isSubscriptionLimitReached()) {
-            return new RedirectResponse($this->defaultRedirectUrl);
-        }
-
-        if (($campaignConfirmationHandler = $this->campaignConfirmationHandlerProvider->provideHandler($request->getSession())) instanceof CustomPage) {
+        $campaignConfirmationHandler = $this->campaignConfirmationHandlerProvider->provideHandler($request->getSession());
+        if ($campaignConfirmationHandler instanceof CustomPage) {
             $result = $campaignConfirmationHandler->proceedCustomPage($request);
-            if($result instanceof RedirectResponse) {
+            if ($result instanceof RedirectResponse) {
                 return $result;
             }
         }
@@ -192,13 +198,21 @@ class SubscribeAction extends AbstractController
         $user = $this->userExtractor->getUserByIdentificationData($identificationData);
 
 
+        if ($this->subscriptionLimiter->isSubscriptionLimitReached($request->getSession())) {
+            $this->subscriptionLimitNotifier->notifyLimitReachedForCarrier($user->getCarrier());
+            return RedirectResponse::create($this->defaultRedirectUrl);
+        }
+
+        if ($this->subscriptionLimiter->need2BeLimited($user)) {
+            $this->subscriptionLimiter->reserveSlotForSubscription($request->getSession());
+        }
+
         try {
 
             $subscriber = $this->handlerProvider->getSubscriber($user->getCarrier());
             if ($subscriber instanceof HasCustomFlow) {
                 return $subscriber->process($request, $request->getSession(), $user);
-            }
-            else {
+            } else {
                 return $this->commonFlowHandler->process($request, $user);
             }
         } catch (ExistingSubscriptionException $exception) {

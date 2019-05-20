@@ -46,6 +46,7 @@
         "symfony/flex": "v1.1.8",
         "symfony/form": "v4.2.1",
         "symfony/framework-bundle": "v4.2.1",
+        "symfony/lock": "v4.2.1",
         "symfony/monolog-bundle": "v3.3.1",
         "symfony/orm-pack": "v1.0.5",
         "symfony/swiftmailer-bundle": "v3.2.4",

@@ -14,26 +14,26 @@ final class Version20190402141109 extends AbstractMigration
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('DROP TABLE languages_audit');
-        $this->addSql('DROP TABLE carriers_audit');
-        $this->addSql('DROP TABLE admins_audit');
-        $this->addSql('DROP TABLE affiliates_audit');
-        $this->addSql('DROP TABLE campaigns_audit');
-        $this->addSql('DROP TABLE country_category_priority_overrides_audit');
-        $this->addSql('DROP TABLE developers_audit');
-        $this->addSql('DROP TABLE games_audit');
-        $this->addSql('DROP TABLE game_builds_audit');
-        $this->addSql('DROP TABLE game_images_audit');
-        $this->addSql('DROP TABLE main_categories_audit');
-        $this->addSql('DROP TABLE subcategories_audit');
-        $this->addSql('DROP TABLE translations_audit');
-        $this->addSql('DROP TABLE uploaded_video_audit');
-        $this->addSql('DROP TABLE user_audit');
-        $this->addSql('DROP TABLE subscription_packs_audit');
-        $this->addSql('DROP TABLE subscriptions_audit');
-        $this->addSql('DROP TABLE black_list_audit');
-        $this->addSql('DROP TABLE refunds_audit');
-        $this->addSql('DROP TABLE revisions');
+        $this->addSql('DROP TABLE IF EXISTS languages_audit');
+        $this->addSql('DROP TABLE IF EXISTS carriers_audit');
+        $this->addSql('DROP TABLE IF EXISTS admins_audit');
+        $this->addSql('DROP TABLE IF EXISTS affiliates_audit');
+        $this->addSql('DROP TABLE IF EXISTS campaigns_audit');
+        $this->addSql('DROP TABLE IF EXISTS country_category_priority_overrides_audit');
+        $this->addSql('DROP TABLE IF EXISTS developers_audit');
+        $this->addSql('DROP TABLE IF EXISTS games_audit');
+        $this->addSql('DROP TABLE IF EXISTS game_builds_audit');
+        $this->addSql('DROP TABLE IF EXISTS game_images_audit');
+        $this->addSql('DROP TABLE IF EXISTS main_categories_audit');
+        $this->addSql('DROP TABLE IF EXISTS subcategories_audit');
+        $this->addSql('DROP TABLE IF EXISTS translations_audit');
+        $this->addSql('DROP TABLE IF EXISTS uploaded_video_audit');
+        $this->addSql('DROP TABLE IF EXISTS user_audit');
+        $this->addSql('DROP TABLE IF EXISTS subscription_packs_audit');
+        $this->addSql('DROP TABLE IF EXISTS subscriptions_audit');
+        $this->addSql('DROP TABLE IF EXISTS black_list_audit');
+        $this->addSql('DROP TABLE IF EXISTS refunds_audit');
+        $this->addSql('DROP TABLE IF EXISTS revisions');
 
     }
 

@@ -95,25 +95,6 @@ services:
             - '%cap_notification_mail_to%'
             - '%cap_notification_mail_from%'
 
-    SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis:
-        arguments:
-            - '@=service("app.cache.redis_factory").createCounterConnection()'
-
-    SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater:
-        arguments:
-            - '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender'
-            - '@SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis'
-            - '@doctrine.orm.entity_manager'
-            - '@App\Domain\Repository\CampaignRepository'
-
-    SubscriptionBundle\Service\CapConstraint\SubscriptionConstraintByCarrier:
-        arguments:
-            - '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender'
-            - '@SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis'
-            - '@App\Domain\Repository\CarrierRepository'
-            - '@session'
-            - '@doctrine.orm.entity_manager'
-
     SubscriptionBundle\Service\SubscriptionSerializer: ~
 
 parameters:

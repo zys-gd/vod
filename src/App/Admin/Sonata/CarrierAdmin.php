@@ -10,7 +10,14 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
-use SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis;
+use Sonata\Form\Type\BooleanType;
+use Sonata\Form\Type\EqualType;
+use SubscriptionBundle\Service\CAPTool\DTO\CarrierLimiterData;
+use SubscriptionBundle\Service\CAPTool\Limiter\LimiterDataConverter;
+use SubscriptionBundle\Service\CAPTool\Limiter\LimiterDataExtractor;
+use SubscriptionBundle\Service\CAPTool\Limiter\LimiterStorage;
+use SubscriptionBundle\Service\CAPTool\Limiter\StorageKeyGenerator;
+use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -21,9 +28,14 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 class CarrierAdmin extends AbstractAdmin
 {
     /**
-     * @var ConstraintCounterRedis
+     * @var SubscriptionLimiter
      */
-    private $constraintCounterRedis;
+    private $subscriptionLimiter;
+
+    /**
+     * @var LimiterStorage
+     */
+    private $limiterDataStorage;
 
     /**
      * @var EntityManagerInterface
@@ -31,25 +43,36 @@ class CarrierAdmin extends AbstractAdmin
     private $entityManager;
 
     /**
+     * @var StorageKeyGenerator
+     */
+    private $storageKeyGenerator;
+
+    /**
      * CarrierAdmin constructor
      *
      * @param string $code
      * @param string $class
      * @param string $baseControllerName
-     * @param ConstraintCounterRedis $constraintCounterRedis
+     * @param SubscriptionLimiter $subscriptionLimiter
+     * @param LimiterStorage $limiterDataStorage
+     * @param StorageKeyGenerator $storageKeyGenerator
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         string $code,
         string $class,
         string $baseControllerName,
-        ConstraintCounterRedis $constraintCounterRedis,
+        SubscriptionLimiter $subscriptionLimiter,
+        LimiterStorage $limiterDataStorage,
+        StorageKeyGenerator $storageKeyGenerator,
         EntityManagerInterface $entityManager
     ) {
-        $this->constraintCounterRedis = $constraintCounterRedis;
-        $this->entityManager = $entityManager;
-
+        $this->subscriptionLimiter = $subscriptionLimiter;
+        $this->limiterDataStorage  = $limiterDataStorage;
         parent::__construct($code, $class, $baseControllerName);
+        $this->storageKeyGenerator = $storageKeyGenerator;
+        $this->code                = $code;
+        $this->entityManager       = $entityManager;
     }
 
     /**
@@ -69,7 +92,7 @@ class CarrierAdmin extends AbstractAdmin
     /**
      * @param DatagridMapper $datagridMapper
      */
-    protected function configureDatagridFilters (DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
             ->add('uuid')
@@ -97,7 +120,7 @@ class CarrierAdmin extends AbstractAdmin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields (ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
             ->add('billingCarrierId')
@@ -115,13 +138,13 @@ class CarrierAdmin extends AbstractAdmin
             ->add('resubAllowed')
             ->add('isCampaignsOnPause')
             ->add('isLpOff')
-            ->add('_action', null, array(
-                'actions' => array(
-                    'show' => array(),
-                    'edit' => array(),
-                    'delete' => array(),
-                )
-            ));
+            ->add('_action', null, [
+                'actions' => [
+                    'show'   => [],
+                    'edit'   => [],
+                    'delete' => [],
+                ]
+            ]);
     }
 
     /**
@@ -129,7 +152,7 @@ class CarrierAdmin extends AbstractAdmin
      *
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields (FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
             ->add('uuid', TextType::class, [
@@ -155,7 +178,7 @@ class CarrierAdmin extends AbstractAdmin
             ->add('redirectUrl', UrlType::class, ['required' => false])
             ->add('resubAllowed')
             ->add('isCampaignsOnPause')
-            ->add('isUnlimitedSubscriptionAttemptsAllowed', null,[
+            ->add('isUnlimitedSubscriptionAttemptsAllowed', null, [
                 'attr' => ["class" => "unlimited-games"]
             ])
             ->add('subscribeAttempts', null, [
@@ -166,14 +189,20 @@ class CarrierAdmin extends AbstractAdmin
     /**
      * @param ShowMapper $showMapper
      */
-    protected function configureShowFields (ShowMapper $showMapper)
+    protected function configureShowFields(ShowMapper $showMapper)
     {
         /** @var Carrier $subject */
         $subject = $this->getSubject();
 
-        $counter = $this->constraintCounterRedis->getCounter($subject->getBillingCarrierId());
+        $key = $this->storageKeyGenerator->generateKey($subject);
 
-        $subject->setCounter((int) $counter);
+        $pending = $this->limiterDataStorage->getPendingSubscriptionAmount($key);
+
+        $finished = $this->limiterDataStorage->getFinishedSubscriptionAmount($key);
+
+        $available = $pending + $finished;
+
+        $subject->setCounter($available);
 
         $showMapper
             ->add('uuid')

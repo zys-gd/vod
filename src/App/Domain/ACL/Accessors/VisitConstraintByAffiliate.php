@@ -2,12 +2,9 @@
 
 namespace App\Domain\ACL\Accessors;
 
-use App\Domain\Entity\Campaign;
-use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\CarrierInterface;
+use SubscriptionBundle\Service\VisitCAPTool\VisitChecker;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
-use SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis;
-use SubscriptionBundle\Service\Notification\Email\CAPNotificationSender;
 
 /**
  * Class VisitConstraintByAffiliateService
@@ -15,92 +12,27 @@ use SubscriptionBundle\Service\Notification\Email\CAPNotificationSender;
 class VisitConstraintByAffiliate
 {
     /**
-     * @var CAPNotificationSender
+     * @var VisitChecker
      */
-    private $notificationSender;
-
-    /**
-     * @var ConstraintCounterRedis
-     */
-    private $constraintCounterRedis;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private $checker;
 
     /**
      * AbstractConstraintByAffiliateService constructor
      *
-     * @param CAPNotificationSender $notificationSender
-     * @param ConstraintCounterRedis $constraintCounterRedis
-     * @param EntityManagerInterface $entityManager
+     * @param VisitChecker $checker
      */
-    public function __construct(
-        CAPNotificationSender $notificationSender,
-        ConstraintCounterRedis $constraintCounterRedis,
-        EntityManagerInterface $entityManager
-    ) {
-        $this->notificationSender = $notificationSender;
-        $this->constraintCounterRedis = $constraintCounterRedis;
-        $this->entityManager = $entityManager;
-    }
-
-    /**
-     * @param Campaign $campaign
-     *
-     * @param CarrierInterface $carrier
-     * @return bool
-     *
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
-     */
-    public function canVisit(Campaign $campaign, CarrierInterface $carrier): bool
+    public function __construct(VisitChecker $checker)
     {
-        $affiliate = $campaign->getAffiliate();
-
-        /** @var ConstraintByAffiliate $constraint */
-        foreach ($affiliate->getConstraints()->getIterator() as $constraint) {
-            if ($carrier && $carrier->getUuid() !== $constraint->getCarrier()->getUuid()) {
-                continue;
-            }
-
-            $counter = $this->constraintCounterRedis->getCounter($constraint->getUuid());
-
-            $isLimitReached = $counter ? $counter >= $constraint->getNumberOfActions() : false;
-
-            if ($isLimitReached) {
-                if (!$constraint->getIsCapAlertDispatch()) {
-                    $this->sendNotification($constraint, $carrier);
-                }
-
-                return false;
-            } elseif ($constraint->getCapType() === ConstraintByAffiliate::CAP_TYPE_VISIT) {
-                $this->constraintCounterRedis->updateCounter($constraint->getUuid());
-            }
-        }
-
-        return true;
+        $this->checker = $checker;
     }
 
     /**
+     * @param CarrierInterface      $carrier
      * @param ConstraintByAffiliate $constraint
-     * @param CarrierInterface $carrier
-     *
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @return bool
      */
-    private function sendNotification(ConstraintByAffiliate $constraint, CarrierInterface $carrier)
+    public function canVisit(CarrierInterface $carrier, ConstraintByAffiliate $constraint): bool
     {
-        $result = $this->notificationSender->sendCapByAffiliateNotification($constraint, $carrier);
-
-        if ($result) {
-            $constraint->setIsCapAlertDispatch(true);
-
-            $this->entityManager->persist($constraint);
-            $this->entityManager->flush();
-        }
+        return !$this->checker->isCapReached($carrier, $constraint);
     }
 }
