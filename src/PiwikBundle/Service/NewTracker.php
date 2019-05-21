@@ -30,9 +30,7 @@ class NewTracker
     const TRACK_UNSUBSCRIBE   = 'trackUnsubscribe';
     const TRACK_DOWNLOAD      = 'trackDownload';
     const TRACK_PLAYING_VIDEO = 'trackPlayingVideo';
-    protected $phpClient;
-    protected $jsClient;
-    protected $jsEnabled;
+
     protected $exchangeService;
     protected $container;
     protected $user;
@@ -119,7 +117,6 @@ class NewTracker
      * @var SessionInterface
      */
     private $session;
-    private $campaignSessionName;
     /**
      * @var CampaignRepository
      */
@@ -128,6 +125,14 @@ class NewTracker
      * @var Device
      */
     private $device;
+    /**
+     * @var ClientAbstract
+     */
+    private $piwikClient;
+    /**
+     * @var PiwikDataMapper
+     */
+    private $piwikDataMapper;
 
 
     /**
@@ -144,26 +149,12 @@ class NewTracker
      * @param Device                           $device
      */
     public function __construct(
-        PhpClient $phpClient,
-        JsClient $jsClient,
-        $jsEnabled,
-        Exchanger $exchangeService,
-        SubscriptionPackProvider $subscriptionPackProvider,
-        SessionInterface $session,
-        string $campaignSessionName,
-        CampaignRepository $campaignRepository,
-        Device $device
+        ClientAbstract $piwikClient,
+        PiwikDataMapper $piwikDataMapper
     )
     {
-        $this->phpClient = $phpClient;
-        $this->jsClient = $jsClient;
-        $this->jsEnabled = $jsEnabled;
-        $this->exchangeService = $exchangeService;
-        $this->subscriptionPackProvider = $subscriptionPackProvider;
-        $this->session = $session;
-        $this->campaignSessionName = $campaignSessionName;
-        $this->campaignRepository = $campaignRepository;
-        $this->device = $device;
+        $this->piwikClient     = $piwikClient;
+        $this->piwikDataMapper = $piwikDataMapper;
     }
 
     /**
@@ -195,7 +186,7 @@ class NewTracker
         $aff_publisher = null
     )
     {
-        $this->getApiClient()->clearCustomVariables();
+        $this->piwikClient->clearCustomVariables();
         $this->addStandardVariables(
             $user,
             null,
@@ -208,25 +199,7 @@ class NewTracker
             $campaign,
             $aff_publisher
         );
-        $ret = (bool)$this->getApiClient()->doTrackPageView('');
-        return $ret;
-    }
-
-    /**
-     * NewTracker::getApiClient()
-     * Returns the Piwik Client to be used (PHP Client is mandatory for callbacks)
-     *
-     * @param bool $clear_vars
-     *
-     * @return ClientAbstract
-     */
-    protected function getApiClient($clear_vars = false)
-    {
-        $ret = $this->jsEnabled ? $this->jsClient : $this->phpClient;
-        if ($clear_vars && !$this->jsEnabled) {
-            $ret->clearCustomVariables();
-        }
-
+        $ret = (bool)$this->piwikClient->doTrackPageView('');
         return $ret;
     }
 
@@ -247,7 +220,8 @@ class NewTracker
      *
      * @return ClientAbstract
      * @throws \Exception
-     */protected function addStandardVariables(
+     */
+    protected function addStandardVariables(
         User $user = null,
 
         $subscription = null,
@@ -275,7 +249,7 @@ class NewTracker
         $aff_publisher = $aff_publisher ?: $this->aff_publisher;
 
         if ($user) {
-            $ret = $this->getApiClient()->setUserId($user->getUuid());
+            $ret = $this->piwikClient->setUserId($user->getUuid());
             $this->user = $user;
 
             if ($userCountry = $user->getCountry()) {
@@ -301,11 +275,11 @@ class NewTracker
             $this->operator = $operator;
         }
         if ($country) {
-            $this->getApiClient()->setCountry($country);
+            $this->piwikClient->setCountry($country);
             $this->country = $country;
         }
         if ($ip) {
-            $this->getApiClient()->setIp($ip);
+            $this->piwikClient->setIp($ip);
             $this->ip = $ip;
         }
         if (!$msisdn) {
@@ -381,7 +355,7 @@ class NewTracker
     {
         $ret = false;
         if (isset($this->customVars[$key])) {
-            $ret = $this->getApiClient()->setCustomVariable($this->customVars[$key]['id'], $this->customVars[$key]['name'], $value, $scope);
+            $ret = $this->piwikClient->setCustomVariable($this->customVars[$key]['id'], $this->customVars[$key]['name'], $value, $scope);
         }
         return $ret;
     }
@@ -431,7 +405,7 @@ class NewTracker
         $conversionMode = null
     )
     {
-        return $this->trackSubscribe($user, $subscription, $bfResponse, $conversionMode, $type ?? 'resubscribe');
+        return $this->trackSubscribe($user, $subscription, $bfResponse, $conversionMode, 'resubscribe');
     }
 
     /**
@@ -502,7 +476,7 @@ class NewTracker
         ];
         $orderId = implode('-', $orderIdPieces);
 
-        $this->getApiClient()->clearCustomVariables();
+        $this->piwikClient->clearCustomVariables();
         $this->addStandardVariables($user, $subscription);
         $this->addVariable('currency', $oSubPack->getTierCurrency());
         $this->addVariable('provider', $bfProvider);
@@ -527,7 +501,7 @@ class NewTracker
      */
     protected function sendEcommerce($orderId, $orderValue, $prodSku, $prodCat)
     {
-        $this->getApiClient()->addEcommerceItem(
+        $this->piwikClient->addEcommerceItem(
             $prodSku,
             $prodSku,
             $prodCat,
@@ -535,7 +509,7 @@ class NewTracker
             1
         );
 
-        $ret = (bool)$this->getApiClient()->doTrackEcommerceOrder(
+        $ret = (bool)$this->piwikClient->doTrackEcommerceOrder(
             $orderId,
             $orderValue
         );
@@ -625,7 +599,7 @@ class NewTracker
         ];
         $orderId = implode('-', $orderIdPieces);
 
-        $this->getApiClient()->clearCustomVariables();
+        $this->piwikClient->clearCustomVariables();
         $this->addStandardVariables($user, $subscription);
 
         $this->addVariable('currency', $oSubPack->getTierCurrency());
@@ -660,7 +634,7 @@ class NewTracker
         string $conversionMode = null
     ): bool
     {
-        $this->getApiClient()->clearCustomVariables();
+        $this->piwikClient->clearCustomVariables();
         $this->addStandardVariables($user, $subscription);
 
         $this->addVariable('game_name', $game->getName());
@@ -689,43 +663,6 @@ class NewTracker
         return $this->sendEcommerce($orderId, 0.01, $prodSku, 'game');
     }
 
-    /**
-     * NewTracker::trackBookmarkDownload()
-     * Tracks to Piwik a game download, The $subscription argument is optional.
-     *
-     * @param User              $user
-     * @param Game              $game
-     * @param Subscription|null $subscription
-     * @param null              $conversionMode
-     *
-     * @return bool
-     * @throws \Exception
-     */
-    public function trackBookmarkDownload(User $user,
-        Game $game,
-        Subscription $subscription = null,
-        $conversionMode = null
-    )
-    {
-        $this->getApiClient()->clearCustomVariables();
-        $this->addStandardVariables($user, $subscription);
-        $category = $game->getFirstCategory();
-        $categoryName = $category ? $category->getName() : 'game';
-        if ($conversionMode) {
-            $this->addVariable('conversion_mode', $conversionMode);
-        }
-        $type = 'bookmark-download-ok';
-        $prodSku = 'bookmark-download-' . $game->getUuid();
-        $orderIdPieces = [
-            $type,
-            rand(1, 1000000000),
-            rand(1, 1000000000),
-            $game->getUuid(),
-            'N' . rand(1000, 9999),
-        ];
-        $orderId = implode('-', $orderIdPieces);
-        return $this->sendEcommerce($orderId, 0.01, $prodSku, $categoryName);
-    }
 
     /**
      * @param User $user
@@ -743,7 +680,7 @@ class NewTracker
         Subscription $subscription,
         string $conversionMode = null
     ) {
-        $this->getApiClient()->clearCustomVariables();
+        $this->piwikClient->clearCustomVariables();
         $this->addStandardVariables($user, $subscription);
 
         $this->addVariable('video_name', $uploadedVideo->getTitle());
@@ -769,15 +706,5 @@ class NewTracker
         $orderId = implode('-', $orderIdPieces);
 
         return $this->sendEcommerce($orderId, 0.01, $prodSku, $uploadedVideo->getSubcategory()->getTitle());
-    }
-
-    /**
-     * Track request from potential malware or bot
-     */
-    public function trackBot()
-    {
-        $this->getApiClient()->clearCustomVariables();
-        $this->addStandardVariables();
-        $this->sendEcommerce('malware-bot', 0, 1, 0);
     }
 }

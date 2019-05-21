@@ -47,7 +47,26 @@ class SubscriptionStatisticSender
         bool $conversionMode = null
     ): bool
     {
-        return $this->send($this->newTracker::TRACK_SUBSCRIBE, $user, $subscriptionEntity, $responseData, $conversionMode);
+        try {
+            $this->logger->info('Trying to send piwik event', [
+                'eventName' => 'trackSubscribe'
+            ]);
+
+            $result = $this->newTracker->trackSubscribe(
+                $user,
+                $subscriptionEntity,
+                $responseData,
+                $conversionMode
+            );
+
+            $this->logger->info('Sending is finished', ['result' => $result]);
+
+            return $result;
+        } catch (\Exception $ex) {
+            $this->logger->info('Exception on piwik sending', ['msg' => $ex->getMessage(), 'line' => $ex->getLine(), 'code' => $ex->getCode()]);
+
+            return false;
+        }
     }
 
     /**
@@ -65,7 +84,26 @@ class SubscriptionStatisticSender
         bool $conversionMode = null
     ): bool
     {
-        return $this->send($this->newTracker::TRACK_RESUBSCRIBE, $user, $subscriptionEntity, $responseData, $conversionMode);
+        try {
+            $this->logger->info('Trying to send piwik event', [
+                'eventName' => 'trackResubscribe'
+            ]);
+
+            $result = $this->newTracker->trackResubscribe(
+                $user,
+                $subscriptionEntity,
+                $responseData,
+                $conversionMode
+            );
+
+            $this->logger->info('Sending is finished', ['result' => $result]);
+
+            return $result;
+        } catch (\Exception $ex) {
+            $this->logger->info('Exception on piwik sending', ['msg' => $ex->getMessage(), 'line' => $ex->getLine(), 'code' => $ex->getCode()]);
+
+            return false;
+        }
     }
 
     /**
@@ -83,7 +121,26 @@ class SubscriptionStatisticSender
         bool $conversionMode = null
     ): bool
     {
-        return $this->send($this->newTracker::TRACK_RENEW, $user, $subscriptionEntity, $responseData, $conversionMode);
+        try {
+            $this->logger->info('Trying to send piwik event', [
+                'eventName' => 'trackRenew'
+            ]);
+
+            $result = $this->newTracker->trackRenew(
+                $user,
+                $subscriptionEntity,
+                $responseData,
+                $conversionMode
+            );
+
+            $this->logger->info('Sending is finished', ['result' => $result]);
+
+            return $result;
+        } catch (\Exception $ex) {
+            $this->logger->info('Exception on piwik sending', ['msg' => $ex->getMessage(), 'line' => $ex->getLine(), 'code' => $ex->getCode()]);
+
+            return false;
+        }
     }
 
     /**
@@ -101,7 +158,26 @@ class SubscriptionStatisticSender
         bool $conversionMode = null
     ): bool
     {
-        return $this->send($this->newTracker::TRACK_UNSUBSCRIBE, $user, $subscriptionEntity, $responseData, $conversionMode);
+        try {
+            $this->logger->info('Trying to send piwik event', [
+                'eventName' => 'trackUnsubscribe'
+            ]);
+
+            $result = $this->newTracker->trackUnsubscribe(
+                $user,
+                $subscriptionEntity,
+                $responseData,
+                $conversionMode
+            );
+
+            $this->logger->info('Sending is finished', ['result' => $result]);
+
+            return $result;
+        } catch (\Exception $ex) {
+            $this->logger->info('Exception on piwik sending', ['msg' => $ex->getMessage(), 'line' => $ex->getLine(), 'code' => $ex->getCode()]);
+
+            return false;
+        }
     }
 
     /**

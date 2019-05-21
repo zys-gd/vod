@@ -10,56 +10,43 @@ use PiwikBundle\Api\PhpClient;
 class PiwikDataSender
 {
     /**
-     * @var PhpClient
+     * @var PiwikClientFactory
      */
-    private $piwikPhpClient;
+    private $piwikClientFactory;
 
-    /**
-     * PiwikDataSender constructor
-     *
-     * @param PhpClient $piwikPhpClient
-     */
-    public function __construct(PhpClient $piwikPhpClient)
+    public function __construct(PiwikClientFactory $piwikClientFactory)
     {
-        $this->piwikPhpClient = $piwikPhpClient;
+        $this->piwikClientFactory = $piwikClientFactory;
     }
 
     /**
-     * @param array $data
+     * @param $orderId
+     * @param $orderValue
+     * @param $prodSku
+     * @param $prodCat
      *
-     * @return mixed
+     * @return bool
+     * @throws \Exception
      */
-    public function sendData(array $data)
+    public function sendEcommerce($orderId, $orderValue, $prodSku, $prodCat)
     {
-        if (!empty($data['piwikData'][0])) {
-            $pieces    = explode('&', $data['piwikData'][0]);
-            $newpieces = array();
+        $this->piwikClientFactory->getPiwikClient()->addEcommerceItem(
+            $prodSku,
+            $prodSku,
+            $prodCat,
+            $orderValue,
+            1
+        );
 
-            foreach ($pieces as $k => $piece) {
-                if (strpos($piece, 'cip=') === 0) {
-                    $rump = preg_replace('/[^0-9a-zA-Z,\.]/', ',', substr($piece, 4));
-                    $subpieces = explode(',', $rump);
-                    $ip = '';
-
-                    foreach ($subpieces as $s => $subpiece) {
-                        if ($subpiece !== '') {
-                            $ip = $subpiece;
-                            break;
-                        }
-                    }
-
-                    $piece = 'cip=' . $ip;
-                }
-
-                $newpieces[] = $piece;
-            }
-
-            $newurl = implode('&', $newpieces) . '&opti=1';
-            $data['piwikData'][0] = str_replace(array(' ', "\t", "\n", "\r"), array('%20', '', '', ''), $newurl);
-        }
-
-        $result = $this->piwikPhpClient->sendRequestFromQueue($data['piwikData']);
-
+        $result = (bool)$this->piwikClientFactory->getPiwikClient()->doTrackEcommerceOrder(
+            $orderId,
+            $orderValue
+        );
         return $result;
+    }
+
+    public function sendVisitData()
+    {
+        $this->piwikClientFactory->getPiwikClient()->doTrackPageView('');
     }
 }
