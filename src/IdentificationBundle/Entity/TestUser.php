@@ -3,10 +3,14 @@
 namespace IdentificationBundle\Entity;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * Class TestUser
+ *
+ * @UniqueEntity(
+ *     fields={"userIdentifier"},
+ *     message = "This user is already in use"
+ * )
  */
 class TestUser
 {
@@ -46,14 +50,6 @@ class TestUser
     {
         $this->addedAt = new \DateTime();
         $this->uuid    = $uuid;
-    }
-
-    public static function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata->addConstraint(new UniqueEntity([
-            'fields'  => 'userIdentifier',
-            'message' => 'This user is already in use',
-        ]));
     }
 
     /**
