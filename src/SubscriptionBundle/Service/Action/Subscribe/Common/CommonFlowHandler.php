@@ -8,6 +8,7 @@
 
 namespace SubscriptionBundle\Service\Action\Subscribe\Common;
 
+use App\Domain\Entity\Campaign;
 use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
 use ExtrasBundle\Utils\UrlParamAppender;
 use IdentificationBundle\Entity\User;
@@ -27,6 +28,7 @@ use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomResponses;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomAffiliateTrackingRules;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
 use SubscriptionBundle\Service\Action\Subscribe\Subscriber;
+use SubscriptionBundle\Service\CampaignExtractor;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\SubscriptionExtractor;
 use SubscriptionBundle\Service\SubscriptionPackProvider;
@@ -103,6 +105,10 @@ class CommonFlowHandler
      * @var SubscriptionEventTracker
      */
     private $subscriptionEventTracker;
+    /**
+     * @var CampaignExtractor
+     */
+    private $campaignExtractor;
 
 
     /**
@@ -124,6 +130,7 @@ class CommonFlowHandler
      * @param EntitySaveHelper               $entitySaveHelper
      * @param string                         $resubNotAllowedRoute
      * @param SubscriptionEventTracker       $subscriptionEventTracker
+     * @param CampaignExtractor              $campaignExtractor
      */
     public function __construct(
         SubscriptionExtractor $subscriptionProvider,
@@ -141,7 +148,8 @@ class CommonFlowHandler
         UserInfoMapper $infoMapper,
         EntitySaveHelper $entitySaveHelper,
         string $resubNotAllowedRoute,
-        SubscriptionEventTracker $subscriptionEventTracker
+        SubscriptionEventTracker $subscriptionEventTracker,
+        CampaignExtractor $campaignExtractor
     )
     {
         $this->subscriptionPackProvider    = $subscriptionPackProvider;
@@ -160,6 +168,7 @@ class CommonFlowHandler
         $this->entitySaveHelper            = $entitySaveHelper;
         $this->resubNotAllowedRoute        = $resubNotAllowedRoute;
         $this->subscriptionEventTracker    = $subscriptionEventTracker;
+        $this->campaignExtractor = $campaignExtractor;
     }
 
 
@@ -316,6 +325,17 @@ class CommonFlowHandler
 
         $additionalData   = $subscriber->getAdditionalSubscribeParams($request, $User);
         $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($User);
+        /** @var Campaign $campaign */
+        $campaign = $this->campaignExtractor->getCampaignFromSession($request->getSession());
+        $additionalData['zero_credit_sub_available'] = false;
+        if (
+            $subscriptionPack->isZeroCreditSubAvailable()
+            ||
+            ($campaign && $campaign->isZeroCreditSubAvailable())
+        ) {
+            $additionalData['zero_credit_sub_available'] = true;
+        }
+
         /** @var ProcessResult $result */
         list($newSubscription, $result) = $this->subscriber->subscribe($User, $subscriptionPack, $additionalData);
 

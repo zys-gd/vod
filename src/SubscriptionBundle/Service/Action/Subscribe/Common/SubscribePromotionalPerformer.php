@@ -51,9 +51,11 @@ class SubscribePromotionalPerformer
 
     /**
      * @param Subscription $subscription
+     * @param array        $additionalData
+     *
      * @return ProcessResult
      */
-    public function doSubscribe(Subscription $subscription): ProcessResult
+    public function doSubscribe(Subscription $subscription, array $additionalData): ProcessResult
     {
 
         $carrier = $subscription->getUser()->getCarrier();
