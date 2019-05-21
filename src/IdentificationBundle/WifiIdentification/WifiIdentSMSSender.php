@@ -1,16 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 11.01.19
- * Time: 15:58
- */
 
 namespace IdentificationBundle\WifiIdentification;
 
-
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\BillingFramework\Process\PinRequestProcess;
+use IdentificationBundle\BillingFramework\Process\PinResendProcess;
+use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Exception\AlreadyIdentifiedException;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
@@ -18,11 +13,15 @@ use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\Common\InternalSMS\PinCodeSaver;
 use IdentificationBundle\WifiIdentification\Common\RequestProvider;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinRequestRules;
+use IdentificationBundle\WifiIdentification\Handler\HasCustomPinResendRules;
 use IdentificationBundle\WifiIdentification\Handler\HasInternalSMSHandling;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerProvider;
 use IdentificationBundle\WifiIdentification\Service\MessageComposer;
 use IdentificationBundle\WifiIdentification\Service\MsisdnCleaner;
 
+/**
+ * Class WifiIdentSMSSender
+ */
 class WifiIdentSMSSender
 {
     /**
@@ -61,7 +60,10 @@ class WifiIdentSMSSender
      * @var UserRepository
      */
     private $userRepository;
-
+    /**
+     * @var PinResendProcess
+     */
+    private $pinResendProcess;
 
     /**
      * WifiIdentSMSSender constructor.
@@ -74,6 +76,7 @@ class WifiIdentSMSSender
      * @param RequestProvider                   $requestProvider
      * @param IdentificationDataStorage         $dataStorage
      * @param UserRepository                    $userRepository
+     * @param PinResendProcess                  $pinResendProcess
      */
     public function __construct(
         WifiIdentificationHandlerProvider $handlerProvider,
@@ -84,7 +87,8 @@ class WifiIdentSMSSender
         PinCodeSaver $pinCodeSaver,
         RequestProvider $requestProvider,
         IdentificationDataStorage $dataStorage,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        PinResendProcess $pinResendProcess
     )
     {
         $this->handlerProvider   = $handlerProvider;
@@ -96,15 +100,15 @@ class WifiIdentSMSSender
         $this->requestProvider   = $requestProvider;
         $this->dataStorage       = $dataStorage;
         $this->userRepository    = $userRepository;
+        $this->pinResendProcess  = $pinResendProcess;
     }
 
     /**
-     * @param int    $carrierId
+     * @param int $carrierId
      * @param string $mobileNumber
-     * @throws AlreadyIdentifiedException
-     * @throws PinRequestProcessException
+     * @param bool $isResend
      */
-    public function sendSMS(int $carrierId, string $mobileNumber): void
+    public function sendSMS(int $carrierId, string $mobileNumber, bool $isResend = false): void
     {
         $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
         $handler = $this->handlerProvider->get($carrier);
@@ -121,6 +125,12 @@ class WifiIdentSMSSender
 
         $msisdn = $this->cleaner->clean($mobileNumber, $carrier);
         $body   = $this->messageComposer->composePinCodeMessage('_subtext_', 'en', $pinCode);
+
+        if ($isResend && $handler instanceof HasCustomPinResendRules) {
+            $this->resendSMS($handler, $carrier, $body);
+
+            return;
+        }
 
         if ($handler instanceof HasCustomPinRequestRules) {
             $additionalParameters = $handler->getAdditionalPinRequestParams();
@@ -149,6 +159,30 @@ class WifiIdentSMSSender
             if ($handler instanceof HasCustomPinRequestRules) {
                 $handler->getPinRequestErrorMessage($exception);
             }
+            throw $exception;
+        }
+    }
+
+    /**
+     * @param HasCustomPinResendRules $handler
+     * @param CarrierInterface $carrier
+     * @param string $body
+     */
+    public function resendSMS(HasCustomPinResendRules $handler, CarrierInterface $carrier, string $body)
+    {
+        $pinRequestResult = $this->dataStorage->readPreviousOperationResult('pinRequest');
+        $additionalParameters = $handler->getAdditionalPinResendParameters($pinRequestResult);
+
+        $parameters = $this->requestProvider->getPinResendParameters(
+            $carrier->getBillingCarrierId(),
+            $carrier->getOperatorId(),
+            $body,
+            $additionalParameters
+        );
+
+        try {
+            $this->pinResendProcess->doPinRequest($parameters);
+        } catch (PinRequestProcessException $exception) {
             throw $exception;
         }
     }

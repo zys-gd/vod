@@ -38,6 +38,7 @@ services:
         - '@IdentificationBundle\WifiIdentification\Common\RequestProvider'
         - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
         - '@IdentificationBundle\Repository\UserRepository'
+        - '@IdentificationBundle\BillingFramework\Process\PinResendProcess'
 
   IdentificationBundle\WifiIdentification\Common\InternalSMS\PinCodeVerifier:
       arguments:

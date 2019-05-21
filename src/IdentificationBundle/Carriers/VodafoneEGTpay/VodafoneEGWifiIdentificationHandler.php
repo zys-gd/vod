@@ -10,6 +10,7 @@ use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\Exception\WifiIdentConfirmException;
+use IdentificationBundle\WifiIdentification\Handler\HasCustomPinResendRules;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinVerifyRules;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -17,7 +18,7 @@ use Symfony\Component\Routing\RouterInterface;
 /**
  * Class VodafonePKWifiIdentificationHandler
  */
-class VodafoneEGWifiIdentificationHandler implements WifiIdentificationHandlerInterface, HasCustomPinVerifyRules
+class VodafoneEGWifiIdentificationHandler implements WifiIdentificationHandlerInterface, HasCustomPinVerifyRules, HasCustomPinResendRules
 {
     /**
      * @var UserRepository
@@ -41,8 +42,11 @@ class VodafoneEGWifiIdentificationHandler implements WifiIdentificationHandlerIn
      * @param EntityManagerInterface $entityManager
      * @param RouterInterface $router
      */
-    public function __construct(UserRepository $userRepository, EntityManagerInterface $entityManager, RouterInterface $router)
-    {
+    public function __construct(
+        UserRepository $userRepository,
+        EntityManagerInterface $entityManager,
+        RouterInterface $router
+    ) {
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
         $this->router = $router;
@@ -125,6 +129,21 @@ class VodafoneEGWifiIdentificationHandler implements WifiIdentificationHandlerIn
     public function getRedirectUrl()
     {
         return $this->router->generate('subscription.consent_page_subscribe');
+    }
+
+    /**
+     * @param PinRequestResult $pinRequestResult
+     *
+     * @return array
+     */
+    public function getAdditionalPinResendParameters(PinRequestResult $pinRequestResult): array
+    {
+        $pinRequestResultData = $pinRequestResult->getRawData();
+        $clientUser = empty($pinRequestResultData['subscription_contract_id'])
+            ? null
+            : $pinRequestResultData['subscription_contract_id'];
+
+        return ['client_user' => $clientUser];
     }
 
     /**
