@@ -181,7 +181,15 @@
         // re-send pin code
         $(document).on('click', '#resend-pin', function (event) {
             event.preventDefault();
+            var form = $(this).closest('form');
+            var resendPinMarker = $('<input type="hidden" name="resend-pin" />');
+
+            form.append(resendPinMarker);
+
             $(this).closest('form').attr('data-form', 'pin').submit();
+
+            resendPinMarker.remove();
+
             $(document).ajaxSuccess(function (event, request, settings) {
                 if (settings.url === '{{ path('send_sms_pin_code') }}') {
                     showAlert({title: 'New PIN-code', message: 'has been successfully sent'});

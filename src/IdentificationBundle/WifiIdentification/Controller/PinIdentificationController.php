@@ -136,7 +136,6 @@ class PinIdentificationController extends AbstractController implements APIContr
             throw new BadRequestHttpException('`mobile_number` is required');
         }
 
-
         if ($this->limiter->isSubscriptionLimitReached($request->getSession())) {
 
             $carrier = $this->carrierRepository->findOneByBillingId($ispData->getCarrierId());
@@ -147,11 +146,14 @@ class PinIdentificationController extends AbstractController implements APIContr
             ]);
         }
 
+        $postData = $request->request->all();
+        $isResend = isset($postData['resend-pin']);
+
         $this->limiter->reserveSlotForSubscription($request->getSession());
 
         $carrierId = $ispData->getCarrierId();
         try {
-            $this->identSMSSender->sendSMS($carrierId, $mobileNumber, true);
+            $this->identSMSSender->sendSMS($carrierId, $mobileNumber, $isResend);
             return $this->getSimpleJsonResponse('Sent', 200, [], ['success' => true, 'carrierId' => $carrierId]);
 
         } catch (PinRequestProcessException $exception) {
