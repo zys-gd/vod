@@ -95,6 +95,7 @@
                     $('#player-modal').removeClass('d-flex');
                     $('html').css({'overflow-y': 'auto'});
                     demoplayer.stop();
+                    $('.modal-related-videos-block').empty();
                 }
 
                 function changeVideo(publicId, options) {
@@ -127,7 +128,7 @@
                     let uri = `${batchRelatedVideosRoute}?categoryUuid=${category}&offset=${offset}`;
 
                     $.get(uri, (data) => {
-                        $('.modal-related-videos-block').append(data.html);
+                        $('.modal-related-videos-block').empty().append(data.html);
                         isLast = Boolean(data.isLast);
                     }).then(() => {
                         let isAllowRequest = true;
@@ -146,7 +147,7 @@
                                     uri = `${batchRelatedVideosRoute}?categoryUuid=${category}&offset=${offset}`;
                                     isAllowRequest = false;
                                     $.get(uri, (data) => {
-                                        $('.modal-related-videos-block').append(data.html);
+                                        $('.modal-related-videos-block').empty().append(data.html);
                                         isAllowRequest = true;
                                         isLast = Boolean(data.isLast);
                                     });
