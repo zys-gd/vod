@@ -3,6 +3,7 @@
 namespace IdentificationBundle\Carriers\OrangeEGTpay;
 
 use App\Domain\Constants\ConstBillingCarrierId;
+use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\BillingFramework\Process\IdentProcess;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
@@ -46,6 +47,11 @@ class OrangeEGIdentificationHandler implements IdentificationHandlerInterface, H
     private $asyncIdentStarter;
 
     /**
+     * @var LocalExtractor
+     */
+    private $localExtractor;
+
+    /**
      * VodafoneEGIdentificationHandler constructor
      *
      * @param UserRepository $userRepository
@@ -53,19 +59,22 @@ class OrangeEGIdentificationHandler implements IdentificationHandlerInterface, H
      * @param RequestParametersProvider $parametersProvider
      * @param IdentProcess $identProcess
      * @param AsyncIdentStarter $asyncIdentStarter
+     * @param LocalExtractor $localExtractor
      */
     public function __construct(
         UserRepository $userRepository,
         RouterInterface $router,
         RequestParametersProvider $parametersProvider,
         IdentProcess $identProcess,
-        AsyncIdentStarter $asyncIdentStarter
+        AsyncIdentStarter $asyncIdentStarter,
+        LocalExtractor $localExtractor
     ) {
         $this->userRepository = $userRepository;
         $this->router = $router;
         $this->parametersProvider = $parametersProvider;
         $this->identProcess = $identProcess;
         $this->asyncIdentStarter = $asyncIdentStarter;
+        $this->localExtractor = $localExtractor;
     }
 
     /**
@@ -85,7 +94,7 @@ class OrangeEGIdentificationHandler implements IdentificationHandlerInterface, H
      */
     public function getAdditionalIdentificationParams(Request $request): array
     {
-        return [];
+        return ['lang' => $this->localExtractor->getLocal()];
     }
 
     /**

@@ -6,6 +6,7 @@ services:
             - '@IdentificationBundle\Identification\Common\RequestParametersProvider'
             - '@IdentificationBundle\BillingFramework\Process\IdentProcess'
             - '@IdentificationBundle\Identification\Common\Async\AsyncIdentStarter'
+            - '@ExtrasBundle\Utils\LocalExtractor'
         tags:
             - {name: identification.identification_handler}
 
@@ -14,6 +15,7 @@ services:
             - '@IdentificationBundle\Repository\UserRepository'
             - '@doctrine.orm.entity_manager'
             - '@router'
+            - '@ExtrasBundle\Utils\LocalExtractor'
         tags:
             - { name: identification.wifi_identification_handler }
 

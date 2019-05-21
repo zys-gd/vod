@@ -4,12 +4,15 @@ namespace IdentificationBundle\Carriers\VodafoneEGTpay;
 
 use App\Domain\Constants\ConstBillingCarrierId;
 use Doctrine\ORM\EntityManagerInterface;
+use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
 use IdentificationBundle\BillingFramework\Process\DTO\PinVerifyResult;
+use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\Exception\WifiIdentConfirmException;
+use IdentificationBundle\WifiIdentification\Handler\HasCustomPinRequestRules;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinResendRules;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinVerifyRules;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
@@ -18,7 +21,11 @@ use Symfony\Component\Routing\RouterInterface;
 /**
  * Class VodafonePKWifiIdentificationHandler
  */
-class VodafoneEGWifiIdentificationHandler implements WifiIdentificationHandlerInterface, HasCustomPinVerifyRules, HasCustomPinResendRules
+class VodafoneEGWifiIdentificationHandler implements
+    WifiIdentificationHandlerInterface,
+    HasCustomPinVerifyRules,
+    HasCustomPinResendRules,
+    HasCustomPinRequestRules
 {
     /**
      * @var UserRepository
@@ -36,20 +43,28 @@ class VodafoneEGWifiIdentificationHandler implements WifiIdentificationHandlerIn
     private $router;
 
     /**
+     * @var LocalExtractor
+     */
+    private $localExtractor;
+
+    /**
      * VodafonePKWifiIdentificationHandler constructor
      *
      * @param UserRepository $userRepository
      * @param EntityManagerInterface $entityManager
      * @param RouterInterface $router
+     * @param LocalExtractor $localExtractor
      */
     public function __construct(
         UserRepository $userRepository,
         EntityManagerInterface $entityManager,
-        RouterInterface $router
+        RouterInterface $router,
+        LocalExtractor $localExtractor
     ) {
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
         $this->router = $router;
+        $this->localExtractor = $localExtractor;
     }
 
     /**
@@ -147,10 +162,33 @@ class VodafoneEGWifiIdentificationHandler implements WifiIdentificationHandlerIn
     }
 
     /**
+     * @return array
+     */
+    public function getAdditionalPinRequestParams(): array
+    {
+        return ['lang' => $this->localExtractor->getLocal()];
+    }
+
+    /**
+     * @param PinRequestProcessException $exception
+     *
+     * @return string|null
+     */
+    public function getPinRequestErrorMessage(PinRequestProcessException $exception): ?string
+    {
+        return $exception->getMessage();
+    }
+
+    /**
      * @param \Exception $exception
      */
     public function afterFailedPinVerify(\Exception $exception): void
     {
 
+    }
+
+    public function afterSuccessfulPinRequest(PinRequestResult $result): void
+    {
+        // TODO: Implement afterSuccessfulPinRequest() method.
     }
 }
