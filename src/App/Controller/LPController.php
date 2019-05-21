@@ -3,9 +3,6 @@
 namespace App\Controller;
 
 use App\Domain\ACL\Exception\AccessException;
-use App\Domain\ACL\Exception\SubscriptionCapReachedOnAffiliate;
-use App\Domain\ACL\Exception\SubscriptionCapReachedOnCarrier;
-use App\Domain\ACL\Exception\VisitCapReached;
 use App\Domain\ACL\LandingPageACL;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
@@ -19,8 +16,12 @@ use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
-use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
+use SubscriptionBundle\Service\CAPTool\Exception\CapToolAccessException;
+use SubscriptionBundle\Service\CAPTool\Exception\SubscriptionCapReachedOnAffiliate;
+use SubscriptionBundle\Service\CAPTool\Exception\SubscriptionCapReachedOnCarrier;
+use SubscriptionBundle\Service\CAPTool\Exception\VisitCapReached;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
+use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
 use SubscriptionBundle\Service\VisitCAPTool\VisitNotifier;
 use SubscriptionBundle\Service\VisitCAPTool\VisitTracker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -189,8 +190,11 @@ class LPController extends AbstractController implements ControllerWithISPDetect
                 $this->visitNotifier->notifyLimitReached($exception->getConstraint(), $carrier);
                 return RedirectResponse::create($this->defaultRedirectUrl);
 
+            } catch (CapToolAccessException $exception) {
+                $this->logger->debug('CAP checking throw CapToolAccessException');
+                return RedirectResponse::create($this->defaultRedirectUrl);
+
             } catch (AccessException $exception) {
-                $this->logger->debug('CAP checking throw AccessException');
                 return RedirectResponse::create($this->defaultRedirectUrl);
 
             }
@@ -244,8 +248,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $billingCarrierId = (int)$ispDetectionData['carrier_id'] ?? null;
         if (!empty($billingCarrierId)) {
             return $this->carrierRepository->findOneByBillingId($billingCarrierId);
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -260,8 +263,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         if ($campaign) {
             return $campaign;
-        }
-        else {
+        } else {
             return null;
         }
 
