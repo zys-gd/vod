@@ -3,6 +3,7 @@
 namespace SubscriptionBundle\Carriers\VodafoneEGTpay\Subscribe;
 
 use App\Domain\Constants\ConstBillingCarrierId;
+use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
@@ -17,6 +18,21 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, HasConsentPageFlow
 {
+    /**
+     * @var LocalExtractor
+     */
+    private $localExtractor;
+
+    /**
+     * VodafoneEGSubscriptionHandler constructor
+     *
+     * @param LocalExtractor $localExtractor
+     */
+    public function __construct(LocalExtractor $localExtractor)
+    {
+        $this->localExtractor = $localExtractor;
+    }
+
     /**
      * @param CarrierInterface $carrier
      *
@@ -41,7 +57,11 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
             throw new BadRequestHttpException("Can't process subscribe, required parameter `subscription_contract_id` not found");
         }
 
-        return ['subscription_contract_id' => $user->getProviderId(), 'url_id' => $user->getShortUrlId()];
+        return [
+            'subscription_contract_id' => $user->getProviderId(),
+            'url_id' => $user->getShortUrlId(),
+            'lang' => $this->localExtractor->getLocal()
+        ];
     }
 
     /**

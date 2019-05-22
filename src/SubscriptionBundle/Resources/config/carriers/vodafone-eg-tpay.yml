@@ -1,7 +1,9 @@
 services:
     SubscriptionBundle\Carriers\VodafoneEGTpay\Subscribe\VodafoneEGSubscriptionHandler:
+        arguments: ['@ExtrasBundle\Utils\LocalExtractor']
         tags:
             - { name: subscription.subscription_handler }
+
     SubscriptionBundle\Carriers\VodafoneEGTpay\Unsubscribe\VodafoneEGUnsubscribeHandler:
         tags:
             - { name: subscription.unsubscription_handler }
