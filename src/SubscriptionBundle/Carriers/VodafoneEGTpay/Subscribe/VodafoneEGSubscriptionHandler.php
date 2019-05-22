@@ -41,7 +41,7 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
             throw new BadRequestHttpException("Can't process subscribe, required parameter `subscription_contract_id` not found");
         }
 
-        return ['subscription_contract_id' => $user->getProviderId()];
+        return ['subscription_contract_id' => $user->getProviderId(), 'url_id' => $user->getShortUrlId()];
     }
 
     /**

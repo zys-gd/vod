@@ -55,7 +55,9 @@ services:
             - '@IdentificationBundle\Repository\UserRepository'
             - '@IdentificationBundle\Identification\Common\PostPaidHandler'
 
-    IdentificationBundle\Identification\Service\UserFactory: ~
+    IdentificationBundle\Identification\Service\UserFactory:
+        arguments:
+            - '@SubscriptionBundle\Service\Notification\Common\ShortUrlHashGenerator'
 
     IdentificationBundle\Identification\Common\Async\AsyncIdentStarter:
         arguments:

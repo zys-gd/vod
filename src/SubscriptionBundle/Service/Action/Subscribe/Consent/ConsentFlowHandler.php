@@ -202,6 +202,7 @@ class ConsentFlowHandler
      * @return Response
      *
      * @throws ActiveSubscriptionPackNotFound
+     * @throws NonUniqueResultException
      */
     public function handleSubscribe(Request $request, User $user, HasConsentPageFlow $subscriber): Response
     {

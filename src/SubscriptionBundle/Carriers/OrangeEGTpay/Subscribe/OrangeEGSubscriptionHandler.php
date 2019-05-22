@@ -41,7 +41,7 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
             throw new BadRequestHttpException("Can't process subscribe, required parameter `subscription_contract_id` not found");
         }
 
-        return ['subscription_contract_id' => $user->getProviderId()];
+        return ['subscription_contract_id' => $user->getProviderId(), 'url_id' => $user->getShortUrlId()];
     }
 
     /**
