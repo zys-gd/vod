@@ -57,12 +57,29 @@
         }
 
         $(document).ready(function () {
+            var carrierId = '{{ carrierId }}';
 
             var url       = new URL(window.location.href);
             var errHandle = url.searchParams.get("err_handle");
             var message;
             if (errHandle && (message = resolveErrorMessage(errHandle))) {
-                showAlert({title: 'Error', message: message})
+                showAlert({title: 'Error', message: message});
+
+                if (carrierId == 2253 || carrierId == 2254) {
+                    var closeButton = $('a[data-fancybox-close=""]');
+
+                    console.log(closeButton);
+
+                    $('#send-reminder').click(function () {
+                        $.ajax({
+                            url: "{{ path('remind_credentials') }}",
+                            method: 'GET',
+                            complete: function () {
+                                closeButton.click();
+                            }
+                        })
+                    })
+                }
             }
         })
 

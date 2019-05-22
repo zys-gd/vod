@@ -144,7 +144,8 @@ class HomeController extends AbstractController implements
             'categoryVideos'  => array_slice($categoryVideos, 1, 3),
             'categories'      => $indexedCategoryData,
             'sliderVideos'    => array_slice($categoryVideos, 0, 1),
-            'games'           => $games->getGames()
+            'games'           => $games->getGames(),
+            'carrierId'       => $data->getCarrierId()
         ]);
     }
 
