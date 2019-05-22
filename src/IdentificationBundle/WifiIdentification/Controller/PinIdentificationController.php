@@ -157,7 +157,7 @@ class PinIdentificationController extends AbstractController implements APIContr
             return $this->getSimpleJsonResponse('Sent', 200, [], ['success' => true, 'carrierId' => $carrierId]);
 
         } catch (PinRequestProcessException $exception) {
-            $message = $this->errorCodeResolver->resolveMessage($exception->getCode());
+            $message = $this->errorCodeResolver->resolveMessage($exception->getCode(), $carrierId);
             return $this->getSimpleJsonResponse($message, 200, [], ['success' => false]);
         } catch (\Exception $exception) {
             return $this->getSimpleJsonResponse($exception->getMessage(), 200, [], ['success' => false]);
@@ -241,7 +241,7 @@ class PinIdentificationController extends AbstractController implements APIContr
             return $this->getSimpleJsonResponse('Sent', 200, [], ['success' => true, 'carrierId' => $carrierId]);
 
         } catch (PinRequestProcessException $exception) {
-            $message = $this->errorCodeResolver->resolveMessage($exception->getCode());
+            $message = $this->errorCodeResolver->resolveMessage($exception->getCode(), $carrierId);
             return $this->getSimpleJsonResponse($message, 200, [], ['success' => false]);
         } catch (\Exception $exception) {
             return $this->getSimpleJsonResponse($exception->getMessage(), 200, [], ['success' => false]);

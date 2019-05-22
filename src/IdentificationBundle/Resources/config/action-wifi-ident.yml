@@ -51,4 +51,7 @@ services:
 
   IdentificationBundle\WifiIdentification\Common\RequestProvider: ~
 
-  IdentificationBundle\WifiIdentification\Service\ErrorCodeResolver: ~
+  IdentificationBundle\WifiIdentification\Service\ErrorCodeResolver:
+    arguments:
+      - '@App\Domain\Service\Translator\Translator'
+      - '@ExtrasBundle\Utils\LocalExtractor'
