@@ -11,11 +11,11 @@ use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\UserRepository;
-use PiwikBundle\Service\NewTracker;
+use PiwikBundle\Service\PiwikTracker;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\SubscriptionExtractor;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class ContentStatisticSender
@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class ContentStatisticSender
 {
     /**
-     * @var NewTracker
+     * @var PiwikTracker
      */
     private $newTracker;
 
@@ -43,11 +43,6 @@ class ContentStatisticSender
     private $maxMindIpInfo;
 
     /**
-     * @var Session
-     */
-    private $session;
-
-    /**
      * @var CountryRepository
      */
     private $countryRepository;
@@ -65,21 +60,19 @@ class ContentStatisticSender
     /**
      * ContentStatisticSender constructor
      *
-     * @param NewTracker $newTracker
-     * @param UserRepository $userRepository
-     * @param LoggerInterface $logger
-     * @param MaxMindIpInfo $maxMindIpInfo
-     * @param Session $session
-     * @param CountryRepository $countryRepository
+     * @param PiwikTracker          $newTracker
+     * @param UserRepository        $userRepository
+     * @param LoggerInterface       $logger
+     * @param MaxMindIpInfo         $maxMindIpInfo
+     * @param CountryRepository     $countryRepository
      * @param SubscriptionExtractor $subscriptionExtractor
-     * @param CarrierRepository $carrierRepository
+     * @param CarrierRepository     $carrierRepository
      */
     public function __construct(
-        NewTracker $newTracker,
+        PiwikTracker $newTracker,
         UserRepository $userRepository,
         LoggerInterface $logger,
         MaxMindIpInfo $maxMindIpInfo,
-        Session $session,
         CountryRepository $countryRepository,
         SubscriptionExtractor $subscriptionExtractor,
         CarrierRepository $carrierRepository
@@ -89,20 +82,20 @@ class ContentStatisticSender
         $this->userRepository        = $userRepository;
         $this->logger                = $logger;
         $this->maxMindIpInfo         = $maxMindIpInfo;
-        $this->session               = $session;
         $this->countryRepository     = $countryRepository;
         $this->subscriptionExtractor = $subscriptionExtractor;
         $this->carrierRepository     = $carrierRepository;
     }
 
     /**
-     * @param ISPData $data
+     * @param SessionInterface $session
+     * @param ISPData          $data
      *
      * @return bool
      */
-    public function trackVisit(ISPData $data = null): bool
+    public function trackVisit(SessionInterface $session, ISPData $data = null): bool
     {
-        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($this->session);
+        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($session);
 
         $billingCarrierId = $data ? $data->getCarrierId() : null;
         $userIp = $this->getUserIp();
@@ -152,14 +145,15 @@ class ContentStatisticSender
     }
 
     /**
-     * @param Subscription $subscription
-     * @param Game         $game
+     * @param SessionInterface $session
+     * @param Subscription     $subscription
+     * @param Game             $game
      *
      * @return bool
      */
-    public function trackDownload(Subscription $subscription, Game $game): bool
+    public function trackDownload(SessionInterface $session, Subscription $subscription, Game $game): bool
     {
-        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($this->session);
+        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($session);
         $user               = null;
 
         if (!empty($identificationData['identification_token'])) {
@@ -191,16 +185,16 @@ class ContentStatisticSender
     }
 
     /**
-     * @param UploadedVideo $uploadedVideo
+     * @param SessionInterface $session
+     * @param UploadedVideo    $uploadedVideo
      *
      * @return bool
-     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function trackPlayingVideo(UploadedVideo $uploadedVideo): bool
+    public function trackPlayingVideo(SessionInterface $session, UploadedVideo $uploadedVideo): bool
     {
-        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($this->session);
-        $subscription       = $this->subscriptionExtractor->extractSubscriptionFromSession($this->session);
+        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($session);
+        $subscription       = $this->subscriptionExtractor->extractSubscriptionFromSession($session);
         $user               = null;
 
         if (!empty($identificationData['identification_token'])) {

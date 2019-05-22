@@ -137,7 +137,7 @@ class HomeController extends AbstractController implements
             5
         );
 
-        $this->contentStatisticSender->trackVisit($data);
+        $this->contentStatisticSender->trackVisit($request->getSession(), $data);
 
         $template = $this->templateConfigurator->getTemplate('home', $data->getCarrierId());
         return $this->render($template, [

@@ -62,7 +62,7 @@ class TrackEventController extends AbstractController
         try {
             /** @var UploadedVideo $video */
             $video = $this->uploadedVideoRepository->findOneBy(['remoteId' => $remoteId]);
-            $this->contentStatisticSender->trackPlayingVideo($video);
+            $this->contentStatisticSender->trackPlayingVideo($request->getSession(), $video);
 
             return new JsonResponse(['result' => true]);
         } catch (\Exception $exception) {

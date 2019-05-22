@@ -9,7 +9,7 @@
 namespace SubscriptionBundle\Service\Callback\Common\Type;
 
 
-use PiwikBundle\Service\NewTracker;
+use PiwikBundle\Service\PiwikTracker;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\UnsubscribeProcess;
 use SubscriptionBundle\Entity\Subscription;
@@ -41,7 +41,7 @@ class UnsubscriptionCallbackHandler extends AbstractCallbackHandler
 
     public function getPiwikEventName(): string
     {
-        return NewTracker::TRACK_UNSUBSCRIBE;
+        return PiwikTracker::TRACK_UNSUBSCRIBE;
     }
 
 

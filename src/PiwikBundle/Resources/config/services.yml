@@ -1,9 +1,6 @@
 services:
-    PiwikBundle\Service\NewTracker:
-        factory: ['@PiwikBundle\Service\PiwikClientFactory', getPiwikClient]
-        arguments:
-            - 1
-            - '@PiwikBundle\Service\PiwikDataMapper'
+    PiwikBundle\Service\PiwikTracker:
+        factory: 'PiwikBundle\Service\PiwikClientFactory:getPiwikClient'
 
     PiwikBundle\Twig\PiwikExtension:
         arguments: ['@PiwikBundle\Api\JsClient', '%piwik_enable_js_tracker%']
@@ -38,4 +35,5 @@ services:
             - '@PiwikBundle\Api\PhpClient'
             - '@PiwikBundle\Api\JsClient'
 
-    PiwikBundle\Service\PiwikDataMapper: ~
+    PiwikBundle\Service\PiwikDataMapper:
+        factory: 'PiwikBundle\Service\PiwikClientFactory:getPiwikClient'

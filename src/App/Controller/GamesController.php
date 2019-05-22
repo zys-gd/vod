@@ -105,15 +105,16 @@ class GamesController extends AbstractController implements AppControllerInterfa
     /**
      * @Route("/games/",name="game_category")
      * @Method("GET")
+     * @param Request $request
      * @param ISPData $data
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showCategoryContentAction(ISPData $data)
+    public function showCategoryContentAction(Request $request, ISPData $data)
     {
         $games = $this->gameRepository->findBatchOfGames(0, 8);
 
-        $this->contentStatisticSender->trackVisit($data);
+        $this->contentStatisticSender->trackVisit($request->getSession(), $data);
 
         $template = $this->templateConfigurator->getTemplate('game_category_content', $data->getCarrierId());
         return $this->render($template, [
@@ -215,7 +216,7 @@ class GamesController extends AbstractController implements AppControllerInterfa
 
         $link = $this->drmApkProvider->getDRMApkUrl($gameBuild);
 
-        $this->contentStatisticSender->trackDownload($subscription, $gameBuild->getGame());
+        $this->contentStatisticSender->trackDownload($request->getSession(), $subscription, $gameBuild->getGame());
 
         return new JsonResponse(['url' => $link]);
     }

@@ -105,7 +105,7 @@ class CategoryController extends AbstractController implements AppControllerInte
             $categoryVideos[$categoryKey][$video->getUuid()] = $this->videoSerializer->serializeShort($video);
         }
 
-        $this->contentStatisticSender->trackVisit($data);
+        $this->contentStatisticSender->trackVisit($request->getSession(), $data);
 
         $template = $this->templateConfigurator->getTemplate('category', $data->getCarrierId());
         return $this->render($template, [

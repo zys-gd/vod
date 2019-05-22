@@ -1,3 +1,3 @@
 services:
   SubscriptionBundle\Piwik\SubscriptionStatisticSender:
-      arguments: ['@logger', '@PiwikBundle\Service\NewTracker']
+      arguments: ['@logger', '@PiwikBundle\Service\PiwikTracker', '@PiwikBundle\Service\PiwikDataMapper']
