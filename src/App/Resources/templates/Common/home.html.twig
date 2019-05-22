@@ -65,21 +65,15 @@
             if (errHandle && (message = resolveErrorMessage(errHandle))) {
                 showAlert({title: 'Error', message: message});
 
-                if (carrierId == 2253 || carrierId == 2254) {
-                    var closeButton = $('a[data-fancybox-close=""]');
-
-                    console.log(closeButton);
-
-                    $('#send-reminder').click(function () {
-                        $.ajax({
-                            url: "{{ path('remind_credentials') }}",
-                            method: 'GET',
-                            complete: function () {
-                                closeButton.click();
-                            }
-                        })
+                $('#send-reminder').click(function () {
+                    $.ajax({
+                        url: "{{ path('remind_credentials') }}",
+                        method: 'GET',
+                        complete: function () {
+                            $('.fc-content .button-confirm').click();
+                        }
                     })
-                }
+                })
             }
         })
 

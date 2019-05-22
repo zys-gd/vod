@@ -118,6 +118,16 @@
                         $wifi_warning.html(params.pin_notif.replace(/%wifi_phone%/, phone));
                     } else {
                         showAlert({title: result.data.message});
+
+                        $('#send-reminder').click(function () {
+                            $.ajax({
+                                url: "{{ path('remind_credentials') }}",
+                                method: 'GET',
+                                complete: function () {
+                                    $('.fc-content .button-confirm').click();
+                                }
+                            })
+                        })
                     }
                 }
             });
@@ -153,6 +163,16 @@
                         insertAnnotation();
                     } else {
                         showAlert({title: result.data.message});
+
+                        $('#send-reminder').click(function () {
+                            $.ajax({
+                                url: "{{ path('remind_credentials') }}",
+                                method: 'GET',
+                                complete: function () {
+                                    $('.fc-content .button-confirm').click();
+                                }
+                            })
+                        })
                     }
                 }
             });
