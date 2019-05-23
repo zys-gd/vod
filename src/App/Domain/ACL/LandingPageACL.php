@@ -2,20 +2,20 @@
 
 namespace App\Domain\ACL;
 
-use App\Domain\Repository\CampaignRepository;
-use App\Domain\Repository\CarrierRepository;
 use App\Domain\ACL\Accessors\VisitAccessorByCampaign;
 use App\Domain\ACL\Accessors\VisitConstraintByAffiliate;
 use App\Domain\ACL\Exception\CampaignAccessException;
 use App\Domain\ACL\Exception\CampaignPausedException;
-use App\Domain\ACL\Exception\SubscriptionCapReachedOnAffiliate;
-use App\Domain\ACL\Exception\SubscriptionCapReachedOnCarrier;
-use App\Domain\ACL\Exception\VisitCapReached;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
+use App\Domain\Repository\CampaignRepository;
+use App\Domain\Repository\CarrierRepository;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
+use SubscriptionBundle\Service\CAPTool\Exception\SubscriptionCapReachedOnAffiliate;
+use SubscriptionBundle\Service\CAPTool\Exception\SubscriptionCapReachedOnCarrier;
+use SubscriptionBundle\Service\CAPTool\Exception\VisitCapReached;
 use SubscriptionBundle\Service\CAPTool\Limiter\SubscriptionCapChecker;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -108,10 +108,7 @@ class LandingPageACL
             throw new CampaignAccessException($campaign);
         }
 
-        if ($this->carrierCapChecker->isCapReachedForCarrier($carrier)) {
-            $this->logger->debug('CAP checking on LP', ['message' => 'isCapReachedForCarrier say: isCapReachedForCarrier = true']);
-            throw new SubscriptionCapReachedOnCarrier($carrier);
-        }
+        $this->ensureSubscribeCapIsNotReachedByCarrier($carrier);
 
         $affiliate = $campaign->getAffiliate();
 
@@ -122,23 +119,11 @@ class LandingPageACL
             }
 
             if ($constraint->getCapType() == ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE) {
-                if ($this->carrierCapChecker->isCapReachedForAffiliate($constraint)) {
-                    $this->logger->debug('CAP checking on LP', [
-                        'message' => 'Constraint by aff say: isCapReachedForAffiliate = true',
-                        'constraint' => $constraint
-                    ]);
-                    throw new SubscriptionCapReachedOnAffiliate($constraint, $carrier);
-                }
+                $this->ensureSubscribeCapIsNotReachedByAffiliate($carrier, $constraint);
             }
 
             if ($constraint->getCapType() == ConstraintByAffiliate::CAP_TYPE_VISIT) {
-                if (!$this->visitConstraintByAffiliate->canVisit($carrier, $constraint)) {
-                    $this->logger->debug('CAP checking on LP', [
-                        'message' => 'Constraint by aff say: CanVisit = false',
-                        'constraint' => $constraint
-                    ]);
-                    throw new VisitCapReached($constraint);
-                }
+                $this->ensureVisitCapIsNotReached($carrier, $constraint);
             }
         }
     }
@@ -162,6 +147,66 @@ class LandingPageACL
             return $carrier->isLpOff() || $campaign->isLpOff() || $campaign->getAffiliate()->isLpOff();
         } catch (\Throwable $e) {
             return false;
+        }
+    }
+
+    /**
+     * @param Carrier               $carrier
+     * @param ConstraintByAffiliate $constraint
+     * @throws SubscriptionCapReachedOnAffiliate
+     */
+    private function ensureSubscribeCapIsNotReachedByAffiliate(Carrier $carrier, ConstraintByAffiliate $constraint): void
+    {
+        if ($this->carrierCapChecker->isCapReachedForAffiliate($constraint)) {
+            $this->logger->debug('CAP checking on LP', [
+                'message'    => 'Constraint by aff say: isCapReachedForAffiliate = true',
+                'constraint' => $constraint
+            ]);
+            throw new SubscriptionCapReachedOnAffiliate($constraint, $carrier);
+        }
+    }
+
+    /**
+     * @param Carrier               $carrier
+     * @param ConstraintByAffiliate $constraint
+     * @throws \SubscriptionBundle\Service\CAPTool\Exception\VisitCapReached
+     */
+    private function ensureVisitCapIsNotReached(Carrier $carrier, ConstraintByAffiliate $constraint): void
+    {
+        if (!$this->visitConstraintByAffiliate->canVisit($carrier, $constraint)) {
+            $this->logger->debug('CAP checking on LP', [
+                'message'    => 'Constraint by aff say: CanVisit = false',
+                'constraint' => $constraint
+            ]);
+            throw new VisitCapReached($constraint);
+        }
+    }
+
+    /**
+     * @param Carrier $carrier
+     * @throws SubscriptionCapReachedOnCarrier
+     */
+    private function ensureSubscribeCapIsNotReachedByCarrier(Carrier $carrier): void
+    {
+        if ($this->carrierCapChecker->isCapReachedForCarrier($carrier)) {
+            $this->logger->debug('CAP checking on LP', ['message' => 'isCapReachedForCarrier say: isCapReachedForCarrier = true']);
+            throw new SubscriptionCapReachedOnCarrier($carrier);
+        }
+    }
+
+    public function ensureCanAccessByVisits(Campaign $campaign, Carrier $carrier): void
+    {
+        $affiliate = $campaign->getAffiliate();
+
+        foreach ($affiliate->getConstraints() as $constraint) {
+            /** @var ConstraintByAffiliate $constraint */
+            if ($carrier && $carrier->getUuid() !== $constraint->getCarrier()->getUuid()) {
+                continue;
+            }
+
+            if ($constraint->getCapType() == ConstraintByAffiliate::CAP_TYPE_VISIT) {
+                $this->ensureVisitCapIsNotReached($carrier, $constraint);
+            }
         }
     }
 }

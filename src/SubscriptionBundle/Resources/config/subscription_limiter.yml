@@ -12,6 +12,7 @@ services:
         - '@SubscriptionBundle\Service\CAPTool\Limiter\StorageKeyGenerator'
         - '@SubscriptionBundle\Service\CampaignExtractor'
         - '@logger'
+        - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier'
 
 
     SubscriptionBundle\Service\CAPTool\Limiter\LimiterStorage:

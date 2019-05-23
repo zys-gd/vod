@@ -107,7 +107,7 @@
                         window.location = result.data.redirectUrl;
                         return;
                     }
-                    
+
                     if (result.data.success) {
                         input_phone.addClass('d-none');
                         $wifi_form_step
@@ -125,35 +125,74 @@
         // merge carrier and phone steps
         $(document).on('submit', 'form[data-form=carrier_with_pin]', function (e) {
             e.preventDefault();
-            $._loader();
             phone = input_phone.val();
 
-            $.ajax({
-                url    : "{{ path('select_carrier_with_send_pin_code') }}",
-                method : "POST",
-                data   : form.serialize(),
-                success: function (result) {
-                    $._loader(true);
-
-                    if (result.data.redirectUrl) {
-                        window.location = result.data.redirectUrl;
-                        return;
-                    }
-                    
-                    if (result.data.success) {
-                        var input_phone = $('input[name=mobile_number]');
-                        input_phone.addClass('d-none');
-                        $wifi_form_step
-                            .html(params.html_wifi_pin)
-                            .append(input_phone);
-                        form.attr('data-form', 'confirm');
-                        $wifi_warning.html(params.pin_notif.replace(/%wifi_phone%/, phone));
-                        insertAnnotation();
-                    } else {
-                        showAlert({title: result.data.message});
-                    }
-                }
-            });
+            Q
+                .fcall(function () {
+                    return new Promise(
+                        function (resolve, reject) {
+                            $.ajax({
+                                url       : "{{ path('select_carrier_with_send_pin_code') }}",
+                                method    : "POST",
+                                data      : form.serialize(),
+                                beforeSend: function () {
+                                    $._loader();
+                                },
+                                success   : function (result) {
+                                    console.log(result);
+                                    if (result.data.redirectUrl) {
+                                        window.location = result.data.redirectUrl;
+                                        reject();
+                                        return;
+                                    }
+                                    if (result.data.success) {
+                                        resolve();
+                                    } else {
+                                        showAlert({title: result.data.message});
+                                        reject();
+                                    }
+                                },
+                                always    : function () {
+                                    $._loader(true)
+                                }
+                            })
+                        })
+                })
+                .then(function () {
+                    return new Promise(
+                        function (resolve, reject) {
+                            $.ajax({
+                                url       : "{{ path('ajax_after_carrier_selected') }}",
+                                method    : "POST",
+                                beforeSend: function () {
+                                    $._loader();
+                                },
+                                success   : function (result) {
+                                    if (result.data.redirectUrl) {
+                                        window.location = result.data.redirectUrl;
+                                        reject();
+                                        return;
+                                    }
+                                    if (result.data.success) {
+                                        resolve();
+                                    }
+                                },
+                                always    : function () {
+                                    $._loader(true)
+                                }
+                            })
+                        })
+                })
+                .then(function () {
+                    var input_phone = $('input[name=mobile_number]');
+                    input_phone.addClass('d-none');
+                    $wifi_form_step
+                        .html(params.html_wifi_pin)
+                        .append(input_phone);
+                    form.attr('data-form', 'confirm');
+                    $wifi_warning.html(params.pin_notif.replace(/%wifi_phone%/, phone));
+                    insertAnnotation();
+                })
         });
 
         // confirm pin code

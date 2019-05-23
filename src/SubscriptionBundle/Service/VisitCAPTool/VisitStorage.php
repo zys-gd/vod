@@ -49,6 +49,8 @@ class VisitStorage
     public function getVisitCount(string $key): int
     {
         $values = $this->redis->lRange($key, 0, -1);
-        return $values ? count($values) : 0;
+        return $values
+            ? count(array_unique($values))
+            : 0;
     }
 }

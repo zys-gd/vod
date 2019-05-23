@@ -21,8 +21,9 @@ use IdentificationBundle\WifiIdentification\WifiIdentConfirmator;
 use IdentificationBundle\WifiIdentification\WifiIdentSMSSender;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
-use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
+use SubscriptionBundle\Service\CAPTool\Exception\CapToolAccessException;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
+use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -74,7 +75,7 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @param SubscriptionLimiter        $limiter
      * @param string                     $defaultRedirectUrl
      * @param CarrierRepositoryInterface $carrierRepository
-     * @param SubscriptionLimitNotifier            $subscriptionLimitNotifier
+     * @param SubscriptionLimitNotifier  $subscriptionLimitNotifier
      */
     public function __construct(
         WifiIdentSMSSender $identSMSSender,
@@ -88,14 +89,14 @@ class PinIdentificationController extends AbstractController implements APIContr
 
     )
     {
-        $this->identSMSSender     = $identSMSSender;
-        $this->identConfirmator   = $identConfirmator;
-        $this->errorCodeResolver  = $errorCodeResolver;
-        $this->carrierSelector    = $carrierSelector;
-        $this->limiter            = $limiter;
-        $this->defaultRedirectUrl = $defaultRedirectUrl;
-        $this->carrierRepository  = $carrierRepository;
-        $this->subscriptionLimitNotifier    = $subscriptionLimitNotifier;
+        $this->identSMSSender            = $identSMSSender;
+        $this->identConfirmator          = $identConfirmator;
+        $this->errorCodeResolver         = $errorCodeResolver;
+        $this->carrierSelector           = $carrierSelector;
+        $this->limiter                   = $limiter;
+        $this->defaultRedirectUrl        = $defaultRedirectUrl;
+        $this->carrierRepository         = $carrierRepository;
+        $this->subscriptionLimitNotifier = $subscriptionLimitNotifier;
     }
 
 
@@ -136,12 +137,9 @@ class PinIdentificationController extends AbstractController implements APIContr
             throw new BadRequestHttpException('`mobile_number` is required');
         }
 
-
-        if ($this->limiter->isSubscriptionLimitReached($request->getSession())) {
-
-            $carrier = $this->carrierRepository->findOneByBillingId($ispData->getCarrierId());
-            $this->subscriptionLimitNotifier->notifyLimitReachedForCarrier($carrier);
-
+        try {
+            $this->limiter->ensureCapIsNotReached($request->getSession());
+        } catch (CapToolAccessException $exception) {
             return $this->getSimpleJsonResponse('Subscription limit has been reached', 200, [], [
                 'success' => false, 'redirectUrl' => $this->defaultRedirectUrl
             ]);
@@ -226,15 +224,14 @@ class PinIdentificationController extends AbstractController implements APIContr
             throw new BadRequestHttpException('`mobile_number` is required');
         }
 
-        if ($this->limiter->isSubscriptionLimitReached($request->getSession())) {
-
-            $carrier = $this->carrierRepository->findOneByBillingId((int)$carrierId);
-            $this->subscriptionLimitNotifier->notifyLimitReachedForCarrier($carrier);
-
+        try {
+            $this->limiter->ensureCapIsNotReached($request->getSession());
+        } catch (CapToolAccessException $exception) {
             return $this->getSimpleJsonResponse('Subscription limit has been reached', 200, [], [
                 'success' => false, 'redirectUrl' => $this->defaultRedirectUrl
             ]);
         }
+
         $this->limiter->reserveSlotForSubscription($request->getSession());
 
         try {

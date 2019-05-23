@@ -10,10 +10,12 @@ use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\CampaignExtractor;
-use SubscriptionBundle\Service\CAPTool\Limiter\SubscriptionCapChecker;
+use SubscriptionBundle\Service\CAPTool\Exception\SubscriptionCapReachedOnAffiliate;
+use SubscriptionBundle\Service\CAPTool\Exception\SubscriptionCapReachedOnCarrier;
 use SubscriptionBundle\Service\CAPTool\Limiter\LimiterDataMapper;
 use SubscriptionBundle\Service\CAPTool\Limiter\LimiterStorage;
 use SubscriptionBundle\Service\CAPTool\Limiter\StorageKeyGenerator;
+use SubscriptionBundle\Service\CAPTool\Limiter\SubscriptionCapChecker;
 use SubscriptionBundle\Service\SubscriptionExtractor;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -48,6 +50,10 @@ class SubscriptionLimiter
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var SubscriptionLimitNotifier
+     */
+    private $notifier;
 
     /**
      * SubscriptionLimiter constructor.
@@ -66,7 +72,8 @@ class SubscriptionLimiter
         SubscriptionCapChecker $carrierCapChecker,
         StorageKeyGenerator $storageKeyGenerator,
         CampaignExtractor $campaignExtractor,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        SubscriptionLimitNotifier $notifier
     )
     {
         $this->subscriptionExtractor = $subscriptionExtractor;
@@ -76,32 +83,38 @@ class SubscriptionLimiter
         $this->storageKeyGenerator   = $storageKeyGenerator;
         $this->campaignExtractor     = $campaignExtractor;
         $this->logger                = $logger;
+        $this->notifier              = $notifier;
     }
 
     /**
      * @param SessionInterface $session
      *
-     * @return bool
+     * @return void
+     * @throws \Twig_Error_Loader
+     * @throws SubscriptionCapReachedOnCarrier
+     * @throws SubscriptionCapReachedOnAffiliate
+     * @throws \Twig_Error_Syntax
+     * @throws \Twig_Error_Runtime
      */
-    public function isSubscriptionLimitReached(SessionInterface $session): bool
+    public function ensureCapIsNotReached(SessionInterface $session): void
     {
         if ($this->limiterDataStorage->isSubscriptionAlreadyPending($session->getId())) {
             $this->logger->debug('Already pending subscription', ['id' => $session->getId()]);
-            return false;
+            return;
         }
 
         $data = $this->limiterDataMapper->mapFromSession($session);
 
         if ($this->carrierCapChecker->isCapReachedForCarrier($data->getCarrier())) {
-            return true;
+            $this->notifier->notifyLimitReachedForCarrier($data->getCarrier());
+            throw new SubscriptionCapReachedOnCarrier($data->getCarrier());
         }
 
         $constraint = $data->getConstraintByAffiliate();
         if ($constraint && $this->carrierCapChecker->isCapReachedForAffiliate($constraint)) {
-            return true;
+            $this->notifier->notifyLimitReachedByAffiliate($constraint, $constraint->getCarrier());
+            throw new SubscriptionCapReachedOnAffiliate($constraint, $constraint->getCarrier());
         }
-
-        return false;
     }
 
     /**
