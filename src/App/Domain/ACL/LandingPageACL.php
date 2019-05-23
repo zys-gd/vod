@@ -193,4 +193,20 @@ class LandingPageACL
             throw new SubscriptionCapReachedOnCarrier($carrier);
         }
     }
+
+    public function ensureCanAccessByVisits(Campaign $campaign, Carrier $carrier): void
+    {
+        $affiliate = $campaign->getAffiliate();
+
+        foreach ($affiliate->getConstraints() as $constraint) {
+            /** @var ConstraintByAffiliate $constraint */
+            if ($carrier && $carrier->getUuid() !== $constraint->getCarrier()->getUuid()) {
+                continue;
+            }
+
+            if ($constraint->getCapType() == ConstraintByAffiliate::CAP_TYPE_VISIT) {
+                $this->ensureVisitCapIsNotReached($carrier, $constraint);
+            }
+        }
+    }
 }

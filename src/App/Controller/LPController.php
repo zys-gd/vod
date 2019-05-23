@@ -268,9 +268,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
                 ]);
             }
 
+
             try {
-                $this->landingPageAccessResolver->ensureCanAccess($campaign, $carrier);
-            } catch (CapToolAccessException | AccessException $exception) {
+                $this->landingPageAccessResolver->ensureCanAccessByVisits($campaign, $carrier);
+            } catch (VisitCapReached $capReached) {
                 return $this->getSimpleJsonResponse('success', 200, [], [
                     'success'     => false,
                     'redirectUrl' => $this->defaultRedirectUrl
@@ -278,6 +279,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             }
 
             $this->visitTracker->trackVisit($carrier, $campaign, $session->getId());
+
+
 
             return $this->getSimpleJsonResponse('success', 200, [], [
                 'success' => true,
