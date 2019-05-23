@@ -9,7 +9,7 @@ use App\Domain\Entity\GameBuild;
 use App\Domain\Entity\GameImage;
 use App\Domain\Repository\GameBuildRepository;
 use App\Domain\Repository\GameRepository;
-use App\Domain\Service\ContentStatisticSender;
+use App\Domain\Service\Piwik\ContentStatisticSender;
 use App\Domain\Service\Games\DrmApkProvider;
 use App\Domain\Service\Games\ExcludedGamesProvider;
 use App\Domain\Service\Games\GameImagesSerializer;
@@ -216,7 +216,7 @@ class GamesController extends AbstractController implements AppControllerInterfa
 
         $link = $this->drmApkProvider->getDRMApkUrl($gameBuild);
 
-        $this->contentStatisticSender->trackDownload($request->getSession(), $subscription, $gameBuild->getGame());
+        $this->contentStatisticSender->trackDownload($subscription, $gameBuild->getGame());
 
         return new JsonResponse(['url' => $link]);
     }

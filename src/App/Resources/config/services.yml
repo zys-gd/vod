@@ -86,13 +86,27 @@ services:
         arguments:
             - '@App\Domain\Repository\CarrierRepository'
 
-    App\Domain\Service\ContentStatisticSender:
+    App\Domain\Service\Piwik\ContentStatisticSender:
         arguments:
             - '@PiwikBundle\Service\PiwikTracker'
             - '@IdentificationBundle\Repository\UserRepository'
             - '@logger'
             - '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
-            - '@App\Domain\Repository\CountryRepository'
+            - '@SubscriptionBundle\Service\SubscriptionExtractor'
+            - '@App\Domain\Repository\CarrierRepository'
+            - '@SubscriptionBundle\Service\CampaignExtractor'
+            - '@PiwikBundle\Service\PiwikDataMapper'
+            - '@CountryCarrierDetectionBundle\Service\IpService'
+            - '@App\Domain\Service\Piwik\DataMapper\PiwikGameDataMapper'
+            - '@App\Domain\Service\Piwik\DataMapper\PiwikVideoDataMapper'
+
+    App\Domain\Service\Piwik\DataMapper\PiwikGameDataMapper:
+        arguments:
+            - '@SubscriptionBundle\Service\CampaignExtractor'
+
+    App\Domain\Service\Piwik\DataMapper\PiwikVideoDataMapper:
+        arguments:
+            - '@SubscriptionBundle\Service\CampaignExtractor'
 
     App\Domain\ACL\Accessors\VisitConstraintByAffiliate:
         arguments:
