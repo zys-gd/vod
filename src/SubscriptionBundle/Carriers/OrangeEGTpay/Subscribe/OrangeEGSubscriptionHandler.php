@@ -40,7 +40,7 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
      */
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::VODAFONE_EGYPT_TPAY;
+        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::ORANGE_EGYPT_TPAY;
     }
 
     /**
