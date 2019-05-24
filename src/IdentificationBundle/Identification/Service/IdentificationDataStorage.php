@@ -90,4 +90,9 @@ class IdentificationDataStorage
     {
         $this->session->set('isp_detection_data', ['carrier_id' => $carrierId]);
     }
+
+    public function cleanCarrier(): void
+    {
+        $this->session->remove('isp_detection_data');
+    }
 }

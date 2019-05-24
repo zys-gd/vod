@@ -59,32 +59,48 @@
             warning        : $('<div />').html('{{ html2string(translate('wifi.warning')|nl2br) }}').text()
         };
 
-        $(document).on('change', 'select[name="carrier_id"], select[name="country"]', function () {
+        $(document).on('change', 'select[name="country"]', function () {
+            var carrierSelect = $('select[name="carrier_id"]');
+            var selectedCarrier = carrierSelect.find(':selected').data('content');
+
+            carrierSelect.empty()
+                .append("<option value=''>{{ translate('wifi.form.select_carrier') }}</option>");
+            var carriers = $(this).find(':selected').data('carriers');
+            for(carrier in carriers) {
+                var _carrier = carriers[carrier];
+                carrierSelect.append("<option data-content='"+JSON.stringify(_carrier)+"' value='"+ _carrier.billingCarrierId+"'>"+ _carrier.name +"</option>");
+            }
+
+            if (selectedCarrier) {
+                carrierSelect.trigger('change');
+            }
+        });
+
+        $(document).on('change', 'select[name="carrier_id"]', function () {
             var carrier = $(this).find(':selected').data('content');
             $('#wifi_offer').html( (carrier && carrier.wifi_offer) || '');
 
             $('footer ul').remove();
             $('#landing-offer-container').addClass('mt-2').html('');
 
-            if (carrier) {
-                $._loader();
+            $._loader();
 
-                $.ajax({
-                    url    : "{{ path('select_carrier_wifi') }}",
-                    method : "POST",
-                    data   : { carrier_id: carrier.billingCarrierId },
-                    success: function (result) {
-                        $._loader(true);
-
-                        if (result.data.success) {
-                            $('footer').prepend(result.data.annotation);
-                            $('#landing-offer-container').removeClass('mt-2').html(result.data.offer);
-                        } else {
-                            showAlert({title: result.data.message});
-                        }
+            $.ajax({
+                url    : "{{ path('select_carrier_wifi') }}",
+                method : "POST",
+                data   : { carrier_id: carrier ? carrier.billingCarrierId : null },
+                success: function (result) {
+                    if (result.data.success) {
+                        $('footer').prepend(result.data.annotation);
+                        $('#landing-offer-container').removeClass('mt-2').html(result.data.offer);
+                    } else if (result.data.message) {
+                        showAlert({title: result.data.message});
                     }
-                });
-            }
+                },
+                complete: function () {
+                    $._loader(true);
+                }
+            });
         });
 
         // send pin code to input phone

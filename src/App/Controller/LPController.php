@@ -254,10 +254,12 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      *
      * @return JsonResponse
      */
-    public function selectCarrierWifi(Request $request)
+    public function handleCarrierSelect(Request $request)
     {
         if (!$carrierId = $request->get('carrier_id', '')) {
-            throw new BadRequestHttpException('`carrier_id` is required');
+            $this->carrierSelector->removeCarrier();
+
+            return $this->getSimpleJsonResponse('');
         }
 
         try {
