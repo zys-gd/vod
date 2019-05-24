@@ -65,17 +65,6 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
     }
 
     /**
-     * @param Request $request
-     * @param User $user
-     *
-     * @return array
-     */
-    public function getAdditionalResubscribeParams(Request $request, User $user): array
-    {
-        return [];
-    }
-
-    /**
      * @param Subscription $subscription
      * @param ProcessResult $result
      */

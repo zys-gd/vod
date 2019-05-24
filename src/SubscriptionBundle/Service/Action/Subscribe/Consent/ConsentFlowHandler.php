@@ -267,7 +267,7 @@ class ConsentFlowHandler
                 'carrierName' => $subscriptionPack->getName()
             ]);
 
-            $additionalData = $subscriber->getAdditionalResubscribeParams($request, $user);
+            $additionalData = $subscriber->getAdditionalSubscribeParams($request, $user);
             $result = $this->subscriber->resubscribe($subscription, $subscriptionPack, $additionalData);
         } else {
             $this->logger->debug('Resubscription is not allowed.', [
