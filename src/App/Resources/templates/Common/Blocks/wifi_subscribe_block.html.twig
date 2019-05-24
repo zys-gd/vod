@@ -76,6 +76,8 @@
             }
         });
 
+        $('select[name="country"]').trigger('change');
+
         $(document).on('change', 'select[name="carrier_id"]', function () {
             var carrier = $(this).find(':selected').data('content');
             $('#wifi_offer').html( (carrier && carrier.wifi_offer) || '');
