@@ -22,6 +22,5 @@ services:
     IdentificationBundle\Carriers\VodafoneEGTpay\VodafoneEGIdentificationCallbackHandler:
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
         tags:
             - { name: identification.identification_callback_handler }

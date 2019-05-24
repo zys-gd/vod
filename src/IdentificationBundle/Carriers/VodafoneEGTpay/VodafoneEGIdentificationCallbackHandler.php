@@ -7,7 +7,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Callback\Handler\HasCommonFlow;
 use IdentificationBundle\Callback\Handler\IdentCallbackHandlerInterface;
 use IdentificationBundle\Entity\User;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 
 /**
@@ -21,22 +20,13 @@ class VodafoneEGIdentificationCallbackHandler implements IdentCallbackHandlerInt
     private $entityManager;
 
     /**
-     * @var IdentificationDataStorage
-     */
-    private $identificationDataStorage;
-
-    /**
      * VodafoneEGIdentificationCallbackHandler constructor
      *
      * @param EntityManagerInterface $entityManager
-     * @param IdentificationDataStorage $identificationDataStorage
      */
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        IdentificationDataStorage $identificationDataStorage
-    ) {
+    public function __construct(EntityManagerInterface $entityManager)
+    {
         $this->entityManager = $entityManager;
-        $this->identificationDataStorage = $identificationDataStorage;
     }
 
     /**
@@ -55,8 +45,6 @@ class VodafoneEGIdentificationCallbackHandler implements IdentCallbackHandlerInt
      */
     public function afterSuccess(User $user, ProcessResult $processResponse): void
     {
-        $this->identificationDataStorage->storeValue('is_wifi_flow', false);
-
         $user->setProviderId($processResponse->getProviderId());
         $this->entityManager->flush();
     }
