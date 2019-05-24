@@ -92,7 +92,9 @@ class OrangeEGWifiIdentificationHandler implements
      */
     public function getExistingUser(string $msisdn): ?User
     {
-        return $this->userRepository->findOneByMsisdn($msisdn);
+        $identifier = str_replace('+', '', $msisdn);
+
+        return $this->userRepository->findOneByMsisdn($identifier);
     }
 
     /**
