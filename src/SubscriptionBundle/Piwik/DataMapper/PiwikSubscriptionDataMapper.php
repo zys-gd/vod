@@ -3,22 +3,14 @@
 
 namespace SubscriptionBundle\Piwik\DataMapper;
 
-
-use App\Domain\Constants\ConstBillingCarrierId;
-use IdentificationBundle\Entity\User;
 use LegacyBundle\Service\Exchanger;
 use PiwikBundle\Service\DTO\EcommerceDTO;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\CampaignExtractor;
-use SubscriptionBundle\Service\SubscriptionPackProvider;
 
 class PiwikSubscriptionDataMapper
 {
-    /**
-     * @var SubscriptionPackProvider
-     */
-    private $subscriptionPackProvider;
     /**
      * @var Exchanger
      */
@@ -28,48 +20,36 @@ class PiwikSubscriptionDataMapper
      */
     private $campaignExtractor;
 
-    public function __construct(SubscriptionPackProvider $subscriptionPackProvider,
-        Exchanger $exchanger,
-        CampaignExtractor $campaignExtractor)
+    public function __construct(Exchanger $exchanger, CampaignExtractor $campaignExtractor)
     {
-        $this->subscriptionPackProvider = $subscriptionPackProvider;
-        $this->exchanger                = $exchanger;
-        $this->campaignExtractor        = $campaignExtractor;
+        $this->exchanger         = $exchanger;
+        $this->campaignExtractor = $campaignExtractor;
     }
 
     /**
      * Data for subscribe, renew, resubscribe
      *
-     * @param User          $user
      * @param Subscription  $subscription
      * @param ProcessResult $bfResponse
      * @param string        $action
+     * @param bool          $resultStatus
      *
      * @return EcommerceDTO
-     * @throws \SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound
      */
-    public function getEcommerceDTO(User $user,
-        Subscription $subscription,
+    public function getEcommerceDTO(Subscription $subscription,
         ProcessResult $bfResponse,
-        string $action
+        string $action,
+        bool $resultStatus
     ): EcommerceDTO
     {
-        $oSubPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
-
-        if ($oSubPack->getCarrier()->getBillingCarrierId() == ConstBillingCarrierId::HUTCH3_INDONESIA
-            && $bfResponse->getStatus() === ProcessResult::STATUS_FAILED
-            && $bfResponse->getError() === ProcessResult::ERROR_CANCELED) {
-            return false;
-        }
-
-        $bfSuccess  = $bfResponse->getStatus() === 'successful';
-        $bfId       = $bfResponse->getId();
+        $oSubPack = $subscription->getSubscriptionPack();
+        $bfId     = $bfResponse->getId();
 
         $subscriptionPackId = abs($oSubPack->getUuid());
 
         $eurPrice          = $this->exchanger->convert($oSubPack->getTierCurrency(), $oSubPack->getTierPrice());
         $subscriptionPrice = round($oSubPack->getTierPrice(), 2);
-        $name              = $action . '-' . ($bfSuccess ? 'ok' : 'failed');
+        $name              = $action . '-' . ($resultStatus ? 'ok' : 'failed');
 
         $orderIdPieces = [
             $name,
@@ -102,16 +82,16 @@ class PiwikSubscriptionDataMapper
     }
 
     /**
-     * @param User      $user
-     * @param string    $bfProvider
-     * @param bool|null $conversionMode
+     * @param Subscription $subscription
+     * @param string       $bfProvider
+     * @param bool|null    $conversionMode
      *
      * @return array
      * @throws \SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound
      */
-    public function getAdditionalData(User $user, string $bfProvider, bool $conversionMode = null)
+    public function getAdditionalData(Subscription $subscription, string $bfProvider, bool $conversionMode = null)
     {
-        $oSubPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
+        $oSubPack = $subscription->getSubscriptionPack();
 
         $additionData = [
             'currency' => $oSubPack->getFinalCurrency(),

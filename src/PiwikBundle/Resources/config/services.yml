@@ -1,6 +1,7 @@
 services:
     PiwikBundle\Service\PiwikTracker:
-        factory: 'PiwikBundle\Service\PiwikClientFactory:getPiwikClient'
+        arguments:
+            - '@PiwikBundle\Service\PiwikClient'
 
     PiwikBundle\Twig\PiwikExtension:
         arguments: ['@PiwikBundle\Api\JsClient', '%piwik_enable_js_tracker%']
@@ -22,10 +23,6 @@ services:
         calls:
             - ['setEnableLinkTracking', ['%piwik_enable_link_tracking%']]
 
-    PiwikBundle\Service\PiwikDataSender:
-        arguments:
-            - '@PiwikBundle\Service\PiwikClientFactory'
-
     PiwikBundle\Service\RabbitMQProducer:
         arguments: ['%rabbit_mq_host%', '%rabbit_mq_port%', '%rabbit_mq_user%', '%rabbit_mq_password%', '%rabbit_mq_vhost%']
 
@@ -36,4 +33,8 @@ services:
             - '@PiwikBundle\Api\JsClient'
 
     PiwikBundle\Service\PiwikDataMapper:
+        arguments:
+            - '@PiwikBundle\Service\PiwikClient'
+
+    PiwikBundle\Service\PiwikClient:
         factory: 'PiwikBundle\Service\PiwikClientFactory:getPiwikClient'

@@ -103,11 +103,14 @@ class PiwikDataMapper
 
     /**
      * @param DTO\PiwikDTO $piwikDTO
+     * @param bool         $clear
      *
      * @throws \Exception
      */
-    public function mapData(DTO\PiwikDTO $piwikDTO)
+    public function mapData(DTO\PiwikDTO $piwikDTO, bool $clear = true)
     {
+        $clear && $this->piwikClient->clearCustomVariables();
+
         if ($piwikDTO->getOperator()) {
             $this->addVariable('operator', $piwikDTO->getOperator());
         }
@@ -130,13 +133,11 @@ class PiwikDataMapper
 
     /**
      * @param array $additionData
-     * @param bool  $clear
      *
      * @throws \Exception
      */
-    public function mapAdditionalData(array $additionData, bool $clear = false)
+    public function mapAdditionalData(array $additionData)
     {
-        $clear && $this->piwikClient->clearCustomVariables();
         foreach ($additionData as $key => $value) {
             $this->addVariable($key, $value);
         }

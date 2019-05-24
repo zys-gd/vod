@@ -169,7 +169,6 @@ class ContentStatisticSender
             );
 
             $this->piwikDataMapper->mapData($piwikDTO);
-            $this->piwikDataMapper->mapAdditionalData([], true);
 
             $result = $this->piwikTracker->sendPageView();
 
@@ -212,7 +211,7 @@ class ContentStatisticSender
             );
 
             $this->piwikDataMapper->mapData($piwikDTO);
-            $this->piwikDataMapper->mapAdditionalData($additionData, true);
+            $this->piwikDataMapper->mapAdditionalData($additionData);
 
             $result = $this->piwikTracker->sendEcommerce($ecommerceDTO);
 
@@ -255,7 +254,7 @@ class ContentStatisticSender
             );
 
             $this->piwikDataMapper->mapData($piwikDTO);
-            $this->piwikDataMapper->mapAdditionalData($additionData, true);
+            $this->piwikDataMapper->mapAdditionalData($additionData);
 
             $result = $this->piwikTracker->sendEcommerce($ecommerceDTO);
 

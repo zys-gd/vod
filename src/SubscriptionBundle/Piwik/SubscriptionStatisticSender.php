@@ -40,35 +40,42 @@ class SubscriptionStatisticSender
      * @var PiwikUnsubscriptionDataMapper
      */
     private $piwikUnsubscriptionDataMapper;
+    /**
+     * @var ProcessResultVerifier
+     */
+    private $resultVerifier;
 
     /**
      * SubscriptionStatisticSender constructor.
      *
      * @param LoggerInterface               $logger
-     * @param PiwikTracker                  $newTracker
+     * @param PiwikTracker                  $piwikTracker
      * @param PiwikDataMapper               $piwikDataMapper
      * @param PiwikSubscriptionDataMapper   $piwikSubscriptionDataMapper
      * @param MaxMindIpInfo                 $maxMindIpInfo
      * @param PiwikUnsubscriptionDataMapper $piwikUnsubscriptionDataMapper
+     * @param ProcessResultVerifier         $resultVerifier
      */
     public function __construct(LoggerInterface $logger,
-        PiwikTracker $newTracker,
+        PiwikTracker $piwikTracker,
         PiwikDataMapper $piwikDataMapper,
         PiwikSubscriptionDataMapper $piwikSubscriptionDataMapper,
         MaxMindIpInfo $maxMindIpInfo,
-        PiwikUnsubscriptionDataMapper $piwikUnsubscriptionDataMapper)
+        PiwikUnsubscriptionDataMapper $piwikUnsubscriptionDataMapper,
+        ProcessResultVerifier $resultVerifier)
     {
         $this->logger                        = $logger;
-        $this->piwikTracker                  = $newTracker;
+        $this->piwikTracker                  = $piwikTracker;
         $this->piwikDataMapper               = $piwikDataMapper;
         $this->piwikSubscriptionDataMapper   = $piwikSubscriptionDataMapper;
         $this->maxMindIpInfo                 = $maxMindIpInfo;
         $this->piwikUnsubscriptionDataMapper = $piwikUnsubscriptionDataMapper;
+        $this->resultVerifier                = $resultVerifier;
     }
 
     /**
      * @param User          $user
-     * @param Subscription  $subscriptionEntity
+     * @param Subscription  $subscription
      * @param ProcessResult $responseData
      * @param bool|null     $conversionMode
      *
@@ -76,7 +83,7 @@ class SubscriptionStatisticSender
      */
     public function trackSubscribe(
         User $user,
-        Subscription $subscriptionEntity,
+        Subscription $subscription,
         ProcessResult $responseData,
         bool $conversionMode = null
     ): bool
@@ -86,12 +93,14 @@ class SubscriptionStatisticSender
                 'eventName' => 'trackSubscribe'
             ]);
 
-            $ecommerceDTO = $this->piwikSubscriptionDataMapper->getEcommerceDTO($user,
-                $subscriptionEntity,
-                $responseData,
-                'subscribe');
+            if ($this->resultVerifier->cantTrackSubscription($responseData)) {
+                return false;
+            }
 
-            $additionData = $this->piwikSubscriptionDataMapper->getAdditionalData($user, $responseData->getProvider(), $conversionMode);
+            $resultStatus = $this->resultVerifier->isSuccessSubscribe($responseData);
+            $ecommerceDTO = $this->piwikSubscriptionDataMapper->getEcommerceDTO($subscription, $responseData, 'subscribe', $resultStatus);
+
+            $additionData = $this->piwikSubscriptionDataMapper->getAdditionalData($subscription, $responseData->getProvider(), $conversionMode);
 
             $piwikDTO = new PiwikDTO(
                 $user->getCountry(),
@@ -99,11 +108,11 @@ class SubscriptionStatisticSender
                 $this->maxMindIpInfo->getConnectionType(),
                 $user->getIdentifier(),
                 $user->getBillingCarrierId(),
-                $this->piwikSubscriptionDataMapper->getAffiliateString($subscriptionEntity)
+                $this->piwikSubscriptionDataMapper->getAffiliateString($subscription)
             );
 
             $this->piwikDataMapper->mapData($piwikDTO);
-            $this->piwikDataMapper->mapAdditionalData($additionData, true);
+            $this->piwikDataMapper->mapAdditionalData($additionData);
 
             $result = $this->piwikTracker->sendEcommerce($ecommerceDTO);
 
@@ -119,7 +128,7 @@ class SubscriptionStatisticSender
 
     /**
      * @param User          $user
-     * @param Subscription  $subscriptionEntity
+     * @param Subscription  $subscription
      * @param ProcessResult $responseData
      * @param bool|null     $conversionMode
      *
@@ -127,7 +136,7 @@ class SubscriptionStatisticSender
      */
     public function trackResubscribe(
         User $user,
-        Subscription $subscriptionEntity,
+        Subscription $subscription,
         ProcessResult $responseData,
         bool $conversionMode = null
     ): bool
@@ -137,12 +146,13 @@ class SubscriptionStatisticSender
                 'eventName' => 'trackResubscribe'
             ]);
 
-            $ecommerceDTO = $this->piwikSubscriptionDataMapper->getEcommerceDTO($user,
-                $subscriptionEntity,
-                $responseData,
-                'resubscribe');
+            if ($this->resultVerifier->cantTrackSubscription($responseData)) {
+                return false;
+            }
+            $resultStatus = $this->resultVerifier->isSuccessSubscribe($responseData);
+            $ecommerceDTO = $this->piwikSubscriptionDataMapper->getEcommerceDTO($subscription, $responseData, 'resubscribe', $resultStatus);
 
-            $additionData = $this->piwikSubscriptionDataMapper->getAdditionalData($user, $responseData->getProvider(), $conversionMode);
+            $additionData = $this->piwikSubscriptionDataMapper->getAdditionalData($subscription, $responseData->getProvider(), $conversionMode);
 
             $piwikDTO = new PiwikDTO(
                 $user->getCountry(),
@@ -150,11 +160,11 @@ class SubscriptionStatisticSender
                 $this->maxMindIpInfo->getConnectionType(),
                 $user->getIdentifier(),
                 $user->getBillingCarrierId(),
-                $this->piwikSubscriptionDataMapper->getAffiliateString($subscriptionEntity)
+                $this->piwikSubscriptionDataMapper->getAffiliateString($subscription)
             );
 
             $this->piwikDataMapper->mapData($piwikDTO);
-            $this->piwikDataMapper->mapAdditionalData($additionData, true);
+            $this->piwikDataMapper->mapAdditionalData($additionData);
 
             $result = $this->piwikTracker->sendEcommerce($ecommerceDTO);
 
@@ -170,7 +180,7 @@ class SubscriptionStatisticSender
 
     /**
      * @param User          $user
-     * @param Subscription  $subscriptionEntity
+     * @param Subscription  $subscription
      * @param ProcessResult $responseData
      * @param bool|null     $conversionMode
      *
@@ -178,7 +188,7 @@ class SubscriptionStatisticSender
      */
     public function trackRenew(
         User $user,
-        Subscription $subscriptionEntity,
+        Subscription $subscription,
         ProcessResult $responseData,
         bool $conversionMode = null
     ): bool
@@ -188,12 +198,13 @@ class SubscriptionStatisticSender
                 'eventName' => 'trackRenew'
             ]);
 
-            $ecommerceDTO = $this->piwikSubscriptionDataMapper->getEcommerceDTO($user,
-                $subscriptionEntity,
-                $responseData,
-                'renew');
+            if ($this->resultVerifier->cantTrackSubscription($responseData)) {
+                return false;
+            }
+            $resultStatus = $this->resultVerifier->isSuccessSubscribe($responseData);
+            $ecommerceDTO = $this->piwikSubscriptionDataMapper->getEcommerceDTO($subscription, $responseData, 'renew', $resultStatus);
 
-            $additionData = $this->piwikSubscriptionDataMapper->getAdditionalData($user, $responseData->getProvider(), $conversionMode);
+            $additionData = $this->piwikSubscriptionDataMapper->getAdditionalData($subscription, $responseData->getProvider(), $conversionMode);
 
             $piwikDTO = new PiwikDTO(
                 $user->getCountry(),
@@ -201,11 +212,11 @@ class SubscriptionStatisticSender
                 $this->maxMindIpInfo->getConnectionType(),
                 $user->getIdentifier(),
                 $user->getBillingCarrierId(),
-                $this->piwikSubscriptionDataMapper->getAffiliateString($subscriptionEntity)
+                $this->piwikSubscriptionDataMapper->getAffiliateString($subscription)
             );
 
             $this->piwikDataMapper->mapData($piwikDTO);
-            $this->piwikDataMapper->mapAdditionalData($additionData, true);
+            $this->piwikDataMapper->mapAdditionalData($additionData);
 
             $result = $this->piwikTracker->sendEcommerce($ecommerceDTO);
 
@@ -221,7 +232,7 @@ class SubscriptionStatisticSender
 
     /**
      * @param User          $user
-     * @param Subscription  $subscriptionEntity
+     * @param Subscription  $subscription
      * @param ProcessResult $responseData
      * @param string|null   $conversionMode
      *
@@ -229,7 +240,7 @@ class SubscriptionStatisticSender
      */
     public function trackUnsubscribe(
         User $user,
-        Subscription $subscriptionEntity,
+        Subscription $subscription,
         ProcessResult $responseData,
         string $conversionMode = null
     ): bool
@@ -239,12 +250,13 @@ class SubscriptionStatisticSender
                 'eventName' => 'trackUnsubscribe'
             ]);
 
-            $ecommerceDTO = $this->piwikUnsubscriptionDataMapper->getEcommerceDTO($user,
-                $subscriptionEntity,
-                $responseData,
-                'unsubscribe');
+            if ($this->resultVerifier->cantTrackUnsubscription($responseData)) {
+                return false;
+            }
+            $resultStatus = $this->resultVerifier->isSuccessUnsubscribe($responseData);
+            $ecommerceDTO = $this->piwikUnsubscriptionDataMapper->getEcommerceDTO($subscription, $responseData, 'unsubscribe', $resultStatus);
 
-            $additionData = $this->piwikUnsubscriptionDataMapper->getAdditionalData($user, $responseData->getProvider(), $conversionMode);
+            $additionData = $this->piwikUnsubscriptionDataMapper->getAdditionalData($subscription, $responseData->getProvider(), $conversionMode);
 
             $piwikDTO = new PiwikDTO(
                 $user->getCountry(),
@@ -252,11 +264,11 @@ class SubscriptionStatisticSender
                 $this->maxMindIpInfo->getConnectionType(),
                 $user->getIdentifier(),
                 $user->getBillingCarrierId(),
-                $this->piwikUnsubscriptionDataMapper->getAffiliateString($subscriptionEntity)
+                $this->piwikUnsubscriptionDataMapper->getAffiliateString($subscription)
             );
 
             $this->piwikDataMapper->mapData($piwikDTO);
-            $this->piwikDataMapper->mapAdditionalData($additionData, true);
+            $this->piwikDataMapper->mapAdditionalData($additionData);
 
             $result = $this->piwikTracker->sendEcommerce($ecommerceDTO);
 

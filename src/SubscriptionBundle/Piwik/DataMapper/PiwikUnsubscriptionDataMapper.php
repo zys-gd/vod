@@ -3,22 +3,14 @@
 
 namespace SubscriptionBundle\Piwik\DataMapper;
 
-
-use App\Domain\Constants\ConstBillingCarrierId;
-use IdentificationBundle\Entity\User;
 use LegacyBundle\Service\Exchanger;
 use PiwikBundle\Service\DTO\EcommerceDTO;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\CampaignExtractor;
-use SubscriptionBundle\Service\SubscriptionPackProvider;
 
 class PiwikUnsubscriptionDataMapper
 {
-    /**
-     * @var SubscriptionPackProvider
-     */
-    private $subscriptionPackProvider;
     /**
      * @var CampaignExtractor
      */
@@ -28,64 +20,38 @@ class PiwikUnsubscriptionDataMapper
      */
     private $exchanger;
 
-    public function __construct(SubscriptionPackProvider $subscriptionPackProvider,
-        Exchanger $exchanger,
-        CampaignExtractor $campaignExtractor)
+    public function __construct(Exchanger $exchanger, CampaignExtractor $campaignExtractor)
     {
-        $this->subscriptionPackProvider = $subscriptionPackProvider;
-        $this->exchanger                = $exchanger;
-        $this->campaignExtractor        = $campaignExtractor;
+        $this->exchanger         = $exchanger;
+        $this->campaignExtractor = $campaignExtractor;
     }
 
     /**
-     * @param User               $user
      * @param Subscription       $subscription
      * @param ProcessResult|null $bfResponse
      * @param string             $action
+     * @param bool               $resultStatus
      *
      * @return bool|EcommerceDTO
-     * @throws \SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound
      */
     public function getEcommerceDTO(
-        User $user,
         Subscription $subscription,
         ProcessResult $bfResponse,
-        string $action
-    )
+        string $action,
+        bool $resultStatus
+    ): EcommerceDTO
     {
-        $bfId      = $bfProvider = $oSubPack = false;
-        $bfSuccess = true;
+        $bfId = $bfProvider = $oSubPack = false;
 
-        $oSubPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
+        $oSubPack = $subscription->getSubscriptionPack();
 
-        $bfWrong = $bfResponse
-            && $bfResponse->getError() != ProcessResult::ERROR_BATCH_LIMIT_EXCEEDED
-            && $bfResponse->getError() != ProcessResult::ERROR_USER_TIMEOUT
-            && !($bfResponse->getError() == ProcessResult::ERROR_CANCELED && $oSubPack->getCarrier()->getBillingCarrierId() == ConstBillingCarrierId::ROBI_BANGLADESH)
-            &&
-            (
-                $bfResponse->getType() !== 'unsubscribe'
-                || !in_array($bfResponse->getStatus(), ['successful', 'failed', 'ok'])
-            );
-
-        if (!$oSubPack || $bfWrong) {
-            return false;
-        }
-
-        if ($bfResponse) {
-            $bfSuccess = $bfResponse->getError() == ProcessResult::ERROR_BATCH_LIMIT_EXCEEDED ||
-            $bfResponse->getError() == ProcessResult::ERROR_USER_TIMEOUT ||
-            ($bfResponse->getError() == ProcessResult::ERROR_CANCELED && $oSubPack->getCarrier()->getBillingCarrierId() == ConstBillingCarrierId::ROBI_BANGLADESH)
-                ? true : ($bfResponse->getStatus() === 'successful' || $bfResponse->getStatus() === 'ok');
-
-            $bfId = $bfResponse->getId();
-        }
+        $bfId = $bfResponse->getId();
 
         $subscriptionPackId = abs($oSubPack->getUuid());
         $eurPrice           = $this->exchanger->convert($oSubPack->getTierCurrency(), $oSubPack->getTierPrice());
         $subscriptionPrice  = round($oSubPack->getTierPrice(), 2);
 
-        $name          = $action . '-' . ($bfSuccess ? 'ok' : 'failed');
+        $name          = $action . '-' . ($resultStatus ? 'ok' : 'failed');
         $orderIdPieces = [
             $name,
             $subscription->getUuid(),
@@ -101,16 +67,16 @@ class PiwikUnsubscriptionDataMapper
     }
 
     /**
-     * @param User      $user
-     * @param string    $bfProvider
-     * @param bool|null $conversionMode
+     * @param Subscription $subscription
+     * @param string       $bfProvider
+     * @param bool|null    $conversionMode
      *
      * @return array
      * @throws \SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound
      */
-    public function getAdditionalData(User $user, string $bfProvider, bool $conversionMode = null)
+    public function getAdditionalData(Subscription $subscription, string $bfProvider, bool $conversionMode = null)
     {
-        $oSubPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
+        $oSubPack = $subscription->getSubscriptionPack();
 
         $additionData = [
             'currency' => $oSubPack->getFinalCurrency(),

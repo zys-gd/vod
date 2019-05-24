@@ -5,7 +5,6 @@ namespace PiwikBundle\Service;
 
 
 use PiwikBundle\Api\ClientAbstract;
-use PiwikBundle\Api\JsClient;
 
 class PiwikClientFactory
 {
@@ -18,7 +17,7 @@ class PiwikClientFactory
      */
     private $phpClient;
     /**
-     * @var JsClient
+     * @var ClientAbstract
      */
     private $jsClient;
 
@@ -27,9 +26,9 @@ class PiwikClientFactory
      *
      * @param bool           $jsClientEnabled
      * @param ClientAbstract $phpClient
-     * @param JsClient       $jsClient
+     * @param ClientAbstract $jsClient
      */
-    public function __construct(bool $jsClientEnabled, ClientAbstract $phpClient, JsClient $jsClient)
+    public function __construct(bool $jsClientEnabled, ClientAbstract $phpClient, ClientAbstract $jsClient)
     {
         $this->jsClientEnabled = $jsClientEnabled;
         $this->phpClient       = $phpClient;
