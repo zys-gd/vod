@@ -4,7 +4,7 @@
     {% import '@App/Components/Forms/wifi_pin.html.twig' as wifi_pin %}
     {% import '@App/Components/Forms/wifi_select.html.twig' as wifi_select %}
 
-    <form data-form="{% if isCarrierDetected() %}pin{% else %}carrier_with_pin{% endif %}" id="wifi_form"
+    <form data-form="pin" id="wifi_form"
           class="d-flex flex-column w-75 text-center">
         <div class="wifi_form__ground"></div>
         <div class="align-self-center wifi_form__warning w-75">
@@ -59,34 +59,32 @@
             warning        : $('<div />').html('{{ html2string(translate('wifi.warning')|nl2br) }}').text()
         };
 
-        // set carrier to IdentificationDataStorage
-        $(document).on('submit', 'form[data-form=carrier]', function (e) {
-            e.preventDefault();
-            $._loader();
-            phone = input_phone.val();
+        $(document).on('change', 'select[name="carrier_id"], select[name="country"]', function () {
+            var carrier = $(this).find(':selected').data('content');
+            $('#wifi_offer').html( (carrier && carrier.wifi_offer) || '');
 
-            $.ajax({
-                url    : "{{ path('select_carrier_for_pin_code_form') }}",
-                method : "POST",
-                data   : form.serialize(),
-                success: function (result) {
-                    $._loader(true);
+            $('footer ul').remove();
+            $('#landing-offer-container').addClass('mt-2').html('');
 
-                    if (result.data.redirectUrl) {
-                        window.location = result.data.redirectUrl
-                        return;
+            if (carrier) {
+                $._loader();
+
+                $.ajax({
+                    url    : "{{ path('select_carrier_wifi') }}",
+                    method : "POST",
+                    data   : { carrier_id: carrier.billingCarrierId },
+                    success: function (result) {
+                        $._loader(true);
+
+                        if (result.data.success) {
+                            $('footer').prepend(result.data.annotation);
+                            $('#landing-offer-container').removeClass('mt-2').html(result.data.offer);
+                        } else {
+                            showAlert({title: result.data.message});
+                        }
                     }
-
-                    if (result.data.success) {
-                        $wifi_form_step.html(params.html_wifi_phone);
-                        form.attr('data-form', 'pin');
-                        insertAnnotation();
-                    } else {
-                        showAlert({title: result.data.message});
-                    }
-                }
-            });
-
+                });
+            }
         });
 
         // send pin code to input phone
@@ -116,51 +114,6 @@
                         addValidationAttributes(result.data.carrierId);
                         form.attr('data-form', 'confirm');
                         $wifi_warning.html(params.pin_notif.replace(/%wifi_phone%/, phone));
-                    } else {
-                        showAlert({title: result.data.message});
-
-                        $('#send-reminder').click(function () {
-                            $.ajax({
-                                url: "{{ path('remind_credentials') }}",
-                                method: 'GET',
-                                complete: function () {
-                                    $('.fc-content .button-confirm').click();
-                                }
-                            })
-                        })
-                    }
-                }
-            });
-        });
-
-        // merge carrier and phone steps
-        $(document).on('submit', 'form[data-form=carrier_with_pin]', function (e) {
-            e.preventDefault();
-            $._loader();
-            phone = input_phone.val();
-
-            $.ajax({
-                url    : "{{ path('select_carrier_with_send_pin_code') }}",
-                method : "POST",
-                data   : form.serialize(),
-                success: function (result) {
-                    $._loader(true);
-
-                    if (result.data.redirectUrl) {
-                        window.location = result.data.redirectUrl;
-                        return;
-                    }
-                    
-                    if (result.data.success) {
-                        var input_phone = $('input[name=mobile_number]');
-                        input_phone.addClass('d-none');
-                        $wifi_form_step
-                            .html(params.html_wifi_pin)
-                            .append(input_phone);
-                        addValidationAttributes(result.data.carrierId);
-                        form.attr('data-form', 'confirm');
-                        $wifi_warning.html(params.pin_notif.replace(/%wifi_phone%/, phone));
-                        insertAnnotation();
                     } else {
                         showAlert({title: result.data.message});
 
@@ -239,21 +192,6 @@
                 $(this).val('');
             }
         });
-
-        function insertAnnotation() {
-            $._loader(false);
-            var $html;
-            $.ajax('{{ path('ajax_annotation') }}')
-                .done(function (result) {
-                    $html = result.response;
-                    $('footer').prepend($html);
-                    $._loader(true);
-                })
-                .fail(function () {
-                    $._loader(true);
-                    showAlert({title: "Server error"});
-                });
-        }
 
         // TODO find more flexible way to apply validation attributes
         function addValidationAttributes(carrierId) {

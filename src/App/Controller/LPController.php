@@ -15,11 +15,14 @@ use App\Domain\Service\CarrierOTPVerifier;
 use App\Domain\Service\ContentStatisticSender;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
+use IdentificationBundle\Identification\Exception\MissingCarrierException;
+use IdentificationBundle\Identification\Service\CarrierSelector;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
+use SubscriptionBundle\Controller\Traits\ResponseTrait;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
 use SubscriptionBundle\Service\VisitCAPTool\VisitNotifier;
@@ -29,6 +32,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -36,6 +40,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class LPController extends AbstractController implements ControllerWithISPDetection, AppControllerInterface
 {
+    use ResponseTrait;
+
     /**
      * @var ContentStatisticSender
      */
@@ -92,6 +98,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var CarrierSelector
+     */
+    private $carrierSelector;
 
     /**
      * LPController constructor.
@@ -104,12 +114,13 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param string $defaultRedirectUrl
      * @param TemplateConfigurator $templateConfigurator
      * @param IdentificationDataStorage $dataStorage
-     * @param SubscriptionLimiter        $limiter
-     * @param SubscriptionLimitNotifier  $subscriptionLimitNotifier
+     * @param SubscriptionLimiter $limiter
+     * @param SubscriptionLimitNotifier $subscriptionLimitNotifier
      * @param CarrierRepositoryInterface $carrierRepository
-     * @param VisitTracker               $visitTracker
-     * @param VisitNotifier              $notifier
-     * @param LoggerInterface            $logger
+     * @param VisitTracker $visitTracker
+     * @param VisitNotifier $notifier
+     * @param LoggerInterface $logger
+     * @param CarrierSelector $carrierSelector
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
@@ -125,7 +136,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         CarrierRepositoryInterface $carrierRepository,
         VisitTracker $visitTracker,
         VisitNotifier $notifier,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        CarrierSelector $carrierSelector
     )
     {
         $this->contentStatisticSender    = $contentStatisticSender;
@@ -142,6 +154,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->visitTracker              = $visitTracker;
         $this->visitNotifier             = $notifier;
         $this->logger                    = $logger;
+        $this->carrierSelector           = $carrierSelector;
     }
 
 
@@ -236,15 +249,31 @@ class LPController extends AbstractController implements ControllerWithISPDetect
     }
 
     /**
-     * @Route("/get_annotation", name="ajax_annotation")
+     * @Route("/lp/select-carrier-wifi", name="select_carrier_wifi")
+     * @param Request $request
+     *
      * @return JsonResponse
      */
-    public function ajaxAnnotationAction()
+    public function selectCarrierWifi(Request $request)
     {
-        return new JsonResponse([
-            'code'     => 200,
-            'response' => $this->renderView('@App/Components/Ajax/annotation.html.twig')
-        ]);
+        if (!$carrierId = $request->get('carrier_id', '')) {
+            throw new BadRequestHttpException('`carrier_id` is required');
+        }
+
+        try {
+            $this->carrierSelector->selectCarrier((int) $carrierId);
+            $offerTemplate = $this->templateConfigurator->getTemplate('landing_offer', $carrierId);
+
+            $data = [
+                'success' => true,
+                'annotation' => $this->renderView('@App/Components/Ajax/annotation.html.twig'),
+                'offer' => $this->renderView($offerTemplate)
+            ];
+
+            return $this->getSimpleJsonResponse('Successfully selected', 200, [], $data);
+        } catch (MissingCarrierException $exception) {
+            return $this->getSimpleJsonResponse($exception->getMessage(), 200, [], ['success' => false]);
+        }
     }
 
     /**

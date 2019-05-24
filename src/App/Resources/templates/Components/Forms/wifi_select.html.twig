@@ -32,10 +32,5 @@
                 carrierSelect.append("<option data-content='"+JSON.stringify(_carrier)+"' value='"+ _carrier.billingCarrierId+"'>"+ _carrier.name +"</option>");
             };
         });
-
-        $(document).on('change', 'select[name="carrier_id"], select[name="country"]', function () {
-            var carrier = $(this).find(':selected').data('content');
-            $('#wifi_offer').html( (carrier && carrier.wifi_offer) || '');
-        });
     </script>
 {% endmacro %}
