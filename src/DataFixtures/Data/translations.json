@@ -424,7 +424,7 @@
     },
     {
         "uuid": "727b838c-641e-42db-b1b9-171b68e50ef4",
-        "key": "buttons.leave",
+        "key": "buttons.unsubscribe",
         "translation": "Leave 100% sport",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
@@ -1383,15 +1383,6 @@
         "uuid": "0a290e02-2165-4134-ae9d-b193992d128a",
         "key": "subscription.status.error",
         "translation": "\u0627\u0644\u0645\u0639\u0630\u0631\u0629\u060c \u0644\u0627 \u0646\u0633\u062a\u0637\u064a\u0639 \u0645\u0639\u0627\u0644\u062c\u0629 \u0637\u0644\u0628\u0643 \u0641\u064a \u0647\u0630\u0647 \u0627\u0644\u0644\u062d\u0638\u0629. \u064a\u0631\u062c\u0649 \u0627\u0644\u0645\u062d\u0627\u0648\u0644\u0629 \u0644\u0627\u062d\u0642\u0627.",
-        "language": {
-            "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
-        "uuid": "0d8f18c9-de7e-417a-a3ec-8c655600b925",
-        "key": "messages.error.already_subscribed",
-        "translation": "\u0646\u062a \u062a\u0633\u062a\u0641\u064a\u062f \u0645\u0646 \u0627\u0634\u062a\u0631\u0627\u0643 \u0646\u0634\u0637 \u0645\u0633\u0628\u0642\u0627.",
         "language": {
             "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -2676,15 +2667,6 @@
         "carrier": null
     },
     {
-        "uuid": "edf68642-8cef-4997-a902-9f830bc74cb2",
-        "key": "messages.error.already_subscribed",
-        "translation": "\u0623\u0646\u062a \u062a\u0633\u062a\u0641\u064a\u062f \u0645\u0646 \u0627\u0634\u062a\u0631\u0627\u0643 \u0646\u0634\u0637 \u0645\u0633\u0628\u0642\u0627.",
-        "language": {
-            "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
-    },
-    {
         "uuid": "ef5d4713-5243-4006-9c64-445ae6b5fc81",
         "key": "terms.block_3.text.1",
         "translation": "\u062e\u062f\u0645\u0629 \u0627\u0644\u0627\u0634\u062a\u0631\u0627\u0643 \u0647\u0630\u0647 \u062a\u062a\u064a\u062d \u0644\u0643 \u0645\u0634\u0627\u0647\u062f\u0629 \u0645\u0642\u0627\u0637\u0639 \u0641\u064a\u062f\u064a\u0648 \u0627\u0644\u0623\u0644\u0639\u0627\u0628 \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u063a\u064a\u0631 \u0627\u0644\u0645\u062d\u062f\u0648\u062f\u0629 \u0643\u0644 \u064a\u0648\u0645 \u0639\u0644\u0649 \u0647\u0627\u062a\u0641\u0643 \u0645\u0646 \u0643\u062a\u0627\u0644\u0648\u062c 100% sport \u0645\u0642\u0627\u0628\u0644 2.50 \u062c\u0646\u064a\u0647 \u0645\u0635\u0631\u064a (+ \u0631\u0633\u0648\u0645 \u0627\u062a\u0635\u0627\u0644 WAP). \u0637\u0627\u0644\u0645\u0627 \u0623\u0646\u0643 \u0645\u0634\u062a\u0631\u0643 \u0641\u064a 100% sport\u060c \u0633\u062a\u062a\u0645\u0643\u0646 \u0645\u0646 \u0645\u0634\u0627\u0647\u062f\u0629 \u0645\u062d\u062a\u0648\u0649 \u063a\u064a\u0631 \u0645\u062d\u062f\u0648\u062f \u0643\u0644 \u064a\u0648\u0645.",
@@ -2894,6 +2876,59 @@
         },
         "carrier": {
             "uuid": "7c8385df-8d56-464a-98ff-66c55a7a5741"
+        }
+    },
+    {
+        "uuid": "4bb3fc5b-63c0-4974-8b4b-e9a2e5be5a6f",
+        "key": "buttons.unsubscribe",
+        "translation": "\u0625\u0644\u063a\u0627\u0621 \u0627\u0644\u0627\u0634\u062a\u0631\u0627\u0643 \u0645\u0646 %100 sport",
+        "language": {
+            "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "810aos5s-0eb7-4357-bfdc-f906144e2489",
+        "key": "messages.error.already_subscribed",
+        "translation": "<a href=\"#\" id=\"send-reminder\">\u0647\u0646\u0627<\/a> \u0644\u062f\u064a\u0643 \u0628\u0627\u0644\u0641\u0639\u0644 \u0627\u0634\u062a\u0631\u0627\u0643 \u0646\u0634\u0637. \u0644\u062a\u0644\u0642\u064a \u062a\u0641\u0627\u0635\u064a\u0644 \u0627\u0644\u0627\u0634\u062a\u0631\u0627\u0643 \u0627\u0646\u0642\u0631 \u0641\u0648\u0642",
+        "language": {
+            "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": {
+            "uuid": "99a362ea-72cd-45d5-bbcc-18f16b8451ed"
+        }
+    },
+    {
+        "uuid": "8a5sde56-0eb7-4357-bfdc-f9061d58s489",
+        "key": "messages.error.already_subscribed",
+        "translation": "<a href=\"#\" id=\"send-reminder\">\u0647\u0646\u0627<\/a> \u0644\u062f\u064a\u0643 \u0628\u0627\u0644\u0641\u0639\u0644 \u0627\u0634\u062a\u0631\u0627\u0643 \u0646\u0634\u0637. \u0644\u062a\u0644\u0642\u064a \u062a\u0641\u0627\u0635\u064a\u0644 \u0627\u0644\u0627\u0634\u062a\u0631\u0627\u0643 \u0627\u0646\u0642\u0631 \u0641\u0648\u0642",
+        "language": {
+            "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": {
+            "uuid": "7c8385df-8d56-464a-98ff-66c55a7a5741"
+        }
+    },
+    {
+        "uuid": "8ea5dd5e-72af-4f7b-b089-bas58ds7a252",
+        "key": "messages.error.already_subscribed",
+        "translation": "You already have an active subscription. To receive the details of subscription click <a href=\"#\" id=\"send-reminder\">here<\/a>",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": {
+            "uuid": "7c8385df-8d56-464a-98ff-66c55a7a5741"
+        }
+    },
+    {
+        "uuid": "aas3d74c-9df9-4fe7-9508-fa54da7as58d",
+        "key": "messages.error.already_subscribed",
+        "translation": "You already have an active subscription. To receive the details of subscription click <a href=\"#\" id=\"send-reminder\">here<\/a>",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": {
+            "uuid": "99a362ea-72cd-45d5-bbcc-18f16b8451ed"
         }
     }
 ]
