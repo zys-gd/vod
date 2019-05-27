@@ -51,7 +51,18 @@ class PiwikUnsubscriptionDataMapper
         $eurPrice           = $this->exchanger->convert($oSubPack->getTierCurrency(), $oSubPack->getTierPrice());
         $subscriptionPrice  = round($oSubPack->getTierPrice(), 2);
 
-        $name          = $action . '-' . ($resultStatus ? 'ok' : 'failed');
+        $campaign   = $this->campaignExtractor->getCampaignForSubscription($subscription);
+        $zerocredit = '';
+        if (
+            $oSubPack->isZeroCreditSubAvailable()
+            ||
+            ($campaign && $campaign->isZeroCreditSubAvailable())
+        ) {
+            $zerocredit = '-zerocredit';
+        }
+
+        $name = $action . $zerocredit . '-' . ($resultStatus ? 'ok' : 'failed');
+
         $orderIdPieces = [
             $name,
             $subscription->getUuid(),
