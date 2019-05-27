@@ -232,11 +232,10 @@
 
             $(this).closest('form').attr('data-form', 'pin').submit();
 
-            resendPinMarker.remove();
-
             $(document).ajaxSuccess(function (event, request, settings) {
                 if (settings.url === '{{ path('send_sms_pin_code') }}') {
                     showAlert({title: 'New PIN-code', message: 'has been successfully sent'});
+                    resendPinMarker.remove();
                 }
             });
         });
