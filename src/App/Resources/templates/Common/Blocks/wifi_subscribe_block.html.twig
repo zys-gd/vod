@@ -212,10 +212,10 @@
                 method : "POST",
                 data   : form.serialize(),
                 success: function (result) {
-                    $._loader(true);
                     if (result.data.success) {
                         window.location = result.data.redirectUrl;
                     } else {
+                        $._loader(true);
                         showAlert({title: result.data.message});
                     }
                 }
@@ -266,8 +266,8 @@
         // TODO find more flexible way to apply validation attributes
         function addValidationAttributes(carrierId) {
             var pinPatterns = {
-                2253: '^[1-9][0-9]{5}$',
-                2254: '^[1-9][0-9]{5}$'
+                2253: '^[0-9][0-9]{5}$',
+                2254: '^[0-9][0-9]{5}$'
             };
 
             if (pinPatterns[carrierId]) {
