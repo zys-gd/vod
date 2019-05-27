@@ -193,6 +193,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
                 'editable' => true,
                 'choices'  => array_flip(SubscriptionPack::PERIODICITY),
             ])
+            ->add('zeroCreditSubAvailable')
             ->add('status', 'choice', [
                 'editable' => true,
                 'choices'  => array_flip(SubscriptionPack::STATUSES),
@@ -450,8 +451,11 @@ class SubscriptionPackAdmin extends AbstractAdmin
             ->add('isResubAllowed', CheckboxType::class, [
                 'required' => false,
                 'label'    => 'Is resubscribe allowed'
-            ])
-            ->end();
+            ]);
+
+        $formMapper->add('zeroCreditSubAvailable');
+
+        $formMapper->end();
     }
 
     /**
