@@ -16,6 +16,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@router'
             - '@ExtrasBundle\Utils\LocalExtractor'
+            - '@SubscriptionBundle\Repository\SubscriptionRepository'
         tags:
             - { name: identification.wifi_identification_handler }
 

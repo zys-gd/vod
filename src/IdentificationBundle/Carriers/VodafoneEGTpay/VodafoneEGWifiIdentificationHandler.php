@@ -12,10 +12,13 @@ use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\Exception\WifiIdentConfirmException;
+use IdentificationBundle\WifiIdentification\Handler\HasConsentPageFlow;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinRequestRules;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinResendRules;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinVerifyRules;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
+use SubscriptionBundle\Entity\Subscription;
+use SubscriptionBundle\Repository\SubscriptionRepository;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -25,7 +28,8 @@ class VodafoneEGWifiIdentificationHandler implements
     WifiIdentificationHandlerInterface,
     HasCustomPinVerifyRules,
     HasCustomPinResendRules,
-    HasCustomPinRequestRules
+    HasCustomPinRequestRules,
+    HasConsentPageFlow
 {
     /**
      * @var UserRepository
@@ -48,23 +52,31 @@ class VodafoneEGWifiIdentificationHandler implements
     private $localExtractor;
 
     /**
+     * @var SubscriptionRepository
+     */
+    private $subscriptionRepository;
+
+    /**
      * VodafonePKWifiIdentificationHandler constructor
      *
      * @param UserRepository $userRepository
      * @param EntityManagerInterface $entityManager
      * @param RouterInterface $router
      * @param LocalExtractor $localExtractor
+     * @param SubscriptionRepository $subscriptionRepository
      */
     public function __construct(
         UserRepository $userRepository,
         EntityManagerInterface $entityManager,
         RouterInterface $router,
-        LocalExtractor $localExtractor
+        LocalExtractor $localExtractor,
+        SubscriptionRepository $subscriptionRepository
     ) {
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
         $this->router = $router;
         $this->localExtractor = $localExtractor;
+        $this->subscriptionRepository = $subscriptionRepository;
     }
 
     /**
@@ -86,15 +98,31 @@ class VodafoneEGWifiIdentificationHandler implements
     }
 
     /**
-     * @param string $msisdn
+     * @param string $mobileNumber
      *
      * @return User|null
      */
-    public function getExistingUser(string $msisdn): ?User
+    public function getExistingUser(string $mobileNumber): ?User
     {
-        $identifier = str_replace('+', '', $msisdn);
+        return $this->userRepository->findOneByMsisdn($this->cleanMsisnd($mobileNumber));
+    }
 
-        return $this->userRepository->findOneByMsisdn($identifier);
+    /**
+     * @param string $mobileNumber
+     *
+     * @return Subscription|null
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getExistingSubscription(string $mobileNumber): ?Subscription
+    {
+        $user = $this->getExistingUser($mobileNumber);
+
+        if ($user) {
+            return $this->subscriptionRepository->findCurrentSubscriptionByOwner($user);
+        }
+
+        return null;
     }
 
     /**
@@ -121,7 +149,7 @@ class VodafoneEGWifiIdentificationHandler implements
      */
     public function getMsisdnFromResult(PinVerifyResult $pinVerifyResult, string $phoneNumber): string
     {
-        return $phoneNumber;
+        return $this->cleanMsisnd($phoneNumber);
     }
 
     /**
@@ -192,5 +220,15 @@ class VodafoneEGWifiIdentificationHandler implements
     public function afterSuccessfulPinRequest(PinRequestResult $result): void
     {
         // TODO: Implement afterSuccessfulPinRequest() method.
+    }
+
+    /**
+     * @param string $mobileNumber
+     *
+     * @return string
+     */
+    private function cleanMsisnd(string $mobileNumber): string
+    {
+        return str_replace('+', '', $mobileNumber);
     }
 }

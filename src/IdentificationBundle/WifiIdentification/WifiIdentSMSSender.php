@@ -12,6 +12,7 @@ use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\Common\InternalSMS\PinCodeSaver;
 use IdentificationBundle\WifiIdentification\Common\RequestProvider;
+use IdentificationBundle\WifiIdentification\Handler\HasConsentPageFlow;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinRequestRules;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinResendRules;
 use IdentificationBundle\WifiIdentification\Handler\HasInternalSMSHandling;
@@ -89,8 +90,7 @@ class WifiIdentSMSSender
         IdentificationDataStorage $dataStorage,
         UserRepository $userRepository,
         PinResendProcess $pinResendProcess
-    )
-    {
+    ) {
         $this->handlerProvider   = $handlerProvider;
         $this->carrierRepository = $carrierRepository;
         $this->pinRequestProcess = $pinRequestProcess;
@@ -112,6 +112,10 @@ class WifiIdentSMSSender
     {
         $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
         $handler = $this->handlerProvider->get($carrier);
+
+        if ($handler instanceof HasConsentPageFlow && $handler->getExistingSubscription($mobileNumber)) {
+            throw new PinRequestProcessException('', 101, '');
+        }
 
         if ($handler->getExistingUser($mobileNumber)) {
             throw new AlreadyIdentifiedException('User is already identified');
