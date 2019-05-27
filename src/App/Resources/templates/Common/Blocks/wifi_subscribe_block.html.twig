@@ -136,8 +136,6 @@
                                     $._loader();
                                 },
                                 success: function (result) {
-                                    $._loader(true);
-
                                     if (result.data.redirectUrl) {
                                         window.location = result.data.redirectUrl;
                                         return;
@@ -161,7 +159,7 @@
                                         reject()
                                     }
                                 },
-                                always: function () {
+                                complete: function () {
                                     $._loader(true)
                                 }
                             });
@@ -186,7 +184,7 @@
                                         resolve();
                                     }
                                 },
-                                always: function () {
+                                complete: function () {
                                     $._loader(true)
                                 }
                             })
