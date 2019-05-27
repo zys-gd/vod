@@ -121,45 +121,86 @@
         // send pin code to input phone
         $(document).on('submit', 'form[data-form=pin]', function (e) {
             e.preventDefault();
-            $._loader();
             phone = input_phone.val();
             $(document).unbind("ajaxSuccess"); // hook for re-send pin
 
-            $.ajax({
-                url    : "{{ path('send_sms_pin_code') }}",
-                method : "POST",
-                data   : form.serialize(),
-                success: function (result) {
-                    $._loader(true);
-
-                    if (result.data.redirectUrl) {
-                        window.location = result.data.redirectUrl;
-                        return;
-                    }
-
-                    if (result.data.success) {
-                        input_phone.addClass('d-none');
-                        $wifi_form_step
-                            .html(params.html_wifi_pin)
-                            .append(input_phone);
-                        addValidationAttributes(result.data.carrierId);
-                        form.attr('data-form', 'confirm');
-                        $wifi_warning.html(params.pin_notif.replace(/%wifi_phone%/, phone));
-                    } else {
-                        showAlert({title: result.data.message});
-
-                        $('#send-reminder').click(function () {
+            Q
+                .fcall(function () {
+                    return new Promise(
+                        function (resolve, reject) {
                             $.ajax({
-                                url: "{{ path('remind_credentials') }}",
-                                method: 'GET',
-                                complete: function () {
-                                    $('.fc-content .button-confirm').click();
+                                url: "{{ path('send_sms_pin_code') }}",
+                                method: "POST",
+                                data: form.serialize(),
+                                beforeSend: function () {
+                                    $._loader();
+                                },
+                                success: function (result) {
+                                    $._loader(true);
+
+                                    if (result.data.redirectUrl) {
+                                        window.location = result.data.redirectUrl;
+                                        return;
+                                    }
+
+                                    if (result.data.success) {
+                                        resolve()
+                                    } else {
+                                        showAlert({title: result.data.message});
+
+                                        $('#send-reminder').click(function () {
+                                            $.ajax({
+                                                url: "{{ path('remind_credentials') }}",
+                                                method: 'GET',
+                                                complete: function () {
+                                                    $('.fc-content .button-confirm').click();
+                                                }
+                                            })
+                                        });
+
+                                        reject()
+                                    }
+                                },
+                                always: function () {
+                                    $._loader(true)
+                                }
+                            });
+                        })
+                })
+                .then(function () {
+                    return new Promise(
+                        function (resolve, reject) {
+                            $.ajax({
+                                url: "{{ path('ajax_after_carrier_selected') }}",
+                                method: "POST",
+                                beforeSend: function () {
+                                    $._loader();
+                                },
+                                success: function (result) {
+                                    if (result.data.redirectUrl) {
+                                        window.location = result.data.redirectUrl;
+                                        reject();
+                                        return;
+                                    }
+                                    if (result.data.success) {
+                                        resolve();
+                                    }
+                                },
+                                always: function () {
+                                    $._loader(true)
                                 }
                             })
                         })
-                    }
-                }
-            });
+                })
+                .then(function () {
+                    var input_phone = $('input[name=mobile_number]');
+                    input_phone.addClass('d-none');
+                    $wifi_form_step
+                        .html(params.html_wifi_pin)
+                        .append(input_phone);
+                    form.attr('data-form', 'confirm');
+                    $wifi_warning.html(params.pin_notif.replace(/%wifi_phone%/, phone));
+                });
         });
 
         // confirm pin code
