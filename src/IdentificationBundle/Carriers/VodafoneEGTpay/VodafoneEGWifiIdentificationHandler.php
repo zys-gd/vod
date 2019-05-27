@@ -110,19 +110,21 @@ class VodafoneEGWifiIdentificationHandler implements
     /**
      * @param string $mobileNumber
      *
-     * @return Subscription|null
+     * @return bool
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getExistingSubscription(string $mobileNumber): ?Subscription
+    public function hasActiveSubscription(string $mobileNumber): bool
     {
         $user = $this->getExistingUser($mobileNumber);
 
         if ($user) {
-            return $this->subscriptionRepository->findCurrentSubscriptionByOwner($user);
+            $subscription = $this->subscriptionRepository->findCurrentSubscriptionByOwner($user);
+
+            return $subscription && $subscription->isActive();
         }
 
-        return null;
+        return false;
     }
 
     /**

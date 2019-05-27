@@ -113,11 +113,11 @@ class WifiIdentSMSSender
         $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
         $handler = $this->handlerProvider->get($carrier);
 
-        if ($handler instanceof HasConsentPageFlow && $handler->getExistingSubscription($mobileNumber)) {
+        if ($handler instanceof HasConsentPageFlow && $handler->hasActiveSubscription($mobileNumber)) {
             throw new PinRequestProcessException('', 101, '');
         }
 
-        if ($handler->getExistingUser($mobileNumber)) {
+        if (!$handler instanceof HasConsentPageFlow && $handler->getExistingUser($mobileNumber)) {
             throw new AlreadyIdentifiedException('User is already identified');
         }
 

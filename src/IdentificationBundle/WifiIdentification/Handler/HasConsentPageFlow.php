@@ -2,8 +2,6 @@
 
 namespace IdentificationBundle\WifiIdentification\Handler;
 
-use SubscriptionBundle\Entity\Subscription;
-
 /**
  * Interface HasConsentFlow
  */
@@ -12,7 +10,7 @@ interface HasConsentPageFlow
     /**
      * @param string $mobileNumber
      *
-     * @return Subscription|null
+     * @return bool
      */
-    public function getExistingSubscription(string $mobileNumber): ?Subscription;
+    public function hasActiveSubscription(string $mobileNumber): bool;
 }
