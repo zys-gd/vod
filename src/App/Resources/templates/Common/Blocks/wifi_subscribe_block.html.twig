@@ -11,9 +11,7 @@
             {{ translate('wifi.warning') }}
         </div>
         <div id="wifi_form_step">
-            {% if not isCarrierDetected() %}
-                {{ wifi_select.render() }}
-            {% endif %}
+            {{ wifi_select.render() }}
             {{ wifi_phone.render() }}
         </div>
         <div id="wifi_button">
@@ -34,6 +32,7 @@
         $('.x-subscribe-image').removeAttr('href').removeAttr('class');
 
         var form = $('#wifi_form');
+        var carrierId = + '{{ getCarrierId() }}';
 
         $(document).ready(function () {
             // move form to designed position (the best designer ever)
@@ -59,20 +58,34 @@
             warning        : $('<div />').html('{{ html2string(translate('wifi.warning')|nl2br) }}').text()
         };
 
+        if (carrierId) {
+            $.each($('select[name="country"] option'), function() {
+                var carriers = $(this).data('carriers');
+
+                if (carriers && carriers[carrierId]) {
+                    $(this).attr('selected', 'selected');
+                }
+            });
+        }
+
         $(document).on('change', 'select[name="country"]', function () {
             var carrierSelect = $('select[name="carrier_id"]');
-            var selectedCarrier = carrierSelect.find(':selected').data('content');
 
             carrierSelect.empty()
                 .append("<option value=''>{{ translate('wifi.form.select_carrier') }}</option>");
             var carriers = $(this).find(':selected').data('carriers');
             for(carrier in carriers) {
                 var _carrier = carriers[carrier];
-                carrierSelect.append("<option data-content='"+JSON.stringify(_carrier)+"' value='"+ _carrier.billingCarrierId+"'>"+ _carrier.name +"</option>");
-            }
+                var option = $('<option></option>')
+                    .attr('data-content', JSON.stringify(_carrier))
+                    .attr('value', _carrier.billingCarrierId)
+                    .text(_carrier.name);
 
-            if (selectedCarrier) {
-                carrierSelect.trigger('change');
+                if (carrierId && carrierId === _carrier.billingCarrierId) {
+                    option.attr('selected', 'selected');
+                }
+
+                carrierSelect.append(option);
             }
         });
 
