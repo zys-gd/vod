@@ -68,13 +68,12 @@ class PiwikUnsubscriptionDataMapper
 
     /**
      * @param Subscription $subscription
-     * @param string       $bfProvider
+     * @param string|null  $bfProvider
      * @param bool|null    $conversionMode
      *
      * @return array
-     * @throws \SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound
      */
-    public function getAdditionalData(Subscription $subscription, string $bfProvider, bool $conversionMode = null)
+    public function getAdditionalData(Subscription $subscription, string $bfProvider = null, bool $conversionMode = null)
     {
         $oSubPack = $subscription->getSubscriptionPack();
 
