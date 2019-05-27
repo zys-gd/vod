@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Domain\ACL\Exception;
+namespace SubscriptionBundle\Service\CAPTool\Exception;
 
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 
 /**
  * Class VisitCapReached
  */
-class VisitCapReached extends AccessException
+class VisitCapReached extends CapToolAccessException
 {
     /**
      * @var ConstraintByAffiliate
