@@ -1,21 +1,13 @@
 services:
-    PiwikBundle\Service\NewTracker:
+    PiwikBundle\Service\PiwikTracker:
         arguments:
-            - '@PiwikBundle\Api\PhpClient'
-            - '@PiwikBundle\Api\JsClient'
-            - '%piwik_enable_js_tracker%'
-            - '@LegacyBundle\Service\Exchanger'
-            - '@SubscriptionBundle\Service\SubscriptionPackProvider'
-            - '@session'
-            - '%campaign_session_name%'
-            - '@App\Domain\Repository\CampaignRepository'
-            - '@device_detection.service.device'
+            - '@PiwikBundle\Service\PiwikClient'
 
     PiwikBundle\Twig\PiwikExtension:
         arguments: ['@PiwikBundle\Api\JsClient', '%piwik_enable_js_tracker%']
         tags:
             - { name: twig.extension }
-            
+
     PiwikBundle\Api\ClientAbstract:
         abstract: true
         arguments: ['%piwik_id_site%', '%piwik_host%', '%piwik_https%', '%piwik_token_auth%']
@@ -31,11 +23,18 @@ services:
         calls:
             - ['setEnableLinkTracking', ['%piwik_enable_link_tracking%']]
 
-    RabbitMqBundle\Service\SendToAMQP\SendToDirectExchange:
-        arguments: ['@wl_rabbit_mq.connection']
-
-    PiwikBundle\Service\PiwikDataSender:
-        arguments: ['@PiwikBundle\Api\PhpClient']
-
     PiwikBundle\Service\RabbitMQProducer:
         arguments: ['%rabbit_mq_host%', '%rabbit_mq_port%', '%rabbit_mq_user%', '%rabbit_mq_password%', '%rabbit_mq_vhost%']
+
+    PiwikBundle\Service\PiwikClientFactory:
+        arguments:
+            - '%piwik_enable_js_tracker%'
+            - '@PiwikBundle\Api\PhpClient'
+            - '@PiwikBundle\Api\JsClient'
+
+    PiwikBundle\Service\PiwikDataMapper:
+        arguments:
+            - '@PiwikBundle\Service\PiwikClient'
+
+    PiwikBundle\Service\PiwikClient:
+        factory: 'PiwikBundle\Service\PiwikClientFactory:getPiwikClient'

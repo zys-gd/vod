@@ -2,8 +2,15 @@
 
 namespace IdentificationBundle\Entity;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 /**
  * Class TestUser
+ *
+ * @UniqueEntity(
+ *     fields={"userIdentifier"},
+ *     message = "This user is already in use"
+ * )
  */
 class TestUser
 {
@@ -42,7 +49,7 @@ class TestUser
     public function __construct(string $uuid)
     {
         $this->addedAt = new \DateTime();
-        $this->uuid = $uuid;
+        $this->uuid    = $uuid;
     }
 
     /**

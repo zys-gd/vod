@@ -3,24 +3,27 @@
 namespace App\Controller;
 
 use App\Domain\ACL\Exception\AccessException;
-use App\Domain\ACL\Exception\SubscriptionCapReachedOnAffiliate;
-use App\Domain\ACL\Exception\SubscriptionCapReachedOnCarrier;
-use App\Domain\ACL\Exception\VisitCapReached;
 use App\Domain\ACL\LandingPageACL;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Service\CarrierOTPVerifier;
-use App\Domain\Service\ContentStatisticSender;
+use App\Domain\Service\Piwik\ContentStatisticSender;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use Psr\Log\LoggerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
-use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
+use SubscriptionBundle\Controller\Traits\ResponseTrait;
+use SubscriptionBundle\Service\CAPTool\Exception\CapToolAccessException;
+use SubscriptionBundle\Service\CAPTool\Exception\SubscriptionCapReachedOnAffiliate;
+use SubscriptionBundle\Service\CAPTool\Exception\SubscriptionCapReachedOnCarrier;
+use SubscriptionBundle\Service\CAPTool\Exception\VisitCapReached;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
+use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
 use SubscriptionBundle\Service\VisitCAPTool\VisitNotifier;
 use SubscriptionBundle\Service\VisitCAPTool\VisitTracker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,6 +31,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -35,6 +39,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class LPController extends AbstractController implements ControllerWithISPDetection, AppControllerInterface
 {
+
+    use ResponseTrait;
     /**
      * @var ContentStatisticSender
      */
@@ -189,10 +195,9 @@ class LPController extends AbstractController implements ControllerWithISPDetect
                 $this->visitNotifier->notifyLimitReached($exception->getConstraint(), $carrier);
                 return RedirectResponse::create($this->defaultRedirectUrl);
 
-            } catch (AccessException $exception) {
-                $this->logger->debug('CAP checking throw AccessException');
+            } catch (CapToolAccessException | AccessException $exception) {
+                $this->logger->debug('CAP checking throw Access Exception');
                 return RedirectResponse::create($this->defaultRedirectUrl);
-
             }
 
             $this->visitTracker->trackVisit($carrier, $campaign, $session->getId());
@@ -205,7 +210,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         // we can't use ISPData object as function parameter because request to LP could not contain
         // carrier data and in this case BadRequestHttpException will be throw
         $ispData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession());
-        $this->contentStatisticSender->trackVisit($ispData ? new ISPData($ispData['carrier_id']) : null);
+        $this->contentStatisticSender->trackVisit($request->getSession(), $ispData ? new ISPData($ispData['carrier_id']) : null);
 
         if (!(bool)$this->dataStorage->readValue('is_wifi_flow') && $this->landingPageAccessResolver->isLandingDisabled($request)) {
             return new RedirectResponse($this->generateUrl('identify_and_subscribe'));
@@ -225,12 +230,68 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @Route("/get_annotation", name="ajax_annotation")
      * @return JsonResponse
      */
-    public function ajaxAnnotationAction()
+    public function ajaxAnnotationAction(Request $request)
     {
+
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
         return new JsonResponse([
             'code'     => 200,
             'response' => $this->renderView('@App/Components/Ajax/annotation.html.twig')
         ]);
+    }
+
+    /**
+     * @Method("POST")
+     * @Route("/after_carrier_selected", name="ajax_after_carrier_selected")
+     * @return JsonResponse
+     */
+    public function ajaxAfterCarrierSelected(Request $request)
+    {
+
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
+
+        try {
+            $session  = $request->getSession();
+            $cid      = $session->get('campaign_id', '');
+            $carrier  = $this->resolveCarrierFromRequest($request);
+            $campaign = $this->resolveCampaignFromRequest($cid);
+
+            if (!$campaign) {
+                return $this->getSimpleJsonResponse('success', 200, [], [
+                    'success' => true,
+                ]);
+            }
+
+
+            try {
+                $this->landingPageAccessResolver->ensureCanAccessByVisits($campaign, $carrier);
+            } catch (VisitCapReached $capReached) {
+                return $this->getSimpleJsonResponse('success', 200, [], [
+                    'success'     => false,
+                    'redirectUrl' => $this->defaultRedirectUrl
+                ]);
+            }
+
+            $this->visitTracker->trackVisit($carrier, $campaign, $session->getId());
+
+
+
+            return $this->getSimpleJsonResponse('success', 200, [], [
+                'success' => true,
+            ]);
+
+        } catch (\Exception $exception) {
+            return $this->getSimpleJsonResponse('success', 500, [], [
+                'success' => false,
+                'error'   => $exception->getMessage()
+            ]);
+        }
     }
 
     /**
@@ -244,8 +305,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $billingCarrierId = (int)$ispDetectionData['carrier_id'] ?? null;
         if (!empty($billingCarrierId)) {
             return $this->carrierRepository->findOneByBillingId($billingCarrierId);
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -260,8 +320,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         if ($campaign) {
             return $campaign;
-        }
-        else {
+        } else {
             return null;
         }
 

@@ -2,6 +2,8 @@
 
 namespace App\Domain\ACL\Exception;
 
+use SubscriptionBundle\Service\CAPTool\Exception\CapToolAccessException;
+
 /**
  * Class CampaignPausedException
  */

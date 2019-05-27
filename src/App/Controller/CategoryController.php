@@ -8,7 +8,7 @@ use App\Domain\Entity\UploadedVideo;
 use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\SubcategoryRepository;
 use App\Domain\Repository\UploadedVideoRepository;
-use App\Domain\Service\ContentStatisticSender;
+use App\Domain\Service\Piwik\ContentStatisticSender;
 use App\Domain\Service\VideoProcessing\UploadedVideoSerializer;
 use IdentificationBundle\Identification\DTO\ISPData;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -105,7 +105,7 @@ class CategoryController extends AbstractController implements AppControllerInte
             $categoryVideos[$categoryKey][$video->getUuid()] = $this->videoSerializer->serializeShort($video);
         }
 
-        $this->contentStatisticSender->trackVisit($data);
+        $this->contentStatisticSender->trackVisit($request->getSession(), $data);
 
         $template = $this->templateConfigurator->getTemplate('category', $data->getCarrierId());
         return $this->render($template, [

@@ -18,7 +18,7 @@ use App\Domain\Repository\CountryCategoryPriorityOverrideRepository;
 use App\Domain\Repository\GameRepository;
 use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\UploadedVideoRepository;
-use App\Domain\Service\ContentStatisticSender;
+use App\Domain\Service\Piwik\ContentStatisticSender;
 use App\Domain\Service\VideoProcessing\UploadedVideoSerializer;
 use ExtrasBundle\Utils\ArraySorter;
 use IdentificationBundle\Controller\ControllerWithIdentification;
@@ -137,7 +137,7 @@ class HomeController extends AbstractController implements
             5
         );
 
-        $this->contentStatisticSender->trackVisit($data);
+        $this->contentStatisticSender->trackVisit($request->getSession(), $data);
 
         $template = $this->templateConfigurator->getTemplate('home', $data->getCarrierId());
         return $this->render($template, [

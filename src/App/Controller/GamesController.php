@@ -9,7 +9,7 @@ use App\Domain\Entity\GameBuild;
 use App\Domain\Entity\GameImage;
 use App\Domain\Repository\GameBuildRepository;
 use App\Domain\Repository\GameRepository;
-use App\Domain\Service\ContentStatisticSender;
+use App\Domain\Service\Piwik\ContentStatisticSender;
 use App\Domain\Service\Games\DrmApkProvider;
 use App\Domain\Service\Games\ExcludedGamesProvider;
 use App\Domain\Service\Games\GameImagesSerializer;
@@ -105,15 +105,16 @@ class GamesController extends AbstractController implements AppControllerInterfa
     /**
      * @Route("/games/",name="game_category")
      * @Method("GET")
+     * @param Request $request
      * @param ISPData $data
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showCategoryContentAction(ISPData $data)
+    public function showCategoryContentAction(Request $request, ISPData $data)
     {
         $games = $this->gameRepository->findBatchOfGames(0, 8);
 
-        $this->contentStatisticSender->trackVisit($data);
+        $this->contentStatisticSender->trackVisit($request->getSession(), $data);
 
         $template = $this->templateConfigurator->getTemplate('game_category_content', $data->getCarrierId());
         return $this->render($template, [

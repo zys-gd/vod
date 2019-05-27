@@ -357,6 +357,7 @@ class CommonFlowHandler
         else {
             $isPiwikTracked = ($result->isFailedOrSuccessful() && $result->isFinal());
         }
+
         if ($isPiwikTracked) {
             $this->subscriptionEventTracker->trackPiwikForSubscribe($newSubscription, $result);
         }

@@ -26,9 +26,10 @@ use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CustomPage;
-use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
+use SubscriptionBundle\Service\CAPTool\Exception\CapToolAccessException;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiterInterface;
+use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
 use SubscriptionBundle\Service\UserExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -119,7 +120,7 @@ class SubscribeAction extends AbstractController
      * @param PostPaidHandler                     $postPaidHandler
      * @param CampaignConfirmationHandlerProvider $campaignConfirmationHandlerProvider
      * @param SubscriptionLimiter                 $subscriptionLimiter
-     * @param SubscriptionLimitNotifier                     $subscriptionLimitNotifier
+     * @param SubscriptionLimitNotifier           $subscriptionLimitNotifier
      */
     public function __construct(
         UserExtractor $userExtractor,
@@ -153,7 +154,7 @@ class SubscribeAction extends AbstractController
         $this->postPaidHandler                     = $postPaidHandler;
         $this->campaignConfirmationHandlerProvider = $campaignConfirmationHandlerProvider;
         $this->subscriptionLimiter                 = $subscriptionLimiter;
-        $this->subscriptionLimitNotifier                     = $subscriptionLimitNotifier;
+        $this->subscriptionLimitNotifier           = $subscriptionLimitNotifier;
     }
 
     /**
@@ -188,7 +189,7 @@ class SubscribeAction extends AbstractController
 
         $this->ensureNotConsentPageFlow($ISPData->getCarrierId());
 
-        if(
+        if (
             $this->blacklistVoter->isInBlacklist($request->getSession())
             || !$this->blacklistVoter->deductSubscriptionAttempt($request->getSession())
         ) {
@@ -198,9 +199,11 @@ class SubscribeAction extends AbstractController
         $user = $this->userExtractor->getUserByIdentificationData($identificationData);
 
 
-        if ($this->subscriptionLimiter->isSubscriptionLimitReached($request->getSession())) {
-            $this->subscriptionLimitNotifier->notifyLimitReachedForCarrier($user->getCarrier());
+        try {
+            $this->subscriptionLimiter->ensureCapIsNotReached($request->getSession());
+        } catch (CapToolAccessException $exception) {
             return RedirectResponse::create($this->defaultRedirectUrl);
+
         }
 
         if ($this->subscriptionLimiter->need2BeLimited($user)) {

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Domain\ACL\Exception;
+namespace SubscriptionBundle\Service\CAPTool\Exception;
 
-use App\Domain\Entity\Carrier;
+use IdentificationBundle\Entity\CarrierInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 
 /**
  * Class SubscriptionCapReachedOnAffiliate
  */
-class SubscriptionCapReachedOnAffiliate extends AccessException
+class SubscriptionCapReachedOnAffiliate extends CapToolAccessException
 {
     /**
      * @var ConstraintByAffiliate
@@ -16,16 +16,16 @@ class SubscriptionCapReachedOnAffiliate extends AccessException
     private $constraint;
 
     /**
-     * @var Carrier
+     * @var CarrierInterface
      */
     private $carrier;
 
     /**
      * SubscriptionCapReachedOnAffiliate constructor.
      * @param ConstraintByAffiliate $constraint
-     * @param Carrier               $carrier
+     * @param CarrierInterface      $carrier
      */
-    public function __construct(ConstraintByAffiliate $constraint, Carrier $carrier)
+    public function __construct(ConstraintByAffiliate $constraint, CarrierInterface $carrier)
     {
         $this->constraint = $constraint;
         $this->carrier    = $carrier;
@@ -40,9 +40,9 @@ class SubscriptionCapReachedOnAffiliate extends AccessException
     }
 
     /**
-     * @return Carrier
+     * @return CarrierInterface
      */
-    public function getCarrier(): Carrier
+    public function getCarrier(): CarrierInterface
     {
         return $this->carrier;
     }

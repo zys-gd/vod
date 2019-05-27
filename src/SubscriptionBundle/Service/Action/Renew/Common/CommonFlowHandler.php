@@ -99,6 +99,8 @@ class CommonFlowHandler
 
             $this->entityManager->flush();
 
+            return $result;
+
 
         } else {
             return new MassRenewResult(0, [], [], null);
