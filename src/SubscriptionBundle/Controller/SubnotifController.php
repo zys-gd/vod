@@ -3,6 +3,7 @@
 namespace SubscriptionBundle\Controller;
 
 use App\Domain\Repository\CarrierRepository;
+use App\Domain\Service\Translator\Translator;
 use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
@@ -52,6 +53,11 @@ class SubnotifController
     private $subscriptionPackProvider;
 
     /**
+     * @var Translator
+     */
+    private $translator;
+
+    /**
      * SubnotifController constructor
      *
      * @param Notifier $notifier
@@ -60,6 +66,7 @@ class SubnotifController
      * @param SessionInterface $session
      * @param LocalExtractor $localExtractor
      * @param SubscriptionPackProvider $subscriptionPackProvider
+     * @param Translator $translator
      */
     public function __construct(
         Notifier $notifier,
@@ -67,7 +74,8 @@ class SubnotifController
         UserRepository $userRepository,
         SessionInterface $session,
         LocalExtractor $localExtractor,
-        SubscriptionPackProvider $subscriptionPackProvider
+        SubscriptionPackProvider $subscriptionPackProvider,
+        Translator $translator
     ) {
         $this->notifier = $notifier;
         $this->carrierRepository = $carrierRepository;
@@ -75,6 +83,7 @@ class SubnotifController
         $this->session = $session;
         $this->localExtractor = $localExtractor;
         $this->subscriptionPackProvider = $subscriptionPackProvider;
+        $this->translator = $translator;
     }
 
     /**
@@ -96,14 +105,18 @@ class SubnotifController
         $user = $this->userRepository->findOneByIdentificationToken($identificationToken);
         $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
 
+        $localLanguage = $this->localExtractor->getLocal();
+
         $this->notifier->sendSMS(
             $carrier,
             $user->getIdentifier(),
             $user->getShortUrlId() ?? '',
             $subscriptionPack->convertPeriodicity2Text(),
-            $this->localExtractor->getLocal()
+            $localLanguage
         );
 
-        return $this->getSimpleJsonResponse('');
+        return $this->getSimpleJsonResponse('Success', 200, [
+            'message' => $this->translator->translate('messages.info.remind_credentials', $carrier->getBillingCarrierId(), $localLanguage)
+        ]);
     }
 }

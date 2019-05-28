@@ -143,17 +143,18 @@
 
                                     var input_phone = $('input[name=mobile_number]');
                                     input_phone.addClass('d-none');
-                                    $wifi_form_step
-                                        .html(params.html_wifi_pin)
-                                        .append(input_phone);
-                                    form.attr('data-form', 'confirm');
                                     $wifi_warning.html(params.pin_notif.replace(/%wifi_phone%/, phone));
-                                    addValidationAttributes(carrierId);
 
                                     if (result.data.success) {
                                         if (result.data.isResend) {
                                             showAlert({title: 'New PIN-code', message: 'has been successfully sent'});
                                         }
+
+                                        $wifi_form_step
+                                            .html(params.html_wifi_pin)
+                                            .append(input_phone);
+                                        form.attr('data-form', 'confirm');
+                                        addValidationAttributes(carrierId);
 
                                         resolve(result.data.carrierId);
                                     } else {
@@ -163,8 +164,11 @@
                                             $.ajax({
                                                 url: "{{ path('remind_credentials') }}",
                                                 method: 'GET',
-                                                complete: function () {
+                                                complete: function() {
                                                     $('.fc-content .button-confirm').click();
+                                                },
+                                                success: function(result) {
+                                                    showAlert({title: result.data.message});
                                                 }
                                             })
                                         });

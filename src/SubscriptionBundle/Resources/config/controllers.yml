@@ -107,3 +107,4 @@ services:
             - '@session'
             - '@ExtrasBundle\Utils\LocalExtractor'
             - '@SubscriptionBundle\Service\SubscriptionPackProvider'
+            - '@App\Domain\Service\Translator\Translator'
