@@ -97,6 +97,10 @@ services:
 
     SubscriptionBundle\Service\SubscriptionSerializer: ~
 
+    SubscriptionBundle\Service\ZeroCreditSubscriptionChecking:
+        arguments:
+            - '@SubscriptionBundle\Service\CampaignExtractor'
+
 parameters:
     subscription.subscription.class: SubscriptionBundle\Entity\SubscriptionPack
     guzzle.client.class: GuzzleHttp\Client

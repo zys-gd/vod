@@ -7,6 +7,7 @@ use LegacyBundle\Service\Exchanger;
 use PiwikBundle\Service\DTO\EcommerceDTO;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
+use SubscriptionBundle\Piwik\PiwikSubscriptionSignature;
 use SubscriptionBundle\Service\CampaignExtractor;
 
 class PiwikSubscriptionDataMapper
@@ -19,11 +20,18 @@ class PiwikSubscriptionDataMapper
      * @var CampaignExtractor
      */
     private $campaignExtractor;
+    /**
+     * @var PiwikSubscriptionSignature
+     */
+    private $piwikSubscriptionSignature;
 
-    public function __construct(Exchanger $exchanger, CampaignExtractor $campaignExtractor)
+    public function __construct(Exchanger $exchanger,
+        CampaignExtractor $campaignExtractor,
+        PiwikSubscriptionSignature $piwikSubscriptionSignature)
     {
-        $this->exchanger         = $exchanger;
-        $this->campaignExtractor = $campaignExtractor;
+        $this->exchanger                  = $exchanger;
+        $this->campaignExtractor          = $campaignExtractor;
+        $this->piwikSubscriptionSignature = $piwikSubscriptionSignature;
     }
 
     /**
@@ -50,17 +58,8 @@ class PiwikSubscriptionDataMapper
         $eurPrice          = $this->exchanger->convert($oSubPack->getTierCurrency(), $oSubPack->getTierPrice());
         $subscriptionPrice = round($oSubPack->getTierPrice(), 2);
 
-        $campaign   = $this->campaignExtractor->getCampaignForSubscription($subscription);
-        $zerocredit = '';
-        if (
-            $oSubPack->isZeroCreditSubAvailable()
-            ||
-            ($campaign && $campaign->isZeroCreditSubAvailable())
-        ) {
-            $zerocredit = '-zerocredit';
-        }
-
-        $name = $action . $zerocredit . '-' . ($resultStatus ? 'ok' : 'failed');
+        $campaign = $this->campaignExtractor->getCampaignForSubscription($subscription);
+        $name     = $this->piwikSubscriptionSignature->get($action, $resultStatus, $oSubPack, $campaign);
 
         $orderIdPieces = [
             $name,
@@ -99,7 +98,9 @@ class PiwikSubscriptionDataMapper
      *
      * @return array
      */
-    public function getAdditionalData(Subscription $subscription, string $bfProvider = null, bool $conversionMode = null)
+    public function getAdditionalData(Subscription $subscription,
+        string $bfProvider = null,
+        bool $conversionMode = null)
     {
         $oSubPack = $subscription->getSubscriptionPack();
 

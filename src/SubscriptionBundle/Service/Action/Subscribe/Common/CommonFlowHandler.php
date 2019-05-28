@@ -28,10 +28,10 @@ use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomResponses;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomAffiliateTrackingRules;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
 use SubscriptionBundle\Service\Action\Subscribe\Subscriber;
-use SubscriptionBundle\Service\CampaignExtractor;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\SubscriptionExtractor;
 use SubscriptionBundle\Service\SubscriptionPackProvider;
+use SubscriptionBundle\Service\ZeroCreditSubscriptionChecking;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -106,9 +106,9 @@ class CommonFlowHandler
      */
     private $subscriptionEventTracker;
     /**
-     * @var CampaignExtractor
+     * @var ZeroCreditSubscriptionChecking
      */
-    private $campaignExtractor;
+    private $zeroCreditSubscriptionChecking;
 
 
     /**
@@ -130,7 +130,7 @@ class CommonFlowHandler
      * @param EntitySaveHelper               $entitySaveHelper
      * @param string                         $resubNotAllowedRoute
      * @param SubscriptionEventTracker       $subscriptionEventTracker
-     * @param CampaignExtractor              $campaignExtractor
+     * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
      */
     public function __construct(
         SubscriptionExtractor $subscriptionProvider,
@@ -149,26 +149,26 @@ class CommonFlowHandler
         EntitySaveHelper $entitySaveHelper,
         string $resubNotAllowedRoute,
         SubscriptionEventTracker $subscriptionEventTracker,
-        CampaignExtractor $campaignExtractor
+        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
     )
     {
-        $this->subscriptionPackProvider    = $subscriptionPackProvider;
-        $this->subscriber                  = $subscriber;
-        $this->checker                     = $checker;
-        $this->subscriptionProvider        = $subscriptionProvider;
-        $this->logger                      = $logger;
-        $this->redirectUrlNullifier        = $redirectUrlNullifier;
-        $this->handlerProvider             = $handlerProvider;
-        $this->commonResponseCreator       = $commonResponseCreator;
-        $this->urlParamAppender            = $urlParamAppender;
-        $this->router                      = $router;
-        $this->affiliateService            = $affiliateService;
-        $this->subscriptionStatisticSender = $subscriptionStatisticSender;
-        $this->infoMapper                  = $infoMapper;
-        $this->entitySaveHelper            = $entitySaveHelper;
-        $this->resubNotAllowedRoute        = $resubNotAllowedRoute;
-        $this->subscriptionEventTracker    = $subscriptionEventTracker;
-        $this->campaignExtractor = $campaignExtractor;
+        $this->subscriptionPackProvider       = $subscriptionPackProvider;
+        $this->subscriber                     = $subscriber;
+        $this->checker                        = $checker;
+        $this->subscriptionProvider           = $subscriptionProvider;
+        $this->logger                         = $logger;
+        $this->redirectUrlNullifier           = $redirectUrlNullifier;
+        $this->handlerProvider                = $handlerProvider;
+        $this->commonResponseCreator          = $commonResponseCreator;
+        $this->urlParamAppender               = $urlParamAppender;
+        $this->router                         = $router;
+        $this->affiliateService               = $affiliateService;
+        $this->subscriptionStatisticSender    = $subscriptionStatisticSender;
+        $this->infoMapper                     = $infoMapper;
+        $this->entitySaveHelper               = $entitySaveHelper;
+        $this->resubNotAllowedRoute           = $resubNotAllowedRoute;
+        $this->subscriptionEventTracker       = $subscriptionEventTracker;
+        $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
     }
 
 
@@ -325,14 +325,8 @@ class CommonFlowHandler
 
         $additionalData   = $subscriber->getAdditionalSubscribeParams($request, $User);
         $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($User);
-        /** @var Campaign $campaign */
-        $campaign = $this->campaignExtractor->getCampaignFromSession($request->getSession());
-        $additionalData['zero_credit_sub_available'] = false;
-        if (
-            $subscriptionPack->isZeroCreditSubAvailable()
-            ||
-            ($campaign && $campaign->isZeroCreditSubAvailable())
-        ) {
+
+        if ($this->zeroCreditSubscriptionChecking->isAvailable($request->getSession(), $subscriptionPack)) {
             $additionalData['zero_credit_sub_available'] = true;
         }
 

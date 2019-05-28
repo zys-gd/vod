@@ -13,11 +13,18 @@ services:
         arguments:
             - '@LegacyBundle\Service\Exchanger'
             - '@SubscriptionBundle\Service\CampaignExtractor'
+            - '@SubscriptionBundle\Piwik\PiwikSubscriptionSignature'
 
     SubscriptionBundle\Piwik\DataMapper\PiwikUnsubscriptionDataMapper:
         arguments:
             - '@LegacyBundle\Service\Exchanger'
             - '@SubscriptionBundle\Service\CampaignExtractor'
+            - '@SubscriptionBundle\Piwik\PiwikSubscriptionSignature'
 
 
     SubscriptionBundle\Piwik\ProcessResultVerifier: ~
+
+    SubscriptionBundle\Piwik\PiwikSubscriptionSignature:
+        arguments:
+            - '@SubscriptionBundle\Service\CampaignExtractor'
+            - '@SubscriptionBundle\Service\ZeroCreditSubscriptionChecking'

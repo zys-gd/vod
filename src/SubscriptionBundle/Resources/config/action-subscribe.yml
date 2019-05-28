@@ -38,7 +38,7 @@ services:
             - '@SubscriptionBundle\Service\EntitySaveHelper'
             - '_resub_not_allowed_route_placeholder_'
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEventTracker'
-            - '@SubscriptionBundle\Service\CampaignExtractor'
+            - '@SubscriptionBundle\Service\ZeroCreditSubscriptionChecking'
 
     SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker: ~
 
