@@ -160,6 +160,10 @@
                                     } else {
                                         showAlert({title: result.data.message});
 
+                                        if (result.data.code === 102) {
+                                            form.attr('data-form', 'confirm');
+                                        }
+
                                         $('#send-reminder').click(function () {
                                             $.ajax({
                                                 url: "{{ path('remind_credentials') }}",
