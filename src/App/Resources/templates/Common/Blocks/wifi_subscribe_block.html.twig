@@ -141,8 +141,21 @@
                                         return;
                                     }
 
+                                    var input_phone = $('input[name=mobile_number]');
+                                    input_phone.addClass('d-none');
+                                    $wifi_form_step
+                                        .html(params.html_wifi_pin)
+                                        .append(input_phone);
+                                    form.attr('data-form', 'confirm');
+                                    $wifi_warning.html(params.pin_notif.replace(/%wifi_phone%/, phone));
+                                    addValidationAttributes(carrierId);
+
                                     if (result.data.success) {
-                                        resolve(result.data.carrierId)
+                                        if (result.data.isResend) {
+                                            showAlert({title: 'New PIN-code', message: 'has been successfully sent'});
+                                        }
+
+                                        resolve(result.data.carrierId);
                                     } else {
                                         showAlert({title: result.data.message});
 
@@ -190,16 +203,6 @@
                             })
                         })
                 })
-                .then(function (carrierId) {
-                    var input_phone = $('input[name=mobile_number]');
-                    input_phone.addClass('d-none');
-                    $wifi_form_step
-                        .html(params.html_wifi_pin)
-                        .append(input_phone);
-                    form.attr('data-form', 'confirm');
-                    $wifi_warning.html(params.pin_notif.replace(/%wifi_phone%/, phone));
-                    addValidationAttributes(carrierId);
-                });
         });
 
         // confirm pin code
@@ -234,7 +237,6 @@
 
             $(document).ajaxSuccess(function (event, request, settings) {
                 if (settings.url === '{{ path('send_sms_pin_code') }}') {
-                    showAlert({title: 'New PIN-code', message: 'has been successfully sent'});
                     resendPinMarker.remove();
                 }
             });
