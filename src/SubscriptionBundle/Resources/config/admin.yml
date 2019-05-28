@@ -3,10 +3,12 @@ services:
         arguments:
             - ~
             - SubscriptionBundle\Entity\SubscriptionPack
-            - 'SubscriptionBundle\Admin\Controller\SubscriptionPackAdminController'
+            - ~ #'SubscriptionBundle\Admin\Controller\SubscriptionPackAdminController'
             - '@SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider'
             - '@SubscriptionBundle\Service\SubscriptionTextService'
             - '@App\Domain\Repository\CarrierRepository'
+            - '@SubscriptionBundle\Repository\SubscriptionPackRepository'
+            - '@App\Domain\Repository\CountryRepository'
         tags:
             -   name: sonata.admin
                 manager_type: orm
@@ -44,6 +46,8 @@ services:
             - '@SubscriptionBundle\Service\BlackListService'
         tags:
             - { name: sonata.admin, manager_type: orm, group: black_list_management, label: Black list }
+        calls:
+            - [ setTemplate, [edit, '@@SubscriptionAdmin/BlackList/edit.html.twig']]
 
     SubscriptionBundle\Admin\Sonata\AffiliateLogAdmin:
         arguments:
@@ -62,5 +66,8 @@ services:
             - ~
             - '@SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository'
             - '@doctrine.orm.entity_manager'
+            - '@SubscriptionBundle\Service\CAPTool\Limiter\LimiterStorage'
+            - '@SubscriptionBundle\Service\CAPTool\Limiter\StorageKeyGenerator'
+            - '@SubscriptionBundle\Service\VisitCAPTool\VisitStorage'
         tags:
             - { name: sonata.admin, manager_type: orm, group: affiliate_management, label: Constraints by affiliate }

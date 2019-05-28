@@ -18,14 +18,14 @@ class RenewDateCalculatorTest extends TestCase
     /**
      * @var RenewDateCalculator
      */
-    private $translatorProvider;
+    private $renewDateCalculator;
 
     /**
      * @throws \Exception
      */
     public function testCalculateRenewDate()
     {
-        $knownDate = Carbon::create(2019, 4, 3, 01);
+        $knownDate = Carbon::create(date('Y'), date('m'), date('d'), 01);
         Carbon::setTestNow($knownDate);
 
         $subscriptionPack = new SubscriptionPack(UuidGenerator::generate());
@@ -36,7 +36,7 @@ class RenewDateCalculatorTest extends TestCase
         $subscription = new Subscription(UuidGenerator::generate());
         $subscription->setSubscriptionPack($subscriptionPack);
 
-        $renewDate = $this->translatorProvider->calculateRenewDate($subscription);
+        $renewDate = $this->renewDateCalculator->calculateRenewDate($subscription);
 
         $this->assertTrue(
             $renewDate->between(
@@ -48,6 +48,6 @@ class RenewDateCalculatorTest extends TestCase
 
     protected function setUp()
     {
-        $this->translatorProvider = new RenewDateCalculator();
+        $this->renewDateCalculator = new RenewDateCalculator();
     }
 }

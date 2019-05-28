@@ -10,6 +10,7 @@ namespace App\Controller;
 
 
 use App\CarrierTemplate\TemplateConfigurator;
+use App\Domain\DTO\BatchOfGames;
 use App\Domain\Entity\CountryCategoryPriorityOverride;
 use App\Domain\Entity\MainCategory;
 use App\Domain\Entity\UploadedVideo;
@@ -108,6 +109,9 @@ class HomeController extends AbstractController implements
      */
     public function indexAction(Request $request, ISPData $data)
     {
+        /**
+         * @var BatchOfGames $games
+         */
         $videos            = $this->videoRepository->findNotExpiredWithCategories();
         $games             = $this->gameRepository->findBatchOfGames(0, 2);
         $categoryOverrides = $this->categoryOverrideRepository->findByBillingCarrierId($data->getCarrierId());
@@ -121,13 +125,17 @@ class HomeController extends AbstractController implements
 
             $categoryEntity                                  = $video->getSubcategory()->getParent();
             $categoryKey                                     = $categoryEntity->getTitle();
-            $categoryVideos[$categoryKey][$video->getUuid()] = $this->videoSerializer->serialize($video);
+            $categoryVideos[$categoryKey][$video->getUuid()] = $this->videoSerializer->serializeShort($video);
         }
 
-        $categoryVideos = array_slice(ArraySorter::sortArrayByKeys(
-            $categoryVideos,
-            array_keys($indexedCategoryData)
-        ), 0, 5);
+        $categoryVideos = array_slice(
+            ArraySorter::sortArrayByKeys(
+                $categoryVideos,
+                array_keys($indexedCategoryData)
+            ),
+            0,
+            5
+        );
 
         $this->contentStatisticSender->trackVisit($data);
 
@@ -136,7 +144,7 @@ class HomeController extends AbstractController implements
             'categoryVideos'  => array_slice($categoryVideos, 1, 3),
             'categories'      => $indexedCategoryData,
             'sliderVideos'    => array_slice($categoryVideos, 0, 1),
-            'games'           => $games
+            'games'           => $games->getGames()
         ]);
     }
 

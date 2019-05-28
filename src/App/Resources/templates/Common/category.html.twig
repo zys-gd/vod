@@ -103,12 +103,14 @@
                                 </div>
                             {% endfor %}
                         </div>
+                        {% if not isLast %}
                         <div class="games-page-container">
                             <div class="d-flex flex-wrap align-items-center justify-content-around x-games-block"></div>
                             <div class="load-more-button-block d-flex align-items-center justify-content-center">
                                 <div>{{ button_gray.render('Load More', 'load-more-button x-load-more-videos-button') }}</div>
                             </div>
                         </div>
+                        {% endif %}
                     </div>
                 {% endif %}
             </div>
@@ -124,10 +126,12 @@
 
 
     <script>
+        let isLast = false;
         let offset = 20
         const batchSize = 20
         const categoryUuid = '{{ category.uuid }}'
         const loadMoreCategoryVideosLink = '{{ path('load_more_category_videos') }}'
+        const loadMoreBtn = $('.x-load-more-videos-button')
 
         $(document).on('click', '.x-show-subcategory-button', (e) =>  {
             e.preventDefault();
@@ -140,31 +144,38 @@
             parent.find('.category-content').toggleClass('d-none');
         })
 
-        $(document).on('click', '.x-load-more-videos-button', () => {
-            let link = getLoadMoreCategoryVideosFullLink(loadMoreCategoryVideosLink, {categoryUuid, offset})
-            let button = $(this)
+        if(!isLast) {
+            loadMoreBtn.click(() => {
+                let link = getLoadMoreCategoryVideosFullLink(loadMoreCategoryVideosLink, {categoryUuid, offset})
+                let button = $(this)
 
-            $.ajax({
-                url: link,
-                method: 'GET',
-                beforeSend: () => {
-                    button.attr('disabled', true)
-                },
-                complete  : () => {
-                    button.attr('disabled', false)
-                },
-                success   : (data) => {
-                    console.log(222, link, data)
-                    $('.related-videos-block').append(data)
+                $.ajax({
+                    url: link,
+                    method: 'GET',
+                    beforeSend: () => {
+                        button.attr('disabled', true)
+                    },
+                    complete  : () => {
+                        button.attr('disabled', false)
+                    },
+                    success   : (data) => {
+                        $('.related-videos-block').append(data.html)
 
-                    offset += batchSize
-                },
-                error: (e) => {
-                  console.log(111, e)
-                }
+                        if(data.isLast) {
+                            isLast = true;
+                            loadMoreBtn.hide()
+                        }
 
-            })
-        })
+                        offset += batchSize
+                    },
+                    error: (e) => {
+                        throw e
+                    }
+
+                })
+            });
+        }
+
 
         function getLoadMoreCategoryVideosFullLink(baseLink, {categoryUuid, offset}) {
             return `${baseLink}?categoryUuid=${categoryUuid}&offset=${Number(offset)}`

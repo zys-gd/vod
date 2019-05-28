@@ -69,7 +69,7 @@ abstract class AbstractFunctionalTest extends \Liip\FunctionalTestBundle\Test\We
 
         $container = $client->getContainer();
 
-        $clientMock =
+        /*$clientMock =
             Mockery::spy(Client::class)
                 ->shouldReceive('request', 'requestAsync')
                 ->andThrow(
@@ -79,7 +79,7 @@ abstract class AbstractFunctionalTest extends \Liip\FunctionalTestBundle\Test\We
                 )
                 ->getMock();
 
-        Self::$container->set('subscription.http.client', $clientMock);
+        Self::$container->set('subscription.http.client', $clientMock);*/
 
         $this->configureWebClientClientContainer($container);
 

@@ -20,5 +20,6 @@ abstract class AbstractCallbackHandler
 
     abstract public function isSupport($type): bool;
 
+    abstract public function afterProcess(Subscription $subscription, ProcessResult $response): void;
 
 }

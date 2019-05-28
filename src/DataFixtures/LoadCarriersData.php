@@ -14,7 +14,6 @@ use DataFixtures\Utils\FixtureDataLoader;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use JsonMapper;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
@@ -42,14 +41,14 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $countryCode                             = $row['countryCode'];
             $isp                                     = $row['isp'];
             $published                               = $row['published'];
-            $lpOtp                                   = $row['lpOtp'];
+            $isConfirmationClick                     = $row['isConfirmationClick'];
             $pinIdentSupport                         = $row['pinIdentSupport'];
             $trialInitializer                        = $row['trial_initializer'];
             $trialPeriod                             = $row['trial_period'];
             $subscriptionPeriod                      = $row['subscription_period'];
             $resubAllowed                            = $row['resubAllowed'];
             $isCampaignsOnPause                      = $row['isCampaignsOnPause'];
-            $numberOfAllowedSubscription             = $row['numberOfAllowedSubscription'];
+            $subscribeAttempts                       = $row['subscribeAttempts'];
             $isUnlimitedSubscriptionAttemptsAllowed  = $row['isUnlimitedSubscriptionAttemptsAllowed'];
             $numberOfAllowedSubscriptionByConstraint = $row['numberOfAllowedSubscriptionsByConstraint'];
             $redirectUrl                             = $row['redirectUrl'];
@@ -71,11 +70,11 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $carrier->setTrialPeriod($trialPeriod);
             $carrier->setSubscriptionPeriod($subscriptionPeriod);
             $carrier->setOperatorId($operatorId);
-            $carrier->setLpOtp($lpOtp);
+            $carrier->setIsConfirmationClick($isConfirmationClick);
             $carrier->setPinIdentSupport($pinIdentSupport);
             $carrier->setResubAllowed($resubAllowed);
             $carrier->setIsCampaignsOnPause($isCampaignsOnPause);
-            $carrier->setNumberOfAllowedSubscription((int)$numberOfAllowedSubscription);
+            $carrier->setSubscribeAttempts((int)$subscribeAttempts);
             $carrier->setNumberOfAllowedSubscriptionsByConstraint($numberOfAllowedSubscriptionByConstraint);
             $carrier->setRedirectUrl($redirectUrl);
             $carrier->setFlushDate($flushdate ? \DateTime::createFromFormat('Y-m-d', $flushdate) : null);
@@ -100,7 +99,6 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
     /**
      * This method must return an array of fixtures classes
      * on which the implementing class depends on
-     *
      * @return array
      */
     function getDependencies()

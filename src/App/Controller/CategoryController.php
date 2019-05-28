@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\CarrierTemplate\TemplateConfigurator;
+use App\Domain\DTO\BatchOfNotExpiredVideos;
 use App\Domain\Entity\UploadedVideo;
 use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\SubcategoryRepository;
@@ -84,6 +85,7 @@ class CategoryController extends AbstractController implements AppControllerInte
 
         $subcategories = $this->subcategoryRepository->findBy(['parent' => $category]);
 
+        /** @var  BatchOfNotExpiredVideos $videos */
         if ($subcategoryUuid = $request->get('subcategoryUuid', '')) {
             $selectedSubcategory = $this->subcategoryRepository->findOneBy([
                 'parent' => $category,
@@ -96,18 +98,19 @@ class CategoryController extends AbstractController implements AppControllerInte
 
 
         $categoryVideos = [];
-        /** @var UploadedVideo[] $videos */
-        foreach ($videos as $video) {
+
+        foreach ($videos->getVideos() as $video) {
             $categoryEntity                                  = $video->getSubcategory()->getParent();
             $categoryKey                                     = $categoryEntity->getUuid();
-            $categoryVideos[$categoryKey][$video->getUuid()] = $this->videoSerializer->serialize($video);
+            $categoryVideos[$categoryKey][$video->getUuid()] = $this->videoSerializer->serializeShort($video);
         }
 
         $this->contentStatisticSender->trackVisit($data);
 
         $template = $this->templateConfigurator->getTemplate('category', $data->getCarrierId());
         return $this->render($template, [
-            'videos'              => $videos,
+            'videos'              => $videos->getVideos(),
+            'isLast'              => $videos->isLast(),
             'category'            => $category,
             'subcategories'       => $subcategories,
             'selectedSubcategory' => $selectedSubcategory ?? null

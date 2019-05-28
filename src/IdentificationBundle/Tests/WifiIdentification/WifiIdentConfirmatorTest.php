@@ -76,7 +76,8 @@ class WifiIdentConfirmatorTest extends TestCase
             $this->dataStorage,
             $this->identFinisher,
             $this->subscriptionRepository,
-            $this->userRepository
+            $this->userRepository,
+            Mockery::spy(\IdentificationBundle\Identification\Common\PostPaidHandler::class)
         );
     }
 

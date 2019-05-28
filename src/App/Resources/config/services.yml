@@ -1,124 +1,122 @@
 services:
-    # default configuration for services in *this* file
-    _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-        public: false       # Allows optimizing the container by removing unused services; this also means
-        # fetching services directly from the container via $container->get() won't work.
-        # The best practice is to be explicit about your dependencies anyway.
+  # default configuration for services in *this* file
+  _defaults:
+    autowire: true      # Automatically injects dependencies in your services.
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+    public: false       # Allows optimizing the container by removing unused services; this also means
+    # fetching services directly from the container via $container->get() won't work.
+    # The best practice is to be explicit about your dependencies anyway.
 
-        # makes classes in src/ available to be used as services
-        # this creates a service per class whose id is the fully-qualified class name
-        # App\:
-        #     resource: '../src/App/*'
-        #     exclude: '../src/App/{DependencyInjection,Entity,Migrations}'
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    # App\:
+    #     resource: '../src/App/*'
+    #     exclude: '../src/App/{DependencyInjection,Entity,Migrations}'
 
-        # controllers are imported separately to make sure services can be injected
-        # as action arguments even if you don't extend any base controller class
-        # App\Controller\:
-        #     resource: '../src/App/Controller'
-        #     tags: ['controller.service_arguments']
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    # App\Controller\:
+    #     resource: '../src/App/Controller'
+    #     tags: ['controller.service_arguments']
 
-        # add more service definitions when explicit configuration is needed
-        # please note that last definitions always *replace* previous ones
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
 
-    App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector:
-        arguments:
-            - '%cloudinary_api_key%'
-            - '%cloudinary_api_secret%'
-            - '%cloudinary_cloud_name%'
+  App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector:
+    arguments:
+      - '%cloudinary_api_key%'
+      - '%cloudinary_api_secret%'
+      - '%cloudinary_cloud_name%'
 
-    App\Domain\Service\VideoProcessing\Callback\EagerType:
-        arguments: ['@App\Domain\Repository\UploadedVideoRepository', '@doctrine.orm.entity_manager']
+  App\Domain\Service\VideoProcessing\Callback\EagerType:
+    arguments: ['@App\Domain\Repository\UploadedVideoRepository', '@doctrine.orm.entity_manager']
 
-    App\Domain\Service\VideoProcessing\CallbackVoter:
-        arguments: ['@App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector']
+  App\Domain\Service\VideoProcessing\CallbackVoter:
+    arguments: ['@App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector']
 
-    App\Domain\Service\AWSS3\S3Client:
-        public: true
-        arguments:
-            -   credentials:
-                    key: '%aws_s3_key%'
-                    secret: '%aws_s3_secret%'
-                version: '%aws_s3_version%'
-                region: '%aws_s3_region%'
+  App\Domain\Service\AWSS3\S3Client:
+    public: true
+    arguments:
+      - credentials:
+          key: '%aws_s3_key%'
+          secret: '%aws_s3_secret%'
+        version: '%aws_s3_version%'
+        region: '%aws_s3_region%'
 
-    App\Domain\Service\Campaign\CampaignService:
-        public: true
+  App\Domain\Service\Campaign\CampaignService:
+    public: true
 
-    App\Domain\Service\Translator\Translator:
-        arguments:
-            - '@App\Domain\Repository\TranslationRepository'
-            - '@App\Domain\Repository\CarrierRepository'
-            - '@App\Domain\Repository\LanguageRepository'
-            - '@app.cache.default.translation'
+  App\Domain\Service\Translator\Translator:
+    arguments:
+      - '@App\Domain\Repository\TranslationRepository'
+      - '@App\Domain\Repository\CarrierRepository'
+      - '@App\Domain\Repository\LanguageRepository'
+      - '@app.cache.default.translation'
 
-    App\Domain\Service\Translator\ShortcodeReplacer: ~
+  App\Domain\Service\Translator\ShortcodeReplacer: ~
 
-    App\Domain\Service\FaqProviderService: ~
+  App\Domain\Service\Games\GameSerializer: ~
 
-    App\Domain\Service\Games\GameSerializer: ~
+  App\Domain\Service\Games\ExcludedGamesProvider:
+    arguments:
+      - '@device_detection.service.device'
 
-    App\Domain\Service\Games\ExcludedGamesProvider:
-        arguments:
-            - '@device_detection.service.device'
+  App\Domain\Service\Games\GameImagesSerializer:
+    arguments:
+      - '@App\Domain\Service\Games\ImagePathProvider'
 
-    App\Domain\Service\Games\GameImagesSerializer:
-        arguments:
-            - '@App\Domain\Service\Games\ImagePathProvider'
+  App\Domain\Service\Games\ImagePathProvider:
+    arguments: ['%images_base_url%']
 
-    App\Domain\Service\Games\ImagePathProvider:
-        arguments: ['%images_base_url%']
+  App\Domain\Service\Games\DrmApkProvider:
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - '@App\Domain\Service\AWSS3\S3Client'
+      - '@request_stack'
+      - '%uploads_builds_path%'
+      - '%drm_api_url%'
+      - '%drm_authorize_key%'
+      - '%s3_root_url%'
+    public: true
 
-    App\Domain\Service\Games\DrmApkProvider:
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@App\Domain\Service\AWSS3\S3Client'
-            - '@request_stack'
-            - '%uploads_builds_path%'
-            - '%drm_api_url%'
-            - '%drm_authorize_key%'
-            - '%s3_root_url%'
-        public: true
+  App\Domain\Service\SimpleImageService:
+    public: true
 
-    App\Domain\Service\SimpleImageService:
-        public: true
+  App\Domain\Service\Translator\DataAggregator:
+    arguments:
+      - '@App\Domain\Repository\CarrierRepository'
 
-    App\Domain\Service\Translator\DataAggregator:
-        arguments:
-            - '@App\Domain\Repository\CarrierRepository'
+  App\Domain\Service\ContentStatisticSender:
+    arguments:
+      - '@PiwikBundle\Service\NewTracker'
+      - '@IdentificationBundle\Repository\UserRepository'
+      - '@logger'
+      - '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
+      - '@session'
+      - '@App\Domain\Repository\CountryRepository'
 
-    App\Domain\Service\ContentStatisticSender:
-        arguments:
-            - '@PiwikBundle\Service\NewTracker'
-            - '@IdentificationBundle\Repository\UserRepository'
-            - '@logger'
-            - '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
-            - '@session'
-            - '@App\Domain\Repository\CountryRepository'
+  App\Domain\ACL\Accessors\VisitConstraintByAffiliate:
+    arguments:
+      - '@SubscriptionBundle\Service\VisitCAPTool\VisitChecker'
 
-    App\Domain\ACL\Accessors\VisitConstraintByAffiliate:
-        arguments:
-            - '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender'
-            - '@SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis'
-            - '@doctrine.orm.entity_manager'
+  App\Domain\ACL\Accessors\VisitAccessorByCampaign: ~
 
-    App\Domain\ACL\Accessors\VisitAccessorByCampaign: ~
+  App\Domain\ACL\LandingPageACL:
+    arguments:
+      - '@App\Domain\ACL\Accessors\VisitConstraintByAffiliate'
+      - '@App\Domain\ACL\Accessors\VisitAccessorByCampaign'
+      - '@App\Domain\Repository\CarrierRepository'
+      - '@App\Domain\Repository\CampaignRepository'
+      - '@session'
+      - '@SubscriptionBundle\Service\CAPTool\Limiter\SubscriptionCapChecker'
+      - '@logger'
 
-    App\Domain\ACL\LandingPageACL:
-        - '@App\Domain\ACL\Accessors\VisitConstraintByAffiliate'
-        - '@App\Domain\ACL\Accessors\VisitAccessorByCampaign'
-        - '@SubscriptionBundle\Service\CapConstraint\SubscriptionConstraintByCarrier'
-        - '@App\Domain\Repository\CarrierRepository'
-        - '@App\Domain\Repository\CampaignRepository'
-        - '@session'
+  App\Domain\Service\CarrierOTPVerifier:
+    arguments:
+      - '@App\Domain\Repository\CarrierRepository'
+      - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
 
-    App\Domain\Service\CarrierOTPVerifier:
-        arguments:
-            - '@App\Domain\Repository\CarrierRepository'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
-
-    App\Domain\Service\VideoProcessing\UploadedVideoSerializer: ~
+  App\Domain\Service\VideoProcessing\UploadedVideoSerializer: ~
 
 
     App\Domain\ACL\SubscribeACL:

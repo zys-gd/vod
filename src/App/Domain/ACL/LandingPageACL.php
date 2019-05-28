@@ -2,13 +2,21 @@
 
 namespace App\Domain\ACL;
 
+use App\Domain\ACL\Accessors\VisitAccessorByCampaign;
+use App\Domain\ACL\Accessors\VisitConstraintByAffiliate;
+use App\Domain\ACL\Exception\CampaignAccessException;
+use App\Domain\ACL\Exception\CampaignPausedException;
 use App\Domain\Entity\Campaign;
+use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Repository\CarrierRepository;
-use App\Domain\ACL\Accessors\VisitConstraintByAffiliate;
-use App\Domain\ACL\Accessors\VisitAccessorByCampaign;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
-use SubscriptionBundle\Service\CapConstraint\SubscriptionConstraintByCarrier;
+use Psr\Log\LoggerInterface;
+use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
+use SubscriptionBundle\Service\CAPTool\Exception\SubscriptionCapReachedOnAffiliate;
+use SubscriptionBundle\Service\CAPTool\Exception\SubscriptionCapReachedOnCarrier;
+use SubscriptionBundle\Service\CAPTool\Exception\VisitCapReached;
+use SubscriptionBundle\Service\CAPTool\Limiter\SubscriptionCapChecker;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -17,6 +25,26 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  */
 class LandingPageACL
 {
+    /**
+     * @var VisitConstraintByAffiliate
+     */
+    private $visitConstraintByAffiliate;
+
+    /**
+     * @var VisitAccessorByCampaign
+     */
+    private $visitAccessorByCampaign;
+
+    /**
+     * @var SubscriptionCapChecker
+     */
+    private $carrierCapChecker;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
     /**
      * @var CarrierRepository
      */
@@ -33,90 +61,152 @@ class LandingPageACL
     private $session;
 
     /**
-     * @var VisitConstraintByAffiliate
-     */
-    private $visitConstraintByAffiliate;
-
-    /**
-     * @var VisitAccessorByCampaign
-     */
-    private $visitAccessorByCampaign;
-
-    /**
-     * @var SubscriptionConstraintByCarrier
-     */
-    private $subscriptionConstraintByCarrier;
-
-    /**
      * LandingPageAccessResolver constructor
      *
      * @param VisitConstraintByAffiliate $visitConstraintByAffiliate
-     * @param VisitAccessorByCampaign $visitAccessorByCampaign
-     * @param SubscriptionConstraintByCarrier $subscriptionConstraintByCarrier
-     * @param CarrierRepository $carrierRepository
-     * @param CampaignRepository $campaignRepository
-     * @param SessionInterface $session
+     * @param VisitAccessorByCampaign    $visitAccessorByCampaign
+     * @param CarrierRepository          $carrierRepository
+     * @param CampaignRepository         $campaignRepository
+     * @param SessionInterface           $session
+     * @param SubscriptionCapChecker     $subscriptionCapChecker
+     * @param LoggerInterface            $logger
      */
     public function __construct(
         VisitConstraintByAffiliate $visitConstraintByAffiliate,
         VisitAccessorByCampaign $visitAccessorByCampaign,
-        SubscriptionConstraintByCarrier $subscriptionConstraintByCarrier,
         CarrierRepository $carrierRepository,
         CampaignRepository $campaignRepository,
-        SessionInterface $session
-    ) {
-        $this->carrierRepository = $carrierRepository;
-        $this->campaignRepository = $campaignRepository;
-        $this->session = $session;
+        SessionInterface $session,
+        SubscriptionCapChecker $subscriptionCapChecker,
+        LoggerInterface $logger
+    )
+    {
         $this->visitConstraintByAffiliate = $visitConstraintByAffiliate;
-        $this->visitAccessorByCampaign = $visitAccessorByCampaign;
-        $this->subscriptionConstraintByCarrier = $subscriptionConstraintByCarrier;
+        $this->visitAccessorByCampaign    = $visitAccessorByCampaign;
+        $this->carrierCapChecker          = $subscriptionCapChecker;
+        $this->logger                     = $logger;
+        $this->carrierRepository          = $carrierRepository;
+        $this->campaignRepository         = $campaignRepository;
+        $this->session                    = $session;
+    }
+
+    /**
+     * @param Campaign $campaign
+     * @param Carrier  $carrier
+     *
+     * @return void
+     */
+    public function ensureCanAccess(Campaign $campaign, Carrier $carrier): void
+    {
+        if ($campaign->getIsPause()) {
+            $this->logger->debug('CAP checking on LP', ['message' => 'Campaign on pause']);
+            throw new CampaignPausedException();
+        }
+
+        if (!$this->visitAccessorByCampaign->canVisit($campaign, $carrier)) {
+            $this->logger->debug('CAP checking on LP', ['message' => 'visitAccessorByCampaign say: cant visit']);
+            throw new CampaignAccessException($campaign);
+        }
+
+        $this->ensureSubscribeCapIsNotReachedByCarrier($carrier);
+
+        $affiliate = $campaign->getAffiliate();
+
+        foreach ($affiliate->getConstraints() as $constraint) {
+            /** @var ConstraintByAffiliate $constraint */
+            if ($carrier && $carrier->getUuid() !== $constraint->getCarrier()->getUuid()) {
+                continue;
+            }
+
+            if ($constraint->getCapType() == ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE) {
+                $this->ensureSubscribeCapIsNotReachedByAffiliate($carrier, $constraint);
+            }
+
+            if ($constraint->getCapType() == ConstraintByAffiliate::CAP_TYPE_VISIT) {
+                $this->ensureVisitCapIsNotReached($carrier, $constraint);
+            }
+        }
     }
 
     /**
      * @param Request $request
      *
-     * @return string|null
-     *
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @return bool
      */
-    public function canAccess(Request $request): ?string
+    public function isLandingDisabled(Request $request): bool
     {
-        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
+        try {
+            $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
+            $campaignToken    = $request->get('cid', '');
+            /** @var Carrier $carrier */
+            $carrier = $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id']);
 
-        if (empty($ispDetectionData['carrier_id'])) {
-            return true;
-        }
-
-        $carrier =  $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id']);
-
-        if (empty($carrier)) {
-            return true;
-        }
-
-        if ($this->subscriptionConstraintByCarrier->isSubscriptionLimitReached($carrier)) {
+            /** @var Campaign $campaign */
+            $campaign = $this->campaignRepository->findOneBy(['campaignToken' => $campaignToken]);
+            // $campaign->getAffiliate()
+            return $carrier->isLpOff() || $campaign->isLpOff() || $campaign->getAffiliate()->isLpOff();
+        } catch (\Throwable $e) {
             return false;
         }
+    }
 
-        $campaignToken = $request->get('cid', '');
-
-        if (empty($campaignToken)) {
-            return true;
+    /**
+     * @param Carrier               $carrier
+     * @param ConstraintByAffiliate $constraint
+     * @throws SubscriptionCapReachedOnAffiliate
+     */
+    private function ensureSubscribeCapIsNotReachedByAffiliate(Carrier $carrier, ConstraintByAffiliate $constraint): void
+    {
+        if ($this->carrierCapChecker->isCapReachedForAffiliate($constraint)) {
+            $this->logger->debug('CAP checking on LP', [
+                'message'    => 'Constraint by aff say: isCapReachedForAffiliate = true',
+                'constraint' => $constraint
+            ]);
+            throw new SubscriptionCapReachedOnAffiliate($constraint, $carrier);
         }
+    }
 
-        /** @var Campaign $campaign */
-        $campaign = $this->campaignRepository->findOneBy(['campaignToken' => $campaignToken]);
-
-        if (!$this->visitAccessorByCampaign->canVisit($campaign, $carrier)) {
-            return false;
+    /**
+     * @param Carrier               $carrier
+     * @param ConstraintByAffiliate $constraint
+     * @throws \SubscriptionBundle\Service\CAPTool\Exception\VisitCapReached
+     */
+    private function ensureVisitCapIsNotReached(Carrier $carrier, ConstraintByAffiliate $constraint): void
+    {
+        if (!$this->visitConstraintByAffiliate->canVisit($carrier, $constraint)) {
+            $this->logger->debug('CAP checking on LP', [
+                'message'    => 'Constraint by aff say: CanVisit = false',
+                'constraint' => $constraint
+            ]);
+            throw new VisitCapReached($constraint);
         }
+    }
 
-        if (!$this->visitConstraintByAffiliate->canVisit($campaign, $carrier)) {
-            return false;
+    /**
+     * @param Carrier $carrier
+     * @throws SubscriptionCapReachedOnCarrier
+     */
+    private function ensureSubscribeCapIsNotReachedByCarrier(Carrier $carrier): void
+    {
+        if ($this->carrierCapChecker->isCapReachedForCarrier($carrier)) {
+            $this->logger->debug('CAP checking on LP', ['message' => 'isCapReachedForCarrier say: isCapReachedForCarrier = true']);
+            throw new SubscriptionCapReachedOnCarrier($carrier);
         }
+    }
 
-        return true;
+    public function ensureCanAccessByVisits(Campaign $campaign, Carrier $carrier): void
+    {
+        $affiliate = $campaign->getAffiliate();
+
+        foreach ($affiliate->getConstraints() as $constraint) {
+            /** @var ConstraintByAffiliate $constraint */
+            if ($carrier && $carrier->getUuid() !== $constraint->getCarrier()->getUuid()) {
+                continue;
+            }
+
+            if ($constraint->getCapType() == ConstraintByAffiliate::CAP_TYPE_VISIT) {
+                $this->ensureVisitCapIsNotReached($carrier, $constraint);
+            }
+        }
     }
 }

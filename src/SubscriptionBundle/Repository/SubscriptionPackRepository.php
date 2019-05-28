@@ -30,28 +30,11 @@ class SubscriptionPackRepository extends EntityRepository
             ->andWhere('sp.uuid != :uuid')
             ->setParameters([
                 'status' => SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK,
-                'billingCarrierId' => $subscriptionPack->getBillingCarrierId(),
+                'billingCarrierId' => $subscriptionPack->getCarrier()->getBillingCarrierId(),
                 'uuid' => $subscriptionPack->getUuid()
             ])
             ->getQuery();
 
         return $query->getResult();
-    }
-
-    /**
-     * @param SubscriptionPack $subscriptionPack
-     * @return mixed
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     */
-    public function getCarrier(SubscriptionPack $subscriptionPack)
-    {
-        $qb = $this->getEntityManager()->createQueryBuilder()
-            ->select('c')
-            ->from('App\Domain\Entity\Carrier', 'c')
-            ->where('c.id_carrier = :idCarrier')
-            ->setParameter('idCarrier', $subscriptionPack->getBillingCarrierId())
-        ;
-        $oCarrier = $qb->getQuery()->getOneOrNullResult(AbstractQuery::HYDRATE_SINGLE_SCALAR);
-        return $oCarrier;
     }
 }

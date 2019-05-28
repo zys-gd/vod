@@ -12,6 +12,7 @@ services:
             - '@form.factory'
             - '@doctrine.orm.entity_manager'
             - '@App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector'
+            - '@App\Domain\Service\VideoProcessing\UploadedVideoSerializer'
             - '%cloudinary_api_key%'
             - '%cloudinary_cloud_name%'
             - '%cloudinary_api_secret%'
@@ -44,6 +45,13 @@ services:
             - '%images_base_url%'
             - '@App\Domain\Service\CarrierOTPVerifier'
             - '%default_redirect_url%'
+            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
+            - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier'
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+            - '@SubscriptionBundle\Service\VisitCAPTool\VisitTracker'
+            - '@SubscriptionBundle\Service\VisitCAPTool\VisitNotifier'
+            - '@logger'
 
     App\Controller\ErrorController:
         arguments:
@@ -74,6 +82,8 @@ services:
         - '%contact_us_mail_to%'
         - '%contact_us_mail_from%'
         - '@App\CarrierTemplate\TemplateConfigurator'
+        - '@device_detection.service.device'
+        - '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
 
     App\Controller\GamesController:
         arguments:

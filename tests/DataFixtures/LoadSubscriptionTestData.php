@@ -28,6 +28,7 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
 {
 
     const GENERIC_CARRIER = 10241024;
+    const ALLOWED_RESUB_CARRIER = 10241027;
 
     /**
      * Load data fixtures with the passed EntityManager
@@ -54,6 +55,10 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
         $pack = $this->createGenericSubscriptionPack($manager);
         $pack = $this->createGenericCarrier($manager);
 
+        $allowedResubCarrier = $this->createCarrierWithAllowedResub($manager);
+        $allowedResubCarrierPack = $this->createSubscriptionPackForCarrierWithAllowedResub($manager);
+
+        $this->createUserWithInactiveSubscriptionForCarrierWithAllowedResub($manager);
 
         $manager->flush();
     }
@@ -69,7 +74,7 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
     {
         /** @var SubscriptionPack $randomSubscriptionPack */
         $randomSubscriptionPack = $this->getReference('subscription_pack_with_name_Jazz PK');
-        $carrier                = $this->getReference(sprintf('carrier_with_internal_id_%s', $randomSubscriptionPack->getBillingCarrierId()));
+        $carrier                = $this->getReference(sprintf('carrier_with_internal_id_%s', $randomSubscriptionPack->getCarrier()->getBillingCarrierId()));
 
         $user = TestEntityProvider::createUserWithIdentificationRequest($carrier, 'identtoken');
 
@@ -90,9 +95,9 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
      */
     protected function createUserForJazzPKSubscribe(ObjectManager $manager)
     {
-
+        /** @var SubscriptionPack $jazzPk */
         $jazzPk  = $this->getReference('subscription_pack_with_name_Jazz PK');
-        $carrier = $this->getReference(sprintf('carrier_with_internal_id_%s', $jazzPk->getCarrierId()));
+        $carrier = $this->getReference(sprintf('carrier_with_internal_id_%s', $jazzPk->getCarrier()->getBillingCarrierId()));
 
         $user = TestEntityProvider::createUserWithIdentificationRequest($carrier, 'token_for_dialog_user');
 
@@ -112,7 +117,7 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
 
         /** @var SubscriptionPack $randomSubscriptionPack */
         $randomSubscriptionPack = $this->getReference('subscription_pack_with_name_Orange TN'); // Orange Tunis.
-        $carrier                = $this->getReference(sprintf('carrier_with_internal_id_%s', $randomSubscriptionPack->getBillingCarrierId()));
+        $carrier                = $this->getReference(sprintf('carrier_with_internal_id_%s', $randomSubscriptionPack->getCarrier()->getBillingCarrierId()));
 
         $user = TestEntityProvider::createUserWithIdentificationRequest($carrier, 'token_for_user_without_subscription');
 
@@ -130,7 +135,7 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
     {
 
         $randomSubscriptionPack = $this->getReference('subscription_pack_with_name_Jazz PK');
-        $carrier                = $this->getReference(sprintf('carrier_with_internal_id_%s', $randomSubscriptionPack->getCarrierId()));
+        $carrier                = $this->getReference(sprintf('carrier_with_internal_id_%s', $randomSubscriptionPack->getCarrier()->getBillingCarrierId()));
 
         $affiliate = new Affiliate(UuidGenerator::generate());
         $affiliate->setName('');
@@ -171,7 +176,7 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
     {
         /** @var SubscriptionPack $randomSubscriptionPack */
         $randomSubscriptionPack = $this->getReference('subscription_pack_with_name_Jazz PK');
-        $carrier                = $this->getReference(sprintf('carrier_with_internal_id_%s', $randomSubscriptionPack->getBillingCarrierId()));
+        $carrier                = $this->getReference(sprintf('carrier_with_internal_id_%s', $randomSubscriptionPack->getCarrier()->getBillingCarrierId()));
 
         $user = TestEntityProvider::createUserWithIdentificationRequest($carrier, 'inactive_subscription_ident_request');
 
@@ -186,6 +191,38 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
     }
 
     /**
+     * @TODO: It will be better to came up with more pretty name of function)))
+     * @param ObjectManager $manager
+     * @return Subscription
+     * @throws \Exception
+     */
+    private function createUserWithInactiveSubscriptionForCarrierWithAllowedResub(ObjectManager $manager)
+    {
+        /** @var SubscriptionPack $subscriptionPackForCarrierWithAllowedResub */
+        /** @var Carrier $carrier */
+        $subscriptionPackForCarrierWithAllowedResub = $this->getReference('subscription_pack_for_carrier_with_allowed_resub');
+        $carrier = $this->getReference(sprintf('carrier_with_internal_id_%s', $subscriptionPackForCarrierWithAllowedResub
+            ->getCarrier()->getBillingCarrierId()));
+
+        $user = TestEntityProvider::createUserWithIdentificationRequest($carrier, 'inactive_subscription_ident_for_carrier_with_allowed_resub_request');
+
+        $manager->persist($user);
+
+        $subscription = TestEntityProvider::createSubscription(
+            $user,
+            $subscriptionPackForCarrierWithAllowedResub,
+            Subscription::IS_INACTIVE,
+            Subscription::ACTION_SUBSCRIBE
+        );
+        $subscription->setCredits(0);
+
+        $manager->persist($subscription);
+
+        $this->addReference('inactive_subscription_for_carrier_with_allowed_resub', $subscription);
+        return $subscription;
+    }
+
+    /**
      * @param ObjectManager $manager
      *
      * @return Subscription
@@ -195,7 +232,7 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
     {
         /** @var SubscriptionPack $randomSubscriptionPack */
         $randomSubscriptionPack = $this->getReference('subscription_pack_with_name_Jazz PK');
-        $carrier                = $this->getReference(sprintf('carrier_with_internal_id_%s', $randomSubscriptionPack->getBillingCarrierId()));
+        $carrier                = $this->getReference(sprintf('carrier_with_internal_id_%s', $randomSubscriptionPack->getCarrier()->getBillingCarrierId()));
 
         $user = TestEntityProvider::createUserWithIdentificationRequest($carrier, 'active_subscription_ident_request');
 
@@ -219,7 +256,7 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
     {
         /** @var SubscriptionPack $randomSubscriptionPack */
         $randomSubscriptionPack = $this->getReference('subscription_pack_with_name_Jazz PK');
-        $carrier                = $this->getReference(sprintf('carrier_with_internal_id_%s', $randomSubscriptionPack->getBillingCarrierId()));
+        $carrier                = $this->getReference(sprintf('carrier_with_internal_id_%s', $randomSubscriptionPack->getCarrier()->getBillingCarrierId()));
 
         $user = TestEntityProvider::createUserWithIdentificationRequest($carrier, 'onhold_subscription_ident_request');
 
@@ -251,11 +288,11 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
         $carrier->setTrialPeriod(0);
         $carrier->setSubscriptionPeriod(7);
         $carrier->setOperatorId('');
-        $carrier->setLpOtp(false);
+        $carrier->setIsConfirmationClick(false);
         $carrier->setPinIdentSupport(false);
         $carrier->setResubAllowed(false);
         $carrier->setIsCampaignsOnPause(false);
-        $carrier->setNumberOfAllowedSubscription(0);
+        $carrier->setSubscribeAttempts(0);
         $carrier->setNumberOfAllowedSubscriptionsByConstraint(0);
         $carrier->setRedirectUrl(false);
         $carrier->setFlushDate(null);
@@ -277,18 +314,14 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
     private function createGenericSubscriptionPack(ObjectManager $manager): SubscriptionPack
     {
         $pack = new SubscriptionPack(UuidGenerator::generate());
-        $pack->setBillingCarrierId(self::GENERIC_CARRIER);
         $pack->setCredits(2);
         $pack->setName('Generic');
         $pack->setIsResubAllowed(false);
         $pack->setStatus(SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK);
-        $pack->setCarrierName('Generic Carrier');
         $pack->setTier('Generic Carrier Tier');
         $pack->setTierId(10241024);
         $pack->setTierCurrency('Common');
-        $pack->setBuyStrategy('Generic BStrategy');
         $pack->setBuyStrategyId(10241024 + 1);
-        $pack->setRenewStrategy('Generic RStrategy');
         $pack->setRenewStrategyId(10241024 + 2);
         $pack->setCreated(new \DateTime());
         $pack->setUpdated(new \DateTime());
@@ -300,5 +333,67 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
         return $pack;
     }
 
+    /**
+     * @param ObjectManager $manager
+     *
+     * @return Carrier
+     * @throws \Exception
+     */
+    private function createCarrierWithAllowedResub(ObjectManager $manager): Carrier
+    {
+        $carrier = new Carrier(UuidGenerator::generate());
+
+        $carrier->setBillingCarrierId(self::ALLOWED_RESUB_CARRIER);
+        $carrier->setName('Allowed Resub Carrier');
+        $carrier->setCountryCode('AB');
+        $carrier->setIsp('Generic');
+        $carrier->setPublished(true);
+        $carrier->setTrialInitializer('store');
+        $carrier->setTrialPeriod(0);
+        $carrier->setSubscriptionPeriod(7);
+        $carrier->setOperatorId('');
+        $carrier->setPinIdentSupport(false);
+        $carrier->setResubAllowed(true);
+        $carrier->setIsCampaignsOnPause(false);
+        $carrier->setSubscribeAttempts(0);
+        $carrier->setNumberOfAllowedSubscriptionsByConstraint(0);
+        $carrier->setRedirectUrl(false);
+        $carrier->setFlushDate(null);
+        $carrier->setIsUnlimitedSubscriptionAttemptsAllowed(true);
+
+        $this->addReference('allowed_resub_carrier', $carrier);
+        $this->addReference(sprintf('carrier_with_internal_id_%s', self::ALLOWED_RESUB_CARRIER), $carrier);
+        $manager->persist($carrier);
+
+        return $carrier;
+    }
+
+    /**
+     * @param ObjectManager $manager
+     *
+     * @return SubscriptionPack
+     * @throws \Exception
+     */
+    private function createSubscriptionPackForCarrierWithAllowedResub(ObjectManager $manager): SubscriptionPack
+    {
+        $pack = new SubscriptionPack(UuidGenerator::generate());
+        $pack->setCredits(2);
+        $pack->setName('Allowed Resub Carrier');
+        $pack->setIsResubAllowed(true);
+        $pack->setStatus(SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK);
+        $pack->setTier('Allowed Resub Carrier Tier');
+        $pack->setTierId(10241027);
+        $pack->setCarrier($this->getReference('allowed_resub_carrier'));
+        $pack->setTierCurrency('Common');
+        $pack->setBuyStrategyId(10241027 + 1);
+        $pack->setRenewStrategyId(10241027 + 2);
+        $pack->setCreated(new \DateTime());
+        $pack->setUpdated(new \DateTime());
+        $this->addReference('subscription_pack_for_carrier_with_allowed_resub', $pack);
+
+        $manager->persist($pack);
+
+        return $pack;
+    }
 
 }
