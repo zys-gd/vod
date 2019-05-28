@@ -23,6 +23,7 @@ use SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider;
 use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
+use SubscriptionBundle\Service\SubscriptionVoter\BatchSubscriptionVoter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Tests\DataFixtures\LoadCampaignTestData;
 use Tests\DataFixtures\LoadSubscriptionTestData;
@@ -61,6 +62,7 @@ class SubscribeActionTest extends AbstractFunctionalTest
      */
     private $campaignConfirmationHandlerProvider;
     private $subscriptionLimiter;
+    private $voter;
 
     public function testSubscribeWithoutIdentWillFallIntoError()
     {
@@ -192,6 +194,8 @@ class SubscribeActionTest extends AbstractFunctionalTest
         $container->set('talentica.piwic_statistic_sender', $this->piwikStatisticSender);
         $container->set('subscription.http.client', $this->httpClient);
         $container->set('SubscriptionBundle\Service\CAPTool\SubscriptionLimiter', $this->subscriptionLimiter);
+        $container->set('SubscriptionBundle\Service\SubscriptionVoter\BatchSubscriptionVoter', $this->voter);
+
     }
 
     protected function getFixturesListLoadedForEachTest(): array
@@ -204,6 +208,9 @@ class SubscribeActionTest extends AbstractFunctionalTest
 
     protected function initializeServices(ContainerInterface $container)
     {
+
+        $this->voter = Mockery::spy(BatchSubscriptionVoter::class);
+        $this->voter->allows(['checkIfSubscriptionAllowed' => true]);
 
         $this->httpClient                   = \Mockery::spy(Client::class);
         $this->subscriptionPackDataProvider = \Mockery::spy(SubscriptionPackDataProvider::class);

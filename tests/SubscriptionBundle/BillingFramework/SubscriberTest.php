@@ -56,10 +56,15 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
 
     public function testSubscribe()
     {
+        $carrier = new \App\Domain\Entity\Carrier(UuidGenerator::generate());
+        $carrier->setBillingCarrierId(1);
 
         $subscriptionPack = new SubscriptionPack(UuidGenerator::generate());
         $subscriptionPack->setProviderManagedSubscriptions(true);
-        $user         = new User(UuidGenerator::generate());
+        $user = new User(UuidGenerator::generate());
+        $user->setCarrier($carrier);
+        $user->setIdentifier('test');
+
         $subscription = new Subscription(UuidGenerator::generate());
         $subscription->setSubscriptionPack($subscriptionPack);
         $subscription->setUser($user);
@@ -128,7 +133,8 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
             Mockery::spy(\SubscriptionBundle\Service\CAPTool\SubscriptionLimitCompleter::class),
             Mockery::spy(\SubscriptionBundle\Service\SubscriptionSerializer::class),
             $this->subscribePerformer,
-            $this->subscribePromotionalPerformer
+            $this->subscribePromotionalPerformer,
+            Mockery::spy(\App\Domain\Service\CrossSubscriptionAPI\ApiConnector::class)
         );
 
     }

@@ -38,6 +38,7 @@ services:
       arguments:
           - '@SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater'
           - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitCompleter'
+          - '@App\Domain\Service\CrossSubscriptionAPI\ApiConnector'
 
   SubscriptionBundle\Service\Callback\Common\Type\RenewCallbackHandler:
       arguments:

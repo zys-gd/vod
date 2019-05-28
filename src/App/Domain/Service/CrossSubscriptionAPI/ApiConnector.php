@@ -10,6 +10,7 @@ namespace App\Domain\Service\CrossSubscriptionAPI;
 
 
 use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
 
 class ApiConnector
 {
@@ -38,10 +39,15 @@ class ApiConnector
     {
 
         $result   = $this->guzzleClient->get(sprintf('%s/msisdn/%s', $this->apiLink, $msisdn));
-        $response = json_decode($result->getBody());
-        $isExists = $response['isExists'] ?? false;
+        $response = json_decode($result->getBody(), true);
+        $isExists = $response['isExist'] ?? false;
         return (bool)$isExists;
+    }
 
-
+    public function registerSubscription(string $msisdn, int $carrierId): void
+    {
+        $this->guzzleClient->post(sprintf('%s/msisdn', $this->apiLink), $options = [
+            RequestOptions::JSON => ['carrierId' => $carrierId, 'msisdn' => $msisdn],
+        ]);
     }
 }

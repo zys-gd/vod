@@ -45,6 +45,8 @@ class SubscribeACL implements SubscriptionVoterInterface
             return false;
         }
 
-        return $this->APICheck->checkOnExternalAPI($user->getIdentifier(), 0);
+        $isExists = $this->APICheck->checkOnExternalAPI($user->getIdentifier(), 0);
+
+        return !$isExists;
     }
 }

@@ -15,6 +15,7 @@ services:
         - '@SubscriptionBundle\Service\SubscriptionSerializer'
         - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePerformer'
         - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePromotionalPerformer'
+        - '@App\Domain\Service\CrossSubscriptionAPI\ApiConnector'
 
 
   SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider:

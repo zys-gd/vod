@@ -46,12 +46,13 @@
     </div>
     {{ player.render(categoryVideos|merge(sliderVideos)) }}
 
-{#    {{ addJs('/js/errors_text.js') }}#}
+    {#    {{ addJs('/js/errors_text.js') }}#}
     <script type="text/javascript">
         function resolveErrorMessage(key) {
             var texts = {
-                'already_subscribed': "{{ translate('messages.error.already_subscribed') }}",
-                'postpaid_restricted': "{{ translate('messages.error.postpaid_restricted') }}"
+                'already_subscribed'     : "{{ translate('messages.error.already_subscribed') }}",
+                'postpaid_restricted'    : "{{ translate('messages.error.postpaid_restricted') }}",
+                'subscription_restricted': "{{ translate('messages.error.subscription_restricted') }}"
             };
             return texts[key] || null;
         }
