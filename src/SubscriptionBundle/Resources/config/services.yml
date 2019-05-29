@@ -86,14 +86,29 @@ services:
         arguments:
             - '%reporting_stats_api_host%'
 
-    SubscriptionBundle\Service\BlackListService:
-        autowire: true
+    SubscriptionBundle\Service\Blacklist\BlacklistSaver:
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@doctrine.orm.entity_manager'
+            - '@SubscriptionBundle\Repository\SubscriptionRepository'
+            - '@SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
+            - '@SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber'
+            -
+    SubscriptionBundle\Service\Blacklist\BlacklistChecker:
+        arguments: ['@IdentificationBundle\Repository\UserRepository', '@SubscriptionBundle\Repository\BlackListRepository']
+
+    SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator:
+        arguments:
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+            - '@app.cache.default.subscription'
+            - '@SubscriptionBundle\Service\Blacklist\BlacklistSaver'
 
     SubscriptionBundle\Service\Notification\Email\CAPNotificationSender:
         arguments:
             - '@ExtrasBundle\Email\EmailSender'
             - '%cap_notification_mail_to%'
             - '%cap_notification_mail_from%'
+
 
     SubscriptionBundle\Service\SubscriptionSerializer: ~
 

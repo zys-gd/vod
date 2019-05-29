@@ -50,7 +50,7 @@ services:
     arguments:
       - '@app.cache.default.translation'
       - '@router'
-      - '@SubscriptionBundle\Service\BlackListService'
+      - '@SubscriptionBundle\Service\Blacklist\BlacklistChecker'
       - '@IdentificationBundle\Repository\UserRepository'
       - '@logger'
       - '_sub_not_allowed_route_placeholder_'

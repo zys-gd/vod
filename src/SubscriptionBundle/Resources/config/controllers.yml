@@ -21,6 +21,7 @@ services:
             - '@SubscriptionBundle\Service\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider'
             - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
             - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier'
+            - '@SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator'
 
     SubscriptionBundle\Controller\Actions\ListenAction:
         arguments: ['@SubscriptionBundle\Service\Callback\Common\CommonFlowHandler', '@logger', '@SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider']

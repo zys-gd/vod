@@ -2,8 +2,6 @@
 
 namespace IdentificationBundle\Entity;
 
-use App\Domain\Entity\Carrier;
-
 interface CarrierInterface
 {
     /**
@@ -86,4 +84,7 @@ interface CarrierInterface
      * @return boolean
      */
     public function getResubAllowed(): bool;
+
+    public function getSubscribeAttempts();
+
 }
