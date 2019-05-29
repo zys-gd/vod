@@ -21,6 +21,7 @@ use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\CampaignExtractor;
 use SubscriptionBundle\Service\SubscriptionExtractor;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use TypeError;
 
 /**
  * Class ContentStatisticSender
@@ -139,8 +140,12 @@ class ContentStatisticSender
             $countryCode = $user->getCountry();
             $msisdn      = $user->getIdentifier();
         } catch (\Throwable $e) {
-            $carrier     = $this->carrierRepository->findOneByBillingId($billingCarrierId);
-            $countryCode = $carrier->getCountryCode();
+            $carrier     = $billingCarrierId
+                ? $this->carrierRepository->findOneByBillingId($billingCarrierId)
+                : null;
+            $countryCode = $carrier
+                ? $carrier->getCountryCode()
+                : null;
             $user        = null;
             $msisdn      = null;
             $userIp      = $this->ipService->getIp();
@@ -183,8 +188,8 @@ class ContentStatisticSender
     }
 
     /**
-     * @param Subscription     $subscription
-     * @param Game             $game
+     * @param Subscription $subscription
+     * @param Game         $game
      *
      * @return bool
      */
@@ -226,8 +231,8 @@ class ContentStatisticSender
     }
 
     /**
-     * @param UploadedVideo    $uploadedVideo
-     * @param Subscription     $subscription
+     * @param UploadedVideo $uploadedVideo
+     * @param Subscription  $subscription
      *
      * @return bool
      */
