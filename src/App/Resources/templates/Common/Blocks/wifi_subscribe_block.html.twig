@@ -33,6 +33,7 @@
 
         var form = $('#wifi_form');
         var carrierId = + '{{ getCarrierId() }}';
+        var homePageUrl = '{{ path('index') }}';
 
         $(document).ready(function () {
             // move form to designed position (the best designer ever)
@@ -160,7 +161,8 @@
                                     } else {
                                         showAlert({title: result.data.message});
 
-                                        if (result.data.code === 102) {
+                                        // request limit exceeded
+                                        if (result.data.code === 102 || result.data.code === 103) {
                                             form.attr('data-form', 'confirm');
                                         }
 
@@ -172,7 +174,7 @@
                                                     $('.fc-content .button-confirm').click();
                                                 },
                                                 success: function(result) {
-                                                    showAlert({title: result.data.message});
+                                                    window.location = homePageUrl;
                                                 }
                                             })
                                         });
