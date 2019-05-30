@@ -227,9 +227,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         // we can't use ISPData object as function parameter because request to LP could not contain
         // carrier data and in this case BadRequestHttpException will be throw
         $ispData            = IdentificationFlowDataExtractor::extractIspDetectionData($session);
+        $carrierId          = $ispData ? $ispData['carrier_id'] : null;
         $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($session);
         $campaignToken      = AffiliateVisitSaver::extractCampaignToken($session);
-        $this->contentStatisticSender->trackVisit($identificationData, $ispData ? new ISPData($ispData['carrier_id']) : null, $campaignToken);
+        $this->contentStatisticSender->trackVisit($identificationData, $carrierId ? new ISPData($carrierId) : null, $campaignToken);
 
         if (!(bool)$this->dataStorage->readValue('is_wifi_flow') && $this->landingPageAccessResolver->isLandingDisabled($request)) {
             return new RedirectResponse($this->generateUrl('identify_and_subscribe'));
