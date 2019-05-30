@@ -20,12 +20,6 @@
         <div class="">
             <span id="wifi_offer">{% if isCarrierDetected() %}{{ translate('wifi.offer') }}{% endif %}</span>
         </div>
-        <div class="mt-3">
-            <label class="terms_confirmation">
-                <input type="checkbox" required value="0"/>
-                {{ translate('wifi.terms_confirmation', {'%terms_url%': path('terms_and_conditions')}) | raw }}
-            </label>
-        </div>
     </form>
 
     <script type="text/javascript">
@@ -67,6 +61,8 @@
                     $(this).attr('selected', 'selected');
                 }
             });
+
+            addValidationAttributes(carrierId);
         }
 
         $(document).on('change', 'select[name="country"]', function () {
@@ -122,6 +118,12 @@
         // send pin code to input phone
         $(document).on('submit', 'form[data-form=pin]', function (e) {
             e.preventDefault();
+
+            if (!$('#terms-and-conditions-checkbox').is(':checked')) {
+                $('#terms-and-conditions').focus();
+                return;
+            }
+
             phone = input_phone.val();
             $(document).unbind("ajaxSuccess"); // hook for re-send pin
 
@@ -142,19 +144,18 @@
                                         return;
                                     }
 
-                                    var input_phone = $('input[name=mobile_number]');
-                                    input_phone.addClass('d-none');
-                                    $wifi_warning.html(params.pin_notif.replace(/%wifi_phone%/, phone));
-
                                     if (result.data.success) {
                                         if (result.data.isResend) {
                                             showAlert({title: 'New PIN-code', message: 'has been successfully sent'});
                                         }
 
+                                        var input_phone = $('input[name=mobile_number]');
+                                        $wifi_warning.html(params.pin_notif.replace(/%wifi_phone%/, phone));
                                         $wifi_form_step
                                             .html(params.html_wifi_pin)
                                             .append(input_phone);
                                         form.attr('data-form', 'confirm');
+                                        input_phone.addClass('d-none');
                                         addValidationAttributes(carrierId);
 
                                         resolve(result.data.carrierId);
@@ -275,12 +276,36 @@
             }
         });
 
+        $(document).on('focus', '#terms-and-conditions', function(e) {
+            e.preventDefault();
+            $(this).addClass('highlighting-item');
+        });
+
+        $(document).on('focusout', '#terms-and-conditions', function(e) {
+            e.preventDefault();
+            $(this).removeClass('highlighting-item');
+        });
+
+        $(document).on('mousedown', '#terms-and-conditions', function(e) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+        });
+
         // TODO find more flexible way to apply validation attributes
         function addValidationAttributes(carrierId) {
             var pinPatterns = {
                 2253: '^[0-9][0-9]{5}$',
                 2254: '^[0-9][0-9]{5}$'
             };
+
+            var msisdnPatterns = {
+                2253: '^\\+(201)[0-9]{9}$',
+                2254: '^\\+(201)[0-9]{9}$'
+            };
+
+            if (msisdnPatterns[carrierId]) {
+                $("input[name='mobile_number']").attr('pattern', msisdnPatterns[carrierId])
+            }
 
             if (pinPatterns[carrierId]) {
                 $("input[name='pin_code']").attr('pattern', pinPatterns[carrierId])

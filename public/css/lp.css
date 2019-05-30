@@ -116,3 +116,27 @@
     text-align: right;
     list-style-type: disc;
 }
+
+.annotation-block {
+    margin-bottom: 0;
+}
+
+#terms-and-conditions {
+    padding: 10px;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.highlighting-item {
+    animation: highlight 2000ms ease-out;
+}
+
+@keyframes highlight {
+    0% {
+        background-color: red;
+    }
+
+    100% {
+        background-color: white;
+    }
+}

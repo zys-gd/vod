@@ -57,6 +57,12 @@
 {% block footer_content %}
     {% if isCarrierDetected() %}
         {{ annotation.render() }}
+        <div id="terms-and-conditions" tabindex="1">
+                <span>
+                    <input name="terms" id="terms-and-conditions-checkbox" type="checkbox" required />
+                    {{ translate('wifi.terms_confirmation', {'%terms_url%': path('terms_and_conditions')}) | raw }}
+                </span>
+        </div>
     {% endif %}
     {{ footer_menu.render() }}
 {% endblock footer_content %}

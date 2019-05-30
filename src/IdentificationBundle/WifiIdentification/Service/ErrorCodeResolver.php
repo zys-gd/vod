@@ -43,15 +43,15 @@ class ErrorCodeResolver
         $lang = $this->localExtractor->getLocal();
 
         switch ($billingResponseCode) {
+            case 100:
+                return $this->translator->translate('messages.error.wrong_phone_number', $carrierId, $lang);
+                break;
             case 101:
                 return $this->translator->translate('messages.error.already_subscribed', $carrierId, $lang);
                 break;
-            case 103:
             case 102:
+            case 103:
                 return $this->translator->translate('message.error.pin_request_limit_exceeded', $carrierId, $lang);
-                break;
-            case 666:
-                return 'You entered the wrong phone number. Please enter the correct phone number with international calling code';
                 break;
             case 104:
                 return $this->translator->translate('message.error.invalid_pin', $carrierId, $lang);
