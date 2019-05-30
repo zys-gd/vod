@@ -209,8 +209,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         // we can't use ISPData object as function parameter because request to LP could not contain
         // carrier data and in this case BadRequestHttpException will be throw
-        $ispData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession());
-        $this->contentStatisticSender->trackVisit($request->getSession(), $ispData ? new ISPData($ispData['carrier_id']) : null);
+        $ispData            = IdentificationFlowDataExtractor::extractIspDetectionData($session);
+        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($session);
+        $campaignToken      = AffiliateVisitSaver::extractCampaignToken($session);
+        $this->contentStatisticSender->trackVisit($identificationData, $ispData ? new ISPData($ispData['carrier_id']) : null, $campaignToken);
 
         if (!(bool)$this->dataStorage->readValue('is_wifi_flow') && $this->landingPageAccessResolver->isLandingDisabled($request)) {
             return new RedirectResponse($this->generateUrl('identify_and_subscribe'));
@@ -281,7 +283,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             $this->visitTracker->trackVisit($carrier, $campaign, $session->getId());
 
 
-
             return $this->getSimpleJsonResponse('success', 200, [], [
                 'success' => true,
             ]);
@@ -305,7 +306,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $billingCarrierId = (int)$ispDetectionData['carrier_id'] ?? null;
         if (!empty($billingCarrierId)) {
             return $this->carrierRepository->findOneByBillingId($billingCarrierId);
-        } else {
+        }
+        else {
             return null;
         }
     }
@@ -320,7 +322,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         if ($campaign) {
             return $campaign;
-        } else {
+        }
+        else {
             return null;
         }
 

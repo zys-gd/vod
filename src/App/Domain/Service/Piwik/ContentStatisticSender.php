@@ -4,6 +4,7 @@ namespace App\Domain\Service\Piwik;
 
 use App\Domain\Entity\Game;
 use App\Domain\Entity\UploadedVideo;
+use App\Domain\Repository\CampaignRepository;
 use App\Domain\Repository\CarrierRepository;
 use App\Domain\Service\Piwik\DataMapper\PiwikGameDataMapper;
 use App\Domain\Service\Piwik\DataMapper\PiwikVideoDataMapper;
@@ -11,17 +12,12 @@ use CountryCarrierDetectionBundle\Service\IpService;
 use CountryCarrierDetectionBundle\Service\MaxMindIpInfo;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\DTO\ISPData;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\UserRepository;
 use PiwikBundle\Service\DTO\PiwikDTO;
 use PiwikBundle\Service\PiwikDataMapper;
 use PiwikBundle\Service\PiwikTracker;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Service\CampaignExtractor;
-use SubscriptionBundle\Service\SubscriptionExtractor;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use TypeError;
 
 /**
  * Class ContentStatisticSender
@@ -49,18 +45,9 @@ class ContentStatisticSender
     private $maxMindIpInfo;
 
     /**
-     * @var SubscriptionExtractor
-     */
-    private $subscriptionExtractor;
-
-    /**
      * @var CarrierRepository
      */
     private $carrierRepository;
-    /**
-     * @var CampaignExtractor
-     */
-    private $campaignExtractor;
     /**
      * @var PiwikDataMapper
      */
@@ -77,6 +64,10 @@ class ContentStatisticSender
      * @var PiwikVideoDataMapper
      */
     private $piwikVideoDataMapper;
+    /**
+     * @var CampaignRepository
+     */
+    private $campaignRepository;
 
     /**
      * ContentStatisticSender constructor
@@ -85,9 +76,8 @@ class ContentStatisticSender
      * @param UserRepository        $userRepository
      * @param LoggerInterface       $logger
      * @param MaxMindIpInfo         $maxMindIpInfo
-     * @param SubscriptionExtractor $subscriptionExtractor
      * @param CarrierRepository     $carrierRepository
-     * @param CampaignExtractor     $campaignExtractor
+     * @param CampaignRepository    $campaignRepository
      * @param PiwikDataMapper       $piwikDataMapper
      * @param IpService             $ipService
      * @param PiwikGameDataMapper   $piwikGameDataMapper
@@ -98,9 +88,8 @@ class ContentStatisticSender
         UserRepository $userRepository,
         LoggerInterface $logger,
         MaxMindIpInfo $maxMindIpInfo,
-        SubscriptionExtractor $subscriptionExtractor,
         CarrierRepository $carrierRepository,
-        CampaignExtractor $campaignExtractor,
+        CampaignRepository $campaignRepository,
         PiwikDataMapper $piwikDataMapper,
         IpService $ipService,
         PiwikGameDataMapper $piwikGameDataMapper,
@@ -111,24 +100,24 @@ class ContentStatisticSender
         $this->userRepository        = $userRepository;
         $this->logger                = $logger;
         $this->maxMindIpInfo         = $maxMindIpInfo;
-        $this->subscriptionExtractor = $subscriptionExtractor;
         $this->carrierRepository     = $carrierRepository;
-        $this->campaignExtractor     = $campaignExtractor;
         $this->piwikDataMapper       = $piwikDataMapper;
         $this->ipService             = $ipService;
         $this->piwikGameDataMapper   = $piwikGameDataMapper;
         $this->piwikVideoDataMapper  = $piwikVideoDataMapper;
+        $this->campaignRepository = $campaignRepository;
     }
 
     /**
-     * @param SessionInterface $session
-     * @param ISPData          $data
+     * @param array|null  $identificationData
+     * @param ISPData     $data
+     * @param string|null $campaignToken
      *
      * @return bool
      */
-    public function trackVisit(SessionInterface $session, ISPData $data = null): bool
+    public function trackVisit(array $identificationData = null, ISPData $data = null, string $campaignToken = null): bool
     {
-        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($session);
+
 
         $billingCarrierId = $data ? $data->getCarrierId() : null;
 
@@ -152,7 +141,7 @@ class ContentStatisticSender
         }
 
         try {
-            $campaign        = $this->campaignExtractor->getCampaignFromSession($session);
+            $campaign        = $this->campaignRepository->findOneByCampaignToken($campaignToken);
             $affiliate       = $campaign->getAffiliate();
             $affiliateString = $affiliate->getUuid() . '@' . $campaign->getUuid();
         } catch (\Throwable $e) {
@@ -271,20 +260,5 @@ class ContentStatisticSender
 
             return false;
         }
-    }
-
-    /**
-     * @return string
-     */
-    private function getUserIp(): string
-    {
-        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-            return $_SERVER['HTTP_CLIENT_IP'];
-        }
-        elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            return $_SERVER['HTTP_X_FORWARDED_FOR'];
-        }
-
-        return $_SERVER['REMOTE_ADDR'];
     }
 }

@@ -24,6 +24,8 @@ use ExtrasBundle\Utils\ArraySorter;
 use IdentificationBundle\Controller\ControllerWithIdentification;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
+use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -137,7 +139,9 @@ class HomeController extends AbstractController implements
             5
         );
 
-        $this->contentStatisticSender->trackVisit($request->getSession(), $data);
+        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
+        $campaignToken      = AffiliateVisitSaver::extractCampaignToken($request->getSession());
+        $this->contentStatisticSender->trackVisit($identificationData, $data, $campaignToken);
 
         $template = $this->templateConfigurator->getTemplate('home', $data->getCarrierId());
         return $this->render($template, [

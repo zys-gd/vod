@@ -16,7 +16,9 @@ use App\Domain\Service\Games\GameImagesSerializer;
 use App\Domain\Service\Games\GameSerializer;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use IdentificationBundle\Identification\DTO\ISPData;
+use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\SubscriptionExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -90,15 +92,15 @@ class GamesController extends AbstractController implements AppControllerInterfa
         TemplateConfigurator $templateConfigurator
     )
     {
-        $this->gameRepository = $gameRepository;
-        $this->gameSerializer = $gameSerializer;
-        $this->gameBuildRepository = $gameBuildRepository;
-        $this->drmApkProvider = $drmApkProvider;
-        $this->subscriptionExtractor = $extractor;
-        $this->gameImagesSerializer = $gameImagesSerializer;
-        $this->excludedGamesProvider = $excludedGamesProvider;
+        $this->gameRepository         = $gameRepository;
+        $this->gameSerializer         = $gameSerializer;
+        $this->gameBuildRepository    = $gameBuildRepository;
+        $this->drmApkProvider         = $drmApkProvider;
+        $this->subscriptionExtractor  = $extractor;
+        $this->gameImagesSerializer   = $gameImagesSerializer;
+        $this->excludedGamesProvider  = $excludedGamesProvider;
         $this->contentStatisticSender = $contentStatisticSender;
-        $this->templateConfigurator = $templateConfigurator;
+        $this->templateConfigurator   = $templateConfigurator;
     }
 
 
@@ -114,7 +116,9 @@ class GamesController extends AbstractController implements AppControllerInterfa
     {
         $games = $this->gameRepository->findBatchOfGames(0, 8);
 
-        $this->contentStatisticSender->trackVisit($request->getSession(), $data);
+        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
+        $campaignToken      = AffiliateVisitSaver::extractCampaignToken($request->getSession());
+        $this->contentStatisticSender->trackVisit($identificationData, $data, $campaignToken);
 
         $template = $this->templateConfigurator->getTemplate('game_category_content', $data->getCarrierId());
         return $this->render($template, [
@@ -149,8 +153,8 @@ class GamesController extends AbstractController implements AppControllerInterfa
         /** @var GameImage[] $images */
         $images = $this->gameImagesSerializer->serializeGameImages($game->getImages()->getValues());
 
-        $excluded = $this->excludedGamesProvider->get();
-        $similarGames = $this->gameRepository->getSimilarGames($game, $excluded);
+        $excluded      = $this->excludedGamesProvider->get();
+        $similarGames  = $this->gameRepository->getSimilarGames($game, $excluded);
         $aSimilarGames = [];
 
         foreach ($similarGames ?? [] as $similarGame) {
