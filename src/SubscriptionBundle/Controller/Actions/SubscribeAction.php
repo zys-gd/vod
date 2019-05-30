@@ -24,6 +24,7 @@ use SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter;
 use SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
+use SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator;
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CustomPage;
 use SubscriptionBundle\Service\CAPTool\Exception\CapToolAccessException;
@@ -102,6 +103,10 @@ class SubscribeAction extends AbstractController
      * @var SubscriptionLimitNotifier
      */
     private $subscriptionLimitNotifier;
+    /**
+     * @var BlacklistAttemptRegistrator
+     */
+    private $blacklistDeducter;
 
     /**
      * SubscribeAction constructor.
@@ -121,6 +126,7 @@ class SubscribeAction extends AbstractController
      * @param CampaignConfirmationHandlerProvider $campaignConfirmationHandlerProvider
      * @param SubscriptionLimiter                 $subscriptionLimiter
      * @param SubscriptionLimitNotifier           $subscriptionLimitNotifier
+     * @param BlacklistAttemptRegistrator         $blacklistDeducter
      */
     public function __construct(
         UserExtractor $userExtractor,
@@ -137,7 +143,8 @@ class SubscribeAction extends AbstractController
         PostPaidHandler $postPaidHandler,
         CampaignConfirmationHandlerProvider $campaignConfirmationHandlerProvider,
         SubscriptionLimiter $subscriptionLimiter,
-        SubscriptionLimitNotifier $subscriptionLimitNotifier
+        SubscriptionLimitNotifier $subscriptionLimitNotifier,
+        BlacklistAttemptRegistrator $blacklistDeducter
     )
     {
         $this->userExtractor                       = $userExtractor;
@@ -155,6 +162,7 @@ class SubscribeAction extends AbstractController
         $this->campaignConfirmationHandlerProvider = $campaignConfirmationHandlerProvider;
         $this->subscriptionLimiter                 = $subscriptionLimiter;
         $this->subscriptionLimitNotifier           = $subscriptionLimitNotifier;
+        $this->blacklistDeducter                   = $blacklistDeducter;
     }
 
     /**
@@ -190,8 +198,11 @@ class SubscribeAction extends AbstractController
         $this->ensureNotConsentPageFlow($ISPData->getCarrierId());
 
         if (
-            $this->blacklistVoter->isInBlacklist($request->getSession())
-            || !$this->blacklistVoter->deductSubscriptionAttempt($request->getSession())
+            $this->blacklistVoter->isInBlacklist($request->getSession()) ||
+            !$this->blacklistDeducter->registerSubscriptionAttempt(
+                $identificationData->getIdentificationToken(),
+                (int)$ISPData->getCarrierId()
+            )
         ) {
             return $this->blacklistVoter->createNotAllowedResponse();
         }
