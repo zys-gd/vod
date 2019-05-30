@@ -50,4 +50,10 @@ class ApiConnector
             RequestOptions::JSON => ['carrierId' => $carrierId, 'msisdn' => $msisdn],
         ]);
     }
+    public function deregisterSubscription(string $msisdn, int $carrierId): void
+    {
+        $this->guzzleClient->delete(sprintf('%s/msisdn', $this->apiLink), $options = [
+            RequestOptions::JSON => ['carrierId' => $carrierId, 'msisdn' => $msisdn],
+        ]);
+    }
 }
