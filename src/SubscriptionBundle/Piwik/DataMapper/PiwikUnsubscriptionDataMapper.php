@@ -35,38 +35,36 @@ class PiwikUnsubscriptionDataMapper
     }
 
     /**
-     * @param Subscription       $subscription
-     * @param ProcessResult|null $bfResponse
-     * @param string             $action
-     * @param bool               $resultStatus
+     * @param int          $responseId
+     * @param int          $chargePaid
+     * @param bool         $resultStatus
+     * @param Subscription $subscription
+     * @param string       $action
      *
      * @return bool|EcommerceDTO
      */
-    public function getEcommerceDTO(
+    public function getEcommerceDTO(int $responseId,
+        int $chargePaid,
+        bool $resultStatus,
         Subscription $subscription,
-        ProcessResult $bfResponse,
-        string $action,
-        bool $resultStatus
+        string $action
     ): EcommerceDTO
     {
-        $bfId = $bfProvider = $oSubPack = false;
 
         $oSubPack = $subscription->getSubscriptionPack();
-
-        $bfId = $bfResponse->getId();
 
         $subscriptionPackId = abs($oSubPack->getUuid());
         $eurPrice           = $this->exchanger->convert($oSubPack->getTierCurrency(), $oSubPack->getTierPrice());
         $subscriptionPrice  = round($oSubPack->getTierPrice(), 2);
 
         $campaign = $this->campaignExtractor->getCampaignForSubscription($subscription);
-        $name     = $this->piwikSubscriptionSignature->get($action, $resultStatus, $oSubPack, $campaign);
+        $name     = $this->piwikSubscriptionSignature->get($action, $resultStatus, $chargePaid, $oSubPack, $campaign);
 
         $orderIdPieces = [
             $name,
             $subscription->getUuid(),
             $subscriptionPackId,
-            $bfId ?: 'N' . rand(1000, 9999),
+            $responseId ?: 'N' . rand(1000, 9999),
             $subscriptionPrice,
             mt_rand(0, 9999)
         ];

@@ -26,23 +26,29 @@ class PiwikSubscriptionSignature
      * @param CampaignExtractor              $campaignExtractor
      * @param ZeroCreditSubscriptionChecking $creditSubscriptionChecking
      */
-    public function __construct(CampaignExtractor $campaignExtractor, ZeroCreditSubscriptionChecking $creditSubscriptionChecking)
+    public function __construct(CampaignExtractor $campaignExtractor,
+        ZeroCreditSubscriptionChecking $creditSubscriptionChecking)
     {
-        $this->campaignExtractor = $campaignExtractor;
+        $this->campaignExtractor          = $campaignExtractor;
         $this->creditSubscriptionChecking = $creditSubscriptionChecking;
     }
 
     /**
      * @param string           $action
      * @param bool             $resultStatus
+     * @param int              $chargePaid
      * @param SubscriptionPack $subscriptionPack
      * @param Campaign|null    $campaign
      *
      * @return string
      */
-    public function get(string $action, bool $resultStatus, SubscriptionPack $subscriptionPack, Campaign $campaign = null): string
+    public function get(string $action,
+        bool $resultStatus,
+        int $chargePaid,
+        SubscriptionPack $subscriptionPack,
+        Campaign $campaign = null): string
     {
-        $additionalMark = $this->getAdditionalMark($subscriptionPack, $campaign);
+        $additionalMark = $this->getAdditionalMark($chargePaid, $subscriptionPack, $campaign);
 
         $textResultStatus = $resultStatus ? 'ok' : 'failed';
 
@@ -50,22 +56,23 @@ class PiwikSubscriptionSignature
     }
 
     /**
+     * @param int              $chargePaid
      * @param SubscriptionPack $subscriptionPack
      * @param Campaign|null    $campaign
      *
      * @return string
      */
-    private function getAdditionalMark(SubscriptionPack $subscriptionPack, Campaign $campaign = null)
+    private function getAdditionalMark(int $chargePaid, SubscriptionPack $subscriptionPack, Campaign $campaign = null)
     {
-        if($subscriptionPack->isFirstSubscriptionPeriodIsFree()) {
+        if ($subscriptionPack->isFirstSubscriptionPeriodIsFree()) {
             return '-freetrial';
         }
 
-        if($subscriptionPack->isZeroCreditSubAvailable()){
+        if ($subscriptionPack->isZeroCreditSubAvailable() && $chargePaid == 0) {
             return '-zerocredit';
         }
 
-        if($campaign && $campaign->isZeroCreditSubAvailable()){
+        if ($campaign && $campaign->isZeroCreditSubAvailable() && $chargePaid == 0) {
             return '-zerocredit';
         }
 

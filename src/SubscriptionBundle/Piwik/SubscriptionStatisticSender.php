@@ -98,7 +98,9 @@ class SubscriptionStatisticSender
             }
 
             $resultStatus = $this->resultVerifier->isSuccessSubscribe($responseData);
-            $ecommerceDTO = $this->piwikSubscriptionDataMapper->getEcommerceDTO($subscription, $responseData, 'subscribe', $resultStatus);
+            $chargePaid   = $responseData->getChargePaid();
+            $responseId   = $responseData->getId();
+            $ecommerceDTO = $this->piwikSubscriptionDataMapper->getEcommerceDTO($responseId, $chargePaid, $resultStatus, $subscription, 'subscribe');
 
             $additionData = $this->piwikSubscriptionDataMapper->getAdditionalData($subscription, $responseData->getProvider(), $conversionMode);
 
@@ -150,7 +152,9 @@ class SubscriptionStatisticSender
                 return false;
             }
             $resultStatus = $this->resultVerifier->isSuccessSubscribe($responseData);
-            $ecommerceDTO = $this->piwikSubscriptionDataMapper->getEcommerceDTO($subscription, $responseData, 'resubscribe', $resultStatus);
+            $chargePaid   = $responseData->getChargePaid();
+            $responseId   = $responseData->getId();
+            $ecommerceDTO = $this->piwikSubscriptionDataMapper->getEcommerceDTO($responseId, $chargePaid, $resultStatus, $subscription, 'resubscribe');
 
             $additionData = $this->piwikSubscriptionDataMapper->getAdditionalData($subscription, $responseData->getProvider(), $conversionMode);
 
@@ -202,7 +206,9 @@ class SubscriptionStatisticSender
                 return false;
             }
             $resultStatus = $this->resultVerifier->isSuccessSubscribe($responseData);
-            $ecommerceDTO = $this->piwikSubscriptionDataMapper->getEcommerceDTO($subscription, $responseData, 'renew', $resultStatus);
+            $chargePaid   = $responseData->getChargePaid();
+            $responseId   = $responseData->getId();
+            $ecommerceDTO = $this->piwikSubscriptionDataMapper->getEcommerceDTO($responseId, $chargePaid, $resultStatus, $subscription, 'renew');
 
             $additionData = $this->piwikSubscriptionDataMapper->getAdditionalData($subscription, $responseData->getProvider(), $conversionMode);
 
@@ -253,8 +259,11 @@ class SubscriptionStatisticSender
             if ($this->resultVerifier->cantTrackUnsubscription($responseData)) {
                 return false;
             }
-            $resultStatus = $this->resultVerifier->isSuccessUnsubscribe($responseData);
-            $ecommerceDTO = $this->piwikUnsubscriptionDataMapper->getEcommerceDTO($subscription, $responseData, 'unsubscribe', $resultStatus);
+
+            $resultStatus = $this->resultVerifier->isSuccessSubscribe($responseData);
+            $chargePaid   = $responseData->getChargePaid();
+            $responseId   = $responseData->getId();
+            $ecommerceDTO = $this->piwikUnsubscriptionDataMapper->getEcommerceDTO($responseId, $chargePaid, $resultStatus, $subscription, 'unsubscribe');
 
             $additionData = $this->piwikUnsubscriptionDataMapper->getAdditionalData($subscription, $responseData->getProvider(), $conversionMode);
 

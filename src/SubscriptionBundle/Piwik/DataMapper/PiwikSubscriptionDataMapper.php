@@ -37,21 +37,22 @@ class PiwikSubscriptionDataMapper
     /**
      * Data for subscribe, renew, resubscribe
      *
-     * @param Subscription  $subscription
-     * @param ProcessResult $bfResponse
-     * @param string        $action
-     * @param bool          $resultStatus
+     * @param int          $responseId
+     * @param int          $chargePaid
+     * @param bool         $resultStatus
+     * @param Subscription $subscription
+     * @param string       $action
      *
      * @return EcommerceDTO
      */
-    public function getEcommerceDTO(Subscription $subscription,
-        ProcessResult $bfResponse,
-        string $action,
-        bool $resultStatus
+    public function getEcommerceDTO(int $responseId,
+        int $chargePaid,
+        bool $resultStatus,
+        Subscription $subscription,
+        string $action
     ): EcommerceDTO
     {
         $oSubPack = $subscription->getSubscriptionPack();
-        $bfId     = $bfResponse->getId();
 
         $subscriptionPackId = abs($oSubPack->getUuid());
 
@@ -59,13 +60,13 @@ class PiwikSubscriptionDataMapper
         $subscriptionPrice = round($oSubPack->getTierPrice(), 2);
 
         $campaign = $this->campaignExtractor->getCampaignForSubscription($subscription);
-        $name     = $this->piwikSubscriptionSignature->get($action, $resultStatus, $oSubPack, $campaign);
+        $name     = $this->piwikSubscriptionSignature->get($action, $resultStatus, $chargePaid, $oSubPack, $campaign);
 
         $orderIdPieces = [
             $name,
             $subscription->getUuid(),
             $subscriptionPackId,
-            $bfId,
+            $responseId,
             $subscriptionPrice,
         ];
 
