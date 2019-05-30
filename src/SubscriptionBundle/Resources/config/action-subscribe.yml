@@ -25,7 +25,7 @@ services:
             - '@SubscriptionBundle\Service\SubscriptionPackProvider'
             - '@SubscriptionBundle\Service\Action\Subscribe\Subscriber'
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker'
-            - '@monolog.logger.subscription'
+            - '@logger'
             - '@SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier'
             - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator'
@@ -37,6 +37,7 @@ services:
             - '@SubscriptionBundle\Service\EntitySaveHelper'
             - '_resub_not_allowed_route_placeholder_'
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEventTracker'
+            - '@SubscriptionBundle\Service\ZeroCreditSubscriptionChecking'
 
     SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker: ~
 
@@ -49,7 +50,7 @@ services:
         arguments:
             - '@app.cache.default.translation'
             - '@router'
-            - '@SubscriptionBundle\Service\BlackListService'
+            - '@SubscriptionBundle\Service\Blacklist\BlacklistChecker'
             - '@IdentificationBundle\Repository\UserRepository'
             - '@logger'
             - '_sub_not_allowed_route_placeholder_'

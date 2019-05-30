@@ -67,6 +67,10 @@ App\Domain\Entity\Campaign:
             type: boolean
             options:
                 default: false
+        zeroCreditSubAvailable:
+            type: boolean
+            options:
+                default: 0
 
     lifecycleCallbacks: {  }
 

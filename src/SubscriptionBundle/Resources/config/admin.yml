@@ -43,7 +43,7 @@ services:
             - ~
             - SubscriptionBundle\Entity\BlackList
             - ~
-            - '@SubscriptionBundle\Service\BlackListService'
+            - '@SubscriptionBundle\Service\Blacklist\BlacklistSaver'
         tags:
             - { name: sonata.admin, manager_type: orm, group: black_list_management, label: Black list }
         calls:

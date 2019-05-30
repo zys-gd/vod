@@ -297,6 +297,11 @@ SubscriptionBundle\Entity\SubscriptionPack:
               timestampable:
                 on: update
 
+        zeroCreditSubAvailable:
+            type: boolean
+            options:
+                default: 0
+
     lifecycleCallbacks: {  }
 
     oneToMany:
