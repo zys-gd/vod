@@ -202,6 +202,7 @@ class WifiIdentConfirmator
             }
 
             if ($handler instanceof HasCustomPinVerifyRules) {
+                $handler->afterSuccessfulPinVerify($result);
                 $finalMsisdn = $handler->getMsisdnFromResult($result, $msisdn);
             } else {
                 $finalMsisdn = $msisdn;
@@ -211,11 +212,7 @@ class WifiIdentConfirmator
             if ($user) {
                 $this->identFinisher->finishForExistingUser($user, $msisdn, $ip);
             } else {
-                $user = $this->identFinisher->finish($finalMsisdn, $carrier, $ip);
-            }
-
-            if ($handler instanceof HasCustomPinVerifyRules) {
-                $handler->afterSuccessfulPinVerify($result, $user);
+                $this->identFinisher->finish($finalMsisdn, $carrier, $ip);
             }
 
             $this->dataStorage->cleanPreviousOperationResult('pinRequest');

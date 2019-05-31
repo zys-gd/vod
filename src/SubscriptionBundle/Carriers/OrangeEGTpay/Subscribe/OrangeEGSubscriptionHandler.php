@@ -6,12 +6,12 @@ use App\Domain\Constants\ConstBillingCarrierId;
 use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
+use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasConsentPageFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * Class OrangeEGSubscriptionHandler
@@ -24,13 +24,20 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
     private $localExtractor;
 
     /**
+     * @var IdentificationDataStorage
+     */
+    private $identificationDataStorage;
+
+    /**
      * VodafoneEGSubscriptionHandler constructor
      *
      * @param LocalExtractor $localExtractor
+     * @param IdentificationDataStorage $identificationDataStorage
      */
-    public function __construct(LocalExtractor $localExtractor)
+    public function __construct(LocalExtractor $localExtractor, IdentificationDataStorage $identificationDataStorage)
     {
         $this->localExtractor = $localExtractor;
+        $this->identificationDataStorage = $identificationDataStorage;
     }
 
     /**
@@ -51,10 +58,16 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
      */
     public function getAdditionalSubscribeParams(Request $request, User $user): array
     {
-        return [
+        $data = [
             'url_id' => $user->getShortUrlId(),
             'lang' => $this->localExtractor->getLocal()
         ];
+
+        if ((bool) $this->identificationDataStorage->readValue('is_wifi_flow')) {
+            $data['subscription_contract_id'] = $this->identificationDataStorage->readValue('subscription_contract_id');
+        }
+
+        return $data;
     }
 
     /**

@@ -1,6 +1,8 @@
 services:
     SubscriptionBundle\Carriers\OrangeEGTpay\Subscribe\OrangeEGSubscriptionHandler:
-        arguments: ['@ExtrasBundle\Utils\LocalExtractor']
+        arguments:
+            - '@ExtrasBundle\Utils\LocalExtractor'
+            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
         tags:
             - { name: subscription.subscription_handler }
 

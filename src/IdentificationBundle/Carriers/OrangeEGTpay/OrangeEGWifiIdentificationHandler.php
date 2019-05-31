@@ -10,6 +10,7 @@ use IdentificationBundle\BillingFramework\Process\DTO\PinVerifyResult;
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
+use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\Exception\WifiIdentConfirmException;
 use IdentificationBundle\WifiIdentification\Handler\HasConsentPageFlow;
@@ -56,6 +57,11 @@ class OrangeEGWifiIdentificationHandler implements
     private $subscriptionRepository;
 
     /**
+     * @var IdentificationDataStorage
+     */
+    private $identificationDataStorage;
+
+    /**
      * OrangeEGWifiIdentificationHandler constructor
      *
      * @param UserRepository $userRepository
@@ -63,19 +69,22 @@ class OrangeEGWifiIdentificationHandler implements
      * @param RouterInterface $router
      * @param LocalExtractor $localExtractor
      * @param SubscriptionRepository $subscriptionRepository
+     * @param IdentificationDataStorage $identificationDataStorage
      */
     public function __construct(
         UserRepository $userRepository,
         EntityManagerInterface $entityManager,
         RouterInterface $router,
         LocalExtractor $localExtractor,
-        SubscriptionRepository $subscriptionRepository
+        SubscriptionRepository $subscriptionRepository,
+        IdentificationDataStorage $identificationDataStorage
     ) {
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
         $this->router = $router;
         $this->localExtractor = $localExtractor;
         $this->subscriptionRepository = $subscriptionRepository;
+        $this->identificationDataStorage = $identificationDataStorage;
     }
 
     /**
@@ -158,6 +167,11 @@ class OrangeEGWifiIdentificationHandler implements
      */
     public function afterSuccessfulPinVerify(PinVerifyResult $parameters): void
     {
+        $data = $parameters->getRawData();
+
+        if (!empty($data['subscription_contract_id'])) {
+            $this->identificationDataStorage->storeValue('subscription_contract_id', $data['subscription_contract_id']);
+        }
     }
 
     /**
