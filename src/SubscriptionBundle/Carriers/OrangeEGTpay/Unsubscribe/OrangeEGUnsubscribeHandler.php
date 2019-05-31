@@ -3,6 +3,7 @@
 namespace SubscriptionBundle\Carriers\OrangeEGTpay\Unsubscribe;
 
 use App\Domain\Constants\ConstBillingCarrierId;
+use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\Entity\CarrierInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
@@ -13,6 +14,21 @@ use SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerI
  */
 class OrangeEGUnsubscribeHandler implements UnsubscriptionHandlerInterface
 {
+    /**
+     * @var LocalExtractor
+     */
+    private $localExtractor;
+
+    /**
+     * OrangeEGUnsubscribeHandler constructor
+     *
+     * @param LocalExtractor $localExtractor
+     */
+    public function __construct(LocalExtractor $localExtractor)
+    {
+        $this->localExtractor = $localExtractor;
+    }
+
     /**
      * @param CarrierInterface $carrier
      *
@@ -31,6 +47,16 @@ class OrangeEGUnsubscribeHandler implements UnsubscriptionHandlerInterface
     public function isPiwikNeedToBeTracked(ProcessResult $processResult): bool
     {
         return false;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAdditionalUnsubscribeParameters(): array
+    {
+        return [
+            'lang' => $this->localExtractor->getLocal()
+        ];
     }
 
     /**

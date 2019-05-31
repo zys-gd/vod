@@ -7,5 +7,7 @@ services:
             - { name: subscription.subscription_handler }
 
     SubscriptionBundle\Carriers\OrangeEGTpay\Unsubscribe\OrangeEGUnsubscribeHandler:
+        arguments:
+            - '@ExtrasBundle\Utils\LocalExtractor'
         tags:
             - { name: subscription.unsubscription_handler }

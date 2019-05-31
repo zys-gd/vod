@@ -90,10 +90,11 @@ class Unsubscriber
         $this->parametersProvider          = $parametersProvider;
     }
 
-    public function unsubscribe(Subscription $subscription, SubscriptionPack $subscriptionPack)
-    {
-
-
+    public function unsubscribe(
+        Subscription $subscription,
+        SubscriptionPack $subscriptionPack,
+        array $additionalParameters = []
+    ) {
         $subscription->setStatus(Subscription::IS_PENDING);
         $subscription->setCurrentStage(Subscription::ACTION_UNSUBSCRIBE);
         $this->entitySaveHelper->persistAndSave($subscription);
@@ -126,8 +127,8 @@ class Unsubscriber
             }
 
         } else {
+            $parameters = $this->parametersProvider->provideParameters($subscription, $additionalParameters);
 
-            $parameters = $this->parametersProvider->provideParameters($subscription);
             try {
                 $response = $this->unsubscribeProcess->doUnsubscribe($parameters);
                 $this->onUnsubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
