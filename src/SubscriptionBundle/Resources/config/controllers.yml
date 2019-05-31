@@ -40,6 +40,7 @@ services:
             - '@SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber'
             - '@SubscriptionBundle\Service\Action\Unsubscribe\UnsubscriptionEligibilityChecker'
             - '@SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
+            - '@App\Domain\Service\CrossSubscriptionAPI\ApiConnector'
 
     SubscriptionBundle\Controller\Actions\WaitAction:
         class: SubscriptionBundle\Controller\Actions\WaitAction
