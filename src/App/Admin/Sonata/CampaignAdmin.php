@@ -273,6 +273,7 @@ class CampaignAdmin extends AbstractAdmin
                 'help' => 'If consent page exist, then show it. Otherwise will try to subscribe'
             ])
             ->add('zeroCreditSubAvailable')
+            ->add('freeTrialSubscription')
             ->end()
             ->end();
     }

@@ -21,6 +21,7 @@ use SubscriptionBundle\Service\Action\Common\FakeResponseProvider;
 use SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker;
 use SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePerformer;
 use SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePromotionalPerformer;
+use SubscriptionBundle\Service\CampaignExtractor;
 use SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\Notification\Notifier;
@@ -87,26 +88,30 @@ class Subscriber
      * @var SubscribePromotionalPerformer
      */
     private $subscribePromotionalPerformer;
+    /**
+     * @var CampaignExtractor
+     */
+    private $campaignExtractor;
 
 
     /**
      * Subscriber constructor.
      *
-     * @param LoggerInterface                   $logger
-     * @param EntitySaveHelper                  $entitySaveHelper
-     * @param SessionInterface                  $session
-     * @param SubscriptionCreator               $subscriptionCreator
-     * @param PromotionalResponseChecker        $promotionalResponseChecker
-     * @param FakeResponseProvider              $fakeResponseProvider
-     * @param Notifier                          $notifier
-     * @param SubscribeProcess                  $subscribeProcess
-     * @param OnSubscribeUpdater                $onSubscribeUpdater
-     * @param SubscribeParametersProvider       $subscribeParametersProvider
-     * @param SubscriptionLimitCompleter  $subscriptionLimitCompleter
-     * @param SubscriptionCounterUpdater        $subscriptionCounterUpdater
-     * @param SubscriptionSerializer            $subscriptionSerializer
-     * @param SubscribePerformer                $subscribePerformer
-     * @param SubscribePromotionalPerformer     $subscribePromotionalPerformer
+     * @param LoggerInterface               $logger
+     * @param EntitySaveHelper              $entitySaveHelper
+     * @param SessionInterface              $session
+     * @param SubscriptionCreator           $subscriptionCreator
+     * @param PromotionalResponseChecker    $promotionalResponseChecker
+     * @param FakeResponseProvider          $fakeResponseProvider
+     * @param Notifier                      $notifier
+     * @param SubscribeProcess              $subscribeProcess
+     * @param OnSubscribeUpdater            $onSubscribeUpdater
+     * @param SubscribeParametersProvider   $subscribeParametersProvider
+     * @param SubscriptionLimitCompleter    $subscriptionLimitCompleter
+     * @param SubscriptionSerializer        $subscriptionSerializer
+     * @param SubscribePerformer            $subscribePerformer
+     * @param SubscribePromotionalPerformer $subscribePromotionalPerformer
+     * @param CampaignExtractor             $campaignExtractor
      */
     public function __construct(
         LoggerInterface $logger,
@@ -120,26 +125,27 @@ class Subscriber
         OnSubscribeUpdater $onSubscribeUpdater,
         SubscribeParametersProvider $subscribeParametersProvider,
         SubscriptionLimitCompleter $subscriptionLimitCompleter,
-        SubscriptionSerializer $subscriptionSerializer
-,
+        SubscriptionSerializer $subscriptionSerializer,
         SubscribePerformer $subscribePerformer,
-        SubscribePromotionalPerformer $subscribePromotionalPerformer
+        SubscribePromotionalPerformer $subscribePromotionalPerformer,
+        CampaignExtractor $campaignExtractor
     )
     {
-        $this->logger                           = $logger;
-        $this->entitySaveHelper                 = $entitySaveHelper;
-        $this->session                          = $session;
-        $this->subscriptionCreator              = $subscriptionCreator;
-        $this->promotionalResponseChecker       = $promotionalResponseChecker;
-        $this->fakeResponseProvider             = $fakeResponseProvider;
-        $this->notifier                         = $notifier;
-        $this->subscribeProcess                 = $subscribeProcess;
-        $this->onSubscribeUpdater               = $onSubscribeUpdater;
-        $this->subscribeParametersProvider      = $subscribeParametersProvider;
-        $this->subscriptionLimitCompleter  = $subscriptionLimitCompleter;
-        $this->subscriptionSerializer           = $subscriptionSerializer;
-        $this->subscribePerformer               = $subscribePerformer;
-        $this->subscribePromotionalPerformer    = $subscribePromotionalPerformer;
+        $this->logger                        = $logger;
+        $this->entitySaveHelper              = $entitySaveHelper;
+        $this->session                       = $session;
+        $this->subscriptionCreator           = $subscriptionCreator;
+        $this->promotionalResponseChecker    = $promotionalResponseChecker;
+        $this->fakeResponseProvider          = $fakeResponseProvider;
+        $this->notifier                      = $notifier;
+        $this->subscribeProcess              = $subscribeProcess;
+        $this->onSubscribeUpdater            = $onSubscribeUpdater;
+        $this->subscribeParametersProvider   = $subscribeParametersProvider;
+        $this->subscriptionLimitCompleter    = $subscriptionLimitCompleter;
+        $this->subscriptionSerializer        = $subscriptionSerializer;
+        $this->subscribePerformer            = $subscribePerformer;
+        $this->subscribePromotionalPerformer = $subscribePromotionalPerformer;
+        $this->campaignExtractor             = $campaignExtractor;
     }
 
     /**
@@ -161,22 +167,29 @@ class Subscriber
         $subscription = $this->createPendingSubscription($user, $plan);
         $subscription->setAffiliateToken(json_encode($var));
 
+        $campaign = $this->campaignExtractor->getCampaignForSubscription($subscription);
+        $isFreeTrialSubscriptionFromCampaign = $campaign && $campaign->isFreeTrialSubscription();
 
-        if ($subscription->getSubscriptionPack()->isFirstSubscriptionPeriodIsFree() &&
-            !$subscription->getSubscriptionPack()->isProviderManagedSubscriptions()) {
-            $tierIdWithZeroValue = $this->getPriceTierIdWithZeroValue($subscription->getSubscriptionPack()->getCarrier());
-            $subscription->setPromotionTierId($tierIdWithZeroValue);
-        }
+        try{
+            if (
+                ($subscription->getSubscriptionPack()->isFirstSubscriptionPeriodIsFree() || $isFreeTrialSubscriptionFromCampaign)
+                && !$subscription->getSubscriptionPack()->isProviderManagedSubscriptions()
+            ) {
+                $tierIdWithZeroValue = $this->getPriceTierIdWithZeroValue($subscription->getSubscriptionPack()->getCarrier());
+                $subscription->setPromotionTierId($tierIdWithZeroValue);
+            }
+        } catch (\Throwable $e) { }
 
         try {
 
-            if($this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription)){
+            if ($this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription)) {
                 $response = $this->subscribePromotionalPerformer->doSubscribe($subscription);
-                if (!$plan->isFirstSubscriptionPeriodIsFree()) {
+                if (!$plan->isFirstSubscriptionPeriodIsFree() && !$isFreeTrialSubscriptionFromCampaign) {
                     $this->subscribePerformer->doSubscribe($subscription, $additionalData);
                 }
-            }else{
-                $response =  $this->subscribePerformer->doSubscribe($subscription, $additionalData);
+            }
+            else {
+                $response = $this->subscribePerformer->doSubscribe($subscription, $additionalData);
 
             }
 
@@ -205,8 +218,8 @@ class Subscriber
      * @throws SubscribingProcessException
      */
     public function resubscribe(Subscription $existingSubscription,
-                                SubscriptionPack $plan,
-                                $additionalData = []): ProcessResult
+        SubscriptionPack $plan,
+        $additionalData = []): ProcessResult
     {
         $subscription = $existingSubscription;
 
@@ -214,11 +227,12 @@ class Subscriber
 
         try {
 
-            if($this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription)){
+            if ($this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription)) {
                 $response = $this->subscribePromotionalPerformer->doSubscribe($subscription);
                 $this->subscribePerformer->doSubscribe($subscription, $additionalData);
-            }else{
-                $response =  $this->subscribePerformer->doSubscribe($subscription, $additionalData);
+            }
+            else {
+                $response = $this->subscribePerformer->doSubscribe($subscription, $additionalData);
             }
 
 
@@ -245,9 +259,11 @@ class Subscriber
      */
     protected function applyResubscribeTierChanges(Subscription $subscription)
     {
+        $campaign = $this->campaignExtractor->getCampaignForSubscription($subscription);
+        $isFreeTrialSubscriptionFromCampaign = $campaign && $campaign->isFreeTrialSubscription();
+
         $subscriptionPack = $subscription->getSubscriptionPack();
-        if ($subscriptionPack->isFirstSubscriptionPeriodIsFree() /*&&*/
-            /*$subscriptionPack->isFirstSubscriptionPeriodIsFreeMultiple()*/
+        if ($subscriptionPack->isFirstSubscriptionPeriodIsFree() || $isFreeTrialSubscriptionFromCampaign
         ) {
             $tierIdWithZeroValue = $this->getPriceTierIdWithZeroValue($subscriptionPack->getCarrier()->getBillingCarrierId());
             $subscription->setPromotionTierId($tierIdWithZeroValue);

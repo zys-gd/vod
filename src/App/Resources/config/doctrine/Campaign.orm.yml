@@ -71,6 +71,10 @@ App\Domain\Entity\Campaign:
             type: boolean
             options:
                 default: 0
+        freeTrialSubscription:
+            type: boolean
+            options:
+                default: 0
 
     lifecycleCallbacks: {  }
 
