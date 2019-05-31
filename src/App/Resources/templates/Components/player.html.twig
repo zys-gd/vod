@@ -115,6 +115,8 @@
                     });
                 });
 
+                let loadMoreFunc;
+
                 //TODO: Refactor this
                 $(document).on('click', '.x-play-button, .modal-related-video-thumbnail-wrapper', function () {
                     openModal();
@@ -133,26 +135,28 @@
                     }).then(() => {
                         let isAllowRequest = true;
                         let modalRelatedVideosBlock = document.querySelector('.modal-related-videos-block');
+                        loadMoreFunc = () => {
+                            let mrvbScrollTop = modalRelatedVideosBlock.scrollTop;
+                            let mrvbHeight = modalRelatedVideosBlock.scrollHeight;
+
+                            if (Math.round(mrvbScrollTop) >= Math.round(mrvbHeight - modalRelatedVideosBlock.offsetHeight)
+                                && isAllowRequest
+                                && !isLast
+                            ) {
+                                offset += 20;
+                                uri = `${batchRelatedVideosRoute}?categoryUuid=${category}&offset=${offset}`;
+                                isAllowRequest = false;
+                                $.get(uri, (data) => {
+                                    $('.modal-related-videos-block').append(data.html);
+                                    isAllowRequest = true;
+                                    isLast = Boolean(data.isLast);
+                                });
+                            }
+                        };
+
                         if (modalRelatedVideosBlock.childNodes.length > 0) {
 
-                            modalRelatedVideosBlock.addEventListener('scroll', () => {
-                                let mrvbScrollTop = modalRelatedVideosBlock.scrollTop;
-                                let mrvbHeight = modalRelatedVideosBlock.scrollHeight;
-
-                                if (Math.round(mrvbScrollTop) >= Math.round(mrvbHeight - modalRelatedVideosBlock.offsetHeight)
-                                    && isAllowRequest
-                                    && !isLast
-                                ) {
-                                    offset += 20;
-                                    uri = `${batchRelatedVideosRoute}?categoryUuid=${category}&offset=${offset}`;
-                                    isAllowRequest = false;
-                                    $.get(uri, (data) => {
-                                        $('.modal-related-videos-block').append(data.html);
-                                        isAllowRequest = true;
-                                        isLast = Boolean(data.isLast);
-                                    });
-                                }
-                            });
+                            modalRelatedVideosBlock.addEventListener('scroll', loadMoreFunc);
                         }
                     });
 
@@ -172,6 +176,8 @@
                 });
 
                 $(document).on('click', '.x-close-modal-button', function () {
+                    let modalRelatedVideosBlock = document.querySelector('.modal-related-videos-block');
+                    modalRelatedVideosBlock.removeEventListener('scroll', loadMoreFunc);
                     closeModal()
                 });
 
