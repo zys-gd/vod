@@ -51,14 +51,7 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
      */
     public function getAdditionalSubscribeParams(Request $request, User $user): array
     {
-        $subscriptionContractId = $user->getProviderId();
-
-        if (empty($subscriptionContractId)) {
-            throw new BadRequestHttpException("Can't process subscribe, required parameter `subscription_contract_id` not found");
-        }
-
         return [
-            'subscription_contract_id' => $user->getProviderId(),
             'url_id' => $user->getShortUrlId(),
             'lang' => $this->localExtractor->getLocal()
         ];

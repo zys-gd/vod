@@ -156,18 +156,10 @@ class VodafoneEGWifiIdentificationHandler implements
 
     /**
      * @param PinVerifyResult $parameters
-     * @param User $user
      */
-    public function afterSuccessfulPinVerify(PinVerifyResult $parameters, User $user): void
+    public function afterSuccessfulPinVerify(PinVerifyResult $parameters): void
     {
-        $data = $parameters->getRawData();
 
-        if (!empty($data['subscription_contract_id'])) {
-            $user->setProviderId($data['subscription_contract_id']);
-
-            $this->entityManager->persist($user);
-            $this->entityManager->flush();
-        }
     }
 
     /**

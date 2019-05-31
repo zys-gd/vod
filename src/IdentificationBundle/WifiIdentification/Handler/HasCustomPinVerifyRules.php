@@ -21,9 +21,8 @@ interface HasCustomPinVerifyRules
 
     /**
      * @param PinVerifyResult $parameters
-     * @param User $user
      */
-    public function afterSuccessfulPinVerify(PinVerifyResult $parameters, User $user): void;
+    public function afterSuccessfulPinVerify(PinVerifyResult $parameters): void;
 
     /**
      * @param \Exception $exception

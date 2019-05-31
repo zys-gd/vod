@@ -76,7 +76,7 @@ class EtisalatEGWifiIdentificationHandler implements
         ];
     }
 
-    public function afterSuccessfulPinVerify(PinVerifyResult $parameters, User $user): void
+    public function afterSuccessfulPinVerify(PinVerifyResult $parameters): void
     {
     }
 

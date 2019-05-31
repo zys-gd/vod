@@ -63,7 +63,7 @@ class TelenorPKWifiIdentificationHandler implements WifiIdentificationHandlerInt
         return ['otpId' => $pinRequestResult->getRawData()['otpId']];
     }
 
-    public function afterSuccessfulPinVerify(PinVerifyResult $parameters, User $user): void
+    public function afterSuccessfulPinVerify(PinVerifyResult $parameters): void
     {
         // TODO: Implement afterSuccessfulPinVerify() method.
     }
