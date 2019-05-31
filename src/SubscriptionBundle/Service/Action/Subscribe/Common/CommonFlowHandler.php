@@ -8,6 +8,7 @@
 
 namespace SubscriptionBundle\Service\Action\Subscribe\Common;
 
+use App\Domain\Entity\Campaign;
 use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
 use ExtrasBundle\Utils\UrlParamAppender;
 use IdentificationBundle\Entity\User;
@@ -30,6 +31,7 @@ use SubscriptionBundle\Service\Action\Subscribe\Subscriber;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\SubscriptionExtractor;
 use SubscriptionBundle\Service\SubscriptionPackProvider;
+use SubscriptionBundle\Service\ZeroCreditSubscriptionChecking;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -103,6 +105,10 @@ class CommonFlowHandler
      * @var SubscriptionEventTracker
      */
     private $subscriptionEventTracker;
+    /**
+     * @var ZeroCreditSubscriptionChecking
+     */
+    private $zeroCreditSubscriptionChecking;
 
 
     /**
@@ -124,6 +130,7 @@ class CommonFlowHandler
      * @param EntitySaveHelper               $entitySaveHelper
      * @param string                         $resubNotAllowedRoute
      * @param SubscriptionEventTracker       $subscriptionEventTracker
+     * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
      */
     public function __construct(
         SubscriptionExtractor $subscriptionProvider,
@@ -141,25 +148,27 @@ class CommonFlowHandler
         UserInfoMapper $infoMapper,
         EntitySaveHelper $entitySaveHelper,
         string $resubNotAllowedRoute,
-        SubscriptionEventTracker $subscriptionEventTracker
+        SubscriptionEventTracker $subscriptionEventTracker,
+        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
     )
     {
-        $this->subscriptionPackProvider    = $subscriptionPackProvider;
-        $this->subscriber                  = $subscriber;
-        $this->checker                     = $checker;
-        $this->subscriptionProvider        = $subscriptionProvider;
-        $this->logger                      = $logger;
-        $this->redirectUrlNullifier        = $redirectUrlNullifier;
-        $this->handlerProvider             = $handlerProvider;
-        $this->commonResponseCreator       = $commonResponseCreator;
-        $this->urlParamAppender            = $urlParamAppender;
-        $this->router                      = $router;
-        $this->affiliateService            = $affiliateService;
-        $this->subscriptionStatisticSender = $subscriptionStatisticSender;
-        $this->infoMapper                  = $infoMapper;
-        $this->entitySaveHelper            = $entitySaveHelper;
-        $this->resubNotAllowedRoute        = $resubNotAllowedRoute;
-        $this->subscriptionEventTracker    = $subscriptionEventTracker;
+        $this->subscriptionPackProvider       = $subscriptionPackProvider;
+        $this->subscriber                     = $subscriber;
+        $this->checker                        = $checker;
+        $this->subscriptionProvider           = $subscriptionProvider;
+        $this->logger                         = $logger;
+        $this->redirectUrlNullifier           = $redirectUrlNullifier;
+        $this->handlerProvider                = $handlerProvider;
+        $this->commonResponseCreator          = $commonResponseCreator;
+        $this->urlParamAppender               = $urlParamAppender;
+        $this->router                         = $router;
+        $this->affiliateService               = $affiliateService;
+        $this->subscriptionStatisticSender    = $subscriptionStatisticSender;
+        $this->infoMapper                     = $infoMapper;
+        $this->entitySaveHelper               = $entitySaveHelper;
+        $this->resubNotAllowedRoute           = $resubNotAllowedRoute;
+        $this->subscriptionEventTracker       = $subscriptionEventTracker;
+        $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
     }
 
 
@@ -316,6 +325,11 @@ class CommonFlowHandler
 
         $additionalData   = $subscriber->getAdditionalSubscribeParams($request, $User);
         $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($User);
+
+        if ($this->zeroCreditSubscriptionChecking->isAvailable($request->getSession(), $subscriptionPack)) {
+            $additionalData['zero_credit_sub_available'] = true;
+        }
+
         /** @var ProcessResult $result */
         list($newSubscription, $result) = $this->subscriber->subscribe($User, $subscriptionPack, $additionalData);
 
@@ -337,6 +351,7 @@ class CommonFlowHandler
         else {
             $isPiwikTracked = ($result->isFailedOrSuccessful() && $result->isFinal());
         }
+
         if ($isPiwikTracked) {
             $this->subscriptionEventTracker->trackPiwikForSubscribe($newSubscription, $result);
         }

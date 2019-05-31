@@ -135,7 +135,8 @@ class CampaignAdmin extends AbstractAdmin
             ->add('campaignToken')
             ->add('textColor')
             ->add('isPause')
-            ->add('isLpOff');
+            ->add('isLpOff')
+            ->add('zeroCreditSubAvailable');
     }
 
     /**
@@ -162,6 +163,7 @@ class CampaignAdmin extends AbstractAdmin
                 'label' => 'Landing page'
             ])
             ->add('isLpOff')
+            ->add('zeroCreditSubAvailable')
             ->add('carriers')
             ->add('_action', null, [
                 'actions' => [
@@ -193,6 +195,7 @@ class CampaignAdmin extends AbstractAdmin
             ])
             ->add('isPause', null,
                 ['label' => 'Pause'])
+            ->add('zeroCreditSubAvailable')
             ->add('pausedCampaigns', null, [
                 'label' => 'Paused by Carrier',
                 'template' => '@Admin/Campaign/paused_campaigns.html.twig',
@@ -269,6 +272,7 @@ class CampaignAdmin extends AbstractAdmin
                 'label' => 'Turn off LP showing',
                 'help' => 'If consent page exist, then show it. Otherwise will try to subscribe'
             ])
+            ->add('zeroCreditSubAvailable')
             ->end()
             ->end();
     }

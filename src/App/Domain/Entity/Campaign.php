@@ -105,6 +105,9 @@ class Campaign implements CampaignInterface, HasUuid
      */
     private $isLpOff = false;
 
+    /** @var bool  */
+    private $zeroCreditSubAvailable = false;
+
     /**
      * Campaign constructor
      *
@@ -523,5 +526,21 @@ class Campaign implements CampaignInterface, HasUuid
     public function setIsLpOff(bool $isLpOff): void
     {
         $this->isLpOff = $isLpOff;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isZeroCreditSubAvailable(): bool
+    {
+        return $this->zeroCreditSubAvailable;
+    }
+
+    /**
+     * @param bool $zeroCreditSubAvailable
+     */
+    public function setZeroCreditSubAvailable(bool $zeroCreditSubAvailable): void
+    {
+        $this->zeroCreditSubAvailable = $zeroCreditSubAvailable;
     }
 }
