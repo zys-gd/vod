@@ -68,7 +68,7 @@ class UploadedVideoAdmin extends AbstractAdmin
      */
     public function getBatchActions(): array
     {
-        return [];
+        return parent::getBatchActions();
     }
 
     /**
@@ -245,7 +245,7 @@ class UploadedVideoAdmin extends AbstractAdmin
      */
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->clearExcept(['show', 'list', 'edit', 'delete']);
+        $collection->clearExcept(['show', 'list', 'edit', 'delete', 'batch']);
         $collection->add('preUpload', 'preUpload');
         $collection->add('signature', 'signature');
         $collection->add('saveBaseVideoData', 'saveBaseVideoData');
