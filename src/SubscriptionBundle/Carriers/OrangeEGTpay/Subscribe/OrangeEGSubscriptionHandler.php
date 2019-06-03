@@ -12,6 +12,7 @@ use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasConsentPageFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Class OrangeEGSubscriptionHandler
@@ -29,15 +30,25 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
     private $identificationDataStorage;
 
     /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
      * VodafoneEGSubscriptionHandler constructor
      *
      * @param LocalExtractor $localExtractor
      * @param IdentificationDataStorage $identificationDataStorage
+     * @param RouterInterface $router
      */
-    public function __construct(LocalExtractor $localExtractor, IdentificationDataStorage $identificationDataStorage)
-    {
+    public function __construct(
+        LocalExtractor $localExtractor,
+        IdentificationDataStorage $identificationDataStorage,
+        RouterInterface $router
+    ) {
         $this->localExtractor = $localExtractor;
         $this->identificationDataStorage = $identificationDataStorage;
+        $this->router = $router;
     }
 
     /**
@@ -66,6 +77,23 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
         if ((bool) $this->identificationDataStorage->readValue('is_wifi_flow')) {
             $data['subscription_contract_id'] = $this->identificationDataStorage->readValue('subscription_contract_id');
         }
+
+        return $data;
+    }
+
+    /**
+     * @param Request $request
+     * @param User $user
+     *
+     * @return array
+     */
+    public function getAdditionalResubscribeParams(Request $request, User $user): array
+    {
+        $data = [
+            'url_id' => $user->getShortUrlId(),
+            'lang' => $this->localExtractor->getLocal(),
+            'redirect_url' => $this->router->generate('index')
+        ];
 
         return $data;
     }
