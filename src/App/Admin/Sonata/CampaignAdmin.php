@@ -345,4 +345,13 @@ class CampaignAdmin extends AbstractAdmin
 
         parent::configureRoutes($collection);
     }
+
+    protected function configureBatchActions($actions)
+    {
+        $actions['pause'] = [
+            'ask_confirmation' => false
+        ];
+
+        return $actions;
+    }
 }
