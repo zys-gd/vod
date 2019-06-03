@@ -131,12 +131,12 @@ services:
     App\Domain\Service\VideoProcessing\UploadedVideoSerializer: ~
 
 
-  App\Domain\ACL\SubscribeACL:
-      tags:
-          - { name: subscription.voter }
+    App\Domain\ACL\SubscribeACL:
+        tags:
+            - { name: subscription.voter }
 
-  App\Domain\Service\CrossSubscriptionAPI\ApiConnector:
-      arguments: ['@subscription.http.client', '%cross_subscription_service%']
+    App\Domain\Service\CrossSubscriptionAPI\ApiConnector:
+        arguments: ['@subscription.http.client', '%cross_subscription_service%']
 
-  App\Domain\ACL\Accessors\SubscribeExternalAPICheck:
-      arguments: ['@App\Domain\Service\CrossSubscriptionAPI\ApiConnector']
+    App\Domain\ACL\Accessors\SubscribeExternalAPICheck:
+        arguments: ['@App\Domain\Service\CrossSubscriptionAPI\ApiConnector']

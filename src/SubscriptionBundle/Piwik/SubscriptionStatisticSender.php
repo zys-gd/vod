@@ -56,13 +56,15 @@ class SubscriptionStatisticSender
      * @param PiwikUnsubscriptionDataMapper $piwikUnsubscriptionDataMapper
      * @param ProcessResultVerifier         $resultVerifier
      */
-    public function __construct(LoggerInterface $logger,
+    public function __construct(
+        LoggerInterface $logger,
         PiwikTracker $piwikTracker,
         PiwikDataMapper $piwikDataMapper,
         PiwikSubscriptionDataMapper $piwikSubscriptionDataMapper,
         MaxMindIpInfo $maxMindIpInfo,
         PiwikUnsubscriptionDataMapper $piwikUnsubscriptionDataMapper,
-        ProcessResultVerifier $resultVerifier)
+        ProcessResultVerifier $resultVerifier
+    )
     {
         $this->logger                        = $logger;
         $this->piwikTracker                  = $piwikTracker;

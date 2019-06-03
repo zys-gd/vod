@@ -8,18 +8,23 @@
 
 namespace Controller\Action;
 
+use CountryCarrierDetectionBundle\Service\MaxMindIpInfo;
 use ExtrasBundle\Testing\Core\AbstractFunctionalTest;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
+use PiwikBundle\Service\PiwikDataMapper;
 use PiwikBundle\Service\PiwikTracker;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\BillingFramework\Notification\API\RequestSender as NotificationService;
 use SubscriptionBundle\BillingFramework\Process\API\RequestSender;
 use SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider;
+use SubscriptionBundle\Piwik\DataMapper\PiwikSubscriptionDataMapper;
+use SubscriptionBundle\Piwik\DataMapper\PiwikUnsubscriptionDataMapper;
+use SubscriptionBundle\Piwik\ProcessResultVerifier;
 use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
@@ -219,6 +224,11 @@ class SubscribeActionTest extends AbstractFunctionalTest
         $this->piwikStatisticSender         = Mockery::spy(SubscriptionStatisticSender::class, [
             Mockery::spy(LoggerInterface::class),
             Mockery::spy(PiwikTracker::class),
+            Mockery::spy(PiwikDataMapper::class),
+            Mockery::spy(PiwikSubscriptionDataMapper::class),
+            Mockery::spy(MaxMindIpInfo::class),
+            Mockery::spy(PiwikUnsubscriptionDataMapper::class),
+            Mockery::spy(ProcessResultVerifier::class),
         ])->makePartial();
     }
 
