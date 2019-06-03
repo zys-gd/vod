@@ -125,7 +125,6 @@ class Unsubscriber
                 $this->onUnsubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
 
                 $user = $subscription->getUser();
-                $this->crossSubscriptionApi->deregisterSubscription($user->getIdentifier(), $user->getBillingCarrierId());
 
                 return $response;
 
@@ -145,7 +144,6 @@ class Unsubscriber
                 $this->onUnsubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
 
                 $user = $subscription->getUser();
-                $this->crossSubscriptionApi->deregisterSubscription($user->getIdentifier(), $user->getBillingCarrierId());
 
                 return $response;
 
