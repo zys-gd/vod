@@ -5,6 +5,7 @@ namespace App\Admin\Sonata;
 use App\Admin\Form\Type\AffiliateConstantType;
 use App\Admin\Form\Type\AffiliateParameterType;
 use App\Domain\Entity\Affiliate;
+use App\Domain\Entity\Carrier;
 use App\Domain\Entity\Country;
 use App\Domain\Repository\AffiliateRepository;
 use App\Utils\UuidGenerator;
@@ -12,6 +13,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -35,9 +37,9 @@ class AffiliateAdmin extends AbstractAdmin
     /**
      * AffiliateAdmin constructor
      *
-     * @param string $code
-     * @param string $class
-     * @param string $baseControllerName
+     * @param string              $code
+     * @param string              $class
+     * @param string              $baseControllerName
      * @param AffiliateRepository $affiliateRepository
      */
     public function __construct(
@@ -45,7 +47,8 @@ class AffiliateAdmin extends AbstractAdmin
         string $class,
         string $baseControllerName,
         AffiliateRepository $affiliateRepository
-    ) {
+    )
+    {
         $this->affiliateRepository = $affiliateRepository;
 
         parent::__construct($code, $class, $baseControllerName);
@@ -53,7 +56,6 @@ class AffiliateAdmin extends AbstractAdmin
 
     /**
      * @return Affiliate
-     *
      * @throws \Exception
      */
     public function getNewInstance(): Affiliate
@@ -94,8 +96,8 @@ class AffiliateAdmin extends AbstractAdmin
             ])
             ->add('_action', null, [
                 'actions' => [
-                    'show' => [],
-                    'edit' => [],
+                    'show'   => [],
+                    'edit'   => [],
                     'delete' => [],
                 ]
             ]);
@@ -116,7 +118,7 @@ class AffiliateAdmin extends AbstractAdmin
             ->add('skypeId')
             ->add('isLpOff', null, [
                 'label' => 'Turn off LP showing',
-                'help' => 'If consent page exist, then show it. Otherwise will try to subscribe'
+                'help'  => 'If consent page exist, then show it. Otherwise will try to subscribe'
             ])
             ->add('enabled');
     }
@@ -146,16 +148,16 @@ class AffiliateAdmin extends AbstractAdmin
                     'CPC' => Affiliate::CPC_TYPE,
                     'CPA' => Affiliate::CPA_TYPE
                 ],
-                'label' => 'Type'
+                'label'   => 'Type'
             ])
             ->add('name', TextType::class, [
-                'label' => 'Name',
+                'label'       => 'Name',
                 'constraints' => [
                     new Callback(function (string $name, ExecutionContextInterface $context) {
                         $affiliates = $this->affiliateRepository->findBy(['name' => $name]);
                         /** @var Affiliate $affiliate */
                         $affiliate = empty($affiliates) ? null : $affiliates[0];
-                        $subject = $this->getSubject();
+                        $subject   = $this->getSubject();
 
                         if ($affiliate && $affiliate->getUuid() !== $subject->getUuid()) {
                             $context
@@ -166,15 +168,30 @@ class AffiliateAdmin extends AbstractAdmin
                 ]
             ])
             ->add('postbackUrl', UrlType::class, [
-                'required' => true,
-                'label' => 'Postback URL',
+                'required'    => true,
+                'label'       => 'Postback URL',
                 'constraints' => [
                     new NotBlank()
                 ]
             ])
-            ->add('isLpOff', null, [
-                'label' => 'Turn off LP showing',
-                'help' => 'If consent page exist, then show it. Otherwise will try to subscribe'
+            ->add('isLpOff', ChoiceFieldMaskType::class, [
+                'label'   => 'Turn off LP showing',
+                'help'    => 'If consent page exist, then show it. Otherwise will try to subscribe',
+                'choices' => [
+                    'No'  => 0,
+                    'Yes' => 1,
+                ],
+                'map'     => [
+                    1 => ['carriers', 'carriers2'],
+                ],
+            ])
+            ->add('carriers', EntityType::class, [
+                'class'       => Carrier::class,
+                'expanded'    => false,
+                'required'    => false,
+                'multiple'    => true,
+                'placeholder' => 'Please select carriers',
+                'help' => 'If empty, then for all carriers. Otherwise landing will be turned off only for chosen carriers.'
             ])
             ->end()
             ->end();
@@ -189,21 +206,21 @@ class AffiliateAdmin extends AbstractAdmin
             ->tab('Contact details')
             ->with('', ['box_class' => 'box-solid'])
             ->add('country', EntityType::class, [
-                'class' => Country::class,
+                'class'        => Country::class,
                 'choice_label' => 'countryName',
-                'label' => 'Based in'
+                'label'        => 'Based in'
             ])
             ->add('commercialContact', TextType::class, [
                 'required' => false,
-                'label' => 'Commercial Contact person'
+                'label'    => 'Commercial Contact person'
             ])
             ->add('technicalContact', TextType::class, [
                 'required' => false,
-                'label' => 'Technical Contact person'
+                'label'    => 'Technical Contact person'
             ])
             ->add('skypeId', TextType::class, [
                 'required' => false,
-                'label' => 'Skype ID'
+                'label'    => 'Skype ID'
             ])
             ->add('url', TextType::class, [
                 'required' => false
@@ -223,13 +240,13 @@ class AffiliateAdmin extends AbstractAdmin
             ->add('enabled', ChoiceType::class, [
                 'choices' => [
                     'Yes' => true,
-                    'No' => false
+                    'No'  => false
                 ],
-                'label' => 'Enable this affiliate?'
+                'label'   => 'Enable this affiliate?'
             ])
             ->add('subPriceName', TextType::class, [
                 'required' => false,
-                'label' => 'Name of subscription price parameter. Fill JUST when the partner requires!'
+                'label'    => 'Name of subscription price parameter. Fill JUST when the partner requires!'
             ])
             ->end()
             ->end();
@@ -244,10 +261,10 @@ class AffiliateAdmin extends AbstractAdmin
             ->tab('Constants')
             ->with('', ['box_class' => 'box-solid'])
             ->add('constants', CollectionType::class, [
-                'entry_type' => AffiliateConstantType::class,
+                'entry_type'   => AffiliateConstantType::class,
                 'by_reference' => false,
                 'allow_delete' => true,
-                'allow_add' => true
+                'allow_add'    => true
             ])
             ->end()
             ->end();
@@ -262,10 +279,10 @@ class AffiliateAdmin extends AbstractAdmin
             ->tab('Parameters')
             ->with('', ['box_class' => 'box-solid'])
             ->add('parameters', CollectionType::class, [
-                'entry_type' => AffiliateParameterType::class,
+                'entry_type'   => AffiliateParameterType::class,
                 'by_reference' => false,
                 'allow_delete' => true,
-                'allow_add' => true
+                'allow_add'    => true
             ])
             ->end()
             ->end();
