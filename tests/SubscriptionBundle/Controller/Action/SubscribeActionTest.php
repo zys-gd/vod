@@ -14,7 +14,7 @@ use GuzzleHttp\ClientInterface;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
-use PiwikBundle\Service\NewTracker;
+use PiwikBundle\Service\PiwikTracker;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\BillingFramework\Notification\API\RequestSender as NotificationService;
@@ -218,7 +218,7 @@ class SubscribeActionTest extends AbstractFunctionalTest
         $this->subscriptionLimiter          = Mockery::spy(SubscriptionLimiter::class);
         $this->piwikStatisticSender         = Mockery::spy(SubscriptionStatisticSender::class, [
             Mockery::spy(LoggerInterface::class),
-            Mockery::spy(NewTracker::class),
+            Mockery::spy(PiwikTracker::class),
         ])->makePartial();
     }
 

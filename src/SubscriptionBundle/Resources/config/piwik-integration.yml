@@ -1,3 +1,30 @@
 services:
-  SubscriptionBundle\Piwik\SubscriptionStatisticSender:
-      arguments: ['@logger', '@PiwikBundle\Service\NewTracker']
+    SubscriptionBundle\Piwik\SubscriptionStatisticSender:
+        arguments:
+            - '@logger'
+            - '@PiwikBundle\Service\PiwikTracker'
+            - '@PiwikBundle\Service\PiwikDataMapper'
+            - '@SubscriptionBundle\Piwik\DataMapper\PiwikSubscriptionDataMapper'
+            - '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
+            - '@SubscriptionBundle\Piwik\DataMapper\PiwikUnsubscriptionDataMapper'
+            - '@SubscriptionBundle\Piwik\ProcessResultVerifier'
+
+    SubscriptionBundle\Piwik\DataMapper\PiwikSubscriptionDataMapper:
+        arguments:
+            - '@LegacyBundle\Service\Exchanger'
+            - '@SubscriptionBundle\Service\CampaignExtractor'
+            - '@SubscriptionBundle\Piwik\PiwikSubscriptionSignature'
+
+    SubscriptionBundle\Piwik\DataMapper\PiwikUnsubscriptionDataMapper:
+        arguments:
+            - '@LegacyBundle\Service\Exchanger'
+            - '@SubscriptionBundle\Service\CampaignExtractor'
+            - '@SubscriptionBundle\Piwik\PiwikSubscriptionSignature'
+
+
+    SubscriptionBundle\Piwik\ProcessResultVerifier: ~
+
+    SubscriptionBundle\Piwik\PiwikSubscriptionSignature:
+        arguments:
+            - '@SubscriptionBundle\Service\CampaignExtractor'
+            - '@SubscriptionBundle\Service\ZeroCreditSubscriptionChecking'

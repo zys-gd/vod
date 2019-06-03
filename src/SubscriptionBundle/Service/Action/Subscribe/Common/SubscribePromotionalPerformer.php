@@ -51,6 +51,7 @@ class SubscribePromotionalPerformer
 
     /**
      * @param Subscription $subscription
+     *
      * @return ProcessResult
      */
     public function doSubscribe(Subscription $subscription): ProcessResult

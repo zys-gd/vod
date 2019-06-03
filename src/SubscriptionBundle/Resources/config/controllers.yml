@@ -21,6 +21,7 @@ services:
             - '@SubscriptionBundle\Service\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider'
             - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
             - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier'
+            - '@SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator'
             - '@SubscriptionBundle\Service\SubscriptionVoter\BatchSubscriptionVoter'
 
     SubscriptionBundle\Controller\Actions\ListenAction:

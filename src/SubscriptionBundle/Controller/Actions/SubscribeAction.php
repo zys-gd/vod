@@ -24,6 +24,7 @@ use SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter;
 use SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
+use SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator;
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CustomPage;
 use SubscriptionBundle\Service\CAPTool\Exception\CapToolAccessException;
@@ -107,6 +108,10 @@ class SubscribeAction extends AbstractController
      * @var SubscriptionLimitNotifier
      */
     private $subscriptionLimitNotifier;
+    /**
+     * @var BlacklistAttemptRegistrator
+     */
+    private $blacklistDeducter;
 
     /**
      * SubscribeAction constructor.
@@ -126,6 +131,7 @@ class SubscribeAction extends AbstractController
      * @param CampaignConfirmationHandlerProvider $campaignConfirmationHandlerProvider
      * @param SubscriptionLimiter                 $subscriptionLimiter
      * @param SubscriptionLimitNotifier           $subscriptionLimitNotifier
+     * @param BlacklistAttemptRegistrator         $blacklistDeducter
      * @param BatchSubscriptionVoter              $subscriptionVoter
      */
     public function __construct(
@@ -144,6 +150,7 @@ class SubscribeAction extends AbstractController
         CampaignConfirmationHandlerProvider $campaignConfirmationHandlerProvider,
         SubscriptionLimiter $subscriptionLimiter,
         SubscriptionLimitNotifier $subscriptionLimitNotifier,
+        BlacklistAttemptRegistrator $blacklistDeducter,
         BatchSubscriptionVoter $subscriptionVoter
     )
     {
@@ -163,6 +170,7 @@ class SubscribeAction extends AbstractController
         $this->subscriptionVoter                   = $subscriptionVoter;
         $this->subscriptionLimiter                 = $subscriptionLimiter;
         $this->subscriptionLimitNotifier           = $subscriptionLimitNotifier;
+        $this->blacklistDeducter                   = $blacklistDeducter;
     }
 
     /**
@@ -202,8 +210,11 @@ class SubscribeAction extends AbstractController
         $this->ensureNotConsentPageFlow($ISPData->getCarrierId());
 
         if (
-            $this->blacklistVoter->isInBlacklist($request->getSession())
-            || !$this->blacklistVoter->deductSubscriptionAttempt($request->getSession())
+            $this->blacklistVoter->isInBlacklist($request->getSession()) ||
+            !$this->blacklistDeducter->registerSubscriptionAttempt(
+                $identificationData->getIdentificationToken(),
+                (int)$ISPData->getCarrierId()
+            )
         ) {
             return $this->blacklistVoter->createNotAllowedResponse();
         }
