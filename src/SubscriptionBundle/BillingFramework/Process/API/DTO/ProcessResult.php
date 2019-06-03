@@ -379,9 +379,9 @@ class ProcessResult
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getChargePaid(): int
+    public function getChargePaid(): ?int
     {
         return $this->chargePaid;
     }
