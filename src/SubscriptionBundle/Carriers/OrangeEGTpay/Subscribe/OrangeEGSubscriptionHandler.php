@@ -92,7 +92,7 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
         $data = [
             'url_id' => $user->getShortUrlId(),
             'lang' => $this->localExtractor->getLocal(),
-            'redirect_url' => $this->router->generate('index')
+            'redirect_url' => $this->router->generate('index', [], RouterInterface::ABSOLUTE_URL)
         ];
 
         if ((bool) $this->identificationDataStorage->readValue('is_wifi_flow')) {
