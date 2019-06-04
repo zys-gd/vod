@@ -180,17 +180,12 @@ class ConsentFlowHandler
                 return $response;
             }
 
-            $redirect = $request->get('redirect', false);
-            $redirect_url = $request->get('location', '/');
+            $redirect_url = $this->router->generate('index');
             $updatedUrl = $this->urlParamAppender->appendUrl($redirect_url, [
                 'err_handle' => 'already_subscribed'
             ]);
 
-            if ($redirect) {
-                return new RedirectResponse($updatedUrl);
-            }
-
-            throw new ExistingSubscriptionException('You already have an active subscription.', $subscription);
+            return new RedirectResponse($updatedUrl);
         }
     }
 
