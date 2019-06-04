@@ -95,6 +95,10 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
             'redirect_url' => $this->router->generate('index')
         ];
 
+        if ((bool) $this->identificationDataStorage->readValue('is_wifi_flow')) {
+            $data['subscription_contract_id'] = $this->identificationDataStorage->readValue('subscription_contract_id');
+        }
+
         return $data;
     }
 
