@@ -31,6 +31,7 @@ use SubscriptionBundle\Service\CAPTool\Exception\CapToolAccessException;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiterInterface;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
+use SubscriptionBundle\Service\SubscriptionVoter\BatchSubscriptionVoter;
 use SubscriptionBundle\Service\UserExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -96,6 +97,10 @@ class SubscribeAction extends AbstractController
      */
     private $campaignConfirmationHandlerProvider;
     /**
+     * @var BatchSubscriptionVoter
+     */
+    private $subscriptionVoter;
+    /**
      * @var SubscriptionLimiter
      */
     private $subscriptionLimiter;
@@ -127,6 +132,7 @@ class SubscribeAction extends AbstractController
      * @param SubscriptionLimiter                 $subscriptionLimiter
      * @param SubscriptionLimitNotifier           $subscriptionLimitNotifier
      * @param BlacklistAttemptRegistrator         $blacklistDeducter
+     * @param BatchSubscriptionVoter              $subscriptionVoter
      */
     public function __construct(
         UserExtractor $userExtractor,
@@ -144,7 +150,8 @@ class SubscribeAction extends AbstractController
         CampaignConfirmationHandlerProvider $campaignConfirmationHandlerProvider,
         SubscriptionLimiter $subscriptionLimiter,
         SubscriptionLimitNotifier $subscriptionLimitNotifier,
-        BlacklistAttemptRegistrator $blacklistDeducter
+        BlacklistAttemptRegistrator $blacklistDeducter,
+        BatchSubscriptionVoter $subscriptionVoter
     )
     {
         $this->userExtractor                       = $userExtractor;
@@ -160,6 +167,7 @@ class SubscribeAction extends AbstractController
         $this->defaultRedirectUrl                  = $defaultRedirectUrl;
         $this->postPaidHandler                     = $postPaidHandler;
         $this->campaignConfirmationHandlerProvider = $campaignConfirmationHandlerProvider;
+        $this->subscriptionVoter                   = $subscriptionVoter;
         $this->subscriptionLimiter                 = $subscriptionLimiter;
         $this->subscriptionLimitNotifier           = $subscriptionLimitNotifier;
         $this->blacklistDeducter                   = $blacklistDeducter;
@@ -179,6 +187,10 @@ class SubscribeAction extends AbstractController
      */
     public function __invoke(Request $request, IdentificationData $identificationData, ISPData $ISPData)
     {
+        if (!$this->subscriptionVoter->checkIfSubscriptionAllowed($request, $identificationData, $ISPData)) {
+            return new RedirectResponse($this->generateUrl('index', ['err_handle' => 'subscription_restricted']));
+        }
+
         if ($this->postPaidHandler->isPostPaidRestricted()) {
             return new RedirectResponse($this->generateUrl('index', ['err_handle' => 'postpaid_restricted']));
         }

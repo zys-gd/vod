@@ -9,6 +9,7 @@
 namespace SubscriptionBundle\Service\Action\Unsubscribe;
 
 
+use App\Domain\Service\CrossSubscriptionAPI\ApiConnector;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Notification\API\Exception\NotificationSendFailedException;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
@@ -56,6 +57,10 @@ class Unsubscriber
      * @var UnsubscribeParametersProvider
      */
     private $parametersProvider;
+    /**
+     * @var ApiConnector
+     */
+    private $crossSubscriptionApi;
 
 
     /**
@@ -68,6 +73,7 @@ class Unsubscriber
      * @param OnUnsubscribeUpdater          $onUnsubscribeUpdater
      * @param SubscriptionStatisticSender   $subscriptionStatisticSender
      * @param UnsubscribeParametersProvider $parametersProvider
+     * @param ApiConnector                  $crossSubscriptionApi
      */
     public function __construct(
         LoggerInterface $logger,
@@ -77,7 +83,8 @@ class Unsubscriber
         UnsubscribeProcess $unsubscribeProcess,
         OnUnsubscribeUpdater $onUnsubscribeUpdater,
         SubscriptionStatisticSender $subscriptionStatisticSender,
-        UnsubscribeParametersProvider $parametersProvider
+        UnsubscribeParametersProvider $parametersProvider,
+        ApiConnector $crossSubscriptionApi
     )
     {
         $this->logger                      = $logger;
@@ -88,6 +95,7 @@ class Unsubscriber
         $this->onUnsubscribeUpdater        = $onUnsubscribeUpdater;
         $this->subscriptionStatisticSender = $subscriptionStatisticSender;
         $this->parametersProvider          = $parametersProvider;
+        $this->crossSubscriptionApi        = $crossSubscriptionApi;
     }
 
     public function unsubscribe(Subscription $subscription, SubscriptionPack $subscriptionPack)
@@ -102,7 +110,7 @@ class Unsubscriber
 
             $previousStatus = $subscription->getStatus();
             $previousStage  = $subscription->getCurrentStage();
-            $response = $this->fakeResponseProvider->getDummyResult(
+            $response       = $this->fakeResponseProvider->getDummyResult(
                 $subscription,
                 UnsubscribeProcess::PROCESS_METHOD_UNSUBSCRIBE
             );
@@ -115,6 +123,9 @@ class Unsubscriber
                     $subscription->getUser()->getCarrier()
                 );
                 $this->onUnsubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
+
+                $user = $subscription->getUser();
+
                 return $response;
 
             } catch (NotificationSendFailedException $exception) {
@@ -131,6 +142,9 @@ class Unsubscriber
             try {
                 $response = $this->unsubscribeProcess->doUnsubscribe($parameters);
                 $this->onUnsubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
+
+                $user = $subscription->getUser();
+
                 return $response;
 
             } catch (UnsubscribingProcessException $exception) {
