@@ -50,7 +50,7 @@
     <script type="text/javascript">
         function resolveErrorMessage(key) {
             var texts = {
-                'already_subscribed': "{{ translate('messages.error.already_subscribed') }}",
+                'already_subscribed': "{{ translate('messages.error.already_subscribed') | raw }}",
                 'postpaid_restricted': "{{ translate('messages.error.postpaid_restricted') }}"
             };
             return texts[key] || null;
