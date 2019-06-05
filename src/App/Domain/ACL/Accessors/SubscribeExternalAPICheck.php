@@ -33,7 +33,7 @@ class SubscribeExternalAPICheck
 
             return $this->endpoint->checkIfExists($msisdn, $carrierId);
         } catch (\Exception $exception) {
-            return true;
+            return false;
         }
     }
 }
