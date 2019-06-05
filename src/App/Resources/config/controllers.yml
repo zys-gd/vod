@@ -22,7 +22,9 @@ services:
     App\Admin\Controller\SubcategoryAdminController:
         arguments: ['@doctrine.orm.entity_manager']
 
-    App\Admin\Controller\CampaignAdminController: ~
+    App\Admin\Controller\CampaignAdminController:
+        arguments:
+            - '@form.factory'
 
     App\Controller\ContentController:
         arguments:

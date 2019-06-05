@@ -342,6 +342,7 @@ class CampaignAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->add('clone', $this->getRouterIdParameter().'/clone');
+        $collection->add('clone_confirm', $this->getRouterIdParameter().'/clone_confirm');
 
         parent::configureRoutes($collection);
     }
