@@ -9,6 +9,7 @@
 namespace SubscriptionBundle\Service\Callback\Common\Type;
 
 
+use App\Domain\Service\CrossSubscriptionAPI\ApiConnector;
 use PiwikBundle\Service\PiwikTracker;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
@@ -28,6 +29,10 @@ class SubscriptionCallbackHandler extends AbstractCallbackHandler
      * @var SubscriptionLimitCompleter
      */
     private $completer;
+    /**
+     * @var ApiConnector
+     */
+    private $crossSubscriptionApi;
 
 
     /**
@@ -37,11 +42,13 @@ class SubscriptionCallbackHandler extends AbstractCallbackHandler
      */
     public function __construct(
         OnSubscribeUpdater $onSubscribeUpdater,
-        SubscriptionLimitCompleter $completer
+        SubscriptionLimitCompleter $completer,
+        ApiConnector $crossSubscriptionApi
     )
     {
-        $this->onSubscribeUpdater = $onSubscribeUpdater;
-        $this->completer          = $completer;
+        $this->onSubscribeUpdater   = $onSubscribeUpdater;
+        $this->completer            = $completer;
+        $this->crossSubscriptionApi = $crossSubscriptionApi;
     }
 
     public function updateSubscriptionByCallbackData(Subscription $subscription, ProcessResult $response)
@@ -66,5 +73,9 @@ class SubscriptionCallbackHandler extends AbstractCallbackHandler
     public function afterProcess(Subscription $subscription, ProcessResult $response): void
     {
         $this->completer->finishProcess($response, $subscription);
+
+        $user = $subscription->getUser();
+
+        $this->crossSubscriptionApi->registerSubscription($user->getIdentifier(), $user->getBillingCarrierId());
     }
 }

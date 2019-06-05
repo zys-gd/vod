@@ -50,6 +50,7 @@ class SubscriptionExtension extends ConfigurableExtension
         $loader->load('fixtures.yml');
         $loader->load('twig.yml');
         $loader->load('campaign_confirmation.yml');
+        $loader->load('subscription-voters.yml');
         $loader->load('subscription_limiter.yml');
 
 
