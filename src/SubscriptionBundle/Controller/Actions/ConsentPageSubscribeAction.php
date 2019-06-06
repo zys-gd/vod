@@ -10,9 +10,10 @@ use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Identification\Handler\HasConsentPageFlow as IdentConsentPageFlow;
 use SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound;
 use SubscriptionBundle\Exception\ExistingSubscriptionException;
+use SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter;
 use SubscriptionBundle\Service\Action\Subscribe\Consent\ConsentFlowHandler;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\HasConsentPageFlow;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
+use SubscriptionBundle\Service\Action\Subscribe\Handler\{SubscriptionHandlerProvider, HasConsentPageFlow};
+use SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator;
 use SubscriptionBundle\Service\UserExtractor;
 use Symfony\Component\HttpFoundation\{Request, Response};
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -48,6 +49,16 @@ class ConsentPageSubscribeAction
     private $consentFlowHandler;
 
     /**
+     * @var BlacklistAttemptRegistrator
+     */
+    private $blacklistAttemptRegistrator;
+
+    /**
+     * @var BlacklistVoter
+     */
+    private $blacklistVoter;
+
+    /**
      * ConsentPageSubscribeAction constructor
      *
      * @param CarrierRepositoryInterface $carrierRepository
@@ -55,25 +66,31 @@ class ConsentPageSubscribeAction
      * @param SubscriptionHandlerProvider $subscriptionHandlerProvider
      * @param UserExtractor $userExtractor
      * @param ConsentFlowHandler $consentFlowHandler
+     * @param BlacklistVoter $blacklistVoter
+     * @param BlacklistAttemptRegistrator $blacklistAttemptRegistrator
      */
     public function __construct(
         CarrierRepositoryInterface $carrierRepository,
         IdentificationHandlerProvider $identificationHandlerProvider,
         SubscriptionHandlerProvider $subscriptionHandlerProvider,
         UserExtractor $userExtractor,
-        ConsentFlowHandler $consentFlowHandler
+        ConsentFlowHandler $consentFlowHandler,
+        BlacklistVoter $blacklistVoter,
+        BlacklistAttemptRegistrator $blacklistAttemptRegistrator
     ) {
         $this->carrierRepository = $carrierRepository;
         $this->identificationHandlerProvider = $identificationHandlerProvider;
         $this->subscriptionHandlerProvider = $subscriptionHandlerProvider;
         $this->userExtractor = $userExtractor;
         $this->consentFlowHandler = $consentFlowHandler;
+        $this->blacklistVoter = $blacklistVoter;
+        $this->blacklistAttemptRegistrator = $blacklistAttemptRegistrator;
     }
 
     /**
      * @param Request $request
      * @param IdentificationData $identificationData
-     * @param ISPData $ISPData
+     * @param ISPData $ispData
      *
      * @return Response
      *
@@ -81,9 +98,9 @@ class ConsentPageSubscribeAction
      * @throws ActiveSubscriptionPackNotFound
      * @throws ExistingSubscriptionException
      */
-    public function __invoke(Request $request, IdentificationData $identificationData, ISPData $ISPData)
+    public function __invoke(Request $request, IdentificationData $identificationData, ISPData $ispData)
     {
-        $carrier = $this->carrierRepository->findOneByBillingId($ISPData->getCarrierId());
+        $carrier = $this->carrierRepository->findOneByBillingId($ispData->getCarrierId());
         $user = $this->userExtractor->getUserByIdentificationData($identificationData);
 
         $this->ensureConsentPageFlowIsAvailable($carrier);
@@ -92,6 +109,16 @@ class ConsentPageSubscribeAction
 
         if (!$subscriber instanceof HasConsentPageFlow) {
             throw new BadRequestHttpException('This action is available only for subscription `ConsentPageFlow`');
+        }
+
+        if (
+            $this->blacklistVoter->isInBlacklist($request->getSession()) ||
+            !$this->blacklistAttemptRegistrator->registerSubscriptionAttempt(
+                $identificationData->getIdentificationToken(),
+                (int) $ispData->getCarrierId()
+            )
+        ) {
+            return $this->blacklistVoter->createNotAllowedResponse();
         }
 
         return $this->consentFlowHandler->process($request, $user, $subscriber);

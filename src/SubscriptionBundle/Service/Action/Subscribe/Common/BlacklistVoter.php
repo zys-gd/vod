@@ -12,9 +12,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * Class BlacklistVoter
+ */
 class BlacklistVoter
 {
-
     /**
      * @var ICacheService
      */
@@ -63,8 +65,7 @@ class BlacklistVoter
         LoggerInterface $logger,
         string $subNotAllowedRoute,
         CarrierRepository $carrierRepository
-    )
-    {
+    ) {
         $this->cacheService       = $cacheService;
         $this->router             = $router;
         $this->blacklistChecker   = $blacklistChecker;
@@ -74,6 +75,11 @@ class BlacklistVoter
         $this->carrierRepository  = $carrierRepository;
     }
 
+    /**
+     * @param SessionInterface $session
+     *
+     * @return bool
+     */
     public function isInBlacklist(SessionInterface $session)
     {
         $data         = IdentificationFlowDataExtractor::extractIdentificationData($session);
@@ -82,13 +88,21 @@ class BlacklistVoter
         return $this->blacklistChecker->isBlacklisted($sessionToken);
     }
 
-
     /**
      * @return RedirectResponse
      */
     public function createNotAllowedResponse()
     {
         $response = new RedirectResponse($this->router->generate($this->subNotAllowedRoute));
+
         return $response;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRedirectUrl(): string
+    {
+        return $this->router->generate($this->subNotAllowedRoute);
     }
 }
