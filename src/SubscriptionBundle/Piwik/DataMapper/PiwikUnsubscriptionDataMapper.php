@@ -44,7 +44,7 @@ class PiwikUnsubscriptionDataMapper
      * @return bool|EcommerceDTO
      */
     public function getEcommerceDTO(int $responseId,
-        int $chargePaid,
+        ?int $chargePaid,
         bool $resultStatus,
         Subscription $subscription,
         string $action
