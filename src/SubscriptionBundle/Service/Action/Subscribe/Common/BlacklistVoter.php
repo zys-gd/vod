@@ -80,12 +80,22 @@ class BlacklistVoter
      *
      * @return bool
      */
-    public function isInBlacklist(SessionInterface $session)
+    public function isUserBlacklisted(SessionInterface $session): bool
     {
         $data         = IdentificationFlowDataExtractor::extractIdentificationData($session);
         $sessionToken = $data['identification_token'] ?? null;
 
-        return $this->blacklistChecker->isBlacklisted($sessionToken);
+        return $this->blacklistChecker->isUserBlacklisted($sessionToken);
+    }
+
+    /**
+     * @param string $msisdn
+     *
+     * @return bool
+     */
+    public function isPhoneNumberBlacklisted(string $msisdn): bool
+    {
+        return $this->blacklistChecker->isPhoneNumberBlacklisted($msisdn);
     }
 
     /**

@@ -97,6 +97,7 @@ class ConsentPageSubscribeAction
      * @throws NonUniqueResultException
      * @throws ActiveSubscriptionPackNotFound
      * @throws ExistingSubscriptionException
+     * @throws \Exception
      */
     public function __invoke(Request $request, IdentificationData $identificationData, ISPData $ispData)
     {
@@ -112,7 +113,7 @@ class ConsentPageSubscribeAction
         }
 
         if (
-            $this->blacklistVoter->isInBlacklist($request->getSession()) ||
+            $this->blacklistVoter->isUserBlacklisted($request->getSession()) ||
             !$this->blacklistAttemptRegistrator->registerSubscriptionAttempt(
                 $identificationData->getIdentificationToken(),
                 (int) $ispData->getCarrierId()

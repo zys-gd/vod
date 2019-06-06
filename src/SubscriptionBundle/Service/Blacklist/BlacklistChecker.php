@@ -21,7 +21,6 @@ class BlacklistChecker
      */
     private $blackListRepository;
 
-
     /**
      * BlacklistChecker constructor
      *
@@ -31,8 +30,7 @@ class BlacklistChecker
     public function __construct(
         UserRepository $userRepository,
         BlackListRepository $blackListRepository
-    )
-    {
+    ) {
         $this->userRepository      = $userRepository;
         $this->blackListRepository = $blackListRepository;
     }
@@ -42,12 +40,33 @@ class BlacklistChecker
      *
      * @return bool
      */
-    public function isBlacklisted(string $sessionToken): bool
+    public function isUserBlacklisted(string $sessionToken): bool
+    {
+        $user = $this->userRepository->findOneByIdentificationToken($sessionToken);
+
+        return $this->isBlacklisted($user->getIdentifier());
+    }
+
+    /**
+     * @param string $msisdn
+     *
+     * @return bool
+     */
+    public function isPhoneNumberBlacklisted(string $msisdn): bool
+    {
+        return $this->isBlacklisted($msisdn);
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @return bool
+     */
+    private function isBlacklisted(string $identifier): bool
     {
         try {
-            $user = $this->userRepository->findOneByIdentificationToken($sessionToken);
             /** @var BlackList $blackList */
-            $blackList = $this->blackListRepository->findOneBy(['alias' => $user->getIdentifier()]);
+            $blackList = $this->blackListRepository->findOneBy(['alias' => $identifier]);
             $today     = new \DateTime();
             if ($blackList->getDuration() > 0
                 && $blackList->getBanStart() < $today
@@ -62,6 +81,4 @@ class BlacklistChecker
 
         return false;
     }
-
-
 }

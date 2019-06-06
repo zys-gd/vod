@@ -132,7 +132,7 @@ class PinIdentificationController extends AbstractController implements APIContr
         }
 
         if (
-            $this->blacklistVoter->isInBlacklist($request->getSession()) ||
+            $this->blacklistVoter->isUserBlacklisted($request->getSession()) ||
             !$this->blacklistAttemptRegistrator->registerSubscriptionAttempt(
                 $identificationData->getIdentificationToken(),
                 (int) $ispData->getCarrierId()
