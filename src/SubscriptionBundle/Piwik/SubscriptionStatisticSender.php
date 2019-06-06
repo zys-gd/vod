@@ -147,7 +147,8 @@ class SubscriptionStatisticSender
     {
         try {
             $this->logger->info('Trying to send piwik event', [
-                'eventName' => 'trackResubscribe'
+                'eventName' => 'trackResubscribe',
+                'responseData' => $responseData
             ]);
 
             if ($this->resultVerifier->cantTrackSubscription($responseData)) {
@@ -255,7 +256,8 @@ class SubscriptionStatisticSender
     {
         try {
             $this->logger->info('Trying to send piwik event', [
-                'eventName' => 'trackUnsubscribe'
+                'eventName' => 'trackUnsubscribe',
+                'responseData' => $responseData
             ]);
 
             if ($this->resultVerifier->cantTrackUnsubscription($responseData)) {

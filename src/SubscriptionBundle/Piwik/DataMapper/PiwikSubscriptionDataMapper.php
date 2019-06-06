@@ -45,7 +45,8 @@ class PiwikSubscriptionDataMapper
      *
      * @return EcommerceDTO
      */
-    public function getEcommerceDTO(int $responseId,
+    public function getEcommerceDTO(
+        ?int $responseId,
         ?int $chargePaid,
         bool $resultStatus,
         Subscription $subscription,
