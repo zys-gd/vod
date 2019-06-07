@@ -5,7 +5,6 @@ namespace IdentificationBundle\WifiIdentification\Controller;
 use ExtrasBundle\API\Controller\APIControllerInterface;
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\BillingFramework\Process\Exception\PinVerifyProcessException;
-use IdentificationBundle\Identification\DTO\IdentificationData;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\WifiIdentification\Service\ErrorCodeResolver;
@@ -107,7 +106,6 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @Route("/pincode/send",name="send_sms_pin_code")
      *
      * @param Request $request
-     * @param IdentificationData $identificationData
      * @param ISPData $ispData
      *
      * @return JsonResponse
@@ -117,7 +115,7 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @throws \Twig_Error_Syntax
      * @throws \Exception
      */
-    public function sendSMSPinCodeAction(Request $request, IdentificationData $identificationData, ISPData $ispData)
+    public function sendSMSPinCodeAction(Request $request, ISPData $ispData)
     {
         if (!$mobileNumber = $request->get('mobile_number', '')) {
             throw new BadRequestHttpException('`mobile_number` is required');
@@ -131,12 +129,11 @@ class PinIdentificationController extends AbstractController implements APIContr
             ]);
         }
 
-        if (
-            $this->blacklistVoter->isUserBlacklisted($request->getSession()) ||
-            !$this->blacklistAttemptRegistrator->registerSubscriptionAttempt(
-                $identificationData->getIdentificationToken(),
-                (int) $ispData->getCarrierId()
-            )
+        $carrierId = $ispData->getCarrierId();
+        $cleanPhoneNumber = str_replace('+', '', $mobileNumber);
+
+        if ($this->blacklistVoter->isPhoneNumberBlacklisted($cleanPhoneNumber)
+            || $this->blacklistAttemptRegistrator->isSubscriptionAttemptRaised($cleanPhoneNumber, (int) $carrierId)
         ) {
             return $this->getSimpleJsonResponse('User in black list', 200, [], [
                 'success' => false, 'redirectUrl' => $this->blacklistVoter->getRedirectUrl()
@@ -148,7 +145,6 @@ class PinIdentificationController extends AbstractController implements APIContr
         $postData = $request->request->all();
         $isResend = isset($postData['resend-pin']);
 
-        $carrierId = $ispData->getCarrierId();
         try {
             $this->identSMSSender->sendSMS($carrierId, $mobileNumber, $isResend);
             $data = ['success' => true, 'carrierId' => $carrierId, 'isResend' => $isResend];

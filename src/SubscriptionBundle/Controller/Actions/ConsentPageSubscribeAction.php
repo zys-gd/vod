@@ -101,7 +101,10 @@ class ConsentPageSubscribeAction
      */
     public function __invoke(Request $request, IdentificationData $identificationData, ISPData $ispData)
     {
-        $carrier = $this->carrierRepository->findOneByBillingId($ispData->getCarrierId());
+        $carrierId = $ispData->getCarrierId();
+        $identificationToken = $identificationData->getIdentificationToken();
+
+        $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
         $user = $this->userExtractor->getUserByIdentificationData($identificationData);
 
         $this->ensureConsentPageFlowIsAvailable($carrier);
@@ -112,12 +115,8 @@ class ConsentPageSubscribeAction
             throw new BadRequestHttpException('This action is available only for subscription `ConsentPageFlow`');
         }
 
-        if (
-            $this->blacklistVoter->isUserBlacklisted($request->getSession()) ||
-            !$this->blacklistAttemptRegistrator->registerSubscriptionAttempt(
-                $identificationData->getIdentificationToken(),
-                (int) $ispData->getCarrierId()
-            )
+        if ($this->blacklistVoter->isUserBlacklisted($request->getSession())
+            || !$this->blacklistAttemptRegistrator->registerSubscriptionAttempt($identificationToken, (int) $carrierId)
         ) {
             return $this->blacklistVoter->createNotAllowedResponse();
         }

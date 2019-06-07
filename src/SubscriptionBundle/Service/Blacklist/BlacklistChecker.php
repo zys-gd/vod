@@ -36,25 +36,25 @@ class BlacklistChecker
     }
 
     /**
-     * @param string $sessionToken
+     * @param string $identificationToken
      *
      * @return bool
      */
-    public function isUserBlacklisted(string $sessionToken): bool
+    public function isUserBlacklisted(string $identificationToken): bool
     {
-        $user = $this->userRepository->findOneByIdentificationToken($sessionToken);
+        $user = $this->userRepository->findOneByIdentificationToken($identificationToken);
 
         return $this->isBlacklisted($user->getIdentifier());
     }
 
     /**
-     * @param string $msisdn
+     * @param string $phoneNumber
      *
      * @return bool
      */
-    public function isPhoneNumberBlacklisted(string $msisdn): bool
+    public function isPhoneNumberBlacklisted(string $phoneNumber): bool
     {
-        return $this->isBlacklisted($msisdn);
+        return $this->isBlacklisted($phoneNumber);
     }
 
     /**

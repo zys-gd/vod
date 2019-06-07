@@ -102,6 +102,8 @@ services:
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
             - '@app.cache.default.subscription'
             - '@SubscriptionBundle\Service\Blacklist\BlacklistSaver'
+            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\Repository\UserRepository'
 
     SubscriptionBundle\Service\Notification\Email\CAPNotificationSender:
         arguments:

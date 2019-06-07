@@ -83,9 +83,9 @@ class BlacklistVoter
     public function isUserBlacklisted(SessionInterface $session): bool
     {
         $data         = IdentificationFlowDataExtractor::extractIdentificationData($session);
-        $sessionToken = $data['identification_token'] ?? null;
+        $identificationToken = $data['identification_token'] ?? null;
 
-        return $this->blacklistChecker->isUserBlacklisted($sessionToken);
+        return $this->blacklistChecker->isUserBlacklisted($identificationToken);
     }
 
     /**
