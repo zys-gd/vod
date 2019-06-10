@@ -43,7 +43,7 @@ services:
             - ~
             - SubscriptionBundle\Entity\BlackList
             - ~
-            - '@SubscriptionBundle\Service\BlackListService'
+            - '@SubscriptionBundle\Service\Blacklist\BlacklistSaver'
         tags:
             - { name: sonata.admin, manager_type: orm, group: black_list_management, label: Black list }
         calls:
@@ -66,5 +66,8 @@ services:
             - ~
             - '@SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository'
             - '@doctrine.orm.entity_manager'
+            - '@SubscriptionBundle\Service\CAPTool\Limiter\LimiterStorage'
+            - '@SubscriptionBundle\Service\CAPTool\Limiter\StorageKeyGenerator'
+            - '@SubscriptionBundle\Service\VisitCAPTool\VisitStorage'
         tags:
             - { name: sonata.admin, manager_type: orm, group: affiliate_management, label: Constraints by affiliate }

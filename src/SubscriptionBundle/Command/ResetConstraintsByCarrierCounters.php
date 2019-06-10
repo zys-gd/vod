@@ -5,7 +5,9 @@ namespace SubscriptionBundle\Command;
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
-use SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis;
+use SubscriptionBundle\Service\CAPTool\DTO\CarrierLimiterData;
+use SubscriptionBundle\Service\CAPTool\Limiter\LimiterStorage;
+use SubscriptionBundle\Service\CAPTool\Limiter\StorageKeyGenerator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,10 +17,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ResetConstraintsByCarrierCounters extends Command
 {
-    /**
-     * @var ConstraintCounterRedis
-     */
-    private $constraintCounterRedis;
 
     /**
      * @var EntityManagerInterface
@@ -29,34 +27,46 @@ class ResetConstraintsByCarrierCounters extends Command
      * @var CarrierRepositoryInterface
      */
     private $carrierRepository;
+    /**
+     * @var LimiterStorage
+     */
+    private $limiterDataStorage;
+    /**
+     * @var StorageKeyGenerator
+     */
+    private $storageKeyGenerator;
 
     /**
      * ResetConstraintsByCarrierCounters constructor
      *
-     * @param ConstraintCounterRedis $constraintCounterRedis
-     * @param EntityManagerInterface $entityManager
+     * @param EntityManagerInterface     $entityManager
      * @param CarrierRepositoryInterface $carrierRepository
+     * @param LimiterStorage             $limiterDataStorage
+     * @param StorageKeyGenerator        $storageKeyGenerator
      */
     public function __construct(
-        ConstraintCounterRedis $constraintCounterRedis,
         EntityManagerInterface $entityManager,
-        CarrierRepositoryInterface $carrierRepository
-    ) {
-        $this->constraintCounterRedis = $constraintCounterRedis;
-        $this->entityManager = $entityManager;
-        $this->carrierRepository = $carrierRepository;
+        CarrierRepositoryInterface $carrierRepository,
+        LimiterStorage $limiterDataStorage,
+        StorageKeyGenerator $storageKeyGenerator
+    )
+    {
+        $this->entityManager       = $entityManager;
+        $this->carrierRepository   = $carrierRepository;
+        $this->limiterDataStorage  = $limiterDataStorage;
+        $this->storageKeyGenerator = $storageKeyGenerator;
 
         parent::__construct();
     }
 
     public function configure()
     {
-        $this->setName('constraint-by-carrier:reset');
+        $this->setName('cap:constraint-by-carrier:reset');
         $this->setHelp('Reset from redis all counters for constraints by affiliate');
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      *
      * @return int|void|null
@@ -80,8 +90,12 @@ class ResetConstraintsByCarrierCounters extends Command
             if (empty($allowedSubscriptions)) {
                 continue;
             }
+            $output->writeln($carrier->getName());
 
-            $this->constraintCounterRedis->resetCounter($carrier->getBillingCarrierId());
+            $key = $this->storageKeyGenerator->generateKey($carrier);
+
+            $this->limiterDataStorage->resetPendingCounter($key);
+            $this->limiterDataStorage->resetFinishedCounter($key);
 
             $carrier
                 ->setIsCapAlertDispatch(false)

@@ -93,7 +93,7 @@ class IdentificationStatusExtension extends \Twig_Extension
         if (isset($ispDetectionData['carrier_id']) && $ispDetectionData['carrier_id']) {
             /** @var Carrier $carrier */
             $carrier = $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id']);
-            return $carrier->isLpOtp();
+            return $carrier->isConfirmationClick();
         }
         return false;
     }

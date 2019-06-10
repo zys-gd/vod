@@ -9,6 +9,7 @@
 namespace SubscriptionBundle\Service\Action\Subscribe;
 
 
+use App\Domain\Service\CrossSubscriptionAPI\ApiConnector;
 use IdentificationBundle\Entity\User;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
@@ -17,12 +18,12 @@ use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessExce
 use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
-use SubscriptionBundle\Entity\SubscriptionPlanInterface;
 use SubscriptionBundle\Service\Action\Common\FakeResponseProvider;
 use SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker;
 use SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePerformer;
 use SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePromotionalPerformer;
 use SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater;
+use SubscriptionBundle\Service\CAPTool\SubscriptionLimitCompleter;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\Notification\Notifier;
 use SubscriptionBundle\Service\SubscriptionCreator;
@@ -72,9 +73,9 @@ class Subscriber
      */
     private $subscribeParametersProvider;
     /**
-     * @var SubscriptionCounterUpdater
+     * @var SubscriptionLimitCompleter
      */
-    private $subscriptionCounterUpdater;
+    private $subscriptionLimitCompleter;
     /**
      * @var SubscriptionSerializer
      */
@@ -87,24 +88,30 @@ class Subscriber
      * @var SubscribePromotionalPerformer
      */
     private $subscribePromotionalPerformer;
+    /**
+     * @var ApiConnector
+     */
+    private $crossSubscriptionApi;
 
 
     /**
      * Subscriber constructor.
-     * @param LoggerInterface                   $logger
-     * @param EntitySaveHelper                  $entitySaveHelper
-     * @param SessionInterface                  $session
-     * @param SubscriptionCreator               $subscriptionCreator
-     * @param PromotionalResponseChecker        $promotionalResponseChecker
-     * @param FakeResponseProvider              $fakeResponseProvider
-     * @param Notifier                          $notifier
-     * @param SubscribeProcess                  $subscribeProcess
-     * @param OnSubscribeUpdater                $onSubscribeUpdater
-     * @param SubscribeParametersProvider       $subscribeParametersProvider
-     * @param SubscriptionCounterUpdater        $subscriptionCounterUpdater
-     * @param SubscriptionSerializer            $subscriptionSerializer
-     * @param SubscribePerformer                $subscribePerformer
-     * @param SubscribePromotionalPerformer     $subscribePromotionalPerformer
+     *
+     * @param LoggerInterface               $logger
+     * @param EntitySaveHelper              $entitySaveHelper
+     * @param SessionInterface              $session
+     * @param SubscriptionCreator           $subscriptionCreator
+     * @param PromotionalResponseChecker    $promotionalResponseChecker
+     * @param FakeResponseProvider          $fakeResponseProvider
+     * @param Notifier                      $notifier
+     * @param SubscribeProcess              $subscribeProcess
+     * @param OnSubscribeUpdater            $onSubscribeUpdater
+     * @param SubscribeParametersProvider   $subscribeParametersProvider
+     * @param SubscriptionLimitCompleter    $subscriptionLimitCompleter
+     * @param SubscriptionCounterUpdater    $subscriptionCounterUpdater
+     * @param SubscriptionSerializer        $subscriptionSerializer
+     * @param SubscribePerformer            $subscribePerformer
+     * @param SubscribePromotionalPerformer $subscribePromotionalPerformer
      */
     public function __construct(
         LoggerInterface $logger,
@@ -117,34 +124,40 @@ class Subscriber
         SubscribeProcess $subscribeProcess,
         OnSubscribeUpdater $onSubscribeUpdater,
         SubscribeParametersProvider $subscribeParametersProvider,
-        SubscriptionCounterUpdater $subscriptionCounterUpdater,
-        SubscriptionSerializer $subscriptionSerializer,
+        SubscriptionLimitCompleter $subscriptionLimitCompleter,
+        SubscriptionSerializer $subscriptionSerializer
+        ,
         SubscribePerformer $subscribePerformer,
-        SubscribePromotionalPerformer $subscribePromotionalPerformer
+        SubscribePromotionalPerformer $subscribePromotionalPerformer,
+        ApiConnector $crossSubscriptionApi
     )
     {
-        $this->logger                           = $logger;
-        $this->entitySaveHelper                 = $entitySaveHelper;
-        $this->session                          = $session;
-        $this->subscriptionCreator              = $subscriptionCreator;
-        $this->promotionalResponseChecker       = $promotionalResponseChecker;
-        $this->fakeResponseProvider             = $fakeResponseProvider;
-        $this->notifier                         = $notifier;
-        $this->subscribeProcess                 = $subscribeProcess;
-        $this->onSubscribeUpdater               = $onSubscribeUpdater;
-        $this->subscribeParametersProvider      = $subscribeParametersProvider;
-        $this->subscriptionCounterUpdater       = $subscriptionCounterUpdater;
-        $this->subscriptionSerializer           = $subscriptionSerializer;
-        $this->subscribePerformer               = $subscribePerformer;
-        $this->subscribePromotionalPerformer    = $subscribePromotionalPerformer;
+        $this->logger                        = $logger;
+        $this->entitySaveHelper              = $entitySaveHelper;
+        $this->session                       = $session;
+        $this->subscriptionCreator           = $subscriptionCreator;
+        $this->promotionalResponseChecker    = $promotionalResponseChecker;
+        $this->fakeResponseProvider          = $fakeResponseProvider;
+        $this->notifier                      = $notifier;
+        $this->subscribeProcess              = $subscribeProcess;
+        $this->onSubscribeUpdater            = $onSubscribeUpdater;
+        $this->subscribeParametersProvider   = $subscribeParametersProvider;
+        $this->subscriptionLimitCompleter    = $subscriptionLimitCompleter;
+        $this->subscriptionSerializer        = $subscriptionSerializer;
+        $this->subscribePerformer            = $subscribePerformer;
+        $this->subscribePromotionalPerformer = $subscribePromotionalPerformer;
+        $this->crossSubscriptionApi          = $crossSubscriptionApi;
     }
 
     /**
      * Subscribe user to given subscription pack
+     *
      * @param User             $user
      * @param SubscriptionPack $plan
      * @param array            $additionalData
+     *
      * @return array
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function subscribe(User $user, SubscriptionPack $plan, $additionalData = []): array
     {
@@ -164,21 +177,19 @@ class Subscriber
 
         try {
 
-            if($this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription)){
+            if ($this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription)) {
                 $response = $this->subscribePromotionalPerformer->doSubscribe($subscription);
                 if (!$plan->isFirstSubscriptionPeriodIsFree()) {
                     $this->subscribePerformer->doSubscribe($subscription, $additionalData);
                 }
-            }else{
-                $response =  $this->subscribePerformer->doSubscribe($subscription, $additionalData);
+            } else {
+                $response = $this->subscribePerformer->doSubscribe($subscription, $additionalData);
 
             }
 
             $this->onSubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
-
-            if ($response->isSuccessful() && $response->isFinal()) {
-                $this->subscriptionCounterUpdater->updateSubscriptionCounter($subscription);
-            }
+            $this->subscriptionLimitCompleter->finishProcess($response, $subscription);
+            $this->crossSubscriptionApi->registerSubscription($user->getIdentifier(), $user->getBillingCarrierId());
 
             return [$subscription, $response];
 
@@ -196,10 +207,14 @@ class Subscriber
      * @param Subscription     $existingSubscription
      * @param SubscriptionPack $plan
      * @param array            $additionalData
+     *
      * @return ProcessResult
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws SubscribingProcessException
      */
-    public function resubscribe(Subscription $existingSubscription, SubscriptionPack $plan, $additionalData = []): ProcessResult
+    public function resubscribe(Subscription $existingSubscription,
+                                SubscriptionPack $plan,
+                                $additionalData = []): ProcessResult
     {
         $subscription = $existingSubscription;
 
@@ -207,11 +222,11 @@ class Subscriber
 
         try {
 
-            if($this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription)){
+            if ($this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription)) {
                 $response = $this->subscribePromotionalPerformer->doSubscribe($subscription);
                 $this->subscribePerformer->doSubscribe($subscription, $additionalData);
-            }else{
-                $response =  $this->subscribePerformer->doSubscribe($subscription, $additionalData);
+            } else {
+                $response = $this->subscribePerformer->doSubscribe($subscription, $additionalData);
             }
 
 
@@ -250,6 +265,7 @@ class Subscriber
     /**
      * @param User             $User
      * @param SubscriptionPack $plan
+     *
      * @return Subscription
      */
     private function createPendingSubscription(User $User, SubscriptionPack $plan): Subscription

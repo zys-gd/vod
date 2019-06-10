@@ -13,35 +13,32 @@ use SubscriptionBundle\BillingFramework\Process\RenewProcess;
 
 class ProcessResult
 {
-    const STATUS_FAILED = 'failed';
-    const STATUS_SUCCESSFUL = 'successful';
+    const STATUS_FAILED           = 'failed';
+    const STATUS_SUCCESSFUL       = 'successful';
     const STATUS_WAITING_PROVIDER = 'waiting_provider';
-    const STATUS_RETRYING = 'retrying';
+    const STATUS_RETRYING         = 'retrying';
 
-    const ERROR_ALREADY_DONE = 'already_done';
-    const ERROR_INTERNAL = 'internal';
-    const ERROR_REJECTED = 'rejected';
-    const ERROR_CONNECTION_ERROR = 'connection_error';
-    const ERROR_NOT_ENOUGH_CREDIT = 'not_enough_credit';
-    const ERROR_CANCELED = 'canceled';
-    const ERROR_TOO_MANY_TRIES = 'too_many_tries';
-    const ERROR_USER_TIMEOUT = 'user_timeout';
-    const ERROR_NOT_FULLY_PAID = 'not_fully_paid';
-    const ERROR_EXPIRED_TIMEOUT = 'expired_timeout';
+    const ERROR_ALREADY_DONE         = 'already_done';
+    const ERROR_INTERNAL             = 'internal';
+    const ERROR_REJECTED             = 'rejected';
+    const ERROR_CONNECTION_ERROR     = 'connection_error';
+    const ERROR_NOT_ENOUGH_CREDIT    = 'not_enough_credit';
+    const ERROR_CANCELED             = 'canceled';
+    const ERROR_TOO_MANY_TRIES       = 'too_many_tries';
+    const ERROR_USER_TIMEOUT         = 'user_timeout';
+    const ERROR_NOT_FULLY_PAID       = 'not_fully_paid';
+    const ERROR_EXPIRED_TIMEOUT      = 'expired_timeout';
     const ERROR_BATCH_LIMIT_EXCEEDED = 'batch_limit_exceeded';
 
     const PROCESS_SUBTYPE_REDIRECT = 'redirect';
-    const PROCESS_SUBTYPE_FINAL = 'final';
-    const PROCESS_SUBTYPE_WAIT = 'wait';
-    const PROCESS_SUBTYPE_PIXEL = 'pixel';
+    const PROCESS_SUBTYPE_FINAL    = 'final';
+    const PROCESS_SUBTYPE_WAIT     = 'wait';
+    const PROCESS_SUBTYPE_PIXEL    = 'pixel';
 
-    const PROCESS_STATUS_FAILED = 'failed';
-    const PROCESS_STATUS_SUCCESSFUL = 'successful';
+    const PROCESS_STATUS_FAILED           = 'failed';
+    const PROCESS_STATUS_SUCCESSFUL       = 'successful';
     const PROCESS_STATUS_WAITING_PROVIDER = 'waiting_provider';
-    const PROCESS_STATUS_RETRYING = 'retrying';
-
-    const PROCESS_TYPE_SUBSCRIBE = 'subscribe';
-    const PROCESS_TYPE_RENEW = 'renew';
+    const PROCESS_STATUS_RETRYING         = 'retrying';
 
     /** @var  integer */
     private $id;
@@ -63,6 +60,9 @@ class ProcessResult
 
     /** @var  string */
     private $chargeValue;
+
+    /** @var int */
+    private $chargePaid;
 
     /** @var  string */
     private $chargeCurrency;
@@ -97,6 +97,7 @@ class ProcessResult
 
     /**
      * ProcessResult constructor.
+     *
      * @param int    $id
      * @param string $subtype
      * @param string $clientId
@@ -115,6 +116,7 @@ class ProcessResult
      * @param null   $providerId
      * @param null   $providerUser
      * @param array  $clientFields
+     * @param int    $chargePaid
      */
     public function __construct(
         $id = null,
@@ -134,7 +136,8 @@ class ProcessResult
         $provider = null,
         $providerId = null,
         $providerUser = null,
-        $clientFields = []
+        $clientFields = [],
+        $chargePaid = null
     )
     {
         $this->id             = $id;
@@ -144,6 +147,7 @@ class ProcessResult
         $this->status         = $status;
         $this->error          = $error;
         $this->chargeValue    = $chargeValue;
+        $this->chargePaid     = $chargePaid;
         $this->chargeCurrency = $chargeCurrency;
         $this->chargeProduct  = $chargeProduct;
         $this->chargeTier     = $chargeTier;
@@ -162,6 +166,7 @@ class ProcessResult
             'status'          => $status,
             'error'           => $error,
             'charge_value'    => $chargeValue,
+            'charge_paid'     => $chargePaid,
             'charge_currency' => $chargeCurrency,
             'charge_product'  => $chargeProduct,
             'charge_tier'     => $chargeTier,
@@ -371,6 +376,14 @@ class ProcessResult
     public function isFailedOrSuccessful(): bool
     {
         return $this->isSuccessful() || $this->isFailed();
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getChargePaid(): ?int
+    {
+        return $this->chargePaid;
     }
 
 }

@@ -21,7 +21,7 @@
                 <video id="video-player-frame" controls class="cld-video-player cld-fluid"></video>
             </div>
 
-            <div class="d-flex flex-column">
+            <div class="modal-related-video-main-block d-flex flex-column">
                 <div class="d-flex flex-row align-items-center justify-content-center modal-related-video-section-title-block">
                     <div class="separator_left"></div>
                     <div class="modal-related-video-section-title-text">
@@ -70,7 +70,7 @@
         <script>
 
 
-            var trackEventRoute = '{{ url('track_video_percent_event') }}';
+            var trackEventRoute = '{{ url('track_video_play') }}';
 
             $(window).on('load', function () {
 
@@ -95,6 +95,7 @@
                     $('#player-modal').removeClass('d-flex');
                     $('html').css({'overflow-y': 'auto'});
                     demoplayer.stop();
+                    $('.modal-related-videos-block').empty();
                 }
 
                 function changeVideo(publicId, options) {
@@ -102,18 +103,18 @@
                 }
 
                 const cld        = cloudinary.Cloudinary.new({cloud_name: '{{ getCloudName() }}'});
-                const demoplayer = cld.videoPlayer('video-player-frame', {playedEventPercents: [50]})
+                const demoplayer = cld.videoPlayer('video-player-frame')
                     .sourceTypes(['hls'])
                     .transformation({streaming_profile: 'hd'});
 
-
-                demoplayer.on('percentsplayed', function (event) {
+                demoplayer.on('play', function (event) {
 
                     $.post(trackEventRoute, {
-                        percent: event.eventData.percent,
                         video  : demoplayer.currentPublicId()
                     });
                 });
+
+                let loadMoreFunc;
 
                 //TODO: Refactor this
                 $(document).on('click', '.x-play-button, .modal-related-video-thumbnail-wrapper', function () {
@@ -133,26 +134,28 @@
                     }).then(() => {
                         let isAllowRequest = true;
                         let modalRelatedVideosBlock = document.querySelector('.modal-related-videos-block');
+                        loadMoreFunc = () => {
+                            let mrvbScrollTop = modalRelatedVideosBlock.scrollTop;
+                            let mrvbHeight = modalRelatedVideosBlock.scrollHeight;
+
+                            if (Math.round(mrvbScrollTop) >= Math.round(mrvbHeight - modalRelatedVideosBlock.offsetHeight)
+                                && isAllowRequest
+                                && !isLast
+                            ) {
+                                offset += 20;
+                                uri = `${batchRelatedVideosRoute}?categoryUuid=${category}&offset=${offset}`;
+                                isAllowRequest = false;
+                                $.get(uri, (data) => {
+                                    $('.modal-related-videos-block').append(data.html);
+                                    isAllowRequest = true;
+                                    isLast = Boolean(data.isLast);
+                                });
+                            }
+                        };
+
                         if (modalRelatedVideosBlock.childNodes.length > 0) {
 
-                            modalRelatedVideosBlock.addEventListener('scroll', () => {
-                                let mrvbScrollTop = modalRelatedVideosBlock.scrollTop;
-                                let mrvbHeight = modalRelatedVideosBlock.scrollHeight;
-
-                                if (Math.round(mrvbScrollTop) >= Math.round(mrvbHeight - modalRelatedVideosBlock.offsetHeight)
-                                    && isAllowRequest
-                                    && !isLast
-                                ) {
-                                    offset += 20;
-                                    uri = `${batchRelatedVideosRoute}?categoryUuid=${category}&offset=${offset}`;
-                                    isAllowRequest = false;
-                                    $.get(uri, (data) => {
-                                        $('.modal-related-videos-block').append(data.html);
-                                        isAllowRequest = true;
-                                        isLast = Boolean(data.isLast);
-                                    });
-                                }
-                            });
+                            modalRelatedVideosBlock.addEventListener('scroll', loadMoreFunc);
                         }
                     });
 
@@ -172,6 +175,8 @@
                 });
 
                 $(document).on('click', '.x-close-modal-button', function () {
+                    let modalRelatedVideosBlock = document.querySelector('.modal-related-videos-block');
+                    modalRelatedVideosBlock.removeEventListener('scroll', loadMoreFunc);
                     closeModal()
                 });
 

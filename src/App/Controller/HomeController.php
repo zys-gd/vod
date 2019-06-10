@@ -10,6 +10,7 @@ namespace App\Controller;
 
 
 use App\CarrierTemplate\TemplateConfigurator;
+use App\Domain\DTO\BatchOfGames;
 use App\Domain\Entity\CountryCategoryPriorityOverride;
 use App\Domain\Entity\MainCategory;
 use App\Domain\Entity\UploadedVideo;
@@ -17,12 +18,14 @@ use App\Domain\Repository\CountryCategoryPriorityOverrideRepository;
 use App\Domain\Repository\GameRepository;
 use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\UploadedVideoRepository;
-use App\Domain\Service\ContentStatisticSender;
+use App\Domain\Service\Piwik\ContentStatisticSender;
 use App\Domain\Service\VideoProcessing\UploadedVideoSerializer;
 use ExtrasBundle\Utils\ArraySorter;
 use IdentificationBundle\Controller\ControllerWithIdentification;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
+use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -108,6 +111,9 @@ class HomeController extends AbstractController implements
      */
     public function indexAction(Request $request, ISPData $data)
     {
+        /**
+         * @var BatchOfGames $games
+         */
         $videos            = $this->videoRepository->findNotExpiredWithCategories();
         $games             = $this->gameRepository->findBatchOfGames(0, 2);
         $categoryOverrides = $this->categoryOverrideRepository->findByBillingCarrierId($data->getCarrierId());
@@ -121,22 +127,28 @@ class HomeController extends AbstractController implements
 
             $categoryEntity                                  = $video->getSubcategory()->getParent();
             $categoryKey                                     = $categoryEntity->getTitle();
-            $categoryVideos[$categoryKey][$video->getUuid()] = $this->videoSerializer->serialize($video);
+            $categoryVideos[$categoryKey][$video->getUuid()] = $this->videoSerializer->serializeShort($video);
         }
 
-        $categoryVideos = array_slice(ArraySorter::sortArrayByKeys(
-            $categoryVideos,
-            array_keys($indexedCategoryData)
-        ), 0, 5);
+        $categoryVideos = array_slice(
+            ArraySorter::sortArrayByKeys(
+                $categoryVideos,
+                array_keys($indexedCategoryData)
+            ),
+            0,
+            5
+        );
 
-        $this->contentStatisticSender->trackVisit($data);
+        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
+        $campaignToken      = AffiliateVisitSaver::extractCampaignToken($request->getSession());
+        $this->contentStatisticSender->trackVisit($identificationData, $data, $campaignToken);
 
         $template = $this->templateConfigurator->getTemplate('home', $data->getCarrierId());
         return $this->render($template, [
             'categoryVideos'  => array_slice($categoryVideos, 1, 3),
             'categories'      => $indexedCategoryData,
             'sliderVideos'    => array_slice($categoryVideos, 0, 1),
-            'games'           => $games
+            'games'           => $games->getGames()
         ]);
     }
 

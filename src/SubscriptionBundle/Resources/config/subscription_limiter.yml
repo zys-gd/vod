@@ -1,0 +1,39 @@
+services:
+    SubscriptionBundle\Service\CAPTool\SubscriptionLimitCompleter:
+        arguments:
+            - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
+            -
+    SubscriptionBundle\Service\CAPTool\SubscriptionLimiter:
+        arguments:
+        - '@SubscriptionBundle\Service\CAPTool\Limiter\LimiterStorage'
+        - '@SubscriptionBundle\Service\SubscriptionExtractor'
+        - '@SubscriptionBundle\Service\CAPTool\Limiter\LimiterDataMapper'
+        - '@SubscriptionBundle\Service\CAPTool\Limiter\SubscriptionCapChecker'
+        - '@SubscriptionBundle\Service\CAPTool\Limiter\StorageKeyGenerator'
+        - '@SubscriptionBundle\Service\CampaignExtractor'
+        - '@logger'
+        - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier'
+
+
+    SubscriptionBundle\Service\CAPTool\Limiter\LimiterStorage:
+        arguments:
+            - '@app.predis'
+
+
+    SubscriptionBundle\Service\CAPTool\Limiter\LimiterDataMapper:
+        arguments:
+            - '@SubscriptionBundle\Service\CampaignExtractor'
+            - '@App\Domain\Repository\CarrierRepository'
+
+    SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier:
+        arguments:
+            - '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender'
+            - '@SubscriptionBundle\Service\EntitySaveHelper'
+
+    SubscriptionBundle\Service\CAPTool\Limiter\SubscriptionCapChecker:
+        arguments:
+            - '@SubscriptionBundle\Service\CAPTool\Limiter\LimiterStorage'
+            - '@SubscriptionBundle\Service\CAPTool\Limiter\StorageKeyGenerator'
+            - '@logger'
+
+    SubscriptionBundle\Service\CAPTool\Limiter\StorageKeyGenerator: ~

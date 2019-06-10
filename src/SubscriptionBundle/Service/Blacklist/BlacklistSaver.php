@@ -1,6 +1,13 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: dmitriy
+ * Date: 29.05.19
+ * Time: 14:34
+ */
 
-namespace SubscriptionBundle\Service;
+namespace SubscriptionBundle\Service\Blacklist;
+
 
 use App\Utils\UuidGenerator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -8,98 +15,56 @@ use IdentificationBundle\Entity\User;
 use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\Entity\BlackList;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Repository\BlackListRepository;
 use SubscriptionBundle\Repository\SubscriptionRepository;
 use SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider;
 use SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber;
 
-/**
- * Class BlackListService
- */
-class BlackListService
+class BlacklistSaver
 {
     /**
      * @var UserRepository
      */
     private $userRepository;
-
     /**
-     * @var BlackListRepository
+     * @var EntityManagerInterface
      */
-    private $blackListRepository;
-
+    private $entityManager;
     /**
      * @var SubscriptionRepository
      */
     private $subscriptionRepository;
-
     /**
      * @var UnsubscriptionHandlerProvider
      */
     private $unsubscriptionHandlerProvider;
-
     /**
      * @var Unsubscriber
      */
     private $unsubscriber;
 
     /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
-     * BlackListService constructor
-     *
+     * BlacklistSaver constructor.
      * @param UserRepository                $userRepository
-     * @param BlackListRepository           $blackListRepository
-     * @param SubscriptionRepository        $subscriptionRepository
      * @param EntityManagerInterface        $entityManager
+     * @param SubscriptionRepository        $subscriptionRepository
      * @param UnsubscriptionHandlerProvider $unsubscriptionHandlerProvider
      * @param Unsubscriber                  $unsubscriber
      */
     public function __construct(
         UserRepository $userRepository,
-        BlackListRepository $blackListRepository,
-        SubscriptionRepository $subscriptionRepository,
         EntityManagerInterface $entityManager,
+        SubscriptionRepository $subscriptionRepository,
         UnsubscriptionHandlerProvider $unsubscriptionHandlerProvider,
         Unsubscriber $unsubscriber
     )
     {
         $this->userRepository                = $userRepository;
-        $this->blackListRepository           = $blackListRepository;
-        $this->subscriptionRepository        = $subscriptionRepository;
         $this->entityManager                 = $entityManager;
+        $this->subscriptionRepository        = $subscriptionRepository;
         $this->unsubscriptionHandlerProvider = $unsubscriptionHandlerProvider;
         $this->unsubscriber                  = $unsubscriber;
     }
 
-    /**
-     * @param string $sessionToken
-     *
-     * @return bool
-     */
-    public function isBlacklisted(string $sessionToken): bool
-    {
-        try {
-            $user = $this->userRepository->findOneByIdentificationToken($sessionToken);
-            /** @var BlackList $blackList */
-            $blackList = $this->blackListRepository->findOneBy(['alias' => $user->getIdentifier()]);
-            $today     = new \DateTime();
-            if ($blackList->getDuration() > 0
-                && $blackList->getBanStart() < $today
-                && $today < $blackList->getBanEnd()
-                || $blackList->getDuration() == 0
-            ) {
-                return true;
-            }
-        } catch (\Throwable $e) {
-            return false;
-        }
-
-        return false;
-    }
 
     /**
      * @param string $sessionToken
@@ -123,7 +88,7 @@ class BlackListService
 
                 $this->entityManager->persist($blackList);
 
-                $this->postBlackListing($blackList);
+                $this->doAfterAddedToBlackList($blackList);
 
                 $this->entityManager->flush();
                 $this->entityManager->clear();
@@ -131,13 +96,16 @@ class BlackListService
         }
     }
 
+
     /**
      * @param BlackList $blackList
      */
-    public function postBlackListing(BlackList $blackList): void
+    public function doAfterAddedToBlackList(BlackList $blackList): void
     {
         /** @var User $user */
-        $user = $this->userRepository->findOneBy(['identifier' => $blackList->getAlias()]);
+        $user = $this->userRepository->findOneBy([
+            'identifier' => $blackList->getAlias()
+        ]);
 
         if ($user) {
             /** @var Subscription $subscription */

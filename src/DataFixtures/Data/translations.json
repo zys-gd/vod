@@ -65,7 +65,7 @@
     {
         "uuid": "0f5cf82e-b95b-45d1-80aa-e971aef6f2ac",
         "key": "offer.account",
-        "translation": "Watch unlimited videos of your favorite sports and teams!<br/>Only %price% %currency% per %period%",
+        "translation": "Watch unlimited videos of your favorite sports and teams!<br\/>Only %price% %currency% per %period%",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -317,7 +317,7 @@
     {
         "uuid": "51136644-9be4-4eac-b466-f617e7238d00",
         "key": "offer.landing",
-        "translation": "Watch unlimited videos of your favorite sports and teams!<br/>Only %price% %currency% per %period%",
+        "translation": "Watch unlimited videos of your favorite sports and teams!<br\/>Only %price% %currency% per %period%",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -668,7 +668,7 @@
     {
         "uuid": "c4a1eb00-b547-47e6-8cb5-61901c4e9585",
         "key": "subscription.status.not_subscribe",
-        "translation": "Welcome to 100% Sport!\n<small>Get unlimited videos each %period% for only %price%/%currency%</small>",
+        "translation": "Welcome to 100% Sport!\n<small>Get unlimited videos each %period% for only %price%\/%currency%<\/small>",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -677,7 +677,7 @@
     {
         "uuid": "27f643fc-3e18-47d1-bbd7-8a3a14660af4",
         "key": "account.subscription.status.not_subscribe",
-        "translation": "Get unlimited videos each %period% for only %price%/%currency%",
+        "translation": "Get unlimited videos each %period% for only %price%\/%currency%",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -686,7 +686,7 @@
     {
         "uuid": "c55b5f46-10b1-4f9c-bbc3-e8c695d7594f",
         "key": "faq.a.2",
-        "translation": "To watch and enjoy your sports videos, you should simple access to our <a href='%home_url%'>homepage</a> and click on any video available. You are able to browse our whole catalogue on the main menu (searching by title or category).",
+        "translation": "To watch and enjoy your sports videos, you should simple access to our <a href='%home_url%'>homepage<\/a> and click on any video available. You are able to browse our whole catalogue on the main menu (searching by title or category).",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -776,7 +776,7 @@
     {
         "uuid": "ef884604-25a3-4004-a764-2e19f6864cda",
         "key": "terms.block_1.text.1",
-        "translation": "100% sport is a mobile service which provides mobile games. 100% sport proposes this service:  - %period% subscription which will be automatically activated when you confirm your subscription on <a href='%home_url%'>100% sport mobile site</a>.",
+        "translation": "100% sport is a mobile service which provides mobile games. 100% sport proposes this service:  - %period% subscription which will be automatically activated when you confirm your subscription on <a href='%home_url%'>100% sport mobile site<\/a>.",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -830,7 +830,7 @@
     {
         "uuid": "677f8042-109e-490d-8c77-0343c18e8057",
         "key": "copyright",
-        "translation": "©ORIGINDATA 2019 All rights reserved\n© Red Bull Media House",
+        "translation": "\u00a9ORIGINDATA 2019 All rights reserved\n\u00a9 Red Bull Media House",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -983,7 +983,7 @@
     {
         "uuid": "63dee082-f881-488a-94e9-a202a71b2913",
         "key": "wifi.terms_confirmation",
-        "translation": "I have read and agree to the <a href=\"%terms_url%\">Terms and Conditions</a>",
+        "translation": "I have read and agree to the <a href=\"%terms_url%\">Terms and Conditions<\/a>",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -1046,7 +1046,7 @@
     {
         "uuid": "fe09d606-b223-4298-8ab4-b9e07977fdba",
         "key": "landing.text.pay2watch",
-        "translation": "Click on <span class=\"play-text-link red\">play</span><br/> and continue watching!",
+        "translation": "Click on <span class=\"play-text-link red\">play<\/span><br\/> and continue watching!",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -1129,7 +1129,7 @@
     {
         "uuid": "3fe5a2b7-6229-4fcc-8cae-070826f70b03",
         "key": "offer.account",
-        "translation": "Watch unlimited videos of your favorite sports and teams!<br/>Only %price% %currency% per %period% (limited offer: 1st %period% FREE)",
+        "translation": "Watch unlimited videos of your favorite sports and teams!<br\/>Only %price% %currency% per %period% (limited offer: 1st %period% FREE)",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -1140,7 +1140,7 @@
     {
         "uuid": "4550c254-0ebf-43d8-9730-d793bd5939ee",
         "key": "offer.landing",
-        "translation": "Watch unlimited videos of your favorite sports and teams!<br/>Only %price% %currency% per %period% (limited offer: 1st %period% FREE)",
+        "translation": "Watch unlimited videos of your favorite sports and teams!<br\/>Only %price% %currency% per %period% (limited offer: 1st %period% FREE)",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -1173,7 +1173,7 @@
     {
         "uuid": "705c9fa1-cc1f-41c0-b55f-ef7e06b521b2",
         "key": "subscription.status.not_subscribe",
-        "translation": "Welcome to 100% Sport!\n<small>Get unlimited videos each %period% for only %price%/%currency% (limited offer: 1st %period% FREE)</small>",
+        "translation": "Welcome to 100% Sport!\n<small>Get unlimited videos each %period% for only %price%\/%currency% (limited offer: 1st %period% FREE)<\/small>",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -1184,7 +1184,7 @@
     {
         "uuid": "6fa6d69a-494a-4b09-8b08-b573e7a8860c",
         "key": "account.subscription.status.not_subscribe",
-        "translation": "Get unlimited videos each %period% for only %price%/%currency% (limited offer: 1st %period% FREE)",
+        "translation": "Get unlimited videos each %period% for only %price%\/%currency% (limited offer: 1st %period% FREE)",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -1275,5 +1275,34 @@
         "carrier": {
             "uuid": "97400b8f-722b-4339-a48e-a51419bbb143"
         }
+    },
+    {
+        "uuid": "c6ded84f-99c0-4186-bbf1-d8a0835bb4d0",
+        "key": "subscription.status.not_subscribe",
+        "translation": "\u0645\u0631\u062d\u0628\u0627 \u0628\u0643\u0645 \u0641\u064a 100 \u066a \u0631\u064a\u0627\u0636\u0629!\n    <small> \u0627\u062d\u0635\u0644 \u0639\u0644\u0649 \u0645\u0642\u0627\u0637\u0639 \u0641\u064a\u062f\u064a\u0648 \u063a\u064a\u0631 \u0645\u062d\u062f\u0648\u062f\u0629 \u0644\u0643\u0644\u066a period\u066a \u0645\u0642\u0627\u0628\u0644\u066a price \u0641\u0642\u0637\u066a \/\u066a currency\u066a (\u0639\u0631\u0636 \u0645\u062d\u062f\u0648\u062f: 1st\u066a period\u066a FREE) <\/ small>",
+        "language": {
+            "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": {
+            "uuid": "5142f9ec-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "42a13111-2caa-4075-9226-13c4b9d2c412",
+        "key": "messages.error.subscription_restricted",
+        "translation": "Dear customer, sorry, but you are already subscribed or have been subscribed to one of our services, in this regard, the possibility of a subscription for you is limited and impossible",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "7b3115d1-04db-40a3-838c-2e01d5b34872",
+        "key": "messages.error.subscription_restricted",
+        "translation": "Dear customer, sorry, but you are already subscribed or have been subscribed to one of our services, in this regard, the possibility of a subscription for you is limited and impossible",
+        "language": {
+            "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
     }
 ]

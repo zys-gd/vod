@@ -9,10 +9,9 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\Form\Type\DatePickerType;
-use Sonata\Form\Type\DateTimePickerType;
 use SubscriptionBundle\Entity\BlackList;
-use SubscriptionBundle\Service\BlackListService;
+use SubscriptionBundle\Service\Blacklist\BlacklistChecker;
+use SubscriptionBundle\Service\Blacklist\BlacklistSaver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -22,7 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class BlackListAdmin extends AbstractAdmin
 {
     /**
-     * @var BlackListService
+     * @var BlacklistChecker
      */
     private $blackListService;
 
@@ -32,13 +31,13 @@ class BlackListAdmin extends AbstractAdmin
      * @param string           $code
      * @param string           $class
      * @param string           $baseControllerName
-     * @param BlackListService $blackListService
+     * @param BlacklistChecker $blackListService
      */
     public function __construct(
         string $code,
         string $class,
         string $baseControllerName,
-        BlackListService $blackListService
+        BlacklistSaver $blackListService
     )
     {
         $this->blackListService = $blackListService;
@@ -51,7 +50,7 @@ class BlackListAdmin extends AbstractAdmin
      */
     public function postPersist($blackList)
     {
-        $this->blackListService->postBlackListing($blackList);
+        $this->blackListService->doAfterAddedToBlackList($blackList);
     }
 
     /**

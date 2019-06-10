@@ -15,7 +15,6 @@ services:
         - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
         - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
         - '@SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider'
-        - '@SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater'
 
       public: false
 
@@ -38,6 +37,8 @@ services:
   SubscriptionBundle\Service\Callback\Common\Type\SubscriptionCallbackHandler:
       arguments:
           - '@SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater'
+          - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitCompleter'
+          - '@App\Domain\Service\CrossSubscriptionAPI\ApiConnector'
 
   SubscriptionBundle\Service\Callback\Common\Type\RenewCallbackHandler:
       arguments:

@@ -8,6 +8,7 @@
 
 namespace SubscriptionBundle\Service\Action\Subscribe\Common;
 
+use App\Domain\Entity\Campaign;
 use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
 use ExtrasBundle\Utils\UrlParamAppender;
 use IdentificationBundle\Entity\User;
@@ -30,6 +31,7 @@ use SubscriptionBundle\Service\Action\Subscribe\Subscriber;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\SubscriptionExtractor;
 use SubscriptionBundle\Service\SubscriptionPackProvider;
+use SubscriptionBundle\Service\ZeroCreditSubscriptionChecking;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -103,6 +105,10 @@ class CommonFlowHandler
      * @var SubscriptionEventTracker
      */
     private $subscriptionEventTracker;
+    /**
+     * @var ZeroCreditSubscriptionChecking
+     */
+    private $zeroCreditSubscriptionChecking;
 
 
     /**
@@ -124,6 +130,7 @@ class CommonFlowHandler
      * @param EntitySaveHelper               $entitySaveHelper
      * @param string                         $resubNotAllowedRoute
      * @param SubscriptionEventTracker       $subscriptionEventTracker
+     * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
      */
     public function __construct(
         SubscriptionExtractor $subscriptionProvider,
@@ -141,31 +148,34 @@ class CommonFlowHandler
         UserInfoMapper $infoMapper,
         EntitySaveHelper $entitySaveHelper,
         string $resubNotAllowedRoute,
-        SubscriptionEventTracker $subscriptionEventTracker
+        SubscriptionEventTracker $subscriptionEventTracker,
+        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
     )
     {
-        $this->subscriptionPackProvider    = $subscriptionPackProvider;
-        $this->subscriber                  = $subscriber;
-        $this->checker                     = $checker;
-        $this->subscriptionProvider        = $subscriptionProvider;
-        $this->logger                      = $logger;
-        $this->redirectUrlNullifier        = $redirectUrlNullifier;
-        $this->handlerProvider             = $handlerProvider;
-        $this->commonResponseCreator       = $commonResponseCreator;
-        $this->urlParamAppender            = $urlParamAppender;
-        $this->router                      = $router;
-        $this->affiliateService            = $affiliateService;
-        $this->subscriptionStatisticSender = $subscriptionStatisticSender;
-        $this->infoMapper                  = $infoMapper;
-        $this->entitySaveHelper            = $entitySaveHelper;
-        $this->resubNotAllowedRoute        = $resubNotAllowedRoute;
-        $this->subscriptionEventTracker    = $subscriptionEventTracker;
+        $this->subscriptionPackProvider       = $subscriptionPackProvider;
+        $this->subscriber                     = $subscriber;
+        $this->checker                        = $checker;
+        $this->subscriptionProvider           = $subscriptionProvider;
+        $this->logger                         = $logger;
+        $this->redirectUrlNullifier           = $redirectUrlNullifier;
+        $this->handlerProvider                = $handlerProvider;
+        $this->commonResponseCreator          = $commonResponseCreator;
+        $this->urlParamAppender               = $urlParamAppender;
+        $this->router                         = $router;
+        $this->affiliateService               = $affiliateService;
+        $this->subscriptionStatisticSender    = $subscriptionStatisticSender;
+        $this->infoMapper                     = $infoMapper;
+        $this->entitySaveHelper               = $entitySaveHelper;
+        $this->resubNotAllowedRoute           = $resubNotAllowedRoute;
+        $this->subscriptionEventTracker       = $subscriptionEventTracker;
+        $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
     }
 
 
     /**
      * @param Request $request
      * @param User    $User
+     *
      * @return Response
      * @throws ActiveSubscriptionPackNotFound
      * @throws ExistingSubscriptionException
@@ -192,7 +202,8 @@ class CommonFlowHandler
         if ($this->checker->isStatusOkForResubscribe($subscription)) {
             return $this->handleResubscribeAttempt($request, $User, $subscription, $subscriber);
 
-        } else {
+        }
+        else {
             $this->logger->debug('`Subscribe` is not possible. User already have an active subscription.');
             if (
                 $subscriber instanceof HasCustomResponses &&
@@ -221,6 +232,7 @@ class CommonFlowHandler
      * @param User         $User
      * @param Subscription $subscription
      * @param              $subscriber
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse|RedirectResponse|Response
      * @throws ActiveSubscriptionPackNotFound
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -251,7 +263,8 @@ class CommonFlowHandler
             $additionalData = $subscriber->getAdditionalSubscribeParams($request, $User);
             $result         = $this->subscriber->resubscribe($subscription, $subscriptionPack, $additionalData);
 
-        } else {
+        }
+        else {
             $this->logger->debug('Resubscription is not allowed.', [
                 'packId'      => $subpackId,
                 'carrierName' => $subpackName
@@ -259,7 +272,8 @@ class CommonFlowHandler
 
             if ($request->get('is_ajax_request', null)) {
                 return $this->getSimpleJsonResponse('', 200, [], ['resub_not_allowed' => true]);
-            } else {
+            }
+            else {
                 return new RedirectResponse($this->router->generate($this->resubNotAllowedRoute));
             }
         }
@@ -267,8 +281,13 @@ class CommonFlowHandler
 
         if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
             $isAffTracked = $subscriber->isAffiliateTrackedForResub($result);
-        } else {
-            $isAffTracked = ($result->isSuccessful() && $result->isFinal());;
+        }
+        else {
+            $isAffTracked = ($result->isSuccessful() && $result->isFinal());
+            $this->logger->debug('Is need to track affiliate log?', [
+                'result'       => $result,
+                'isAffTracked' => $isAffTracked
+            ]);
         }
         if ($isAffTracked) {
             $this->subscriptionEventTracker->trackAffiliate($subscription);
@@ -277,7 +296,8 @@ class CommonFlowHandler
 
         if ($subscriber instanceof HasCustomPiwikTrackingRules) {
             $isPiwikTracked = $subscriber->isPiwikTrackedForResub($result);
-        } else {
+        }
+        else {
             $isPiwikTracked = ($result->isFailedOrSuccessful() && $result->isFinal());;
         }
         if ($isPiwikTracked) {
@@ -295,6 +315,7 @@ class CommonFlowHandler
      * @param Request       $request
      * @param User          $User
      * @param HasCommonFlow $subscriber
+     *
      * @return null|Response
      * @throws ActiveSubscriptionPackNotFound
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -304,12 +325,18 @@ class CommonFlowHandler
 
         $additionalData   = $subscriber->getAdditionalSubscribeParams($request, $User);
         $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($User);
+
+        if ($this->zeroCreditSubscriptionChecking->isAvailable($request->getSession(), $subscriptionPack)) {
+            $additionalData['zero_credit_sub_available'] = true;
+        }
+
         /** @var ProcessResult $result */
         list($newSubscription, $result) = $this->subscriber->subscribe($User, $subscriptionPack, $additionalData);
 
         if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
             $isAffTracked = $subscriber->isAffiliateTrackedForSub($result);
-        } else {
+        }
+        else {
             $isAffTracked = ($result->isSuccessful() && $result->isFinal());
         }
 
@@ -320,9 +347,11 @@ class CommonFlowHandler
 
         if ($subscriber instanceof HasCustomPiwikTrackingRules) {
             $isPiwikTracked = $subscriber->isPiwikTrackedForSub($result);
-        } else {
+        }
+        else {
             $isPiwikTracked = ($result->isFailedOrSuccessful() && $result->isFinal());
         }
+
         if ($isPiwikTracked) {
             $this->subscriptionEventTracker->trackPiwikForSubscribe($newSubscription, $result);
         }

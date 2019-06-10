@@ -220,6 +220,9 @@ class SubscriptionPack implements HasUuid
      */
     private $updated;
 
+    /** @var bool  */
+    private $zeroCreditSubAvailable = false;
+
     /**
      * SubscriptionPack constructor
      *
@@ -884,5 +887,21 @@ class SubscriptionPack implements HasUuid
                 break;
         }
         return $periodicityText;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isZeroCreditSubAvailable(): bool
+    {
+        return $this->zeroCreditSubAvailable;
+    }
+
+    /**
+     * @param bool $zeroCreditSubAvailable
+     */
+    public function setZeroCreditSubAvailable(bool $zeroCreditSubAvailable): void
+    {
+        $this->zeroCreditSubAvailable = $zeroCreditSubAvailable;
     }
 }

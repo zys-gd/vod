@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controller;
 
+use App\Admin\Form\PreUploadForm;
 use App\Admin\Form\UploadedVideoForm;
 use App\Domain\Entity\UploadedVideo;
 use App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector;
@@ -11,9 +12,7 @@ use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use App\Admin\Form\PreUploadForm;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
@@ -64,15 +63,15 @@ class UploadedVideoAdminController extends CRUDController
     /**
      * UploadedVideoAdminController constructor
      *
-     * @param FormFactory $formFactory
-     * @param EntityManagerInterface $entityManager
-     * @param CloudinaryConnector $cloudinaryConnector
+     * @param FormFactory             $formFactory
+     * @param EntityManagerInterface  $entityManager
+     * @param CloudinaryConnector     $cloudinaryConnector
      * @param UploadedVideoSerializer $uploadedVideoSerializer
-     * @param string $cloudinaryApiKey
-     * @param string $cloudinaryCloudName
-     * @param string $cloudinaryApiSecret
-     * @param string $defaultPreset
-     * @param string $trimPreset
+     * @param string                  $cloudinaryApiKey
+     * @param string                  $cloudinaryCloudName
+     * @param string                  $cloudinaryApiSecret
+     * @param string                  $defaultPreset
+     * @param string                  $trimPreset
      */
     public function __construct(
         FormFactory $formFactory,
@@ -84,17 +83,18 @@ class UploadedVideoAdminController extends CRUDController
         string $cloudinaryApiSecret,
         string $defaultPreset,
         string $trimPreset
-    ) {
-        $this->formFactory  = $formFactory;
-        $this->entityManager = $entityManager;
-        $this->cloudinaryConnector = $cloudinaryConnector;
+    )
+    {
+        $this->formFactory             = $formFactory;
+        $this->entityManager           = $entityManager;
+        $this->cloudinaryConnector     = $cloudinaryConnector;
         $this->uploadedVideoSerializer = $uploadedVideoSerializer;
-        $this->cloudinaryApiKey = $cloudinaryApiKey;
-        $this->cloudinaryCloudName = $cloudinaryCloudName;
-        $this->cloudinaryApiSecret = $cloudinaryApiSecret;
+        $this->cloudinaryApiKey        = $cloudinaryApiKey;
+        $this->cloudinaryCloudName     = $cloudinaryCloudName;
+        $this->cloudinaryApiSecret     = $cloudinaryApiSecret;
 
         $this->presets = [
-            'Default' => $defaultPreset,
+            'Default'       => $defaultPreset,
             'Trim for SNTV' => $trimPreset
         ];
     }
@@ -103,7 +103,6 @@ class UploadedVideoAdminController extends CRUDController
      * @param Request $request
      *
      * @return Response
-     *
      * @throws \Exception
      */
     public function preUploadAction(Request $request)
@@ -121,18 +120,18 @@ class UploadedVideoAdminController extends CRUDController
             $preset = $form->get('preset')->getData();
 
             $widgetOptions = [
-                'cloudName' => $this->cloudinaryCloudName,
-                'apiKey' => $this->cloudinaryApiKey,
-                'folder' => $uploadedVideo->getSubcategory()->getAlias(),
-                'uploadPreset' => $preset,
-                'sources' => ['local'],
-                'resourceType' => 'video',
+                'cloudName'            => $this->cloudinaryCloudName,
+                'apiKey'               => $this->cloudinaryApiKey,
+                'folder'               => $uploadedVideo->getSubcategory()->getAlias(),
+                'uploadPreset'         => $preset,
+                'sources'              => ['local'],
+                'resourceType'         => 'video',
                 'clientAllowedFormats' => ['mp4']
             ];
 
             return $this->renderWithExtraParams('@Admin/UploadedVideo/upload.html.twig', [
-                'widgetOptions' => json_encode($widgetOptions),
-                'preUploadFormData' => $this->uploadedVideoSerializer->jsonSerialize($uploadedVideo)
+                'widgetOptions'     => json_encode($widgetOptions),
+                'preUploadFormData' => $this->uploadedVideoSerializer->serializeJson($uploadedVideo)
             ]);
         }
 
@@ -170,7 +169,7 @@ class UploadedVideoAdminController extends CRUDController
                 return new Response('Error while saving uploaded video', 500);
             }
 
-            return new JsonResponse($uploadedVideo);
+            return new Response($this->uploadedVideoSerializer->serializeJson($uploadedVideo));
         }
 
         return new Response('Video data is invalid', 400);
@@ -180,7 +179,6 @@ class UploadedVideoAdminController extends CRUDController
      * @param Request $request
      *
      * @return JsonResponse|Response
-     *
      * @throws \Exception
      */
     public function confirmVideosAction(Request $request)

@@ -55,8 +55,6 @@ services:
 
     App\Domain\Service\Translator\ShortcodeReplacer: ~
 
-    App\Domain\Service\FaqProviderService: ~
-
     App\Domain\Service\Games\GameSerializer: ~
 
     App\Domain\Service\Games\ExcludedGamesProvider:
@@ -88,30 +86,42 @@ services:
         arguments:
             - '@App\Domain\Repository\CarrierRepository'
 
-    App\Domain\Service\ContentStatisticSender:
+    App\Domain\Service\Piwik\ContentStatisticSender:
         arguments:
-            - '@PiwikBundle\Service\NewTracker'
+            - '@PiwikBundle\Service\PiwikTracker'
             - '@IdentificationBundle\Repository\UserRepository'
             - '@logger'
             - '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
-            - '@session'
-            - '@App\Domain\Repository\CountryRepository'
+            - '@App\Domain\Repository\CarrierRepository'
+            - '@App\Domain\Repository\CampaignRepository'
+            - '@PiwikBundle\Service\PiwikDataMapper'
+            - '@CountryCarrierDetectionBundle\Service\IpService'
+            - '@App\Domain\Service\Piwik\DataMapper\PiwikGameDataMapper'
+            - '@App\Domain\Service\Piwik\DataMapper\PiwikVideoDataMapper'
+
+    App\Domain\Service\Piwik\DataMapper\PiwikGameDataMapper:
+        arguments:
+            - '@SubscriptionBundle\Service\CampaignExtractor'
+
+    App\Domain\Service\Piwik\DataMapper\PiwikVideoDataMapper:
+        arguments:
+            - '@SubscriptionBundle\Service\CampaignExtractor'
 
     App\Domain\ACL\Accessors\VisitConstraintByAffiliate:
         arguments:
-            - '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender'
-            - '@SubscriptionBundle\Service\CapConstraint\ConstraintCounterRedis'
-            - '@doctrine.orm.entity_manager'
+            - '@SubscriptionBundle\Service\VisitCAPTool\VisitChecker'
 
     App\Domain\ACL\Accessors\VisitAccessorByCampaign: ~
 
     App\Domain\ACL\LandingPageACL:
-        - '@App\Domain\ACL\Accessors\VisitConstraintByAffiliate'
-        - '@App\Domain\ACL\Accessors\VisitAccessorByCampaign'
-        - '@SubscriptionBundle\Service\CapConstraint\SubscriptionConstraintByCarrier'
-        - '@App\Domain\Repository\CarrierRepository'
-        - '@App\Domain\Repository\CampaignRepository'
-        - '@session'
+        arguments:
+            - '@App\Domain\ACL\Accessors\VisitConstraintByAffiliate'
+            - '@App\Domain\ACL\Accessors\VisitAccessorByCampaign'
+            - '@App\Domain\Repository\CarrierRepository'
+            - '@App\Domain\Repository\CampaignRepository'
+            - '@session'
+            - '@SubscriptionBundle\Service\CAPTool\Limiter\SubscriptionCapChecker'
+            - '@logger'
 
     App\Domain\Service\CarrierOTPVerifier:
         arguments:
@@ -119,3 +129,14 @@ services:
             - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
 
     App\Domain\Service\VideoProcessing\UploadedVideoSerializer: ~
+
+
+    App\Domain\ACL\SubscribeACL:
+        tags:
+            - { name: subscription.voter }
+
+    App\Domain\Service\CrossSubscriptionAPI\ApiConnector:
+        arguments: ['@subscription.http.client', '%cross_subscription_service%']
+
+    App\Domain\ACL\Accessors\SubscribeExternalAPICheck:
+        arguments: ['@App\Domain\Service\CrossSubscriptionAPI\ApiConnector']

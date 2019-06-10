@@ -62,7 +62,7 @@ class AffiliateLogAdmin extends AbstractAdmin
 
         $query = parent::createQuery($context);
 
-        $query->andWhere($query->expr()->in('o.userMsisdn', $testUsersMsisdns));
+        $testUsersMsisdns && $query->andWhere($query->expr()->in('o.userMsisdn', $testUsersMsisdns));
 
         return $query;
     }

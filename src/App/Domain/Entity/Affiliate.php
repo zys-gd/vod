@@ -106,6 +106,11 @@ class Affiliate implements HasUuid, AffiliateInterface
     private $constraints;
 
     /**
+     * @var bool
+     */
+    private $isLpOff = false;
+
+    /**
      * Affiliate constructor.
      * @param string $uuid
      */
@@ -636,16 +641,32 @@ class Affiliate implements HasUuid, AffiliateInterface
 
     /**
      * @param string $capType
-     * @param CarrierInterface $carrier
+     * @param int    $billingCarrierId
      *
      * @return ConstraintByAffiliate|null
      */
-    public function getConstraint(string $capType, CarrierInterface $carrier): ?ConstraintByAffiliate
+    public function getConstraint(string $capType, int $billingCarrierId): ?ConstraintByAffiliate
     {
-        $filteredByType = $this->constraints->filter(function (ConstraintByAffiliate $constraint) use ($capType, $carrier) {
-            return $constraint->getCapType() === $capType && $constraint->getCarrier()->getUuid() === $carrier->getUuid();
+        $filteredByType = $this->constraints->filter(function (ConstraintByAffiliate $constraint) use ($capType, $billingCarrierId) {
+            return $constraint->getCapType() === $capType && $constraint->getCarrier()->getBillingCarrierId() === $billingCarrierId;
         });
 
         return $filteredByType->isEmpty() ? null : $filteredByType->first();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLpOff(): bool
+    {
+        return $this->isLpOff;
+    }
+
+    /**
+     * @param bool $isLpOff
+     */
+    public function setIsLpOff(bool $isLpOff): void
+    {
+        $this->isLpOff = $isLpOff;
     }
 }

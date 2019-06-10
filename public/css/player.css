@@ -47,6 +47,9 @@
     background-repeat: no-repeat;
 }
 
+.modal-related-video-main-block {
+    height: 100%;
+}
 
 .modal-related-video.currently-playing {
     border: 1px solid #ce1e25;

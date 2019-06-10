@@ -3,13 +3,16 @@
 namespace App\Controller;
 
 use App\CarrierTemplate\TemplateConfigurator;
+use App\Domain\DTO\BatchOfNotExpiredVideos;
 use App\Domain\Entity\UploadedVideo;
 use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\SubcategoryRepository;
 use App\Domain\Repository\UploadedVideoRepository;
-use App\Domain\Service\ContentStatisticSender;
+use App\Domain\Service\Piwik\ContentStatisticSender;
 use App\Domain\Service\VideoProcessing\UploadedVideoSerializer;
 use IdentificationBundle\Identification\DTO\ISPData;
+use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -84,6 +87,7 @@ class CategoryController extends AbstractController implements AppControllerInte
 
         $subcategories = $this->subcategoryRepository->findBy(['parent' => $category]);
 
+        /** @var  BatchOfNotExpiredVideos $videos */
         if ($subcategoryUuid = $request->get('subcategoryUuid', '')) {
             $selectedSubcategory = $this->subcategoryRepository->findOneBy([
                 'parent' => $category,
@@ -96,18 +100,21 @@ class CategoryController extends AbstractController implements AppControllerInte
 
 
         $categoryVideos = [];
-        /** @var UploadedVideo[] $videos */
-        foreach ($videos as $video) {
+
+        foreach ($videos->getVideos() as $video) {
             $categoryEntity                                  = $video->getSubcategory()->getParent();
             $categoryKey                                     = $categoryEntity->getUuid();
-            $categoryVideos[$categoryKey][$video->getUuid()] = $this->videoSerializer->serialize($video);
+            $categoryVideos[$categoryKey][$video->getUuid()] = $this->videoSerializer->serializeShort($video);
         }
 
-        $this->contentStatisticSender->trackVisit($data);
+        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
+        $campaignToken      = AffiliateVisitSaver::extractCampaignToken($request->getSession());
+        $this->contentStatisticSender->trackVisit($identificationData, $data, $campaignToken);
 
         $template = $this->templateConfigurator->getTemplate('category', $data->getCarrierId());
         return $this->render($template, [
-            'videos'              => $videos,
+            'videos'              => $videos->getVideos(),
+            'isLast'              => $videos->isLast(),
             'category'            => $category,
             'subcategories'       => $subcategories,
             'selectedSubcategory' => $selectedSubcategory ?? null

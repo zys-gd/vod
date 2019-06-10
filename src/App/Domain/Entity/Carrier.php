@@ -41,10 +41,13 @@ class Carrier implements CarrierInterface
      */
     private $published = false;
 
+    private $lpOtp = null;
     /**
-     * @var boolean
+     * former lpOtp
+     * is needed subscribe confirmation click
+     * @var bool
      */
-    private $lpOtp = false;
+    private $isConfirmationClick = false;
 
     /**
      * Is carrier supports wi-fi flow identification via sms pin code
@@ -88,7 +91,7 @@ class Carrier implements CarrierInterface
     /**
      * @var integer
      */
-    private $numberOfAllowedSubscription = null;
+    private $subscribeAttempts = null;
 
     /**
      * @var integer
@@ -132,6 +135,11 @@ class Carrier implements CarrierInterface
      * @var \App\Domain\Entity\Language
      */
     private $defaultLanguage;
+
+    /**
+     * @var bool
+     */
+    private $isLpOff = false;
 
     /**
      * Carrier constructor.
@@ -362,34 +370,6 @@ class Carrier implements CarrierInterface
         return $this->published;
     }
 
-
-    /**
-     * @param bool $lpOtp
-     */
-    public function setLpOtp($lpOtp)
-    {
-        $this->lpOtp = $lpOtp;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isLpOtp()
-    {
-        return $this->lpOtp;
-    }
-
-
-    /**
-     * Get published
-     *
-     * @return boolean
-     */
-    public function getLpOtp()
-    {
-        return $this->lpOtp;
-    }
-
     /**
      * @return bool
      */
@@ -489,19 +469,19 @@ class Carrier implements CarrierInterface
     }
 
     /**
-     * @param integer $numberOfAllowedSubscription
+     * @param integer $subscribeAttempts
      */
-    public function setNumberOfAllowedSubscription($numberOfAllowedSubscription)
+    public function setSubscribeAttempts($subscribeAttempts)
     {
-        $this->numberOfAllowedSubscription = $numberOfAllowedSubscription;
+        $this->subscribeAttempts = $subscribeAttempts;
     }
 
     /**
      * @return integer
      */
-    public function getNumberOfAllowedSubscription()
+    public function getSubscribeAttempts()
     {
-        return $this->numberOfAllowedSubscription;
+        return $this->subscribeAttempts;
     }
 
     /**
@@ -672,6 +652,38 @@ class Carrier implements CarrierInterface
     public function getCounter(): ?int
     {
         return isset($this->counter) ? $this->counter : null;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isConfirmationClick(): bool
+    {
+        return $this->isConfirmationClick;
+    }
+
+    /**
+     * @param bool $isConfirmationClick
+     */
+    public function setIsConfirmationClick(bool $isConfirmationClick): void
+    {
+        $this->isConfirmationClick = $isConfirmationClick;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLpOff(): bool
+    {
+        return $this->isLpOff;
+    }
+
+    /**
+     * @param bool $isLpOff
+     */
+    public function setIsLpOff(bool $isLpOff): void
+    {
+        $this->isLpOff = $isLpOff;
     }
 
 }

@@ -4,9 +4,11 @@
 namespace SubscriptionBundle\Service;
 
 
+use App\Domain\Entity\Campaign;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
+use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -30,7 +32,9 @@ class CampaignExtractor
     public function getCampaignFromSession(SessionInterface $session): ?CampaignInterface
     {
         $campaignToken = AffiliateVisitSaver::extractCampaignToken($session);
-        return $this->campaignRepository->findOneByCampaignToken($campaignToken);
+        return $campaignToken ?
+            $this->campaignRepository->findOneByCampaignToken($campaignToken)
+            : null;
     }
 
     /**
@@ -42,5 +46,15 @@ class CampaignExtractor
     {
         $campaign = $this->getCampaignFromSession($session);
         return $campaign ? $campaign->getAffiliate() : null;
+    }
+
+    public function getCampaignForSubscription(Subscription $subscription): ?Campaign
+    {
+        $affiliateData = $subscription->getAffiliateToken();
+        $campaignToken = $affiliateData['cid'] ?? null;
+
+        return $campaignToken ?
+            $this->campaignRepository->findOneByCampaignToken($campaignToken)
+            : null;
     }
 }

@@ -35,16 +35,23 @@ services:
             - '@App\Domain\Service\VideoProcessing\UploadedVideoSerializer'
             - '@App\Domain\Repository\GameRepository'
             - '@App\Domain\Repository\CountryCategoryPriorityOverrideRepository'
-            - '@App\Domain\Service\ContentStatisticSender'
+            - '@App\Domain\Service\Piwik\ContentStatisticSender'
 
     App\Controller\LPController:
         arguments:
-            - '@App\Domain\Service\ContentStatisticSender'
+            - '@App\Domain\Service\Piwik\ContentStatisticSender'
             - '@App\Domain\Repository\CampaignRepository'
             - '@App\Domain\ACL\LandingPageACL'
             - '%images_base_url%'
             - '@App\Domain\Service\CarrierOTPVerifier'
             - '%default_redirect_url%'
+            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
+            - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier'
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+            - '@SubscriptionBundle\Service\VisitCAPTool\VisitTracker'
+            - '@SubscriptionBundle\Service\VisitCAPTool\VisitNotifier'
+            - '@logger'
 
     App\Controller\ErrorController:
         arguments:
@@ -55,7 +62,7 @@ services:
             - '@App\Domain\Repository\MainCategoryRepository'
             - '@App\Domain\Repository\UploadedVideoRepository'
             - '@App\Domain\Repository\SubcategoryRepository'
-            - '@App\Domain\Service\ContentStatisticSender'
+            - '@App\Domain\Service\Piwik\ContentStatisticSender'
             - '@App\CarrierTemplate\TemplateConfigurator'
             - '@App\Domain\Service\VideoProcessing\UploadedVideoSerializer'
 
@@ -75,6 +82,8 @@ services:
         - '%contact_us_mail_to%'
         - '%contact_us_mail_from%'
         - '@App\CarrierTemplate\TemplateConfigurator'
+        - '@device_detection.service.device'
+        - '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
 
     App\Controller\GamesController:
         arguments:
@@ -85,7 +94,7 @@ services:
             - '@SubscriptionBundle\Service\SubscriptionExtractor'
             - '@App\Domain\Service\Games\GameImagesSerializer'
             - '@App\Domain\Service\Games\ExcludedGamesProvider'
-            - '@App\Domain\Service\ContentStatisticSender'
+            - '@App\Domain\Service\Piwik\ContentStatisticSender'
             - '@App\CarrierTemplate\TemplateConfigurator'
 
     App\Controller\VideosController:
@@ -97,7 +106,8 @@ services:
     App\Controller\TrackEventController:
         arguments:
             - '@App\Domain\Repository\UploadedVideoRepository'
-            - '@App\Domain\Service\ContentStatisticSender'
+            - '@App\Domain\Service\Piwik\ContentStatisticSender'
+            - '@SubscriptionBundle\Service\SubscriptionExtractor'
 
 
     App\Controller\PlayerController:

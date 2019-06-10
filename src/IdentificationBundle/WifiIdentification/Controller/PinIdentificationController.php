@@ -13,14 +13,17 @@ use ExtrasBundle\API\Controller\APIControllerInterface;
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\BillingFramework\Process\Exception\PinVerifyProcessException;
 use IdentificationBundle\Identification\DTO\ISPData;
-use IdentificationBundle\Identification\Exception\AlreadyIdentifiedException;
 use IdentificationBundle\Identification\Exception\MissingCarrierException;
 use IdentificationBundle\Identification\Service\CarrierSelector;
+use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\WifiIdentification\Service\ErrorCodeResolver;
 use IdentificationBundle\WifiIdentification\WifiIdentConfirmator;
 use IdentificationBundle\WifiIdentification\WifiIdentSMSSender;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
+use SubscriptionBundle\Service\CAPTool\Exception\CapToolAccessException;
+use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
+use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -46,26 +49,54 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @var CarrierSelector
      */
     private $carrierSelector;
+    /**
+     * @var SubscriptionLimiter
+     */
+    private $limiter;
+    /**
+     * @var string
+     */
+    private $defaultRedirectUrl;
+    /**
+     * @var CarrierRepositoryInterface
+     */
+    private $carrierRepository;
+    /**
+     * @var SubscriptionLimitNotifier
+     */
+    private $subscriptionLimitNotifier;
 
     /**
      * PinIdentificationController constructor.
-     * @param WifiIdentSMSSender   $identSMSSender
-     * @param WifiIdentConfirmator $identConfirmator
-     * @param ErrorCodeResolver    $errorCodeResolver
-     * @param CarrierSelector      $carrierSelector
+     * @param WifiIdentSMSSender         $identSMSSender
+     * @param WifiIdentConfirmator       $identConfirmator
+     * @param ErrorCodeResolver          $errorCodeResolver
+     * @param CarrierSelector            $carrierSelector
+     * @param SubscriptionLimiter        $limiter
+     * @param string                     $defaultRedirectUrl
+     * @param CarrierRepositoryInterface $carrierRepository
+     * @param SubscriptionLimitNotifier  $subscriptionLimitNotifier
      */
     public function __construct(
         WifiIdentSMSSender $identSMSSender,
         WifiIdentConfirmator $identConfirmator,
         ErrorCodeResolver $errorCodeResolver,
-        CarrierSelector $carrierSelector
+        CarrierSelector $carrierSelector,
+        SubscriptionLimiter $limiter,
+        string $defaultRedirectUrl,
+        CarrierRepositoryInterface $carrierRepository,
+        SubscriptionLimitNotifier $subscriptionLimitNotifier
 
     )
     {
-        $this->identSMSSender    = $identSMSSender;
-        $this->identConfirmator  = $identConfirmator;
-        $this->errorCodeResolver = $errorCodeResolver;
-        $this->carrierSelector   = $carrierSelector;
+        $this->identSMSSender            = $identSMSSender;
+        $this->identConfirmator          = $identConfirmator;
+        $this->errorCodeResolver         = $errorCodeResolver;
+        $this->carrierSelector           = $carrierSelector;
+        $this->limiter                   = $limiter;
+        $this->defaultRedirectUrl        = $defaultRedirectUrl;
+        $this->carrierRepository         = $carrierRepository;
+        $this->subscriptionLimitNotifier = $subscriptionLimitNotifier;
     }
 
 
@@ -96,12 +127,25 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @param Request $request
      * @param ISPData $ispData
      * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
     public function sendSMSPinCodeAction(Request $request, ISPData $ispData)
     {
         if (!$mobileNumber = $request->get('mobile_number', '')) {
             throw new BadRequestHttpException('`mobile_number` is required');
         }
+
+        try {
+            $this->limiter->ensureCapIsNotReached($request->getSession());
+        } catch (CapToolAccessException $exception) {
+            return $this->getSimpleJsonResponse('Subscription limit has been reached', 200, [], [
+                'success' => false, 'redirectUrl' => $this->defaultRedirectUrl
+            ]);
+        }
+
+        $this->limiter->reserveSlotForSubscription($request->getSession());
 
         $carrierId = $ispData->getCarrierId();
         try {
@@ -160,6 +204,9 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
     public function selectCarrierWithSendSMSPinCodeAction(Request $request)
     {
@@ -176,6 +223,16 @@ class PinIdentificationController extends AbstractController implements APIContr
         if (!$mobileNumber = $request->get('mobile_number', '')) {
             throw new BadRequestHttpException('`mobile_number` is required');
         }
+
+        try {
+            $this->limiter->ensureCapIsNotReached($request->getSession());
+        } catch (CapToolAccessException $exception) {
+            return $this->getSimpleJsonResponse('Subscription limit has been reached', 200, [], [
+                'success' => false, 'redirectUrl' => $this->defaultRedirectUrl
+            ]);
+        }
+
+        $this->limiter->reserveSlotForSubscription($request->getSession());
 
         try {
             $this->identSMSSender->sendSMS($carrierId, $mobileNumber);

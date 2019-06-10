@@ -1,87 +1,91 @@
 services:
-  SubscriptionBundle\Service\Action\Subscribe\Subscriber:
-      arguments:
-        - '@monolog.logger.subscription'
-        - '@SubscriptionBundle\Service\EntitySaveHelper'
-        - '@session'
-        - '@SubscriptionBundle\Service\SubscriptionCreator'
-        - '@SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker'
-        - '@SubscriptionBundle\Service\Action\Common\FakeResponseProvider'
-        - '@SubscriptionBundle\Service\Notification\Notifier'
-        - '@SubscriptionBundle\BillingFramework\Process\SubscribeProcess'
-        - '@SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater'
-        - '@SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider'
-        - '@SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater'
-        - '@SubscriptionBundle\Service\SubscriptionSerializer'
-        - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePerformer'
-        - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePromotionalPerformer'
+    SubscriptionBundle\Service\Action\Subscribe\Subscriber:
+        arguments:
+            - '@monolog.logger.subscription'
+            - '@SubscriptionBundle\Service\EntitySaveHelper'
+            - '@session'
+            - '@SubscriptionBundle\Service\SubscriptionCreator'
+            - '@SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker'
+            - '@SubscriptionBundle\Service\Action\Common\FakeResponseProvider'
+            - '@SubscriptionBundle\Service\Notification\Notifier'
+            - '@SubscriptionBundle\BillingFramework\Process\SubscribeProcess'
+            - '@SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater'
+            - '@SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider'
+            - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitCompleter'
+            - '@SubscriptionBundle\Service\SubscriptionSerializer'
+            - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePerformer'
+            - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePromotionalPerformer'
+            - '@App\Domain\Service\CrossSubscriptionAPI\ApiConnector'
 
-  SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider:
-      arguments: ['@SubscriptionBundle\Service\Action\Subscribe\Handler\DefaultHandler']
 
-  SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler:
-      arguments:
-          - '@SubscriptionBundle\Service\SubscriptionExtractor'
-          - '@SubscriptionBundle\Service\SubscriptionPackProvider'
-          - '@SubscriptionBundle\Service\Action\Subscribe\Subscriber'
-          - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker'
-          - '@monolog.logger.subscription'
-          - '@SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier'
-          - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
-          - '@SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator'
-          - '@ExtrasBundle\Utils\UrlParamAppender'
-          - '@router'
-          - '@SubscriptionBundle\Affiliate\Service\AffiliateSender'
-          - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
-          - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
-          - '@SubscriptionBundle\Service\EntitySaveHelper'
-          - '_resub_not_allowed_route_placeholder_'
-          - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEventTracker'
+    SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider:
+        arguments: ['@SubscriptionBundle\Service\Action\Subscribe\Handler\DefaultHandler']
 
-  SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker: ~
+    SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler:
+        arguments:
+            - '@SubscriptionBundle\Service\SubscriptionExtractor'
+            - '@SubscriptionBundle\Service\SubscriptionPackProvider'
+            - '@SubscriptionBundle\Service\Action\Subscribe\Subscriber'
+            - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker'
+            - '@logger'
+            - '@SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier'
+            - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
+            - '@SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator'
+            - '@ExtrasBundle\Utils\UrlParamAppender'
+            - '@router'
+            - '@SubscriptionBundle\Affiliate\Service\AffiliateSender'
+            - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
+            - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
+            - '@SubscriptionBundle\Service\EntitySaveHelper'
+            - '_resub_not_allowed_route_placeholder_'
+            - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEventTracker'
+            - '@SubscriptionBundle\Service\ZeroCreditSubscriptionChecking'
 
-  SubscriptionBundle\Service\Action\Unsubscribe\UnsubscriptionEligibilityChecker: ~
+    SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker: ~
 
-  SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier:
-    arguments: ['@SubscriptionBundle\Service\EntitySaveHelper']
+    SubscriptionBundle\Service\Action\Unsubscribe\UnsubscriptionEligibilityChecker: ~
 
-  SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter:
-    arguments:
-      - '@app.cache.default.translation'
-      - '@router'
-      - '@SubscriptionBundle\Service\BlackListService'
-      - '@IdentificationBundle\Repository\UserRepository'
-      - '@monolog.logger.subscription'
-      - '_sub_not_allowed_route_placeholder_'
-      - '_blacklisted_user_route_placeholder_'
+    SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier:
+        arguments: ['@SubscriptionBundle\Service\EntitySaveHelper']
 
-  SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater:
-      arguments:
-        - '@SubscriptionBundle\Service\SubscriptionExtractor'
-        - '@SubscriptionBundle\Service\CreditsCalculator'
-        - '@SubscriptionBundle\Service\RenewDateCalculator'
-        - '@event_dispatcher'
-        - '@SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater'
+    SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter:
+        arguments:
+            - '@app.cache.default.translation'
+            - '@router'
+            - '@SubscriptionBundle\Service\Blacklist\BlacklistChecker'
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@logger'
+            - '_sub_not_allowed_route_placeholder_'
+            - '@App\Domain\Repository\CarrierRepository'
 
-  SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator:
-      arguments: ['@SubscriptionBundle\Service\SubscriptionExtractor', '@SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier']
+    SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater:
+        arguments:
+            - '@SubscriptionBundle\Service\SubscriptionExtractor'
+            - '@SubscriptionBundle\Service\CreditsCalculator'
+            - '@SubscriptionBundle\Service\RenewDateCalculator'
+            - '@event_dispatcher'
+            - '@SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater'
+            - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
 
-  SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePerformer:
-    arguments:
-      - '@SubscriptionBundle\BillingFramework\Process\SubscribeProcess'
-      - '@SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider'
+    SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator:
+        arguments: ['@SubscriptionBundle\Service\SubscriptionExtractor', '@SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier']
 
-  SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePromotionalPerformer:
-    arguments:
-      - '@logger'
-      - '@SubscriptionBundle\Service\Notification\Notifier'
-      - '@SubscriptionBundle\Service\Action\Common\FakeResponseProvider'
-      - '@SubscriptionBundle\Service\SubscriptionSerializer'
+    SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePerformer:
+        arguments:
+            - '@SubscriptionBundle\BillingFramework\Process\SubscribeProcess'
+            - '@SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider'
 
-  SubscriptionBundle\Service\Action\Subscribe\Handler\DefaultHandler: ~
+    SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePromotionalPerformer:
+        arguments:
+            - '@logger'
+            - '@SubscriptionBundle\Service\Notification\Notifier'
+            - '@SubscriptionBundle\Service\Action\Common\FakeResponseProvider'
+            - '@SubscriptionBundle\Service\SubscriptionSerializer'
 
-  SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider:
-      arguments: ['@SubscriptionBundle\Service\Action\Common\RequestParametersProvider', '@request_stack', '@router']
+    SubscriptionBundle\Service\Action\Subscribe\Handler\DefaultHandler: ~
 
-  SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEventTracker:
-    arguments: ['@SubscriptionBundle\Affiliate\Service\AffiliateSender', '@SubscriptionBundle\Affiliate\Service\UserInfoMapper', '@SubscriptionBundle\Piwik\SubscriptionStatisticSender', '@session']
+    SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider:
+        arguments: ['@SubscriptionBundle\Service\Action\Common\RequestParametersProvider', '@request_stack', '@router']
+
+    SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEventTracker:
+        arguments: ['@SubscriptionBundle\Affiliate\Service\AffiliateSender', '@SubscriptionBundle\Affiliate\Service\UserInfoMapper', '@SubscriptionBundle\Piwik\SubscriptionStatisticSender', '@session']

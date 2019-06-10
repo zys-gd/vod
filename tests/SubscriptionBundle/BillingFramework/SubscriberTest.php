@@ -11,6 +11,8 @@ use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use SubscriptionBundle\Service\Action\Common\FakeResponseProvider;
 use SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker;
+use SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePerformer;
+use SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePromotionalPerformer;
 use SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater;
 use SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider;
 use SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater;
@@ -48,14 +50,21 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
      * @var SubscriptionCreator|\Mockery\MockInterface
      */
     private $subscriptionCreator;
+    private $subscribePromotionalPerformer;
+    private $subscribePerformer;
 
 
     public function testSubscribe()
     {
+        $carrier = new \App\Domain\Entity\Carrier(UuidGenerator::generate());
+        $carrier->setBillingCarrierId(1);
 
         $subscriptionPack = new SubscriptionPack(UuidGenerator::generate());
         $subscriptionPack->setProviderManagedSubscriptions(true);
-        $user         = new User(UuidGenerator::generate());
+        $user = new User(UuidGenerator::generate());
+        $user->setCarrier($carrier);
+        $user->setIdentifier('test');
+
         $subscription = new Subscription(UuidGenerator::generate());
         $subscription->setSubscriptionPack($subscriptionPack);
         $subscription->setUser($user);
@@ -72,7 +81,7 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
 
         $this->subscriber->subscribe($user, $subscriptionPack);
 
-        $this->subscribeProcess->shouldHaveReceived('doSubscribe')->once();
+        $this->subscribePerformer->shouldHaveReceived('doSubscribe')->once();
         /*$this->affiliateService->shouldHaveReceived('checkAffiliateEligibilityAndSendEvent')->once();*/
         /*$this->piwikSender->shouldHaveReceived('trackSubscribe')->once();*/
 
@@ -90,7 +99,7 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
 
         $this->subscriber->resubscribe($existingSubscription, $subscriptionPack);
 
-        $this->subscribeProcess->shouldHaveReceived('doSubscribe')->once();
+        $this->subscribePerformer->shouldHaveReceived('doSubscribe')->once();
         /*$this->affiliateService->shouldHaveReceived('checkAffiliateEligibilityAndSendEvent')->once();
         $this->piwikSender->shouldHaveReceived('trackResubscribe')->once();*/
 
@@ -102,10 +111,12 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
     protected function setUp()
     {
 
-        $this->piwikSender         = Mockery::spy(SubscriptionStatisticSender::class);
-        $this->subscriptionCreator = Mockery::spy(SubscriptionCreator::class);
-        $this->affiliateService    = Mockery::spy(AffiliateSender::class);
-        $this->subscribeProcess    = Mockery::spy(SubscribeProcess::class);
+        $this->piwikSender                   = Mockery::spy(SubscriptionStatisticSender::class);
+        $this->subscriptionCreator           = Mockery::spy(SubscriptionCreator::class);
+        $this->affiliateService              = Mockery::spy(AffiliateSender::class);
+        $this->subscribeProcess              = Mockery::spy(SubscribeProcess::class);
+        $this->subscribePromotionalPerformer = Mockery::spy(SubscribePromotionalPerformer::class);
+        $this->subscribePerformer            = Mockery::spy(SubscribePerformer::class);
 
 
         $this->subscriber = new \SubscriptionBundle\Service\Action\Subscribe\Subscriber(
@@ -119,7 +130,11 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
             $this->subscribeProcess,
             Mockery::spy(OnSubscribeUpdater::class),
             Mockery::spy(SubscribeParametersProvider::class),
-            Mockery::spy(SubscriptionCounterUpdater::class)
+            Mockery::spy(\SubscriptionBundle\Service\CAPTool\SubscriptionLimitCompleter::class),
+            Mockery::spy(\SubscriptionBundle\Service\SubscriptionSerializer::class),
+            $this->subscribePerformer,
+            $this->subscribePromotionalPerformer,
+            Mockery::spy(\App\Domain\Service\CrossSubscriptionAPI\ApiConnector::class)
         );
 
     }

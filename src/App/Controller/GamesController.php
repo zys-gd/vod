@@ -3,18 +3,22 @@
 namespace App\Controller;
 
 use App\CarrierTemplate\TemplateConfigurator;
+use App\Domain\DTO\BatchOfGames;
 use App\Domain\Entity\Game;
 use App\Domain\Entity\GameBuild;
 use App\Domain\Entity\GameImage;
 use App\Domain\Repository\GameBuildRepository;
 use App\Domain\Repository\GameRepository;
-use App\Domain\Service\ContentStatisticSender;
+use App\Domain\Service\Piwik\ContentStatisticSender;
 use App\Domain\Service\Games\DrmApkProvider;
 use App\Domain\Service\Games\ExcludedGamesProvider;
 use App\Domain\Service\Games\GameImagesSerializer;
 use App\Domain\Service\Games\GameSerializer;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use IdentificationBundle\Identification\DTO\ISPData;
+use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\SubscriptionExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -88,30 +92,33 @@ class GamesController extends AbstractController implements AppControllerInterfa
         TemplateConfigurator $templateConfigurator
     )
     {
-        $this->gameRepository = $gameRepository;
-        $this->gameSerializer = $gameSerializer;
-        $this->gameBuildRepository = $gameBuildRepository;
-        $this->drmApkProvider = $drmApkProvider;
-        $this->subscriptionExtractor = $extractor;
-        $this->gameImagesSerializer = $gameImagesSerializer;
-        $this->excludedGamesProvider = $excludedGamesProvider;
+        $this->gameRepository         = $gameRepository;
+        $this->gameSerializer         = $gameSerializer;
+        $this->gameBuildRepository    = $gameBuildRepository;
+        $this->drmApkProvider         = $drmApkProvider;
+        $this->subscriptionExtractor  = $extractor;
+        $this->gameImagesSerializer   = $gameImagesSerializer;
+        $this->excludedGamesProvider  = $excludedGamesProvider;
         $this->contentStatisticSender = $contentStatisticSender;
-        $this->templateConfigurator = $templateConfigurator;
+        $this->templateConfigurator   = $templateConfigurator;
     }
 
 
     /**
      * @Route("/games/",name="game_category")
      * @Method("GET")
+     * @param Request $request
      * @param ISPData $data
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showCategoryContentAction(ISPData $data)
+    public function showCategoryContentAction(Request $request, ISPData $data)
     {
         $games = $this->gameRepository->findBatchOfGames(0, 8);
 
-        $this->contentStatisticSender->trackVisit($data);
+        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
+        $campaignToken      = AffiliateVisitSaver::extractCampaignToken($request->getSession());
+        $this->contentStatisticSender->trackVisit($identificationData, $data, $campaignToken);
 
         $template = $this->templateConfigurator->getTemplate('game_category_content', $data->getCarrierId());
         return $this->render($template, [
@@ -146,8 +153,8 @@ class GamesController extends AbstractController implements AppControllerInterfa
         /** @var GameImage[] $images */
         $images = $this->gameImagesSerializer->serializeGameImages($game->getImages()->getValues());
 
-        $excluded = $this->excludedGamesProvider->get();
-        $similarGames = $this->gameRepository->getSimilarGames($game, $excluded);
+        $excluded      = $this->excludedGamesProvider->get();
+        $similarGames  = $this->gameRepository->getSimilarGames($game, $excluded);
         $aSimilarGames = [];
 
         foreach ($similarGames ?? [] as $similarGame) {
@@ -173,17 +180,18 @@ class GamesController extends AbstractController implements AppControllerInterfa
     {
         $offset = $request->get('offset', 0);
 
+        /** @var BatchOfGames $games */
         $games = $this->gameRepository->findBatchOfGames((int)$offset, 8);
 
         $serializedData = [];
 
-        foreach ($games as $game) {
+        foreach ($games->getGames() as $game) {
             $serializedData[] = $this->gameSerializer->serialize($game);
         }
 
         return new JsonResponse([
             'games'  => $serializedData,
-            'isLast' => count($games) < 8
+            'isLast' => $games->isLast()
         ]);
     }
 

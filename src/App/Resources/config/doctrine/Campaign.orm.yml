@@ -63,6 +63,14 @@ App\Domain\Entity\Campaign:
             precision: 10
             scale: '2'
             nullable: true
+        isLpOff:
+            type: boolean
+            options:
+                default: false
+        zeroCreditSubAvailable:
+            type: boolean
+            options:
+                default: 0
 
     lifecycleCallbacks: {  }
 

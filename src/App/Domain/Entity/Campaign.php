@@ -101,6 +101,14 @@ class Campaign implements CampaignInterface, HasUuid
     private $click;
 
     /**
+     * @var bool
+     */
+    private $isLpOff = false;
+
+    /** @var bool  */
+    private $zeroCreditSubAvailable = false;
+
+    /**
      * Campaign constructor
      *
      * @param string $uuid
@@ -502,5 +510,37 @@ class Campaign implements CampaignInterface, HasUuid
     public function setUuid(string $uuid)
     {
         $this->uuid = $uuid;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLpOff(): bool
+    {
+        return $this->isLpOff;
+    }
+
+    /**
+     * @param bool $isLpOff
+     */
+    public function setIsLpOff(bool $isLpOff): void
+    {
+        $this->isLpOff = $isLpOff;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isZeroCreditSubAvailable(): bool
+    {
+        return $this->zeroCreditSubAvailable;
+    }
+
+    /**
+     * @param bool $zeroCreditSubAvailable
+     */
+    public function setZeroCreditSubAvailable(bool $zeroCreditSubAvailable): void
+    {
+        $this->zeroCreditSubAvailable = $zeroCreditSubAvailable;
     }
 }

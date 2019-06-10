@@ -12,7 +12,7 @@ class UploadedVideoSerializer
      * @param UploadedVideo $video
      * @return array
      */
-    public function serialize(UploadedVideo $video): array
+    public function serializeShort(UploadedVideo $video): array
     {
         return [
             'uuid'       => $video->getUuid(),
@@ -28,7 +28,7 @@ class UploadedVideoSerializer
      * @param UploadedVideo $video
      * @return string
      */
-    public function jsonSerialize(UploadedVideo $video): string
+    public function serializeJson(UploadedVideo $video): string
     {
         $videoData = [
             'uuid' => $video->getUuid(),
