@@ -6,6 +6,7 @@ use App\Domain\ACL\Accessors\VisitAccessorByCampaign;
 use App\Domain\ACL\Accessors\VisitConstraintByAffiliate;
 use App\Domain\ACL\Exception\CampaignAccessException;
 use App\Domain\ACL\Exception\CampaignPausedException;
+use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CampaignRepository;
@@ -143,8 +144,15 @@ class LandingPageACL
 
             /** @var Campaign $campaign */
             $campaign = $this->campaignRepository->findOneBy(['campaignToken' => $campaignToken]);
-            // $campaign->getAffiliate()
-            return $carrier->isLpOff() || $campaign->isLpOff() || $campaign->getAffiliate()->isLpOff();
+            $isLPOffByAffiliate = false;
+
+            if($campaign) {
+                /** @var Affiliate $affiliate */
+                $affiliate = $campaign->getAffiliate();
+                $isLPOffByAffiliate = $affiliate->isLpOff() && ($affiliate->hasCarrier($carrier) || empty($affiliate->getCarriers()));
+            }
+
+            return $carrier->isLpOff() || $isLPOffByAffiliate || $campaign->isLpOff() ;
         } catch (\Throwable $e) {
             return false;
         }

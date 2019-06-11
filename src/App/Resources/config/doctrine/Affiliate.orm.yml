@@ -76,3 +76,15 @@ App\Domain\Entity\Affiliate:
             mappedBy: affiliate
             cascade: ["persist", "remove"]
             orphanRemoval: true
+    manyToMany:
+        carriers:
+            targetEntity: App\Domain\Entity\Carrier
+            joinTable:
+                name: null
+                joinColumns:
+                    affiliate_id:
+                        referencedColumnName: uuid
+                inverseJoinColumns:
+                    carrier_id:
+                        referencedColumnName: uuid
+            inversedBy: affiliates
