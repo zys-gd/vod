@@ -11,7 +11,7 @@ use IdentificationBundle\Identification\Handler\HasConsentPageFlow as IdentConse
 use SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound;
 use SubscriptionBundle\Exception\ExistingSubscriptionException;
 use SubscriptionBundle\Service\Action\Subscribe\Consent\ConsentFlowHandler;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\HasConsentPageFlow;
+use SubscriptionBundle\Service\Action\Subscribe\Handler\ConsentPageFlow\{HasConsentPageFlow, HasCustomConsentPageFlow};
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
 use SubscriptionBundle\Service\UserExtractor;
 use Symfony\Component\HttpFoundation\{Request, Response};
@@ -94,7 +94,11 @@ class ConsentPageSubscribeAction
             throw new BadRequestHttpException('This action is available only for subscription `ConsentPageFlow`');
         }
 
-        return $this->consentFlowHandler->process($request, $user, $subscriber);
+        if ($subscriber instanceof HasCustomConsentPageFlow) {
+            return $subscriber->process($request, $user);
+        } else {
+            return $this->consentFlowHandler->process($request, $user, $subscriber);
+        }
     }
 
     /**

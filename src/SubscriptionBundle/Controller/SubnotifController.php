@@ -9,8 +9,10 @@ use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
+use SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound;
 use SubscriptionBundle\Service\Notification\Notifier;
 use SubscriptionBundle\Service\SubscriptionPackProvider;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -92,9 +94,9 @@ class SubnotifController
      * @param Request $request
      * @param ISPData $data
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      *
-     * @throws \SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound
+     * @throws ActiveSubscriptionPackNotFound
      */
     public function sendRemindSms(Request $request, ISPData $data)
     {

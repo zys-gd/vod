@@ -9,7 +9,7 @@ use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\HasConsentPageFlow;
+use SubscriptionBundle\Service\Action\Subscribe\Handler\ConsentPageFlow\HasConsentPageFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
@@ -69,16 +69,7 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
      */
     public function getAdditionalSubscribeParams(Request $request, User $user): array
     {
-        $data = [
-            'url_id' => $user->getShortUrlId(),
-            'lang' => $this->localExtractor->getLocal()
-        ];
-
-        if ((bool) $this->identificationDataStorage->readValue('is_wifi_flow')) {
-            $data['subscription_contract_id'] = $this->identificationDataStorage->readValue('subscription_contract_id');
-        }
-
-        return $data;
+        return $this->getGeneralParameters($user);
     }
 
     /**
@@ -89,15 +80,8 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
      */
     public function getAdditionalResubscribeParams(Request $request, User $user): array
     {
-        $data = [
-            'url_id' => $user->getShortUrlId(),
-            'lang' => $this->localExtractor->getLocal(),
-            'redirect_url' => $this->router->generate('index', [], RouterInterface::ABSOLUTE_URL)
-        ];
-
-        if ((bool) $this->identificationDataStorage->readValue('is_wifi_flow')) {
-            $data['subscription_contract_id'] = $this->identificationDataStorage->readValue('subscription_contract_id');
-        }
+        $data = $this->getGeneralParameters($user);
+        $data['redirect_url'] = $this->router->generate('index', [], RouterInterface::ABSOLUTE_URL);
 
         return $data;
     }
@@ -109,5 +93,24 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
     public function afterProcess(Subscription $subscription, ProcessResult $result): void
     {
 
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return array
+     */
+    private function getGeneralParameters(User $user): array
+    {
+        $data = [
+            'url_id' => $user->getShortUrlId(),
+            'lang' => $this->localExtractor->getLocal()
+        ];
+
+        if ((bool) $this->identificationDataStorage->readValue('is_wifi_flow')) {
+            $data['subscription_contract_id'] = $this->identificationDataStorage->readValue('subscription_contract_id');
+        }
+
+        return $data;
     }
 }
