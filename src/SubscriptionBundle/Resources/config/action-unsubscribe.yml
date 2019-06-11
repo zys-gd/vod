@@ -9,6 +9,7 @@ services:
         - '@SubscriptionBundle\Service\Action\Unsubscribe\OnUnsubscribeUpdater'
         - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
         - '@SubscriptionBundle\Service\Action\Unsubscribe\UnsubscribeParametersProvider'
+        - '@App\Domain\Service\CrossSubscriptionAPI\ApiConnector'
 
   SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider:
       arguments: ['@SubscriptionBundle\Service\Action\Unsubscribe\Handler\DefaultHandler']
