@@ -3,7 +3,6 @@
 namespace IdentificationBundle\Carriers\OrangeEGTpay;
 
 use App\Domain\Constants\ConstBillingCarrierId;
-use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Callback\Handler\HasCommonFlow;
 use IdentificationBundle\Callback\Handler\IdentCallbackHandlerInterface;
 use IdentificationBundle\Entity\User;
@@ -14,21 +13,6 @@ use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
  */
 class OrangeEGIdentificationCallbackHandler implements IdentCallbackHandlerInterface, HasCommonFlow
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
-     * VodafoneEGIdentificationCallbackHandler constructor
-     *
-     * @param EntityManagerInterface $entityManager
-     */
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
     /**
      * @param int $carrierId
      *

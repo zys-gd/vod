@@ -4,8 +4,6 @@ namespace IdentificationBundle\WifiIdentification\Handler;
 
 use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
 use IdentificationBundle\BillingFramework\Process\DTO\PinVerifyResult;
-use IdentificationBundle\Entity\User;
-use IdentificationBundle\WifiIdentification\Exception\WifiIdentConfirmException;
 
 /**
  * Interface HasCustomPinVerifyRules
@@ -34,8 +32,6 @@ interface HasCustomPinVerifyRules
      * @param string $phoneNumber
      *
      * @return string
-     *
-     * @throws WifiIdentConfirmException
      */
     public function getMsisdnFromResult(PinVerifyResult $pinVerifyResult, string $phoneNumber): string;
 }

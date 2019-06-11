@@ -56,6 +56,8 @@ class IdentFinisher
      * @param string $ip
      *
      * @return User
+     *
+     * @throws \Exception
      */
     public function finish(string $msisdn, CarrierInterface $carrier, string $ip): User
     {

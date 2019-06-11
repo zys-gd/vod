@@ -7,7 +7,7 @@ use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\DTO\{IdentificationData, ISPData};
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
-use IdentificationBundle\Identification\Handler\HasConsentPageFlow as IdentConsentPageFlow;
+use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow as IdentConsentPageFlow;
 use SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound;
 use SubscriptionBundle\Exception\ExistingSubscriptionException;
 use SubscriptionBundle\Service\Action\Subscribe\Consent\ConsentFlowHandler;

@@ -139,6 +139,7 @@ class WifiIdentConfirmator
      * @throws AlreadyIdentifiedException
      * @throws MissingIdentificationDataException
      * @throws FailedIdentificationException
+     * @throws \Exception
      */
     public function confirm(int $carrierId, string $pinCode, string $mobileNumber, string $ip): JsonResponse
     {
