@@ -16,7 +16,6 @@ final class Version20190511141121 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE affiliates ADD unique_flow TINYINT(1) DEFAULT \'0\' NOT NULL, ADD unique_parameter VARCHAR(255) DEFAULT NULL');
-        $this->addSql('ALTER TABLE subscription_packs DROP carrier_id, CHANGE buy_strategy_id buy_strategy_id INT NOT NULL');
     }
 
     public function down(Schema $schema) : void
