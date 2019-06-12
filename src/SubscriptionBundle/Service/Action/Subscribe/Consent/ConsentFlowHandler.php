@@ -79,11 +79,6 @@ class ConsentFlowHandler
     private $router;
 
     /**
-     * @var string
-     */
-    private $resubNotAllowedRoute;
-
-    /**
      * @var CommonResponseCreator
      */
     private $commonResponseCreator;
@@ -101,7 +96,6 @@ class ConsentFlowHandler
      * @param SubscriptionEligibilityChecker $subscriptionEligibilityChecker
      * @param UrlParamAppender $urlParamAppender
      * @param RouterInterface $router
-     * @param string $resubNotAllowedRoute
      * @param CommonResponseCreator $commonResponseCreator
      */
     public function __construct(
@@ -115,7 +109,6 @@ class ConsentFlowHandler
         SubscriptionEligibilityChecker $subscriptionEligibilityChecker,
         UrlParamAppender $urlParamAppender,
         RouterInterface $router,
-        string $resubNotAllowedRoute,
         CommonResponseCreator $commonResponseCreator
     ) {
         $this->logger = $logger;
@@ -128,7 +121,6 @@ class ConsentFlowHandler
         $this->subscriptionEligibilityChecker = $subscriptionEligibilityChecker;
         $this->urlParamAppender = $urlParamAppender;
         $this->router = $router;
-        $this->resubNotAllowedRoute = $resubNotAllowedRoute;
         $this->commonResponseCreator = $commonResponseCreator;
     }
 
@@ -265,7 +257,7 @@ class ConsentFlowHandler
             if ($request->get('is_ajax_request', null)) {
                 return $this->getSimpleJsonResponse('', 200, [], ['resub_not_allowed' => true]);
             } else {
-                return new RedirectResponse($this->router->generate($this->resubNotAllowedRoute));
+                return new RedirectResponse($this->router->generate('resub_not_allowed'));
             }
         }
 
