@@ -46,14 +46,19 @@ class ApiConnector
 
     public function registerSubscription(string $msisdn, int $carrierId): void
     {
-        $this->guzzleClient->post(sprintf('%s/msisdn', $this->apiLink), $options = [
-            RequestOptions::JSON => ['carrierId' => $carrierId, 'msisdn' => $msisdn],
-        ]);
+        if($this->apiLink) {
+            $this->guzzleClient->post(sprintf('%s/msisdn', $this->apiLink), $options = [
+                RequestOptions::JSON => ['carrierId' => $carrierId, 'msisdn' => $msisdn],
+            ]);
+        }
+
     }
     public function deregisterSubscription(string $msisdn, int $carrierId): void
     {
-        $this->guzzleClient->delete(sprintf('%s/msisdn', $this->apiLink), $options = [
-            RequestOptions::JSON => ['carrierId' => $carrierId, 'msisdn' => $msisdn],
-        ]);
+        if($this->apiLink) {
+            $this->guzzleClient->delete(sprintf('%s/msisdn', $this->apiLink), $options = [
+                RequestOptions::JSON => ['carrierId' => $carrierId, 'msisdn' => $msisdn],
+            ]);
+        }
     }
 }

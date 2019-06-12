@@ -251,14 +251,6 @@ class Affiliate implements HasUuid, AffiliateInterface
         $this->uniqueParameter = $uniqueParameter;
     }
 
-    /**
-     * @param $param
-     * @return string
-     */
-    public function getPostBackUrlUniqueFlow($param)
-    {
-        return sprintf('%s/%s', $this->postbackUrl, $param);
-    }
 
     /**
      * Set country

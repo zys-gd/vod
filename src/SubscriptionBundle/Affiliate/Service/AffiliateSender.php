@@ -104,7 +104,7 @@ class AffiliateSender
 
 
         try {
-            $data = ['query' => $this->getPostBackParameters($affiliate, $campaign, $campaignParams)]; // TODO implement _formAffiliateData
+            $data = ['query' => $this->getPostBackParameters($affiliate, $campaign, $campaignParams)];
 
             $fullUrl = $affiliate->getPostbackUrl() . '?' . http_build_query($data['query']);
 
@@ -170,24 +170,32 @@ class AffiliateSender
         return false;
     }
 
+    /**
+     * @param AffiliateInterface $affiliate
+     * @param CampaignInterface  $campaign
+     * @param array              $campaignParams
+     *
+     * @return array
+     * @throws WrongIncomingParameters
+     */
     private function getPostBackParameters(AffiliateInterface $affiliate,
-        CampaignInterface $campaign,
-        array $campaignParams): array
+                                           CampaignInterface $campaign,
+                                           array $campaignParams): array
     {
         $query = [];
 
-        /*if ($affiliate->isUniqueFlow()) {
-            $query[] = $this->jumpIntoUniqueFlow($affiliate, $campaignParams);
-        } else {*/
+        if ($affiliate->isUniqueFlow()) {
+            $query = $this->jumpIntoUniqueFlow($affiliate, $campaignParams);
+        } else {
         $paramsList = $affiliate->getParamsList();
         $constantsList = $affiliate->getConstantsList();
         $query = $this->jumpIntoStandartFlow($paramsList, $constantsList, $campaignParams, $query);
         $this->logger->debug('check content in getPostBackParameters()', [
             'query' => $query
         ]);
-        /*};*/
+        };
 
-        if ($subPriceName = $affiliate->getSubPriceName()) {
+        if (!$affiliate->isUniqueFlow() && $subPriceName = $affiliate->getSubPriceName()) {
             $query = array_merge(
                 $query,
                 [$subPriceName => $campaign->getSub() ?? null]
@@ -245,10 +253,11 @@ class AffiliateSender
     private function jumpIntoUniqueFlow(AffiliateInterface $affiliate, array $campaignParams)
     {
         if (!empty($campaignParams) && array_key_exists($affiliate->getUniqueParameter(), $campaignParams)) {
-            $uniqueParameterValue = $campaignParams[$affiliate->getUniqueParameter()];
-            $url = $affiliate->getPostBackUrlUniqueFlow($uniqueParameterValue);
+            $query = [
+                $affiliate->getUniqueParameter() => $campaignParams[$affiliate->getUniqueParameter()]
+            ];
 
-            return $url;
+            return $query;
         }
 
         return [];

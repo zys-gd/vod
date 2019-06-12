@@ -41,7 +41,7 @@ services:
             - [ setTemplate, [edit, '@@Admin\CountryCategoryPriorityOverride\edit.html.twig'] ]
 
     App\Admin\Sonata\AffiliateAdmin:
-        arguments: [~, App\Domain\Entity\Affiliate, ~, '@App\Domain\Repository\AffiliateRepository']
+        arguments: [~, App\Domain\Entity\Affiliate, ~, '@App\Domain\Repository\AffiliateRepository', '@service_container' ]
         tags:
             - { name: sonata.admin, manager_type: orm, group: affiliate_management, label: Affiliates }
 
