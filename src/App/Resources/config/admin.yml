@@ -46,7 +46,11 @@ services:
             - { name: sonata.admin, manager_type: orm, group: affiliate_management, label: Affiliates }
 
     App\Admin\Sonata\CampaignAdmin:
-        arguments: [~, App\Domain\Entity\Campaign, ~, '@service_container']
+        arguments:
+            - ~
+            - 'App\Domain\Entity\Campaign'
+            - 'App\Admin\Controller\CampaignAdminController'
+            - '@service_container'
         tags:
             - { name: sonata.admin, manager_type: orm, group: affiliate_management, label: Campaign }
 

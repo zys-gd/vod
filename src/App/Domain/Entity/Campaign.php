@@ -2,6 +2,7 @@
 
 namespace App\Domain\Entity;
 
+use App\Utils\UuidGenerator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
@@ -134,6 +135,14 @@ class Campaign implements CampaignInterface, HasUuid
         }
 
         return '';
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function __clone()
+    {
+        $this->uuid = UuidGenerator::generate();
     }
 
     /**

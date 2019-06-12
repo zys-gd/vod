@@ -103,6 +103,11 @@ class Affiliate implements HasUuid, AffiliateInterface
     /**
      * @var Collection
      */
+    private $carriers;
+
+    /**
+     * @var Collection
+     */
     private $constraints;
 
     /**
@@ -660,5 +665,26 @@ class Affiliate implements HasUuid, AffiliateInterface
     public function setIsLpOff(bool $isLpOff): void
     {
         $this->isLpOff = $isLpOff;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getCarriers(): Collection
+    {
+        return $this->carriers;
+    }
+
+    /**
+     * @param Collection $carriers
+     */
+    public function setCarriers(Collection $carriers): void
+    {
+        $this->carriers = $carriers;
+    }
+
+    public function hasCarrier(Carrier $carrier): bool
+    {
+        return $this->carriers->contains($carrier);
     }
 }

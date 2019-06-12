@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -170,6 +171,9 @@ class CampaignAdmin extends AbstractAdmin
                     'show' => [],
                     'edit' => [],
                     'delete' => [],
+                    'clone' => [
+                        'template' => '@Admin/Campaign/clone_btn.html.twig',
+                    ],
                 ]
             ]);
 
@@ -333,5 +337,22 @@ class CampaignAdmin extends AbstractAdmin
         }
 
         return '';
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->add('clone', $this->getRouterIdParameter().'/clone');
+        $collection->add('clone_confirm', $this->getRouterIdParameter().'/clone_confirm');
+
+        parent::configureRoutes($collection);
+    }
+
+    protected function configureBatchActions($actions)
+    {
+        $actions['pause'] = [
+            'ask_confirmation' => false
+        ];
+
+        return $actions;
     }
 }

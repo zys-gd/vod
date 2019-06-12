@@ -118,6 +118,17 @@ App\Domain\Entity\Carrier:
                     campaign_id:
                         referencedColumnName: uuid
             mappedBy: carriers
+        affiliates:
+            targetEntity: App\Domain\Entity\Affiliate
+            joinTable:
+                name: null
+                joinColumns:
+                    carrier_id:
+                        referencedColumnName: uuid
+                inverseJoinColumns:
+                    affiliate_id:
+                        referencedColumnName: uuid
+            mappedBy: carriers
 
     manyToOne:
         defaultLanguage:
