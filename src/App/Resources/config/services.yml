@@ -122,6 +122,7 @@ services:
             - '@session'
             - '@SubscriptionBundle\Service\CAPTool\Limiter\SubscriptionCapChecker'
             - '@logger'
+            - '@App\Domain\Repository\CampaignScheduleRepository'
 
     App\Domain\Service\CarrierOTPVerifier:
         arguments:
