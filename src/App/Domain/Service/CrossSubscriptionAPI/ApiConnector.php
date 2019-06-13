@@ -39,7 +39,7 @@ class ApiConnector
     public function checkIfExists(string $msisdn, int $carrierId): bool
     {
         if (strlen($this->apiLink)) {
-            $result   =    && $this->guzzleClient->get(sprintf('%s/msisdn/%s/%s', $this->apiLink, $carrierId, $msisdn));
+            $result   = $this->guzzleClient->get(sprintf('%s/msisdn/%s/%s', $this->apiLink, $carrierId, $msisdn));
             $response = json_decode($result->getBody(), true);
             $isExists = $response['isExist'] ?? false;
             return (bool)$isExists;
