@@ -106,8 +106,13 @@ class Campaign implements CampaignInterface, HasUuid
      */
     private $isLpOff = false;
 
-    /** @var bool  */
+    /** @var bool */
     private $zeroCreditSubAvailable = false;
+
+    /**
+     * @var Collection
+     */
+    private $schedule;
 
     /**
      * Campaign constructor
@@ -116,9 +121,10 @@ class Campaign implements CampaignInterface, HasUuid
      */
     public function __construct(string $uuid)
     {
-        $this->uuid = $uuid;
+        $this->uuid          = $uuid;
         $this->campaignToken = uniqid();
-        $this->carriers = new ArrayCollection();
+        $this->carriers      = new ArrayCollection();
+        $this->schedule      = new ArrayCollection();
     }
 
     /**
@@ -163,12 +169,11 @@ class Campaign implements CampaignInterface, HasUuid
 
     /**
      * Get thumbnail path
-     *
      * @return string
      */
     public function getImagePath()
     {
-        return static::RESOURCE_IMAGE .'/' . $this->getImageName();
+        return static::RESOURCE_IMAGE . '/' . $this->getImageName();
     }
 
     /**
@@ -185,7 +190,6 @@ class Campaign implements CampaignInterface, HasUuid
 
     /**
      * Get thumbnail file
-     *
      * @return File
      */
     public function getImageFile()
@@ -206,7 +210,8 @@ class Campaign implements CampaignInterface, HasUuid
     /**
      * @param string $token
      */
-    public function setCampaignToken($token) {
+    public function setCampaignToken($token)
+    {
         $this->campaignToken = $token;
     }
 
@@ -221,14 +226,16 @@ class Campaign implements CampaignInterface, HasUuid
     /**
      * @param string $testUrl
      */
-    public function setTestUrl($testUrl) {
+    public function setTestUrl($testUrl)
+    {
         $this->testUrl = $testUrl;
     }
 
     /**
      * @return string
      */
-    public function getTestUrl() {
+    public function getTestUrl()
+    {
         return $this->testUrl;
     }
 
@@ -248,7 +255,6 @@ class Campaign implements CampaignInterface, HasUuid
 
     /**
      * Get affiliate
-     *
      * @return AffiliateInterface
      */
     public function getAffiliate(): ?AffiliateInterface
@@ -278,7 +284,6 @@ class Campaign implements CampaignInterface, HasUuid
 
     /**
      * Get operator
-     *
      * @return Collection
      */
     public function getCarriers(): Collection
@@ -326,7 +331,6 @@ class Campaign implements CampaignInterface, HasUuid
 
     /**
      * Get bgColor
-     *
      * @return string
      */
     public function getBgColor()
@@ -361,7 +365,7 @@ class Campaign implements CampaignInterface, HasUuid
      *
      * @return Campaign
      */
-    public function setIsPause ($isPause)
+    public function setIsPause($isPause)
     {
         $this->isPause = $isPause;
 
@@ -370,10 +374,9 @@ class Campaign implements CampaignInterface, HasUuid
 
     /**
      * Get isPause
-     *
      * @return boolean
      */
-    public function getIsPause (): bool
+    public function getIsPause(): bool
     {
         return $this->isPause;
     }
@@ -385,13 +388,11 @@ class Campaign implements CampaignInterface, HasUuid
      * We don't need to store the computed token anywhere inside the DB to identify a specific campaign,
      * because we get its ID it by decoding the token. This applies only when there is no enforced ID from affiliate.
      * This method is called only by configureListFields() inside App\Admin\CampaignAdmin
-     *
-     *
      * The parameter names are hardcoded, and should be read from app/config/parameters.yml
      */
     public function getLandingUrl()
     {
-        return "http://".$_SERVER['HTTP_HOST'].$this->getTestUrl();
+        return "http://" . $_SERVER['HTTP_HOST'] . $this->getTestUrl();
     }
 
     /**
@@ -410,7 +411,6 @@ class Campaign implements CampaignInterface, HasUuid
 
     /**
      * Get counter
-     *
      * @return integer
      */
     public function getCounter()
@@ -434,7 +434,6 @@ class Campaign implements CampaignInterface, HasUuid
 
     /**
      * @return \DateTime
-     *
      * @throws \Exception
      */
     public function getFlushDate()
@@ -508,7 +507,7 @@ class Campaign implements CampaignInterface, HasUuid
      */
     public function getPausedCampaigns()
     {
-        return $this->carriers->filter(function (Carrier $carrier){
+        return $this->carriers->filter(function (Carrier $carrier) {
             return $carrier->getIsCampaignsOnPause();
         });
     }
@@ -552,4 +551,48 @@ class Campaign implements CampaignInterface, HasUuid
     {
         $this->zeroCreditSubAvailable = $zeroCreditSubAvailable;
     }
+
+    /**
+     * @return Collection
+     */
+    public function getSchedule(): Collection
+    {
+        return $this->schedule;
+    }
+
+    /**
+     * @param CampaignSchedule $schedule
+     *
+     * @return $this
+     */
+    public function addSchedule(CampaignSchedule $schedule)
+    {
+        $this->schedule->add($schedule);
+
+        $schedule->setCampaign($this);
+
+        return $this;
+    }
+
+    /**
+     * @param CampaignSchedule $schedule
+     *
+     * @return $this
+     */
+    public function removeSchedule(CampaignSchedule $schedule)
+    {
+        $this->schedule->removeElement($schedule);
+
+        return $this;
+    }
+
+    /**
+     * @param Collection $schedule
+     */
+    public function setSchedule(Collection $schedule): void
+    {
+        $this->schedule = $schedule;
+    }
+
+
 }
