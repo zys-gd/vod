@@ -88,7 +88,7 @@ class UploadedVideo implements HasUuid
     private $videoPartner;
 
     /** @var bool */
-    private $pause;
+    private $pause = false;
 
     /**
      * UploadedVideo constructor
