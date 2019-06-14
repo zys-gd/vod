@@ -115,6 +115,16 @@ class Campaign implements CampaignInterface, HasUuid
     private $schedule;
 
     /**
+     * @var \DateTime
+     */
+    private $dateCreated;
+
+    /**
+     * @var string
+     */
+    private $creator;
+
+    /**
      * Campaign constructor
      *
      * @param string $uuid
@@ -592,6 +602,38 @@ class Campaign implements CampaignInterface, HasUuid
     public function setSchedule(Collection $schedule): void
     {
         $this->schedule = $schedule;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateCreated(): \DateTime
+    {
+        return $this->dateCreated;
+    }
+
+    /**
+     * @param \DateTime $dateCreated
+     */
+    public function setDateCreated(\DateTime $dateCreated): void
+    {
+        $this->dateCreated = $dateCreated;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreator(): string
+    {
+        return $this->creator;
+    }
+
+    /**
+     * @param string $creator
+     */
+    public function setCreator(string $creator): void
+    {
+        $this->creator = $creator;
     }
 
 
