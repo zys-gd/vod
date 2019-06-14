@@ -68,5 +68,5 @@ return [
 
     'REPORTING_STATS_API_HOST' => 'http://reporting.100sport.tv/a/api',
 
-    'CROSS_SUBSCRIPTION_SERVICE' => NULL
+    'CROSS_SUBSCRIPTION_SERVICE' => null
 ];

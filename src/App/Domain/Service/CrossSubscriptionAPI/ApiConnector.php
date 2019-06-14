@@ -11,7 +11,6 @@ namespace App\Domain\Service\CrossSubscriptionAPI;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
-use Psr\Log\LoggerInterface;
 
 class ApiConnector
 {
@@ -24,29 +23,22 @@ class ApiConnector
      * @var string
      */
     private $apiLink;
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
 
 
     /**
      * SubscribeExternalAPICheck constructor.
      *
-     * @param Client          $guzzleClient
-     * @param string          $apiLink
-     * @param LoggerInterface $logger
+     * @param Client $guzzleClient
      */
-    public function __construct(Client $guzzleClient, string $apiLink, LoggerInterface $logger)
+    public function __construct(Client $guzzleClient, string $apiLink)
     {
         $this->guzzleClient = $guzzleClient;
         $this->apiLink      = $apiLink;
-        $this->logger = $logger;
     }
 
     public function checkIfExists(string $msisdn, int $carrierId): bool
     {
-        if ((bool)strlen($this->apiLink)) {
+        if(filter_var($this->apiLink, FILTER_VALIDATE_URL)) {
             $result   = $this->guzzleClient->get(sprintf('%s/msisdn/%s/%s', $this->apiLink, $carrierId, $msisdn));
             $response = json_decode($result->getBody(), true);
             $isExists = $response['isExist'] ?? false;
@@ -57,12 +49,7 @@ class ApiConnector
 
     public function registerSubscription(string $msisdn, int $carrierId): void
     {
-        $this->logger->debug('apiLink',[
-            $this->apiLink,
-            $this
-        ]);
-
-        if((bool)strlen($this->apiLink)) {
+        if(filter_var($this->apiLink, FILTER_VALIDATE_URL)) {
             $this->guzzleClient->post(sprintf('%s/msisdn', $this->apiLink), $options = [
                 RequestOptions::JSON => ['carrierId' => $carrierId, 'msisdn' => $msisdn],
             ]);
@@ -71,7 +58,7 @@ class ApiConnector
 
     public function deregisterSubscription(string $msisdn, int $carrierId): void
     {
-        if((bool)strlen($this->apiLink)) {
+        if(filter_var($this->apiLink, FILTER_VALIDATE_URL)) {
             $this->guzzleClient->delete(sprintf('%s/msisdn', $this->apiLink), $options = [
                 RequestOptions::JSON => ['carrierId' => $carrierId, 'msisdn' => $msisdn],
             ]);
