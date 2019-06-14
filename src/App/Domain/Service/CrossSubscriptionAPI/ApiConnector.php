@@ -11,6 +11,7 @@ namespace App\Domain\Service\CrossSubscriptionAPI;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
+use Psr\Log\LoggerInterface;
 
 class ApiConnector
 {
@@ -23,17 +24,24 @@ class ApiConnector
      * @var string
      */
     private $apiLink;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
 
     /**
      * SubscribeExternalAPICheck constructor.
      *
-     * @param Client $guzzleClient
+     * @param Client          $guzzleClient
+     * @param string          $apiLink
+     * @param LoggerInterface $logger
      */
-    public function __construct(Client $guzzleClient, string $apiLink)
+    public function __construct(Client $guzzleClient, string $apiLink, LoggerInterface $logger)
     {
         $this->guzzleClient = $guzzleClient;
         $this->apiLink      = $apiLink;
+        $this->logger = $logger;
     }
 
     public function checkIfExists(string $msisdn, int $carrierId): bool
@@ -49,6 +57,11 @@ class ApiConnector
 
     public function registerSubscription(string $msisdn, int $carrierId): void
     {
+        $this->logger->debug('apiLink',[
+            $this->apiLink,
+            $this
+        ]);
+
         if((bool)strlen($this->apiLink)) {
             $this->guzzleClient->post(sprintf('%s/msisdn', $this->apiLink), $options = [
                 RequestOptions::JSON => ['carrierId' => $carrierId, 'msisdn' => $msisdn],
