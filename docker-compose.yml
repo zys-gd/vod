@@ -27,6 +27,7 @@ services:
      environment:
        PHP_IDE_CONFIG: serverName=vod.local
        APP_ENV: dev
+       CROSS_SUBSCRIPTION_SERVICE:
      volumes:
        - .:/var/www/html
        - .docker/php-fpm/php.ini:/etc/php/7.2/fpm/conf.d/99-docker.ini
