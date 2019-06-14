@@ -33,6 +33,10 @@ App\Domain\Entity\UploadedVideo:
         options:
             type: json_array
             nullable: true
+        pause:
+            type: boolean
+            options:
+                default: false
 
     lifecycleCallbacks: {  }
 
