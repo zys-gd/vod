@@ -50,7 +50,7 @@ class ApiConnector
     public function registerSubscription(string $msisdn, int $carrierId): void
     {
         if((bool)strlen($this->apiLink)) {
-            strlen($this->apiLink) && $this->guzzleClient->post(sprintf('%s/msisdn', $this->apiLink), $options = [
+            $this->guzzleClient->post(sprintf('%s/msisdn', $this->apiLink), $options = [
                 RequestOptions::JSON => ['carrierId' => $carrierId, 'msisdn' => $msisdn],
             ]);
         }
