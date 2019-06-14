@@ -28,6 +28,7 @@ class UploadedVideoRepository extends \Doctrine\ORM\EntityRepository
             ->leftJoin('subcategory.parent', 'category')
             ->where($queryBuilder->expr()->orX('v.expiredDate > :currentDateTime', 'v.expiredDate IS NULL'))
             ->andWhere('v.status = :status')
+            ->andWhere('v.pause = 0')
             ->orderBy('v.createdDate', 'DESC')
             ->setParameter('currentDateTime', new \DateTime())
             ->setParameter('status', UploadedVideo::STATUS_READY)
@@ -53,6 +54,7 @@ class UploadedVideoRepository extends \Doctrine\ORM\EntityRepository
             ->where($queryBuilder->expr()->orX('v.expiredDate > :currentDateTime', 'v.expiredDate IS NULL'))
             ->andWhere('v.subcategory = :subcategory')
             ->andWhere('v.status = :status')
+            ->andWhere('v.pause = 0')
             ->orderBy('v.createdDate', 'DESC')
             ->setParameters([
                 'subcategory' => $subcategories,
