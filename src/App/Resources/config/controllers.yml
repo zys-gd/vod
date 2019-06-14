@@ -55,6 +55,7 @@ services:
             - '@SubscriptionBundle\Service\VisitCAPTool\VisitTracker'
             - '@SubscriptionBundle\Service\VisitCAPTool\VisitNotifier'
             - '@logger'
+            - '@SubscriptionBundle\Service\SubscribeUrlResolver'
 
     App\Controller\ErrorController:
         arguments:

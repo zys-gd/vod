@@ -1,0 +1,26 @@
+App\Domain\Entity\CampaignSchedule:
+    type: entity
+    table: campaign_schedule
+    repositoryClass: App\Domain\Repository\CampaignScheduleRepository
+    id:
+        uuid:
+            type: guid
+    fields:
+        dayStart:
+            type: integer
+            length: 1
+        dayEnd:
+            type: integer
+            length: 1
+        timeStart:
+            type: time
+        timeEnd:
+            type: time
+
+    manyToOne:
+        campaign:
+            targetEntity: App\Domain\Entity\Campaign
+            inversedBy: schedule
+            joinColumn:
+                name: campaign_uuid
+                referencedColumnName: uuid

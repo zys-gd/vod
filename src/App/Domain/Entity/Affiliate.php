@@ -117,15 +117,17 @@ class Affiliate implements HasUuid, AffiliateInterface
 
     /**
      * Affiliate constructor.
+     *
      * @param string $uuid
      */
     public function __construct(string $uuid)
     {
-        $this->uuid       = $uuid;
-        $this->constants  = new ArrayCollection();
-        $this->parameters = new ArrayCollection();
-        $this->campaigns = new ArrayCollection();
+        $this->uuid        = $uuid;
+        $this->constants   = new ArrayCollection();
+        $this->parameters  = new ArrayCollection();
+        $this->campaigns   = new ArrayCollection();
         $this->constraints = new ArrayCollection();
+        $this->carriers    = new ArrayCollection();
     }
 
     /**
@@ -168,7 +170,6 @@ class Affiliate implements HasUuid, AffiliateInterface
 
     /**
      * Get name
-     *
      * @return string|null
      */
     public function getName(): ?string
@@ -192,7 +193,6 @@ class Affiliate implements HasUuid, AffiliateInterface
 
     /**
      * Get type
-     *
      * @return int
      */
     public function getType()
@@ -216,7 +216,6 @@ class Affiliate implements HasUuid, AffiliateInterface
 
     /**
      * Get url
-     *
      * @return string
      */
     public function getUrl()
@@ -273,7 +272,6 @@ class Affiliate implements HasUuid, AffiliateInterface
 
     /**
      * Get country
-     *
      * @return string
      */
     public function getCountry()
@@ -319,7 +317,6 @@ class Affiliate implements HasUuid, AffiliateInterface
 
     /**
      * Get commercialContact
-     *
      * @return string
      */
     public function getCommercialContact()
@@ -343,7 +340,6 @@ class Affiliate implements HasUuid, AffiliateInterface
 
     /**
      * Get technicalContact
-     *
      * @return string
      */
     public function getTechnicalContact()
@@ -367,7 +363,6 @@ class Affiliate implements HasUuid, AffiliateInterface
 
     /**
      * Get skypeId
-     *
      * @return string
      */
     public function getSkypeId()
@@ -391,7 +386,6 @@ class Affiliate implements HasUuid, AffiliateInterface
 
     /**
      * Get enabled
-     *
      * @return bool
      */
     public function getEnabled()
@@ -415,7 +409,6 @@ class Affiliate implements HasUuid, AffiliateInterface
 
     /**
      * Get subPriceName
-     *
      * @return string
      */
     public function getSubPriceName(): ?string
@@ -629,7 +622,7 @@ class Affiliate implements HasUuid, AffiliateInterface
      *
      * @return Affiliate
      */
-    public function setConstraints(Collection $constraints):self
+    public function setConstraints(Collection $constraints): self
     {
         $this->constraints = $constraints;
 
@@ -644,7 +637,10 @@ class Affiliate implements HasUuid, AffiliateInterface
      */
     public function getConstraint(string $capType, int $billingCarrierId): ?ConstraintByAffiliate
     {
-        $filteredByType = $this->constraints->filter(function (ConstraintByAffiliate $constraint) use ($capType, $billingCarrierId) {
+        $filteredByType = $this->constraints->filter(function (ConstraintByAffiliate $constraint) use (
+            $capType,
+            $billingCarrierId
+        ) {
             return $constraint->getCapType() === $capType && $constraint->getCarrier()->getBillingCarrierId() === $billingCarrierId;
         });
 
