@@ -38,7 +38,7 @@ class ApiConnector
 
     public function checkIfExists(string $msisdn, int $carrierId): bool
     {
-        if ((bool)strlen($this->apiLink)) {
+        if(filter_var($this->apiLink, FILTER_VALIDATE_URL)) {
             $result   = $this->guzzleClient->get(sprintf('%s/msisdn/%s/%s', $this->apiLink, $carrierId, $msisdn));
             $response = json_decode($result->getBody(), true);
             $isExists = $response['isExist'] ?? false;
@@ -49,7 +49,7 @@ class ApiConnector
 
     public function registerSubscription(string $msisdn, int $carrierId): void
     {
-        if((bool)strlen($this->apiLink)) {
+        if(filter_var($this->apiLink, FILTER_VALIDATE_URL)) {
             $this->guzzleClient->post(sprintf('%s/msisdn', $this->apiLink), $options = [
                 RequestOptions::JSON => ['carrierId' => $carrierId, 'msisdn' => $msisdn],
             ]);
@@ -58,7 +58,7 @@ class ApiConnector
 
     public function deregisterSubscription(string $msisdn, int $carrierId): void
     {
-        if((bool)strlen($this->apiLink)) {
+        if(filter_var($this->apiLink, FILTER_VALIDATE_URL)) {
             $this->guzzleClient->delete(sprintf('%s/msisdn', $this->apiLink), $options = [
                 RequestOptions::JSON => ['carrierId' => $carrierId, 'msisdn' => $msisdn],
             ]);
