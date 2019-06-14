@@ -56,13 +56,15 @@ class SubscriptionStatisticSender
      * @param PiwikUnsubscriptionDataMapper $piwikUnsubscriptionDataMapper
      * @param ProcessResultVerifier         $resultVerifier
      */
-    public function __construct(LoggerInterface $logger,
+    public function __construct(
+        LoggerInterface $logger,
         PiwikTracker $piwikTracker,
         PiwikDataMapper $piwikDataMapper,
         PiwikSubscriptionDataMapper $piwikSubscriptionDataMapper,
         MaxMindIpInfo $maxMindIpInfo,
         PiwikUnsubscriptionDataMapper $piwikUnsubscriptionDataMapper,
-        ProcessResultVerifier $resultVerifier)
+        ProcessResultVerifier $resultVerifier
+    )
     {
         $this->logger                        = $logger;
         $this->piwikTracker                  = $piwikTracker;
@@ -145,7 +147,8 @@ class SubscriptionStatisticSender
     {
         try {
             $this->logger->info('Trying to send piwik event', [
-                'eventName' => 'trackResubscribe'
+                'eventName' => 'trackResubscribe',
+                'responseData' => $responseData
             ]);
 
             if ($this->resultVerifier->cantTrackSubscription($responseData)) {
@@ -253,7 +256,8 @@ class SubscriptionStatisticSender
     {
         try {
             $this->logger->info('Trying to send piwik event', [
-                'eventName' => 'trackUnsubscribe'
+                'eventName' => 'trackUnsubscribe',
+                'responseData' => $responseData
             ]);
 
             if ($this->resultVerifier->cantTrackUnsubscription($responseData)) {

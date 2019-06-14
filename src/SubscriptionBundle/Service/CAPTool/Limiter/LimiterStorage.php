@@ -66,9 +66,11 @@ class LimiterStorage
 
     public function storeFinishedSubscription(string $key, string $uuid): void
     {
+        $timeout = $this->calculateSecondsUntilTomorrow();
+
         $this->redis->set(sprintf('finished_%s[%s]', $key, $uuid), json_encode([
             'uuid' => $uuid
-        ]));
+        ]), $timeout);
     }
 
 
@@ -80,6 +82,18 @@ class LimiterStorage
     public function removePendingSubscription()
     {
         // Do nothing and win ?
+    }
+
+    private function calculateSecondsUntilTomorrow(): int
+    {
+        $midnight = strtotime("tomorrow 00:00:00");
+
+        if ($midnight === false) {
+            return 0;
+        }
+
+        $timeTo = $midnight - time();
+        return $timeTo;
     }
 
 }

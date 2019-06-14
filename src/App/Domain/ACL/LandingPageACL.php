@@ -10,6 +10,7 @@ use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CampaignRepository;
+use App\Domain\Repository\CampaignScheduleRepository;
 use App\Domain\Repository\CarrierRepository;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use Psr\Log\LoggerInterface;
@@ -60,6 +61,10 @@ class LandingPageACL
      * @var SessionInterface
      */
     private $session;
+    /**
+     * @var CampaignScheduleRepository
+     */
+    private $campaignScheduleRepository;
 
     /**
      * LandingPageAccessResolver constructor
@@ -71,6 +76,7 @@ class LandingPageACL
      * @param SessionInterface           $session
      * @param SubscriptionCapChecker     $subscriptionCapChecker
      * @param LoggerInterface            $logger
+     * @param CampaignScheduleRepository $campaignScheduleRepository
      */
     public function __construct(
         VisitConstraintByAffiliate $visitConstraintByAffiliate,
@@ -79,7 +85,8 @@ class LandingPageACL
         CampaignRepository $campaignRepository,
         SessionInterface $session,
         SubscriptionCapChecker $subscriptionCapChecker,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        CampaignScheduleRepository $campaignScheduleRepository
     )
     {
         $this->visitConstraintByAffiliate = $visitConstraintByAffiliate;
@@ -89,6 +96,7 @@ class LandingPageACL
         $this->carrierRepository          = $carrierRepository;
         $this->campaignRepository         = $campaignRepository;
         $this->session                    = $session;
+        $this->campaignScheduleRepository = $campaignScheduleRepository;
     }
 
     /**
@@ -143,16 +151,23 @@ class LandingPageACL
             $carrier = $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id']);
 
             /** @var Campaign $campaign */
-            $campaign = $this->campaignRepository->findOneBy(['campaignToken' => $campaignToken]);
+            $campaign           = $this->campaignRepository->findOneBy(['campaignToken' => $campaignToken]);
             $isLPOffByAffiliate = false;
+            $isLPOffByCampaign  = false;
 
-            if($campaign) {
+            if ($campaign) {
                 /** @var Affiliate $affiliate */
-                $affiliate = $campaign->getAffiliate();
+                $affiliate          = $campaign->getAffiliate();
                 $isLPOffByAffiliate = $affiliate->isLpOff() && ($affiliate->hasCarrier($carrier) || empty($affiliate->getCarriers()));
+
+                $isCampaignScheduleExistAndTriggered = $campaign->getSchedule()->isEmpty()
+                                                        ? true
+                                                        : $this->campaignScheduleRepository->isNowInSchedule($campaign);
+
+                $isLPOffByCampaign = $campaign->isLpOff() && $isCampaignScheduleExistAndTriggered;
             }
 
-            return $carrier->isLpOff() || $isLPOffByAffiliate || $campaign->isLpOff() ;
+            return $carrier->isLpOff() || $isLPOffByAffiliate || $isLPOffByCampaign;
         } catch (\Throwable $e) {
             return false;
         }
@@ -161,9 +176,11 @@ class LandingPageACL
     /**
      * @param Carrier               $carrier
      * @param ConstraintByAffiliate $constraint
+     *
      * @throws SubscriptionCapReachedOnAffiliate
      */
-    private function ensureSubscribeCapIsNotReachedByAffiliate(Carrier $carrier, ConstraintByAffiliate $constraint): void
+    private function ensureSubscribeCapIsNotReachedByAffiliate(Carrier $carrier,
+        ConstraintByAffiliate $constraint): void
     {
         if ($this->carrierCapChecker->isCapReachedForAffiliate($constraint)) {
             $this->logger->debug('CAP checking on LP', [
@@ -177,6 +194,7 @@ class LandingPageACL
     /**
      * @param Carrier               $carrier
      * @param ConstraintByAffiliate $constraint
+     *
      * @throws \SubscriptionBundle\Service\CAPTool\Exception\VisitCapReached
      */
     private function ensureVisitCapIsNotReached(Carrier $carrier, ConstraintByAffiliate $constraint): void
@@ -192,6 +210,7 @@ class LandingPageACL
 
     /**
      * @param Carrier $carrier
+     *
      * @throws SubscriptionCapReachedOnCarrier
      */
     private function ensureSubscribeCapIsNotReachedByCarrier(Carrier $carrier): void

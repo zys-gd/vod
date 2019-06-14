@@ -1286,5 +1286,23 @@
         "carrier": {
             "uuid": "5142f9ec-ebd4-11e8-95c4-02bb250f0f22"
         }
+    },
+    {
+        "uuid": "42a13111-2caa-4075-9226-13c4b9d2c412",
+        "key": "messages.error.subscription_restricted",
+        "translation": "Dear customer, sorry, but you are already subscribed or have been subscribed to one of our services, in this regard, the possibility of a subscription for you is limited and impossible",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "7b3115d1-04db-40a3-838c-2e01d5b34872",
+        "key": "messages.error.subscription_restricted",
+        "translation": "Dear customer, sorry, but you are already subscribed or have been subscribed to one of our services, in this regard, the possibility of a subscription for you is limited and impossible",
+        "language": {
+            "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
     }
 ]

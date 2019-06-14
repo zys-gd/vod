@@ -24,6 +24,7 @@ use SubscriptionBundle\Service\CAPTool\Exception\SubscriptionCapReachedOnCarrier
 use SubscriptionBundle\Service\CAPTool\Exception\VisitCapReached;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
+use SubscriptionBundle\Service\SubscribeUrlResolver;
 use SubscriptionBundle\Service\VisitCAPTool\VisitNotifier;
 use SubscriptionBundle\Service\VisitCAPTool\VisitTracker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -93,6 +94,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var SubscribeUrlResolver
+     */
+    private $subscribeUrlResolver;
 
     /**
      * LPController constructor.
@@ -110,6 +115,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param VisitTracker               $visitTracker
      * @param VisitNotifier              $notifier
      * @param LoggerInterface            $logger
+     * @param SubscribeUrlResolver       $subscribeUrlResolver
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
@@ -124,7 +130,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         CarrierRepositoryInterface $carrierRepository,
         VisitTracker $visitTracker,
         VisitNotifier $notifier,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        SubscribeUrlResolver $subscribeUrlResolver
     )
     {
         $this->contentStatisticSender    = $contentStatisticSender;
@@ -140,6 +147,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->visitTracker              = $visitTracker;
         $this->visitNotifier             = $notifier;
         $this->logger                    = $logger;
+        $this->subscribeUrlResolver      = $subscribeUrlResolver;
     }
 
 
@@ -214,8 +222,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $campaignToken      = AffiliateVisitSaver::extractCampaignToken($session);
         $this->contentStatisticSender->trackVisit($identificationData, $ispData ? new ISPData($ispData['carrier_id']) : null, $campaignToken);
 
-        if (!(bool)$this->dataStorage->readValue('is_wifi_flow') && $this->landingPageAccessResolver->isLandingDisabled($request)) {
-            return new RedirectResponse($this->generateUrl('identify_and_subscribe'));
+        if ($carrier && !(bool)$this->dataStorage->readValue('is_wifi_flow') && $this->landingPageAccessResolver->isLandingDisabled($request)) {
+            return new RedirectResponse($this->subscribeUrlResolver->getSubscribeRoute($carrier));
         }
 
         if (!$cid) {
