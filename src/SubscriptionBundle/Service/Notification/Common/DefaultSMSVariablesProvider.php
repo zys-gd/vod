@@ -57,6 +57,12 @@ class DefaultSMSVariablesProvider
             UrlGeneratorInterface::ABSOLUTE_URL
         );
 
+        $shortUrl = $this->router->generate(
+            'identify_by_url',
+            ['urlId' => $user->getUrlId()],
+            UrlGeneratorInterface::NETWORK_PATH
+        );
+
         return [
             '_price_'         => $pack->getTierPrice(),
             '_currency_'      => $pack->getTierCurrency(),
@@ -64,7 +70,8 @@ class DefaultSMSVariablesProvider
             '_shorthome_url_' => preg_replace('|\/\/|', '', $this->provider->getShortLinkToHomepage()),
             '_unsub_url_'     => $this->provider->getLinkToMyAccount(),
             '_renew_date_'    => $renewDate->format('d-m-Y'),
-            '_autologin_url_' => $url
+            '_autologin_url_' => $url,
+            '_shortautologin_url_' => $shortUrl
         ];
 
     }
