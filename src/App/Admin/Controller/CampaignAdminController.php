@@ -89,8 +89,6 @@ class CampaignAdminController extends CRUDController
 
         $selectedModels = $selectedModelQuery->execute();
 
-        // do the merge work here
-
         try {
             foreach ($selectedModels as $selectedModel) {
                 $selectedModel->setIsPause(true);
@@ -98,7 +96,7 @@ class CampaignAdminController extends CRUDController
 
             $modelManager->update($selectedModel);
         } catch (\Exception $e) {
-            $this->addFlash('sonata_flash_error', 'flash_batch_merge_error');
+            $this->addFlash('sonata_flash_error', 'Cant update');
 
             return new RedirectResponse(
                 $this->admin->generateUrl('list', [
@@ -107,7 +105,7 @@ class CampaignAdminController extends CRUDController
             );
         }
 
-        $this->addFlash('sonata_flash_success', 'flash_batch_merge_success');
+        $this->addFlash('sonata_flash_success', 'Success');
 
         return new RedirectResponse(
             $this->admin->generateUrl('list', [
