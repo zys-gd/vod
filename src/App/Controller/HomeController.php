@@ -127,7 +127,7 @@ class HomeController extends AbstractController implements
 
         if (!empty($params['msisdn']) && $user = $this->userRepository->findOneByMsisdn($params['msisdn'])) {
             $carrierId = $user->getCarrierId();
-            $data = new ISPData((int) $carrierId);
+            $data = new ISPData($carrierId);
 
             $this->identificationDataStorage->storeIdentificationToken($user->getIdentificationToken());
             $this->identificationDataStorage->storeCarrierId($carrierId);
