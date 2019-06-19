@@ -7,12 +7,13 @@ use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\DTO\{IdentificationData, ISPData};
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
-use IdentificationBundle\Identification\Handler\HasConsentPageFlow as IdentConsentPageFlow;
+use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow as IdentConsentPageFlow;
 use SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound;
 use SubscriptionBundle\Exception\ExistingSubscriptionException;
 use SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter;
 use SubscriptionBundle\Service\Action\Subscribe\Consent\ConsentFlowHandler;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\{SubscriptionHandlerProvider, HasConsentPageFlow};
+use SubscriptionBundle\Service\Action\Subscribe\Handler\ConsentPageFlow\{HasConsentPageFlow, HasCustomConsentPageFlow};
+use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
 use SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator;
 use SubscriptionBundle\Service\UserExtractor;
 use Symfony\Component\HttpFoundation\{Request, Response};
@@ -121,7 +122,11 @@ class ConsentPageSubscribeAction
             return $this->blacklistVoter->createNotAllowedResponse();
         }
 
-        return $this->consentFlowHandler->process($request, $user, $subscriber);
+        if ($subscriber instanceof HasCustomConsentPageFlow) {
+            return $subscriber->process($request, $user);
+        } else {
+            return $this->consentFlowHandler->process($request, $user, $subscriber);
+        }
     }
 
     /**

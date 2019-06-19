@@ -90,6 +90,7 @@
 
         $(document).on('change', 'select[name="carrier_id"]', function () {
             var carrier = $(this).find(':selected').data('content');
+            var carrierId = carrier ? carrier.billingCarrierId : null;
             $('#wifi_offer').html( (carrier && carrier.wifi_offer) || '');
 
             $('footer ul').remove();
@@ -100,11 +101,12 @@
             $.ajax({
                 url    : "{{ path('select_carrier_wifi') }}",
                 method : "POST",
-                data   : { carrier_id: carrier ? carrier.billingCarrierId : null },
+                data   : { carrier_id: carrierId },
                 success: function (result) {
                     if (result.data.success) {
                         $('footer').prepend(result.data.annotation);
                         $('#landing-offer-container').removeClass('mt-2').html(result.data.offer);
+                        addValidationAttributes(carrierId);
                     } else if (result.data.message) {
                         showAlert({title: result.data.message});
                     }

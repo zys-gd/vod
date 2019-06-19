@@ -10,12 +10,13 @@ namespace IdentificationBundle\Identification;
 
 
 use IdentificationBundle\Identification\Common\CommonFlowHandler;
-use IdentificationBundle\Identification\Common\ConsentPageFlowHandler;
+use IdentificationBundle\Identification\Common\CommonConsentPageFlowHandler;
 use IdentificationBundle\Identification\Common\HeaderEnrichmentHandler;
 use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\DTO\IdentifyResult;
+use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasConsentPageFlow;
 use IdentificationBundle\Identification\Handler\HasCommonFlow;
-use IdentificationBundle\Identification\Handler\HasConsentPageFlow;
+use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow;
 use IdentificationBundle\Identification\Handler\HasCustomFlow;
 use IdentificationBundle\Identification\Handler\HasHeaderEnrichment;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
@@ -46,7 +47,7 @@ class Identifier
      */
     private $headerEnrichmentHandler;
     /**
-     * @var ConsentPageFlowHandler
+     * @var CommonConsentPageFlowHandler
      */
     private $consentPageFlowHandler;
 
@@ -58,7 +59,7 @@ class Identifier
      * @param LoggerInterface                                                     $logger
      * @param CommonFlowHandler                                                   $commonFlowHandler
      * @param \IdentificationBundle\Identification\Common\HeaderEnrichmentHandler $headerEnrichmentHandler
-     * @param ConsentPageFlowHandler                                              $consentPageFlowHandler
+     * @param CommonConsentPageFlowHandler                                              $consentPageFlowHandler
      */
     public function __construct(
         IdentificationHandlerProvider $handlerProvider,
@@ -66,7 +67,7 @@ class Identifier
         LoggerInterface $logger,
         CommonFlowHandler $commonFlowHandler,
         HeaderEnrichmentHandler $headerEnrichmentHandler,
-        ConsentPageFlowHandler $consentPageFlowHandler
+        CommonConsentPageFlowHandler $consentPageFlowHandler
     )
     {
         $this->handlerProvider         = $handlerProvider;

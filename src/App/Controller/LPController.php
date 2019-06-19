@@ -27,6 +27,7 @@ use SubscriptionBundle\Service\CAPTool\Exception\SubscriptionCapReachedOnCarrier
 use SubscriptionBundle\Service\CAPTool\Exception\VisitCapReached;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
+use SubscriptionBundle\Service\SubscribeUrlResolver;
 use SubscriptionBundle\Service\VisitCAPTool\VisitNotifier;
 use SubscriptionBundle\Service\VisitCAPTool\VisitTracker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -104,25 +105,30 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var CarrierSelector
      */
     private $carrierSelector;
+    /**
+     * @var SubscribeUrlResolver
+     */
+    private $subscribeUrlResolver;
 
     /**
      * LPController constructor.
      *
-     * @param ContentStatisticSender $contentStatisticSender
-     * @param CampaignRepository $campaignRepository
-     * @param LandingPageACL $landingPageAccessResolver
-     * @param string $imageBaseUrl
-     * @param CarrierOTPVerifier $OTPVerifier
-     * @param string $defaultRedirectUrl
-     * @param TemplateConfigurator $templateConfigurator
-     * @param IdentificationDataStorage $dataStorage
-     * @param SubscriptionLimiter $limiter
-     * @param SubscriptionLimitNotifier $subscriptionLimitNotifier
+     * @param ContentStatisticSender     $contentStatisticSender
+     * @param CampaignRepository         $campaignRepository
+     * @param LandingPageACL             $landingPageAccessResolver
+     * @param string                     $imageBaseUrl
+     * @param CarrierOTPVerifier         $OTPVerifier
+     * @param string                     $defaultRedirectUrl
+     * @param TemplateConfigurator       $templateConfigurator
+     * @param IdentificationDataStorage  $dataStorage
+     * @param SubscriptionLimiter        $limiter
+     * @param SubscriptionLimitNotifier  $subscriptionLimitNotifier
      * @param CarrierRepositoryInterface $carrierRepository
-     * @param VisitTracker $visitTracker
-     * @param VisitNotifier $notifier
-     * @param LoggerInterface $logger
-     * @param CarrierSelector $carrierSelector
+     * @param VisitTracker               $visitTracker
+     * @param VisitNotifier              $notifier
+     * @param LoggerInterface            $logger
+     * @param CarrierSelector            $carrierSelector
+     * @param SubscribeUrlResolver       $subscribeUrlResolver
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
@@ -139,7 +145,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         VisitTracker $visitTracker,
         VisitNotifier $notifier,
         LoggerInterface $logger,
-        CarrierSelector $carrierSelector
+        CarrierSelector $carrierSelector,
+        SubscribeUrlResolver $subscribeUrlResolver
     )
     {
         $this->contentStatisticSender    = $contentStatisticSender;
@@ -157,6 +164,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->visitNotifier             = $notifier;
         $this->logger                    = $logger;
         $this->carrierSelector           = $carrierSelector;
+        $this->subscribeUrlResolver      = $subscribeUrlResolver;
     }
 
 
@@ -232,15 +240,15 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $campaignToken      = AffiliateVisitSaver::extractCampaignToken($session);
         $this->contentStatisticSender->trackVisit($identificationData, $carrierId ? new ISPData($carrierId) : null, $campaignToken);
 
-        if (!(bool)$this->dataStorage->readValue('is_wifi_flow') && $this->landingPageAccessResolver->isLandingDisabled($request)) {
-            return new RedirectResponse($this->generateUrl('identify_and_subscribe'));
+        if ($carrier && !(bool)$this->dataStorage->readValue('is_wifi_flow') && $this->landingPageAccessResolver->isLandingDisabled($request)) {
+            return new RedirectResponse($this->subscribeUrlResolver->getSubscribeRoute($carrier));
         }
 
         if (!$cid) {
             $this->OTPVerifier->forceWifi($session);
         }
 
-        $template = $this->templateConfigurator->getTemplate('landing', (int) $carrierId);
+        $template = $this->templateConfigurator->getTemplate('landing', (int)$carrierId);
 
         return $this->render($template, [
             'campaignBanner' => $campaignBanner,
@@ -263,13 +271,13 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         }
 
         try {
-            $this->carrierSelector->selectCarrier((int) $carrierId);
+            $this->carrierSelector->selectCarrier((int)$carrierId);
             $offerTemplate = $this->templateConfigurator->getTemplate('landing_offer', $carrierId);
 
             $data = [
-                'success' => true,
+                'success'    => true,
                 'annotation' => $this->renderView('@App/Components/Ajax/annotation.html.twig'),
-                'offer' => $this->renderView($offerTemplate)
+                'offer'      => $this->renderView($offerTemplate)
             ];
 
             return $this->getSimpleJsonResponse('Successfully selected', 200, [], $data);

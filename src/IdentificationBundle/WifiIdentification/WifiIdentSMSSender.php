@@ -19,6 +19,7 @@ use IdentificationBundle\WifiIdentification\Handler\HasInternalSMSHandling;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerProvider;
 use IdentificationBundle\WifiIdentification\Service\MessageComposer;
 use IdentificationBundle\WifiIdentification\Service\MsisdnCleaner;
+use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkException;
 
 /**
  * Class WifiIdentSMSSender
@@ -107,6 +108,8 @@ class WifiIdentSMSSender
      * @param int $carrierId
      * @param string $mobileNumber
      * @param bool $isResend
+     *
+     * @throws BillingFrameworkException
      */
     public function sendSMS(int $carrierId, string $mobileNumber, bool $isResend = false): void
     {
@@ -171,6 +174,8 @@ class WifiIdentSMSSender
      * @param HasCustomPinResendRules $handler
      * @param CarrierInterface $carrier
      * @param string $body
+     *
+     * @throws BillingFrameworkException
      */
     public function resendSMS(HasCustomPinResendRules $handler, CarrierInterface $carrier, string $body)
     {

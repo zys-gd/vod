@@ -114,6 +114,11 @@ services:
 
     SubscriptionBundle\Service\SubscriptionSerializer: ~
 
+    SubscriptionBundle\Service\SubscribeUrlResolver:
+        arguments:
+            - '@router'
+            - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
+
     SubscriptionBundle\Service\ZeroCreditSubscriptionChecking:
         arguments:
             - '@SubscriptionBundle\Service\CampaignExtractor'

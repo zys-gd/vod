@@ -4,9 +4,9 @@ namespace IdentificationBundle\Carriers\OrangeEGTpay;
 
 use App\Domain\Constants\ConstBillingCarrierId;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use ExtrasBundle\Utils\LocalExtractor;
-use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
-use IdentificationBundle\BillingFramework\Process\DTO\PinVerifyResult;
+use IdentificationBundle\BillingFramework\Process\DTO\{PinRequestResult, PinVerifyResult};
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
@@ -120,7 +120,7 @@ class OrangeEGWifiIdentificationHandler implements
      *
      * @return bool
      *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function hasActiveSubscription(string $mobileNumber): bool
     {

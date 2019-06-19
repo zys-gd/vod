@@ -157,7 +157,7 @@ class User
      */
     public function getCarrierId()
     {
-        return $this->carrier->getUuid();
+        return $this->carrier->getBillingCarrierId();
     }
 
     /**

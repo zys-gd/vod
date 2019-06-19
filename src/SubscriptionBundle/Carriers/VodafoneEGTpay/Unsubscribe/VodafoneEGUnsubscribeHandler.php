@@ -46,7 +46,7 @@ class VodafoneEGUnsubscribeHandler implements UnsubscriptionHandlerInterface
      */
     public function isPiwikNeedToBeTracked(ProcessResult $processResult): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -64,6 +64,6 @@ class VodafoneEGUnsubscribeHandler implements UnsubscriptionHandlerInterface
      */
     public function applyPostUnsubscribeChanges(Subscription $subscription)
     {
-        // TODO: Implement applyPostUnsubscribeChanges() method.
+
     }
 }

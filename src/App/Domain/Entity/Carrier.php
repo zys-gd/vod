@@ -5,6 +5,7 @@ namespace App\Domain\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use IdentificationBundle\Entity\CarrierInterface;
 use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
+use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 
 /**
  * Class Carrier
@@ -126,6 +127,11 @@ class Carrier implements CarrierInterface, HasUuid
      * @var Campaign[] | ArrayCollection
      */
     private $campaigns;
+
+    /**
+     * @var AffiliateInterface[] | ArrayCollection
+     */
+    private $affiliates;
 
     /**
      * @var bool
@@ -704,4 +710,24 @@ class Carrier implements CarrierInterface, HasUuid
         $this->isLpOff = $isLpOff;
     }
 
+    /**
+     * @return ArrayCollection|AffiliateInterface[]
+     */
+    public function getAffiliates()
+    {
+        return $this->affiliates;
+    }
+
+    /**
+     * @param ArrayCollection|AffiliateInterface[] $affiliates
+     */
+    public function setAffiliates($affiliates): void
+    {
+        $this->affiliates = $affiliates;
+    }
+
+    public function hasAffiliate(AffiliateInterface $affiliate): bool
+    {
+        return $this->affiliates->contains($affiliate);
+    }
 }

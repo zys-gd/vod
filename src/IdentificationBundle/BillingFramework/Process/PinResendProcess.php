@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 11.01.19
- * Time: 16:55
- */
 
 namespace IdentificationBundle\BillingFramework\Process;
-
 
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use Psr\Log\LoggerInterface;
@@ -17,9 +10,13 @@ use SubscriptionBundle\BillingFramework\Process\API\RequestSender;
 use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkException;
 use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkProcessException;
 
+/**
+ * Class PinResendProcess
+ */
 class PinResendProcess
 {
     const PROCESS_METHOD_PIN_RESEND = "pinresend";
+
     /**
      * @var RequestSender
      */
@@ -29,9 +26,11 @@ class PinResendProcess
      */
     private $logger;
 
-
     /**
-     * PinRequestProcess constructor.
+     * PinRequestProcess constructor
+     *
+     * @param RequestSender $requestSender
+     * @param LoggerInterface $logger
      */
     public function __construct(RequestSender $requestSender, LoggerInterface $logger)
     {

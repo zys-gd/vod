@@ -2,6 +2,7 @@
 
 namespace App\Admin\Sonata;
 
+use App\Admin\Form\Type\CampaignScheduleType;
 use App\Admin\Sonata\Traits\InitDoctrine;
 use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Campaign;
@@ -16,6 +17,9 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
+use Sonata\AdminBundle\Form\Type\CollectionType;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -170,6 +174,9 @@ class CampaignAdmin extends AbstractAdmin
                     'show' => [],
                     'edit' => [],
                     'delete' => [],
+                    'clone' => [
+                        'template' => '@Admin/Campaign/clone_btn.html.twig',
+                    ],
                 ]
             ]);
 
@@ -268,11 +275,25 @@ class CampaignAdmin extends AbstractAdmin
             ->add('isPause', null, [
                 'label' => 'Pause',
             ])
-            ->add('isLpOff', null, [
+            ->add('zeroCreditSubAvailable')
+            ->add('isLpOff', ChoiceFieldMaskType::class, [
+                'choices'  => [
+                    'No' => 0,
+                    'Yes' => 1
+                ],
                 'label' => 'Turn off LP showing',
+                'map'      => [
+                    1 => ['schedule'],
+                ],
                 'help' => 'If consent page exist, then show it. Otherwise will try to subscribe'
             ])
-            ->add('zeroCreditSubAvailable')
+            ->add('schedule', CollectionType::class, [
+                'entry_type' => CampaignScheduleType::class,
+                'allow_delete' => true,
+                'allow_add' => true,
+                'prototype' => true,
+                'by_reference' => false
+            ])
             ->end()
             ->end();
     }
@@ -333,5 +354,22 @@ class CampaignAdmin extends AbstractAdmin
         }
 
         return '';
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->add('clone', $this->getRouterIdParameter().'/clone');
+        $collection->add('clone_confirm', $this->getRouterIdParameter().'/clone_confirm');
+
+        parent::configureRoutes($collection);
+    }
+
+    protected function configureBatchActions($actions)
+    {
+        $actions['pause'] = [
+            'ask_confirmation' => false
+        ];
+
+        return $actions;
     }
 }

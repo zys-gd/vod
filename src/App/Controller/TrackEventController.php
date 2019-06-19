@@ -52,20 +52,16 @@ class TrackEventController extends AbstractController
 
     /**
      * @Method("POST")
-     * @Route("/track-video-percent-event",name="track_video_percent_event")
+     * @Route("/track-video-play",name="track_video_play")
      * @param Request $request
      *
      * @return JsonResponse
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function trackVideoPercentEvent(Request $request)
+    public function trackVideoPlay(Request $request)
     {
         if (!$remoteId = $request->get('video', '')) {
             throw new BadRequestHttpException('Missing `video` parameter');
-        }
-
-        if (!$percent = (int)$request->get('percent', 0)) {
-            throw new BadRequestHttpException('Missing `percent` parameter');
         }
 
         $subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($request->getSession());

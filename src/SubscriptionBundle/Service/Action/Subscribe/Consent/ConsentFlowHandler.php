@@ -11,21 +11,14 @@ use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound;
-use SubscriptionBundle\Exception\ExistingSubscriptionException;
-use SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator;
-use SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker;
-use SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEventTracker;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\HasConsentPageFlow;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomAffiliateTrackingRules;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomPiwikTrackingRules;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomResponses;
+use SubscriptionBundle\Service\Action\Subscribe\Common\{CommonResponseCreator, SubscriptionEligibilityChecker, SubscriptionEventTracker};
+use SubscriptionBundle\Service\Action\Subscribe\Handler\ConsentPageFlow\HasConsentPageFlow;
+use SubscriptionBundle\Service\Action\Subscribe\Handler\{HasCustomAffiliateTrackingRules, HasCustomPiwikTrackingRules, HasCustomResponses};
 use SubscriptionBundle\Service\Action\Subscribe\Subscriber;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\SubscriptionExtractor;
 use SubscriptionBundle\Service\SubscriptionPackProvider;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\{RedirectResponse, Request, Response};
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -86,11 +79,6 @@ class ConsentFlowHandler
     private $router;
 
     /**
-     * @var string
-     */
-    private $resubNotAllowedRoute;
-
-    /**
      * @var CommonResponseCreator
      */
     private $commonResponseCreator;
@@ -108,7 +96,6 @@ class ConsentFlowHandler
      * @param SubscriptionEligibilityChecker $subscriptionEligibilityChecker
      * @param UrlParamAppender $urlParamAppender
      * @param RouterInterface $router
-     * @param string $resubNotAllowedRoute
      * @param CommonResponseCreator $commonResponseCreator
      */
     public function __construct(
@@ -122,7 +109,6 @@ class ConsentFlowHandler
         SubscriptionEligibilityChecker $subscriptionEligibilityChecker,
         UrlParamAppender $urlParamAppender,
         RouterInterface $router,
-        string $resubNotAllowedRoute,
         CommonResponseCreator $commonResponseCreator
     ) {
         $this->logger = $logger;
@@ -135,7 +121,6 @@ class ConsentFlowHandler
         $this->subscriptionEligibilityChecker = $subscriptionEligibilityChecker;
         $this->urlParamAppender = $urlParamAppender;
         $this->router = $router;
-        $this->resubNotAllowedRoute = $resubNotAllowedRoute;
         $this->commonResponseCreator = $commonResponseCreator;
     }
 
@@ -148,7 +133,6 @@ class ConsentFlowHandler
      *
      * @throws ActiveSubscriptionPackNotFound
      * @throws NonUniqueResultException
-     * @throws ExistingSubscriptionException
      */
     public function process(Request $request, User $user, HasConsentPageFlow $subscriber): Response
     {
@@ -273,7 +257,7 @@ class ConsentFlowHandler
             if ($request->get('is_ajax_request', null)) {
                 return $this->getSimpleJsonResponse('', 200, [], ['resub_not_allowed' => true]);
             } else {
-                return new RedirectResponse($this->router->generate($this->resubNotAllowedRoute));
+                return new RedirectResponse($this->router->generate('resub_not_allowed'));
             }
         }
 

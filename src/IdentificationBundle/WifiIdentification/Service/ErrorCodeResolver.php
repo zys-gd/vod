@@ -55,6 +55,8 @@ class ErrorCodeResolver
                 break;
             case 104:
                 return $this->translator->translate('message.error.invalid_pin', $carrierId, $lang);
+            case 105:
+                return $this->translator->translate('messages.info.not_enough_credit', $carrierId, $lang);
             default:
                 return 'Internal Error';
                 break;

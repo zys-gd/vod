@@ -13,7 +13,7 @@ use ExtrasBundle\Utils\UrlParamAppender;
 use IdentificationBundle\Identification\Common\PostPaidHandler;
 use IdentificationBundle\Identification\DTO\IdentificationData;
 use IdentificationBundle\Identification\DTO\ISPData;
-use IdentificationBundle\Identification\Handler\HasConsentPageFlow;
+use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
@@ -254,7 +254,7 @@ class SubscribeAction extends AbstractController
 
         $handler = $this->identificationHandlerProvider->get($carrier);
 
-        if ($handler instanceof HasConsentPageFlow) {
+        if ($handler instanceof HasCommonConsentPageFlow) {
             throw new BadRequestHttpException('This action is not available for `ConsentPageFlow`');
         }
 

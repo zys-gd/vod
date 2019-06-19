@@ -22,6 +22,9 @@ services:
     App\Admin\Controller\SubcategoryAdminController:
         arguments: ['@doctrine.orm.entity_manager']
 
+    App\Admin\Controller\CampaignAdminController:
+        arguments:
+            - '@form.factory'
 
     App\Controller\ContentController:
         arguments:
@@ -36,6 +39,8 @@ services:
             - '@App\Domain\Repository\GameRepository'
             - '@App\Domain\Repository\CountryCategoryPriorityOverrideRepository'
             - '@App\Domain\Service\Piwik\ContentStatisticSender'
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
 
     App\Controller\LPController:
         arguments:
@@ -54,6 +59,7 @@ services:
             - '@SubscriptionBundle\Service\VisitCAPTool\VisitNotifier'
             - '@logger'
             - '@IdentificationBundle\Identification\Service\CarrierSelector'
+            - '@SubscriptionBundle\Service\SubscribeUrlResolver'
 
     App\Controller\ErrorController:
         arguments:

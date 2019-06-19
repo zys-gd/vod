@@ -32,8 +32,8 @@ class IdentificationStatusExtension extends AbstractExtension
      * IdentificationStatusExtension constructor.
      *
      * @param IdentificationDataStorage $dataStorage
-     * @param SessionInterface          $session
-     * @param CarrierRepository         $carrierRepository
+     * @param SessionInterface $session
+     * @param CarrierRepository $carrierRepository
      */
     public function __construct(
         IdentificationDataStorage $dataStorage,
