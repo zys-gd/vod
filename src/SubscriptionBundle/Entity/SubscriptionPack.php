@@ -156,19 +156,9 @@ class SubscriptionPack implements HasUuid
     private $unsubscribeSMSText = "";
 
     /**
-     * @var  string
-     */
-    private $buyStrategy;
-
-    /**
      * @var integer
      */
     private $buyStrategyId;
-
-    /**
-     * @var  string
-     */
-    private $renewStrategy;
 
     /**
      * @var integer

@@ -4,7 +4,6 @@ namespace App\Domain\Entity;
 
 use Doctrine\ORM\PersistentCollection;
 use phpDocumentor\Reflection\Types\Boolean;
-use PriceBundle\Entity\Tier;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\File;
@@ -101,11 +100,6 @@ class Game implements HasUuid
      * @var ArrayCollection
      */
     protected $translations;
-
-    /**
-     * @var Tier
-     */
-    private $tier;
 
     /**
      * @var string
@@ -461,28 +455,6 @@ class Game implements HasUuid
     public function setTranslatableLocale($locale)
     {
         $this->locale = $locale;
-    }
-
-    /**
-     * Returns the game's price tier
-     *
-     * @return Tier | null
-     */
-    public function getTier()
-    {
-        return $this->tier;
-    }
-
-    /**
-     * Sets a price tier for the game
-     *
-     * @param Tier $tier
-     * @return Game
-     */
-    public function setTier(Tier $tier): Game
-    {
-        $this->tier = $tier;
-        return $this;
     }
 
     /**
