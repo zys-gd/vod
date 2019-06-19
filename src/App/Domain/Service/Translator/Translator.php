@@ -118,11 +118,24 @@ class Translator
             'carrier'  => null
         ]);
 
-        try{
+        /** @var Language $defaultLanguage */
+        $userLanguage = $defaultLanguage;
+
+        /** @var Translation[] $defaultTextsForCurrentLang */
+        $defaultTextsForCurrentLang = [];
+        if ($languageCode != self::DEFAULT_LOCALE) {
+            $userLanguage = $this->languageRepository->findOneBy(['code' => $languageCode]);
+            $defaultTextsForCurrentLang = $this->translationRepository->findBy([
+                'language' => $userLanguage,
+                'carrier'  => null
+            ]) ?? [];
+        }
+
+        try {
             /** @var Carrier $oCarrier */
             $oCarrier = $this->carrierRepository->findOneBy(['billingCarrierId' => $billingCarrierId]);
             /** @var Language $currentLanguage */
-            $currentLanguage = $oCarrier->getDefaultLanguage() ?? $this->languageRepository->findOneBy(['code' => $languageCode]);
+            $currentLanguage = $oCarrier->getDefaultLanguage() ?? $userLanguage;
 
             $defaultCarrierTexts = $this->translationRepository->findBy([
                 'carrier'  => $oCarrier,
@@ -134,9 +147,9 @@ class Translator
                 'language' => $currentLanguage
             ]);
 
-            $translations = array_merge($defaultTexts, $defaultCarrierTexts, $currentCarrierTexts);
+            $translations = array_merge($defaultTexts, $defaultTextsForCurrentLang, $defaultCarrierTexts, $currentCarrierTexts);
         } catch (\Throwable $e) {
-            $translations = $defaultTexts;
+            $translations = array_merge($defaultTexts, $defaultTextsForCurrentLang);
         }
 
         foreach ($translations as $translation) {

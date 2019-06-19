@@ -25,6 +25,7 @@ services:
         - '@SubscriptionBundle\Repository\SubscriptionRepository'
         - '@IdentificationBundle\Repository\UserRepository'
         - '@IdentificationBundle\Identification\Common\PostPaidHandler'
+        - '@router'
 
   IdentificationBundle\WifiIdentification\WifiIdentSMSSender:
       arguments:
@@ -37,6 +38,7 @@ services:
         - '@IdentificationBundle\WifiIdentification\Common\RequestProvider'
         - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
         - '@IdentificationBundle\Repository\UserRepository'
+        - '@IdentificationBundle\BillingFramework\Process\PinResendProcess'
 
   IdentificationBundle\WifiIdentification\Common\InternalSMS\PinCodeVerifier:
       arguments:
@@ -49,4 +51,7 @@ services:
 
   IdentificationBundle\WifiIdentification\Common\RequestProvider: ~
 
-  IdentificationBundle\WifiIdentification\Service\ErrorCodeResolver: ~
+  IdentificationBundle\WifiIdentification\Service\ErrorCodeResolver:
+    arguments:
+      - '@App\Domain\Service\Translator\Translator'
+      - '@ExtrasBundle\Utils\LocalExtractor'

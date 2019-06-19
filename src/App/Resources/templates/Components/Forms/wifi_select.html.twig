@@ -20,22 +20,4 @@
     {#<div id="wifi_button">#}
         {#{{ button.renderSubmitButton(translate('wifi.form.button.apply'), 'x-send-pin-button') }}#}
     {#</div>#}
-
-    <script type="text/javascript">
-        $(document).on('change', 'select[name="country"]', function () {
-            var carrierSelect = $('select[name="carrier_id"]');
-            carrierSelect.empty()
-                .append("<option value=''>{{ translate('wifi.form.select_carrier') }}</option>");
-            var carriers = $(this).find(':selected').data('carriers');
-            for(carrier in carriers) {
-                var _carrier = carriers[carrier];
-                carrierSelect.append("<option data-content='"+JSON.stringify(_carrier)+"' value='"+ _carrier.billingCarrierId+"'>"+ _carrier.name +"</option>");
-            };
-        });
-
-        $(document).on('change', 'select[name="carrier_id"], select[name="country"]', function () {
-            var carrier = $(this).find(':selected').data('content');
-            $('#wifi_offer').html( (carrier && carrier.wifi_offer) || '');
-        });
-    </script>
 {% endmacro %}

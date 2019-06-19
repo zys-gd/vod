@@ -101,7 +101,9 @@ class UnsubscribeAction extends Controller
             }
 
             $handler  = $this->handlerProvider->getUnsubscriptionHandler($user->getCarrier());
-            $response = $this->unsubscriber->unsubscribe($subscription, $subscriptionPack);
+            $additionalParameters = $handler->getAdditionalUnsubscribeParameters();
+
+            $response = $this->unsubscriber->unsubscribe($subscription, $subscriptionPack, $additionalParameters);
 
             $handler->applyPostUnsubscribeChanges($subscription);
             if ($handler->isPiwikNeedToBeTracked($response)) {
