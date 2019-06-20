@@ -95,4 +95,9 @@ class IdentificationDataStorage
     {
         $this->session->remove('isp_detection_data');
     }
+
+    public function isWifiFlow(): bool
+    {
+        return $this->readValue('is_wifi_flow');
+    }
 }
