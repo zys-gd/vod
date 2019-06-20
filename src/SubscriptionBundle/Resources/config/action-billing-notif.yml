@@ -13,7 +13,6 @@ services:
         - '@monolog.logger.subscription'
         - '@SubscriptionBundle\Service\Notification\Common\ProcessIdExtractor'
         - '@SubscriptionBundle\Service\Notification\Impl\NotificationHandlerProvider'
-        - '@SubscriptionBundle\Service\Notification\Common\ShortUrlHashGenerator'
         - '@SubscriptionBundle\Service\Notification\Common\DefaultSMSVariablesProvider'
         - '@SubscriptionBundle\Service\Notification\Common\SMSTextProvider'
 

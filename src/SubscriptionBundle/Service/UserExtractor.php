@@ -60,6 +60,10 @@ class UserExtractor
             'identificationData' => $identificationData
         ]);
 
+        if (empty($identificationData['identification_token'])) {
+            return null;
+        }
+
         /** @var User $user */
         $user = $this->userRepository->findOneByIdentificationToken($identificationData['identification_token']);
 

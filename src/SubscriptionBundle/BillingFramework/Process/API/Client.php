@@ -146,7 +146,7 @@ class Client
             $response = $cachedResponse->get();
         }
 
-        $resultData = property_exists($response, 'data') ? $response->data : [];
+        $resultData = $response && property_exists($response, 'data') ? $response->data : [];
 
         return (object)$resultData;
 

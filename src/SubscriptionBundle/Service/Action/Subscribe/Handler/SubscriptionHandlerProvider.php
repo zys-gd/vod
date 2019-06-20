@@ -1,19 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 26.04.18
- * Time: 14:07
- */
 
 namespace SubscriptionBundle\Service\Action\Subscribe\Handler;
 
 use IdentificationBundle\Entity\CarrierInterface;
+use SubscriptionBundle\Service\Action\Subscribe\Handler\ConsentPageFlow\HasConsentPageFlow;
 
+/**
+ * Class SubscriptionHandlerProvider
+ */
 class SubscriptionHandlerProvider
 {
-
-
     /**
      * @var SubscriptionHandlerInterface[]
      */
@@ -42,22 +38,26 @@ class SubscriptionHandlerProvider
         $this->subscribers[] = $handler;
     }
 
-    private function ensureIsCorrect(SubscriptionHandlerInterface $handler)
+    /**
+     * @param SubscriptionHandlerInterface $handler
+     */
+    private function ensureIsCorrect(SubscriptionHandlerInterface $handler): void
     {
         $availableInterfaceString = json_encode([
             HasCommonFlow::class,
-            HasCustomFlow::class
+            HasCustomFlow::class,
+            HasConsentPageFlow::class
         ]);
+
         $handlerClass             = get_class($handler);
 
-        if ((!$handler instanceof HasCommonFlow) && (!$handler instanceof HasCustomFlow)) {
+        if ((!$handler instanceof HasCommonFlow) && (!$handler instanceof HasCustomFlow) && (!$handler instanceof HasConsentPageFlow)) {
             throw new \InvalidArgumentException(sprintf('Handler `%s` should implement one of following two interfaces `%s`', $handlerClass, $availableInterfaceString));
         }
 
         if ($handler instanceof HasCommonFlow && $handler instanceof HasCustomFlow) {
             throw new \InvalidArgumentException(sprintf('Handler `%s` cannot implement both flows. Please select one of `%s`', $handlerClass, $availableInterfaceString));
         }
-
     }
 
     /**

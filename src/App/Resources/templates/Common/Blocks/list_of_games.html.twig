@@ -3,7 +3,7 @@
     {% import "@App/Components/Buttons/small_button.html.twig" as  button %}
     {% import "@App/Common/Blocks/download_button.html.twig" as  download_button %}
 
-    {{ see_all.render('Sport games',path('game_category')) }}
+    {{ see_all.render("category.games", path('game_category')) }}
 
     <div class="listed-games-block d-flex flex-column">
         {% for game in games %}

@@ -4,13 +4,14 @@ namespace App\Domain\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use IdentificationBundle\Entity\CarrierInterface;
+use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 
 /**
  * Class Carrier
  * @package App\Domain\Entity
  */
-class Carrier implements CarrierInterface
+class Carrier implements CarrierInterface, HasUuid
 {
     /**
      * @var string
@@ -160,27 +161,41 @@ class Carrier implements CarrierInterface
     /**
      * @return string
      */
-    public function getUuid(): string
-    {
-        return $this->uuid;
-    }
-
-    /**
-     * toString()
-     *
-     * @return string
-     */
     public function __toString()
     {
         return $this->getName() ?? '';
     }
 
     /**
+     * @return string
+     */
+    public function getUuid(): string
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param string $uuid
+     *
+     * @return Carrier
+     */
+    public function setUuid($uuid)
+    {
+        $this->uuid = $uuid;
+
+        return $this;
+    }
+
+    /**
      * @param mixed $operatorId
+     *
+     * @return Carrier
      */
     public function setOperatorId($operatorId)
     {
         $this->operatorId = $operatorId;
+
+        return $this;
     }
 
     /**
@@ -201,10 +216,14 @@ class Carrier implements CarrierInterface
 
     /**
      * @param mixed $trialInitializer
+     *
+     * @return Carrier
      */
-    public function setTrialInitializer($trialInitializer)
+    public function setTrialInitializer($trialInitializer): Carrier
     {
         $this->trialInitializer = $trialInitializer;
+
+        return $this;
     }
 
     /**
@@ -217,10 +236,14 @@ class Carrier implements CarrierInterface
 
     /**
      * @param int $trialPeriod
+     *
+     * @return Carrier
      */
     public function setTrialPeriod(int $trialPeriod)
     {
         $this->trialPeriod = $trialPeriod;
+
+        return $this;
     }
 
     /**
@@ -233,22 +256,12 @@ class Carrier implements CarrierInterface
 
     /**
      * @param int $subscriptionPeriod
-     */
-    public function setSubscriptionPeriod(int $subscriptionPeriod)
-    {
-        $this->subscriptionPeriod = $subscriptionPeriod;
-    }
-
-    /**
-     * Set id
-     *
-     * @param string $uuid
      *
      * @return Carrier
      */
-    public function setUuid($uuid)
+    public function setSubscriptionPeriod(int $subscriptionPeriod): Carrier
     {
-        $this->uuid = $uuid;
+        $this->subscriptionPeriod = $subscriptionPeriod;
 
         return $this;
     }
@@ -326,13 +339,15 @@ class Carrier implements CarrierInterface
     }
 
     /**
-     * Set isp
-     *
      * @param string $isp
+     *
+     * @return Carrier
      */
-    public function setIsp($isp)
+    public function setIsp($isp): self
     {
         $this->isp = $isp;
+
+        return $this;
     }
 
     /**
@@ -395,6 +410,7 @@ class Carrier implements CarrierInterface
 
     /**
      * @param bool $pinIdentSupport
+     *
      * @return Carrier
      */
     public function setPinIdentSupport(bool $pinIdentSupport): Carrier
@@ -463,9 +479,9 @@ class Carrier implements CarrierInterface
     }
 
     /**
-     * Set isCampaignsOnPause
+     * @param $isCampaignsOnPause
      *
-     * @var $isCampaignsOnPause boolean
+     * @return Carrier
      */
     public function setIsCampaignsOnPause($isCampaignsOnPause)
     {
@@ -480,6 +496,8 @@ class Carrier implements CarrierInterface
     public function setSubscribeAttempts($subscribeAttempts)
     {
         $this->subscribeAttempts = $subscribeAttempts;
+
+        return $this;
     }
 
     /**

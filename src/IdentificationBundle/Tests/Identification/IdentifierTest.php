@@ -8,7 +8,7 @@
 
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Common\CommonFlowHandler;
-use IdentificationBundle\Identification\Common\ConsentPageFlowHandler;
+use IdentificationBundle\Identification\Common\CommonConsentPageFlowHandler;
 use IdentificationBundle\Identification\Common\HeaderEnrichmentHandler;
 use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\Handler\HasCommonFlow;
@@ -69,7 +69,7 @@ class IdentifierTest extends TestCase
         $this->logger                  = Mockery::spy(LoggerInterface::class);
         $this->commonFlowHandler       = Mockery::spy(CommonFlowHandler::class);
 
-        $this->consentPageHandler = Mockery::spy(ConsentPageFlowHandler::class);
+        $this->consentPageHandler = Mockery::spy(CommonConsentPageFlowHandler::class);
         $this->session            = new Session(new MockArraySessionStorage());
 
         $this->dataStorage = new \IdentificationBundle\Identification\Service\IdentificationDataStorage($this->session);

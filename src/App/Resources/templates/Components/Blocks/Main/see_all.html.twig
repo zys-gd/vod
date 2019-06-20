@@ -1,9 +1,9 @@
-{% macro render(title, path) %}
+{% macro render(translateKey, path) %}
     <div class="d-flex justify-content-between">
-        <div class="categories-block-title">{{ title }}</div>
+        <div class="categories-block-title">{{ translate(translateKey) }}</div>
         <a class="see-all-box" href="{{ path }}">
             <span class="categories-see-all-icon"></span>
-            <span class="categories-see-all-button">See all</span>
+            <span class="categories-see-all-button">{{ translate('buttons.see_all') }}</span>
         </a>
     </div>
     <div class="categories-block-title-underline"></div>
