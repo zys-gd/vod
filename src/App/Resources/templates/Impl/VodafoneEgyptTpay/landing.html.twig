@@ -3,6 +3,7 @@
 {% import "@App/Components/Blocks/Main/banner.html.twig" as  banner %}
 {% import "@App/Components/Blocks/Main/icons_channels.html.twig" as  icons_channels %}
 {% import "@App/Components/subscribe_buttons.html.twig" as subscribe_buttons %}
+{% import "@App/Components/Blocks/Footer/menu.html.twig" as  footer_menu %}
 
 {% block body %}
     <div class="d-flex flex-column align-items-center justify-content-top w-100" {% if background %} style="background: {{ background }}" {% endif %}>
@@ -31,3 +32,7 @@
         </div>
     </div>
 {% endblock body %}
+
+{% block footer_content %}
+    {{ footer_menu.render() }}
+{% endblock footer_content %}
