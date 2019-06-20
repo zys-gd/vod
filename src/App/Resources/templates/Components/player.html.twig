@@ -132,6 +132,7 @@
                         $('.modal-related-videos-block').append(data.html);
                         isLast = Boolean(data.isLast);
                     }).then(() => {
+                        console.log(isLast);
                         let isAllowRequest = true;
                         let modalRelatedVideosBlock = document.querySelector('.modal-related-videos-block');
                         loadMoreFunc = () => {
