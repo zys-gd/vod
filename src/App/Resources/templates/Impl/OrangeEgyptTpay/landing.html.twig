@@ -20,7 +20,7 @@
         </div>
 
         <div id="landing-offer-container">
-            {% include "@App/Impl/OrangeEgyptTpay/landing_offer_3g.html.twig" %}
+            {% include "@App/Impl/OrangeEgyptTpay/landing_offer.html.twig" %}
         </div>
 
         <div class="align-items-center justify-content-center row mx-4">
@@ -34,5 +34,16 @@
 {% endblock body %}
 
 {% block footer_content %}
+    {% if isWifiFlow() %}
+        {% if isCarrierDetected() %}
+            {{ annotation.render() }}
+        {% endif %}
+        <div id="terms-and-conditions" tabindex="1">
+            <span>
+                <input name="terms" id="terms-and-conditions-checkbox" type="checkbox" required />
+                {{ translate('wifi.terms_confirmation', {'%terms_url%': path('terms_and_conditions')}) | raw }}
+            </span>
+        </div>
+    {% endif %}
     {{ footer_menu.render() }}
 {% endblock footer_content %}
