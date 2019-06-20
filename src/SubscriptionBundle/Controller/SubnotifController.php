@@ -143,7 +143,7 @@ class SubnotifController
             $localLanguage
         );
 
-        return $this->getSimpleJsonResponse('Success', 200, [
+        return $this->getSimpleJsonResponse('Success', 200, [], [
             'message' => $this->translator->translate('messages.info.remind_credentials', $carrier->getBillingCarrierId(), $localLanguage),
             'redirectUrl' => $redirectUrl
         ]);
