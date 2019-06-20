@@ -6,6 +6,7 @@ use App\Domain\Repository\CarrierRepository;
 use App\Domain\Service\Translator\Translator;
 use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\Identification\DTO\ISPData;
+use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
@@ -16,6 +17,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Class SubnotifController
@@ -60,6 +62,16 @@ class SubnotifController
     private $translator;
 
     /**
+     * @var IdentificationDataStorage
+     */
+    private $identificationDataStorage;
+
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
      * SubnotifController constructor
      *
      * @param Notifier $notifier
@@ -69,6 +81,8 @@ class SubnotifController
      * @param LocalExtractor $localExtractor
      * @param SubscriptionPackProvider $subscriptionPackProvider
      * @param Translator $translator
+     * @param IdentificationDataStorage $identificationDataStorage
+     * @param RouterInterface $router
      */
     public function __construct(
         Notifier $notifier,
@@ -77,7 +91,9 @@ class SubnotifController
         SessionInterface $session,
         LocalExtractor $localExtractor,
         SubscriptionPackProvider $subscriptionPackProvider,
-        Translator $translator
+        Translator $translator,
+        IdentificationDataStorage $identificationDataStorage,
+        RouterInterface $router
     ) {
         $this->notifier = $notifier;
         $this->carrierRepository = $carrierRepository;
@@ -86,10 +102,12 @@ class SubnotifController
         $this->localExtractor = $localExtractor;
         $this->subscriptionPackProvider = $subscriptionPackProvider;
         $this->translator = $translator;
+        $this->identificationDataStorage = $identificationDataStorage;
+        $this->router = $router;
     }
 
     /**
-     * @Route("/subnotif/remind",name="remind_credentials")
+     * @Route("/subnotif/remind", name="remind_credentials")
      *
      * @param Request $request
      * @param ISPData $data
@@ -100,11 +118,19 @@ class SubnotifController
      */
     public function sendRemindSms(Request $request, ISPData $data)
     {
-        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($this->session);
-        $identificationToken = $identificationData['identification_token'];
+        if ($this->identificationDataStorage->isWifiFlow()) {
+            $phoneNumber = $request->request->get('phoneNumber');
+            $user = $this->userRepository->findOneByMsisdn($phoneNumber);
+            $redirectUrl = $this->router->generate('index', ['msisdn' => $phoneNumber]);
+        } else {
+            $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($this->session);
+            $identificationToken = $identificationData['identification_token'];
+
+            $user = $this->userRepository->findOneByIdentificationToken($identificationToken);
+            $redirectUrl = $redirectUrl = $this->router->generate('index');
+        }
 
         $carrier = $this->carrierRepository->findOneByBillingId($data->getCarrierId());
-        $user = $this->userRepository->findOneByIdentificationToken($identificationToken);
         $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
 
         $localLanguage = $this->localExtractor->getLocal();
@@ -118,7 +144,8 @@ class SubnotifController
         );
 
         return $this->getSimpleJsonResponse('Success', 200, [
-            'message' => $this->translator->translate('messages.info.remind_credentials', $carrier->getBillingCarrierId(), $localLanguage)
+            'message' => $this->translator->translate('messages.info.remind_credentials', $carrier->getBillingCarrierId(), $localLanguage),
+            'redirectUrl' => $redirectUrl
         ]);
     }
 }
