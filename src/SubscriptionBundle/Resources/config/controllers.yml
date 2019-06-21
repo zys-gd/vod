@@ -41,7 +41,7 @@ services:
             - '@SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber'
             - '@SubscriptionBundle\Service\Action\Unsubscribe\UnsubscriptionEligibilityChecker'
             - '@SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
-            - '@Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector'
+            - '@cross_subscription.api_connector'
 
     SubscriptionBundle\Controller\Actions\WaitAction:
         class: SubscriptionBundle\Controller\Actions\WaitAction

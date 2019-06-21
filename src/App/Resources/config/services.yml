@@ -137,4 +137,4 @@ services:
             - { name: subscription.voter }
 
     App\Domain\ACL\Accessors\SubscribeExternalAPICheck:
-        arguments: ['@Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector']
+        arguments: ['@cross_subscription.api_connector']

@@ -15,7 +15,7 @@ services:
             - '@SubscriptionBundle\Service\SubscriptionSerializer'
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePerformer'
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePromotionalPerformer'
-            - '@Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector'
+            - '@cross_subscription.api_connector'
 
     SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider:
         arguments: ['@SubscriptionBundle\Service\Action\Subscribe\Handler\DefaultHandler']

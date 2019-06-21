@@ -53,4 +53,13 @@ services:
           - '@IdentificationBundle\Identification\Common\Async\AsyncIdentStatusProvider'
 
     IdentificationBundle\Admin\Controller\TestUserAdminController:
-        autowire: true
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@IdentificationBundle\Repository\TestUserRepository'
+            - '@SubscriptionBundle\Repository\SubscriptionRepository'
+            - '@doctrine.orm.entity_manager'
+            - '@cross_subscription.api_connector'
+        calls:
+            - [setContainer, ['@service_container']]
+        tags:
+            - { name: controller.service_arguments }
