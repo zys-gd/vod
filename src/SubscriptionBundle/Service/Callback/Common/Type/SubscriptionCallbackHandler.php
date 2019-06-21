@@ -9,8 +9,8 @@
 namespace SubscriptionBundle\Service\Callback\Common\Type;
 
 
-use App\Domain\Service\CrossSubscriptionAPI\ApiConnector;
 use PiwikBundle\Service\PiwikTracker;
+use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
 use SubscriptionBundle\Entity\Subscription;
@@ -30,7 +30,7 @@ class SubscriptionCallbackHandler extends AbstractCallbackHandler
      */
     private $completer;
     /**
-     * @var ApiConnector
+     * @var \Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector
      */
     private $crossSubscriptionApi;
 

@@ -5,6 +5,10 @@
         {
             "type": "git",
             "url": "https://git-codecommit.eu-west-1.amazonaws.com/v1/repos/store-difftool-module"
+        },
+        {
+            "type": "git",
+            "url": "https://git-codecommit.eu-west-1.amazonaws.com/v1/repos/cross-subscription-api-connector"
         }
     ],
     "require": {
@@ -32,6 +36,7 @@
         "php-amqplib/php-amqplib": "^2.8",
         "phpoffice/phpspreadsheet": "^1.6",
         "piwik/piwik-php-tracker": "1.0",
+        "playwing/cross-subscription-api-connector": "dev-master",
         "playwing/difftool": "dev-master",
         "predis/predis": "^1.1",
         "queue-interop/queue-interop": "0.8.0",

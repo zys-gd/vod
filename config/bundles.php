@@ -36,4 +36,5 @@ return [
     FOS\UserBundle\FOSUserBundle::class => ['all' => true],
     DataDog\AuditBundle\DataDogAuditBundle::class => ['all' => true],
     DataDog\PagerBundle\DataDogPagerBundle::class => ['all' => true],
+    Playwing\CrossSubscriptionAPIBundle\CrossSubscriptionAPIBundle::class => ['all' => true],
 ];

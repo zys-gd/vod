@@ -9,8 +9,8 @@
 namespace SubscriptionBundle\Service\Action\Subscribe;
 
 
-use App\Domain\Service\CrossSubscriptionAPI\ApiConnector;
 use IdentificationBundle\Entity\User;
+use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
@@ -89,7 +89,7 @@ class Subscriber
      */
     private $subscribePromotionalPerformer;
     /**
-     * @var ApiConnector
+     * @var \Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector
      */
     private $crossSubscriptionApi;
 

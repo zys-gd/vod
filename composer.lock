@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d62a9b4f25b1e8d2978836cd69282fc9",
+    "content-hash": "ff2cc40ca5326736a9401eb517aba169",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -3540,6 +3540,35 @@
                 "tracker"
             ],
             "time": "2014-12-18T23:21:02+00:00"
+        },
+        {
+            "name": "playwing/cross-subscription-api-connector",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://git-codecommit.eu-west-1.amazonaws.com/v1/repos/cross-subscription-api-connector",
+                "reference": "b4aa6cc22cc17a16f8f85f98cd7d8cf79d8634c8"
+            },
+            "require": {
+                "e-moe/guzzle6-bundle": "^1.2",
+                "guzzlehttp/guzzle": "v6.3.3",
+                "php": ">=7.0",
+                "sonata-project/admin-bundle": "3.*",
+                "symfony/yaml": "4.*|3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Playwing\\CrossSubscriptionAPIBundle\\": ""
+                }
+            },
+            "authors": [
+                {
+                    "name": "Dmitriy Bichenko",
+                    "email": "dmitriy.bichenko@playwing.net"
+                }
+            ],
+            "time": "2019-06-21T12:17:30+00:00"
         },
         {
             "name": "playwing/difftool",
@@ -10688,6 +10717,7 @@
     "stability-flags": {
         "granedirval/data-dog-pager-bundle": 20,
         "league/flysystem-aws-s3-v3": 20,
+        "playwing/cross-subscription-api-connector": 20,
         "playwing/difftool": 20,
         "liip/functional-test-bundle": 20
     },
