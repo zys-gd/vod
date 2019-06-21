@@ -27,7 +27,6 @@
 
         var form = $('#wifi_form');
         var carrierId = + '{{ getCarrierId() }}';
-        var homePageUrl = '{{ path('index') }}';
 
         $(document).ready(function () {
             // move form to designed position (the best designer ever)
@@ -170,14 +169,19 @@
                                         }
 
                                         $('#send-reminder').click(function () {
+                                            var phoneNumber = phone.replace('+', '');
+
                                             $.ajax({
                                                 url: "{{ path('remind_credentials') }}",
-                                                method: 'GET',
+                                                method: 'POST',
+                                                data: {
+                                                    phoneNumber: phoneNumber
+                                                },
                                                 complete: function() {
                                                     $('.fc-content .button-confirm').click();
                                                 },
                                                 success: function(result) {
-                                                    window.location = homePageUrl;
+                                                    window.location = result.data.redirectUrl;
                                                 }
                                             })
                                         });
