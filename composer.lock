@@ -3547,7 +3547,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git-codecommit.eu-west-1.amazonaws.com/v1/repos/cross-subscription-api-connector",
-                "reference": "b4aa6cc22cc17a16f8f85f98cd7d8cf79d8634c8"
+                "reference": "02f0e5f5f232542b7242f0bbd8bc1d87c4d6a7b4"
             },
             "require": {
                 "e-moe/guzzle6-bundle": "^1.2",
@@ -3568,7 +3568,7 @@
                     "email": "dmitriy.bichenko@playwing.net"
                 }
             ],
-            "time": "2019-06-21T12:17:30+00:00"
+            "time": "2019-06-21T12:44:06+00:00"
         },
         {
             "name": "playwing/difftool",
