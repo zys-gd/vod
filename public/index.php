@@ -8,7 +8,7 @@ require dirname(__DIR__) . '/config/bootstrap.php';
 
 if (isset($_COOKIE['SNOOKER_IN_COLOMBO'])) {
     $_SERVER['APP_ENV']   = $_ENV['APP_ENV'] = $_COOKIE['SNOOKER_IN_COLOMBO'];
-    $_SERVER['APP_DEBUG'] = 1;
+    $_SERVER['APP_DEBUG'] = ($_SERVER['APP_ENV'] !== 'prod');
 }
 
 
