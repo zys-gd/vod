@@ -8,10 +8,13 @@ use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
+use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\ConsentPageFlow\HasConsentPageFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -69,21 +72,43 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
      */
     public function getAdditionalSubscribeParams(Request $request, User $user): array
     {
-        return $this->getGeneralParameters($user);
+        $data = [
+            'url_id' => $user->getShortUrlId(),
+            'lang' => $this->localExtractor->getLocal(),
+            'redirect_url' => $this->router->generate('index', [], RouterInterface::ABSOLUTE_URL)
+        ];
+
+        if ((bool) $this->identificationDataStorage->readValue('is_wifi_flow')) {
+            $data['subscription_contract_id'] = $this->identificationDataStorage->readValue('subscription_contract_id');
+        }
+
+        return $data;
     }
 
     /**
-     * @param Request $request
-     * @param User $user
+     * @param SubscribingProcessException $exception
      *
-     * @return array
+     * @return Response
      */
-    public function getAdditionalResubscribeParams(Request $request, User $user): array
+    public function getSubscriptionErrorResponse(SubscribingProcessException $exception): Response
     {
-        $data = $this->getGeneralParameters($user);
-        $data['redirect_url'] = $this->router->generate('index', [], RouterInterface::ABSOLUTE_URL);
+        $billingData = $exception->getBillingData();
 
-        return $data;
+        $failReason = $billingData->provider_fields->fail_reason;
+        $redirectUrl = $this->router->generate('whoops');
+
+        switch ($failReason) {
+            case SubscribingProcessException::FAIL_REASON_NOT_ENOUGH_CREDIT:
+                $redirectUrl = $this->router->generate('index', ['err_handle' => 'not_enough_credit']);
+                break;
+            case SubscribingProcessException::FAIL_REASON_BLACKLISTED:
+                $redirectUrl = $this->router->generate('blacklisted_user');
+                break;
+            default:
+                break;
+        }
+
+        return new RedirectResponse($redirectUrl);
     }
 
     /**
@@ -93,24 +118,5 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
     public function afterProcess(Subscription $subscription, ProcessResult $result): void
     {
 
-    }
-
-    /**
-     * @param User $user
-     *
-     * @return array
-     */
-    private function getGeneralParameters(User $user): array
-    {
-        $data = [
-            'url_id' => $user->getShortUrlId(),
-            'lang' => $this->localExtractor->getLocal()
-        ];
-
-        if ((bool) $this->identificationDataStorage->readValue('is_wifi_flow')) {
-            $data['subscription_contract_id'] = $this->identificationDataStorage->readValue('subscription_contract_id');
-        }
-
-        return $data;
     }
 }

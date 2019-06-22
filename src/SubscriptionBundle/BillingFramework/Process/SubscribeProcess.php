@@ -58,7 +58,14 @@ class SubscribeProcess
             return $this->requestSender->sendProcessRequest(self::PROCESS_METHOD_SUBSCRIBE, $parameters);
         } catch (BillingFrameworkProcessException $exception) {
             $this->logger->error('Error while trying to subscribe', ['subscriptionId' => $parameters->clientId, 'params' => $parameters]);
-            throw new SubscribingProcessException('Error while trying to subscribe', $exception->getBillingCode(), $exception->getResponse()->getMessage());
+
+            throw new SubscribingProcessException(
+                'Error while trying to subscribe',
+                $exception->getBillingCode(),
+                $exception->getResponse()->getMessage(),
+                null,
+                $exception->getRawResponse()
+            );
 
         } catch (BillingFrameworkException $exception) {
             $this->logger->error('Error while trying to subscribe', ['subscriptionId' => $parameters->clientId, 'params' => $parameters]);

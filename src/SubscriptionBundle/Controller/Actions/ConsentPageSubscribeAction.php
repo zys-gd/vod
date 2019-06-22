@@ -2,20 +2,19 @@
 
 namespace SubscriptionBundle\Controller\Actions;
 
-use Doctrine\ORM\NonUniqueResultException;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\DTO\{IdentificationData, ISPData};
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow as IdentConsentPageFlow;
-use SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound;
-use SubscriptionBundle\Exception\ExistingSubscriptionException;
+use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException;
 use SubscriptionBundle\Service\Action\Subscribe\Consent\ConsentFlowHandler;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\ConsentPageFlow\{HasConsentPageFlow, HasCustomConsentPageFlow};
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
 use SubscriptionBundle\Service\UserExtractor;
-use Symfony\Component\HttpFoundation\{Request, Response};
+use Symfony\Component\HttpFoundation\{RedirectResponse, Request, Response};
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Class ConsentPageSubscribeAction
@@ -48,6 +47,11 @@ class ConsentPageSubscribeAction
     private $consentFlowHandler;
 
     /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
      * ConsentPageSubscribeAction constructor
      *
      * @param CarrierRepositoryInterface $carrierRepository
@@ -55,19 +59,22 @@ class ConsentPageSubscribeAction
      * @param SubscriptionHandlerProvider $subscriptionHandlerProvider
      * @param UserExtractor $userExtractor
      * @param ConsentFlowHandler $consentFlowHandler
+     * @param RouterInterface $router
      */
     public function __construct(
         CarrierRepositoryInterface $carrierRepository,
         IdentificationHandlerProvider $identificationHandlerProvider,
         SubscriptionHandlerProvider $subscriptionHandlerProvider,
         UserExtractor $userExtractor,
-        ConsentFlowHandler $consentFlowHandler
+        ConsentFlowHandler $consentFlowHandler,
+        RouterInterface $router
     ) {
         $this->carrierRepository = $carrierRepository;
         $this->identificationHandlerProvider = $identificationHandlerProvider;
         $this->subscriptionHandlerProvider = $subscriptionHandlerProvider;
         $this->userExtractor = $userExtractor;
         $this->consentFlowHandler = $consentFlowHandler;
+        $this->router = $router;
     }
 
     /**
@@ -76,10 +83,6 @@ class ConsentPageSubscribeAction
      * @param ISPData $ISPData
      *
      * @return Response
-     *
-     * @throws NonUniqueResultException
-     * @throws ActiveSubscriptionPackNotFound
-     * @throws ExistingSubscriptionException
      */
     public function __invoke(Request $request, IdentificationData $identificationData, ISPData $ISPData)
     {
@@ -94,10 +97,16 @@ class ConsentPageSubscribeAction
             throw new BadRequestHttpException('This action is available only for subscription `ConsentPageFlow`');
         }
 
-        if ($subscriber instanceof HasCustomConsentPageFlow) {
-            return $subscriber->process($request, $user);
-        } else {
-            return $this->consentFlowHandler->process($request, $user, $subscriber);
+        try {
+            if ($subscriber instanceof HasCustomConsentPageFlow) {
+                return $subscriber->process($request, $user);
+            } else {
+                return $this->consentFlowHandler->process($request, $user, $subscriber);
+            }
+        } catch (SubscribingProcessException $exception) {
+            return $subscriber->getSubscriptionErrorResponse($exception);
+        } catch (\Exception $exception) {
+            return new RedirectResponse($this->router->generate('whoops'));
         }
     }
 

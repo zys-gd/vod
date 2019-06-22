@@ -32,7 +32,7 @@ class ErrorController extends AbstractController
 
 
     /**
-     * @Route("/whoops",name="mobile_identification")
+     * @Route("/whoops",name="whoops")
      * @param Request $request
      * @return Response
      */
