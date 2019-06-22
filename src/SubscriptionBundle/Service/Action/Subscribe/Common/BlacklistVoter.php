@@ -38,10 +38,6 @@ class BlacklistVoter
      */
     private $logger;
     /**
-     * @var string
-     */
-    private $subNotAllowedRoute;
-    /**
      * @var CarrierRepository
      */
     private $carrierRepository;
@@ -54,7 +50,6 @@ class BlacklistVoter
      * @param BlacklistChecker  $blacklistChecker
      * @param UserRepository    $userRepository
      * @param LoggerInterface   $logger
-     * @param string            $subNotAllowedRoute
      * @param CarrierRepository $carrierRepository
      */
     public function __construct(
@@ -63,7 +58,6 @@ class BlacklistVoter
         BlacklistChecker $blacklistChecker,
         UserRepository $userRepository,
         LoggerInterface $logger,
-        string $subNotAllowedRoute,
         CarrierRepository $carrierRepository
     ) {
         $this->cacheService       = $cacheService;
@@ -71,7 +65,6 @@ class BlacklistVoter
         $this->blacklistChecker   = $blacklistChecker;
         $this->userRepository     = $userRepository;
         $this->logger             = $logger;
-        $this->subNotAllowedRoute = $subNotAllowedRoute;
         $this->carrierRepository  = $carrierRepository;
     }
 
@@ -103,7 +96,7 @@ class BlacklistVoter
      */
     public function createNotAllowedResponse()
     {
-        $response = new RedirectResponse($this->router->generate($this->subNotAllowedRoute));
+        $response = new RedirectResponse($this->getRedirectUrl());
 
         return $response;
     }
@@ -113,6 +106,6 @@ class BlacklistVoter
      */
     public function getRedirectUrl(): string
     {
-        return $this->router->generate($this->subNotAllowedRoute);
+        return $this->router->generate('blacklisted_user');
     }
 }
