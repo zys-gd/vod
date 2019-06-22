@@ -95,7 +95,10 @@ services:
             - '@SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber'
             -
     SubscriptionBundle\Service\Blacklist\BlacklistChecker:
-        arguments: ['@IdentificationBundle\Repository\UserRepository', '@SubscriptionBundle\Repository\BlackListRepository']
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@SubscriptionBundle\Repository\BlackListRepository'
+            - '@logger'
 
     SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator:
         arguments:
@@ -104,6 +107,7 @@ services:
             - '@SubscriptionBundle\Service\Blacklist\BlacklistSaver'
             - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
             - '@IdentificationBundle\Repository\UserRepository'
+            - '@logger'
 
     SubscriptionBundle\Service\Notification\Email\CAPNotificationSender:
         arguments:

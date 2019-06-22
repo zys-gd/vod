@@ -7,6 +7,7 @@ use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Repository\UserRepository;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class BlacklistAttemptRegistrator
@@ -35,6 +36,10 @@ class BlacklistAttemptRegistrator
      * @var UserRepository
      */
     private $userRepository;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * BlacklistAttemptRegistrator constructor
@@ -44,19 +49,22 @@ class BlacklistAttemptRegistrator
      * @param BlacklistSaver $blacklistSaver
      * @param IdentificationDataStorage $identificationDataStorage
      * @param UserRepository $userRepository
+     * @param LoggerInterface $logger
      */
     public function __construct(
         CarrierRepositoryInterface $carrierRepository,
         ICacheService $cacheService,
         BlacklistSaver $blacklistSaver,
         IdentificationDataStorage $identificationDataStorage,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        LoggerInterface $logger
     ) {
         $this->carrierRepository         = $carrierRepository;
         $this->cacheService              = $cacheService;
         $this->blacklistSaver            = $blacklistSaver;
         $this->identificationDataStorage = $identificationDataStorage;
         $this->userRepository            = $userRepository;
+        $this->logger                    = $logger;
     }
 
     /**
@@ -69,6 +77,8 @@ class BlacklistAttemptRegistrator
      */
     public function registerSubscriptionAttempt(string $identificationToken, int $carrierId): bool
     {
+        $this->logger->debug('Check user subscription attempts', ['identification_token' => $identificationToken]);
+
         if ($this->isSubscriptionAttemptRaised($identificationToken, $carrierId)) {
             return false;
         }
@@ -106,6 +116,7 @@ class BlacklistAttemptRegistrator
 
         if (count($subscriptionTries) > $carrier->getSubscribeAttempts()) {
             $this->blacklistSaver->addToBlackList($identifier);
+            $this->logger->debug('User raised subscription attempts and blacklisted');
 
             return true;
         }

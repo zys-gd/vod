@@ -78,6 +78,8 @@ class BlacklistVoter
         $data         = IdentificationFlowDataExtractor::extractIdentificationData($session);
         $identificationToken = $data['identification_token'] ?? null;
 
+        $this->logger->debug('Check user for blacklist', ['identification_token' => $identificationToken]);
+
         return $this->blacklistChecker->isUserBlacklisted($identificationToken);
     }
 
@@ -88,6 +90,8 @@ class BlacklistVoter
      */
     public function isPhoneNumberBlacklisted(string $msisdn): bool
     {
+        $this->logger->debug('Check phone number for blacklist', ['phone_number' => $msisdn]);
+
         return $this->blacklistChecker->isPhoneNumberBlacklisted($msisdn);
     }
 

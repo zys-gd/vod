@@ -3,6 +3,7 @@
 namespace SubscriptionBundle\Service\Blacklist;
 
 use IdentificationBundle\Repository\UserRepository;
+use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Entity\BlackList;
 use SubscriptionBundle\Repository\BlackListRepository;
 
@@ -22,17 +23,25 @@ class BlacklistChecker
     private $blackListRepository;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * BlacklistChecker constructor
      *
-     * @param UserRepository      $userRepository
+     * @param UserRepository $userRepository
      * @param BlackListRepository $blackListRepository
+     * @param LoggerInterface $logger
      */
     public function __construct(
         UserRepository $userRepository,
-        BlackListRepository $blackListRepository
+        BlackListRepository $blackListRepository,
+        LoggerInterface $logger
     ) {
         $this->userRepository      = $userRepository;
         $this->blackListRepository = $blackListRepository;
+        $this->logger              = $logger;
     }
 
     /**
@@ -73,6 +82,7 @@ class BlacklistChecker
                 && $today < $blackList->getBanEnd()
                 || $blackList->getDuration() == 0
             ) {
+                $this->logger->debug('User blacklisted');
                 return true;
             }
         } catch (\Throwable $e) {
