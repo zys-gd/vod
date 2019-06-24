@@ -27,7 +27,6 @@
 
         var form = $('#wifi_form');
         var carrierId = + '{{ getCarrierId() }}';
-        var homePageUrl = '{{ path('index') }}';
 
         $(document).ready(function () {
             // move form to designed position (the best designer ever)
@@ -90,6 +89,7 @@
 
         $(document).on('change', 'select[name="carrier_id"]', function () {
             var carrier = $(this).find(':selected').data('content');
+            var carrierId = carrier ? carrier.billingCarrierId : null;
             $('#wifi_offer').html( (carrier && carrier.wifi_offer) || '');
 
             $('footer ul').remove();
@@ -100,11 +100,12 @@
             $.ajax({
                 url    : "{{ path('select_carrier_wifi') }}",
                 method : "POST",
-                data   : { carrier_id: carrier ? carrier.billingCarrierId : null },
+                data   : { carrier_id: carrierId },
                 success: function (result) {
                     if (result.data.success) {
                         $('footer').prepend(result.data.annotation);
                         $('#landing-offer-container').removeClass('mt-2').html(result.data.offer);
+                        addValidationAttributes(carrierId);
                     } else if (result.data.message) {
                         showAlert({title: result.data.message});
                     }
@@ -168,14 +169,19 @@
                                         }
 
                                         $('#send-reminder').click(function () {
+                                            var phoneNumber = phone.replace('+', '');
+
                                             $.ajax({
                                                 url: "{{ path('remind_credentials') }}",
-                                                method: 'GET',
+                                                method: 'POST',
+                                                data: {
+                                                    phoneNumber: phoneNumber
+                                                },
                                                 complete: function() {
                                                     $('.fc-content .button-confirm').click();
                                                 },
                                                 success: function(result) {
-                                                    window.location = homePageUrl;
+                                                    window.location = result.data.redirectUrl;
                                                 }
                                             })
                                         });
