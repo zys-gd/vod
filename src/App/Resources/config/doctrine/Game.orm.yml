@@ -51,12 +51,6 @@ App\Domain\Entity\Game:
             joinColumn:
                 name: developer_id
                 referencedColumnName: uuid
-        tier:
-          targetEntity: PriceBundle\Entity\Tier
-          joinColumn:
-            name: tier_id
-            referencedColumnName: uuid
-
     oneToMany:
         images:
             targetEntity: App\Domain\Entity\GameImage

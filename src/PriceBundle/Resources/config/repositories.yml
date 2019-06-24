@@ -1,5 +1,0 @@
-services:
-    PriceBundle\Repository\TierValueRepository:
-        factory: ['@doctrine.orm.default_entity_manager', getRepository]
-        arguments:
-            - PriceBundle\Entity\TierValue
