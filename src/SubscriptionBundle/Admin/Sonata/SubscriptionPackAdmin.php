@@ -7,9 +7,8 @@ use App\Domain\Entity\Country;
 use App\Domain\Repository\CountryRepository;
 use App\Utils\UuidGenerator;
 use Doctrine\ORM\EntityManager;
-use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
-use PriceBundle\Entity\Strategy;
+use SubscriptionBundle\DTO\Strategy;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -18,6 +17,7 @@ use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
 use Sonata\AdminBundle\Route\RouteCollection;
 use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkException;
 use SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider;
+use SubscriptionBundle\DTO\Tier;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Repository\SubscriptionPackRepository;
 use SubscriptionBundle\Service\SubscriptionTextService;
@@ -116,7 +116,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
     {
         $object->setUpdated(new \DateTime('now'));
         // resolve problems with form save and inline list save
-        try{
+        try {
             $object->setBuyStrategyId($object->getBuyStrategyId()->id);
             $object->setRenewStrategyId($object->getRenewStrategyId()->id);
         } catch (\Throwable $e) {
@@ -207,7 +207,6 @@ class SubscriptionPackAdmin extends AbstractAdmin
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-        $carriers   = $this->subscriptionPackDataProvider->getCarriers();
         $tiers      = $this->subscriptionPackDataProvider->getTiers();
         $strategies = $this->subscriptionPackDataProvider->getBillingStrategies();
 
@@ -253,6 +252,8 @@ class SubscriptionPackAdmin extends AbstractAdmin
         $this->buildGeneralSection($formMapper);
         $this->buildBillingStrategySection($formMapper);
         $this->buildPromotionSections($formMapper);
+
+
     }
 
     /**
@@ -273,7 +274,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
         if ($country) {
             $formMapper
                 ->add('country', EntityType::class, [
-                    'attr' => [
+                    'attr'    => [
                         'readonly' => true,
                     ],
                     'choices' => [$country],
@@ -421,9 +422,20 @@ class SubscriptionPackAdmin extends AbstractAdmin
     private function buildBillingStrategySection(FormMapper $formMapper)
     {
         $billingStrategies = $this->subscriptionPackDataProvider->getBillingStrategies();
+        $billingTiers      = $this->subscriptionPackDataProvider->getTiers();
 
         $formMapper
             ->with('Billing strategy', [''])
+            ->add('tierId', ChoiceType::class, [
+                'label'        => 'Billing tier for subscription',
+                'choices'      => $billingTiers,
+                'choice_label' => 'name',
+                'choice_value' => function ($billingTier) {
+                    return $billingTier instanceof Tier ? $billingTier->id : $billingTier;
+                }
+            ]);
+
+        $formMapper
             ->add('buyStrategyId', ChoiceType::class, [
                 'label'        => 'Billing strategy for new subscription',
                 'choices'      => $billingStrategies,

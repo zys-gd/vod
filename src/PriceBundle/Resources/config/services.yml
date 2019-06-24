@@ -1,5 +1,0 @@
-services:
-    PriceBundle\Service\CarrierPrice:
-        arguments:
-            - '@SubscriptionBundle\Repository\SubscriptionRepository'
-            - '@SubscriptionBundle\Repository\SubscriptionPackRepository'

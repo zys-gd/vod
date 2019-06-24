@@ -15,9 +15,16 @@
 {% endblock header_content %}
 
 {% block body %}
+    <div class="flex-column">
         <div class="d-flex align-items-center justify-content-center w-100">
-            <div class="disclaimer-text">
-                {{ translate('whoops', {'%url%': path('landing')})| raw }}
+            <div class="error-code">
+                404
             </div>
         </div>
+        <div class="d-flex align-items-center justify-content-center w-100">
+            <div class="disclaimer-text">
+                {{ translate('not-found-error', {'%url%': path('index')})| raw }}
+            </div>
+        </div>
+    </div>
 {% endblock %}
