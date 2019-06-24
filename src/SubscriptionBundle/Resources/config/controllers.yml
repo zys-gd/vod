@@ -82,7 +82,8 @@ services:
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
             - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
             - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
-            - '@IdentificationBundle\Identification\Service\UserFactory'
+            - '@SubscriptionBundle\Service\UserExtractor'
+            - '@SubscriptionBundle\Service\Action\Subscribe\Consent\ConsentFlowHandler'
 
     SubscriptionBundle\Admin\Controller\SubscriptionPackAdminController:
         calls: [['setContainer', ['@service_container']]]
@@ -100,3 +101,15 @@ services:
         arguments:
             - '@form.factory'
             - '@SubscriptionBundle\Service\ReportingToolService'
+
+    SubscriptionBundle\Controller\SubnotifController:
+        arguments:
+            - '@SubscriptionBundle\Service\Notification\Notifier'
+            - '@App\Domain\Repository\CarrierRepository'
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@session'
+            - '@ExtrasBundle\Utils\LocalExtractor'
+            - '@SubscriptionBundle\Service\SubscriptionPackProvider'
+            - '@App\Domain\Service\Translator\Translator'
+            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@router'

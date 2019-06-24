@@ -39,6 +39,8 @@ services:
             - '@App\Domain\Repository\GameRepository'
             - '@App\Domain\Repository\CountryCategoryPriorityOverrideRepository'
             - '@App\Domain\Service\Piwik\ContentStatisticSender'
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
 
     App\Controller\LPController:
         arguments:
@@ -48,6 +50,7 @@ services:
             - '%images_base_url%'
             - '@App\Domain\Service\CarrierOTPVerifier'
             - '%default_redirect_url%'
+            - '@App\CarrierTemplate\TemplateConfigurator'
             - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
             - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
             - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier'
@@ -55,6 +58,7 @@ services:
             - '@SubscriptionBundle\Service\VisitCAPTool\VisitTracker'
             - '@SubscriptionBundle\Service\VisitCAPTool\VisitNotifier'
             - '@logger'
+            - '@IdentificationBundle\Identification\Service\CarrierSelector'
             - '@SubscriptionBundle\Service\SubscribeUrlResolver'
 
     App\Controller\ErrorController:

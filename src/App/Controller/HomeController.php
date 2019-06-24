@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 08.01.19
- * Time: 16:45
- */
 
 namespace App\Controller;
-
 
 use App\CarrierTemplate\TemplateConfigurator;
 use App\Domain\DTO\BatchOfGames;
@@ -24,13 +17,18 @@ use ExtrasBundle\Utils\ArraySorter;
 use IdentificationBundle\Controller\ControllerWithIdentification;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
+use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class HomeController
+ */
 class HomeController extends AbstractController implements
     ControllerWithISPDetection,
     AppControllerInterface,
@@ -70,15 +68,27 @@ class HomeController extends AbstractController implements
     private $videoSerializer;
 
     /**
+     * @var UserRepository
+     */
+    private $userRepository;
+
+    /**
+     * @var IdentificationDataStorage
+     */
+    private $identificationDataStorage;
+
+    /**
      * HomeController constructor.
      *
-     * @param TemplateConfigurator                      $templateConfigurator
-     * @param MainCategoryRepository                    $mainCategoryRepository
-     * @param UploadedVideoRepository                   $videoRepository
-     * @param UploadedVideoSerializer                   $videoSerializer
-     * @param GameRepository                            $gameRepository
+     * @param TemplateConfigurator $templateConfigurator
+     * @param MainCategoryRepository $mainCategoryRepository
+     * @param UploadedVideoRepository $videoRepository
+     * @param UploadedVideoSerializer $videoSerializer
+     * @param GameRepository $gameRepository
      * @param CountryCategoryPriorityOverrideRepository $categoryOverrideRepository
-     * @param ContentStatisticSender                    $contentStatisticSender
+     * @param ContentStatisticSender $contentStatisticSender
+     * @param UserRepository $userRepository
+     * @param IdentificationDataStorage $identificationDataStorage
      */
     public function __construct(
         TemplateConfigurator $templateConfigurator,
@@ -87,9 +97,10 @@ class HomeController extends AbstractController implements
         UploadedVideoSerializer $videoSerializer,
         GameRepository $gameRepository,
         CountryCategoryPriorityOverrideRepository $categoryOverrideRepository,
-        ContentStatisticSender $contentStatisticSender
-    )
-    {
+        ContentStatisticSender $contentStatisticSender,
+        UserRepository $userRepository,
+        IdentificationDataStorage $identificationDataStorage
+    ) {
         $this->templateConfigurator       = $templateConfigurator;
         $this->mainCategoryRepository     = $mainCategoryRepository;
         $this->videoRepository            = $videoRepository;
@@ -97,8 +108,9 @@ class HomeController extends AbstractController implements
         $this->gameRepository             = $gameRepository;
         $this->categoryOverrideRepository = $categoryOverrideRepository;
         $this->contentStatisticSender     = $contentStatisticSender;
+        $this->userRepository             = $userRepository;
+        $this->identificationDataStorage  = $identificationDataStorage;
     }
-
 
     /**
      * @Route("/",name="index")
@@ -111,6 +123,16 @@ class HomeController extends AbstractController implements
      */
     public function indexAction(Request $request, ISPData $data)
     {
+        $params = $request->query->all();
+
+        if (!empty($params['msisdn']) && $user = $this->userRepository->findOneByMsisdn($params['msisdn'])) {
+            $carrierId = $user->getCarrierId();
+            $data = new ISPData($carrierId);
+
+            $this->identificationDataStorage->storeIdentificationToken($user->getIdentificationToken());
+            $this->identificationDataStorage->storeCarrierId($carrierId);
+        }
+
         /**
          * @var BatchOfGames $games
          */

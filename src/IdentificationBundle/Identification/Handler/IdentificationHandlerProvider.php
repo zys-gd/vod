@@ -10,6 +10,7 @@ namespace IdentificationBundle\Identification\Handler;
 
 
 use IdentificationBundle\Entity\CarrierInterface;
+use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow;
 
 class IdentificationHandlerProvider
 {
@@ -47,7 +48,7 @@ class IdentificationHandlerProvider
             HasCommonFlow::class,
             HasCustomFlow::class,
             HasHeaderEnrichment::class,
-            HasConsentPageFlow::class
+            HasCommonConsentPageFlow::class
         ];
 
         $usedInterfaces = [];

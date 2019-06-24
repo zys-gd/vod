@@ -90,4 +90,14 @@ class IdentificationDataStorage
     {
         $this->session->set('isp_detection_data', ['carrier_id' => $carrierId]);
     }
+
+    public function cleanCarrier(): void
+    {
+        $this->session->remove('isp_detection_data');
+    }
+
+    public function isWifiFlow(): bool
+    {
+        return $this->readValue('is_wifi_flow');
+    }
 }

@@ -8,3 +8,7 @@ app:
 identification:
     resource: '@IdentificationBundle/Resources/config/routes/routes.yaml'
     prefix: identification/
+
+subscription:
+    resource: ../../src/SubscriptionBundle/Controller/
+    type: annotation

@@ -11,13 +11,20 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Class AdminAdmin
  */
 class Admin extends AbstractAdmin
 {
+
+    const IGNORE_ROLES = [
+        'ROLE_SUPER_ADMIN'
+    ];
+
     /**
      * @var UserManagerInterface
      */
@@ -120,7 +127,10 @@ class Admin extends AbstractAdmin
             ])
             ->add('roles', ChoiceType::class, [
                 'choices' => $this->getRoles(),
-                'multiple' => true
+                'multiple' => true,
+                'constraints' => [
+                    new Callback([$this, 'validateRoles'])
+                ]
             ])
             ->add('enabled', CheckboxType::class, [
                 'required' => false
@@ -137,9 +147,24 @@ class Admin extends AbstractAdmin
         $preparedRoles = [];
 
         foreach ($roles as $role => $hierarchy) {
-            $preparedRoles[$role] = $role;
+            if (!in_array($role, self::IGNORE_ROLES)) {
+                $preparedRoles[$role] = $role;
+            }
         }
 
         return $preparedRoles;
+    }
+
+    public function validateRoles(?array $roles, ExecutionContextInterface $context):void
+    {
+        $availableRoles = $this->getRoles();
+
+        foreach ($roles as $role) {
+            if(!in_array($role, $availableRoles) || in_array($role, self::IGNORE_ROLES)) {
+                $context
+                    ->buildViolation('Permission denied')
+                    ->addViolation();
+            }
+        }
     }
 }

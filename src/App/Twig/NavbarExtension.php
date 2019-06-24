@@ -102,6 +102,7 @@ class NavbarExtension extends AbstractExtension
                     }
 
                     $result[] = [
+                        'uuid'     => $category->getUuid(),
                         'link'     => $this->router->generate('show_category', ['categoryUuid' => $category->getUuid()]),
                         'title'    => $category->getTitle(),
                         'subitems' => $subitems

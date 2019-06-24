@@ -1,13 +1,23 @@
 {% extends '@App/base.html.twig' %}
+{% import "@App/Common/Blocks/header_stripped.html.twig" as  header %}
 
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('/css/custom-error-pages.css') }}" rel="stylesheet">
+
+{% endblock %}
+
+
+
+{% block header_content %}
+    {{ header.render() }}
+{% endblock header_content %}
 
 {% block body %}
-
-    <form method="post" action="{{ 'whoops' }}">
-        <input type="text" name="carrier">
-        <button>
-            {{ translate('buttons.submit') }}
-        </button>
-    </form>
-
+        <div class="d-flex align-items-center justify-content-center w-100">
+            <div class="disclaimer-text">
+                {{ translate('whoops', {'%url%': path('landing')})| raw }}
+            </div>
+        </div>
 {% endblock %}

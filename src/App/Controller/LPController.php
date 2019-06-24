@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\CarrierTemplate\TemplateConfigurator;
 use App\Domain\ACL\Exception\AccessException;
 use App\Domain\ACL\LandingPageACL;
 use App\Domain\Entity\Campaign;
@@ -11,6 +12,8 @@ use App\Domain\Service\CarrierOTPVerifier;
 use App\Domain\Service\Piwik\ContentStatisticSender;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
+use IdentificationBundle\Identification\Exception\MissingCarrierException;
+use IdentificationBundle\Identification\Service\CarrierSelector;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
@@ -40,8 +43,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class LPController extends AbstractController implements ControllerWithISPDetection, AppControllerInterface
 {
-
     use ResponseTrait;
+
     /**
      * @var ContentStatisticSender
      */
@@ -66,6 +69,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var string
      */
     private $defaultRedirectUrl;
+    /**
+     * @var TemplateConfigurator
+     */
+    private $templateConfigurator;
     /**
      * @var IdentificationDataStorage
      */
@@ -95,6 +102,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      */
     private $logger;
     /**
+     * @var CarrierSelector
+     */
+    private $carrierSelector;
+    /**
      * @var SubscribeUrlResolver
      */
     private $subscribeUrlResolver;
@@ -102,20 +113,22 @@ class LPController extends AbstractController implements ControllerWithISPDetect
     /**
      * LPController constructor.
      *
-     * @param ContentStatisticSender     $contentStatisticSender
-     * @param CampaignRepository         $campaignRepository
-     * @param LandingPageACL             $landingPageAccessResolver
-     * @param string                     $imageBaseUrl
-     * @param CarrierOTPVerifier         $OTPVerifier
-     * @param string                     $defaultRedirectUrl
-     * @param IdentificationDataStorage  $dataStorage
-     * @param SubscriptionLimiter        $limiter
-     * @param SubscriptionLimitNotifier  $subscriptionLimitNotifier
+     * @param ContentStatisticSender $contentStatisticSender
+     * @param CampaignRepository $campaignRepository
+     * @param LandingPageACL $landingPageAccessResolver
+     * @param string $imageBaseUrl
+     * @param CarrierOTPVerifier $OTPVerifier
+     * @param string $defaultRedirectUrl
+     * @param TemplateConfigurator $templateConfigurator
+     * @param IdentificationDataStorage $dataStorage
+     * @param SubscriptionLimiter $limiter
+     * @param SubscriptionLimitNotifier $subscriptionLimitNotifier
      * @param CarrierRepositoryInterface $carrierRepository
-     * @param VisitTracker               $visitTracker
-     * @param VisitNotifier              $notifier
-     * @param LoggerInterface            $logger
-     * @param SubscribeUrlResolver       $subscribeUrlResolver
+     * @param VisitTracker $visitTracker
+     * @param VisitNotifier $notifier
+     * @param LoggerInterface $logger
+     * @param CarrierSelector $carrierSelector
+     * @param SubscribeUrlResolver $subscribeUrlResolver
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
@@ -124,6 +137,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         string $imageBaseUrl,
         CarrierOTPVerifier $OTPVerifier,
         string $defaultRedirectUrl,
+        TemplateConfigurator $templateConfigurator,
         IdentificationDataStorage $dataStorage,
         SubscriptionLimiter $limiter,
         SubscriptionLimitNotifier $subscriptionLimitNotifier,
@@ -131,6 +145,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         VisitTracker $visitTracker,
         VisitNotifier $notifier,
         LoggerInterface $logger,
+        CarrierSelector $carrierSelector,
         SubscribeUrlResolver $subscribeUrlResolver
     )
     {
@@ -140,6 +155,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->imageBaseUrl              = $imageBaseUrl;
         $this->OTPVerifier               = $OTPVerifier;
         $this->defaultRedirectUrl        = $defaultRedirectUrl;
+        $this->templateConfigurator      = $templateConfigurator;
         $this->dataStorage               = $dataStorage;
         $this->limiter                   = $limiter;
         $this->carrierRepository         = $carrierRepository;
@@ -147,6 +163,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->visitTracker              = $visitTracker;
         $this->visitNotifier             = $notifier;
         $this->logger                    = $logger;
+        $this->carrierSelector           = $carrierSelector;
         $this->subscribeUrlResolver      = $subscribeUrlResolver;
     }
 
@@ -184,7 +201,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         $carrier = $this->resolveCarrierFromRequest($request);
         if ($carrier && $campaign) {
-            $this->logger->debug('Start CAP checking');
+            $this->logger->debug('Start CAP checking', ['carrier' => $carrier]);
             try {
                 $this->landingPageAccessResolver->ensureCanAccess($campaign, $carrier);
 
@@ -218,9 +235,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         // we can't use ISPData object as function parameter because request to LP could not contain
         // carrier data and in this case BadRequestHttpException will be throw
         $ispData            = IdentificationFlowDataExtractor::extractIspDetectionData($session);
+        $carrierId          = $ispData ? $ispData['carrier_id'] : null;
         $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($session);
         $campaignToken      = AffiliateVisitSaver::extractCampaignToken($session);
-        $this->contentStatisticSender->trackVisit($identificationData, $ispData ? new ISPData($ispData['carrier_id']) : null, $campaignToken);
+        $this->contentStatisticSender->trackVisit($identificationData, $carrierId ? new ISPData($carrierId) : null, $campaignToken);
 
         if ($carrier && !(bool)$this->dataStorage->readValue('is_wifi_flow') && $this->landingPageAccessResolver->isLandingDisabled($request)) {
             return new RedirectResponse($this->subscribeUrlResolver->getSubscribeRoute($carrier));
@@ -230,27 +248,42 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             $this->OTPVerifier->forceWifi($session);
         }
 
-        return $this->render('@App/Common/landing.html.twig', [
+        $template = $this->templateConfigurator->getTemplate('landing', (int)$carrierId);
+
+        return $this->render($template, [
             'campaignBanner' => $campaignBanner,
             'background'     => $background
         ]);
     }
 
     /**
-     * @Route("/get_annotation", name="ajax_annotation")
+     * @Route("/lp/select-carrier-wifi", name="select_carrier_wifi")
+     * @param Request $request
+     *
      * @return JsonResponse
      */
-    public function ajaxAnnotationAction(Request $request)
+    public function handleCarrierSelect(Request $request)
     {
+        if (!$carrierId = $request->get('carrier_id', '')) {
+            $this->carrierSelector->removeCarrier();
 
-        if (!$request->isXmlHttpRequest()) {
-            throw new BadRequestHttpException();
+            return $this->getSimpleJsonResponse('');
         }
 
-        return new JsonResponse([
-            'code'     => 200,
-            'response' => $this->renderView('@App/Components/Ajax/annotation.html.twig')
-        ]);
+        try {
+            $this->carrierSelector->selectCarrier((int)$carrierId);
+            $offerTemplate = $this->templateConfigurator->getTemplate('landing_offer', $carrierId);
+
+            $data = [
+                'success'    => true,
+                'annotation' => $this->renderView('@App/Components/Ajax/annotation.html.twig'),
+                'offer'      => $this->renderView($offerTemplate)
+            ];
+
+            return $this->getSimpleJsonResponse('Successfully selected', 200, [], $data);
+        } catch (MissingCarrierException $exception) {
+            return $this->getSimpleJsonResponse($exception->getMessage(), 200, [], ['success' => false]);
+        }
     }
 
     /**

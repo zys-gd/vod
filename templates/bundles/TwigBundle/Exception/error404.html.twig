@@ -1,0 +1,30 @@
+{% extends '@App/base.html.twig' %}
+{% import "@App/Common/Blocks/header_stripped.html.twig" as  header %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('/css/custom-error-pages.css') }}" rel="stylesheet">
+
+{% endblock %}
+
+
+
+{% block header_content %}
+    {{ header.render() }}
+{% endblock header_content %}
+
+{% block body %}
+    <div class="flex-column">
+        <div class="d-flex align-items-center justify-content-center w-100">
+            <div class="error-code">
+                404
+            </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-center w-100">
+            <div class="disclaimer-text">
+                {{ translate('not-found-error', {'%url%': path('index')})| raw }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

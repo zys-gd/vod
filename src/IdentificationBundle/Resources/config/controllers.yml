@@ -41,7 +41,6 @@ services:
         - '@IdentificationBundle\WifiIdentification\WifiIdentSMSSender'
         - '@IdentificationBundle\WifiIdentification\WifiIdentConfirmator'
         - '@IdentificationBundle\WifiIdentification\Service\ErrorCodeResolver'
-        - '@IdentificationBundle\Identification\Service\CarrierSelector'
         - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
         - '%default_redirect_url%'
         - '@IdentificationBundle\Repository\CarrierRepositoryInterface'

@@ -1,21 +1,19 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 15.01.19
- * Time: 13:51
- */
 
 namespace IdentificationBundle\Twig;
-
 
 use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CarrierRepository;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class IdentificationStatusExtension extends \Twig_Extension
+/**
+ * Class IdentificationStatusExtension
+ */
+class IdentificationStatusExtension extends AbstractExtension
 {
     /**
      * @var IdentificationDataStorage
@@ -30,48 +28,53 @@ class IdentificationStatusExtension extends \Twig_Extension
      */
     private $carrierRepository;
 
-
     /**
      * IdentificationStatusExtension constructor.
      *
      * @param IdentificationDataStorage $dataStorage
-     * @param SessionInterface          $session
-     * @param CarrierRepository         $carrierRepository
+     * @param SessionInterface $session
+     * @param CarrierRepository $carrierRepository
      */
-    public function __construct(IdentificationDataStorage $dataStorage,
+    public function __construct(
+        IdentificationDataStorage $dataStorage,
         SessionInterface $session,
-        CarrierRepository $carrierRepository)
-    {
+        CarrierRepository $carrierRepository
+    ) {
         $this->dataStorage = $dataStorage;
         $this->session = $session;
         $this->carrierRepository = $carrierRepository;
     }
 
+    /**
+     * @return TwigFunction[]
+     */
     public function getFunctions()
     {
         return [
+            new TwigFunction('isCarrierDetected', [$this, 'isCarrierDetected']),
 
-            new \Twig_SimpleFunction('isCarrierDetected', [$this, 'isCarrierDetected']),
+            new TwigFunction('getCarrierId', [$this, 'getCarrierId']),
 
-            new \Twig_SimpleFunction('isIdentified', function () {
+            new TwigFunction('isIdentified', function () {
                 $identificationData = $this->dataStorage->readIdentificationData();
                 return isset($identificationData['identification_token']) && $identificationData['identification_token'];
             }),
-            new \Twig_SimpleFunction('isConsentFlow', function () {
+
+            new TwigFunction('isConsentFlow', function () {
                 $token = $this->dataStorage->readValue('consentFlow[token]');
                 return (bool)$token;
             }),
 
-            new \Twig_SimpleFunction('isWifiFlow', function () {
+            new TwigFunction('isWifiFlow', function () {
                 return (bool)$this->dataStorage->readValue('is_wifi_flow');
             }),
 
-            new \Twig_SimpleFunction('getIdentificationToken', function () {
+            new TwigFunction('getIdentificationToken', function () {
                 $identificationData = $this->dataStorage->readIdentificationData();
                 return $identificationData['identification_token'] ?? null;
             }),
 
-            new \Twig_SimpleFunction('isOtp', [$this, 'isOtp']),
+            new TwigFunction('isOtp', [$this, 'isOtp']),
         ];
     }
 
@@ -82,6 +85,15 @@ class IdentificationStatusExtension extends \Twig_Extension
     {
         $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
         return isset($ispDetectionData['carrier_id']) && $ispDetectionData['carrier_id'];
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getCarrierId(): ?int
+    {
+        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
+        return empty($ispDetectionData['carrier_id']) ? null : (int) $ispDetectionData['carrier_id'];
     }
 
     /**
