@@ -11,7 +11,6 @@ namespace SubscriptionBundle\Admin\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\VarDumper\VarDumper;
 use SubscriptionBundle\Entity\SubscriptionPack;
 
 class SubscriptionPackAdminController extends CRUDController
