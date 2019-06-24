@@ -20,3 +20,7 @@ services:
             - '@swiftmailer.mailer'
             - '@ExtrasBundle\Email\EmailComposer'
 
+    ExtrasBundle\Command\RebuildDBCommand:
+        tags:
+            - { name: console.command }
+
