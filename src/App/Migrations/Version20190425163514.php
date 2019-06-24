@@ -50,7 +50,7 @@ final class Version20190425163514 extends AbstractMigration implements Container
             ->setBillingCarrierId(2254) // todo change for live
             ->setName('Orange EG via TPAY')
             ->setCountryCode('EG')
-            ->setIsp('Orange Egypt')
+            ->setIsp('MOBINIL')
             ->setPublished(true)
             ->setPinIdentSupport(true)
             ->setTrialInitializer('carrier')

@@ -1,0 +1,17 @@
+.disclaimer-text {
+
+    font-weight: bold;
+    font-size: 32px;
+    width: 100%;
+    text-align: center;
+
+}
+
+.error-code {
+    color: #ff181e;
+    font-weight: bold;
+    font-size: 60px;
+    width: 100%;
+    padding: 40px;
+    text-align: center;
+}
