@@ -67,16 +67,6 @@ class SubscriptionPack implements HasUuid
     private $country;
 
     /**
-     * @var integer
-     */
-    private $billingCarrierId;
-
-    /**
-     * @var string
-     */
-    private $carrierName;
-
-    /**
      * @var CarrierInterface
      */
     private $carrier;
