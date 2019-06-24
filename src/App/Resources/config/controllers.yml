@@ -60,7 +60,6 @@ services:
             - '@logger'
             - '@IdentificationBundle\Identification\Service\CarrierSelector'
             - '@SubscriptionBundle\Service\SubscribeUrlResolver'
-            - '@IdentificationBundle\Identification\Service\RouteProvider'
 
     App\Controller\ErrorController:
         arguments:

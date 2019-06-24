@@ -16,7 +16,6 @@ use IdentificationBundle\Identification\Exception\MissingCarrierException;
 use IdentificationBundle\Identification\Service\CarrierSelector;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
-use IdentificationBundle\Identification\Service\RouteProvider;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -110,10 +109,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var SubscribeUrlResolver
      */
     private $subscribeUrlResolver;
-    /**
-     * @var RouteProvider
-     */
-    private $routeProvider;
 
     /**
      * LPController constructor.
@@ -134,7 +129,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param LoggerInterface $logger
      * @param CarrierSelector $carrierSelector
      * @param SubscribeUrlResolver $subscribeUrlResolver
-     * @param RouteProvider $routeProvider
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
@@ -152,8 +146,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         VisitNotifier $notifier,
         LoggerInterface $logger,
         CarrierSelector $carrierSelector,
-        SubscribeUrlResolver $subscribeUrlResolver,
-        RouteProvider $routeProvider
+        SubscribeUrlResolver $subscribeUrlResolver
     )
     {
         $this->contentStatisticSender    = $contentStatisticSender;
@@ -172,7 +165,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->logger                    = $logger;
         $this->carrierSelector           = $carrierSelector;
         $this->subscribeUrlResolver      = $subscribeUrlResolver;
-        $this->routeProvider = $routeProvider;
     }
 
 
@@ -292,19 +284,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         } catch (MissingCarrierException $exception) {
             return $this->getSimpleJsonResponse($exception->getMessage(), 200, [], ['success' => false]);
         }
-    }
-
-    /**
-     * @Method("GET")
-     * @Route("/lp/wifi", name="lp-wifi")
-     *
-     * @return RedirectResponse
-     */
-    public function wifiLandingPageAction()
-    {
-        $this->dataStorage->storeValue('is_wifi_flow', true);
-
-        return new RedirectResponse($this->routeProvider->getLinkToWifiFlowPage());
     }
 
     /**
