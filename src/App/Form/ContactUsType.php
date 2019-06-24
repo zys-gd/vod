@@ -27,10 +27,7 @@ class ContactUsType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'required' => true,
-                'constraints' => [
-                    new Email()
-                ]
-            ])
+                'constraints' => [new Email()]])
             ->add('comment', TextareaType::class, [
                 'required' => true,
                 'constraints' => [
