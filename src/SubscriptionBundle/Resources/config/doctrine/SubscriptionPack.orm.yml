@@ -37,41 +37,6 @@ SubscriptionBundle\Entity\SubscriptionPack:
             options:
                 default: 0
             column: is_resub_allowed
-#            remove
-        carrierName:
-            type: string
-            scale: 0
-            length: null
-            unique: false
-            nullable: true
-            precision: 0
-            column: carrier_name
-#            remove
-        billingCarrierId:
-            type: integer
-            scale: 0
-            length: null
-            unique: false
-            nullable: true
-            precision: 0
-#            remove
-        tier:
-            type: string
-            scale: 0
-            length: null
-            unique: false
-            nullable: true
-            precision: 0
-            column: tier_name
-#            remove
-        tierId:
-            type: integer
-            scale: 0
-            length: null
-            unique: false
-            nullable: true
-            precision: 0
-            column: tier_id
         tierPrice:
             type: decimal
             precision: 14
@@ -174,15 +139,14 @@ SubscriptionBundle\Entity\SubscriptionPack:
             nullable: true
             precision: 0
             column: unsubscribe_sms_text
-#            remove
-        buyStrategy:
-            type: string
+        tierId:
+            type: integer
             scale: 0
             length: null
             unique: false
             nullable: true
             precision: 0
-            column: buy_strategy_name
+            column: tier_id
         buyStrategyId:
             type: integer
             scale: 0
@@ -191,16 +155,6 @@ SubscriptionBundle\Entity\SubscriptionPack:
             nullable: false
             precision: 0
             column: buy_strategy_id
-
-#         remove
-        renewStrategy:
-            type: string
-            scale: 0
-            length: null
-            unique: false
-            nullable: true
-            precision: 0
-            column: renew_strategy_name
         renewStrategyId:
             type: string
             scale: 0

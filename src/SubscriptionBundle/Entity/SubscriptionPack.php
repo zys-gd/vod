@@ -67,16 +67,6 @@ class SubscriptionPack implements HasUuid
     private $country;
 
     /**
-     * @var integer
-     */
-    private $billingCarrierId;
-
-    /**
-     * @var string
-     */
-    private $carrierName;
-
-    /**
      * @var CarrierInterface
      */
     private $carrier;
@@ -156,19 +146,9 @@ class SubscriptionPack implements HasUuid
     private $unsubscribeSMSText = "";
 
     /**
-     * @var  string
-     */
-    private $buyStrategy;
-
-    /**
      * @var integer
      */
     private $buyStrategyId;
-
-    /**
-     * @var  string
-     */
-    private $renewStrategy;
 
     /**
      * @var integer

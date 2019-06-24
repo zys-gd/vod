@@ -12,7 +12,7 @@ use App\Utils\UuidGenerator;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use League\Flysystem\Filesystem;
-use PriceBundle\Entity\Tier;
+use SubscriptionBundle\DTO\Tier;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;

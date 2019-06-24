@@ -32,7 +32,6 @@ security:
             #--------Carrier management---------
             - ROLE_APP\ADMIN\SONATA\CARRIERADMIN_ALL
             - ROLE_SUBSCRIPTIONBUNDLE\ADMIN\SONATA\SUBSCRIPTIONPACKADMIN_ALL
-            - ROLE_PRICEBUNDLE\ADMIN\STRATEGYADMIN_ALL
 
             #--------Store text---------
             - ROLE_APP\ADMIN\SONATA\LANGUAGESADMIN_ALL
@@ -99,7 +98,6 @@ security:
             #--------Carrier management---------
             - ROLE_APP\ADMIN\SONATA\CARRIERADMIN_ALL
             - ROLE_SUBSCRIPTIONBUNDLE\ADMIN\SONATA\SUBSCRIPTIONPACKADMIN_ALL
-            - ROLE_PRICEBUNDLE\ADMIN\STRATEGYADMIN_ALL
 
             #--------Store text---------
             - ROLE_APP\ADMIN\SONATA\LANGUAGESADMIN_ALL
