@@ -74,6 +74,8 @@ class HeaderEnrichmentHandler
      * @param CarrierInterface    $carrier
      * @param string              $token
      * @param DeviceData          $deviceData
+     *
+     * @throws \Exception
      */
     public function process(Request $request, HasHeaderEnrichment $handler, CarrierInterface $carrier, string $token, DeviceData $deviceData): void
     {

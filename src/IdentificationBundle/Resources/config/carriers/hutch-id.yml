@@ -1,0 +1,21 @@
+services:
+    IdentificationBundle\Carriers\HutchID\HutchIDIdentificationHandler:
+        arguments:
+            - '@ExtrasBundle\Utils\LocalExtractor'
+        tags:
+            - { name: identification.identification_handler }
+
+    IdentificationBundle\Carriers\HutchID\HutchIDWifiIdentificationHandler:
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@doctrine.orm.entity_manager'
+            - '@router'
+            - '@ExtrasBundle\Utils\LocalExtractor'
+            - '@SubscriptionBundle\Repository\SubscriptionRepository'
+            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+        tags:
+            - { name: identification.wifi_identification_handler }
+
+    IdentificationBundle\Carriers\HutchID\HutchIDIdentificationCallbackHandler:
+        tags:
+            - { name: identification.identification_callback_handler }
