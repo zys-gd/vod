@@ -17,7 +17,6 @@ services:
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePromotionalPerformer'
             - '@App\Domain\Service\CrossSubscriptionAPI\ApiConnector'
 
-
     SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider:
         arguments: ['@SubscriptionBundle\Service\Action\Subscribe\Handler\DefaultHandler']
 
@@ -68,7 +67,9 @@ services:
             - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
 
     SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator:
-        arguments: ['@SubscriptionBundle\Service\SubscriptionExtractor', '@SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier']
+        arguments:
+            - '@SubscriptionBundle\Service\SubscriptionExtractor'
+            - '@SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier'
 
     SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePerformer:
         arguments:
@@ -88,4 +89,22 @@ services:
         arguments: ['@SubscriptionBundle\Service\Action\Common\RequestParametersProvider', '@request_stack', '@router']
 
     SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEventTracker:
-        arguments: ['@SubscriptionBundle\Affiliate\Service\AffiliateSender', '@SubscriptionBundle\Affiliate\Service\UserInfoMapper', '@SubscriptionBundle\Piwik\SubscriptionStatisticSender', '@session']
+        arguments:
+            - '@SubscriptionBundle\Affiliate\Service\AffiliateSender'
+            - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
+            - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
+            - '@session'
+
+    SubscriptionBundle\Service\Action\Subscribe\Consent\ConsentFlowHandler:
+        arguments:
+            - '@logger'
+            - '@SubscriptionBundle\Service\SubscriptionExtractor'
+            - '@SubscriptionBundle\Service\SubscriptionPackProvider'
+            - '@SubscriptionBundle\Service\Action\Subscribe\Subscriber'
+            - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEventTracker'
+            - '@SubscriptionBundle\Service\EntitySaveHelper'
+            - '@IdentificationBundle\Identification\Service\RouteProvider'
+            - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker'
+            - '@ExtrasBundle\Utils\UrlParamAppender'
+            - '@router.default'
+            - '@SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator'

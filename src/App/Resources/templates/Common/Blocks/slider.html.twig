@@ -8,7 +8,7 @@
             {% set categoryData = categories[category] %}
             <div class="categories-block d-flex flex-column">
 
-                {{ see_all.render(category,  path('show_category',{'categoryUuid': categoryData.uuid})) }}
+                {{ see_all.render("category.#{categoryData.uuid}",  path('show_category',{'categoryUuid': categoryData.uuid})) }}
 
                 <div class="d-flex slider slider-big">
                     {% for video in videos %}

@@ -64,9 +64,11 @@ class TemplateConfigurator
     {
         $implTemplate = $this->getTemplateHandler($billingCarrierId)->getFullTemplatePath($template);
         $isImplTemplateExist = $this->templating->getLoader()->exists($implTemplate);
+
         if ($isImplTemplateExist) {
             return $implTemplate;
         }
+
         return "@App/Common/{$template}.html.twig";
     }
 }

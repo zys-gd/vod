@@ -127,6 +127,7 @@ class UploadedVideoAdmin extends AbstractAdmin
             ->add('expiredDate', 'datetime', [
                 'format' => 'Y-m-d H:i',
             ])
+            ->add('pause')
             ->add('_action', null, array(
                 'actions' => array(
                     'show'   => array(),
@@ -169,7 +170,8 @@ class UploadedVideoAdmin extends AbstractAdmin
             ->add('subcategory', null, [
                 'associated_property' => 'title'
             ])
-            ->add('createdAt');
+            ->add('createdAt')
+            ->add('pause');
     }
 
     /**
@@ -200,7 +202,8 @@ class UploadedVideoAdmin extends AbstractAdmin
                 'required' => false,
                 'format' => 'Y-MM-dd HH:mm',
                 'attr' => ['autocomplete' => 'off']
-            ]);
+            ])
+            ->add('pause');
 
         $builder = $formMapper->getFormBuilder();
 
@@ -267,5 +270,14 @@ class UploadedVideoAdmin extends AbstractAdmin
         $list['import']['template'] = '@Admin/UploadedVideo/PreUpload/pre_upload_button.html.twig';
 
         return $list;
+    }
+
+    protected function configureBatchActions($actions)
+    {
+        $actions['pause'] = [
+            'ask_confirmation' => false
+        ];
+
+        return $actions;
     }
 }

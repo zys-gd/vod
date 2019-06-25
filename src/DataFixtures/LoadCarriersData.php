@@ -35,17 +35,17 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
         foreach ($data as $row) {
 
             $uuid                                    = $row['uuid'];
-            $billingCarrierId                        = $row['id_carrier'];
-            $operatorId                              = $row['operator_id'];
+            $billingCarrierId                        = $row['billingCarrierId'];
+            $operatorId                              = $row['operatorId'];
             $name                                    = $row['name'];
             $countryCode                             = $row['countryCode'];
             $isp                                     = $row['isp'];
             $published                               = $row['published'];
             $isConfirmationClick                     = $row['isConfirmationClick'];
             $pinIdentSupport                         = $row['pinIdentSupport'];
-            $trialInitializer                        = $row['trial_initializer'];
-            $trialPeriod                             = $row['trial_period'];
-            $subscriptionPeriod                      = $row['subscription_period'];
+            $trialInitializer                        = $row['trialInitializer'];
+            $trialPeriod                             = $row['trialPeriod'];
+            $subscriptionPeriod                      = $row['subscriptionPeriod'];
             $resubAllowed                            = $row['resubAllowed'];
             $isCampaignsOnPause                      = $row['isCampaignsOnPause'];
             $subscribeAttempts                       = $row['subscribeAttempts'];

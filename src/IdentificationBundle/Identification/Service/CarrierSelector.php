@@ -43,4 +43,9 @@ class CarrierSelector
 
         $this->identificationDataStorage->storeCarrierId($carrierId);
     }
+
+    public function removeCarrier(): void
+    {
+        $this->identificationDataStorage->cleanCarrier();
+    }
 }

@@ -87,6 +87,9 @@ class UploadedVideo implements HasUuid
      */
     private $videoPartner;
 
+    /** @var bool */
+    private $pause = false;
+
     /**
      * UploadedVideo constructor
      *
@@ -374,6 +377,22 @@ class UploadedVideo implements HasUuid
     public function getVideoPartner(): ?VideoPartner
     {
         return $this->videoPartner;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPause(): bool
+    {
+        return $this->pause;
+    }
+
+    /**
+     * @param bool $pause
+     */
+    public function setPause(bool $pause): void
+    {
+        $this->pause = $pause;
     }
 
 }
