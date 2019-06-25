@@ -70,6 +70,11 @@ class DeleteExpiredVideo extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $expiredVideos = $this->uploadedVideoRepository->findExpiredVideo();
+        $count = count($expiredVideos);
+        $output->writeln("$count expired video was found");
+
+        $successfullyDeleted = 0;
+        $errors = [];
 
         /** @var UploadedVideo $expiredVideo */
         foreach ($expiredVideos as $expiredVideo) {
@@ -81,12 +86,18 @@ class DeleteExpiredVideo extends Command
                     $result === CloudinaryConnector::SUCCESS_DESTROY_RESULT
                     || $result === CloudinaryConnector::NOT_FOUND_DESTROY_RESULT
                 ) {
+                    $successfullyDeleted++;
                     $this->entityManager->remove($expiredVideo);
                 }
             } catch (\Exception $exception) {
-                //do nothing
+                $errors[] = $expiredVideo->getRemoteId();
             }
         }
+
+        $errorsIds = empty($errors) ? 'no errors occurred' : implode(', ', $errors);
+
+        $output->writeln("$successfullyDeleted video was successfully deleted");
+        $output->writeln("Errors: $errorsIds");
 
         $this->entityManager->flush();
         $this->entityManager->clear();
