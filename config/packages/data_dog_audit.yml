@@ -3,5 +3,3 @@ data_dog_audit:
 #        - IdentificationBundle\Entity\User
 #        - App\Domain\Entity\MainCategory
 #        - App\Domain\Entity\Translation
-#    unaudited_entities:
-#        - PriceBundle\Entity\Tier
