@@ -7,7 +7,7 @@ use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessExc
 use IdentificationBundle\BillingFramework\Process\Exception\PinVerifyProcessException;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
-use IdentificationBundle\WifiIdentification\Service\ErrorCodeResolver;
+use IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeResolver;
 use IdentificationBundle\WifiIdentification\WifiIdentConfirmator;
 use IdentificationBundle\WifiIdentification\WifiIdentSMSSender;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -57,6 +57,7 @@ class PinIdentificationController extends AbstractController implements APIContr
 
     /**
      * PinIdentificationController constructor.
+     *
      * @param WifiIdentSMSSender         $identSMSSender
      * @param WifiIdentConfirmator       $identConfirmator
      * @param ErrorCodeResolver          $errorCodeResolver
@@ -73,10 +74,11 @@ class PinIdentificationController extends AbstractController implements APIContr
         string $defaultRedirectUrl,
         CarrierRepositoryInterface $carrierRepository,
         SubscriptionLimitNotifier $subscriptionLimitNotifier
-    ) {
-        $this->identSMSSender     = $identSMSSender;
-        $this->identConfirmator   = $identConfirmator;
-        $this->errorCodeResolver  = $errorCodeResolver;
+    )
+    {
+        $this->identSMSSender            = $identSMSSender;
+        $this->identConfirmator          = $identConfirmator;
+        $this->errorCodeResolver         = $errorCodeResolver;
         $this->limiter                   = $limiter;
         $this->defaultRedirectUrl        = $defaultRedirectUrl;
         $this->carrierRepository         = $carrierRepository;
@@ -88,6 +90,7 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @Route("/pincode/send",name="send_sms_pin_code")
      * @param Request $request
      * @param ISPData $ispData
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
@@ -112,14 +115,14 @@ class PinIdentificationController extends AbstractController implements APIContr
         $postData = $request->request->all();
         $isResend = isset($postData['resend-pin']);
 
-        $carrierId = $ispData->getCarrierId();
+        $billingCarrierId = $ispData->getCarrierId();
         try {
-            $this->identSMSSender->sendSMS($carrierId, $mobileNumber, $isResend);
-            $data = ['success' => true, 'carrierId' => $carrierId, 'isResend' => $isResend];
+            $this->identSMSSender->sendSMS($billingCarrierId, $mobileNumber, $isResend);
+            $data = ['success' => true, 'carrierId' => $billingCarrierId, 'isResend' => $isResend];
 
             return $this->getSimpleJsonResponse('Sent', 200, [], $data);
         } catch (PinRequestProcessException $exception) {
-            $message = $this->errorCodeResolver->resolveMessage($exception->getCode(), $carrierId);
+            $message = $this->errorCodeResolver->resolveMessage($exception->getCode(), $billingCarrierId);
             return $this->getSimpleJsonResponse($message, 200, [], ['success' => false, 'code' => $exception->getCode()]);
         } catch (\Exception $exception) {
             return $this->getSimpleJsonResponse($exception->getMessage(), 200, [], ['success' => false]);
@@ -131,6 +134,7 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @Route("/pincode/confirm",name="confirm_sms_pin_code")
      * @param Request $request
      * @param ISPData $ispData
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function confirmSMSPinCodeAction(Request $request, ISPData $ispData)

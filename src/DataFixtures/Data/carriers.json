@@ -10457,7 +10457,7 @@
         "uuid": "7c8385df-8d56-464a-98ff-66c55a7a5741",
         "name": "Orange EG via TPAY",
         "countryCode": "EG",
-        "isp": "MOBINIL",
+        "isp": "MOBINIL|Mobinil 3G",
         "published": true,
         "lpOtp": true,
         "pinIdentSupport": true,
