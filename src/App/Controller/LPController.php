@@ -113,22 +113,22 @@ class LPController extends AbstractController implements ControllerWithISPDetect
     /**
      * LPController constructor.
      *
-     * @param ContentStatisticSender     $contentStatisticSender
-     * @param CampaignRepository         $campaignRepository
-     * @param LandingPageACL             $landingPageAccessResolver
-     * @param string                     $imageBaseUrl
-     * @param CarrierOTPVerifier         $OTPVerifier
-     * @param string                     $defaultRedirectUrl
-     * @param TemplateConfigurator       $templateConfigurator
-     * @param IdentificationDataStorage  $dataStorage
-     * @param SubscriptionLimiter        $limiter
-     * @param SubscriptionLimitNotifier  $subscriptionLimitNotifier
+     * @param ContentStatisticSender $contentStatisticSender
+     * @param CampaignRepository $campaignRepository
+     * @param LandingPageACL $landingPageAccessResolver
+     * @param string $imageBaseUrl
+     * @param CarrierOTPVerifier $OTPVerifier
+     * @param string $defaultRedirectUrl
+     * @param TemplateConfigurator $templateConfigurator
+     * @param IdentificationDataStorage $dataStorage
+     * @param SubscriptionLimiter $limiter
+     * @param SubscriptionLimitNotifier $subscriptionLimitNotifier
      * @param CarrierRepositoryInterface $carrierRepository
-     * @param VisitTracker               $visitTracker
-     * @param VisitNotifier              $notifier
-     * @param LoggerInterface            $logger
-     * @param CarrierSelector            $carrierSelector
-     * @param SubscribeUrlResolver       $subscribeUrlResolver
+     * @param VisitTracker $visitTracker
+     * @param VisitNotifier $notifier
+     * @param LoggerInterface $logger
+     * @param CarrierSelector $carrierSelector
+     * @param SubscribeUrlResolver $subscribeUrlResolver
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
