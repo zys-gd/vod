@@ -45,11 +45,6 @@ class User
     /**
      * @var string
      */
-    private $urlId;
-
-    /**
-     * @var string
-     */
     private $shortUrlId;
 
     /**
@@ -78,10 +73,6 @@ class User
      * @var string
      */
     private $deviceModel;
-    /**
-     * @var string
-     */
-    private $providerId;
 
     /**
      * User constructor
@@ -191,22 +182,6 @@ class User
     public function setIp($ip)
     {
         $this->ip = $ip;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUrlId()
-    {
-        return $this->urlId;
-    }
-
-    /**
-     * @param string $urlId
-     */
-    public function setUrlId($urlId)
-    {
-        $this->urlId = $urlId;
     }
 
     /**
@@ -362,26 +337,6 @@ class User
     public function setDeviceModel($deviceModel)
     {
         $this->deviceModel = $deviceModel;
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getProviderId(): ?string
-    {
-        return $this->providerId;
-    }
-
-    /**
-     * @param string $providerId
-     *
-     * @return User
-     */
-    public function setProviderId(string $providerId): User
-    {
-        $this->providerId = $providerId;
-
         return $this;
     }
 }

@@ -7,7 +7,7 @@ use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessExc
 use IdentificationBundle\BillingFramework\Process\Exception\PinVerifyProcessException;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
-use IdentificationBundle\WifiIdentification\Service\ErrorCodeResolver;
+use IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeResolver;
 use IdentificationBundle\WifiIdentification\WifiIdentConfirmator;
 use IdentificationBundle\WifiIdentification\WifiIdentSMSSender;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -89,8 +89,8 @@ class PinIdentificationController extends AbstractController implements APIContr
         SubscriptionLimitNotifier $subscriptionLimitNotifier,
         BlacklistVoter $blacklistVoter,
         BlacklistAttemptRegistrator $blacklistAttemptRegistrator
-    ) {
-        $this->identSMSSender              = $identSMSSender;
+    )
+    {    $this->identSMSSender              = $identSMSSender;
         $this->identConfirmator            = $identConfirmator;
         $this->errorCodeResolver           = $errorCodeResolver;
         $this->limiter                     = $limiter;
@@ -129,11 +129,11 @@ class PinIdentificationController extends AbstractController implements APIContr
             ]);
         }
 
-        $carrierId = $ispData->getCarrierId();
+        $billingCarrierId = $ispData->getCarrierId();
         $cleanPhoneNumber = str_replace('+', '', $mobileNumber);
 
         if ($this->blacklistVoter->isPhoneNumberBlacklisted($cleanPhoneNumber)
-            || $this->blacklistAttemptRegistrator->isSubscriptionAttemptRaised($cleanPhoneNumber, (int) $carrierId)
+            || $this->blacklistAttemptRegistrator->isSubscriptionAttemptRaised($cleanPhoneNumber, (int) $billingCarrierId)
         ) {
             return $this->getSimpleJsonResponse('User in black list', 200, [], [
                 'success' => false, 'redirectUrl' => $this->blacklistVoter->getRedirectUrl()
@@ -146,12 +146,12 @@ class PinIdentificationController extends AbstractController implements APIContr
         $isResend = isset($postData['resend-pin']);
 
         try {
-            $this->identSMSSender->sendSMS($carrierId, $mobileNumber, $isResend);
-            $data = ['success' => true, 'carrierId' => $carrierId, 'isResend' => $isResend];
+            $this->identSMSSender->sendSMS($billingCarrierId, $mobileNumber, $isResend);
+            $data = ['success' => true, 'carrierId' => $billingCarrierId, 'isResend' => $isResend];
 
             return $this->getSimpleJsonResponse('Sent', 200, [], $data);
         } catch (PinRequestProcessException $exception) {
-            $message = $this->errorCodeResolver->resolveMessage($exception->getCode(), $carrierId);
+            $message = $this->errorCodeResolver->resolveMessage($exception->getCode(), $billingCarrierId);
             return $this->getSimpleJsonResponse($message, 200, [], ['success' => false, 'code' => $exception->getCode()]);
         } catch (\Exception $exception) {
             return $this->getSimpleJsonResponse($exception->getMessage(), 200, [], ['success' => false]);
@@ -163,6 +163,7 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @Route("/pincode/confirm",name="confirm_sms_pin_code")
      * @param Request $request
      * @param ISPData $ispData
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function confirmSMSPinCodeAction(Request $request, ISPData $ispData)
