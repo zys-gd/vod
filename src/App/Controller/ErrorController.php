@@ -32,7 +32,7 @@ class ErrorController extends AbstractController
 
 
     /**
-     * @Route("/whoops",name="whoops")
+     * @Route("/whoops", name="whoops")
      * @param Request $request
      * @return Response
      */
@@ -43,7 +43,7 @@ class ErrorController extends AbstractController
             $this->carrierSelector->selectCarrier((int)$var);
         }
 
-        return $this->render('@App/Error/wrong_carrier.html.twig');
+        return $this->render('@App/Error/whoops.html.twig');
     }
 
     /**

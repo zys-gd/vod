@@ -27,22 +27,11 @@ App\Domain\Entity\Carrier:
             type: boolean
             options:
                 default: false
-#        remove (deprecated)
-#        lpOtp:
-#            type: boolean
-#            nullable: true
-#            options:
-#                default: false
         isConfirmationClick:
             type: boolean
             options:
                 default: false
             #unique: true (should be added at some point...)
-        pinIdentSupport:
-            type: boolean
-            options:
-                default: false
-
         trialInitializer:
             type: string
             options:

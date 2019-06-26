@@ -61,7 +61,7 @@ class IdentifierByUrl
      */
     public function doIdentify(string $urlId): void
     {
-        if (!$user = $this->userRepository->findOneByUrlId($urlId)) {
+        if (!$user = $this->userRepository->findOneByShortUrlId($urlId)) {
             throw new FailedIdentificationException(sprintf('urlId `%s` is not valid', $urlId));
         }
 

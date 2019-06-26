@@ -42,7 +42,6 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $isp                                     = $row['isp'];
             $published                               = $row['published'];
             $isConfirmationClick                     = $row['isConfirmationClick'];
-            $pinIdentSupport                         = $row['pinIdentSupport'];
             $trialInitializer                        = $row['trialInitializer'];
             $trialPeriod                             = $row['trialPeriod'];
             $subscriptionPeriod                      = $row['subscriptionPeriod'];
@@ -52,7 +51,6 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $isUnlimitedSubscriptionAttemptsAllowed  = $row['isUnlimitedSubscriptionAttemptsAllowed'];
             $numberOfAllowedSubscriptionByConstraint = $row['numberOfAllowedSubscriptionsByConstraint'];
             $redirectUrl                             = $row['redirectUrl'];
-            $flushdate                               = $row['flushDate'];
             $isCapAlertDispatch                      = $row['isCapAlertDispatch'];
             $flushdate                               = $row['flushDate'];
 
@@ -71,7 +69,6 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $carrier->setSubscriptionPeriod($subscriptionPeriod);
             $carrier->setOperatorId($operatorId);
             $carrier->setIsConfirmationClick($isConfirmationClick);
-            $carrier->setPinIdentSupport($pinIdentSupport);
             $carrier->setResubAllowed($resubAllowed);
             $carrier->setIsCampaignsOnPause($isCampaignsOnPause);
             $carrier->setSubscribeAttempts((int)$subscribeAttempts);
