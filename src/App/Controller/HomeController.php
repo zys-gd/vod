@@ -17,7 +17,6 @@ use ExtrasBundle\Utils\ArraySorter;
 use IdentificationBundle\Controller\ControllerWithIdentification;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
@@ -73,11 +72,6 @@ class HomeController extends AbstractController implements
     private $userRepository;
 
     /**
-     * @var IdentificationDataStorage
-     */
-    private $identificationDataStorage;
-
-    /**
      * HomeController constructor.
      *
      * @param TemplateConfigurator $templateConfigurator
@@ -88,7 +82,6 @@ class HomeController extends AbstractController implements
      * @param CountryCategoryPriorityOverrideRepository $categoryOverrideRepository
      * @param ContentStatisticSender $contentStatisticSender
      * @param UserRepository $userRepository
-     * @param IdentificationDataStorage $identificationDataStorage
      */
     public function __construct(
         TemplateConfigurator $templateConfigurator,
@@ -98,8 +91,7 @@ class HomeController extends AbstractController implements
         GameRepository $gameRepository,
         CountryCategoryPriorityOverrideRepository $categoryOverrideRepository,
         ContentStatisticSender $contentStatisticSender,
-        UserRepository $userRepository,
-        IdentificationDataStorage $identificationDataStorage
+        UserRepository $userRepository
     ) {
         $this->templateConfigurator       = $templateConfigurator;
         $this->mainCategoryRepository     = $mainCategoryRepository;
@@ -109,7 +101,6 @@ class HomeController extends AbstractController implements
         $this->categoryOverrideRepository = $categoryOverrideRepository;
         $this->contentStatisticSender     = $contentStatisticSender;
         $this->userRepository             = $userRepository;
-        $this->identificationDataStorage  = $identificationDataStorage;
     }
 
     /**
@@ -123,16 +114,6 @@ class HomeController extends AbstractController implements
      */
     public function indexAction(Request $request, ISPData $data)
     {
-        $params = $request->query->all();
-
-        if (!empty($params['msisdn']) && $user = $this->userRepository->findOneByMsisdn($params['msisdn'])) {
-            $carrierId = $user->getCarrierId();
-            $data = new ISPData($carrierId);
-
-            $this->identificationDataStorage->storeIdentificationToken($user->getIdentificationToken());
-            $this->identificationDataStorage->storeCarrierId($carrierId);
-        }
-
         /**
          * @var BatchOfGames $games
          */
