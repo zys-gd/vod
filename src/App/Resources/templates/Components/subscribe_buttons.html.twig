@@ -21,10 +21,7 @@
             {% endif %}
         {% elseif isIdentified() and not isConsentFlow() %}
             {{ link.render(url('subscription.subscribe'), translate(placeholder), class) }}
-        {% elseif isConsentFlow() %}
-            {{ link.render(url('subscription.consent_page_subscribe'), translate(placeholder), class) }}
         {% else %}
-            {#Ident && Subscribe Me#}
             {{ link.render(url('identify_and_subscribe'), translate(placeholder), class) }}
         {% endif %}
 
