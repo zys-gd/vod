@@ -20,17 +20,17 @@ class SubscriptionPackRepository extends EntityRepository
      *
      * @return array
      */
-    public function getActiveSubscriptionPacksByCarrierId(SubscriptionPack $subscriptionPack)
+    public function getActiveSubscriptionPacksByCarrierUuid(SubscriptionPack $subscriptionPack)
     {
         $qb = $this->createQueryBuilder('sp');
 
         $query = $qb
             ->where('sp.status = :status ')
-            ->andWhere('sp.billingCarrierId = :billingCarrierId')
+            ->andWhere('sp.carrier = :carrier')
             ->andWhere('sp.uuid != :uuid')
             ->setParameters([
                 'status' => SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK,
-                'billingCarrierId' => $subscriptionPack->getCarrier()->getBillingCarrierId(),
+                'carrier' => $subscriptionPack->getCarrier(),
                 'uuid' => $subscriptionPack->getUuid()
             ])
             ->getQuery();

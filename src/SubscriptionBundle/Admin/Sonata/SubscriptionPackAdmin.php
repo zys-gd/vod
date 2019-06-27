@@ -519,6 +519,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
     }
 
     /**
+     * @TODO Needs Yuri opinion
      * @param SubscriptionPack $subscriptionPack
      *
      * @throws \Doctrine\ORM\ORMException
@@ -531,7 +532,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
             $em = $this->getConfigurationPool()->getContainer()->get('doctrine')->getEntityManager();
             /** @var SubscriptionPackRepository $subscriptionPackRepository */
             $subscriptionPackRepository = $em->getRepository(SubscriptionPack::class);
-            $subscriptionPacks          = $subscriptionPackRepository->getActiveSubscriptionPacksByCarrierId($subscriptionPack);
+            $subscriptionPacks          = $subscriptionPackRepository->getActiveSubscriptionPacksByCarrierUuid($subscriptionPack);
 
             if (count($subscriptionPacks) > 0) {
                 /** @var SubscriptionPack $subscriptionPack */
