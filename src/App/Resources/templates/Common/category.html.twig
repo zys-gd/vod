@@ -56,6 +56,7 @@
 
 
         {% if videos | length > 0 %}
+            {% set defaultVideo = videos[0] %}
 
             <div class="active-category-container">
                 <div class="d-flex flex-column">
@@ -66,7 +67,6 @@
                                      class="x-play-button w-100"
                                      data-uuid="{{ defaultVideo.uuid }}"
                                      data-category="{{ category.uuid }}"
-                                     data-public-id="{{ defaultVideo.publicId }}"
                                 />
                                 <div class="default-video-play-icon"></div>
 
@@ -88,7 +88,7 @@
                                 <div class="d-flex flex-row related-video x-play-button"
                                      data-uuid="{{ video.uuid }}"
                                      data-category="{{ category.uuid }}"
-                                     data-public-id="{{ video.publicId }}">
+                                     data-public-id="{{ video.remoteId }}">
                                     <div class="related-video-thumbnail-wrapper">
                                         {% for thumbnail in video.thumbnails | slice(0,1) %}
                                             <img src="{{ thumbnail }}" />

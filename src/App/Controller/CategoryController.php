@@ -102,7 +102,9 @@ class CategoryController extends AbstractController implements AppControllerInte
         $categoryVideos = [];
 
         foreach ($videos->getVideos() as $video) {
-            $categoryVideos[$video->getUuid()] = $this->videoSerializer->serializeShort($video);
+            $categoryEntity                                  = $video->getSubcategory()->getParent();
+            $categoryKey                                     = $categoryEntity->getUuid();
+            $categoryVideos[$categoryKey][$video->getUuid()] = $this->videoSerializer->serializeShort($video);
         }
 
         $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
@@ -110,10 +112,8 @@ class CategoryController extends AbstractController implements AppControllerInte
         $this->contentStatisticSender->trackVisit($identificationData, $data, $campaignToken);
 
         $template = $this->templateConfigurator->getTemplate('category', $data->getCarrierId());
-
         return $this->render($template, [
-            'videos'              => $categoryVideos,
-            'defaultVideo'        => array_shift($categoryVideos),
+            'videos'              => $videos->getVideos(),
             'isLast'              => $videos->isLast(),
             'category'            => $category,
             'subcategories'       => $subcategories,
