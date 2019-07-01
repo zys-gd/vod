@@ -154,6 +154,7 @@ class AffiliateAdmin extends AbstractAdmin
         $this->buildConstantSection($formMapper);
         $this->buildParametersSection($formMapper);
         $this->buildUniqueFlowSection($formMapper);
+
     }
 
     /**
