@@ -76,7 +76,7 @@ class AsyncIdentFinisher
             throw new FailedIdentificationException('Callback are not received yet');
         }
 
-        $result = $this->billingDataProvider->getProcessData($user->getBillingCarrierId());
+        $result = $this->billingDataProvider->getProcessData($user->getIdentificationProcessId());
         if (!$result->isSuccessful()) {
             throw  new FailedIdentificationException('Identification is not finished yet');
         }

@@ -46,7 +46,6 @@ class LoadGamesData extends AbstractFixture implements ContainerAwareInterface, 
             $game = new Game($uuid);
 
             $game->setDeveloper($this->getReference(sprintf('developer_%s', $developerId)));
-            $game->setTier($this->getReference(sprintf('tier_%s', $tierId)));
             $game->setTitle($name);
             $game->setDescription($description);
             $game->setIcon($icon);
@@ -76,7 +75,6 @@ class LoadGamesData extends AbstractFixture implements ContainerAwareInterface, 
     {
         return [
             LoadDevelopersData::class,
-            LoadTiersData::class,
             LoadCarriersData::class,
             LoadCountriesData::class,
         ];

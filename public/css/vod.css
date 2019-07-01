@@ -12,6 +12,19 @@ body {
     margin: 0 auto;
 }
 
+.right-text-direction {
+    direction: RTL;
+}
+
+.right-text-direction div {
+    direction: RTL;
+}
+
+.right-text-direction li {
+    text-align: right;
+    list-style-type: none;
+}
+
 a button {
     border: none;
     font-family: 'Kanit', sans-serif;

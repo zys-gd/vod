@@ -76,6 +76,9 @@ class CampaignAdmin extends AbstractAdmin
      */
     public function prePersist($obj)
     {
+        $adminUser = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
+        $obj->setDateCreated(date_create());
+        $obj->setCreator($adminUser->getUsername());
         $this->preUpdate($obj);
     }
 

@@ -35,24 +35,22 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
         foreach ($data as $row) {
 
             $uuid                                    = $row['uuid'];
-            $billingCarrierId                        = $row['id_carrier'];
-            $operatorId                              = $row['operator_id'];
+            $billingCarrierId                        = $row['billingCarrierId'];
+            $operatorId                              = $row['operatorId'];
             $name                                    = $row['name'];
             $countryCode                             = $row['countryCode'];
             $isp                                     = $row['isp'];
             $published                               = $row['published'];
             $isConfirmationClick                     = $row['isConfirmationClick'];
-            $pinIdentSupport                         = $row['pinIdentSupport'];
-            $trialInitializer                        = $row['trial_initializer'];
-            $trialPeriod                             = $row['trial_period'];
-            $subscriptionPeriod                      = $row['subscription_period'];
+            $trialInitializer                        = $row['trialInitializer'];
+            $trialPeriod                             = $row['trialPeriod'];
+            $subscriptionPeriod                      = $row['subscriptionPeriod'];
             $resubAllowed                            = $row['resubAllowed'];
             $isCampaignsOnPause                      = $row['isCampaignsOnPause'];
             $subscribeAttempts                       = $row['subscribeAttempts'];
             $isUnlimitedSubscriptionAttemptsAllowed  = $row['isUnlimitedSubscriptionAttemptsAllowed'];
             $numberOfAllowedSubscriptionByConstraint = $row['numberOfAllowedSubscriptionsByConstraint'];
             $redirectUrl                             = $row['redirectUrl'];
-            $flushdate                               = $row['flushDate'];
             $isCapAlertDispatch                      = $row['isCapAlertDispatch'];
             $flushdate                               = $row['flushDate'];
 
@@ -71,7 +69,6 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $carrier->setSubscriptionPeriod($subscriptionPeriod);
             $carrier->setOperatorId($operatorId);
             $carrier->setIsConfirmationClick($isConfirmationClick);
-            $carrier->setPinIdentSupport($pinIdentSupport);
             $carrier->setResubAllowed($resubAllowed);
             $carrier->setIsCampaignsOnPause($isCampaignsOnPause);
             $carrier->setSubscribeAttempts((int)$subscribeAttempts);

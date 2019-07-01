@@ -30,4 +30,9 @@ class DefaultHandler implements UnsubscriptionHandlerInterface
     {
         // TODO: Implement applyPostUnsubscribeChanges() method.
     }
+
+    public function getAdditionalUnsubscribeParameters(): array
+    {
+        return [];
+    }
 }

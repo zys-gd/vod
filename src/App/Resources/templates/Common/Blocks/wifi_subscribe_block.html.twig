@@ -4,16 +4,14 @@
     {% import '@App/Components/Forms/wifi_pin.html.twig' as wifi_pin %}
     {% import '@App/Components/Forms/wifi_select.html.twig' as wifi_select %}
 
-    <form data-form="{% if isCarrierDetected() %}pin{% else %}carrier_with_pin{% endif %}" id="wifi_form"
+    <form data-form="pin" id="wifi_form"
           class="d-flex flex-column w-75 text-center">
         <div class="wifi_form__ground"></div>
         <div class="align-self-center wifi_form__warning w-75">
             {{ translate('wifi.warning') }}
         </div>
         <div id="wifi_form_step">
-            {% if not isCarrierDetected() %}
-                {{ wifi_select.render() }}
-            {% endif %}
+            {{ wifi_select.render() }}
             {{ wifi_phone.render() }}
         </div>
         <div id="wifi_button">
@@ -22,18 +20,13 @@
         <div class="">
             <span id="wifi_offer">{% if isCarrierDetected() %}{{ translate('wifi.offer') }}{% endif %}</span>
         </div>
-        <div class="mt-3">
-            <label class="terms_confirmation">
-                <input type="checkbox" required value="0"/>
-                {{ translate('wifi.terms_confirmation', {'%terms_url%': path('terms_and_conditions')}) | raw }}
-            </label>
-        </div>
     </form>
 
     <script type="text/javascript">
         $('.x-subscribe-image').removeAttr('href').removeAttr('class');
 
         var form = $('#wifi_form');
+        var carrierId = + '{{ getCarrierId() }}';
 
         $(document).ready(function () {
             // move form to designed position (the best designer ever)
@@ -59,139 +52,173 @@
             warning        : $('<div />').html('{{ html2string(translate('wifi.warning')|nl2br) }}').text()
         };
 
-        // set carrier to IdentificationDataStorage
-        $(document).on('submit', 'form[data-form=carrier]', function (e) {
-            e.preventDefault();
-            $._loader();
-            phone = input_phone.val();
+        if (carrierId) {
+            $.each($('select[name="country"] option'), function() {
+                var carriers = $(this).data('carriers');
 
-            $.ajax({
-                url    : "{{ path('select_carrier_for_pin_code_form') }}",
-                method : "POST",
-                data   : form.serialize(),
-                success: function (result) {
-                    $._loader(true);
-
-                    if (result.data.redirectUrl) {
-                        window.location = result.data.redirectUrl
-                        return;
-                    }
-
-                    if (result.data.success) {
-                        $wifi_form_step.html(params.html_wifi_phone);
-                        form.attr('data-form', 'pin');
-                        insertAnnotation();
-                    } else {
-                        showAlert({title: result.data.message});
-                    }
+                if (carriers && carriers[carrierId]) {
+                    $(this).attr('selected', 'selected');
                 }
             });
 
+            addValidationAttributes(carrierId);
+        }
+
+        $(document).on('change', 'select[name="country"]', function () {
+            var carrierSelect = $('select[name="carrier_id"]');
+
+            carrierSelect.empty()
+                .append("<option value=''>{{ translate('wifi.form.select_carrier') }}</option>");
+            var carriers = $(this).find(':selected').data('carriers');
+            for(carrier in carriers) {
+                var _carrier = carriers[carrier];
+                var option = $('<option></option>')
+                    .attr('data-content', JSON.stringify(_carrier))
+                    .attr('value', _carrier.billingCarrierId)
+                    .text(_carrier.name);
+
+                if (carrierId && carrierId === _carrier.billingCarrierId) {
+                    option.attr('selected', 'selected');
+                }
+
+                carrierSelect.append(option);
+            }
+        });
+
+        $('select[name="country"]').trigger('change');
+
+        $(document).on('change', 'select[name="carrier_id"]', function () {
+            var carrier = $(this).find(':selected').data('content');
+            var carrierId = carrier ? carrier.billingCarrierId : null;
+            $('#wifi_offer').html( (carrier && carrier.wifi_offer) || '');
+
+            $('footer ul').remove();
+            $('#landing-offer-container').addClass('mt-2').html('');
+
+            $._loader();
+
+            $.ajax({
+                url    : "{{ path('select_carrier_wifi') }}",
+                method : "POST",
+                data   : { carrier_id: carrierId },
+                success: function (result) {
+                    if (result.data.success) {
+                        $('footer').prepend(result.data.annotation);
+                        $('#landing-offer-container').removeClass('mt-2').html(result.data.offer);
+                        addValidationAttributes(carrierId);
+                    } else if (result.data.message) {
+                        showAlert({title: result.data.message});
+                    }
+                },
+                complete: function () {
+                    $._loader(true);
+                }
+            });
         });
 
         // send pin code to input phone
         $(document).on('submit', 'form[data-form=pin]', function (e) {
             e.preventDefault();
-            $._loader();
+
+            if (!$('#terms-and-conditions-checkbox').is(':checked')) {
+                $('#terms-and-conditions').focus();
+                return;
+            }
+
             phone = input_phone.val();
             $(document).unbind("ajaxSuccess"); // hook for re-send pin
-
-            $.ajax({
-                url    : "{{ path('send_sms_pin_code') }}",
-                method : "POST",
-                data   : form.serialize(),
-                success: function (result) {
-                    $._loader(true);
-
-                    if (result.data.redirectUrl) {
-                        window.location = result.data.redirectUrl;
-                        return;
-                    }
-
-                    if (result.data.success) {
-                        input_phone.addClass('d-none');
-                        $wifi_form_step
-                            .html(params.html_wifi_pin)
-                            .append(input_phone);
-                        form.attr('data-form', 'confirm');
-                        $wifi_warning.html(params.pin_notif.replace(/%wifi_phone%/, phone));
-                    } else {
-                        showAlert({title: result.data.message});
-                    }
-                }
-            });
-        });
-
-        // merge carrier and phone steps
-        $(document).on('submit', 'form[data-form=carrier_with_pin]', function (e) {
-            e.preventDefault();
-            phone = input_phone.val();
 
             Q
                 .fcall(function () {
                     return new Promise(
                         function (resolve, reject) {
                             $.ajax({
-                                url       : "{{ path('select_carrier_with_send_pin_code') }}",
-                                method    : "POST",
-                                data      : form.serialize(),
+                                url: "{{ path('send_sms_pin_code') }}",
+                                method: "POST",
+                                data: form.serialize(),
                                 beforeSend: function () {
                                     $._loader();
                                 },
-                                success   : function (result) {
-                                    console.log(result);
+                                success: function (result) {
                                     if (result.data.redirectUrl) {
                                         window.location = result.data.redirectUrl;
-                                        reject();
                                         return;
                                     }
+
                                     if (result.data.success) {
-                                        resolve();
+                                        if (result.data.isResend) {
+                                            showAlert({title: 'New PIN-code', message: 'has been successfully sent'});
+                                        }
+
+                                        var input_phone = $('input[name=mobile_number]');
+                                        $wifi_warning.html(params.pin_notif.replace(/%wifi_phone%/, phone));
+                                        $wifi_form_step
+                                            .html(params.html_wifi_pin)
+                                            .append(input_phone);
+                                        form.attr('data-form', 'confirm');
+                                        input_phone.addClass('d-none');
+                                        addValidationAttributes(carrierId);
+
+                                        resolve(result.data.carrierId);
                                     } else {
                                         showAlert({title: result.data.message});
-                                        reject();
+
+                                        // request limit exceeded
+                                        if (result.data.code === 102 || result.data.code === 103) {
+                                            form.attr('data-form', 'confirm');
+                                        }
+
+                                        $('#send-reminder').click(function () {
+                                            var phoneNumber = phone.replace('+', '');
+
+                                            $.ajax({
+                                                url: "{{ path('remind_credentials') }}",
+                                                method: 'POST',
+                                                data: {
+                                                    phoneNumber: phoneNumber
+                                                },
+                                                complete: function() {
+                                                    $('.fc-content .button-confirm').click();
+                                                },
+                                                success: function(result) {
+                                                    window.location = result.data.redirectUrl;
+                                                }
+                                            })
+                                        });
+
+                                        reject()
                                     }
                                 },
-                                always    : function () {
+                                complete: function () {
                                     $._loader(true)
                                 }
-                            })
+                            });
                         })
                 })
-                .then(function () {
+                .then(function (carrierId) {
                     return new Promise(
                         function (resolve, reject) {
                             $.ajax({
-                                url       : "{{ path('ajax_after_carrier_selected') }}",
-                                method    : "POST",
+                                url: "{{ path('ajax_after_carrier_selected') }}",
+                                method: "POST",
                                 beforeSend: function () {
                                     $._loader();
                                 },
-                                success   : function (result) {
+                                success: function (result) {
                                     if (result.data.redirectUrl) {
                                         window.location = result.data.redirectUrl;
                                         reject();
                                         return;
                                     }
                                     if (result.data.success) {
-                                        resolve();
+                                        resolve(carrierId);
                                     }
                                 },
-                                always    : function () {
+                                complete: function () {
                                     $._loader(true)
                                 }
                             })
                         })
-                })
-                .then(function () {
-                    var input_phone = $('input[name=mobile_number]');
-                    input_phone.addClass('d-none');
-                    $wifi_form_step
-                        .html(params.html_wifi_pin)
-                        .append(input_phone);
-                    form.attr('data-form', 'confirm');
-                    $wifi_warning.html(params.pin_notif.replace(/%wifi_phone%/, phone));
-                    insertAnnotation();
                 })
         });
 
@@ -205,10 +232,10 @@
                 method : "POST",
                 data   : form.serialize(),
                 success: function (result) {
-                    $._loader(true);
                     if (result.data.success) {
                         window.location = result.data.redirectUrl;
                     } else {
+                        $._loader(true);
                         showAlert({title: result.data.message});
                     }
                 }
@@ -218,10 +245,16 @@
         // re-send pin code
         $(document).on('click', '#resend-pin', function (event) {
             event.preventDefault();
+            var form = $(this).closest('form');
+            var resendPinMarker = $('<input type="hidden" name="resend-pin" />');
+
+            form.append(resendPinMarker);
+
             $(this).closest('form').attr('data-form', 'pin').submit();
+
             $(document).ajaxSuccess(function (event, request, settings) {
                 if (settings.url === '{{ path('send_sms_pin_code') }}') {
-                    showAlert({title: 'New PIN-code', message: 'has been successfully sent'});
+                    resendPinMarker.remove();
                 }
             });
         });
@@ -249,19 +282,40 @@
             }
         });
 
-        function insertAnnotation() {
-            $._loader(false);
-            var $html;
-            $.ajax('{{ path('ajax_annotation') }}')
-                .done(function (result) {
-                    $html = result.response;
-                    $('footer').prepend($html);
-                    $._loader(true);
-                })
-                .fail(function () {
-                    $._loader(true);
-                    showAlert({title: "Server error"});
-                });
+        $(document).on('focus', '#terms-and-conditions', function(e) {
+            e.preventDefault();
+            $(this).addClass('highlighting-item');
+        });
+
+        $(document).on('focusout', '#terms-and-conditions', function(e) {
+            e.preventDefault();
+            $(this).removeClass('highlighting-item');
+        });
+
+        $(document).on('mousedown', '#terms-and-conditions', function(e) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+        });
+
+        // TODO find more flexible way to apply validation attributes
+        function addValidationAttributes(carrierId) {
+            var pinPatterns = {
+                2253: '^[0-9][0-9]{5}$',
+                2254: '^[0-9][0-9]{5}$'
+            };
+
+            var msisdnPatterns = {
+                2253: '^\\+(201)[0-9]{9}$',
+                2254: '^\\+(201)[0-9]{9}$'
+            };
+
+            if (msisdnPatterns[carrierId]) {
+                $("input[name='mobile_number']").attr('pattern', msisdnPatterns[carrierId])
+            }
+
+            if (pinPatterns[carrierId]) {
+                $("input[name='pin_code']").attr('pattern', pinPatterns[carrierId])
+            }
         }
     </script>
 {% endmacro %}

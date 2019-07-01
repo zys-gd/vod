@@ -1,0 +1,50 @@
+{% extends '@App/Common/landing.html.twig' %}
+{% import "@App/Components/Blocks/Main/lure.html.twig" as  red_lure_block %}
+{% import "@App/Components/Blocks/Main/banner.html.twig" as  banner %}
+{% import "@App/Components/Blocks/Main/icons_channels.html.twig" as  icons_channels %}
+{% import "@App/Components/subscribe_buttons.html.twig" as subscribe_buttons %}
+{% import "@App/Components/Blocks/Footer/menu.html.twig" as  footer_menu %}
+{% import "@App/Components/Blocks/Footer/annotation.html.twig" as  annotation %}
+
+{% block body %}
+    <div class="d-flex flex-column align-items-center justify-content-top w-100" {% if background %} style="background: {{ background }}" {% endif %}>
+        <div class="d-flex align-items-center justify-content-center">
+            {% if campaignBanner %}
+                {{ banner.render(campaignBanner, 'banner', 'w-100', 0) }}
+            {% else %}
+                {{ banner.render(asset('img/lp/lp_subscribe_video.png'), 'banner', 'w-100', 0) }}
+            {% endif %}
+        </div>
+
+        <div class="d-flex align-items-start justify-content-center mt-4 mb-n-2">
+            {{ subscribe_buttons.render('buttons.subscribe', 'btn-lp_big') }}
+        </div>
+
+        <div id="landing-offer-container">
+            {% include "@App/Impl/OrangeEgyptTpay/landing_offer.html.twig" %}
+        </div>
+
+        <div class="align-items-center justify-content-center row mx-4">
+            {{ icons_channels.render() }}
+        </div>
+
+        <div class="lure_box_wrapper">
+            {{ red_lure_block.render(translate('lure_block.text')) }}
+        </div>
+    </div>
+{% endblock body %}
+
+{% block footer_content %}
+    {% if isWifiFlow() %}
+        {% if isCarrierDetected() %}
+            {{ annotation.render() }}
+        {% endif %}
+        <div id="terms-and-conditions" tabindex="1">
+            <span>
+                <input name="terms" id="terms-and-conditions-checkbox" type="checkbox" required />
+                {{ translate('wifi.terms_confirmation', {'%terms_url%': path('terms_and_conditions')}) | raw }}
+            </span>
+        </div>
+    {% endif %}
+    {{ footer_menu.render() }}
+{% endblock footer_content %}

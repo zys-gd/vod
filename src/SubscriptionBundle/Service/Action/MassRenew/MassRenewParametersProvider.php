@@ -63,7 +63,7 @@ class MassRenewParametersProvider
                 'client_user'     => $user->getIdentifier(),
                 'charge_strategy' => $pack->getRenewStrategyId(),
                 'charge_tier'     => $pack->getTierId(),
-                'url_id'          => $user->getUrlId(),
+                'url_id'          => $user->getShortUrlId(),
             ];
         }
 

@@ -40,8 +40,7 @@ services:
       arguments:
         - '@IdentificationBundle\WifiIdentification\WifiIdentSMSSender'
         - '@IdentificationBundle\WifiIdentification\WifiIdentConfirmator'
-        - '@IdentificationBundle\WifiIdentification\Service\ErrorCodeResolver'
-        - '@IdentificationBundle\Identification\Service\CarrierSelector'
+        - '@IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeResolver'
         - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
         - '%default_redirect_url%'
         - '@IdentificationBundle\Repository\CarrierRepositoryInterface'

@@ -1,0 +1,14 @@
+services:
+    SubscriptionBundle\Carriers\OrangeEGTpay\Subscribe\OrangeEGSubscriptionHandler:
+        arguments:
+            - '@ExtrasBundle\Utils\LocalExtractor'
+            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@router'
+        tags:
+            - { name: subscription.subscription_handler }
+
+    SubscriptionBundle\Carriers\OrangeEGTpay\Unsubscribe\OrangeEGUnsubscribeHandler:
+        arguments:
+            - '@ExtrasBundle\Utils\LocalExtractor'
+        tags:
+            - { name: subscription.unsubscription_handler }
