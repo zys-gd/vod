@@ -24,5 +24,10 @@ interface CarrierRepositoryInterface
     /**
      * @return array
      */
+    public function findEnabledCarriersCountryCodes(): array;
+
+    /**
+     * @return array
+     */
     public function findAll();
 }

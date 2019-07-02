@@ -45,6 +45,7 @@ services:
         - '%default_redirect_url%'
         - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
         - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier'
+        - '@SubscriptionBundle\Service\LPDataExtractor'
 
     IdentificationBundle\Identification\Controller\AsyncIdentController:
       arguments:

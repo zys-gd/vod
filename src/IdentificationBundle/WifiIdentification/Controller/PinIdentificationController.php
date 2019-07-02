@@ -2,9 +2,11 @@
 
 namespace IdentificationBundle\WifiIdentification\Controller;
 
+use App\Domain\Entity\Country;
 use ExtrasBundle\API\Controller\APIControllerInterface;
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\BillingFramework\Process\Exception\PinVerifyProcessException;
+use IdentificationBundle\Form\LPType;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeResolver;
@@ -15,6 +17,7 @@ use SubscriptionBundle\Controller\Traits\ResponseTrait;
 use SubscriptionBundle\Service\CAPTool\Exception\CapToolAccessException;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
+use SubscriptionBundle\Service\LPDataExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -54,6 +57,10 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @var SubscriptionLimitNotifier
      */
     private $subscriptionLimitNotifier;
+    /**
+     * @var LPDataExtractor
+     */
+    private $LPDataExtractor;
 
     /**
      * PinIdentificationController constructor.
@@ -65,6 +72,7 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @param string                     $defaultRedirectUrl
      * @param CarrierRepositoryInterface $carrierRepository
      * @param SubscriptionLimitNotifier  $subscriptionLimitNotifier
+     * @param LPDataExtractor            $LPDataExtractor
      */
     public function __construct(
         WifiIdentSMSSender $identSMSSender,
@@ -73,7 +81,8 @@ class PinIdentificationController extends AbstractController implements APIContr
         SubscriptionLimiter $limiter,
         string $defaultRedirectUrl,
         CarrierRepositoryInterface $carrierRepository,
-        SubscriptionLimitNotifier $subscriptionLimitNotifier
+        SubscriptionLimitNotifier $subscriptionLimitNotifier,
+        LPDataExtractor $LPDataExtractor
     )
     {
         $this->identSMSSender            = $identSMSSender;
@@ -83,6 +92,7 @@ class PinIdentificationController extends AbstractController implements APIContr
         $this->defaultRedirectUrl        = $defaultRedirectUrl;
         $this->carrierRepository         = $carrierRepository;
         $this->subscriptionLimitNotifier = $subscriptionLimitNotifier;
+        $this->LPDataExtractor = $LPDataExtractor;
     }
 
     /**
@@ -98,8 +108,16 @@ class PinIdentificationController extends AbstractController implements APIContr
      */
     public function sendSMSPinCodeAction(Request $request, ISPData $ispData)
     {
-        if (!$mobileNumber = $request->get('mobile_number', '')) {
-            throw new BadRequestHttpException('`mobile_number` is required');
+        $form = $this->createForm(
+            LPType::class,
+            ['lpDataExtractor' => $this->LPDataExtractor],
+            ['csrf_protection' => false]
+        );
+        $form->submit($request->request->all());
+
+        if (!$form->isValid()) {
+            $errors = $form->getErrors(true);
+            throw new BadRequestHttpException($errors->current()->getMessage());
         }
 
         try {
@@ -114,6 +132,7 @@ class PinIdentificationController extends AbstractController implements APIContr
 
         $postData = $request->request->all();
         $isResend = isset($postData['resend-pin']);
+        $mobileNumber = $request->get('mobile_number', '');
 
         $billingCarrierId = $ispData->getCarrierId();
         try {

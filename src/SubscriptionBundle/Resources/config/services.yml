@@ -121,6 +121,12 @@ services:
         arguments:
             - '@SubscriptionBundle\Service\CampaignExtractor'
 
+    SubscriptionBundle\Service\LPDataExtractor:
+        arguments:
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+            - '@App\Domain\Repository\CountryRepository'
+
+
 parameters:
     subscription.subscription.class: SubscriptionBundle\Entity\SubscriptionPack
     guzzle.client.class: GuzzleHttp\Client
