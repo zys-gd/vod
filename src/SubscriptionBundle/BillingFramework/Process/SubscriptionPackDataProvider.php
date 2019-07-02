@@ -12,8 +12,8 @@ namespace SubscriptionBundle\BillingFramework\Process;
 use App\Domain\Entity\Carrier;
 use App\Domain\Entity\Country;
 use App\Utils\UuidGenerator;
-use PriceBundle\Entity\Strategy;
-use PriceBundle\Entity\Tier;
+use SubscriptionBundle\DTO\Strategy;
+use SubscriptionBundle\DTO\Tier;
 use stdClass;
 use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkException;
 use SubscriptionBundle\Entity\Price;
@@ -67,7 +67,7 @@ class SubscriptionPackDataProvider
 
         if ($responseObjectArray) {
             foreach ($responseObjectArray as $response) {
-                $responseObject = new $responseObjectClass(UuidGenerator::generate());
+                $responseObject = new $responseObjectClass();
                 $data[]         = $this->mapDataToClass($responseObject, $response);
             }
         }

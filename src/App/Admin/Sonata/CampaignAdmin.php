@@ -76,6 +76,9 @@ class CampaignAdmin extends AbstractAdmin
      */
     public function prePersist($obj)
     {
+        $adminUser = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
+        $obj->setDateCreated(date_create());
+        $obj->setCreator($adminUser->getUsername());
         $this->preUpdate($obj);
     }
 
@@ -133,6 +136,7 @@ class CampaignAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('uuid')
+            ->add('mainCategory', null, ['label' => 'Category'])
             ->add('affiliate')
             ->add('carriers', null, [], null, ['multiple' => true])
             ->add('bgColor')
@@ -150,6 +154,9 @@ class CampaignAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('uuid')
+            ->add('mainCategory', null, [
+                'label' => 'Category'
+            ])
             ->add('affiliate', null, [
                 'sortable'=>true,
                 'sort_field_mapping'=> ['fieldName'=>'name'],
