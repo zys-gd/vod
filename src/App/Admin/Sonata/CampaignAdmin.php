@@ -136,6 +136,7 @@ class CampaignAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('uuid')
+            ->add('mainCategory', null, ['label' => 'Category'])
             ->add('affiliate')
             ->add('carriers', null, [], null, ['multiple' => true])
             ->add('bgColor')
@@ -153,6 +154,9 @@ class CampaignAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('uuid')
+            ->add('mainCategory', null, [
+                'label' => 'Category'
+            ])
             ->add('affiliate', null, [
                 'sortable'=>true,
                 'sort_field_mapping'=> ['fieldName'=>'name'],
