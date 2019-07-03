@@ -10511,7 +10511,7 @@
         "name": "Hutch Indonesia",
         "countryCode": "ID",
         "isp": "Three Indonesia|Three Indonesia|Hutchison CP Telecommunications, PT (ID)|Ruko Malaka Country|Three Indonesia (ID)",
-        "published": false,
+        "published": true,
         "isConfirmationClick": false,
         "pinIdentSupport": true,
         "resubAllowed": false,
