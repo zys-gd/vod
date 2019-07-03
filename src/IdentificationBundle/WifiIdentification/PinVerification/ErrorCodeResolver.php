@@ -75,7 +75,7 @@ class ErrorCodeResolver
                 return $this->translator->translate('message.error.invalid_pin', $billingCarrierId, $lang);
 
             case ErrorCodes::NOT_ENOUGH_CREDIT:
-                return $this->translator->translate('messages.info.not_enough_credit', $billingCarrierId, $lang);
+                return $this->translator->translate('messages.error.not_enough_credit', $billingCarrierId, $lang);
 
             default:
                 return 'Internal Error';
