@@ -77,27 +77,27 @@ class SubscribeActionTest extends AbstractFunctionalTest
         $this->assertEquals(400, $client->getResponse()->getStatusCode(), 'error is missing');
     }
 
-    // public function testSubscribeActionWithRedirect()
-    // {
-    //     $client = $this->makeClient();
-    //
-    //     $this->session->set('identification_data', ['identification_token' => 'token_for_user_without_subscription']);
-    //
-    //     $ispDetectionData = [
-    //         'isp_name'   => 'Jazz PK',
-    //         'carrier_id' => 338,
-    //     ];
-    //     $this->session->set('isp_detection_data', $ispDetectionData);
-    //
-    //     $this->httpClient->allows([
-    //         'request' => TestBillingResponseProvider::createSuccessfulRedirectResponse('renew', 'billing_redirect_url')
-    //     ]);
-    //
-    //     $client->request('GET', 'subscribe');
-    //     $this->assertStatusCode(302, $client);
-    //     $this->assertTrue($client->getResponse()->isRedirect('billing_redirect_url'), 'redirect is missing');
-    //
-    // }
+    public function testSubscribeActionWithRedirect()
+    {
+        $client = $this->makeClient();
+
+        $this->session->set('identification_data', ['identification_token' => 'token_for_user_without_subscription']);
+
+        $ispDetectionData = [
+            'isp_name'   => 'Jazz PK',
+            'carrier_id' => 338,
+        ];
+        $this->session->set('isp_detection_data', $ispDetectionData);
+
+        $this->httpClient->allows([
+            'request' => TestBillingResponseProvider::createSuccessfulRedirectResponse('renew', 'billing_redirect_url')
+        ]);
+
+        $client->request('GET', 'subscribe');
+        $this->assertStatusCode(302, $client);
+        $this->assertTrue($client->getResponse()->isRedirect('billing_redirect_url'), 'redirect is missing');
+
+    }
 
     public function testUserIsRedirectedOnNotAllowedResub()
     {
