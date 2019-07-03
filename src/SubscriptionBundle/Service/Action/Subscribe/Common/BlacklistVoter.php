@@ -12,9 +12,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * Class BlacklistVoter
+ */
 class BlacklistVoter
 {
-
     /**
      * @var ICacheService
      */
@@ -36,10 +38,6 @@ class BlacklistVoter
      */
     private $logger;
     /**
-     * @var string
-     */
-    private $subNotAllowedRoute;
-    /**
      * @var CarrierRepository
      */
     private $carrierRepository;
@@ -52,7 +50,6 @@ class BlacklistVoter
      * @param BlacklistChecker  $blacklistChecker
      * @param UserRepository    $userRepository
      * @param LoggerInterface   $logger
-     * @param string            $subNotAllowedRoute
      * @param CarrierRepository $carrierRepository
      */
     public function __construct(
@@ -61,34 +58,58 @@ class BlacklistVoter
         BlacklistChecker $blacklistChecker,
         UserRepository $userRepository,
         LoggerInterface $logger,
-        string $subNotAllowedRoute,
         CarrierRepository $carrierRepository
-    )
-    {
+    ) {
         $this->cacheService       = $cacheService;
         $this->router             = $router;
         $this->blacklistChecker   = $blacklistChecker;
         $this->userRepository     = $userRepository;
         $this->logger             = $logger;
-        $this->subNotAllowedRoute = $subNotAllowedRoute;
         $this->carrierRepository  = $carrierRepository;
     }
 
-    public function isInBlacklist(SessionInterface $session)
+    /**
+     * @param SessionInterface $session
+     *
+     * @return bool
+     */
+    public function isUserBlacklisted(SessionInterface $session): bool
     {
         $data         = IdentificationFlowDataExtractor::extractIdentificationData($session);
-        $sessionToken = $data['identification_token'] ?? null;
+        $identificationToken = $data['identification_token'] ?? null;
 
-        return $this->blacklistChecker->isBlacklisted($sessionToken);
+        $this->logger->debug('Check user for blacklist', ['identification_token' => $identificationToken]);
+
+        return $this->blacklistChecker->isUserBlacklisted($identificationToken);
     }
 
+    /**
+     * @param string $msisdn
+     *
+     * @return bool
+     */
+    public function isPhoneNumberBlacklisted(string $msisdn): bool
+    {
+        $this->logger->debug('Check phone number for blacklist', ['phone_number' => $msisdn]);
+
+        return $this->blacklistChecker->isPhoneNumberBlacklisted($msisdn);
+    }
 
     /**
      * @return RedirectResponse
      */
     public function createNotAllowedResponse()
     {
-        $response = new RedirectResponse($this->router->generate($this->subNotAllowedRoute));
+        $response = new RedirectResponse($this->getRedirectUrl());
+
         return $response;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRedirectUrl(): string
+    {
+        return $this->router->generate('blacklisted_user');
     }
 }

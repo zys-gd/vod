@@ -54,7 +54,6 @@ services:
             - '@SubscriptionBundle\Service\Blacklist\BlacklistChecker'
             - '@IdentificationBundle\Repository\UserRepository'
             - '@logger'
-            - '_sub_not_allowed_route_placeholder_'
             - '@App\Domain\Repository\CarrierRepository'
 
     SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater:
