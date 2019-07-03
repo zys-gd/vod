@@ -116,7 +116,7 @@ class AffiliateSender
 
             try {
                 $client = $this->clientFactory->getClient();
-                $client->request('GET', $affiliate->getPostbackUrl(), array_merge(['timeout' => 5.0],$data));
+                $client->request('GET', $affiliate->getPostbackUrl(), array_merge(['timeout' => 5.0], $data));
                 $entity = $this->affiliateLogFactory->create(
                     AffiliateLog::EVENT_SUBSCRIBE,
                     true,
