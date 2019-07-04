@@ -144,11 +144,11 @@ class OrangeEGWifiIdentificationHandler implements
     {
         $data = $pinRequestResult->getRawData();
 
-        if (empty($data['subscription_contract_id']) || empty($data['transactionId'])) {
+        if (empty($data['subscription_contract_id'])) {
             throw new WifiIdentConfirmException("Can't process pin verification. Missing required parameters");
         }
 
-        return ['client_user' => $data['subscription_contract_id'], 'transactionId' => $data['transactionId']];
+        return ['client_user' => $data['subscription_contract_id']];
     }
 
     /**
