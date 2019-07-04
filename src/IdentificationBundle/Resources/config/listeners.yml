@@ -1,7 +1,7 @@
 services:
     IdentificationBundle\Listener\AutoIdentStartListener:
         tags:
-            - { name: kernel.event_listener, event: kernel.controller, priority: 9 }
+            - { name: kernel.event_listener, event: kernel.controller }
         arguments:
             - '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
@@ -15,12 +15,3 @@ services:
             - '@IdentificationBundle\Identification\Service\CarrierSelector'
             - '@IdentificationBundle\Identification\Service\DeviceDataProvider'
             - '@logger'
-
-    IdentificationBundle\Listener\AlreadySubscribedListener:
-        arguments:
-            - '@IdentificationBundle\Identification\Service\IdentificationStatus'
-            - '@IdentificationBundle\Identification\Handler\AlreadySubscribedHandlerProvider'
-            - '@session'
-            - '@router'
-        tags:
-            - { name: kernel.event_listener, event: kernel.controller, priority: 10 }

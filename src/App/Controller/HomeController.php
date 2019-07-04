@@ -17,6 +17,7 @@ use ExtrasBundle\Utils\ArraySorter;
 use IdentificationBundle\Controller\ControllerWithIdentification;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
+use IdentificationBundle\Identification\Service\AlreadySubscribedIdentFinisher;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
@@ -72,6 +73,11 @@ class HomeController extends AbstractController implements
     private $userRepository;
 
     /**
+     * @var AlreadySubscribedIdentFinisher
+     */
+    private $alreadySubscribedIdentFinisher;
+
+    /**
      * HomeController constructor.
      *
      * @param TemplateConfigurator $templateConfigurator
@@ -82,6 +88,7 @@ class HomeController extends AbstractController implements
      * @param CountryCategoryPriorityOverrideRepository $categoryOverrideRepository
      * @param ContentStatisticSender $contentStatisticSender
      * @param UserRepository $userRepository
+     * @param AlreadySubscribedIdentFinisher $alreadySubscribedIdentFinisher
      */
     public function __construct(
         TemplateConfigurator $templateConfigurator,
@@ -91,16 +98,18 @@ class HomeController extends AbstractController implements
         GameRepository $gameRepository,
         CountryCategoryPriorityOverrideRepository $categoryOverrideRepository,
         ContentStatisticSender $contentStatisticSender,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        AlreadySubscribedIdentFinisher $alreadySubscribedIdentFinisher
     ) {
-        $this->templateConfigurator       = $templateConfigurator;
-        $this->mainCategoryRepository     = $mainCategoryRepository;
-        $this->videoRepository            = $videoRepository;
-        $this->videoSerializer            = $videoSerializer;
-        $this->gameRepository             = $gameRepository;
-        $this->categoryOverrideRepository = $categoryOverrideRepository;
-        $this->contentStatisticSender     = $contentStatisticSender;
-        $this->userRepository             = $userRepository;
+        $this->templateConfigurator           = $templateConfigurator;
+        $this->mainCategoryRepository         = $mainCategoryRepository;
+        $this->videoRepository                = $videoRepository;
+        $this->videoSerializer                = $videoSerializer;
+        $this->gameRepository                 = $gameRepository;
+        $this->categoryOverrideRepository     = $categoryOverrideRepository;
+        $this->contentStatisticSender         = $contentStatisticSender;
+        $this->userRepository                 = $userRepository;
+        $this->alreadySubscribedIdentFinisher = $alreadySubscribedIdentFinisher;
     }
 
     /**
@@ -141,6 +150,10 @@ class HomeController extends AbstractController implements
             0,
             5
         );
+
+        if ($this->alreadySubscribedIdentFinisher->needToHandle($request)) {
+            $this->alreadySubscribedIdentFinisher->tryToIdentify($request);
+        }
 
         $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
         $campaignToken      = AffiliateVisitSaver::extractCampaignToken($request->getSession());
