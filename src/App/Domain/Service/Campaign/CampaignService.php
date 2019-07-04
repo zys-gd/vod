@@ -18,10 +18,12 @@ class CampaignService
         $affiliateParams = $affiliate->getInputParamsList();
         $result = '';
 
-        if (isset($affiliateParams) && !empty($affiliateParams)){
+        if (isset($affiliateParams) && !empty($affiliateParams) && !$affiliate->isUniqueFlow()){
             foreach ($affiliateParams as $parameter){
                 $result .= "&{$parameter}=testValue";
             }
+        } else {
+            $result .= sprintf("&%s=testValue", $affiliate->getUniqueParameter());
         }
 
         $campaign->setTestUrl(

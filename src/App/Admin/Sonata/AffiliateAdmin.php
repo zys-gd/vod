@@ -6,8 +6,10 @@ use App\Admin\Form\Type\AffiliateConstantType;
 use App\Admin\Form\Type\AffiliateParameterType;
 use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Carrier;
+use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Country;
 use App\Domain\Repository\AffiliateRepository;
+use App\Domain\Service\Campaign\CampaignService;
 use App\Utils\UuidGenerator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -16,7 +18,10 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Show\ShowMapper;
+use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -33,6 +38,10 @@ class AffiliateAdmin extends AbstractAdmin
      * @var AffiliateRepository
      */
     private $affiliateRepository;
+    /**
+     * @var CampaignService
+     */
+    private $campaignService;
 
     /**
      * AffiliateAdmin constructor
@@ -41,15 +50,18 @@ class AffiliateAdmin extends AbstractAdmin
      * @param string              $class
      * @param string              $baseControllerName
      * @param AffiliateRepository $affiliateRepository
+     * @param CampaignService     $campaignService
      */
     public function __construct(
         string $code,
         string $class,
         string $baseControllerName,
-        AffiliateRepository $affiliateRepository
+        AffiliateRepository $affiliateRepository,
+        CampaignService $campaignService
     )
     {
         $this->affiliateRepository = $affiliateRepository;
+        $this->campaignService = $campaignService;
 
         parent::__construct($code, $class, $baseControllerName);
     }
@@ -61,6 +73,14 @@ class AffiliateAdmin extends AbstractAdmin
     public function getNewInstance(): Affiliate
     {
         return new Affiliate(UuidGenerator::generate());
+    }
+
+    /**
+     * @param $obj
+     */
+    public function preUpdate($obj)
+    {
+        $this->generateTestLink($obj);
     }
 
     /**
@@ -133,6 +153,8 @@ class AffiliateAdmin extends AbstractAdmin
         $this->buildMiscSection($formMapper);
         $this->buildConstantSection($formMapper);
         $this->buildParametersSection($formMapper);
+        $this->buildUniqueFlowSection($formMapper);
+
     }
 
     /**
@@ -288,8 +310,37 @@ class AffiliateAdmin extends AbstractAdmin
             ->end();
     }
 
+    private function buildUniqueFlowSection(FormMapper $formMapper)
+    {
+        $formMapper
+            ->tab('Unique Flow')
+            ->with('Affiliate', ['box_class' => 'box box-primary'])
+            ->add('uniqueFlow', CheckboxType::class, [
+                'required' => false,
+                'label' => 'Unique Flow'
+            ])
+            ->add('uniqueParameter', TextType::class, [
+                'required' => false,
+                'label' => 'Unique Parameter'
+            ])
+            ->end();
+    }
+
     public function postUpdate($object)
     {
         $this->affiliateRepository->switchStatusRelatedCampaigns($object);
+    }
+
+    /**
+     * @param Affiliate $affiliate
+     */
+    protected function generateTestLink(Affiliate $affiliate)
+    {
+        /** @var CampaignInterface[] $campaigs */
+        $campaigns = $affiliate->getCampaigns();
+
+        foreach ($campaigns as $campaign) {
+            $this->campaignService->generateTestLink($campaign);
+        }
     }
 }
