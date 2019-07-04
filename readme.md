@@ -25,6 +25,6 @@ _For Linux:_
     * `php bin/console doctrine:database:create --if-not-exists`
     * `php bin/console doctrine:schema:update --force`
     * `php bin/console doctrine:fixtures:load`
-    * `php bin/console doctrine:migrations:versions --add --all`
+    * `php bin/console doctrine:migrations:version --add --all`
 - Run following commands to install application assets:
     * `php bin/console assets:install --symlink`
