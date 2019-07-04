@@ -42,6 +42,10 @@ class AffiliateAdmin extends AbstractAdmin
      * @var ContainerInterface
      */
     private $container;
+    /**
+     * @var CampaignService
+     */
+    private $campaignService;
 
     /**
      * AffiliateAdmin constructor
@@ -51,17 +55,20 @@ class AffiliateAdmin extends AbstractAdmin
      * @param string              $baseControllerName
      * @param AffiliateRepository $affiliateRepository
      * @param ContainerInterface  $container
+     * @param CampaignService     $campaignService
      */
     public function __construct(
         string $code,
         string $class,
         string $baseControllerName,
         AffiliateRepository $affiliateRepository,
-        ContainerInterface $container
+        ContainerInterface $container,
+        CampaignService $campaignService
     )
     {
         $this->affiliateRepository = $affiliateRepository;
         $this->container = $container;
+        $this->campaignService = $campaignService;
 
         parent::__construct($code, $class, $baseControllerName);
     }
@@ -336,13 +343,11 @@ class AffiliateAdmin extends AbstractAdmin
      */
     protected function generateTestLink(Affiliate $affiliate)
     {
-        /**@var CampaignService $campaignService */
-        $campaignService = $this->container->get('App\Domain\Service\Campaign\CampaignService');
         /** @var CampaignInterface[] $campaigs */
         $campaigns = $affiliate->getCampaigns();
 
         foreach ($campaigns as $campaign) {
-            $campaignService->generateTestLink($campaign);
+            $this->campaignService->generateTestLink($campaign);
         }
     }
 }
