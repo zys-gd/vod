@@ -39,10 +39,6 @@ class AffiliateAdmin extends AbstractAdmin
      */
     private $affiliateRepository;
     /**
-     * @var ContainerInterface
-     */
-    private $container;
-    /**
      * @var CampaignService
      */
     private $campaignService;
@@ -54,7 +50,6 @@ class AffiliateAdmin extends AbstractAdmin
      * @param string              $class
      * @param string              $baseControllerName
      * @param AffiliateRepository $affiliateRepository
-     * @param ContainerInterface  $container
      * @param CampaignService     $campaignService
      */
     public function __construct(
@@ -62,12 +57,10 @@ class AffiliateAdmin extends AbstractAdmin
         string $class,
         string $baseControllerName,
         AffiliateRepository $affiliateRepository,
-        ContainerInterface $container,
         CampaignService $campaignService
     )
     {
         $this->affiliateRepository = $affiliateRepository;
-        $this->container = $container;
         $this->campaignService = $campaignService;
 
         parent::__construct($code, $class, $baseControllerName);

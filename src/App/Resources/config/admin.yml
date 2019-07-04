@@ -46,7 +46,6 @@ services:
             - 'App\Domain\Entity\Affiliate'
             - ~
             - '@App\Domain\Repository\AffiliateRepository'
-            - '@service_container'
             - '@App\Domain\Service\Campaign\CampaignService'
         tags:
             - { name: sonata.admin, manager_type: orm, group: affiliate_management, label: Affiliates }
