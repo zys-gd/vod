@@ -117,13 +117,6 @@
     list-style-type: disc;
 }
 
-.lp {
-    padding: 20px;
-}
-
-.lp-sub-btn {
-    position: relative;
-}
 
 .lp-sub-btn button {
     background-image: linear-gradient(#00da33, #00da33, #015c18);
@@ -131,10 +124,13 @@
 }
 
 .lp-sub-btn-top {
-    top: 18px;
+    position: relative;
+    top: 4%;
+    height: 0;
 }
 
 .lp-sub-btn-bottom {
+    position: relative;
     bottom: 18px;
 }
 
@@ -156,7 +152,7 @@
 }
 
 .annotation-block {
-    margin-bottom: 0;
+    margin-bottom: 15px;
     font-weight: 500;
     font-style: italic;
 }
