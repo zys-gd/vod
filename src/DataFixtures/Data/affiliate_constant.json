@@ -34,7 +34,7 @@
     {
         "uuid": "510c90cb-ebd4-11e8-95c4-02bb250f0f22",
         "name": "service",
-        "value": "4491",
+        "value": "2872",
         "affiliate": {
             "uuid": "514fdcf3-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -210,7 +210,7 @@
     {
         "uuid": "510c9c24-ebd4-11e8-95c4-02bb250f0f22",
         "name": "handler",
-        "value": "10522",
+        "value": "10293",
         "affiliate": {
             "uuid": "514ff3ad-ebd4-11e8-95c4-02bb250f0f22"
         }
