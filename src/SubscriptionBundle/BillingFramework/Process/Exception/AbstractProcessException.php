@@ -19,7 +19,7 @@ abstract class AbstractProcessException extends \RuntimeException
      */
     private $billingMessage;
 
-    public function __construct(string $message = "", int $code = null, string $billingMessage, Throwable $previous = null)
+    public function __construct(string $message = "", int $code = null, string $billingMessage = "", Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
         $this->billingMessage = $billingMessage;
