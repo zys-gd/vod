@@ -210,7 +210,7 @@ class SubscribeAction extends AbstractController
         $this->ensureNotConsentPageFlow($ISPData->getCarrierId());
 
         if (
-            $this->blacklistVoter->isInBlacklist($request->getSession()) ||
+            $this->blacklistVoter->isUserBlacklisted($request->getSession()) ||
             !$this->blacklistDeducter->registerSubscriptionAttempt(
                 $identificationData->getIdentificationToken(),
                 (int)$ISPData->getCarrierId()

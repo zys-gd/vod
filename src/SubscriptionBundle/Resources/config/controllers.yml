@@ -84,6 +84,9 @@ services:
             - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
             - '@SubscriptionBundle\Service\UserExtractor'
             - '@SubscriptionBundle\Service\Action\Subscribe\Consent\ConsentFlowHandler'
+            - '@router'
+            - '@SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter'
+            - '@SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator'
 
     SubscriptionBundle\Admin\Controller\SubscriptionPackAdminController:
         calls: [['setContainer', ['@service_container']]]

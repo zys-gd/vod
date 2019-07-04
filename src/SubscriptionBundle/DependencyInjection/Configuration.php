@@ -27,11 +27,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('sub_not_allowed_route')
-                ->end()
                 ->scalarNode('resub_not_allowed_route')
-                ->end()
-                ->scalarNode('blacklisted_user_route')
                 ->end()
             ->end();
 
