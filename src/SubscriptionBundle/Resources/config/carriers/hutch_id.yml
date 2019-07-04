@@ -1,0 +1,11 @@
+services:
+    SubscriptionBundle\Carriers\HutchID\Subscribe\HutchIDSubscriptionHandler:
+        arguments:
+            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@router'
+        tags:
+            - { name: subscription.subscription_handler }
+
+    SubscriptionBundle\Carriers\HutchID\Unsubscribe\HutchIDUnsubscribeHandler:
+        tags:
+            - { name: subscription.unsubscription_handler }
