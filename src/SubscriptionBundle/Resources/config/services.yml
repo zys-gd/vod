@@ -126,6 +126,7 @@ services:
     SubscriptionBundle\Service\ZeroCreditSubscriptionChecking:
         arguments:
             - '@SubscriptionBundle\Service\CampaignExtractor'
+            - '@session'
 
 parameters:
     subscription.subscription.class: SubscriptionBundle\Entity\SubscriptionPack

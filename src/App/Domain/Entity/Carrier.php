@@ -142,6 +142,11 @@ class Carrier implements CarrierInterface, HasUuid
     private $isLpOff = false;
 
     /**
+     * @var bool
+     */
+    private $trackAffiliateOnZeroCreditSub;
+
+    /**
      * Carrier constructor.
      * @param string $uuid
      */
@@ -693,5 +698,25 @@ class Carrier implements CarrierInterface, HasUuid
     public function hasAffiliate(AffiliateInterface $affiliate): bool
     {
         return $this->affiliates->contains($affiliate);
+    }
+
+    /**
+     * @return bool
+     */
+    public function getTrackAffiliateOnZeroCreditSub(): bool
+    {
+        return $this->trackAffiliateOnZeroCreditSub;
+    }
+
+    /**
+     * @param bool $trackAffiliateOnZeroCreditSub
+     *
+     * @return Carrier
+     */
+    public function setTrackAffiliateOnZeroCreditSub(bool $trackAffiliateOnZeroCreditSub): self
+    {
+        $this->trackAffiliateOnZeroCreditSub = $trackAffiliateOnZeroCreditSub;
+
+        return $this;
     }
 }
