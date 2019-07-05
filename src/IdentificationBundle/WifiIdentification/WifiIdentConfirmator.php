@@ -186,8 +186,7 @@ class WifiIdentConfirmator
 
             $parameters = $this->requestProvider->getPinVerifyParameters(
                 $msisdn,
-                $carrier->getBillingCarrierId(),
-                $carrier->getOperatorId(),
+                $carrier,
                 $pinCode,
                 $pinRequestResult->getUserIdentifier(),
                 $additionalParams

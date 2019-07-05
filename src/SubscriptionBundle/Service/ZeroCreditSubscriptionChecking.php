@@ -1,13 +1,14 @@
 <?php
 
-
 namespace SubscriptionBundle\Service;
-
 
 use App\Domain\Entity\Campaign;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+/**
+ * Class ZeroCreditSubscriptionChecking
+ */
 class ZeroCreditSubscriptionChecking
 {
     /**
@@ -15,28 +16,40 @@ class ZeroCreditSubscriptionChecking
      */
     private $campaignExtractor;
 
-    public function __construct(CampaignExtractor $campaignExtractor)
+    /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    /**
+     * ZeroCreditSubscriptionChecking constructor
+     *
+     * @param CampaignExtractor $campaignExtractor
+     * @param SessionInterface $session
+     */
+    public function __construct(CampaignExtractor $campaignExtractor, SessionInterface $session)
     {
         $this->campaignExtractor = $campaignExtractor;
+        $this->session = $session;
     }
 
-    public function isAvailable(SessionInterface $session, SubscriptionPack $subscriptionPack): bool
+    /**
+     * @param SubscriptionPack $subscriptionPack
+     *
+     * @return bool
+     */
+    public function isAvailable(SubscriptionPack $subscriptionPack): bool
     {
         if ($subscriptionPack->isZeroCreditSubAvailable()) {
-            return true;
-        }
+            /** @var Campaign $campaign */
+            $campaign = $this->campaignExtractor->getCampaignFromSession($this->session);
+            if ($campaign && !$campaign->isZeroCreditSubAvailable()) {
+                return false;
+            }
 
-        /** @var Campaign $campaign */
-        $campaign = $this->campaignExtractor->getCampaignFromSession($session);
-        if ($campaign && $campaign->isZeroCreditSubAvailable()) {
             return true;
         }
 
         return false;
-    }
-
-    public function isZeroCreditSubscription(): bool
-    {
-
     }
 }

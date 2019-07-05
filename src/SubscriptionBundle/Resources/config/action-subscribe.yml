@@ -38,7 +38,6 @@ services:
             - '@SubscriptionBundle\Service\EntitySaveHelper'
             - '_resub_not_allowed_route_placeholder_'
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEventTracker'
-            - '@SubscriptionBundle\Service\ZeroCreditSubscriptionChecking'
 
     SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker: ~
 
@@ -85,7 +84,11 @@ services:
     SubscriptionBundle\Service\Action\Subscribe\Handler\DefaultHandler: ~
 
     SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider:
-        arguments: ['@SubscriptionBundle\Service\Action\Common\RequestParametersProvider', '@request_stack', '@router']
+        arguments:
+            - '@SubscriptionBundle\Service\Action\Common\RequestParametersProvider'
+            - '@request_stack'
+            - '@router'
+            - '@SubscriptionBundle\Service\ZeroCreditSubscriptionChecking'
 
     SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEventTracker:
         arguments:

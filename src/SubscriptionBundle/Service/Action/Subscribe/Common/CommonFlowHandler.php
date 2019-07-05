@@ -105,11 +105,6 @@ class CommonFlowHandler
      * @var SubscriptionEventTracker
      */
     private $subscriptionEventTracker;
-    /**
-     * @var ZeroCreditSubscriptionChecking
-     */
-    private $zeroCreditSubscriptionChecking;
-
 
     /**
      * CommonSubscriber constructor.
@@ -130,7 +125,6 @@ class CommonFlowHandler
      * @param EntitySaveHelper               $entitySaveHelper
      * @param string                         $resubNotAllowedRoute
      * @param SubscriptionEventTracker       $subscriptionEventTracker
-     * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
      */
     public function __construct(
         SubscriptionExtractor $subscriptionProvider,
@@ -148,8 +142,7 @@ class CommonFlowHandler
         UserInfoMapper $infoMapper,
         EntitySaveHelper $entitySaveHelper,
         string $resubNotAllowedRoute,
-        SubscriptionEventTracker $subscriptionEventTracker,
-        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
+        SubscriptionEventTracker $subscriptionEventTracker
     )
     {
         $this->subscriptionPackProvider       = $subscriptionPackProvider;
@@ -168,7 +161,6 @@ class CommonFlowHandler
         $this->entitySaveHelper               = $entitySaveHelper;
         $this->resubNotAllowedRoute           = $resubNotAllowedRoute;
         $this->subscriptionEventTracker       = $subscriptionEventTracker;
-        $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
     }
 
 
@@ -322,13 +314,8 @@ class CommonFlowHandler
      */
     private function handleSubscribe(Request $request, User $User, HasCommonFlow $subscriber): Response
     {
-
         $additionalData   = $subscriber->getAdditionalSubscribeParams($request, $User);
         $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($User);
-
-        if ($this->zeroCreditSubscriptionChecking->isAvailable($request->getSession(), $subscriptionPack)) {
-            $additionalData['zero_credit_sub_available'] = true;
-        }
 
         /** @var ProcessResult $result */
         list($newSubscription, $result) = $this->subscriber->subscribe($User, $subscriptionPack, $additionalData);

@@ -147,8 +147,7 @@ class WifiIdentSMSSender
 
         $parameters = $this->requestProvider->getPinRequestParameters(
             $msisdn,
-            $carrier->getBillingCarrierId(),
-            $carrier->getOperatorId(),
+            $carrier,
             $body,
             $additionalParameters
         );

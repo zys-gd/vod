@@ -1,14 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 13.11.18
- * Time: 11:57
- */
 
 namespace SubscriptionBundle\Service\Action\Subscribe;
 
-
+use SubscriptionBundle\Service\ZeroCreditSubscriptionChecking;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters;
@@ -29,35 +23,47 @@ class SubscribeParametersProvider
      * @var RouterInterface
      */
     private $router;
-
+    /**
+     * @var ZeroCreditSubscriptionChecking
+     */
+    private $zeroCreditSubscriptionChecking;
 
     /**
-     * SubscribeParametersProvider constructor.
+     * SubscribeParametersProvider constructor
+     *
      * @param RequestParametersProvider $parametersProvider
-     * @param RequestStack              $requestStack
-     * @param RouterInterface           $router
+     * @param RequestStack $requestStack
+     * @param RouterInterface $router
+     * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
      */
-    public function __construct(RequestParametersProvider $parametersProvider, RequestStack $requestStack, RouterInterface $router)
-    {
+    public function __construct(
+        RequestParametersProvider $parametersProvider,
+        RequestStack $requestStack,
+        RouterInterface $router,
+        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
+    ) {
         $this->parametersProvider = $parametersProvider;
-        $this->requestStack       = $requestStack;
-        $this->router             = $router;
+        $this->requestStack = $requestStack;
+        $this->router = $router;
+        $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
     }
 
     public function provideParameters(Subscription $subscription, array $additionalInfo): ProcessRequestParameters
     {
+        $subscriptionPack = $subscription->getSubscriptionPack();
 
-        $parameters                 = $this->parametersProvider->prepareRequestParameters($subscription);
-        $parameters->additionalData = $additionalInfo;
-        $parameters->chargeProduct  = $subscription->getUuid();
-        $promotionalTierId          = $subscription->getPromotionTierId();
-        $isProviderManaged          = $subscription->getSubscriptionPack()->isProviderManagedSubscriptions();
+        $parameters                         = $this->parametersProvider->prepareRequestParameters($subscription);
+        $parameters->additionalData         = $additionalInfo;
+        $parameters->chargeProduct          = $subscription->getUuid();
+        $parameters->zeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isAvailable($subscriptionPack);
+        $promotionalTierId                  = $subscription->getPromotionTierId();
+        $isProviderManaged                  = $subscriptionPack->isProviderManagedSubscriptions();
 
         $parameters->chargeTier = isset($promotionalTierId) && $isProviderManaged
             ? $promotionalTierId
-            : $subscription->getSubscriptionPack()->getTierId();
+            : $subscriptionPack->getTierId();
 
-        $parameters->chargeStrategy = $subscription->getSubscriptionPack()->getBuyStrategyId();
+        $parameters->chargeStrategy = $subscriptionPack->getBuyStrategyId();
         if ($request = $this->requestStack->getCurrentRequest()) {
             $parameters->redirectUrl = $request->get('location', $this->router->generate('subscription.wait_listen'));
         }

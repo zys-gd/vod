@@ -1,67 +1,108 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 14.01.19
- * Time: 11:08
- */
 
 namespace IdentificationBundle\WifiIdentification\Common;
 
-
+use IdentificationBundle\Entity\CarrierInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters;
+use SubscriptionBundle\Service\SubscriptionPackProvider;
+use SubscriptionBundle\Service\ZeroCreditSubscriptionChecking;
 
+/**
+ * Class RequestProvider
+ */
 class RequestProvider
 {
+    /**
+     * @var ZeroCreditSubscriptionChecking
+     */
+    private $zeroCreditSubscriptionChecking;
+
+    /**
+     * @var SubscriptionPackProvider
+     */
+    private $subscriptionPackProvider;
+
+    /**
+     * RequestProvider constructor
+     *
+     * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
+     * @param SubscriptionPackProvider $subscriptionPackProvider
+     */
+    public function __construct(
+        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking,
+        SubscriptionPackProvider $subscriptionPackProvider
+    ) {
+        $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
+        $this->subscriptionPackProvider = $subscriptionPackProvider;
+    }
+
+    /**
+     * @param string $msisdn
+     * @param CarrierInterface $carrier
+     * @param string $body
+     * @param array $additionalParameters
+     *
+     * @return ProcessRequestParameters
+     */
     public function getPinRequestParameters(
         string $msisdn,
-        int $carrierId,
-        string $operatorId,
+        CarrierInterface $carrier,
         string $body,
         array $additionalParameters
     ): ProcessRequestParameters
     {
-
         $parameters = new ProcessRequestParameters();
+        $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPackFromCarrier($carrier);
 
-        $parameters->client         = 'vod-store';
+        $parameters->client = 'vod-store';
         $parameters->additionalData = array_merge(
             [
-                'body'    => $body,
-                'msisdn'  => $msisdn,
-                'carrier' => $carrierId,
-                'op_id'   => $operatorId,
+                'body' => $body,
+                'msisdn' => $msisdn,
+                'carrier' => $carrier->getBillingCarrierId(),
+                'op_id' => $carrier->getOperatorId(),
+                'zero_credit_sub_available' => $this->zeroCreditSubscriptionChecking->isAvailable($subscriptionPack)
             ],
             $additionalParameters
         );
+
         return $parameters;
     }
 
+    /**
+     * @param string $msisdn
+     * @param CarrierInterface $carrier
+     * @param string $pinCode
+     * @param string $clientUser
+     * @param array $additionalParameters
+     *
+     * @return ProcessRequestParameters
+     */
     public function getPinVerifyParameters(
         string $msisdn,
-        int $carrierId,
-        string $operatorId,
+        CarrierInterface $carrier,
         string $pinCode,
         string $clientUser,
         array $additionalParameters
     ): ProcessRequestParameters
     {
+        $parameters = new ProcessRequestParameters();
+        $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPackFromCarrier($carrier);
 
-        $parameters                 = new ProcessRequestParameters();
-        $parameters->client         = 'vod-store';
+        $parameters->client = 'vod-store';
         $parameters->additionalData = array_merge(
             [
-                'msisdn'      => $msisdn,
-                'carrier'     => $carrierId,
-                'op_id'       => $operatorId,
-                'pin_code'    => $pinCode,
-                'client_user' => $clientUser
+                'msisdn' => $msisdn,
+                'carrier' => $carrier->getBillingCarrierId(),
+                'op_id' => $carrier->getOperatorId(),
+                'pin_code' => $pinCode,
+                'client_user' => $clientUser,
+                'zero_credit_sub_available' => $this->zeroCreditSubscriptionChecking->isAvailable($subscriptionPack)
             ],
             $additionalParameters
-
         );
-        return $parameters;
 
+        return $parameters;
     }
 
     /**

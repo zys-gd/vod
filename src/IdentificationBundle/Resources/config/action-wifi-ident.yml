@@ -49,7 +49,10 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
 
-    IdentificationBundle\WifiIdentification\Common\RequestProvider: ~
+    IdentificationBundle\WifiIdentification\Common\RequestProvider:
+        arguments:
+            - '@SubscriptionBundle\Service\ZeroCreditSubscriptionChecking'
+            - '@SubscriptionBundle\Service\SubscriptionPackProvider'
 
     IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeResolver:
         arguments:

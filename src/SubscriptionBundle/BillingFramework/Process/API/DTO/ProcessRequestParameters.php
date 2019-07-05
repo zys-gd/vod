@@ -55,5 +55,7 @@ class ProcessRequestParameters
     // the default strategy will be used. To see all strategies
     public $chargeStrategy;
 
+    public $zeroCreditSubAvailable;
+
     public $additionalData = [];
 }
