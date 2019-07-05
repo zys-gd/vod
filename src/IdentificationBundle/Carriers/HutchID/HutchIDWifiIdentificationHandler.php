@@ -6,6 +6,7 @@ use App\Domain\Constants\ConstBillingCarrierId;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use ExtrasBundle\Utils\LocalExtractor;
+use HasPassthrough;
 use IdentificationBundle\BillingFramework\Process\DTO\{PinRequestResult, PinVerifyResult};
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\Entity\CarrierInterface;
@@ -27,7 +28,8 @@ class HutchIDWifiIdentificationHandler implements
     HasCustomPinVerifyRules,
     HasCustomPinResendRules,
     HasCustomPinRequestRules,
-    HasConsentPageFlow
+    HasConsentPageFlow,
+    HasPassthrough
 {
     /**
      * @var UserRepository

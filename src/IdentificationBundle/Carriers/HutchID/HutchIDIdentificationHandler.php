@@ -4,6 +4,7 @@ namespace IdentificationBundle\Carriers\HutchID;
 
 use App\Domain\Constants\ConstBillingCarrierId;
 use ExtrasBundle\Utils\LocalExtractor;
+use HasPassthrough;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow;
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasConsentPageFlow;
@@ -11,7 +12,11 @@ use IdentificationBundle\Identification\Handler\IdentificationHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 
-class HutchIDIdentificationHandler implements IdentificationHandlerInterface, HasConsentPageFlow, HasCommonConsentPageFlow
+class HutchIDIdentificationHandler implements
+    IdentificationHandlerInterface,
+    HasConsentPageFlow,
+    HasCommonConsentPageFlow,
+    HasPassthrough
 {
     /**
      * @var LocalExtractor
@@ -30,6 +35,7 @@ class HutchIDIdentificationHandler implements IdentificationHandlerInterface, Ha
 
     /**
      * @param CarrierInterface $carrier
+     *
      * @return bool
      */
     public function canHandle(CarrierInterface $carrier): bool

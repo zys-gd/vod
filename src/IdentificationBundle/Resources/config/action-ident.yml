@@ -118,6 +118,7 @@ services:
             - '@IdentificationBundle\Identification\Common\RequestParametersProvider'
             - '@IdentificationBundle\BillingFramework\Process\IdentProcess'
             - '@IdentificationBundle\Identification\Common\Async\AsyncIdentStarter'
+            - '@IdentificationBundle\BillingFramework\Process\PassthroughProcess'
 
     IdentificationBundle\Identification\Service\CarrierSelector:
         arguments:
