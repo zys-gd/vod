@@ -92,6 +92,10 @@ App\Domain\Entity\Carrier:
             type: boolean
             options:
                 default: false
+        isClickableSubImage:
+            type: boolean
+            options:
+                default: true
 
     lifecycleCallbacks: {  }
 

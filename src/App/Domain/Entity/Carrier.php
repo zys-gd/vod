@@ -142,6 +142,11 @@ class Carrier implements CarrierInterface, HasUuid
     private $isLpOff = false;
 
     /**
+     * @var bool
+     */
+    private $isClickableSubImage = true;
+
+    /**
      * Carrier constructor.
      * @param string $uuid
      */
@@ -693,5 +698,21 @@ class Carrier implements CarrierInterface, HasUuid
     public function hasAffiliate(AffiliateInterface $affiliate): bool
     {
         return $this->affiliates->contains($affiliate);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isClickableSubImage(): bool
+    {
+        return $this->isClickableSubImage;
+    }
+
+    /**
+     * @param bool $isClickableSubImage
+     */
+    public function setIsClickableSubImage(bool $isClickableSubImage): void
+    {
+        $this->isClickableSubImage = $isClickableSubImage;
     }
 }
