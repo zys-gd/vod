@@ -93,6 +93,14 @@ class RequestSender
         return $processedResponse;
     }
 
+    /**
+     * @param string                   $type
+     * @param ProcessRequestParameters $processParameters
+     *
+     * @return \stdClass|\stdClass[]|null
+     * @throws BillingFrameworkException
+     * @throws BillingFrameworkProcessException
+     */
     public function sendRequestWithoutResponseMapping(string $type, ProcessRequestParameters $processParameters)
     {
         try {

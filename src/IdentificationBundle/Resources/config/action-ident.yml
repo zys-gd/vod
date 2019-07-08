@@ -15,6 +15,7 @@ services:
             - '@IdentificationBundle\Identification\Common\CommonFlowHandler'
             - '@IdentificationBundle\Identification\Common\HeaderEnrichmentHandler'
             - '@IdentificationBundle\Identification\Common\CommonConsentPageFlowHandler'
+            - '@IdentificationBundle\Identification\Common\CommonPassthroughFlowHandler'
 
     IdentificationBundle\Identification\Common\CommonFlowHandler:
         arguments:
@@ -109,6 +110,16 @@ services:
             - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
             - '@IdentificationBundle\Repository\UserRepository'
 
+
+    IdentificationBundle\Identification\Common\CommonPassthroughFlowHandler:
+        arguments:
+            - '@router'
+            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\TokenGenerator'
+            - '@IdentificationBundle\Identification\Common\RequestParametersProvider'
+            - '@IdentificationBundle\BillingFramework\Process\IdentProcess'
+            - '@IdentificationBundle\Identification\Common\Async\AsyncIdentStarter'
+            - '@IdentificationBundle\BillingFramework\Process\PassthroughProcess'
 
     IdentificationBundle\Identification\Common\CommonConsentPageFlowHandler:
         arguments:

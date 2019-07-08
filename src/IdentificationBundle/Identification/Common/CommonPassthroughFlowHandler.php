@@ -2,24 +2,20 @@
 
 namespace IdentificationBundle\Identification\Common;
 
-use IdentificationBundle\Identification\Handler\PassthroughFlow\HasPassthroughFlow;
 use IdentificationBundle\BillingFramework\Process\IdentProcess;
 use IdentificationBundle\BillingFramework\Process\PassthroughProcess;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Common\Async\AsyncIdentStarter;
-use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow;
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasConsentPageFlow;
-use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCustomConsentPageFlow;
+use IdentificationBundle\Identification\Handler\PassthroughFlow\HasPassthroughFlow;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\TokenGenerator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
-/**
- * Class ConsentPageFlowHandler
- */
-class CommonConsentPageFlowHandler
+
+class CommonPassthroughFlowHandler
 {
     /**
      * @var IdentificationDataStorage
@@ -94,37 +90,30 @@ class CommonConsentPageFlowHandler
      * @return Response
      */
     public function process(Request $request,
-        HasConsentPageFlow $handler,
+        HasPassthroughFlow $handler,
         CarrierInterface $carrier,
         string $token): Response
     {
-        if ($handler instanceof HasCommonConsentPageFlow) {
-            $additionalParams = $handler->getAdditionalIdentificationParams($request);
-            $successUrl       = $this->router->generate('subscription.consent_page_subscribe', [], RouterInterface::ABSOLUTE_URL);
-            $waitPageUrl      = $this
-                ->router
-                ->generate('wait_for_callback', ['successUrl' => $successUrl], RouterInterface::ABSOLUTE_URL);
 
-            $parameters = $this->requestParametersProvider->prepareRequestParameters(
-                $token,
-                $carrier->getBillingCarrierId(),
-                $request->getClientIp(),
-                $waitPageUrl,
-                $request->headers->all(),
-                $additionalParams
-            );
+        $additionalParams = $handler->getAdditionalIdentificationParams($request);
+        $successUrl       = $this->router->generate('subscription.consent_page_subscribe', [], RouterInterface::ABSOLUTE_URL);
+        $waitPageUrl      = $this
+            ->router
+            ->generate('wait_for_callback', ['successUrl' => $successUrl], RouterInterface::ABSOLUTE_URL);
 
-            $processResult = $this->identProcess->doIdent($parameters);
+        $parameters = $this->requestParametersProvider->prepareRequestParameters(
+            $token,
+            $carrier->getBillingCarrierId(),
+            $request->getClientIp(),
+            $waitPageUrl,
+            $request->headers->all(),
+            $additionalParams
+        );
 
-            $this->dataStorage->storeValue('consentFlow[token]', $this->generator->generateToken());
+        $processResult = $this->passthroughProcess->runPassthrough($parameters);
 
-            return $this->asyncIdentStarter->start($processResult, $token);
-        }
+        $this->dataStorage->storeValue('passthroughFlow[token]', $this->generator->generateToken());
 
-        if ($handler instanceof HasCustomConsentPageFlow) {
-            return $handler->process($request, $carrier, $token);
-        }
-
-        throw new \RuntimeException('Handlers for identification should have according interfaces');
+        return $this->asyncIdentStarter->start($processResult, $token);
     }
 }

@@ -1,7 +1,5 @@
 services:
     IdentificationBundle\Carriers\HutchID\HutchIDIdentificationHandler:
-        arguments:
-            - '@ExtrasBundle\Utils\LocalExtractor'
         tags:
             - { name: identification.identification_handler }
 

@@ -109,6 +109,11 @@ class Client
             if ($contents) {
                 /** @var stdClass $parsedResponse */
                 $data = json_decode($contents);
+
+                if (json_last_error() === JSON_ERROR_SYNTAX) {
+                    $data = (object)['url' => $contents];
+                }
+
             }
         }
         return $data;
@@ -212,8 +217,6 @@ class Client
         } catch (\Exception $e) {
             throw new BillingFrameworkException($e->getMessage(), $e->getCode(), $e);
         }
-
-
     }
 
     /**

@@ -6,30 +6,23 @@ use App\Domain\Constants\ConstBillingCarrierId;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use ExtrasBundle\Utils\LocalExtractor;
-use HasPassthrough;
 use IdentificationBundle\BillingFramework\Process\DTO\{PinRequestResult, PinVerifyResult};
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
+use IdentificationBundle\Identification\Handler\PassthroughFlow\HasPassthroughFlow;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\Exception\WifiIdentConfirmException;
-use IdentificationBundle\WifiIdentification\Handler\HasConsentPageFlow;
-use IdentificationBundle\WifiIdentification\Handler\HasCustomPinRequestRules;
-use IdentificationBundle\WifiIdentification\Handler\HasCustomPinResendRules;
-use IdentificationBundle\WifiIdentification\Handler\HasCustomPinVerifyRules;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
 use SubscriptionBundle\Repository\SubscriptionRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 
 
 class HutchIDWifiIdentificationHandler implements
     WifiIdentificationHandlerInterface,
-    HasCustomPinVerifyRules,
-    HasCustomPinResendRules,
-    HasCustomPinRequestRules,
-    HasConsentPageFlow,
-    HasPassthrough
+    HasPassthroughFlow
 {
     /**
      * @var UserRepository
@@ -228,13 +221,8 @@ class HutchIDWifiIdentificationHandler implements
         // TODO: Implement afterSuccessfulPinRequest() method.
     }
 
-    /**
-     * @param string $mobileNumber
-     *
-     * @return string
-     */
-    private function cleanMsisnd(string $mobileNumber): string
+    public function getAdditionalIdentificationParams(Request $request): array
     {
-        return str_replace('+', '', $mobileNumber);
+        return [];
     }
 }

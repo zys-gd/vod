@@ -3,36 +3,16 @@
 namespace IdentificationBundle\Carriers\HutchID;
 
 use App\Domain\Constants\ConstBillingCarrierId;
-use ExtrasBundle\Utils\LocalExtractor;
-use HasPassthrough;
 use IdentificationBundle\Entity\CarrierInterface;
-use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow;
-use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasConsentPageFlow;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerInterface;
+use IdentificationBundle\Identification\Handler\PassthroughFlow\HasPassthroughFlow;
 use Symfony\Component\HttpFoundation\Request;
 
 
 class HutchIDIdentificationHandler implements
     IdentificationHandlerInterface,
-    HasConsentPageFlow,
-    HasCommonConsentPageFlow,
-    HasPassthrough
+    HasPassthroughFlow
 {
-    /**
-     * @var LocalExtractor
-     */
-    private $localExtractor;
-
-    /**
-     * HutchIDIdentificationHandler constructor.
-     *
-     * @param LocalExtractor $localExtractor
-     */
-    public function __construct(LocalExtractor $localExtractor)
-    {
-        $this->localExtractor = $localExtractor;
-    }
-
     /**
      * @param CarrierInterface $carrier
      *
@@ -50,6 +30,6 @@ class HutchIDIdentificationHandler implements
      */
     public function getAdditionalIdentificationParams(Request $request): array
     {
-        return ['lang' => $this->localExtractor->getLocal()];
+        return [];
     }
 }
