@@ -82,6 +82,7 @@ class BlackListAdmin extends AbstractAdmin
     }
 
 
+
     /**
      * @param ListMapper $listMapper
      */
