@@ -101,7 +101,6 @@ class BlackListAdmin extends AbstractAdmin
                 ]
             ]);
     }
-
     /**
      * @param FormMapper $formMapper
      */
