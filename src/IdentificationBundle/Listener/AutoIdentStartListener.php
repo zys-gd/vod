@@ -225,7 +225,7 @@ class AutoIdentStartListener
 
         if (!$session->has('isp_detection_data')) {
             $carrierISP = $this->carrierDetection->getCarrier($ipAddress);
-            $carrierId  = 2253;
+            $carrierId  = null;
             $this->logger->debug('Carrier ISP', [
                 'ISP'    => $carrierISP
             ]);
