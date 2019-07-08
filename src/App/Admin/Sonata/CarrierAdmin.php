@@ -113,7 +113,8 @@ class CarrierAdmin extends AbstractAdmin
             ->add('isCampaignsOnPause')
             ->add('isUnlimitedSubscriptionAttemptsAllowed')
             ->add('subscribeAttempts')
-            ->add('isLpOff');
+            ->add('isLpOff')
+            ->add('isClickableSubImage');
     }
 
     /**
@@ -136,6 +137,9 @@ class CarrierAdmin extends AbstractAdmin
             ->add('resubAllowed')
             ->add('isCampaignsOnPause')
             ->add('isLpOff')
+            ->add('isClickableSubImage', null, [
+                'label' => 'Clickable image'
+            ])
             ->add('_action', null, [
                 'actions' => [
                     'show'   => [],
@@ -180,6 +184,9 @@ class CarrierAdmin extends AbstractAdmin
             ])
             ->add('subscribeAttempts', null, [
                 'attr' => ["class" => "count-of-subs"]
+            ])
+            ->add('isClickableSubImage', null, [
+                'label' => 'Clickable image'
             ]);
     }
 
@@ -225,6 +232,9 @@ class CarrierAdmin extends AbstractAdmin
             ->add('numberOfAllowedSubscriptionsByConstraint')
             ->add('counter')
             ->add('isCapAlertDispatch')
+            ->add('isClickableSubImage', null, [
+                'label' => 'Clickable image'
+            ])
             ->add('flushDate')
             ->add('redirectUrl');
     }

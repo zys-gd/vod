@@ -106,6 +106,11 @@ class Campaign implements CampaignInterface, HasUuid
      */
     private $isLpOff = false;
 
+    /**
+     * @var bool
+     */
+    private $isClickableSubImage = true;
+
     /** @var bool */
     private $zeroCreditSubAvailable = false;
 
@@ -545,6 +550,23 @@ class Campaign implements CampaignInterface, HasUuid
     {
         $this->isLpOff = $isLpOff;
     }
+
+    /**
+     * @return bool
+     */
+    public function isClickableSubImage(): bool
+    {
+        return $this->isClickableSubImage;
+    }
+
+    /**
+     * @param bool $isClickableSubImage
+     */
+    public function setIsClickableSubImage(bool $isClickableSubImage): void
+    {
+        $this->isClickableSubImage = $isClickableSubImage;
+    }
+
 
     /**
      * @return bool
