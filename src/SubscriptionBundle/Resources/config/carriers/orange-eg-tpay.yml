@@ -4,6 +4,7 @@ services:
             - '@ExtrasBundle\Utils\LocalExtractor'
             - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
             - '@router'
+            - '@SubscriptionBundle\Service\ZeroCreditSubscriptionChecking'
         tags:
             - { name: subscription.subscription_handler }
 

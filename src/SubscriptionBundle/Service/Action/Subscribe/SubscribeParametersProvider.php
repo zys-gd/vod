@@ -51,11 +51,12 @@ class SubscribeParametersProvider
     public function provideParameters(Subscription $subscription, array $additionalInfo): ProcessRequestParameters
     {
         $subscriptionPack = $subscription->getSubscriptionPack();
+        $carrier = $subscription->getSubscriptionPack()->getCarrier();
 
         $parameters                         = $this->parametersProvider->prepareRequestParameters($subscription);
         $parameters->additionalData         = $additionalInfo;
         $parameters->chargeProduct          = $subscription->getUuid();
-        $parameters->zeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isAvailable($subscriptionPack);
+        $parameters->zeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isAvailable($carrier);
         $promotionalTierId                  = $subscription->getPromotionTierId();
         $isProviderManaged                  = $subscriptionPack->isProviderManagedSubscriptions();
 

@@ -3,7 +3,7 @@
 namespace SubscriptionBundle\Service;
 
 use App\Domain\Entity\Campaign;
-use SubscriptionBundle\Entity\SubscriptionPack;
+use IdentificationBundle\Entity\CarrierInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
@@ -22,24 +22,36 @@ class ZeroCreditSubscriptionChecking
     private $session;
 
     /**
+     * @var SubscriptionPackProvider
+     */
+    private $subscriptionPackProvider;
+
+    /**
      * ZeroCreditSubscriptionChecking constructor
      *
      * @param CampaignExtractor $campaignExtractor
      * @param SessionInterface $session
+     * @param SubscriptionPackProvider $subscriptionPackProvider
      */
-    public function __construct(CampaignExtractor $campaignExtractor, SessionInterface $session)
-    {
+    public function __construct(
+        CampaignExtractor $campaignExtractor,
+        SessionInterface $session,
+        SubscriptionPackProvider $subscriptionPackProvider
+    ) {
         $this->campaignExtractor = $campaignExtractor;
         $this->session = $session;
+        $this->subscriptionPackProvider = $subscriptionPackProvider;
     }
 
     /**
-     * @param SubscriptionPack $subscriptionPack
+     * @param CarrierInterface $carrier
      *
      * @return bool
      */
-    public function isAvailable(SubscriptionPack $subscriptionPack): bool
+    public function isAvailable(CarrierInterface $carrier): bool
     {
+        $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPackFromCarrier($carrier);
+
         if ($subscriptionPack->isZeroCreditSubAvailable()) {
             /** @var Campaign $campaign */
             $campaign = $this->campaignExtractor->getCampaignFromSession($this->session);

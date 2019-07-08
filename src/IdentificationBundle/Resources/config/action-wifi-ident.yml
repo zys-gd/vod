@@ -52,7 +52,6 @@ services:
     IdentificationBundle\WifiIdentification\Common\RequestProvider:
         arguments:
             - '@SubscriptionBundle\Service\ZeroCreditSubscriptionChecking'
-            - '@SubscriptionBundle\Service\SubscriptionPackProvider'
 
     IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeResolver:
         arguments:

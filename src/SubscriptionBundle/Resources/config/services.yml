@@ -127,6 +127,7 @@ services:
         arguments:
             - '@SubscriptionBundle\Service\CampaignExtractor'
             - '@session'
+            - '@SubscriptionBundle\Service\SubscriptionPackProvider'
 
 parameters:
     subscription.subscription.class: SubscriptionBundle\Entity\SubscriptionPack

@@ -221,7 +221,7 @@ class CommonFlowHandler
 
     /**
      * @param Request      $request
-     * @param User         $User
+     * @param User         $user
      * @param Subscription $subscription
      * @param              $subscriber
      *
@@ -231,13 +231,13 @@ class CommonFlowHandler
      */
     private function handleResubscribeAttempt(
         Request $request,
-        User $User,
+        User $user,
         Subscription $subscription,
         HasCommonFlow $subscriber
     ): Response
     {
 
-        $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($User);
+        $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
         $subpackId        = $subscriptionPack->getUuid();
         $subpackName      = $subscriptionPack->getName();
 
@@ -252,7 +252,7 @@ class CommonFlowHandler
                 'carrierName' => $subpackName
             ]);
 
-            $additionalData = $subscriber->getAdditionalSubscribeParams($request, $User);
+            $additionalData = $subscriber->getAdditionalSubscribeParams($request, $user);
             $result         = $this->subscriber->resubscribe($subscription, $subscriptionPack, $additionalData);
 
         }
@@ -272,7 +272,7 @@ class CommonFlowHandler
 
 
         if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
-            $isAffTracked = $subscriber->isAffiliateTrackedForResub($result);
+            $isAffTracked = $subscriber->isAffiliateTrackedForResub($result, $user);
         }
         else {
             $isAffTracked = ($result->isSuccessful() && $result->isFinal());
@@ -300,28 +300,28 @@ class CommonFlowHandler
         $subscriber->afterProcess($subscription, $result);
         $this->entitySaveHelper->saveAll();
 
-        return $this->commonResponseCreator->createCommonHttpResponse($request, $User);
+        return $this->commonResponseCreator->createCommonHttpResponse($request, $user);
     }
 
     /**
      * @param Request       $request
-     * @param User          $User
+     * @param User          $user
      * @param HasCommonFlow $subscriber
      *
      * @return null|Response
      * @throws ActiveSubscriptionPackNotFound
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    private function handleSubscribe(Request $request, User $User, HasCommonFlow $subscriber): Response
+    private function handleSubscribe(Request $request, User $user, HasCommonFlow $subscriber): Response
     {
-        $additionalData   = $subscriber->getAdditionalSubscribeParams($request, $User);
-        $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($User);
+        $additionalData   = $subscriber->getAdditionalSubscribeParams($request, $user);
+        $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
 
         /** @var ProcessResult $result */
-        list($newSubscription, $result) = $this->subscriber->subscribe($User, $subscriptionPack, $additionalData);
+        list($newSubscription, $result) = $this->subscriber->subscribe($user, $subscriptionPack, $additionalData);
 
         if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
-            $isAffTracked = $subscriber->isAffiliateTrackedForSub($result);
+            $isAffTracked = $subscriber->isAffiliateTrackedForSub($result, $user);
         }
         else {
             $isAffTracked = ($result->isSuccessful() && $result->isFinal());
@@ -347,11 +347,11 @@ class CommonFlowHandler
         $this->entitySaveHelper->saveAll();
 
         if ($subscriber instanceof HasCustomResponses &&
-            $customResponse = $subscriber->createResponseForSuccessfulSubscribe($request, $User, $newSubscription)) {
+            $customResponse = $subscriber->createResponseForSuccessfulSubscribe($request, $user, $newSubscription)) {
             return $customResponse;
         }
 
-        return $this->commonResponseCreator->createCommonHttpResponse($request, $User);
+        return $this->commonResponseCreator->createCommonHttpResponse($request, $user);
 
     }
 

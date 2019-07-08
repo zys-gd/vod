@@ -11,7 +11,9 @@ use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\ConsentPageFlow\HasConsentPageFlow;
+use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomAffiliateTrackingRules;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerInterface;
+use SubscriptionBundle\Service\ZeroCreditSubscriptionChecking;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +22,7 @@ use Symfony\Component\Routing\RouterInterface;
 /**
  * Class OrangeEGSubscriptionHandler
  */
-class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasConsentPageFlow
+class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasConsentPageFlow, HasCustomAffiliateTrackingRules
 {
     /**
      * @var LocalExtractor
@@ -38,20 +40,28 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
     private $router;
 
     /**
+     * @var ZeroCreditSubscriptionChecking
+     */
+    private $zeroCreditSubscriptionChecking;
+
+    /**
      * VodafoneEGSubscriptionHandler constructor
      *
      * @param LocalExtractor $localExtractor
      * @param IdentificationDataStorage $identificationDataStorage
      * @param RouterInterface $router
+     * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
      */
     public function __construct(
         LocalExtractor $localExtractor,
         IdentificationDataStorage $identificationDataStorage,
-        RouterInterface $router
+        RouterInterface $router,
+        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
     ) {
         $this->localExtractor = $localExtractor;
         $this->identificationDataStorage = $identificationDataStorage;
         $this->router = $router;
+        $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
     }
 
     /**
@@ -109,6 +119,37 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
         }
 
         return new RedirectResponse($redirectUrl);
+    }
+
+    /**
+     * @param ProcessResult $result
+     * @param User $user
+     *
+     * @return bool
+     */
+    public function isAffiliateTrackedForSub(ProcessResult $result, User $user): bool
+    {
+        $carrier = $user->getCarrier();
+
+        $isSuccess = $result->isFailedOrSuccessful() && $result->isFinal();
+        $isZeroCreditsSub = $this->zeroCreditSubscriptionChecking->isAvailable($carrier);
+
+        if ($isZeroCreditsSub) {
+            return $isSuccess && $carrier->getTrackAffiliateOnZeroCreditSub();
+        } else {
+            return $isSuccess;
+        }
+    }
+
+    /**
+     * @param ProcessResult $result
+     * @param User $user
+     *
+     * @return bool
+     */
+    public function isAffiliateTrackedForResub(ProcessResult $result, User $user): bool
+    {
+        return false;
     }
 
     /**

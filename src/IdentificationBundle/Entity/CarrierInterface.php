@@ -2,6 +2,9 @@
 
 namespace IdentificationBundle\Entity;
 
+/**
+ * Interface CarrierInterface
+ */
 interface CarrierInterface
 {
     /**
@@ -79,12 +82,17 @@ interface CarrierInterface
     public function getIsCampaignsOnPause(): bool;
 
     /**
-     * Get resubAllowed
-     *
      * @return boolean
      */
     public function getResubAllowed(): bool;
 
+    /**
+     * @return integer
+     */
     public function getSubscribeAttempts();
 
+    /**
+     * @return bool
+     */
+    public function getTrackAffiliateOnZeroCreditSub(): bool;
 }

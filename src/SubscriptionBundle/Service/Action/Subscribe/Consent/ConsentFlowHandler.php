@@ -193,7 +193,7 @@ class ConsentFlowHandler
         list($newSubscription, $result) = $this->subscriber->subscribe($user, $subscriptionPack, $additionalData);
 
         if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
-            $isAffTracked = $subscriber->isAffiliateTrackedForSub($result);
+            $isAffTracked = $subscriber->isAffiliateTrackedForSub($result, $user);
         } else {
             $isAffTracked = ($result->isSuccessful() && $result->isFinal());
         }
@@ -262,7 +262,7 @@ class ConsentFlowHandler
         }
 
         if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
-            $isAffTracked = $subscriber->isAffiliateTrackedForResub($result);
+            $isAffTracked = $subscriber->isAffiliateTrackedForResub($result, $user);
         } else {
             $isAffTracked = ($result->isSuccessful() && $result->isFinal());
             $this->logger->debug('Is need to track affiliate log?', [

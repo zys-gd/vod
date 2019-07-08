@@ -4,7 +4,6 @@ namespace IdentificationBundle\WifiIdentification\Common;
 
 use IdentificationBundle\Entity\CarrierInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters;
-use SubscriptionBundle\Service\SubscriptionPackProvider;
 use SubscriptionBundle\Service\ZeroCreditSubscriptionChecking;
 
 /**
@@ -18,22 +17,13 @@ class RequestProvider
     private $zeroCreditSubscriptionChecking;
 
     /**
-     * @var SubscriptionPackProvider
-     */
-    private $subscriptionPackProvider;
-
-    /**
      * RequestProvider constructor
      *
      * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
-     * @param SubscriptionPackProvider $subscriptionPackProvider
      */
-    public function __construct(
-        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking,
-        SubscriptionPackProvider $subscriptionPackProvider
-    ) {
+    public function __construct(ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking)
+    {
         $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
-        $this->subscriptionPackProvider = $subscriptionPackProvider;
     }
 
     /**
@@ -52,7 +42,6 @@ class RequestProvider
     ): ProcessRequestParameters
     {
         $parameters = new ProcessRequestParameters();
-        $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPackFromCarrier($carrier);
 
         $parameters->client = 'vod-store';
         $parameters->additionalData = array_merge(
@@ -61,7 +50,7 @@ class RequestProvider
                 'msisdn' => $msisdn,
                 'carrier' => $carrier->getBillingCarrierId(),
                 'op_id' => $carrier->getOperatorId(),
-                'zero_credit_sub_available' => $this->zeroCreditSubscriptionChecking->isAvailable($subscriptionPack)
+                'zero_credit_sub_available' => $this->zeroCreditSubscriptionChecking->isAvailable($carrier)
             ],
             $additionalParameters
         );
@@ -87,7 +76,6 @@ class RequestProvider
     ): ProcessRequestParameters
     {
         $parameters = new ProcessRequestParameters();
-        $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPackFromCarrier($carrier);
 
         $parameters->client = 'vod-store';
         $parameters->additionalData = array_merge(
@@ -97,7 +85,7 @@ class RequestProvider
                 'op_id' => $carrier->getOperatorId(),
                 'pin_code' => $pinCode,
                 'client_user' => $clientUser,
-                'zero_credit_sub_available' => $this->zeroCreditSubscriptionChecking->isAvailable($subscriptionPack)
+                'zero_credit_sub_available' => $this->zeroCreditSubscriptionChecking->isAvailable($carrier)
             ],
             $additionalParameters
         );
