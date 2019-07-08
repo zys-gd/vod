@@ -162,6 +162,7 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
             ->add('isCapAlertDispatch', 'boolean', [
                 'label' => 'Is email sent today'
             ])
+            ->add('counter')
             ->add('_action', null, [
                 'actions' => [
                     'show'   => [],
