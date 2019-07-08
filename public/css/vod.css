@@ -25,6 +25,14 @@ body {
     list-style-type: none;
 }
 
+.right-text-direction .slick-slider {
+    direction: LTR !important;
+}
+
+.right-text-direction .slick-slider div {
+    direction: LTR !important;
+}
+
 a button {
     border: none;
     font-family: 'Kanit', sans-serif;
