@@ -81,6 +81,8 @@ class BlackListAdmin extends AbstractAdmin
             ->add('alias');
     }
 
+
+
     /**
      * @param ListMapper $listMapper
      */
@@ -101,7 +103,6 @@ class BlackListAdmin extends AbstractAdmin
                 ]
             ]);
     }
-
     /**
      * @param FormMapper $formMapper
      */
