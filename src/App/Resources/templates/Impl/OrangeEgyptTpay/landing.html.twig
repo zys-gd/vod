@@ -7,18 +7,21 @@
 {% import "@App/Components/Blocks/Footer/annotation.html.twig" as  annotation %}
 
 {% block header_content %}
-{#    {{ header.render() }}#}
+    {% if isWifiFlow() %}
+        {{ header.render() }}
+    {% endif %}
 {% endblock header_content %}
 
 {% block body %}
     <div class="d-flex flex-column align-items-center justify-content-top w-100" {% if background %} style="background: {{ background }}" {% endif %}>
 
-        <div class="d-flex flex-column align-items-center justify-content-center">
-
+        {% if not isWifiFlow() %}
             <div class="d-flex align-items-start justify-content-center mb-n-2 lp-sub-btn lp-sub-btn-top">
                 {{ subscribe_buttons.render('buttons.subscribe', 'btn-lp_big') }}
             </div>
+        {% endif %}
 
+        <div class="d-flex flex-column align-items-center justify-content-center">
             {% if campaignBanner %}
                 {{ banner.render(campaignBanner, 'banner', 'w-100', 0) }}
             {% else %}
