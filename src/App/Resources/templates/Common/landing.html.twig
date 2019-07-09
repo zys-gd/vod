@@ -8,7 +8,7 @@
 {% import "@App/Components/subscribe_buttons.html.twig" as subscribe_buttons %}
 
 {% block header_content %}
-    {{ header.render() }}
+{#    {{ header.render() }}#}
 {% endblock header_content %}
 
 {% block stylesheets %}
@@ -26,13 +26,13 @@
             </div>
         {% endif %}
 
-        <div class="d-flex flex-column align-items-center justify-content-center">
-            {% if not isWifiFlow() %}
-                <div class="d-flex align-items-start justify-content-center mb-n-2 lp-sub-btn lp-sub-btn-top">
-                    {{ subscribe_buttons.render('buttons.subscribe', 'btn-lp_big') }}
-                </div>
-            {% endif %}
+        {% if not isWifiFlow() %}
+            <div class="d-flex align-items-start justify-content-center mb-n-2 lp-sub-btn lp-sub-btn-top">
+                {{ subscribe_buttons.render('buttons.subscribe', 'btn-lp_big') }}
+            </div>
+        {% endif %}
 
+        <div class="d-flex flex-column align-items-center justify-content-center">
             {% if campaignBanner %}
                 {{ banner.render(campaignBanner, 'banner', 'w-100', 1) }}
             {% else %}

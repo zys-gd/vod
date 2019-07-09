@@ -121,17 +121,17 @@
 .lp-sub-btn button {
     background-image: linear-gradient(#00da33, #00da33, #015c18);
     border-bottom: none;
+    font-size: 41px;
 }
 
 .lp-sub-btn-top {
     position: relative;
-    top: 4%;
-    height: 0;
+    margin: 10px;
 }
 
 .lp-sub-btn-bottom {
     position: relative;
-    bottom: 18px;
+    margin: 10px;
 }
 
 .sub-info {
