@@ -4,5 +4,6 @@ services:
             - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
             - '@session'
             - '@App\Domain\Repository\CarrierRepository'
+            - '@IdentificationBundle\Identification\Service\PassthroughChecker'
         tags:
             - { name: twig.extension }

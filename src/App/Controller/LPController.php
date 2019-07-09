@@ -16,6 +16,7 @@ use IdentificationBundle\Identification\Exception\MissingCarrierException;
 use IdentificationBundle\Identification\Service\CarrierSelector;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\PassthroughChecker;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -109,26 +110,31 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var SubscribeUrlResolver
      */
     private $subscribeUrlResolver;
+    /**
+     * @var PassthroughChecker
+     */
+    private $passthroughChecker;
 
     /**
      * LPController constructor.
      *
-     * @param ContentStatisticSender $contentStatisticSender
-     * @param CampaignRepository $campaignRepository
-     * @param LandingPageACL $landingPageAccessResolver
-     * @param string $imageBaseUrl
-     * @param CarrierOTPVerifier $OTPVerifier
-     * @param string $defaultRedirectUrl
-     * @param TemplateConfigurator $templateConfigurator
-     * @param IdentificationDataStorage $dataStorage
-     * @param SubscriptionLimiter $limiter
-     * @param SubscriptionLimitNotifier $subscriptionLimitNotifier
+     * @param ContentStatisticSender     $contentStatisticSender
+     * @param CampaignRepository         $campaignRepository
+     * @param LandingPageACL             $landingPageAccessResolver
+     * @param string                     $imageBaseUrl
+     * @param CarrierOTPVerifier         $OTPVerifier
+     * @param string                     $defaultRedirectUrl
+     * @param TemplateConfigurator       $templateConfigurator
+     * @param IdentificationDataStorage  $dataStorage
+     * @param SubscriptionLimiter        $limiter
+     * @param SubscriptionLimitNotifier  $subscriptionLimitNotifier
      * @param CarrierRepositoryInterface $carrierRepository
-     * @param VisitTracker $visitTracker
-     * @param VisitNotifier $notifier
-     * @param LoggerInterface $logger
-     * @param CarrierSelector $carrierSelector
-     * @param SubscribeUrlResolver $subscribeUrlResolver
+     * @param VisitTracker               $visitTracker
+     * @param VisitNotifier              $notifier
+     * @param LoggerInterface            $logger
+     * @param CarrierSelector            $carrierSelector
+     * @param SubscribeUrlResolver       $subscribeUrlResolver
+     * @param PassthroughChecker         $passthroughChecker
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
@@ -146,7 +152,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         VisitNotifier $notifier,
         LoggerInterface $logger,
         CarrierSelector $carrierSelector,
-        SubscribeUrlResolver $subscribeUrlResolver
+        SubscribeUrlResolver $subscribeUrlResolver,
+        PassthroughChecker $passthroughChecker
     )
     {
         $this->contentStatisticSender    = $contentStatisticSender;
@@ -165,6 +172,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->logger                    = $logger;
         $this->carrierSelector           = $carrierSelector;
         $this->subscribeUrlResolver      = $subscribeUrlResolver;
+        $this->passthroughChecker        = $passthroughChecker;
     }
 
 
@@ -264,20 +272,22 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      */
     public function handleCarrierSelect(Request $request)
     {
-        if (!$carrierId = $request->get('carrier_id', '')) {
+        if (!$billingCarrierId = $request->get('carrier_id', '')) {
             $this->carrierSelector->removeCarrier();
 
             return $this->getSimpleJsonResponse('');
         }
 
         try {
-            $this->carrierSelector->selectCarrier((int)$carrierId);
-            $offerTemplate = $this->templateConfigurator->getTemplate('landing_offer', $carrierId);
+            $this->carrierSelector->selectCarrier((int)$billingCarrierId);
+            $offerTemplate = $this->templateConfigurator->getTemplate('landing_offer', $billingCarrierId);
+            $carrier       = $this->carrierRepository->findOneByBillingId($billingCarrierId);
 
             $data = [
-                'success'    => true,
-                'annotation' => $this->renderView('@App/Components/Ajax/annotation.html.twig'),
-                'offer'      => $this->renderView($offerTemplate)
+                'success'     => true,
+                'annotation'  => $this->renderView('@App/Components/Ajax/annotation.html.twig'),
+                'offer'       => $this->renderView($offerTemplate),
+                'passthrough' => $this->passthroughChecker->isCarrierPassthrough($carrier)
             ];
 
             return $this->getSimpleJsonResponse('Successfully selected', 200, [], $data);

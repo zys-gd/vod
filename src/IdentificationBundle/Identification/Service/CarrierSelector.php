@@ -35,13 +35,13 @@ class CarrierSelector
         $this->identificationDataStorage = $identificationDataStorage;
     }
 
-    public function selectCarrier(int $carrierId): void
+    public function selectCarrier(int $billingCarrierId): void
     {
-        if (!$this->repository->findOneByBillingId($carrierId)) {
+        if (!$this->repository->findOneByBillingId($billingCarrierId)) {
             throw new MissingCarrierException('Carrier not found');
         }
 
-        $this->identificationDataStorage->storeCarrierId($carrierId);
+        $this->identificationDataStorage->storeCarrierId($billingCarrierId);
     }
 
     public function removeCarrier(): void

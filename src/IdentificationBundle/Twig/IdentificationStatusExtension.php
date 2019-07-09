@@ -4,8 +4,11 @@ namespace IdentificationBundle\Twig;
 
 use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CarrierRepository;
+use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
+use IdentificationBundle\Identification\Handler\PassthroughFlow\HasPassthroughFlow;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\PassthroughChecker;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -27,22 +30,30 @@ class IdentificationStatusExtension extends AbstractExtension
      * @var CarrierRepository
      */
     private $carrierRepository;
+    /**
+     * @var PassthroughChecker
+     */
+    private $passthroughChecker;
 
     /**
      * IdentificationStatusExtension constructor.
      *
      * @param IdentificationDataStorage $dataStorage
-     * @param SessionInterface $session
-     * @param CarrierRepository $carrierRepository
+     * @param SessionInterface          $session
+     * @param CarrierRepository         $carrierRepository
+     * @param PassthroughChecker        $passthroughChecker
      */
     public function __construct(
         IdentificationDataStorage $dataStorage,
         SessionInterface $session,
-        CarrierRepository $carrierRepository
-    ) {
-        $this->dataStorage = $dataStorage;
-        $this->session = $session;
-        $this->carrierRepository = $carrierRepository;
+        CarrierRepository $carrierRepository,
+        PassthroughChecker $passthroughChecker
+    )
+    {
+        $this->dataStorage        = $dataStorage;
+        $this->session            = $session;
+        $this->carrierRepository  = $carrierRepository;
+        $this->passthroughChecker = $passthroughChecker;
     }
 
     /**
@@ -75,6 +86,8 @@ class IdentificationStatusExtension extends AbstractExtension
             }),
 
             new TwigFunction('isOtp', [$this, 'isOtp']),
+
+            new TwigFunction('isCarrierPassthrough', [$this, 'isCarrierPassthrough']),
         ];
     }
 
@@ -93,7 +106,7 @@ class IdentificationStatusExtension extends AbstractExtension
     public function getCarrierId(): ?int
     {
         $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
-        return empty($ispDetectionData['carrier_id']) ? null : (int) $ispDetectionData['carrier_id'];
+        return empty($ispDetectionData['carrier_id']) ? null : (int)$ispDetectionData['carrier_id'];
     }
 
     /**
@@ -108,5 +121,20 @@ class IdentificationStatusExtension extends AbstractExtension
             return $carrier->isConfirmationClick();
         }
         return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCarrierPassthrough(): bool
+    {
+        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
+        try {
+            $billingCarrierId = (int)$ispDetectionData['carrier_id'];
+            $carrier          = $this->carrierRepository->findOneByBillingId($billingCarrierId);
+            return $this->passthroughChecker->isCarrierPassthrough($carrier);
+        } catch (\Throwable $e) {
+            return false;
+        }
     }
 }
