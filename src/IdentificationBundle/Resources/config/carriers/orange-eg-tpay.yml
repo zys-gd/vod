@@ -13,6 +13,7 @@ services:
             - '@ExtrasBundle\Utils\LocalExtractor'
             - '@SubscriptionBundle\Repository\SubscriptionRepository'
             - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@SubscriptionBundle\Service\ZeroCreditSubscriptionChecking'
         tags:
             - { name: identification.wifi_identification_handler }
 

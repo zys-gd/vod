@@ -3,6 +3,7 @@
 namespace IdentificationBundle\Carriers\VodafoneEGTpay;
 
 use App\Domain\Constants\ConstBillingCarrierId;
+use App\Domain\Entity\Carrier;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use ExtrasBundle\Utils\LocalExtractor;
@@ -19,6 +20,7 @@ use IdentificationBundle\WifiIdentification\Handler\HasCustomPinResendRules;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinVerifyRules;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
 use SubscriptionBundle\Repository\SubscriptionRepository;
+use SubscriptionBundle\Service\ZeroCreditSubscriptionChecking;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -62,6 +64,11 @@ class VodafoneEGWifiIdentificationHandler implements
     private $identificationDataStorage;
 
     /**
+     * @var ZeroCreditSubscriptionChecking
+     */
+    private $zeroCreditSubscriptionChecking;
+
+    /**
      * VodafonePKWifiIdentificationHandler constructor
      *
      * @param UserRepository $userRepository
@@ -70,6 +77,7 @@ class VodafoneEGWifiIdentificationHandler implements
      * @param LocalExtractor $localExtractor
      * @param SubscriptionRepository $subscriptionRepository
      * @param IdentificationDataStorage $identificationDataStorage
+     * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
      */
     public function __construct(
         UserRepository $userRepository,
@@ -77,7 +85,8 @@ class VodafoneEGWifiIdentificationHandler implements
         RouterInterface $router,
         LocalExtractor $localExtractor,
         SubscriptionRepository $subscriptionRepository,
-        IdentificationDataStorage $identificationDataStorage
+        IdentificationDataStorage $identificationDataStorage,
+        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
     ) {
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
@@ -85,6 +94,7 @@ class VodafoneEGWifiIdentificationHandler implements
         $this->localExtractor = $localExtractor;
         $this->subscriptionRepository = $subscriptionRepository;
         $this->identificationDataStorage = $identificationDataStorage;
+        $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
     }
 
     /**
@@ -143,12 +153,23 @@ class VodafoneEGWifiIdentificationHandler implements
     public function getAdditionalPinVerifyParams(PinRequestResult $pinRequestResult): array
     {
         $data = $pinRequestResult->getRawData();
+        $carrierRepository = $this->entityManager->getRepository(Carrier::class);
 
-        if (empty($data['subscription_contract_id'])) {
+        $isZeroCreditSub = $this
+            ->zeroCreditSubscriptionChecking
+            ->isAvailable($carrierRepository->findOneByBillingId(ConstBillingCarrierId::VODAFONE_EGYPT_TPAY));
+
+        if (empty($data['subscription_contract_id']) || ($isZeroCreditSub && empty($data['transactionId']))) {
             throw new WifiIdentConfirmException("Can't process pin verification. Missing required parameters");
         }
 
-        return ['client_user' => $data['subscription_contract_id']];
+        $additionalData = ['client_user' => $data['subscription_contract_id']];
+
+        if ($isZeroCreditSub) {
+            $additionalData['transactionId'] = $data['transactionId'];
+        }
+
+        return $additionalData;
     }
 
     /**
