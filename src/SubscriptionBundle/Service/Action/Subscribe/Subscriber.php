@@ -168,13 +168,6 @@ class Subscriber
         $subscription = $this->createPendingSubscription($user, $plan);
         $subscription->setAffiliateToken(json_encode($var));
 
-
-        if ($subscription->getSubscriptionPack()->isFirstSubscriptionPeriodIsFree() &&
-            !$subscription->getSubscriptionPack()->isProviderManagedSubscriptions()) {
-            $tierIdWithZeroValue = $this->getPriceTierIdWithZeroValue($subscription->getSubscriptionPack()->getCarrier());
-            $subscription->setPromotionTierId($tierIdWithZeroValue);
-        }
-
         try {
 
             if ($this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription)) {
