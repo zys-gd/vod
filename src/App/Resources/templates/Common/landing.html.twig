@@ -8,7 +8,9 @@
 {% import "@App/Components/subscribe_buttons.html.twig" as subscribe_buttons %}
 
 {% block header_content %}
-{#    {{ header.render() }}#}
+    {% if isWifiFlow() %}
+        {{ header.render() }}
+    {% endif %}
 {% endblock header_content %}
 
 {% block stylesheets %}
