@@ -20,5 +20,6 @@ services:
             - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
             - '@SubscriptionBundle\Affiliate\Service\AffiliateSender'
             - '@doctrine.orm.entity_manager'
+            - '@SubscriptionBundle\Service\ZeroCreditSubscriptionChecking'
         tags:
             - { name: subscription.callback_carrier_handler, type: renew }
