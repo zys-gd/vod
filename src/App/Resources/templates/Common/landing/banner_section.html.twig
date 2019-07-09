@@ -1,0 +1,20 @@
+
+{% macro render(campaignBanner) %}
+    {% import "@App/Components/Blocks/Main/banner.html.twig" as  banner %}
+
+    <div class="d-flex align-items-center justify-content-center">
+        {% if isClickableSubImage() %}
+            {% if campaignBanner %}
+                {{ banner.render(campaignBanner, 'banner', 'w-100', 1) }}
+            {% else %}
+                {{ banner.render(asset('img/lp/lp_subscribe_video.png'), 'banner', 'w-100', 1) }}
+            {% endif %}
+        {% else %}
+            {% if campaignBanner %}
+                <img src="{{ campaignBanner }}" class="w-100" alt="banner">
+            {% else %}
+                <img src="{{ asset('img/lp/lp_subscribe_video.png') }}" class="w-100" alt="banner">
+            {% endif %}
+        {% endif %}
+    </div>
+{% endmacro %}

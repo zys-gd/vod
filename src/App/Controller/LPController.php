@@ -250,7 +250,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             $this->OTPVerifier->forceWifi($session);
         }
 
-        $template = $this->templateConfigurator->getTemplate('landing', (int)$carrierId);
+
+        $template = $this->templateConfigurator->getLPTemplate('landing', (int)$carrierId, true);
 
         return $this->render($template, [
             'campaignBanner' => $campaignBanner,
