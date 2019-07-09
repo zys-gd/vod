@@ -82,11 +82,13 @@ class BlackListAdmin extends AbstractAdmin
     }
 
 
+
     /**
      * @param ListMapper $listMapper
      */
     protected function configureListFields(ListMapper $listMapper)
     {
+
         $listMapper
             ->add('uuid')
             ->add('billingCarrierId')
