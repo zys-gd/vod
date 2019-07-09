@@ -136,6 +136,7 @@ class CarrierAdmin extends AbstractAdmin
             ->add('subscriptionPeriod')
             ->add('resubAllowed')
             ->add('isCampaignsOnPause')
+            ->add('trackAffiliateOnZeroCreditSub')
             ->add('isLpOff')
             ->add('isClickableSubImage', null, [
                 'label' => 'Clickable image'
@@ -179,6 +180,7 @@ class CarrierAdmin extends AbstractAdmin
             ->add('redirectUrl', UrlType::class, ['required' => false])
             ->add('resubAllowed')
             ->add('isCampaignsOnPause')
+            ->add('trackAffiliateOnZeroCreditSub')
             ->add('isUnlimitedSubscriptionAttemptsAllowed', null, [
                 'attr' => ["class" => "unlimited-games"]
             ])
@@ -226,6 +228,7 @@ class CarrierAdmin extends AbstractAdmin
             ->add('trialPeriod')
             ->add('subscriptionPeriod')
             ->add('resubAllowed')
+            ->add('trackAffiliateOnZeroCreditSub')
             ->add('isCampaignsOnPause')
             ->add('isUnlimitedSubscriptionAttemptsAllowed')
             ->add('subscribeAttempts')
