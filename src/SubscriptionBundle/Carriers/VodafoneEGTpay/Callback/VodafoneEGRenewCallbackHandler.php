@@ -12,6 +12,7 @@ use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerInterface;
 use SubscriptionBundle\Service\Callback\Impl\HasCommonFlow;
+use SubscriptionBundle\Service\ZeroCreditSubscriptionChecking;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -40,23 +41,31 @@ class VodafoneEGRenewCallbackHandler implements HasCommonFlow, CarrierCallbackHa
     private $entityManager;
 
     /**
+     * @var ZeroCreditSubscriptionChecking
+     */
+    private $zeroCreditSubscriptionChecking;
+
+    /**
      * OrangeEGCallbackHandler constructor
      *
      * @param UserRepository $userRepository
      * @param UserInfoMapper $userInfoMapper
      * @param AffiliateSender $affiliateSender
      * @param EntityManagerInterface $entityManager
+     * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
      */
     public function __construct(
         UserRepository $userRepository,
         UserInfoMapper $userInfoMapper,
         AffiliateSender $affiliateSender,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
     ) {
         $this->userRepository = $userRepository;
         $this->userInfoMapper = $userInfoMapper;
         $this->affiliateSender = $affiliateSender;
         $this->entityManager = $entityManager;
+        $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
     }
 
     /**
@@ -78,8 +87,14 @@ class VodafoneEGRenewCallbackHandler implements HasCommonFlow, CarrierCallbackHa
     public function afterProcess(Subscription $subscription, User $user, ProcessResult $processResponse)
     {
         $affiliateToken = $subscription->getAffiliateToken();
+        $carrier = $user->getCarrier();
 
-        if ($processResponse->isSuccessful() && !empty($affiliateToken['cid']) && empty($affiliateToken['isTracked'])) {
+        if ($processResponse->isSuccessful()
+            && $this->zeroCreditSubscriptionChecking->isAvailable($carrier)
+            && !$carrier->getTrackAffiliateOnZeroCreditSub()
+            && !empty($affiliateToken['cid'])
+            && empty($affiliateToken['isTracked'])
+        ) {
             $userInfo = $this->userInfoMapper->mapFromUser($user);
             $this->affiliateSender->checkAffiliateEligibilityAndSendEvent($subscription, $userInfo);
 
