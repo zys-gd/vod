@@ -23,6 +23,7 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -76,6 +77,9 @@ class CampaignAdmin extends AbstractAdmin
      */
     public function prePersist($obj)
     {
+        $adminUser = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
+        $obj->setDateCreated(date_create());
+        $obj->setCreator($adminUser->getUsername());
         $this->preUpdate($obj);
     }
 
@@ -133,6 +137,7 @@ class CampaignAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('uuid')
+            ->add('mainCategory', null, ['label' => 'Category'])
             ->add('affiliate')
             ->add('carriers', null, [], null, ['multiple' => true])
             ->add('bgColor')
@@ -140,6 +145,7 @@ class CampaignAdmin extends AbstractAdmin
             ->add('textColor')
             ->add('isPause')
             ->add('isLpOff')
+            ->add('isClickableSubImage')
             ->add('zeroCreditSubAvailable');
     }
 
@@ -150,6 +156,9 @@ class CampaignAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('uuid')
+            ->add('mainCategory', null, [
+                'label' => 'Category'
+            ])
             ->add('affiliate', null, [
                 'sortable'=>true,
                 'sort_field_mapping'=> ['fieldName'=>'name'],
@@ -168,6 +177,9 @@ class CampaignAdmin extends AbstractAdmin
             ])
             ->add('isLpOff')
             ->add('zeroCreditSubAvailable')
+            ->add('isClickableSubImage', null, [
+                'label' => 'Clickable image'
+            ])
             ->add('carriers')
             ->add('_action', null, [
                 'actions' => [
@@ -203,6 +215,9 @@ class CampaignAdmin extends AbstractAdmin
             ->add('isPause', null,
                 ['label' => 'Pause'])
             ->add('zeroCreditSubAvailable')
+            ->add('isClickableSubImage', null, [
+                'label' => 'Clickable image'
+            ])
             ->add('pausedCampaigns', null, [
                 'label' => 'Paused by Carrier',
                 'template' => '@Admin/Campaign/paused_campaigns.html.twig',
@@ -276,6 +291,9 @@ class CampaignAdmin extends AbstractAdmin
                 'label' => 'Pause',
             ])
             ->add('zeroCreditSubAvailable')
+            ->add('isClickableSubImage', null, [
+                'label' => 'Clickable image'
+            ])
             ->add('isLpOff', ChoiceFieldMaskType::class, [
                 'choices'  => [
                     'No' => 0,

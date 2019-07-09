@@ -57,4 +57,14 @@ interface AffiliateInterface
      * @return ConstraintByAffiliate|null
      */
     public function getConstraint(string $capType, int $billingCarrierId): ?ConstraintByAffiliate;
+
+    /**
+     * @return bool
+     */
+    public function isUniqueFlow(): bool;
+
+    /**
+     * @return string|null
+     */
+    public function getUniqueParameter(): ?string;
 }

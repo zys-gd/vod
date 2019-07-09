@@ -43,19 +43,12 @@ class Carrier implements CarrierInterface, HasUuid
      */
     private $published = false;
 
-    private $lpOtp = null;
     /**
      * former lpOtp
      * is needed subscribe confirmation click
      * @var bool
      */
     private $isConfirmationClick = false;
-
-    /**
-     * Is carrier supports wi-fi flow identification via sms pin code
-     * @var bool
-     */
-    private $pinIdentSupport;
 
     /**
      * Can be store|carrier
@@ -147,6 +140,11 @@ class Carrier implements CarrierInterface, HasUuid
      * @var bool
      */
     private $isLpOff = false;
+
+    /**
+     * @var bool
+     */
+    private $isClickableSubImage = true;
 
     /**
      * Carrier constructor.
@@ -389,35 +387,6 @@ class Carrier implements CarrierInterface, HasUuid
     public function isPublished()
     {
         return $this->published;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getPinIdentSupport()
-    {
-        return $this->pinIdentSupport;
-    }
-
-    /**
-     * Alias
-     * @return bool
-     */
-    public function isPinIdentSupport()
-    {
-        return $this->getPinIdentSupport();
-    }
-
-    /**
-     * @param bool $pinIdentSupport
-     *
-     * @return Carrier
-     */
-    public function setPinIdentSupport(bool $pinIdentSupport): Carrier
-    {
-        $this->pinIdentSupport = $pinIdentSupport;
-
-        return $this;
     }
 
     /**
@@ -729,5 +698,21 @@ class Carrier implements CarrierInterface, HasUuid
     public function hasAffiliate(AffiliateInterface $affiliate): bool
     {
         return $this->affiliates->contains($affiliate);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isClickableSubImage(): bool
+    {
+        return $this->isClickableSubImage;
+    }
+
+    /**
+     * @param bool $isClickableSubImage
+     */
+    public function setIsClickableSubImage(bool $isClickableSubImage): void
+    {
+        $this->isClickableSubImage = $isClickableSubImage;
     }
 }

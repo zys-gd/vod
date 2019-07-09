@@ -67,10 +67,21 @@ App\Domain\Entity\Campaign:
             type: boolean
             options:
                 default: false
+        isClickableSubImage:
+            type: boolean
+            options:
+                default: true
         zeroCreditSubAvailable:
             type: boolean
             options:
                 default: 0
+        dateCreated:
+            type: datetime
+            nullable: true
+        creator:
+            type: string
+            nullable: true
+
 
     lifecycleCallbacks: {  }
 

@@ -72,12 +72,6 @@ class SubscriptionExtension extends ConfigurableExtension
         $loader->load('vodafone-eg-tpay.yml');
         $loader->load('orange-eg-tpay.yml');
 
-
-        $definition = $container->getDefinition('SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter');
-
-        $definition->replaceArgument(5, $mergedConfig['blacklisted_user_route']);
-
-
         $definition = $container->getDefinition('SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler');
 
         $definition->replaceArgument(14, $mergedConfig['resub_not_allowed_route']);

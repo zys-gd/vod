@@ -7,15 +7,18 @@ use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessExc
 use IdentificationBundle\BillingFramework\Process\Exception\PinVerifyProcessException;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
-use IdentificationBundle\WifiIdentification\Service\ErrorCodeResolver;
+use IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeResolver;
 use IdentificationBundle\WifiIdentification\WifiIdentConfirmator;
 use IdentificationBundle\WifiIdentification\WifiIdentSMSSender;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
+use SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter;
+use SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator;
 use SubscriptionBundle\Service\CAPTool\Exception\CapToolAccessException;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -54,16 +57,27 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @var SubscriptionLimitNotifier
      */
     private $subscriptionLimitNotifier;
+    /**
+     * @var BlacklistAttemptRegistrator
+     */
+    private $blacklistAttemptRegistrator;
+    /**
+     * @var BlacklistVoter
+     */
+    private $blacklistVoter;
 
     /**
-     * PinIdentificationController constructor.
-     * @param WifiIdentSMSSender         $identSMSSender
-     * @param WifiIdentConfirmator       $identConfirmator
-     * @param ErrorCodeResolver          $errorCodeResolver
-     * @param SubscriptionLimiter        $limiter
-     * @param string                     $defaultRedirectUrl
-     * @param CarrierRepositoryInterface $carrierRepository
-     * @param SubscriptionLimitNotifier  $subscriptionLimitNotifier
+     * PinIdentificationController constructor
+     *
+     * @param WifiIdentSMSSender          $identSMSSender
+     * @param WifiIdentConfirmator        $identConfirmator
+     * @param ErrorCodeResolver           $errorCodeResolver
+     * @param SubscriptionLimiter         $limiter
+     * @param string                      $defaultRedirectUrl
+     * @param CarrierRepositoryInterface  $carrierRepository
+     * @param SubscriptionLimitNotifier   $subscriptionLimitNotifier
+     * @param BlacklistVoter              $blacklistVoter
+     * @param BlacklistAttemptRegistrator $blacklistAttemptRegistrator
      */
     public function __construct(
         WifiIdentSMSSender $identSMSSender,
@@ -72,26 +86,34 @@ class PinIdentificationController extends AbstractController implements APIContr
         SubscriptionLimiter $limiter,
         string $defaultRedirectUrl,
         CarrierRepositoryInterface $carrierRepository,
-        SubscriptionLimitNotifier $subscriptionLimitNotifier
-    ) {
-        $this->identSMSSender     = $identSMSSender;
-        $this->identConfirmator   = $identConfirmator;
-        $this->errorCodeResolver  = $errorCodeResolver;
-        $this->limiter                   = $limiter;
-        $this->defaultRedirectUrl        = $defaultRedirectUrl;
-        $this->carrierRepository         = $carrierRepository;
-        $this->subscriptionLimitNotifier = $subscriptionLimitNotifier;
+        SubscriptionLimitNotifier $subscriptionLimitNotifier,
+        BlacklistVoter $blacklistVoter,
+        BlacklistAttemptRegistrator $blacklistAttemptRegistrator
+    )
+    {    $this->identSMSSender              = $identSMSSender;
+        $this->identConfirmator            = $identConfirmator;
+        $this->errorCodeResolver           = $errorCodeResolver;
+        $this->limiter                     = $limiter;
+        $this->defaultRedirectUrl          = $defaultRedirectUrl;
+        $this->carrierRepository           = $carrierRepository;
+        $this->subscriptionLimitNotifier   = $subscriptionLimitNotifier;
+        $this->blacklistVoter              = $blacklistVoter;
+        $this->blacklistAttemptRegistrator = $blacklistAttemptRegistrator;
     }
 
     /**
      * @Method("POST")
      * @Route("/pincode/send",name="send_sms_pin_code")
+     *
      * @param Request $request
      * @param ISPData $ispData
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     *
+     * @return JsonResponse
+     *
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
+     * @throws \Exception
      */
     public function sendSMSPinCodeAction(Request $request, ISPData $ispData)
     {
@@ -107,19 +129,29 @@ class PinIdentificationController extends AbstractController implements APIContr
             ]);
         }
 
+        $billingCarrierId = $ispData->getCarrierId();
+        $cleanPhoneNumber = str_replace('+', '', $mobileNumber);
+
+        if ($this->blacklistVoter->isPhoneNumberBlacklisted($cleanPhoneNumber)
+            || $this->blacklistAttemptRegistrator->isSubscriptionAttemptRaised($cleanPhoneNumber, (int) $billingCarrierId)
+        ) {
+            return $this->getSimpleJsonResponse('User in black list', 200, [], [
+                'success' => false, 'redirectUrl' => $this->blacklistVoter->getRedirectUrl()
+            ]);
+        }
+
         $this->limiter->reserveSlotForSubscription($request->getSession());
 
         $postData = $request->request->all();
         $isResend = isset($postData['resend-pin']);
 
-        $carrierId = $ispData->getCarrierId();
         try {
-            $this->identSMSSender->sendSMS($carrierId, $mobileNumber, $isResend);
-            $data = ['success' => true, 'carrierId' => $carrierId, 'isResend' => $isResend];
+            $this->identSMSSender->sendSMS($billingCarrierId, $mobileNumber, $isResend);
+            $data = ['success' => true, 'carrierId' => $billingCarrierId, 'isResend' => $isResend];
 
             return $this->getSimpleJsonResponse('Sent', 200, [], $data);
         } catch (PinRequestProcessException $exception) {
-            $message = $this->errorCodeResolver->resolveMessage($exception->getCode(), $carrierId);
+            $message = $this->errorCodeResolver->resolveMessage($exception->getCode(), $billingCarrierId);
             return $this->getSimpleJsonResponse($message, 200, [], ['success' => false, 'code' => $exception->getCode()]);
         } catch (\Exception $exception) {
             return $this->getSimpleJsonResponse($exception->getMessage(), 200, [], ['success' => false]);
@@ -131,6 +163,7 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @Route("/pincode/confirm",name="confirm_sms_pin_code")
      * @param Request $request
      * @param ISPData $ispData
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function confirmSMSPinCodeAction(Request $request, ISPData $ispData)

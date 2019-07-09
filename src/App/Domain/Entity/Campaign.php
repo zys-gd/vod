@@ -106,6 +106,11 @@ class Campaign implements CampaignInterface, HasUuid
      */
     private $isLpOff = false;
 
+    /**
+     * @var bool
+     */
+    private $isClickableSubImage = true;
+
     /** @var bool */
     private $zeroCreditSubAvailable = false;
 
@@ -113,6 +118,16 @@ class Campaign implements CampaignInterface, HasUuid
      * @var Collection
      */
     private $schedule;
+
+    /**
+     * @var \DateTime
+     */
+    private $dateCreated;
+
+    /**
+     * @var string
+     */
+    private $creator;
 
     /**
      * Campaign constructor
@@ -539,6 +554,23 @@ class Campaign implements CampaignInterface, HasUuid
     /**
      * @return bool
      */
+    public function isClickableSubImage(): bool
+    {
+        return $this->isClickableSubImage;
+    }
+
+    /**
+     * @param bool $isClickableSubImage
+     */
+    public function setIsClickableSubImage(bool $isClickableSubImage): void
+    {
+        $this->isClickableSubImage = $isClickableSubImage;
+    }
+
+
+    /**
+     * @return bool
+     */
     public function isZeroCreditSubAvailable(): bool
     {
         return $this->zeroCreditSubAvailable;
@@ -592,6 +624,38 @@ class Campaign implements CampaignInterface, HasUuid
     public function setSchedule(Collection $schedule): void
     {
         $this->schedule = $schedule;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateCreated(): \DateTime
+    {
+        return $this->dateCreated;
+    }
+
+    /**
+     * @param \DateTime $dateCreated
+     */
+    public function setDateCreated(\DateTime $dateCreated): void
+    {
+        $this->dateCreated = $dateCreated;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreator(): string
+    {
+        return $this->creator;
+    }
+
+    /**
+     * @param string $creator
+     */
+    public function setCreator(string $creator): void
+    {
+        $this->creator = $creator;
     }
 
 

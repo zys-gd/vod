@@ -71,6 +71,7 @@
 
 
             var trackEventRoute = '{{ url('track_video_play') }}';
+            let isLoading = false;
 
             $(window).on('load', function () {
 
@@ -108,57 +109,62 @@
                     .transformation({streaming_profile: 'hd'});
 
                 demoplayer.on('play', function (event) {
-
+                    isLoading = true;
                     $.post(trackEventRoute, {
                         video  : demoplayer.currentPublicId()
+                    }).then(()=>{
+                        isLoading = false;
                     });
                 });
 
-                let loadMoreFunc;
-
                 //TODO: Refactor this
+                let loadMoreFunc;
+                let offset = 0;
+                let isFirstQuery = true;
                 $(document).on('click', '.x-play-button, .modal-related-video-thumbnail-wrapper', function () {
                     openModal();
 
                     let isLast = false;
-                    let offset = 0;
                     let category = $(this).attr('data-category');
                     let batchRelatedVideosRoute = '{{ url('load_more_related_videos') }}';
                     let options = ($(this).attr('data-options')) ? JSON.parse($(this).attr('data-options')) : undefined;
                     let publicId = $(this).attr('data-public-id');
                     let uri = `${batchRelatedVideosRoute}?categoryUuid=${category}&offset=${offset}`;
 
-                    $.get(uri, (data) => {
-                        $('.modal-related-videos-block').append(data.html);
-                        isLast = Boolean(data.isLast);
-                    }).then(() => {
-                        console.log(isLast);
-                        let isAllowRequest = true;
-                        let modalRelatedVideosBlock = document.querySelector('.modal-related-videos-block');
-                        loadMoreFunc = () => {
-                            let mrvbScrollTop = modalRelatedVideosBlock.scrollTop;
-                            let mrvbHeight = modalRelatedVideosBlock.scrollHeight;
-
-                            if (Math.round(mrvbScrollTop) >= Math.round(mrvbHeight - modalRelatedVideosBlock.offsetHeight)
-                                && isAllowRequest
-                                && !isLast
-                            ) {
-                                offset += 20;
-                                uri = `${batchRelatedVideosRoute}?categoryUuid=${category}&offset=${offset}`;
-                                isAllowRequest = false;
-                                $.get(uri, (data) => {
-                                    $('.modal-related-videos-block').append(data.html);
-                                    isAllowRequest = true;
-                                    isLast = Boolean(data.isLast);
-                                });
+                    // TODO: Refactor this. IMPORTANT!!!!
+                    // Main problem is that we have one listener on play-button on the main page and on the page with recording video with related-videos.
+                    // We need to separate this
+                    if(isFirstQuery) {
+                        $.get(uri, (data) => {
+                            $('.modal-related-videos-block').append(data.html);
+                            isLast = Boolean(data.isLast);
+                            isFirstQuery = false;
+                            if (modalRelatedVideosBlock.childNodes.length > 0) {
+                                modalRelatedVideosBlock.addEventListener('scroll', loadMoreFunc);
                             }
-                        };
+                        });
+                    }
 
-                        if (modalRelatedVideosBlock.childNodes.length > 0) {
-
-                            modalRelatedVideosBlock.addEventListener('scroll', loadMoreFunc);
+                    let isAllowRequest = true;
+                    let modalRelatedVideosBlock = document.querySelector('.modal-related-videos-block');
+                    loadMoreFunc = () => {
+                        let mrvbScrollTop = modalRelatedVideosBlock.scrollTop;
+                        let mrvbHeight = modalRelatedVideosBlock.scrollHeight;
+                        if (Math.round(mrvbScrollTop) >= Math.round(mrvbHeight - modalRelatedVideosBlock.offsetHeight)
+                            && isAllowRequest
+                            && !isLast
+                            && !isLoading
+                        ) {
+                            offset += 20;
+                            uri = `${batchRelatedVideosRoute}?categoryUuid=${category}&offset=${offset}`;
+                            isAllowRequest = false;
+                            $.get(uri, (data) => {
+                                $('.modal-related-videos-block').append(data.html);
+                                isAllowRequest = true;
+                                isLast = Boolean(data.isLast);
+                            });
                         }
-                    });
+                    };
 
                     changeVideo(publicId, options);
                     demoplayer.play();

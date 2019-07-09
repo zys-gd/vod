@@ -20,6 +20,17 @@ App\Domain\Entity\Affiliate:
             type: string
             length: 255
             nullable: false
+        uniqueFlow:
+            type: boolean
+            column: unique_flow
+            nullable: false
+            options:
+                default: false
+        uniqueParameter:
+            type: string
+            length: 255
+            column: unique_parameter
+            nullable: true
         commercialContact:
             type: string
             length: 255

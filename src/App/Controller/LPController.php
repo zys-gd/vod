@@ -11,6 +11,7 @@ use App\Domain\Repository\CampaignRepository;
 use App\Domain\Service\CarrierOTPVerifier;
 use App\Domain\Service\Piwik\ContentStatisticSender;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
+use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Exception\MissingCarrierException;
 use IdentificationBundle\Identification\Service\CarrierSelector;
@@ -113,22 +114,22 @@ class LPController extends AbstractController implements ControllerWithISPDetect
     /**
      * LPController constructor.
      *
-     * @param ContentStatisticSender     $contentStatisticSender
-     * @param CampaignRepository         $campaignRepository
-     * @param LandingPageACL             $landingPageAccessResolver
-     * @param string                     $imageBaseUrl
-     * @param CarrierOTPVerifier         $OTPVerifier
-     * @param string                     $defaultRedirectUrl
-     * @param TemplateConfigurator       $templateConfigurator
-     * @param IdentificationDataStorage  $dataStorage
-     * @param SubscriptionLimiter        $limiter
-     * @param SubscriptionLimitNotifier  $subscriptionLimitNotifier
+     * @param ContentStatisticSender $contentStatisticSender
+     * @param CampaignRepository $campaignRepository
+     * @param LandingPageACL $landingPageAccessResolver
+     * @param string $imageBaseUrl
+     * @param CarrierOTPVerifier $OTPVerifier
+     * @param string $defaultRedirectUrl
+     * @param TemplateConfigurator $templateConfigurator
+     * @param IdentificationDataStorage $dataStorage
+     * @param SubscriptionLimiter $limiter
+     * @param SubscriptionLimitNotifier $subscriptionLimitNotifier
      * @param CarrierRepositoryInterface $carrierRepository
-     * @param VisitTracker               $visitTracker
-     * @param VisitNotifier              $notifier
-     * @param LoggerInterface            $logger
-     * @param CarrierSelector            $carrierSelector
-     * @param SubscribeUrlResolver       $subscribeUrlResolver
+     * @param VisitTracker $visitTracker
+     * @param VisitNotifier $notifier
+     * @param LoggerInterface $logger
+     * @param CarrierSelector $carrierSelector
+     * @param SubscribeUrlResolver $subscribeUrlResolver
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
@@ -200,6 +201,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         }
 
         $carrier = $this->resolveCarrierFromRequest($request);
+        $this->checkClickableSubImage($carrier, $campaign);
         if ($carrier && $campaign) {
             $this->logger->debug('Start CAP checking', ['carrier' => $carrier]);
             try {
@@ -353,6 +355,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         }
     }
 
+    /**
+     * @param $cid
+     * @return Campaign|null
+     */
     private function resolveCampaignFromRequest($cid): ?Campaign
     {
         /** @var Campaign $campaign */
@@ -361,12 +367,28 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             'isPause'       => false
         ]);
 
-        if ($campaign) {
-            return $campaign;
-        }
-        else {
-            return null;
-        }
+        return $campaign ?? null;
+    }
 
+    /**
+     * TODO: Transfer to separate class for additional session data
+     *
+     * @param Carrier|null  $carrier
+     * @param Campaign|null $campaign
+     */
+    public function checkClickableSubImage(Carrier $carrier = null, Campaign $campaign = null)
+    {
+        //is_clickable_sub_image has default value - true
+        //1.Highest priority in carrier that has value not equal the default
+        //2.Next if the campaign has value not equal the default
+        //3.All other situations
+        if ($carrier !== null && $carrier->isClickableSubImage() === false) {
+            $this->dataStorage->storeIsClickableSubImage(false);
+        } else if ($carrier !== null && $carrier->isClickableSubImage() === true
+            && $campaign !== null && $campaign->isClickableSubImage() === false) {
+            $this->dataStorage->storeIsClickableSubImage(false);
+        } else {
+            $this->dataStorage->storeIsClickableSubImage(true);
+        }
     }
 }

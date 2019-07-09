@@ -56,7 +56,6 @@
 
 
         {% if videos | length > 0 %}
-            {% set defaultVideo = videos[0] %}
 
             <div class="active-category-container">
                 <div class="d-flex flex-column">
@@ -67,6 +66,7 @@
                                      class="x-play-button w-100"
                                      data-uuid="{{ defaultVideo.uuid }}"
                                      data-category="{{ category.uuid }}"
+                                     data-public-id="{{ defaultVideo.publicId }}"
                                 />
                                 <div class="default-video-play-icon"></div>
 
@@ -88,7 +88,7 @@
                                 <div class="d-flex flex-row related-video x-play-button"
                                      data-uuid="{{ video.uuid }}"
                                      data-category="{{ category.uuid }}"
-                                     data-public-id="{{ video.remoteId }}">
+                                     data-public-id="{{ video.publicId }}">
                                     <div class="related-video-thumbnail-wrapper">
                                         {% for thumbnail in video.thumbnails | slice(0,1) %}
                                             <img src="{{ thumbnail }}" />
@@ -104,12 +104,12 @@
                             {% endfor %}
                         </div>
                         {% if not isLast %}
-                        <div class="games-page-container">
-                            <div class="d-flex flex-wrap align-items-center justify-content-around x-games-block"></div>
-                            <div class="load-more-button-block d-flex align-items-center justify-content-center">
-                                <div>{{ button_gray.render('Load More', 'load-more-button x-load-more-videos-button') }}</div>
+                            <div class="games-page-container">
+                                <div class="d-flex flex-wrap align-items-center justify-content-around x-games-block"></div>
+                                <div class="load-more-button-block d-flex align-items-center justify-content-center">
+                                    <div>{{ button_gray.render('Load More', 'load-more-button x-load-more-videos-button') }}</div>
+                                </div>
                             </div>
-                        </div>
                         {% endif %}
                     </div>
                 {% endif %}

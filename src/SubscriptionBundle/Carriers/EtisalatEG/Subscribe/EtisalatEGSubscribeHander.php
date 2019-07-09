@@ -51,7 +51,7 @@ class EtisalatEGSubscribeHander implements SubscriptionHandlerInterface, HasComm
 
         return [
             'subscription_contract_id' => $contractId,
-            'url_id'                   => $User->getUrlId()
+            'url_id'                   => $User->getShortUrlId()
         ];
     }
 
