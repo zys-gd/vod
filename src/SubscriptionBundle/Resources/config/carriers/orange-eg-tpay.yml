@@ -13,3 +13,12 @@ services:
             - '@ExtrasBundle\Utils\LocalExtractor'
         tags:
             - { name: subscription.unsubscription_handler }
+
+    SubscriptionBundle\Carriers\OrangeEGTpay\Callback\OrangeEGRenewCallbackHandler:
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
+            - '@SubscriptionBundle\Affiliate\Service\AffiliateSender'
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: subscription.callback_carrier_handler, type: renew }
