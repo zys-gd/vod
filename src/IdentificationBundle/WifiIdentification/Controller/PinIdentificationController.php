@@ -10,6 +10,7 @@ use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeResolver;
 use IdentificationBundle\WifiIdentification\WifiIdentConfirmator;
 use IdentificationBundle\WifiIdentification\WifiIdentSMSSender;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
 use SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter;
@@ -30,7 +31,7 @@ class PinIdentificationController extends AbstractController implements APIContr
 {
     use ResponseTrait;
     /**
-     * @var \IdentificationBundle\WifiIdentification\WifiIdentSMSSender
+     * @var WifiIdentSMSSender
      */
     private $identSMSSender;
     /**
@@ -65,19 +66,24 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @var BlacklistVoter
      */
     private $blacklistVoter;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * PinIdentificationController constructor
      *
-     * @param WifiIdentSMSSender          $identSMSSender
-     * @param WifiIdentConfirmator        $identConfirmator
-     * @param ErrorCodeResolver           $errorCodeResolver
-     * @param SubscriptionLimiter         $limiter
-     * @param string                      $defaultRedirectUrl
-     * @param CarrierRepositoryInterface  $carrierRepository
-     * @param SubscriptionLimitNotifier   $subscriptionLimitNotifier
-     * @param BlacklistVoter              $blacklistVoter
+     * @param WifiIdentSMSSender $identSMSSender
+     * @param WifiIdentConfirmator $identConfirmator
+     * @param ErrorCodeResolver $errorCodeResolver
+     * @param SubscriptionLimiter $limiter
+     * @param string $defaultRedirectUrl
+     * @param CarrierRepositoryInterface $carrierRepository
+     * @param SubscriptionLimitNotifier $subscriptionLimitNotifier
+     * @param BlacklistVoter $blacklistVoter
      * @param BlacklistAttemptRegistrator $blacklistAttemptRegistrator
+     * @param LoggerInterface $logger
      */
     public function __construct(
         WifiIdentSMSSender $identSMSSender,
@@ -88,9 +94,10 @@ class PinIdentificationController extends AbstractController implements APIContr
         CarrierRepositoryInterface $carrierRepository,
         SubscriptionLimitNotifier $subscriptionLimitNotifier,
         BlacklistVoter $blacklistVoter,
-        BlacklistAttemptRegistrator $blacklistAttemptRegistrator
-    )
-    {    $this->identSMSSender              = $identSMSSender;
+        BlacklistAttemptRegistrator $blacklistAttemptRegistrator,
+        LoggerInterface $logger
+    ) {
+        $this->identSMSSender              = $identSMSSender;
         $this->identConfirmator            = $identConfirmator;
         $this->errorCodeResolver           = $errorCodeResolver;
         $this->limiter                     = $limiter;
@@ -99,6 +106,7 @@ class PinIdentificationController extends AbstractController implements APIContr
         $this->subscriptionLimitNotifier   = $subscriptionLimitNotifier;
         $this->blacklistVoter              = $blacklistVoter;
         $this->blacklistAttemptRegistrator = $blacklistAttemptRegistrator;
+        $this->logger                      = $logger;
     }
 
     /**
@@ -151,6 +159,11 @@ class PinIdentificationController extends AbstractController implements APIContr
 
             return $this->getSimpleJsonResponse('Sent', 200, [], $data);
         } catch (PinRequestProcessException $exception) {
+            $this->logger->debug('Send pin error. Try to resolve error message', [
+                'code' => $exception->getCode(),
+                'carrierId' => $billingCarrierId
+            ]);
+
             $message = $this->errorCodeResolver->resolveMessage($exception->getCode(), $billingCarrierId);
             return $this->getSimpleJsonResponse($message, 200, [], ['success' => false, 'code' => $exception->getCode()]);
         } catch (\Exception $exception) {
