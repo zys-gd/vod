@@ -9,11 +9,11 @@
 namespace SubscriptionBundle\Service\Action\Subscribe;
 
 
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\RouterInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\Action\Common\RequestParametersProvider;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\RouterInterface;
 
 class SubscribeParametersProvider
 {
@@ -50,12 +50,7 @@ class SubscribeParametersProvider
         $parameters                 = $this->parametersProvider->prepareRequestParameters($subscription);
         $parameters->additionalData = $additionalInfo;
         $parameters->chargeProduct  = $subscription->getUuid();
-        $promotionalTierId          = $subscription->getPromotionTierId();
-        $isProviderManaged          = $subscription->getSubscriptionPack()->isProviderManagedSubscriptions();
-
-        $parameters->chargeTier = isset($promotionalTierId) && $isProviderManaged
-            ? $promotionalTierId
-            : $subscription->getSubscriptionPack()->getTierId();
+        $parameters->chargeTier     = $subscription->getSubscriptionPack()->getTierId();
 
         $parameters->chargeStrategy = $subscription->getSubscriptionPack()->getBuyStrategyId();
         if ($request = $this->requestStack->getCurrentRequest()) {

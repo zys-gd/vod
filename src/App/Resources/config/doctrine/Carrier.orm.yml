@@ -37,22 +37,18 @@ App\Domain\Entity\Carrier:
             options:
                 default: 'carrier'
             length: 10
-
         trialPeriod:
             type: integer
             options:
                 default: 0
-
         subscriptionPeriod:
             type: integer
             options:
                 default: 7
-
         resubAllowed:
             type: boolean
             options:
                 default: false
-
         isCampaignsOnPause:
             type: boolean
             options:
@@ -70,25 +66,30 @@ App\Domain\Entity\Carrier:
             nullable: true
             options:
                 default: null
-
         redirectUrl:
             type: string
             nullable: true
             options:
                 default: null
-
         flushDate:
             type: date
             nullable: true
             options:
                 default: null
-
         isCapAlertDispatch:
             type: boolean
             nullable: false
             options:
                 default: false
         isLpOff:
+            type: boolean
+            options:
+                default: false
+        isClickableSubImage:
+            type: boolean
+            options:
+                default: true
+        trackAffiliateOnZeroCreditSub:
             type: boolean
             options:
                 default: false

@@ -23,6 +23,7 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -144,6 +145,7 @@ class CampaignAdmin extends AbstractAdmin
             ->add('textColor')
             ->add('isPause')
             ->add('isLpOff')
+            ->add('isClickableSubImage')
             ->add('zeroCreditSubAvailable');
     }
 
@@ -175,6 +177,9 @@ class CampaignAdmin extends AbstractAdmin
             ])
             ->add('isLpOff')
             ->add('zeroCreditSubAvailable')
+            ->add('isClickableSubImage', null, [
+                'label' => 'Clickable image'
+            ])
             ->add('carriers')
             ->add('_action', null, [
                 'actions' => [
@@ -210,6 +215,9 @@ class CampaignAdmin extends AbstractAdmin
             ->add('isPause', null,
                 ['label' => 'Pause'])
             ->add('zeroCreditSubAvailable')
+            ->add('isClickableSubImage', null, [
+                'label' => 'Clickable image'
+            ])
             ->add('pausedCampaigns', null, [
                 'label' => 'Paused by Carrier',
                 'template' => '@Admin/Campaign/paused_campaigns.html.twig',
@@ -283,6 +291,9 @@ class CampaignAdmin extends AbstractAdmin
                 'label' => 'Pause',
             ])
             ->add('zeroCreditSubAvailable')
+            ->add('isClickableSubImage', null, [
+                'label' => 'Clickable image'
+            ])
             ->add('isLpOff', ChoiceFieldMaskType::class, [
                 'choices'  => [
                     'No' => 0,
