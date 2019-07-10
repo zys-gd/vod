@@ -159,13 +159,13 @@ class VodafoneEGWifiIdentificationHandler implements
             ->zeroCreditSubscriptionChecking
             ->isAvailable($carrierRepository->findOneByBillingId(ConstBillingCarrierId::VODAFONE_EGYPT_TPAY));
 
-        if (empty($data['subscription_contract_id']) || ($isZeroCreditSub && empty($data['transactionId']))) {
+        if (empty($data['subscription_contract_id']) || (!$isZeroCreditSub && empty($data['transactionId']))) {
             throw new WifiIdentConfirmException("Can't process pin verification. Missing required parameters");
         }
 
         $additionalData = ['client_user' => $data['subscription_contract_id']];
 
-        if ($isZeroCreditSub) {
+        if (!$isZeroCreditSub) {
             $additionalData['transactionId'] = $data['transactionId'];
         }
 
