@@ -142,7 +142,6 @@ class CarrierAdmin extends AbstractAdmin
             ->add('isClickableSubImage', null, [
                 'label' => 'Clickable image'
             ])
-            ->add('trackAffiliateOnZeroCreditSub')
             ->add('_action', null, [
                 'actions' => [
                     'show'   => [],
