@@ -76,7 +76,7 @@ class VodafoneEGRenewCallbackHandler implements HasCommonFlow, CarrierCallbackHa
      */
     public function canHandle(Request $request, int $carrierId): bool
     {
-        return $carrierId === ConstBillingCarrierId::ORANGE_EGYPT_TPAY;
+        return $carrierId === ConstBillingCarrierId::VODAFONE_EGYPT_TPAY;
     }
 
     /**
