@@ -44,13 +44,14 @@ class RequestProvider
         $parameters = new ProcessRequestParameters();
 
         $parameters->client = 'vod-store';
+        $parameters->zeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isAvailable($carrier);
+
         $parameters->additionalData = array_merge(
             [
                 'body' => $body,
                 'msisdn' => $msisdn,
                 'carrier' => $carrier->getBillingCarrierId(),
-                'op_id' => $carrier->getOperatorId(),
-                'zero_credit_sub_available' => $this->zeroCreditSubscriptionChecking->isAvailable($carrier)
+                'op_id' => $carrier->getOperatorId()
             ],
             $additionalParameters
         );
@@ -78,14 +79,15 @@ class RequestProvider
         $parameters = new ProcessRequestParameters();
 
         $parameters->client = 'vod-store';
+        $parameters->zeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isAvailable($carrier);
+
         $parameters->additionalData = array_merge(
             [
                 'msisdn' => $msisdn,
                 'carrier' => $carrier->getBillingCarrierId(),
                 'op_id' => $carrier->getOperatorId(),
                 'pin_code' => $pinCode,
-                'client_user' => $clientUser,
-                'zero_credit_sub_available' => $this->zeroCreditSubscriptionChecking->isAvailable($carrier)
+                'client_user' => $clientUser
             ],
             $additionalParameters
         );
