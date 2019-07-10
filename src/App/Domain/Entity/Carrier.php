@@ -152,11 +152,6 @@ class Carrier implements CarrierInterface, HasUuid
     private $isClickableSubImage = true;
 
     /**
-     * @var bool
-     */
-    private $trackAffiliateOnZeroCreditSub;
-
-    /**
      * Carrier constructor.
      * @param string $uuid
      */
