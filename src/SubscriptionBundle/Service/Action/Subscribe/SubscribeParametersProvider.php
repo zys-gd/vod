@@ -3,11 +3,11 @@
 namespace SubscriptionBundle\Service\Action\Subscribe;
 
 use SubscriptionBundle\Service\ZeroCreditSubscriptionChecking;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\RouterInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\Action\Common\RequestParametersProvider;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\RouterInterface;
 
 class SubscribeParametersProvider
 {
@@ -57,12 +57,7 @@ class SubscribeParametersProvider
         $parameters->additionalData         = $additionalInfo;
         $parameters->chargeProduct          = $subscription->getUuid();
         $parameters->zeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isAvailable($carrier);
-        $promotionalTierId                  = $subscription->getPromotionTierId();
-        $isProviderManaged                  = $subscriptionPack->isProviderManagedSubscriptions();
-
-        $parameters->chargeTier = isset($promotionalTierId) && $isProviderManaged
-            ? $promotionalTierId
-            : $subscriptionPack->getTierId();
+        $parameters->chargeTier             = $subscriptionPack->getTierId();
 
         $parameters->chargeStrategy = $subscriptionPack->getBuyStrategyId();
         if ($request = $this->requestStack->getCurrentRequest()) {

@@ -14,18 +14,13 @@ use SubscriptionBundle\Entity\Subscription;
 class PromotionalResponseChecker
 {
 
-    const MISSING_PROMOTIONAL_TIER = 0;
 
     public function isPromotionalResponseNeeded(Subscription $subscription)
     {
         $isProviderManaged = $subscription->getSubscriptionPack()->isProviderManagedSubscriptions();
 
-        return $this->isSubscriptionPromotionalTierMissing($subscription) && !$isProviderManaged;
+        return !$isProviderManaged;
 
     }
 
-    private function isSubscriptionPromotionalTierMissing(Subscription $subscription): bool
-    {
-        return $subscription->getPromotionTierId() === self::MISSING_PROMOTIONAL_TIER;
-    }
 }
