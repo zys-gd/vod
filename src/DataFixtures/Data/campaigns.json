@@ -22,7 +22,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "094696a2-d039-4c95-ac2b-f11ce39d5b86",
@@ -47,7 +48,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "0afc64b4-ca2f-42eb-b7d5-94db877f984e",
@@ -72,7 +74,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "0b44e721-0eb0-4d14-b061-6f50c867a59f",
@@ -97,7 +100,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "12619a30-fb7b-4ece-aaf5-f984f7a48f7e",
@@ -122,7 +126,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "12fc8a54-3263-4b19-bf66-3ef039f94ead",
@@ -147,7 +152,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "176116a6-1025-4f39-8fb5-cd049cb95c2d",
@@ -172,7 +178,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "1fb2de02-1274-444d-87f9-c8c7c222d304",
@@ -197,7 +204,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "20534881-dad2-456f-b45c-ea6a1cab38c5",
@@ -222,7 +230,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "22e214ac-e6c0-4184-b7cf-850b9bba562a",
@@ -247,7 +256,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "292a5a0a-706e-4f5e-bc61-2bbb168f0405",
@@ -272,7 +282,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "2b4da240-a29a-4a73-ae4b-df1e565b14ab",
@@ -297,7 +308,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "34a3aa66-56d9-4ca6-bbfe-5ffb1a593614",
@@ -322,7 +334,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "497f5074-32e4-42c2-bdf1-771f2ae375fd",
@@ -347,7 +360,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "4ea1bcae-4c0c-4379-bbca-6f1fa07b6a30",
@@ -372,7 +386,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "6d888b47-e783-43c9-be37-bf9a52feb18b",
@@ -397,7 +412,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "6f6e5baf-6f3f-4c9d-9a85-63375fdd060e",
@@ -422,7 +438,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "7d34e1c7-1131-4f8b-b2e0-7e8a130fc5d7",
@@ -447,7 +464,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "82bc7dac-cb4c-454f-8e1c-d8f5df613a40",
@@ -472,7 +490,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "85108c87-b8a0-4f28-98b4-1d71adb496e6",
@@ -497,7 +516,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "8c3ff3a0-6215-427c-977a-e86e90fe2305",
@@ -522,7 +542,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "a071e1be-e0fc-4bae-a3f6-44cc7a8c4edd",
@@ -547,7 +568,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "bc574bd1-580f-4f50-aee2-4334ff6f9fd3",
@@ -572,7 +594,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "bc73c45f-4250-4cbb-9c39-c68a2e621c04",
@@ -597,7 +620,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "c9697222-ed0d-4412-a7bf-6f8b1d918d52",
@@ -622,7 +646,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "d1b78d26-d3db-4736-9065-b3c5e6acdb86",
@@ -647,7 +672,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "d2a18de1-84bb-42a4-bb6d-9c1dd6cc90e8",
@@ -672,7 +698,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "d33436ac-eaa0-42f1-818c-2131c0a35261",
@@ -697,7 +724,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "d3719fda-33fa-45fe-b897-e92fd3dbdc99",
@@ -722,7 +750,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "d706e76a-28de-44c8-9379-298eb1c328fd",
@@ -747,7 +776,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "dd604319-7a02-4640-bfcf-8bd1a44e05aa",
@@ -772,7 +802,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "e339946c-1cf7-4123-8c10-92e370052c6d",
@@ -797,7 +828,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "e7ee7bb9-f0ad-45d4-88b1-5639c8293035",
@@ -822,7 +854,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "e88ad96d-be3d-478b-9842-673f6a406207",
@@ -847,7 +880,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "ed021372-d26b-4a60-bd87-cb5f5afdcd90",
@@ -872,7 +906,8 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     },
     {
         "uuid": "ff292c77-5ab4-44cb-90f6-e335a9e42e7c",
@@ -897,6 +932,7 @@
             }
         ],
         "isLpOff": false,
-        "zeroCreditSubAvailable": false
+        "zeroCreditSubAvailable": false,
+        "isClickableSubImage": true
     }
 ]

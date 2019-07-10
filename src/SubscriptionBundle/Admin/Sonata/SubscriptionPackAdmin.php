@@ -119,6 +119,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
         try {
             $object->setBuyStrategyId($object->getBuyStrategyId()->id);
             $object->setRenewStrategyId($object->getRenewStrategyId()->id);
+            $object->setTierId($object->getTierId()->id);
         } catch (\Throwable $e) {
             // then save by default behavior
         }
