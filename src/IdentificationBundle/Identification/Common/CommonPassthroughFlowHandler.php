@@ -96,7 +96,7 @@ class CommonPassthroughFlowHandler
     {
 
         $additionalParams = $handler->getAdditionalIdentificationParams($request);
-        $successUrl       = $this->router->generate('subscription.consent_page_subscribe', [], RouterInterface::ABSOLUTE_URL);
+        $successUrl       = $this->router->generate('subscription.passthrough_page_subscribe', [], RouterInterface::ABSOLUTE_URL);
         $waitPageUrl      = $this
             ->router
             ->generate('wait_for_callback', ['successUrl' => $successUrl], RouterInterface::ABSOLUTE_URL);
