@@ -133,3 +133,5 @@ services:
             - '@SubscriptionBundle\BillingFramework\Process\API\Client'
             - '@SubscriptionBundle\BillingFramework\Process\API\LinkCreator'
             - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+
+    IdentificationBundle\Identification\Handler\AlreadySubscribedHandlerProvider: ~
