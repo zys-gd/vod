@@ -13,11 +13,8 @@
 
 {% block body %}
     <div class="d-flex align-items-center justify-content-center w-100">
-        <div class="bkus-disclaimer-text">
-            <p>You can not subscribe to 100% Sport.
-               Your phone number has been blacklisted from subscribing.
-                <br>
-               For more info please <a class="contact-us-link red" href="{{ url('contact_us') }}">Contact Us</a></p>
+        <div class="disclaimer-text">
+            {{ translate('messages.error.blacklisted', {'%contact-us-url%': url('contact_us')}) | raw }}
         </div>
     </div>
 {% endblock %}
