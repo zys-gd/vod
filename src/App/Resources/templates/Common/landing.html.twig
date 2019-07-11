@@ -8,7 +8,9 @@
 {% import "@App/Components/subscribe_buttons.html.twig" as subscribe_buttons %}
 
 {% block header_content %}
-    {{ header.render() }}
+    {% if isWifiFlow() %}
+        {{ header.render() }}
+    {% endif %}
 {% endblock header_content %}
 
 {% block stylesheets %}
@@ -23,6 +25,12 @@
         {% if not isWifiFlow() %}
             <div class="play-text">
                 {{ translate('landing.text.pay2watch') |raw }}
+            </div>
+        {% endif %}
+
+        {% if not isWifiFlow() %}
+            <div class="d-flex align-items-start justify-content-center mb-n-2 lp-sub-btn lp-sub-btn-top">
+                {{ subscribe_buttons.render('buttons.subscribe', 'btn-lp_big') }}
             </div>
         {% endif %}
 
@@ -42,11 +50,18 @@
             {% endif %}
         </div>
 
-        <div class="d-flex align-items-start justify-content-center mt-4 mb-n-2">
-            {{ subscribe_buttons.render('buttons.join.now', 'btn-lp_big') }}
-        </div>
+        {% if not isWifiFlow() %}
+            <div class="d-flex align-items-start justify-content-center mb-n-2 lp-sub-btn lp-sub-btn-bottom">
+                {{ subscribe_buttons.render('buttons.subscribe', 'btn-lp_big') }}
+            </div>
+        {% else %}
+           <div class="d-flex align-items-start justify-content-center mt-4 mb-n-2">
+               {{ subscribe_buttons.render('buttons.join.now', 'btn-lp_big') }}
+           </div>
+        {% endif %}
 
-        <div id="landing-offer-container" class="mt-2">
+
+        <div class="lure_box_wrapper mb-3" style="margin-top: 0!important;">
             {% include "@App/Common/landing_offer.html.twig" %}
         </div>
 
