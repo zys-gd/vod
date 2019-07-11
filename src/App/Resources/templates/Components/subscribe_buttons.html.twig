@@ -37,14 +37,18 @@
         $(document).on('click', '.x-otp-button', function (e) {
             e.preventDefault();
             if ($(this).is('a')) {
-                $(this).removeClass('x-otp-button')
-                    .addClass('x-subscribe-button')
-                    .find('button').text('{{ translate('buttons.confirm') }}');
+                $('.x-otp-button').each((key, el) => {
+                    $(el).removeClass('x-otp-button')
+                        .addClass('x-subscribe-button')
+                        .find('button').text('{{ translate('buttons.confirm') }}');
+                });
             }
             else if($(this).is('button')) {
-                $(this).removeClass('x-otp-button')
-                    .addClass('x-subscribe-button')
-                    .text('{{ translate('buttons.confirm') }}');
+                $('.x-otp-button').each((key, el) => {
+                    $(el).removeClass('x-otp-button')
+                        .addClass('x-subscribe-button')
+                        .text('{{ translate('buttons.confirm') }}');
+                });
             }
         });
 
