@@ -1,18 +1,17 @@
 services:
-
-  IdentificationBundle\Listener\AutoIdentStartListener:
-    tags:
-     - { name: kernel.event_listener, event: kernel.controller }
-    arguments:
-      - '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
-      - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
-      - '@IdentificationBundle\Identification\Service\ISPResolver'
-      - '@IdentificationBundle\Identification\Identifier'
-      - '@IdentificationBundle\Identification\Service\TokenGenerator'
-      - '@IdentificationBundle\Identification\Service\RouteProvider'
-      - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
-      - '@IdentificationBundle\Identification\Service\IdentificationStatus'
-      - '@annotations.reader'
-      - '@IdentificationBundle\Identification\Service\CarrierSelector'
-      - '@IdentificationBundle\Identification\Service\DeviceDataProvider'
-      - '@logger'
+    IdentificationBundle\Listener\AutoIdentStartListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller }
+        arguments:
+            - '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+            - '@IdentificationBundle\Identification\Service\ISPResolver'
+            - '@IdentificationBundle\Identification\Identifier'
+            - '@IdentificationBundle\Identification\Service\TokenGenerator'
+            - '@IdentificationBundle\Identification\Service\RouteProvider'
+            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\IdentificationStatus'
+            - '@annotations.reader'
+            - '@IdentificationBundle\Identification\Service\CarrierSelector'
+            - '@IdentificationBundle\Identification\Service\DeviceDataProvider'
+            - '@logger'

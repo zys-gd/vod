@@ -35,7 +35,7 @@
     background-color: #de0000;
     box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.5), inset 0px 2px 1px 0px rgba(255, 255, 255, 0.43);
     color: #FFFFFF;
-    width: 100%;
+    max-width: 100%;
     padding-top: 16px;
     padding-bottom: 16px;
 }
@@ -117,8 +117,46 @@
     list-style-type: disc;
 }
 
+
+.lp-sub-btn button {
+    background-image: linear-gradient(#00da33, #00da33, #015c18);
+    border-bottom: none;
+    font-size: 40px;
+    padding: 10px 65px;
+
+}
+
+.lp-sub-btn-top {
+    position: relative;
+    margin: 10px;
+}
+
+.lp-sub-btn-bottom {
+    position: relative;
+    margin: 10px;
+}
+
+.sub-info {
+    text-align: center;
+    font-family: "Kanit";
+    font-style: italic;
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.sub-info p {
+    font-weight: 600;
+    margin: 0;
+}
+
+.sub-info a {
+    color: #48c8da;
+}
+
 .annotation-block {
-    margin-bottom: 0;
+    margin-bottom: 15px;
+    font-weight: 500;
+    font-style: italic;
 }
 
 #terms-and-conditions {

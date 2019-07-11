@@ -19,3 +19,10 @@ services:
     IdentificationBundle\Carriers\OrangeEGTpay\OrangeEGIdentificationCallbackHandler:
         tags:
             - { name: identification.identification_callback_handler }
+
+    IdentificationBundle\Carriers\OrangeEGTpay\OrangeEGAlreadySubscribedHandler:
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@IdentificationBundle\Identification\Service\IdentificationStatus'
+        tags:
+            - { name: identification.already_subscribed_handler }
