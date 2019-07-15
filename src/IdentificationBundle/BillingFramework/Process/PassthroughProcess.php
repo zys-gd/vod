@@ -5,6 +5,7 @@ namespace IdentificationBundle\BillingFramework\Process;
 
 
 use IdentificationBundle\BillingFramework\Process\Exception\IdentProcessException;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters;
 use SubscriptionBundle\BillingFramework\Process\API\RequestSender;
@@ -33,11 +34,18 @@ class PassthroughProcess
         $this->logger        = $logger;
     }
 
-
-    public function runPassthrough(ProcessRequestParameters $parameters)
+    /**
+     * @param ProcessRequestParameters $parameters
+     *
+     * @return string
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function runPassthrough(ProcessRequestParameters $parameters): string
     {
         try {
-            return $this->requestSender->sendProcessRequest('passthrough', $parameters);
+            $response = $this->requestSender->sendRequestWithoutExtraction('passthrough', $parameters);
+            $passthrowLink = $response->getBody()->getContents();
+            return $passthrowLink;
         } catch (BillingFrameworkException $exception) {
             $this->logger->error('Error while trying to passthrough ident');
             throw new IdentProcessException('Error while trying to ident', 0, $exception);

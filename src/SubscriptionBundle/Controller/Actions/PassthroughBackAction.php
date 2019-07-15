@@ -105,11 +105,10 @@ class PassthroughBackAction
      * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function __invoke(Request $request, IdentificationData $identificationData, ISPData $ispData)
+    public function __invoke(Request $request, ISPData $ispData)
     {
 
         $carrierId           = $ispData->getCarrierId();
-        $identificationToken = $identificationData->getIdentificationToken();
 
         $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
         $user    = $this->userExtractor->getUserByIdentificationData($identificationData);
@@ -119,7 +118,7 @@ class PassthroughBackAction
         $subscriber = $this->subscriptionHandlerProvider->getSubscriber($carrier);
 
         if (!$subscriber instanceof HasConsentPageFlow) {
-            throw new BadRequestHttpException('This action is available only for subscription `ConsentPageFlow`');
+            throw new BadRequestHttpException('This action is available only for subscription `PassthroughFlow`');
         }
 
         if ($this->blacklistVoter->isUserBlacklisted($request->getSession())

@@ -9,6 +9,7 @@
 namespace SubscriptionBundle\BillingFramework\Process\API;
 
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -117,4 +118,25 @@ class RequestSender
 
     }
 
+    /**
+     * @param string                   $type
+     * @param ProcessRequestParameters $processParameters
+     *
+     * @return ResponseInterface
+     * @throws BillingFrameworkException
+     * @throws BillingFrameworkProcessException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function sendRequestWithoutExtraction(string $type, ProcessRequestParameters $processParameters): ResponseInterface
+    {
+        try {
+
+            $preparedParams = $this->extractor->extractParameters($processParameters);
+            return $this->apiClient->sendPostProcessRequestWithoutExtraction($preparedParams, $type);
+
+        } catch (BillingFrameworkProcessException $e) {
+            $this->logger->debug('Bad response from BF', (array)$e->getRawResponse());
+            throw $e;
+        }
+    }
 }

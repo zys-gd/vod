@@ -10,6 +10,7 @@ use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasConsentPageFl
 use IdentificationBundle\Identification\Handler\PassthroughFlow\HasPassthroughFlow;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\TokenGenerator;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -83,11 +84,12 @@ class CommonPassthroughFlowHandler
 
     /**
      * @param Request            $request
-     * @param HasConsentPageFlow $handler
+     * @param HasPassthroughFlow $handler
      * @param CarrierInterface   $carrier
      * @param string             $token
      *
      * @return Response
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function process(Request $request,
         HasPassthroughFlow $handler,
@@ -110,10 +112,10 @@ class CommonPassthroughFlowHandler
             $additionalParams
         );
 
-        $processResult = $this->passthroughProcess->runPassthrough($parameters);
+        $passthrowLink = $this->passthroughProcess->runPassthrough($parameters);
 
         $this->dataStorage->storeValue('passthroughFlow[token]', $this->generator->generateToken());
 
-        return $this->asyncIdentStarter->start($processResult, $token);
+        return new RedirectResponse($passthrowLink);
     }
 }
