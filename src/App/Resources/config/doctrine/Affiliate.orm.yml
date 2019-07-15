@@ -87,6 +87,11 @@ App\Domain\Entity\Affiliate:
             mappedBy: affiliate
             cascade: ["persist", "remove"]
             orphanRemoval: true
+        affiliateBannedPublisher:
+            targetEntity: App\Domain\Entity\AffiliateBannedPublisher
+            mappedBy: affiliate
+            cascade: ["persist", "remove"]
+            orphanRemoval: true
     manyToMany:
         carriers:
             targetEntity: App\Domain\Entity\Carrier

@@ -115,6 +115,9 @@ class Affiliate implements HasUuid, AffiliateInterface
      */
     private $isLpOff = false;
 
+    /** @var ArrayCollection */
+    private $affiliateBannedPublisher;
+
     /**
      * Affiliate constructor.
      *
@@ -122,12 +125,13 @@ class Affiliate implements HasUuid, AffiliateInterface
      */
     public function __construct(string $uuid)
     {
-        $this->uuid        = $uuid;
-        $this->constants   = new ArrayCollection();
-        $this->parameters  = new ArrayCollection();
-        $this->campaigns   = new ArrayCollection();
-        $this->constraints = new ArrayCollection();
-        $this->carriers    = new ArrayCollection();
+        $this->uuid                     = $uuid;
+        $this->constants                = new ArrayCollection();
+        $this->parameters               = new ArrayCollection();
+        $this->campaigns                = new ArrayCollection();
+        $this->constraints              = new ArrayCollection();
+        $this->carriers                 = new ArrayCollection();
+        $this->affiliateBannedPublisher = new ArrayCollection();
     }
 
     /**
@@ -682,5 +686,31 @@ class Affiliate implements HasUuid, AffiliateInterface
     public function hasCarrier(Carrier $carrier): bool
     {
         return $this->carriers->contains($carrier);
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getAffiliateBannedPublisher(): Collection
+    {
+        return $this->affiliateBannedPublisher;
+    }
+
+    /**
+     * @param Collection $affiliateBannedPublisher
+     */
+    public function setAffiliateBannedPublisher(Collection $affiliateBannedPublisher): void
+    {
+        $this->affiliateBannedPublisher = $affiliateBannedPublisher;
+    }
+
+    /**
+     * @param AffiliateBannedPublisher $bannedPublisher
+     *
+     * @return bool
+     */
+    public function hasBannedPublisher(AffiliateBannedPublisher $bannedPublisher): bool
+    {
+        return $this->affiliateBannedPublisher->contains($bannedPublisher);
     }
 }
