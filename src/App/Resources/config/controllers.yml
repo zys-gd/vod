@@ -40,7 +40,7 @@ services:
             - '@App\Domain\Repository\CountryCategoryPriorityOverrideRepository'
             - '@App\Domain\Service\Piwik\ContentStatisticSender'
             - '@IdentificationBundle\Repository\UserRepository'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\AlreadySubscribedIdentFinisher'
 
     App\Controller\LPController:
         arguments:

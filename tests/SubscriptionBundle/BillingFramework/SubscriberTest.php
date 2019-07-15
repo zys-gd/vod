@@ -134,7 +134,7 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
             Mockery::spy(\SubscriptionBundle\Service\SubscriptionSerializer::class),
             $this->subscribePerformer,
             $this->subscribePromotionalPerformer,
-            Mockery::spy(\App\Domain\Service\CrossSubscriptionAPI\ApiConnector::class)
+            Mockery::spy(\Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector::class)
         );
 
     }

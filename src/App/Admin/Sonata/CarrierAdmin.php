@@ -113,7 +113,8 @@ class CarrierAdmin extends AbstractAdmin
             ->add('isCampaignsOnPause')
             ->add('isUnlimitedSubscriptionAttemptsAllowed')
             ->add('subscribeAttempts')
-            ->add('isLpOff');
+            ->add('isLpOff')
+            ->add('isClickableSubImage');
     }
 
     /**
@@ -135,7 +136,11 @@ class CarrierAdmin extends AbstractAdmin
             ->add('subscriptionPeriod')
             ->add('resubAllowed')
             ->add('isCampaignsOnPause')
+            ->add('trackAffiliateOnZeroCreditSub')
             ->add('isLpOff')
+            ->add('isClickableSubImage', null, [
+                'label' => 'Clickable image'
+            ])
             ->add('_action', null, [
                 'actions' => [
                     'show'   => [],
@@ -175,11 +180,15 @@ class CarrierAdmin extends AbstractAdmin
             ->add('redirectUrl', UrlType::class, ['required' => false])
             ->add('resubAllowed')
             ->add('isCampaignsOnPause')
+            ->add('trackAffiliateOnZeroCreditSub')
             ->add('isUnlimitedSubscriptionAttemptsAllowed', null, [
                 'attr' => ["class" => "unlimited-games"]
             ])
             ->add('subscribeAttempts', null, [
                 'attr' => ["class" => "count-of-subs"]
+            ])
+            ->add('isClickableSubImage', null, [
+                'label' => 'Clickable image'
             ]);
     }
 
@@ -219,12 +228,16 @@ class CarrierAdmin extends AbstractAdmin
             ->add('trialPeriod')
             ->add('subscriptionPeriod')
             ->add('resubAllowed')
+            ->add('trackAffiliateOnZeroCreditSub')
             ->add('isCampaignsOnPause')
             ->add('isUnlimitedSubscriptionAttemptsAllowed')
             ->add('subscribeAttempts')
             ->add('numberOfAllowedSubscriptionsByConstraint')
             ->add('counter')
             ->add('isCapAlertDispatch')
+            ->add('isClickableSubImage', null, [
+                'label' => 'Clickable image'
+            ])
             ->add('flushDate')
             ->add('redirectUrl');
     }

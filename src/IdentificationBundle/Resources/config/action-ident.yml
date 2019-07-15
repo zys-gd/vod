@@ -149,3 +149,5 @@ services:
     IdentificationBundle\Identification\Service\PassthroughChecker:
         arguments:
             - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
+
+    IdentificationBundle\Identification\Handler\AlreadySubscribedHandlerProvider: ~

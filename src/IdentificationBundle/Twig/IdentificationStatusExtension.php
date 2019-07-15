@@ -88,6 +88,10 @@ class IdentificationStatusExtension extends AbstractExtension
             new TwigFunction('isOtp', [$this, 'isOtp']),
 
             new TwigFunction('isCarrierPassthrough', [$this, 'isCarrierPassthrough']),
+
+            new TwigFunction('isClickableSubImage', function () {
+                return (bool)$this->dataStorage->readValue('is_clickable_sub_image');
+            })
         ];
     }
 
