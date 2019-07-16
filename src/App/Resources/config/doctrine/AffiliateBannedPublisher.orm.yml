@@ -2,9 +2,9 @@ App\Domain\Entity\AffiliateBannedPublisher:
     type: entity
     table: affiliate_banned_publisher
     id:
-        affiliate:
+        uuid:
             type: guid
-            associationKey: true
+    fields:
         publisherId:
             type: string
 

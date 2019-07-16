@@ -6,6 +6,7 @@ namespace App\Domain\Entity;
 
 class AffiliateBannedPublisher
 {
+    private $uuid;
     /** @var Affiliate */
     private $affiliate;
 
@@ -13,9 +14,25 @@ class AffiliateBannedPublisher
     private $publisherId;
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getAffiliate(): string
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param Affiliate $affiliate
+     */
+    public function setAffiliate(Affiliate $affiliate): void
+    {
+        $this->affiliate = $affiliate;
+    }
+
+    /**
+     * @return Affiliate
+     */
+    public function getAffiliate(): Affiliate
     {
         return $this->affiliate;
     }
@@ -23,9 +40,16 @@ class AffiliateBannedPublisher
     /**
      * @return string
      */
-    public function getPublisherId(): string
+    public function getPublisherId(): ?string
     {
         return $this->publisherId;
     }
 
+    /**
+     * @param string $publisherId
+     */
+    public function setPublisherId(string $publisherId): void
+    {
+        $this->publisherId = $publisherId;
+    }
 }

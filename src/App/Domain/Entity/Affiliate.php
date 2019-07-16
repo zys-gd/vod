@@ -116,7 +116,7 @@ class Affiliate implements HasUuid, AffiliateInterface
     private $isLpOff = false;
 
     /** @var ArrayCollection */
-    private $affiliateBannedPublisher;
+    private $bannedPublishers;
 
     /**
      * Affiliate constructor.
@@ -125,13 +125,13 @@ class Affiliate implements HasUuid, AffiliateInterface
      */
     public function __construct(string $uuid)
     {
-        $this->uuid                     = $uuid;
-        $this->constants                = new ArrayCollection();
-        $this->parameters               = new ArrayCollection();
-        $this->campaigns                = new ArrayCollection();
-        $this->constraints              = new ArrayCollection();
-        $this->carriers                 = new ArrayCollection();
-        $this->affiliateBannedPublisher = new ArrayCollection();
+        $this->uuid             = $uuid;
+        $this->constants        = new ArrayCollection();
+        $this->parameters       = new ArrayCollection();
+        $this->campaigns        = new ArrayCollection();
+        $this->constraints      = new ArrayCollection();
+        $this->carriers         = new ArrayCollection();
+        $this->bannedPublishers = new ArrayCollection();
     }
 
     /**
@@ -691,17 +691,17 @@ class Affiliate implements HasUuid, AffiliateInterface
     /**
      * @return Collection
      */
-    public function getAffiliateBannedPublisher(): Collection
+    public function getBannedPublishers(): Collection
     {
-        return $this->affiliateBannedPublisher;
+        return $this->bannedPublishers;
     }
 
     /**
-     * @param Collection $affiliateBannedPublisher
+     * @param Collection $bannedPublishers
      */
-    public function setAffiliateBannedPublisher(Collection $affiliateBannedPublisher): void
+    public function setBannedPublishers(Collection $bannedPublishers): void
     {
-        $this->affiliateBannedPublisher = $affiliateBannedPublisher;
+        $this->bannedPublishers = $bannedPublishers;
     }
 
     /**
@@ -711,6 +711,20 @@ class Affiliate implements HasUuid, AffiliateInterface
      */
     public function hasBannedPublisher(AffiliateBannedPublisher $bannedPublisher): bool
     {
-        return $this->affiliateBannedPublisher->contains($bannedPublisher);
+        return $this->bannedPublishers->contains($bannedPublisher);
+    }
+
+    /**
+     * @param AffiliateBannedPublisher $affiliateBannedPublisher
+     *
+     * @return $this
+     */
+    public function addAffiliateBannedPublisher(AffiliateBannedPublisher $affiliateBannedPublisher)
+    {
+        $this->bannedPublishers->add($affiliateBannedPublisher);
+
+        $affiliateBannedPublisher->setAffiliate($this);
+
+        return $this;
     }
 }
