@@ -67,7 +67,7 @@ class ErrorCodeResolver
                 break;
 
             case ErrorCodes::PIN_REQUEST_LIMIT_EXCEEDED:
-            case 103:
+            case ErrorCodes::REQUEST_LIMIT_EXCEEDED:
                 return $this->translator->translate('message.error.pin_request_limit_exceeded', $billingCarrierId, $lang);
                 break;
 
@@ -76,6 +76,9 @@ class ErrorCodeResolver
 
             case ErrorCodes::NOT_ENOUGH_CREDIT:
                 return $this->translator->translate('messages.error.not_enough_credit', $billingCarrierId, $lang);
+
+            case ErrorCodes::BLACKLISTED_PHONE_NUMBER:
+                return $this->translator->translate('messages.error.wifi_blacklisted', $billingCarrierId, $lang);
 
             default:
                 return 'Internal Error';

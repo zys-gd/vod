@@ -9,7 +9,7 @@
 namespace App\Domain\ACL\Accessors;
 
 
-use App\Domain\Service\CrossSubscriptionAPI\ApiConnector;
+use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
 
 class SubscribeExternalAPICheck
 {

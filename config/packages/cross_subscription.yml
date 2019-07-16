@@ -1,0 +1,2 @@
+cross_subscription_api:
+  api_endpoint: '%cross_subscription_service%'
