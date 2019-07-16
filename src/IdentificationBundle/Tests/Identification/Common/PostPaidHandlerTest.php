@@ -47,14 +47,14 @@ class PostPaidHandlerTest extends \PHPUnit\Framework\TestCase
 
         $this->postPaidHandler->process(123, 321);
 
-        $this->assertEquals(2, $this->identificationDataStorage->readValue('isPostPaidRestricted'));
+        $this->assertEquals(2, $this->identificationDataStorage->isPostPaidRestricted());
     }
 
     public function testProcessWhenPostPaid()
     {
         $this->process(1, 'Postpaid');
 
-        $this->assertEquals(1, $this->identificationDataStorage->readValue('isPostPaidRestricted'));
+        $this->assertEquals(1, $this->identificationDataStorage->isPostPaidRestricted());
     }
 
     public function testIsNotPostPaidRestricted()

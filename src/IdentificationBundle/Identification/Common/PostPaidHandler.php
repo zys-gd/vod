@@ -61,7 +61,7 @@ class PostPaidHandler
         try {
             $response = $this->client->makePostRequest($link, $preparedParams);
             $data = (array)$response->data;
-            $this->identificationDataStorage->storeValue('isPostPaidRestricted', $data['accountTypeId'] ?? false);
+            $this->identificationDataStorage->setPostPaidRestricted($data['accountTypeId'] ?? false);
         } catch (\Throwable $e) {
             $this->logger->debug('Postpaid error', [
                 'error' => $e->getMessage()
@@ -74,6 +74,6 @@ class PostPaidHandler
      */
     public function isPostPaidRestricted()
     {
-        return $this->identificationDataStorage->readValue('isPostPaidRestricted') === 1;
+        return $this->identificationDataStorage->isPostPaidRestricted();
     }
 }

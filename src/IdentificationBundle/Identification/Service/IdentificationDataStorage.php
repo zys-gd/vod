@@ -1,16 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 14.01.19
- * Time: 13:02
- */
 
 namespace IdentificationBundle\Identification\Service;
 
-
+use IdentificationBundle\Identification\Service\Session\SessionStorageInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+/**
+ * Class IdentificationDataStorage
+ */
 class IdentificationDataStorage
 {
     /**
@@ -19,26 +16,20 @@ class IdentificationDataStorage
     private $session;
 
     /**
-     * IdentificationDataStorage constructor.
+     * @var SessionStorageInterface
      */
-    public function __construct(SessionInterface $session)
+    private $sessionStorage;
+
+    /**
+     * IdentificationDataStorage constructor
+     *
+     * @param SessionInterface $session
+     * @param SessionStorageInterface $sessionStorage
+     */
+    public function __construct(SessionInterface $session, SessionStorageInterface $sessionStorage)
     {
         $this->session = $session;
-    }
-
-    public function readValue(string $key)
-    {
-        return $this->session->get("storage[$key]", '');
-    }
-
-    public function storeValue(string $key, $value): void
-    {
-        $this->session->set("storage[$key]", $value);
-    }
-
-    public function cleanValue(string $key): void
-    {
-        $this->session->remove("storage[$key]");
+        $this->session = $sessionStorage;
     }
 
     public function storeOperationResult(string $key, $result): void
@@ -56,6 +47,7 @@ class IdentificationDataStorage
         $this->session->remove("results[$key]");
     }
 
+
     public function storeIdentificationToken(string $token): void
     {
         $identificationData = $this->readIdentificationData();
@@ -65,9 +57,6 @@ class IdentificationDataStorage
         $this->setIdentificationData($identificationData);
     }
 
-    /**
-     * @return array
-     */
     public function readIdentificationData(): array
     {
         if ($this->session->has('identification_data')) {
@@ -78,9 +67,6 @@ class IdentificationDataStorage
         return $identificationData;
     }
 
-    /**
-     * @param $identificationData
-     */
     private function setIdentificationData(array $identificationData): void
     {
         $this->session->set('identification_data', $identificationData);
@@ -98,11 +84,121 @@ class IdentificationDataStorage
 
     public function storeIsClickableSubImage(bool $flag): void
     {
-        $this->storeValue('is_clickable_sub_image', $flag);
+        // todo rework after task with LP
+        //$this->storeValue('is_clickable_sub_image', $flag);
     }
 
+    /**
+     * @param $result
+     */
+    public function setPinVerifyResult($result): void
+    {
+        $this->sessionStorage->storeOperationResult('pinVerify', $result);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPinVerifyResult()
+    {
+        return $this->sessionStorage->readOperationResult('pinVerify');
+    }
+
+    /**
+     * @param bool $value
+     *
+     * @return void
+     */
+    public function setSubscribeAfterIdent(bool $value = true): void
+    {
+        $this->sessionStorage->storeStorageValue('subscribeAfterIdent', $value);
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getSubscribeAfterIdent(): ?bool
+    {
+        return $this->sessionStorage->readStorageValue('subscribeAfterIdent');
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRedirectIdentToken(): ?string
+    {
+        return $this->sessionStorage->readStorageValue('redirectIdent[token]');
+    }
+
+    /**
+     * @param string $token
+     */
+    public function setRedirectIdentToken(string $token): void
+    {
+        $this->sessionStorage->storeStorageValue('redirectIdent[token]', $token);
+    }
+
+    /**
+     * @param string $token
+     */
+    public function setConsentFlowToken(string $token): void
+    {
+        $this->sessionStorage->storeStorageValue('consentFlow[token]', $token);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getConsentFlowToken(): ?string
+    {
+        return $this->sessionStorage->readStorageValue('consentFlow[token]');
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPostPaidRestricted(): bool
+    {
+        return $this->sessionStorage->readStorageValue('isPostPaidRestricted') === 1;
+    }
+
+    /**
+     * @param $value
+     */
+    public function setPostPaidRestricted($value): void
+    {
+        $this->sessionStorage->storeStorageValue('isPostPaidRestricted', $value);
+    }
+
+    /**
+     * @return void
+     */
+    public function setAutoIdentAttempt(): void
+    {
+        $this->sessionStorage->storeStorageValue('is_tried_to_autoident', true);
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getAutoIdentAttempt(): ?bool
+    {
+        return $this->sessionStorage->readStorageValue('is_tried_to_autoident');
+    }
+
+    /**
+     * @return bool
+     */
     public function isWifiFlow(): bool
     {
-        return $this->readValue('is_wifi_flow');
+        return $this->sessionStorage->readStorageValue('is_wifi_flow');
+    }
+
+    /**
+     * @param bool $isWifiFlow
+     */
+    public function setWifiFlow(bool $isWifiFlow): void
+    {
+        $this->sessionStorage->storeStorageValue('is_wifi_flow', $isWifiFlow);
     }
 }

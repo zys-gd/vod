@@ -163,15 +163,11 @@ class OrangeEGWifiIdentificationHandler implements
     }
 
     /**
-     * @param PinVerifyResult $parameters
+     * @param PinVerifyResult $pinVerifyResult
      */
-    public function afterSuccessfulPinVerify(PinVerifyResult $parameters): void
+    public function afterSuccessfulPinVerify(PinVerifyResult $pinVerifyResult): void
     {
-        $data = $parameters->getRawData();
-
-        if (!empty($data['subscription_contract_id'])) {
-            $this->identificationDataStorage->storeValue('subscription_contract_id', $data['subscription_contract_id']);
-        }
+        $this->identificationDataStorage->setPinVerifyResult($pinVerifyResult);
     }
 
     /**

@@ -42,7 +42,7 @@ class AsyncIdentStatusProvider
     public function isCallbackReceived(): bool
     {
         try {
-            if (!$tempToken = $this->dataStorage->readValue('redirectIdent[token]')) {
+            if (!$tempToken = $this->dataStorage->getRedirectIdentToken()) {
                 throw new FailedIdentificationException('Ident is not started');
             }
 

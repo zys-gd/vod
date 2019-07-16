@@ -53,7 +53,7 @@ class AsyncIdentStarterTest extends \PHPUnit\Framework\TestCase
         );
 
         $this->assertEquals(
-            $this->dataStorage->readValue('redirectIdent[token]'),
+            $this->dataStorage->getRedirectIdentToken(),
             'token',
             'token is not set'
         );

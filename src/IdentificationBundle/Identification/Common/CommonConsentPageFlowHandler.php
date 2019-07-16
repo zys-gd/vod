@@ -102,7 +102,7 @@ class CommonConsentPageFlowHandler
             );
 
             $processResult = $this->identProcess->doIdent($parameters);
-            $this->dataStorage->storeValue('consentFlow[token]', $this->generator->generateToken());
+            $this->dataStorage->setConsentFlowToken($this->generator->generateToken());
 
             return $this->asyncIdentStarter->start($processResult, $token);
         } elseif ($handler instanceof HasCustomConsentPageFlow) {

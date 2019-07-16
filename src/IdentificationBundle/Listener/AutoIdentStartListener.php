@@ -245,7 +245,7 @@ class AutoIdentStartListener
 
     private function startWifiFlow(SessionInterface $session): Response
     {
-        $this->dataStorage->storeValue('is_wifi_flow', true);
+        $this->dataStorage->setWifiFlow(true);
 
         return new RedirectResponse($this->routeProvider->getLinkToWifiFlowPage());
 

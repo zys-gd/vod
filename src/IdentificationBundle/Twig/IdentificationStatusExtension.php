@@ -61,12 +61,12 @@ class IdentificationStatusExtension extends AbstractExtension
             }),
 
             new TwigFunction('isConsentFlow', function () {
-                $token = $this->dataStorage->readValue('consentFlow[token]');
+                $token = $this->dataStorage->getConsentFlowToken();
                 return (bool)$token;
             }),
 
             new TwigFunction('isWifiFlow', function () {
-                return (bool)$this->dataStorage->readValue('is_wifi_flow');
+                return (bool)$this->dataStorage->isWifiFlow();
             }),
 
             new TwigFunction('getIdentificationToken', function () {
@@ -77,7 +77,9 @@ class IdentificationStatusExtension extends AbstractExtension
             new TwigFunction('isOtp', [$this, 'isOtp']),
 
             new TwigFunction('isClickableSubImage', function () {
-                return (bool)$this->dataStorage->readValue('is_clickable_sub_image');
+                // todo rework after task with landing page
+                return false;
+                //return (bool)$this->dataStorage->readValue('is_clickable_sub_image');
             })
         ];
     }

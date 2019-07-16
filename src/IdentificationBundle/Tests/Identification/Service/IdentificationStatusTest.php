@@ -32,7 +32,7 @@ class IdentificationStatusTest extends TestCase
 
         $this->assertArraySubset(['identification_token' => 'token'],$this->dataStorage->readIdentificationData());
 
-        $this->assertFalse($this->dataStorage->readValue('is_wifi_flow'));
+        $this->assertFalse($this->dataStorage->isWifiFlow());
 
     }
 
@@ -46,7 +46,7 @@ class IdentificationStatusTest extends TestCase
 
     public function testIsWifiFlowStarted()
     {
-        $this->dataStorage->storeValue('is_wifi_flow',true);
+        $this->dataStorage->setWifiFlow(true);
 
         $this->assertTrue($this->identificationStatus->isWifiFlowStarted());
 

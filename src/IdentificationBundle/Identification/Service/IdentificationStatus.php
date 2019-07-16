@@ -36,22 +36,22 @@ class IdentificationStatus
     public function finishIdent(string $token, User $user): void
     {
         $this->dataStorage->storeIdentificationToken($token);
-        $this->dataStorage->storeValue('is_wifi_flow', false);
+        $this->dataStorage->setWifiFlow(false);
     }
 
     public function isAlreadyTriedToAutoIdent(): bool
     {
-        return (bool)$this->dataStorage->readValue('is_tried_to_autoident');
+        return (bool)$this->dataStorage->getAutoIdentAttempt();
     }
 
     public function registerAutoIdentAttempt(): void
     {
-        $this->dataStorage->storeValue('is_tried_to_autoident', true);
+        $this->dataStorage->setAutoIdentAttempt();
     }
 
     public function isWifiFlowStarted(): bool
     {
-        return (bool)$this->dataStorage->readValue('is_wifi_flow');
+        return (bool) $this->dataStorage->isWifiFlow();
     }
 
 }

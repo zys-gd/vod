@@ -4,6 +4,7 @@ namespace SubscriptionBundle\Carriers\OrangeEGTpay\Subscribe;
 
 use App\Domain\Constants\ConstBillingCarrierId;
 use ExtrasBundle\Utils\LocalExtractor;
+use IdentificationBundle\BillingFramework\Process\DTO\PinVerifyResult;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
@@ -78,8 +79,12 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
             'redirect_url' => $this->router->generate('index', [], RouterInterface::ABSOLUTE_URL)
         ];
 
-        if ((bool) $this->identificationDataStorage->readValue('is_wifi_flow')) {
-            $data['subscription_contract_id'] = $this->identificationDataStorage->readValue('subscription_contract_id');
+        if ((bool) $this->identificationDataStorage->isWifiFlow()) {
+            /** @var PinVerifyResult $pinVerifyResult */
+            $pinVerifyResult = $this->identificationDataStorage->getPinVerifyResult();
+            $rawData = $pinVerifyResult->getRawData();
+
+            $data['subscription_contract_id'] = $rawData['subscription_contract_id'];
         }
 
         return $data;

@@ -68,7 +68,7 @@ class AsyncIdentFinisher
      */
     public function finish(): void
     {
-        if (!$tempToken = $this->dataStorage->readValue('redirectIdent[token]')) {
+        if (!$tempToken = $this->dataStorage->getRedirectIdentToken()) {
             throw new FailedIdentificationException('Ident is not started');
         }
 

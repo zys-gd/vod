@@ -58,7 +58,7 @@ class AsyncIdentFinisherTest extends TestCase
 
     public function testTokenIsStored()
     {
-        $this->session->set('storage[redirectIdent[token]]', 'token');
+        $this->dataStorage->setRedirectIdentToken('token');
 
         $user = Mockery::spy(User::class);
         $user->allows([

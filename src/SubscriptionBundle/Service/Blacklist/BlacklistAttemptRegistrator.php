@@ -87,7 +87,7 @@ class BlacklistAttemptRegistrator
 
         $this->cacheService->saveCache($identificationToken, $subscriptionTries, self::TIME_LIMIT);
 
-        if ($this->identificationDataStorage->readValue('is_wifi_flow')) {
+        if ($this->identificationDataStorage->isWifiFlow()) {
             $user = $this->userRepository->findOneByIdentificationToken($identificationToken);
             $this->cacheService->saveCache($user->getIdentifier(), $subscriptionTries, self::TIME_LIMIT);
         }

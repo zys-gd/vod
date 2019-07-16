@@ -33,7 +33,7 @@ class AsyncIdentStarter
 
     public function start(ProcessResult $processResult, string $token): RedirectResponse
     {
-        $this->dataStorage->storeValue('redirectIdent[token]', $token);
+        $this->dataStorage->setRedirectIdentToken($token);
 
         return new RedirectResponse($processResult->getUrl());
     }

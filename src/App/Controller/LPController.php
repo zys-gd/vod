@@ -242,7 +242,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $campaignToken      = AffiliateVisitSaver::extractCampaignToken($session);
         $this->contentStatisticSender->trackVisit($identificationData, $carrierId ? new ISPData($carrierId) : null, $campaignToken);
 
-        if ($carrier && !(bool)$this->dataStorage->readValue('is_wifi_flow') && $this->landingPageAccessResolver->isLandingDisabled($request)) {
+        if ($carrier && !(bool) $this->dataStorage->isWifiFlow() && $this->landingPageAccessResolver->isLandingDisabled($request)) {
             return new RedirectResponse($this->subscribeUrlResolver->getSubscribeRoute($carrier));
         }
 

@@ -73,7 +73,7 @@ class IdentDataCollector extends DataCollector
         $this->data['current_identity'] = [
             'isp'            => IdentificationFlowDataExtractor::extractIspDetectionData($session),
             'identification' => $extractIdentificationData,
-            'wifi_flow'      => (int)$this->dataStorage->readValue('is_wifi_flow'),
+            'wifi_flow'      => (int) $this->dataStorage->isWifiFlow(),
             'user'           => isset($user)
                 ? [
                     'uuid'       => $user->getUuid(),
