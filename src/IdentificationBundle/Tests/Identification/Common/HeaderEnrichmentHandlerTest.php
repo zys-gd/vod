@@ -97,7 +97,7 @@ class HeaderEnrichmentHandlerTest extends \PHPUnit\Framework\TestCase
         $this->headerEnrichmentHandler->process($this->request, $this->handler, $this->carrier, 'token', Mockery::spy(DeviceData::class));
 
         $this->assertEquals('token', $user->getIdentificationToken());
-        $this->assertArraySubset(['identification_token' => 'token'], $this->dataStorage->readIdentificationData());
+        $this->assertArraySubset(['identification_token' => 'token'], $this->dataStorage->getIdentificationData());
 
     }
 
@@ -109,7 +109,7 @@ class HeaderEnrichmentHandlerTest extends \PHPUnit\Framework\TestCase
 
         $this->headerEnrichmentHandler->process($this->request, $this->handler, $this->carrier, 'token', Mockery::spy(DeviceData::class));
 
-        $this->assertArraySubset(['identification_token' => 'token'], $this->dataStorage->readIdentificationData());
+        $this->assertArraySubset(['identification_token' => 'token'], $this->dataStorage->getIdentificationData());
 
         $this->userFactory->shouldHaveReceived('create')->once();
 

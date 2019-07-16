@@ -10,6 +10,19 @@ interface SessionStorageInterface
     /**
      * @param string $key
      *
+     * @return mixed
+     */
+    public function readValue(string $key);
+
+    /**
+     * @param string $key
+     * @param $value
+     */
+    public function storeValue(string $key, $value): void;
+
+    /**
+     * @param string $key
+     *
      * @return string|null
      */
     public function readStorageValue(string $key): ?string;

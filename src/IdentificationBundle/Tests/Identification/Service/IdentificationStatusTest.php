@@ -30,7 +30,7 @@ class IdentificationStatusTest extends TestCase
     {
         $this->identificationStatus->finishIdent('token', Mockery::spy(\IdentificationBundle\Entity\User::class));
 
-        $this->assertArraySubset(['identification_token' => 'token'],$this->dataStorage->readIdentificationData());
+        $this->assertArraySubset(['identification_token' => 'token'],$this->dataStorage->getIdentificationData());
 
         $this->assertFalse($this->dataStorage->isWifiFlow());
 

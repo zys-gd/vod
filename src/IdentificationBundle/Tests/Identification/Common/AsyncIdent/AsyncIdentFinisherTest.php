@@ -77,7 +77,7 @@ class AsyncIdentFinisherTest extends TestCase
 
 
         $this->assertArraySubset(
-            $this->dataStorage->readIdentificationData(),
+            $this->dataStorage->getIdentificationData(),
             ['identification_token' => 'token'],
             'token is not set'
         );

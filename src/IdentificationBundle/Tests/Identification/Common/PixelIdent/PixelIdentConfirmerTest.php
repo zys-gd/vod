@@ -111,7 +111,7 @@ class PixelIdentConfirmerTest extends TestCase
 
         $this->assertArraySubset(
             ['identification_token' => 'token'],
-            $this->dataStorage->readIdentificationData(),
+            $this->dataStorage->getIdentificationData(),
             'ident are not finished'
         );
     }
@@ -146,7 +146,7 @@ class PixelIdentConfirmerTest extends TestCase
 
         $this->assertArraySubset(
             ['identification_token' => '555555'],
-            $this->dataStorage->readIdentificationData(),
+            $this->dataStorage->getIdentificationData(),
             'ident are not finished'
         );
     }

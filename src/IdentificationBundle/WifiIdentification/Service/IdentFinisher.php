@@ -66,7 +66,7 @@ class IdentFinisher
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
-        $this->identificationDataStorage->storeIdentificationToken($token);
+        $this->identificationDataStorage->setIdentificationToken($token);
 
         return $user;
     }
@@ -87,6 +87,6 @@ class IdentFinisher
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
-        $this->identificationDataStorage->storeIdentificationToken($token);
+        $this->identificationDataStorage->setIdentificationToken($token);
     }
 }

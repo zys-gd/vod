@@ -29,7 +29,7 @@ class IdentificationDataStorage
     public function __construct(SessionInterface $session, SessionStorageInterface $sessionStorage)
     {
         $this->session = $session;
-        $this->session = $sessionStorage;
+        $this->sessionStorage = $sessionStorage;
     }
 
     public function storeOperationResult(string $key, $result): void
@@ -45,31 +45,6 @@ class IdentificationDataStorage
     public function cleanPreviousOperationResult(string $key): void
     {
         $this->session->remove("results[$key]");
-    }
-
-
-    public function storeIdentificationToken(string $token): void
-    {
-        $identificationData = $this->readIdentificationData();
-
-        $identificationData['identification_token'] = $token;
-
-        $this->setIdentificationData($identificationData);
-    }
-
-    public function readIdentificationData(): array
-    {
-        if ($this->session->has('identification_data')) {
-            $identificationData = $this->session->get('identification_data');
-        } else {
-            $identificationData = [];
-        }
-        return $identificationData;
-    }
-
-    private function setIdentificationData(array $identificationData): void
-    {
-        $this->session->set('identification_data', $identificationData);
     }
 
     public function storeCarrierId(int $carrierId): void
@@ -88,6 +63,28 @@ class IdentificationDataStorage
         //$this->storeValue('is_clickable_sub_image', $flag);
     }
 
+
+
+
+    /**
+     * @param string $token
+     */
+    public function setIdentificationToken(string $token): void
+    {
+        $identificationData = $this->getIdentificationData();
+        $identificationData['identification_token'] = $token;
+
+        $this->setIdentificationData($identificationData);
+    }
+
+    /**
+     * @return array
+     */
+    public function getIdentificationData(): array
+    {
+        return $this->sessionStorage->readValue('identification_data') ?? [];
+    }
+
     /**
      * @param $result
      */
@@ -102,6 +99,11 @@ class IdentificationDataStorage
     public function getPinVerifyResult()
     {
         return $this->sessionStorage->readOperationResult('pinVerify');
+    }
+
+    public function setPinRequestResult()
+    {
+
     }
 
     /**
@@ -200,5 +202,13 @@ class IdentificationDataStorage
     public function setWifiFlow(bool $isWifiFlow): void
     {
         $this->sessionStorage->storeStorageValue('is_wifi_flow', $isWifiFlow);
+    }
+
+    /**
+     * @param array $identificationData
+     */
+    private function setIdentificationData(array $identificationData): void
+    {
+        $this->session->set('identification_data', $identificationData);
     }
 }

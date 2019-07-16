@@ -30,6 +30,25 @@ class SessionStorage implements SessionStorageInterface
     /**
      * @param string $key
      *
+     * @return mixed
+     */
+    public function readValue(string $key)
+    {
+        return $this->session->get($key);
+    }
+
+    /**
+     * @param string $key
+     * @param $value
+     */
+    public function storeValue(string $key, $value): void
+    {
+        $this->session->set($key, $value);
+    }
+
+    /**
+     * @param string $key
+     *
      * @return string|null
      */
     public function readStorageValue(string $key): ?string

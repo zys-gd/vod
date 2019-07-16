@@ -29,13 +29,13 @@ class IdentificationStatus
 
     public function isIdentified(): bool
     {
-        $identificationData = $this->dataStorage->readIdentificationData();
+        $identificationData = $this->dataStorage->getIdentificationData();
         return isset($identificationData['identification_token']);
     }
 
     public function finishIdent(string $token, User $user): void
     {
-        $this->dataStorage->storeIdentificationToken($token);
+        $this->dataStorage->setIdentificationToken($token);
         $this->dataStorage->setWifiFlow(false);
     }
 

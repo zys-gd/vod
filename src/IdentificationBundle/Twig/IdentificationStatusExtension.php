@@ -56,7 +56,7 @@ class IdentificationStatusExtension extends AbstractExtension
             new TwigFunction('getCarrierId', [$this, 'getCarrierId']),
 
             new TwigFunction('isIdentified', function () {
-                $identificationData = $this->dataStorage->readIdentificationData();
+                $identificationData = $this->dataStorage->getIdentificationData();
                 return isset($identificationData['identification_token']) && $identificationData['identification_token'];
             }),
 
@@ -70,7 +70,7 @@ class IdentificationStatusExtension extends AbstractExtension
             }),
 
             new TwigFunction('getIdentificationToken', function () {
-                $identificationData = $this->dataStorage->readIdentificationData();
+                $identificationData = $this->dataStorage->getIdentificationData();
                 return $identificationData['identification_token'] ?? null;
             }),
 

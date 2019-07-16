@@ -92,7 +92,7 @@ services:
     IdentificationBundle\Identification\Service\ISPResolver: ~
 
     IdentificationBundle\Identification\Service\IdentificationDataStorage:
-        arguments: ['@session']
+        arguments: ['@session', '@IdentificationBundle\Identification\Service\Session\SessionStorage']
 
     IdentificationBundle\Identification\IdentifierByUrl:
         arguments:

@@ -44,7 +44,7 @@ class IdentificationDataStorageTest extends TestCase
 
     public function testStoreIdentificationToken()
     {
-        $this->identificationDataStorage->storeIdentificationToken('token');
+        $this->identificationDataStorage->setIdentificationToken('token');
 
         $data = $this->session->get('identification_data');
 
@@ -56,7 +56,7 @@ class IdentificationDataStorageTest extends TestCase
     {
         $this->session->set('identification_data', ['identification_token' => 'token']);
 
-        $result = $this->identificationDataStorage->readIdentificationData('token');
+        $result = $this->identificationDataStorage->getIdentificationData('token');
 
         $this->assertArraySubset(['identification_token' => 'token'], $result);
 
