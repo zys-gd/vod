@@ -114,7 +114,7 @@ class UnsubscriberTest extends TestCase
             Mockery::spy(OnUnsubscribeUpdater::class),
             $this->piwikSender,
             Mockery::spy(\SubscriptionBundle\Service\Action\Unsubscribe\UnsubscribeParametersProvider::class),
-            Mockery::spy(\App\Domain\Service\CrossSubscriptionAPI\ApiConnector::class)
+            Mockery::spy(\Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector::class)
         );
 
     }

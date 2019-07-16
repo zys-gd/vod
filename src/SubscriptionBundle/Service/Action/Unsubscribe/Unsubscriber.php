@@ -9,7 +9,7 @@
 namespace SubscriptionBundle\Service\Action\Unsubscribe;
 
 
-use App\Domain\Service\CrossSubscriptionAPI\ApiConnector;
+use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Notification\API\Exception\NotificationSendFailedException;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
@@ -65,15 +65,15 @@ class Unsubscriber
 
     /**
      * Unsubscriber constructor.
-     * @param LoggerInterface               $logger
-     * @param EntitySaveHelper              $entitySaveHelper
-     * @param FakeResponseProvider          $fakeResponseProvider
-     * @param Notifier                      $notifier
-     * @param UnsubscribeProcess            $unsubscribeProcess
-     * @param OnUnsubscribeUpdater          $onUnsubscribeUpdater
-     * @param SubscriptionStatisticSender   $subscriptionStatisticSender
-     * @param UnsubscribeParametersProvider $parametersProvider
-     * @param ApiConnector                  $crossSubscriptionApi
+     * @param LoggerInterface                                             $logger
+     * @param EntitySaveHelper                                            $entitySaveHelper
+     * @param FakeResponseProvider                                        $fakeResponseProvider
+     * @param Notifier                                                    $notifier
+     * @param UnsubscribeProcess                                          $unsubscribeProcess
+     * @param OnUnsubscribeUpdater                                        $onUnsubscribeUpdater
+     * @param SubscriptionStatisticSender                                 $subscriptionStatisticSender
+     * @param UnsubscribeParametersProvider                               $parametersProvider
+     * @param \Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector $crossSubscriptionApi
      */
     public function __construct(
         LoggerInterface $logger,

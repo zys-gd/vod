@@ -71,6 +71,9 @@ class TestUserAdmin extends AbstractAdmin
                     ],
                     'set_status_for_renew' => [
                         'template' => '@IdentificationAdmin/TestUser/set_status_for_renew_button.html.twig'
+                    ]   ,
+                    'clean_from_cross_subscription' => [
+                        'template' => '@IdentificationAdmin/TestUser/clean_from_cross_subscription.html.twig'
                     ]
                 ]
             ]);
@@ -98,6 +101,7 @@ class TestUserAdmin extends AbstractAdmin
 
         $collection->add('drop_user_data', $this->getRouterIdParameter() . '/dropUserData');
         $collection->add('set_status_for_renew', $this->getRouterIdParameter() . '/setStatusForRenew');
+        $collection->add('clean_from_cross_subscription', $this->getRouterIdParameter() . '/cleanFromCrossSubscription');
 
         parent::configureRoutes($collection);
     }

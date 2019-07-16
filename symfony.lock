@@ -275,6 +275,9 @@
     "piwik/piwik-php-tracker": {
         "version": "1.0.0"
     },
+    "playwing/cross-subscription-api-connector": {
+        "version": "dev-master"
+    },
     "playwing/difftool": {
         "version": "1.0"
     },
