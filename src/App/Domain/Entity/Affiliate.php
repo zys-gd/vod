@@ -719,11 +719,23 @@ class Affiliate implements HasUuid, AffiliateInterface
      *
      * @return $this
      */
-    public function addAffiliateBannedPublisher(AffiliateBannedPublisher $affiliateBannedPublisher)
+    public function addBannedPublisher(AffiliateBannedPublisher $affiliateBannedPublisher)
     {
         $this->bannedPublishers->add($affiliateBannedPublisher);
 
         $affiliateBannedPublisher->setAffiliate($this);
+
+        return $this;
+    }
+
+    /**
+     * @param AffiliateBannedPublisher $affiliateBannedPublisher
+     *
+     * @return $this
+     */
+    public function removeBannedPublisher(AffiliateBannedPublisher $affiliateBannedPublisher)
+    {
+        $this->bannedPublishers->removeElement($affiliateBannedPublisher);
 
         return $this;
     }

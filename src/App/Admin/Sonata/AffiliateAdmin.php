@@ -335,13 +335,12 @@ class AffiliateAdmin extends AbstractAdmin
         $formMapper
             ->tab('Banned Publishers')
             ->with('', ['box_class' => 'box-solid'])
-            ->add('affiliateBannedPublisher', CollectionType::class, [
+            ->add('bannedPublishers', CollectionType::class, [
                 'entry_type'   => AffiliateBannedPublisherType::class,
                 'allow_delete' => true,
                 'allow_add'    => true,
-                // 'by_reference' => false,
-                'prototype'    => true,
-                'label'        => 'Publisher identification key'
+                'by_reference' => false,
+                'label'        => 'Publisher identification keys'
             ])
             ->end();
     }

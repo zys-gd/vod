@@ -6,17 +6,24 @@ namespace App\Domain\Entity;
 
 class AffiliateBannedPublisher
 {
+    /** @var string */
     private $uuid;
+
     /** @var Affiliate */
     private $affiliate;
 
     /** @var string */
     private $publisherId;
 
+    public function __construct(string $uuid)
+    {
+        $this->uuid = $uuid;
+    }
+
     /**
-     * @return mixed
+     * @return string
      */
-    public function getUuid()
+    public function getUuid(): string
     {
         return $this->uuid;
     }

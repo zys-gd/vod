@@ -45,7 +45,7 @@ class AffiliateBannedPublisherType extends AbstractType
         $resolver->setDefaults([
             'data_class' => AffiliateBannedPublisher::class,
             'empty_data' => function () {
-                return new AffiliateBannedPublisher();
+                return new AffiliateBannedPublisher(UuidGenerator::generate());
             }
         ]);
     }
