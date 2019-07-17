@@ -6,6 +6,7 @@ namespace App\Admin\Controller;
 
 use App\Admin\Form\CampaignCloneForm;
 use App\Admin\Form\PreUploadForm;
+use App\Domain\Entity\Campaign;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Symfony\Component\Form\FormFactory;
@@ -33,6 +34,7 @@ class CampaignAdminController extends CRUDController
      */
     public function cloneAction($id, Request $request)
     {
+        /** @var Campaign $object */
         $object = $this->admin->getSubject();
 
         if (!$object) {
@@ -44,6 +46,7 @@ class CampaignAdminController extends CRUDController
         try {
             while ($count--) {
                 $clonedObject = clone $object;
+                $clonedObject->setCampaignToken(uniqid());
 
                 $this->admin->create($clonedObject);
             }
