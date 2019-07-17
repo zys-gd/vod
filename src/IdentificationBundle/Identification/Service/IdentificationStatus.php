@@ -40,8 +40,7 @@ class IdentificationStatus
 
     public function isIdentified(): bool
     {
-        $identificationData = $this->dataStorage->getIdentificationData();
-        return isset($identificationData['identification_token']);
+        return (bool) $this->dataStorage->getIdentificationToken();
     }
 
     public function finishIdent(string $token, User $user): void

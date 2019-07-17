@@ -11,6 +11,7 @@ use App\Domain\Repository\CampaignRepository;
 use App\Domain\Service\CarrierOTPVerifier;
 use App\Domain\Service\Piwik\ContentStatisticSender;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
+use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Exception\MissingCarrierException;
 use IdentificationBundle\Identification\Service\CarrierSelector;
@@ -235,11 +236,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         // we can't use ISPData object as function parameter because request to LP could not contain
         // carrier data and in this case BadRequestHttpException will be throw
-        $ispData            = IdentificationFlowDataExtractor::extractIspDetectionData($session);
-        $carrierId          = $ispData ? $ispData['carrier_id'] : null;
-        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($session);
-        $campaignToken      = AffiliateVisitSaver::extractCampaignToken($session);
-        $this->contentStatisticSender->trackVisit($identificationData, $carrierId ? new ISPData($carrierId) : null, $campaignToken);
+        $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($session);
+        $extractIdentificationToken = IdentificationFlowDataExtractor::extractIdentificationToken($session);
+        $campaignToken = AffiliateVisitSaver::extractCampaignToken($session);
+        $this->contentStatisticSender->trackVisit($extractIdentificationToken, $billingCarrierId ? new ISPData($billingCarrierId) : null, $campaignToken);
 
         if ($carrier && !(bool) $this->wifiIdentificationDataStorage->isWifiFlow() && $this->landingPageAccessResolver->isLandingDisabled($request)) {
             return new RedirectResponse($this->subscribeUrlResolver->getSubscribeRoute($carrier));
@@ -249,7 +249,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             $this->OTPVerifier->forceWifi($session);
         }
 
-        $template = $this->templateConfigurator->getTemplate('landing', (int)$carrierId);
+        $template = $this->templateConfigurator->getTemplate('landing', (int)$billingCarrierId);
 
         return $this->render($template, [
             'campaignBanner' => $campaignBanner,
@@ -342,16 +342,15 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      *
      * @return Carrier|null
      */
-    private function resolveCarrierFromRequest(Request $request): ?Carrier
+    private function resolveCarrierFromRequest(Request $request): ?CarrierInterface
     {
-        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession());
-        $billingCarrierId = (int)$ispDetectionData['carrier_id'] ?? null;
+        $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($request->getSession());
+
         if (!empty($billingCarrierId)) {
             return $this->carrierRepository->findOneByBillingId($billingCarrierId);
         }
-        else {
-            return null;
-        }
+
+        return null;
     }
 
     /**

@@ -31,11 +31,11 @@ class ISPDetectionConverter implements ParamConverterInterface
      */
     public function apply(Request $request, ParamConverter $configuration)
     {
-        if (!$ispData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession())) {
+        if (!$billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($request->getSession())) {
             throw new BadRequestHttpException('ISP detection data is not found');
         }
 
-        $object = new ISPData($ispData['carrier_id']);
+        $object = new ISPData($billingCarrierId);
 
 
         $request->attributes->set($configuration->getName(), $object);

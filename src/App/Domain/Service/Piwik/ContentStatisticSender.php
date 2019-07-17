@@ -109,22 +109,21 @@ class ContentStatisticSender
     }
 
     /**
-     * @param array|null  $identificationData
+     * @param string|null  $identificationToken
      * @param ISPData     $data
      * @param string|null $campaignToken
      *
      * @return bool
      */
-    public function trackVisit(array $identificationData = null, ISPData $data = null, string $campaignToken = null): bool
+    public function trackVisit(string $identificationToken = null, ISPData $data = null, string $campaignToken = null): bool
     {
 
 
         $billingCarrierId = $data ? $data->getCarrierId() : null;
 
         try {
-            $token = $identificationData['identification_token'];
             /** @var User $user */
-            $user        = $this->userRepository->findOneBy(['identificationToken' => $token]);
+            $user        = $this->userRepository->findOneBy(['identificationToken' => $identificationToken]);
             $userIp      = $user->getIp();
             $countryCode = $user->getCountry();
             $msisdn      = $user->getIdentifier();

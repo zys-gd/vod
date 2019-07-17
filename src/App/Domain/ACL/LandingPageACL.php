@@ -145,10 +145,10 @@ class LandingPageACL
     public function isLandingDisabled(Request $request): bool
     {
         try {
-            $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
+            $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
             $campaignToken    = $request->get('cid', '');
             /** @var Carrier $carrier */
-            $carrier = $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id']);
+            $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
 
             /** @var Campaign $campaign */
             $campaign           = $this->campaignRepository->findOneBy(['campaignToken' => $campaignToken]);

@@ -28,11 +28,11 @@ class IdentificationDataConverter implements ParamConverterInterface
      */
     public function apply(Request $request, ParamConverter $configuration)
     {
-        if (!$identificationData = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession())) {
+        if (!$identificationToken = IdentificationFlowDataExtractor::extractIdentificationToken($request->getSession())) {
             throw new BadRequestHttpException('Identification data is not found');
         }
 
-        $object = new IdentificationData($identificationData['identification_token']);
+        $object = new IdentificationData($identificationToken);
 
 
         $request->attributes->set($configuration->getName(), $object);

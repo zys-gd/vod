@@ -145,8 +145,7 @@ class TranslatorExtension extends AbstractExtension
      */
     private function extractDetectionData()
     {
-        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
-        $billingCarrierId = $ispDetectionData['carrier_id'];
+        $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
         $languageCode = $this->localExtractor->getLocal();
 
         return [

@@ -91,12 +91,12 @@ class IdentificationController extends AbstractController
             return $this->redirectToRoute('identify_by_url', ['urlId' => $urlId]);
         }
 
-        $identData = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
-        if (isset($identData['identification_token'])) {
+        $identificationToken = IdentificationFlowDataExtractor::extractIdentificationToken($request->getSession());
+        if ($identificationToken) {
             throw new BadRequestHttpException('You are already identified');
         }
 
-        if (!$ispData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession())) {
+        if (!$billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($request->getSession())) {
             throw new BadRequestHttpException('Isp data missing');
         }
 
@@ -104,7 +104,7 @@ class IdentificationController extends AbstractController
 
         $this->logger->debug('Start ident from action', []);
         $result = $this->identifier->identify(
-            (int)$ispData['carrier_id'],
+            $billingCarrierId,
             $request,
             $token,
             $deviceData

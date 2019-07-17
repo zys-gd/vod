@@ -54,11 +54,11 @@ class AlreadySubscribedIdentFinisher
      */
     public function tryToIdentify(Request $request): void
     {
-        if (!$ispData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession())) {
+        if (!$billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($request->getSession())) {
             return;
         }
 
-        if (!$handler = $this->handlerProvider->get($ispData['carrier_id'])) {
+        if (!$handler = $this->handlerProvider->get($billingCarrierId)) {
             return;
         }
 

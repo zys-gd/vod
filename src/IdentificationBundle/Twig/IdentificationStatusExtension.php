@@ -59,13 +59,16 @@ class IdentificationStatusExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('isCarrierDetected', [$this, 'isCarrierDetected']),
+            new TwigFunction('isCarrierDetected', function () {
+                return (bool) IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
+            }),
 
-            new TwigFunction('getCarrierId', [$this, 'getCarrierId']),
+            new TwigFunction('getCarrierId', function () {
+                return IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
+            }),
 
             new TwigFunction('isIdentified', function () {
-                $identificationData = $this->dataStorage->getIdentificationData();
-                return isset($identificationData['identification_token']) && $identificationData['identification_token'];
+                return (bool) $this->dataStorage->getIdentificationToken();
             }),
 
             new TwigFunction('isConsentFlow', function () {
@@ -78,8 +81,7 @@ class IdentificationStatusExtension extends AbstractExtension
             }),
 
             new TwigFunction('getIdentificationToken', function () {
-                $identificationData = $this->dataStorage->getIdentificationData();
-                return $identificationData['identification_token'] ?? null;
+                return $this->dataStorage->getIdentificationToken();
             }),
 
             new TwigFunction('isOtp', [$this, 'isOtp']),
@@ -95,32 +97,17 @@ class IdentificationStatusExtension extends AbstractExtension
     /**
      * @return bool
      */
-    public function isCarrierDetected(): bool
-    {
-        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
-        return isset($ispDetectionData['carrier_id']) && $ispDetectionData['carrier_id'];
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getCarrierId(): ?int
-    {
-        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
-        return empty($ispDetectionData['carrier_id']) ? null : (int) $ispDetectionData['carrier_id'];
-    }
-
-    /**
-     * @return bool
-     */
     public function isOtp(): bool
     {
-        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
-        if (isset($ispDetectionData['carrier_id']) && $ispDetectionData['carrier_id']) {
+        $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
+
+        if ($billingCarrierId) {
             /** @var Carrier $carrier */
-            $carrier = $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id']);
+            $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
+
             return $carrier->isConfirmationClick();
         }
+
         return false;
     }
 }

@@ -105,9 +105,9 @@ class CategoryController extends AbstractController implements AppControllerInte
             $categoryVideos[$video->getUuid()] = $this->videoSerializer->serializeShort($video);
         }
 
-        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
+        $identificationToken = IdentificationFlowDataExtractor::extractIdentificationToken($request->getSession());
         $campaignToken      = AffiliateVisitSaver::extractCampaignToken($request->getSession());
-        $this->contentStatisticSender->trackVisit($identificationData, $data, $campaignToken);
+        $this->contentStatisticSender->trackVisit($identificationToken, $data, $campaignToken);
 
         $template = $this->templateConfigurator->getTemplate('category', $data->getCarrierId());
 

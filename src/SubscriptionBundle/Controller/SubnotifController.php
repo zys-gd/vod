@@ -123,8 +123,7 @@ class SubnotifController
             $user = $this->userRepository->findOneByMsisdn($phoneNumber);
             $redirectUrl = $this->router->generate('index', ['msisdn' => $phoneNumber]);
         } else {
-            $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($this->session);
-            $identificationToken = $identificationData['identification_token'];
+            $identificationToken = IdentificationFlowDataExtractor::extractIdentificationToken($this->session);
 
             $user = $this->userRepository->findOneByIdentificationToken($identificationToken);
             $redirectUrl = $redirectUrl = $this->router->generate('index');

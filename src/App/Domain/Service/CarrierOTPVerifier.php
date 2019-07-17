@@ -51,9 +51,7 @@ class CarrierOTPVerifier
      */
     public function forceWifi(SessionInterface $session)
     {
-        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($session);
-
-        if (in_array($ispDetectionData['carrier_id'] ?? '', $this->otpCarriers)) {
+        if (in_array(IdentificationFlowDataExtractor::extractBillingCarrierId($session) ?? '', $this->otpCarriers)) {
             $this->wifiIdentificationDataStorage->setWifiFlow(true);
         }
     }

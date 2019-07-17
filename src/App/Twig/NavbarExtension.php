@@ -65,11 +65,11 @@ class NavbarExtension extends AbstractExtension
                 /** @var MainCategory[] $categories */
                 $categories = $this->mainCategoryRepository->findWithSubcategories();
 
-                $ispData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
-                if ($ispData) {
+                $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
+                if ($billingCarrierId) {
                     $categoryOverrides = $this
                         ->categoryPriorityOverrideRepository
-                        ->findByBillingCarrierId($ispData['carrier_id']);
+                        ->findByBillingCarrierId($billingCarrierId);
                 }
 
                 if (!empty($categoryOverrides)) {

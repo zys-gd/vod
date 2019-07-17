@@ -49,9 +49,8 @@ class LimiterDataMapper
      */
     private function extractCarrierFromSession(SessionInterface $session): CarrierInterface
     {
-        $ispData          = IdentificationFlowDataExtractor::extractIspDetectionData($session);
-        $billingCarrierId = $ispData['carrier_id'];
-        $carrier          = $this->carrierRepository->findOneByBillingId($billingCarrierId);
+        $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($session);
+        $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
 
         return $carrier;
     }
@@ -64,8 +63,7 @@ class LimiterDataMapper
     private function extractAffiliateConstraintFromSession(SessionInterface $session): ?ConstraintByAffiliate
     {
         try {
-            $ispData          = IdentificationFlowDataExtractor::extractIspDetectionData($session);
-            $billingCarrierId = $ispData['carrier_id'];
+            $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($session);
 
             /** @var Campaign $campaign */
             $campaign = $this->campaignExtractor->getCampaignFromSession($session);

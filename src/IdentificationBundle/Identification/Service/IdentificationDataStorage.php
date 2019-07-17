@@ -52,6 +52,16 @@ class IdentificationDataStorage
     }
 
     /**
+     * @return string|null
+     */
+    public function getIdentificationToken(): ?string
+    {
+        $identificationData = $this->getIdentificationData();
+
+        return isset($identificationData['identification_token']) ? $identificationData['identification_token'] : null;
+    }
+
+    /**
      * @return array
      */
     public function getIdentificationData(): array
