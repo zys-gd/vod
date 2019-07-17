@@ -123,18 +123,24 @@ services:
             - '@SubscriptionBundle\Service\CAPTool\Limiter\SubscriptionCapChecker'
             - '@logger'
             - '@App\Domain\Repository\CampaignScheduleRepository'
+            - '@App\Domain\Service\AffiliateBannedPublisherChecker'
+
 
     App\Domain\Service\CarrierOTPVerifier:
         arguments:
-            - '@App\Domain\Repository\CarrierRepository'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+        - '@App\Domain\Repository\CarrierRepository'
+        - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
 
     App\Domain\Service\VideoProcessing\UploadedVideoSerializer: ~
 
 
     App\Domain\ACL\SubscribeACL:
         tags:
-            - { name: subscription.voter }
+                                                            - { name: subscription.voter }
 
     App\Domain\ACL\Accessors\SubscribeExternalAPICheck:
         arguments: ['@cross_subscription.api_connector']
+
+    App\Domain\Service\AffiliateBannedPublisherChecker:
+        arguments:
+            - '@App\Domain\Repository\AffiliateBannedPublisherRepository'

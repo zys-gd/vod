@@ -1,6 +1,7 @@
 App\Domain\Entity\AffiliateBannedPublisher:
     type: entity
     table: affiliate_banned_publisher
+    repositoryClass: App\Domain\Repository\AffiliateBannedPublisherRepository
     id:
         uuid:
             type: guid
