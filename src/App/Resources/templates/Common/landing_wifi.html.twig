@@ -4,11 +4,11 @@
 {% import "@App/Components/Blocks/Footer/menu.html.twig" as  footer_menu %}
 
 {# IMPORT SECTIONS #}
-{% import "@App/Common/landing/banner_section.html.twig" as banner_section %}
-{% import "@App/Common/landing/sub_btn_section.html.twig" as sub_btn_section %}
-{% import "@App/Common/landing/offer_section.html.twig" as offer_section %}
-{% import "@App/Common/landing/icons_chanel_section.html.twig" as icons_chanel_section %}
-{% import "@App/Common/landing/lure_text_section.html.twig" as lure_text_section %}
+{% import LPImporter("LP/Sections/banner_section.html.twig") as banner_section %}
+{% import LPImporter("LP/Sections/Wifi/sub_btn_section.html.twig") as sub_btn_section %}
+{% import LPImporter("LP/Sections/offer_section.html.twig") as offer_section %}
+{% import LPImporter("LP/Sections/icons_chanel_section.html.twig") as icons_chanel_section %}
+{% import LPImporter("LP/Sections/lure_text_section.html.twig") as lure_text_section %}
 {# END IMPORT SECTIONS #}
 
 {% block header_content %}
@@ -33,7 +33,7 @@
         <!-- END SUBSCRIBE BUTTON SECTION -->
 
         <!-- OFFER SECTION -->
-        {{ offer_section.render() }}
+        {{ offer_section.render()  }}
         <!-- END OFFER SECTION -->
 
         <!-- ICONS CHANEL SECTION -->

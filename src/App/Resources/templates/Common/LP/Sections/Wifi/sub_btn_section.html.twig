@@ -1,0 +1,17 @@
+{% macro render(className) %}
+    {% import "@App/Components/Buttons/link.html.twig" as  link %}
+    {% import "@App/Common/Blocks/wifi_subscribe_block.html.twig" as wifi_subscribe_block %}
+
+    <div class="d-flex align-items-start justify-content-center mb-n-2 {{ className }}">
+        {% if not hasActiveSubscription() or not isNotFullyPaid() %}
+            {#if we use this macro outside landing#}
+            {% if app.request.get('_route') == 'landing' %}
+                {{ wifi_subscribe_block.render() }}
+            {% else %}
+                {{ link.render(url('landing'), translate(placeholder)) }}
+            {% endif %}
+        {% else %}
+            {{ link.render(url('subscription.subscribe'), translate(placeholder), class) }}
+        {% endif %}
+    </div>
+{% endmacro %}

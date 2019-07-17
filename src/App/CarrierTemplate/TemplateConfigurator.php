@@ -71,19 +71,4 @@ class TemplateConfigurator
 
         return "@App/Common/{$template}.html.twig";
     }
-
-    public function getLPTemplate(string $template, int $billingCarrierId = 0, bool $isWifiFlow = false)
-    {
-        $implTemplate = $this->getTemplateHandler($billingCarrierId)->getFullTemplatePath($template);
-        $isImplTemplateExist = $this->templating->getLoader()->exists($implTemplate);
-        //
-        if ($isImplTemplateExist) {
-            return $implTemplate;
-        }
-
-        if($isWifiFlow) {
-            return "@App/Common/landing/wifi/{$template}.html.twig";
-        }
-        return "@App/Common/landing/3g/{$template}.html.twig";
-    }
 }

@@ -201,7 +201,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         }
 
         $carrier = $this->resolveCarrierFromRequest($request);
-        $this->checkClickableSubImage($carrier, $campaign);
         if ($carrier && $campaign) {
             $this->logger->debug('Start CAP checking', ['carrier' => $carrier]);
             try {
@@ -240,9 +239,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $carrierId          = $ispData ? $ispData['carrier_id'] : null;
         $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($session);
         $campaignToken      = AffiliateVisitSaver::extractCampaignToken($session);
+        $isWifiFlow = (bool)$this->dataStorage->readValue('is_wifi_flow');
         $this->contentStatisticSender->trackVisit($identificationData, $carrierId ? new ISPData($carrierId) : null, $campaignToken);
 
-        if ($carrier && !(bool)$this->dataStorage->readValue('is_wifi_flow') && $this->landingPageAccessResolver->isLandingDisabled($request)) {
+        if ($carrier && !$isWifiFlow && $this->landingPageAccessResolver->isLandingDisabled($request)) {
             return new RedirectResponse($this->subscribeUrlResolver->getSubscribeRoute($carrier));
         }
 
@@ -251,7 +251,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         }
 
 
-        $template = $this->templateConfigurator->getLPTemplate('landing', (int)$carrierId, true);
+        $template = $this->templateConfigurator->getTemplate($isWifiFlow ? 'landing_wifi' : 'landing_3g', (int)$carrierId);
 
         return $this->render($template, [
             'campaignBanner' => $campaignBanner,
@@ -369,27 +369,5 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         ]);
 
         return $campaign ?? null;
-    }
-
-    /**
-     * TODO: Transfer to separate class for additional session data
-     *
-     * @param Carrier|null  $carrier
-     * @param Campaign|null $campaign
-     */
-    public function checkClickableSubImage(Carrier $carrier = null, Campaign $campaign = null)
-    {
-        //is_clickable_sub_image has default value - true
-        //1.Highest priority in carrier that has value not equal the default
-        //2.Next if the campaign has value not equal the default
-        //3.All other situations
-        if ($carrier !== null && $carrier->isClickableSubImage() === false) {
-            $this->dataStorage->storeIsClickableSubImage(false);
-        } else if ($carrier !== null && $carrier->isClickableSubImage() === true
-            && $campaign !== null && $campaign->isClickableSubImage() === false) {
-            $this->dataStorage->storeIsClickableSubImage(false);
-        } else {
-            $this->dataStorage->storeIsClickableSubImage(true);
-        }
     }
 }

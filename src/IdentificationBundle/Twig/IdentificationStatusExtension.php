@@ -74,11 +74,7 @@ class IdentificationStatusExtension extends AbstractExtension
                 return $identificationData['identification_token'] ?? null;
             }),
 
-            new TwigFunction('isOtp', [$this, 'isOtp']),
-
-            new TwigFunction('isClickableSubImage', function () {
-                return (bool)$this->dataStorage->readValue('is_clickable_sub_image');
-            })
+            new TwigFunction('isOtp', [$this, 'isOtp'])
         ];
     }
 

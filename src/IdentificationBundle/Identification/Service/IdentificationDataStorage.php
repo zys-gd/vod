@@ -96,11 +96,6 @@ class IdentificationDataStorage
         $this->session->remove('isp_detection_data');
     }
 
-    public function storeIsClickableSubImage(bool $flag): void
-    {
-        $this->storeValue('is_clickable_sub_image', $flag);
-    }
-
     public function isWifiFlow(): bool
     {
         return $this->readValue('is_wifi_flow');

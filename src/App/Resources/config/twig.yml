@@ -57,6 +57,22 @@ services:
         tags:
             - { name: twig.extension }
 
+    App\Twig\LPClickableSubscribeImageExtension:
+        arguments:
+            - '@session'
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+            - '@SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface'
+        tags:
+            - { name: twig.extension }
+
+    App\Twig\LPTwigImporterExtension:
+        arguments:
+            - '@session'
+            - '@App\CarrierTemplate\TemplateConfigurator'
+        tags:
+            - { name: twig.extension }
+
+
     twig.extension.date:
         class: Twig_Extensions_Extension_Date
         tags:
