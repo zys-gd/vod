@@ -51,7 +51,7 @@ services:
             - '@App\Domain\Service\CarrierOTPVerifier'
             - '%default_redirect_url%'
             - '@App\CarrierTemplate\TemplateConfigurator'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
             - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
             - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier'
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'

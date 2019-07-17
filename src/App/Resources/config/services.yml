@@ -125,7 +125,7 @@ services:
     App\Domain\Service\CarrierOTPVerifier:
         arguments:
             - '@App\Domain\Repository\CarrierRepository'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
 
     App\Domain\Service\VideoProcessing\UploadedVideoSerializer: ~
 

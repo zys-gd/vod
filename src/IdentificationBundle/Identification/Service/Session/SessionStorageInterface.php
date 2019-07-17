@@ -22,6 +22,11 @@ interface SessionStorageInterface
 
     /**
      * @param string $key
+     */
+    public function cleanValue(string $key): void;
+
+    /**
+     * @param string $key
      *
      * @return string|null
      */

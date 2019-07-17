@@ -1,28 +1,24 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 11.05.18
- * Time: 10:02
- */
 
 namespace IdentificationBundle\Profiler;
 
-
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\UserRepository;
+use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use SubscriptionBundle\Repository\SubscriptionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
+/**
+ * Class IdentDataCollector
+ */
 class IdentDataCollector extends DataCollector
 {
     /**
-     * @var IdentificationDataStorage
+     * @var WifiIdentificationDataStorage
      */
-    private $dataStorage;
+    private $wifiIdentificationDataStorage;
     /**
      * @var SubscriptionRepository
      */
@@ -33,20 +29,20 @@ class IdentDataCollector extends DataCollector
     private $userRepository;
 
     /**
-     * IdentDataCollector constructor.
-     * @param IdentificationDataStorage $dataStorage
-     * @param SubscriptionRepository    $subscriptionRepository
-     * @param UserRepository            $userRepository
+     * IdentDataCollector constructor
+     *
+     * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
+     * @param SubscriptionRepository $subscriptionRepository
+     * @param UserRepository $userRepository
      */
     public function __construct(
-        IdentificationDataStorage $dataStorage,
+        WifiIdentificationDataStorage $wifiIdentificationDataStorage,
         SubscriptionRepository $subscriptionRepository,
         UserRepository $userRepository
-    )
-    {
-        $this->dataStorage            = $dataStorage;
+    ) {
+        $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
         $this->subscriptionRepository = $subscriptionRepository;
-        $this->userRepository         = $userRepository;
+        $this->userRepository = $userRepository;
     }
 
 
@@ -73,7 +69,7 @@ class IdentDataCollector extends DataCollector
         $this->data['current_identity'] = [
             'isp'            => IdentificationFlowDataExtractor::extractIspDetectionData($session),
             'identification' => $extractIdentificationData,
-            'wifi_flow'      => (int) $this->dataStorage->isWifiFlow(),
+            'wifi_flow'      => (int) $this->wifiIdentificationDataStorage->isWifiFlow(),
             'user'           => isset($user)
                 ? [
                     'uuid'       => $user->getUuid(),

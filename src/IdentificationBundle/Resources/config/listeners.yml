@@ -9,7 +9,7 @@ services:
             - '@IdentificationBundle\Identification\Identifier'
             - '@IdentificationBundle\Identification\Service\TokenGenerator'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
             - '@IdentificationBundle\Identification\Service\IdentificationStatus'
             - '@annotations.reader'
             - '@IdentificationBundle\Identification\Service\CarrierSelector'

@@ -10,6 +10,7 @@ namespace IdentificationBundle\Identification\Service;
 
 
 use IdentificationBundle\Entity\User;
+use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 
 class IdentificationStatus
 {
@@ -19,12 +20,22 @@ class IdentificationStatus
     private $dataStorage;
 
     /**
-     * IdentificationStatus constructor.
-     * @param IdentificationDataStorage $dataStorage
+     * @var WifiIdentificationDataStorage
      */
-    public function __construct(IdentificationDataStorage $dataStorage)
-    {
+    private $wifiIdentificationDataStorage;
+
+    /**
+     * IdentificationStatus constructor
+     *
+     * @param IdentificationDataStorage $dataStorage
+     * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
+     */
+    public function __construct(
+        IdentificationDataStorage $dataStorage,
+        WifiIdentificationDataStorage $wifiIdentificationDataStorage
+    ) {
         $this->dataStorage = $dataStorage;
+        $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
     }
 
     public function isIdentified(): bool
@@ -36,7 +47,7 @@ class IdentificationStatus
     public function finishIdent(string $token, User $user): void
     {
         $this->dataStorage->setIdentificationToken($token);
-        $this->dataStorage->setWifiFlow(false);
+        $this->wifiIdentificationDataStorage->setWifiFlow(false);
     }
 
     public function isAlreadyTriedToAutoIdent(): bool
@@ -51,7 +62,7 @@ class IdentificationStatus
 
     public function isWifiFlowStarted(): bool
     {
-        return (bool) $this->dataStorage->isWifiFlow();
+        return (bool) $this->wifiIdentificationDataStorage->isWifiFlow();
     }
 
 }

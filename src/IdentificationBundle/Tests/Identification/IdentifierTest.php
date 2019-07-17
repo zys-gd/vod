@@ -16,6 +16,8 @@ use IdentificationBundle\Identification\Handler\HasCustomFlow;
 use IdentificationBundle\Identification\Handler\HasHeaderEnrichment;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerInterface;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
+use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\SessionStorage;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -72,7 +74,7 @@ class IdentifierTest extends TestCase
         $this->consentPageHandler = Mockery::spy(CommonConsentPageFlowHandler::class);
         $this->session            = new Session(new MockArraySessionStorage());
 
-        $this->dataStorage = new \IdentificationBundle\Identification\Service\IdentificationDataStorage($this->session);
+        $this->dataStorage = new IdentificationDataStorage(new SessionStorage($this->session));
 
 
         $this->identifier = new \IdentificationBundle\Identification\Identifier(

@@ -14,7 +14,9 @@ use IdentificationBundle\Identification\Common\Async\AsyncIdentFinisher;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationStatus;
+use IdentificationBundle\Identification\Service\Session\SessionStorage;
 use IdentificationBundle\Repository\UserRepository;
+use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
@@ -41,13 +43,13 @@ class AsyncIdentFinisherTest extends TestCase
 
 
         $this->session             = new Session(new MockArraySessionStorage());
-        $this->dataStorage         = new IdentificationDataStorage($this->session);
+        $this->dataStorage         = new IdentificationDataStorage(new SessionStorage($this->session));
         $this->userRepository      = Mockery::spy(UserRepository::class);
         $this->billingDataProvider = Mockery::spy(DataProvider::class);
         $this->asyncIdentStarter   = new AsyncIdentFinisher(
             $this->dataStorage,
             $this->userRepository,
-            new IdentificationStatus($this->dataStorage),
+            new IdentificationStatus($this->dataStorage, new WifiIdentificationDataStorage(new SessionStorage($this->session))),
             Mockery::spy(IdentificationHandlerProvider::class),
             $this->billingDataProvider
         );

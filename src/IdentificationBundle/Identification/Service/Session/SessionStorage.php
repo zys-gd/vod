@@ -48,6 +48,14 @@ class SessionStorage implements SessionStorageInterface
 
     /**
      * @param string $key
+     */
+    public function cleanValue(string $key): void
+    {
+        $this->session->remove($key);
+    }
+
+    /**
+     * @param string $key
      *
      * @return string|null
      */

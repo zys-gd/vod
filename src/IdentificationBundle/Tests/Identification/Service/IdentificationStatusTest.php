@@ -1,10 +1,14 @@
 <?php declare(strict_types=1);
 
 
+use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationStatus;
+use IdentificationBundle\Identification\Service\Session\SessionStorage;
+use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 class IdentificationStatusTest extends TestCase
@@ -12,18 +16,26 @@ class IdentificationStatusTest extends TestCase
     /** @var IdentificationStatus */
     private $identificationStatus;
 
-    /** @var IdentificationBundle\Identification\Service\IdentificationDataStorage | MockInterface */
+    /** @var IdentificationDataStorage | MockInterface */
     private $dataStorage;
+
+    /**
+     * @var WifiIdentificationDataStorage
+     */
+    private $wifiIdentificationDataStorage;
+
+    /**
+     * @var SessionInterface
+     */
     private $session;
 
     protected function setUp()
     {
-
-        $this->session              = new Session(new MockArraySessionStorage());
-        $this->dataStorage          = new \IdentificationBundle\Identification\Service\IdentificationDataStorage($this->session);
-        $this->identificationStatus = new IdentificationStatus(
-            $this->dataStorage
-        );
+        $this->session = new Session(new MockArraySessionStorage());
+        $sessionStorage = new SessionStorage($this->session);
+        $this->dataStorage = new IdentificationDataStorage($sessionStorage);
+        $this->wifiIdentificationDataStorage = new WifiIdentificationDataStorage($sessionStorage);
+        $this->identificationStatus = new IdentificationStatus($this->dataStorage, $this->wifiIdentificationDataStorage);
     }
 
     public function testFinishIdent()
@@ -32,7 +44,7 @@ class IdentificationStatusTest extends TestCase
 
         $this->assertArraySubset(['identification_token' => 'token'],$this->dataStorage->getIdentificationData());
 
-        $this->assertFalse($this->dataStorage->isWifiFlow());
+        $this->assertFalse($this->wifiIdentificationDataStorage->isWifiFlow());
 
     }
 
@@ -46,7 +58,7 @@ class IdentificationStatusTest extends TestCase
 
     public function testIsWifiFlowStarted()
     {
-        $this->dataStorage->setWifiFlow(true);
+        $this->wifiIdentificationDataStorage->setWifiFlow(true);
 
         $this->assertTrue($this->identificationStatus->isWifiFlowStarted());
 

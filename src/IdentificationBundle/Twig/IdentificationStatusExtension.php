@@ -6,6 +6,7 @@ use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CarrierRepository;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -20,6 +21,10 @@ class IdentificationStatusExtension extends AbstractExtension
      */
     private $dataStorage;
     /**
+     * @var WifiIdentificationDataStorage
+     */
+    private $wifiIdentificationDataStorage;
+    /**
      * @var SessionInterface
      */
     private $session;
@@ -32,17 +37,20 @@ class IdentificationStatusExtension extends AbstractExtension
      * IdentificationStatusExtension constructor.
      *
      * @param IdentificationDataStorage $dataStorage
+     * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
      * @param SessionInterface $session
      * @param CarrierRepository $carrierRepository
      */
     public function __construct(
         IdentificationDataStorage $dataStorage,
+        WifiIdentificationDataStorage $wifiIdentificationDataStorage,
         SessionInterface $session,
         CarrierRepository $carrierRepository
     ) {
         $this->dataStorage = $dataStorage;
         $this->session = $session;
         $this->carrierRepository = $carrierRepository;
+        $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
     }
 
     /**
@@ -66,7 +74,7 @@ class IdentificationStatusExtension extends AbstractExtension
             }),
 
             new TwigFunction('isWifiFlow', function () {
-                return (bool)$this->dataStorage->isWifiFlow();
+                return (bool)$this->wifiIdentificationDataStorage->isWifiFlow();
             }),
 
             new TwigFunction('getIdentificationToken', function () {

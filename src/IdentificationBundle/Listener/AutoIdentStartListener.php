@@ -18,12 +18,12 @@ use IdentificationBundle\Identification\Exception\FailedIdentificationException;
 use IdentificationBundle\Identification\Identifier;
 use IdentificationBundle\Identification\Service\CarrierSelector;
 use IdentificationBundle\Identification\Service\DeviceDataProvider;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationStatus;
 use IdentificationBundle\Identification\Service\ISPResolver;
 use IdentificationBundle\Identification\Service\RouteProvider;
 use IdentificationBundle\Identification\Service\TokenGenerator;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
+use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,9 +58,9 @@ class AutoIdentStartListener
      */
     private $routeProvider;
     /**
-     * @var IdentificationDataStorage
+     * @var WifiIdentificationDataStorage
      */
-    private $dataStorage;
+    private $wifiIdentificationDataStorage;
     /**
      * @var IdentificationStatus
      */
@@ -82,21 +82,21 @@ class AutoIdentStartListener
      */
     private $logger;
 
-
     /**
-     * AutoIdentStartListener constructor.
-     * @param ICountryCarrierDetection                                   $carrierDetection
-     * @param CarrierRepositoryInterface                                 $carrierRepository
-     * @param \IdentificationBundle\Identification\Service\ISPResolver   $ISPResolver
-     * @param Identifier                                                 $identifier
-     * @param TokenGenerator                                             $generator
-     * @param \IdentificationBundle\Identification\Service\RouteProvider $routeProvider
-     * @param IdentificationDataStorage                                  $dataStorage
-     * @param IdentificationStatus                                       $identificationStatus
-     * @param AnnotationReader                                           $annotationReader
-     * @param CarrierSelector                                            $carrierSelector
-     * @param DeviceDataProvider                                         $deviceDataProvider
-     * @param LoggerInterface                                            $logger
+     * AutoIdentStartListener constructor
+     *
+     * @param ICountryCarrierDetection      $carrierDetection
+     * @param CarrierRepositoryInterface    $carrierRepository
+     * @param ISPResolver                   $ISPResolver
+     * @param Identifier                    $identifier
+     * @param TokenGenerator                $generator
+     * @param RouteProvider                 $routeProvider
+     * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
+     * @param IdentificationStatus          $identificationStatus
+     * @param AnnotationReader              $annotationReader
+     * @param CarrierSelector               $carrierSelector
+     * @param DeviceDataProvider            $deviceDataProvider
+     * @param LoggerInterface               $logger
      */
     public function __construct(
         ICountryCarrierDetection $carrierDetection,
@@ -105,26 +105,25 @@ class AutoIdentStartListener
         Identifier $identifier,
         TokenGenerator $generator,
         RouteProvider $routeProvider,
-        IdentificationDataStorage $dataStorage,
+        WifiIdentificationDataStorage $wifiIdentificationDataStorage,
         IdentificationStatus $identificationStatus,
         AnnotationReader $annotationReader,
         CarrierSelector $carrierSelector,
         DeviceDataProvider $deviceDataProvider,
         LoggerInterface $logger
-    )
-    {
-        $this->carrierDetection     = $carrierDetection;
-        $this->carrierRepository    = $carrierRepository;
-        $this->ISPResolver          = $ISPResolver;
-        $this->identifier           = $identifier;
-        $this->generator            = $generator;
-        $this->routeProvider        = $routeProvider;
-        $this->dataStorage          = $dataStorage;
-        $this->identificationStatus = $identificationStatus;
-        $this->annotationReader     = $annotationReader;
-        $this->carrierSelector      = $carrierSelector;
-        $this->deviceDataProvider   = $deviceDataProvider;
-        $this->logger               = $logger;
+    ) {
+        $this->carrierDetection              = $carrierDetection;
+        $this->carrierRepository             = $carrierRepository;
+        $this->ISPResolver                   = $ISPResolver;
+        $this->identifier                    = $identifier;
+        $this->generator                     = $generator;
+        $this->routeProvider                 = $routeProvider;
+        $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
+        $this->identificationStatus          = $identificationStatus;
+        $this->annotationReader              = $annotationReader;
+        $this->carrierSelector               = $carrierSelector;
+        $this->deviceDataProvider            = $deviceDataProvider;
+        $this->logger                        = $logger;
     }
 
     public function onKernelController(FilterControllerEvent $event)
@@ -245,7 +244,7 @@ class AutoIdentStartListener
 
     private function startWifiFlow(SessionInterface $session): Response
     {
-        $this->dataStorage->setWifiFlow(true);
+        $this->wifiIdentificationDataStorage->setWifiFlow(true);
 
         return new RedirectResponse($this->routeProvider->getLinkToWifiFlowPage());
 

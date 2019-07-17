@@ -114,5 +114,5 @@ services:
             - '@ExtrasBundle\Utils\LocalExtractor'
             - '@SubscriptionBundle\Service\SubscriptionPackProvider'
             - '@App\Domain\Service\Translator\Translator'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
             - '@router'

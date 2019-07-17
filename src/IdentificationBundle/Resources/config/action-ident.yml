@@ -102,7 +102,9 @@ services:
             - '@doctrine.orm.entity_manager'
 
     IdentificationBundle\Identification\Service\IdentificationStatus:
-        arguments: ['@IdentificationBundle\Identification\Service\IdentificationDataStorage']
+        arguments:
+            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
 
     IdentificationBundle\Identification\Common\Async\AsyncIdentStatusProvider:
         arguments:

@@ -6,9 +6,9 @@ use App\Domain\Repository\CarrierRepository;
 use App\Domain\Service\Translator\Translator;
 use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\Identification\DTO\ISPData;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\UserRepository;
+use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
 use SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound;
 use SubscriptionBundle\Service\Notification\Notifier;
@@ -62,9 +62,9 @@ class SubnotifController
     private $translator;
 
     /**
-     * @var IdentificationDataStorage
+     * @var WifiIdentificationDataStorage
      */
-    private $identificationDataStorage;
+    private $wifiIdentificationDataStorage;
 
     /**
      * @var RouterInterface
@@ -81,7 +81,7 @@ class SubnotifController
      * @param LocalExtractor $localExtractor
      * @param SubscriptionPackProvider $subscriptionPackProvider
      * @param Translator $translator
-     * @param IdentificationDataStorage $identificationDataStorage
+     * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
      * @param RouterInterface $router
      */
     public function __construct(
@@ -92,7 +92,7 @@ class SubnotifController
         LocalExtractor $localExtractor,
         SubscriptionPackProvider $subscriptionPackProvider,
         Translator $translator,
-        IdentificationDataStorage $identificationDataStorage,
+        WifiIdentificationDataStorage $wifiIdentificationDataStorage,
         RouterInterface $router
     ) {
         $this->notifier = $notifier;
@@ -102,7 +102,7 @@ class SubnotifController
         $this->localExtractor = $localExtractor;
         $this->subscriptionPackProvider = $subscriptionPackProvider;
         $this->translator = $translator;
-        $this->identificationDataStorage = $identificationDataStorage;
+        $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
         $this->router = $router;
     }
 
@@ -118,7 +118,7 @@ class SubnotifController
      */
     public function sendRemindSms(Request $request, ISPData $data)
     {
-        if ($this->identificationDataStorage->isWifiFlow()) {
+        if ($this->wifiIdentificationDataStorage->isWifiFlow()) {
             $phoneNumber = $request->request->get('phoneNumber');
             $user = $this->userRepository->findOneByMsisdn($phoneNumber);
             $redirectUrl = $this->router->generate('index', ['msisdn' => $phoneNumber]);

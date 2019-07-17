@@ -3,18 +3,12 @@
 namespace IdentificationBundle\Identification\Service;
 
 use IdentificationBundle\Identification\Service\Session\SessionStorageInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class IdentificationDataStorage
  */
 class IdentificationDataStorage
 {
-    /**
-     * @var SessionInterface
-     */
-    private $session;
-
     /**
      * @var SessionStorageInterface
      */
@@ -23,48 +17,28 @@ class IdentificationDataStorage
     /**
      * IdentificationDataStorage constructor
      *
-     * @param SessionInterface $session
      * @param SessionStorageInterface $sessionStorage
      */
-    public function __construct(SessionInterface $session, SessionStorageInterface $sessionStorage)
+    public function __construct(SessionStorageInterface $sessionStorage)
     {
-        $this->session = $session;
         $this->sessionStorage = $sessionStorage;
     }
 
-    public function storeOperationResult(string $key, $result): void
-    {
-        $this->session->set("results[$key]", serialize($result));
-    }
-
-    public function readPreviousOperationResult(string $key)
-    {
-        return unserialize($this->session->get("results[$key]"));
-    }
-
-    public function cleanPreviousOperationResult(string $key): void
-    {
-        $this->session->remove("results[$key]");
-    }
-
+    /**
+     * @param int $carrierId
+     */
     public function storeCarrierId(int $carrierId): void
     {
-        $this->session->set('isp_detection_data', ['carrier_id' => $carrierId]);
+        $this->sessionStorage->storeValue('isp_detection_data', ['carrier_id' => $carrierId]);
     }
 
+    /**
+     * @return void
+     */
     public function cleanCarrier(): void
     {
-        $this->session->remove('isp_detection_data');
+        $this->sessionStorage->cleanValue('isp_detection_data');
     }
-
-    public function storeIsClickableSubImage(bool $flag): void
-    {
-        // todo rework after task with LP
-        //$this->storeValue('is_clickable_sub_image', $flag);
-    }
-
-
-
 
     /**
      * @param string $token
@@ -83,27 +57,6 @@ class IdentificationDataStorage
     public function getIdentificationData(): array
     {
         return $this->sessionStorage->readValue('identification_data') ?? [];
-    }
-
-    /**
-     * @param $result
-     */
-    public function setPinVerifyResult($result): void
-    {
-        $this->sessionStorage->storeOperationResult('pinVerify', $result);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPinVerifyResult()
-    {
-        return $this->sessionStorage->readOperationResult('pinVerify');
-    }
-
-    public function setPinRequestResult()
-    {
-
     }
 
     /**
@@ -189,26 +142,10 @@ class IdentificationDataStorage
     }
 
     /**
-     * @return bool
-     */
-    public function isWifiFlow(): bool
-    {
-        return $this->sessionStorage->readStorageValue('is_wifi_flow');
-    }
-
-    /**
-     * @param bool $isWifiFlow
-     */
-    public function setWifiFlow(bool $isWifiFlow): void
-    {
-        $this->sessionStorage->storeStorageValue('is_wifi_flow', $isWifiFlow);
-    }
-
-    /**
      * @param array $identificationData
      */
     private function setIdentificationData(array $identificationData): void
     {
-        $this->session->set('identification_data', $identificationData);
+        $this->sessionStorage->storeValue('identification_data', $identificationData);
     }
 }

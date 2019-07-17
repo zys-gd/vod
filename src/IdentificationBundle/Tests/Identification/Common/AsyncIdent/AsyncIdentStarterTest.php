@@ -11,6 +11,7 @@ namespace IdentificationBundle\Tests\Identification\Common\AsyncIdent;
 
 use IdentificationBundle\Identification\Common\Async\AsyncIdentStarter;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\SessionStorage;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
@@ -32,7 +33,7 @@ class AsyncIdentStarterTest extends \PHPUnit\Framework\TestCase
 
         $this->session = new Session(new MockArraySessionStorage());
 
-        $this->dataStorage = new IdentificationDataStorage($this->session);
+        $this->dataStorage = new IdentificationDataStorage(new SessionStorage($this->session));
 
         $this->asyncIdentStarter = new AsyncIdentStarter($this->dataStorage);
 

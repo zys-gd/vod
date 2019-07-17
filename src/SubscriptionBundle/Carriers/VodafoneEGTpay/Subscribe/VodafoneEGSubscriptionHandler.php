@@ -7,7 +7,7 @@ use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\BillingFramework\Process\DTO\PinVerifyResult;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException;
 use SubscriptionBundle\Entity\Subscription;
@@ -29,9 +29,9 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
     private $localExtractor;
 
     /**
-     * @var IdentificationDataStorage
+     * @var WifiIdentificationDataStorage
      */
-    private $identificationDataStorage;
+    private $wifiIdentificationDataStorage;
 
     /**
      * @var RouterInterface
@@ -42,16 +42,16 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
      * VodafoneEGSubscriptionHandler constructor
      *
      * @param LocalExtractor $localExtractor
-     * @param IdentificationDataStorage $identificationDataStorage
+     * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
      * @param RouterInterface $router
      */
     public function __construct(
         LocalExtractor $localExtractor,
-        IdentificationDataStorage $identificationDataStorage,
+        WifiIdentificationDataStorage $wifiIdentificationDataStorage,
         RouterInterface $router
     ) {
         $this->localExtractor = $localExtractor;
-        $this->identificationDataStorage = $identificationDataStorage;
+        $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
         $this->router = $router;
     }
 
@@ -79,9 +79,9 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
             'redirect_url' => $this->router->generate('index', [], RouterInterface::ABSOLUTE_URL)
         ];
 
-        if ((bool) $this->identificationDataStorage->isWifiFlow()) {
+        if ((bool) $this->wifiIdentificationDataStorage->isWifiFlow()) {
             /** @var PinVerifyResult $pinVerifyResult */
-            $pinVerifyResult = $this->identificationDataStorage->getPinVerifyResult();
+            $pinVerifyResult = $this->wifiIdentificationDataStorage->getPinVerifyResult();
             $rawData = $pinVerifyResult->getRawData();
 
             $data['subscription_contract_id'] = $rawData['subscription_contract_id'];
