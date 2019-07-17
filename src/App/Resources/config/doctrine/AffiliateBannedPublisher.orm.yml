@@ -10,7 +10,7 @@ App\Domain\Entity\AffiliateBannedPublisher:
             type: string
     uniqueConstraints:
         affiliate_banned_publisher_key:
-            columns: [ affiliate_id, publisherId ]
+            columns: [ affiliateId, publisherId ]
 
     manyToOne:
         affiliate:
