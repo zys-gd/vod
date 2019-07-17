@@ -3086,7 +3086,7 @@
         "countryCode": "PK",
         "isp": "Telenor Pakistan|Telenor Pakistan|Telenor Pakistan (PK)|Telenor Pakistan (Pvt)| Telenor Pakistan (Pvt)",
         "published": false,
-        "isConfirmationClick": false,
+        "isConfirmationClick": true,
         "pinIdentSupport": true,
         "resubAllowed": false,
         "isCampaignsOnPause": false,
