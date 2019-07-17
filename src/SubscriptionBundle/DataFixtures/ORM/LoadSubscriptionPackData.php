@@ -82,7 +82,7 @@ class LoadSubscriptionPackData extends AbstractFixture implements ContainerAware
 
             $tierParts = explode(' ', $tier_name);
 
-            $pack->setTierPrice($tierParts[0] ?? $tier_price);
+            $pack->setTierPrice(!empty($tierParts[0]) ? $tierParts[0] : $tier_price);
             $pack->setTierCurrency($tierParts[1] ?? $tier_currency);
             $pack->setTierId($tier_id);
 
