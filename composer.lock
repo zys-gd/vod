@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ff2cc40ca5326736a9401eb517aba169",
+    "content-hash": "fa07580b4b61e117eebbb8ef188b2d4b",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -3605,6 +3605,47 @@
                 }
             ],
             "time": "2019-01-08T12:10:24+00:00"
+        },
+        {
+            "name": "playwing/store-commons",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://git-codecommit.eu-west-1.amazonaws.com/v1/repos/store-commons-module",
+                "reference": "0791f904262c80b1d1212036a8c9f872cffaacb7"
+            },
+            "require": {
+                "doctrine/orm": "^2.5",
+                "ext-gd": "^7.2",
+                "geoip2/geoip2": "v2.9.0",
+                "phive/twig-extensions-deferred": "^2.0",
+                "php": "^7.2",
+                "predis/predis": "^1.1",
+                "ramsey/uuid": "^3.8.0",
+                "symfony/framework-bundle": "4.*",
+                "twig/twig": "^2.7"
+            },
+            "require-dev": {
+                "doctrine/doctrine-fixtures-bundle": "^3.1.0",
+                "liip/functional-test-bundle": "dev-master#7481d9c",
+                "mockery/mockery": "1.2.0",
+                "phpunit/phpunit": "7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CountryCarrierDetectionBundle\\": "src/CountryCarrierDetectionBundle",
+                    "DeviceDetectionBundle\\": "src/DeviceDetectionBundle",
+                    "ExtrasBundle\\": "src/ExtrasBundle"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Dmitriy Bichenko",
+                    "email": "dmitriy.bichenko@playwing.net"
+                }
+            ],
+            "time": "2019-07-18T11:29:25+00:00"
         },
         {
             "name": "predis/predis",
@@ -10719,6 +10760,7 @@
         "league/flysystem-aws-s3-v3": 20,
         "playwing/cross-subscription-api-connector": 20,
         "playwing/difftool": 20,
+        "playwing/store-commons": 20,
         "liip/functional-test-bundle": 20
     },
     "prefer-stable": false,

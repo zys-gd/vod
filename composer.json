@@ -9,6 +9,10 @@
         {
             "type": "git",
             "url": "https://git-codecommit.eu-west-1.amazonaws.com/v1/repos/cross-subscription-api-connector"
+        },
+        {
+            "type": "git",
+            "url": "https://git-codecommit.eu-west-1.amazonaws.com/v1/repos/store-commons-module"
         }
     ],
     "require": {
@@ -38,6 +42,7 @@
         "piwik/piwik-php-tracker": "1.0",
         "playwing/cross-subscription-api-connector": "dev-master",
         "playwing/difftool": "dev-master",
+        "playwing/store-commons": "dev-master",
         "predis/predis": "^1.1",
         "queue-interop/queue-interop": "0.8.0",
         "ramsey/uuid": "3.8.0",
