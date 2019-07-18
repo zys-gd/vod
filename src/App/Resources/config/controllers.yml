@@ -2,6 +2,10 @@ services:
     _defaults:
         tags: ['controller.service_arguments']
 
+    App\API\Controller\AffiliateBannedPublishersController:
+        arguments:
+            - '@App\Domain\Repository\AffiliateBannedPublisherRepository'
+
     App\API\Controller\APIController:
         arguments: ['@App\Domain\Service\VideoProcessing\CallbackVoter', '@App\Domain\Service\VideoProcessing\Callback\EagerType']
 
