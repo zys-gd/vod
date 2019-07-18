@@ -13,7 +13,7 @@ namespace Tests\DataFixtures;
 use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use DataFixtures\LoadCarriersData;
 use DataFixtures\LoadGamesData;
 use Doctrine\Common\DataFixtures\AbstractFixture;

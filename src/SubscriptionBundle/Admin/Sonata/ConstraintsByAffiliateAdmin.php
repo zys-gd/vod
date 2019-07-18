@@ -4,7 +4,7 @@ namespace SubscriptionBundle\Admin\Sonata;
 
 use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Carrier;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\CarrierInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;

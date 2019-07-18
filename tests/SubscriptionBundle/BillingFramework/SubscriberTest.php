@@ -1,6 +1,6 @@
 <?php
 
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use IdentificationBundle\Entity\User;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateSender;

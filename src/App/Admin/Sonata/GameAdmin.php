@@ -8,7 +8,7 @@ use App\Domain\Entity\Game;
 use App\Domain\Service\AWSS3\S3Client;
 use App\Domain\Service\Games\ImagePathProvider;
 use App\Domain\Service\SimpleImageService;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use League\Flysystem\Filesystem;

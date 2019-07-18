@@ -7,7 +7,7 @@ use App\Domain\Entity\Subcategory;
 use App\Domain\Entity\VideoPartner;
 use App\Domain\Repository\SubcategoryRepository;
 use App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Doctrine\ORM\EntityManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;

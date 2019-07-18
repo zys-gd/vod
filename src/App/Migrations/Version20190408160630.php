@@ -2,7 +2,7 @@
 
 namespace DoctrineMigrations;
 
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 

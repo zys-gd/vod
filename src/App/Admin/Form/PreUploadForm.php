@@ -7,7 +7,7 @@ use App\Domain\Entity\Subcategory;
 use App\Domain\Entity\UploadedVideo;
 use App\Domain\Entity\VideoPartner;
 use App\Domain\Repository\SubcategoryRepository;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
