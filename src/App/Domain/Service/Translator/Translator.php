@@ -10,8 +10,9 @@ use App\Domain\Repository\LanguageRepository;
 use App\Domain\Repository\TranslationRepository;
 use ExtrasBundle\Cache\ICacheService;
 use IdentificationBundle\Entity\CarrierInterface;
+use IdentificationBundle\Identification\Service\TranslatorInterface;
 
-class Translator
+class Translator implements TranslatorInterface
 {
     const DEFAULT_LOCALE = 'en';
 

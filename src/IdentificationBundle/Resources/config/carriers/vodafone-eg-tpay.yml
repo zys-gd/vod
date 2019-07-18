@@ -26,3 +26,7 @@ services:
             - '@IdentificationBundle\Identification\Service\IdentificationStatus'
         tags:
             - { name: identification.already_subscribed_handler }
+
+    IdentificationBundle\Carriers\VodafoneEGTpay\VodafoneEGTpayErrorCodeMapper:
+        tags:
+            - { name: identification.error_code_mapper }
