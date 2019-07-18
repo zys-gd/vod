@@ -2,12 +2,13 @@
 
 namespace IdentificationBundle\Identification\Service\Session;
 
+use IdentificationBundle\Identification\Service\StorageInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class SessionStorage
  */
-class SessionStorage implements SessionStorageInterface
+class SessionStorage implements StorageInterface
 {
     const STORAGE_KEY = 'storage';
     const RESULTS_KEY = 'results';
@@ -18,7 +19,7 @@ class SessionStorage implements SessionStorageInterface
     private $session;
 
     /**
-     * IdentificationDataStorage constructor
+     * SessionStorage constructor
      *
      * @param SessionInterface $session
      */
@@ -52,33 +53,6 @@ class SessionStorage implements SessionStorageInterface
     public function cleanValue(string $key): void
     {
         $this->session->remove($key);
-    }
-
-    /**
-     * @param string $key
-     *
-     * @return string|null
-     */
-    public function readStorageValue(string $key): ?string
-    {
-        return $this->session->get(self::STORAGE_KEY . "[$key]", '');
-    }
-
-    /**
-     * @param string $key
-     * @param $value
-     */
-    public function storeStorageValue(string $key, $value): void
-    {
-        $this->session->set(self::STORAGE_KEY . "[$key]", $value);
-    }
-
-    /**
-     * @param string $key
-     */
-    public function cleanStorageValue(string $key): void
-    {
-        $this->session->remove(self::STORAGE_KEY . "[$key]");
     }
 
     /**

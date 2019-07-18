@@ -12,7 +12,7 @@ namespace IdentificationBundle\Identification\Common\Async;
 use IdentificationBundle\BillingFramework\Data\DataProvider;
 use IdentificationBundle\Identification\Exception\FailedIdentificationException;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationStatus;
 use IdentificationBundle\Repository\UserRepository;
 

@@ -4,7 +4,7 @@ namespace App\Domain\Service;
 
 use App\Domain\Constants\ConstBillingCarrierId;
 use App\Domain\Repository\CarrierRepository;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 

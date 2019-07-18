@@ -2,7 +2,7 @@
 
 namespace IdentificationBundle\Tests\Identification\Service;
 
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\Session\SessionStorage;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;

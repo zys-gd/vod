@@ -4,7 +4,7 @@ namespace SubscriptionBundle\Service;
 
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\DTO\IdentificationData;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\UserRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;

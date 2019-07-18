@@ -5,7 +5,7 @@ namespace SubscriptionBundle\Service;
 
 use App\Domain\Entity\Carrier;
 use IdentificationBundle\Entity\User;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Repository\SubscriptionRepository;

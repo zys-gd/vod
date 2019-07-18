@@ -13,7 +13,7 @@ services:
             - '@ExtrasBundle\Utils\UrlParamAppender'
             - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
             - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
             - '%default_redirect_url%'

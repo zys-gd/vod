@@ -5,7 +5,7 @@ namespace IdentificationBundle\Tests\Identification\Common;
 
 
 use IdentificationBundle\Identification\Common\PostPaidHandler;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\Session\SessionStorage;
 use Mockery;
 use Psr\Log\LoggerInterface;

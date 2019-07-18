@@ -10,6 +10,7 @@ namespace IdentificationBundle\Identification\Service;
 
 
 use IdentificationBundle\Entity\User;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 
 class IdentificationStatus

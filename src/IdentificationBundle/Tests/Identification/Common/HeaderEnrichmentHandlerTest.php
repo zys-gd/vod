@@ -38,7 +38,7 @@ class HeaderEnrichmentHandlerTest extends \PHPUnit\Framework\TestCase
     private $userRepository;
     private $session;
     /**
-     * @var \IdentificationBundle\Identification\Service\IdentificationDataStorage
+     * @var \IdentificationBundle\Identification\Service\Session\IdentificationDataStorage
      */
     private $dataStorage;
     private $identificationStatus;
@@ -64,7 +64,7 @@ class HeaderEnrichmentHandlerTest extends \PHPUnit\Framework\TestCase
         $this->userFactory             = Mockery::spy(\IdentificationBundle\Identification\Service\UserFactory::class);
         $this->session                 = new Session(new MockArraySessionStorage());
         $sessionStorage                = new \IdentificationBundle\Identification\Service\Session\SessionStorage($this->session);
-        $this->dataStorage             = new \IdentificationBundle\Identification\Service\IdentificationDataStorage($sessionStorage);
+        $this->dataStorage             = new \IdentificationBundle\Identification\Service\Session\IdentificationDataStorage($sessionStorage);
         $this->identificationStatus    = new IdentificationStatus($this->dataStorage, new WifiIdentificationDataStorage($sessionStorage));
         $this->headerEnrichmentHandler = new HeaderEnrichmentHandler(
             $this->userFactory,

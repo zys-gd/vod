@@ -14,7 +14,7 @@ use App\Domain\Service\Translator\Translator;
 use App\Domain\Service\Translator\ShortcodeReplacer;
 use App\Exception\WrongTranslationKey;
 use ExtrasBundle\Utils\LocalExtractor;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Twig\Extension\AbstractExtension;

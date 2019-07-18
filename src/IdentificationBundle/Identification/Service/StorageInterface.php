@@ -1,11 +1,11 @@
 <?php
 
-namespace IdentificationBundle\Identification\Service\Session;
+namespace IdentificationBundle\Identification\Service;
 
 /**
  * Interface SessionStorageInterface
  */
-interface SessionStorageInterface
+interface StorageInterface
 {
     /**
      * @param string $key
@@ -24,24 +24,6 @@ interface SessionStorageInterface
      * @param string $key
      */
     public function cleanValue(string $key): void;
-
-    /**
-     * @param string $key
-     *
-     * @return string|null
-     */
-    public function readStorageValue(string $key): ?string;
-
-    /**
-     * @param string $key
-     * @param $value
-     */
-    public function storeStorageValue(string $key, $value): void;
-
-    /**
-     * @param string $key
-     */
-    public function cleanStorageValue(string $key): void;
 
     /**
      * @param string $key

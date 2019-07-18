@@ -9,7 +9,7 @@ services:
         arguments:
             - '@IdentificationBundle\Identification\Service\TokenGenerator'
             - '@IdentificationBundle\Identification\Service\UserFactory'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
             - '@doctrine.orm.entity_manager'
 
     IdentificationBundle\WifiIdentification\WifiIdentConfirmator:
@@ -20,7 +20,7 @@ services:
             - '@IdentificationBundle\BillingFramework\Process\PinVerifyProcess'
             - '@IdentificationBundle\WifiIdentification\Common\RequestProvider'
             - '@IdentificationBundle\WifiIdentification\Service\MsisdnCleaner'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
             - '@IdentificationBundle\WifiIdentification\Service\IdentFinisher'
             - '@SubscriptionBundle\Repository\SubscriptionRepository'
             - '@IdentificationBundle\Repository\UserRepository'

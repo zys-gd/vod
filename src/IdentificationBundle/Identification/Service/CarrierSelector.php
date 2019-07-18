@@ -10,6 +10,7 @@ namespace IdentificationBundle\Identification\Service;
 
 
 use IdentificationBundle\Identification\Exception\MissingCarrierException;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 
 class CarrierSelector

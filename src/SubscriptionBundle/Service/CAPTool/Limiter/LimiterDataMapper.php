@@ -7,7 +7,7 @@ namespace SubscriptionBundle\Service\CAPTool\Limiter;
 use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Campaign;
 use IdentificationBundle\Entity\CarrierInterface;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Service\CampaignExtractor;

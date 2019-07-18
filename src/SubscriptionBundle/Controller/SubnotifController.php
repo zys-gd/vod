@@ -6,7 +6,7 @@ use App\Domain\Repository\CarrierRepository;
 use App\Domain\Service\Translator\Translator;
 use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\Identification\DTO\ISPData;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;

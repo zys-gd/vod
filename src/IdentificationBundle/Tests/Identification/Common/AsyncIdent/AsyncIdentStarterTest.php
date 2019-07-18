@@ -10,7 +10,7 @@ namespace IdentificationBundle\Tests\Identification\Common\AsyncIdent;
 
 
 use IdentificationBundle\Identification\Common\Async\AsyncIdentStarter;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\Session\SessionStorage;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use Symfony\Component\HttpFoundation\Session\Session;

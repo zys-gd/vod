@@ -4,7 +4,8 @@ namespace IdentificationBundle\WifiIdentification\Service;
 
 use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
 use IdentificationBundle\BillingFramework\Process\DTO\PinVerifyResult;
-use IdentificationBundle\Identification\Service\Session\SessionStorageInterface;
+use IdentificationBundle\Identification\Service\Session\SessionStorage;
+use IdentificationBundle\Identification\Service\StorageInterface;
 
 /**
  * Class WifiIdentificationDataStorage
@@ -12,18 +13,18 @@ use IdentificationBundle\Identification\Service\Session\SessionStorageInterface;
 class WifiIdentificationDataStorage
 {
     /**
-     * @var SessionStorageInterface
+     * @var StorageInterface
      */
-    private $sessionStorage;
+    private $storage;
 
     /**
      * WifiIdentificationDataStorage constructor
      *
-     * @param SessionStorageInterface $sessionStorage
+     * @param StorageInterface $storage
      */
-    public function __construct(SessionStorageInterface $sessionStorage)
+    public function __construct(StorageInterface $storage)
     {
-        $this->sessionStorage = $sessionStorage;
+        $this->storage = $storage;
     }
 
     /**
@@ -31,7 +32,7 @@ class WifiIdentificationDataStorage
      */
     public function setWifiFlow(bool $isWifiFlow): void
     {
-        $this->sessionStorage->storeStorageValue('is_wifi_flow', $isWifiFlow);
+        $this->storage->storeValue(SessionStorage::STORAGE_KEY . '[is_wifi_flow]', $isWifiFlow);
     }
 
     /**
@@ -39,7 +40,7 @@ class WifiIdentificationDataStorage
      */
     public function isWifiFlow(): ?bool
     {
-        return $this->sessionStorage->readStorageValue('is_wifi_flow');
+        return $this->storage->readValue(SessionStorage::STORAGE_KEY . '[is_wifi_flow]');
     }
 
     /**
@@ -47,7 +48,7 @@ class WifiIdentificationDataStorage
      */
     public function setPinVerifyResult(PinVerifyResult $result): void
     {
-        $this->sessionStorage->storeOperationResult('pinVerify', $result);
+        $this->storage->storeOperationResult('pinVerify', $result);
     }
 
     /**
@@ -55,7 +56,7 @@ class WifiIdentificationDataStorage
      */
     public function getPinVerifyResult(): ?PinVerifyResult
     {
-        return $this->sessionStorage->readOperationResult('pinVerify');
+        return $this->storage->readOperationResult('pinVerify');
     }
 
     /**
@@ -63,7 +64,7 @@ class WifiIdentificationDataStorage
      */
     public function setPinRequestResult(PinRequestResult $result): void
     {
-        $this->sessionStorage->storeOperationResult('pinRequest', $result);
+        $this->storage->storeOperationResult('pinRequest', $result);
     }
 
     /**
@@ -71,7 +72,7 @@ class WifiIdentificationDataStorage
      */
     public function getPinRequestResult(): ?PinRequestResult
     {
-        return $this->sessionStorage->readOperationResult('pinRequest');
+        return $this->storage->readOperationResult('pinRequest');
     }
 
     /**
@@ -79,6 +80,6 @@ class WifiIdentificationDataStorage
      */
     public function cleanPinRequestResult(): void
     {
-        $this->sessionStorage->cleanOperationResult('pinRequest');
+        $this->storage->cleanOperationResult('pinRequest');
     }
 }

@@ -1,7 +1,7 @@
 services:
     IdentificationBundle\Twig\IdentificationStatusExtension:
         arguments:
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
             - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
             - '@session'
             - '@App\Domain\Repository\CarrierRepository'

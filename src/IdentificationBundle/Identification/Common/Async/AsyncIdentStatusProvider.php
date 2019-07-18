@@ -10,7 +10,7 @@ namespace IdentificationBundle\Identification\Common\Async;
 
 
 use IdentificationBundle\Identification\Exception\FailedIdentificationException;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Repository\UserRepository;
 
 class AsyncIdentStatusProvider

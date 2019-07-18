@@ -12,7 +12,7 @@ use IdentificationBundle\BillingFramework\Data\DataProvider;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Common\Async\AsyncIdentFinisher;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationStatus;
 use IdentificationBundle\Identification\Service\Session\SessionStorage;
 use IdentificationBundle\Repository\UserRepository;

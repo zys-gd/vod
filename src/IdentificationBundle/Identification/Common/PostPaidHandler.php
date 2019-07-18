@@ -4,7 +4,7 @@
 namespace IdentificationBundle\Identification\Common;
 
 
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Process\API\Client;
 use SubscriptionBundle\BillingFramework\Process\API\LinkCreator;
