@@ -9,7 +9,7 @@
 namespace SubscriptionBundle\DataFixtures\ORM;
 
 
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use SubscriptionBundle\Entity\CronTask;

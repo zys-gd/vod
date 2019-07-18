@@ -2,7 +2,7 @@
 
 namespace SubscriptionBundle\Affiliate\Service;
 
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use SubscriptionBundle\Affiliate\DTO\UserInfo;
 use SubscriptionBundle\Entity\Affiliate\AffiliateLog;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;

@@ -10,7 +10,7 @@ use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Country;
 use App\Domain\Repository\AffiliateRepository;
 use App\Domain\Service\Campaign\CampaignService;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

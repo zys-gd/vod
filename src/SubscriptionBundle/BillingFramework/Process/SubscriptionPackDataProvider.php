@@ -11,7 +11,7 @@ namespace SubscriptionBundle\BillingFramework\Process;
 
 use App\Domain\Entity\Carrier;
 use App\Domain\Entity\Country;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use SubscriptionBundle\DTO\Strategy;
 use SubscriptionBundle\DTO\Tier;
 use stdClass;

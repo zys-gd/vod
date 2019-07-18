@@ -8,7 +8,7 @@
 
 namespace Tests\SubscriptionBundle\Service;
 
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use SubscriptionBundle\Entity\Subscription;

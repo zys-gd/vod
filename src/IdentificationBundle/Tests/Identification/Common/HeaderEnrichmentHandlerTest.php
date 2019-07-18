@@ -89,7 +89,7 @@ class HeaderEnrichmentHandlerTest extends \PHPUnit\Framework\TestCase
 
     public function testTokenIsSetForExistingUser()
     {
-        $user = new \IdentificationBundle\Entity\User(\App\Utils\UuidGenerator::generate());
+        $user = new \IdentificationBundle\Entity\User(\ExtrasBundle\Utils\UuidGenerator::generate());
 
         $this->handler->allows(['getMsisdn' => 'msisdn']);
         $this->userRepository->allows(['findOneByMsisdn' => $user]);

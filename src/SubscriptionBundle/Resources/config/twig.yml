@@ -9,5 +9,5 @@ services:
     tags:
       - { name: twig.extension }
     arguments:
-      ['@session', '@SubscriptionBundle\Service\SubscriptionExtractor']
+      ['@session', '@SubscriptionBundle\Service\SubscriptionExtractor', '@app.cache.array_default']
 

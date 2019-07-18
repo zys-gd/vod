@@ -79,8 +79,6 @@ services:
             - '%s3_root_url%'
         public: true
 
-    App\Domain\Service\SimpleImageService:
-        public: true
 
     App\Domain\Service\Translator\DataAggregator:
         arguments:
@@ -138,3 +136,6 @@ services:
 
     App\Domain\ACL\Accessors\SubscribeExternalAPICheck:
         arguments: ['@cross_subscription.api_connector']
+
+
+    App\Domain\Service\Games\GameImageSizeProvider: ~

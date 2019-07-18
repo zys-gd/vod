@@ -9,6 +9,7 @@
 namespace SubscriptionBundle\Twig;
 
 
+use ExtrasBundle\Cache\ArrayCache\ArrayCacheService;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\SubscriptionExtractor;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -23,6 +24,10 @@ class SubscriptionStatusExtension extends \Twig_Extension
      * @var SubscriptionExtractor
      */
     private $subscriptionExtractor;
+    /**
+     * @var ArrayCacheService
+     */
+    private $arrayCacheService;
 
 
     /**
@@ -31,10 +36,11 @@ class SubscriptionStatusExtension extends \Twig_Extension
      * @param SessionInterface      $session
      * @param SubscriptionExtractor $subscriptionExtractor
      */
-    public function __construct(SessionInterface $session, SubscriptionExtractor $subscriptionExtractor)
+    public function __construct(SessionInterface $session, SubscriptionExtractor $subscriptionExtractor, ArrayCacheService $arrayCacheService)
     {
-        $this->session = $session;
+        $this->session               = $session;
         $this->subscriptionExtractor = $subscriptionExtractor;
+        $this->arrayCacheService     = $arrayCacheService;
     }
 
     public function getFunctions()
@@ -52,11 +58,11 @@ class SubscriptionStatusExtension extends \Twig_Extension
 
     /**
      * @return bool
-     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function hasActiveSubscription(): bool
     {
-        if ($subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($this->session)) {
+
+        if ($subscription = $this->getPreparedSubscription()) {
             return $subscription->getStatus() == Subscription::IS_ACTIVE && $subscription->getCurrentStage() == Subscription::ACTION_SUBSCRIBE;
         }
         return false;
@@ -64,11 +70,10 @@ class SubscriptionStatusExtension extends \Twig_Extension
 
     /**
      * @return bool
-     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function hasInActiveSubscription(): bool
     {
-        if ($subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($this->session)) {
+        if ($subscription = $this->getPreparedSubscription()) {
             return $subscription->getStatus() == Subscription::IS_INACTIVE;
         }
         return false;
@@ -76,11 +81,10 @@ class SubscriptionStatusExtension extends \Twig_Extension
 
     /**
      * @return bool
-     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function isSubscriptionExist(): bool
     {
-        if ($subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($this->session)) {
+        if ($subscription = $this->getPreparedSubscription()) {
             return true;
         }
         return false;
@@ -88,11 +92,10 @@ class SubscriptionStatusExtension extends \Twig_Extension
 
     /**
      * @return bool
-     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function isUnsubscribed(): bool
     {
-        if ($subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($this->session)) {
+        if ($subscription = $this->getPreparedSubscription()) {
             return $subscription->getStatus() == Subscription::IS_INACTIVE && $subscription->getCurrentStage() == Subscription::ACTION_UNSUBSCRIBE;
         }
         return false;
@@ -100,11 +103,10 @@ class SubscriptionStatusExtension extends \Twig_Extension
 
     /**
      * @return bool
-     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function hasSubscriptionWithError()
     {
-        if ($subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($this->session)) {
+        if ($subscription = $this->getPreparedSubscription()) {
             return $subscription->hasError();
         }
         return false;
@@ -112,11 +114,10 @@ class SubscriptionStatusExtension extends \Twig_Extension
 
     /**
      * @return bool
-     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function isNotEnoughCredit(): bool
     {
-        $subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($this->session);
+        $subscription = $this->getPreparedSubscription();
         if ($subscription && $subscription->isNotEnoughCredit()) {
             return true;
         }
@@ -125,14 +126,27 @@ class SubscriptionStatusExtension extends \Twig_Extension
 
     /**
      * @return bool
-     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function isNotFullyPaid(): bool
     {
-        $subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($this->session);
-        if ($subscription && $subscription->isNotFullyPaid() ) {
+        $subscription = $this->getPreparedSubscription();
+        if ($subscription && $subscription->isNotFullyPaid()) {
             return true;
         }
         return false;
+    }
+
+    private function getPreparedSubscription(): ?Subscription
+    {
+        $key = sprintf('%s_%s', $this->session->getId(), 'subscription');
+
+        if ($this->arrayCacheService->hasCache($key)) {
+            $subscription = $this->arrayCacheService->getValue($key);
+        } else {
+            $subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($this->session);
+            $this->arrayCacheService->saveCache($key, $subscription, 0);
+        }
+        return $subscription;
+
     }
 }

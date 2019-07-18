@@ -281,6 +281,9 @@
     "playwing/difftool": {
         "version": "1.0"
     },
+    "playwing/store-commons": {
+        "version": "dev-master"
+    },
     "predis/predis": {
         "version": "v1.1.1"
     },

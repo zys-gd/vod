@@ -2,3 +2,8 @@ extras:
   signature_check:
     request_parameter: signature
     secret_key: secretkey
+
+  cache:
+    redis_host: '%redis_host%'
+    redis_port: '%redis_port%'
+    use_array_cache: false

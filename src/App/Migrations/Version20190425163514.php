@@ -4,7 +4,7 @@ namespace DoctrineMigrations;
 
 use App\Domain\Entity\Carrier;
 use App\Domain\Entity\Language;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Doctrine\ORM\EntityManagerInterface;
