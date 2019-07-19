@@ -15,6 +15,6 @@ class GuzzleClientFactory
 {
     public function getClient(): Client
     {
-        return new Client();
+        return new Client(['connect_timeout' => 1, 'read_timeout' => 1,'timeout' => 1]);
     }
 }

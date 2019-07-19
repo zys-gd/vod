@@ -18,6 +18,8 @@ if ($_SERVER['APP_DEBUG']) {
     Debug::enable();
 }
 
+require_once __DIR__ . '/../profiler/include.php';
+
 Request::setTrustedProxies(
     [$_SERVER['REMOTE_ADDR']],
     Request::HEADER_X_FORWARDED_ALL ^ Request::HEADER_X_FORWARDED_HOST
