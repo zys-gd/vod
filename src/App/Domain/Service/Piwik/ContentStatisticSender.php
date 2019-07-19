@@ -11,13 +11,15 @@ use App\Domain\Service\Piwik\DataMapper\PiwikVideoDataMapper;
 use CountryCarrierDetectionBundle\Service\IpService;
 use CountryCarrierDetectionBundle\Service\MaxMindIpInfo;
 use IdentificationBundle\Entity\User;
-use IdentificationBundle\Identification\DTO\ISPData;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\UserRepository;
 use PiwikBundle\Service\DTO\PiwikDTO;
 use PiwikBundle\Service\PiwikDataMapper;
 use PiwikBundle\Service\PiwikTracker;
 use Psr\Log\LoggerInterface;
+use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Entity\Subscription;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class ContentStatisticSender
@@ -109,17 +111,14 @@ class ContentStatisticSender
     }
 
     /**
-     * @param string|null  $identificationToken
-     * @param ISPData     $data
-     * @param string|null $campaignToken
-     *
+     * @param SessionInterface $session
      * @return bool
      */
-    public function trackVisit(string $identificationToken = null, ISPData $data = null, string $campaignToken = null): bool
+    public function trackVisit(SessionInterface $session): bool
     {
-
-
-        $billingCarrierId = $data ? $data->getCarrierId() : null;
+        $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($session);
+        $identificationToken = IdentificationFlowDataExtractor::extractIdentificationToken($session);
+        $campaignToken = AffiliateVisitSaver::extractCampaignToken($session);
 
         try {
             /** @var User $user */

@@ -98,16 +98,13 @@ class CategoryController extends AbstractController implements AppControllerInte
             $videos = $this->uploadedVideoRepository->findNotExpiredBySubcategories($subcategories);
         }
 
-
         $categoryVideos = [];
 
         foreach ($videos->getVideos() as $video) {
             $categoryVideos[$video->getUuid()] = $this->videoSerializer->serializeShort($video);
         }
 
-        $identificationToken = IdentificationFlowDataExtractor::extractIdentificationToken($request->getSession());
-        $campaignToken      = AffiliateVisitSaver::extractCampaignToken($request->getSession());
-        $this->contentStatisticSender->trackVisit($identificationToken, $data, $campaignToken);
+        $this->contentStatisticSender->trackVisit($request->getSession());
 
         $template = $this->templateConfigurator->getTemplate('category', $data->getCarrierId());
 

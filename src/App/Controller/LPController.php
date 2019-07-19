@@ -12,7 +12,6 @@ use App\Domain\Service\CarrierOTPVerifier;
 use App\Domain\Service\Piwik\ContentStatisticSender;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Entity\CarrierInterface;
-use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Exception\MissingCarrierException;
 use IdentificationBundle\Identification\Service\CarrierSelector;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
@@ -150,22 +149,22 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         SubscribeUrlResolver $subscribeUrlResolver
     )
     {
-        $this->contentStatisticSender    = $contentStatisticSender;
-        $this->campaignRepository        = $campaignRepository;
-        $this->landingPageAccessResolver = $landingPageAccessResolver;
-        $this->imageBaseUrl              = $imageBaseUrl;
-        $this->OTPVerifier               = $OTPVerifier;
-        $this->defaultRedirectUrl        = $defaultRedirectUrl;
-        $this->templateConfigurator      = $templateConfigurator;
-        $this->wifiIdentificationDataStorage               = $wifiIdentificationDataStorage;
-        $this->limiter                   = $limiter;
-        $this->carrierRepository         = $carrierRepository;
-        $this->subscriptionLimitNotifier = $subscriptionLimitNotifier;
-        $this->visitTracker              = $visitTracker;
-        $this->visitNotifier             = $notifier;
-        $this->logger                    = $logger;
-        $this->carrierSelector           = $carrierSelector;
-        $this->subscribeUrlResolver      = $subscribeUrlResolver;
+        $this->contentStatisticSender        = $contentStatisticSender;
+        $this->campaignRepository            = $campaignRepository;
+        $this->landingPageAccessResolver     = $landingPageAccessResolver;
+        $this->imageBaseUrl                  = $imageBaseUrl;
+        $this->OTPVerifier                   = $OTPVerifier;
+        $this->defaultRedirectUrl            = $defaultRedirectUrl;
+        $this->templateConfigurator          = $templateConfigurator;
+        $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
+        $this->limiter                       = $limiter;
+        $this->carrierRepository             = $carrierRepository;
+        $this->subscriptionLimitNotifier     = $subscriptionLimitNotifier;
+        $this->visitTracker                  = $visitTracker;
+        $this->visitNotifier                 = $notifier;
+        $this->logger                        = $logger;
+        $this->carrierSelector               = $carrierSelector;
+        $this->subscribeUrlResolver          = $subscribeUrlResolver;
     }
 
 
@@ -231,17 +230,16 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             $this->logger->debug('Finish CAP checking');
         }
 
-
         AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
 
-        // we can't use ISPData object as function parameter because request to LP could not contain
-        // carrier data and in this case BadRequestHttpException will be throw
         $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($session);
-        $extractIdentificationToken = IdentificationFlowDataExtractor::extractIdentificationToken($session);
-        $campaignToken = AffiliateVisitSaver::extractCampaignToken($session);
-        $this->contentStatisticSender->trackVisit($extractIdentificationToken, $billingCarrierId ? new ISPData($billingCarrierId) : null, $campaignToken);
 
-        if ($carrier && !(bool) $this->wifiIdentificationDataStorage->isWifiFlow() && $this->landingPageAccessResolver->isLandingDisabled($request)) {
+        $this->contentStatisticSender->trackVisit($session);
+
+        if ($carrier
+            && !(bool) $this->wifiIdentificationDataStorage->isWifiFlow()
+            && $this->landingPageAccessResolver->isLandingDisabled($request)
+        ) {
             return new RedirectResponse($this->subscribeUrlResolver->getSubscribeRoute($carrier));
         }
 

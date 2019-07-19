@@ -155,11 +155,10 @@ class HomeController extends AbstractController implements
             $this->alreadySubscribedIdentFinisher->tryToIdentify($request);
         }
 
-        $identificationToken = IdentificationFlowDataExtractor::extractIdentificationToken($request->getSession());
-        $campaignToken      = AffiliateVisitSaver::extractCampaignToken($request->getSession());
-        $this->contentStatisticSender->trackVisit($identificationToken, $data, $campaignToken);
+        $this->contentStatisticSender->trackVisit($request->getSession());
 
         $template = $this->templateConfigurator->getTemplate('home', $data->getCarrierId());
+
         return $this->render($template, [
             'categoryVideos'  => array_slice($categoryVideos, 1, 3),
             'categories'      => $indexedCategoryData,

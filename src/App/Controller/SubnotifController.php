@@ -1,11 +1,12 @@
 <?php
 
-namespace SubscriptionBundle\Controller;
+namespace App\Controller;
 
 use App\Domain\Repository\CarrierRepository;
 use App\Domain\Service\Translator\Translator;
 use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\Identification\DTO\ISPData;
+use IdentificationBundle\Identification\Service\RouteProvider;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
@@ -17,7 +18,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Class SubnotifController
@@ -67,9 +67,9 @@ class SubnotifController
     private $wifiIdentificationDataStorage;
 
     /**
-     * @var RouterInterface
+     * @var RouteProvider
      */
-    private $router;
+    private $routeProvider;
 
     /**
      * SubnotifController constructor
@@ -82,7 +82,7 @@ class SubnotifController
      * @param SubscriptionPackProvider $subscriptionPackProvider
      * @param Translator $translator
      * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
-     * @param RouterInterface $router
+     * @param RouteProvider $routeProvider
      */
     public function __construct(
         Notifier $notifier,
@@ -93,7 +93,7 @@ class SubnotifController
         SubscriptionPackProvider $subscriptionPackProvider,
         Translator $translator,
         WifiIdentificationDataStorage $wifiIdentificationDataStorage,
-        RouterInterface $router
+        RouteProvider $routeProvider
     ) {
         $this->notifier = $notifier;
         $this->carrierRepository = $carrierRepository;
@@ -103,7 +103,7 @@ class SubnotifController
         $this->subscriptionPackProvider = $subscriptionPackProvider;
         $this->translator = $translator;
         $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
-        $this->router = $router;
+        $this->routeProvider = $routeProvider;
     }
 
     /**
@@ -121,12 +121,12 @@ class SubnotifController
         if ($this->wifiIdentificationDataStorage->isWifiFlow()) {
             $phoneNumber = $request->request->get('phoneNumber');
             $user = $this->userRepository->findOneByMsisdn($phoneNumber);
-            $redirectUrl = $this->router->generate('index', ['msisdn' => $phoneNumber]);
+            $redirectUrl = $this->routeProvider->getLinkToHomepage(['msisdn' => $phoneNumber]);
         } else {
             $identificationToken = IdentificationFlowDataExtractor::extractIdentificationToken($this->session);
 
             $user = $this->userRepository->findOneByIdentificationToken($identificationToken);
-            $redirectUrl = $redirectUrl = $this->router->generate('index');
+            $redirectUrl = $redirectUrl = $this->routeProvider->getLinkToHomepage();
         }
 
         $carrier = $this->carrierRepository->findOneByBillingId($data->getCarrierId());
@@ -143,7 +143,9 @@ class SubnotifController
         );
 
         return $this->getSimpleJsonResponse('Success', 200, [], [
-            'message' => $this->translator->translate('messages.info.remind_credentials', $carrier->getBillingCarrierId(), $localLanguage),
+            'message' => $this
+                ->translator
+                ->translate('messages.info.remind_credentials', $carrier->getBillingCarrierId(), $localLanguage),
             'redirectUrl' => $redirectUrl
         ]);
     }

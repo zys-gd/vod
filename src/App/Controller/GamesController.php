@@ -116,9 +116,7 @@ class GamesController extends AbstractController implements AppControllerInterfa
     {
         $games = $this->gameRepository->findBatchOfGames(0, 8);
 
-        $identificationToken = IdentificationFlowDataExtractor::extractIdentificationToken($request->getSession());
-        $campaignToken      = AffiliateVisitSaver::extractCampaignToken($request->getSession());
-        $this->contentStatisticSender->trackVisit($identificationToken, $data, $campaignToken);
+        $this->contentStatisticSender->trackVisit($request->getSession());
 
         $template = $this->templateConfigurator->getTemplate('game_category_content', $data->getCarrierId());
         return $this->render($template, [
