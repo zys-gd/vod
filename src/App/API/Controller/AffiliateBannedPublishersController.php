@@ -107,12 +107,12 @@ class AffiliateBannedPublishersController extends AbstractController
         } catch (AffiliateIdNotFoundException $exception) {
             return new JsonResponse([
                 'result'  => true,
-                'isExist' => false
+                'isBanned' => false
             ]);
         } catch (PublisherIdNotFoundException $exception) {
             return new JsonResponse([
                 'result'  => true,
-                'isExist' => false
+                'isBanned' => false
             ]);
         } catch (\Throwable $exception) {
             return $this->createResponseForException($exception);
@@ -136,17 +136,17 @@ class AffiliateBannedPublishersController extends AbstractController
         try {
             return new JsonResponse([
                 'result'   => true,
-                'isBanned' => true
+                'removed' => true
             ]);
         } catch (AffiliateIdNotFoundException $exception) {
             return new JsonResponse([
                 'result'  => true,
-                'isExist' => false
+                'removed' => false
             ]);
         } catch (PublisherIdNotFoundException $exception) {
             return new JsonResponse([
                 'result'  => true,
-                'isExist' => false
+                'removed' => false
             ]);
         } catch (\Throwable $exception) {
             return $this->createResponseForException($exception);
