@@ -218,6 +218,9 @@
     "ocramius/proxy-manager": {
         "version": "2.0.4"
     },
+    "perftools/xhgui-collector": {
+        "version": "1.7.0"
+    },
     "phar-io/manifest": {
         "version": "1.0.1"
     },
