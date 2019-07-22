@@ -28,17 +28,17 @@
         var form = $('#wifi_form');
         var carrierId = + '{{ getCarrierId() }}';
 
-        $(document).ready(function () {
-            // move form to designed position (the best designer ever)
-            var height      = parseFloat(window.getComputedStyle(form.parent('div').prev().get(0)).height);
-            var padding_top = parseFloat(window.getComputedStyle(form.parent('div').get(0)).paddingTop);
-            var margin_top  = parseFloat(window.getComputedStyle(form.parent('div').get(0)).marginTop);
-            var offset      = height + padding_top + margin_top;
-            form.css({
-                'margin-top': '-' + offset + 'px',
-                'min-height': parseInt(form.parent('div').prev().height()) + 'px'
-            });
-        });
+        // $(document).ready(function () {
+        //     // move form to designed position (the best designer ever)
+        //     var height      = parseFloat(window.getComputedStyle(form.parent('div').prev().get(0)).height);
+        //     var padding_top = parseFloat(window.getComputedStyle(form.parent('div').get(0)).paddingTop);
+        //     var margin_top  = parseFloat(window.getComputedStyle(form.parent('div').get(0)).marginTop);
+        //     var offset      = height + padding_top + margin_top;
+        //     form.css({
+        //         'margin-top': '-' + offset + 'px',
+        //         'min-height': parseInt(form.parent('div').prev().height()) + 'px'
+        //     });
+        // });
 
         var $wifi_form_step = $('#wifi_form_step');
         var $wifi_warning   = $('.wifi_form__warning');
@@ -101,14 +101,8 @@
                 url    : "{{ path('select_carrier_wifi') }}",
                 method : "POST",
                 data   : { carrier_id: carrierId },
-                success: function (result) {
-                    if (result.data.success) {
-                        $('footer').prepend(result.data.annotation);
-                        $('#landing-offer-container').removeClass('mt-2').html(result.data.offer);
-                        addValidationAttributes(carrierId);
-                    } else if (result.data.message) {
-                        showAlert({title: result.data.message});
-                    }
+                success: (response) => {
+                    $('html').html(response)
                 },
                 complete: function () {
                     $._loader(true);

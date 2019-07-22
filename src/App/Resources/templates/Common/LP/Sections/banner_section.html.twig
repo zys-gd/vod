@@ -1,15 +1,16 @@
-{% macro render(campaignBanner) %}
+{% macro render() %}
     {% import "@App/Components/Blocks/Main/banner.html.twig" as  banner %}
+    {% import LPImporter("LP/Sections/Wifi/sub_btn_section.html.twig") as sub_btn_section %}
 
-    <div class="d-flex align-items-center justify-content-center">
+    <div class="d-flex align-items-center flex-column">
         {% if isClickableSubImage() %}
-            {% if campaignBanner %}
+            {% if getCampaignData('campaign_banner') %}
                 {{ banner.render(campaignBanner, 'banner', 'w-100', 1) }}
             {% else %}
                 {{ banner.render(asset('img/lp/lp_subscribe_video.png'), 'banner', 'w-100', 1) }}
             {% endif %}
         {% else %}
-            {% if campaignBanner %}
+            {% if getCampaignData('campaign_banner') %}
                 <img src="{{ campaignBanner }}" class="w-100" alt="banner">
             {% else %}
                 <img src="{{ asset('img/lp/lp_subscribe_video.png') }}" class="w-100" alt="banner">

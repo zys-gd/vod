@@ -23,7 +23,7 @@
 
 {% block body %}
 
-    <div class="d-flex flex-column align-items-center justify-content-top w-100" {% if background %} style="background: {{ background }}" {% endif %}>
+    <div class="d-flex flex-column align-items-center justify-content-top w-100"  style="background: {{ getCampaignData('background') }}">
 
         <!-- PLAY TEXT SECTION -->
         {{ play_text_section.render() }}
@@ -34,7 +34,7 @@
         <!-- END SUBSCRIBE BUTTON SECTION -->
 
         <!-- BANNER SECTION WITH SUB IMAGE -->
-        {{ banner_section.render(campaignBanner) }}
+        {{ banner_section.render() }}
         <!-- END BANNER SECTION WITH SUB IMAGE -->
 
         <!-- SUBSCRIBE BUTTON SECTION -->

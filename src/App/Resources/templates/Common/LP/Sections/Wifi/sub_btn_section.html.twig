@@ -2,7 +2,7 @@
     {% import "@App/Components/Buttons/link.html.twig" as  link %}
     {% import "@App/Common/Blocks/wifi_subscribe_block.html.twig" as wifi_subscribe_block %}
 
-    <div class="d-flex align-items-start justify-content-center mb-n-2 {{ blockClass }}">
+    <div class="d-flex align-items-start justify-content-center  {{ blockClass }}">
         {% if not hasActiveSubscription() or not isNotFullyPaid() %}
             {#if we use this macro outside landing#}
             {% if app.request.get('_route') == 'landing' %}

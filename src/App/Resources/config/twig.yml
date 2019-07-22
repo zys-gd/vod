@@ -65,6 +65,14 @@ services:
         tags:
             - { name: twig.extension }
 
+    App\Twig\LPCampaignDataExtension:
+        arguments:
+            - '@session'
+            - '@App\Domain\Repository\CampaignRepository'
+            - '%images_base_url%'
+        tags:
+          - { name: twig.extension }
+
     App\Twig\LPTwigImporterExtension:
         arguments:
             - '@session'
