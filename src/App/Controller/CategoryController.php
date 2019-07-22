@@ -4,15 +4,12 @@ namespace App\Controller;
 
 use App\CarrierTemplate\TemplateConfigurator;
 use App\Domain\DTO\BatchOfNotExpiredVideos;
-use App\Domain\Entity\UploadedVideo;
 use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\SubcategoryRepository;
 use App\Domain\Repository\UploadedVideoRepository;
 use App\Domain\Service\Piwik\ContentStatisticSender;
 use App\Domain\Service\VideoProcessing\UploadedVideoSerializer;
 use IdentificationBundle\Identification\DTO\ISPData;
-use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
-use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
