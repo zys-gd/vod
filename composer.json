@@ -23,6 +23,7 @@
         "cloudinary/cloudinary_php": "1.13.0",
         "data-dog/audit-bundle": "^0.1.13",
         "e-moe/guzzle6-bundle": "^1.2",
+        "e0ipso/amazon-sqs-php-extended-client-lib": "1.0.0-alpha",
         "friendsofsymfony/user-bundle": "^2.1",
         "geoip2/geoip2": "v2.9.0",
         "granedirval/data-dog-pager-bundle": "dev-master",

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ff8bbc70961728ebad7da1d16190406d",
+    "content-hash": "7e9da107ad874ce87c5596f3d104c583",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1624,6 +1624,54 @@
                 "web service"
             ],
             "time": "2018-12-19T09:11:04+00:00"
+        },
+        {
+            "name": "e0ipso/amazon-sqs-php-extended-client-lib",
+            "version": "1.0.0-alpha",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/e0ipso/amazon-sqs-php-extended-client-lib.git",
+                "reference": "bf9766a74d7d1f5e33769ee9a8a797e47d874634"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/e0ipso/amazon-sqs-php-extended-client-lib/zipball/bf9766a74d7d1f5e33769ee9a8a797e47d874634",
+                "reference": "bf9766a74d7d1f5e33769ee9a8a797e47d874634",
+                "shasum": ""
+            },
+            "require": {
+                "aws/aws-sdk-php": "^3.18",
+                "php": ">=5.6",
+                "ramsey/uuid": "^3.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AwsExtended\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Mateu Aguiló Bosch",
+                    "email": "mateu.aguilo.bosch@gmail.com"
+                }
+            ],
+            "description": "An extension to the Amazon SQS client that enables sending and receiving messages up to 2GB via Amazon S3.",
+            "homepage": "https://github.com/e0ipso/amazon-sqs-php-extended-client-lib",
+            "keywords": [
+                "amazon",
+                "aws",
+                "s3",
+                "sqs"
+            ],
+            "time": "2016-07-20T08:33:59+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -10761,6 +10809,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "e0ipso/amazon-sqs-php-extended-client-lib": 15,
         "granedirval/data-dog-pager-bundle": 20,
         "league/flysystem-aws-s3-v3": 20,
         "playwing/cross-subscription-api-connector": 20,
