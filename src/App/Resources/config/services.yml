@@ -29,7 +29,10 @@ services:
             - '%cloudinary_cloud_name%'
 
     App\Domain\Service\VideoProcessing\Callback\EagerType:
-        arguments: ['@App\Domain\Repository\UploadedVideoRepository', '@doctrine.orm.entity_manager']
+        arguments:
+            - '@App\Domain\Repository\UploadedVideoRepository'
+            - '@doctrine.orm.entity_manager'
+            - '@logger'
 
     App\Domain\Service\VideoProcessing\CallbackVoter:
         arguments: ['@App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector']
