@@ -8,7 +8,6 @@ services:
       -
         persistent: 1
 
-
   app.cache.default.subscription:
     class: ExtrasBundle\Cache\Redis\RedisCacheService
     factory: [ '@app.cache.redis_factory', 'createCacheService']

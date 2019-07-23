@@ -33,6 +33,7 @@ services:
             - '@App\Domain\Repository\CarrierRepository'
             - '@App\Domain\Repository\LanguageRepository'
             - '@app.cache.default.translation'
+            - '@app.cache.array_default'
 
     App\Domain\Service\Translator\ShortcodeReplacer: ~
 
