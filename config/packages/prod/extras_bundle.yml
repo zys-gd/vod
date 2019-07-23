@@ -30,11 +30,19 @@ services:
     class: Redis
     public: false
     factory: ['@app.cache.redis_connection_provider', create]
-    arguments: [1]
+    arguments:
+      - '1'
+      -
+        persistent: 1
 
   app_redis_connection_adapter:
     class: Symfony\Component\Cache\Adapter\RedisAdapter
     public: false
-    factory: ['@app.cache.redis_connection_provider', createWrapped]
-    arguments: [1]
+    factory: ['@app.cache.redis_connection_provider', createAdapter]
+    arguments:
+      - '1'
+      - ''
+      -
+        persistent: 1
+
 
