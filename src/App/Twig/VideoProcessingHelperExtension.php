@@ -42,12 +42,15 @@ class VideoProcessingHelperExtension extends AbstractExtension
             }),
             new TwigFunction('createPlaylistElement', function (UploadedVideo $uploadedVideo) {
 
-                return json_encode([
-                    'publicId' => $uploadedVideo->getRemoteId(),
-                    'info'     => [
-                        'title' => $uploadedVideo->getTitle(),
-                    ]
-                ]);
+                return json_encode(array_merge(
+                    [
+                        'publicId' => $uploadedVideo->getRemoteId(),
+                        'info'     => [
+                            'title' => $uploadedVideo->getTitle(),
+                        ]
+                    ],
+                    $uploadedVideo->getOptions() ? $uploadedVideo->getOptions() : []
+                ));
             })
         ];
 
