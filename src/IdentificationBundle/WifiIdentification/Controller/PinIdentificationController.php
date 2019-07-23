@@ -5,6 +5,7 @@ namespace IdentificationBundle\WifiIdentification\Controller;
 use ExtrasBundle\API\Controller\APIControllerInterface;
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\BillingFramework\Process\Exception\PinVerifyProcessException;
+use IdentificationBundle\Form\LPType;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeResolver;
@@ -17,6 +18,7 @@ use SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator;
 use SubscriptionBundle\Service\CAPTool\Exception\CapToolAccessException;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
+use SubscriptionBundle\Service\LPDataExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,6 +67,10 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @var BlacklistVoter
      */
     private $blacklistVoter;
+    /**
+     * @var LPDataExtractor
+     */
+    private $LPDataExtractor;
 
     /**
      * PinIdentificationController constructor
@@ -78,6 +84,7 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @param SubscriptionLimitNotifier   $subscriptionLimitNotifier
      * @param BlacklistVoter              $blacklistVoter
      * @param BlacklistAttemptRegistrator $blacklistAttemptRegistrator
+     * @param LPDataExtractor             $LPDataExtractor
      */
     public function __construct(
         WifiIdentSMSSender $identSMSSender,
@@ -88,7 +95,8 @@ class PinIdentificationController extends AbstractController implements APIContr
         CarrierRepositoryInterface $carrierRepository,
         SubscriptionLimitNotifier $subscriptionLimitNotifier,
         BlacklistVoter $blacklistVoter,
-        BlacklistAttemptRegistrator $blacklistAttemptRegistrator
+        BlacklistAttemptRegistrator $blacklistAttemptRegistrator,
+        LPDataExtractor $LPDataExtractor
     )
     {    $this->identSMSSender              = $identSMSSender;
         $this->identConfirmator            = $identConfirmator;
@@ -99,6 +107,7 @@ class PinIdentificationController extends AbstractController implements APIContr
         $this->subscriptionLimitNotifier   = $subscriptionLimitNotifier;
         $this->blacklistVoter              = $blacklistVoter;
         $this->blacklistAttemptRegistrator = $blacklistAttemptRegistrator;
+        $this->LPDataExtractor = $LPDataExtractor;
     }
 
     /**
@@ -117,8 +126,16 @@ class PinIdentificationController extends AbstractController implements APIContr
      */
     public function sendSMSPinCodeAction(Request $request, ISPData $ispData)
     {
-        if (!$mobileNumber = $request->get('mobile_number', '')) {
-            throw new BadRequestHttpException('`mobile_number` is required');
+        $form = $this->createForm(
+            LPType::class,
+            ['lpDataExtractor' => $this->LPDataExtractor],
+            ['csrf_protection' => false]
+        );
+        $form->submit($request->request->all());
+
+        if (!$form->isValid()) {
+            $errors = $form->getErrors(true);
+            throw new BadRequestHttpException($errors->current()->getMessage());
         }
 
         try {
@@ -129,6 +146,7 @@ class PinIdentificationController extends AbstractController implements APIContr
             ]);
         }
 
+        $mobileNumber = $request->get('mobile_number', '');
         $billingCarrierId = $ispData->getCarrierId();
         $cleanPhoneNumber = str_replace('+', '', $mobileNumber);
 

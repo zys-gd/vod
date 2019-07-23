@@ -47,6 +47,7 @@ services:
         - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier'
         - '@SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter'
         - '@SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator'
+        - '@SubscriptionBundle\Service\LPDataExtractor'
 
     IdentificationBundle\Identification\Controller\AsyncIdentController:
       arguments:
