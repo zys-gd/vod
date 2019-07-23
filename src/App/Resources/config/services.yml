@@ -36,7 +36,9 @@ services:
 
     App\Domain\Service\Translator\ShortcodeReplacer: ~
 
-    App\Domain\Service\Games\GameSerializer: ~
+    App\Domain\Service\Games\GameSerializer:
+        arguments:
+          - '@App\Domain\Service\Games\ImagePathProvider'
 
     App\Domain\Service\Games\ExcludedGamesProvider:
         arguments:
