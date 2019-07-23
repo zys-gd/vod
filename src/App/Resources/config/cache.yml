@@ -2,10 +2,19 @@ services:
   app.cache.default.translation:
     class: ExtrasBundle\Cache\Redis\RedisCacheService
     factory: [ '@app.cache.redis_factory', 'createCacheService']
-    arguments: ['1', 'translations']
+    arguments:
+      - '1'
+      - 'translations'
+      -
+        persistent: 1
+
 
   app.cache.default.subscription:
     class: ExtrasBundle\Cache\Redis\RedisCacheService
     factory: [ '@app.cache.redis_factory', 'createCacheService']
-    arguments: ['1', 'subscriptions']
+    arguments:
+      - '1'
+      - 'subscriptions'
+      -
+        persistent: 1
 
