@@ -1,4 +1,5 @@
 {% extends '@App/base.html.twig' %}
+
 {% import "@App/Common/Blocks/header.html.twig" as  header %}
 {% import "@App/Components/Blocks/Footer/annotation.html.twig" as  footer %}
 {% import "@App/Common/Blocks/slider.html.twig" as  slider %}
@@ -8,26 +9,23 @@
 {% import "@App/Components/Blocks/Footer/menu.html.twig" as  footer_menu %}
 {% import '@App/Components/Buttons/gray_button.html.twig' as button_gray %}
 {% import "@App/Components/Blocks/Main/mirror_separator.html.twig" as  mirror_separator %}
+{% import "@App/Components/Blocks/Main/video_preview.html.twig" as  video_preview %}
 
 {% block stylesheets %}
     {{ parent() }}
     <link href="{{ asset('/css/category.css') }}" rel="stylesheet">
 {% endblock %}
 
-
 {% block header_content %}
     {{ header.render() }}
 {% endblock header_content %}
 
 {% block body %}
-
     <div class="d-flex flex-column w-100">
         <div class="menu-block">
-
             <div class="category-select-description">
                 {{ translate('category.title') }}
             </div>
-
             <div class="category-block">
                 <div class="d-flex flex-row category-content-open-link x-show-subcategory-button">
                     <div class="category-title {% if not selectedSubcategory %}active{% endif %}">
@@ -35,44 +33,15 @@
                             {{ category.title }}
                         </a>
                     </div>
-                    {#<div class="category_header__arrow"></div>#}
                 </div>
-
-                {#<div class="category-content {% if not selectedSubcategory %}d-none{% endif %}">
-                    {% for subcategory in subcategories %}
-                        <div class="subcategory">
-                            <div class="d-flex flex-row subcategory-content-open-link">
-                                <div class="subcategory-title {% if selectedSubcategory and selectedSubcategory.uuid == subcategory.uuid %}active{% endif %}">
-                                    <a href="{{ path('show_category',{'categoryUuid':category.uuid,'subcategoryUuid':subcategory.uuid}) }}">
-                                        {{ subcategory.title }}
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>#}
             </div>
         </div>
 
-
         {% if videos | length > 0 %}
-
             <div class="active-category-container">
                 <div class="d-flex flex-column">
                     <div class="d-flex flex-column align-items-center justify-content-center">
-                        {% for thumbnail in defaultVideo.thumbnails | slice(0,1) %}
-                            <div class="w-100 default-video-thumbnail-wrapper">
-                                <img src="{{ thumbnail }}"
-                                     class="x-play-button w-100"
-                                     data-uuid="{{ defaultVideo.uuid }}"
-                                     data-category="{{ category.uuid }}"
-                                     data-public-id="{{ defaultVideo.publicId }}"
-                                     data-options="{{ defaultVideo.jsonOptions }}"
-                                />
-                                <div class="default-video-play-icon"></div>
-
-                            </div>
-                        {% endfor %}
+                        {{ video_preview.render('w-100 default-video-thumbnail-wrapper', defaultVideo) }}
                         <div id="video-player-title" class="video-player-title text-center">
                             {{ defaultVideo.title }}
                         </div>
@@ -83,27 +52,9 @@
                 {% if relatedVideos | length > 0 %}
                     {{ mirror_separator.render(translate('category.related_videos'), 'category__related_title my-4') }}
                     <div class="related-videos-section-container">
-
                         <div class="d-flex flex-column related-videos-block">
                             {% for video in videos | slice(1) %}
-                                <div class="d-flex flex-row related-video x-play-button"
-                                     data-uuid="{{ video.uuid }}"
-                                     data-category="{{ category.uuid }}"
-                                     data-public-id="{{ video.publicId }}"
-                                     data-options="{{ video.jsonOptions }}"
-                                >
-                                    <div class="related-video-thumbnail-wrapper">
-                                        {% for thumbnail in video.thumbnails | slice(0,1) %}
-                                            <img src="{{ thumbnail }}" />
-                                        {% endfor %}
-                                        <div class="category__related__box-play">
-
-                                        </div>
-                                    </div>
-                                    <div class="related-video-title align-items-center d-flex">
-                                        {{ video.title }}
-                                    </div>
-                                </div>
+                                {{ video_preview.render('d-flex flex-row related-video', video) }}
                             {% endfor %}
                         </div>
                         {% if not isLast %}
@@ -122,19 +73,17 @@
         {{ mirror_separator.render('', 'mt-4 mb-5') }}
     </div>
 
-
     {{ player.render(category) }}
     {{ slider.render() }}
     {{ elect.render() }}
 
-
     <script>
         let isLast = false;
-        let offset = 20
-        const batchSize = 20
-        const categoryUuid = '{{ category.uuid }}'
-        const loadMoreCategoryVideosLink = '{{ path('load_more_category_videos') }}'
-        const loadMoreBtn = $('.x-load-more-videos-button')
+        let offset = 20;
+        const batchSize = 20;
+        const loadMoreCategoryVideosLink = '{{ path('load_more_category_videos') }}';
+        const loadMoreBtn = $('.x-load-more-videos-button');
+        const defaultVideoRemoteId = '{{ defaultVideo.publicId }}';
 
         $(document).on('click', '.x-show-subcategory-button', (e) =>  {
             e.preventDefault();
@@ -145,12 +94,12 @@
             parent.toggleClass('expanded');
 
             parent.find('.category-content').toggleClass('d-none');
-        })
+        });
 
         if(!isLast) {
             loadMoreBtn.click(() => {
-                let link = getLoadMoreCategoryVideosFullLink(loadMoreCategoryVideosLink, {categoryUuid, offset})
-                let button = $(this)
+                let link = getLoadMoreCategoryVideosFullLink(loadMoreCategoryVideosLink, {defaultVideoRemoteId, offset});
+                let button = $(this);
 
                 $.ajax({
                     url: link,
@@ -162,7 +111,7 @@
                         button.attr('disabled', false)
                     },
                     success   : (data) => {
-                        $('.related-videos-block').append(data.html)
+                        $('.related-videos-block').append(data.html);
 
                         if(data.isLast) {
                             isLast = true;
@@ -179,14 +128,12 @@
             });
         }
 
-
-        function getLoadMoreCategoryVideosFullLink(baseLink, {categoryUuid, offset}) {
-            return `${baseLink}?categoryUuid=${categoryUuid}&offset=${Number(offset)}`
+        function getLoadMoreCategoryVideosFullLink(baseLink, {defaultVideoRemoteId, offset}) {
+            return `${baseLink}?videoPublicId=${defaultVideoRemoteId}&offset=${Number(offset)}`
         }
     </script>
-
-
 {% endblock %}
+
 {% block footer_content %}
     {{ footer_menu.render() }}
 {% endblock footer_content %}

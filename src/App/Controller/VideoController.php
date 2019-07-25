@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Controller;
 
 use App\Domain\DTO\BatchOfNotExpiredVideos;
@@ -14,11 +13,15 @@ use IdentificationBundle\Identification\DTO\ISPData;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class VideosController extends AbstractController implements AppControllerInterface
+/**
+ * Class VideoController
+ */
+class VideoController extends AbstractController implements AppControllerInterface
 {
     /** @var UploadedVideoRepository */
     private $videoRepository;
@@ -29,42 +32,46 @@ class VideosController extends AbstractController implements AppControllerInterf
     /** @var MainCategoryRepository */
     private $mainCategoryRepository;
 
+    /** @var UploadedVideoRepository */
+    private $uploadedVideoRepository;
+
     /**
-     * VideosController constructor.
+     * VideosController constructor
+     *
      * @param UploadedVideoRepository $videoRepository
      * @param MainCategoryRepository $mainCategoryRepository
      * @param UploadedVideoSerializer $videoSerializer
+     * @param UploadedVideoRepository $uploadedVideoRepository
      */
     public function __construct(
         UploadedVideoRepository $videoRepository,
         MainCategoryRepository $mainCategoryRepository,
-        UploadedVideoSerializer $videoSerializer
-    )
-    {
+        UploadedVideoSerializer $videoSerializer,
+        UploadedVideoRepository $uploadedVideoRepository
+    ) {
         $this->videoRepository = $videoRepository;
         $this->mainCategoryRepository = $mainCategoryRepository;
         $this->videoSerializer = $videoSerializer;
+        $this->uploadedVideoRepository = $uploadedVideoRepository;
     }
 
     /**
      * @Route("/videos/category/load-more", methods={"GET"}, name="load_more_category_videos")
      *
-     * @param ISPData $data
-     * @param IdentificationData $identificationData
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
+     *
      * @throws \Exception
      */
-    public function loadMoreCategoryVideosAction(ISPData $data, IdentificationData $identificationData, Request $request)
+    public function loadMoreCategoryVideosAction(Request $request)
     {
-
-        if (!$categoryUuid = $request->get('categoryUuid')) {
-            throw new BadRequestHttpException('Missing `categoryUuid` parameter');
+        if (!$videoPublicId = $request->get('videoPublicId')) {
+            throw new BadRequestHttpException('Missing `videoPublicId` parameter');
         }
 
-        /** @var MainCategory $category */
-        if (!$category = $this->mainCategoryRepository->findOneBy(['uuid' => $categoryUuid])) {
+        /** @var UploadedVideo $uploadedVideo */
+        if (!$uploadedVideo = $this->uploadedVideoRepository->findOneBy(['remoteId' => $videoPublicId])) {
             throw new NotFoundHttpException('Category not found');
         }
 
@@ -72,7 +79,7 @@ class VideosController extends AbstractController implements AppControllerInterf
 
         /** @var BatchOfNotExpiredVideos $videos */
         $videos = $this->videoRepository->findNotExpiredBySubcategories(
-            $category->getSubcategories()->toArray(),
+            $uploadedVideo->getSubcategory()->getParent()->getSubcategories()->toArray(),
             $offset
         );
 
@@ -83,8 +90,7 @@ class VideosController extends AbstractController implements AppControllerInterf
         }
 
         $html = $this->renderView('@App/Components/category_player_related_videos.html.twig', [
-            'videos'   => $serializedData,
-            'category' => $category
+            'videos'   => $serializedData
         ]);
 
         return new JsonResponse([

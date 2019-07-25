@@ -105,11 +105,12 @@ services:
             - '@App\Domain\Service\Piwik\ContentStatisticSender'
             - '@App\CarrierTemplate\TemplateConfigurator'
 
-    App\Controller\VideosController:
+    App\Controller\VideoController:
         arguments:
             - '@App\Domain\Repository\UploadedVideoRepository'
             - '@App\Domain\Repository\MainCategoryRepository'
             - '@App\Domain\Service\VideoProcessing\UploadedVideoSerializer'
+            - '@App\Domain\Repository\UploadedVideoRepository'
 
     App\Controller\TrackEventController:
         arguments:

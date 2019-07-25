@@ -1,5 +1,5 @@
-{% import "@App/Components/Blocks/Main/category_player_related_video.html.twig" as related_video %}
+{% import "@App/Components/Blocks/Main/video_preview.html.twig" as  video_preview %}
 
 {% for video in videos %}
-    {{ related_video.render(video, category) }}
+    {{ video_preview.render('d-flex flex-row related-video', video) }}
 {% endfor %}

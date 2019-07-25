@@ -326,6 +326,16 @@ a button {
     padding-right: 8px;
 }
 
+.video-play-icon {
+    position: absolute;
+    background-image: url(../img/play-icon-big.png);
+    height: 30px;
+    width: 30px;
+    bottom: 0;
+    right: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
 
 .category__related__box-play {
     position: absolute;
