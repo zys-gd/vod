@@ -73,7 +73,7 @@
         {{ mirror_separator.render('', 'mt-4 mb-5') }}
     </div>
 
-    {{ player.render(category) }}
+    {{ player.render() }}
     {{ slider.render() }}
     {{ elect.render() }}
 
@@ -81,7 +81,7 @@
         let isLast = false;
         let offset = 20;
         const batchSize = 20;
-        const loadMoreCategoryVideosLink = '{{ path('load_more_category_videos') }}';
+        const loadMoreVideoLink = '{{ path('load_more_video') }}';
         const loadMoreBtn = $('.x-load-more-videos-button');
         const defaultVideoRemoteId = '{{ defaultVideo.publicId }}';
 
@@ -98,7 +98,7 @@
 
         if(!isLast) {
             loadMoreBtn.click(() => {
-                let link = getLoadMoreCategoryVideosFullLink(loadMoreCategoryVideosLink, {defaultVideoRemoteId, offset});
+                let link = `${loadMoreVideoLink}?videoPublicId=${defaultVideoRemoteId}&offset=${Number(offset)}`;
                 let button = $(this);
 
                 $.ajax({
@@ -126,10 +126,6 @@
 
                 })
             });
-        }
-
-        function getLoadMoreCategoryVideosFullLink(baseLink, {defaultVideoRemoteId, offset}) {
-            return `${baseLink}?videoPublicId=${defaultVideoRemoteId}&offset=${Number(offset)}`
         }
     </script>
 {% endblock %}

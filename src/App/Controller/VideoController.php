@@ -56,7 +56,7 @@ class VideoController extends AbstractController implements AppControllerInterfa
     }
 
     /**
-     * @Route("/videos/category/load-more", methods={"GET"}, name="load_more_category_videos")
+     * @Route("/video/load-more", methods={"GET"}, name="load_more_video")
      *
      * @param Request $request
      *
@@ -64,7 +64,7 @@ class VideoController extends AbstractController implements AppControllerInterfa
      *
      * @throws \Exception
      */
-    public function loadMoreCategoryVideosAction(Request $request)
+    public function loadMore(Request $request)
     {
         if (!$videoPublicId = $request->get('videoPublicId')) {
             throw new BadRequestHttpException('Missing `videoPublicId` parameter');
