@@ -9,6 +9,16 @@ use IdentificationBundle\Identification\Service\StorageInterface;
  */
 class IdentificationDataStorage
 {
+    const AUTO_IDENT_ATTEMPT_KEY = 'is_tried_to_autoident';
+    const CONSENT_FLOW_TOKEN_KEY = 'consentFlow[token]';
+    const REDIRECT_IDENT_TOKEN_KEY = 'redirectIdent[token]';
+    const POST_PAID_RESTRICTED_KEY = 'isPostPaidRestricted';
+    const SUBSCRIBE_AFTER_IDENT_KEY = 'subscribeAfterIdent';
+
+    const IDENTIFICATION_DATA_KEY = 'identification_data';
+    const ISP_DETECTION_DATA_KEY = 'isp_detection_data';
+    const IDENTIFICATION_TOKEN_KEY = 'identification_token';
+
     /**
      * @var StorageInterface
      */
@@ -25,11 +35,30 @@ class IdentificationDataStorage
     }
 
     /**
+     * @param string $key
+     * @param $value
+     */
+    public function setToStorage(string $key, $value): void
+    {
+        $this->storage->storeValue(SessionStorage::STORAGE_KEY . "[$key]", $value);
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function getFromStorage(string $key)
+    {
+        return $this->storage->readValue(SessionStorage::STORAGE_KEY . "[$key]");
+    }
+
+    /**
      * @param int $carrierId
      */
-    public function storeCarrierId(int $carrierId): void
+    public function setCarrierId(int $carrierId): void
     {
-        $this->storage->storeValue('isp_detection_data', ['carrier_id' => $carrierId]);
+        $this->storage->storeValue(self::ISP_DETECTION_DATA_KEY, ['carrier_id' => $carrierId]);
     }
 
     /**
@@ -37,7 +66,7 @@ class IdentificationDataStorage
      */
     public function cleanCarrier(): void
     {
-        $this->storage->cleanValue('isp_detection_data');
+        $this->storage->cleanValue(self::ISP_DETECTION_DATA_KEY);
     }
 
     /**
@@ -46,7 +75,7 @@ class IdentificationDataStorage
     public function setIdentificationToken(string $token): void
     {
         $identificationData = $this->getIdentificationData();
-        $identificationData['identification_token'] = $token;
+        $identificationData[self::IDENTIFICATION_TOKEN_KEY] = $token;
 
         $this->setIdentificationData($identificationData);
     }
@@ -58,7 +87,9 @@ class IdentificationDataStorage
     {
         $identificationData = $this->getIdentificationData();
 
-        return isset($identificationData['identification_token']) ? $identificationData['identification_token'] : null;
+        return isset($identificationData[self::IDENTIFICATION_TOKEN_KEY])
+            ? $identificationData[self::IDENTIFICATION_TOKEN_KEY]
+            : null;
     }
 
     /**
@@ -66,25 +97,7 @@ class IdentificationDataStorage
      */
     public function getIdentificationData(): array
     {
-        return $this->storage->readValue('identification_data') ?? [];
-    }
-
-    /**
-     * @param bool $value
-     *
-     * @return void
-     */
-    public function setSubscribeAfterIdent(bool $value = true): void
-    {
-        $this->storage->storeValue($this->key('subscribeAfterIdent'), $value);
-    }
-
-    /**
-     * @return bool|null
-     */
-    public function getSubscribeAfterIdent(): ?bool
-    {
-        return $this->storage->readValue($this->key('subscribeAfterIdent'));
+        return $this->storage->readValue(self::IDENTIFICATION_DATA_KEY) ?? [];
     }
 
     /**
@@ -92,7 +105,7 @@ class IdentificationDataStorage
      */
     public function getRedirectIdentToken(): ?string
     {
-        return $this->storage->readValue($this->key('redirectIdent[token]'));
+        return $this->getFromStorage(self::REDIRECT_IDENT_TOKEN_KEY);
     }
 
     /**
@@ -100,55 +113,7 @@ class IdentificationDataStorage
      */
     public function setRedirectIdentToken(string $token): void
     {
-        $this->storage->storeValue($this->key('redirectIdent[token]'), $token);
-    }
-
-    /**
-     * @param string $token
-     */
-    public function setConsentFlowToken(string $token): void
-    {
-        $this->storage->storeValue($this->key('consentFlow[token]'), $token);
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getConsentFlowToken(): ?string
-    {
-        return $this->storage->readValue($this->key('consentFlow[token]'));
-    }
-
-    /**
-     * @return bool
-     */
-    public function isPostPaidRestricted(): bool
-    {
-        return $this->storage->readValue($this->key('isPostPaidRestricted')) === 1;
-    }
-
-    /**
-     * @param $value
-     */
-    public function setPostPaidRestricted($value): void
-    {
-        $this->storage->storeValue($this->key('isPostPaidRestricted'), $value);
-    }
-
-    /**
-     * @return void
-     */
-    public function setAutoIdentAttempt(): void
-    {
-        $this->storage->storeValue($this->key('is_tried_to_autoident'), true);
-    }
-
-    /**
-     * @return bool|null
-     */
-    public function getAutoIdentAttempt(): ?bool
-    {
-        return $this->storage->readValue($this->key('is_tried_to_autoident'));
+        $this->setToStorage(self::REDIRECT_IDENT_TOKEN_KEY, $token);
     }
 
     /**
@@ -156,16 +121,6 @@ class IdentificationDataStorage
      */
     private function setIdentificationData(array $identificationData): void
     {
-        $this->storage->storeValue('identification_data', $identificationData);
-    }
-
-    /**
-     * @param string $key
-     *
-     * @return string
-     */
-    private function key(string $key): string
-    {
-        return SessionStorage::STORAGE_KEY . "[$key]";
+        $this->storage->storeValue(self::IDENTIFICATION_DATA_KEY, $identificationData);
     }
 }

@@ -51,7 +51,10 @@ class IdentificationStatusTest extends TestCase
 
     public function testIsIdentified()
     {
-        $this->session->set('identification_data',['identification_token' => '123token']);
+        $this->session->set(
+            IdentificationDataStorage::IDENTIFICATION_DATA_KEY,
+            [IdentificationDataStorage::IDENTIFICATION_TOKEN_KEY => '123token']
+        );
 
         $this->assertTrue($this->identificationStatus->isIdentified());
     }

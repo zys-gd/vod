@@ -101,8 +101,8 @@ class PixelIdentController extends AbstractController
             throw new BadRequestHttpException("Pixel ident is not started yet");
         }
 
-        if ($this->identificationDataStorage->getSubscribeAfterIdent()) {
-            $this->identificationDataStorage->setSubscribeAfterIdent(false);
+        if ($this->identificationDataStorage->getFromStorage(IdentificationDataStorage::SUBSCRIBE_AFTER_IDENT_KEY)) {
+            $this->identificationDataStorage->setToStorage(IdentificationDataStorage::SUBSCRIBE_AFTER_IDENT_KEY, false);
             $successUrl = $this->generateUrl('subscription.subscribe');
         } else {
             $successUrl = $this->routeProvider->getLinkToHomepage();

@@ -35,6 +35,7 @@ services:
             - '@IdentificationBundle\Identification\Service\UserFactory'
             - '@doctrine.orm.entity_manager'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
 
     IdentificationBundle\WifiIdentification\Controller\PinIdentificationController:
       arguments:

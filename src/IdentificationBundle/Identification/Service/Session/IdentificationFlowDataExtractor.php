@@ -16,7 +16,7 @@ class IdentificationFlowDataExtractor
      */
     public static function extractIdentificationData(SessionInterface $session): ?array
     {
-        return $session->get('identification_data');
+        return $session->get(IdentificationDataStorage::IDENTIFICATION_DATA_KEY);
     }
 
     /**
@@ -26,9 +26,11 @@ class IdentificationFlowDataExtractor
      */
     public static function extractIdentificationToken(SessionInterface $session): ?string
     {
-        $identificationData = $session->get('identification_data');
+        $identificationData = $session->get(IdentificationDataStorage::IDENTIFICATION_DATA_KEY);
 
-        return isset($identificationData['identification_token']) ? $identificationData['identification_token'] : null;
+        return isset($identificationData[IdentificationDataStorage::IDENTIFICATION_TOKEN_KEY])
+            ? $identificationData[IdentificationDataStorage::IDENTIFICATION_TOKEN_KEY]
+            : null;
     }
 
     /**
@@ -38,7 +40,7 @@ class IdentificationFlowDataExtractor
      */
     public static function extractIspDetectionData(SessionInterface $session): ?array
     {
-        return $session->get('isp_detection_data');
+        return $session->get(IdentificationDataStorage::ISP_DETECTION_DATA_KEY);
     }
 
     /**
@@ -48,7 +50,7 @@ class IdentificationFlowDataExtractor
      */
     public static function extractBillingCarrierId(SessionInterface $session): ?int
     {
-        $ispData = $session->get('isp_detection_data');
+        $ispData = $session->get(IdentificationDataStorage::ISP_DETECTION_DATA_KEY);
 
         return isset($ispData['carrier_id']) ? (int) $ispData['carrier_id'] : null;
     }

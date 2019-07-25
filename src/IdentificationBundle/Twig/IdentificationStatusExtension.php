@@ -72,7 +72,7 @@ class IdentificationStatusExtension extends AbstractExtension
             }),
 
             new TwigFunction('isConsentFlow', function () {
-                $token = $this->dataStorage->getConsentFlowToken();
+                $token = $this->dataStorage->getFromStorage(IdentificationDataStorage::CONSENT_FLOW_TOKEN_KEY);
                 return (bool)$token;
             }),
 

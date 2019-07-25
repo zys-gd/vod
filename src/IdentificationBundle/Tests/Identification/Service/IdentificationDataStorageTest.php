@@ -31,25 +31,28 @@ class IdentificationDataStorageTest extends TestCase
     {
         $this->identificationDataStorage->setIdentificationToken('token');
 
-        $data = $this->session->get('identification_data');
+        $data = $this->session->get(IdentificationDataStorage::IDENTIFICATION_DATA_KEY);
 
-        $this->assertArraySubset(['identification_token' => 'token'], $data);
+        $this->assertArraySubset([IdentificationDataStorage::IDENTIFICATION_TOKEN_KEY => 'token'], $data);
     }
 
     public function testReadIdentificationData()
     {
-        $this->session->set('identification_data', ['identification_token' => 'token']);
+        $this->session->set(
+            IdentificationDataStorage::IDENTIFICATION_DATA_KEY,
+            [IdentificationDataStorage::IDENTIFICATION_TOKEN_KEY => 'token']
+        );
 
         $result = $this->identificationDataStorage->getIdentificationData();
 
-        $this->assertArraySubset(['identification_token' => 'token'], $result);
+        $this->assertArraySubset([IdentificationDataStorage::IDENTIFICATION_TOKEN_KEY => 'token'], $result);
     }
 
     public function testStoreCarrierId()
     {
-        $this->identificationDataStorage->storeCarrierId(135);
+        $this->identificationDataStorage->setCarrierId(135);
 
-        $data = $this->session->get('isp_detection_data');
+        $data = $this->session->get(IdentificationDataStorage::ISP_DETECTION_DATA_KEY);
 
         $this->assertArraySubset(['carrier_id' => '135'], $data);
     }

@@ -83,7 +83,12 @@ class CommonConsentPageFlowHandler
      *
      * @return Response
      */
-    public function process(Request $request, HasConsentPageFlow $handler, CarrierInterface $carrier, string $token): Response
+    public function process(
+        Request $request,
+        HasConsentPageFlow $handler,
+        CarrierInterface $carrier,
+        string $token
+    ): Response
     {
         if ($handler instanceof HasCommonConsentPageFlow) {
             $additionalParams = $handler->getAdditionalIdentificationParams($request);
@@ -102,7 +107,11 @@ class CommonConsentPageFlowHandler
             );
 
             $processResult = $this->identProcess->doIdent($parameters);
-            $this->dataStorage->setConsentFlowToken($this->generator->generateToken());
+
+            $this->dataStorage->setToStorage(
+                IdentificationDataStorage::CONSENT_FLOW_TOKEN_KEY,
+                $this->generator->generateToken()
+            );
 
             return $this->asyncIdentStarter->start($processResult, $token);
         } elseif ($handler instanceof HasCustomConsentPageFlow) {

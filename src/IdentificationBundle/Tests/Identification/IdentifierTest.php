@@ -123,7 +123,7 @@ class IdentifierTest extends TestCase
     {
         $request = new Request();
 
-        $this->session->set('isp_detection_data', ['somedata' => '123']);
+        $this->session->set(IdentificationDataStorage::ISP_DETECTION_DATA_KEY, ['somedata' => '123']);
 
         $this->handlerProvider->allows([
             'get' => Mockery::spy(HasCommonFlow::class, IdentificationHandlerInterface::class)

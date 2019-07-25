@@ -43,10 +43,7 @@ class Translator implements TranslatorInterface
      * @var array
      */
     private $texts = [];
-    /**
-     * @var CarrierRepository
-     */
-    private $carrierRepository;
+
     /**
      * @var ArrayCacheService
      */

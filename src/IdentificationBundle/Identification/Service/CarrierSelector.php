@@ -42,7 +42,7 @@ class CarrierSelector
             throw new MissingCarrierException('Carrier not found');
         }
 
-        $this->identificationDataStorage->storeCarrierId($carrierId);
+        $this->identificationDataStorage->setCarrierId($carrierId);
     }
 
     public function removeCarrier(): void
