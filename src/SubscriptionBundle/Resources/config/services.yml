@@ -1,6 +1,7 @@
 services:
     subscription.http.client:
         class: "%guzzle.client.class%"
+        factory: ['@SubscriptionBundle\Affiliate\Service\GuzzleClientFactory','getClient']
         tags:
             - { name: guzzle.client }
 
