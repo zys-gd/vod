@@ -52,8 +52,4 @@ class TelenorPKNotificationHandler implements NotificationHandlerInterface
         return $this->languageRepository->findByCode('ur');
     }
 
-    public function getMessageNamespace(): ?string
-    {
-        return 'dot.telenorpk';
-    }
 }

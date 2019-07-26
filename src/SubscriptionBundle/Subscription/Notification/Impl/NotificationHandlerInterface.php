@@ -22,6 +22,4 @@ interface NotificationHandlerInterface
 
     public function getSmsLanguage(): LanguageInterface;
 
-    public function getMessageNamespace(): ?string;
-
 }

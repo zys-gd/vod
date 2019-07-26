@@ -3,6 +3,7 @@
 namespace App\Domain\Entity;
 
 use CommonDataBundle\Entity\Interfaces\HasUuid;
+use CommonDataBundle\Entity\Interfaces\LanguageInterface;
 
 class Translation implements HasUuid
 {
@@ -27,7 +28,7 @@ class Translation implements HasUuid
     private $carrier;
 
     /**
-     * @var Language
+     * @var LanguageInterface
      */
     private $language;
 
@@ -58,17 +59,17 @@ class Translation implements HasUuid
     }
 
     /**
-     * @return Language|null
+     * @return LanguageInterface|null
      */
-    public function getLanguage(): ?Language
+    public function getLanguage(): ?LanguageInterface
     {
         return $this->language;
     }
 
     /**
-     * @param Language $language
+     * @param LanguageInterface $language
      */
-    public function setLanguage(Language $language): void
+    public function setLanguage(LanguageInterface $language): void
     {
         $this->language = $language;
     }

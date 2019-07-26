@@ -13,6 +13,7 @@ use IdentificationBundle\Entity\User;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Notification\API\DTO\NotificationMessage;
 use SubscriptionBundle\BillingFramework\Notification\API\MessageCreator;
+use SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider;
 
 class MessageCompiler
 {
@@ -21,7 +22,7 @@ class MessageCompiler
      */
     private $logger;
     /**
-     * @var SMSTextProvider
+     * @var \SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider
      */
     private $SMSTextProvider;
     /**
@@ -31,9 +32,9 @@ class MessageCompiler
 
     /**
      * MessageCompiler constructor.
-     * @param LoggerInterface $logger
-     * @param MessageCreator  $messageCreator
-     * @param SMSTextProvider $SMSTextProvider
+     * @param LoggerInterface                                                       $logger
+     * @param MessageCreator                                                        $messageCreator
+     * @param \SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider $SMSTextProvider
      */
     public function __construct(
         LoggerInterface $logger,

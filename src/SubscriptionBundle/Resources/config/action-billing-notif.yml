@@ -14,20 +14,20 @@ services:
         - '@SubscriptionBundle\Subscription\Notification\Common\ProcessIdExtractor'
         - '@SubscriptionBundle\Subscription\Notification\Impl\NotificationHandlerProvider'
         - '@SubscriptionBundle\Subscription\Notification\Common\DefaultSMSVariablesProvider'
-        - '@SubscriptionBundle\Subscription\Notification\Common\SMSTextProvider'
+        - '@SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider'
 
   SubscriptionBundle\Subscription\Notification\Common\MessageCompiler:
         arguments:
           - '@monolog.logger.subscription'
           - '@SubscriptionBundle\BillingFramework\Notification\API\MessageCreator'
-          - '@SubscriptionBundle\Subscription\Notification\Common\SMSTextProvider'
+          - '@SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider'
 
   SubscriptionBundle\Subscription\Notification\Common\ProcessIdExtractor: ~
 
   SubscriptionBundle\Subscription\Notification\Common\ShortUrlHashGenerator: ~
 
-  SubscriptionBundle\Subscription\Notification\Common\SMSTextProvider:
-          arguments: ['%sms.notification.messages%', '@IdentificationBundle\Repository\CarrierRepositoryInterface', '@CommonDataBundle\Repository\Interfaces\LanguageRepositoryInterface']
+  SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider:
+          arguments: ['@IdentificationBundle\Repository\CarrierRepositoryInterface', '@CommonDataBundle\Repository\Interfaces\LanguageRepositoryInterface']
 
   SubscriptionBundle\Subscription\Notification\Common\NamespaceResolver: ~
 

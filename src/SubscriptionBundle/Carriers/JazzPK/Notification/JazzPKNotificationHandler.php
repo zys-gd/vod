@@ -44,8 +44,4 @@ class JazzPKNotificationHandler implements NotificationHandlerInterface
         return $this->languageRepository->findByCode('en');
     }
 
-    public function getMessageNamespace(): ?string
-    {
-        return 'dot.jazzpk';
-    }
 }

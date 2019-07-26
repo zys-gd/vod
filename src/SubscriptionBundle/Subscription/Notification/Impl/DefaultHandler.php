@@ -50,8 +50,4 @@ class DefaultHandler implements NotificationHandlerInterface
     }
 
 
-    public function getMessageNamespace(): ?string
-    {
-        return null;
-    }
 }

@@ -12,7 +12,7 @@ use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Subscription\Notification\Common\DefaultSMSVariablesProvider;
 use SubscriptionBundle\Subscription\Notification\Common\MessageCompiler;
 use SubscriptionBundle\Subscription\Notification\Common\ProcessIdExtractor;
-use SubscriptionBundle\Subscription\Notification\Common\SMSTextProvider;
+use SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider;
 use SubscriptionBundle\Subscription\Notification\Impl\NotificationHandlerProvider;
 
 /**
@@ -51,13 +51,13 @@ class Notifier
 
     /**
      * Notifier constructor.
-     * @param MessageCompiler             $messageCompiler
-     * @param RequestSender               $sender
-     * @param LoggerInterface             $logger
-     * @param ProcessIdExtractor          $processIdExtractor
-     * @param NotificationHandlerProvider $notificationHandlerProvider
-     * @param DefaultSMSVariablesProvider $defaultSMSVariablesProvider
-     * @param SMSTextProvider             $SMSTextProvider
+     * @param MessageCompiler                                                        $messageCompiler
+     * @param RequestSender                                                         $sender
+     * @param LoggerInterface                                                       $logger
+     * @param ProcessIdExtractor                                                    $processIdExtractor
+     * @param NotificationHandlerProvider                                           $notificationHandlerProvider
+     * @param DefaultSMSVariablesProvider                                           $defaultSMSVariablesProvider
+     * @param \SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider $SMSTextProvider
      */
     public function __construct(
         MessageCompiler $messageCompiler,
@@ -67,7 +67,8 @@ class Notifier
         NotificationHandlerProvider $notificationHandlerProvider,
         DefaultSMSVariablesProvider $defaultSMSVariablesProvider,
         SMSTextProvider $SMSTextProvider
-    ) {
+    )
+    {
         $this->messageCompiler             = $messageCompiler;
         $this->sender                      = $sender;
         $this->logger                      = $logger;
@@ -109,7 +110,7 @@ class Notifier
             try {
                 $body = $this->SMSTextProvider->getSMSText(
                     $processType,
-                    (string)$handler->getMessageNamespace(),
+                    $carrier,
                     $subscriptionPack,
                     $handler->getSmsLanguage()
                 );

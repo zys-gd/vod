@@ -6,6 +6,7 @@ use SubscriptionBundle\DependencyInjection\Compiler\CallbackHandlerPass;
 use SubscriptionBundle\DependencyInjection\Compiler\CampaignConfirmationPass;
 use SubscriptionBundle\DependencyInjection\Compiler\NotificationHandlerPass;
 use SubscriptionBundle\DependencyInjection\Compiler\RenewHandlerPass;
+use SubscriptionBundle\DependencyInjection\Compiler\SMSTextHandlerPass;
 use SubscriptionBundle\DependencyInjection\Compiler\SubscriptionHandlerPass;
 use SubscriptionBundle\DependencyInjection\Compiler\SubscriptionVoterPass;
 use SubscriptionBundle\DependencyInjection\Compiler\TwigAdditionalPathsExtension;
@@ -27,5 +28,6 @@ class SubscriptionBundle extends Bundle
         $container->addCompilerPass(new SubscriptionVoterPass());
 
         $container->addCompilerPass(new TwigAdditionalPathsExtension());
+        $container->addCompilerPass(new SMSTextHandlerPass());
     }
 }

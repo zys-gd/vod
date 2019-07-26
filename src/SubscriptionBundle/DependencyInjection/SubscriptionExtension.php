@@ -61,12 +61,6 @@ class SubscriptionExtension extends ConfigurableExtension
 
         $loader = new YamlFileLoader(
             $container,
-            new FileLocator(__DIR__ . '/../Resources/notifications')
-        );
-        $loader->load('parameters.yml');
-
-        $loader = new YamlFileLoader(
-            $container,
             new FileLocator(__DIR__ . '/../Resources/config/carriers')
         );
         //$loader->load('orange-eg.yml');

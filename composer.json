@@ -90,7 +90,8 @@
         "psr-4": {
             "": "src/",
             "App\\": "src/App",
-            "Admin\\": "src/Admin"
+            "Admin\\": "src/Admin",
+            "Carriers\\": "src/Carriers"
         }
     },
     "autoload-dev": {
