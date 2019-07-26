@@ -41,7 +41,7 @@
             <div class="active-category-container">
                 <div class="d-flex flex-column">
                     <div class="d-flex flex-column align-items-center justify-content-center">
-                        {{ video_preview.render('w-100 default-video-thumbnail-wrapper', defaultVideo) }}
+                        {{ video_preview.render('w-100 default-video-thumbnail-wrapper x-play-button', defaultVideo) }}
                         <div id="video-player-title" class="video-player-title text-center">
                             {{ defaultVideo.title }}
                         </div>
@@ -54,7 +54,7 @@
                     <div class="related-videos-section-container">
                         <div class="d-flex flex-column related-videos-block">
                             {% for video in videos | slice(1) %}
-                                {{ video_preview.render('d-flex flex-row related-video', video) }}
+                                {{ video_preview.render('d-flex flex-row related-video x-play-button', video) }}
                             {% endfor %}
                         </div>
                         {% if not isLast %}

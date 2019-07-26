@@ -15,6 +15,10 @@
     width: 100%;
 }
 
+.active-category-container .video-preview-image-container > img {
+    width: 100%;
+}
+
 .related-videos-section-container {
     padding: 3px;
 }

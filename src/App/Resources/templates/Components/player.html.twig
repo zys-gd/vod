@@ -76,8 +76,8 @@
             $(window).on('load', function () {
 
                 function makeCurrentlyPlaying(index) {
-                    $('.modal-related-video').each(function () {
-                        let elementIndex = $(this).attr('data-uuid');
+                    $('.modal-related-videos-block .related-video').each(function () {
+                        let elementIndex = $(this).attr('data-public-id');
 
                         if (index != elementIndex) {
                             $(this).removeClass('currently-playing')
@@ -121,15 +121,14 @@
                 let loadMoreFunc;
                 let offset = 0;
                 let isFirstQuery = true;
-                $(document).on('click', '.x-play-button, .modal-related-video-thumbnail-wrapper', function () {
+                $(document).on('click', '.x-play-button', function () {
                     openModal();
 
                     let isLast = false;
-                    let category = $(this).attr('data-category');
-                    let batchRelatedVideosRoute = '{{ url('load_more_related_videos') }}';
+                    let batchRelatedVideosRoute = '{{ url('load_more_video') }}';
                     let options = ($(this).attr('data-options')) ? JSON.parse($(this).attr('data-options')) : undefined;
                     let publicId = $(this).attr('data-public-id');
-                    let uri = `${batchRelatedVideosRoute}?categoryUuid=${category}&offset=${offset}`;
+                    let uri = `${batchRelatedVideosRoute}?videoPublicId=${publicId}&offset=${offset}`;
 
                     // TODO: Refactor this. IMPORTANT!!!!
                     // Main problem is that we have one listener on play-button on the main page and on the page with recording video with related-videos.
@@ -156,7 +155,7 @@
                             && !isLoading
                         ) {
                             offset += 20;
-                            uri = `${batchRelatedVideosRoute}?categoryUuid=${category}&offset=${offset}`;
+                            uri = `${batchRelatedVideosRoute}?videoPublicId=${publicId}&offset=${offset}`;
                             isAllowRequest = false;
                             $.get(uri, (data) => {
                                 $('.modal-related-videos-block').append(data.html);
@@ -170,20 +169,20 @@
                     demoplayer.play();
                 });
 
-                $(document).on('click', '.x-modal-play-button', function () {
-                    let index    = $(this).attr('data-uuid');
+                $(document).on('click', '.modal-related-videos-block .related-video', function () {
+                    let index    = $(this).attr('data-public-id');
                     let publicId = $(this).attr('data-public-id');
                     let options = ($(this).attr('data-options')) ? JSON.parse($(this).attr('data-options')) : undefined;
 
                     changeVideo(publicId, options);
                     makeCurrentlyPlaying(index);
                     demoplayer.play();
-
                 });
 
                 $(document).on('click', '.x-close-modal-button', function () {
                     let modalRelatedVideosBlock = document.querySelector('.modal-related-videos-block');
                     modalRelatedVideosBlock.removeEventListener('scroll', loadMoreFunc);
+                    isFirstQuery = true;
                     closeModal()
                 });
 
