@@ -39,6 +39,7 @@ try {
     $response->send();
     $kernel->terminate($request, $response);
 } catch (\Throwable $exception) {
+    echo $exception->getMessage();
     throw $exception;
 }
 

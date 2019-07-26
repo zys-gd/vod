@@ -9,14 +9,13 @@
 namespace IdentificationBundle\Identification;
 
 
-use IdentificationBundle\Identification\Common\CommonFlowHandler;
 use IdentificationBundle\Identification\Common\CommonConsentPageFlowHandler;
+use IdentificationBundle\Identification\Common\CommonFlowHandler;
 use IdentificationBundle\Identification\Common\HeaderEnrichmentHandler;
 use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\DTO\IdentifyResult;
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasConsentPageFlow;
 use IdentificationBundle\Identification\Handler\HasCommonFlow;
-use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow;
 use IdentificationBundle\Identification\Handler\HasCustomFlow;
 use IdentificationBundle\Identification\Handler\HasHeaderEnrichment;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;

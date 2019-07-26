@@ -9,9 +9,11 @@
 namespace SubscriptionBundle\DependencyInjection;
 
 
+use ExtrasBundle\Config\DefinitionReplacer;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 
 class SubscriptionExtension extends ConfigurableExtension
@@ -39,7 +41,6 @@ class SubscriptionExtension extends ConfigurableExtension
         $loader->load('action-subscribe-back.yml');
         $loader->load('admin.yml');
         $loader->load('billing-framework-integration.yml');
-        $loader->load('enqueue-integration.yml');
         $loader->load('listeners.yml');
         $loader->load('repositories.yml');
         $loader->load('controllers.yml');
@@ -54,6 +55,8 @@ class SubscriptionExtension extends ConfigurableExtension
         $loader->load('captool-visit.yml');
         $loader->load('captool-commons.yml');
         $loader->load('captool-subscription.yml');
+        $loader->load('reporting-tool.yml');
+        $loader->load('blacklist.yml');
 
 
         $loader = new YamlFileLoader(
@@ -74,8 +77,20 @@ class SubscriptionExtension extends ConfigurableExtension
         $loader->load('vodafone-eg-tpay.yml');
         $loader->load('orange-eg-tpay.yml');
 
-        $definition = $container->getDefinition('SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler');
+        $definition = $container->getDefinition('SubscriptionBundle\CAPTool\Subscription\Notificaton\EmailProvider');
+        DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['cap_tool']['notification']['mail_to'], '_cap_notification_mail_to_placeholder_');
+        DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['cap_tool']['notification']['mail_from'], '_cap_notification_mail_from_placeholder_');
 
-        $definition->replaceArgument(14, $mergedConfig['resub_not_allowed_route']);
+        $definition = $container->getDefinition('SubscriptionBundle\BillingFramework\BillingOptionsProvider');
+        DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['billing_framework']['api_host'], '_billing_api_host_placeholder_');
+        DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['billing_framework']['client_id'], '_client_id_placeholder_');
+
+        $definition = $container->getDefinition('SubscriptionBundle\Service\ReportingToolService');
+        DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['reporting_tool']['api_host'], '_reporting_stats_api_host_placeholder_');
+
+        $definition = $container->getDefinition('SubscriptionBundle\Subscription\Common\RouteProvider');
+        DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['resub_not_allowed_route'], '_resub_not_allowed_route_placeholder_');
+        DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['action_not_allowed_url'], '_action_not_allowed_url_placeholder_');
+        DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['callback_host'], '_callback_host_placeholder_');
     }
 }

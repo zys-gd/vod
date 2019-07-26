@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use PHPUnit\Framework\TestCase;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
-use SubscriptionBundle\Service\RenewDateCalculator;
+use SubscriptionBundle\Subscription\Renew\Service\RenewDateCalculator;
 
 
 class RenewDateCalculatorTest extends TestCase
@@ -48,6 +48,6 @@ class RenewDateCalculatorTest extends TestCase
 
     protected function setUp()
     {
-        $this->renewDateCalculator = new RenewDateCalculator();
+        $this->renewDateCalculator = new \SubscriptionBundle\Subscription\Renew\Service\RenewDateCalculator();
     }
 }

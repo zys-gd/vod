@@ -5,7 +5,7 @@ services:
 
 
 
-# SubscriptionBundle\Service\Action\SubscribeBack\SubscribeBackHandlerProvider:
+# SubscriptionBundle\Subscription\SubscribeBack\SubscribeBackHandlerProvider:
 #     arguments:
 #       - "@handler.subscribe_back.tim"
 #       - "@handler.subscribe_back.robi"
@@ -19,7 +19,7 @@ services:
 #      class: SubscriptionBundle\Carriers\ZainIQ\SubscribeBack\ZainBackSubscriber
 #      arguments:
 #        - "@affiliate.affiliate.service"
-#        - '@SubscriptionBundle\Service\SubscriptionPackProvider'
+#        - '@SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider'
 #        - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
 #        - '@affiliate.user_info_mapper'
 #        - '@app.carriers'

@@ -17,7 +17,7 @@ class MsisdnCleanerTest extends TestCase
     public function testCleanTelenorPK()
     {
 
-        $carrier = Mockery::mock(\IdentificationBundle\Entity\CarrierInterface::class);
+        $carrier = Mockery::mock(\CommonDataBundle\Entity\Interfaces\CarrierInterface::class);
 
         $carrier->allows(['getBillingCarrierId' => 381]);
 
@@ -29,7 +29,7 @@ class MsisdnCleanerTest extends TestCase
     public function testCleanCellcardCambodia()
     {
 
-        $carrier = Mockery::mock(\IdentificationBundle\Entity\CarrierInterface::class);
+        $carrier = Mockery::mock(\CommonDataBundle\Entity\Interfaces\CarrierInterface::class);
 
         $carrier->allows(['getBillingCarrierId' => 2207]);
 

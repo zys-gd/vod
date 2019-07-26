@@ -4,6 +4,7 @@ namespace DataFixtures;
 
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
+use CommonDataBundle\DataFixtures\LoadCountriesData;
 use DataFixtures\Utils\FixtureDataLoader;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;

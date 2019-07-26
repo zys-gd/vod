@@ -10,8 +10,8 @@ namespace App\Twig;
 
 
 use App\Domain\Service\Translator\DataAggregator;
-use App\Domain\Service\Translator\Translator;
 use App\Domain\Service\Translator\ShortcodeReplacer;
+use App\Domain\Service\Translator\Translator;
 use App\Exception\WrongTranslationKey;
 use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;

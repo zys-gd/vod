@@ -9,9 +9,9 @@
 namespace IdentificationBundle\Tests\Identification\Common\PixelIdent;
 
 
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\BillingFramework\Data\DataProvider;
-use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer;
 use IdentificationBundle\Identification\Common\PostPaidHandler;

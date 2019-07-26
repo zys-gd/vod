@@ -2,11 +2,11 @@
 
 namespace IdentificationBundle\Identification\Service;
 
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use ExtrasBundle\Utils\UuidGenerator;
-use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\DTO\DeviceData;
-use SubscriptionBundle\Service\Notification\Common\ShortUrlHashGenerator;
+use SubscriptionBundle\Subscription\Notification\Common\ShortUrlHashGenerator;
 
 /**
  * Class UserFactory

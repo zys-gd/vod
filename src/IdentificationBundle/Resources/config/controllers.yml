@@ -41,12 +41,13 @@ services:
         - '@IdentificationBundle\WifiIdentification\WifiIdentSMSSender'
         - '@IdentificationBundle\WifiIdentification\WifiIdentConfirmator'
         - '@IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeResolver'
-        - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
+        - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter'
         - '%default_redirect_url%'
         - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
-        - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier'
-        - '@SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter'
-        - '@SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator'
+        - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitNotifier'
+        - '@SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter'
+        - '@SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator'
+        - '@IdentificationBundle\WifiIdentification\WifiPhoneOptionsProvider'
 
     IdentificationBundle\Identification\Controller\AsyncIdentController:
       arguments:

@@ -2,8 +2,4 @@ services:
   subscription.captool.redis_client:
     class: Predis\Client
     factory: ['@app.cache.redis_connection_provider','create']
-    arguments:
-      - '2'
-      -
-        persistent: 1
-
+    arguments: ['2']

@@ -3,16 +3,16 @@
 namespace DoctrineMigrations;
 
 use App\Domain\Entity\Carrier;
-use Doctrine\ORM\AbstractQuery;
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Migrations\AbortMigrationException;
 use Doctrine\DBAL\Schema\Schema;
-use \Doctrine\DBAL\DBALException;
-use Doctrine\ORM\Query\Expr\Join;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Migrations\AbstractMigration;
+use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\Expr\Join;
 use SubscriptionBundle\Entity\SubscriptionPack;
-use \Doctrine\DBAL\Migrations\AbortMigrationException;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  * Auto-generated Migration: Please modify to your needs!

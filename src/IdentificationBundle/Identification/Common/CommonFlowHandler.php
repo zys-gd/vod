@@ -9,10 +9,10 @@
 namespace IdentificationBundle\Identification\Common;
 
 
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\BillingFramework\Process\IdentProcess;
-use IdentificationBundle\Entity\CarrierInterface;
-use IdentificationBundle\Identification\Common\Pixel\PixelIdentStarter;
 use IdentificationBundle\Identification\Common\Async\AsyncIdentStarter;
+use IdentificationBundle\Identification\Common\Pixel\PixelIdentStarter;
 use IdentificationBundle\Identification\Handler\HasCommonFlow;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Identification\Service\RouteProvider;

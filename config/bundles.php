@@ -36,4 +36,5 @@ return [
     DataDog\AuditBundle\DataDogAuditBundle::class => ['all' => true],
     DataDog\PagerBundle\DataDogPagerBundle::class => ['all' => true],
     Playwing\CrossSubscriptionAPIBundle\CrossSubscriptionAPIBundle::class => ['all' => true],
+    \CommonDataBundle\CommonDataBundle::class => ['all' => true],
 ];

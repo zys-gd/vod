@@ -2,7 +2,6 @@
 
 
 use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
-use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Exception\MissingIdentificationDataException;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinVerifyRules;
@@ -85,7 +84,7 @@ class WifiIdentConfirmatorTest extends TestCase
     public function testExceptionThrownWhenNoPreviousPinRequest()
     {
         $this->carrierRepository->allows([
-            'findOneByBillingId' => Mockery::spy(\IdentificationBundle\Entity\CarrierInterface::class)
+            'findOneByBillingId' => Mockery::spy(\CommonDataBundle\Entity\Interfaces\CarrierInterface::class)
         ]);
         $this->handlerProvider->allows([
             'get' => $this->identificationHandler
@@ -118,7 +117,7 @@ class WifiIdentConfirmatorTest extends TestCase
             'readPreviousOperationResult' => $pinRequest
         ]);
         $this->carrierRepository->allows([
-            'findOneByBillingId' => Mockery::spy(\IdentificationBundle\Entity\CarrierInterface::class)
+            'findOneByBillingId' => Mockery::spy(\CommonDataBundle\Entity\Interfaces\CarrierInterface::class)
         ]);
         $this->handlerProvider->allows([
             'get' => Mockery::spy(WifiIdentificationHandlerInterface::class)
@@ -140,7 +139,7 @@ class WifiIdentConfirmatorTest extends TestCase
         $pinRequest = new PinRequestResult('123456789', true, []);
         $this->dataStorage->storeOperationResult('pinRequest', $pinRequest);
         $this->carrierRepository->allows([
-            'findOneByBillingId' => Mockery::spy(\IdentificationBundle\Entity\CarrierInterface::class)
+            'findOneByBillingId' => Mockery::spy(\CommonDataBundle\Entity\Interfaces\CarrierInterface::class)
         ]);
         $handler = Mockery::spy(WifiIdentificationHandlerInterface::class, HasCustomPinVerifyRules::class);
         $this->handlerProvider->allows([

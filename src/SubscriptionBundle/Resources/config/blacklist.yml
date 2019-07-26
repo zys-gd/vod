@@ -1,0 +1,24 @@
+services:
+
+  SubscriptionBundle\Blacklist\BlacklistSaver:
+    arguments:
+      - '@IdentificationBundle\Repository\UserRepository'
+      - '@doctrine.orm.entity_manager'
+      - '@SubscriptionBundle\Repository\SubscriptionRepository'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber'
+      -
+  SubscriptionBundle\Blacklist\BlacklistChecker:
+    arguments:
+      - '@IdentificationBundle\Repository\UserRepository'
+      - '@SubscriptionBundle\Repository\BlackListRepository'
+      - '@logger'
+
+  SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator:
+    arguments:
+      - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+      - '@app.cache.default.subscription'
+      - '@SubscriptionBundle\Blacklist\BlacklistSaver'
+      - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+      - '@IdentificationBundle\Repository\UserRepository'
+      - '@logger'

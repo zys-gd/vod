@@ -4,8 +4,8 @@
 namespace App\Domain\Service;
 
 
-use App\Domain\Constants\ConstBillingCarrierId;
 use App\Domain\Repository\CarrierRepository;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -26,7 +26,7 @@ class CarrierOTPVerifier
      * @var array
      */
     private $otpCarriers = [
-        ConstBillingCarrierId::MOBILINK_PAKISTAN
+        ID::MOBILINK_PAKISTAN
     ];
 
     /**

@@ -2,10 +2,10 @@
 
 namespace DataFixtures;
 
-use LegacyBundle\Entity\ExchangeRate;
 use DataFixtures\Utils\FixtureDataLoader;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use LegacyBundle\Entity\ExchangeRate;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 

@@ -1,27 +1,27 @@
 services:
-  SubscriptionBundle\Service\Action\Renew\Renewer:
+  SubscriptionBundle\Subscription\Renew\Renewer:
       arguments:
         - '@logger'
         - '@event_dispatcher'
         - '@SubscriptionBundle\Service\EntitySaveHelper'
         - '@SubscriptionBundle\BillingFramework\Process\RenewProcess'
-        - '@SubscriptionBundle\Service\Action\Renew\OnRenewUpdater'
-        - '@SubscriptionBundle\Service\Action\Renew\RenewParametersProvider'
+        - '@SubscriptionBundle\Subscription\Renew\OnRenewUpdater'
+        - '@SubscriptionBundle\Subscription\Renew\RenewParametersProvider'
 
-  SubscriptionBundle\Service\Action\Renew\OnRenewUpdater:
+  SubscriptionBundle\Subscription\Renew\OnRenewUpdater:
       arguments:
-        - '@SubscriptionBundle\Service\RenewDateCalculator'
-        - '@SubscriptionBundle\Service\SubscriptionExtractor'
-        - '@SubscriptionBundle\Service\CreditsCalculator'
+        - '@SubscriptionBundle\Subscription\Renew\Service\RenewDateCalculator'
+        - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
+        - '@SubscriptionBundle\Subscription\Subscribe\Service\CreditsCalculator'
         - '@event_dispatcher'
-        - '@SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater'
+        - '@SubscriptionBundle\Subscription\Common\CommonSubscriptionUpdater'
 
-  SubscriptionBundle\Service\Action\Renew\RenewParametersProvider:
-      arguments: ['@SubscriptionBundle\Service\Action\Common\RequestParametersProvider', '%host%', '@router']
+  SubscriptionBundle\Subscription\Renew\RenewParametersProvider:
+      arguments: ['@SubscriptionBundle\Subscription\Common\RequestParametersProvider', '@SubscriptionBundle\Subscription\Common\RouteProvider']
 
-  SubscriptionBundle\Service\Action\Renew\Handler\RenewHandlerProvider:
-      arguments: ['@SubscriptionBundle\Service\Action\Renew\Handler\DefaultHandler']
+  SubscriptionBundle\Subscription\Renew\Handler\RenewHandlerProvider:
+      arguments: ['@SubscriptionBundle\Subscription\Renew\Handler\DefaultHandler']
 
-  SubscriptionBundle\Service\Action\Renew\Handler\DefaultHandler: ~
+  SubscriptionBundle\Subscription\Renew\Handler\DefaultHandler: ~
 
-  SubscriptionBundle\Service\Action\Renew\Common\RenewAlertTypeProvider: ~
+  SubscriptionBundle\Subscription\Renew\Common\RenewAlertTypeProvider: ~

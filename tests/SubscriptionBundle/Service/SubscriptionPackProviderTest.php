@@ -13,9 +13,9 @@ use ExtrasBundle\Utils\UuidGenerator;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use SubscriptionBundle\Entity\SubscriptionPack;
-use SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound;
+use SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound;
 use SubscriptionBundle\Repository\SubscriptionPackRepository;
-use SubscriptionBundle\Service\SubscriptionPackProvider;
+use SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider;
 use IdentificationBundle\Entity\User;
 
 class SubscriptionPackProviderTest extends TestCase

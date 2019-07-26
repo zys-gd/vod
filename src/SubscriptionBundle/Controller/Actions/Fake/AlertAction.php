@@ -9,7 +9,7 @@
 namespace SubscriptionBundle\Controller\Actions\Fake;
 
 
-use SubscriptionBundle\Command\IncomingRenewNotificationCommand;
+use SubscriptionBundle\Subscription\Renew\Command\IncomingRenewNotificationCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 class AlertAction
 {
     /**
-     * @var IncomingRenewNotificationCommand
+     * @var \SubscriptionBundle\Subscription\Renew\Command\IncomingRenewNotificationCommand
      */
     private $notificationCommand;
     /**

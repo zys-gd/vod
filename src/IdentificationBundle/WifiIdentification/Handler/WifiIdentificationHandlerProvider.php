@@ -9,7 +9,7 @@
 namespace IdentificationBundle\WifiIdentification\Handler;
 
 
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 
 class WifiIdentificationHandlerProvider
 {

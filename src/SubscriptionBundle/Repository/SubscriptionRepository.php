@@ -2,12 +2,10 @@
 
 namespace SubscriptionBundle\Repository;
 
-use App\Domain\Entity\Carrier;
-use Carbon\Carbon;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use DateTime;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
-use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Exception\SubscriptionException;

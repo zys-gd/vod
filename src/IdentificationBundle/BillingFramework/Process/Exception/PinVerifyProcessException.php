@@ -10,7 +10,6 @@ namespace IdentificationBundle\BillingFramework\Process\Exception;
 
 
 use SubscriptionBundle\BillingFramework\Process\Exception\AbstractProcessException;
-use Throwable;
 
 class PinVerifyProcessException extends AbstractProcessException
 {

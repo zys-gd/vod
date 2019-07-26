@@ -4,8 +4,8 @@ namespace SubscriptionBundle\Admin\Controller;
 
 use ExtrasBundle\Utils\UuidGenerator;
 use IdentificationBundle\Entity\User;
-use SubscriptionBundle\Admin\Form\RefundForm;
 use Sonata\AdminBundle\Controller\CRUDController;
+use SubscriptionBundle\Admin\Form\RefundForm;
 use SubscriptionBundle\Entity\Refund;
 use SubscriptionBundle\Service\RefundService;
 use Symfony\Component\Form\FormFactory;

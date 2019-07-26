@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Service\EntitySaveHelper;
-use SubscriptionBundle\Service\SubscriptionCreator;
+use SubscriptionBundle\Subscription\Common\SubscriptionFactory;
 use IdentificationBundle\Entity\User;
 
 class SubscriptionCreatorTest extends TestCase
@@ -36,8 +36,8 @@ class SubscriptionCreatorTest extends TestCase
 
     public function testCreateAndSave()
     {
-        /** @var Mockery\Mock|SubscriptionCreator $creator */
-        $creator = Mockery::mock(SubscriptionCreator::class, [$this->entitySaveHelper])->makePartial();
+        /** @var Mockery\Mock|SubscriptionFactory $creator */
+        $creator = Mockery::mock(SubscriptionFactory::class, [$this->entitySaveHelper])->makePartial();
 
         $subscription = $creator->createAndSave(new User(UuidGenerator::generate()), new SubscriptionPack(UuidGenerator::generate()));
 
@@ -50,7 +50,7 @@ class SubscriptionCreatorTest extends TestCase
     public function testCreate()
     {
 
-        $creator      = new SubscriptionCreator($this->entitySaveHelper);
+        $creator      = new SubscriptionFactory($this->entitySaveHelper);
         $pack         = new SubscriptionPack(UuidGenerator::generate());
         $user         = new User(UuidGenerator::generate());
         $subscription = $creator->create($user, $pack, 'affiliate');

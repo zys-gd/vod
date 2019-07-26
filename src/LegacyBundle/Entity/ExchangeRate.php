@@ -2,7 +2,7 @@
 
 namespace LegacyBundle\Entity;
 
-use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
+use CommonDataBundle\Entity\Interfaces\HasUuid;
 
 /**
  * Class ExchangeRate

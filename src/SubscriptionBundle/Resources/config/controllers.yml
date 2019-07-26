@@ -4,89 +4,77 @@ services:
         tags: ['controller.service_arguments']
 
 
-    SubscriptionBundle\Controller\Actions\SubscribeAction:
+    SubscriptionBundle\Subscription\Subscribe\Controller\SubscribeAction:
         arguments:
-            - '@SubscriptionBundle\Service\UserExtractor'
-            - '@SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler'
-            - '@router.default'
-            - '@logger'
-            - '@ExtrasBundle\Utils\UrlParamAppender'
-            - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
-            - '@SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\UserExtractor'
+            - '@SubscriptionBundle\Subscription\Subscribe\Common\CommonFlowHandler'
+            - '@SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider'
+            - '@SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter'
             - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
-            - '%default_redirect_url%'
             - '@IdentificationBundle\Identification\Common\PostPaidHandler'
-            - '@SubscriptionBundle\Service\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider'
-            - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
-            - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier'
-            - '@SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator'
-            - '@SubscriptionBundle\Service\SubscriptionVoter\BatchSubscriptionVoter'
+            - '@SubscriptionBundle\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider'
+            - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter'
+            - '@SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator'
+            - '@SubscriptionBundle\Subscription\Subscribe\Voter\BatchSubscriptionVoter'
+            - '@IdentificationBundle\Identification\Service\RouteProvider'
+            - '@SubscriptionBundle\Subscription\Common\RouteProvider'
 
-    SubscriptionBundle\Controller\Actions\ListenAction:
-        arguments: ['@SubscriptionBundle\Service\Callback\Common\CommonFlowHandler', '@logger', '@SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider']
+    SubscriptionBundle\Subscription\Callback\Controller\ListenAction:
+        arguments: ['@SubscriptionBundle\Subscription\Callback\Common\CommonFlowHandler', '@logger', '@SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerProvider']
 
-    #SubscriptionBundle\Controller\Actions\SubscribeBackAction:
-    #    arguments: ['@SubscriptionBundle\Service\Action\SubscribeBack\SubscribeBackHandlerProvider', '@router']
+    #SubscriptionBundle\Subscription\SubscribeBack\Controller\SubscribeBackAction:
+    #    arguments: ['@SubscriptionBundle\Subscription\SubscribeBack\SubscribeBackHandlerProvider', '@router']
 
-    SubscriptionBundle\Controller\Actions\RedirectAction:
-        arguments: ['@SubscriptionBundle\Service\UserExtractor', '@monolog.logger', '@SubscriptionBundle\Service\SubscriptionExtractor']
 
-    SubscriptionBundle\Controller\Actions\UnsubscribeAction:
+    SubscriptionBundle\Subscription\Unsubscribe\Controller\UnsubscribeAction:
         arguments:
-            - '@SubscriptionBundle\Service\UserExtractor'
-            - '@SubscriptionBundle\Service\SubscriptionExtractor'
-            - '@SubscriptionBundle\Service\SubscriptionPackProvider'
-            - '@SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber'
-            - '@SubscriptionBundle\Service\Action\Unsubscribe\UnsubscriptionEligibilityChecker'
-            - '@SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
+            - '@IdentificationBundle\Identification\Service\UserExtractor'
+            - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
+            - '@SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider'
+            - '@SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber'
+            - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscriptionEligibilityChecker'
+            - '@SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
             - '@cross_subscription.api_connector'
 
-    SubscriptionBundle\Controller\Actions\WaitAction:
-        class: SubscriptionBundle\Controller\Actions\WaitAction
-        arguments: ['@SubscriptionBundle\Service\UserExtractor', '@SubscriptionBundle\Service\SubscriptionExtractor', '@router.default']
-
-    SubscriptionBundle\Controller\Actions\GetSubscriptionAction:
-        class: SubscriptionBundle\Controller\Actions\GetSubscriptionAction
-        arguments: ['@SubscriptionBundle\Service\UserExtractor', '@SubscriptionBundle\Service\SubscriptionExtractor']
 
     SubscriptionBundle\Controller\Actions\Fake\RenewAction:
         arguments:
-            - '@SubscriptionBundle\Command\MassRenewCommand'
+            - '@SubscriptionBundle\Subscription\MassRenew\Command\MassRenewCommand'
             - '@twig'
 
     SubscriptionBundle\Controller\Actions\Fake\AlertAction:
         arguments:
-            - '@SubscriptionBundle\Command\IncomingRenewNotificationCommand'
+            - '@SubscriptionBundle\Subscription\Renew\Command\IncomingRenewNotificationCommand'
             - '@twig'
 
     SubscriptionBundle\Controller\Actions\Fake\SubscribeAction:
         arguments:
-            - '@SubscriptionBundle\Service\UserExtractor'
+            - '@IdentificationBundle\Identification\Service\UserExtractor'
             - '@router.default'
             - '@logger'
-            - '@SubscriptionBundle\Service\SubscriptionExtractor'
-            - '@SubscriptionBundle\Service\SubscriptionPackProvider'
+            - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
+            - '@SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider'
             - '@SubscriptionBundle\Service\EntitySaveHelper'
+            - '@IdentificationBundle\Identification\Service\RouteProvider'
 
     SubscriptionBundle\Controller\Actions\Fake\UnsubscribeAction:
         arguments:
-            - '@SubscriptionBundle\Service\UserExtractor'
-            - '@SubscriptionBundle\Service\SubscriptionExtractor'
-            - '@SubscriptionBundle\Service\Action\Unsubscribe\UnsubscriptionEligibilityChecker'
+            - '@IdentificationBundle\Identification\Service\UserExtractor'
+            - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
+            - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscriptionEligibilityChecker'
             - '@SubscriptionBundle\Service\EntitySaveHelper'
 
-    SubscriptionBundle\Controller\Actions\ConsentPageSubscribeAction:
+    SubscriptionBundle\Subscription\Subscribe\Controller\ConsentPageSubscribeAction:
         arguments:
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
             - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
-            - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
-            - '@SubscriptionBundle\Service\UserExtractor'
-            - '@SubscriptionBundle\Service\Action\Subscribe\Consent\ConsentFlowHandler'
+            - '@SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider'
+            - '@IdentificationBundle\Identification\Service\UserExtractor'
+            - '@SubscriptionBundle\Subscription\Subscribe\Consent\ConsentFlowHandler'
             - '@router'
-            - '@SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter'
-            - '@SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator'
+            - '@SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter'
+            - '@SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator'
 
     SubscriptionBundle\Admin\Controller\SubscriptionPackAdminController:
         calls: [['setContainer', ['@service_container']]]
@@ -97,8 +85,8 @@ services:
     SubscriptionBundle\Admin\Controller\UnsubscriptionAdminController:
         arguments:
             - '@form.factory'
-            - '@SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber'
-            - '@SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
+            - '@SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber'
+            - '@SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
 
     SubscriptionBundle\Admin\Controller\ComplaintsAdminController:
         arguments:
@@ -107,12 +95,12 @@ services:
 
     SubscriptionBundle\Controller\SubnotifController:
         arguments:
-            - '@SubscriptionBundle\Service\Notification\Notifier'
+            - '@SubscriptionBundle\Subscription\Notification\Notifier'
             - '@App\Domain\Repository\CarrierRepository'
             - '@IdentificationBundle\Repository\UserRepository'
             - '@session'
             - '@ExtrasBundle\Utils\LocalExtractor'
-            - '@SubscriptionBundle\Service\SubscriptionPackProvider'
+            - '@SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider'
             - '@App\Domain\Service\Translator\Translator'
             - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
             - '@router'

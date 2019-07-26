@@ -2,12 +2,12 @@
 
 namespace App\Domain\Entity;
 
-use Doctrine\ORM\PersistentCollection;
-use phpDocumentor\Reflection\Types\Boolean;
+use CommonDataBundle\Entity\Interfaces\HasUuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\PersistentCollection;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\HttpFoundation\File\File;
-use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 
 class Game implements HasUuid
 {

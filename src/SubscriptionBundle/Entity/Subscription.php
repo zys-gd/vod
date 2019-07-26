@@ -2,8 +2,8 @@
 
 namespace SubscriptionBundle\Entity;
 
+use CommonDataBundle\Entity\Interfaces\HasUuid;
 use IdentificationBundle\Entity\User;
-use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 
 class Subscription implements HasUuid
 {

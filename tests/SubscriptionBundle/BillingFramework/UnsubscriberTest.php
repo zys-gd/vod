@@ -15,12 +15,12 @@ use SubscriptionBundle\BillingFramework\Process\UnsubscribeProcess;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
-use SubscriptionBundle\Service\Action\Common\FakeResponseProvider;
-use SubscriptionBundle\Service\Action\Unsubscribe\OnUnsubscribeUpdater;
-use SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber;
+use SubscriptionBundle\Subscription\Common\FakeResponseProvider;
+use SubscriptionBundle\Subscription\Unsubscribe\OnUnsubscribeUpdater;
+use SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber;
 use SubscriptionBundle\Service\CarrierTrackingTypeChecker;
 use SubscriptionBundle\Service\EntitySaveHelper;
-use SubscriptionBundle\Service\Notification\Notifier;
+use SubscriptionBundle\Subscription\Notification\Notifier;
 
 class UnsubscriberTest extends TestCase
 {
@@ -113,7 +113,7 @@ class UnsubscriberTest extends TestCase
             $this->unsubscribeProcess,
             Mockery::spy(OnUnsubscribeUpdater::class),
             $this->piwikSender,
-            Mockery::spy(\SubscriptionBundle\Service\Action\Unsubscribe\UnsubscribeParametersProvider::class),
+            Mockery::spy(\SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeParametersProvider::class),
             Mockery::spy(\Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector::class)
         );
 

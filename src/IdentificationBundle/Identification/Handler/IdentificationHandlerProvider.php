@@ -9,7 +9,7 @@
 namespace IdentificationBundle\Identification\Handler;
 
 
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow;
 
 class IdentificationHandlerProvider

@@ -11,7 +11,7 @@ namespace SubscriptionBundle\Admin\Twig;
 
 use SubscriptionBundle\Admin\Service\ConstraintByAffiliateCapCalculator;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
-use SubscriptionBundle\Service\CAPTool\Limiter\LimiterStorage;
+use SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterStorage;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 

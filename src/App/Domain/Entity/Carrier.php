@@ -2,9 +2,10 @@
 
 namespace App\Domain\Entity;
 
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\HasUuid;
+use CommonDataBundle\Entity\Language;
 use Doctrine\Common\Collections\ArrayCollection;
-use IdentificationBundle\Entity\CarrierInterface;
-use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 
 /**
@@ -132,7 +133,7 @@ class Carrier implements CarrierInterface, HasUuid
     private $isCapAlertDispatch  = false;
 
     /**
-     * @var \App\Domain\Entity\Language
+     * @var \CommonDataBundle\Entity\Language
      */
     private $defaultLanguage;
 

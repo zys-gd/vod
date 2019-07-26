@@ -9,15 +9,15 @@
 namespace SubscriptionBundle\Carriers\TelenorPK\Renew;
 
 
-use App\Domain\Constants\ConstBillingCarrierId;
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use IdentificationBundle\BillingFramework\ID;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Service\Action\Renew\Common\RenewAlertTypeProvider;
-use SubscriptionBundle\Service\Action\Renew\Handler\HasCommonFlow;
-use SubscriptionBundle\Service\Action\Renew\Handler\HasRenewAlerts;
-use SubscriptionBundle\Service\Action\Renew\Handler\RenewHandlerInterface;
-use SubscriptionBundle\Service\Notification\Notifier;
-use SubscriptionBundle\Service\SubscriptionPackProvider;
+use SubscriptionBundle\Subscription\Renew\Common\RenewAlertTypeProvider;
+use SubscriptionBundle\Subscription\Renew\Handler\HasCommonFlow;
+use SubscriptionBundle\Subscription\Renew\Handler\HasRenewAlerts;
+use SubscriptionBundle\Subscription\Renew\Handler\RenewHandlerInterface;
+use SubscriptionBundle\Subscription\Notification\Notifier;
+use SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider;
 
 class TelenorPKRenewHandler implements
     RenewHandlerInterface,
@@ -40,9 +40,9 @@ class TelenorPKRenewHandler implements
 
     /**
      * TelenorPKRenewHandler constructor.
-     * @param Notifier                 $notifier
-     * @param SubscriptionPackProvider $provider
-     * @param RenewAlertTypeProvider   $typeProvider
+     * @param Notifier                                                      $notifier
+     * @param \SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider $provider
+     * @param RenewAlertTypeProvider                                        $typeProvider
      */
     public function __construct(Notifier $notifier, SubscriptionPackProvider $provider, RenewAlertTypeProvider $typeProvider)
     {
@@ -53,7 +53,7 @@ class TelenorPKRenewHandler implements
 
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::TELENOR_PAKISTAN_DOT;
+        return $carrier->getBillingCarrierId() === ID::TELENOR_PAKISTAN_DOT;
     }
 
     public function onRenewSendSuccess(Subscription $subscription, int $processId): void

@@ -6,12 +6,12 @@
  * Time: 11:04
  */
 
-namespace SubscriptionBundle\Service\Action\SubscribeBack;
+namespace SubscriptionBundle\Subscription\SubscribeBack;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
-use SubscriptionBundle\Service\Action\SubscribeBack\AbstractSubscribeBackHandler;
-use SubscriptionBundle\Service\Action\SubscribeBack\SubscribeBackHandlerProvider;
+use SubscriptionBundle\Subscription\SubscribeBack\AbstractSubscribeBackHandler;
+use SubscriptionBundle\Subscription\SubscribeBack\SubscribeBackHandlerProvider;
 
 class ChainHandlerTest extends TestCase
 {

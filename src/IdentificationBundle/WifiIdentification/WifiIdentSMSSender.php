@@ -2,11 +2,12 @@
 
 namespace IdentificationBundle\WifiIdentification;
 
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\BillingFramework\Process\PinRequestProcess;
 use IdentificationBundle\BillingFramework\Process\PinResendProcess;
-use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Exception\AlreadyIdentifiedException;
+use IdentificationBundle\Identification\Exception\FailedIdentificationException;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Repository\UserRepository;
@@ -91,7 +92,8 @@ class WifiIdentSMSSender
         IdentificationDataStorage $dataStorage,
         UserRepository $userRepository,
         PinResendProcess $pinResendProcess
-    ) {
+    )
+    {
         $this->handlerProvider   = $handlerProvider;
         $this->carrierRepository = $carrierRepository;
         $this->pinRequestProcess = $pinRequestProcess;
@@ -105,9 +107,9 @@ class WifiIdentSMSSender
     }
 
     /**
-     * @param int $carrierId
+     * @param int    $carrierId
      * @param string $mobileNumber
-     * @param bool $isResend
+     * @param bool   $isResend
      *
      * @throws BillingFrameworkException
      */
@@ -122,6 +124,16 @@ class WifiIdentSMSSender
 
         if (!$handler instanceof HasConsentPageFlow && $handler->getExistingUser($mobileNumber)) {
             throw new AlreadyIdentifiedException('User is already identified');
+        }
+
+        $validationOptions = $handler->getPhoneValidationOptions();
+        if ($phoneRegexPattern = $validationOptions->getPhoneRegexPattern()) {
+            $isPinCodeValid = preg_match("/$phoneRegexPattern/", $mobileNumber);
+            if (!$isPinCodeValid) {
+                throw new FailedIdentificationException(
+                    sprintf('Mobile number should be in a `%s` format', $validationOptions->getPhonePlaceholder())
+                );
+            }
         }
 
         $pinCode = '000000';
@@ -172,14 +184,14 @@ class WifiIdentSMSSender
 
     /**
      * @param HasCustomPinResendRules $handler
-     * @param CarrierInterface $carrier
-     * @param string $body
+     * @param CarrierInterface        $carrier
+     * @param string                  $body
      *
      * @throws BillingFrameworkException
      */
     public function resendSMS(HasCustomPinResendRules $handler, CarrierInterface $carrier, string $body)
     {
-        $pinRequestResult = $this->dataStorage->readPreviousOperationResult('pinRequest');
+        $pinRequestResult     = $this->dataStorage->readPreviousOperationResult('pinRequest');
         $additionalParameters = $handler->getAdditionalPinResendParameters($pinRequestResult);
 
         $parameters = $this->requestProvider->getPinResendParameters(

@@ -9,11 +9,11 @@
 namespace SubscriptionBundle\Carriers\JazzPK\Notification;
 
 
-use App\Domain\Constants\ConstBillingCarrierId;
-use IdentificationBundle\Entity\CarrierInterface;
-use IdentificationBundle\Entity\LanguageInterface;
-use IdentificationBundle\Repository\LanguageRepositoryInterface;
-use SubscriptionBundle\Service\Notification\Impl\NotificationHandlerInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\LanguageInterface;
+use CommonDataBundle\Repository\Interfaces\LanguageRepositoryInterface;
+use IdentificationBundle\BillingFramework\ID;
+use SubscriptionBundle\Subscription\Notification\Impl\NotificationHandlerInterface;
 
 class JazzPKNotificationHandler implements NotificationHandlerInterface
 {
@@ -26,7 +26,7 @@ class JazzPKNotificationHandler implements NotificationHandlerInterface
 
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::MOBILINK_PAKISTAN;
+        return $carrier->getBillingCarrierId() === ID::MOBILINK_PAKISTAN;
     }
 
     public function isNotificationShouldBeSent(): bool

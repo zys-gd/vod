@@ -74,7 +74,7 @@ class WifiIdentSMSSenderTest extends TestCase
     public function testExceptionThrownWhenUserExists()
     {
         $this->carrierRepository->allows([
-            'findOneByBillingId' => Mockery::spy(\IdentificationBundle\Entity\CarrierInterface::class)
+            'findOneByBillingId' => Mockery::spy(\CommonDataBundle\Entity\Interfaces\CarrierInterface::class)
         ]);
         $this->handlerProvider->allows([
             'get' => $this->identificationHandler
@@ -91,7 +91,7 @@ class WifiIdentSMSSenderTest extends TestCase
     public function testPinRequestIsSend()
     {
         $this->carrierRepository->allows([
-            'findOneByBillingId' => Mockery::spy(\IdentificationBundle\Entity\CarrierInterface::class)
+            'findOneByBillingId' => Mockery::spy(\CommonDataBundle\Entity\Interfaces\CarrierInterface::class)
         ]);
         $wifiIdentificationHandler = Mockery::spy(
             WifiIdentificationHandlerInterface::class,

@@ -65,15 +65,15 @@ services:
             - ~
             - App\Domain\Entity\Carrier
             - ~
-            - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
-            - '@SubscriptionBundle\Service\CAPTool\Limiter\LimiterStorage'
-            - '@SubscriptionBundle\Service\CAPTool\Limiter\StorageKeyGenerator'
+            - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter'
+            - '@SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterStorage'
+            - '@SubscriptionBundle\CAPTool\Subscription\Limiter\StorageKeyGenerator'
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: sonata.admin, manager_type: orm, group: carrier_management, label: Carriers }
 
     App\Admin\Sonata\LanguagesAdmin:
-        arguments: [~, App\Domain\Entity\Language, ~]
+        arguments: [~, CommonDataBundle\Entity\Language, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, group: store_text, label: Languages }
 

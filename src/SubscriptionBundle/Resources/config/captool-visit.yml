@@ -1,20 +1,27 @@
 services:
-  SubscriptionBundle\Service\VisitCAPTool\VisitStorage:
-    arguments: ['@subscription.captool.redis_client', '@SubscriptionBundle\Service\VisitCAPTool\ConstraintValidityChecker']
+  SubscriptionBundle\CAPTool\Visit\VisitStorage:
+    arguments: ['@subscription.captool.redis_client', '@SubscriptionBundle\CAPTool\Visit\ConstraintValidityChecker']
 
-  SubscriptionBundle\Service\VisitCAPTool\ConstraintValidityChecker: ~
+  SubscriptionBundle\CAPTool\Visit\ConstraintValidityChecker: ~
 
-  SubscriptionBundle\Service\VisitCAPTool\VisitChecker:
-    arguments: ['@SubscriptionBundle\Service\VisitCAPTool\VisitStorage', '@SubscriptionBundle\Service\VisitCAPTool\KeyGenerator']
+  SubscriptionBundle\CAPTool\Visit\VisitChecker:
+    arguments: ['@SubscriptionBundle\CAPTool\Visit\VisitStorage', '@SubscriptionBundle\CAPTool\Visit\KeyGenerator']
 
-  SubscriptionBundle\Service\VisitCAPTool\VisitTracker:
+  SubscriptionBundle\CAPTool\Visit\VisitTracker:
     arguments:
-      - '@SubscriptionBundle\Service\VisitCAPTool\ConstraintValidityChecker'
-      - '@SubscriptionBundle\Service\VisitCAPTool\VisitStorage'
-      - '@SubscriptionBundle\Service\VisitCAPTool\KeyGenerator'
+      - '@SubscriptionBundle\CAPTool\Visit\ConstraintValidityChecker'
+      - '@SubscriptionBundle\CAPTool\Visit\VisitStorage'
+      - '@SubscriptionBundle\CAPTool\Visit\KeyGenerator'
       - '@logger'
 
-  SubscriptionBundle\Service\VisitCAPTool\VisitNotifier:
-    arguments: ['@SubscriptionBundle\Service\VisitCAPTool\ConstraintValidityChecker', '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender', '@SubscriptionBundle\Service\EntitySaveHelper']
+  SubscriptionBundle\CAPTool\Visit\VisitNotifier:
+    arguments: ['@SubscriptionBundle\CAPTool\Visit\ConstraintValidityChecker', '@SubscriptionBundle\CAPTool\Subscription\Notificaton\CAPNotificationSender', '@SubscriptionBundle\Service\EntitySaveHelper']
 
-  SubscriptionBundle\Service\VisitCAPTool\KeyGenerator: ~
+  SubscriptionBundle\CAPTool\Visit\KeyGenerator: ~
+
+
+  SubscriptionBundle\CAPTool\Visit\Command\ResetVisitConstraints:
+    arguments:
+      - '@SubscriptionBundle\CAPTool\Visit\VisitStorage'
+    tags:
+      - { name: console.command }

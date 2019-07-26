@@ -6,6 +6,7 @@ namespace IdentificationBundle\Identification\Common;
 
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use Psr\Log\LoggerInterface;
+use SubscriptionBundle\BillingFramework\BillingOptionsProvider;
 use SubscriptionBundle\BillingFramework\Process\API\Client;
 use SubscriptionBundle\BillingFramework\Process\API\LinkCreator;
 
@@ -28,16 +29,24 @@ class PostPaidHandler
      * @var IdentificationDataStorage
      */
     private $identificationDataStorage;
+    /**
+     * @var BillingOptionsProvider
+     */
+    private $billingOptionsProvider;
 
-    public function __construct(LoggerInterface $logger,
+    public function __construct(
+        LoggerInterface $logger,
         Client $client,
         LinkCreator $linkCreator,
-        IdentificationDataStorage $identificationDataStorage)
+        IdentificationDataStorage $identificationDataStorage,
+        BillingOptionsProvider $billingOptionsProvider
+    )
     {
-        $this->logger = $logger;
-        $this->client = $client;
-        $this->linkCreator = $linkCreator;
+        $this->logger                    = $logger;
+        $this->client                    = $client;
+        $this->linkCreator               = $linkCreator;
         $this->identificationDataStorage = $identificationDataStorage;
+        $this->billingOptionsProvider    = $billingOptionsProvider;
     }
 
     /**
@@ -53,14 +62,14 @@ class PostPaidHandler
 
         $preparedParams = [
             'msisdn'     => $msisdn,
-            'client'     => 'vod-store',
+            'client'     => $this->billingOptionsProvider->getClientId(),
             'auth_token' => base64_encode('snooker_in_colombo_investigating_aircrash')
         ];
 
         $link = $this->linkCreator->createCustomLink(sprintf('public/special/%s/postpaidcheck', $billingCarrierId));
         try {
             $response = $this->client->makePostRequest($link, $preparedParams);
-            $data = (array)$response->data;
+            $data     = (array)$response->data;
             $this->identificationDataStorage->storeValue('isPostPaidRestricted', $data['accountTypeId'] ?? false);
         } catch (\Throwable $e) {
             $this->logger->debug('Postpaid error', [

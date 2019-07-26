@@ -2,7 +2,7 @@
 
 namespace App\Domain\Entity;
 
-use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
+use CommonDataBundle\Entity\Interfaces\HasUuid;
 
 class Translation implements HasUuid
 {

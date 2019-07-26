@@ -269,7 +269,7 @@ SubscriptionBundle\Entity\SubscriptionPack:
             orderBy: null
     manyToOne:
         country:
-            targetEntity: App\Domain\Entity\Country
+            targetEntity: CommonDataBundle\Entity\Country
             cascade: {  }
             fetch: LAZY
             mappedBy: null

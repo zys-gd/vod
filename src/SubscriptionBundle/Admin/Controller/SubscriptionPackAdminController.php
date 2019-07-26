@@ -10,8 +10,8 @@ namespace SubscriptionBundle\Admin\Controller;
 
 
 use Sonata\AdminBundle\Controller\CRUDController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use SubscriptionBundle\Entity\SubscriptionPack;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class SubscriptionPackAdminController extends CRUDController
 {

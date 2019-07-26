@@ -7,7 +7,7 @@ use App\Domain\Repository\UploadedVideoRepository;
 use App\Domain\Service\Piwik\ContentStatisticSender;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use SubscriptionBundle\Service\SubscriptionExtractor;
+use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,9 +35,9 @@ class TrackEventController extends AbstractController
     /**
      * TrackEventController constructor
      *
-     * @param UploadedVideoRepository $uploadedVideoRepository
-     * @param ContentStatisticSender  $contentStatisticSender
-     * @param SubscriptionExtractor   $subscriptionExtractor
+     * @param UploadedVideoRepository                                       $uploadedVideoRepository
+     * @param ContentStatisticSender                                        $contentStatisticSender
+     * @param \SubscriptionBundle\Subscription\Common\SubscriptionExtractor $subscriptionExtractor
      */
     public function __construct(
         UploadedVideoRepository $uploadedVideoRepository,

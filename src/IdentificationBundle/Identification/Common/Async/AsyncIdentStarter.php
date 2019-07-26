@@ -12,7 +12,6 @@ namespace IdentificationBundle\Identification\Common\Async;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
 
 class AsyncIdentStarter
 {

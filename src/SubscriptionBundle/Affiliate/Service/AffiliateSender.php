@@ -8,15 +8,15 @@
 
 namespace SubscriptionBundle\Affiliate\Service;
 
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use IdentificationBundle\Entity\CarrierInterface;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\DTO\UserInfo;
 use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 use SubscriptionBundle\Entity\Affiliate\AffiliateLog;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Exception\WrongIncomingParameters;
+use SubscriptionBundle\Affiliate\Exception\WrongIncomingParameters;
 use SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface;
 
 class AffiliateSender

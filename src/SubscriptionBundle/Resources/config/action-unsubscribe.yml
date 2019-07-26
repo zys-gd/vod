@@ -1,24 +1,24 @@
 services:
-  SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber:
+  SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber:
       arguments:
         - '@logger'
         - '@SubscriptionBundle\Service\EntitySaveHelper'
-        - '@SubscriptionBundle\Service\Action\Common\FakeResponseProvider'
-        - '@SubscriptionBundle\Service\Notification\Notifier'
+        - '@SubscriptionBundle\Subscription\Common\FakeResponseProvider'
+        - '@SubscriptionBundle\Subscription\Notification\Notifier'
         - '@SubscriptionBundle\BillingFramework\Process\UnsubscribeProcess'
-        - '@SubscriptionBundle\Service\Action\Unsubscribe\OnUnsubscribeUpdater'
+        - '@SubscriptionBundle\Subscription\Unsubscribe\OnUnsubscribeUpdater'
         - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
-        - '@SubscriptionBundle\Service\Action\Unsubscribe\UnsubscribeParametersProvider'
+        - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeParametersProvider'
         - '@cross_subscription.api_connector'
 
-  SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider:
-      arguments: ['@SubscriptionBundle\Service\Action\Unsubscribe\Handler\DefaultHandler']
+  SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider:
+      arguments: ['@SubscriptionBundle\Subscription\Unsubscribe\Handler\DefaultHandler']
 
-  SubscriptionBundle\Service\Action\Unsubscribe\Handler\DefaultHandler: ~
+  SubscriptionBundle\Subscription\Unsubscribe\Handler\DefaultHandler: ~
 
 
-  SubscriptionBundle\Service\Action\Unsubscribe\OnUnsubscribeUpdater:
-      arguments: ['@event_dispatcher', '@SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater']
+  SubscriptionBundle\Subscription\Unsubscribe\OnUnsubscribeUpdater:
+      arguments: ['@event_dispatcher', '@SubscriptionBundle\Subscription\Common\CommonSubscriptionUpdater']
 
-  SubscriptionBundle\Service\Action\Unsubscribe\UnsubscribeParametersProvider:
-      arguments: ['@SubscriptionBundle\Service\Action\Common\RequestParametersProvider']
+  SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeParametersProvider:
+      arguments: ['@SubscriptionBundle\Subscription\Common\RequestParametersProvider']

@@ -2,15 +2,15 @@
 
 namespace SubscriptionBundle\DataFixtures\ORM;
 
-use App\Domain\Entity\Carrier;
-use DataFixtures\LoadCountriesData;
+use CommonDataBundle\DataFixtures\LoadCountriesData;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Playwing\DiffToolBundle\Utils\FixtureDataLoader;
+use ExtrasBundle\Utils\FixtureDataLoader;
+use SubscriptionBundle\Entity\SubscriptionPack;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use SubscriptionBundle\Entity\SubscriptionPack;
 
 class LoadSubscriptionPackData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
 {
@@ -76,7 +76,7 @@ class LoadSubscriptionPackData extends AbstractFixture implements ContainerAware
             $pack->setName($name);
             $pack->setDescription($description);
 
-            /** @var Carrier $carrier */
+            /** @var CarrierInterface $carrier */
             $carrier = $this->getReference(sprintf('carrier_with_internal_id_%s', $carrier_id));
             $pack->setCarrier($carrier);
 

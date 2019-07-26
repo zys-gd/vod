@@ -2,7 +2,6 @@
 
 namespace SubscriptionBundle\Repository;
 
-use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use SubscriptionBundle\Entity\SubscriptionPack;
 

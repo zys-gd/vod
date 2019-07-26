@@ -4,7 +4,7 @@ namespace SubscriptionBundle\Entity\Game;
 
 
 use App\Domain\Entity\Game;
-use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
+use CommonDataBundle\Entity\Interfaces\HasUuid;
 use SubscriptionBundle\Entity\Subscription;
 
 class SubscribedGame implements HasUuid

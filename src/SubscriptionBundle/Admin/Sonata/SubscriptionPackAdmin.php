@@ -3,12 +3,11 @@
 namespace SubscriptionBundle\Admin\Sonata;
 
 use App\Domain\Entity\Carrier;
-use App\Domain\Entity\Country;
-use App\Domain\Repository\CountryRepository;
-use ExtrasBundle\Utils\UuidGenerator;
+use CommonDataBundle\Entity\Country;
+use CommonDataBundle\Repository\CountryRepository;
 use Doctrine\ORM\EntityManager;
+use ExtrasBundle\Utils\UuidGenerator;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
-use SubscriptionBundle\DTO\Strategy;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -17,7 +16,8 @@ use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
 use Sonata\AdminBundle\Route\RouteCollection;
 use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkException;
 use SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider;
-use SubscriptionBundle\DTO\Tier;
+use SubscriptionBundle\SubscriptionPack\DTO\Strategy;
+use SubscriptionBundle\SubscriptionPack\DTO\Tier;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Repository\SubscriptionPackRepository;
 use SubscriptionBundle\Service\SubscriptionTextService;
@@ -34,10 +34,6 @@ use Symfony\Component\Form\Extension\Core\Type\TimeType;
  */
 class SubscriptionPackAdmin extends AbstractAdmin
 {
-    /**
-     * @var SubscriptionTextService
-     */
-    private $subscriptionTextService;
 
     /**
      * @var SubscriptionPackDataProvider
@@ -62,7 +58,6 @@ class SubscriptionPackAdmin extends AbstractAdmin
      * @param string                       $class
      * @param string                       $baseControllerName
      * @param SubscriptionPackDataProvider $subscriptionPackDataProvider
-     * @param SubscriptionTextService      $subscriptionTextService
      * @param CarrierRepositoryInterface   $carrierRepository
      * @param SubscriptionPackRepository   $subscriptionPackRepository
      * @param CountryRepository            $countryRepository
@@ -72,20 +67,17 @@ class SubscriptionPackAdmin extends AbstractAdmin
         $class,
         $baseControllerName,
         SubscriptionPackDataProvider $subscriptionPackDataProvider,
-        SubscriptionTextService $subscriptionTextService,
         CarrierRepositoryInterface $carrierRepository,
         SubscriptionPackRepository $subscriptionPackRepository,
         CountryRepository $countryRepository
 
     )
     {
-        $this->subscriptionTextService      = $subscriptionTextService;
+        parent::__construct($code, $class, $baseControllerName);
         $this->subscriptionPackDataProvider = $subscriptionPackDataProvider;
         $this->carrierRepository            = $carrierRepository;
-
-        parent::__construct($code, $class, $baseControllerName);
-        $this->subscriptionPackRepository = $subscriptionPackRepository;
-        $this->countryRepository          = $countryRepository;
+        $this->subscriptionPackRepository   = $subscriptionPackRepository;
+        $this->countryRepository            = $countryRepository;
     }
 
     /**
@@ -290,8 +282,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
                     'choices' => [$subject->getCarrier()],
                     'class'   => Carrier::class,
                 ]);
-        }
-        else {
+        } else {
             $formMapper->add('country', EntityType::class, [
                 'class'        => Country::class,
                 'label'        => 'Country',

@@ -6,25 +6,25 @@ namespace SubscriptionBundle\Piwik;
 
 use App\Domain\Entity\Campaign;
 use SubscriptionBundle\Entity\SubscriptionPack;
-use SubscriptionBundle\Service\CampaignExtractor;
-use SubscriptionBundle\Service\ZeroCreditSubscriptionChecking;
+use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
+use SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking;
 
 class PiwikSubscriptionSignature
 {
     /**
-     * @var CampaignExtractor
+     * @var \SubscriptionBundle\Affiliate\Service\CampaignExtractor
      */
     private $campaignExtractor;
     /**
-     * @var ZeroCreditSubscriptionChecking
+     * @var \SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking
      */
     private $creditSubscriptionChecking;
 
     /**
      * PiwikSubscriptionSignature constructor.
      *
-     * @param CampaignExtractor              $campaignExtractor
-     * @param ZeroCreditSubscriptionChecking $creditSubscriptionChecking
+     * @param \SubscriptionBundle\Affiliate\Service\CampaignExtractor                          $campaignExtractor
+     * @param \SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking $creditSubscriptionChecking
      */
     public function __construct(CampaignExtractor $campaignExtractor,
         ZeroCreditSubscriptionChecking $creditSubscriptionChecking)

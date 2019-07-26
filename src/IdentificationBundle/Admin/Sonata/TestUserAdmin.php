@@ -4,8 +4,8 @@ namespace IdentificationBundle\Admin\Sonata;
 
 use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CarrierRepository;
-use ExtrasBundle\Utils\UuidGenerator;
 use Doctrine\ORM\Query\Expr\Join;
+use ExtrasBundle\Utils\UuidGenerator;
 use IdentificationBundle\Entity\TestUser;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;

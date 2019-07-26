@@ -5,12 +5,10 @@ namespace App\Admin\Controller;
 
 
 use App\Admin\Form\CampaignCloneForm;
-use App\Admin\Form\PreUploadForm;
 use App\Domain\Entity\Campaign;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Symfony\Component\Form\FormFactory;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

@@ -2,10 +2,10 @@
 
 namespace IdentificationBundle\Twig;
 
-use App\Domain\Entity\Carrier;
-use App\Domain\Repository\CarrierRepository;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -24,24 +24,25 @@ class IdentificationStatusExtension extends AbstractExtension
      */
     private $session;
     /**
-     * @var CarrierRepository
+     * @var CarrierRepositoryInterface
      */
     private $carrierRepository;
 
     /**
      * IdentificationStatusExtension constructor.
      *
-     * @param IdentificationDataStorage $dataStorage
-     * @param SessionInterface $session
-     * @param CarrierRepository $carrierRepository
+     * @param IdentificationDataStorage  $dataStorage
+     * @param SessionInterface           $session
+     * @param CarrierRepositoryInterface $carrierRepository
      */
     public function __construct(
         IdentificationDataStorage $dataStorage,
         SessionInterface $session,
-        CarrierRepository $carrierRepository
-    ) {
-        $this->dataStorage = $dataStorage;
-        $this->session = $session;
+        CarrierRepositoryInterface $carrierRepository
+    )
+    {
+        $this->dataStorage       = $dataStorage;
+        $this->session           = $session;
         $this->carrierRepository = $carrierRepository;
     }
 
@@ -97,7 +98,7 @@ class IdentificationStatusExtension extends AbstractExtension
     public function getCarrierId(): ?int
     {
         $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
-        return empty($ispDetectionData['carrier_id']) ? null : (int) $ispDetectionData['carrier_id'];
+        return empty($ispDetectionData['carrier_id']) ? null : (int)$ispDetectionData['carrier_id'];
     }
 
     /**
@@ -107,7 +108,7 @@ class IdentificationStatusExtension extends AbstractExtension
     {
         $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
         if (isset($ispDetectionData['carrier_id']) && $ispDetectionData['carrier_id']) {
-            /** @var Carrier $carrier */
+            /** @var CarrierInterface $carrier */
             $carrier = $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id']);
             return $carrier->isConfirmationClick();
         }

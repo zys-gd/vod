@@ -5,7 +5,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\RenewProcess;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Service\Action\Renew\OnRenewUpdater;
+use SubscriptionBundle\Subscription\Renew\OnRenewUpdater;
 use SubscriptionBundle\Service\EntitySaveHelper;
 
 /**
@@ -20,7 +20,7 @@ class RenewerTest extends \PHPUnit\Framework\TestCase
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
     /**
-     * @var \SubscriptionBundle\Service\Action\Renew\Renewer
+     * @var \SubscriptionBundle\Subscription\Renew\Renewer
      */
     private $renewer;
 
@@ -48,13 +48,13 @@ class RenewerTest extends \PHPUnit\Framework\TestCase
     {
 
         $this->renewProcess = Mockery::spy(RenewProcess::class);
-        $this->renewer      = new \SubscriptionBundle\Service\Action\Renew\Renewer(
+        $this->renewer      = new \SubscriptionBundle\Subscription\Renew\Renewer(
             Mockery::spy(LoggerInterface::class),
             Mockery::spy(EventDispatcherInterface::class),
             Mockery::spy(EntitySaveHelper::class),
             $this->renewProcess,
             Mockery::spy(OnRenewUpdater::class),
-            Mockery::spy(\SubscriptionBundle\Service\Action\Renew\RenewParametersProvider::class)
+            Mockery::spy(\SubscriptionBundle\Subscription\Renew\RenewParametersProvider::class)
 
         );
 

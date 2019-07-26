@@ -9,6 +9,7 @@
 namespace IdentificationBundle\WifiIdentification;
 
 
+use ExtrasBundle\Controller\Traits\ResponseTrait;
 use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
 use IdentificationBundle\BillingFramework\Process\Exception\PinVerifyProcessException;
 use IdentificationBundle\BillingFramework\Process\PinVerifyProcess;
@@ -26,7 +27,6 @@ use IdentificationBundle\WifiIdentification\Handler\HasCustomPinVerifyRules;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerProvider;
 use IdentificationBundle\WifiIdentification\Service\IdentFinisher;
 use IdentificationBundle\WifiIdentification\Service\MsisdnCleaner;
-use SubscriptionBundle\Controller\Traits\ResponseTrait;
 use SubscriptionBundle\Repository\SubscriptionRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\RouterInterface;
@@ -88,17 +88,17 @@ class WifiIdentConfirmator
      * WifiIdentConfirmator constructor.
      *
      * @param WifiIdentificationHandlerProvider $handlerProvider
-     * @param PinCodeVerifier $codeVerifier
-     * @param CarrierRepositoryInterface $carrierRepository
-     * @param PinVerifyProcess $pinVerifyProcess
-     * @param RequestProvider $requestProvider
-     * @param MsisdnCleaner $msisdnCleaner
-     * @param IdentificationDataStorage $dataStorage
-     * @param IdentFinisher $identFinisher
-     * @param SubscriptionRepository $subscriptionRepository
-     * @param UserRepository $userRepository
-     * @param PostPaidHandler $postPaidHandler
-     * @param RouterInterface $router
+     * @param PinCodeVerifier                   $codeVerifier
+     * @param CarrierRepositoryInterface        $carrierRepository
+     * @param PinVerifyProcess                  $pinVerifyProcess
+     * @param RequestProvider                   $requestProvider
+     * @param MsisdnCleaner                     $msisdnCleaner
+     * @param IdentificationDataStorage         $dataStorage
+     * @param IdentFinisher                     $identFinisher
+     * @param SubscriptionRepository            $subscriptionRepository
+     * @param UserRepository                    $userRepository
+     * @param PostPaidHandler                   $postPaidHandler
+     * @param RouterInterface                   $router
      */
     public function __construct(
         WifiIdentificationHandlerProvider $handlerProvider,
@@ -113,7 +113,8 @@ class WifiIdentConfirmator
         UserRepository $userRepository,
         PostPaidHandler $postPaidHandler,
         RouterInterface $router
-    ) {
+    )
+    {
         $this->handlerProvider        = $handlerProvider;
         $this->codeVerifier           = $codeVerifier;
         $this->carrierRepository      = $carrierRepository;
@@ -129,7 +130,7 @@ class WifiIdentConfirmator
     }
 
     /**
-     * @param int $carrierId
+     * @param int    $carrierId
      * @param string $pinCode
      * @param string $mobileNumber
      * @param string $ip
@@ -145,6 +146,16 @@ class WifiIdentConfirmator
     {
         $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
         $handler = $this->handlerProvider->get($carrier);
+
+        $validationOptions = $handler->getPhoneValidationOptions();
+        if ($pinRegexPattern = $validationOptions->getPinRegexPattern()) {
+            $isPinCodeValid = preg_match("/$pinRegexPattern/", $pinCode);
+            if (!$isPinCodeValid) {
+                throw new FailedIdentificationException(
+                    sprintf('Pin code number should be in a `%s` format', $validationOptions->getPinPlaceholder())
+                );
+            }
+        }
 
         /** @var PinRequestResult $pinRequestResult */
         $pinRequestResult = $this->dataStorage->readPreviousOperationResult('pinRequest');

@@ -9,13 +9,12 @@
 namespace SubscriptionBundle\Carriers\TelenorPK\Subscribe;
 
 
-use App\Domain\Constants\ConstBillingCarrierId;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Entity\User;
-use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCommonFlow;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerInterface;
-use SubscriptionBundle\Service\Notification\Notifier;
+use SubscriptionBundle\Subscription\Subscribe\Handler\HasCommonFlow;
+use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerInterface;
+use SubscriptionBundle\Subscription\Notification\Notifier;
 use Symfony\Component\HttpFoundation\Request;
 
 class TelenorPKSubscribeHandler implements SubscriptionHandlerInterface, HasCommonFlow
@@ -35,9 +34,9 @@ class TelenorPKSubscribeHandler implements SubscriptionHandlerInterface, HasComm
         $this->notifier = $notifier;
     }
 
-    public function canHandle(\IdentificationBundle\Entity\CarrierInterface $carrier): bool
+    public function canHandle(\CommonDataBundle\Entity\Interfaces\CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::TELENOR_PAKISTAN_DOT;
+        return $carrier->getBillingCarrierId() === ID::TELENOR_PAKISTAN_DOT;
     }
 
     public function getAdditionalSubscribeParams(Request $request, User $User): array

@@ -10,10 +10,10 @@ namespace SubscriptionBundle\Admin\Service;
 
 
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
-use SubscriptionBundle\Service\CAPTool\Limiter\LimiterStorage;
-use SubscriptionBundle\Service\CAPTool\Limiter\StorageKeyGenerator;
-use SubscriptionBundle\Service\VisitCAPTool\KeyGenerator;
-use SubscriptionBundle\Service\VisitCAPTool\VisitStorage;
+use SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterStorage;
+use SubscriptionBundle\CAPTool\Subscription\Limiter\StorageKeyGenerator;
+use SubscriptionBundle\CAPTool\Visit\KeyGenerator;
+use SubscriptionBundle\CAPTool\Visit\VisitStorage;
 
 class ConstraintByAffiliateCapCalculator
 {

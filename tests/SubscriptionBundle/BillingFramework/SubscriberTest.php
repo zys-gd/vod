@@ -9,16 +9,16 @@ use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
-use SubscriptionBundle\Service\Action\Common\FakeResponseProvider;
-use SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker;
-use SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePerformer;
-use SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePromotionalPerformer;
-use SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater;
-use SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider;
+use SubscriptionBundle\Subscription\Common\FakeResponseProvider;
+use SubscriptionBundle\Subscription\Common\PromotionalResponseChecker;
+use SubscriptionBundle\Subscription\Subscribe\Common\SubscribePerformer;
+use SubscriptionBundle\Subscription\Subscribe\Common\SubscribePromotionalPerformer;
+use SubscriptionBundle\Subscription\Subscribe\OnSubscribeUpdater;
+use SubscriptionBundle\Subscription\Subscribe\SubscribeParametersProvider;
 use SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater;
 use SubscriptionBundle\Service\EntitySaveHelper;
-use SubscriptionBundle\Service\Notification\Notifier;
-use SubscriptionBundle\Service\SubscriptionCreator;
+use SubscriptionBundle\Subscription\Notification\Notifier;
+use SubscriptionBundle\Subscription\Common\SubscriptionFactory;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
@@ -38,7 +38,7 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
     private $piwikSender;
 
     /**
-     * @var \SubscriptionBundle\Service\Action\Subscribe\Subscriber
+     * @var \SubscriptionBundle\Subscription\Subscribe\Subscriber
      */
     private $subscriber;
 
@@ -47,7 +47,7 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
      */
     private $subscribeProcess;
     /**
-     * @var SubscriptionCreator|\Mockery\MockInterface
+     * @var SubscriptionFactory|\Mockery\MockInterface
      */
     private $subscriptionCreator;
     private $subscribePromotionalPerformer;
@@ -112,14 +112,14 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
     {
 
         $this->piwikSender                   = Mockery::spy(SubscriptionStatisticSender::class);
-        $this->subscriptionCreator           = Mockery::spy(SubscriptionCreator::class);
+        $this->subscriptionCreator           = Mockery::spy(SubscriptionFactory::class);
         $this->affiliateService              = Mockery::spy(AffiliateSender::class);
         $this->subscribeProcess              = Mockery::spy(SubscribeProcess::class);
         $this->subscribePromotionalPerformer = Mockery::spy(SubscribePromotionalPerformer::class);
         $this->subscribePerformer            = Mockery::spy(SubscribePerformer::class);
 
 
-        $this->subscriber = new \SubscriptionBundle\Service\Action\Subscribe\Subscriber(
+        $this->subscriber = new \SubscriptionBundle\Subscription\Subscribe\Subscriber(
             Mockery::spy(LoggerInterface::class),
             Mockery::spy(EntitySaveHelper::class),
             Mockery::spy(SessionInterface::class),
@@ -130,8 +130,8 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
             $this->subscribeProcess,
             Mockery::spy(OnSubscribeUpdater::class),
             Mockery::spy(SubscribeParametersProvider::class),
-            Mockery::spy(\SubscriptionBundle\Service\CAPTool\SubscriptionLimitCompleter::class),
-            Mockery::spy(\SubscriptionBundle\Service\SubscriptionSerializer::class),
+            Mockery::spy(\SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitCompleter::class),
+            Mockery::spy(\SubscriptionBundle\Subscription\Common\SubscriptionSerializer::class),
             $this->subscribePerformer,
             $this->subscribePromotionalPerformer,
             Mockery::spy(\Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector::class)

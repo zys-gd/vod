@@ -13,7 +13,7 @@ use App\Domain\Repository\CarrierRepository;
 use ExtrasBundle\Cache\ArrayCache\ArrayCacheService;
 use ExtrasBundle\Utils\LocalExtractor;
 use SubscriptionBundle\Entity\SubscriptionPack;
-use SubscriptionBundle\Service\SubscriptionPackProvider;
+use SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider;
 
 class DataAggregator
 {
@@ -36,18 +36,18 @@ class DataAggregator
      */
     private $arrayCacheService;
     /**
-     * @var SubscriptionPackProvider
+     * @var \SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider
      */
     private $subscriptionPackProvider;
 
     /**
      * DataAggregator constructor
      *
-     * @param CarrierRepository        $carrierRepository
-     * @param Translator               $translator
-     * @param LocalExtractor           $localExtractor
-     * @param ArrayCacheService        $arrayCacheService
-     * @param SubscriptionPackProvider $subscriptionPackProvider
+     * @param CarrierRepository                                             $carrierRepository
+     * @param Translator                                                    $translator
+     * @param LocalExtractor                                                $localExtractor
+     * @param ArrayCacheService                                             $arrayCacheService
+     * @param \SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider $subscriptionPackProvider
      */
     public function __construct(
         CarrierRepository $carrierRepository,

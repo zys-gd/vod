@@ -3,21 +3,21 @@
 namespace SubscriptionBundle\Controller\Actions\Fake;
 
 
+use ExtrasBundle\Controller\Traits\ResponseTrait;
 use IdentificationBundle\Identification\Exception\RedirectRequiredException;
-use SubscriptionBundle\Controller\Traits\ResponseTrait;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Exception\SubscriptionException;
-use SubscriptionBundle\Service\Action\Unsubscribe\UnsubscriptionEligibilityChecker;
+use SubscriptionBundle\Subscription\Unsubscribe\UnsubscriptionEligibilityChecker;
 use SubscriptionBundle\Service\EntitySaveHelper;
-use SubscriptionBundle\Service\SubscriptionExtractor;
-use SubscriptionBundle\Service\UserExtractor;
+use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
+use IdentificationBundle\Identification\Service\UserExtractor;
 use Symfony\Component\HttpFoundation\Request;
 
 class UnsubscribeAction
 {
     use ResponseTrait;
 
-    /** @var UserExtractor */
+    /** @var \IdentificationBundle\Identification\Service\UserExtractor */
     private $userProvider;
     /** @var UnsubscriptionEligibilityChecker */
     private $checker;

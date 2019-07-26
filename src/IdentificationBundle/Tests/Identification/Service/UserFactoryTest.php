@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\Identification\Service\UserFactory;
 use PHPUnit\Framework\TestCase;
 

@@ -26,9 +26,9 @@ use SubscriptionBundle\Piwik\DataMapper\PiwikSubscriptionDataMapper;
 use SubscriptionBundle\Piwik\DataMapper\PiwikUnsubscriptionDataMapper;
 use SubscriptionBundle\Piwik\ProcessResultVerifier;
 use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
-use SubscriptionBundle\Service\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
-use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
-use SubscriptionBundle\Service\SubscriptionVoter\BatchSubscriptionVoter;
+use SubscriptionBundle\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
+use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter;
+use SubscriptionBundle\Subscription\Subscribe\Voter\BatchSubscriptionVoter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Tests\DataFixtures\LoadCampaignTestData;
 use Tests\DataFixtures\LoadSubscriptionTestData;
@@ -198,8 +198,8 @@ class SubscribeActionTest extends AbstractFunctionalTest
         $container->set('SubscriptionBundle\BillingFramework\Process\API\RequestSender', $this->requestSender);
         $container->set('talentica.piwic_statistic_sender', $this->piwikStatisticSender);
         $container->set('subscription.http.client', $this->httpClient);
-        $container->set('SubscriptionBundle\Service\CAPTool\SubscriptionLimiter', $this->subscriptionLimiter);
-        $container->set('SubscriptionBundle\Service\SubscriptionVoter\BatchSubscriptionVoter', $this->voter);
+        $container->set('SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter', $this->subscriptionLimiter);
+        $container->set('SubscriptionBundle\Subscription\Subscribe\Voter\BatchSubscriptionVoter', $this->voter);
 
     }
 

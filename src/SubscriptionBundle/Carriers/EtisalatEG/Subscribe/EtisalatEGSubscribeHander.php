@@ -9,14 +9,14 @@
 namespace SubscriptionBundle\Carriers\EtisalatEG\Subscribe;
 
 
-use App\Domain\Constants\ConstBillingCarrierId;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
-use Symfony\Component\HttpFoundation\Request;
-use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerInterface;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCommonFlow;
 use IdentificationBundle\Entity\User;
+use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use SubscriptionBundle\Entity\Subscription;
+use SubscriptionBundle\Subscription\Subscribe\Handler\HasCommonFlow;
+use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class EtisalatEGSubscribeHander implements SubscriptionHandlerInterface, HasCommonFlow
 {
@@ -35,10 +35,10 @@ class EtisalatEGSubscribeHander implements SubscriptionHandlerInterface, HasComm
         $this->identificationDataStorage = $identificationDataStorage;
     }
 
-    public function canHandle(\IdentificationBundle\Entity\CarrierInterface $carrier): bool
+    public function canHandle(\CommonDataBundle\Entity\Interfaces\CarrierInterface $carrier): bool
     {
         return in_array($carrier->getBillingCarrierId(), [
-            ConstBillingCarrierId::ETISALAT_EGYPT,
+            ID::ETISALAT_EGYPT,
         ]);
     }
 

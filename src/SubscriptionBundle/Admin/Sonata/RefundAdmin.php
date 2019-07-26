@@ -3,8 +3,8 @@
 namespace SubscriptionBundle\Admin\Sonata;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\ListMapper;
 
 /**
  * Class RefundAdmin

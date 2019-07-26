@@ -3,11 +3,11 @@
 namespace App\Domain\Service\Translator;
 
 use App\Domain\Entity\Carrier;
-use App\Domain\Entity\Language;
 use App\Domain\Entity\Translation;
 use App\Domain\Repository\CarrierRepository;
-use App\Domain\Repository\LanguageRepository;
 use App\Domain\Repository\TranslationRepository;
+use CommonDataBundle\Entity\Language;
+use CommonDataBundle\Repository\LanguageRepository;
 use ExtrasBundle\Cache\ArrayCache\ArrayCacheService;
 use ExtrasBundle\Cache\ICacheService;
 

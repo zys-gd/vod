@@ -23,11 +23,7 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - App\Domain\Entity\Translation
-    App\Domain\Repository\LanguageRepository:
-        factory: ['@doctrine.orm.default_entity_manager', getRepository]
-        arguments:
-            - App\Domain\Entity\Language
-            -
+
     App\Domain\Repository\CampaignRepository:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
@@ -52,11 +48,6 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - App\Domain\Entity\CountryCategoryPriorityOverride
-
-    App\Domain\Repository\CountryRepository:
-        factory: ['@doctrine.orm.default_entity_manager', getRepository]
-        arguments:
-            - App\Domain\Entity\Country
 
     App\Domain\Repository\AffiliateRepository:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]

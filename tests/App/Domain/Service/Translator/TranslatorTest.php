@@ -9,10 +9,10 @@
 namespace App\Tests\App\Domain\Service\Translator;
 
 use App\Domain\Entity\Carrier;
-use App\Domain\Entity\Language;
+use CommonDataBundle\Entity\Language;
 use App\Domain\Entity\Translation;
 use App\Domain\Repository\CarrierRepository;
-use App\Domain\Repository\LanguageRepository;
+use CommonDataBundle\Repository\LanguageRepository;
 use App\Domain\Repository\TranslationRepository;
 use App\Domain\Service\Translator\Translator;
 use ExtrasBundle\Utils\UuidGenerator;

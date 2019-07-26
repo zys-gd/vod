@@ -10,8 +10,8 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
 use Sonata\AdminBundle\Show\ShowMapper;
 use SubscriptionBundle\Entity\BlackList;
-use SubscriptionBundle\Service\Blacklist\BlacklistChecker;
-use SubscriptionBundle\Service\Blacklist\BlacklistSaver;
+use SubscriptionBundle\Blacklist\BlacklistChecker;
+use SubscriptionBundle\Blacklist\BlacklistSaver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 

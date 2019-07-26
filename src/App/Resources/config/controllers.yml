@@ -52,14 +52,14 @@ services:
             - '%default_redirect_url%'
             - '@App\CarrierTemplate\TemplateConfigurator'
             - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
-            - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
-            - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier'
+            - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter'
+            - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitNotifier'
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
-            - '@SubscriptionBundle\Service\VisitCAPTool\VisitTracker'
-            - '@SubscriptionBundle\Service\VisitCAPTool\VisitNotifier'
+            - '@SubscriptionBundle\CAPTool\Visit\VisitTracker'
+            - '@SubscriptionBundle\CAPTool\Visit\VisitNotifier'
             - '@logger'
             - '@IdentificationBundle\Identification\Service\CarrierSelector'
-            - '@SubscriptionBundle\Service\SubscribeUrlResolver'
+            - '@SubscriptionBundle\Subscription\Subscribe\Service\SubscribeUrlResolver'
 
     App\Controller\ErrorController:
         arguments:
@@ -77,15 +77,15 @@ services:
     App\Controller\AccountController:
         arguments:
             - '@App\Domain\Repository\CarrierRepository'
-            - '@SubscriptionBundle\Service\SubscriptionExtractor'
+            - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
             - '@App\CarrierTemplate\TemplateConfigurator'
 
     App\Controller\ContactUsController:
         arguments:
         - '@form.factory'
-        - '@SubscriptionBundle\Service\UserExtractor'
+        - '@IdentificationBundle\Identification\Service\UserExtractor'
         - '@ExtrasBundle\Email\EmailSender'
-        - '@SubscriptionBundle\Service\SubscriptionExtractor'
+        - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
         - '@App\Domain\Repository\CampaignRepository'
         - '%contact_us_mail_to%'
         - '%contact_us_mail_from%'
@@ -99,7 +99,7 @@ services:
             - '@App\Domain\Service\Games\GameSerializer'
             - '@App\Domain\Repository\GameBuildRepository'
             - '@App\Domain\Service\Games\DrmApkProvider'
-            - '@SubscriptionBundle\Service\SubscriptionExtractor'
+            - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
             - '@App\Domain\Service\Games\GameImagesSerializer'
             - '@App\Domain\Service\Games\ExcludedGamesProvider'
             - '@App\Domain\Service\Piwik\ContentStatisticSender'
@@ -115,7 +115,7 @@ services:
         arguments:
             - '@App\Domain\Repository\UploadedVideoRepository'
             - '@App\Domain\Service\Piwik\ContentStatisticSender'
-            - '@SubscriptionBundle\Service\SubscriptionExtractor'
+            - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
 
 
     App\Controller\PlayerController:

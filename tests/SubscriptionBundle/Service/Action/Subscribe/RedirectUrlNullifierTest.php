@@ -24,7 +24,7 @@ class RedirectUrlNullifierTest extends \PHPUnit\Framework\TestCase
      */
     private $entitySaveHelper;
     /**
-     * @var \SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier|Mockery\MockInterface
+     * @var \SubscriptionBundle\Subscription\Common\RedirectUrlNullifier|Mockery\MockInterface
      */
     private $redirectNullifier;
 
@@ -43,7 +43,7 @@ class RedirectUrlNullifierTest extends \PHPUnit\Framework\TestCase
     protected function setUp()
     {
         $this->entitySaveHelper  = Mockery::spy(EntitySaveHelper::class);
-        $this->redirectNullifier = new \SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier(
+        $this->redirectNullifier = new \SubscriptionBundle\Subscription\Common\RedirectUrlNullifier(
             $this->entitySaveHelper
         );
 

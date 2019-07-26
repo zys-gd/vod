@@ -2,7 +2,7 @@
 
 namespace SubscriptionBundle\Entity\Affiliate;
 
-use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
+use CommonDataBundle\Entity\Interfaces\HasUuid;
 
 /**
  * AffiliateLog

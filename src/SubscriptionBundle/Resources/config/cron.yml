@@ -1,15 +1,15 @@
 services:
-    SubscriptionBundle\Command\MassRenewCommand:
+    SubscriptionBundle\Subscription\MassRenew\Command\MassRenewCommand:
         arguments:
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
             - '@cron.task'
-            - '@SubscriptionBundle\Service\Action\Renew\Handler\RenewHandlerProvider'
-            - '@SubscriptionBundle\Service\Action\Renew\Common\CommonFlowHandler'
+            - '@SubscriptionBundle\Subscription\Renew\Handler\RenewHandlerProvider'
+            - '@SubscriptionBundle\Subscription\Renew\Common\CommonFlowHandler'
         tags:
             - { name: console.command }
 
-    SubscriptionBundle\Command\IncomingRenewNotificationCommand:
-        arguments: ['@IdentificationBundle\Repository\CarrierRepositoryInterface', '@SubscriptionBundle\Service\Cron\RenewAlerter']
+    SubscriptionBundle\Subscription\Renew\Command\IncomingRenewNotificationCommand:
+        arguments: ['@IdentificationBundle\Repository\CarrierRepositoryInterface', '@SubscriptionBundle\Subscription\Renew\Service\RenewAlerter']
         tags:
             - { name: console.command }
 
@@ -35,43 +35,21 @@ services:
     #  arguments: ['@cron.trial_renew_service', '@cron.task', '@doctrine.orm.entity_manager']
 
     #cron.trial_renew_service:
-    #    class: SubscriptionBundle\Service\Cron\TrialRenewer
+    #    class: SubscriptionBundle\Subscription\Renew\Service\TrialRenewer
     #    arguments:
-    #      - '@SubscriptionBundle\Service\SubscriptionPackProvider'
-    #      - '@SubscriptionBundle\Service\Action\Renew\Renewer'
-    #      - '@SubscriptionBundle\Service\SubscriptionExtractor'
+    #      - '@SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider'
+    #      - '@SubscriptionBundle\Subscription\Renew\Renewer'
+    #      - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
 
     cron.task:
         class: SubscriptionBundle\Service\Cron\CronTaskStatus
         arguments: ['@doctrine.orm.default_entity_manager', '@SubscriptionBundle\Repository\CronTaskRepository']
 
 
-    SubscriptionBundle\Service\Cron\RenewAlerter:
+    SubscriptionBundle\Subscription\Renew\Service\RenewAlerter:
         arguments:
             - '@SubscriptionBundle\Repository\SubscriptionRepository'
-            - '@SubscriptionBundle\Service\Action\Renew\Handler\RenewHandlerProvider'
+            - '@SubscriptionBundle\Subscription\Renew\Handler\RenewHandlerProvider'
             - '@SubscriptionBundle\Service\EntitySaveHelper'
 
-    SubscriptionBundle\Command\ResetConstraintsByAffiliateCounters:
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository'
-            - '@SubscriptionBundle\Service\CAPTool\Limiter\LimiterStorage'
-            - '@SubscriptionBundle\Service\CAPTool\Limiter\StorageKeyGenerator'
-        tags:
-            - { name: console.command }
 
-    SubscriptionBundle\Command\ResetConstraintsByCarrierCounters:
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@App\Domain\Repository\CarrierRepository'
-            - '@SubscriptionBundle\Service\CAPTool\Limiter\LimiterStorage'
-            - '@SubscriptionBundle\Service\CAPTool\Limiter\StorageKeyGenerator'
-        tags:
-            - { name: console.command }
-
-    SubscriptionBundle\Command\ResetVisitConstraints:
-        arguments:
-            - '@SubscriptionBundle\Service\VisitCAPTool\VisitStorage'
-        tags:
-            - { name: console.command }

@@ -3,8 +3,8 @@
 namespace App\Domain\Repository;
 
 use App\Domain\Entity\Carrier;
-use App\Domain\Entity\Country;
 use App\Domain\Entity\MainCategory;
+use CommonDataBundle\Entity\Country;
 use Doctrine\ORM\EntityRepository;
 
 /**

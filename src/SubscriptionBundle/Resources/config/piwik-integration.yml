@@ -12,13 +12,13 @@ services:
     SubscriptionBundle\Piwik\DataMapper\PiwikSubscriptionDataMapper:
         arguments:
             - '@LegacyBundle\Service\Exchanger'
-            - '@SubscriptionBundle\Service\CampaignExtractor'
+            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
             - '@SubscriptionBundle\Piwik\PiwikSubscriptionSignature'
 
     SubscriptionBundle\Piwik\DataMapper\PiwikUnsubscriptionDataMapper:
         arguments:
             - '@LegacyBundle\Service\Exchanger'
-            - '@SubscriptionBundle\Service\CampaignExtractor'
+            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
             - '@SubscriptionBundle\Piwik\PiwikSubscriptionSignature'
 
 
@@ -26,5 +26,5 @@ services:
 
     SubscriptionBundle\Piwik\PiwikSubscriptionSignature:
         arguments:
-            - '@SubscriptionBundle\Service\CampaignExtractor'
-            - '@SubscriptionBundle\Service\ZeroCreditSubscriptionChecking'
+            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
+            - '@SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking'

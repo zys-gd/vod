@@ -5,10 +5,9 @@ services:
             - SubscriptionBundle\Entity\SubscriptionPack
             - ~ #'SubscriptionBundle\Admin\Controller\SubscriptionPackAdminController'
             - '@SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider'
-            - '@SubscriptionBundle\Service\SubscriptionTextService'
             - '@App\Domain\Repository\CarrierRepository'
             - '@SubscriptionBundle\Repository\SubscriptionPackRepository'
-            - '@App\Domain\Repository\CountryRepository'
+            - '@CommonDataBundle\Repository\CountryRepository'
         tags:
             -   name: sonata.admin
                 manager_type: orm
@@ -43,7 +42,7 @@ services:
             - ~
             - SubscriptionBundle\Entity\BlackList
             - ~
-            - '@SubscriptionBundle\Service\Blacklist\BlacklistSaver'
+            - '@SubscriptionBundle\Blacklist\BlacklistSaver'
         tags:
             - { name: sonata.admin, manager_type: orm, group: black_list_management, label: Black list }
         calls:
@@ -72,7 +71,7 @@ services:
 
     SubscriptionBundle\Admin\Service\ConstraintByAffiliateCapCalculator:
         arguments:
-            - '@SubscriptionBundle\Service\CAPTool\Limiter\StorageKeyGenerator'
-            - '@SubscriptionBundle\Service\CAPTool\Limiter\LimiterStorage'
-            - '@SubscriptionBundle\Service\VisitCAPTool\KeyGenerator'
-            - '@SubscriptionBundle\Service\VisitCAPTool\VisitStorage'
+            - '@SubscriptionBundle\CAPTool\Subscription\Limiter\StorageKeyGenerator'
+            - '@SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterStorage'
+            - '@SubscriptionBundle\CAPTool\Visit\KeyGenerator'
+            - '@SubscriptionBundle\CAPTool\Visit\VisitStorage'

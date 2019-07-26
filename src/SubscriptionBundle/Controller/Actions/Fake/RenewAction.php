@@ -9,7 +9,7 @@
 namespace SubscriptionBundle\Controller\Actions\Fake;
 
 
-use SubscriptionBundle\Command\MassRenewCommand;
+use SubscriptionBundle\Subscription\MassRenew\Command\MassRenewCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,8 +28,8 @@ class RenewAction
 
     /**
      * RenewAction constructor.
-     * @param MassRenewCommand  $renewCommand
-     * @param \Twig_Environment $twigEnvironment
+     * @param \SubscriptionBundle\Subscription\MassRenew\Command\MassRenewCommand $renewCommand
+     * @param \Twig_Environment                                                   $twigEnvironment
      */
     public function __construct(
         MassRenewCommand $renewCommand,

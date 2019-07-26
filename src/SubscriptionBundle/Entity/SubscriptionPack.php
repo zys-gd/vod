@@ -3,9 +3,9 @@
 namespace SubscriptionBundle\Entity;
 
 use App\Domain\Entity\Country;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\HasUuid;
 use Doctrine\Common\Collections\ArrayCollection;
-use IdentificationBundle\Entity\CarrierInterface;
-use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 
 /**
  * Class SubscriptionPack
