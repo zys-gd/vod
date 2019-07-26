@@ -344,10 +344,13 @@ a button {
     background-repeat: no-repeat;
 }
 
-.thumbnail-wrapper {
+.video-element .video-preview-image-container {
     position: relative !important;
 }
 
+.categories-content .video-element img {
+    width: 100%;
+}
 
 .separator_right {
     background: url(../img/home/separator-right.png) right center no-repeat;

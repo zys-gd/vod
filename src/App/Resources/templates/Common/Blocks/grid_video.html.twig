@@ -1,5 +1,6 @@
 {% macro render(aVideos, categories) %}
     {% import '@App/Components/Blocks/Main/see_all.html.twig' as  see_all %}
+    {% import "@App/Components/Blocks/Main/video_preview.html.twig" as  video_preview %}
     {% import '@App/Components/Blocks/Main/grid_element_video.html.twig' as  grid_element_video %}
 
     {% for category, videos in aVideos %}
@@ -10,7 +11,7 @@
 
             <div class="categories-content d-flex flex-row felx-wrap justify-content-between">
                 {% for video in videos | slice(0, 2) %}
-                    {{ grid_element_video.render(video, categoryData) }}
+                    {{ video_preview.render('video-element x-play-button', video) }}
                 {% endfor %}
 
             </div>
