@@ -3707,7 +3707,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git-codecommit.eu-west-1.amazonaws.com/v1/repos/store-commons-module",
-                "reference": "ff66aaa6a4d5840dac9bce1deba2e1b46637f9a0"
+                "reference": "f172fb969b7925d2a837c019fc60bf44e47b2d74"
             },
             "require": {
                 "doctrine/orm": "^2.5",
@@ -3715,7 +3715,6 @@
                 "geoip2/geoip2": "v2.9.0",
                 "phive/twig-extensions-deferred": "^2.0",
                 "php": "^7.2",
-                "predis/predis": "^1.1",
                 "ramsey/uuid": "^3.8.0",
                 "symfony/framework-bundle": "4.*",
                 "twig/twig": "^2.7"
@@ -3741,7 +3740,7 @@
                     "email": "dmitriy.bichenko@playwing.net"
                 }
             ],
-            "time": "2019-07-25T11:00:10+00:00"
+            "time": "2019-07-26T13:31:36+00:00"
         },
         {
             "name": "predis/predis",

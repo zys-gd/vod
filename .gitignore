@@ -5,6 +5,8 @@
 /var/cache/*
 /var/log/*
 /var/dump/*
+/var/hash
+
 /vendor/
 ###< symfony/framework-bundle ###
 
