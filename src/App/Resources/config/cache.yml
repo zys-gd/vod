@@ -6,7 +6,7 @@ services:
       - '1'
       - 'translations'
       -
-        persistent: 1
+        class: 'Redis'
 
   app.cache.default.subscription:
     class: ExtrasBundle\Cache\Redis\RedisCacheService
@@ -15,5 +15,5 @@ services:
       - '1'
       - 'subscriptions'
       -
-        persistent: 1
+        class: 'Redis'
 

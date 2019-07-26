@@ -1,9 +1,9 @@
 services:
   subscription.captool.redis_client:
-    class: Predis\Client
+    class: Redis
     factory: ['@app.cache.redis_connection_provider','create']
     arguments:
       - '2'
       -
-        persistent: 1
+        class: 'Redis'
 
