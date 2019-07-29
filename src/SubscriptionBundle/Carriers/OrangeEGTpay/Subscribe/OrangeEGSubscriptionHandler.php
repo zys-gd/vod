@@ -7,6 +7,7 @@ use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\RouteProvider;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException;
 use SubscriptionBundle\Entity\Subscription;
@@ -31,27 +32,35 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
      * @var IdentificationDataStorage
      */
     private $identificationDataStorage;
-
+    /**
+     * @var RouteProvider
+     */
+    private $routeProvider;
     /**
      * @var RouterInterface
      */
     private $router;
 
+
     /**
      * VodafoneEGSubscriptionHandler constructor
      *
-     * @param LocalExtractor $localExtractor
+     * @param LocalExtractor            $localExtractor
      * @param IdentificationDataStorage $identificationDataStorage
-     * @param RouterInterface $router
+     * @param RouteProvider             $routeProvider
+     * @param RouterInterface           $router
      */
     public function __construct(
         LocalExtractor $localExtractor,
         IdentificationDataStorage $identificationDataStorage,
+        RouteProvider $routeProvider,
         RouterInterface $router
-    ) {
-        $this->localExtractor = $localExtractor;
+    )
+    {
+        $this->localExtractor            = $localExtractor;
         $this->identificationDataStorage = $identificationDataStorage;
-        $this->router = $router;
+        $this->routeProvider             = $routeProvider;
+        $this->router                    = $router;
     }
 
     /**
@@ -66,19 +75,19 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
 
     /**
      * @param Request $request
-     * @param User $user
+     * @param User    $user
      *
      * @return array
      */
     public function getAdditionalSubscribeParams(Request $request, User $user): array
     {
         $data = [
-            'url_id' => $user->getShortUrlId(),
-            'lang' => $this->localExtractor->getLocal(),
-            'redirect_url' => $this->router->generate('index', [], RouterInterface::ABSOLUTE_URL)
+            'url_id'       => $user->getShortUrlId(),
+            'lang'         => $this->localExtractor->getLocal(),
+            'redirect_url' => $this->routeProvider->getLinkToHomepage()
         ];
 
-        if ((bool) $this->identificationDataStorage->readValue('is_wifi_flow')) {
+        if ((bool)$this->identificationDataStorage->readValue('is_wifi_flow')) {
             $data['subscription_contract_id'] = $this->identificationDataStorage->readValue('subscription_contract_id');
         }
 
@@ -94,12 +103,12 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
     {
         $billingData = $exception->getBillingData();
 
-        $failReason = $billingData->provider_fields->fail_reason;
-        $redirectUrl = $this->router->generate('whoops');
+        $failReason  = $billingData->provider_fields->fail_reason;
+        $redirectUrl = $this->routeProvider->getLinkToWifiFlowPage();
 
         switch ($failReason) {
             case SubscribingProcessException::FAIL_REASON_NOT_ENOUGH_CREDIT:
-                $redirectUrl = $this->router->generate('index', ['err_handle' => 'not_enough_credit']);
+                $redirectUrl = $this->routeProvider->getLinkToHomepage(['err_handle' => 'not_enough_credit']);
                 break;
             case SubscribingProcessException::FAIL_REASON_BLACKLISTED:
                 $redirectUrl = $this->router->generate('blacklisted_user');
@@ -112,7 +121,7 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
     }
 
     /**
-     * @param Subscription $subscription
+     * @param Subscription  $subscription
      * @param ProcessResult $result
      */
     public function afterProcess(Subscription $subscription, ProcessResult $result): void

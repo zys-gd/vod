@@ -3,6 +3,7 @@ services:
         arguments:
             - '@ExtrasBundle\Utils\LocalExtractor'
             - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\RouteProvider'
             - '@router'
         tags:
             - { name: subscription.subscription_handler }
