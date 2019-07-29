@@ -117,7 +117,3 @@ services:
             - '@App\Domain\Repository\UploadedVideoRepository'
             - '@App\Domain\Service\Piwik\ContentStatisticSender'
             - '@SubscriptionBundle\Service\SubscriptionExtractor'
-
-
-    App\Controller\PlayerController:
-        arguments: ['@App\Domain\Repository\UploadedVideoRepository', '@App\Domain\Repository\MainCategoryRepository']
