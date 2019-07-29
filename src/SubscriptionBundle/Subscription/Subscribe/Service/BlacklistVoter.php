@@ -2,7 +2,7 @@
 
 namespace SubscriptionBundle\Subscription\Subscribe\Service;
 
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Blacklist\BlacklistChecker;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -50,8 +50,7 @@ class BlacklistVoter
      */
     public function isUserBlacklisted(SessionInterface $session): bool
     {
-        $data         = IdentificationFlowDataExtractor::extractIdentificationData($session);
-        $identificationToken = $data['identification_token'] ?? null;
+        $identificationToken = IdentificationFlowDataExtractor::extractIdentificationToken($session);
 
         $this->logger->debug('Check user for blacklist', ['identification_token' => $identificationToken]);
 

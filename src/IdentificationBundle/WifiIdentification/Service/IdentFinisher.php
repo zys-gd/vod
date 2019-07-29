@@ -5,7 +5,7 @@ namespace IdentificationBundle\WifiIdentification\Service;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\User;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\TokenGenerator;
 use IdentificationBundle\Identification\Service\UserFactory;
 
@@ -66,7 +66,7 @@ class IdentFinisher
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
-        $this->identificationDataStorage->storeIdentificationToken($token);
+        $this->identificationDataStorage->setIdentificationToken($token);
 
         return $user;
     }
@@ -87,6 +87,6 @@ class IdentFinisher
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
-        $this->identificationDataStorage->storeIdentificationToken($token);
+        $this->identificationDataStorage->setIdentificationToken($token);
     }
 }

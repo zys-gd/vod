@@ -6,7 +6,7 @@ namespace IdentificationBundle\Profiler;
 use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CarrierRepository;
 use IdentificationBundle\BillingFramework\ID;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;

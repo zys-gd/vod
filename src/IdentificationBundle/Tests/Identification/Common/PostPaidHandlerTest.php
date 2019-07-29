@@ -5,7 +5,8 @@ namespace IdentificationBundle\Tests\Identification\Common;
 
 
 use IdentificationBundle\Identification\Common\PostPaidHandler;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\SessionStorage;
 use Mockery;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Process\API\Client;
@@ -47,14 +48,14 @@ class PostPaidHandlerTest extends \PHPUnit\Framework\TestCase
 
         $this->postPaidHandler->process(123, 321);
 
-        $this->assertEquals(2, $this->identificationDataStorage->readValue('isPostPaidRestricted'));
+        $this->assertEquals(2, $this->identificationDataStorage->readValue(IdentificationDataStorage::POST_PAID_RESTRICTED_KEY));
     }
 
     public function testProcessWhenPostPaid()
     {
         $this->process(1, 'Postpaid');
 
-        $this->assertEquals(1, $this->identificationDataStorage->readValue('isPostPaidRestricted'));
+        $this->assertEquals(1, $this->identificationDataStorage->readValue(IdentificationDataStorage::POST_PAID_RESTRICTED_KEY));
     }
 
     public function testIsNotPostPaidRestricted()
@@ -75,7 +76,7 @@ class PostPaidHandlerTest extends \PHPUnit\Framework\TestCase
         $this->logger = Mockery::spy(LoggerInterface::class);
         $this->client = Mockery::spy(Client::class);
         $this->linkCreator = Mockery::spy(LinkCreator::class);
-        $this->identificationDataStorage = new IdentificationDataStorage($this->session);
+        $this->identificationDataStorage = new IdentificationDataStorage(new SessionStorage($this->session));
 
         $this->postPaidHandler = new PostPaidHandler(
             $this->logger,

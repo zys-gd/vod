@@ -10,6 +10,8 @@ namespace IdentificationBundle\Identification\Service;
 
 
 use IdentificationBundle\Entity\User;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
+use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 
 class IdentificationStatus
 {
@@ -19,39 +21,52 @@ class IdentificationStatus
     private $dataStorage;
 
     /**
-     * IdentificationStatus constructor.
-     * @param IdentificationDataStorage $dataStorage
+     * @var WifiIdentificationDataStorage
      */
-    public function __construct(IdentificationDataStorage $dataStorage)
-    {
+    private $wifiIdentificationDataStorage;
+
+    /**
+     * IdentificationStatus constructor
+     *
+     * @param IdentificationDataStorage $dataStorage
+     * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
+     */
+    public function __construct(
+        IdentificationDataStorage $dataStorage,
+        WifiIdentificationDataStorage $wifiIdentificationDataStorage
+    ) {
         $this->dataStorage = $dataStorage;
+        $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
     }
 
     public function isIdentified(): bool
     {
-        $identificationData = $this->dataStorage->readIdentificationData();
-        return isset($identificationData['identification_token']);
+        return (bool) $this->dataStorage->getIdentificationToken();
     }
 
     public function finishIdent(string $token, User $user): void
     {
-        $this->dataStorage->storeIdentificationToken($token);
-        $this->dataStorage->storeValue('is_wifi_flow', false);
+        $this->dataStorage->setIdentificationToken($token);
+        $this->wifiIdentificationDataStorage->setWifiFlow(false);
     }
 
     public function isAlreadyTriedToAutoIdent(): bool
     {
-        return (bool)$this->dataStorage->readValue('is_tried_to_autoident');
+        return (bool)$this->dataStorage->readValue(IdentificationDataStorage::AUTO_IDENT_ATTEMPT_KEY);
     }
 
     public function registerAutoIdentAttempt(): void
     {
-        $this->dataStorage->storeValue('is_tried_to_autoident', true);
+        $this->dataStorage->storeValue(IdentificationDataStorage::AUTO_IDENT_ATTEMPT_KEY, true);
     }
 
     public function isWifiFlowStarted(): bool
     {
-        return (bool)$this->dataStorage->readValue('is_wifi_flow');
+        return (bool) $this->wifiIdentificationDataStorage->isWifiFlow();
     }
 
+    public function startWifiFlow(): void
+    {
+        $this->wifiIdentificationDataStorage->setWifiFlow(true);
+    }
 }

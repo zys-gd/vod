@@ -9,7 +9,7 @@
 namespace IdentificationBundle\Identification\Common\Async;
 
 
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -32,7 +32,7 @@ class AsyncIdentStarter
 
     public function start(ProcessResult $processResult, string $token): RedirectResponse
     {
-        $this->dataStorage->storeValue('redirectIdent[token]', $token);
+        $this->dataStorage->setRedirectIdentToken($token);
 
         return new RedirectResponse($processResult->getUrl());
     }

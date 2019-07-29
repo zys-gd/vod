@@ -92,15 +92,3 @@ services:
         arguments:
             - '@form.factory'
             - '@SubscriptionBundle\Service\ReportingToolService'
-
-    SubscriptionBundle\Controller\SubnotifController:
-        arguments:
-            - '@SubscriptionBundle\Subscription\Notification\Notifier'
-            - '@App\Domain\Repository\CarrierRepository'
-            - '@IdentificationBundle\Repository\UserRepository'
-            - '@session'
-            - '@ExtrasBundle\Utils\LocalExtractor'
-            - '@SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider'
-            - '@App\Domain\Service\Translator\Translator'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
-            - '@router'

@@ -10,7 +10,6 @@ use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\BillingFramework\Process\DTO\{PinRequestResult, PinVerifyResult};
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\Entity\User;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\DTO\PhoneValidationOptions;
 use IdentificationBundle\WifiIdentification\Exception\WifiIdentConfirmException;
@@ -19,6 +18,7 @@ use IdentificationBundle\WifiIdentification\Handler\HasCustomPinRequestRules;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinResendRules;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinVerifyRules;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
+use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use SubscriptionBundle\Repository\SubscriptionRepository;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -58,9 +58,9 @@ class OrangeEGWifiIdentificationHandler implements
     private $subscriptionRepository;
 
     /**
-     * @var IdentificationDataStorage
+     * @var WifiIdentificationDataStorage
      */
-    private $identificationDataStorage;
+    private $wifiIdentificationDataStorage;
 
     /**
      * OrangeEGWifiIdentificationHandler constructor
@@ -70,7 +70,7 @@ class OrangeEGWifiIdentificationHandler implements
      * @param RouterInterface           $router
      * @param LocalExtractor            $localExtractor
      * @param SubscriptionRepository    $subscriptionRepository
-     * @param IdentificationDataStorage $identificationDataStorage
+     * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
      */
     public function __construct(
         UserRepository $userRepository,
@@ -78,7 +78,7 @@ class OrangeEGWifiIdentificationHandler implements
         RouterInterface $router,
         LocalExtractor $localExtractor,
         SubscriptionRepository $subscriptionRepository,
-        IdentificationDataStorage $identificationDataStorage
+        WifiIdentificationDataStorage $wifiIdentificationDataStorage
     )
     {
         $this->userRepository            = $userRepository;
@@ -86,7 +86,7 @@ class OrangeEGWifiIdentificationHandler implements
         $this->router                    = $router;
         $this->localExtractor            = $localExtractor;
         $this->subscriptionRepository    = $subscriptionRepository;
-        $this->identificationDataStorage = $identificationDataStorage;
+        $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
     }
 
     /**
@@ -165,15 +165,11 @@ class OrangeEGWifiIdentificationHandler implements
     }
 
     /**
-     * @param PinVerifyResult $parameters
+     * @param PinVerifyResult $pinVerifyResult
      */
-    public function afterSuccessfulPinVerify(PinVerifyResult $parameters): void
+    public function afterSuccessfulPinVerify(PinVerifyResult $pinVerifyResult): void
     {
-        $data = $parameters->getRawData();
-
-        if (!empty($data['subscription_contract_id'])) {
-            $this->identificationDataStorage->storeValue('subscription_contract_id', $data['subscription_contract_id']);
-        }
+        $this->wifiIdentificationDataStorage->setPinVerifyResult($pinVerifyResult);
     }
 
     /**

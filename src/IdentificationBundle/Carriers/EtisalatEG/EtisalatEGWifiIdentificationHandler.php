@@ -14,7 +14,7 @@ use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
 use IdentificationBundle\BillingFramework\Process\DTO\PinVerifyResult;
 use IdentificationBundle\Entity\User;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\DTO\PhoneValidationOptions;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinVerifyRules;
@@ -26,7 +26,7 @@ class EtisalatEGWifiIdentificationHandler implements
 
 {
     /**
-     * @var \IdentificationBundle\Identification\Service\IdentificationDataStorage
+     * @var \IdentificationBundle\Identification\Service\Session\IdentificationDataStorage
      */
     private $dataStorage;
     /**

@@ -12,7 +12,7 @@ use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Repository\CampaignScheduleRepository;
 use App\Domain\Repository\CarrierRepository;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\CAPTool\Exception\SubscriptionCapReachedOnAffiliate;
@@ -145,10 +145,10 @@ class LandingPageACL
     public function isLandingDisabled(Request $request): bool
     {
         try {
-            $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
+            $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
             $campaignToken    = $request->get('cid', '');
             /** @var Carrier $carrier */
-            $carrier = $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id']);
+            $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
 
             /** @var Campaign $campaign */
             $campaign           = $this->campaignRepository->findOneBy(['campaignToken' => $campaignToken]);

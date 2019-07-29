@@ -63,11 +63,11 @@ services:
 
     IdentificationBundle\Identification\Common\Async\AsyncIdentStarter:
         arguments:
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
 
     IdentificationBundle\Identification\Common\Async\AsyncIdentFinisher:
         arguments:
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
             - '@IdentificationBundle\Repository\UserRepository'
             - '@IdentificationBundle\Identification\Service\IdentificationStatus'
             - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
@@ -93,8 +93,8 @@ services:
 
     IdentificationBundle\Identification\Service\ISPResolver: ~
 
-    IdentificationBundle\Identification\Service\IdentificationDataStorage:
-        arguments: ['@session']
+    IdentificationBundle\Identification\Service\Session\IdentificationDataStorage:
+        arguments: ['@IdentificationBundle\Identification\Service\Session\SessionStorage']
 
     IdentificationBundle\Identification\IdentifierByUrl:
         arguments:
@@ -104,18 +104,20 @@ services:
             - '@doctrine.orm.entity_manager'
 
     IdentificationBundle\Identification\Service\IdentificationStatus:
-        arguments: ['@IdentificationBundle\Identification\Service\IdentificationDataStorage']
+        arguments:
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
+            - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
 
     IdentificationBundle\Identification\Common\Async\AsyncIdentStatusProvider:
         arguments:
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
             - '@IdentificationBundle\Repository\UserRepository'
 
 
     IdentificationBundle\Identification\Common\CommonConsentPageFlowHandler:
         arguments:
             - '@router'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
             - '@IdentificationBundle\Identification\Service\TokenGenerator'
             - '@IdentificationBundle\Identification\Common\RequestParametersProvider'
             - '@IdentificationBundle\BillingFramework\Process\IdentProcess'
@@ -124,7 +126,7 @@ services:
     IdentificationBundle\Identification\Service\CarrierSelector:
         arguments:
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
 
     IdentificationBundle\Identification\Service\DeviceDataProvider:
         arguments: ['@device_detection.service.device', '@CountryCarrierDetectionBundle\Service\ConnectionTypeService']
@@ -134,7 +136,7 @@ services:
             - '@logger'
             - '@SubscriptionBundle\BillingFramework\Process\API\Client'
             - '@SubscriptionBundle\BillingFramework\Process\API\LinkCreator'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
             - '@SubscriptionBundle\BillingFramework\BillingOptionsProvider'
 
     IdentificationBundle\Identification\Handler\AlreadySubscribedHandlerProvider: ~

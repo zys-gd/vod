@@ -6,6 +6,11 @@ use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
+use App\Domain\Entity\Carrier;
+use App\Domain\Repository\CarrierRepository;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
+use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -20,6 +25,10 @@ class IdentificationStatusExtension extends AbstractExtension
      */
     private $dataStorage;
     /**
+     * @var WifiIdentificationDataStorage
+     */
+    private $wifiIdentificationDataStorage;
+    /**
      * @var SessionInterface
      */
     private $session;
@@ -32,11 +41,13 @@ class IdentificationStatusExtension extends AbstractExtension
      * IdentificationStatusExtension constructor.
      *
      * @param IdentificationDataStorage  $dataStorage
+     * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
      * @param SessionInterface           $session
      * @param CarrierRepositoryInterface $carrierRepository
      */
     public function __construct(
         IdentificationDataStorage $dataStorage,
+        WifiIdentificationDataStorage $wifiIdentificationDataStorage,
         SessionInterface $session,
         CarrierRepositoryInterface $carrierRepository
     )
@@ -44,6 +55,7 @@ class IdentificationStatusExtension extends AbstractExtension
         $this->dataStorage       = $dataStorage;
         $this->session           = $session;
         $this->carrierRepository = $carrierRepository;
+        $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
     }
 
     /**
@@ -52,33 +64,37 @@ class IdentificationStatusExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('isCarrierDetected', [$this, 'isCarrierDetected']),
+            new TwigFunction('isCarrierDetected', function () {
+                return (bool) IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
+            }),
 
-            new TwigFunction('getCarrierId', [$this, 'getCarrierId']),
+            new TwigFunction('getCarrierId', function () {
+                return IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
+            }),
 
             new TwigFunction('isIdentified', function () {
-                $identificationData = $this->dataStorage->readIdentificationData();
-                return isset($identificationData['identification_token']) && $identificationData['identification_token'];
+                return (bool) $this->dataStorage->getIdentificationToken();
             }),
 
             new TwigFunction('isConsentFlow', function () {
-                $token = $this->dataStorage->readValue('consentFlow[token]');
+                $token = $this->dataStorage->readValue(IdentificationDataStorage::CONSENT_FLOW_TOKEN_KEY);
                 return (bool)$token;
             }),
 
             new TwigFunction('isWifiFlow', function () {
-                return (bool)$this->dataStorage->readValue('is_wifi_flow');
+                return (bool)$this->wifiIdentificationDataStorage->isWifiFlow();
             }),
 
             new TwigFunction('getIdentificationToken', function () {
-                $identificationData = $this->dataStorage->readIdentificationData();
-                return $identificationData['identification_token'] ?? null;
+                return $this->dataStorage->getIdentificationToken();
             }),
 
             new TwigFunction('isOtp', [$this, 'isOtp']),
 
             new TwigFunction('isClickableSubImage', function () {
-                return (bool)$this->dataStorage->readValue('is_clickable_sub_image');
+                // todo rework after task with landing page
+                return false;
+                //return (bool)$this->dataStorage->readValue('is_clickable_sub_image');
             })
         ];
     }
@@ -106,12 +122,14 @@ class IdentificationStatusExtension extends AbstractExtension
      */
     public function isOtp(): bool
     {
-        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
-        if (isset($ispDetectionData['carrier_id']) && $ispDetectionData['carrier_id']) {
+        $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
+
+        if ($billingCarrierId) {
             /** @var CarrierInterface $carrier */
-            $carrier = $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id']);
+            $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
             return $carrier->isConfirmationClick();
         }
+
         return false;
     }
 }

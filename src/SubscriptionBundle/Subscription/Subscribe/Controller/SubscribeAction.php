@@ -16,6 +16,7 @@ use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Identification\Service\RouteProvider;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Subscription\Subscribe\Exception\ExistingSubscriptionException;
 use SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter;

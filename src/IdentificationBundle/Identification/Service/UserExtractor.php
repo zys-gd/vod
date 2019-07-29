@@ -4,7 +4,7 @@ namespace IdentificationBundle\Identification\Service;
 
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\DTO\IdentificationData;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\UserRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,17 +55,17 @@ class UserExtractor
      */
     public function getUserFromRequest(Request $request): ?User
     {
-        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
+        $identificationToken = IdentificationFlowDataExtractor::extractIdentificationToken($request->getSession());
         $this->logger->debug('Retrieving user user from request', [
-            'identificationData' => $identificationData
+            'identificationToken' => $identificationToken
         ]);
 
-        if (empty($identificationData['identification_token'])) {
+        if (!$identificationToken) {
             return null;
         }
 
         /** @var User $user */
-        $user = $this->userRepository->findOneByIdentificationToken($identificationData['identification_token']);
+        $user = $this->userRepository->findOneByIdentificationToken($identificationToken);
 
         if ($user) {
 

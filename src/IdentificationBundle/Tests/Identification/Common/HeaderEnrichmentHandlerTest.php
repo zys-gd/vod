@@ -10,6 +10,8 @@ use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\Identification\Common\HeaderEnrichmentHandler;
 use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\Handler\HasHeaderEnrichment;
+use IdentificationBundle\Identification\Service\IdentificationStatus;
+use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
@@ -36,7 +38,7 @@ class HeaderEnrichmentHandlerTest extends \PHPUnit\Framework\TestCase
     private $userRepository;
     private $session;
     /**
-     * @var \IdentificationBundle\Identification\Service\IdentificationDataStorage
+     * @var \IdentificationBundle\Identification\Service\Session\IdentificationDataStorage
      */
     private $dataStorage;
     private $identificationStatus;
@@ -61,8 +63,9 @@ class HeaderEnrichmentHandlerTest extends \PHPUnit\Framework\TestCase
         $this->userRepository          = Mockery::spy(\IdentificationBundle\Repository\UserRepository::class);
         $this->userFactory             = Mockery::spy(\IdentificationBundle\Identification\Service\UserFactory::class);
         $this->session                 = new Session(new MockArraySessionStorage());
-        $this->dataStorage             = new \IdentificationBundle\Identification\Service\IdentificationDataStorage($this->session);
-        $this->identificationStatus    = new \IdentificationBundle\Identification\Service\IdentificationStatus($this->dataStorage);
+        $sessionStorage                = new \IdentificationBundle\Identification\Service\Session\SessionStorage($this->session);
+        $this->dataStorage             = new \IdentificationBundle\Identification\Service\Session\IdentificationDataStorage($sessionStorage);
+        $this->identificationStatus    = new IdentificationStatus($this->dataStorage, new WifiIdentificationDataStorage($sessionStorage));
         $this->headerEnrichmentHandler = new HeaderEnrichmentHandler(
             $this->userFactory,
             $this->entityManager,
@@ -97,7 +100,7 @@ class HeaderEnrichmentHandlerTest extends \PHPUnit\Framework\TestCase
         $this->headerEnrichmentHandler->process($this->request, $this->handler, $this->carrier, 'token', Mockery::spy(DeviceData::class));
 
         $this->assertEquals('token', $user->getIdentificationToken());
-        $this->assertArraySubset(['identification_token' => 'token'], $this->dataStorage->readIdentificationData());
+        $this->assertArraySubset(['identification_token' => 'token'], $this->dataStorage->getIdentificationData());
 
     }
 
@@ -109,7 +112,7 @@ class HeaderEnrichmentHandlerTest extends \PHPUnit\Framework\TestCase
 
         $this->headerEnrichmentHandler->process($this->request, $this->handler, $this->carrier, 'token', Mockery::spy(DeviceData::class));
 
-        $this->assertArraySubset(['identification_token' => 'token'], $this->dataStorage->readIdentificationData());
+        $this->assertArraySubset(['identification_token' => 'token'], $this->dataStorage->getIdentificationData());
 
         $this->userFactory->shouldHaveReceived('create')->once();
 

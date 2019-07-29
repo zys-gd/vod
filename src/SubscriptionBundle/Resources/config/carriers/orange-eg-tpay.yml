@@ -2,7 +2,7 @@ services:
     SubscriptionBundle\Carriers\OrangeEGTpay\Subscribe\OrangeEGSubscriptionHandler:
         arguments:
             - '@ExtrasBundle\Utils\LocalExtractor'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
             - '@router'
         tags:

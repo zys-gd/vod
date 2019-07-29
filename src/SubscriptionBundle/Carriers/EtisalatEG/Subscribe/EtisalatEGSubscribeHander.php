@@ -12,7 +12,7 @@ namespace SubscriptionBundle\Carriers\EtisalatEG\Subscribe;
 use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
 use IdentificationBundle\Entity\User;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Subscribe\Handler\HasCommonFlow;
 use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerInterface;
@@ -21,18 +21,18 @@ use Symfony\Component\HttpFoundation\Request;
 class EtisalatEGSubscribeHander implements SubscriptionHandlerInterface, HasCommonFlow
 {
     /**
-     * @var IdentificationDataStorage
+     * @var WifiIdentificationDataStorage
      */
-    private $identificationDataStorage;
+    private $wifiIdentificationDataStorage;
 
 
     /**
      * EtisalatEGSubscribeHander constructor.
-     * @param IdentificationDataStorage $identificationDataStorage
+     * @param WifiIdentificationDataStorage $identificationDataStorage
      */
-    public function __construct(IdentificationDataStorage $identificationDataStorage)
+    public function __construct(WifiIdentificationDataStorage $identificationDataStorage)
     {
-        $this->identificationDataStorage = $identificationDataStorage;
+        $this->wifiIdentificationDataStorage = $identificationDataStorage;
     }
 
     public function canHandle(\CommonDataBundle\Entity\Interfaces\CarrierInterface $carrier): bool
@@ -45,7 +45,7 @@ class EtisalatEGSubscribeHander implements SubscriptionHandlerInterface, HasComm
     public function getAdditionalSubscribeParams(Request $request, User $User): array
     {
         /** @var PinRequestResult $pinRequestResult */
-        $pinRequestResult = $this->identificationDataStorage->readPreviousOperationResult('pinRequest');
+        $pinRequestResult = $this->wifiIdentificationDataStorage->getPinRequestResult();
 
         $contractId = $pinRequestResult->getRawData()['subscription_contract_id'];
 

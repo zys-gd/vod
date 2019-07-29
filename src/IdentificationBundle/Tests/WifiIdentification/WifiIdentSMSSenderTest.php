@@ -1,9 +1,11 @@
 <?php declare(strict_types=1);
 
 
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\SessionStorage;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinRequestRules;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
+use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use IdentificationBundle\WifiIdentification\WifiIdentSMSSender;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
@@ -36,8 +38,8 @@ class WifiIdentSMSSenderTest extends TestCase
     /** @var IdentificationBundle\WifiIdentification\Common\RequestProvider | MockInterface */
     private $requestProvider;
 
-    /** @var IdentificationBundle\Identification\Service\IdentificationDataStorage | MockInterface */
-    private $dataStorage;
+    /** @var WifiIdentificationDataStorage | MockInterface */
+    private $wifiIdentificationDataStorage;
 
     /** @var IdentificationBundle\Repository\UserRepository | MockInterface */
     private $userRepository;
@@ -54,7 +56,7 @@ class WifiIdentSMSSenderTest extends TestCase
         $this->cleaner               = Mockery::spy(IdentificationBundle\WifiIdentification\Service\MsisdnCleaner::class);
         $this->pinCodeSaver          = Mockery::spy(IdentificationBundle\WifiIdentification\Common\InternalSMS\PinCodeSaver::class);
         $this->requestProvider       = Mockery::spy(IdentificationBundle\WifiIdentification\Common\RequestProvider::class);
-        $this->dataStorage           = new IdentificationDataStorage($this->session);
+        $this->wifiIdentificationDataStorage = new WifiIdentificationDataStorage(new SessionStorage($this->session));
         $this->userRepository        = Mockery::spy(IdentificationBundle\Repository\UserRepository::class);
         $this->identificationHandler = Mockery::spy(WifiIdentificationHandlerInterface::class);
 
@@ -66,7 +68,7 @@ class WifiIdentSMSSenderTest extends TestCase
             $this->cleaner,
             $this->pinCodeSaver,
             $this->requestProvider,
-            $this->dataStorage,
+            $this->wifiIdentificationDataStorage,
             $this->userRepository
         );
     }
@@ -115,7 +117,7 @@ class WifiIdentSMSSenderTest extends TestCase
 
         $this->wifiIdentSMSSender->sendSMS(0, '1234567890');
 
-        $this->assertNotEmpty($this->dataStorage->readPreviousOperationResult('pinRequest'));
+        $this->assertNotEmpty($this->wifiIdentificationDataStorage->getPinRequestResult());
 
         $this->pinRequestProcess->shouldHaveReceived('doPinRequest')->once();
         $wifiIdentificationHandler->shouldHaveReceived('afterSuccessfulPinRequest')->once();

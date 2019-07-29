@@ -15,9 +15,7 @@ use App\Domain\Service\Games\GameImagesSerializer;
 use App\Domain\Service\Games\GameSerializer;
 use App\Domain\Service\Piwik\ContentStatisticSender;
 use IdentificationBundle\Identification\DTO\ISPData;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -115,9 +113,7 @@ class GamesController extends AbstractController implements AppControllerInterfa
     {
         $games = $this->gameRepository->findBatchOfGames(0, 8);
 
-        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
-        $campaignToken      = AffiliateVisitSaver::extractCampaignToken($request->getSession());
-        $this->contentStatisticSender->trackVisit($identificationData, $data, $campaignToken);
+        $this->contentStatisticSender->trackVisit($request->getSession());
 
         $template = $this->templateConfigurator->getTemplate('game_category_content', $data->getCarrierId());
         return $this->render($template, [

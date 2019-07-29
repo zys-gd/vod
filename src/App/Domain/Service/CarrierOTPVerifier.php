@@ -1,15 +1,16 @@
 <?php
 
-
 namespace App\Domain\Service;
-
 
 use App\Domain\Repository\CarrierRepository;
 use IdentificationBundle\BillingFramework\ID;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
+use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+/**
+ * Class CarrierOTPVerifier
+ */
 class CarrierOTPVerifier
 {
     /**
@@ -17,9 +18,9 @@ class CarrierOTPVerifier
      */
     private $carrierRepository;
     /**
-     * @var IdentificationDataStorage
+     * @var WifiIdentificationDataStorage
      */
-    private $dataStorage;
+    private $wifiIdentificationDataStorage;
 
     /**
      * TODO: do with interface of carrier's implementation subscriber?
@@ -30,15 +31,17 @@ class CarrierOTPVerifier
     ];
 
     /**
-     * CarrierOTPVerifier constructor.
+     * CarrierOTPVerifier constructor
      *
-     * @param CarrierRepository         $carrierRepository
-     * @param IdentificationDataStorage $dataStorage
+     * @param CarrierRepository $carrierRepository
+     * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
      */
-    public function __construct(CarrierRepository $carrierRepository, IdentificationDataStorage $dataStorage)
-    {
+    public function __construct(
+        CarrierRepository $carrierRepository,
+        WifiIdentificationDataStorage $wifiIdentificationDataStorage
+    ) {
         $this->carrierRepository = $carrierRepository;
-        $this->dataStorage       = $dataStorage;
+        $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
     }
 
     /**
@@ -48,10 +51,8 @@ class CarrierOTPVerifier
      */
     public function forceWifi(SessionInterface $session)
     {
-        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($session);
-
-        if (in_array($ispDetectionData['carrier_id'] ?? '', $this->otpCarriers)) {
-            $this->dataStorage->storeValue('is_wifi_flow', true);
+        if (in_array(IdentificationFlowDataExtractor::extractBillingCarrierId($session) ?? '', $this->otpCarriers)) {
+            $this->wifiIdentificationDataStorage->setWifiFlow(true);
         }
     }
 }

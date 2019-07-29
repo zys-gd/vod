@@ -4,7 +4,7 @@
 namespace IdentificationBundle\Identification\Common;
 
 
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\BillingOptionsProvider;
 use SubscriptionBundle\BillingFramework\Process\API\Client;
@@ -70,7 +70,10 @@ class PostPaidHandler
         try {
             $response = $this->client->makePostRequest($link, $preparedParams);
             $data     = (array)$response->data;
-            $this->identificationDataStorage->storeValue('isPostPaidRestricted', $data['accountTypeId'] ?? false);
+            $this->identificationDataStorage->storeValue(
+                IdentificationDataStorage::POST_PAID_RESTRICTED_KEY,
+                $data['accountTypeId'] ?? false
+            );
         } catch (\Throwable $e) {
             $this->logger->debug('Postpaid error', [
                 'error' => $e->getMessage()
@@ -83,6 +86,6 @@ class PostPaidHandler
      */
     public function isPostPaidRestricted()
     {
-        return $this->identificationDataStorage->readValue('isPostPaidRestricted') === 1;
+        return $this->identificationDataStorage->readValue(IdentificationDataStorage::POST_PAID_RESTRICTED_KEY);
     }
 }
