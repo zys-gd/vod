@@ -3706,7 +3706,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git-codecommit.eu-west-1.amazonaws.com/v1/repos/store-commons-module",
-                "reference": "46cbcc8b37e55af78817af1792b1d5b44a521f4e"
+                "reference": "8c172009d1638cea8576b4de6fe1e7f826501c7f"
             },
             "require": {
                 "doctrine/orm": "^2.5",
@@ -3714,7 +3714,6 @@
                 "geoip2/geoip2": "v2.9.0",
                 "phive/twig-extensions-deferred": "^2.0",
                 "php": "^7.2",
-                "predis/predis": "^1.1",
                 "ramsey/uuid": "^3.8.0",
                 "symfony/framework-bundle": "4.*",
                 "twig/twig": "^2.7"
@@ -3730,7 +3729,8 @@
                 "psr-4": {
                     "CountryCarrierDetectionBundle\\": "src/CountryCarrierDetectionBundle",
                     "DeviceDetectionBundle\\": "src/DeviceDetectionBundle",
-                    "ExtrasBundle\\": "src/ExtrasBundle"
+                    "ExtrasBundle\\": "src/ExtrasBundle",
+                    "CommonDataBundle\\": "src/CommonDataBundle"
                 }
             },
             "authors": [
@@ -3739,7 +3739,7 @@
                     "email": "dmitriy.bichenko@playwing.net"
                 }
             ],
-            "time": "2019-07-23T11:12:54+00:00"
+            "time": "2019-07-26T10:50:36+00:00"
         },
         {
             "name": "predis/predis",
