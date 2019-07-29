@@ -4,8 +4,6 @@ namespace SubscriptionBundle\Blacklist;
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use ExtrasBundle\Cache\ICacheService;
-use IdentificationBundle\Entity\CarrierInterface;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;

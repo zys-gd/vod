@@ -15,6 +15,7 @@ services:
   IdentificationBundle\Repository\CarrierRepositoryInterface: '@App\Domain\Repository\CarrierRepository'
   CommonDataBundle\Repository\Interfaces\LanguageRepositoryInterface: '@CommonDataBundle\Repository\LanguageRepository'
   SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface: '@App\Domain\Repository\CampaignRepository'
+  IdentificationBundle\Identification\Service\TranslatorInterface: '@App\Domain\Service\Translator\Translator'
 
 
 subscription:

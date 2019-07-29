@@ -21,7 +21,6 @@ use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerPro
 use IdentificationBundle\WifiIdentification\Service\IdentFinisher;
 use IdentificationBundle\WifiIdentification\Service\MsisdnCleaner;
 use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
-use SubscriptionBundle\Controller\Traits\ResponseTrait;
 use SubscriptionBundle\Repository\SubscriptionRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\RouterInterface;

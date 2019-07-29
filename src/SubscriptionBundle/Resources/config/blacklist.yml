@@ -19,6 +19,6 @@ services:
       - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
       - '@app.cache.default.subscription'
       - '@SubscriptionBundle\Blacklist\BlacklistSaver'
-      - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+      - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
       - '@IdentificationBundle\Repository\UserRepository'
       - '@logger'

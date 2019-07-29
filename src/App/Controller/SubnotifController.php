@@ -115,6 +115,7 @@ class SubnotifController
      * @return JsonResponse
      *
      * @throws ActiveSubscriptionPackNotFound
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function sendRemindSms(Request $request, ISPData $data)
     {

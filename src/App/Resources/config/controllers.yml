@@ -122,12 +122,12 @@ services:
 
     App\Controller\SubnotifController:
         arguments:
-            - '@SubscriptionBundle\Service\Notification\Notifier'
+            - '@SubscriptionBundle\Subscription\Notification\Notifier'
             - '@App\Domain\Repository\CarrierRepository'
             - '@IdentificationBundle\Repository\UserRepository'
             - '@session'
             - '@ExtrasBundle\Utils\LocalExtractor'
-            - '@SubscriptionBundle\Service\SubscriptionPackProvider'
+            - '@SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider'
             - '@App\Domain\Service\Translator\Translator'
             - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
