@@ -108,7 +108,7 @@ class CommonConsentPageFlowHandler
 
             $processResult = $this->identProcess->doIdent($parameters);
 
-            $this->dataStorage->setToStorage(
+            $this->dataStorage->storeValue(
                 IdentificationDataStorage::CONSENT_FLOW_TOKEN_KEY,
                 $this->generator->generateToken()
             );

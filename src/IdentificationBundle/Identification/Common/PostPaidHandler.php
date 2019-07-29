@@ -61,7 +61,7 @@ class PostPaidHandler
         try {
             $response = $this->client->makePostRequest($link, $preparedParams);
             $data = (array)$response->data;
-            $this->identificationDataStorage->setToStorage(
+            $this->identificationDataStorage->storeValue(
                 IdentificationDataStorage::POST_PAID_RESTRICTED_KEY,
                 $data['accountTypeId'] ?? false
             );
@@ -77,6 +77,6 @@ class PostPaidHandler
      */
     public function isPostPaidRestricted()
     {
-        return $this->identificationDataStorage->getFromStorage(IdentificationDataStorage::POST_PAID_RESTRICTED_KEY);
+        return $this->identificationDataStorage->readValue(IdentificationDataStorage::POST_PAID_RESTRICTED_KEY);
     }
 }

@@ -37,7 +37,7 @@ class IdentificationDataStorage
      * @param string $key
      * @param $value
      */
-    public function setToStorage(string $key, $value): void
+    public function storeValue(string $key, $value): void
     {
         $this->storage->storeValue(SessionStorage::STORAGE_KEY . "[$key]", $value);
     }
@@ -47,7 +47,7 @@ class IdentificationDataStorage
      *
      * @return mixed
      */
-    public function getFromStorage(string $key)
+    public function readValue(string $key)
     {
         return $this->storage->readValue(SessionStorage::STORAGE_KEY . "[$key]");
     }
@@ -104,7 +104,7 @@ class IdentificationDataStorage
      */
     public function getRedirectIdentToken(): ?string
     {
-        return $this->getFromStorage(self::REDIRECT_IDENT_TOKEN_KEY);
+        return $this->readValue(self::REDIRECT_IDENT_TOKEN_KEY);
     }
 
     /**
@@ -112,7 +112,7 @@ class IdentificationDataStorage
      */
     public function setRedirectIdentToken(string $token): void
     {
-        $this->setToStorage(self::REDIRECT_IDENT_TOKEN_KEY, $token);
+        $this->storeValue(self::REDIRECT_IDENT_TOKEN_KEY, $token);
     }
 
     /**

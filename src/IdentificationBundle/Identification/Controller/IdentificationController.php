@@ -110,7 +110,7 @@ class IdentificationController extends AbstractController
             $deviceData
         );
         $this->logger->debug('Finish ident from action', ['result' => $result]);
-        $this->identificationDataStorage->setToStorage(IdentificationDataStorage::SUBSCRIBE_AFTER_IDENT_KEY, true);
+        $this->identificationDataStorage->storeValue(IdentificationDataStorage::SUBSCRIBE_AFTER_IDENT_KEY, true);
 
         if ($customResponse = $result->getOverridedResponse()) {
             return $customResponse;

@@ -52,12 +52,12 @@ class IdentificationStatus
 
     public function isAlreadyTriedToAutoIdent(): bool
     {
-        return (bool)$this->dataStorage->getFromStorage(IdentificationDataStorage::AUTO_IDENT_ATTEMPT_KEY);
+        return (bool)$this->dataStorage->readValue(IdentificationDataStorage::AUTO_IDENT_ATTEMPT_KEY);
     }
 
     public function registerAutoIdentAttempt(): void
     {
-        $this->dataStorage->setToStorage(IdentificationDataStorage::AUTO_IDENT_ATTEMPT_KEY, true);
+        $this->dataStorage->storeValue(IdentificationDataStorage::AUTO_IDENT_ATTEMPT_KEY, true);
     }
 
     public function isWifiFlowStarted(): bool
