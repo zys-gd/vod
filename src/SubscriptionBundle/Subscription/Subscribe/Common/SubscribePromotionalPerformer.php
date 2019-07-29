@@ -9,8 +9,8 @@ use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessExce
 use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Common\FakeResponseProvider;
-use SubscriptionBundle\Subscription\Notification\Notifier;
 use SubscriptionBundle\Subscription\Common\SubscriptionSerializer;
+use SubscriptionBundle\Subscription\Notification\Notifier;
 
 /**
  * Class SubscribePromotionalPerformer

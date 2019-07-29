@@ -10,16 +10,15 @@ namespace SubscriptionBundle\Subscription\Unsubscribe\Controller;
 
 
 use ExtrasBundle\Controller\Traits\ResponseTrait;
-use IdentificationBundle\Exception\RedirectRequiredException;
+use IdentificationBundle\Identification\Service\UserExtractor;
 use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
-use SubscriptionBundle\Exception\SubscriptionException;
+use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
 use SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEligibilityChecker;
+use SubscriptionBundle\Subscription\Unsubscribe\Exception\AlreadyUnsubscribedException;
 use SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider;
 use SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber;
 use SubscriptionBundle\Subscription\Unsubscribe\UnsubscriptionEligibilityChecker;
-use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
 use SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider;
-use IdentificationBundle\Identification\Service\UserExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -67,6 +66,8 @@ class UnsubscribeAction extends Controller
      * @param SubscriptionPackProvider                                      $subscriptionPackProvider
      * @param Unsubscriber                                                  $unsubscriber
      * @param UnsubscriptionEligibilityChecker                              $checker
+     * @param UnsubscriptionHandlerProvider                                 $handlerProvider
+     * @param ApiConnector                                                  $crossSubscriptionAPI
      */
     public function __construct(
         UserExtractor $UserProvider,
@@ -97,7 +98,7 @@ class UnsubscribeAction extends Controller
             $subscription     = $this->subscriptionProvider->getExistingSubscriptionForUser($user);
 
             if (!is_null($subscription) && !$this->checker->isEligibleToUnsubscribe($subscription)) {
-                throw new SubscriptionException('You have already been unsubscribed');
+                throw new AlreadyUnsubscribedException('You have already been unsubscribed');
             }
 
             $handler  = $this->handlerProvider->getUnsubscriptionHandler($user->getCarrier());
@@ -126,18 +127,7 @@ class UnsubscribeAction extends Controller
             );
 
 
-        } catch (RedirectRequiredException $ex) {
-            $response = $this->getSimpleJsonResponse($ex->getMessage(), 400, [
-                'identification' => false,
-                'subscription'   => false,
-                'redirectUrl'    => $ex->getRedirectUrl(),
-            ]);
-        } catch (SubscriptionException $ex) {
-            $response = $this->getSimpleJsonResponse($ex->getMessage(), 400, [
-                'identification' => true,
-                'subscription'   => false,
-            ]);
-        } catch (\Exception $ex) {
+        }  catch (\Exception $ex) {
             $response = $this->getSimpleJsonResponse($ex->getMessage(), 400, [
                 'identification' => true,
                 'subscription'   => false,

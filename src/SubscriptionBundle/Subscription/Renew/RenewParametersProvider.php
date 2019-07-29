@@ -13,7 +13,6 @@ use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Common\RequestParametersProvider;
 use SubscriptionBundle\Subscription\Common\RouteProvider;
-use Symfony\Component\Routing\RouterInterface;
 
 class RenewParametersProvider
 {

@@ -10,8 +10,8 @@ namespace SubscriptionBundle\Admin\Twig;
 
 
 use SubscriptionBundle\Admin\Service\ConstraintByAffiliateCapCalculator;
-use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterStorage;
+use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 

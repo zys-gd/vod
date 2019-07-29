@@ -10,10 +10,10 @@ namespace SubscriptionBundle\CAPTool\Visit;
 
 
 use App\Domain\Entity\Carrier;
-use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
-use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\CAPTool\Subscription\Notificaton\CAPNotificationSender;
 use SubscriptionBundle\CAPTool\Visit\Exception\InvalidConstraintException;
+use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
+use SubscriptionBundle\Service\EntitySaveHelper;
 
 class VisitNotifier
 {

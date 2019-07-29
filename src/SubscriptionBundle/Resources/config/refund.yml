@@ -1,0 +1,6 @@
+services:
+  SubscriptionBundle\Refund\RefundService:
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - '@SubscriptionBundle\BillingFramework\Process\API\Client'
+      - '@SubscriptionBundle\Reporting\ReportingToolDataProvider'

@@ -9,9 +9,7 @@
 namespace SubscriptionBundle\SubscriptionPack\Exception;
 
 
-use SubscriptionBundle\Exception\SubscriptionException;
-
-class ActiveSubscriptionPackNotFound extends SubscriptionException
+class ActiveSubscriptionPackNotFound extends \Exception
 {
 
 }

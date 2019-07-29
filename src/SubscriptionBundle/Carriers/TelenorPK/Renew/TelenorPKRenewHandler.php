@@ -12,11 +12,11 @@ namespace SubscriptionBundle\Carriers\TelenorPK\Renew;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\BillingFramework\ID;
 use SubscriptionBundle\Entity\Subscription;
+use SubscriptionBundle\Subscription\Notification\Notifier;
 use SubscriptionBundle\Subscription\Renew\Common\RenewAlertTypeProvider;
 use SubscriptionBundle\Subscription\Renew\Handler\HasCommonFlow;
 use SubscriptionBundle\Subscription\Renew\Handler\HasRenewAlerts;
 use SubscriptionBundle\Subscription\Renew\Handler\RenewHandlerInterface;
-use SubscriptionBundle\Subscription\Notification\Notifier;
 use SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider;
 
 class TelenorPKRenewHandler implements

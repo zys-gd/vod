@@ -9,11 +9,11 @@
 namespace SubscriptionBundle\Admin\Service;
 
 
-use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterStorage;
 use SubscriptionBundle\CAPTool\Subscription\Limiter\StorageKeyGenerator;
 use SubscriptionBundle\CAPTool\Visit\KeyGenerator;
 use SubscriptionBundle\CAPTool\Visit\VisitStorage;
+use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 
 class ConstraintByAffiliateCapCalculator
 {

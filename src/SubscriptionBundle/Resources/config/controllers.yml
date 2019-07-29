@@ -80,7 +80,7 @@ services:
         calls: [['setContainer', ['@service_container']]]
 
     SubscriptionBundle\Admin\Controller\RefundAdminController:
-        arguments: ['@form.factory', '@SubscriptionBundle\Service\RefundService']
+        arguments: ['@form.factory', '@SubscriptionBundle\Refund\RefundService']
 
     SubscriptionBundle\Admin\Controller\UnsubscriptionAdminController:
         arguments:
@@ -91,4 +91,4 @@ services:
     SubscriptionBundle\Admin\Controller\ComplaintsAdminController:
         arguments:
             - '@form.factory'
-            - '@SubscriptionBundle\Service\ReportingToolService'
+            - '@SubscriptionBundle\Reporting\ReportingToolDataProvider'

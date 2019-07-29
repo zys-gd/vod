@@ -1,12 +1,13 @@
 <?php
 
-namespace SubscriptionBundle\Service;
+namespace SubscriptionBundle\Refund;
 
 use Doctrine\ORM\EntityManager;
 use IdentificationBundle\Entity\User;
 use SubscriptionBundle\BillingFramework\Process\API\Client;
 use SubscriptionBundle\Entity\Refund;
 use SubscriptionBundle\Entity\Subscription;
+use SubscriptionBundle\Reporting\ReportingToolDataProvider;
 
 /**
  * Class RefundService
@@ -27,21 +28,21 @@ class RefundService
     private $billingClientApi;
 
     /**
-     * @var ReportingToolService
+     * @var ReportingToolDataProvider
      */
     private $reportingToolService;
 
     /**
      * RefundService constructor
      *
-     * @param EntityManager $entityManager
-     * @param Client $billingClientApi
-     * @param ReportingToolService $reportingToolService
+     * @param EntityManager             $entityManager
+     * @param Client                    $billingClientApi
+     * @param ReportingToolDataProvider $reportingToolService
      */
     public function __construct(
         EntityManager $entityManager,
         Client $billingClientApi,
-        ReportingToolService $reportingToolService
+        ReportingToolDataProvider $reportingToolService
     ) {
         $this->entityManager = $entityManager;
         $this->billingClientApi = $billingClientApi;

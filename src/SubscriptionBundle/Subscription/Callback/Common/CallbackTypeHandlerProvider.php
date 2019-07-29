@@ -9,7 +9,6 @@
 namespace SubscriptionBundle\Subscription\Callback\Common;
 
 
-use SubscriptionBundle\Exception\SubscriptionException;
 use SubscriptionBundle\Subscription\Callback\Common\Type\AbstractCallbackHandler;
 
 class CallbackTypeHandlerProvider
@@ -43,6 +42,6 @@ class CallbackTypeHandlerProvider
                 return $helper;
             }
         }
-        throw new SubscriptionException("Unsupported helper");
+        throw new \InvalidArgumentException("Unsupported helper");
     }
 }

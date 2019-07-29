@@ -7,7 +7,7 @@ use IdentificationBundle\Entity\User;
 use Sonata\AdminBundle\Controller\CRUDController;
 use SubscriptionBundle\Admin\Form\RefundForm;
 use SubscriptionBundle\Entity\Refund;
-use SubscriptionBundle\Service\RefundService;
+use SubscriptionBundle\Refund\RefundService;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;

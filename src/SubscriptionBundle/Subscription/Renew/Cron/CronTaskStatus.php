@@ -1,12 +1,12 @@
 <?php
 
-namespace SubscriptionBundle\Service\Cron;
+namespace SubscriptionBundle\Subscription\Renew\Cron;
 
 use Doctrine\ORM\EntityManager;
 use SubscriptionBundle\Entity\CronTask;
 use SubscriptionBundle\Repository\CronTaskRepository;
-use SubscriptionBundle\Service\Cron\Exception\NoTaskException;
-use SubscriptionBundle\Service\Cron\Exception\TaskRunningException;
+use SubscriptionBundle\Subscription\Renew\Cron\Exception\NoTaskException;
+use SubscriptionBundle\Subscription\Renew\Cron\Exception\TaskRunningException;
 
 class CronTaskStatus
 {

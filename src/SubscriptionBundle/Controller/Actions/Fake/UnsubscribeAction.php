@@ -4,13 +4,12 @@ namespace SubscriptionBundle\Controller\Actions\Fake;
 
 
 use ExtrasBundle\Controller\Traits\ResponseTrait;
-use IdentificationBundle\Identification\Exception\RedirectRequiredException;
+use IdentificationBundle\Identification\Service\UserExtractor;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Exception\SubscriptionException;
-use SubscriptionBundle\Subscription\Unsubscribe\UnsubscriptionEligibilityChecker;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
-use IdentificationBundle\Identification\Service\UserExtractor;
+use SubscriptionBundle\Subscription\Unsubscribe\Exception\AlreadyUnsubscribedException;
+use SubscriptionBundle\Subscription\Unsubscribe\UnsubscriptionEligibilityChecker;
 use Symfony\Component\HttpFoundation\Request;
 
 class UnsubscribeAction
@@ -52,7 +51,7 @@ class UnsubscribeAction
             $subscription = $this->subscriptionProvider->getExistingSubscriptionForUser($User);
 
             if (!is_null($subscription) && !$this->checker->isEligibleToUnsubscribe($subscription)) {
-                throw new SubscriptionException('You have already been unsubscribed');
+                throw new AlreadyUnsubscribedException('You have already been unsubscribed');
             }
 
             $subscription->setStatus(Subscription::IS_INACTIVE);
@@ -71,18 +70,7 @@ class UnsubscribeAction
                     'type' => 'unsubscribe',
                 ]
             );
-        } catch (RedirectRequiredException $ex) {
-            $response = $this->getSimpleJsonResponse($ex->getMessage(), 400, [
-                'identification' => false,
-                'subscription' => false,
-                'redirectUrl' => $ex->getRedirectUrl(),
-            ]);
-        } catch (SubscriptionException $ex) {
-            $response = $this->getSimpleJsonResponse($ex->getMessage(), 400, [
-                'identification' => true,
-                'subscription' => false,
-            ]);
-        } catch (\Exception $ex) {
+        }  catch (\Exception $ex) {
             $response = $this->getSimpleJsonResponse($ex->getMessage(), 400, [
                 'identification' => true,
                 'subscription' => false,

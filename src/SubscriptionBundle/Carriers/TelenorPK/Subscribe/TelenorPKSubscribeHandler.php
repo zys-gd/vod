@@ -12,9 +12,9 @@ namespace SubscriptionBundle\Carriers\TelenorPK\Subscribe;
 use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Entity\User;
 use SubscriptionBundle\Entity\Subscription;
+use SubscriptionBundle\Subscription\Notification\Notifier;
 use SubscriptionBundle\Subscription\Subscribe\Handler\HasCommonFlow;
 use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerInterface;
-use SubscriptionBundle\Subscription\Notification\Notifier;
 use Symfony\Component\HttpFoundation\Request;
 
 class TelenorPKSubscribeHandler implements SubscriptionHandlerInterface, HasCommonFlow

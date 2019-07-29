@@ -7,8 +7,6 @@ use App\Domain\Entity\Affiliate;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use Psr\Log\LoggerInterface;
-use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
-use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 use SubscriptionBundle\CAPTool\Subscription\Exception\SubscriptionCapReachedOnAffiliate;
 use SubscriptionBundle\CAPTool\Subscription\Exception\SubscriptionCapReachedOnCarrier;
@@ -16,6 +14,8 @@ use SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterDataMapper;
 use SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterStorage;
 use SubscriptionBundle\CAPTool\Subscription\Limiter\StorageKeyGenerator;
 use SubscriptionBundle\CAPTool\Subscription\Limiter\SubscriptionCapChecker;
+use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
+use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 

@@ -42,7 +42,7 @@ services:
     #      - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
 
     cron.task:
-        class: SubscriptionBundle\Service\Cron\CronTaskStatus
+        class: SubscriptionBundle\Subscription\Renew\Cron\CronTaskStatus
         arguments: ['@doctrine.orm.default_entity_manager', '@SubscriptionBundle\Repository\CronTaskRepository']
 
 

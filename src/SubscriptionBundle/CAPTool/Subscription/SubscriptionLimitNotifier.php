@@ -5,9 +5,9 @@ namespace SubscriptionBundle\CAPTool\Subscription;
 
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use SubscriptionBundle\CAPTool\Subscription\Notificaton\CAPNotificationSender;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Service\EntitySaveHelper;
-use SubscriptionBundle\CAPTool\Subscription\Notificaton\CAPNotificationSender;
 
 class SubscriptionLimitNotifier
 {

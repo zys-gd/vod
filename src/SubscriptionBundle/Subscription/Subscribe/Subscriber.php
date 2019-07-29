@@ -16,18 +16,18 @@ use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException;
 use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
+use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitCompleter;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
+use SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater;
+use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Subscription\Common\FakeResponseProvider;
 use SubscriptionBundle\Subscription\Common\PromotionalResponseChecker;
-use SubscriptionBundle\Subscription\Subscribe\Common\SubscribePerformer;
-use SubscriptionBundle\Subscription\Subscribe\Common\SubscribePromotionalPerformer;
-use SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater;
-use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitCompleter;
-use SubscriptionBundle\Service\EntitySaveHelper;
-use SubscriptionBundle\Subscription\Notification\Notifier;
 use SubscriptionBundle\Subscription\Common\SubscriptionFactory;
 use SubscriptionBundle\Subscription\Common\SubscriptionSerializer;
+use SubscriptionBundle\Subscription\Notification\Notifier;
+use SubscriptionBundle\Subscription\Subscribe\Common\SubscribePerformer;
+use SubscriptionBundle\Subscription\Subscribe\Common\SubscribePromotionalPerformer;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class Subscriber

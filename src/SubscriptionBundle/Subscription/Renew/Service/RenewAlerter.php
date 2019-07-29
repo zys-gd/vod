@@ -11,9 +11,9 @@ namespace SubscriptionBundle\Subscription\Renew\Service;
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use SubscriptionBundle\Repository\SubscriptionRepository;
+use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Subscription\Renew\Handler\HasRenewAlerts;
 use SubscriptionBundle\Subscription\Renew\Handler\RenewHandlerProvider;
-use SubscriptionBundle\Service\EntitySaveHelper;
 
 class RenewAlerter
 {

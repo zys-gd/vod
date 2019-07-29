@@ -9,16 +9,15 @@ use SubscriptionBundle\Affiliate\Service\AffiliateSender;
 use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
 use SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Exception\SubscriptionException;
 use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use SubscriptionBundle\Repository\SubscriptionRepository;
+use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Subscription\Callback\Common\Type\RenewCallbackHandler;
 use SubscriptionBundle\Subscription\Callback\Common\Type\SubscriptionCallbackHandler;
 use SubscriptionBundle\Subscription\Callback\Common\Type\UnsubscriptionCallbackHandler;
 use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerProvider;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCommonFlow;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCustomTrackingRules;
-use SubscriptionBundle\Service\EntitySaveHelper;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -158,11 +157,11 @@ class CommonFlowHandler
         }
 
         if (!$subscription instanceof Subscription) {
-            throw new SubscriptionException("There is no such subscription");
+            throw new \Exception("There is no such subscription");
         }
 
         if ($carrierId != $subscription->getSubscriptionPack()->getCarrier()->getBillingCarrierId()) {
-            throw new SubscriptionException("Selected carrier does not fit to selected subscription");
+            throw new \Exception("Selected carrier does not fit to selected subscription");
         }
 
         $this->logger->debug(

@@ -9,11 +9,11 @@ use App\Domain\Entity\Campaign;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
-use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 use SubscriptionBundle\CAPTool\Subscription\DTO\AffiliateLimiterData;
 use SubscriptionBundle\CAPTool\Subscription\DTO\CarrierLimiterData;
 use SubscriptionBundle\CAPTool\Subscription\DTO\LimiterData;
+use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class LimiterDataMapper

@@ -13,8 +13,8 @@ use PiwikBundle\Service\PiwikTracker;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\UnsubscribeProcess;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Subscription\Unsubscribe\OnUnsubscribeUpdater;
 use SubscriptionBundle\Subscription\Callback\Common\SubscriptionStatusChanger;
+use SubscriptionBundle\Subscription\Unsubscribe\OnUnsubscribeUpdater;
 
 class UnsubscriptionCallbackHandler extends AbstractCallbackHandler
 {

@@ -13,9 +13,9 @@ use PiwikBundle\Service\PiwikTracker;
 use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
+use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitCompleter;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Subscribe\OnSubscribeUpdater;
-use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitCompleter;
 
 class SubscriptionCallbackHandler extends AbstractCallbackHandler
 {

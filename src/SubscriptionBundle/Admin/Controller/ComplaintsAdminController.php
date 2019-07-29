@@ -14,7 +14,7 @@ use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 use SubscriptionBundle\Entity\Affiliate\AffiliateLog;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Service\ReportingToolService;
+use SubscriptionBundle\Reporting\ReportingToolDataProvider;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormView;
@@ -35,7 +35,7 @@ class ComplaintsAdminController extends CRUDController
     private $formFactory;
 
     /**
-     * @var ReportingToolService
+     * @var \SubscriptionBundle\Reporting\ReportingToolDataProvider
      */
     private $reportingToolService;
 
@@ -61,7 +61,7 @@ class ComplaintsAdminController extends CRUDController
         'charges_successful_value' => 'Total Amount Charged',
     ];
 
-    public function __construct(FormFactory $formFactory, ReportingToolService $reportingToolService)
+    public function __construct(FormFactory $formFactory, ReportingToolDataProvider $reportingToolService)
     {
         $this->formFactory = $formFactory;
         $this->reportingToolService = $reportingToolService;

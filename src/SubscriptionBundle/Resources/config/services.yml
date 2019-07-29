@@ -47,11 +47,6 @@ services:
     IdentificationBundle\Identification\Service\UserExtractor:
         arguments: ['@router.default', '@logger', '@IdentificationBundle\Repository\UserRepository']
 
-    SubscriptionBundle\Service\RefundService:
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@SubscriptionBundle\BillingFramework\Process\API\Client'
-            - '@SubscriptionBundle\Service\ReportingToolService'
 
     SubscriptionBundle\Subscription\Common\SubscriptionSerializer: ~
 

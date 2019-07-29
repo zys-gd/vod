@@ -5,8 +5,8 @@ namespace SubscriptionBundle\Piwik;
 
 
 use App\Domain\Entity\Campaign;
-use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
+use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking;
 
 class PiwikSubscriptionSignature

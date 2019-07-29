@@ -1,4 +1,7 @@
 services:
-  SubscriptionBundle\Service\ReportingToolService:
+  SubscriptionBundle\Reporting\ReportingToolDataProvider:
     arguments:
-      - '_reporting_stats_api_host_placeholder_'
+      - '@SubscriptionBundle\Reporting\ReportingToolRequestSender'
+
+  SubscriptionBundle\Reporting\ReportingToolRequestSender:
+    arguments: ['_reporting_stats_api_host_placeholder_', '@subscription.http.client']

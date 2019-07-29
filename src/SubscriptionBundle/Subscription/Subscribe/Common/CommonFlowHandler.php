@@ -8,34 +8,27 @@
 
 namespace SubscriptionBundle\Subscription\Subscribe\Common;
 
-use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
 use ExtrasBundle\Controller\Traits\ResponseTrait;
 use ExtrasBundle\Utils\UrlParamAppender;
 use IdentificationBundle\Entity\User;
 use Psr\Log\LoggerInterface;
-use SubscriptionBundle\Affiliate\Service\AffiliateSender;
-use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound;
+use SubscriptionBundle\Service\EntitySaveHelper;
+use SubscriptionBundle\Subscription\Common\RouteProvider;
+use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
 use SubscriptionBundle\Subscription\Subscribe\Exception\ExistingSubscriptionException;
-use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
-use SubscriptionBundle\Subscription\Common\RedirectUrlNullifier;
 use SubscriptionBundle\Subscription\Subscribe\Handler\HasCommonFlow;
 use SubscriptionBundle\Subscription\Subscribe\Handler\HasCustomAffiliateTrackingRules;
 use SubscriptionBundle\Subscription\Subscribe\Handler\HasCustomPiwikTrackingRules;
 use SubscriptionBundle\Subscription\Subscribe\Handler\HasCustomResponses;
 use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider;
 use SubscriptionBundle\Subscription\Subscribe\Subscriber;
-use SubscriptionBundle\Service\EntitySaveHelper;
-use SubscriptionBundle\Subscription\Common\RouteProvider;
-use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
+use SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound;
 use SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider;
-use SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
 
 class CommonFlowHandler
 {

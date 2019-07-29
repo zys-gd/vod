@@ -6,8 +6,8 @@ namespace SubscriptionBundle\SubscriptionPack;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use SubscriptionBundle\Entity\SubscriptionPack;
-use SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound;
 use SubscriptionBundle\Repository\SubscriptionPackRepository;
+use SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound;
 
 class SubscriptionPackProvider
 {

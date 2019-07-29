@@ -13,7 +13,6 @@ use ExtrasBundle\Config\DefinitionReplacer;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 
 class SubscriptionExtension extends ConfigurableExtension
@@ -51,6 +50,7 @@ class SubscriptionExtension extends ConfigurableExtension
         $loader->load('twig.yml');
         $loader->load('campaign_confirmation.yml');
         $loader->load('subscription-voters.yml');
+        $loader->load('refund.yml');
 
         $loader->load('captool-visit.yml');
         $loader->load('captool-commons.yml');
@@ -79,7 +79,7 @@ class SubscriptionExtension extends ConfigurableExtension
         DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['billing_framework']['api_host'], '_billing_api_host_placeholder_');
         DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['billing_framework']['client_id'], '_client_id_placeholder_');
 
-        $definition = $container->getDefinition('SubscriptionBundle\Service\ReportingToolService');
+        $definition = $container->getDefinition('SubscriptionBundle\Reporting\ReportingToolRequestSender');
         DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['reporting_tool']['api_host'], '_reporting_stats_api_host_placeholder_');
 
         $definition = $container->getDefinition('SubscriptionBundle\Subscription\Common\RouteProvider');

@@ -13,8 +13,8 @@ use PiwikBundle\Service\PiwikTracker;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\RenewProcess;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Subscription\Renew\OnRenewUpdater;
 use SubscriptionBundle\Subscription\Callback\Common\SubscriptionStatusChanger;
+use SubscriptionBundle\Subscription\Renew\OnRenewUpdater;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RenewCallbackHandler extends AbstractCallbackHandler

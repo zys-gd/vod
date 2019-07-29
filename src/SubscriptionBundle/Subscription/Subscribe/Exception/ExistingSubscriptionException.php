@@ -10,9 +10,8 @@ namespace SubscriptionBundle\Subscription\Subscribe\Exception;
 
 
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Exception\SubscriptionException;
 
-class ExistingSubscriptionException extends SubscriptionException
+class ExistingSubscriptionException extends \Exception
 {
 
     /**

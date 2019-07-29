@@ -5,7 +5,6 @@ namespace SubscriptionBundle\Affiliate\Service;
 
 
 use App\Domain\Entity\Campaign;
-use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;

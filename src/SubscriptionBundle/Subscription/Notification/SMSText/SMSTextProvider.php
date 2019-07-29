@@ -12,8 +12,6 @@ namespace SubscriptionBundle\Subscription\Notification\SMSText;
 use AppBundle\Service\Domain\Carrier\CarrierProvider;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use CommonDataBundle\Entity\Interfaces\LanguageInterface;
-use CommonDataBundle\Repository\Interfaces\LanguageRepositoryInterface;
-use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\BillingFramework\Listener\NotificationContentProvider;
 use SubscriptionBundle\BillingFramework\Notification\Exception\MissingSMSTextException;
 use SubscriptionBundle\Entity\SubscriptionPack;

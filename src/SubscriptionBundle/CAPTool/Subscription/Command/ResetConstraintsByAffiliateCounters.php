@@ -3,12 +3,12 @@
 namespace SubscriptionBundle\CAPTool\Subscription\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
-use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
-use SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository;
 use SubscriptionBundle\CAPTool\Subscription\DTO\AffiliateLimiterData;
 use SubscriptionBundle\CAPTool\Subscription\DTO\CarrierLimiterData;
 use SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterStorage;
 use SubscriptionBundle\CAPTool\Subscription\Limiter\StorageKeyGenerator;
+use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
+use SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

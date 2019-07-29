@@ -12,7 +12,6 @@ namespace SubscriptionBundle\Subscription\Common;
 use SubscriptionBundle\BillingFramework\BillingOptionsProvider;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Subscription\Common\RouteProvider;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 

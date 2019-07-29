@@ -4,10 +4,10 @@ namespace SubscriptionBundle\Subscription\MassRenew\Command;
 
 use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
+use SubscriptionBundle\Subscription\Renew\Cron\CronTaskStatus;
 use SubscriptionBundle\Subscription\Renew\Common\CommonFlowHandler;
 use SubscriptionBundle\Subscription\Renew\Handler\HasCommonFlow;
 use SubscriptionBundle\Subscription\Renew\Handler\RenewHandlerProvider;
-use SubscriptionBundle\Service\Cron\CronTaskStatus;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

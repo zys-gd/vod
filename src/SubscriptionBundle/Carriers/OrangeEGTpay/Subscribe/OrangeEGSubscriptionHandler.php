@@ -4,11 +4,11 @@ namespace SubscriptionBundle\Carriers\OrangeEGTpay\Subscribe;
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use ExtrasBundle\Utils\LocalExtractor;
-use IdentificationBundle\BillingFramework\Process\DTO\PinVerifyResult;
 use IdentificationBundle\BillingFramework\ID;
+use IdentificationBundle\BillingFramework\Process\DTO\PinVerifyResult;
 use IdentificationBundle\Entity\User;
-use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use IdentificationBundle\Identification\Service\RouteProvider;
+use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException;
 use SubscriptionBundle\Entity\Subscription;

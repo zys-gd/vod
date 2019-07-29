@@ -5,9 +5,9 @@ namespace SubscriptionBundle\Piwik\DataMapper;
 
 use LegacyBundle\Service\Exchanger;
 use PiwikBundle\Service\DTO\EcommerceDTO;
+use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Piwik\PiwikSubscriptionSignature;
-use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 
 class PiwikUnsubscriptionDataMapper
 {

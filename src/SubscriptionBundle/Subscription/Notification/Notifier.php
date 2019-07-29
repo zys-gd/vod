@@ -12,8 +12,8 @@ use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Subscription\Notification\Common\DefaultSMSVariablesProvider;
 use SubscriptionBundle\Subscription\Notification\Common\MessageCompiler;
 use SubscriptionBundle\Subscription\Notification\Common\ProcessIdExtractor;
-use SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider;
 use SubscriptionBundle\Subscription\Notification\Impl\NotificationHandlerProvider;
+use SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider;
 
 /**
  * Class Notifier

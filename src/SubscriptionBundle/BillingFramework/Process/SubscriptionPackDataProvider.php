@@ -13,9 +13,9 @@ use ExtrasBundle\Utils\UuidGenerator;
 use stdClass;
 use SubscriptionBundle\BillingFramework\Process\API\Client;
 use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkException;
+use SubscriptionBundle\Entity\Price;
 use SubscriptionBundle\SubscriptionPack\DTO\Strategy;
 use SubscriptionBundle\SubscriptionPack\DTO\Tier;
-use SubscriptionBundle\Entity\Price;
 
 
 class SubscriptionPackDataProvider

@@ -12,9 +12,9 @@ namespace SubscriptionBundle\Subscription\MassRenew;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use SubscriptionBundle\BillingFramework\Process\MassRenewProcess;
 use SubscriptionBundle\Entity\Subscription;
+use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Subscription\Renew\DTO\MassRenewResult;
 use SubscriptionBundle\Subscription\Renew\OnRenewUpdater;
-use SubscriptionBundle\Service\EntitySaveHelper;
 
 class MassRenewer
 {

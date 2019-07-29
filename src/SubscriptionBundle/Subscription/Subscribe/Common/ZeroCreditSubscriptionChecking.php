@@ -5,8 +5,8 @@ namespace SubscriptionBundle\Subscription\Subscribe\Common;
 
 
 use App\Domain\Entity\Campaign;
-use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
+use SubscriptionBundle\Entity\SubscriptionPack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ZeroCreditSubscriptionChecking

@@ -18,8 +18,8 @@ use SubscriptionBundle\BillingFramework\Process\UnsubscribeProcess;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
-use SubscriptionBundle\Subscription\Common\FakeResponseProvider;
 use SubscriptionBundle\Service\EntitySaveHelper;
+use SubscriptionBundle\Subscription\Common\FakeResponseProvider;
 use SubscriptionBundle\Subscription\Notification\Notifier;
 
 class Unsubscriber

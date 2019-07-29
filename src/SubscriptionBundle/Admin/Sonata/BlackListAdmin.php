@@ -9,9 +9,9 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
 use Sonata\AdminBundle\Show\ShowMapper;
-use SubscriptionBundle\Entity\BlackList;
 use SubscriptionBundle\Blacklist\BlacklistChecker;
 use SubscriptionBundle\Blacklist\BlacklistSaver;
+use SubscriptionBundle\Entity\BlackList;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 

@@ -4,9 +4,9 @@ namespace SubscriptionBundle\Subscription\Renew\Service;
 
 
 use App\Domain\Entity\Carrier;
-use SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound;
-use SubscriptionBundle\Subscription\Renew\Renewer;
 use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
+use SubscriptionBundle\Subscription\Renew\Renewer;
+use SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound;
 use SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider;
 
 /**
