@@ -3,7 +3,7 @@
 namespace SubscriptionBundle\Controller\Actions\Fake;
 
 
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Doctrine\ORM\EntityManager;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\DTO\IdentificationData;

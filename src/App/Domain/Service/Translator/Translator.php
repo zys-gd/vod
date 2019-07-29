@@ -8,8 +8,8 @@ use App\Domain\Entity\Translation;
 use App\Domain\Repository\CarrierRepository;
 use App\Domain\Repository\LanguageRepository;
 use App\Domain\Repository\TranslationRepository;
+use ExtrasBundle\Cache\ArrayCache\ArrayCacheService;
 use ExtrasBundle\Cache\ICacheService;
-use IdentificationBundle\Entity\CarrierInterface;
 
 class Translator
 {
@@ -24,18 +24,28 @@ class Translator
     private $languageRepository;
 
     private $texts = [];
+    /**
+     * @var CarrierRepository
+     */
+    private $carrierRepository;
+    /**
+     * @var ArrayCacheService
+     */
+    private $arrayCacheService;
 
     public function __construct(
         TranslationRepository $translationRepository,
         CarrierRepository $carrierRepository,
         LanguageRepository $languageRepository,
-        ICacheService $cache
+        ICacheService $cache,
+        ArrayCacheService $arrayCacheService
     )
     {
         $this->translationRepository = $translationRepository;
-        $this->carrierRepository     = $carrierRepository;
         $this->cache                 = $cache;
         $this->languageRepository    = $languageRepository;
+        $this->carrierRepository     = $carrierRepository;
+        $this->arrayCacheService     = $arrayCacheService;
     }
 
     /**
@@ -44,20 +54,27 @@ class Translator
      * @param string $languageCode
      *
      * @return string|null
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function translate(string $translationKey, $billingCarrierId, string $languageCode): ?string
     {
         $cacheKey = $this->generateCacheKey($billingCarrierId, $languageCode);
-        // if cache exist
-        if ($this->isCacheExist($cacheKey)) {
-            $this->extractCache($cacheKey);
-            if (!isset($this->texts[$translationKey])) {
-                $this->doTranslate($translationKey, $billingCarrierId, $languageCode)
+
+        if ($this->texts) {
+            if (!array_key_exists($translationKey, $this->texts)) {
+                $this
+                    ->doTranslate($translationKey, $billingCarrierId, $languageCode)
                     ->pushTexts2Cache($cacheKey);
             }
-        }
-        else {
-            $this->initializeTexts($billingCarrierId, $languageCode)
+        } else {
+            if ($this->arrayCacheService->hasCache($cacheKey)) {
+                $this->texts = $this->arrayCacheService->getValue($cacheKey);
+            } elseif ($this->cache->hasCache($cacheKey)) {
+                $this->texts = $this->cache->getValue($cacheKey);
+                $this->arrayCacheService->saveCache($cacheKey, $this->texts, 86400);
+            }
+            $this
+                ->initializeTexts($billingCarrierId, $languageCode)
                 ->pushTexts2Cache($cacheKey);
         }
 
@@ -74,9 +91,13 @@ class Translator
     private function doTranslate(string $translationKey, $billingCarrierId, string $languageCode)
     {
         $translation = $this->receiveFromDb($translationKey, $billingCarrierId, $languageCode);
+
         if (!is_null($translation)) {
             $this->texts[$translationKey] = $translation->getTranslation();
+        } else {
+            $this->texts[$translationKey] = $translationKey;
         }
+
         return $this;
     }
 
@@ -124,11 +145,11 @@ class Translator
         /** @var Translation[] $defaultTextsForCurrentLang */
         $defaultTextsForCurrentLang = [];
         if ($languageCode != self::DEFAULT_LOCALE) {
-            $userLanguage = $this->languageRepository->findOneBy(['code' => $languageCode]);
+            $userLanguage               = $this->languageRepository->findOneBy(['code' => $languageCode]);
             $defaultTextsForCurrentLang = $this->translationRepository->findBy([
-                'language' => $userLanguage,
-                'carrier'  => null
-            ]) ?? [];
+                    'language' => $userLanguage,
+                    'carrier'  => null
+                ]) ?? [];
         }
 
         try {
@@ -152,6 +173,7 @@ class Translator
             $translations = array_merge($defaultTexts, $defaultTextsForCurrentLang);
         }
 
+        /** @var Translation[] $translations */
         foreach ($translations as $translation) {
             $this->texts[$translation->getKey()] = $translation->getTranslation();
         }
@@ -159,31 +181,15 @@ class Translator
         return $this;
     }
 
-    /**
-     * @param string $cacheKey
-     */
-    private function extractCache(string $cacheKey)
-    {
-        $this->texts = $this->cache->getValue($cacheKey);
-    }
 
-    /**
-     * @param string $cacheKey
-     *
-     * @return mixed
-     */
-    private function isCacheExist(string $cacheKey)
+    private function generateCacheKey($carrierId, string $languageCode): string
     {
-        return $this->cache->hasCache($cacheKey);
-    }
-
-    private function generateCacheKey($carrierId, string $languageCode)
-    {
-        return base64_encode("translations_{$languageCode}_{$carrierId}");
+        return "translations_{$languageCode}_{$carrierId}";
     }
 
     private function pushTexts2Cache($cacheKey)
     {
+        $this->arrayCacheService->saveCache($cacheKey, $this->texts, 86400);
         $this->cache->saveCache($cacheKey, $this->texts, 86400);
         return $this;
     }

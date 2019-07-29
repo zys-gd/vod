@@ -18,6 +18,8 @@ if ($_SERVER['APP_DEBUG']) {
     Debug::enable();
 }
 
+require_once __DIR__ . '/../profiler/include.php';
+
 Request::setTrustedProxies(
     [$_SERVER['REMOTE_ADDR']],
     Request::HEADER_X_FORWARDED_ALL ^ Request::HEADER_X_FORWARDED_HOST
@@ -32,7 +34,11 @@ $kernel = new VODKernel($_SERVER['APP_ENV'], (bool)$_SERVER['APP_DEBUG']);
 
 $request = Request::createFromGlobals();
 
-$response = $kernel->handle($request);
-$response->send();
-$kernel->terminate($request, $response);
+try {
+    $response = $kernel->handle($request);
+    $response->send();
+    $kernel->terminate($request, $response);
+} catch (\Throwable $exception) {
+    throw $exception;
+}
 

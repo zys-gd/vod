@@ -7,7 +7,7 @@
  */
 
 use App\Domain\Entity\Carrier;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use IdentificationBundle\Entity\User;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
