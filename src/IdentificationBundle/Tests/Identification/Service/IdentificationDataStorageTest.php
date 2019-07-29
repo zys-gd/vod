@@ -33,19 +33,19 @@ class IdentificationDataStorageTest extends TestCase
 
         $data = $this->session->get(IdentificationDataStorage::IDENTIFICATION_DATA_KEY);
 
-        $this->assertArraySubset([IdentificationDataStorage::IDENTIFICATION_TOKEN_KEY => 'token'], $data);
+        $this->assertArraySubset(['identification_token' => 'token'], $data);
     }
 
     public function testReadIdentificationData()
     {
         $this->session->set(
             IdentificationDataStorage::IDENTIFICATION_DATA_KEY,
-            [IdentificationDataStorage::IDENTIFICATION_TOKEN_KEY => 'token']
+            ['identification_token' => 'token']
         );
 
         $result = $this->identificationDataStorage->getIdentificationData();
 
-        $this->assertArraySubset([IdentificationDataStorage::IDENTIFICATION_TOKEN_KEY => 'token'], $result);
+        $this->assertArraySubset(['identification_token' => 'token'], $result);
     }
 
     public function testStoreCarrierId()

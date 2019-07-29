@@ -28,8 +28,8 @@ class IdentificationFlowDataExtractor
     {
         $identificationData = $session->get(IdentificationDataStorage::IDENTIFICATION_DATA_KEY);
 
-        return isset($identificationData[IdentificationDataStorage::IDENTIFICATION_TOKEN_KEY])
-            ? $identificationData[IdentificationDataStorage::IDENTIFICATION_TOKEN_KEY]
+        return isset($identificationData['identification_token'])
+            ? $identificationData['identification_token']
             : null;
     }
 

@@ -17,7 +17,6 @@ class IdentificationDataStorage
 
     const IDENTIFICATION_DATA_KEY = 'identification_data';
     const ISP_DETECTION_DATA_KEY = 'isp_detection_data';
-    const IDENTIFICATION_TOKEN_KEY = 'identification_token';
 
     /**
      * @var StorageInterface
@@ -75,7 +74,7 @@ class IdentificationDataStorage
     public function setIdentificationToken(string $token): void
     {
         $identificationData = $this->getIdentificationData();
-        $identificationData[self::IDENTIFICATION_TOKEN_KEY] = $token;
+        $identificationData['identification_token'] = $token;
 
         $this->setIdentificationData($identificationData);
     }
@@ -87,8 +86,8 @@ class IdentificationDataStorage
     {
         $identificationData = $this->getIdentificationData();
 
-        return isset($identificationData[self::IDENTIFICATION_TOKEN_KEY])
-            ? $identificationData[self::IDENTIFICATION_TOKEN_KEY]
+        return isset($identificationData['identification_token'])
+            ? $identificationData['identification_token']
             : null;
     }
 
