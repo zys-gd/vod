@@ -102,7 +102,8 @@ class Unsubscriber
         Subscription $subscription,
         SubscriptionPack $subscriptionPack,
         array $additionalParameters = []
-    ) {
+    )
+    {
         $subscription->setStatus(Subscription::IS_PENDING);
         $subscription->setCurrentStage(Subscription::ACTION_UNSUBSCRIBE);
         $this->entitySaveHelper->persistAndSave($subscription);

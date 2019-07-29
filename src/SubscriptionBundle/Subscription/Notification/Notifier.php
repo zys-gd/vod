@@ -51,7 +51,7 @@ class Notifier
 
     /**
      * Notifier constructor.
-     * @param MessageCompiler                                                        $messageCompiler
+     * @param MessageCompiler                                                       $messageCompiler
      * @param RequestSender                                                         $sender
      * @param LoggerInterface                                                       $logger
      * @param ProcessIdExtractor                                                    $processIdExtractor

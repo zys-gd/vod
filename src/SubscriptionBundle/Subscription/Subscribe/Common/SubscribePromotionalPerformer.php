@@ -42,10 +42,11 @@ class SubscribePromotionalPerformer
         Notifier $notifier,
         FakeResponseProvider $fakeResponseProvider,
         SubscriptionSerializer $subscriptionSerializer
-    ) {
-        $this->logger = $logger;
-        $this->notifier = $notifier;
-        $this->fakeResponseProvider = $fakeResponseProvider;
+    )
+    {
+        $this->logger                 = $logger;
+        $this->notifier               = $notifier;
+        $this->fakeResponseProvider   = $fakeResponseProvider;
         $this->subscriptionSerializer = $subscriptionSerializer;
     }
 

@@ -18,3 +18,12 @@ services:
       - '@SubscriptionBundle\Repository\SubscriptionRepository'
       - '@SubscriptionBundle\Subscription\Renew\Handler\RenewHandlerProvider'
       - '@doctrine.orm.entity_manager'
+
+  SubscriptionBundle\Subscription\MassRenew\Command\MassRenewCommand:
+    arguments:
+      - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+      - '@cron.task'
+      - '@SubscriptionBundle\Subscription\Renew\Handler\RenewHandlerProvider'
+      - '@SubscriptionBundle\Subscription\Renew\Common\CommonFlowHandler'
+    tags:
+      - { name: console.command }

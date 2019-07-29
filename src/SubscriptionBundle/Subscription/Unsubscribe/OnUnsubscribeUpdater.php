@@ -24,7 +24,7 @@ class OnUnsubscribeUpdater
 
     /**
      * OnUnsubscribeUpdater constructor.
-     * @param EventDispatcherInterface                                                      $eventDispatcher
+     * @param EventDispatcherInterface                                          $eventDispatcher
      * @param \SubscriptionBundle\Subscription\Common\CommonSubscriptionUpdater $commonSubscriptionUpdater
      */
     public function __construct(

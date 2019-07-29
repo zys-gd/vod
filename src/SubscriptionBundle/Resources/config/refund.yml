@@ -3,4 +3,16 @@ services:
     arguments:
       - '@doctrine.orm.entity_manager'
       - '@SubscriptionBundle\BillingFramework\Process\API\Client'
-      - '@SubscriptionBundle\Reporting\ReportingToolDataProvider'
+      - '@SubscriptionBundle\ReportingTool\ReportingToolDataProvider'
+
+
+  SubscriptionBundle\Refund\Admin\Sonata\RefundAdmin:
+    arguments: [~, SubscriptionBundle\Entity\Refund, 'SubscriptionBundle\Refund\Admin\Controller\RefundAdminController']
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: refunds, label: Refunds }
+
+
+  SubscriptionBundle\Refund\Admin\Controller\RefundAdminController:
+    arguments: ['@form.factory', '@SubscriptionBundle\Refund\RefundService']
+    tags: ['controller.service_arguments']
+

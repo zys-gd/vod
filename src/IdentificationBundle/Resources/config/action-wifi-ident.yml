@@ -8,7 +8,7 @@ services:
     IdentificationBundle\WifiIdentification\Service\IdentFinisher:
         arguments:
             - '@IdentificationBundle\Identification\Service\TokenGenerator'
-            - '@IdentificationBundle\Identification\Service\UserFactory'
+            - '@IdentificationBundle\User\Service\UserFactory'
             - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
             - '@doctrine.orm.entity_manager'
 
@@ -68,3 +68,19 @@ services:
 
     IdentificationBundle\WifiIdentification\WifiPhoneOptionsProvider:
         arguments: ['@IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerProvider', '@IdentificationBundle\Repository\CarrierRepositoryInterface']
+
+
+
+    IdentificationBundle\WifiIdentification\Controller\PinIdentificationController:
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@IdentificationBundle\WifiIdentification\WifiIdentSMSSender'
+            - '@IdentificationBundle\WifiIdentification\WifiIdentConfirmator'
+            - '@IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeResolver'
+            - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter'
+            - '%default_redirect_url%'
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+            - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitNotifier'
+            - '@SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter'
+            - '@SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator'
+            - '@IdentificationBundle\WifiIdentification\WifiPhoneOptionsProvider'

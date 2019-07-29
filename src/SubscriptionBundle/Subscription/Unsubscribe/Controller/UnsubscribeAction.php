@@ -10,7 +10,7 @@ namespace SubscriptionBundle\Subscription\Unsubscribe\Controller;
 
 
 use ExtrasBundle\Controller\Traits\ResponseTrait;
-use IdentificationBundle\Identification\Service\UserExtractor;
+use IdentificationBundle\User\Service\UserExtractor;
 use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
 use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
 use SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEligibilityChecker;
@@ -28,7 +28,7 @@ class UnsubscribeAction extends Controller
     use ResponseTrait;
 
     /**
-     * @var \IdentificationBundle\Identification\Service\UserExtractor
+     * @var \IdentificationBundle\User\Service\UserExtractor
      */
     private $UserProvider;
 
@@ -61,7 +61,7 @@ class UnsubscribeAction extends Controller
     /**
      * UnsubscribeAction constructor.
      *
-     * @param \IdentificationBundle\Identification\Service\UserExtractor    $UserProvider
+     * @param \IdentificationBundle\User\Service\UserExtractor              $UserProvider
      * @param \SubscriptionBundle\Subscription\Common\SubscriptionExtractor $subscriptionProvider
      * @param SubscriptionPackProvider                                      $subscriptionPackProvider
      * @param Unsubscriber                                                  $unsubscriber
@@ -101,7 +101,7 @@ class UnsubscribeAction extends Controller
                 throw new AlreadyUnsubscribedException('You have already been unsubscribed');
             }
 
-            $handler  = $this->handlerProvider->getUnsubscriptionHandler($user->getCarrier());
+            $handler              = $this->handlerProvider->getUnsubscriptionHandler($user->getCarrier());
             $additionalParameters = $handler->getAdditionalUnsubscribeParameters();
 
             $response = $this->unsubscriber->unsubscribe($subscription, $subscriptionPack, $additionalParameters);
@@ -127,7 +127,7 @@ class UnsubscribeAction extends Controller
             );
 
 
-        }  catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             $response = $this->getSimpleJsonResponse($ex->getMessage(), 400, [
                 'identification' => true,
                 'subscription'   => false,

@@ -13,7 +13,7 @@ interface HasCustomConsentPageFlow
 {
     /**
      * @param Request $request
-     * @param User $user
+     * @param User    $user
      *
      * @return Response
      */

@@ -22,7 +22,7 @@ class TwigAdditionalPathsExtension implements CompilerPassInterface
     {
         $twigFilesystemLoaderDefinition = $container->getDefinition('twig.loader.filesystem');
 
-        $path = realpath(__DIR__ . '/../../Admin/Resources/templates');
+        $path = realpath(__DIR__ . '/../../Resources/views/Admin');
 
         $twigFilesystemLoaderDefinition->addMethodCall('addPath', [
             $path, 'SubscriptionAdmin'

@@ -16,7 +16,7 @@ use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Identification\Service\RouteProvider;
-use IdentificationBundle\Identification\Service\UserExtractor;
+use IdentificationBundle\User\Service\UserExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator;
 use SubscriptionBundle\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
@@ -95,12 +95,12 @@ class SubscribeAction extends AbstractController
     /**
      * SubscribeAction constructor.
      *
-     * @param \IdentificationBundle\Identification\Service\UserExtractor $userExtractor
-     * @param CommonFlowHandler                                          $commonFlowHandler
-     * @param SubscriptionHandlerProvider                                $handlerProvider
-     * @param BlacklistVoter                                             $blacklistVoter
-     * @param IdentificationHandlerProvider                              $identificationHandlerProvider
-     * @param CarrierRepositoryInterface                                 $carrierRepository
+     * @param \IdentificationBundle\User\Service\UserExtractor $userExtractor
+     * @param CommonFlowHandler                                $commonFlowHandler
+     * @param SubscriptionHandlerProvider                      $handlerProvider
+     * @param BlacklistVoter                                   $blacklistVoter
+     * @param IdentificationHandlerProvider                    $identificationHandlerProvider
+     * @param CarrierRepositoryInterface                       $carrierRepository
      * @param PostPaidHandler                                            $postPaidHandler
      * @param CampaignConfirmationHandlerProvider                        $campaignConfirmationHandlerProvider
      * @param SubscriptionLimiter                                        $subscriptionLimiter

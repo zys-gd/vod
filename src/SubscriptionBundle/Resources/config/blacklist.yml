@@ -22,3 +22,15 @@ services:
       - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
       - '@IdentificationBundle\Repository\UserRepository'
       - '@logger'
+
+
+  SubscriptionBundle\Blacklist\Admin\Sonata\BlackListAdmin:
+    arguments:
+      - ~
+      - SubscriptionBundle\Entity\BlackList
+      - ~
+      - '@SubscriptionBundle\Blacklist\BlacklistSaver'
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: black_list_management, label: Black list }
+    calls:
+      - [ setTemplate, [edit, '@@SubscriptionAdmin/BlackList/edit.html.twig']]

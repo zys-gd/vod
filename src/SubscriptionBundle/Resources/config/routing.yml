@@ -10,15 +10,9 @@ subscription.subscribe:
     path: /subscribe
     defaults: {_controller: 'SubscriptionBundle\Subscription\Subscribe\Controller\SubscribeAction'}
 
-
-
 subscription.unsubscribe:
     path: /unsubscribe
     defaults: {_controller: 'SubscriptionBundle\Subscription\Unsubscribe\Controller\UnsubscribeAction'}
-
-subscription.redirect:
-    path: /subscribe/redirect
-    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\RedirectAction'}
 
 subscription.listen:
     path: /v2/callback/listen
@@ -43,11 +37,11 @@ subscription.fake_unsubscribe:
 
 subscription.fake_renew:
     path: /fake/renew/{carrierId}
-    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\Fake\RenewAction'}
+    defaults: {_controller: 'SubscriptionBundle\Subscription\Renew\Controller\RenewAction'}
 
 subscription.fake_alert:
     path: /fake/alert/{carrierId}
-    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\Fake\AlertAction'}
+    defaults: {_controller: 'SubscriptionBundle\Subscription\Renew\Controller\AlertAction'}
 
 google_campaign:
     path: /google_campaign

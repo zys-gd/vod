@@ -280,7 +280,7 @@ SubscriptionBundle\Entity\SubscriptionPack:
             orphanRemoval: false
 
         carrier:
-            targetEntity: App\Domain\Entity\Carrier
+            targetEntity: CommonDataBundle\Entity\Interfaces\CarrierInterface
             fetch: LAZY
             mappedBy: null
             inversedBy: null

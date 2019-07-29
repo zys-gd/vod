@@ -27,8 +27,8 @@ class RenewCallbackHandler extends AbstractCallbackHandler
 
     /**
      * RenewCallbackHandler constructor.
-     * @param OnRenewUpdater             $onRenewUpdater
-     * @param EventDispatcherInterface   $eventDispatcher
+     * @param OnRenewUpdater           $onRenewUpdater
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(OnRenewUpdater $onRenewUpdater, EventDispatcherInterface $eventDispatcher)
     {

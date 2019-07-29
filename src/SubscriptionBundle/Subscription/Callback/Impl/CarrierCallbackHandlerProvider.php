@@ -34,24 +34,6 @@ class CarrierCallbackHandlerProvider
         $this->handlers[$type][] = $handler;
     }
 
-    /**
-     * @param Request $request
-     * @param string  $type
-     * @return CarrierCallbackHandlerInterface
-     */
-    public function getHandler(string $carrierId, Request $request, string $type): CarrierCallbackHandlerInterface
-    {
-        $availableHandlers = $this->handlers[$type] ?? [];
-
-        /** @var CarrierCallbackHandlerInterface $handler */
-        foreach ($availableHandlers as $handler) {
-            if ($handler->canHandle($request, (int)$carrierId)) {
-                return $handler;
-            }
-        }
-        return $this->defaultHandler;
-    }
-
     private function ensureIsCorrect(CarrierCallbackHandlerInterface $handler)
     {
         $availableInterfaceString = json_encode([
@@ -69,6 +51,24 @@ class CarrierCallbackHandlerProvider
 
         }
 
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $type
+     * @return CarrierCallbackHandlerInterface
+     */
+    public function getHandler(string $carrierId, Request $request, string $type): CarrierCallbackHandlerInterface
+    {
+        $availableHandlers = $this->handlers[$type] ?? [];
+
+        /** @var CarrierCallbackHandlerInterface $handler */
+        foreach ($availableHandlers as $handler) {
+            if ($handler->canHandle($request, (int)$carrierId)) {
+                return $handler;
+            }
+        }
+        return $this->defaultHandler;
     }
 
 }

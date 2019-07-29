@@ -35,7 +35,7 @@ class SubscriptionFactory
 
     public function create(User $user, SubscriptionPack $subscriptionPack, $affiliateToken = null, int $status = Subscription::IS_ACTIVE): Subscription
     {
-        $uuid = UuidGenerator::generate();
+        $uuid         = UuidGenerator::generate();
         $subscription = new Subscription($uuid);
         $subscription->setSubscriptionPack($subscriptionPack);
         $subscription->setUser($user);
@@ -44,8 +44,6 @@ class SubscriptionFactory
 
         return $subscription;
     }
-
-
 
 
 }

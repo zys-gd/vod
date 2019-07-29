@@ -7,58 +7,6 @@ services:
 
 
 
-    SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider:
-        arguments: ['@SubscriptionBundle\Repository\SubscriptionPackRepository']
-
     SubscriptionBundle\Service\EntitySaveHelper:
         arguments: ['@doctrine.orm.entity_manager', '@logger']
-
-    SubscriptionBundle\Subscription\Common\SubscriptionExtractor:
-        arguments: ['@SubscriptionBundle\Repository\SubscriptionRepository', '@IdentificationBundle\Repository\UserRepository']
-
-    SubscriptionBundle\Affiliate\Service\CampaignExtractor:
-        arguments:
-            - '@App\Domain\Repository\CampaignRepository'
-
-    SubscriptionBundle\Subscription\Common\SubscriptionFactory:
-        arguments: ['@SubscriptionBundle\Service\EntitySaveHelper']
-
-    SubscriptionBundle\Subscription\Renew\Service\RenewDateCalculator: ~
-
-    SubscriptionBundle\Subscription\Subscribe\Service\CreditsCalculator:
-        arguments: ['@SubscriptionBundle\Subscription\Renew\Service\RenewDateCalculator']
-
-    SubscriptionBundle\Subscription\Common\FakeResponseProvider:
-        arguments:
-          ['@logger', '@event_dispatcher']
-
-    SubscriptionBundle\Subscription\Common\RequestParametersProvider:
-        arguments:
-            - '@request_stack'
-            - '@router'
-            - '@SubscriptionBundle\Subscription\Common\RouteProvider'
-            - '@SubscriptionBundle\BillingFramework\BillingOptionsProvider'
-
-    SubscriptionBundle\Subscription\Common\PromotionalResponseChecker: ~
-
-    SubscriptionBundle\Subscription\Common\CommonSubscriptionUpdater:
-        arguments: ['@event_dispatcher']
-
-    IdentificationBundle\Identification\Service\UserExtractor:
-        arguments: ['@router.default', '@logger', '@IdentificationBundle\Repository\UserRepository']
-
-
-    SubscriptionBundle\Subscription\Common\SubscriptionSerializer: ~
-
-    SubscriptionBundle\Subscription\Subscribe\Service\SubscribeUrlResolver:
-        arguments:
-            - '@router'
-            - '@SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider'
-
-    SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking:
-        arguments:
-            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
-            -
-    SubscriptionBundle\Subscription\Common\RouteProvider:
-        arguments: ['@router', '_resub_not_allowed_route_placeholder_', '_action_not_allowed_url_placeholder_','_callback_host_placeholder_']
 

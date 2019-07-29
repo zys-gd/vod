@@ -18,12 +18,12 @@ class AlreadySubscribedEvent extends Event
     /**
      * AlreadySubscribedEvent constructor.
      * @param Subscription $subscription
-     * @param Carrier $carrier
+     * @param Carrier      $carrier
      */
     public function __construct(Subscription $subscription, Carrier $carrier)
     {
         $this->subscription = $subscription;
-        $this->carrier = $carrier;
+        $this->carrier      = $carrier;
     }
 
     /**

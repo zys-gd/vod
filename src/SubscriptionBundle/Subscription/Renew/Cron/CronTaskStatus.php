@@ -31,6 +31,12 @@ class CronTaskStatus
         $this->cronTaskRepository = $cronTaskRepository;
     }
 
+    public function getCronTaskByName(String $name)
+    {
+        $this->getCronTask(['cronName' => $name]);
+        return $this;
+    }
+
     public function getCronTask(array $params = null)
     {
         if (is_null($params)) {
@@ -49,12 +55,6 @@ class CronTaskStatus
         return $this;
     }
 
-    public function getCronTaskByName(String $name)
-    {
-        $this->getCronTask(['cronName' => $name]);
-        return $this;
-    }
-
     public function isRunning()
     {
         if ($this->cronTask) {
@@ -70,12 +70,6 @@ class CronTaskStatus
     public function start()
     {
         $this->setStatus(self::TASK_STATUS_RUN);
-    }
-
-
-    public function stop()
-    {
-        $this->setStatus(self::TASK_STATUS_STOP);
     }
 
     protected function setStatus($status)
@@ -104,5 +98,10 @@ class CronTaskStatus
         } catch (NoTaskException $ex) {
 
         }
+    }
+
+    public function stop()
+    {
+        $this->setStatus(self::TASK_STATUS_STOP);
     }
 }

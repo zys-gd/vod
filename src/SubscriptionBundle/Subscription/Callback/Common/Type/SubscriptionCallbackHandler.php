@@ -38,7 +38,7 @@ class SubscriptionCallbackHandler extends AbstractCallbackHandler
     /**
      * SubscriptionCallbackHandler constructor.
      * @param \SubscriptionBundle\Subscription\Subscribe\OnSubscribeUpdater $onSubscribeUpdater
-     * @param SubscriptionLimitCompleter                                      $completer
+     * @param SubscriptionLimitCompleter                                    $completer
      */
     public function __construct(
         OnSubscribeUpdater $onSubscribeUpdater,

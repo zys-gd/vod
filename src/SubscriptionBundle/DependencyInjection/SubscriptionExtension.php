@@ -38,12 +38,9 @@ class SubscriptionExtension extends ConfigurableExtension
         $loader->load('action-renew.yml');
         $loader->load('action-mass-renew.yml');
         $loader->load('action-subscribe-back.yml');
-        $loader->load('admin.yml');
         $loader->load('billing-framework-integration.yml');
         $loader->load('listeners.yml');
         $loader->load('repositories.yml');
-        $loader->load('controllers.yml');
-        $loader->load('cron.yml');
         $loader->load('piwik-integration.yml');
         $loader->load('affiliate.yml');
         $loader->load('fixtures.yml');
@@ -57,6 +54,9 @@ class SubscriptionExtension extends ConfigurableExtension
         $loader->load('captool-subscription.yml');
         $loader->load('reporting-tool.yml');
         $loader->load('blacklist.yml');
+        $loader->load('action-common.yml');
+        $loader->load('subscription-pack.yml');
+        $loader->load('complaints.yml');
 
 
         $loader = new YamlFileLoader(
@@ -79,7 +79,7 @@ class SubscriptionExtension extends ConfigurableExtension
         DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['billing_framework']['api_host'], '_billing_api_host_placeholder_');
         DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['billing_framework']['client_id'], '_client_id_placeholder_');
 
-        $definition = $container->getDefinition('SubscriptionBundle\Reporting\ReportingToolRequestSender');
+        $definition = $container->getDefinition('SubscriptionBundle\ReportingTool\ReportingToolRequestSender');
         DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['reporting_tool']['api_host'], '_reporting_stats_api_host_placeholder_');
 
         $definition = $container->getDefinition('SubscriptionBundle\Subscription\Common\RouteProvider');

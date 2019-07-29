@@ -18,7 +18,7 @@ interface HasCustomResponses
 {
     /**
      * @param Request      $request
-     * @param User $User
+     * @param User         $User
      * @param Subscription $subscription
      * @return Response|null
      */
@@ -27,7 +27,7 @@ interface HasCustomResponses
 
     /**
      * @param Request      $request
-     * @param User $User
+     * @param User         $User
      * @param Subscription $subscription
      * @return Response|null
      */

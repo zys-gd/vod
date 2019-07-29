@@ -1,0 +1,30 @@
+services:
+  SubscriptionBundle\Subscription\Common\SubscriptionExtractor:
+    arguments: ['@SubscriptionBundle\Repository\SubscriptionRepository', '@IdentificationBundle\Repository\UserRepository']
+
+
+  SubscriptionBundle\Subscription\Common\SubscriptionFactory:
+    arguments: ['@SubscriptionBundle\Service\EntitySaveHelper']
+
+  SubscriptionBundle\Subscription\Common\FakeResponseProvider:
+    arguments:
+      ['@logger', '@event_dispatcher']
+
+  SubscriptionBundle\Subscription\Common\RequestParametersProvider:
+    arguments:
+      - '@request_stack'
+      - '@router'
+      - '@SubscriptionBundle\Subscription\Common\RouteProvider'
+      - '@SubscriptionBundle\BillingFramework\BillingOptionsProvider'
+
+  SubscriptionBundle\Subscription\Common\PromotionalResponseChecker: ~
+
+  SubscriptionBundle\Subscription\Common\CommonSubscriptionUpdater:
+    arguments: ['@event_dispatcher']
+
+  SubscriptionBundle\Subscription\Common\SubscriptionSerializer: ~
+
+  SubscriptionBundle\Subscription\Common\RouteProvider:
+    arguments: ['@router', '_resub_not_allowed_route_placeholder_', '_action_not_allowed_url_placeholder_','_callback_host_placeholder_']
+
+

@@ -42,8 +42,8 @@ class CommonResponseCreator
 
 
     /**
-     * @param Request      $request
-     * @param User $User
+     * @param Request $request
+     * @param User    $User
      * @return Response
      * @throws \Doctrine\ORM\NonUniqueResultException
      */

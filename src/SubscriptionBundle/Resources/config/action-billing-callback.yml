@@ -1,4 +1,10 @@
 services:
+
+  SubscriptionBundle\Subscription\Callback\Controller\ListenAction:
+    arguments: ['@SubscriptionBundle\Subscription\Callback\Common\CommonFlowHandler', '@logger', '@SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerProvider']
+    tags: ['controller.service_arguments']
+
+
   SubscriptionBundle\Subscription\Callback\Impl\DefaultHandler:
     arguments: ['@IdentificationBundle\Repository\UserRepository']
 

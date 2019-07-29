@@ -1,4 +1,7 @@
 services:
+
+
+
   SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber:
       arguments:
         - '@logger'
@@ -16,9 +19,44 @@ services:
 
   SubscriptionBundle\Subscription\Unsubscribe\Handler\DefaultHandler: ~
 
-
   SubscriptionBundle\Subscription\Unsubscribe\OnUnsubscribeUpdater:
       arguments: ['@event_dispatcher', '@SubscriptionBundle\Subscription\Common\CommonSubscriptionUpdater']
 
   SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeParametersProvider:
       arguments: ['@SubscriptionBundle\Subscription\Common\RequestParametersProvider']
+
+
+  SubscriptionBundle\Subscription\Unsubscribe\Controller\FakeUnsubscribeAction:
+    tags: ['controller.service_arguments']
+    arguments:
+      - '@IdentificationBundle\User\Service\UserExtractor'
+      - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscriptionEligibilityChecker'
+      - '@SubscriptionBundle\Service\EntitySaveHelper'
+
+  SubscriptionBundle\Subscription\Unsubscribe\Controller\UnsubscribeAction:
+    tags: ['controller.service_arguments']
+    arguments:
+      - '@IdentificationBundle\User\Service\UserExtractor'
+      - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
+      - '@SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscriptionEligibilityChecker'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
+      - '@cross_subscription.api_connector'
+
+  SubscriptionBundle\Subscription\Unsubscribe\Admin\Sonata\UnsubscriptionAdmin:
+    arguments:
+      - ~
+      - SubscriptionBundle\Entity\Subscription
+      - 'SubscriptionBundle\Subscription\Unsubscribe\Admin\Controller\UnsubscriptionAdminController'
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: user_management, label: Unsubscriptions }
+
+
+  SubscriptionBundle\Subscription\Unsubscribe\Admin\Controller\UnsubscriptionAdminController:
+    tags: ['controller.service_arguments']
+    arguments:
+      - '@form.factory'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider'

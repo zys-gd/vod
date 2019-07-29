@@ -9,7 +9,6 @@
 namespace SubscriptionBundle\Subscription\Renew\Cron\Exception;
 
 
-
 class IsOnHoldException extends \Exception
 {
 

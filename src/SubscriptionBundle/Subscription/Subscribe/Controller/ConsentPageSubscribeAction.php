@@ -6,7 +6,7 @@ use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\Identification\DTO\{IdentificationData, ISPData};
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow as IdentConsentPageFlow;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
-use IdentificationBundle\Identification\Service\UserExtractor;
+use IdentificationBundle\User\Service\UserExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException;
 use SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator;
@@ -39,7 +39,7 @@ class ConsentPageSubscribeAction
     private $subscriptionHandlerProvider;
 
     /**
-     * @var \IdentificationBundle\Identification\Service\UserExtractor
+     * @var \IdentificationBundle\User\Service\UserExtractor
      */
     private $userExtractor;
 
@@ -69,7 +69,7 @@ class ConsentPageSubscribeAction
      * @param CarrierRepositoryInterface                                        $carrierRepository
      * @param IdentificationHandlerProvider                                     $identificationHandlerProvider
      * @param SubscriptionHandlerProvider                                       $subscriptionHandlerProvider
-     * @param \IdentificationBundle\Identification\Service\UserExtractor        $userExtractor
+     * @param \IdentificationBundle\User\Service\UserExtractor                  $userExtractor
      * @param ConsentFlowHandler                                                $consentFlowHandler
      * @param RouterInterface                                                   $router
      * @param \SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter $blacklistVoter
@@ -84,21 +84,22 @@ class ConsentPageSubscribeAction
         RouterInterface $router,
         BlacklistVoter $blacklistVoter,
         BlacklistAttemptRegistrator $blacklistAttemptRegistrator
-    ) {
-        $this->carrierRepository = $carrierRepository;
+    )
+    {
+        $this->carrierRepository             = $carrierRepository;
         $this->identificationHandlerProvider = $identificationHandlerProvider;
-        $this->subscriptionHandlerProvider = $subscriptionHandlerProvider;
-        $this->userExtractor = $userExtractor;
-        $this->consentFlowHandler = $consentFlowHandler;
-        $this->router = $router;
-        $this->blacklistVoter = $blacklistVoter;
-        $this->blacklistAttemptRegistrator = $blacklistAttemptRegistrator;
+        $this->subscriptionHandlerProvider   = $subscriptionHandlerProvider;
+        $this->userExtractor                 = $userExtractor;
+        $this->consentFlowHandler            = $consentFlowHandler;
+        $this->router                        = $router;
+        $this->blacklistVoter                = $blacklistVoter;
+        $this->blacklistAttemptRegistrator   = $blacklistAttemptRegistrator;
     }
 
     /**
-     * @param Request $request
+     * @param Request            $request
      * @param IdentificationData $identificationData
-     * @param ISPData $ispData
+     * @param ISPData            $ispData
      *
      * @return Response
      *
@@ -106,11 +107,11 @@ class ConsentPageSubscribeAction
      */
     public function __invoke(Request $request, IdentificationData $identificationData, ISPData $ispData)
     {
-        $carrierId = $ispData->getCarrierId();
+        $carrierId           = $ispData->getCarrierId();
         $identificationToken = $identificationData->getIdentificationToken();
 
         $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
-        $user = $this->userExtractor->getUserByIdentificationData($identificationData);
+        $user    = $this->userExtractor->getUserByIdentificationData($identificationData);
 
         $this->ensureConsentPageFlowIsAvailable($carrier);
 
@@ -121,7 +122,7 @@ class ConsentPageSubscribeAction
         }
 
         if ($this->blacklistVoter->isUserBlacklisted($request->getSession())
-            || !$this->blacklistAttemptRegistrator->registerSubscriptionAttempt($identificationToken, (int) $carrierId)
+            || !$this->blacklistAttemptRegistrator->registerSubscriptionAttempt($identificationToken, (int)$carrierId)
         ) {
             return $this->blacklistVoter->createNotAllowedResponse();
         }

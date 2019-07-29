@@ -25,3 +25,33 @@ services:
   SubscriptionBundle\Subscription\Renew\Handler\DefaultHandler: ~
 
   SubscriptionBundle\Subscription\Renew\Common\RenewAlertTypeProvider: ~
+
+  SubscriptionBundle\Subscription\Renew\Controller\InstantRenewAction:
+    arguments:
+      - '@SubscriptionBundle\Subscription\MassRenew\Command\MassRenewCommand'
+      - '@twig'
+    tags: ['controller.service_arguments']
+
+  SubscriptionBundle\Subscription\Renew\Controller\InstantAlertAction:
+    arguments:
+      - '@SubscriptionBundle\Subscription\Renew\Command\IncomingRenewNotificationCommand'
+      - '@twig'
+    tags: ['controller.service_arguments']
+
+  SubscriptionBundle\Subscription\Renew\Service\RenewDateCalculator: ~
+
+  SubscriptionBundle\Subscription\Renew\Command\IncomingRenewNotificationCommand:
+    arguments: ['@IdentificationBundle\Repository\CarrierRepositoryInterface', '@SubscriptionBundle\Subscription\Renew\Service\RenewAlerter']
+    tags:
+      - { name: console.command }
+
+  SubscriptionBundle\Subscription\Renew\Service\RenewAlerter:
+    arguments:
+      - '@SubscriptionBundle\Repository\SubscriptionRepository'
+      - '@SubscriptionBundle\Subscription\Renew\Handler\RenewHandlerProvider'
+      - '@SubscriptionBundle\Service\EntitySaveHelper'
+
+  cron.task:
+    class: SubscriptionBundle\Subscription\Renew\Cron\CronTaskStatus
+    arguments: ['@doctrine.orm.default_entity_manager', '@SubscriptionBundle\Repository\CronTaskRepository']
+

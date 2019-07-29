@@ -19,7 +19,7 @@ use ExtrasBundle\Email\EmailSender;
 use IdentificationBundle\Identification\DTO\ISPData;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
-use IdentificationBundle\Identification\Service\UserExtractor;
+use IdentificationBundle\User\Service\UserExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;

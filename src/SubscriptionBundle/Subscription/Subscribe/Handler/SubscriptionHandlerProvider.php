@@ -49,7 +49,7 @@ class SubscriptionHandlerProvider
             HasConsentPageFlow::class
         ]);
 
-        $handlerClass             = get_class($handler);
+        $handlerClass = get_class($handler);
 
         if ((!$handler instanceof HasCommonFlow) && (!$handler instanceof HasCustomFlow) && (!$handler instanceof HasConsentPageFlow)) {
             throw new \InvalidArgumentException(sprintf('Handler `%s` should implement one of following two interfaces `%s`', $handlerClass, $availableInterfaceString));

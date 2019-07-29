@@ -27,7 +27,7 @@ class SubscribeUrlResolver
      */
     public function __construct(RouterInterface $route, SubscriptionHandlerProvider $handlerProvider)
     {
-        $this->route = $route;
+        $this->route           = $route;
         $this->handlerProvider = $handlerProvider;
     }
 

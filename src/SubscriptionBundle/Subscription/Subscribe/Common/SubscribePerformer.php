@@ -21,18 +21,19 @@ class SubscribePerformer
 
     /**
      * SubscribePerformer constructor.
-     * @param SubscribeProcess $subscribeProcess
+     * @param SubscribeProcess            $subscribeProcess
      * @param SubscribeParametersProvider $subscribeParametersProvider
      */
     public function __construct(
         SubscribeProcess $subscribeProcess,
         SubscribeParametersProvider $subscribeParametersProvider
-    ) {
+    )
+    {
         $this->subscribeParametersProvider = $subscribeParametersProvider;
-        $this->subscribeProcess = $subscribeProcess;
+        $this->subscribeProcess            = $subscribeProcess;
     }
 
-    public function doSubscribe(Subscription $subscription, $additionalData):ProcessResult
+    public function doSubscribe(Subscription $subscription, $additionalData): ProcessResult
     {
         $parameters = $this->subscribeParametersProvider->provideParameters($subscription, $additionalData);
         return $this->subscribeProcess->doSubscribe($parameters);

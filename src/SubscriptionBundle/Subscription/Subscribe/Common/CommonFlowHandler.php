@@ -87,12 +87,12 @@ class CommonFlowHandler
     /**
      * CommonSubscriber constructor.
      *
-     * @param \SubscriptionBundle\Subscription\Common\SubscriptionExtractor $subscriptionProvider
-     * @param \SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider $subscriptionPackProvider
-     * @param Subscriber                                                    $subscriber
-     * @param SubscriptionEligibilityChecker                                $checker
-     * @param LoggerInterface                                               $logger
-     * @param SubscriptionHandlerProvider                                   $handlerProvider
+     * @param \SubscriptionBundle\Subscription\Common\SubscriptionExtractor                    $subscriptionProvider
+     * @param \SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider                    $subscriptionPackProvider
+     * @param Subscriber                                                                       $subscriber
+     * @param SubscriptionEligibilityChecker                                                   $checker
+     * @param LoggerInterface                                                                  $logger
+     * @param SubscriptionHandlerProvider                                                      $handlerProvider
      * @param CommonResponseCreator                                                            $commonResponseCreator
      * @param UrlParamAppender                                                                 $urlParamAppender
      * @param EntitySaveHelper                                                                 $entitySaveHelper
@@ -184,6 +184,60 @@ class CommonFlowHandler
         }
     }
 
+    /**
+     * @param Request       $request
+     * @param User          $User
+     * @param HasCommonFlow $subscriber
+     *
+     * @return null|Response
+     * @throws \SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    private function handleSubscribe(Request $request, User $User, HasCommonFlow $subscriber): Response
+    {
+
+        $additionalData   = $subscriber->getAdditionalSubscribeParams($request, $User);
+        $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($User);
+
+        if ($this->zeroCreditSubscriptionChecking->isAvailable($request->getSession(), $subscriptionPack)) {
+            $additionalData['zero_credit_sub_available'] = true;
+        }
+
+        /** @var ProcessResult $result */
+        list($newSubscription, $result) = $this->subscriber->subscribe($User, $subscriptionPack, $additionalData);
+
+        if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
+            $isAffTracked = $subscriber->isAffiliateTrackedForSub($result);
+        } else {
+            $isAffTracked = ($result->isSuccessful() && $result->isFinal());
+        }
+
+        if ($isAffTracked) {
+            $this->subscriptionEventTracker->trackAffiliate($newSubscription);
+        }
+
+
+        if ($subscriber instanceof HasCustomPiwikTrackingRules) {
+            $isPiwikTracked = $subscriber->isPiwikTrackedForSub($result);
+        } else {
+            $isPiwikTracked = ($result->isFailedOrSuccessful() && $result->isFinal());
+        }
+
+        if ($isPiwikTracked) {
+            $this->subscriptionEventTracker->trackPiwikForSubscribe($newSubscription, $result);
+        }
+
+        $subscriber->afterProcess($newSubscription, $result);
+        $this->entitySaveHelper->saveAll();
+
+        if ($subscriber instanceof HasCustomResponses &&
+            $customResponse = $subscriber->createResponseForSuccessfulSubscribe($request, $User, $newSubscription)) {
+            return $customResponse;
+        }
+
+        return $this->commonResponseCreator->createCommonHttpResponse($request, $User);
+
+    }
 
     /**
      * @param Request      $request
@@ -263,61 +317,6 @@ class CommonFlowHandler
         $this->entitySaveHelper->saveAll();
 
         return $this->commonResponseCreator->createCommonHttpResponse($request, $User);
-    }
-
-    /**
-     * @param Request       $request
-     * @param User          $User
-     * @param HasCommonFlow $subscriber
-     *
-     * @return null|Response
-     * @throws \SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     */
-    private function handleSubscribe(Request $request, User $User, HasCommonFlow $subscriber): Response
-    {
-
-        $additionalData   = $subscriber->getAdditionalSubscribeParams($request, $User);
-        $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($User);
-
-        if ($this->zeroCreditSubscriptionChecking->isAvailable($request->getSession(), $subscriptionPack)) {
-            $additionalData['zero_credit_sub_available'] = true;
-        }
-
-        /** @var ProcessResult $result */
-        list($newSubscription, $result) = $this->subscriber->subscribe($User, $subscriptionPack, $additionalData);
-
-        if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
-            $isAffTracked = $subscriber->isAffiliateTrackedForSub($result);
-        } else {
-            $isAffTracked = ($result->isSuccessful() && $result->isFinal());
-        }
-
-        if ($isAffTracked) {
-            $this->subscriptionEventTracker->trackAffiliate($newSubscription);
-        }
-
-
-        if ($subscriber instanceof HasCustomPiwikTrackingRules) {
-            $isPiwikTracked = $subscriber->isPiwikTrackedForSub($result);
-        } else {
-            $isPiwikTracked = ($result->isFailedOrSuccessful() && $result->isFinal());
-        }
-
-        if ($isPiwikTracked) {
-            $this->subscriptionEventTracker->trackPiwikForSubscribe($newSubscription, $result);
-        }
-
-        $subscriber->afterProcess($newSubscription, $result);
-        $this->entitySaveHelper->saveAll();
-
-        if ($subscriber instanceof HasCustomResponses &&
-            $customResponse = $subscriber->createResponseForSuccessfulSubscribe($request, $User, $newSubscription)) {
-            return $customResponse;
-        }
-
-        return $this->commonResponseCreator->createCommonHttpResponse($request, $User);
-
     }
 
 }

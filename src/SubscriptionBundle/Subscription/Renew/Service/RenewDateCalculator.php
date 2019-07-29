@@ -55,7 +55,7 @@ class RenewDateCalculator
 
                 $rand_epoch = rand($min_epoch, $max_epoch);
 
-                $renewInterval =  new \DateTime();
+                $renewInterval = new \DateTime();
                 $renewInterval->setTimestamp($rand_epoch);
 
                 $renewDate->setTime($renewInterval->format('h'), $renewInterval->format('i'));

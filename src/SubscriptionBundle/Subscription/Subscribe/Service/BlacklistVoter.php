@@ -38,11 +38,13 @@ class BlacklistVoter
         RouterInterface $router,
         BlacklistChecker $blacklistChecker,
         LoggerInterface $logger
-    ) {
-        $this->router             = $router;
-        $this->blacklistChecker   = $blacklistChecker;
-        $this->logger             = $logger;
+    )
+    {
+        $this->router           = $router;
+        $this->blacklistChecker = $blacklistChecker;
+        $this->logger           = $logger;
     }
+
     /**
      * @param SessionInterface $session
      *

@@ -46,7 +46,7 @@ class TrialRenewer
     )
     {
         $this->subscriptionPackProvider = $subscriptionPackProvider;
-        $this->renewer               = $renewer;
+        $this->renewer                  = $renewer;
         $this->subscriptionProvider     = $subscriptionProvider;
     }
 

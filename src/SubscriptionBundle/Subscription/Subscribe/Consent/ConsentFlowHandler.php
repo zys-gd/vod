@@ -89,17 +89,17 @@ class ConsentFlowHandler
     /**
      * ConsentFlowHandler constructor
      *
-     * @param LoggerInterface $logger
-     * @param SubscriptionExtractor $subscriptionExtractor
-     * @param SubscriptionPackProvider $subscriptionPackProvider
-     * @param Subscriber $subscriber
-     * @param SubscriptionEventTracker $subscriptionEventTracker
-     * @param EntitySaveHelper $entitySaveHelper
-     * @param RouteProvider $routeProvider
+     * @param LoggerInterface                $logger
+     * @param SubscriptionExtractor          $subscriptionExtractor
+     * @param SubscriptionPackProvider       $subscriptionPackProvider
+     * @param Subscriber                     $subscriber
+     * @param SubscriptionEventTracker       $subscriptionEventTracker
+     * @param EntitySaveHelper               $entitySaveHelper
+     * @param RouteProvider                  $routeProvider
      * @param SubscriptionEligibilityChecker $subscriptionEligibilityChecker
-     * @param UrlParamAppender $urlParamAppender
-     * @param RouterInterface $router
-     * @param CommonResponseCreator $commonResponseCreator
+     * @param UrlParamAppender               $urlParamAppender
+     * @param RouterInterface                $router
+     * @param CommonResponseCreator          $commonResponseCreator
      */
     public function __construct(
         LoggerInterface $logger,
@@ -113,23 +113,24 @@ class ConsentFlowHandler
         UrlParamAppender $urlParamAppender,
         RouterInterface $router,
         CommonResponseCreator $commonResponseCreator
-    ) {
-        $this->logger = $logger;
-        $this->subscriptionExtractor = $subscriptionExtractor;
-        $this->subscriptionPackProvider = $subscriptionPackProvider;
-        $this->subscriber = $subscriber;
-        $this->subscriptionEventTracker = $subscriptionEventTracker;
-        $this->entitySaveHelper = $entitySaveHelper;
-        $this->routeProvider = $routeProvider;
+    )
+    {
+        $this->logger                         = $logger;
+        $this->subscriptionExtractor          = $subscriptionExtractor;
+        $this->subscriptionPackProvider       = $subscriptionPackProvider;
+        $this->subscriber                     = $subscriber;
+        $this->subscriptionEventTracker       = $subscriptionEventTracker;
+        $this->entitySaveHelper               = $entitySaveHelper;
+        $this->routeProvider                  = $routeProvider;
         $this->subscriptionEligibilityChecker = $subscriptionEligibilityChecker;
-        $this->urlParamAppender = $urlParamAppender;
-        $this->router = $router;
-        $this->commonResponseCreator = $commonResponseCreator;
+        $this->urlParamAppender               = $urlParamAppender;
+        $this->router                         = $router;
+        $this->commonResponseCreator          = $commonResponseCreator;
     }
 
     /**
-     * @param Request $request
-     * @param User $user
+     * @param Request            $request
+     * @param User               $user
      * @param HasConsentPageFlow $subscriber
      *
      * @return Response
@@ -143,7 +144,7 @@ class ConsentFlowHandler
 
         if (empty($subscription)) {
             $this->logger->debug('Processing `consent subscribe` action', [
-                'user' => $user,
+                'user'    => $user,
                 'request' => $request
             ]);
 
@@ -152,7 +153,7 @@ class ConsentFlowHandler
 
         if ($this->subscriptionEligibilityChecker->isStatusOkForResubscribe($subscription)) {
             $this->logger->debug('Processing `consent subscribe` action', [
-                'user' => $user,
+                'user'    => $user,
                 'request' => $request
             ]);
 
@@ -168,7 +169,7 @@ class ConsentFlowHandler
             }
 
             $redirect_url = $this->router->generate('index');
-            $updatedUrl = $this->urlParamAppender->appendUrl($redirect_url, [
+            $updatedUrl   = $this->urlParamAppender->appendUrl($redirect_url, [
                 'err_handle' => 'already_subscribed'
             ]);
 
@@ -177,8 +178,8 @@ class ConsentFlowHandler
     }
 
     /**
-     * @param Request $request
-     * @param User $user
+     * @param Request            $request
+     * @param User               $user
      * @param HasConsentPageFlow $subscriber
      *
      * @return Response
@@ -222,10 +223,10 @@ class ConsentFlowHandler
     }
 
     /**
-     * @param Request $request
-     * @param User $user
+     * @param Request            $request
+     * @param User               $user
      * @param HasConsentPageFlow $subscriber
-     * @param Subscription $subscription
+     * @param Subscription       $subscription
      *
      * @return Response
      *
@@ -250,10 +251,10 @@ class ConsentFlowHandler
             ]);
 
             $additionalData = $subscriber->getAdditionalSubscribeParams($request, $user);
-            $result = $this->subscriber->resubscribe($subscription, $subscriptionPack, $additionalData);
+            $result         = $this->subscriber->resubscribe($subscription, $subscriptionPack, $additionalData);
         } else {
             $this->logger->debug('Resubscription is not allowed.', [
-                'packId' => $subscriptionPack->getUuid(),
+                'packId'      => $subscriptionPack->getUuid(),
                 'carrierName' => $subscriptionPack->getName()
             ]);
 

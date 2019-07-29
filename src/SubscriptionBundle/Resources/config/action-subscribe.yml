@@ -99,3 +99,56 @@ services:
             - '@ExtrasBundle\Utils\UrlParamAppender'
             - '@router.default'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\CommonResponseCreator'
+
+    SubscriptionBundle\Subscription\Subscribe\Controller\SubscribeAction:
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@IdentificationBundle\User\Service\UserExtractor'
+            - '@SubscriptionBundle\Subscription\Subscribe\Common\CommonFlowHandler'
+            - '@SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider'
+            - '@SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter'
+            - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+            - '@IdentificationBundle\Identification\Common\PostPaidHandler'
+            - '@SubscriptionBundle\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider'
+            - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter'
+            - '@SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator'
+            - '@SubscriptionBundle\Subscription\Subscribe\Voter\BatchSubscriptionVoter'
+            - '@IdentificationBundle\Identification\Service\RouteProvider'
+            - '@SubscriptionBundle\Subscription\Common\RouteProvider'
+
+
+    SubscriptionBundle\Subscription\Subscribe\Controller\FakeSubscribeAction:
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@IdentificationBundle\User\Service\UserExtractor'
+            - '@router.default'
+            - '@logger'
+            - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
+            - '@SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider'
+            - '@SubscriptionBundle\Service\EntitySaveHelper'
+            - '@IdentificationBundle\Identification\Service\RouteProvider'
+
+    SubscriptionBundle\Subscription\Subscribe\Controller\ConsentPageSubscribeAction:
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+            - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
+            - '@SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider'
+            - '@IdentificationBundle\User\Service\UserExtractor'
+            - '@SubscriptionBundle\Subscription\Subscribe\Consent\ConsentFlowHandler'
+            - '@router'
+            - '@SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter'
+            - '@SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator'
+
+    SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking:
+        arguments:
+            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
+
+    SubscriptionBundle\Subscription\Subscribe\Service\SubscribeUrlResolver:
+        arguments:
+            - '@router'
+            - '@SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider'
+
+    SubscriptionBundle\Subscription\Subscribe\Service\CreditsCalculator:
+        arguments: ['@SubscriptionBundle\Subscription\Renew\Service\RenewDateCalculator']

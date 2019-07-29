@@ -83,7 +83,7 @@ services:
     App\Controller\ContactUsController:
         arguments:
         - '@form.factory'
-        - '@IdentificationBundle\Identification\Service\UserExtractor'
+        - '@IdentificationBundle\User\Service\UserExtractor'
         - '@ExtrasBundle\Email\EmailSender'
         - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
         - '@App\Domain\Repository\CampaignRepository'

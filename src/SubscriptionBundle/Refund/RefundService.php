@@ -7,7 +7,7 @@ use IdentificationBundle\Entity\User;
 use SubscriptionBundle\BillingFramework\Process\API\Client;
 use SubscriptionBundle\Entity\Refund;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Reporting\ReportingToolDataProvider;
+use SubscriptionBundle\ReportingTool\ReportingToolDataProvider;
 
 /**
  * Class RefundService

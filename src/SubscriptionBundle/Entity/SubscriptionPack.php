@@ -2,7 +2,7 @@
 
 namespace SubscriptionBundle\Entity;
 
-use App\Domain\Entity\Country;
+use CommonDataBundle\Entity\Country;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use CommonDataBundle\Entity\Interfaces\HasUuid;
 use Doctrine\Common\Collections\ArrayCollection;

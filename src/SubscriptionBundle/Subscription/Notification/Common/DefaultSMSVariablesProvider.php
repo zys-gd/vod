@@ -37,8 +37,8 @@ class DefaultSMSVariablesProvider
      * @param RenewDateCalculator $renewDateCalculator
      */
     public function __construct(RouterInterface $router,
-        RenewDateCalculator $renewDateCalculator,
-        RouteProvider $provider)
+                                RenewDateCalculator $renewDateCalculator,
+                                RouteProvider $provider)
     {
         $this->router              = $router;
         $this->renewDateCalculator = $renewDateCalculator;

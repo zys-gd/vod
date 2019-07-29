@@ -27,7 +27,7 @@ services:
   SubscriptionBundle\Subscription\Notification\Common\ShortUrlHashGenerator: ~
 
   SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider:
-          arguments: ['@IdentificationBundle\Repository\CarrierRepositoryInterface', '@CommonDataBundle\Repository\Interfaces\LanguageRepositoryInterface']
+    arguments: ['@IdentificationBundle\Repository\CarrierRepositoryInterface', '@CommonDataBundle\Repository\Interfaces\LanguageRepositoryInterface']
 
   SubscriptionBundle\Subscription\Notification\Common\NamespaceResolver: ~
 

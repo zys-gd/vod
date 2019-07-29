@@ -97,15 +97,15 @@ class Subscriber
     /**
      * Subscriber constructor.
      *
-     * @param LoggerInterface                                             $logger
-     * @param EntitySaveHelper                                            $entitySaveHelper
-     * @param SessionInterface                                            $session
-     * @param \SubscriptionBundle\Subscription\Common\SubscriptionFactory $subscriptionCreator
-     * @param PromotionalResponseChecker                                  $promotionalResponseChecker
-     * @param FakeResponseProvider                                        $fakeResponseProvider
-     * @param Notifier                                                    $notifier
-     * @param SubscribeProcess                                            $subscribeProcess
-     * @param OnSubscribeUpdater                                          $onSubscribeUpdater
+     * @param LoggerInterface                                                $logger
+     * @param EntitySaveHelper                                               $entitySaveHelper
+     * @param SessionInterface                                               $session
+     * @param \SubscriptionBundle\Subscription\Common\SubscriptionFactory    $subscriptionCreator
+     * @param PromotionalResponseChecker                                     $promotionalResponseChecker
+     * @param FakeResponseProvider                                           $fakeResponseProvider
+     * @param Notifier                                                       $notifier
+     * @param SubscribeProcess                                               $subscribeProcess
+     * @param OnSubscribeUpdater                                             $onSubscribeUpdater
      * @param SubscribeParametersProvider                                    $subscribeParametersProvider
      * @param SubscriptionLimitCompleter                                     $subscriptionLimitCompleter
      * @param SubscriptionCounterUpdater                                     $subscriptionCounterUpdater
@@ -197,6 +197,23 @@ class Subscriber
     }
 
     /**
+     * @param User             $User
+     * @param SubscriptionPack $plan
+     *
+     * @return Subscription
+     */
+    private function createPendingSubscription(User $User, SubscriptionPack $plan): Subscription
+    {
+        $subscription = $this->subscriptionCreator->create($User, $plan);
+        $subscription->setStatus(Subscription::IS_PENDING);
+        $subscription->setCurrentStage(Subscription::ACTION_SUBSCRIBE);
+        $this->entitySaveHelper->persistAndSave($subscription);
+        return $subscription;
+    }
+
+//TODO: remove fake
+
+    /**
      * @param Subscription     $existingSubscription
      * @param SubscriptionPack $plan
      * @param array            $additionalData
@@ -235,12 +252,6 @@ class Subscriber
         }
     }
 
-//TODO: remove fake
-    private function getPriceTierIdWithZeroValue($carrierId)
-    {
-        return 0;
-    }
-
     /**
      * @param $subscription
      */
@@ -255,19 +266,9 @@ class Subscriber
         }
     }
 
-    /**
-     * @param User             $User
-     * @param SubscriptionPack $plan
-     *
-     * @return Subscription
-     */
-    private function createPendingSubscription(User $User, SubscriptionPack $plan): Subscription
+    private function getPriceTierIdWithZeroValue($carrierId)
     {
-        $subscription = $this->subscriptionCreator->create($User, $plan);
-        $subscription->setStatus(Subscription::IS_PENDING);
-        $subscription->setCurrentStage(Subscription::ACTION_SUBSCRIBE);
-        $this->entitySaveHelper->persistAndSave($subscription);
-        return $subscription;
+        return 0;
     }
 
 }

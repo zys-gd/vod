@@ -2,12 +2,12 @@
 
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
-use IdentificationBundle\Identification\Service\UserFactory;
+use IdentificationBundle\User\Service\UserFactory;
 use PHPUnit\Framework\TestCase;
 
 class UserFactoryTest extends TestCase
 {
-    /** @var UserFactory */
+    /** @var \IdentificationBundle\User\Service\UserFactory */
     private $userFactory;
 
     protected function setUp()
