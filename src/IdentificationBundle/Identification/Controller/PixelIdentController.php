@@ -15,7 +15,7 @@ use IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer;
 use IdentificationBundle\Identification\Common\Pixel\PixelIdentVerifier;
 use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\DTO\ISPData;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\RouteProvider;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -101,8 +101,8 @@ class PixelIdentController extends AbstractController
             throw new BadRequestHttpException("Pixel ident is not started yet");
         }
 
-        if ($this->identificationDataStorage->readValue('subscribeAfterIdent')) {
-            $this->identificationDataStorage->cleanValue('subscribeAfterIdent');
+        if ($this->identificationDataStorage->readValue(IdentificationDataStorage::SUBSCRIBE_AFTER_IDENT_KEY)) {
+            $this->identificationDataStorage->storeValue(IdentificationDataStorage::SUBSCRIBE_AFTER_IDENT_KEY, false);
             $successUrl = $this->generateUrl('subscription.subscribe');
         } else {
             $successUrl = $this->routeProvider->getLinkToHomepage();

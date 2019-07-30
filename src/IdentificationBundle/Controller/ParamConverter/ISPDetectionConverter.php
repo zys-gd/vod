@@ -10,7 +10,7 @@ namespace IdentificationBundle\Controller\ParamConverter;
 
 
 use IdentificationBundle\Identification\DTO\ISPData;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,11 +31,11 @@ class ISPDetectionConverter implements ParamConverterInterface
      */
     public function apply(Request $request, ParamConverter $configuration)
     {
-        if (!$ispData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession())) {
+        if (!$billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($request->getSession())) {
             throw new BadRequestHttpException('ISP detection data is not found');
         }
 
-        $object = new ISPData($ispData['carrier_id']);
+        $object = new ISPData($billingCarrierId);
 
 
         $request->attributes->set($configuration->getName(), $object);

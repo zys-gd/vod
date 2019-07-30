@@ -9,7 +9,7 @@ services:
         arguments:
             - '@IdentificationBundle\Identification\Service\TokenGenerator'
             - '@IdentificationBundle\Identification\Service\UserFactory'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
             - '@doctrine.orm.entity_manager'
 
     IdentificationBundle\WifiIdentification\WifiIdentConfirmator:
@@ -20,7 +20,7 @@ services:
             - '@IdentificationBundle\BillingFramework\Process\PinVerifyProcess'
             - '@IdentificationBundle\WifiIdentification\Common\RequestProvider'
             - '@IdentificationBundle\WifiIdentification\Service\MsisdnCleaner'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
             - '@IdentificationBundle\WifiIdentification\Service\IdentFinisher'
             - '@SubscriptionBundle\Repository\SubscriptionRepository'
             - '@IdentificationBundle\Repository\UserRepository'
@@ -36,7 +36,7 @@ services:
             - '@IdentificationBundle\WifiIdentification\Service\MsisdnCleaner'
             - '@IdentificationBundle\WifiIdentification\Common\InternalSMS\PinCodeSaver'
             - '@IdentificationBundle\WifiIdentification\Common\RequestProvider'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
             - '@IdentificationBundle\Repository\UserRepository'
             - '@IdentificationBundle\BillingFramework\Process\PinResendProcess'
 
@@ -53,12 +53,12 @@ services:
 
     IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeResolver:
         arguments:
-            - '@App\Domain\Service\Translator\Translator'
+            - '@IdentificationBundle\Identification\Service\TranslatorInterface'
             - '@ExtrasBundle\Utils\LocalExtractor'
             - '@IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeMappers\ErrorCodeMapperProvider'
 
     IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeMappers\ErrorCodeMapperProvider: ~
 
-    IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeMappers\VodafoneEGTpayMapper:
-        tags:
-            - { name: identification.error_code_mapper }
+    IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage:
+        arguments:
+            - '@IdentificationBundle\Identification\Service\Session\SessionStorage'

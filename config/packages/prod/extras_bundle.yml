@@ -32,7 +32,7 @@ services:
     arguments:
       - '1'
       -
-        class: 'Redis'
+        lazy: false
 
   app_redis_connection_adapter:
     class: Symfony\Component\Cache\Adapter\RedisAdapter
@@ -42,6 +42,7 @@ services:
       - ''
       -
         class: 'Redis'
-
+        read_timeout: 1
+        timeout: 1
 
 

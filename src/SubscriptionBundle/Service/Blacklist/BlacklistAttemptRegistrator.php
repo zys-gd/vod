@@ -4,9 +4,9 @@ namespace SubscriptionBundle\Service\Blacklist;
 
 use ExtrasBundle\Cache\ICacheService;
 use IdentificationBundle\Entity\CarrierInterface;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Repository\UserRepository;
+use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -29,9 +29,9 @@ class BlacklistAttemptRegistrator
      */
     private $blacklistSaver;
     /**
-     * @var IdentificationDataStorage
+     * @var WifiIdentificationDataStorage
      */
-    private $identificationDataStorage;
+    private $wifiIdentificationDataStorage;
     /**
      * @var UserRepository
      */
@@ -47,7 +47,7 @@ class BlacklistAttemptRegistrator
      * @param CarrierRepositoryInterface $carrierRepository
      * @param ICacheService $cacheService
      * @param BlacklistSaver $blacklistSaver
-     * @param IdentificationDataStorage $identificationDataStorage
+     * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
      * @param UserRepository $userRepository
      * @param LoggerInterface $logger
      */
@@ -55,14 +55,14 @@ class BlacklistAttemptRegistrator
         CarrierRepositoryInterface $carrierRepository,
         ICacheService $cacheService,
         BlacklistSaver $blacklistSaver,
-        IdentificationDataStorage $identificationDataStorage,
+        WifiIdentificationDataStorage $wifiIdentificationDataStorage,
         UserRepository $userRepository,
         LoggerInterface $logger
     ) {
         $this->carrierRepository         = $carrierRepository;
         $this->cacheService              = $cacheService;
         $this->blacklistSaver            = $blacklistSaver;
-        $this->identificationDataStorage = $identificationDataStorage;
+        $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
         $this->userRepository            = $userRepository;
         $this->logger                    = $logger;
     }
@@ -87,7 +87,7 @@ class BlacklistAttemptRegistrator
 
         $this->cacheService->saveCache($identificationToken, $subscriptionTries, self::TIME_LIMIT);
 
-        if ($this->identificationDataStorage->readValue('is_wifi_flow')) {
+        if ($this->wifiIdentificationDataStorage->isWifiFlow()) {
             $user = $this->userRepository->findOneByIdentificationToken($identificationToken);
             $this->cacheService->saveCache($user->getIdentifier(), $subscriptionTries, self::TIME_LIMIT);
         }
