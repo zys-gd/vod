@@ -6,7 +6,7 @@ use App\Domain\Entity\CountryCategoryPriorityOverride;
 use App\Domain\Entity\MainCategory;
 use App\Domain\Repository\CountryCategoryPriorityOverrideRepository;
 use App\Domain\Repository\MainCategoryRepository;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Extension\AbstractExtension;
@@ -65,11 +65,11 @@ class NavbarExtension extends AbstractExtension
                 /** @var MainCategory[] $categories */
                 $categories = $this->mainCategoryRepository->findWithSubcategories();
 
-                $ispData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
-                if ($ispData) {
+                $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
+                if ($billingCarrierId) {
                     $categoryOverrides = $this
                         ->categoryPriorityOverrideRepository
-                        ->findByBillingCarrierId($ispData['carrier_id']);
+                        ->findByBillingCarrierId($billingCarrierId);
                 }
 
                 if (!empty($categoryOverrides)) {

@@ -4,8 +4,6 @@ services:
     factory: ['@app.cache.redis_connection_provider','create']
     arguments:
       - 3
-      -
-        class: 'Redis'
 
   app.session.redis_handler:
     class: Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler

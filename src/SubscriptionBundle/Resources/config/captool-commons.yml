@@ -5,5 +5,4 @@ services:
     arguments:
       - '2'
       -
-        class: 'Redis'
-
+        timeout: 3
