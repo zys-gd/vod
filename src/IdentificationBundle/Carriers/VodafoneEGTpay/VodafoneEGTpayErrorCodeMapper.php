@@ -1,18 +1,14 @@
 <?php
 
-
-namespace IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeMappers;
-
+namespace IdentificationBundle\Carriers\VodafoneEGTpay;
 
 use App\Domain\Constants\ConstBillingCarrierId;
+use IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeMappers\ErrorCodeMapperInterface;
 
 /**
- * This is example
- *
- * Class VodafoneEGTpayMapper
- * @package IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeMappers
+ * Class VodafoneEGTpayErrorCodeMapper
  */
-class VodafoneEGTpayMapper implements ErrorCodeMapperInterface
+class VodafoneEGTpayErrorCodeMapper implements ErrorCodeMapperInterface
 {
     /**
      * @param int $billingResponseCode

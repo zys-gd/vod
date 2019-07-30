@@ -10,7 +10,7 @@ use IdentificationBundle\Identification\Common\Async\AsyncIdentStarter;
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow;
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasConsentPageFlow;
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCustomConsentPageFlow;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\TokenGenerator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -93,10 +93,12 @@ class CommonConsentPageFlowHandler
      *
      * @return Response
      */
-    public function process(Request $request,
+    public function process(
+        Request $request,
         HasConsentPageFlow $handler,
         CarrierInterface $carrier,
-        string $token): Response
+        string $token
+    ): Response
     {
         if ($handler instanceof HasCommonConsentPageFlow) {
             $additionalParams = $handler->getAdditionalIdentificationParams($request);
@@ -116,7 +118,10 @@ class CommonConsentPageFlowHandler
 
             $processResult = $this->identProcess->doIdent($parameters);
 
-            $this->dataStorage->storeValue('consentFlow[token]', $this->generator->generateToken());
+            $this->dataStorage->storeValue(
+                IdentificationDataStorage::CONSENT_FLOW_TOKEN_KEY,
+                $this->generator->generateToken()
+            );
 
             return $this->asyncIdentStarter->start($processResult, $token);
         }

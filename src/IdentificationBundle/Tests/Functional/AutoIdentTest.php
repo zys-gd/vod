@@ -13,6 +13,7 @@ use DataFixtures\LoadCarriersData;
 use ExtrasBundle\Testing\Core\AbstractFunctionalTest;
 use IdentificationBundle\BillingFramework\Process\IdentProcess;
 use IdentificationBundle\Identification\Service\DeviceDataProvider;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use Mockery;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -75,7 +76,7 @@ class AutoIdentTest extends AbstractFunctionalTest
         $client = $this->makeClient();
 
         $this->session->set('storage[is_wifi_flow]', true);
-        $this->session->set('identification_data', ['carrier_id' => null]);
+        $this->session->set(IdentificationDataStorage::IDENTIFICATION_DATA_KEY, ['carrier_id' => null]);
 
         $client->request('get', '/',['f' => 1]);
 

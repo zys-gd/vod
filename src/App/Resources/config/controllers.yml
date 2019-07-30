@@ -51,7 +51,7 @@ services:
             - '@App\Domain\Service\CarrierOTPVerifier'
             - '%default_redirect_url%'
             - '@App\CarrierTemplate\TemplateConfigurator'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
             - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
             - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier'
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
@@ -118,6 +118,17 @@ services:
             - '@App\Domain\Service\Piwik\ContentStatisticSender'
             - '@SubscriptionBundle\Service\SubscriptionExtractor'
 
-
     App\Controller\PlayerController:
         arguments: ['@App\Domain\Repository\UploadedVideoRepository', '@App\Domain\Repository\MainCategoryRepository']
+
+    App\Controller\SubnotifController:
+        arguments:
+            - '@SubscriptionBundle\Service\Notification\Notifier'
+            - '@App\Domain\Repository\CarrierRepository'
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@session'
+            - '@ExtrasBundle\Utils\LocalExtractor'
+            - '@SubscriptionBundle\Service\SubscriptionPackProvider'
+            - '@App\Domain\Service\Translator\Translator'
+            - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\RouteProvider'

@@ -13,8 +13,8 @@ use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\Exception\FailedIdentificationException;
 use IdentificationBundle\Identification\Identifier;
 use IdentificationBundle\Identification\IdentifierByUrl;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use IdentificationBundle\Identification\Service\RouteProvider;
 use IdentificationBundle\Identification\Service\TokenGenerator;
 use Psr\Log\LoggerInterface;
@@ -91,12 +91,12 @@ class IdentificationController extends AbstractController
             return $this->redirectToRoute('identify_by_url', ['urlId' => $urlId]);
         }
 
-        $identData = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
-        if (isset($identData['identification_token'])) {
+        $identificationToken = IdentificationFlowDataExtractor::extractIdentificationToken($request->getSession());
+        if ($identificationToken) {
             throw new BadRequestHttpException('You are already identified');
         }
 
-        if (!$ispData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession())) {
+        if (!$billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($request->getSession())) {
             throw new BadRequestHttpException('Isp data missing');
         }
 
@@ -104,13 +104,13 @@ class IdentificationController extends AbstractController
 
         $this->logger->debug('Start ident from action', []);
         $result = $this->identifier->identify(
-            (int)$ispData['carrier_id'],
+            $billingCarrierId,
             $request,
             $token,
             $deviceData
         );
         $this->logger->debug('Finish ident from action', ['result' => $result]);
-        $this->identificationDataStorage->storeValue('subscribeAfterIdent', true);
+        $this->identificationDataStorage->storeValue(IdentificationDataStorage::SUBSCRIBE_AFTER_IDENT_KEY, true);
 
         if ($customResponse = $result->getOverridedResponse()) {
             return $customResponse;

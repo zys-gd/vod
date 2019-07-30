@@ -13,7 +13,7 @@ services:
             - '@ExtrasBundle\Utils\UrlParamAppender'
             - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
             - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
             - '%default_redirect_url%'
@@ -115,15 +115,3 @@ services:
         arguments:
             - '@form.factory'
             - '@SubscriptionBundle\Service\ReportingToolService'
-
-    SubscriptionBundle\Controller\SubnotifController:
-        arguments:
-            - '@SubscriptionBundle\Service\Notification\Notifier'
-            - '@App\Domain\Repository\CarrierRepository'
-            - '@IdentificationBundle\Repository\UserRepository'
-            - '@session'
-            - '@ExtrasBundle\Utils\LocalExtractor'
-            - '@SubscriptionBundle\Service\SubscriptionPackProvider'
-            - '@App\Domain\Service\Translator\Translator'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
-            - '@router'

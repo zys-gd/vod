@@ -10,37 +10,60 @@ use App\Domain\Repository\LanguageRepository;
 use App\Domain\Repository\TranslationRepository;
 use ExtrasBundle\Cache\ArrayCache\ArrayCacheService;
 use ExtrasBundle\Cache\ICacheService;
+use IdentificationBundle\Identification\Service\TranslatorInterface;
 
-class Translator
+/**
+ * Class Translator
+ */
+class Translator implements TranslatorInterface
 {
     const DEFAULT_LOCALE = 'en';
 
-    /** @var TranslationRepository */
+    /**
+     * @var TranslationRepository
+     */
     protected $translationRepository;
 
-    /** @var ICacheService */
+    /**
+     * @var ICacheService
+     */
     protected $cache;
-    /** @var LanguageRepository */
+
+    /**
+     * @var LanguageRepository
+     */
     private $languageRepository;
 
-    private $texts = [];
     /**
      * @var CarrierRepository
      */
     private $carrierRepository;
+
+    /**
+     * @var array
+     */
+    private $texts = [];
+
     /**
      * @var ArrayCacheService
      */
     private $arrayCacheService;
 
+    /**
+     * Translator constructor
+     *
+     * @param TranslationRepository $translationRepository
+     * @param CarrierRepository $carrierRepository
+     * @param LanguageRepository $languageRepository
+     * @param ICacheService $cache
+     */
     public function __construct(
         TranslationRepository $translationRepository,
         CarrierRepository $carrierRepository,
         LanguageRepository $languageRepository,
         ICacheService $cache,
         ArrayCacheService $arrayCacheService
-    )
-    {
+    ) {
         $this->translationRepository = $translationRepository;
         $this->cache                 = $cache;
         $this->languageRepository    = $languageRepository;

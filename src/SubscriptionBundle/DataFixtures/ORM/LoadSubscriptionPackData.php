@@ -37,7 +37,6 @@ class LoadSubscriptionPackData extends AbstractFixture implements ContainerAware
             $periodicity                         = $row['periodicity'];
             $custom_renew_period                 = $row['custom_renew_period'];
             $grace_period                        = $row['grace_period'];
-            $tier_name                           = $row['tier_name'] ?? '';
             $tier_id                             = $row['tier_id'];
             $tier_price                          = $row['tier_price'] ?? '';
             $tier_currency                       = $row['tier_currency'] ?? '';
@@ -80,10 +79,8 @@ class LoadSubscriptionPackData extends AbstractFixture implements ContainerAware
             $carrier = $this->getReference(sprintf('carrier_with_internal_id_%s', $carrier_id));
             $pack->setCarrier($carrier);
 
-            $tierParts = explode(' ', $tier_name);
-
-            $pack->setTierPrice(!empty($tierParts[0]) ? $tierParts[0] : $tier_price);
-            $pack->setTierCurrency($tierParts[1] ?? $tier_currency);
+            $pack->setTierPrice($tier_price);
+            $pack->setTierCurrency($tier_currency);
             $pack->setTierId($tier_id);
 
             $pack->setCredits($credits);
