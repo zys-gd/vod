@@ -83,6 +83,7 @@
         const batchSize = 20;
         const loadMoreVideoLink = '{{ path('load_more_video') }}';
         const loadMoreBtn = $('.x-load-more-videos-button');
+        const defaultVideoRemoteId = '{{ defaultVideo ? defaultVideo.publicId : null }}';
 
         $(document).on('click', '.x-show-subcategory-button', (e) =>  {
             e.preventDefault();
@@ -97,7 +98,6 @@
 
         if(!isLast) {
             loadMoreBtn.click(() => {
-                const defaultVideoRemoteId = '{{ defaultVideo.publicId }}';
                 let link = `${loadMoreVideoLink}?videoPublicId=${defaultVideoRemoteId}&offset=${Number(offset)}`;
                 let button = $(this);
 
