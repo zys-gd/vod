@@ -6,7 +6,7 @@ use App\Domain\Constants\ConstBillingCarrierId;
 use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException;
 use SubscriptionBundle\Entity\Subscription;

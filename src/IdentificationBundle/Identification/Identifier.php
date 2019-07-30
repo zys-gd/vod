@@ -60,13 +60,13 @@ class Identifier
     /**
      * Identifier constructor.
      *
-     * @param IdentificationHandlerProvider                                       $handlerProvider
-     * @param CarrierRepositoryInterface                                          $carrierRepository
-     * @param LoggerInterface                                                     $logger
-     * @param CommonFlowHandler                                                   $commonFlowHandler
-     * @param \IdentificationBundle\Identification\Common\HeaderEnrichmentHandler $headerEnrichmentHandler
-     * @param CommonConsentPageFlowHandler                                        $consentPageFlowHandler
-     * @param CommonPassthroughFlowHandler                                        $passthroughFlowHandler
+     * @param IdentificationHandlerProvider $handlerProvider
+     * @param CarrierRepositoryInterface    $carrierRepository
+     * @param LoggerInterface               $logger
+     * @param CommonFlowHandler             $commonFlowHandler
+     * @param HeaderEnrichmentHandler       $headerEnrichmentHandler
+     * @param CommonConsentPageFlowHandler  $consentPageFlowHandler
+     * @param CommonPassthroughFlowHandler  $passthroughFlowHandler
      */
     public function __construct(
         IdentificationHandlerProvider $handlerProvider,

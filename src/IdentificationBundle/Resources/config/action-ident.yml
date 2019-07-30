@@ -116,7 +116,7 @@ services:
     IdentificationBundle\Identification\Common\CommonPassthroughFlowHandler:
         arguments:
             - '@router'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
             - '@IdentificationBundle\Identification\Service\TokenGenerator'
             - '@IdentificationBundle\Identification\Common\RequestParametersProvider'
             - '@IdentificationBundle\BillingFramework\Process\IdentProcess'

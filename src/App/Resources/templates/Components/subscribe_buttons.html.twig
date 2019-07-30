@@ -4,7 +4,7 @@
 
 
     {% set class %}
-        {% if isOtp() %}
+        {% if isConfirmationClick() %}
             {{ class ~ ' x-otp-button' }}
         {% else %}
             {{ class ~ ' x-subscribe-button' }}
