@@ -6,7 +6,7 @@ use App\Domain\Entity\Country;
 use App\Domain\Entity\CountryCategoryPriorityOverride;
 use App\Domain\Entity\MainCategory;
 use App\Domain\Repository\CountryCategoryPriorityOverrideRepository;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Doctrine\ORM\EntityRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;

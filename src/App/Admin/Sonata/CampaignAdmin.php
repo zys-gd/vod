@@ -9,7 +9,7 @@ use App\Domain\Entity\Campaign;
 use App\Domain\Entity\MainCategory;
 use App\Domain\Service\AWSS3\S3Client;
 use App\Domain\Service\Campaign\CampaignService;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Doctrine\ORM\EntityRepository;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use League\Flysystem\Filesystem;

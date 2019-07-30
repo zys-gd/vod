@@ -3,7 +3,7 @@
 
 namespace App\Tests\SubscriptionBundle\Service;
 
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Carbon\Carbon;
 use PHPUnit\Framework\TestCase;
 use SubscriptionBundle\Entity\Subscription;

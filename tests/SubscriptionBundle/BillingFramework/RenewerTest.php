@@ -33,7 +33,7 @@ class RenewerTest extends \PHPUnit\Framework\TestCase
     public function testRenew()
     {
 
-        $subscription = new Subscription(\App\Utils\UuidGenerator::generate());
+        $subscription = new Subscription(\ExtrasBundle\Utils\UuidGenerator::generate());
 
         $this->renewProcess->allows(['doRenew' => new ProcessResult()]);
         $this->renewer->renew($subscription);

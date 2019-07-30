@@ -5,7 +5,7 @@ namespace App\Admin\Sonata;
 use App\Domain\Entity\Carrier;
 use App\Domain\Entity\Language;
 use App\Domain\Entity\Translation;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

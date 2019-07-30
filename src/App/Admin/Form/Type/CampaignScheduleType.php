@@ -5,7 +5,7 @@ namespace App\Admin\Form\Type;
 
 
 use App\Domain\Entity\CampaignSchedule;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;

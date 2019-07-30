@@ -1,8 +1,0 @@
-services:
-    device_detection.service.identifier:
-        class: DeviceDetectionBundle\Service\Identifier
-        arguments: ['@request_stack']
-        public: false
-    device_detection.service.device:
-        class: DeviceDetectionBundle\Service\Device
-        arguments: ['@device_detection.service.identifier', '@cache.app', '@logger']

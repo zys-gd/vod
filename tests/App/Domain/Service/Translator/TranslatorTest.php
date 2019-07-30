@@ -15,7 +15,7 @@ use App\Domain\Repository\CarrierRepository;
 use App\Domain\Repository\LanguageRepository;
 use App\Domain\Repository\TranslationRepository;
 use App\Domain\Service\Translator\Translator;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use ExtrasBundle\Cache\ICacheService;
 use PHPUnit\Framework\TestCase;
 use Mockery;
