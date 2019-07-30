@@ -12,7 +12,7 @@ class UserFactoryTest extends TestCase
 
     protected function setUp()
     {
-        $this->userFactory = new UserFactory();
+        $this->userFactory = new UserFactory(Mockery::spy(\SubscriptionBundle\Subscription\Notification\Common\ShortUrlHashGenerator::class));
     }
 
     public function testCreate()

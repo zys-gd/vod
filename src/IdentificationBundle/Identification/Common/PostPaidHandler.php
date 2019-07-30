@@ -72,7 +72,7 @@ class PostPaidHandler
             $data     = (array)$response->data;
             $this->identificationDataStorage->storeValue(
                 IdentificationDataStorage::POST_PAID_RESTRICTED_KEY,
-                $data['accountTypeId'] ?? false
+                $data['accountTypeId'] === 1
             );
         } catch (\Throwable $e) {
             $this->logger->debug('Postpaid error', [
@@ -86,6 +86,6 @@ class PostPaidHandler
      */
     public function isPostPaidRestricted()
     {
-        return $this->identificationDataStorage->readValue(IdentificationDataStorage::POST_PAID_RESTRICTED_KEY);
+        return (bool)$this->identificationDataStorage->readValue(IdentificationDataStorage::POST_PAID_RESTRICTED_KEY);
     }
 }

@@ -48,17 +48,17 @@ class WifiIdentSMSSenderTest extends TestCase
 
     protected function setUp()
     {
-        $this->session               = new Session(new MockArraySessionStorage());
-        $this->handlerProvider       = Mockery::spy(IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerProvider::class);
-        $this->carrierRepository     = Mockery::spy(IdentificationBundle\Repository\CarrierRepositoryInterface::class);
-        $this->pinRequestProcess     = Mockery::spy(IdentificationBundle\BillingFramework\Process\PinRequestProcess::class);
-        $this->messageComposer       = Mockery::spy(IdentificationBundle\WifiIdentification\Service\MessageComposer::class);
-        $this->cleaner               = Mockery::spy(IdentificationBundle\WifiIdentification\Service\MsisdnCleaner::class);
-        $this->pinCodeSaver          = Mockery::spy(IdentificationBundle\WifiIdentification\Common\InternalSMS\PinCodeSaver::class);
-        $this->requestProvider       = Mockery::spy(IdentificationBundle\WifiIdentification\Common\RequestProvider::class);
+        $this->session                       = new Session(new MockArraySessionStorage());
+        $this->handlerProvider               = Mockery::spy(IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerProvider::class);
+        $this->carrierRepository             = Mockery::spy(IdentificationBundle\Repository\CarrierRepositoryInterface::class);
+        $this->pinRequestProcess             = Mockery::spy(IdentificationBundle\BillingFramework\Process\PinRequestProcess::class);
+        $this->messageComposer               = Mockery::spy(IdentificationBundle\WifiIdentification\Service\MessageComposer::class);
+        $this->cleaner                       = Mockery::spy(IdentificationBundle\WifiIdentification\Service\MsisdnCleaner::class);
+        $this->pinCodeSaver                  = Mockery::spy(IdentificationBundle\WifiIdentification\Common\InternalSMS\PinCodeSaver::class);
+        $this->requestProvider               = Mockery::spy(IdentificationBundle\WifiIdentification\Common\RequestProvider::class);
         $this->wifiIdentificationDataStorage = new WifiIdentificationDataStorage(new SessionStorage($this->session));
-        $this->userRepository        = Mockery::spy(IdentificationBundle\Repository\UserRepository::class);
-        $this->identificationHandler = Mockery::spy(WifiIdentificationHandlerInterface::class);
+        $this->userRepository                = Mockery::spy(IdentificationBundle\Repository\UserRepository::class);
+        $this->identificationHandler         = Mockery::spy(WifiIdentificationHandlerInterface::class);
 
         $this->wifiIdentSMSSender = new WifiIdentSMSSender(
             $this->handlerProvider,
@@ -69,7 +69,8 @@ class WifiIdentSMSSenderTest extends TestCase
             $this->pinCodeSaver,
             $this->requestProvider,
             $this->wifiIdentificationDataStorage,
-            $this->userRepository
+            $this->userRepository,
+            Mockery::spy(\IdentificationBundle\BillingFramework\Process\PinResendProcess::class)
         );
     }
 
@@ -103,7 +104,8 @@ class WifiIdentSMSSenderTest extends TestCase
             'get' => $wifiIdentificationHandler
         ]);
         $wifiIdentificationHandler->allows([
-            'isSmsSentByBilling' => true
+            'isSmsSentByBilling'        => true,
+            'getPhoneValidationOptions' => new \IdentificationBundle\WifiIdentification\DTO\PhoneValidationOptions('', '')
         ]);
         $pinCode = Mockery::spy(\IdentificationBundle\Entity\PinCode::class);
         $this->pinCodeSaver->allows([
