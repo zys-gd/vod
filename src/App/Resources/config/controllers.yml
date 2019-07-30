@@ -5,6 +5,9 @@ services:
     App\API\Controller\AffiliateBannedPublishersController:
         arguments:
             - '@App\Domain\Repository\AffiliateBannedPublisherRepository'
+            - '@App\Domain\Repository\AffiliateRepository'
+            - '@App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherCreator'
+            - '@App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherRemover'
 
     App\API\Controller\APIController:
         arguments: ['@App\Domain\Service\VideoProcessing\CallbackVoter', '@App\Domain\Service\VideoProcessing\Callback\EagerType']

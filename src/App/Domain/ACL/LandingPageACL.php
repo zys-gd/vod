@@ -12,7 +12,7 @@ use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Repository\CampaignScheduleRepository;
 use App\Domain\Repository\CarrierRepository;
-use App\Domain\Service\AffiliateBannedPublisherChecker;
+use App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherChecker;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;

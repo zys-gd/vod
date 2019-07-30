@@ -3,8 +3,7 @@
 namespace App\Admin\Form\Type;
 
 use App\Domain\Entity\AffiliateBannedPublisher;
-use App\Domain\Entity\AffiliateParameter;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

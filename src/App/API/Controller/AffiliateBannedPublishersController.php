@@ -4,7 +4,11 @@
 namespace App\API\Controller;
 
 
+use App\Domain\Entity\Affiliate;
 use App\Domain\Repository\AffiliateBannedPublisherRepository;
+use App\Domain\Repository\AffiliateRepository;
+use App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherCreator;
+use App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherRemover;
 use App\Exception\AffiliateIdNotFoundException;
 use App\Exception\PublisherIdNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,15 +25,36 @@ class AffiliateBannedPublishersController extends AbstractController
      * @var AffiliateBannedPublisherRepository
      */
     private $affiliateBannedPublisherRepository;
+    /**
+     * @var AffiliateRepository
+     */
+    private $affiliateRepository;
+    /**
+     * @var AffiliateBannedPublisherCreator
+     */
+    private $affiliateBannedPublisherCreator;
+    /**
+     * @var AffiliateBannedPublisherRemover
+     */
+    private $affiliateBannedPublisherRemover;
 
     /**
      * AffiliateBannedPublishersController constructor.
      *
      * @param AffiliateBannedPublisherRepository $affiliateBannedPublisherRepository
+     * @param AffiliateRepository                $affiliateRepository
+     * @param AffiliateBannedPublisherCreator    $affiliateBannedPublisherCreator
+     * @param AffiliateBannedPublisherRemover    $affiliateBannedPublisherRemover
      */
-    public function __construct(AffiliateBannedPublisherRepository $affiliateBannedPublisherRepository)
+    public function __construct(AffiliateBannedPublisherRepository $affiliateBannedPublisherRepository,
+        AffiliateRepository $affiliateRepository,
+        AffiliateBannedPublisherCreator $affiliateBannedPublisherCreator,
+        AffiliateBannedPublisherRemover $affiliateBannedPublisherRemover)
     {
         $this->affiliateBannedPublisherRepository = $affiliateBannedPublisherRepository;
+        $this->affiliateRepository                = $affiliateRepository;
+        $this->affiliateBannedPublisherCreator    = $affiliateBannedPublisherCreator;
+        $this->affiliateBannedPublisherRemover    = $affiliateBannedPublisherRemover;
     }
 
     /**
@@ -45,11 +70,6 @@ class AffiliateBannedPublishersController extends AbstractController
             return new JsonResponse([
                 'result'                    => true,
                 'affiliateBunnetPublishers' => $affiliateBunnetPublishers
-            ]);
-        } catch (AffiliateIdNotFoundException $exception) {
-            return new JsonResponse([
-                'result'  => true,
-                'isExist' => false
             ]);
         } catch (\Throwable $exception) {
             return $this->createResponseForException($exception);
@@ -74,16 +94,6 @@ class AffiliateBannedPublishersController extends AbstractController
                 'result'   => true,
                 'isBanned' => !!$affiliateBunnetPublisher
             ]);
-        } catch (AffiliateIdNotFoundException $exception) {
-            return new JsonResponse([
-                'result'  => true,
-                'isExist' => false
-            ]);
-        } catch (PublisherIdNotFoundException $exception) {
-            return new JsonResponse([
-                'result'  => true,
-                'isExist' => false
-            ]);
         } catch (\Throwable $exception) {
             return $this->createResponseForException($exception);
         }
@@ -99,20 +109,12 @@ class AffiliateBannedPublishersController extends AbstractController
     public function banAction(string $affiliateId, string $publisherId): JsonResponse
     {
         try {
-            $this->affiliateBannedPublisherRepository->banPublisher($affiliateId, $publisherId);
+            /** @var Affiliate $affiliate */
+            $affiliate = $this->affiliateRepository->find($affiliateId);
+            $this->affiliateBannedPublisherCreator->banPublisher($affiliate, $publisherId);
             return new JsonResponse([
                 'result'   => true,
                 'isBanned' => true
-            ]);
-        } catch (AffiliateIdNotFoundException $exception) {
-            return new JsonResponse([
-                'result'  => true,
-                'isBanned' => false
-            ]);
-        } catch (PublisherIdNotFoundException $exception) {
-            return new JsonResponse([
-                'result'  => true,
-                'isBanned' => false
             ]);
         } catch (\Throwable $exception) {
             return $this->createResponseForException($exception);
@@ -130,23 +132,14 @@ class AffiliateBannedPublishersController extends AbstractController
      */
     public function unbanAction(string $affiliateId, string $publisherId): JsonResponse
     {
-
-        $this->affiliateBannedPublisherRepository->unbanPublisher($affiliateId, $publisherId);
-
         try {
+            /** @var Affiliate $affiliate */
+            $affiliate = $this->affiliateRepository->find($affiliateId);
+            $this->affiliateBannedPublisherCreator->banPublisher($affiliate, $publisherId);
+
             return new JsonResponse([
-                'result'   => true,
+                'result'  => true,
                 'removed' => true
-            ]);
-        } catch (AffiliateIdNotFoundException $exception) {
-            return new JsonResponse([
-                'result'  => true,
-                'removed' => false
-            ]);
-        } catch (PublisherIdNotFoundException $exception) {
-            return new JsonResponse([
-                'result'  => true,
-                'removed' => false
             ]);
         } catch (\Throwable $exception) {
             return $this->createResponseForException($exception);

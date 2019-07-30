@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Domain\Service;
+namespace App\Domain\Service\AffiliateBannedPublisher;
 
 
 
