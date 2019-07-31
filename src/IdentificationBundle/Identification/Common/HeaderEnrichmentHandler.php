@@ -86,7 +86,7 @@ class HeaderEnrichmentHandler
         $user = $this->userRepository->findOneByMsisdn($msisdn);
         if (!$user) {
             $user = $this->userFactory->create(
-                $msisdn, $carrier, $request->getClientIp(), $token, $deviceData
+                $msisdn, $carrier, $request->getClientIp(), $token, null, $deviceData
             );
             $this->entityManager->persist($user);
         } else {
