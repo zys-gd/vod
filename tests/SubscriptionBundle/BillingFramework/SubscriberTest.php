@@ -1,6 +1,6 @@
 <?php
 
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use IdentificationBundle\Entity\User;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateSender;
@@ -134,7 +134,7 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
             Mockery::spy(\SubscriptionBundle\Service\SubscriptionSerializer::class),
             $this->subscribePerformer,
             $this->subscribePromotionalPerformer,
-            Mockery::spy(\App\Domain\Service\CrossSubscriptionAPI\ApiConnector::class)
+            Mockery::spy(\Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector::class)
         );
 
     }

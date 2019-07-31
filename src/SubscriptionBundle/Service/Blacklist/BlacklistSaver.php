@@ -9,7 +9,7 @@
 namespace SubscriptionBundle\Service\Blacklist;
 
 
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Repository\UserRepository;

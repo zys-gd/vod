@@ -2,8 +2,8 @@
 
 namespace IdentificationBundle\WifiIdentification\PinVerification;
 
-use App\Domain\Service\Translator\Translator;
 use ExtrasBundle\Utils\LocalExtractor;
+use IdentificationBundle\Identification\Service\TranslatorInterface;
 use IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeMappers\ErrorCodeMapperProvider;
 
 /**
@@ -12,7 +12,7 @@ use IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeMappers\Err
 class ErrorCodeResolver
 {
     /**
-     * @var Translator
+     * @var TranslatorInterface
      */
     private $translator;
 
@@ -28,14 +28,15 @@ class ErrorCodeResolver
     /**
      * ErrorCodeResolver constructor
      *
-     * @param Translator              $translator
+     * @param TranslatorInterface     $translator
      * @param LocalExtractor          $localExtractor
      * @param ErrorCodeMapperProvider $errorCodeMapperProvider
      */
-    public function __construct(Translator $translator,
+    public function __construct(
+        TranslatorInterface $translator,
         LocalExtractor $localExtractor,
-        ErrorCodeMapperProvider $errorCodeMapperProvider)
-    {
+        ErrorCodeMapperProvider $errorCodeMapperProvider
+    ) {
         $this->translator              = $translator;
         $this->localExtractor          = $localExtractor;
         $this->errorCodeMapperProvider = $errorCodeMapperProvider;
@@ -67,7 +68,7 @@ class ErrorCodeResolver
                 break;
 
             case ErrorCodes::PIN_REQUEST_LIMIT_EXCEEDED:
-            case 103:
+            case ErrorCodes::REQUEST_LIMIT_EXCEEDED:
                 return $this->translator->translate('message.error.pin_request_limit_exceeded', $billingCarrierId, $lang);
                 break;
 
@@ -76,6 +77,9 @@ class ErrorCodeResolver
 
             case ErrorCodes::NOT_ENOUGH_CREDIT:
                 return $this->translator->translate('messages.error.not_enough_credit', $billingCarrierId, $lang);
+
+            case ErrorCodes::BLACKLISTED_PHONE_NUMBER:
+                return $this->translator->translate('messages.error.wifi_blacklisted', $billingCarrierId, $lang);
 
             default:
                 return 'Internal Error';

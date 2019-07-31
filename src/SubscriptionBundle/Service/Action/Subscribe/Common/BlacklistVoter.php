@@ -4,7 +4,7 @@ namespace SubscriptionBundle\Service\Action\Subscribe\Common;
 
 use App\Domain\Repository\CarrierRepository;
 use ExtrasBundle\Cache\ICacheService;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\UserRepository;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Service\Blacklist\BlacklistChecker;
@@ -75,8 +75,7 @@ class BlacklistVoter
      */
     public function isUserBlacklisted(SessionInterface $session): bool
     {
-        $data         = IdentificationFlowDataExtractor::extractIdentificationData($session);
-        $identificationToken = $data['identification_token'] ?? null;
+        $identificationToken = IdentificationFlowDataExtractor::extractIdentificationToken($session);
 
         $this->logger->debug('Check user for blacklist', ['identification_token' => $identificationToken]);
 

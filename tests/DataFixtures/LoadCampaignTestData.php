@@ -6,7 +6,7 @@ namespace Tests\DataFixtures;
 
 use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Campaign;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use DataFixtures\LoadAffiliatesData;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;

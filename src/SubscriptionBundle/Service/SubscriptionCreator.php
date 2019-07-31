@@ -3,7 +3,7 @@
 namespace SubscriptionBundle\Service;
 
 
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\User;
 use SubscriptionBundle\Entity\Subscription;

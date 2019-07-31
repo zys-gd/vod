@@ -11,7 +11,6 @@ use IdentificationBundle\BillingFramework\Process\DTO\{PinRequestResult, PinVeri
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\Exception\WifiIdentConfirmException;
 use IdentificationBundle\WifiIdentification\Handler\HasConsentPageFlow;
@@ -19,6 +18,7 @@ use IdentificationBundle\WifiIdentification\Handler\HasCustomPinRequestRules;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinResendRules;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinVerifyRules;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
+use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use SubscriptionBundle\Repository\SubscriptionRepository;
 use SubscriptionBundle\Service\ZeroCreditSubscriptionChecking;
 use Symfony\Component\Routing\RouterInterface;
@@ -59,9 +59,9 @@ class VodafoneEGWifiIdentificationHandler implements
     private $subscriptionRepository;
 
     /**
-     * @var IdentificationDataStorage
+     * @var WifiIdentificationDataStorage
      */
-    private $identificationDataStorage;
+    private $wifiIdentificationDataStorage;
 
     /**
      * @var ZeroCreditSubscriptionChecking
@@ -76,7 +76,7 @@ class VodafoneEGWifiIdentificationHandler implements
      * @param RouterInterface $router
      * @param LocalExtractor $localExtractor
      * @param SubscriptionRepository $subscriptionRepository
-     * @param IdentificationDataStorage $identificationDataStorage
+     * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
      * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
      */
     public function __construct(
@@ -85,7 +85,7 @@ class VodafoneEGWifiIdentificationHandler implements
         RouterInterface $router,
         LocalExtractor $localExtractor,
         SubscriptionRepository $subscriptionRepository,
-        IdentificationDataStorage $identificationDataStorage,
+        WifiIdentificationDataStorage $wifiIdentificationDataStorage,
         ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
     ) {
         $this->userRepository = $userRepository;
@@ -93,7 +93,7 @@ class VodafoneEGWifiIdentificationHandler implements
         $this->router = $router;
         $this->localExtractor = $localExtractor;
         $this->subscriptionRepository = $subscriptionRepository;
-        $this->identificationDataStorage = $identificationDataStorage;
+        $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
         $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
     }
 
@@ -184,15 +184,11 @@ class VodafoneEGWifiIdentificationHandler implements
     }
 
     /**
-     * @param PinVerifyResult $parameters
+     * @param PinVerifyResult $pinVerifyResult
      */
-    public function afterSuccessfulPinVerify(PinVerifyResult $parameters): void
+    public function afterSuccessfulPinVerify(PinVerifyResult $pinVerifyResult): void
     {
-        $data = $parameters->getRawData();
-
-        if (!empty($data['subscription_contract_id'])) {
-            $this->identificationDataStorage->storeValue('subscription_contract_id', $data['subscription_contract_id']);
-        }
+        $this->wifiIdentificationDataStorage->setPinVerifyResult($pinVerifyResult);
     }
 
     /**

@@ -24,7 +24,6 @@
         {% elseif isConsentFlow() %}
             {{ link.render(url('subscription.consent_page_subscribe'), translate(placeholder), class) }}
         {% else %}
-            {#Ident && Subscribe Me#}
             {{ link.render(url('identify_and_subscribe'), translate(placeholder), class) }}
         {% endif %}
 
@@ -33,22 +32,29 @@
     {% endif %}
 
     <script type="text/javascript">
+        function firstClickOtpBtn() {
+            let otpBtn = $('.x-otp-button');
+            if (otpBtn.is('a')) {
+                otpBtn.each((key, el) => {
+                    $(el).removeClass('x-otp-button')
+                        .addClass('x-subscribe-button')
+                        .find('button').text('{{ translate('buttons.confirm') }}');
+                });
+            } else if(otpBtn.is('button')) {
+                otpBtn.each((key, el) => {
+                    $(el).removeClass('x-otp-button')
+                        .addClass('x-subscribe-button')
+                        .text('{{ translate('buttons.confirm') }}');
+                });
+            }
+        }
 
         $(document).on('click', '.x-subscribe-button', function (e) {
             $._loader(false);
         });
         $(document).on('click', '.x-otp-button', function (e) {
             e.preventDefault();
-            if ($(this).is('a')) {
-                $(this).removeClass('x-otp-button')
-                    .addClass('x-subscribe-button')
-                    .find('button').text('{{ translate('buttons.confirm') }}');
-            }
-            else if($(this).is('button')) {
-                $(this).removeClass('x-otp-button')
-                    .addClass('x-subscribe-button')
-                    .text('{{ translate('buttons.confirm') }}');
-            }
+            firstClickOtpBtn()
         });
 
     </script>

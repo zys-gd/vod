@@ -17,10 +17,8 @@ use ExtrasBundle\Utils\ArraySorter;
 use IdentificationBundle\Controller\ControllerWithIdentification;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\AlreadySubscribedIdentFinisher;
 use IdentificationBundle\Repository\UserRepository;
-use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -73,9 +71,9 @@ class HomeController extends AbstractController implements
     private $userRepository;
 
     /**
-     * @var IdentificationDataStorage
+     * @var AlreadySubscribedIdentFinisher
      */
-    private $identificationDataStorage;
+    private $alreadySubscribedIdentFinisher;
 
     /**
      * HomeController constructor.
@@ -88,7 +86,7 @@ class HomeController extends AbstractController implements
      * @param CountryCategoryPriorityOverrideRepository $categoryOverrideRepository
      * @param ContentStatisticSender $contentStatisticSender
      * @param UserRepository $userRepository
-     * @param IdentificationDataStorage $identificationDataStorage
+     * @param AlreadySubscribedIdentFinisher $alreadySubscribedIdentFinisher
      */
     public function __construct(
         TemplateConfigurator $templateConfigurator,
@@ -99,17 +97,17 @@ class HomeController extends AbstractController implements
         CountryCategoryPriorityOverrideRepository $categoryOverrideRepository,
         ContentStatisticSender $contentStatisticSender,
         UserRepository $userRepository,
-        IdentificationDataStorage $identificationDataStorage
+        AlreadySubscribedIdentFinisher $alreadySubscribedIdentFinisher
     ) {
-        $this->templateConfigurator       = $templateConfigurator;
-        $this->mainCategoryRepository     = $mainCategoryRepository;
-        $this->videoRepository            = $videoRepository;
-        $this->videoSerializer            = $videoSerializer;
-        $this->gameRepository             = $gameRepository;
-        $this->categoryOverrideRepository = $categoryOverrideRepository;
-        $this->contentStatisticSender     = $contentStatisticSender;
-        $this->userRepository             = $userRepository;
-        $this->identificationDataStorage  = $identificationDataStorage;
+        $this->templateConfigurator           = $templateConfigurator;
+        $this->mainCategoryRepository         = $mainCategoryRepository;
+        $this->videoRepository                = $videoRepository;
+        $this->videoSerializer                = $videoSerializer;
+        $this->gameRepository                 = $gameRepository;
+        $this->categoryOverrideRepository     = $categoryOverrideRepository;
+        $this->contentStatisticSender         = $contentStatisticSender;
+        $this->userRepository                 = $userRepository;
+        $this->alreadySubscribedIdentFinisher = $alreadySubscribedIdentFinisher;
     }
 
     /**
@@ -123,16 +121,6 @@ class HomeController extends AbstractController implements
      */
     public function indexAction(Request $request, ISPData $data)
     {
-        $params = $request->query->all();
-
-        if (!empty($params['msisdn']) && $user = $this->userRepository->findOneByMsisdn($params['msisdn'])) {
-            $carrierId = $user->getCarrierId();
-            $data = new ISPData($carrierId);
-
-            $this->identificationDataStorage->storeIdentificationToken($user->getIdentificationToken());
-            $this->identificationDataStorage->storeCarrierId($carrierId);
-        }
-
         /**
          * @var BatchOfGames $games
          */
@@ -161,11 +149,14 @@ class HomeController extends AbstractController implements
             5
         );
 
-        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
-        $campaignToken      = AffiliateVisitSaver::extractCampaignToken($request->getSession());
-        $this->contentStatisticSender->trackVisit($identificationData, $data, $campaignToken);
+        if ($this->alreadySubscribedIdentFinisher->needToHandle($request)) {
+            $this->alreadySubscribedIdentFinisher->tryToIdentify($request);
+        }
+
+        $this->contentStatisticSender->trackVisit($request->getSession());
 
         $template = $this->templateConfigurator->getTemplate('home', $data->getCarrierId());
+
         return $this->render($template, [
             'categoryVideos'  => array_slice($categoryVideos, 1, 3),
             'categories'      => $indexedCategoryData,

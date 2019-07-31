@@ -2,6 +2,13 @@ services:
     _defaults:
         tags: ['controller.service_arguments']
 
+    App\API\Controller\AffiliateBannedPublishersController:
+        arguments:
+            - '@App\Domain\Repository\AffiliateBannedPublisherRepository'
+            - '@App\Domain\Repository\AffiliateRepository'
+            - '@App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherCreator'
+            - '@App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherRemover'
+
     App\API\Controller\APIController:
         arguments: ['@App\Domain\Service\VideoProcessing\CallbackVoter', '@App\Domain\Service\VideoProcessing\Callback\EagerType']
 
@@ -40,7 +47,7 @@ services:
             - '@App\Domain\Repository\CountryCategoryPriorityOverrideRepository'
             - '@App\Domain\Service\Piwik\ContentStatisticSender'
             - '@IdentificationBundle\Repository\UserRepository'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\AlreadySubscribedIdentFinisher'
 
     App\Controller\LPController:
         arguments:
@@ -51,7 +58,7 @@ services:
             - '@App\Domain\Service\CarrierOTPVerifier'
             - '%default_redirect_url%'
             - '@App\CarrierTemplate\TemplateConfigurator'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
             - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
             - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier'
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
@@ -105,11 +112,12 @@ services:
             - '@App\Domain\Service\Piwik\ContentStatisticSender'
             - '@App\CarrierTemplate\TemplateConfigurator'
 
-    App\Controller\VideosController:
+    App\Controller\VideoController:
         arguments:
             - '@App\Domain\Repository\UploadedVideoRepository'
             - '@App\Domain\Repository\MainCategoryRepository'
             - '@App\Domain\Service\VideoProcessing\UploadedVideoSerializer'
+            - '@App\Domain\Repository\UploadedVideoRepository'
 
     App\Controller\TrackEventController:
         arguments:
@@ -117,6 +125,14 @@ services:
             - '@App\Domain\Service\Piwik\ContentStatisticSender'
             - '@SubscriptionBundle\Service\SubscriptionExtractor'
 
-
-    App\Controller\PlayerController:
-        arguments: ['@App\Domain\Repository\UploadedVideoRepository', '@App\Domain\Repository\MainCategoryRepository']
+    App\Controller\SubnotifController:
+        arguments:
+            - '@SubscriptionBundle\Service\Notification\Notifier'
+            - '@App\Domain\Repository\CarrierRepository'
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@session'
+            - '@ExtrasBundle\Utils\LocalExtractor'
+            - '@SubscriptionBundle\Service\SubscriptionPackProvider'
+            - '@App\Domain\Service\Translator\Translator'
+            - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\RouteProvider'

@@ -12,7 +12,7 @@ services:
             - '@router'
             - '@ExtrasBundle\Utils\LocalExtractor'
             - '@SubscriptionBundle\Repository\SubscriptionRepository'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
             - '@SubscriptionBundle\Service\ZeroCreditSubscriptionChecking'
         tags:
             - { name: identification.wifi_identification_handler }
@@ -20,3 +20,14 @@ services:
     IdentificationBundle\Carriers\VodafoneEGTpay\VodafoneEGIdentificationCallbackHandler:
         tags:
             - { name: identification.identification_callback_handler }
+
+    IdentificationBundle\Carriers\VodafoneEGTpay\VodafoneEGAlreadySubscribedHandler:
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@IdentificationBundle\Identification\Service\IdentificationStatus'
+        tags:
+            - { name: identification.already_subscribed_handler }
+
+    IdentificationBundle\Carriers\VodafoneEGTpay\VodafoneEGTpayErrorCodeMapper:
+        tags:
+            - { name: identification.error_code_mapper }

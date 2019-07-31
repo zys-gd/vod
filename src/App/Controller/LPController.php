@@ -12,12 +12,11 @@ use App\Domain\Service\CarrierOTPVerifier;
 use App\Domain\Service\Piwik\ContentStatisticSender;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Entity\CarrierInterface;
-use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Exception\MissingCarrierException;
 use IdentificationBundle\Identification\Service\CarrierSelector;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
+use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
@@ -75,9 +74,9 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      */
     private $templateConfigurator;
     /**
-     * @var IdentificationDataStorage
+     * @var WifiIdentificationDataStorage
      */
-    private $dataStorage;
+    private $wifiIdentificationDataStorage;
     /**
      * @var SubscriptionLimiter
      */
@@ -121,7 +120,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param CarrierOTPVerifier $OTPVerifier
      * @param string $defaultRedirectUrl
      * @param TemplateConfigurator $templateConfigurator
-     * @param IdentificationDataStorage $dataStorage
+     * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
      * @param SubscriptionLimiter $limiter
      * @param SubscriptionLimitNotifier $subscriptionLimitNotifier
      * @param CarrierRepositoryInterface $carrierRepository
@@ -139,7 +138,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         CarrierOTPVerifier $OTPVerifier,
         string $defaultRedirectUrl,
         TemplateConfigurator $templateConfigurator,
-        IdentificationDataStorage $dataStorage,
+        WifiIdentificationDataStorage $wifiIdentificationDataStorage,
         SubscriptionLimiter $limiter,
         SubscriptionLimitNotifier $subscriptionLimitNotifier,
         CarrierRepositoryInterface $carrierRepository,
@@ -150,22 +149,22 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         SubscribeUrlResolver $subscribeUrlResolver
     )
     {
-        $this->contentStatisticSender    = $contentStatisticSender;
-        $this->campaignRepository        = $campaignRepository;
-        $this->landingPageAccessResolver = $landingPageAccessResolver;
-        $this->imageBaseUrl              = $imageBaseUrl;
-        $this->OTPVerifier               = $OTPVerifier;
-        $this->defaultRedirectUrl        = $defaultRedirectUrl;
-        $this->templateConfigurator      = $templateConfigurator;
-        $this->dataStorage               = $dataStorage;
-        $this->limiter                   = $limiter;
-        $this->carrierRepository         = $carrierRepository;
-        $this->subscriptionLimitNotifier = $subscriptionLimitNotifier;
-        $this->visitTracker              = $visitTracker;
-        $this->visitNotifier             = $notifier;
-        $this->logger                    = $logger;
-        $this->carrierSelector           = $carrierSelector;
-        $this->subscribeUrlResolver      = $subscribeUrlResolver;
+        $this->contentStatisticSender        = $contentStatisticSender;
+        $this->campaignRepository            = $campaignRepository;
+        $this->landingPageAccessResolver     = $landingPageAccessResolver;
+        $this->imageBaseUrl                  = $imageBaseUrl;
+        $this->OTPVerifier                   = $OTPVerifier;
+        $this->defaultRedirectUrl            = $defaultRedirectUrl;
+        $this->templateConfigurator          = $templateConfigurator;
+        $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
+        $this->limiter                       = $limiter;
+        $this->carrierRepository             = $carrierRepository;
+        $this->subscriptionLimitNotifier     = $subscriptionLimitNotifier;
+        $this->visitTracker                  = $visitTracker;
+        $this->visitNotifier                 = $notifier;
+        $this->logger                        = $logger;
+        $this->carrierSelector               = $carrierSelector;
+        $this->subscribeUrlResolver          = $subscribeUrlResolver;
     }
 
 
@@ -196,6 +195,11 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         if ($campaign) {
             // Useless method atm.
             AffiliateVisitSaver::saveCampaignId($cid, $session);
+
+            if($this->landingPageAccessResolver->isAffiliatePublisherBanned($request, $campaign)){
+                return new RedirectResponse($this->defaultRedirectUrl);
+            }
+
             $campaignBanner = $this->imageBaseUrl . '/' . $campaign->getImagePath();
             $background     = $campaign->getBgColor();
         }
@@ -231,18 +235,16 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             $this->logger->debug('Finish CAP checking');
         }
 
-
         AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
 
-        // we can't use ISPData object as function parameter because request to LP could not contain
-        // carrier data and in this case BadRequestHttpException will be throw
-        $ispData            = IdentificationFlowDataExtractor::extractIspDetectionData($session);
-        $carrierId          = $ispData ? $ispData['carrier_id'] : null;
-        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($session);
-        $campaignToken      = AffiliateVisitSaver::extractCampaignToken($session);
-        $this->contentStatisticSender->trackVisit($identificationData, $carrierId ? new ISPData($carrierId) : null, $campaignToken);
+        $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($session);
 
-        if ($carrier && !(bool)$this->dataStorage->readValue('is_wifi_flow') && $this->landingPageAccessResolver->isLandingDisabled($request)) {
+        $this->contentStatisticSender->trackVisit($session);
+
+        if ($carrier
+            && !(bool) $this->wifiIdentificationDataStorage->isWifiFlow()
+            && $this->landingPageAccessResolver->isLandingDisabled($request)
+        ) {
             return new RedirectResponse($this->subscribeUrlResolver->getSubscribeRoute($carrier));
         }
 
@@ -250,7 +252,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             $this->OTPVerifier->forceWifi($session);
         }
 
-        $template = $this->templateConfigurator->getTemplate('landing', (int)$carrierId);
+        $template = $this->templateConfigurator->getTemplate('landing', (int)$billingCarrierId);
 
         return $this->render($template, [
             'campaignBanner' => $campaignBanner,
@@ -343,16 +345,15 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      *
      * @return Carrier|null
      */
-    private function resolveCarrierFromRequest(Request $request): ?Carrier
+    private function resolveCarrierFromRequest(Request $request): ?CarrierInterface
     {
-        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($request->getSession());
-        $billingCarrierId = (int)$ispDetectionData['carrier_id'] ?? null;
+        $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($request->getSession());
+
         if (!empty($billingCarrierId)) {
             return $this->carrierRepository->findOneByBillingId($billingCarrierId);
         }
-        else {
-            return null;
-        }
+
+        return null;
     }
 
     /**
@@ -382,13 +383,13 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         //1.Highest priority in carrier that has value not equal the default
         //2.Next if the campaign has value not equal the default
         //3.All other situations
-        if ($carrier !== null && $carrier->isClickableSubImage() === false) {
-            $this->dataStorage->storeIsClickableSubImage(false);
-        } else if ($carrier !== null && $carrier->isClickableSubImage() === true
-            && $campaign !== null && $campaign->isClickableSubImage() === false) {
-            $this->dataStorage->storeIsClickableSubImage(false);
-        } else {
-            $this->dataStorage->storeIsClickableSubImage(true);
-        }
+//        if ($carrier !== null && $carrier->isClickableSubImage() === false) {
+//            $this->dataStorage->storeIsClickableSubImage(false);
+//        } else if ($carrier !== null && $carrier->isClickableSubImage() === true
+//            && $campaign !== null && $campaign->isClickableSubImage() === false) {
+//            $this->dataStorage->storeIsClickableSubImage(false);
+//        } else {
+//            $this->dataStorage->storeIsClickableSubImage(true);
+//        }
     }
 }

@@ -1,7 +1,5 @@
 {% macro render() %}
-
     {% import "@App/Components/Blocks/Header/header_main.html.twig" as  header_main %}
-
 
     <link rel="stylesheet" href="{{ asset('css/player.css') }}">
 
@@ -32,52 +30,18 @@
                 <div class="modal-related-videos-block"></div>
             </div>
         </div>
-
-        {#<div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="d-flex flex-column">
-
-                        <div class="close-modal-button-container x-close-modal-button">
-                            <div class="close-modal-button"></div>
-                            <div class="close-modal-button-text">Close</div>
-                        </div>
-
-                        <div style="">
-                            <video id="video-player-frame" controls muted
-                                   class="cld-video-player cld-fluid"></video>
-                        </div>
-
-                        <div class="d-flex flex-column">
-                            <div class="d-flex flex-row align-items-center justify-content-center modal-related-video-section-title-block">
-                                <div class="separator_left"></div>
-                                <div class="modal-related-video-section-title-text">
-                                    Related videos
-                                </div>
-                                <div class="separator_right"></div>
-                            </div>
-                            <div class="modal-related-videos-block"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>#}
     </div>
-
-
 
     {% if hasActiveSubscription() or isNotFullyPaid() %}
         <script>
-
-
             var trackEventRoute = '{{ url('track_video_play') }}';
             let isLoading = false;
 
             $(window).on('load', function () {
 
                 function makeCurrentlyPlaying(index) {
-                    $('.modal-related-video').each(function () {
-                        let elementIndex = $(this).attr('data-uuid');
+                    $('.modal-related-videos-block .related-video').each(function () {
+                        let elementIndex = $(this).attr('data-public-id');
 
                         if (index != elementIndex) {
                             $(this).removeClass('currently-playing')
@@ -121,15 +85,14 @@
                 let loadMoreFunc;
                 let offset = 0;
                 let isFirstQuery = true;
-                $(document).on('click', '.x-play-button, .modal-related-video-thumbnail-wrapper', function () {
+                $(document).on('click', '.x-play-button', function () {
                     openModal();
 
                     let isLast = false;
-                    let category = $(this).attr('data-category');
-                    let batchRelatedVideosRoute = '{{ url('load_more_related_videos') }}';
+                    let batchRelatedVideosRoute = '{{ url('load_more_video') }}';
                     let options = ($(this).attr('data-options')) ? JSON.parse($(this).attr('data-options')) : undefined;
                     let publicId = $(this).attr('data-public-id');
-                    let uri = `${batchRelatedVideosRoute}?categoryUuid=${category}&offset=${offset}`;
+                    let uri = `${batchRelatedVideosRoute}?videoPublicId=${publicId}&offset=${offset}`;
 
                     // TODO: Refactor this. IMPORTANT!!!!
                     // Main problem is that we have one listener on play-button on the main page and on the page with recording video with related-videos.
@@ -156,7 +119,7 @@
                             && !isLoading
                         ) {
                             offset += 20;
-                            uri = `${batchRelatedVideosRoute}?categoryUuid=${category}&offset=${offset}`;
+                            uri = `${batchRelatedVideosRoute}?videoPublicId=${publicId}&offset=${offset}`;
                             isAllowRequest = false;
                             $.get(uri, (data) => {
                                 $('.modal-related-videos-block').append(data.html);
@@ -170,20 +133,20 @@
                     demoplayer.play();
                 });
 
-                $(document).on('click', '.x-modal-play-button', function () {
-                    let index    = $(this).attr('data-uuid');
+                $(document).on('click', '.modal-related-videos-block .related-video', function () {
+                    let index    = $(this).attr('data-public-id');
                     let publicId = $(this).attr('data-public-id');
                     let options = ($(this).attr('data-options')) ? JSON.parse($(this).attr('data-options')) : undefined;
 
                     changeVideo(publicId, options);
                     makeCurrentlyPlaying(index);
                     demoplayer.play();
-
                 });
 
                 $(document).on('click', '.x-close-modal-button', function () {
                     let modalRelatedVideosBlock = document.querySelector('.modal-related-videos-block');
                     modalRelatedVideosBlock.removeEventListener('scroll', loadMoreFunc);
+                    isFirstQuery = true;
                     closeModal()
                 });
 

@@ -5,7 +5,7 @@ namespace SubscriptionBundle\Admin\Sonata;
 use App\Domain\Entity\Carrier;
 use App\Domain\Entity\Country;
 use App\Domain\Repository\CountryRepository;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Doctrine\ORM\EntityManager;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\DTO\Strategy;

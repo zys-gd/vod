@@ -2,7 +2,7 @@
 
 namespace IdentificationBundle\Identification\Service;
 
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\DTO\DeviceData;

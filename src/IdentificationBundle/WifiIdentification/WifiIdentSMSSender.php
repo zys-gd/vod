@@ -7,7 +7,6 @@ use IdentificationBundle\BillingFramework\Process\PinRequestProcess;
 use IdentificationBundle\BillingFramework\Process\PinResendProcess;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Exception\AlreadyIdentifiedException;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\Common\InternalSMS\PinCodeSaver;
@@ -19,6 +18,7 @@ use IdentificationBundle\WifiIdentification\Handler\HasInternalSMSHandling;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerProvider;
 use IdentificationBundle\WifiIdentification\Service\MessageComposer;
 use IdentificationBundle\WifiIdentification\Service\MsisdnCleaner;
+use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkException;
 
 /**
@@ -55,9 +55,9 @@ class WifiIdentSMSSender
      */
     private $requestProvider;
     /**
-     * @var IdentificationDataStorage
+     * @var WifiIdentificationDataStorage
      */
-    private $dataStorage;
+    private $wifiIdentificationDataStorage;
     /**
      * @var UserRepository
      */
@@ -76,7 +76,7 @@ class WifiIdentSMSSender
      * @param MsisdnCleaner                     $cleaner
      * @param PinCodeSaver                      $pinCodeSaver
      * @param RequestProvider                   $requestProvider
-     * @param IdentificationDataStorage         $dataStorage
+     * @param WifiIdentificationDataStorage     $wifiIdentificationDataStorage
      * @param UserRepository                    $userRepository
      * @param PinResendProcess                  $pinResendProcess
      */
@@ -88,7 +88,7 @@ class WifiIdentSMSSender
         MsisdnCleaner $cleaner,
         PinCodeSaver $pinCodeSaver,
         RequestProvider $requestProvider,
-        IdentificationDataStorage $dataStorage,
+        WifiIdentificationDataStorage $wifiIdentificationDataStorage,
         UserRepository $userRepository,
         PinResendProcess $pinResendProcess
     ) {
@@ -99,7 +99,7 @@ class WifiIdentSMSSender
         $this->cleaner           = $cleaner;
         $this->pinCodeSaver      = $pinCodeSaver;
         $this->requestProvider   = $requestProvider;
-        $this->dataStorage       = $dataStorage;
+        $this->wifiIdentificationDataStorage       = $wifiIdentificationDataStorage;
         $this->userRepository    = $userRepository;
         $this->pinResendProcess  = $pinResendProcess;
     }
@@ -154,7 +154,7 @@ class WifiIdentSMSSender
 
         try {
             $result = $this->pinRequestProcess->doPinRequest($parameters);
-            $this->dataStorage->storeOperationResult('pinRequest', $result);
+            $this->wifiIdentificationDataStorage->setPinRequestResult($result);
 
             if ($handler instanceof HasCustomPinRequestRules) {
                 $handler->afterSuccessfulPinRequest($result);
@@ -178,7 +178,7 @@ class WifiIdentSMSSender
      */
     public function resendSMS(HasCustomPinResendRules $handler, CarrierInterface $carrier, string $body)
     {
-        $pinRequestResult = $this->dataStorage->readPreviousOperationResult('pinRequest');
+        $pinRequestResult = $this->wifiIdentificationDataStorage->getPinRequestResult();
         $additionalParameters = $handler->getAdditionalPinResendParameters($pinRequestResult);
 
         $parameters = $this->requestProvider->getPinResendParameters(

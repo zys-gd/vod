@@ -5,7 +5,7 @@ namespace App\Admin\Form\Type;
 
 
 use App\Domain\Entity\CampaignSchedule;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -50,41 +50,12 @@ class CampaignScheduleType extends AbstractType
                 'attr'     => ['class' => 'short_field']
             ]);
 
-        // $builder
-        //     ->add('hourStart', ChoiceFieldMaskType::class, [
-        //         'required' => $required,
-        //         'choices'  => range(0, 23),
-        //         'attr'     => ['class' => 'short_field', 'data-sonata-select2' => 'false']
-        //     ]);
-        //
-        // $builder
-        //     ->add('minuteStart', ChoiceFieldMaskType::class, [
-        //         'required' => $required,
-        //         'choices'  => range(0, 59),
-        //         'attr'     => ['class' => 'short_field', 'data-sonata-select2' => 'false']
-        //     ]);
-
         $builder
             ->add('dayEnd', ChoiceFieldMaskType::class, [
                 'required' => $required,
                 'choices'  => self::DAYS,
                 'attr'     => ['class' => 'short_field', 'data-sonata-select2' => 'false']
             ]);
-
-        // $builder
-        //     ->add('hourEnd', ChoiceFieldMaskType::class, [
-        //         'required' => $required,
-        //         'choices'  => range(0, 23),
-        //         'attr'     => ['class' => 'short_field', 'data-sonata-select2' => 'false']
-        //     ]);
-        //
-        // $builder
-        //     ->add('minuteEnd', ChoiceFieldMaskType::class, [
-        //         'required' => $required,
-        //         'choices'  => range(0, 59),
-        //         'attr'     => ['class' => 'short_field', 'data-sonata-select2' => 'false', 'data-sonata-select2-allow-clear' => 'false']
-        //     ]);
-
 
         $builder
             ->add('timeEnd', TimeType::class, [

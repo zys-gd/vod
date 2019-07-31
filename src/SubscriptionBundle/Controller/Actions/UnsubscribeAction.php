@@ -9,8 +9,8 @@
 namespace SubscriptionBundle\Controller\Actions;
 
 
-use App\Domain\Service\CrossSubscriptionAPI\ApiConnector;
 use IdentificationBundle\Exception\RedirectRequiredException;
+use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
 use SubscriptionBundle\Exception\SubscriptionException;
 use SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker;

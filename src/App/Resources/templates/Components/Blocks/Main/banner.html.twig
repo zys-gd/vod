@@ -25,9 +25,8 @@
             $(document).on('click', '.x-subscribe-image', function (e) {
                 if($('.x-otp-button').length) {
                     e.preventDefault();
-                    $('.x-otp-button').click();
-                }
-                else {
+                    firstClickOtpBtn()
+                } else {
                     $._loader(false);
                 }
             })
