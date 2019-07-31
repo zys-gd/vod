@@ -18,7 +18,7 @@ class HutchIDIdentificationCallbackHandler implements IdentCallbackHandlerInterf
      */
     public function canHandle(int $carrierId): bool
     {
-        return $carrierId === ConstBillingCarrierId::HUTCH_INDONESIA;
+        return false; //$carrierId === ConstBillingCarrierId::HUTCH_INDONESIA;
     }
 
     /**

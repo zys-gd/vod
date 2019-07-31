@@ -6,6 +6,8 @@
     {% set class %}
         {% if isConfirmationClick() %}
             {{ class ~ ' x-otp-button' }}
+        {% elseif isConfirmationPopup() %}
+            {{ class ~ ' x-popup-button' }}
         {% else %}
             {{ class ~ ' x-subscribe-button' }}
         {% endif %}
@@ -55,6 +57,24 @@
         $(document).on('click', '.x-otp-button', function (e) {
             e.preventDefault();
             firstClickOtpBtn()
+        });
+
+        $(document).on('click', '.x-popup-button', function (e) {
+            e.preventDefault();
+
+            var cfg = {
+                title: 'Are you sure subscribe?',
+                message: '',
+                okButton: 'Yes',
+                noButton: 'No',
+            };
+
+            showConfirmPopup(cfg)
+                .then(function () {
+                    $._loader(false);
+
+                    location = "{{ url('identify_and_subscribe') }}";
+                });
         });
 
     </script>

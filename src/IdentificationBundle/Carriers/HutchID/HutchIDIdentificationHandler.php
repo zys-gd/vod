@@ -20,7 +20,7 @@ class HutchIDIdentificationHandler implements
      */
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::HUTCH_INDONESIA;
+        return false; //$carrier->getBillingCarrierId() === ConstBillingCarrierId::HUTCH_INDONESIA;
     }
 
     /**

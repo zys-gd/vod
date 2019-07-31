@@ -31,6 +31,10 @@ App\Domain\Entity\Carrier:
             type: boolean
             options:
                 default: false
+        isConfirmationPopup:
+            type: boolean
+            options:
+                default: false
             #unique: true (should be added at some point...)
         trialInitializer:
             type: string

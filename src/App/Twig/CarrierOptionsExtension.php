@@ -51,6 +51,8 @@ class CarrierOptionsExtension extends AbstractExtension
         return [
             new TwigFunction('isConfirmationClick', [$this, 'isConfirmationClick']),
 
+            new TwigFunction('isConfirmationPopup', [$this, 'isConfirmationPopup']),
+
             new TwigFunction('isCarrierPassthrough', [$this, 'isCarrierPassthrough']),
 
         ];
@@ -68,6 +70,23 @@ class CarrierOptionsExtension extends AbstractExtension
             $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
 
             return $carrier->isConfirmationClick();
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isConfirmationPopup(): bool
+    {
+        $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
+
+        if ($billingCarrierId) {
+            /** @var Carrier $carrier */
+            $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
+
+            return $carrier->isConfirmationPopup();
         }
 
         return false;
