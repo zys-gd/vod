@@ -25,13 +25,10 @@ class VisitStorage
         $this->redis = $redis;
     }
 
-    public function cleanVisits(string $key = 'visit-*')
+    public function cleanVisits(string $key = 'visit-*'): void
     {
         $keys = $this->redis->keys($key);
-
-        foreach ($keys as $key) {
-            $this->redis->del($key);
-        }
+        $this->redis->del($keys);
     }
 
     /**
