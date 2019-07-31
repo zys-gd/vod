@@ -4,6 +4,7 @@ namespace IdentificationBundle\Carriers\HutchID;
 
 use App\Domain\Constants\ConstBillingCarrierId;
 use IdentificationBundle\Entity\CarrierInterface;
+use IdentificationBundle\Identification\Handler\HasHeaderEnrichment;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerInterface;
 use IdentificationBundle\Identification\Handler\PassthroughFlow\HasPassthroughFlow;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class HutchIDIdentificationHandler implements
     IdentificationHandlerInterface,
-    HasPassthroughFlow
+    HasHeaderEnrichment
 {
     /**
      * @param CarrierInterface $carrier
@@ -20,7 +21,7 @@ class HutchIDIdentificationHandler implements
      */
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return false; //$carrier->getBillingCarrierId() === ConstBillingCarrierId::HUTCH_INDONESIA;
+        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::HUTCH_INDONESIA;
     }
 
     /**
@@ -31,5 +32,15 @@ class HutchIDIdentificationHandler implements
     public function getAdditionalIdentificationParams(Request $request): array
     {
         return [];
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return string|null
+     */
+    public function getMsisdn(Request $request): ?string
+    {
+        return $request->headers->get('x-msp-msisdn');
     }
 }
