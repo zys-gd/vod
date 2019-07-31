@@ -1,0 +1,15 @@
+{% macro render(containerClass = '', video) %}
+    <div
+        class="{{ containerClass }}"
+        data-public-id="{{ video.publicId }}"
+        data-options="{{ video.jsonOptions }}"
+    >
+        <div class="video-preview-image-container">
+            <img src="{{ video.thumbnailUrl }}" alt="Play video">
+            <div class="video-play-icon"></div>
+        </div>
+        <div class="video-preview-title align-items-center d-flex">
+            {{ video.title }}
+        </div>
+    </div>
+{% endmacro %}

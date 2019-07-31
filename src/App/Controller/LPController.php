@@ -203,6 +203,11 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         if ($campaign) {
             // Useless method atm.
             AffiliateVisitSaver::saveCampaignId($cid, $session);
+
+            if($this->landingPageAccessResolver->isAffiliatePublisherBanned($request, $campaign)){
+                return new RedirectResponse($this->defaultRedirectUrl);
+            }
+
             $campaignBanner = $this->imageBaseUrl . '/' . $campaign->getImagePath();
             $background     = $campaign->getBgColor();
         }
