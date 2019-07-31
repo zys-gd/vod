@@ -51,15 +51,23 @@
     height: 100%;
 }
 
-.modal-related-video.currently-playing {
+.related-video.currently-playing {
     border: 1px solid #ce1e25;
 }
 
 
-.modal-related-video .modal-related-video-title {
+.modal-related-videos-block .related-video .video-preview-title {
     padding-left: 6px;
     font-weight: 500;
     font-size: 14px;
+}
+
+.modal-related-videos-block .related-video {
+    margin: .5rem 0;
+}
+
+.modal-related-videos-block .related-video img {
+    width: 175px;
 }
 
 .modal-related-videos-block {
@@ -67,7 +75,7 @@
     height: 95%;
 }
 
-.modal-related-video-thumbnail-wrapper {
+.modal-related-videos-block .video-preview-image-container {
     position: relative;
 }
 

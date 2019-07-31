@@ -4,15 +4,12 @@ namespace App\Controller;
 
 use App\CarrierTemplate\TemplateConfigurator;
 use App\Domain\DTO\BatchOfNotExpiredVideos;
-use App\Domain\Entity\UploadedVideo;
 use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\SubcategoryRepository;
 use App\Domain\Repository\UploadedVideoRepository;
 use App\Domain\Service\Piwik\ContentStatisticSender;
 use App\Domain\Service\VideoProcessing\UploadedVideoSerializer;
 use IdentificationBundle\Identification\DTO\ISPData;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
-use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -98,16 +95,13 @@ class CategoryController extends AbstractController implements AppControllerInte
             $videos = $this->uploadedVideoRepository->findNotExpiredBySubcategories($subcategories);
         }
 
-
         $categoryVideos = [];
 
         foreach ($videos->getVideos() as $video) {
             $categoryVideos[$video->getUuid()] = $this->videoSerializer->serializeShort($video);
         }
 
-        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
-        $campaignToken      = AffiliateVisitSaver::extractCampaignToken($request->getSession());
-        $this->contentStatisticSender->trackVisit($identificationData, $data, $campaignToken);
+        $this->contentStatisticSender->trackVisit($request->getSession());
 
         $template = $this->templateConfigurator->getTemplate('category', $data->getCarrierId());
 

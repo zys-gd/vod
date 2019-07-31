@@ -28,13 +28,21 @@ services:
 
   doctrine_redis_connection:
     class: Redis
-    public: false
     factory: ['@app.cache.redis_connection_provider', create]
-    arguments: [1]
+    arguments:
+      - '1'
+      -
+        lazy: false
 
   app_redis_connection_adapter:
     class: Symfony\Component\Cache\Adapter\RedisAdapter
-    public: false
-    factory: ['@app.cache.redis_connection_provider', createWrapped]
-    arguments: [1]
+    factory: ['@app.cache.redis_connection_provider', createAdapter]
+    arguments:
+      - '1'
+      - ''
+      -
+        class: 'Redis'
+        read_timeout: 1
+        timeout: 1
+
 

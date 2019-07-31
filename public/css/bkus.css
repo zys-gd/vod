@@ -1,9 +1,6 @@
-.bkus-disclaimer-text {
-    font-size: 26px;
+.disclaimer-text {
+    font-weight: bold;
+    font-size: 32px;
     width: 100%;
     text-align: center;
-}
-
-.contact-us-link{
-    font-weight: bold;
 }

@@ -31,10 +31,6 @@ a button {
     min-width: 0;
 }
 
-.w-175px {
-    width: 175px;
-}
-
 .m-55 {
     margin: 0 55px;
 }
@@ -305,6 +301,16 @@ a button {
     padding-right: 8px;
 }
 
+.video-play-icon {
+    position: absolute;
+    background-image: url(../img/play-icon-big.png);
+    height: 30px;
+    width: 30px;
+    bottom: 0;
+    right: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
 
 .category__related__box-play {
     position: absolute;
@@ -317,10 +323,13 @@ a button {
     background-repeat: no-repeat;
 }
 
-.thumbnail-wrapper {
+.video-element .video-preview-image-container {
     position: relative !important;
 }
 
+.categories-content .video-element img {
+    width: 100%;
+}
 
 .separator_right {
     background: url(../img/home/separator-right.png) right center no-repeat;

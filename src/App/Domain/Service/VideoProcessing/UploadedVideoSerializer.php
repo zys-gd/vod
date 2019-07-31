@@ -15,12 +15,10 @@ class UploadedVideoSerializer
     public function serializeShort(UploadedVideo $video): array
     {
         return [
-            'uuid'       => $video->getUuid(),
-            'title'      => $video->getTitle(),
-            'publicId'   => $video->getRemoteId(),
-            'thumbnails' => $video->getThumbnails(),
-            'options'    => $video->getOptions(),
-            'jsonOptions' => json_encode($video->getOptions())
+            'title'        => $video->getTitle(),
+            'publicId'     => $video->getRemoteId(),
+            'thumbnailUrl' => $video->getThumbnails()[0],
+            'jsonOptions'  => json_encode($video->getOptions())
         ];
     }
 

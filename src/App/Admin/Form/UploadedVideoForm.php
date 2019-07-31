@@ -3,7 +3,7 @@
 namespace App\Admin\Form;
 
 use App\Domain\Entity\UploadedVideo;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Sonata\Form\Type\DateTimePickerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

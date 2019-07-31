@@ -1,0 +1,21 @@
+App\Domain\Entity\AffiliateBannedPublisher:
+    type: entity
+    table: affiliate_banned_publisher
+    repositoryClass: App\Domain\Repository\AffiliateBannedPublisherRepository
+    id:
+        uuid:
+            type: guid
+    fields:
+        publisherId:
+            type: string
+    uniqueConstraints:
+        affiliate_banned_publisher_key:
+            columns: [ affiliateId, publisherId ]
+
+    manyToOne:
+        affiliate:
+            targetEntity: App\Domain\Entity\Affiliate
+            inversedBy: bannedPublishers
+            joinColumn:
+                name: affiliate_id
+                referencedColumnName: uuid

@@ -2,15 +2,15 @@
 
 namespace App\Admin\Sonata;
 
+use App\Admin\Form\Type\AffiliateBannedPublisherType;
 use App\Admin\Form\Type\AffiliateConstantType;
 use App\Admin\Form\Type\AffiliateParameterType;
 use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Carrier;
-use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Country;
 use App\Domain\Repository\AffiliateRepository;
 use App\Domain\Service\Campaign\CampaignService;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -20,7 +20,6 @@ use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Show\ShowMapper;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -61,7 +60,7 @@ class AffiliateAdmin extends AbstractAdmin
     )
     {
         $this->affiliateRepository = $affiliateRepository;
-        $this->campaignService = $campaignService;
+        $this->campaignService     = $campaignService;
 
         parent::__construct($code, $class, $baseControllerName);
     }
@@ -154,6 +153,7 @@ class AffiliateAdmin extends AbstractAdmin
         $this->buildConstantSection($formMapper);
         $this->buildParametersSection($formMapper);
         $this->buildUniqueFlowSection($formMapper);
+        $this->buildBannedPublishersSection($formMapper);
 
     }
 
@@ -213,7 +213,7 @@ class AffiliateAdmin extends AbstractAdmin
                 'required'    => false,
                 'multiple'    => true,
                 'placeholder' => 'Please select carriers',
-                'help' => 'If empty, then for all carriers. Otherwise landing will be turned off only for chosen carriers.'
+                'help'        => 'If empty, then for all carriers. Otherwise landing will be turned off only for chosen carriers.'
             ])
             ->end()
             ->end();
@@ -317,11 +317,27 @@ class AffiliateAdmin extends AbstractAdmin
             ->with('Affiliate', ['box_class' => 'box box-primary'])
             ->add('uniqueFlow', CheckboxType::class, [
                 'required' => false,
-                'label' => 'Unique Flow'
+                'label'    => 'Unique Flow'
             ])
             ->add('uniqueParameter', TextType::class, [
                 'required' => false,
-                'label' => 'Unique Parameter'
+                'label'    => 'Unique Parameter'
+            ])
+            ->end()
+            ->end();
+    }
+
+    private function buildBannedPublishersSection(FormMapper $formMapper)
+    {
+        $formMapper
+            ->tab('Banned Publishers')
+            ->with('', ['box_class' => 'box-solid'])
+            ->add('bannedPublishers', CollectionType::class, [
+                'entry_type'   => AffiliateBannedPublisherType::class,
+                'allow_delete' => true,
+                'allow_add'    => true,
+                'by_reference' => false,
+                'label'        => 'Publisher identification keys'
             ])
             ->end();
     }

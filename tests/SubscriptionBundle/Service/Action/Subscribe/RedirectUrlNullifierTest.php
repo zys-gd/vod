@@ -9,7 +9,7 @@
 namespace Service\Action\Subscribe;
 
 
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Mockery;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\EntitySaveHelper;

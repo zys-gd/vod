@@ -1,6 +1,7 @@
 services:
     subscription.http.client:
         class: "%guzzle.client.class%"
+        factory: ['@SubscriptionBundle\Affiliate\Service\GuzzleClientFactory','getClient']
         tags:
             - { name: guzzle.client }
 
@@ -105,7 +106,7 @@ services:
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
             - '@app.cache.default.subscription'
             - '@SubscriptionBundle\Service\Blacklist\BlacklistSaver'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
             - '@IdentificationBundle\Repository\UserRepository'
             - '@logger'
 

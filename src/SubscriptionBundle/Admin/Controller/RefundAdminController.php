@@ -2,7 +2,7 @@
 
 namespace SubscriptionBundle\Admin\Controller;
 
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use IdentificationBundle\Entity\User;
 use SubscriptionBundle\Admin\Form\RefundForm;
 use Sonata\AdminBundle\Controller\CRUDController;

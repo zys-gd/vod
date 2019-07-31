@@ -4,7 +4,7 @@ namespace SubscriptionBundle\Admin\Controller;
 
 use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Carrier;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Doctrine\Common\Collections\ArrayCollection;
 use IdentificationBundle\Entity\User;
 use Sonata\AdminBundle\Controller\CRUDController;
