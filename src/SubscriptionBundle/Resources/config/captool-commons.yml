@@ -6,6 +6,7 @@ services:
       - '2'
       -
         class: 'Redis'
+        timeout: 3
 
   SubscriptionBundle\CAPTool\Admin\Sonata\ConstraintsByAffiliateAdmin:
     arguments:

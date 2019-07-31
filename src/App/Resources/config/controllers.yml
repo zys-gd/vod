@@ -2,6 +2,13 @@ services:
     _defaults:
         tags: ['controller.service_arguments']
 
+    App\API\Controller\AffiliateBannedPublishersController:
+        arguments:
+            - '@App\Domain\Repository\AffiliateBannedPublisherRepository'
+            - '@App\Domain\Repository\AffiliateRepository'
+            - '@App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherCreator'
+            - '@App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherRemover'
+
     App\API\Controller\APIController:
         arguments: ['@App\Domain\Service\VideoProcessing\CallbackVoter', '@App\Domain\Service\VideoProcessing\Callback\EagerType']
 
@@ -105,20 +112,18 @@ services:
             - '@App\Domain\Service\Piwik\ContentStatisticSender'
             - '@App\CarrierTemplate\TemplateConfigurator'
 
-    App\Controller\VideosController:
+    App\Controller\VideoController:
         arguments:
             - '@App\Domain\Repository\UploadedVideoRepository'
             - '@App\Domain\Repository\MainCategoryRepository'
             - '@App\Domain\Service\VideoProcessing\UploadedVideoSerializer'
+            - '@App\Domain\Repository\UploadedVideoRepository'
 
     App\Controller\TrackEventController:
         arguments:
             - '@App\Domain\Repository\UploadedVideoRepository'
             - '@App\Domain\Service\Piwik\ContentStatisticSender'
             - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
-
-    App\Controller\PlayerController:
-        arguments: ['@App\Domain\Repository\UploadedVideoRepository', '@App\Domain\Repository\MainCategoryRepository']
 
     App\Controller\SubnotifController:
         arguments:

@@ -28,19 +28,13 @@ class LimiterStorage
     public function resetPendingCounter(string $key): void
     {
         $keys = $this->redis->keys(sprintf('pending_%s*', $key));
-
-        foreach ($keys as $key) {
-            $this->redis->del($key);
-        }
+        $this->redis->delete($keys);
     }
 
     public function resetFinishedCounter(string $key): void
     {
         $keys = $this->redis->keys(sprintf('finished_%s*', $key));
-
-        foreach ($keys as $key) {
-            $this->redis->del($key);
-        }
+        $this->redis->delete($keys);
     }
 
     public function storePendingSubscription(string $key, string $sessionId): void
@@ -66,7 +60,8 @@ class LimiterStorage
 
     public function storeFinishedSubscription(string $key, string $uuid): void
     {
-        $timeout = $this->calculateSecondsUntilTomorrow();
+        /*$timeout = $this->calculateSecondsUntilTomorrow();*/
+        $timeout = 0;
 
         $this->redis->set(sprintf('finished_%s[%s]', $key, $uuid), json_encode([
             'uuid' => $uuid

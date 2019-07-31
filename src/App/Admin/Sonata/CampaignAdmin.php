@@ -44,9 +44,9 @@ class CampaignAdmin extends AbstractAdmin
     /**
      * CampaignAdmin constructor
      *
-     * @param string $code
-     * @param string $class
-     * @param string $baseControllerName
+     * @param string             $code
+     * @param string             $class
+     * @param string             $baseControllerName
      * @param ContainerInterface $container
      */
     public function __construct(string $code, string $class, string $baseControllerName, ContainerInterface $container)
@@ -59,9 +59,7 @@ class CampaignAdmin extends AbstractAdmin
 
     /**
      * Get instance of campaign
-     *
      * @return mixed
-     *
      * @throws \Exception
      */
     public function getNewInstance(): Campaign
@@ -113,7 +111,7 @@ class CampaignAdmin extends AbstractAdmin
 
             /** @var S3Client $s3Client */
             $s3Client = $this->container->get('App\Domain\Service\AWSS3\S3Client');
-            $adapter = new AwsS3Adapter($s3Client, 'playwing-appstore');
+            $adapter  = new AwsS3Adapter($s3Client, 'playwing-appstore');
 
             /** @var Filesystem $filesystem */
             $filesystem = new Filesystem($adapter);
@@ -159,17 +157,17 @@ class CampaignAdmin extends AbstractAdmin
                 'label' => 'Category'
             ])
             ->add('affiliate', null, [
-                'sortable'=>true,
-                'sort_field_mapping'=> ['fieldName'=>'name'],
-                'sort_parent_association_mappings' => [['fieldName'=>'affiliate']]
+                'sortable'                         => true,
+                'sort_field_mapping'               => ['fieldName' => 'name'],
+                'sort_parent_association_mappings' => [['fieldName' => 'affiliate']]
             ])
             ->add('isPause', null, [
                 'label' => 'Pause'
             ])
             ->add('pausedCampaigns', null, [
-                'label' => 'Paused by Carrier',
+                'label'    => 'Paused by Carrier',
                 'template' => '@Admin/Campaign/paused_campaigns.html.twig',
-                'sortable'=>false
+                'sortable' => false
             ])
             ->add('landingUrl', null, [
                 'label' => 'Landing page'
@@ -182,10 +180,10 @@ class CampaignAdmin extends AbstractAdmin
             ->add('carriers')
             ->add('_action', null, [
                 'actions' => [
-                    'show' => [],
-                    'edit' => [],
+                    'show'   => [],
+                    'edit'   => [],
                     'delete' => [],
-                    'clone' => [
+                    'clone'  => [
                         'template' => '@Admin/Campaign/clone_btn.html.twig',
                     ],
                 ]
@@ -209,7 +207,7 @@ class CampaignAdmin extends AbstractAdmin
             ->add('textColor')
             ->add('isLpOff', null, [
                 'label' => 'Turn off LP showing',
-                'help' => 'If consent page exist, then show it. Otherwise will try to subscribe'
+                'help'  => 'If consent page exist, then show it. Otherwise will try to subscribe'
             ])
             ->add('isPause', null,
                 ['label' => 'Pause'])
@@ -218,7 +216,7 @@ class CampaignAdmin extends AbstractAdmin
                 'label' => 'Clickable image'
             ])
             ->add('pausedCampaigns', null, [
-                'label' => 'Paused by Carrier',
+                'label'    => 'Paused by Carrier',
                 'template' => '@Admin/Campaign/paused_campaigns.html.twig',
             ]);
     }
@@ -263,28 +261,28 @@ class CampaignAdmin extends AbstractAdmin
             ->tab('General')
             ->with('', ['box_class' => 'box-solid'])
             ->add('affiliate', EntityType::class, [
-                'class' => Affiliate::class,
-                'choice_label' => 'name',
+                'class'         => Affiliate::class,
+                'choice_label'  => 'name',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('a')->where('a.enabled=true');
                 },
-                'placeholder' => 'Select affiliate'
+                'placeholder'   => 'Select affiliate'
             ])
             ->add('carriers', null, [
                 'required' => true
             ])
             ->end()
             ->add('ppd', MoneyType::class, [
-                'label' => 'PPD',
-                'required'=>true
+                'label'    => 'PPD',
+                'required' => true
             ])
             ->add('sub', MoneyType::class, [
-                'label' => 'SUB',
-                'required'=>true
+                'label'    => 'SUB',
+                'required' => true
             ])
             ->add('click', MoneyType::class, [
-                'label' => 'CLICK',
-                'required'=>true
+                'label'    => 'CLICK',
+                'required' => true
             ])
             ->add('isPause', null, [
                 'label' => 'Pause',
@@ -294,21 +292,21 @@ class CampaignAdmin extends AbstractAdmin
                 'label' => 'Clickable image'
             ])
             ->add('isLpOff', ChoiceFieldMaskType::class, [
-                'choices'  => [
-                    'No' => 0,
+                'choices' => [
+                    'No'  => 0,
                     'Yes' => 1
                 ],
-                'label' => 'Turn off LP showing',
-                'map'      => [
+                'label'   => 'Turn off LP showing',
+                'map'     => [
                     1 => ['schedule'],
                 ],
-                'help' => 'If consent page exist, then show it. Otherwise will try to subscribe'
+                'help'    => 'If consent page exist, then show it. Otherwise will try to subscribe'
             ])
             ->add('schedule', CollectionType::class, [
-                'entry_type' => CampaignScheduleType::class,
+                'entry_type'   => CampaignScheduleType::class,
                 'allow_delete' => true,
-                'allow_add' => true,
-                'prototype' => true,
+                'allow_add'    => true,
+                'prototype'    => true,
                 'by_reference' => false
             ])
             ->end()
@@ -326,24 +324,24 @@ class CampaignAdmin extends AbstractAdmin
             ->tab('Landing page')
             ->with('', ['box_class' => 'box-solid'])
             ->add('mainCategory', EntityType::class, [
-                'class' => MainCategory::class,
+                'class'       => MainCategory::class,
                 'placeholder' => 'Select main category',
-                'label' => 'Category to be displayed'
+                'label'       => 'Category to be displayed'
             ])
             ->add('image_file', FileType::class, [
                 'required' => empty($imagePreview),
-                'label' => 'Main Image',
-                'help' => $imagePreview
+                'label'    => 'Main Image',
+                'help'     => $imagePreview
             ])
             ->add('bgColor', ColorType::class, [
-                'attr' => ['style' => 'width: 50px'],
-                'label' => 'Background color',
-                'data' => '#ffffff',
+                'attr'     => ['style' => 'width: 50px'],
+                'label'    => 'Background color',
+                'data'     => '#ffffff',
                 'required' => true
             ])
             ->add('textColor', ColorType::class, [
-                'attr' => ['style' => 'width: 50px'],
-                'label' => 'Text color',
+                'attr'     => ['style' => 'width: 50px'],
+                'label'    => 'Text color',
                 'required' => true
             ])
             ->add('isPause', null, [
@@ -375,8 +373,8 @@ class CampaignAdmin extends AbstractAdmin
 
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->add('clone', $this->getRouterIdParameter().'/clone');
-        $collection->add('clone_confirm', $this->getRouterIdParameter().'/clone_confirm');
+        $collection->add('clone', $this->getRouterIdParameter() . '/clone');
+        $collection->add('clone_confirm', $this->getRouterIdParameter() . '/clone_confirm');
 
         parent::configureRoutes($collection);
     }

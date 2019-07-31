@@ -1,12 +1,15 @@
 services:
+
+  App\Cache\ConfiguredCacheFactoryWrapper:
+    decorates: app.cache.default_factory
+    arguments: ['@App\Cache\ConfiguredCacheFactoryWrapper.inner']
+
   app.cache.default.translation:
     class: ExtrasBundle\Cache\Redis\RedisCacheService
     factory: [ '@app.cache.default_factory', 'createCacheService']
     arguments:
       - '1'
       - '%app_version_hash%_translations'
-      -
-        class: 'Redis'
 
   app.cache.default.subscription:
     class: ExtrasBundle\Cache\Redis\RedisCacheService
@@ -14,6 +17,10 @@ services:
     arguments:
       - '1'
       - 'subscriptions'
-      -
-        class: 'Redis'
 
+  app.cache.default.blacklist:
+    class: ExtrasBundle\Cache\Redis\RedisCacheService
+    factory: [ '@app.cache.redis_factory', 'createCacheService']
+    arguments:
+      - '4'
+      - 'blacklist'
