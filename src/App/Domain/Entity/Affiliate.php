@@ -115,6 +115,9 @@ class Affiliate implements HasUuid, AffiliateInterface
      */
     private $isLpOff = false;
 
+    /** @var ArrayCollection */
+    private $bannedPublishers;
+
     /**
      * Affiliate constructor.
      *
@@ -122,12 +125,13 @@ class Affiliate implements HasUuid, AffiliateInterface
      */
     public function __construct(string $uuid)
     {
-        $this->uuid        = $uuid;
-        $this->constants   = new ArrayCollection();
-        $this->parameters  = new ArrayCollection();
-        $this->campaigns   = new ArrayCollection();
-        $this->constraints = new ArrayCollection();
-        $this->carriers    = new ArrayCollection();
+        $this->uuid             = $uuid;
+        $this->constants        = new ArrayCollection();
+        $this->parameters       = new ArrayCollection();
+        $this->campaigns        = new ArrayCollection();
+        $this->constraints      = new ArrayCollection();
+        $this->carriers         = new ArrayCollection();
+        $this->bannedPublishers = new ArrayCollection();
     }
 
     /**
@@ -682,5 +686,57 @@ class Affiliate implements HasUuid, AffiliateInterface
     public function hasCarrier(Carrier $carrier): bool
     {
         return $this->carriers->contains($carrier);
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getBannedPublishers(): Collection
+    {
+        return $this->bannedPublishers;
+    }
+
+    /**
+     * @param Collection $bannedPublishers
+     */
+    public function setBannedPublishers(Collection $bannedPublishers): void
+    {
+        $this->bannedPublishers = $bannedPublishers;
+    }
+
+    /**
+     * @param AffiliateBannedPublisher $bannedPublisher
+     *
+     * @return bool
+     */
+    public function hasBannedPublisher(AffiliateBannedPublisher $bannedPublisher): bool
+    {
+        return $this->bannedPublishers->contains($bannedPublisher);
+    }
+
+    /**
+     * @param AffiliateBannedPublisher $affiliateBannedPublisher
+     *
+     * @return $this
+     */
+    public function addBannedPublisher(AffiliateBannedPublisher $affiliateBannedPublisher)
+    {
+        $this->bannedPublishers->add($affiliateBannedPublisher);
+
+        $affiliateBannedPublisher->setAffiliate($this);
+
+        return $this;
+    }
+
+    /**
+     * @param AffiliateBannedPublisher $affiliateBannedPublisher
+     *
+     * @return $this
+     */
+    public function removeBannedPublisher(AffiliateBannedPublisher $affiliateBannedPublisher)
+    {
+        $this->bannedPublishers->removeElement($affiliateBannedPublisher);
+
+        return $this;
     }
 }
