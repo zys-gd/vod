@@ -9,7 +9,6 @@
 namespace SubscriptionBundle\Subscription\Unsubscribe\Admin\Service;
 
 
-use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Blacklist\BlacklistFactory;
 use SubscriptionBundle\Entity\Subscription;

@@ -3,10 +3,9 @@
 namespace IdentificationBundle\Identification\Profiler;
 
 
-use App\Domain\Entity\Carrier;
-use App\Domain\Repository\CarrierRepository;
 use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
+use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -14,14 +13,15 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 class FakeCarrierIdentifier extends DataCollector
 {
     /**
-     * @var CarrierRepository
+     * @var CarrierRepositoryInterface
      */
     private $carrierRepository;
 
     /**
      * CustomDataCollector constructor.
+     * @param CarrierRepositoryInterface $carrierRepository
      */
-    public function __construct(CarrierRepository $carrierRepository)
+    public function __construct(CarrierRepositoryInterface $carrierRepository)
     {
         $this->carrierRepository = $carrierRepository;
     }
@@ -58,15 +58,11 @@ class FakeCarrierIdentifier extends DataCollector
             $indexedOperators[$operator['carrier']] = $operator;
         }
 
-        /** @var Carrier[] $carriers */
-        $carriers = $this->carrierRepository->findAll();
+        $carriers = $this->carrierRepository->findEnabledCarriers();
 
         $filteredOperators = [];
         foreach ($carriers as $carrier) {
 
-            if (!$carrier->isPublished()) {
-                continue;
-            }
 
             $key = $carrier->getBillingCarrierId();
             if (!isset($indexedOperators[$key])) {

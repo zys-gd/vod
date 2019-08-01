@@ -66,7 +66,7 @@ services:
     arguments:
       - '@SubscriptionBundle\Blacklist\BlacklistFactory'
       - '@SubscriptionBundle\Repository\SubscriptionRepository'
-      - '@App\Domain\Repository\CarrierRepository'
+      - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
       - '@SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
       - '@SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber'
       - '@SubscriptionBundle\Service\EntitySaveHelper'

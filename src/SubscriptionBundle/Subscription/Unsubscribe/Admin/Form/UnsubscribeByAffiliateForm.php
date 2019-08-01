@@ -4,6 +4,7 @@ namespace SubscriptionBundle\Subscription\Unsubscribe\Admin\Form;
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use ExtrasBundle\Utils\RealClassnameResolver;
 use Sonata\Form\Type\DateTimeRangePickerType;
 use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

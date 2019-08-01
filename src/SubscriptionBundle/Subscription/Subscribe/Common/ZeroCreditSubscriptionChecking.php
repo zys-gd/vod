@@ -4,7 +4,6 @@
 namespace SubscriptionBundle\Subscription\Subscribe\Common;
 
 
-use App\Domain\Entity\Campaign;
 use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -27,7 +26,6 @@ class ZeroCreditSubscriptionChecking
             return true;
         }
 
-        /** @var Campaign $campaign */
         $campaign = $this->campaignExtractor->getCampaignFromSession($session);
         if ($campaign && $campaign->isZeroCreditSubAvailable()) {
             return true;

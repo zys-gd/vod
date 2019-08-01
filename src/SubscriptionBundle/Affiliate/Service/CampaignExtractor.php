@@ -4,7 +4,6 @@
 namespace SubscriptionBundle\Affiliate\Service;
 
 
-use App\Domain\Entity\Campaign;
 use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
@@ -47,7 +46,7 @@ class CampaignExtractor
         return $campaign ? $campaign->getAffiliate() : null;
     }
 
-    public function getCampaignForSubscription(Subscription $subscription): ?Campaign
+    public function getCampaignForSubscription(Subscription $subscription): ?CampaignInterface
     {
         $affiliateData = $subscription->getAffiliateToken();
         $campaignToken = $affiliateData['cid'] ?? null;

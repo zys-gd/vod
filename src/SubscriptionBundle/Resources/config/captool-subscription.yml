@@ -34,7 +34,7 @@ services:
     SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterDataMapper:
         arguments:
             - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
-            - '@App\Domain\Repository\CarrierRepository'
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
 
     SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitNotifier:
         arguments:
@@ -63,7 +63,7 @@ services:
     SubscriptionBundle\CAPTool\Subscription\Command\ResetConstraintsByCarrierCounters:
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@App\Domain\Repository\CarrierRepository'
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
             - '@SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterStorage'
             - '@SubscriptionBundle\CAPTool\Subscription\Limiter\StorageKeyGenerator'
         tags:

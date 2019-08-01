@@ -30,4 +30,6 @@ interface CampaignInterface
      * @return AffiliateInterface|null
      */
     public function getAffiliate(): ?AffiliateInterface;
+
+    public function isZeroCreditSubAvailable(): bool;
 }

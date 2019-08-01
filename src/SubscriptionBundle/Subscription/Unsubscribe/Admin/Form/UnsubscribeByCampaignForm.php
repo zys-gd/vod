@@ -2,8 +2,8 @@
 
 namespace SubscriptionBundle\Subscription\Unsubscribe\Admin\Form;
 
-use App\Domain\Entity\Campaign;
 use Doctrine\ORM\EntityManagerInterface;
+use ExtrasBundle\Utils\RealClassnameResolver;
 use Sonata\Form\Type\DateTimeRangePickerType;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

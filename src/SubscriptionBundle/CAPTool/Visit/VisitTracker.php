@@ -8,10 +8,9 @@
 
 namespace SubscriptionBundle\CAPTool\Visit;
 
-
-use App\Domain\Entity\Campaign;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use Psr\Log\LoggerInterface;
+use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 
 class VisitTracker
 {
@@ -41,10 +40,12 @@ class VisitTracker
      * @param KeyGenerator              $keyGenerator
      * @param LoggerInterface           $logger
      */
-    public function __construct(ConstraintValidityChecker $constraintValidityChecker,
+    public function __construct(
+        ConstraintValidityChecker $constraintValidityChecker,
         VisitStorage $visitStorage,
         KeyGenerator $keyGenerator,
-        LoggerInterface $logger)
+        LoggerInterface $logger
+    )
     {
         $this->constraintValidityChecker = $constraintValidityChecker;
         $this->visitStorage              = $visitStorage;
@@ -52,7 +53,7 @@ class VisitTracker
         $this->logger                    = $logger;
     }
 
-    public function trackVisit(CarrierInterface $carrier, Campaign $campaign, string $visitInfo)
+    public function trackVisit(CarrierInterface $carrier, CampaignInterface $campaign, string $visitInfo)
     {
         $affiliate             = $campaign->getAffiliate();
         $constraintByAffiliate = null;

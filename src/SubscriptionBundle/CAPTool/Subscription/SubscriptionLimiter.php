@@ -3,7 +3,6 @@
 
 namespace SubscriptionBundle\CAPTool\Subscription;
 
-use App\Domain\Entity\Affiliate;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use Psr\Log\LoggerInterface;
@@ -64,6 +63,8 @@ class SubscriptionLimiter
      * @param SubscriptionCapChecker                                  $carrierCapChecker
      * @param StorageKeyGenerator                                     $storageKeyGenerator
      * @param \SubscriptionBundle\Affiliate\Service\CampaignExtractor $campaignExtractor
+     * @param LoggerInterface                                         $logger
+     * @param SubscriptionLimitNotifier                               $notifier
      */
     public function __construct(
         LimiterStorage $limiterDataStorage,
@@ -144,7 +145,6 @@ class SubscriptionLimiter
         $this->limiterDataStorage->storeFinishedSubscription($key, $subscription->getUuid());
 
         if ($campaign = $this->campaignExtractor->getCampaignForSubscription($subscription)) {
-            /** @var Affiliate $affiliate */
             $affiliate  = $campaign->getAffiliate();
             $constraint = $affiliate->getConstraint(
                 ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE,

@@ -14,3 +14,8 @@ services:
         arguments:
             - '@form.factory'
             - '@SubscriptionBundle\ReportingTool\ReportingToolDataProvider'
+            - '@doctrine.orm.entity_manager'
+            - '@SubscriptionBundle\Repository\SubscriptionRepository'
+            - '@SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository'
+            - '@SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface'
+            - '@CommonDataBundle\Repository\CountryRepository'

@@ -11,9 +11,10 @@ services:
       - SubscriptionBundle\Entity\SubscriptionPack
       - ~ #'SubscriptionBundle\SubscriptionPack\Admin\Controller\SubscriptionPackAdminController'
       - '@SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider'
-      - '@App\Domain\Repository\CarrierRepository'
+      - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
       - '@SubscriptionBundle\Repository\SubscriptionPackRepository'
       - '@CommonDataBundle\Repository\CountryRepository'
+      - '@doctrine.orm.entity_manager'
     tags:
       - name: sonata.admin
         manager_type: orm

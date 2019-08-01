@@ -14,7 +14,7 @@ services:
 
     SubscriptionBundle\Affiliate\Service\AffiliateSender:
         arguments:
-            - '@App\Domain\Repository\CampaignRepository'
+            - '@SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface'
             - '@doctrine.orm.entity_manager'
             - '@SubscriptionBundle\Affiliate\Service\GuzzleClientFactory'
             - '@SubscriptionBundle\Affiliate\Service\AffiliateLogFactory'
@@ -28,4 +28,4 @@ services:
 
     SubscriptionBundle\Affiliate\Service\CampaignExtractor:
         arguments:
-            - '@App\Domain\Repository\CampaignRepository'
+            - '@SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface'

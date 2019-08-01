@@ -9,7 +9,7 @@
 namespace SubscriptionBundle\CAPTool\Visit;
 
 
-use App\Domain\Entity\Carrier;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use SubscriptionBundle\CAPTool\Subscription\Notificaton\CAPNotificationSender;
 use SubscriptionBundle\CAPTool\Visit\Exception\InvalidConstraintException;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
@@ -44,7 +44,7 @@ class VisitNotifier
         $this->entitySaveHelper          = $entitySaveHelper;
     }
 
-    public function notifyLimitReached(ConstraintByAffiliate $constraint, Carrier $carrier): void
+    public function notifyLimitReached(ConstraintByAffiliate $constraint, CarrierInterface $carrier): void
     {
         if (!$this->constraintValidityChecker->isValidConstraint($constraint)) {
             throw new InvalidConstraintException('Invalid constraint');

@@ -2,10 +2,9 @@
 
 namespace SubscriptionBundle\CAPTool\Admin\Sonata;
 
-use App\Domain\Entity\Affiliate;
-use App\Domain\Entity\Carrier;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use ExtrasBundle\Utils\RealClassnameResolver;
 use ExtrasBundle\Utils\UuidGenerator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -13,10 +12,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use SubscriptionBundle\CAPTool\Admin\Service\ConstraintByAffiliateCapCalculator;
-use SubscriptionBundle\CAPTool\DTO\AffiliateLimiterData;
-use SubscriptionBundle\CAPTool\DTO\CarrierLimiterData;
-use SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterDataConverter;
-use SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterDataExtractor;
+use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -158,11 +154,11 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
         if ($isCreate) {
             $formMapper
                 ->add('affiliate', EntityType::class, [
-                    'class'       => Affiliate::class,
+                    'class'       => RealClassnameResolver::resolveName(AffiliateInterface::class, $this->entityManager),
                     'placeholder' => 'Select affiliate',
                 ])
                 ->add('carrier', EntityType::class, [
-                    'class'       => Carrier::class,
+                    'class'       => RealClassnameResolver::resolveName(CarrierInterface::class, $this->entityManager),
                     'constraints' => [
                         new Callback([$this, 'validateForIdenticalRecord'])
                     ],

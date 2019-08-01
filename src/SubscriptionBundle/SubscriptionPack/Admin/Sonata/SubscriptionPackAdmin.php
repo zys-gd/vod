@@ -2,10 +2,11 @@
 
 namespace SubscriptionBundle\SubscriptionPack\Admin\Sonata;
 
-use App\Domain\Entity\Carrier;
 use CommonDataBundle\Entity\Country;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use CommonDataBundle\Repository\CountryRepository;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use ExtrasBundle\Utils\RealClassnameResolver;
 use ExtrasBundle\Utils\UuidGenerator;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -18,7 +19,6 @@ use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkExcept
 use SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Repository\SubscriptionPackRepository;
-use SubscriptionBundle\Service\SubscriptionTextService;
 use SubscriptionBundle\SubscriptionPack\DTO\Strategy;
 use SubscriptionBundle\SubscriptionPack\DTO\Tier;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -52,6 +52,10 @@ class SubscriptionPackAdmin extends AbstractAdmin
      * @var CountryRepository
      */
     private $countryRepository;
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
 
     /**
      * @param string                       $code
@@ -61,6 +65,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
      * @param CarrierRepositoryInterface   $carrierRepository
      * @param SubscriptionPackRepository   $subscriptionPackRepository
      * @param CountryRepository            $countryRepository
+     * @param EntityManagerInterface       $entityManager
      */
     public function __construct(
         $code,
@@ -69,7 +74,8 @@ class SubscriptionPackAdmin extends AbstractAdmin
         SubscriptionPackDataProvider $subscriptionPackDataProvider,
         CarrierRepositoryInterface $carrierRepository,
         SubscriptionPackRepository $subscriptionPackRepository,
-        CountryRepository $countryRepository
+        CountryRepository $countryRepository,
+        EntityManagerInterface $entityManager
 
     )
     {
@@ -78,6 +84,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
         $this->carrierRepository            = $carrierRepository;
         $this->subscriptionPackRepository   = $subscriptionPackRepository;
         $this->countryRepository            = $countryRepository;
+        $this->entityManager                = $entityManager;
     }
 
     /**
@@ -166,12 +173,6 @@ class SubscriptionPackAdmin extends AbstractAdmin
     {
         $listMapper
             ->addIdentifier('name')
-            // ->add('renewStrategy', null, [
-            //     'editable' => false
-            // ])
-            // ->add('buyStrategy', null, [
-            //     'editable' => false
-            // ])
             ->add('country')
             ->add('carrier')
             ->add('unlimited', null, [
@@ -280,7 +281,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
                         'readonly' => true,
                     ],
                     'choices' => [$subject->getCarrier()],
-                    'class'   => Carrier::class,
+                    'class'   => RealClassnameResolver::resolveName(CarrierInterface::class, $this->entityManager),
                 ]);
         } else {
             $formMapper->add('country', EntityType::class, [
@@ -300,7 +301,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
             ]);
 
             $formMapper->add('carrier', EntityType::class, [
-                'class'       => Carrier::class,
+                'class'       => RealClassnameResolver::resolveName(CarrierInterface::class, $this->entityManager),
                 'label'       => 'Carrier',
                 'expanded'    => false,
                 'required'    => true,
@@ -514,26 +515,20 @@ class SubscriptionPackAdmin extends AbstractAdmin
      * @TODO Needs Yuri opinion
      * @param SubscriptionPack $subscriptionPack
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
     private function markSubscriptionPacksWithSameCarrierAsInactive(SubscriptionPack $subscriptionPack): void
     {
         if ($subscriptionPack->getStatus() == SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK) {
-            /** @var EntityManager $em */
-            $em = $this->getConfigurationPool()->getContainer()->get('doctrine')->getEntityManager();
-            /** @var SubscriptionPackRepository $subscriptionPackRepository */
-            $subscriptionPackRepository = $em->getRepository(SubscriptionPack::class);
-            $subscriptionPacks          = $subscriptionPackRepository->getActiveSubscriptionPacksByCarrierUuid($subscriptionPack);
+            $subscriptionPacks = $this->subscriptionPackRepository->getActiveSubscriptionPacksByCarrierUuid($subscriptionPack);
 
             if (count($subscriptionPacks) > 0) {
                 /** @var SubscriptionPack $subscriptionPack */
                 foreach ($subscriptionPacks as $subscriptionPack) {
                     $subscriptionPack->setStatus(SubscriptionPack::INACTIVE_SUBSCRIPTION_PACK);
-                    $em->persist($subscriptionPack);
+                    $this->entityManager->persist($subscriptionPack);
                 }
 
-                $em->flush();
+                $this->entityManager->flush();
             }
         }
     }
@@ -543,7 +538,6 @@ class SubscriptionPackAdmin extends AbstractAdmin
         $carrierInterfaces = $this->carrierRepository->findEnabledCarriers();
 
         $countriesCarriers = [];
-        /** @var Carrier $carrier */
         foreach ($carrierInterfaces as $carrier) {
             $countriesCarriers[] = $carrier->getCountryCode();
         }

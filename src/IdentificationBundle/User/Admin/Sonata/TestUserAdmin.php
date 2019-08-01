@@ -2,9 +2,11 @@
 
 namespace IdentificationBundle\User\Admin\Sonata;
 
-use App\Domain\Entity\Carrier;
-use App\Domain\Repository\CarrierRepository;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
+use ExtrasBundle\Utils\RealClassnameResolver;
 use ExtrasBundle\Utils\UuidGenerator;
 use IdentificationBundle\Entity\TestUser;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -19,6 +21,18 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
  */
 class TestUserAdmin extends AbstractAdmin
 {
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    public function __construct(string $code, string $class, string $baseControllerName, EntityManagerInterface $entityManager)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+        $this->entityManager = $entityManager;
+    }
+
+
     /**
      * @return TestUser
      *
@@ -45,8 +59,8 @@ class TestUserAdmin extends AbstractAdmin
         $datagridMapper
             ->add('userIdentifier')
             ->add('carrier', null, [], EntityType::class, [
-                'class' => Carrier::class,
-                'query_builder' => function (CarrierRepository $carrierRepository) {
+                'class'         => RealClassnameResolver::resolveName(CarrierInterface::class, $this->entityManager),
+                'query_builder' => function (EntityRepository $carrierRepository) {
                     return $carrierRepository
                         ->createQueryBuilder('c')
                         ->join(TestUser::class, 'tu', Join::WITH, 'c.uuid = tu.carrier')
@@ -66,12 +80,12 @@ class TestUserAdmin extends AbstractAdmin
             ->add('userIdentifier')
             ->add('_action', null, [
                 'actions' => [
-                    'drop_user_data' => [
+                    'drop_user_data'                => [
                         'template' => '@IdentificationAdmin/TestUser/drop_user_data_button.html.twig'
                     ],
-                    'set_status_for_renew' => [
+                    'set_status_for_renew'          => [
                         'template' => '@IdentificationAdmin/TestUser/set_status_for_renew_button.html.twig'
-                    ]   ,
+                    ],
                     'clean_from_cross_subscription' => [
                         'template' => '@IdentificationAdmin/TestUser/clean_from_cross_subscription.html.twig'
                     ]
@@ -87,7 +101,7 @@ class TestUserAdmin extends AbstractAdmin
         $formMapper
             ->add('userIdentifier')
             ->add('carrier', EntityType::class, [
-                'class' => Carrier::class,
+                'class'       => RealClassnameResolver::resolveName(CarrierInterface::class, $this->entityManager),
                 'placeholder' => 'Select carrier'
             ]);
     }

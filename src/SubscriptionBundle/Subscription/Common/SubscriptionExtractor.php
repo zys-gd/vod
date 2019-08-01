@@ -3,7 +3,7 @@
 namespace SubscriptionBundle\Subscription\Common;
 
 
-use App\Domain\Entity\Carrier;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\UserRepository;
@@ -33,10 +33,11 @@ class SubscriptionExtractor
     }
 
     /**
-     * @param Carrier $carrier
+     * @param CarrierInterface $carrier
      * @return Subscription[]
+     * @throws \Exception
      */
-    public function getTrialSubscriptionsToRenew(Carrier $carrier)
+    public function getTrialSubscriptionsToRenew(CarrierInterface $carrier)
     {
         $subscriptions = $this->subscriptionRepository->getExpiredSubscriptions($carrier);
 

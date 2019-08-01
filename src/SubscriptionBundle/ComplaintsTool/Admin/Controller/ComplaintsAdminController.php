@@ -2,8 +2,8 @@
 
 namespace SubscriptionBundle\ComplaintsTool\Admin\Controller;
 
-use App\Domain\Entity\Campaign;
-use CommonDataBundle\Entity\Country;
+use CommonDataBundle\Repository\CountryRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\User;
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -15,6 +15,9 @@ use SubscriptionBundle\Entity\Affiliate\AffiliateLog;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\ReportingTool\ReportingToolDataProvider;
+use SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository;
+use SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface;
+use SubscriptionBundle\Repository\SubscriptionRepository;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormView;
@@ -29,6 +32,8 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  */
 class ComplaintsAdminController extends CRUDController
 {
+
+
     /**
      * @var FormFactory
      */
@@ -60,11 +65,44 @@ class ComplaintsAdminController extends CRUDController
         'charges_successful_no'    => 'Amount of succes charges',
         'charges_successful_value' => 'Total Amount Charged',
     ];
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+    /**
+     * @var SubscriptionRepository
+     */
+    private $subscriptionRepository;
+    /**
+     * @var AffiliateLogRepository
+     */
+    private $affiliateLogRepository;
+    /**
+     * @var CampaignRepositoryInterface
+     */
+    private $campaignRepository;
+    /**
+     * @var CountryRepository
+     */
+    private $countryRepository;
 
-    public function __construct(FormFactory $formFactory, ReportingToolDataProvider $reportingToolService)
+    public function __construct(
+        FormFactory $formFactory,
+        ReportingToolDataProvider $reportingToolService,
+        EntityManagerInterface $entityManager,
+        SubscriptionRepository $subscriptionRepository,
+        AffiliateLogRepository $affiliateLogRepository,
+        CampaignRepositoryInterface $campaignRepository,
+        CountryRepository $countryRepository
+    )
     {
-        $this->formFactory = $formFactory;
-        $this->reportingToolService = $reportingToolService;
+        $this->formFactory            = $formFactory;
+        $this->reportingToolService   = $reportingToolService;
+        $this->entityManager          = $entityManager;
+        $this->subscriptionRepository = $subscriptionRepository;
+        $this->affiliateLogRepository = $affiliateLogRepository;
+        $this->campaignRepository     = $campaignRepository;
+        $this->countryRepository      = $countryRepository;
     }
 
     /**
@@ -80,21 +118,20 @@ class ComplaintsAdminController extends CRUDController
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
             /** @var UploadedFile $file */
-            $file = $formData['file'];
 
+            $file    = $formData['file'];
             $msisdns = empty($file)
                 ? [$formData['identifier']]
                 : str_getcsv(file_get_contents($file->getRealPath()), ',');
 
             $usersData = $this->getUsersReport($msisdns);
-
-            $content = $this->renderView('@SubscriptionAdmin/Complaints/report.html.twig', [
+            $content   = $this->renderView('@SubscriptionAdmin/Complaints/report.html.twig', [
                 'nonexistentUsers' => $usersData['nonexistentUsers'],
-                'tableHeaders' => $this->tableHeaders,
-                'users' => $usersData['users'],
-                'admin' => $this->admin,
-                'formExcel' => $this->getFileDownloadFormView('downloadExcel', $msisdns),
-                'formCsv' => $this->getFileDownloadFormView('downloadCsv', $msisdns)
+                'tableHeaders'     => $this->tableHeaders,
+                'users'            => $usersData['users'],
+                'admin'            => $this->admin,
+                'formExcel'        => $this->getFileDownloadFormView('downloadExcel', $msisdns),
+                'formCsv'          => $this->getFileDownloadFormView('downloadCsv', $msisdns)
             ]);
         } else {
             $content = $this->renderView('@SubscriptionAdmin/Complaints/complaints_form.html.twig', [
@@ -114,8 +151,8 @@ class ComplaintsAdminController extends CRUDController
      */
     public function downloadCsvAction(Request $request)
     {
-        $msisnds = explode(',', $request->request->get('form')['msisdns']);
-        $report = $this->getUsersReport($msisnds);
+        $msisnds   = explode(',', $request->request->get('form')['msisdns']);
+        $report    = $this->getUsersReport($msisnds);
         $usersData = $report['users'];
 
         $response = new StreamedResponse();
@@ -157,16 +194,16 @@ class ComplaintsAdminController extends CRUDController
      */
     public function downloadExcelAction(Request $request)
     {
-        $msisnds = explode(',', $request->request->get('form')['msisdns']);
-        $report = $this->getUsersReport($msisnds);
+        $msisnds   = explode(',', $request->request->get('form')['msisdns']);
+        $report    = $this->getUsersReport($msisnds);
         $usersData = $report['users'];
 
         $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
+        $sheet       = $spreadsheet->getActiveSheet();
         $sheet->setTitle('Complaints');
         $sheet->getDefaultColumnDimension()->setWidth(17);
 
-        $row = 1;
+        $row             = 1;
         $headerColumnKey = 1;
 
         foreach ($this->tableHeaders as $header) {
@@ -191,7 +228,7 @@ class ComplaintsAdminController extends CRUDController
             $row++;
         }
 
-        $writer = new Xlsx($spreadsheet);
+        $writer   = new Xlsx($spreadsheet);
         $fileName = "Complaints-" . date("Y-m-d") . ".xlsx";
 
         $response = new StreamedResponse();
@@ -214,26 +251,24 @@ class ComplaintsAdminController extends CRUDController
      */
     private function getUsersReport(array $msisdns): array
     {
-        $doctrine = $this->getDoctrine();
+        $doctrine       = $this->getDoctrine();
         $userRepository = $doctrine->getRepository(User::class);
 
         $nonexistentUsers = [];
-        $usersInfo = [];
+        $usersInfo        = [];
 
         foreach ($msisdns as $msisdn) {
             /** @var User $user */
             $user = $userRepository->findOneBy(['identifier' => $msisdn]);
 
             if (!empty($user)) {
-                $subscriptionRepository = $doctrine->getRepository(Subscription::class);
-                $affiliateLogRepository = $doctrine->getRepository(AffiliateLog::class);
 
-                $usersInfo[$msisdn] = $this->getEmptyData();
+                $usersInfo[$msisdn]         = $this->getEmptyData();
                 $usersInfo[$msisdn]['user'] = $user;
-                $usersInfo[$msisdn]['ip'] = $user->getIp();
+                $usersInfo[$msisdn]['ip']   = $user->getIp();
 
                 /** @var Subscription $subscription */
-                $subscription = $subscriptionRepository->findOneBy(['user' => $user]);
+                $subscription = $this->subscriptionRepository->findCurrentSubscriptionByOwner($user);
 
                 if ($subscription->getCurrentStage() === Subscription::ACTION_SUBSCRIBE) {
                     $usersInfo[$msisdn]['subscription_date'] = $subscription->getUpdated();
@@ -242,24 +277,23 @@ class ComplaintsAdminController extends CRUDController
                 }
 
                 /** @var AffiliateLog $affiliateLog */
-                $affiliateLog = $affiliateLogRepository->findOneBy(['userMsisdn' => $msisdn]);
+                $affiliateLog = $this->affiliateLogRepository->findOneBy(['userMsisdn' => $msisdn]);
 
                 if (!empty($affiliateLog)) {
-                    $campaignRepository = $doctrine->getRepository(Campaign::class);
 
                     $usersInfo[$msisdn]['device_info'] = $affiliateLog->getFullDeviceInfo();
 
                     /** @var CampaignInterface $campaign */
-                    $campaign = $campaignRepository->findOneBy(['campaignToken' => $affiliateLog->getCampaignToken()]);
+                    $campaign = $this->campaignRepository->findOneByCampaignToken($affiliateLog->getCampaignToken());
 
                     if (!empty($campaign)) {
                         /** @var AffiliateInterface $affiliate */
                         $affiliate = $campaign->getAffiliate();
 
-                        $usersInfo[$msisdn]['url'] = $affiliateLog->getUrl();
-                        $usersInfo[$msisdn]['aff_id'] = $campaign->getAffiliate()->getUuid();
-                        $usersInfo[$msisdn]['aff_name'] = $affiliate->getName();
-                        $usersInfo[$msisdn]['campaign_id'] = $campaign->getUuid();
+                        $usersInfo[$msisdn]['url']            = $affiliateLog->getUrl();
+                        $usersInfo[$msisdn]['aff_id']         = $campaign->getAffiliate()->getUuid();
+                        $usersInfo[$msisdn]['aff_name']       = $affiliate->getName();
+                        $usersInfo[$msisdn]['campaign_id']    = $campaign->getUuid();
                         $usersInfo[$msisdn]['campaignParams'] = json_encode($affiliateLog->getCampaignParams());
                     }
                 }
@@ -269,7 +303,7 @@ class ComplaintsAdminController extends CRUDController
                 if (isset($reportingToolResponse['data']['subs_total'])) {
                     if (isset($reportingToolResponse['data']['subs_before_success'])) {
                         $usersInfo[$msisdn]['subscription_attempts'] = $reportingToolResponse['data']['subs_before_success'];
-                        $usersInfo[$msisdn]['resubs_attempts'] = $reportingToolResponse['data']['subs_total'] - $usersInfo[$msisdn]['subscription_attempts'];
+                        $usersInfo[$msisdn]['resubs_attempts']       = $reportingToolResponse['data']['subs_total'] - $usersInfo[$msisdn]['subscription_attempts'];
                     } else {
                         $usersInfo[$msisdn]['resubs_attempts'] = $reportingToolResponse['data']['subs_total'];
                     }
@@ -280,10 +314,12 @@ class ComplaintsAdminController extends CRUDController
                 }
 
                 if (isset($reportingToolResponse['data']['charges_successful_value'])) {
-                    $countryRepository = $doctrine->getRepository(Country::class);
 
-                    $country = $countryRepository->findOneBy(['countryCode' => $user->getCountry()]);
-                    $currency = $country->getCurrencyCode();
+                    $country = $this->countryRepository->findOneBy([
+                        'countryCode' => $user->getCountry()
+                    ]);
+
+                    $currency                                       = $country->getCurrencyCode();
                     $usersInfo[$msisdn]['charges_successful_value'] = $reportingToolResponse['data']['charges_successful_value'] . ' ' . $currency;
                 }
             } else {
@@ -293,7 +329,7 @@ class ComplaintsAdminController extends CRUDController
 
         return [
             'nonexistentUsers' => $nonexistentUsers,
-            'users' => $usersInfo
+            'users'            => $usersInfo
         ];
     }
 
@@ -322,7 +358,7 @@ class ComplaintsAdminController extends CRUDController
 
     /**
      * @param string $action
-     * @param array $msisdns
+     * @param array  $msisdns
      *
      * @return FormView
      */

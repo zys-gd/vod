@@ -196,4 +196,4 @@ services:
     IdentificationBundle\Identification\Profiler\FakeCarrierIdentifier:
       tags:
         - {name: data_collector, template: '@Identification/profiler/fake_carrier_identifier.html.twig', id: 'identification.fake_carrier_identifier'}
-      arguments: ['@App\Domain\Repository\CarrierRepository']
+      arguments: ['@IdentificationBundle\Repository\CarrierRepositoryInterface']
