@@ -19,7 +19,7 @@ use App\Domain\Service\Translator\Translator;
 use Doctrine\Common\Collections\ArrayCollection;
 use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\Entity\CarrierInterface;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Repository\SubscriptionPackRepository;
 use SubscriptionBundle\Service\LPDataExtractor;
@@ -186,12 +186,11 @@ class WifiFlowExtension extends AbstractExtension
 
     public function getCarrierCountry()
     {
-        $ispData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
-        $carrierId = $ispData ? $ispData['carrier_id'] : null;
-        if(!$carrierId) {
+        $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
+        if(!$billingCarrierId) {
             return;
         }
-        $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
+        $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
 
         /** @var Country $country */
         $country = $this->countryRepository->findOneBy(['countryCode' => $carrier->getCountryCode()]);

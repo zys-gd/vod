@@ -30,6 +30,7 @@
 
         // submit pin form
         $(document).on('submit', 'form[data-form=pin]', function (e) {
+            console.log(form.serialize())
             e.preventDefault();
             if (!$('#terms-and-conditions-checkbox').is(':checked')) {
                 $('#terms-and-conditions').focus();
@@ -101,11 +102,6 @@
             });
         });
 
-        $(document).on('focus', 'input[name=mobile_number]', function () {
-            if ($(this).val() === '') {
-                $(this).val('+');
-            }
-        });
         // change phone number
         $(document).on('click', '#change-number', function (event) {
             event.preventDefault();
@@ -117,24 +113,13 @@
             $._loader(true);
         });
 
-        $(document).on('focus', 'input[name=mobile_number]', function () {
+        $(document).on('focus blur', 'input[name=mobile_number]', function () {
             if ($(this).val() === '') {
                 $(this).val('+');
             }
         });
 
-        $(document).on('blur', 'input[name=mobile_number]', function () {
-            if ($(this).val() === '+') {
-                $(this).val('');
-            }
-        });
-
-        $(document).on('focus', '#terms-and-conditions', function(e) {
-            e.preventDefault();
-            $(this).addClass('highlighting-item');
-        });
-
-        $(document).on('focusout', '#terms-and-conditions', function(e) {
+        $(document).on('focusout focus', '#terms-and-conditions', function(e) {
             e.preventDefault();
             $(this).removeClass('highlighting-item');
         });

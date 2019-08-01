@@ -6,7 +6,7 @@ namespace App\Twig;
 
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface;
@@ -58,10 +58,10 @@ class LPClickableSubscribeImageExtension extends AbstractExtension
     public function isClickableSubImage(): bool
     {
         $campaignToken = AffiliateVisitSaver::extractCampaignToken($this->session);
-        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
-        if(isset($ispDetectionData['carrier_id']) && !empty($ispDetectionData['carrier_id'])) {
+        $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
+        if(!empty($billingCarrierId)) {
             /** @var Carrier $carrier */
-            $carrier = $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id']);
+            $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
             //1.Highest priority in carrier that has value not equal the default
             if($carrier && !$carrier->isClickableSubImage()) {
                 return false;

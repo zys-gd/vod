@@ -246,7 +246,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             $this->OTPVerifier->forceWifi($session);
         }
 
-
         $template = $this->templateConfigurator->getTemplate($isWifiFlow ? 'landing_wifi' : 'landing_3g', (int)$billingCarrierId);
 
         return $this->render($template);

@@ -5,7 +5,7 @@ namespace App\Twig;
 
 
 use App\CarrierTemplate\TemplateConfigurator;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
@@ -23,7 +23,7 @@ class LPTwigImporterExtension extends AbstractExtension
     private $templateConfigurator;
 
     /**
-     * LPTwigImporterExtension constructor.
+     * LPTwigImporterExtension constructor.\
      * @param SessionInterface     $session
      * @param TemplateConfigurator $templateConfigurator
      */
@@ -42,10 +42,8 @@ class LPTwigImporterExtension extends AbstractExtension
 
     public function getLPImportPath(string $baseFilePath): string
     {
-        $ispData            = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
-        $carrierId          = $ispData ? $ispData['carrier_id'] : 0;
-
+        $billingCarrierId = (int)IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
         $baseFilePath = str_replace('.html.twig', '', $baseFilePath);
-        return $this->templateConfigurator->getTemplate($baseFilePath, $carrierId);
+        return $this->templateConfigurator->getTemplate($baseFilePath, $billingCarrierId);
     }
 }
