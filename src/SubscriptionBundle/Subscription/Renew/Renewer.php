@@ -86,6 +86,7 @@ class Renewer
         } catch (\SubscriptionBundle\BillingFramework\Process\Exception\RenewingProcessException $exception) {
 
             $subscription->setStatus(Subscription::IS_ERROR);
+            $subscription->setError('renewing_process_exception');
             throw $exception;
 
         } finally {

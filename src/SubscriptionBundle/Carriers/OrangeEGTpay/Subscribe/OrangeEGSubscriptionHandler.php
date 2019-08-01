@@ -107,9 +107,9 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
     public function getSubscriptionErrorResponse(SubscribingProcessException $exception): Response
     {
         $billingData = $exception->getBillingData();
-
-        $failReason  = $billingData->provider_fields->fail_reason;
-        $redirectUrl = $this->routeProvider->getLinkToWifiFlowPage();
+        $failReason = $billingData
+            ? $billingData->provider_fields->fail_reason
+            : null;
 
         switch ($failReason) {
             case SubscribingProcessException::FAIL_REASON_NOT_ENOUGH_CREDIT:
@@ -119,6 +119,7 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
                 $redirectUrl = $this->router->generate('blacklisted_user');
                 break;
             default:
+                $redirectUrl = $this->routeProvider->getLinkToWifiFlowPage();
                 break;
         }
 

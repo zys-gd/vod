@@ -3,6 +3,7 @@
 namespace IdentificationBundle\Identification\Service;
 
 use IdentificationBundle\Identification\Handler\AlreadySubscribedHandlerProvider;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

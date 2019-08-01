@@ -90,25 +90,25 @@ class OnSubscribeUpdater
     }
 
     /**
-     * @param Subscription     $subscription
-     * @param ProcessResult    $response
-     * @param SessionInterface $session
-     *
+     * @param Subscription  $subscription
+     * @param ProcessResult $result
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function updateSubscriptionByCallbackResponse(Subscription $subscription, ProcessResult $response)
+    public function updateSubscriptionByCallbackResponse(Subscription $subscription, ProcessResult $result)
     {
-        if ($response->isSuccessful()) {
+        $isSuccessful = !$result->isFailed() && !$result->getError();
+
+        if ($isSuccessful) {
             $this->applySuccess($subscription);
         }
 
-        $this->commonSubscriptionUpdater->updateSubscriptionByCallbackResponse($subscription, $response);
+        $this->commonSubscriptionUpdater->updateSubscriptionByCallbackResponse($subscription, $result);
 
-        if ($response->isFailed()) {
+        if (!$isSuccessful) {
 
-            $subscription->setError($response->getError());
+            $subscription->setError($result->getError());
 
-            switch ($response->getError()) {
+            switch ($result->getError()) {
                 case 'not_enough_credit':
                     $subscription->setStatus(Subscription::IS_ON_HOLD);
                     //TODO: remove?
@@ -117,7 +117,7 @@ class OnSubscribeUpdater
                     }
                     break;
                 default:
-                    $this->applyFailure($subscription, $response->getError());
+                    $this->applyFailure($subscription, $result->getError());
             }
         }
     }

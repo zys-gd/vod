@@ -12,6 +12,7 @@ use SubscriptionBundle\BillingFramework\Process\API\LinkCreator;
 
 class PostPaidHandler
 {
+    const POST_PAID_ACCOUNT_TYPE_ID = 1;
 
     /**
      * @var LoggerInterface
@@ -72,7 +73,7 @@ class PostPaidHandler
             $data     = (array)$response->data;
             $this->identificationDataStorage->storeValue(
                 IdentificationDataStorage::POST_PAID_RESTRICTED_KEY,
-                $data['accountTypeId'] === 1
+                $data['accountTypeId'] === self::POST_PAID_ACCOUNT_TYPE_ID
             );
         } catch (\Throwable $e) {
             $this->logger->debug('Postpaid error', [

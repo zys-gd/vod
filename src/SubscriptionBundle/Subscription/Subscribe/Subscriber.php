@@ -173,7 +173,7 @@ class Subscriber
             if ($this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription)) {
                 $response = $this->subscribePromotionalPerformer->doSubscribe($subscription);
                 if (!$plan->isFirstSubscriptionPeriodIsFree()) {
-                    $this->subscribePerformer->doSubscribe($subscription, $additionalData);
+                    $response = $this->subscribePerformer->doSubscribe($subscription, $additionalData);
                 }
             } else {
                 $response = $this->subscribePerformer->doSubscribe($subscription, $additionalData);
@@ -188,6 +188,7 @@ class Subscriber
 
         } catch (SubscribingProcessException $exception) {
             $subscription->setStatus(Subscription::IS_ERROR);
+            $subscription->setError('subscribing_process_exception');
             throw $exception;
         } finally {
             $this->entitySaveHelper->persistAndSave($subscription);
