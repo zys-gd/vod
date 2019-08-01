@@ -2,9 +2,10 @@
 
 namespace SubscriptionBundle\Subscription\Unsubscribe\Admin\Form;
 
-use App\Domain\Entity\Affiliate;
-use App\Domain\Entity\Carrier;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Sonata\Form\Type\DateTimeRangePickerType;
+use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -17,6 +18,20 @@ use Symfony\Component\Validator\Constraints\Range;
 class UnsubscribeByAffiliateForm extends AbstractType
 {
     const NAME = 'affiliate';
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
+     * UnsubscribeByAffiliateForm constructor.
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
 
     /**
      * @param FormBuilderInterface $builder
@@ -26,13 +41,13 @@ class UnsubscribeByAffiliateForm extends AbstractType
     {
         $builder
             ->add('affiliate', EntityType::class, [
-                'class'       => Affiliate::class,
+                'class'       => RealClassnameResolver::resolveName(AffiliateInterface::class, $this->entityManager),
                 'required'    => true,
                 'label'       => 'Select affiliate to get all subscribed users',
                 'placeholder' => 'Select affiliate',
             ])
             ->add('carrier', EntityType::class, [
-                'class'       => Carrier::class,
+                'class'       => RealClassnameResolver::resolveName(CarrierInterface::class, $this->entityManager),
                 'required'    => true,
                 'label'       => 'and also please select carrier',
                 'placeholder' => 'Select carrier',

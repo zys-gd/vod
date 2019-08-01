@@ -1,29 +1,27 @@
 services:
 
-
-
   SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber:
-      arguments:
-        - '@logger'
-        - '@SubscriptionBundle\Service\EntitySaveHelper'
-        - '@SubscriptionBundle\Subscription\Common\FakeResponseProvider'
-        - '@SubscriptionBundle\Subscription\Notification\Notifier'
-        - '@SubscriptionBundle\BillingFramework\Process\UnsubscribeProcess'
-        - '@SubscriptionBundle\Subscription\Unsubscribe\OnUnsubscribeUpdater'
-        - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
-        - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeParametersProvider'
-        - '@cross_subscription.api_connector'
+    arguments:
+      - '@logger'
+      - '@SubscriptionBundle\Service\EntitySaveHelper'
+      - '@SubscriptionBundle\Subscription\Common\FakeResponseProvider'
+      - '@SubscriptionBundle\Subscription\Notification\Notifier'
+      - '@SubscriptionBundle\BillingFramework\Process\UnsubscribeProcess'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\OnUnsubscribeUpdater'
+      - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeParametersProvider'
+      - '@cross_subscription.api_connector'
 
   SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider:
-      arguments: ['@SubscriptionBundle\Subscription\Unsubscribe\Handler\DefaultHandler']
+    arguments: ['@SubscriptionBundle\Subscription\Unsubscribe\Handler\DefaultHandler']
 
   SubscriptionBundle\Subscription\Unsubscribe\Handler\DefaultHandler: ~
 
   SubscriptionBundle\Subscription\Unsubscribe\OnUnsubscribeUpdater:
-      arguments: ['@event_dispatcher', '@SubscriptionBundle\Subscription\Common\CommonSubscriptionUpdater']
+    arguments: ['@event_dispatcher', '@SubscriptionBundle\Subscription\Common\CommonSubscriptionUpdater']
 
   SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeParametersProvider:
-      arguments: ['@SubscriptionBundle\Subscription\Common\RequestParametersProvider']
+    arguments: ['@SubscriptionBundle\Subscription\Common\RequestParametersProvider']
 
 
   SubscriptionBundle\Subscription\Unsubscribe\Controller\FakeUnsubscribeAction:
@@ -58,5 +56,28 @@ services:
     tags: ['controller.service_arguments']
     arguments:
       - '@form.factory'
-      - '@SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber'
+      - '@SubscriptionBundle\Repository\SubscriptionRepository'
+      - '@IdentificationBundle\Repository\UserRepository'
+      - '@SubscriptionBundle\Repository\BlackListRepository'
+      - '@SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\Admin\Service\AdminUnsubscriber'
+
+  SubscriptionBundle\Subscription\Unsubscribe\Admin\Service\AdminUnsubscriber:
+    arguments:
+      - '@SubscriptionBundle\Blacklist\BlacklistFactory'
+      - '@SubscriptionBundle\Repository\SubscriptionRepository'
+      - '@App\Domain\Repository\CarrierRepository'
       - '@SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber'
+      - '@SubscriptionBundle\Service\EntitySaveHelper'
+
+  SubscriptionBundle\Subscription\Unsubscribe\Admin\Form\UnsubscribeByAffiliateForm:
+    arguments: ['@doctrine.orm.entity_manager']
+    tags:
+      - { name: form.type }
+
+
+  SubscriptionBundle\Subscription\Unsubscribe\Admin\Form\UnsubscribeByCampaignForm:
+    arguments: ['@doctrine.orm.entity_manager']
+    tags:
+      - { name: form.type }

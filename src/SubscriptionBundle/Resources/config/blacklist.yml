@@ -1,5 +1,7 @@
 services:
 
+  SubscriptionBundle\Blacklist\BlacklistFactory: ~
+
   SubscriptionBundle\Blacklist\BlacklistSaver:
     arguments:
       - '@IdentificationBundle\Repository\UserRepository'

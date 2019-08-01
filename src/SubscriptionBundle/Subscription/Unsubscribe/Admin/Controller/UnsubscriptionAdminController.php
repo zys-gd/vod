@@ -2,25 +2,24 @@
 
 namespace SubscriptionBundle\Subscription\Unsubscribe\Admin\Controller;
 
-use App\Domain\Entity\Affiliate;
-use App\Domain\Entity\Carrier;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use ExtrasBundle\Utils\UuidGenerator;
 use IdentificationBundle\Entity\User;
+use IdentificationBundle\Repository\UserRepository;
 use Sonata\AdminBundle\Controller\CRUDController;
+use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
+use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
+use SubscriptionBundle\Entity\Subscription;
+use SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository;
+use SubscriptionBundle\Repository\BlackListRepository;
+use SubscriptionBundle\Repository\SubscriptionRepository;
 use SubscriptionBundle\Subscription\Unsubscribe\Admin\Form\UnsubscribeByAffiliateForm;
 use SubscriptionBundle\Subscription\Unsubscribe\Admin\Form\UnsubscribeByCampaignForm;
 use SubscriptionBundle\Subscription\Unsubscribe\Admin\Form\UnsubscribeByFileForm;
 use SubscriptionBundle\Subscription\Unsubscribe\Admin\Form\UnsubscribeByMsisdnForm;
-use SubscriptionBundle\Entity\Affiliate\AffiliateLog;
-use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
-use SubscriptionBundle\Entity\BlackList;
-use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Entity\SubscriptionPack;
-use SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository;
-use SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider;
-use SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber;
+use SubscriptionBundle\Subscription\Unsubscribe\Admin\Service\AdminUnsubscriber;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,16 +34,6 @@ class UnsubscriptionAdminController extends CRUDController
      * @var FormFactory
      */
     private $formFactory;
-
-    /**
-     * @var Unsubscriber
-     */
-    private $unsubscriber;
-
-    /**
-     * @var UnsubscriptionHandlerProvider
-     */
-    private $unsubscriptionHandlerProvider;
 
     /**
      * @var array
@@ -64,43 +53,88 @@ class UnsubscriptionAdminController extends CRUDController
         'Unsubscribe',
         'Set to blacklist'
     ];
+    /**
+     * @var SubscriptionRepository
+     */
+    private $subscriptionRepository;
+    /**
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
+    /**
+     * @var BlackListRepository
+     */
+    private $blackListRepository;
+    /**
+     * @var AffiliateLogRepository
+     */
+    private $affiliateLogRepository;
+    /**
+     * @var AdminUnsubscriber
+     */
+    private $adminUnsubscriber;
+
 
     /**
      * UnsubscriptionAdminController constructor
      *
-     * @param FormFactory                   $formFactory
-     * @param Unsubscriber                  $unsubscriber
-     * @param UnsubscriptionHandlerProvider $unsubscriptionHandlerProvider
+     * @param FormFactory            $formFactory
+     * @param SubscriptionRepository $subscriptionRepository
+     * @param UserRepository         $userRepository
+     * @param BlackListRepository    $blackListRepository
+     * @param AffiliateLogRepository $affiliateLogRepository
+     * @param AdminUnsubscriber      $adminUnsubscriber
      */
     public function __construct(
         FormFactory $formFactory,
-        Unsubscriber $unsubscriber,
-        UnsubscriptionHandlerProvider $unsubscriptionHandlerProvider
+        SubscriptionRepository $subscriptionRepository,
+        UserRepository $userRepository,
+        BlackListRepository $blackListRepository,
+        AffiliateLogRepository $affiliateLogRepository,
+        AdminUnsubscriber $adminUnsubscriber
     )
     {
         $this->formFactory                   = $formFactory;
-        $this->unsubscriber                  = $unsubscriber;
-        $this->unsubscriptionHandlerProvider = $unsubscriptionHandlerProvider;
+        $this->subscriptionRepository        = $subscriptionRepository;
+        $this->userRepository                = $userRepository;
+        $this->blackListRepository           = $blackListRepository;
+        $this->affiliateLogRepository        = $affiliateLogRepository;
+        $this->adminUnsubscriber             = $adminUnsubscriber;
     }
-
     /**
      * @param Request|null $request
      *
      * @return Response
+     * @throws \Doctrine\DBAL\DBALException
      */
     public function createAction(Request $request = null)
     {
         $formName = $this->detectCurrentFormTab($request->request->all());
 
-        if (empty($formName)) {
-            throw new BadRequestHttpException('Unknown tab');
+
+        switch ($formName) {
+            case 'msisdn':
+                $tabContent = $this->handleMsisdnForm($request);
+                break;
+            case 'affiliate':
+                $tabContent = $this->handleAffiliateForm($request);
+                break;
+            case 'campaign':
+                $tabContent = $this->handleCampaignForm($request);
+                break;
+            case 'file':
+                $tabContent = $this->handleFileForm($request);
+                break;
+            default;
+                throw new BadRequestHttpException('Unknown tab');
+                break;
         }
 
-        $actionName = 'handle' . ucfirst($formName);
 
         return $this->renderWithExtraParams('@SubscriptionAdmin/Unsubscription/create.html.twig', [
             'tabs'       => $this->tabList,
-            'tabContent' => $this->$actionName($request),
+            'tabContent' => $tabContent,
             'activeTab'  => $formName
         ]);
     }
@@ -134,51 +168,26 @@ class UnsubscriptionAdminController extends CRUDController
             throw new BadRequestHttpException('At least one user should be present to unsubscribe');
         }
 
-        $entityManager = $this->getDoctrine()->getManager();
-
-        $subscriptionRepository = $entityManager->getRepository(Subscription::class);
-        $carrierRepository      = $entityManager->getRepository(Carrier::class);
 
         $success = [];
         $errors  = [];
 
         foreach ($users as $user) {
             $subscriptionId = $user['subscriptionId'];
-
             /** @var Subscription $subscription */
-            $subscription = $subscriptionRepository->find($subscriptionId);
-            /** @var SubscriptionPack $subscriptionPack */
-            $subscriptionPack = $subscription->getSubscriptionPack();
-            /** @var Carrier $carrier */
-            $carrier = $carrierRepository->findOneBy(['billingCarrierId' => $subscriptionPack->getCarrier()->getBillingCarrierId()]);
-
-            try {
-                $response = $this->unsubscriber->unsubscribe($subscription, $subscriptionPack);
-
-                $unsubscriptionHandler = $this->unsubscriptionHandlerProvider->getUnsubscriptionHandler($carrier);
-                $unsubscriptionHandler->applyPostUnsubscribeChanges($subscription);
-
-                if ($unsubscriptionHandler->isPiwikNeedToBeTracked($response)) {
-                    $this->unsubscriber->trackEventsForUnsubscribe($subscription, $response);
-                }
-
-                if ((int)$user['toBlacklist']) {
-                    $blackList = new BlackList(UuidGenerator::generate());
-                    $blackList
-                        ->setBillingCarrierId($subscriptionPack->getCarrier()->getBillingCarrierId())
-                        ->setAlias($subscription->getUser()->getIdentifier());
-
-                    $entityManager->persist($blackList);
-                    $entityManager->flush();
-                }
-
+            $subscription = $this->subscriptionRepository->find($subscriptionId);
+            if ($this->adminUnsubscriber->unsubscribe($subscriptionId, (bool)$user['toBlacklist'])) {
                 $success[] = $subscription->getUuid();
-            } catch (\Exception $e) {
+            } else {
                 $errors[] = $subscription->getUuid();
             }
+
         }
 
-        return new Response(json_encode(['success' => $success, 'errors' => $errors]));
+        return new JsonResponse([
+            'success' => $success,
+            'errors'  => $errors
+        ]);
     }
 
     public function listAction()
@@ -191,7 +200,7 @@ class UnsubscriptionAdminController extends CRUDController
      *
      * @return string
      */
-    protected function handleMsisdn(Request $request = null): string
+    private function handleMsisdnForm(Request $request = null): string
     {
         $form = $this->formFactory->create(UnsubscribeByMsisdnForm::class);
         $form->handleRequest($request);
@@ -210,24 +219,23 @@ class UnsubscriptionAdminController extends CRUDController
      *
      * @return string
      */
-    protected function renderPreparedUsers(array $msisdns): string
+    private function renderPreparedUsers(array $msisdns): string
     {
         $nonexistentUsers    = [];
         $users               = [];
         $alreadyUnsubscribed = [];
         $alreadyBlacklisted  = [];
-        $entityManager       = $this->getDoctrine()->getManager();
 
         foreach ($msisdns as $msisdn) {
             /** @var User $user */
-            $user = $entityManager->getRepository(User::class)->findOneBy(['identifier' => $msisdn]);
+            $user = $this->userRepository->findOneByMsisdn($msisdn);
 
             if (empty($user)) {
                 $nonexistentUsers[] = $msisdn;
                 continue;
             }
 
-            $isBlacklisted = $entityManager->getRepository(BlackList::class)->findOneBy(['alias' => $msisdn]);
+            $isBlacklisted = $this->blackListRepository->findOneBy(['alias' => $msisdn]);
 
             if (!empty($isBlacklisted)) {
                 $alreadyBlacklisted[] = $msisdn;
@@ -235,9 +243,7 @@ class UnsubscriptionAdminController extends CRUDController
             }
 
             /** @var Subscription $subscription */
-            $subscription = $entityManager
-                ->getRepository(Subscription::class)
-                ->findOneBy(['user' => $user->getUuid()]);
+            $subscription = $this->subscriptionRepository->findOneBy(['user' => $user->getUuid()]);
 
             if (!empty($subscription) && $subscription->isUnsubscribed()) {
                 $alreadyUnsubscribed[] = $msisdn;
@@ -261,7 +267,7 @@ class UnsubscriptionAdminController extends CRUDController
      *
      * @return string
      */
-    protected function handleFile(Request $request = null): string
+    protected function handleFileForm(Request $request = null): string
     {
         $form = $this->formFactory->create(UnsubscribeByFileForm::class);
         $form->handleRequest($request);
@@ -283,7 +289,7 @@ class UnsubscriptionAdminController extends CRUDController
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    protected function handleCampaign(Request $request = null): string
+    protected function handleCampaignForm(Request $request = null): string
     {
         $form = $this->formFactory->create(UnsubscribeByCampaignForm::class);
         $form->handleRequest($request);
@@ -297,12 +303,9 @@ class UnsubscriptionAdminController extends CRUDController
             $usersLimit = $data['usersCount'];
             $msisdns    = [];
 
-            /** @var AffiliateLogRepository $affiliateLogRepository */
-            $affiliateLogRepository = $this->getDoctrine()->getRepository(AffiliateLog::class);
-
             /** @var CampaignInterface $campaign */
             foreach ($campaigns->getIterator() as $campaign) {
-                $identifiers = $affiliateLogRepository->findByCampaignAndDateRange(
+                $identifiers = $this->affiliateLogRepository->findByCampaignAndDateRange(
                     $campaign->getCampaignToken(),
                     $period['start'],
                     $period['end'],
@@ -327,7 +330,7 @@ class UnsubscriptionAdminController extends CRUDController
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    protected function handleAffiliate(Request $request = null): string
+    protected function handleAffiliateForm(Request $request = null): string
     {
         $form = $this->formFactory->create(UnsubscribeByAffiliateForm::class);
         $form->handleRequest($request);
@@ -335,16 +338,14 @@ class UnsubscriptionAdminController extends CRUDController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            /** @var Affiliate $affiliate */
+            /** @var AffiliateInterface $affiliate */
             $affiliate = $data['affiliate'];
-            /** @var Carrier $carrier */
+            /** @var CarrierInterface $carrier */
             $carrier    = $data['carrier'];
             $period     = $data['period'];
             $usersLimit = $data['usersCount'];
 
-            /** @var AffiliateLogRepository $affiliateLogRepository */
-            $affiliateLogRepository = $this->getDoctrine()->getRepository(AffiliateLog::class);
-            $msisdns                = $affiliateLogRepository->findByAffiliateCarrierAndDateRange(
+            $msisdns = $this->affiliateLogRepository->findByAffiliateCarrierAndDateRange(
                 $affiliate->getUuid(),
                 $carrier->getUuid(),
                 $period['start'],

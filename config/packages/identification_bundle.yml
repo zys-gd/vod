@@ -4,6 +4,7 @@ doctrine:
       CommonDataBundle\Entity\Interfaces\CarrierInterface: App\Domain\Entity\Carrier
       CommonDataBundle\Entity\Interfaces\LanguageInterface: CommonDataBundle\Entity\Language
       SubscriptionBundle\Entity\Affiliate\CampaignInterface: App\Domain\Entity\Campaign
+      SubscriptionBundle\Entity\Affiliate\AffiliateInterface: App\Domain\Entity\Affiliate
 
 identification:
   wifi_flow_redirect_route: 'landing'
