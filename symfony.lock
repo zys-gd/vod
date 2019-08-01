@@ -107,6 +107,9 @@
     "e-moe/guzzle6-bundle": {
         "version": "v1.2.4"
     },
+    "e0ipso/amazon-sqs-php-extended-client-lib": {
+        "version": "1.0.0-alpha"
+    },
     "easycorp/easy-log-handler": {
         "version": "1.0",
         "recipe": {
@@ -217,6 +220,9 @@
     },
     "ocramius/proxy-manager": {
         "version": "2.0.4"
+    },
+    "perftools/xhgui-collector": {
+        "version": "1.7.0"
     },
     "phar-io/manifest": {
         "version": "1.0.1"

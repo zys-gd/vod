@@ -9,6 +9,7 @@ use IdentificationBundle\Identification\Exception\MissingCarrierException;
 use IdentificationBundle\Identification\Identifier;
 use IdentificationBundle\Identification\Service\ISPResolver;
 use IdentificationBundle\Identification\Service\RouteProvider;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\TokenGenerator;
 use IdentificationBundle\Identification\Service\UserFactory;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
@@ -17,8 +18,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Router;
 
+/**
+ * Class FakeIdentificationController
+ */
 class FakeIdentificationController extends AbstractController
 {
     /**
@@ -38,21 +41,17 @@ class FakeIdentificationController extends AbstractController
      */
     private $carrierRepository;
     /**
-     * @var \IdentificationBundle\Identification\Service\ISPResolver
+     * @var ISPResolver
      */
     private $ISPResolver;
     /**
-     * @var \IdentificationBundle\Identification\Service\UserFactory
+     * @var UserFactory
      */
     private $userFactory;
     /**
      * @var EntityManager
      */
     private $entityManager;
-    /**
-     * @var Router
-     */
-    private $router;
     /**
      * @var UserRepository
      */
@@ -61,39 +60,47 @@ class FakeIdentificationController extends AbstractController
      * @var RouteProvider
      */
     private $routeProvider;
+    /**
+     * @var IdentificationDataStorage
+     */
+    private $identificationDataStorage;
 
     /**
      * FakeIdentificationController constructor.
      *
-     * @param ICountryCarrierDetection                                 $carrierDetection
-     * @param CarrierRepositoryInterface                               $carrierRepository
-     * @param UserRepository                                           $userRepository
-     * @param \IdentificationBundle\Identification\Service\ISPResolver $ISPResolver
-     * @param Identifier                                               $identifier
-     * @param TokenGenerator                                           $generator
-     * @param UserFactory                                              $userFactory
-     * @param EntityManager                                            $entityManager
-     * @param RouteProvider                                            $routeProvider
+     * @param ICountryCarrierDetection $carrierDetection
+     * @param CarrierRepositoryInterface $carrierRepository
+     * @param UserRepository $userRepository
+     * @param ISPResolver $ISPResolver
+     * @param Identifier $identifier
+     * @param TokenGenerator $generator
+     * @param UserFactory $userFactory
+     * @param EntityManager $entityManager
+     * @param RouteProvider $routeProvider
+     * @param IdentificationDataStorage $identificationDataStorage
      */
-    public function __construct(ICountryCarrierDetection $carrierDetection,
-                                CarrierRepositoryInterface $carrierRepository,
-                                UserRepository $userRepository,
-                                ISPResolver $ISPResolver,
-                                Identifier $identifier,
-                                TokenGenerator $generator,
-                                UserFactory $userFactory,
-                                EntityManager $entityManager,
-                                RouteProvider $routeProvider)
-    {
-        $this->carrierDetection  = $carrierDetection;
-        $this->identifier        = $identifier;
-        $this->tokenGenerator    = $generator;
+    public function __construct(
+        ICountryCarrierDetection $carrierDetection,
+        CarrierRepositoryInterface $carrierRepository,
+        UserRepository $userRepository,
+        ISPResolver $ISPResolver,
+        Identifier $identifier,
+        TokenGenerator $generator,
+        UserFactory $userFactory,
+        EntityManager $entityManager,
+        RouteProvider $routeProvider,
+        IdentificationDataStorage $identificationDataStorage
+    ) {
+        $this->carrierDetection = $carrierDetection;
+        $this->identifier = $identifier;
+        $this->tokenGenerator = $generator;
         $this->carrierRepository = $carrierRepository;
-        $this->ISPResolver       = $ISPResolver;
-        $this->userFactory       = $userFactory;
-        $this->entityManager     = $entityManager;
-        $this->userRepository    = $userRepository;
-        $this->routeProvider     = $routeProvider;
+        $this->ISPResolver = $ISPResolver;
+        $this->userFactory = $userFactory;
+        $this->entityManager = $entityManager;
+        $this->userRepository = $userRepository;
+        $this->routeProvider = $routeProvider;
+        $this->identificationDataStorage = $identificationDataStorage;
     }
 
     /**
@@ -108,22 +115,17 @@ class FakeIdentificationController extends AbstractController
     {
         $ipAddress = $request->get('ip', $request->getClientIp());
         $msisdn    = $request->get('msisdn', 'fake');
-        $force     = $request->get('force', true);
 
         $session = $request->getSession();
         $session->clear();
 
         if ($user = $this->userRepository->findOneBy(['ip' => $ipAddress])) {
-            $session->set('identification_data', ['identification_token' => $user->getIdentificationToken()]);
-            $ispDetectionData = [
-                'isp_name'   => $user->getCarrier()->getIsp(),
-                'carrier_id' => $user->getBillingCarrierId(),
-            ];
-            $session->set('isp_detection_data', $ispDetectionData);
+            $this->identificationDataStorage->setIdentificationToken($user->getIdentificationToken());
+            $this->identificationDataStorage->setCarrierId($user->getBillingCarrierId());
         } else {
-            // Get carrier
-            $carrierISP       = $this->carrierDetection->getCarrier($ipAddress);
+            $carrierISP = $this->carrierDetection->getCarrier($ipAddress);
             $billingCarrierId = null;
+
             if ($carrierISP) {
                 try {
                     $billingCarrierId = $this->resolveISP($carrierISP);
@@ -131,18 +133,14 @@ class FakeIdentificationController extends AbstractController
                     throw $exception;
                 }
             }
-            // Set session data
-            $ispDetectionData = [
-                'isp_name'   => $carrierISP,
-                'carrier_id' => $billingCarrierId,
-            ];
-            $session->set('isp_detection_data', $ispDetectionData);
 
             $token = $this->tokenGenerator->generateToken();
-            $session->set('identification_data', ['identification_token' => $token]);
+
+            $this->identificationDataStorage->setCarrierId($billingCarrierId);
+            $this->identificationDataStorage->setIdentificationToken($token);
 
             $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
-            $user    = $this->userFactory->create($msisdn, $carrier, $ipAddress,$token, null, $deviceData);
+            $user    = $this->userFactory->create($msisdn, $carrier, $ipAddress, $token, null, $deviceData);
 
             $this->entityManager->persist($user);
             $this->entityManager->flush();
@@ -161,6 +159,7 @@ class FakeIdentificationController extends AbstractController
     {
         $session = $request->getSession();
         $session->clear();
+
         return new RedirectResponse($this->routeProvider->getLinkToHomepage());
     }
 
@@ -172,12 +171,14 @@ class FakeIdentificationController extends AbstractController
     private function resolveISP(string $carrierISP): ?int
     {
         $carriers = $this->carrierRepository->findEnabledCarriers();
+
         foreach ($carriers as $carrier) {
             if ($this->ISPResolver->isISPMatches($carrierISP, $carrier)) {
                 return $carrier->getBillingCarrierId();
                 break;
             }
         }
+
         throw new MissingCarrierException('Carrier not found');
     }
 }

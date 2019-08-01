@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fa07580b4b61e117eebbb8ef188b2d4b",
+    "content-hash": "5928b882216502cc8100fb8ffae6fcc7",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1624,6 +1624,54 @@
                 "web service"
             ],
             "time": "2018-12-19T09:11:04+00:00"
+        },
+        {
+            "name": "e0ipso/amazon-sqs-php-extended-client-lib",
+            "version": "1.0.0-alpha",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/e0ipso/amazon-sqs-php-extended-client-lib.git",
+                "reference": "bf9766a74d7d1f5e33769ee9a8a797e47d874634"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/e0ipso/amazon-sqs-php-extended-client-lib/zipball/bf9766a74d7d1f5e33769ee9a8a797e47d874634",
+                "reference": "bf9766a74d7d1f5e33769ee9a8a797e47d874634",
+                "shasum": ""
+            },
+            "require": {
+                "aws/aws-sdk-php": "^3.18",
+                "php": ">=5.6",
+                "ramsey/uuid": "^3.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AwsExtended\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Mateu Aguiló Bosch",
+                    "email": "mateu.aguilo.bosch@gmail.com"
+                }
+            ],
+            "description": "An extension to the Amazon SQS client that enables sending and receiving messages up to 2GB via Amazon S3.",
+            "homepage": "https://github.com/e0ipso/amazon-sqs-php-extended-client-lib",
+            "keywords": [
+                "amazon",
+                "aws",
+                "s3",
+                "sqs"
+            ],
+            "time": "2016-07-20T08:33:59+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -3295,6 +3343,52 @@
             "time": "2018-09-27T13:45:01+00:00"
         },
         {
+            "name": "perftools/xhgui-collector",
+            "version": "1.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/perftools/xhgui-collector.git",
+                "reference": "1388249f88803448f446a78498709fb791ce5175"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/perftools/xhgui-collector/zipball/1388249f88803448f446a78498709fb791ce5175",
+                "reference": "1388249f88803448f446a78498709fb791ce5175",
+                "shasum": ""
+            },
+            "require": {
+                "paragonie/random_compat": ">=2.0",
+                "php": ">=5.3.0"
+            },
+            "suggest": {
+                "alcaeus/mongo-php-adapter": "Mongo PHP Adapter is required for PHP >7 (when using ext-mongodb)",
+                "ext-curl": "You need to install the curl extension to upload saved files",
+                "ext-mongo": "Mongo is needed to store profiler results for PHP < 7.",
+                "ext-mongodb": "Mongo is needed to store profiler results for PHP > 7.",
+                "ext-pdo": "You need to install the pdo extension to store profiler results to a relational database",
+                "ext-uprofiler": "You need to install either xhprof or uprofiler to use XHGui.",
+                "ext-xhprof": "You need to install either xhprof or uprofiler to use XHGui."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Xhgui_": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lauri Piisang",
+                    "email": "lauri.piisang@eesti.ee"
+                }
+            ],
+            "description": "Library for collecting and storing XHProf results for later use by XHGUI.",
+            "time": "2019-04-24T16:41:36+00:00"
+        },
+        {
             "name": "phive/twig-extensions-deferred",
             "version": "v2.0.0",
             "source": {
@@ -3612,7 +3706,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git-codecommit.eu-west-1.amazonaws.com/v1/repos/store-commons-module",
-                "reference": "6dbaaf5ebf08256e7c5567e70c52202bc73f9e2e"
+                "reference": "8c172009d1638cea8576b4de6fe1e7f826501c7f"
             },
             "require": {
                 "doctrine/orm": "^2.5",
@@ -3620,7 +3714,6 @@
                 "geoip2/geoip2": "v2.9.0",
                 "phive/twig-extensions-deferred": "^2.0",
                 "php": "^7.2",
-                "predis/predis": "^1.1",
                 "ramsey/uuid": "^3.8.0",
                 "symfony/framework-bundle": "4.*",
                 "twig/twig": "^2.7"
@@ -3636,7 +3729,8 @@
                 "psr-4": {
                     "CountryCarrierDetectionBundle\\": "src/CountryCarrierDetectionBundle",
                     "DeviceDetectionBundle\\": "src/DeviceDetectionBundle",
-                    "ExtrasBundle\\": "src/ExtrasBundle"
+                    "ExtrasBundle\\": "src/ExtrasBundle",
+                    "CommonDataBundle\\": "src/CommonDataBundle"
                 }
             },
             "authors": [
@@ -3645,7 +3739,7 @@
                     "email": "dmitriy.bichenko@playwing.net"
                 }
             ],
-            "time": "2019-07-18T12:04:33+00:00"
+            "time": "2019-07-26T10:50:36+00:00"
         },
         {
             "name": "predis/predis",
@@ -10756,6 +10850,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "e0ipso/amazon-sqs-php-extended-client-lib": 15,
         "granedirval/data-dog-pager-bundle": 20,
         "league/flysystem-aws-s3-v3": 20,
         "playwing/cross-subscription-api-connector": 20,

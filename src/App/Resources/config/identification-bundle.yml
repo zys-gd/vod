@@ -1,3 +1,4 @@
 services:
     IdentificationBundle\Repository\CarrierRepositoryInterface: '@App\Domain\Repository\CarrierRepository'
     IdentificationBundle\Repository\LanguageRepositoryInterface: '@App\Domain\Repository\LanguageRepository'
+    IdentificationBundle\Identification\Service\TranslatorInterface: '@App\Domain\Service\Translator\Translator'

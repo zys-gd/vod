@@ -25,13 +25,10 @@ class VisitStorage
         $this->redis = $redis;
     }
 
-    public function cleanVisits(string $key = 'visit-*')
+    public function cleanVisits(string $key = 'visit-*'): void
     {
         $keys = $this->redis->keys($key);
-
-        foreach ($keys as $key) {
-            $this->redis->del($key);
-        }
+        $this->redis->del($keys);
     }
 
     /**
@@ -40,7 +37,8 @@ class VisitStorage
      */
     public function storeVisit(string $key, string $visitInfo): void
     {
-        $timeout = $this->calculateSecondsUntilTomorrow();
+        //$timeout = $this->calculateSecondsUntilTomorrow();
+        $timeout = 0;
 
         $this->redis->set(sprintf('%s-%s', $key, $visitInfo), $visitInfo, $timeout);
     }

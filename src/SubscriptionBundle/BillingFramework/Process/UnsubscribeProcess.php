@@ -56,7 +56,7 @@ class UnsubscribeProcess
             return $this->requestSender->sendProcessRequest(self::PROCESS_METHOD_UNSUBSCRIBE, $parameters);
         } catch (BillingFrameworkProcessException $exception) {
             $this->logger->error('Error while trying to unsubscribe', ['subscriptionId' => $parameters->clientId, 'params' => $parameters]);
-            throw new UnsubscribingProcessException('Error while trying to unsubscribe', $exception->getBillingCode(), $exception->getResponse()->getMessage());
+            throw new UnsubscribingProcessException('Error while trying to unsubscribe', $exception->getBillingCode(), $exception);
 
         } catch (BillingFrameworkException $exception) {
             $this->logger->error('Error while trying to unsubscribe', ['subscriptionId' => $parameters->clientId, 'params' => $parameters]);

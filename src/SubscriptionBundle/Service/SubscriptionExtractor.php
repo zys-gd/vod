@@ -5,7 +5,7 @@ namespace SubscriptionBundle\Service;
 
 use App\Domain\Entity\Carrier;
 use IdentificationBundle\Entity\User;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Repository\SubscriptionRepository;
@@ -69,9 +69,9 @@ class SubscriptionExtractor
      */
     public function extractSubscriptionFromSession(SessionInterface $session): ?Subscription
     {
-        $extractIdentificationData = IdentificationFlowDataExtractor::extractIdentificationData($session);
-        if (isset($extractIdentificationData['identification_token'])) {
-            $user = $this->userRepository->findOneByIdentificationToken($extractIdentificationData['identification_token']);
+        $identificationToken = IdentificationFlowDataExtractor::extractIdentificationToken($session);
+        if ($identificationToken) {
+            $user = $this->userRepository->findOneByIdentificationToken($identificationToken);
             if ($user) {
                 $subscription = $this->subscriptionRepository->findCurrentSubscriptionByOwner($user);
 
