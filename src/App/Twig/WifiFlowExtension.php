@@ -16,10 +16,16 @@ use App\Domain\Repository\CountryRepository;
 use App\Domain\Service\Translator\DataAggregator;
 use App\Domain\Service\Translator\ShortcodeReplacer;
 use App\Domain\Service\Translator\Translator;
+use Doctrine\Common\Collections\ArrayCollection;
 use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\Entity\CarrierInterface;
+use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Repository\SubscriptionPackRepository;
+use SubscriptionBundle\Service\LPDataExtractor;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -53,6 +59,14 @@ class WifiFlowExtension extends AbstractExtension
      * @var LocalExtractor
      */
     private $localExtractor;
+    /**
+     * @var LPDataExtractor
+     */
+    private $LPDataExtractor;
+    /**
+     * @var SessionInterface
+     */
+    private $session;
 
     /**
      * WifiFlowExtension constructor.
@@ -64,14 +78,20 @@ class WifiFlowExtension extends AbstractExtension
      * @param ShortcodeReplacer          $shortcodeReplacer
      * @param DataAggregator             $dataAggregator
      * @param LocalExtractor             $localExtractor
+     * @param LPDataExtractor            $LPDataExtractor
+     * @param SessionInterface           $session
      */
-    public function __construct(CarrierRepository $carrierRepository,
+    public function __construct(
+        CarrierRepository $carrierRepository,
         SubscriptionPackRepository $subscriptionPackRepository,
         CountryRepository $countryRepository,
         Translator $translator,
         ShortcodeReplacer $shortcodeReplacer,
         DataAggregator $dataAggregator,
-        LocalExtractor $localExtractor)
+        LocalExtractor $localExtractor,
+        LPDataExtractor $LPDataExtractor,
+        SessionInterface $session
+    )
     {
         $this->carrierRepository = $carrierRepository;
         $this->subscriptionPackRepository = $subscriptionPackRepository;
@@ -80,6 +100,8 @@ class WifiFlowExtension extends AbstractExtension
         $this->shortcodeReplacer = $shortcodeReplacer;
         $this->dataAggregator = $dataAggregator;
         $this->localExtractor = $localExtractor;
+        $this->LPDataExtractor = $LPDataExtractor;
+        $this->session = $session;
     }
 
     /**
@@ -88,7 +110,9 @@ class WifiFlowExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('getCountryCarrierList', [$this, 'getCountryCarrierList'])
+            new TwigFunction('getCountryCarrierList', [$this, 'getCountryCarrierList']),
+            new TwigFunction('getCountries', [$this, 'getCountries']),
+            new TwigFunction('getCarrierCountry', [$this, 'getCarrierCountry'])
         ];
     }
 
@@ -149,5 +173,40 @@ class WifiFlowExtension extends AbstractExtension
         }
 
         return $countriesCarriers;
+    }
+
+    public function getCountries()
+    {
+        $activeCarrierCountries = $this->LPDataExtractor->getActiveCarrierCountries()->map(function(Country $country) {
+
+            return ['code' => $country->getCountryCode(), 'name' => $country->getCountryName()];
+        })->toArray();
+        return $activeCarrierCountries;
+    }
+
+    public function getCarrierCountry()
+    {
+        $ispData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
+        $carrierId = $ispData ? $ispData['carrier_id'] : null;
+        if(!$carrierId) {
+            return;
+        }
+        $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
+
+        /** @var Country $country */
+        $country = $this->countryRepository->findOneBy(['countryCode' => $carrier->getCountryCode()]);
+
+        $countryCarriers = new ArrayCollection(
+            $this->carrierRepository->findBy(['published' => true, 'countryCode' => $carrier->getCountryCode()])
+        );
+
+        $resultCountryCarriersMapper = $countryCarriers->map(function (Carrier $carrier) {
+            return [
+                'id' => $carrier->getBillingCarrierId(),
+                'name' => $carrier->getName()
+            ];
+        })->toArray();
+
+        return ['code' => $country->getCountryCode(), 'name' => $country->getCountryName(), 'countryCarriers' => $resultCountryCarriersMapper];
     }
 }

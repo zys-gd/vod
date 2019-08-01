@@ -22,6 +22,7 @@ use SubscriptionBundle\Service\LPDataExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -126,53 +127,57 @@ class PinIdentificationController extends AbstractController implements APIContr
      */
     public function sendSMSPinCodeAction(Request $request, ISPData $ispData)
     {
+        $postData = $request->request->all();
+        $isResend = isset($postData['resend-pin']);
+        $mobileNumber = $request->get('mobile_number', '');
+        $billingCarrierId = $ispData->getCarrierId();
+
         $form = $this->createForm(
             LPType::class,
             ['lpDataExtractor' => $this->LPDataExtractor],
             ['csrf_protection' => false]
         );
-        $form->submit($request->request->all());
-
+        $form->submit($postData);
         if (!$form->isValid()) {
             $errors = $form->getErrors(true);
-            throw new BadRequestHttpException($errors->current()->getMessage());
+            return $this->getSimpleJsonResponse($errors->current()->getMessage(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         try {
             $this->limiter->ensureCapIsNotReached($request->getSession());
         } catch (CapToolAccessException $exception) {
-            return $this->getSimpleJsonResponse('Subscription limit has been reached', 200, [], [
-                'success' => false, 'redirectUrl' => $this->defaultRedirectUrl
-            ]);
+            return $this->getSimpleJsonResponse(
+                'Subscription limit has been reached',
+                Response::HTTP_BAD_REQUEST,
+                [],
+                ['redirectUrl' => $this->defaultRedirectUrl]
+            );
         }
 
-        $mobileNumber = $request->get('mobile_number', '');
-        $billingCarrierId = $ispData->getCarrierId();
         $cleanPhoneNumber = str_replace('+', '', $mobileNumber);
-
         if ($this->blacklistVoter->isPhoneNumberBlacklisted($cleanPhoneNumber)
             || $this->blacklistAttemptRegistrator->isSubscriptionAttemptRaised($cleanPhoneNumber, (int) $billingCarrierId)
         ) {
-            return $this->getSimpleJsonResponse('User in black list', 200, [], [
-                'success' => false, 'redirectUrl' => $this->blacklistVoter->getRedirectUrl()
-            ]);
+            return $this->getSimpleJsonResponse(
+                'User in black list',
+                Response::HTTP_BAD_REQUEST,
+                [],
+                ['redirectUrl' => $this->blacklistVoter->getRedirectUrl()]
+            );
         }
 
         $this->limiter->reserveSlotForSubscription($request->getSession());
 
-        $postData = $request->request->all();
-        $isResend = isset($postData['resend-pin']);
-
         try {
             $this->identSMSSender->sendSMS($billingCarrierId, $mobileNumber, $isResend);
-            $data = ['success' => true, 'carrierId' => $billingCarrierId, 'isResend' => $isResend];
+            $data = ['carrierId' => $billingCarrierId, 'isResend' => $isResend];
 
-            return $this->getSimpleJsonResponse('Sent', 200, [], $data);
+            return $this->getSimpleJsonResponse('Sent', Response::HTTP_OK, [], $data);
         } catch (PinRequestProcessException $exception) {
             $message = $this->errorCodeResolver->resolveMessage($exception->getCode(), $billingCarrierId);
-            return $this->getSimpleJsonResponse($message, 200, [], ['success' => false, 'code' => $exception->getCode()]);
+            return $this->getSimpleJsonResponse($message, Response::HTTP_BAD_REQUEST, [], ['code' => $exception->getCode()]);
         } catch (\Exception $exception) {
-            return $this->getSimpleJsonResponse($exception->getMessage(), 200, [], ['success' => false]);
+            return $this->getSimpleJsonResponse($exception->getMessage(), Response::HTTP_BAD_REQUEST, []);
         }
     }
 

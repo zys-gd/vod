@@ -34,7 +34,7 @@ class LPType extends AbstractType
                 new NotNull()
             ],
             'choices' => $dataExtractor->getActiveCarrierCountries()->map(function (Country $country) {
-                return $country->getCountryName();
+                return $country->getCountryCode();
             })->toArray(),
             'invalid_message' => "Invalid 'country' field"
         ])

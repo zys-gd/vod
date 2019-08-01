@@ -2,6 +2,7 @@
 {% import "@App/Components/Blocks/Header/header_lp.html.twig" as  header %}
 {% import "@App/Components/Blocks/Footer/annotation.html.twig" as  annotation %}
 {% import "@App/Components/Blocks/Footer/menu.html.twig" as  footer_menu %}
+{% import LPImporter("LP/wifi_sub_block_js.html.twig") as subJS %}
 
 {# IMPORT SECTIONS #}
 {% import LPImporter("LP/Sections/banner_section.html.twig") as banner_section %}
@@ -15,13 +16,17 @@
     {{ header.render() }}
 {% endblock header_content %}
 
+{% block javascripts %}
+    {{ parent() }}
+    {{ subJS.render() }}
+{% endblock %}
+
 {% block stylesheets %}
     {{ parent() }}
     <link href="{{ asset('/css/lp.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
-
     <div class="d-flex flex-column align-items-center justify-content-top w-100" style="background: {{ getCampaignData('background') }}">
 
         <!-- BANNER SECTION WITH SUB IMAGE -->

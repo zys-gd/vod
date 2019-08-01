@@ -1,0 +1,203 @@
+{% macro render() %}
+    {% import '@App/Components/Forms/wifi_phone.html.twig' as wifi_phone %}
+    {% import '@App/Components/Forms/wifi_pin.html.twig' as wifi_pin %}
+    {% import '@App/Components/Forms/wifi_select.html.twig' as wifi_select %}
+<script>
+    $(document).ready(() => {
+        var form = $('#wifi_form');
+        var carrierId = + '{{ getCarrierId() }}';
+
+        var $wifi_form_step = $('#wifi_form_step');
+        var $wifi_warning   = $('.wifi_form__warning');
+        var phone;
+        var input_phone     = $('input[name=mobile_number]');
+
+        var params = {
+            html_wifi_phone: $('<div />').html('{{ html2string(wifi_phone.render()) }}').text(),
+            html_wifi_pin  : $('<div />').html('{{ html2string(wifi_pin.render()) }}').text(),
+            pin_notif      : $('<div />').html('{{ html2string(translate('wifi.pin_notif')|nl2br) }}').text(),
+            warning        : $('<div />').html('{{ html2string(translate('wifi.warning')|nl2br) }}').text()
+        };
+
+        $('.x-subscribe-image').removeAttr('href').removeAttr('class');
+
+        $(document).on('change', 'select[name="country"]', (e) =>
+            changeCountry(e, "{{ path('fetch_carriers_for_country') }}", "{{ translate('wifi.form.select_carrier') }}")
+        );
+
+        $(document).on('change', 'select[name="carrier_id"]', (e) => changeCarrier(e, "{{ path('select_carrier_wifi') }}"));
+
+
+        // submit pin form
+        $(document).on('submit', 'form[data-form=pin]', function (e) {
+            e.preventDefault();
+            if (!$('#terms-and-conditions-checkbox').is(':checked')) {
+                $('#terms-and-conditions').focus();
+                return;
+            }
+            $.ajax({
+                url: "{{ path('send_sms_pin_code') }}",
+                method: "POST",
+                data: form.serialize(),
+                beforeSend: () => $._loader(),
+                success: response => new PinSuccessResponseResolver(response),
+                error: response => new PinErrorResponseResolver(response).resolve(),
+                complete: () => $._loader(true)
+            });
+        });
+
+        // confirm pin code
+        $(document).on('submit', 'form[data-form=confirm]', function (e) {
+            e.preventDefault();
+            $._loader();
+
+            $.ajax({
+                url    : "{{ path('confirm_sms_pin_code') }}",
+                method : "POST",
+                data   : form.serialize(),
+                success: function (result) {
+                    if (result.data.success) {
+                        window.location = result.data.redirectUrl;
+                    } else {
+                        $._loader(true);
+                        showAlert({title: result.data.message});
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '#send-reminder', function () {
+            let phoneNumber = phone.replace('+', '');
+
+            $.ajax({
+                url: "{{ path('remind_credentials') }}",
+                method: 'POST',
+                data: {
+                    phoneNumber: phoneNumber
+                },
+                complete: function() {
+                    $('.fc-content .button-confirm').click();
+                },
+                success: function(result) {
+                    window.location = result.data.redirectUrl;
+                }
+            })
+        });
+
+        // re-send pin code
+        $(document).on('click', '#resend-pin', function (event) {
+            event.preventDefault();
+            var form = $(this).closest('form');
+            var resendPinMarker = $('<input type="hidden" name="resend-pin" />');
+
+            form.append(resendPinMarker);
+
+            $(this).closest('form').attr('data-form', 'pin').submit();
+
+            $(document).ajaxSuccess(function (event, request, settings) {
+                if (settings.url === '{{ path('send_sms_pin_code') }}') {
+                    resendPinMarker.remove();
+                }
+            });
+        });
+
+        $(document).on('focus', 'input[name=mobile_number]', function () {
+            if ($(this).val() === '') {
+                $(this).val('+');
+            }
+        });
+        // change phone number
+        $(document).on('click', '#change-number', function (event) {
+            event.preventDefault();
+            $._loader();
+            $wifi_form_step.html(params.html_wifi_phone);
+            $wifi_warning.html(params.warning);
+            form.attr('data-form', 'pin');
+            $('input[name=mobile_number]').val(phone);
+            $._loader(true);
+        });
+
+        $(document).on('focus', 'input[name=mobile_number]', function () {
+            if ($(this).val() === '') {
+                $(this).val('+');
+            }
+        });
+
+        $(document).on('blur', 'input[name=mobile_number]', function () {
+            if ($(this).val() === '+') {
+                $(this).val('');
+            }
+        });
+
+        $(document).on('focus', '#terms-and-conditions', function(e) {
+            e.preventDefault();
+            $(this).addClass('highlighting-item');
+        });
+
+        $(document).on('focusout', '#terms-and-conditions', function(e) {
+            e.preventDefault();
+            $(this).removeClass('highlighting-item');
+        });
+
+        $(document).on('mousedown', '#terms-and-conditions', function(e) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+        });
+
+
+        function PinSuccessResponseResolver(response) {
+            if(response.data.isResend) {
+                showAlert({title: 'New PIN-code', message: 'has been successfully sent'});
+            }
+            $wifi_warning.html(params.pin_notif.replace(/%wifi_phone%/, phone));
+            $wifi_form_step
+                .html(params.html_wifi_pin)
+                .append(input_phone);
+
+            form.attr('data-form', 'confirm');
+            input_phone.addClass('d-none');
+
+            addValidationAttributes(response.data.carrierId);
+        }
+
+        function PinErrorResponseResolver(response) {
+            this._response = response;
+
+            this.resolve = () => {
+                switch (true) {
+                    case this._response.status === 422:
+                        _validationFlow();
+                        break;
+                    case this._response.status === 400 && this._response.responseJSON.data.hasOwnProperty('redirectUrl'):
+                        _redirectFlow();
+                        break;
+                    case this._response.status === 400:
+                        _defaultFlow();
+                        break;
+                    case this._response.responseJSON.data.hasOwnProperty('code') &&
+                    (this._response.responseJSON.data.code === 102 || this._response.responseJSON.data.code === 103):
+                        _limitExceededFlow();
+                        break;
+                }
+            }
+
+            let _redirectFlow = () => {
+                window.location = this._response.responseJSON.data.redirectUrl;
+            }
+            let _validationFlow = () => {
+                showAlert({title: this._response.responseJSON.data.message});
+            }
+            let _defaultFlow = () => {
+                showAlert({title: this._response.responseJSON.data.message});
+            }
+            let _limitExceededFlow = () => {
+                form.attr('data-form', 'confirm');
+                _defaultFlow();
+            }
+
+        }
+
+    });
+
+</script>
+{% endmacro %}

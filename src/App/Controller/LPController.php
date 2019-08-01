@@ -10,6 +10,7 @@ use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Service\CarrierOTPVerifier;
 use App\Domain\Service\Piwik\ContentStatisticSender;
+use Doctrine\Common\Collections\ArrayCollection;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\DTO\ISPData;
@@ -183,21 +184,15 @@ class LPController extends AbstractController implements ControllerWithISPDetect
     public function landingPageAction(Request $request)
     {
         $session        = $request->getSession();
-        $campaignBanner = null;
-        $background     = null;
 
         $cid      = $request->get('cid', '');
+
+        /** @var Campaign $campaign */
         $campaign = $this->resolveCampaignFromRequest($cid);
         if ($cid && !$campaign) {
             return RedirectResponse::create($this->defaultRedirectUrl);
-        }
-
-        /** @var Campaign $campaign */
-        if ($campaign) {
-            // Useless method atm.
+        } else if ($campaign) {
             AffiliateVisitSaver::saveCampaignId($cid, $session);
-            $campaignBanner = $this->imageBaseUrl . '/' . $campaign->getImagePath();
-            $background     = $campaign->getBgColor();
         }
 
         $carrier = $this->resolveCarrierFromRequest($request);
@@ -253,90 +248,83 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         $template = $this->templateConfigurator->getTemplate($isWifiFlow ? 'landing_wifi' : 'landing_3g', (int)$carrierId);
 
-        return $this->render($template, [
-            'campaignBanner' => $campaignBanner,
-            'background'     => $background
-        ]);
+        return $this->render($template);
     }
 
     /**
-     * @Route("/lp/select-carrier-wifi", name="select_carrier_wifi")
+     * @Route("/lp/select-carrier-wifi", name="select_carrier_wifi", methods={"GET"}, condition="request.isXmlHttpRequest()")
+     *
      * @param Request $request
      *
      * @return JsonResponse
      */
-    public function handleCarrierSelect(Request $request)
+    public function selectCarrierAction(Request $request)
     {
-        if (!$carrierId = $request->get('carrier_id', '')) {
+
+        if (!$carrierId = $request->get('carrierId', '')) {
             $this->carrierSelector->removeCarrier();
 
-            return $this->getSimpleJsonResponse('');
+            return new JsonResponse(['error' => 'Missing `carrier_id` parameter'], Response::HTTP_BAD_REQUEST);
         }
 
-        try {
-            $this->carrierSelector->selectCarrier((int)$carrierId);
-            $offerTemplate = $this->templateConfigurator->getTemplate('landing_offer', $carrierId);
-
-            $data = [
-                'success'    => true,
-                'annotation' => $this->renderView('@App/Components/Ajax/annotation.html.twig'),
-                'offer'      => $this->renderView($offerTemplate)
-            ];
-
-            return $this->getSimpleJsonResponse('Successfully selected', 200, [], $data);
-        } catch (MissingCarrierException $exception) {
-            return $this->getSimpleJsonResponse($exception->getMessage(), 200, [], ['success' => false]);
-        }
-    }
-
-    /**
-     * @Method("POST")
-     * @Route("/after_carrier_selected", name="ajax_after_carrier_selected")
-     * @return JsonResponse
-     */
-    public function ajaxAfterCarrierSelected(Request $request)
-    {
-
-        if (!$request->isXmlHttpRequest()) {
-            throw new BadRequestHttpException();
+        if (!(bool)$this->dataStorage->readValue('is_wifi_flow')) {
+            return new JsonResponse(['error' => 'Error flow'], Response::HTTP_BAD_REQUEST);
         }
 
-
-        try {
-            $session  = $request->getSession();
-            $cid      = $session->get('campaign_id', '');
-            $carrier  = $this->resolveCarrierFromRequest($request);
-            $campaign = $this->resolveCampaignFromRequest($cid);
-
-            if (!$campaign) {
-                return $this->getSimpleJsonResponse('success', 200, [], [
-                    'success' => true,
-                ]);
-            }
-
-
+        $session = $request->getSession();
+        $cid = $session->get('campaign_id', '');
+        $campaign = $this->resolveCampaignFromRequest($cid);
+        if ($campaign) {
+            $carrier = $this->resolveCarrierFromRequest($request);
             try {
                 $this->landingPageAccessResolver->ensureCanAccessByVisits($campaign, $carrier);
             } catch (VisitCapReached $capReached) {
-                return $this->getSimpleJsonResponse('success', 200, [], [
-                    'success'     => false,
+                return $this->getSimpleJsonResponse('success', Response::HTTP_BAD_REQUEST, [], [
                     'redirectUrl' => $this->defaultRedirectUrl
                 ]);
             }
 
             $this->visitTracker->trackVisit($carrier, $campaign, $session->getId());
-
-
-            return $this->getSimpleJsonResponse('success', 200, [], [
-                'success' => true,
-            ]);
-
-        } catch (\Exception $exception) {
-            return $this->getSimpleJsonResponse('success', 500, [], [
-                'success' => false,
-                'error'   => $exception->getMessage()
-            ]);
         }
+
+        try {
+            $this->carrierSelector->selectCarrier((int)$carrierId);
+            $template = $this->templateConfigurator->getTemplate('landing_wifi', (int)$carrierId);
+            $html = $this->renderView($template);
+
+            return new JsonResponse($html, Response::HTTP_OK);
+        } catch (MissingCarrierException $exception) {
+            return new JsonResponse([
+                'error' => $exception->getMessage()
+            ], $exception->getCode());
+        }
+    }
+
+    /**
+     * @Route("/lp/fetch-carriers-for-country", name="fetch_carriers_for_country", methods={"GET"}, condition="request.isXmlHttpRequest()")
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function fetchCarrierForCountry(Request $request)
+    {
+        if(!$countryCode = $request->get('countryCode')) {
+            return new JsonResponse(['error' => 'Missing `countryCode` parameter']);
+        }
+
+        $countryCarriers = new ArrayCollection(
+            $this->carrierRepository->findBy(['published' => true, 'countryCode' => $countryCode])
+        );
+
+        $resultMapper = $countryCarriers->map(function (Carrier $carrier) {
+            return [
+                'id' => $carrier->getBillingCarrierId(),
+                'name' => $carrier->getName()
+            ];
+        })->toArray();
+
+
+        return new JsonResponse($resultMapper, Response::HTTP_OK);
     }
 
     /**

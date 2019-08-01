@@ -2,18 +2,25 @@
 {% import "@App/Components/Blocks/Header/header_lp.html.twig" as  header %}
 {% import "@App/Components/Blocks/Footer/annotation.html.twig" as  annotation %}
 {% import "@App/Components/Blocks/Footer/menu.html.twig" as  footer_menu %}
+{% import LPImporter("LP/wifi_sub_block_js.html.twig") as subJS %}
 
 {# IMPORT SECTIONS #}
-{% import LPImporter("LP/banner_section.html.twig") as banner_section %}
-{% import LPImporter("LP/Wifi/sub_btn_section.html.twig") as sub_btn_section %}
-{% import LPImporter("LP/Wifi/offer_section.html.twig") as offer_section %}
-{% import LPImporter("LP/icons_chanel_section.html.twig") as icons_chanel_section %}
-{% import LPImporter("LP/lure_text_section.html.twig") as lure_text_section %}
+{% import LPImporter("LP/Sections/banner_section.html.twig") as banner_section %}
+{% import LPImporter("LP/Sections/Wifi/sub_btn_section.html.twig") as sub_btn_section %}
+{% import LPImporter("LP/Sections/Wifi/offer_section.html.twig") as offer_section %}
+{% import LPImporter("LP/Sections/icons_chanel_section.html.twig") as icons_chanel_section %}
+{% import LPImporter("LP/Sections/lure_text_section.html.twig") as lure_text_section %}
 {# END IMPORT SECTIONS #}
 
 {% block header_content %}
     {{ header.render() }}
 {% endblock header_content %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ subJS.render() }}
+{% endblock %}
+
 
 {% block stylesheets %}
     {{ parent() }}
@@ -22,14 +29,14 @@
 
 {% block body %}
 
-    <div class="d-flex flex-column align-items-center justify-content-top w-100" {% if background %} style="background: {{ background }}" {% endif %}>
+    <div class="d-flex flex-column align-items-center justify-content-top w-100" style="background: {{ getCampaignData('background') }}">
 
         <!-- BANNER SECTION WITH SUB IMAGE -->
-        {{ banner_section.render(campaignBanner) }}
+        {{ banner_section.render() }}
         <!-- END BANNER SECTION WITH SUB IMAGE -->
 
         <!-- SUBSCRIBE BUTTON SECTION -->
-        {{ sub_btn_section.render('buttons.subscribe', 'btn-lp_big', 'lp-sub-btn lp-sub-btn-top') }}
+        {{ sub_btn_section.render('buttons.subscribe', 'btn-lp_big') }}
         <!-- END SUBSCRIBE BUTTON SECTION -->
 
         <!-- OFFER SECTION -->
