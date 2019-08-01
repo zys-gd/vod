@@ -30,8 +30,10 @@ function clearOptionsForCarrierSelect(defaultCarrierSelectText) {
 }
 
 function replaceBodyContent(html) {
-    let body = $(html).filter('#main-page-container').html();
-    $('.media-body').html(body);
+    let mainPageContainer = $(html).filter('#main-page-container').html();
+    let footer = $(html).filter('footer').html();
+    $('.media-body').html(mainPageContainer);
+    $('footer').html(footer);
 }
 
 function changeCountry(e, url, defaultSelectText) {
