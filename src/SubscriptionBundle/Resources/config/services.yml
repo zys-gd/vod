@@ -104,7 +104,7 @@ services:
     SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator:
         arguments:
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
-            - '@app.cache.default.subscription'
+            - '@app.cache.default.blacklist'
             - '@SubscriptionBundle\Service\Blacklist\BlacklistSaver'
             - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
             - '@IdentificationBundle\Repository\UserRepository'

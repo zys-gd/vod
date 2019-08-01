@@ -11,6 +11,7 @@ use SubscriptionBundle\BillingFramework\Process\API\LinkCreator;
 
 class PostPaidHandler
 {
+    const POST_PAID_ACCOUNT_TYPE_ID = 1;
 
     /**
      * @var LoggerInterface
@@ -77,6 +78,6 @@ class PostPaidHandler
      */
     public function isPostPaidRestricted()
     {
-        return $this->identificationDataStorage->readValue(IdentificationDataStorage::POST_PAID_RESTRICTED_KEY);
+        return $this->identificationDataStorage->readValue(IdentificationDataStorage::POST_PAID_RESTRICTED_KEY) === self::POST_PAID_ACCOUNT_TYPE_ID;
     }
 }

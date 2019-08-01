@@ -12,8 +12,10 @@ use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Repository\CampaignScheduleRepository;
 use App\Domain\Repository\CarrierRepository;
+use App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherChecker;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use Psr\Log\LoggerInterface;
+use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Service\CAPTool\Exception\SubscriptionCapReachedOnAffiliate;
 use SubscriptionBundle\Service\CAPTool\Exception\SubscriptionCapReachedOnCarrier;
@@ -65,18 +67,23 @@ class LandingPageACL
      * @var CampaignScheduleRepository
      */
     private $campaignScheduleRepository;
+    /**
+     * @var AffiliateBannedPublisherChecker
+     */
+    private $affiliateBannedPublisherChecker;
 
     /**
      * LandingPageAccessResolver constructor
      *
-     * @param VisitConstraintByAffiliate $visitConstraintByAffiliate
-     * @param VisitAccessorByCampaign    $visitAccessorByCampaign
-     * @param CarrierRepository          $carrierRepository
-     * @param CampaignRepository         $campaignRepository
-     * @param SessionInterface           $session
-     * @param SubscriptionCapChecker     $subscriptionCapChecker
-     * @param LoggerInterface            $logger
-     * @param CampaignScheduleRepository $campaignScheduleRepository
+     * @param VisitConstraintByAffiliate      $visitConstraintByAffiliate
+     * @param VisitAccessorByCampaign         $visitAccessorByCampaign
+     * @param CarrierRepository               $carrierRepository
+     * @param CampaignRepository              $campaignRepository
+     * @param SessionInterface                $session
+     * @param SubscriptionCapChecker          $subscriptionCapChecker
+     * @param LoggerInterface                 $logger
+     * @param CampaignScheduleRepository      $campaignScheduleRepository
+     * @param AffiliateBannedPublisherChecker $affiliateBannedPublisherChecker
      */
     public function __construct(
         VisitConstraintByAffiliate $visitConstraintByAffiliate,
@@ -86,17 +93,19 @@ class LandingPageACL
         SessionInterface $session,
         SubscriptionCapChecker $subscriptionCapChecker,
         LoggerInterface $logger,
-        CampaignScheduleRepository $campaignScheduleRepository
+        CampaignScheduleRepository $campaignScheduleRepository,
+        AffiliateBannedPublisherChecker $affiliateBannedPublisherChecker
     )
     {
-        $this->visitConstraintByAffiliate = $visitConstraintByAffiliate;
-        $this->visitAccessorByCampaign    = $visitAccessorByCampaign;
-        $this->carrierCapChecker          = $subscriptionCapChecker;
-        $this->logger                     = $logger;
-        $this->carrierRepository          = $carrierRepository;
-        $this->campaignRepository         = $campaignRepository;
-        $this->session                    = $session;
-        $this->campaignScheduleRepository = $campaignScheduleRepository;
+        $this->visitConstraintByAffiliate      = $visitConstraintByAffiliate;
+        $this->visitAccessorByCampaign         = $visitAccessorByCampaign;
+        $this->carrierCapChecker               = $subscriptionCapChecker;
+        $this->logger                          = $logger;
+        $this->carrierRepository               = $carrierRepository;
+        $this->campaignRepository              = $campaignRepository;
+        $this->session                         = $session;
+        $this->campaignScheduleRepository      = $campaignScheduleRepository;
+        $this->affiliateBannedPublisherChecker = $affiliateBannedPublisherChecker;
     }
 
     /**
@@ -105,7 +114,7 @@ class LandingPageACL
      *
      * @return void
      */
-    public function ensureCanAccess(Campaign $campaign, Carrier $carrier): void
+    public function ensureCanAccess(CampaignInterface $campaign, Carrier $carrier): void
     {
         if ($campaign->getIsPause()) {
             $this->logger->debug('CAP checking on LP', ['message' => 'Campaign on pause']);
@@ -161,8 +170,8 @@ class LandingPageACL
                 $isLPOffByAffiliate = $affiliate->isLpOff() && ($affiliate->hasCarrier($carrier) || empty($affiliate->getCarriers()));
 
                 $isCampaignScheduleExistAndTriggered = $campaign->getSchedule()->isEmpty()
-                                                        ? true
-                                                        : $this->campaignScheduleRepository->isNowInSchedule($campaign);
+                    ? true
+                    : $this->campaignScheduleRepository->isNowInSchedule($campaign);
 
                 $isLPOffByCampaign = $campaign->isLpOff() && $isCampaignScheduleExistAndTriggered;
             }
@@ -221,7 +230,7 @@ class LandingPageACL
         }
     }
 
-    public function ensureCanAccessByVisits(Campaign $campaign, Carrier $carrier): void
+    public function ensureCanAccessByVisits(CampaignInterface $campaign, Carrier $carrier): void
     {
         $affiliate = $campaign->getAffiliate();
 
@@ -235,5 +244,11 @@ class LandingPageACL
                 $this->ensureVisitCapIsNotReached($carrier, $constraint);
             }
         }
+    }
+
+    public function isAffiliatePublisherBanned(Request $request, CampaignInterface $campaign): bool
+    {
+        $affiliate = $campaign->getAffiliate();
+        return $this->affiliateBannedPublisherChecker->isPublisherBanned($affiliate, $request->query->all());
     }
 }
