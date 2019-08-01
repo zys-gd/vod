@@ -6,7 +6,7 @@
  * Time: 13:48
  */
 
-namespace Tests\SubscriptionBundle\Service;
+namespace SubscriptionBundle\Tests\Service;
 
 use ExtrasBundle\Utils\UuidGenerator;
 use Mockery;

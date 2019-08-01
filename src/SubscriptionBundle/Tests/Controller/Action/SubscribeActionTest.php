@@ -32,7 +32,7 @@ use SubscriptionBundle\Subscription\Subscribe\Voter\BatchSubscriptionVoter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Tests\DataFixtures\LoadCampaignTestData;
 use Tests\DataFixtures\LoadSubscriptionTestData;
-use Tests\SubscriptionBundle\BillingFramework\TestBillingResponseProvider;
+use SubscriptionBundle\Tests\BillingFramework\TestBillingResponseProvider;
 
 class SubscribeActionTest extends AbstractFunctionalTest
 {
@@ -172,7 +172,9 @@ class SubscribeActionTest extends AbstractFunctionalTest
         $this->session->set('isp_detection_data', $ispDetectionData);
 
         $client->request('GET', 'subscribe');
-        $this->assertTrue($client->getResponse()->isRedirect('/?err_handle=postpaid_restricted'), 'redirect is missing');
+
+        $location = $client->getResponse()->headers->get('location');
+        $this->assertContains('err_handle=postpaid_restricted', $location, 'redirect is missing');
     }
 
     public function testCampaignConfirmationCustomPage()

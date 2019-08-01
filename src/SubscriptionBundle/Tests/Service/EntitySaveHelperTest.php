@@ -6,7 +6,7 @@
  * Time: 14:02
  */
 
-namespace Tests\SubscriptionBundle\Service;
+namespace SubscriptionBundle\Tests\Service;
 
 use Doctrine\ORM\EntityManager;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;

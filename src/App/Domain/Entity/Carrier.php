@@ -145,7 +145,7 @@ class Carrier implements CarrierInterface, HasUuid
     /**
      * @var bool
      */
-    private $trackAffiliateOnZeroCreditSub;
+    private $trackAffiliateOnZeroCreditSub = false;
 
     /**
      * @var bool

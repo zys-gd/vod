@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Tests\SubscriptionBundle\Service;
+namespace App\SubscriptionBundle\Tests\Service;
 
 use ExtrasBundle\Utils\UuidGenerator;
 use Carbon\Carbon;
