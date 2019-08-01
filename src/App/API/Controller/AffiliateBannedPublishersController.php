@@ -5,6 +5,7 @@ namespace App\API\Controller;
 
 
 use App\Domain\Entity\Affiliate;
+use App\Domain\Entity\AffiliateBannedPublisher;
 use App\Domain\Repository\AffiliateBannedPublisherRepository;
 use App\Domain\Repository\AffiliateRepository;
 use App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherCreator;
@@ -135,7 +136,12 @@ class AffiliateBannedPublishersController extends AbstractController
         try {
             /** @var Affiliate $affiliate */
             $affiliate = $this->affiliateRepository->find($affiliateId);
-            $this->affiliateBannedPublisherCreator->banPublisher($affiliate, $publisherId);
+            /** @var AffiliateBannedPublisher $affiliateBannedPublisher */
+            $affiliateBannedPublisher = $this->affiliateBannedPublisherRepository->findOneBy([
+                'affiliate'   => $affiliate,
+                'publisherId' => $publisherId
+            ]);
+            $this->affiliateBannedPublisherRemover->unbanPublisher($affiliateBannedPublisher);
 
             return new JsonResponse([
                 'result'  => true,
