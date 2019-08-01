@@ -124,7 +124,7 @@ class FakeCarrierIdentifier extends DataCollector
             ["name" => "Tigo Honduras", "ip" => "186.2.144.0", 'carrier' => ConstBillingCarrierId::TIGO_HONDURAS, 'msisdn' => '50498170614'],
             ["name" => "Claro Nicaragua", "ip" => "200.62.96.0", 'carrier' => ConstBillingCarrierId::CLARO_NICARAGUA, 'msisdn' => '50587239464'],
             ["name" => "Robi Bangladesh", "ip" => "202.134.14.136", 'carrier' => ConstBillingCarrierId::ROBI_BANGLADESH, 'msisdn' => '8801813977240'],
-            ["name" => "Hutch Indonesia", "ip" => "202.67.46.31", 'carrier' => ConstBillingCarrierId::HUTCH_INDONESIA, 'msisdn' => ''],
+            ["name" => "Hutch Indonesia", "ip" => "202.67.46.31", 'carrier' => ConstBillingCarrierId::HUTCH_INDONESIA, 'msisdn' => '62895361638546'],
 
         ];
     }
