@@ -28,6 +28,7 @@ use SubscriptionBundle\Service\CAPTool\Exception\VisitCapReached;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
 use SubscriptionBundle\Service\SubscribeUrlResolver;
+use SubscriptionBundle\Service\VisitCAPTool\ConstraintAvailabilityChecker;
 use SubscriptionBundle\Service\VisitCAPTool\VisitNotifier;
 use SubscriptionBundle\Service\VisitCAPTool\VisitTracker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -109,26 +110,31 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var SubscribeUrlResolver
      */
     private $subscribeUrlResolver;
+    /**
+     * @var ConstraintAvailabilityChecker
+     */
+    private $visitConstraintChecker;
 
     /**
      * LPController constructor.
      *
-     * @param ContentStatisticSender $contentStatisticSender
-     * @param CampaignRepository $campaignRepository
-     * @param LandingPageACL $landingPageAccessResolver
-     * @param string $imageBaseUrl
-     * @param CarrierOTPVerifier $OTPVerifier
-     * @param string $defaultRedirectUrl
-     * @param TemplateConfigurator $templateConfigurator
+     * @param ContentStatisticSender        $contentStatisticSender
+     * @param CampaignRepository            $campaignRepository
+     * @param LandingPageACL                $landingPageAccessResolver
+     * @param string                        $imageBaseUrl
+     * @param CarrierOTPVerifier            $OTPVerifier
+     * @param string                        $defaultRedirectUrl
+     * @param TemplateConfigurator          $templateConfigurator
      * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
-     * @param SubscriptionLimiter $limiter
-     * @param SubscriptionLimitNotifier $subscriptionLimitNotifier
-     * @param CarrierRepositoryInterface $carrierRepository
-     * @param VisitTracker $visitTracker
-     * @param VisitNotifier $notifier
-     * @param LoggerInterface $logger
-     * @param CarrierSelector $carrierSelector
-     * @param SubscribeUrlResolver $subscribeUrlResolver
+     * @param SubscriptionLimiter           $limiter
+     * @param SubscriptionLimitNotifier     $subscriptionLimitNotifier
+     * @param CarrierRepositoryInterface    $carrierRepository
+     * @param VisitTracker                  $visitTracker
+     * @param VisitNotifier                 $notifier
+     * @param LoggerInterface               $logger
+     * @param CarrierSelector               $carrierSelector
+     * @param SubscribeUrlResolver          $subscribeUrlResolver
+     * @param ConstraintAvailabilityChecker $visitConstraintChecker
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
@@ -146,7 +152,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         VisitNotifier $notifier,
         LoggerInterface $logger,
         CarrierSelector $carrierSelector,
-        SubscribeUrlResolver $subscribeUrlResolver
+        SubscribeUrlResolver $subscribeUrlResolver,
+        ConstraintAvailabilityChecker $visitConstraintChecker
     )
     {
         $this->contentStatisticSender        = $contentStatisticSender;
@@ -165,6 +172,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->logger                        = $logger;
         $this->carrierSelector               = $carrierSelector;
         $this->subscribeUrlResolver          = $subscribeUrlResolver;
+        $this->visitConstraintChecker        = $visitConstraintChecker;
     }
 
 
@@ -196,7 +204,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             // Useless method atm.
             AffiliateVisitSaver::saveCampaignId($cid, $session);
 
-            if($this->landingPageAccessResolver->isAffiliatePublisherBanned($request, $campaign)){
+            if ($this->landingPageAccessResolver->isAffiliatePublisherBanned($request, $campaign)) {
                 return new RedirectResponse($this->defaultRedirectUrl);
             }
 
@@ -231,7 +239,9 @@ class LPController extends AbstractController implements ControllerWithISPDetect
                 return RedirectResponse::create($this->defaultRedirectUrl);
             }
 
-            $this->visitTracker->trackVisit($carrier, $campaign, $session->getId());
+            if ($this->visitConstraintChecker->isCapEnabledForAffiliate($campaign->getAffiliate())) {
+                $this->visitTracker->trackVisit($carrier, $campaign, $session->getId());
+            }
             $this->logger->debug('Finish CAP checking');
         }
 
@@ -242,7 +252,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->contentStatisticSender->trackVisit($session);
 
         if ($carrier
-            && !(bool) $this->wifiIdentificationDataStorage->isWifiFlow()
+            && !(bool)$this->wifiIdentificationDataStorage->isWifiFlow()
             && $this->landingPageAccessResolver->isLandingDisabled($request)
         ) {
             return new RedirectResponse($this->subscribeUrlResolver->getSubscribeRoute($carrier));
