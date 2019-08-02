@@ -28,6 +28,7 @@ use SubscriptionBundle\CAPTool\Subscription\Exception\VisitCapReached;
 use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter;
 use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitNotifier;
 use SubscriptionBundle\CAPTool\Visit\VisitNotifier;
+use SubscriptionBundle\Service\VisitCAPTool\ConstraintAvailabilityChecker;
 use SubscriptionBundle\CAPTool\Visit\VisitTracker;
 use SubscriptionBundle\Subscription\Subscribe\Service\SubscribeUrlResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -109,6 +110,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var \SubscriptionBundle\Subscription\Subscribe\Common\\SubscriptionBundle\Subscription\Subscribe\Service\SubscribeUrlResolver
      */
     private $subscribeUrlResolver;
+    /**
+     * @var ConstraintAvailabilityChecker
+     */
+    private $visitConstraintChecker;
 
     /**
      * LPController constructor.
@@ -128,7 +133,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param VisitNotifier                                                           $notifier
      * @param LoggerInterface                                                         $logger
      * @param CarrierSelector                                                         $carrierSelector
-     * @param \SubscriptionBundle\Subscription\Subscribe\Service\SubscribeUrlResolver $subscribeUrlResolver
+     * @param \SubscriptionBundle\Subscription\Subscribe\Service\SubscribeUrlResolver          $subscribeUrlResolver
+     * @param ConstraintAvailabilityChecker $visitConstraintChecker
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
@@ -146,7 +152,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         VisitNotifier $notifier,
         LoggerInterface $logger,
         CarrierSelector $carrierSelector,
-        SubscribeUrlResolver $subscribeUrlResolver
+        SubscribeUrlResolver $subscribeUrlResolver,
+        ConstraintAvailabilityChecker $visitConstraintChecker
     )
     {
         $this->contentStatisticSender        = $contentStatisticSender;
@@ -165,6 +172,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->logger                        = $logger;
         $this->carrierSelector               = $carrierSelector;
         $this->subscribeUrlResolver          = $subscribeUrlResolver;
+        $this->visitConstraintChecker        = $visitConstraintChecker;
     }
 
 
@@ -196,7 +204,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             // Useless method atm.
             AffiliateVisitSaver::saveCampaignId($cid, $session);
 
-            if($this->landingPageAccessResolver->isAffiliatePublisherBanned($request, $campaign)){
+            if ($this->landingPageAccessResolver->isAffiliatePublisherBanned($request, $campaign)) {
                 return new RedirectResponse($this->defaultRedirectUrl);
             }
 
@@ -231,7 +239,9 @@ class LPController extends AbstractController implements ControllerWithISPDetect
                 return RedirectResponse::create($this->defaultRedirectUrl);
             }
 
-            $this->visitTracker->trackVisit($carrier, $campaign, $session->getId());
+            if ($this->visitConstraintChecker->isCapEnabledForAffiliate($campaign->getAffiliate())) {
+                $this->visitTracker->trackVisit($carrier, $campaign, $session->getId());
+            }
             $this->logger->debug('Finish CAP checking');
         }
 
@@ -242,7 +252,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->contentStatisticSender->trackVisit($session);
 
         if ($carrier
-            && !(bool) $this->wifiIdentificationDataStorage->isWifiFlow()
+            && !(bool)$this->wifiIdentificationDataStorage->isWifiFlow()
             && $this->landingPageAccessResolver->isLandingDisabled($request)
         ) {
             return new RedirectResponse($this->subscribeUrlResolver->getSubscribeRoute($carrier));
