@@ -38,9 +38,11 @@ class VisitStorage
     public function storeVisit(string $key, string $visitInfo): void
     {
         //$timeout = $this->calculateSecondsUntilTomorrow();
-        $timeout = 0;
+        $timeout = 10;
 
-        $this->redis->set(sprintf('%s-%s', $key, $visitInfo), $visitInfo, $timeout);
+        $redisKey = sprintf('%s-%s', $key, $visitInfo);
+        $this->redis->set($redisKey, $visitInfo, $timeout);
+        $this->redis->persist($redisKey);
     }
 
     public function getVisitCount(string $key): int
