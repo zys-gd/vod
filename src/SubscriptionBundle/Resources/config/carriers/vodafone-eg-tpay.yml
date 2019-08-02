@@ -2,7 +2,7 @@ services:
     SubscriptionBundle\Carriers\VodafoneEGTpay\Subscribe\VodafoneEGSubscriptionHandler:
         arguments:
             - '@ExtrasBundle\Utils\LocalExtractor'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
             - '@router'
         tags:
             - { name: subscription.subscription_handler }

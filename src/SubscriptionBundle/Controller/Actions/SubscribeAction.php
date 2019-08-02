@@ -15,7 +15,7 @@ use IdentificationBundle\Identification\DTO\IdentificationData;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;

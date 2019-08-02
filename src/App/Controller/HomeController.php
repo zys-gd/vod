@@ -18,9 +18,7 @@ use IdentificationBundle\Controller\ControllerWithIdentification;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Service\AlreadySubscribedIdentFinisher;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\UserRepository;
-use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -155,11 +153,10 @@ class HomeController extends AbstractController implements
             $this->alreadySubscribedIdentFinisher->tryToIdentify($request);
         }
 
-        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
-        $campaignToken      = AffiliateVisitSaver::extractCampaignToken($request->getSession());
-        $this->contentStatisticSender->trackVisit($identificationData, $data, $campaignToken);
+        $this->contentStatisticSender->trackVisit($request->getSession());
 
         $template = $this->templateConfigurator->getTemplate('home', $data->getCarrierId());
+
         return $this->render($template, [
             'categoryVideos'  => array_slice($categoryVideos, 1, 3),
             'categories'      => $indexedCategoryData,

@@ -39,7 +39,7 @@ services:
 
     App\Domain\Service\Games\GameSerializer:
         arguments:
-          - '@App\Domain\Service\Games\ImagePathProvider'
+            - '@App\Domain\Service\Games\ImagePathProvider'
 
     App\Domain\Service\Games\ExcludedGamesProvider:
         arguments:
@@ -109,11 +109,13 @@ services:
             - '@SubscriptionBundle\Service\CAPTool\Limiter\SubscriptionCapChecker'
             - '@logger'
             - '@App\Domain\Repository\CampaignScheduleRepository'
+            - '@App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherChecker'
+
 
     App\Domain\Service\CarrierOTPVerifier:
         arguments:
             - '@App\Domain\Repository\CarrierRepository'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
 
     App\Domain\Service\VideoProcessing\UploadedVideoSerializer: ~
 
@@ -127,5 +129,16 @@ services:
     App\Domain\ACL\Accessors\SubscribeExternalAPICheck:
         arguments: ['@cross_subscription.api_connector']
 
+    App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherChecker:
+        arguments:
+            - '@App\Domain\Repository\AffiliateBannedPublisherRepository'
+
+    App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherCreator:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherRemover:
+        arguments:
+            - '@doctrine.orm.entity_manager'
 
     App\Domain\Service\Games\GameImageSizeProvider: ~

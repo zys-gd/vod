@@ -48,13 +48,15 @@ class OnUnsubscribeUpdater
     final public function updateSubscriptionByCallbackResponse(Subscription $subscription, ProcessResult $processResponse)
     {
 
-        if ($processResponse->isSuccessful()) {
+        $isSuccessful = !$processResponse->isFailed() && !$processResponse->getError();
+
+        if ($isSuccessful) {
             $this->applySuccess($subscription);
         }
 
         $this->commonSubscriptionUpdater->updateSubscriptionByCallbackResponse($subscription, $processResponse);
 
-        if ($processResponse->isFailed()) {
+        if (!$isSuccessful) {
             $subscription->setError($processResponse->getError());
             $this->applyFailure($subscription, $processResponse->getError());
         }
