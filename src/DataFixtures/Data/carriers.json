@@ -10004,6 +10004,7 @@
         "trialInitializer": "carrier",
         "trialPeriod": 0,
         "subscriptionPeriod": 3,
-        "isLpOff": false
+        "isLpOff": false,
+        "isConfirmationPopup": true
     }
 ]
