@@ -19,6 +19,11 @@
             warning        : $('<div />').html('{{ html2string(translate('wifi.warning')|nl2br) }}').text()
         };
 
+
+        if (window.performance && window.performance.navigation.type == window.performance.navigation.TYPE_BACK_FORWARD) {
+            location.reload()
+        }
+
         $('.x-subscribe-image').removeAttr('href').removeAttr('class');
 
         $(document).on('change', 'select[name="country"]', (e) =>
