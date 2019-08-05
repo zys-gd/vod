@@ -30,7 +30,7 @@
 
         // submit pin form
         $(document).on('submit', 'form[data-form=pin]', function (e) {
-            console.log(form.serialize())
+            let form = $('#wifi_form');
             e.preventDefault();
             if (!$('#terms-and-conditions-checkbox').is(':checked')) {
                 $('#terms-and-conditions').focus();
@@ -119,7 +119,12 @@
             }
         });
 
-        $(document).on('focusout focus', '#terms-and-conditions', function(e) {
+        $(document).on('focus', '#terms-and-conditions', function (e) {
+            e.preventDefault();
+            $(this).addClass('highlighting-item');
+        });
+
+        $(document).on('focusout', '#terms-and-conditions', function(e) {
             e.preventDefault();
             $(this).removeClass('highlighting-item');
         });
