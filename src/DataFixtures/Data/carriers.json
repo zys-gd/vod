@@ -10003,7 +10003,7 @@
         "operatorId": 0,
         "trialInitializer": "carrier",
         "trialPeriod": 0,
-        "subscriptionPeriod": 7,
+        "subscriptionPeriod": 3,
         "isLpOff": false
     }
 ]
