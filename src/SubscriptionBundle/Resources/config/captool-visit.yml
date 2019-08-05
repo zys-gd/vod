@@ -27,4 +27,4 @@ services:
       - { name: console.command }
 
 
-  SubscriptionBundle\Service\VisitCAPTool\ConstraintAvailabilityChecker: ~
+  SubscriptionBundle\CAPTool\Visit\ConstraintAvailabilityChecker: ~

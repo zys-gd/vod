@@ -6,7 +6,7 @@
  * Time: 14:19
  */
 
-namespace SubscriptionBundle\Service\VisitCAPTool;
+namespace SubscriptionBundle\CAPTool\Visit;
 
 
 use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;

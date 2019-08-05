@@ -67,7 +67,7 @@ services:
             - '@logger'
             - '@IdentificationBundle\Identification\Service\CarrierSelector'
             - '@SubscriptionBundle\Subscription\Subscribe\Service\SubscribeUrlResolver'
-            - '@SubscriptionBundle\Service\VisitCAPTool\ConstraintAvailabilityChecker'
+            - '@SubscriptionBundle\CAPTool\Visit\ConstraintAvailabilityChecker'
 
     App\Controller\ErrorController:
         arguments:

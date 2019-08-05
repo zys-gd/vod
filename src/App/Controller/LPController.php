@@ -28,7 +28,7 @@ use SubscriptionBundle\CAPTool\Subscription\Exception\VisitCapReached;
 use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter;
 use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitNotifier;
 use SubscriptionBundle\CAPTool\Visit\VisitNotifier;
-use SubscriptionBundle\Service\VisitCAPTool\ConstraintAvailabilityChecker;
+use SubscriptionBundle\CAPTool\Visit\ConstraintAvailabilityChecker;
 use SubscriptionBundle\CAPTool\Visit\VisitTracker;
 use SubscriptionBundle\Subscription\Subscribe\Service\SubscribeUrlResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
