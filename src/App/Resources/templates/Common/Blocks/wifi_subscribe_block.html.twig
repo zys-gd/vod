@@ -66,8 +66,8 @@
             });
 
             addValidationAttributes(carrierId);
-            compilePassthrough({{ isCarrierPassthrough() }});
         }
+        compilePassthrough({{ isCarrierPassthrough() }});
 
         $(document).on('change', 'select[name="country"]', function () {
             var carrierSelect = $('select[name="carrier_id"]');
