@@ -73,11 +73,13 @@ class UserInformationExtension extends AbstractExtension
         $identificationToken = IdentificationFlowDataExtractor::extractIdentificationToken($this->requestStack->getCurrentRequest()->getSession());
         $billingCarrierId    = IdentificationFlowDataExtractor::extractBillingCarrierId($this->requestStack->getCurrentRequest()->getSession());
 
-        $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
-        $handler = $this->handlerProvider->get($carrier);
-        if ($handler instanceof HasHeaderEnrichment) {
-            return $handler->getMsisdn($this->requestStack->getCurrentRequest());
-        }
+        try{
+            $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
+            $handler = $this->handlerProvider->get($carrier);
+            if ($handler instanceof HasHeaderEnrichment) {
+                return $handler->getMsisdn($this->requestStack->getCurrentRequest());
+            }
+        } catch (\Throwable $e) {}
 
         try {
             $identificationData = new IdentificationData($identificationToken);
