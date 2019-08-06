@@ -42,7 +42,7 @@
                         .addClass('x-subscribe-button')
                         .find('button').text('{{ translate('buttons.confirm') }}');
                 });
-            } else if(otpBtn.is('button')) {
+            } else if (otpBtn.is('button')) {
                 otpBtn.each((key, el) => {
                     $(el).removeClass('x-otp-button')
                         .addClass('x-subscribe-button')
@@ -63,17 +63,17 @@
             e.preventDefault();
 
             var cfg = {
-                title: '',
-                message: 'Hai 62xxxxxx, Anda akan berlangganan layanan 100% sport dengan tarif Rp. 2200/3 hari ',
-                okButton: 'Yes',
-                noButton: 'No',
+                title: '{{ translate('messages.subscription_popup.confirmation_title') }}',
+                message: '{{ translate('messages.subscription_popup.confirmation_text', ['%phone%' => 123]) }}',
+                okButton: '{{ translate('buttons.yes') }}',
+                noButton: '{{ translate('buttons.no') }}',
             };
 
             showConfirmPopup(cfg)
                 .then(function () {
                     $._loader(false);
 
-                    location = "{{ url('identify_and_subscribe') }}";
+                    location = "{{ url('subscription.subscribe') }}";
                 });
         });
 
