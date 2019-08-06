@@ -1,10 +1,10 @@
 <?php
 
-namespace LegacyBundle\Service;
+namespace SubscriptionBundle\Piwik\Service;
 
-use LegacyBundle\Repository\ExchangeRateRepository;
+use SubscriptionBundle\Repository\ExchangeRateRepository;
 
-class Exchanger
+class CurrencyConverter
 {
     /**
      * @var ExchangeRateRepository
@@ -16,7 +16,7 @@ class Exchanger
         $this->exchangeRateRepository = $exchangeRateRepository;
     }
 
-    public function convert($from, $sum)
+    public function convert(string $from, $sum)
     {
         if (!$from) {
             return false;

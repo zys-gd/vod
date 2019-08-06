@@ -1,7 +1,7 @@
-LegacyBundle\Entity\ExchangeRate:
+SubscriptionBundle\Entity\ExchangeRate:
     type: entity
     table: exchange_rates
-    repositoryClass: LegacyBundle\Repository\ExchangeRateRepository
+    repositoryClass: SubscriptionBundle\Repository\ExchangeRateRepository
 
     id:
         uuid:

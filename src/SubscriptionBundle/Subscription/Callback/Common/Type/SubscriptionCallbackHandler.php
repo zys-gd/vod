@@ -9,7 +9,7 @@
 namespace SubscriptionBundle\Subscription\Callback\Common\Type;
 
 
-use PiwikBundle\Service\PiwikTracker;
+use PiwikBundle\Service\EventPublisher;
 use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
@@ -66,7 +66,7 @@ class SubscriptionCallbackHandler extends AbstractCallbackHandler
 
     public function getPiwikEventName(): string
     {
-        return PiwikTracker::TRACK_SUBSCRIBE;
+        return EventPublisher::TRACK_SUBSCRIBE;
     }
 
 

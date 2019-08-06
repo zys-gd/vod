@@ -34,6 +34,7 @@ services:
             - '@SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventTracker'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking'
             - '@SubscriptionBundle\Subscription\Common\RouteProvider'
+            - '@SubscriptionBundle\Subscription\Subscribe\Common\AffiliateNotifier'
 
     SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEligibilityChecker: ~
 
@@ -81,10 +82,10 @@ services:
 
     SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventTracker:
         arguments:
-            - '@SubscriptionBundle\Affiliate\Service\AffiliateSender'
-            - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
-            - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
-            - '@session'
+            - '@SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventChecker'
+            - '@?'
+            - '@?'
+            - '@logger'
 
     SubscriptionBundle\Subscription\Subscribe\Consent\ConsentFlowHandler:
         arguments:
@@ -99,6 +100,7 @@ services:
             - '@ExtrasBundle\Utils\UrlParamAppender'
             - '@router.default'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\CommonResponseCreator'
+            - '@SubscriptionBundle\Subscription\Subscribe\Common\AffiliateNotifier'
 
     SubscriptionBundle\Subscription\Subscribe\Controller\SubscribeAction:
         tags: ['controller.service_arguments']
@@ -152,3 +154,8 @@ services:
 
     SubscriptionBundle\Subscription\Subscribe\Service\CreditsCalculator:
         arguments: ['@SubscriptionBundle\Subscription\Renew\Service\RenewDateCalculator']
+
+    SubscriptionBundle\Subscription\Subscribe\Common\AffiliateNotifier:
+      arguments: ['@SubscriptionBundle\Affiliate\Service\AffiliateSender', '@SubscriptionBundle\Affiliate\Service\UserInfoMapper']
+
+    SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventChecker: ~

@@ -82,6 +82,10 @@ class CommonFlowHandler
      * @var RouteProvider
      */
     private $routeProvider;
+    /**
+     * @var AffiliateNotifier
+     */
+    private $affiliateNotifier;
 
 
     /**
@@ -99,6 +103,7 @@ class CommonFlowHandler
      * @param SubscriptionEventTracker                                                         $subscriptionEventTracker
      * @param \SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
      * @param \SubscriptionBundle\Subscription\Common\RouteProvider                            $routeProvider
+     * @param AffiliateNotifier                                                                $affiliateNotifier
      */
     public function __construct(
         SubscriptionExtractor $subscriptionProvider,
@@ -112,7 +117,8 @@ class CommonFlowHandler
         EntitySaveHelper $entitySaveHelper,
         SubscriptionEventTracker $subscriptionEventTracker,
         ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking,
-        RouteProvider $routeProvider
+        RouteProvider $routeProvider,
+        AffiliateNotifier $affiliateNotifier
     )
     {
 
@@ -128,6 +134,7 @@ class CommonFlowHandler
         $this->subscriptionEventTracker       = $subscriptionEventTracker;
         $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
         $this->routeProvider                  = $routeProvider;
+        $this->affiliateNotifier              = $affiliateNotifier;
     }
 
 
@@ -213,7 +220,7 @@ class CommonFlowHandler
         }
 
         if ($isAffTracked) {
-            $this->subscriptionEventTracker->trackAffiliate($newSubscription);
+            $this->affiliateNotifier->notifyAffiliateAboutSubscription($newSubscription, $request->getSession());
         }
 
 
@@ -224,7 +231,7 @@ class CommonFlowHandler
         }
 
         if ($isPiwikTracked) {
-            $this->subscriptionEventTracker->trackPiwikForSubscribe($newSubscription, $result);
+            $this->subscriptionEventTracker->trackSubscribe($newSubscription, $result);
         }
 
         $subscriber->afterProcess($newSubscription, $result);
@@ -299,7 +306,7 @@ class CommonFlowHandler
             ]);
         }
         if ($isAffTracked) {
-            $this->subscriptionEventTracker->trackAffiliate($subscription);
+            $this->affiliateNotifier->notifyAffiliateAboutSubscription($subscription, $request->getSession());
         }
 
 
@@ -309,7 +316,7 @@ class CommonFlowHandler
             $isPiwikTracked = ($result->isFailedOrSuccessful() && $result->isFinal());;
         }
         if ($isPiwikTracked) {
-            $this->subscriptionEventTracker->trackPiwikForResubscribe($subscription, $result);
+            $this->subscriptionEventTracker->trackResubscribe($subscription, $result);
         }
 
 

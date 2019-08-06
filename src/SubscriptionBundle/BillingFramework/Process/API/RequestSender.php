@@ -41,7 +41,7 @@ class RequestSender
 
 
     /**
-     * RequestSender constructor.
+     * EventPublisher constructor.
      * @param EventDispatcherInterface   $eventDispatcher
      * @param Client                     $apiClient
      * @param LoggerInterface            $logger

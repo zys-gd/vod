@@ -25,6 +25,3 @@ services:
       - '@SubscriptionBundle\CAPTool\Visit\VisitStorage'
     tags:
       - { name: console.command }
-
-
-  SubscriptionBundle\CAPTool\Visit\ConstraintAvailabilityChecker: ~

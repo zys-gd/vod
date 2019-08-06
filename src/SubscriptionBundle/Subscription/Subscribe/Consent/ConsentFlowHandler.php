@@ -12,7 +12,8 @@ use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
-use SubscriptionBundle\Subscription\Subscribe\Common\{CommonResponseCreator,
+use SubscriptionBundle\Subscription\Subscribe\Common\{AffiliateNotifier,
+    CommonResponseCreator,
     SubscriptionEligibilityChecker,
     SubscriptionEventTracker};
 use SubscriptionBundle\Subscription\Subscribe\Handler\{HasCustomAffiliateTrackingRules,
@@ -85,6 +86,10 @@ class ConsentFlowHandler
      * @var CommonResponseCreator
      */
     private $commonResponseCreator;
+    /**
+     * @var AffiliateNotifier
+     */
+    private $affiliateNotifier;
 
     /**
      * ConsentFlowHandler constructor
@@ -100,6 +105,7 @@ class ConsentFlowHandler
      * @param UrlParamAppender               $urlParamAppender
      * @param RouterInterface                $router
      * @param CommonResponseCreator          $commonResponseCreator
+     * @param AffiliateNotifier              $affiliateNotifier
      */
     public function __construct(
         LoggerInterface $logger,
@@ -112,7 +118,8 @@ class ConsentFlowHandler
         SubscriptionEligibilityChecker $subscriptionEligibilityChecker,
         UrlParamAppender $urlParamAppender,
         RouterInterface $router,
-        CommonResponseCreator $commonResponseCreator
+        CommonResponseCreator $commonResponseCreator,
+        AffiliateNotifier $affiliateNotifier
     )
     {
         $this->logger                         = $logger;
@@ -126,6 +133,7 @@ class ConsentFlowHandler
         $this->urlParamAppender               = $urlParamAppender;
         $this->router                         = $router;
         $this->commonResponseCreator          = $commonResponseCreator;
+        $this->affiliateNotifier              = $affiliateNotifier;
     }
 
     /**
@@ -203,7 +211,7 @@ class ConsentFlowHandler
         }
 
         if ($isAffTracked) {
-            $this->subscriptionEventTracker->trackAffiliate($newSubscription);
+            $this->affiliateNotifier->notifyAffiliateAboutSubscription($newSubscription, $request->getSession());
         }
 
         if ($subscriber instanceof HasCustomPiwikTrackingRules) {
@@ -213,7 +221,7 @@ class ConsentFlowHandler
         }
 
         if ($isPiwikTracked) {
-            $this->subscriptionEventTracker->trackPiwikForSubscribe($newSubscription, $result);
+            $this->subscriptionEventTracker->trackSubscribe($newSubscription, $result);
         }
 
         $subscriber->afterProcess($newSubscription, $result);
@@ -276,7 +284,7 @@ class ConsentFlowHandler
         }
 
         if ($isAffTracked) {
-            $this->subscriptionEventTracker->trackAffiliate($subscription);
+            $this->affiliateNotifier->notifyAffiliateAboutSubscription($subscription, $request->getSession());
         }
 
         if ($subscriber instanceof HasCustomPiwikTrackingRules) {
@@ -286,7 +294,7 @@ class ConsentFlowHandler
         }
 
         if ($isPiwikTracked) {
-            $this->subscriptionEventTracker->trackPiwikForResubscribe($subscription, $result);
+            $this->subscriptionEventTracker->trackResubscribe($subscription, $result);
         }
 
         $subscriber->afterProcess($subscription, $result);

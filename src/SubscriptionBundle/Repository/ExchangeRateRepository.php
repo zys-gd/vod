@@ -1,6 +1,6 @@
 <?php
 
-namespace LegacyBundle\Repository;
+namespace SubscriptionBundle\Repository;
 
 /**
  * ExchangeRateRepository

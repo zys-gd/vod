@@ -1,7 +1,7 @@
 <?php
 
 
-namespace SubscriptionBundle\Piwik;
+namespace SubscriptionBundle\Piwik\Service;
 
 
 use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
@@ -9,7 +9,7 @@ use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking;
 
-class PiwikSubscriptionSignature
+class OrderNameProvider
 {
     /**
      * @var \SubscriptionBundle\Affiliate\Service\CampaignExtractor
@@ -21,7 +21,7 @@ class PiwikSubscriptionSignature
     private $creditSubscriptionChecking;
 
     /**
-     * PiwikSubscriptionSignature constructor.
+     * OrderNameProvider constructor.
      *
      * @param \SubscriptionBundle\Affiliate\Service\CampaignExtractor                          $campaignExtractor
      * @param \SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking $creditSubscriptionChecking
@@ -67,7 +67,7 @@ class PiwikSubscriptionSignature
      *
      * @return string
      */
-    private function getAdditionalMark(?int $chargePaid, SubscriptionPack $subscriptionPack, CampaignInterface $campaign = null)
+    private function getAdditionalMark(?int $chargePaid, SubscriptionPack $subscriptionPack, CampaignInterface $campaign = null): string
     {
         if ($subscriptionPack->isFirstSubscriptionPeriodIsFree()) {
             return '-freetrial';

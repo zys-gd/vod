@@ -9,7 +9,7 @@
 namespace SubscriptionBundle\Subscription\Callback\Common\Type;
 
 
-use PiwikBundle\Service\PiwikTracker;
+use PiwikBundle\Service\EventPublisher;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\RenewProcess;
 use SubscriptionBundle\Entity\Subscription;
@@ -52,7 +52,7 @@ class RenewCallbackHandler extends AbstractCallbackHandler
 
     public function getPiwikEventName(): string
     {
-        return PiwikTracker::TRACK_RENEW;
+        return EventPublisher::TRACK_RENEW;
     }
 
     public function afterProcess(Subscription $subscription, ProcessResult $response): void

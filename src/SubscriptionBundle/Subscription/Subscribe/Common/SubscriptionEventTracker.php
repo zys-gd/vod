@@ -9,73 +9,103 @@
 namespace SubscriptionBundle\Subscription\Subscribe\Common;
 
 
+use PiwikBundle\Service\EventPublisher;
+use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateSender;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
+use SubscriptionBundle\Piwik\DataMapper\ConversionEventMapper;
 use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SubscriptionEventTracker
 {
+
     /**
-     * @var AffiliateSender
+     * @var SubscriptionEventChecker
      */
-    private $affiliateSender;
+    private $trackPossibilityChecker;
     /**
-     * @var UserInfoMapper
+     * @var ConversionEventMapper
      */
-    private $infoMapper;
+    private $conversionEventMapper;
     /**
-     * @var SubscriptionStatisticSender
+     * @var EventPublisher
      */
-    private $subscriptionStatisticSender;
+    private $eventPublisher;
     /**
-     * @var SessionInterface
+     * @var LoggerInterface
      */
-    private $session;
+    private $logger;
 
 
     /**
      * SubscriptionEventTracker constructor.
-     * @param AffiliateSender             $affiliateSender
-     * @param UserInfoMapper              $infoMapper
-     * @param SubscriptionStatisticSender $sender
+     * @param SubscriptionEventChecker $trackPossibilityChecker
+     * @param ConversionEventMapper        $conversionEventMapper
+     * @param EventPublisher               $eventPublisher
+     * @param LoggerInterface              $logger
      */
-    public function __construct(AffiliateSender $affiliateSender, UserInfoMapper $infoMapper, SubscriptionStatisticSender $sender, SessionInterface $session)
+    public function __construct(
+        SubscriptionEventChecker $trackPossibilityChecker,
+        ConversionEventMapper $conversionEventMapper,
+        EventPublisher $eventPublisher,
+        LoggerInterface $logger
+    )
     {
-        $this->affiliateSender             = $affiliateSender;
-        $this->infoMapper                  = $infoMapper;
-        $this->subscriptionStatisticSender = $sender;
-        $this->session                     = $session;
+
+        $this->trackPossibilityChecker     = $trackPossibilityChecker;
+        $this->conversionEventMapper       = $conversionEventMapper;
+        $this->eventPublisher              = $eventPublisher;
+        $this->logger                      = $logger;
+    }
+    public function trackSubscribe(Subscription $subscription, ProcessResult $response): void
+    {
+        $this->logger->info('Trying to send subscribe event');
+        if (!$this->trackPossibilityChecker->isSubscribeNeedToBeTracked($response)) {
+            return;
+        }
+        try {
+            $conversionEvent = $this->conversionEventMapper->map(
+                'subscribe',
+                $response,
+                $subscription->getUser(),
+                $subscription
+            );
+            $result          = $this->eventPublisher->sendEcommerceEvent($conversionEvent);
+            $this->logger->info('Sending is finished', ['result' => $result]);
+        } catch (\Exception $ex) {
+            $this->logger->info('Exception on piwik sending', [
+                'msg'  => $ex->getMessage(),
+                'line' => $ex->getLine(),
+                'code' => $ex->getCode()
+            ]);
+        }
     }
 
-    public function trackAffiliate(Subscription $subscription): void
+    public function trackResubscribe(Subscription $subscription, ProcessResult $response): void
     {
-        $this->affiliateSender->checkAffiliateEligibilityAndSendEvent(
-            $subscription,
-            $this->infoMapper->mapFromUser($subscription->getUser()),
-            $subscription->getAffiliateToken(),
-            AffiliateVisitSaver::extractCampaignToken($this->session)
-        );
-    }
-
-    public function trackPiwikForSubscribe(Subscription $subscription, ProcessResult $response): void
-    {
-        $this->subscriptionStatisticSender->trackSubscribe(
-            $subscription->getUser(),
-            $subscription,
-            $response
-        );
-    }
-
-    public function trackPiwikForResubscribe(Subscription $subscription, ProcessResult $response): void
-    {
-        $this->subscriptionStatisticSender->trackResubscribe(
-            $subscription->getUser(),
-            $subscription,
-            $response
-        );
+        $this->logger->info('Trying to send resubscribe event');
+        if (!$this->trackPossibilityChecker->isSubscribeNeedToBeTracked($response)) {
+            return;
+        }
+        try {
+            $conversionEvent = $this->conversionEventMapper->map(
+                'resubscribe',
+                $response,
+                $subscription->getUser(),
+                $subscription
+            );
+            $result          = $this->eventPublisher->sendEcommerceEvent($conversionEvent);
+            $this->logger->info('Sending is finished', ['result' => $result]);
+        } catch (\Exception $ex) {
+            $this->logger->info('Exception on piwik sending', [
+                'msg'  => $ex->getMessage(),
+                'line' => $ex->getLine(),
+                'code' => $ex->getCode()
+            ]);
+        }
     }
 }

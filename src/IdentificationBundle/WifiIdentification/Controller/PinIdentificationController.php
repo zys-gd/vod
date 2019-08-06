@@ -14,6 +14,7 @@ use IdentificationBundle\WifiIdentification\WifiIdentSMSSender;
 use IdentificationBundle\WifiIdentification\WifiPhoneOptionsProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitNotifier;
+use SubscriptionBundle\Subscription\Common\RouteProvider;
 use SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter;
 use SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator;
 use SubscriptionBundle\CAPTool\Subscription\Exception\CapToolAccessException;
@@ -47,10 +48,6 @@ class PinIdentificationController extends AbstractController implements APIContr
      */
     private $limiter;
     /**
-     * @var string
-     */
-    private $defaultRedirectUrl;
-    /**
      * @var CarrierRepositoryInterface
      */
     private $carrierRepository;
@@ -70,6 +67,10 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @var WifiPhoneOptionsProvider
      */
     private $phoneOptionsProvider;
+    /**
+     * @var RouteProvider
+     */
+    private $routeProvider;
 
     /**
      * PinIdentificationController constructor
@@ -78,36 +79,36 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @param WifiIdentConfirmator                                              $identConfirmator
      * @param ErrorCodeResolver                                                 $errorCodeResolver
      * @param SubscriptionLimiter                                               $limiter
-     * @param string                                                            $defaultRedirectUrl
      * @param CarrierRepositoryInterface                                        $carrierRepository
      * @param SubscriptionLimitNotifier                                         $subscriptionLimitNotifier
      * @param \SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter $blacklistVoter
      * @param BlacklistAttemptRegistrator                                       $blacklistAttemptRegistrator
      * @param WifiPhoneOptionsProvider                                          $phoneOptionsProvider
+     * @param RouteProvider                                                     $routeProvider
      */
     public function __construct(
         WifiIdentSMSSender $identSMSSender,
         WifiIdentConfirmator $identConfirmator,
         ErrorCodeResolver $errorCodeResolver,
         SubscriptionLimiter $limiter,
-        string $defaultRedirectUrl,
         CarrierRepositoryInterface $carrierRepository,
         SubscriptionLimitNotifier $subscriptionLimitNotifier,
         BlacklistVoter $blacklistVoter,
         BlacklistAttemptRegistrator $blacklistAttemptRegistrator,
-        WifiPhoneOptionsProvider $phoneOptionsProvider
+        WifiPhoneOptionsProvider $phoneOptionsProvider,
+        RouteProvider $routeProvider
     )
     {
         $this->identSMSSender              = $identSMSSender;
         $this->identConfirmator            = $identConfirmator;
         $this->errorCodeResolver           = $errorCodeResolver;
         $this->limiter                     = $limiter;
-        $this->defaultRedirectUrl          = $defaultRedirectUrl;
         $this->carrierRepository           = $carrierRepository;
         $this->subscriptionLimitNotifier   = $subscriptionLimitNotifier;
         $this->blacklistVoter              = $blacklistVoter;
         $this->blacklistAttemptRegistrator = $blacklistAttemptRegistrator;
         $this->phoneOptionsProvider        = $phoneOptionsProvider;
+        $this->routeProvider               = $routeProvider;
     }
 
     /**
@@ -134,7 +135,7 @@ class PinIdentificationController extends AbstractController implements APIContr
             $this->limiter->ensureCapIsNotReached($request->getSession());
         } catch (CapToolAccessException $exception) {
             return $this->getSimpleJsonResponse('Subscription limit has been reached', 200, [], [
-                'success' => false, 'redirectUrl' => $this->defaultRedirectUrl
+                'success' => false, 'redirectUrl' => $this->routeProvider->getActionIsNotAllowedUrl()
             ]);
         }
 

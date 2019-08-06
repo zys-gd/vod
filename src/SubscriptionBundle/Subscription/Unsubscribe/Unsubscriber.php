@@ -9,8 +9,6 @@
 namespace SubscriptionBundle\Subscription\Unsubscribe;
 
 
-use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
-use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Notification\API\Exception\NotificationSendFailedException;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\Exception\UnsubscribingProcessException;
@@ -24,10 +22,6 @@ use SubscriptionBundle\Subscription\Notification\Notifier;
 
 class Unsubscriber
 {
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
     /**
      * @var EntitySaveHelper
      */
@@ -58,25 +52,28 @@ class Unsubscriber
      */
     private $parametersProvider;
     /**
-     * @var ApiConnector
+     * @var UnsubscribeEventChecker
      */
-    private $crossSubscriptionApi;
+    private $unsubscribeEventChecker;
+    /**
+     * @var UnsubscribeEventTracker
+     */
+    private $unsubscribeEventTracker;
 
 
     /**
      * Unsubscriber constructor.
-     * @param LoggerInterface                                             $logger
-     * @param EntitySaveHelper                                            $entitySaveHelper
-     * @param FakeResponseProvider                                        $fakeResponseProvider
-     * @param Notifier                                                    $notifier
-     * @param UnsubscribeProcess                                          $unsubscribeProcess
-     * @param OnUnsubscribeUpdater                                        $onUnsubscribeUpdater
-     * @param SubscriptionStatisticSender                                 $subscriptionStatisticSender
-     * @param UnsubscribeParametersProvider                               $parametersProvider
-     * @param \Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector $crossSubscriptionApi
+     * @param EntitySaveHelper              $entitySaveHelper
+     * @param FakeResponseProvider          $fakeResponseProvider
+     * @param Notifier                      $notifier
+     * @param UnsubscribeProcess            $unsubscribeProcess
+     * @param OnUnsubscribeUpdater          $onUnsubscribeUpdater
+     * @param SubscriptionStatisticSender   $subscriptionStatisticSender
+     * @param UnsubscribeParametersProvider $parametersProvider
+     * @param UnsubscribeEventChecker       $unsubscribeEventChecker
+     * @param UnsubscribeEventTracker       $unsubscribeEventTracker
      */
     public function __construct(
-        LoggerInterface $logger,
         EntitySaveHelper $entitySaveHelper,
         FakeResponseProvider $fakeResponseProvider,
         Notifier $notifier,
@@ -84,10 +81,10 @@ class Unsubscriber
         OnUnsubscribeUpdater $onUnsubscribeUpdater,
         SubscriptionStatisticSender $subscriptionStatisticSender,
         UnsubscribeParametersProvider $parametersProvider,
-        ApiConnector $crossSubscriptionApi
+        UnsubscribeEventChecker $unsubscribeEventChecker,
+        UnsubscribeEventTracker $unsubscribeEventTracker
     )
     {
-        $this->logger                      = $logger;
         $this->entitySaveHelper            = $entitySaveHelper;
         $this->fakeResponseProvider        = $fakeResponseProvider;
         $this->notifier                    = $notifier;
@@ -95,7 +92,8 @@ class Unsubscriber
         $this->onUnsubscribeUpdater        = $onUnsubscribeUpdater;
         $this->subscriptionStatisticSender = $subscriptionStatisticSender;
         $this->parametersProvider          = $parametersProvider;
-        $this->crossSubscriptionApi        = $crossSubscriptionApi;
+        $this->unsubscribeEventChecker     = $unsubscribeEventChecker;
+        $this->unsubscribeEventTracker     = $unsubscribeEventTracker;
     }
 
     public function unsubscribe(
@@ -161,9 +159,13 @@ class Unsubscriber
      * @param Subscription $subscription
      * @param              $response
      */
-    public function trackEventsForUnsubscribe(Subscription $subscription, ProcessResult $response)
+    public function trackEventsForUnsubscribe(Subscription $subscription, ProcessResult $response): void
     {
-        $this->subscriptionStatisticSender->trackUnsubscribe(
+        if (!$this->unsubscribeEventChecker->isNeedToBeTracked($response)) {
+            return;
+        }
+
+        $this->unsubscribeEventTracker->trackUnsubscribe(
             $subscription->getUser(),
             $subscription,
             $response

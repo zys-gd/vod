@@ -108,10 +108,10 @@ class Subscriber
      * @param OnSubscribeUpdater                                             $onSubscribeUpdater
      * @param SubscribeParametersProvider                                    $subscribeParametersProvider
      * @param SubscriptionLimitCompleter                                     $subscriptionLimitCompleter
-     * @param SubscriptionCounterUpdater                                     $subscriptionCounterUpdater
      * @param \SubscriptionBundle\Subscription\Common\SubscriptionSerializer $subscriptionSerializer
      * @param SubscribePerformer                                             $subscribePerformer
      * @param SubscribePromotionalPerformer                                  $subscribePromotionalPerformer
+     * @param ApiConnector                                                   $crossSubscriptionApi
      */
     public function __construct(
         LoggerInterface $logger,

@@ -1,47 +1,52 @@
 services:
 
-    SubscriptionBundle\Repository\SubscriptionPackRepository:
-        factory: ['@doctrine.orm.default_entity_manager', getRepository]
-        arguments:
-            - SubscriptionBundle\Entity\SubscriptionPack
+  SubscriptionBundle\Repository\ExchangeRateRepository:
+    factory: ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments:
+      - SubscriptionBundle\Entity\ExchangeRate
+      -
+  SubscriptionBundle\Repository\SubscriptionPackRepository:
+    factory: ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments:
+      - SubscriptionBundle\Entity\SubscriptionPack
 
-    SubscriptionBundle\Repository\SubscriptionRepository:
-        factory: ['@doctrine.orm.default_entity_manager', getRepository]
-        arguments:
-            - SubscriptionBundle\Entity\Subscription
+  SubscriptionBundle\Repository\SubscriptionRepository:
+    factory: ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments:
+      - SubscriptionBundle\Entity\Subscription
 
-    SubscriptionBundle\Repository\CronTaskRepository:
-        factory: ['@doctrine.orm.default_entity_manager', getRepository]
-        arguments:
-            - SubscriptionBundle\Entity\CronTask
+  SubscriptionBundle\Repository\CronTaskRepository:
+    factory: ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments:
+      - SubscriptionBundle\Entity\CronTask
 
-    SubscriptionBundle\Repository\CronRunningHistoryRepository:
-        factory: ['@doctrine.orm.default_entity_manager', getRepository]
-        arguments:
-            - SubscriptionBundle\Entity\CronRunningHistory
+  SubscriptionBundle\Repository\CronRunningHistoryRepository:
+    factory: ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments:
+      - SubscriptionBundle\Entity\CronRunningHistory
 
-    SubscriptionBundle\Repository\LogRepository:
-        factory: ['@doctrine.orm.default_entity_manager', getRepository]
-        arguments:
-            - SubscriptionBundle\Entity\Log
+  SubscriptionBundle\Repository\LogRepository:
+    factory: ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments:
+      - SubscriptionBundle\Entity\Log
 
-    SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository:
-        factory: ['@doctrine.orm.default_entity_manager', getRepository]
-        arguments:
-            - SubscriptionBundle\Entity\Affiliate\AffiliateLog
+  SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository:
+    factory: ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments:
+      - SubscriptionBundle\Entity\Affiliate\AffiliateLog
 
 
-    SubscriptionBundle\Repository\RefundRepository:
-        factory: ['@doctrine.orm.default_entity_manager', getRepository]
-        arguments:
-            - SubscriptionBundle\Entity\Refund
+  SubscriptionBundle\Repository\RefundRepository:
+    factory: ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments:
+      - SubscriptionBundle\Entity\Refund
 
-    SubscriptionBundle\Repository\BlackListRepository:
-        factory: ['@doctrine.orm.default_entity_manager', getRepository]
-        arguments:
-            - SubscriptionBundle\Entity\BlackList
+  SubscriptionBundle\Repository\BlackListRepository:
+    factory: ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments:
+      - SubscriptionBundle\Entity\BlackList
 
-    SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository:
-        factory: ['@doctrine.orm.default_entity_manager', getRepository]
-        arguments:
-            - SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate
+  SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository:
+    factory: ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments:
+      - SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate

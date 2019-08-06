@@ -1,11 +1,11 @@
 <?php
 
-namespace DataFixtures;
+namespace SubscriptionBundle\DataFixtures\ORM;
 
-use DataFixtures\Utils\FixtureDataLoader;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use LegacyBundle\Entity\ExchangeRate;
+use ExtrasBundle\Utils\FixtureDataLoader;
+use SubscriptionBundle\Entity\ExchangeRate;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
@@ -23,10 +23,10 @@ class LoadExchangeRatesData extends AbstractFixture implements ContainerAwareInt
      */
     public function load(ObjectManager $manager)
     {
-        $data = FixtureDataLoader::loadDataFromJSONFile('exchange_rates.json');
+        $data = FixtureDataLoader::loadDataFromJSONFile(__DIR__ . '/Data/', 'exchange_rates.json');
 
         foreach ($data as $row) {
-            $uuid = $row['uuid'];
+            $uuid          = $row['uuid'];
             $currency_code = $row['currencyCode'];
             $currency_name = $row['currencyName'];
             $exchange_rate = $row['exchangeRate'];

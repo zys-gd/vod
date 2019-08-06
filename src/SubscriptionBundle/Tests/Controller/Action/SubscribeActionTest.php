@@ -24,7 +24,7 @@ use SubscriptionBundle\BillingFramework\Process\API\RequestSender;
 use SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider;
 use SubscriptionBundle\Piwik\DataMapper\PiwikSubscriptionDataMapper;
 use SubscriptionBundle\Piwik\DataMapper\PiwikUnsubscriptionDataMapper;
-use SubscriptionBundle\Piwik\ProcessResultVerifier;
+use SubscriptionBundle\Piwik\Service\ProcessResultVerifier;
 use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use SubscriptionBundle\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
 use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter;

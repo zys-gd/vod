@@ -81,3 +81,8 @@ services:
     arguments: ['@doctrine.orm.entity_manager']
     tags:
       - { name: form.type }
+
+  SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeEventChecker: ~
+
+  SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeEventTracker:
+    arguments: ['@logger', '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeEventChecker', '@?', '@?']

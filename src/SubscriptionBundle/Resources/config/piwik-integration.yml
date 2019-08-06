@@ -1,4 +1,6 @@
 services:
+
+
     SubscriptionBundle\Piwik\SubscriptionStatisticSender:
         arguments:
             - '@logger'
@@ -7,19 +9,19 @@ services:
             - '@SubscriptionBundle\Piwik\DataMapper\PiwikSubscriptionDataMapper'
             - '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
             - '@SubscriptionBundle\Piwik\DataMapper\PiwikUnsubscriptionDataMapper'
-            - '@SubscriptionBundle\Piwik\ProcessResultVerifier'
+            - '@SubscriptionBundle\Piwik\Service\ProcessResultVerifier'
 
     SubscriptionBundle\Piwik\DataMapper\PiwikSubscriptionDataMapper:
         arguments:
             - '@LegacyBundle\Service\Exchanger'
             - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
-            - '@SubscriptionBundle\Piwik\PiwikSubscriptionSignature'
+            - '@SubscriptionBundle\Piwik\Service\PiwikSubscriptionSignature'
 
     SubscriptionBundle\Piwik\DataMapper\PiwikUnsubscriptionDataMapper:
         arguments:
             - '@LegacyBundle\Service\Exchanger'
             - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
-            - '@SubscriptionBundle\Piwik\PiwikSubscriptionSignature'
+            - '@SubscriptionBundle\Piwik\Service\PiwikSubscriptionSignature'
 
 
     SubscriptionBundle\Piwik\ProcessResultVerifier: ~

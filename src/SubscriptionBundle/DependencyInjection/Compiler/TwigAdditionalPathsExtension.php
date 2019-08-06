@@ -20,7 +20,12 @@ class TwigAdditionalPathsExtension implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $twigFilesystemLoaderDefinition = $container->getDefinition('twig.loader.filesystem');
+
+        if ($container->hasDefinition('twig.loader.filesystem')) {
+            $twigFilesystemLoaderDefinition = $container->getDefinition('twig.loader.filesystem');
+        } else {
+            $twigFilesystemLoaderDefinition = $container->getDefinition('twig.loader.native_filesystem');
+        }
 
         $path = realpath(__DIR__ . '/../../Resources/views/Admin');
 

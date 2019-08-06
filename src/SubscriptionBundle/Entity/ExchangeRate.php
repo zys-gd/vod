@@ -1,6 +1,6 @@
 <?php
 
-namespace LegacyBundle\Entity;
+namespace SubscriptionBundle\Entity;
 
 use CommonDataBundle\Entity\Interfaces\HasUuid;
 

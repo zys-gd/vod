@@ -5,8 +5,6 @@ services:
         tags:
             - { name: guzzle.client }
 
-
-
     SubscriptionBundle\Service\EntitySaveHelper:
         arguments: ['@doctrine.orm.entity_manager', '@logger']
 
