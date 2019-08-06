@@ -49,5 +49,10 @@ services:
             - '@App\Domain\Repository\CarrierRepository'
             - '@IdentificationBundle\Identification\Service\PassthroughChecker'
 
+    App\Twig\UserInformationExtension:
+        arguments:
+            - '@session'
+            - '@SubscriptionBundle\Service\UserExtractor'
+
     twig.extension.date:
         class: Twig_Extensions_Extension_Date

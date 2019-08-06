@@ -77,11 +77,6 @@ class IdentificationStatusExtension extends AbstractExtension
                 return $this->dataStorage->getIdentificationToken();
             }),
 
-            new TwigFunction('isClickableSubImage', function () {
-                // todo rework after task with landing page
-                return false;
-                //return (bool)$this->dataStorage->readValue('is_clickable_sub_image');
-            })
         ];
     }
 

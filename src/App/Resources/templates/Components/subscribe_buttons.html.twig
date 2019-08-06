@@ -64,7 +64,7 @@
 
             var cfg = {
                 title: '{{ translate('messages.subscription_popup.confirmation_title') }}',
-                message: '{{ translate('messages.subscription_popup.confirmation_text', ['%phone%' => 123]) }}',
+                message: '{{ translate('messages.subscription_popup.confirmation_text', {'%phone%': getUserIdentifier()}) }}',
                 okButton: '{{ translate('buttons.yes') }}',
                 noButton: '{{ translate('buttons.no') }}',
             };
