@@ -51,8 +51,10 @@ services:
 
     App\Twig\UserInformationExtension:
         arguments:
-            - '@session'
+            - '@request_stack'
             - '@SubscriptionBundle\Service\UserExtractor'
+            - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
+            - '@App\Domain\Repository\CarrierRepository'
 
     twig.extension.date:
         class: Twig_Extensions_Extension_Date
