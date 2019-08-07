@@ -1,3 +1,16 @@
+parameters:
+  twig.show_full_error_page: '%kernel.debug%'
+
+services:
+  twig.controller.exception:
+    class: Symfony\Bundle\TwigBundle\Controller\ExceptionController
+    public: true
+    arguments:
+      - '@twig'
+      - '%twig.show_full_error_page%'
+
+
+
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'

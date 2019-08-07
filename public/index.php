@@ -12,7 +12,7 @@ if (isset($_COOKIE['SNOOKER_IN_COLOMBO'])) {
 }
 
 
-if ($_SERVER['APP_DEBUG']) {
+if ($_SERVER['APP_DEBUG'] && ($_SERVER['APP_ENV'] !== 'stage')) {
     umask(0000);
 
     Debug::enable();
