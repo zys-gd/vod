@@ -23,7 +23,6 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -246,6 +245,10 @@ class CampaignAdmin extends AbstractAdmin
 
     /**
      * @param FormMapper $formMapper
+     *
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -315,7 +318,11 @@ class CampaignAdmin extends AbstractAdmin
     }
 
     /**
-     * @param FormMapper $formMapper
+     * @param FormMapper
+     *
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     private function buildLandingPageSection(FormMapper $formMapper)
     {
@@ -354,6 +361,10 @@ class CampaignAdmin extends AbstractAdmin
 
     /**
      * @return string
+     *
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     private function getImagePreviewHtml(): string
     {
@@ -372,6 +383,9 @@ class CampaignAdmin extends AbstractAdmin
         return '';
     }
 
+    /**
+     * @param RouteCollection $collection
+     */
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->add('clone', $this->getRouterIdParameter() . '/clone');
@@ -380,9 +394,35 @@ class CampaignAdmin extends AbstractAdmin
         parent::configureRoutes($collection);
     }
 
+    /**
+     * @param array $actions
+     *
+     * @return array
+     */
     protected function configureBatchActions($actions)
     {
         $actions['pause'] = [
+            'ask_confirmation' => false
+        ];
+
+        $actions['unpause'] = [
+            'ask_confirmation' => false,
+            'label' => 'Remove from pause'
+        ];
+
+        $actions['enableOneClick'] = [
+            'ask_confirmation' => false
+        ];
+
+        $actions['disableOneClick'] = [
+            'ask_confirmation' => false
+        ];
+
+        $actions['enableClickableImage'] = [
+            'ask_confirmation' => false
+        ];
+
+        $actions['disableClickableImage'] = [
             'ask_confirmation' => false
         ];
 
