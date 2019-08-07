@@ -6,3 +6,13 @@ services:
     SubscriptionBundle\Carriers\HutchID\Unsubscribe\HutchIDUnsubscribeHandler:
         tags:
             - { name: subscription.unsubscription_handler }
+
+    SubscriptionBundle\Carriers\HutchID\Callback\HutchIDCallbackSubscribe:
+        tags:
+            - {name: subscription.callback_carrier_handler, type: subscribe}
+        arguments:
+            - '@SubscriptionBundle\Service\Callback\Common\CommonFlowHandler'
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@SubscriptionBundle\Service\SubscriptionCreator'
+            - '@SubscriptionBundle\Repository\SubscriptionRepository'
+            - '@SubscriptionBundle\Repository\SubscriptionPackRepository'
