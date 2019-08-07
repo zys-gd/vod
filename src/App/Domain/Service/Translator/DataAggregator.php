@@ -68,6 +68,7 @@ class DataAggregator
      * @param int $billingCarrierId
      *
      * @return array
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function getGlobalParameters(int $billingCarrierId): array
     {
@@ -80,6 +81,7 @@ class DataAggregator
             '%price%'       => $subscriptionPack->getTierPrice(),
             '%currency%'    => $subscriptionPack->getFinalCurrency(),
             '%credits%'     => $subscriptionPack->getCredits(),
+            '%duration%'    => $subscriptionPack->getFinalPeriodForSubscription(),
             '%period%'      => $this
                 ->translator
                 ->translate('period.' . $subscriptionPack->convertPeriod2Text(), $billingCarrierId, $languageCode),
@@ -94,7 +96,8 @@ class DataAggregator
 
         if ($this->arrayCacheService->hasCache($key)) {
             $carrier = $this->arrayCacheService->getValue($key);
-        } else {
+        }
+        else {
             $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);;
             $this->arrayCacheService->saveCache($key, $carrier, 96000);
         }
@@ -107,7 +110,8 @@ class DataAggregator
 
         if ($this->arrayCacheService->hasCache($key)) {
             $pack = $this->arrayCacheService->getValue($key);
-        } else {
+        }
+        else {
             $pack = $this->subscriptionPackProvider->getActiveSubscriptionPackFromCarrier($carrier);;
             $this->arrayCacheService->saveCache($key, $pack, 96000);
         }
