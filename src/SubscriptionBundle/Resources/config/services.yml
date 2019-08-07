@@ -128,6 +128,8 @@ services:
         arguments:
             - '@SubscriptionBundle\Service\CampaignExtractor'
 
+    SubscriptionBundle\Service\Action\Common\ProcessResultSuccessChecker: ~
+
     SubscriptionBundle\Service\LPDataExtractor:
         arguments:
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
