@@ -81,6 +81,7 @@ services:
             - '@IdentificationBundle\Repository\UserRepository'
             - '@IdentificationBundle\Identification\Service\IdentificationStatus'
             - '@IdentificationBundle\Identification\Common\PostPaidHandler'
+            - '@logger'
 
     IdentificationBundle\Identification\Service\RouteProvider:
         arguments:
