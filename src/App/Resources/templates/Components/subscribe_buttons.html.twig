@@ -73,7 +73,7 @@
                 .then(function () {
                     $._loader(false);
 
-                    location = "{{ url('subscription.subscribe') }}";
+                    location = "{% if isIdentified() %}{{ url('subscription.subscribe') }}{% else %}{{ url('identify_and_subscribe') }}{% endif %}";
                 });
         });
 
