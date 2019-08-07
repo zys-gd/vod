@@ -5,95 +5,139 @@ namespace SubscriptionBundle\Piwik\DTO;
 
 class UserInformation
 {
+
     /**
-     * @var string|null
-     */
-    private $msisdn;
-    /**
-     * billingCarrierId
-     * @var string|null
-     */
-    private $operator;
-    /**
-     * @var string|null
-     */
-    private $affiliate;
-    /**
-     * @var string|null
+     * @var string
      */
     private $country;
     /**
-     * @var string|null
+     * @var string
      */
     private $ip;
-
     /**
-     * @var string|null
+     * @var string
      */
     private $connection;
+    /**
+     * @var string
+     */
+    private $msisdn;
+    /**
+     * @var int
+     */
+    private $operator;
+    /**
+     * @var int
+     */
+    private $provider;
+    /**
+     * @var int
+     */
+    private $deviceHeight;
+    /**
+     * @var int
+     */
+    private $deviceWidth;
+    /**
+     * @var string
+     */
+    private $affiliate;
 
     public function __construct(
-        string $country = null,
-        string $ip = null,
-        string $connection = null,
-        string $msisdn = null,
-        string $operator = null,
+        string $country,
+        string $ip,
+        string $connection,
+        string $msisdn,
+        int $operator,
+        int $provider,
+        int $deviceHeight,
+        int $deviceWidth,
         string $affiliate = null
     )
     {
-        $this->msisdn     = $msisdn;
-        $this->operator   = $operator;
-        $this->affiliate  = $affiliate;
-        $this->country    = $country;
-        $this->ip         = $ip;
-        $this->connection = $connection;
+        $this->country      = $country;
+        $this->ip           = $ip;
+        $this->connection   = $connection;
+        $this->msisdn       = $msisdn;
+        $this->operator     = $operator;
+        $this->provider     = $provider;
+        $this->deviceHeight = $deviceHeight;
+        $this->deviceWidth  = $deviceWidth;
+        $this->affiliate    = $affiliate;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getCountry(): ?string
+    public function getCountry(): string
     {
         return $this->country;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getIp(): ?string
+    public function getIp(): string
     {
         return $this->ip;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getMsisdn(): ?string
+    public function getConnection(): string
+    {
+        return $this->connection;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMsisdn(): string
     {
         return $this->msisdn;
     }
 
     /**
-     * @return string|null
+     * @return int
      */
-    public function getOperator(): ?string
+    public function getOperator(): int
     {
         return $this->operator;
     }
 
     /**
-     * @return string|null
+     * @return int
+     */
+    public function getProvider(): int
+    {
+        return $this->provider;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDeviceHeight(): int
+    {
+        return $this->deviceHeight;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDeviceWidth(): int
+    {
+        return $this->deviceWidth;
+    }
+
+    /**
+     * @return string
      */
     public function getAffiliate(): ?string
     {
         return $this->affiliate;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getConnection(): ?string
-    {
-        return $this->connection;
-    }
+
+
 }

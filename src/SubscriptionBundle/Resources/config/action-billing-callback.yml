@@ -14,13 +14,12 @@ services:
         - '@SubscriptionBundle\Subscription\Callback\Common\CallbackTypeHandlerProvider'
         - '@SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper'
         - '@SubscriptionBundle\Repository\SubscriptionRepository'
-        - '@IdentificationBundle\Repository\UserRepository'
-        - '@event_dispatcher'
         - '@SubscriptionBundle\Service\EntitySaveHelper'
         - '@SubscriptionBundle\Affiliate\Service\AffiliateSender'
-        - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
         - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
         - '@SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerProvider'
+        - '@SubscriptionBundle\Piwik\DataMapper\ConversionEventMapper'
+        - '@SubscriptionBundle\Piwik\EventPublisher'
 
       public: false
 

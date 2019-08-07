@@ -2,15 +2,14 @@ services:
 
   SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber:
     arguments:
-      - '@logger'
       - '@SubscriptionBundle\Service\EntitySaveHelper'
       - '@SubscriptionBundle\Subscription\Common\FakeResponseProvider'
       - '@SubscriptionBundle\Subscription\Notification\Notifier'
       - '@SubscriptionBundle\BillingFramework\Process\UnsubscribeProcess'
       - '@SubscriptionBundle\Subscription\Unsubscribe\OnUnsubscribeUpdater'
-      - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
       - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeParametersProvider'
-      - '@cross_subscription.api_connector'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeEventChecker'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeEventTracker'
 
   SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider:
     arguments: ['@SubscriptionBundle\Subscription\Unsubscribe\Handler\DefaultHandler']
@@ -85,4 +84,8 @@ services:
   SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeEventChecker: ~
 
   SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeEventTracker:
-    arguments: ['@logger', '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeEventChecker', '@?', '@?']
+    arguments:
+      - '@logger'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeEventChecker'
+      - '@SubscriptionBundle\Piwik\DataMapper\ConversionEventMapper'
+      - '@SubscriptionBundle\Piwik\EventPublisher'

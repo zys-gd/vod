@@ -35,3 +35,13 @@ subscription:
     notification:
       mail_to:   '%cap_notification_mail_to%'
       mail_from: '%cap_notification_mail_from%'
+
+  event_tracking:
+    rabbit_mq:
+      host: '%rabbit_mq_host%'
+      port: '%rabbit_mq_port%'
+      user: '%rabbit_mq_user%'
+      password: '%rabbit_mq_password%'
+      vhost: '%rabbit_mq_vhost%'
+      exchange_name: 'piwik-vod'
+      queue_name: 'piwik-events-vod'

@@ -1,11 +1,13 @@
 <?php
 
 
-namespace PiwikBundle\Service\DTO;
+namespace SubscriptionBundle\Piwik\DTO;
 
 
 class OrderInformation
 {
+
+
     /**
      * @var string
      */
@@ -13,22 +15,28 @@ class OrderInformation
     /**
      * @var string
      */
-    private $orderValue;
+    private $price;
     /**
      * @var string
      */
-    private $prodSku;
+    private $alias;
     /**
      * @var string
      */
-    private $prodCat;
+    private $action;
+    /**
+     * @var string
+     */
+    private $currency;
 
-    public function __construct(string $orderId, string $orderValue, string $prodSku, string $prodCat)
+    public function __construct(string $orderId, string $price, string $alias, string $action, string $currency)
     {
-        $this->orderId    = $orderId;
-        $this->orderValue = $orderValue;
-        $this->prodSku    = $prodSku;
-        $this->prodCat    = $prodCat;
+
+        $this->orderId  = $orderId;
+        $this->price    = $price;
+        $this->alias    = $alias;
+        $this->action   = $action;
+        $this->currency = $currency;
     }
 
     /**
@@ -42,25 +50,34 @@ class OrderInformation
     /**
      * @return string
      */
-    public function getOrderValue(): string
+    public function getPrice(): string
     {
-        return $this->orderValue;
+        return $this->price;
     }
 
     /**
      * @return string
      */
-    public function getProdSku(): string
+    public function getAlias(): string
     {
-        return $this->prodSku;
+        return $this->alias;
     }
 
     /**
      * @return string
      */
-    public function getProdCat(): string
+    public function getAction(): string
     {
-        return $this->prodCat;
+        return $this->action;
     }
+
+    /**
+     * @return string
+     */
+    public function getCurrency(): string
+    {
+        return $this->currency;
+    }
+
 
 }

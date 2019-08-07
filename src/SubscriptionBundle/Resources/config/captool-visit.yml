@@ -4,6 +4,8 @@ services:
 
   SubscriptionBundle\CAPTool\Visit\ConstraintValidityChecker: ~
 
+  SubscriptionBundle\CAPTool\Visit\ConstraintAvailabilityChecker: ~
+
   SubscriptionBundle\CAPTool\Visit\VisitChecker:
     arguments: ['@SubscriptionBundle\CAPTool\Visit\VisitStorage', '@SubscriptionBundle\CAPTool\Visit\KeyGenerator']
 

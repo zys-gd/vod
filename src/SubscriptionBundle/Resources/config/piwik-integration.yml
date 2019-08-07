@@ -1,32 +1,46 @@
 services:
 
+    SubscriptionBundle\Piwik\Service\CurrencyConverter:
+        arguments: ['@SubscriptionBundle\Repository\ExchangeRateRepository']
 
-    SubscriptionBundle\Piwik\SubscriptionStatisticSender:
+    SubscriptionBundle\Piwik\EventPublisher:
         arguments:
-            - '@logger'
-            - '@PiwikBundle\Service\PiwikTracker'
-            - '@PiwikBundle\Service\PiwikDataMapper'
-            - '@SubscriptionBundle\Piwik\DataMapper\PiwikSubscriptionDataMapper'
-            - '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
-            - '@SubscriptionBundle\Piwik\DataMapper\PiwikUnsubscriptionDataMapper'
-            - '@SubscriptionBundle\Piwik\Service\ProcessResultVerifier'
+            - '@SubscriptionBundle\Piwik\Senders\RabbitMQ'
+            - '@SubscriptionBundle\Piwik\Formatter\LegacyPiwikFormatter'
 
-    SubscriptionBundle\Piwik\DataMapper\PiwikSubscriptionDataMapper:
+    SubscriptionBundle\Piwik\Service\AdditionalDataProvider: ~
+
+    SubscriptionBundle\Piwik\Service\AffiliateStringProvider:
+        arguments: ['@SubscriptionBundle\Affiliate\Service\CampaignExtractor']
+
+    SubscriptionBundle\Piwik\Service\OrderNameProvider:
+        arguments: ['@SubscriptionBundle\Affiliate\Service\CampaignExtractor', '@SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking']
+
+    SubscriptionBundle\Piwik\Senders\RabbitMQ:
         arguments:
-            - '@LegacyBundle\Service\Exchanger'
+            - '_rabbitmq_host_placeholder_'
+            - '_rabbitmq_port_placeholder_'
+            - '_rabbitmq_user_placeholder_'
+            - '_rabbitmq_password_placeholder_'
+            - '_rabbitmq_vhost_placeholder_'
+            - '_rabbitmq_exchange_name_placeholder_'
+            - '_rabbitmq_queue_name_placeholder_'
+
+    SubscriptionBundle\Piwik\Formatter\LegacyPiwikFormatter: ~
+
+    SubscriptionBundle\Piwik\DataMapper\ConversionEventMapper:
+        arguments:
+            - '@SubscriptionBundle\Piwik\DataMapper\UserInformationMapper'
+            - '@SubscriptionBundle\Piwik\Service\AdditionalDataProvider'
+            - '@SubscriptionBundle\Piwik\Service\AffiliateStringProvider'
+            - '@SubscriptionBundle\Piwik\DataMapper\OrderInformationMapper'
+
+    SubscriptionBundle\Piwik\DataMapper\OrderInformationMapper:
+        arguments:
             - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
-            - '@SubscriptionBundle\Piwik\Service\PiwikSubscriptionSignature'
+            - '@SubscriptionBundle\Piwik\Service\OrderNameProvider'
+            - '@SubscriptionBundle\Piwik\Service\CurrencyConverter'
 
-    SubscriptionBundle\Piwik\DataMapper\PiwikUnsubscriptionDataMapper:
+    SubscriptionBundle\Piwik\DataMapper\UserInformationMapper:
         arguments:
-            - '@LegacyBundle\Service\Exchanger'
-            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
-            - '@SubscriptionBundle\Piwik\Service\PiwikSubscriptionSignature'
-
-
-    SubscriptionBundle\Piwik\ProcessResultVerifier: ~
-
-    SubscriptionBundle\Piwik\PiwikSubscriptionSignature:
-        arguments:
-            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
-            - '@SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking'
+            - '@SubscriptionBundle\Piwik\Service\AffiliateStringProvider'

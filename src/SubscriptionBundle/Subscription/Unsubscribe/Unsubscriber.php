@@ -15,7 +15,6 @@ use SubscriptionBundle\BillingFramework\Process\Exception\UnsubscribingProcessEx
 use SubscriptionBundle\BillingFramework\Process\UnsubscribeProcess;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
-use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Subscription\Common\FakeResponseProvider;
 use SubscriptionBundle\Subscription\Notification\Notifier;
@@ -44,10 +43,6 @@ class Unsubscriber
     private $onUnsubscribeUpdater;
 
     /**
-     * @var SubscriptionStatisticSender
-     */
-    private $subscriptionStatisticSender;
-    /**
      * @var UnsubscribeParametersProvider
      */
     private $parametersProvider;
@@ -61,6 +56,7 @@ class Unsubscriber
     private $unsubscribeEventTracker;
 
 
+
     /**
      * Unsubscriber constructor.
      * @param EntitySaveHelper              $entitySaveHelper
@@ -68,7 +64,6 @@ class Unsubscriber
      * @param Notifier                      $notifier
      * @param UnsubscribeProcess            $unsubscribeProcess
      * @param OnUnsubscribeUpdater          $onUnsubscribeUpdater
-     * @param SubscriptionStatisticSender   $subscriptionStatisticSender
      * @param UnsubscribeParametersProvider $parametersProvider
      * @param UnsubscribeEventChecker       $unsubscribeEventChecker
      * @param UnsubscribeEventTracker       $unsubscribeEventTracker
@@ -79,7 +74,6 @@ class Unsubscriber
         Notifier $notifier,
         UnsubscribeProcess $unsubscribeProcess,
         OnUnsubscribeUpdater $onUnsubscribeUpdater,
-        SubscriptionStatisticSender $subscriptionStatisticSender,
         UnsubscribeParametersProvider $parametersProvider,
         UnsubscribeEventChecker $unsubscribeEventChecker,
         UnsubscribeEventTracker $unsubscribeEventTracker
@@ -90,12 +84,10 @@ class Unsubscriber
         $this->notifier                    = $notifier;
         $this->unsubscribeProcess          = $unsubscribeProcess;
         $this->onUnsubscribeUpdater        = $onUnsubscribeUpdater;
-        $this->subscriptionStatisticSender = $subscriptionStatisticSender;
         $this->parametersProvider          = $parametersProvider;
         $this->unsubscribeEventChecker     = $unsubscribeEventChecker;
         $this->unsubscribeEventTracker     = $unsubscribeEventTracker;
     }
-
     public function unsubscribe(
         Subscription $subscription,
         SubscriptionPack $subscriptionPack,

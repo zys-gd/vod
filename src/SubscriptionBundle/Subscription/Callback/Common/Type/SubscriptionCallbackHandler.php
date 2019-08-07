@@ -66,7 +66,7 @@ class SubscriptionCallbackHandler extends AbstractCallbackHandler
 
     public function getPiwikEventName(): string
     {
-        return EventPublisher::TRACK_SUBSCRIBE;
+        return 'trackSubscribe';
     }
 
 

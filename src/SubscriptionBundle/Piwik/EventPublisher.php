@@ -1,77 +1,50 @@
 <?php
 
-namespace PiwikBundle\Service;
+namespace SubscriptionBundle\Piwik;
 
-use PiwikBundle\Api\ClientAbstract;
-use PiwikBundle\Service\DTO\OrderInformation;
+use ExtrasBundle\Utils\TimestampGenerator;
 use SubscriptionBundle\Piwik\DTO\ConversionEvent;
-use SubscriptionBundle\Piwik\DTO\UserInformation;
+use SubscriptionBundle\Piwik\Formatter\FormatterInterface;
+use SubscriptionBundle\Piwik\Senders\RabbitMQ;
+use SubscriptionBundle\Piwik\Senders\SenderInterface;
 
 
 class EventPublisher
 {
-    const TRACK_SUBSCRIBE = 'trackSubscribe';
-    const TRACK_RESUBSCRIBE = 'trackResubscribe';
-    const TRACK_UNSUBSCRIBE = 'trackUnsubscribe';
-
     /**
-     * @var ClientAbstract
+     * @var RabbitMQ
      */
-    private $piwikClient;
+    private $sender;
+    /**
+     * @var FormatterInterface
+     */
+    private $formatter;
 
     /**
      * EventPublisher constructor.
      *
-     * @param ClientAbstract $piwikClient
+     * @param SenderInterface    $sender
+     * @param FormatterInterface $formatter
      */
-    public function __construct(ClientAbstract $piwikClient)
+    public function __construct(SenderInterface $sender, FormatterInterface $formatter)
     {
-        $this->piwikClient = $piwikClient;
+        $this->sender    = $sender;
+        $this->formatter = $formatter;
     }
 
 
     /**
-     * @param OrderInformation $orderInformation
-     *
+     * @param ConversionEvent $conversionEvent
      * @return bool
-     * @throws \Exception
      */
-    public function sendEcommerceEvent(ConversionEvent $conversionEvent)
+    public function publish(ConversionEvent $conversionEvent): bool
     {
-
-        $legacyPiwikVariables = [
-            'idsite'     => 1,
-            'rec'        => 1,
-            'apiv'       => 1,
-            'r'          => 443213,
-            'cip'        => '127.0.0.1',
-            'uid'        => '76703109',
-            'token_auth' => 'blah',
-            '_idts'      => 1,
-            '_idvc'      => 1
-        ];
-
-        $ecommerceVariables = ['ec_items' => [
-            $orderInformation->getProdSku(),
-            $orderInformation->getProdSku(),
-            $orderInformation->getProdCat(),
-            $orderInformation->getOrderValue(),
-            1
-        ]];
-
-
-        $this->piwikClient->addEcommerceItem(
-            $orderInformation->getProdSku(),
-            $orderInformation->getProdSku(),
-            $orderInformation->getProdCat(),
-            $orderInformation->getOrderValue(),
-            1
+        $data   = $this->formatter->prepareFormattedData($conversionEvent);
+        $result = $this->sender->sendEvent(
+            $data,
+            TimestampGenerator::generateMicrotime()
         );
 
-        $ret = (bool)$this->piwikClient->doTrackEcommerceOrder(
-            $orderInformation->getOrderId(),
-            $orderInformation->getOrderValue()
-        );
-        return $ret;
+        return $result;
     }
 }

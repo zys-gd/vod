@@ -9,7 +9,8 @@ use SubscriptionBundle\Affiliate\Service\AffiliateSender;
 use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
 use SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
+use SubscriptionBundle\Piwik\DataMapper\ConversionEventMapper;
+use SubscriptionBundle\Piwik\EventPublisher;
 use SubscriptionBundle\Repository\SubscriptionRepository;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Subscription\Callback\Common\Type\RenewCallbackHandler;
@@ -46,15 +47,6 @@ class CommonFlowHandler
      */
     private $subscriptionRepository;
 
-    /**
-     * @var UserRepository
-     */
-    private $UserRepository;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
 
     /**
      * @var EntitySaveHelper
@@ -64,12 +56,8 @@ class CommonFlowHandler
     /**
      * @var AffiliateSender
      */
-    private $affiliateService;
+    private $affiliateSender;
 
-    /**
-     * @var SubscriptionStatisticSender
-     */
-    private $subscriptionStatisticSender;
 
     /**
      * @var UserInfoMapper
@@ -80,6 +68,15 @@ class CommonFlowHandler
      * @var CarrierCallbackHandlerProvider
      */
     private $carrierCallbackHandlerProvider;
+    /**
+     * @var ConversionEventMapper
+     */
+    private $conversionEventMapper;
+    /**
+     * @var EventPublisher
+     */
+    private $conversionEventPublisher;
+
 
     /**
      * MainHandler constructor.
@@ -87,41 +84,37 @@ class CommonFlowHandler
      * @param CallbackTypeHandlerProvider    $callbackTypeHandlerProvider
      * @param ProcessResponseMapper          $billingFrameworkProcessResponseMapper
      * @param SubscriptionRepository         $subscriptionRepository
-     * @param UserRepository                 $UserRepository
-     * @param EventDispatcherInterface       $eventDispatcher
      * @param EntitySaveHelper               $entitySaveHelper
      * @param AffiliateSender                $affiliateService
-     * @param SubscriptionStatisticSender    $subscriptionStatisticSender
      * @param UserInfoMapper                 $infoMapper
      * @param CarrierCallbackHandlerProvider $carrierCallbackHandlerProvider
+     * @param ConversionEventMapper          $conversionEventMapper
+     * @param EventPublisher                 $conversionEventPublisher
      */
     public function __construct(
         LoggerInterface $logger,
         CallbackTypeHandlerProvider $callbackTypeHandlerProvider,
         ProcessResponseMapper $billingFrameworkProcessResponseMapper,
         SubscriptionRepository $subscriptionRepository,
-        UserRepository $UserRepository,
-        EventDispatcherInterface $eventDispatcher,
         EntitySaveHelper $entitySaveHelper,
         AffiliateSender $affiliateService,
-        SubscriptionStatisticSender $subscriptionStatisticSender,
         UserInfoMapper $infoMapper,
-        CarrierCallbackHandlerProvider $carrierCallbackHandlerProvider
+        CarrierCallbackHandlerProvider $carrierCallbackHandlerProvider,
+        ConversionEventMapper $conversionEventMapper,
+        EventPublisher $conversionEventPublisher
     )
     {
         $this->logger                         = $logger;
         $this->callbackTypeHandlerProvider    = $callbackTypeHandlerProvider;
         $this->processResponseMapper          = $billingFrameworkProcessResponseMapper;
         $this->subscriptionRepository         = $subscriptionRepository;
-        $this->UserRepository                 = $UserRepository;
-        $this->eventDispatcher                = $eventDispatcher;
         $this->entitySaveHelper               = $entitySaveHelper;
-        $this->affiliateService               = $affiliateService;
-        $this->subscriptionStatisticSender    = $subscriptionStatisticSender;
+        $this->affiliateSender                = $affiliateService;
         $this->infoMapper                     = $infoMapper;
         $this->carrierCallbackHandlerProvider = $carrierCallbackHandlerProvider;
+        $this->conversionEventMapper          = $conversionEventMapper;
+        $this->conversionEventPublisher       = $conversionEventPublisher;
     }
-
 
     public function process(Request $request, string $carrierId, string $type)
     {
@@ -194,14 +187,15 @@ class CommonFlowHandler
         if ($isNeedToBeTracked) {
             $userInfo = $this->infoMapper->mapFromUser($subscription->getUser());
             if ($type === 'subscribe') {
-                $this->affiliateService->checkAffiliateEligibilityAndSendEvent($subscription, $userInfo);
+                $this->affiliateSender->checkAffiliateEligibilityAndSendEvent($subscription, $userInfo);
             }
-            $this->subscriptionStatisticSender->send(
+            $event = $this->conversionEventMapper->map(
                 $callbackTypeHandler->getPiwikEventName(),
+                $processResponse,
                 $subscription->getUser(),
-                $subscription,
-                $processResponse
+                $subscription
             );
+            $this->conversionEventPublisher->publish($event);
         } else {
             $carrier = $subscription->getUser()->getCarrier();
             $this->logger->info('Event should be already tracked. Ignoring', [

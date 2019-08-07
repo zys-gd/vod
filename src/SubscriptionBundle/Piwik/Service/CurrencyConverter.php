@@ -16,7 +16,7 @@ class CurrencyConverter
         $this->exchangeRateRepository = $exchangeRateRepository;
     }
 
-    public function convert(string $from, $sum)
+    public function convert(string $from, $sum): float
     {
         if (!$from) {
             return false;

@@ -50,6 +50,26 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+
+            ->end();
+
+        $rootNode
+            ->children()
+                ->arrayNode('event_tracking')
+                    ->children()
+                        ->arrayNode('rabbit_mq')
+                            ->children()
+                                ->scalarNode('host')->isRequired()->end()
+                                ->scalarNode('port')->isRequired()->end()
+                                ->scalarNode('user')->isRequired()->end()
+                                ->scalarNode('password')->isRequired()->end()
+                                ->scalarNode('vhost')->isRequired()->end()
+                                ->scalarNode('exchange_name')->isRequired()->end()
+                                ->scalarNode('queue_name')->isRequired()->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

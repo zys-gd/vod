@@ -9,16 +9,11 @@
 namespace SubscriptionBundle\Subscription\Subscribe\Common;
 
 
-use PiwikBundle\Service\EventPublisher;
 use Psr\Log\LoggerInterface;
-use SubscriptionBundle\Affiliate\Service\AffiliateSender;
-use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
-use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Piwik\DataMapper\ConversionEventMapper;
-use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use SubscriptionBundle\Piwik\EventPublisher;
 
 class SubscriptionEventTracker
 {
@@ -74,7 +69,7 @@ class SubscriptionEventTracker
                 $subscription->getUser(),
                 $subscription
             );
-            $result          = $this->eventPublisher->sendEcommerceEvent($conversionEvent);
+            $result          = $this->eventPublisher->publish($conversionEvent);
             $this->logger->info('Sending is finished', ['result' => $result]);
         } catch (\Exception $ex) {
             $this->logger->info('Exception on piwik sending', [
@@ -98,7 +93,7 @@ class SubscriptionEventTracker
                 $subscription->getUser(),
                 $subscription
             );
-            $result          = $this->eventPublisher->sendEcommerceEvent($conversionEvent);
+            $result          = $this->eventPublisher->publish($conversionEvent);
             $this->logger->info('Sending is finished', ['result' => $result]);
         } catch (\Exception $ex) {
             $this->logger->info('Exception on piwik sending', [

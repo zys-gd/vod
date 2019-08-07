@@ -10,11 +10,11 @@ namespace SubscriptionBundle\Subscription\Unsubscribe;
 
 
 use IdentificationBundle\Entity\User;
-use PiwikBundle\Service\EventPublisher;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Piwik\DataMapper\ConversionEventMapper;
+use SubscriptionBundle\Piwik\EventPublisher;
 
 class UnsubscribeEventTracker
 {
@@ -74,7 +74,7 @@ class UnsubscribeEventTracker
                 $user,
                 $subscription
             );
-            $result          = $this->eventPublisher->sendEcommerceEvent($conversionEvent);
+            $result          = $this->eventPublisher->publish($conversionEvent);
             $this->logger->info('Sending is finished', ['result' => $result]);
         } catch (\Exception $ex) {
             $this->logger->info('Exception on piwik sending', [

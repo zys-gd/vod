@@ -9,9 +9,9 @@
 namespace SubscriptionBundle\Piwik\DataMapper;
 
 
-use PiwikBundle\Service\DTO\OrderInformation;
 use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 use SubscriptionBundle\Entity\Subscription;
+use SubscriptionBundle\Piwik\DTO\OrderInformation;
 use SubscriptionBundle\Piwik\Service\CurrencyConverter;
 use SubscriptionBundle\Piwik\Service\OrderNameProvider;
 
@@ -48,6 +48,14 @@ class OrderInformationMapper
         $this->converter         = $converter;
     }
 
+    /**
+     * @param int|null     $responseId
+     * @param int|null     $chargePaid
+     * @param bool         $resultStatus
+     * @param Subscription $subscription
+     * @param string       $action
+     * @return OrderInformation
+     */
     public function map(
         ?int $responseId,
         ?int $chargePaid,
@@ -84,7 +92,8 @@ class OrderInformationMapper
             $orderId,
             $eurPrice,
             $name . '-' . $subscriptionPackId,
-            $action
+            $action,
+            $subscriptionPack->getTierCurrency()
         );
     }
 

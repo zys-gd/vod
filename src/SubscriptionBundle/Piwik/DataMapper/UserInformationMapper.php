@@ -10,19 +10,43 @@ namespace SubscriptionBundle\Piwik\DataMapper;
 
 
 use IdentificationBundle\Entity\User;
+use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
+use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Piwik\DTO\UserInformation;
+use SubscriptionBundle\Piwik\Service\AffiliateStringProvider;
 
 class UserInformationMapper
 {
+    /**
+     * @var AffiliateStringProvider
+     */
+    private $affiliateStringProvider;
 
-    public function mapUserInformation(User $user, string $connectionType, string $affiliateString): UserInformation
+
+    /**
+     * UserInformationMapper constructor.
+     * @param AffiliateStringProvider $affiliateStringProvider
+     */
+    public function __construct(AffiliateStringProvider $affiliateStringProvider)
     {
+        $this->affiliateStringProvider = $affiliateStringProvider;
+    }
+
+    public function mapUserInformation(User $user, Subscription $subscription, int $providerId): UserInformation
+    {
+        $affiliateString = $this->affiliateStringProvider->getAffiliateString($subscription);
+
         return new UserInformation(
             $user->getCountry(),
             $user->getIp(),
-            $connectionType,
+            // Kinda risky, because im not sure if we always have userConnection type.
+            // We can use $this->maxMindIpInfo->getConnectionType() instead but what about renews etc?
+            $user->getConnectionType(),
             $user->getIdentifier(),
-            $user->getBillingCarrierId(),
+            (int)$user->getBillingCarrierId(),
+            $providerId,
+            0,
+            0,
             $affiliateString
         );
     }

@@ -9,8 +9,6 @@
 namespace SubscriptionBundle\Piwik\DTO;
 
 
-use PiwikBundle\Service\DTO\OrderInformation;
-
 class ConversionEvent
 {
     /**
@@ -20,23 +18,17 @@ class ConversionEvent
     /**
      * @var OrderInformation
      */
-    private $information;
-    /**
-     * @var array
-     */
-    private $additionalData;
+    private $orderInformation;
 
     /**
      * ConversionEvent constructor.
      * @param UserInformation  $userInformation
-     * @param OrderInformation $information
-     * @param array            $additionalData
+     * @param OrderInformation $orderInformation
      */
-    public function __construct(UserInformation $userInformation, OrderInformation $information, array $additionalData)
+    public function __construct(UserInformation $userInformation, OrderInformation $orderInformation)
     {
-        $this->userInformation = $userInformation;
-        $this->information     = $information;
-        $this->additionalData  = $additionalData;
+        $this->userInformation  = $userInformation;
+        $this->orderInformation = $orderInformation;
     }
 
     /**
@@ -50,17 +42,9 @@ class ConversionEvent
     /**
      * @return OrderInformation
      */
-    public function getInformation(): OrderInformation
+    public function getOrderInformation(): OrderInformation
     {
-        return $this->information;
-    }
-
-    /**
-     * @return array
-     */
-    public function getAdditionalData(): array
-    {
-        return $this->additionalData;
+        return $this->orderInformation;
     }
 
 

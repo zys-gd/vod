@@ -22,10 +22,7 @@ use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\BillingFramework\Notification\API\RequestSender as NotificationService;
 use SubscriptionBundle\BillingFramework\Process\API\RequestSender;
 use SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider;
-use SubscriptionBundle\Piwik\DataMapper\PiwikSubscriptionDataMapper;
-use SubscriptionBundle\Piwik\DataMapper\PiwikUnsubscriptionDataMapper;
-use SubscriptionBundle\Piwik\Service\ProcessResultVerifier;
-use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
+
 use SubscriptionBundle\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
 use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter;
 use SubscriptionBundle\Subscription\Subscribe\Voter\BatchSubscriptionVoter;

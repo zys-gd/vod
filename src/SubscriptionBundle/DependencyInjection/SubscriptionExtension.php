@@ -86,5 +86,14 @@ class SubscriptionExtension extends ConfigurableExtension
         DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['resub_not_allowed_route'], '_resub_not_allowed_route_placeholder_');
         DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['action_not_allowed_url'], '_action_not_allowed_url_placeholder_');
         DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['callback_host'], '_callback_host_placeholder_');
+
+        $definition = $container->getDefinition('SubscriptionBundle\Piwik\Senders\RabbitMQ');
+        DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['event_tracking']['rabbit_mq']['host'], '_rabbitmq_host_placeholder_');
+        DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['event_tracking']['rabbit_mq']['port'], '_rabbitmq_port_placeholder_');
+        DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['event_tracking']['rabbit_mq']['user'], '_rabbitmq_user_placeholder_');
+        DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['event_tracking']['rabbit_mq']['password'], '_rabbitmq_password_placeholder_');
+        DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['event_tracking']['rabbit_mq']['vhost'], '_rabbitmq_vhost_placeholder_');
+        DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['event_tracking']['rabbit_mq']['exchange_name'], '_rabbitmq_exchange_name_placeholder_');
+        DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['event_tracking']['rabbit_mq']['queue_name'], '_rabbitmq_queue_name_placeholder_');
     }
 }
