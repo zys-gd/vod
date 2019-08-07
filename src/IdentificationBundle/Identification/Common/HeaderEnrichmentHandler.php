@@ -91,11 +91,11 @@ class HeaderEnrichmentHandler
         string $token,
         DeviceData $deviceData): void
     {
+        $this->logger->debug('headers', [$request->headers->all()]);
+
         if (!$msisdn = $handler->getMsisdn($request)) {
             throw new FailedIdentificationException('Cannot retrieve msisdn');
         }
-
-        $this->logger->debug('headers', [$request->headers->all()]);
 
         $user = $this->userRepository->findOneByMsisdn($msisdn);
         if (!$user) {
