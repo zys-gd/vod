@@ -119,8 +119,6 @@ class VODKernel extends BaseKernel
             $versionHash = file_get_contents($dest);
             $container->setParameter('app_version_hash', $versionHash);
         }
-
-
     }
 
     protected function build(ContainerBuilder $container): void

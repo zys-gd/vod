@@ -1,0 +1,4 @@
+parameters:
+  twig.show_full_error_page: false
+twig:
+  debug: false
