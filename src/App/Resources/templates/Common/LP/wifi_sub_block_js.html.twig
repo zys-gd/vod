@@ -35,7 +35,10 @@
 
         // submit pin form
         $(document).on('submit', 'form[data-form=pin]', function (e) {
-            let form = $('#wifi_form');
+            form = $('#wifi_form');
+            $wifi_form_step = $('#wifi_form_step');
+            $wifi_warning   = $('.wifi_form__warning');
+
             e.preventDefault();
             if (!$('#terms-and-conditions-checkbox').is(':checked')) {
                 $('#terms-and-conditions').focus();
@@ -144,6 +147,10 @@
             if(response.data.isResend) {
                 showAlert({title: 'New PIN-code', message: 'has been successfully sent'});
             }
+
+            input_phone = $('input[name=mobile_number]');
+            phone = input_phone.val();
+
             $wifi_warning.html(params.pin_notif.replace(/%wifi_phone%/, phone));
             $wifi_form_step
                 .html(params.html_wifi_pin)
@@ -174,21 +181,21 @@
                         _limitExceededFlow();
                         break;
                 }
-            }
+            };
 
             let _redirectFlow = () => {
                 window.location = this._response.responseJSON.data.redirectUrl;
-            }
+            };
             let _validationFlow = () => {
                 showAlert({title: this._response.responseJSON.data.message});
-            }
+            };
             let _defaultFlow = () => {
                 showAlert({title: this._response.responseJSON.data.message});
-            }
+            };
             let _limitExceededFlow = () => {
                 form.attr('data-form', 'confirm');
                 _defaultFlow();
-            }
+            };
 
         }
 
