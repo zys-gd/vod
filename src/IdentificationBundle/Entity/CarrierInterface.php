@@ -85,6 +85,13 @@ interface CarrierInterface
      */
     public function getResubAllowed(): bool;
 
+    /**
+     * @return mixed
+     */
     public function getSubscribeAttempts();
 
+    /**
+     * @return mixed
+     */
+    public function getDefaultLanguage();
 }
