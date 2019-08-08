@@ -14,7 +14,6 @@ if (isset($_COOKIE['SNOOKER_IN_COLOMBO'])) {
 
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);
-
     Debug::enable();
 }
 
