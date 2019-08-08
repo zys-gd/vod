@@ -16,3 +16,10 @@ services:
             - '@SubscriptionBundle\Service\SubscriptionCreator'
             - '@SubscriptionBundle\Repository\SubscriptionRepository'
             - '@SubscriptionBundle\Repository\SubscriptionPackRepository'
+
+    SubscriptionBundle\Carriers\HutchID\Notification\HutchIDNotificationHandler:
+        arguments:
+            - '@App\Domain\Repository\LanguageRepository'
+        tags:
+            - { name: subscription.notification_handler, type: subscribe }
+            - { name: subscription.notification_handler, type: unsubscribe }
