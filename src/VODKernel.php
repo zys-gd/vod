@@ -49,8 +49,11 @@ class VODKernel extends BaseKernel
         $loader->load($confDir . '/{services}' . self::CONFIG_EXTS, 'glob');
         $loader->load($confDir . '/{services}_' . $this->environment . self::CONFIG_EXTS, 'glob');
 
-        if ($this->environment === 'stage') {
+        if (in_array($this->environment, ['stage', 'stage_debug'])) {
             $loader->load($confDir . '/{packages}/prod/**/*' . self::CONFIG_EXTS, 'glob');
+        }
+        if (in_array($this->environment, ['ci_dev'])) {
+            $loader->load($confDir . '/{packages}/dev/**/*' . self::CONFIG_EXTS, 'glob');
         }
 
         $appConfDir = $this->getProjectDir() . '/src/App/Resources/config/';
