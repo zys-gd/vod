@@ -43,7 +43,7 @@ class VisitStorage
             $date = date('Ymd');
         }
 
-        $this->redis->pfAdd(sprintf('%s-%s', $key, $date), [$visitInfo]);
+        $this->redis->pfAdd(sprintf('visit-%s-%s', $key, $date), [$visitInfo]);
     }
 
     public function getVisitCount(string $key, \DateTimeInterface $dateTime = null): int
@@ -54,7 +54,7 @@ class VisitStorage
             $date = date('Ymd');
         }
 
-        $count = $this->redis->pfCount(sprintf('%s-%s', $key, $date));
+        $count = $this->redis->pfCount(sprintf('visit-%s-%s', $key, $date));
 
         return $count;
     }
