@@ -7,7 +7,7 @@
 {# IMPORT SECTIONS #}
 {% import LPImporter("LP/Sections/play_text_section.html.twig") as play_text_section %}
 {% import LPImporter("LP/Sections/banner_section.html.twig") as banner_section %}
-{% import LPImporter("LP/Sections/3G/sub_btn_section.html.twig") as sub_btn_section %}
+{% import LPImporter("LP/Sections/3G/subscribe_button_section.html.twig") as subscribe_button_section %}
 {% import LPImporter("LP/Sections/offer_section.html.twig") as offer_section %}
 {% import LPImporter("LP/Sections/icons_chanel_section.html.twig") as icons_chanel_section %}
 {% import LPImporter("LP/Sections/lure_text_section.html.twig") as lure_text_section %}
@@ -30,7 +30,7 @@
         <!-- END PLAY TEXT SECTION-->
 
         <!-- SUBSCRIBE BUTTON SECTION -->
-        {{ sub_btn_section.render('buttons.subscribe', 'btn-lp_big', 'lp-sub-btn lp-sub-btn-top') }}
+        {{ subscribe_button_section.render('buttons.subscribe', 'btn-lp_big', 'lp-sub-btn lp-sub-btn-top') }}
         <!-- END SUBSCRIBE BUTTON SECTION -->
 
         <!-- BANNER SECTION WITH SUB IMAGE -->
@@ -38,7 +38,7 @@
         <!-- END BANNER SECTION WITH SUB IMAGE -->
 
         <!-- SUBSCRIBE BUTTON SECTION -->
-        {{ sub_btn_section.render('buttons.subscribe', 'btn-lp_big', 'lp-sub-btn lp-sub-btn-bottom') }}
+        {{ subscribe_button_section.render('buttons.subscribe', 'btn-lp_big', 'lp-sub-btn lp-sub-btn-bottom') }}
         <!-- END SUBSCRIBE BUTTON SECTION -->
 
         <!-- OFFER SECTION -->
