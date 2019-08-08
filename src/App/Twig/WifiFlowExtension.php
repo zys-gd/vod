@@ -20,7 +20,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use SubscriptionBundle\Repository\SubscriptionPackRepository;
-use SubscriptionBundle\Service\LPDataExtractor;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -56,10 +55,6 @@ class WifiFlowExtension extends AbstractExtension
      */
     private $localExtractor;
     /**
-     * @var LPDataExtractor
-     */
-    private $LPDataExtractor;
-    /**
      * @var SessionInterface
      */
     private $session;
@@ -74,7 +69,6 @@ class WifiFlowExtension extends AbstractExtension
      * @param ShortcodeReplacer          $shortcodeReplacer
      * @param DataAggregator             $dataAggregator
      * @param LocalExtractor             $localExtractor
-     * @param LPDataExtractor            $LPDataExtractor
      * @param SessionInterface           $session
      */
     public function __construct(
@@ -85,7 +79,6 @@ class WifiFlowExtension extends AbstractExtension
         ShortcodeReplacer $shortcodeReplacer,
         DataAggregator $dataAggregator,
         LocalExtractor $localExtractor,
-        LPDataExtractor $LPDataExtractor,
         SessionInterface $session
     )
     {
@@ -96,7 +89,6 @@ class WifiFlowExtension extends AbstractExtension
         $this->shortcodeReplacer = $shortcodeReplacer;
         $this->dataAggregator = $dataAggregator;
         $this->localExtractor = $localExtractor;
-        $this->LPDataExtractor = $LPDataExtractor;
         $this->session = $session;
     }
 
@@ -113,10 +105,13 @@ class WifiFlowExtension extends AbstractExtension
 
     public function getCountries()
     {
-        $activeCarrierCountries = $this->LPDataExtractor->getActiveCarrierCountries()->map(function(Country $country) {
+        $activeCarrierCountries = new ArrayCollection($this->countryRepository->findEnabledCarriersCountryCodes());
 
+        /** @var Country $country */
+        $activeCarrierCountries = $activeCarrierCountries->map(function ($country) {
             return ['code' => $country->getCountryCode(), 'name' => $country->getCountryName()];
         })->toArray();
+
         return $activeCarrierCountries;
     }
 

@@ -2,6 +2,9 @@
 
 namespace App\Domain\Repository;
 
+use App\Domain\Entity\Carrier;
+use App\Domain\Entity\Country;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -15,9 +18,10 @@ class CountryRepository extends EntityRepository
     public function findEnabledCarriersCountryCodes(): array
     {
         $qb = $this->createQueryBuilder('v');
-        $qb->where($qb->expr()->eq('v.published', true))
-            ->select('v.countryCode');
+        $qb->innerJoin(Carrier::class, 'c','WITH', 'c.countryCode = v.countryCode AND c.published = true')
+            ->select('v')
+            ->groupBy('c.countryCode');
 
-        return $qb->getQuery()->getResult('COLUMN_HYDRATOR');
+        return $qb->getQuery()->getResult(AbstractQuery::HYDRATE_OBJECT);
     }
 }

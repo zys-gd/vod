@@ -130,11 +130,6 @@ services:
 
     SubscriptionBundle\Service\Action\Common\ProcessResultSuccessChecker: ~
 
-    SubscriptionBundle\Service\LPDataExtractor:
-        arguments:
-            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
-            - '@App\Domain\Repository\CountryRepository'
-
 
 parameters:
     subscription.subscription.class: SubscriptionBundle\Entity\SubscriptionPack

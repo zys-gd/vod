@@ -50,7 +50,6 @@ services:
             - '@App\Domain\Service\Translator\ShortcodeReplacer'
             - '@App\Domain\Service\Translator\DataAggregator'
             - '@ExtrasBundle\Utils\LocalExtractor'
-            - '@SubscriptionBundle\Service\LPDataExtractor'
             - '@session'
         tags:
             - { name: twig.extension }

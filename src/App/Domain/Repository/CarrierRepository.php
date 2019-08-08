@@ -27,18 +27,6 @@ class CarrierRepository extends \Doctrine\ORM\EntityRepository implements Carrie
 
 
     /**
-     * @return array
-     */
-    public function findEnabledCarriersCountryCodes(): array
-    {
-        $qb = $this->createQueryBuilder('v');
-        $qb->where($qb->expr()->eq('v.published', true))
-            ->select('v.countryCode');
-
-        return $qb->getQuery()->getResult('COLUMN_HYDRATOR');
-    }
-
-    /**
      * @param int $billingCarrierId
      *
      * @return CarrierInterface|null
