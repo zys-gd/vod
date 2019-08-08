@@ -19,7 +19,7 @@
             {{ button.renderSubmitButton(translate('buttons.subscribe'), 'x-send-pin-button') }}
         </div>
         <div class="">
-            <span id="wifi_offer">{% if isCarrierDetected() %} {{ getCarrierOffer() }} {% endif %}</span>
+            <span id="wifi_offer">{% if isCarrierDetected() %} {{ translate('wifi.offer') }} {% endif %}</span>
         </div>
     </form>
 

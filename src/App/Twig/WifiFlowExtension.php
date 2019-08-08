@@ -18,13 +18,9 @@ use App\Domain\Service\Translator\ShortcodeReplacer;
 use App\Domain\Service\Translator\Translator;
 use Doctrine\Common\Collections\ArrayCollection;
 use ExtrasBundle\Utils\LocalExtractor;
-use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
-use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Repository\SubscriptionPackRepository;
 use SubscriptionBundle\Service\LPDataExtractor;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -110,71 +106,9 @@ class WifiFlowExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('getCountryCarrierList', [$this, 'getCountryCarrierList']),
             new TwigFunction('getCountries', [$this, 'getCountries']),
             new TwigFunction('getCarrierCountry', [$this, 'getCarrierCountry']),
-            new TwigFunction('getCarrierOffer', [$this, 'getCarrierOffer'])
         ];
-    }
-
-    /**
-     * @TODO Remove this method
-     * @return array
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     */
-    public function getCountryCarrierList()
-    {
-        $carrierInterfaces = $this->carrierRepository->findEnabledCarriers();
-
-        /** @var SubscriptionPack[] $subpacks */
-        $subpacks = $this->subscriptionPackRepository->findAll();
-
-        $subpackCarriers = [];
-        foreach ($subpacks as $subpack) {
-            $subpackCarriers[] = $subpack->getCarrier()->getBillingCarrierId();
-        }
-
-        $carrierInterfaces = array_filter($carrierInterfaces, function (CarrierInterface $carrier) use ($subpackCarriers
-        ) {
-            return in_array($carrier->getBillingCarrierId(), $subpackCarriers);
-        });
-
-
-        $countriesCarriers = [];
-        /** @var Carrier $carrier */
-        foreach ($carrierInterfaces as $carrier) {
-            $wifi_offer = $this->translator->translate(
-                'wifi.offer',
-                $carrier->getBillingCarrierId(),
-                $this->localExtractor->getLocal());
-            $wifi_button = $this->translator->translate(
-                'wifi.button',
-                $carrier->getBillingCarrierId(),
-                $this->localExtractor->getLocal());
-
-            $carrierData = [
-                'uuid' => $carrier->getUuid(),
-                'billingCarrierId' => $carrier->getBillingCarrierId(),
-                'name' => $carrier->getName(),
-                'wifi_offer' => $this->shortcodeReplacer->do(
-                    $this->dataAggregator->getGlobalParameters($carrier->getBillingCarrierId()),
-                    $wifi_offer
-                ),
-                'wifi_button' => $this->shortcodeReplacer->do(
-                    $this->dataAggregator->getGlobalParameters($carrier->getBillingCarrierId()),
-                    $wifi_button
-                ),
-            ];
-            $countriesCarriers[$carrier->getCountryCode()][$carrier->getBillingCarrierId()] = $carrierData;
-        }
-        $countries = $this->countryRepository->findBy(['countryCode' => array_keys($countriesCarriers)]);
-        /** @var Country $country */
-        foreach ($countries as $country) {
-            $countriesCarriers[$country->getCountryName()] = json_encode($countriesCarriers[$country->getCountryCode()]);
-            unset($countriesCarriers[$country->getCountryCode()]);
-        }
-
-        return $countriesCarriers;
     }
 
     public function getCountries()
@@ -209,26 +143,5 @@ class WifiFlowExtension extends AbstractExtension
         })->toArray();
 
         return ['code' => $country->getCountryCode(), 'name' => $country->getCountryName(), 'countryCarriers' => $resultCountryCarriersMapper];
-    }
-
-    public function getCarrierOffer()
-    {
-        $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
-
-        if(!$billingCarrierId) {
-            return;
-        }
-
-        $wifi_offer = $this->translator->translate(
-            'wifi.offer',
-            $billingCarrierId,
-            $this->localExtractor->getLocal()
-        );
-        $wifi_offer = $this->shortcodeReplacer->do(
-            $this->dataAggregator->getGlobalParameters($billingCarrierId),
-            $wifi_offer
-        );
-
-        return $wifi_offer;
     }
 }
