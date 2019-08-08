@@ -48,7 +48,7 @@ try {
         $exception->getLine()
     );
 
-    if ($_SERVER['APP_DEBUG'] || $_SERVER['APP_ENV'] === 'ci_dev') {
+    if ($_SERVER['APP_DEBUG'] || (in_array($_SERVER['APP_ENV'], ['ci_dev', 'stage']))) {
         http_response_code(500);
         echo $exception->getMessage();
         error_log($log);
