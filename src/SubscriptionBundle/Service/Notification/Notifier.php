@@ -1,16 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Администратор
- * Date: 28.10.2018
- * Time: 16:46
- */
 
 namespace SubscriptionBundle\Service\Notification;
 
-
 use IdentificationBundle\Entity\CarrierInterface;
-use IdentificationBundle\Repository\LanguageRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Notification\API\DTO\SMSRequest;
 use SubscriptionBundle\BillingFramework\Notification\API\RequestSender;
@@ -20,10 +12,12 @@ use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Service\Notification\Common\DefaultSMSVariablesProvider;
 use SubscriptionBundle\Service\Notification\Common\MessageCompiler;
 use SubscriptionBundle\Service\Notification\Common\ProcessIdExtractor;
-use SubscriptionBundle\Service\Notification\Common\ShortUrlHashGenerator;
 use SubscriptionBundle\Service\Notification\Common\SMSTextProvider;
 use SubscriptionBundle\Service\Notification\Impl\NotificationHandlerProvider;
 
+/**
+ * Class Notifier
+ */
 class Notifier
 {
     /**
@@ -38,7 +32,6 @@ class Notifier
      * @var LoggerInterface
      */
     private $logger;
-
     /**
      * @var ProcessIdExtractor
      */
@@ -47,11 +40,6 @@ class Notifier
      * @var NotificationHandlerProvider
      */
     private $notificationHandlerProvider;
-    /**
-     * @var ShortUrlHashGenerator
-     */
-    private $shortUrlHashGenerator;
-
     /**
      * @var DefaultSMSVariablesProvider
      */
@@ -68,10 +56,8 @@ class Notifier
      * @param LoggerInterface             $logger
      * @param ProcessIdExtractor          $processIdExtractor
      * @param NotificationHandlerProvider $notificationHandlerProvider
-     * @param ShortUrlHashGenerator       $shortUrlHashGenerator
      * @param DefaultSMSVariablesProvider $defaultSMSVariablesProvider
      * @param SMSTextProvider             $SMSTextProvider
-     * @param LanguageRepositoryInterface $languageRepository
      */
     public function __construct(
         MessageCompiler $messageCompiler,
@@ -79,17 +65,14 @@ class Notifier
         LoggerInterface $logger,
         ProcessIdExtractor $processIdExtractor,
         NotificationHandlerProvider $notificationHandlerProvider,
-        ShortUrlHashGenerator $shortUrlHashGenerator,
         DefaultSMSVariablesProvider $defaultSMSVariablesProvider,
         SMSTextProvider $SMSTextProvider
-    )
-    {
+    ) {
         $this->messageCompiler             = $messageCompiler;
         $this->sender                      = $sender;
         $this->logger                      = $logger;
         $this->processIdExtractor          = $processIdExtractor;
         $this->notificationHandlerProvider = $notificationHandlerProvider;
-        $this->shortUrlHashGenerator       = $shortUrlHashGenerator;
         $this->defaultSMSVariablesProvider = $defaultSMSVariablesProvider;
         $this->SMSTextProvider             = $SMSTextProvider;
     }
@@ -116,13 +99,6 @@ class Notifier
             } else {
                 $processId = null;
             }
-
-
-            if (!$User->getUrlId()) {
-                $User->setShortUrlId($this->shortUrlHashGenerator->generate());
-                $this->logger->debug('Generated auto-login URL for user. ', ['url' => $User->getUrlId()]);
-            }
-
 
             $variables = $this->defaultSMSVariablesProvider->getDefaultSMSVariables(
                 $subscriptionPack,

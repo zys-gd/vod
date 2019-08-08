@@ -30,8 +30,11 @@ class UnsubscribeParametersProvider
         $this->parametersProvider = $parametersProvider;
     }
 
-    public function provideParameters(Subscription $subscription): ProcessRequestParameters
+    public function provideParameters(Subscription $subscription, array $additionalParameters): ProcessRequestParameters
     {
-        return $this->parametersProvider->prepareRequestParameters($subscription);
+        $parameters = $this->parametersProvider->prepareRequestParameters($subscription);
+        $parameters->additionalData = $additionalParameters;
+
+        return $parameters;
     }
 }

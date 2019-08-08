@@ -20,6 +20,17 @@ App\Domain\Entity\Affiliate:
             type: string
             length: 255
             nullable: false
+        uniqueFlow:
+            type: boolean
+            column: unique_flow
+            nullable: false
+            options:
+                default: false
+        uniqueParameter:
+            type: string
+            length: 255
+            column: unique_parameter
+            nullable: true
         commercialContact:
             type: string
             length: 255
@@ -76,3 +87,20 @@ App\Domain\Entity\Affiliate:
             mappedBy: affiliate
             cascade: ["persist", "remove"]
             orphanRemoval: true
+        bannedPublishers:
+            targetEntity: App\Domain\Entity\AffiliateBannedPublisher
+            mappedBy: affiliate
+            cascade: ["persist", "remove"]
+            orphanRemoval: true
+    manyToMany:
+        carriers:
+            targetEntity: App\Domain\Entity\Carrier
+            joinTable:
+                name: null
+                joinColumns:
+                    affiliate_id:
+                        referencedColumnName: uuid
+                inverseJoinColumns:
+                    carrier_id:
+                        referencedColumnName: uuid
+            inversedBy: affiliates

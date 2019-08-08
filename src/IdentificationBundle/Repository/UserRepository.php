@@ -50,13 +50,13 @@ class UserRepository extends EntityRepository
     }
 
     /**
-     * @param string $urlId
+     * @param string $shortUrlId
      *
      * @return User|null
      */
-    public function findOneByUrlId(string $urlId): ?User
+    public function findOneByShortUrlId(string $shortUrlId): ?User
     {
-        return $this->findOneBy(['urlId' => $urlId]);
+        return $this->findOneBy(['shortUrlId' => $shortUrlId]);
     }
 
     /**

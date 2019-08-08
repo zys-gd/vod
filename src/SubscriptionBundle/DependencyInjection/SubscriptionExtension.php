@@ -46,11 +46,14 @@ class SubscriptionExtension extends ConfigurableExtension
         $loader->load('cron.yml');
         $loader->load('piwik-integration.yml');
         $loader->load('affiliate.yml');
-        $loader->load('affiliate-cap-constraint.yml');
         $loader->load('fixtures.yml');
         $loader->load('twig.yml');
         $loader->load('campaign_confirmation.yml');
-        $loader->load('subscription_limiter.yml');
+        $loader->load('subscription-voters.yml');
+
+        $loader->load('captool-visit.yml');
+        $loader->load('captool-commons.yml');
+        $loader->load('captool-subscription.yml');
 
 
         $loader = new YamlFileLoader(
@@ -68,12 +71,8 @@ class SubscriptionExtension extends ConfigurableExtension
         $loader->load('etisalat-eg.yml');
         $loader->load('telenor-pk.yml');
         $loader->load('jazz-pk.yml');
-
-
-        $definition = $container->getDefinition('SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter');
-
-        $definition->replaceArgument(5, $mergedConfig['blacklisted_user_route']);
-
+        $loader->load('vodafone-eg-tpay.yml');
+        $loader->load('orange-eg-tpay.yml');
 
         $definition = $container->getDefinition('SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler');
 

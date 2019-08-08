@@ -20,12 +20,14 @@ use IdentificationBundle\Identification\Handler\CommonFlow\HasCustomPixelIdent;
 use IdentificationBundle\Identification\Handler\HasCommonFlow;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerInterface;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationStatus;
+use IdentificationBundle\Identification\Service\Session\SessionStorage;
 use IdentificationBundle\Identification\Service\TokenGenerator;
 use IdentificationBundle\Identification\Service\UserFactory;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Repository\UserRepository;
+use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
@@ -56,9 +58,9 @@ class PixelIdentConfirmerTest extends TestCase
 
     protected function setUp()
     {
-
         $this->session                       = new Session(new MockArraySessionStorage());
-        $this->dataStorage                   = new IdentificationDataStorage($this->session);
+        $sessionStorage                      = new SessionStorage($this->session);
+        $this->dataStorage                   = new IdentificationDataStorage($sessionStorage);
         $this->billingDataProvider           = Mockery::spy(DataProvider::class);
         $this->carrierRepository             = Mockery::spy(CarrierRepositoryInterface::class);
         $this->tokenGenerator                = Mockery::spy(TokenGenerator::class);
@@ -75,7 +77,7 @@ class PixelIdentConfirmerTest extends TestCase
             $this->carrierRepository,
             $this->billingDataProvider,
             $this->identificationHandlerProvider,
-            new IdentificationStatus($this->dataStorage),
+            new IdentificationStatus($this->dataStorage, new WifiIdentificationDataStorage($sessionStorage)),
             $this->tokenGenerator,
             $this->userRepository,
             Mockery::spy(PostPaidHandler::class)
@@ -111,7 +113,7 @@ class PixelIdentConfirmerTest extends TestCase
 
         $this->assertArraySubset(
             ['identification_token' => 'token'],
-            $this->dataStorage->readIdentificationData(),
+            $this->dataStorage->getIdentificationData(),
             'ident are not finished'
         );
     }
@@ -146,7 +148,7 @@ class PixelIdentConfirmerTest extends TestCase
 
         $this->assertArraySubset(
             ['identification_token' => '555555'],
-            $this->dataStorage->readIdentificationData(),
+            $this->dataStorage->getIdentificationData(),
             'ident are not finished'
         );
     }

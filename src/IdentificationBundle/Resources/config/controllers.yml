@@ -8,7 +8,7 @@ services:
             - '@IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
             - '@IdentificationBundle\BillingFramework\Data\DataProvider'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
             - '@logger'
 
     IdentificationBundle\Callback\Controller\CallbackController:
@@ -21,7 +21,7 @@ services:
             - '@IdentificationBundle\Identification\Service\TokenGenerator'
             - '@IdentificationBundle\Identification\IdentifierByUrl'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
             - '@logger'
 
     IdentificationBundle\Identification\Controller\FakeIdentificationController:
@@ -35,17 +35,19 @@ services:
             - '@IdentificationBundle\Identification\Service\UserFactory'
             - '@doctrine.orm.entity_manager'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
 
     IdentificationBundle\WifiIdentification\Controller\PinIdentificationController:
       arguments:
         - '@IdentificationBundle\WifiIdentification\WifiIdentSMSSender'
         - '@IdentificationBundle\WifiIdentification\WifiIdentConfirmator'
-        - '@IdentificationBundle\WifiIdentification\Service\ErrorCodeResolver'
-        - '@IdentificationBundle\Identification\Service\CarrierSelector'
+        - '@IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeResolver'
         - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
         - '%default_redirect_url%'
         - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
         - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier'
+        - '@SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter'
+        - '@SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator'
 
     IdentificationBundle\Identification\Controller\AsyncIdentController:
       arguments:
@@ -54,4 +56,13 @@ services:
           - '@IdentificationBundle\Identification\Common\Async\AsyncIdentStatusProvider'
 
     IdentificationBundle\Admin\Controller\TestUserAdminController:
-        autowire: true
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@IdentificationBundle\Repository\TestUserRepository'
+            - '@SubscriptionBundle\Repository\SubscriptionRepository'
+            - '@doctrine.orm.entity_manager'
+            - '@cross_subscription.api_connector'
+        calls:
+            - [setContainer, ['@service_container']]
+        tags:
+            - { name: controller.service_arguments }

@@ -1,0 +1,25 @@
+{% extends base_template %}
+
+{% block navbar_title %}
+    {{ 'Select general options for uploading' }}
+{% endblock %}
+
+
+{% block form %}
+    <div class="sonata-ba-form">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="sonata-ba-collapsed-fields">
+                            {{ form_start(form) }}
+
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

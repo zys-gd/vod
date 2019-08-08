@@ -63,4 +63,34 @@ class RequestProvider
         return $parameters;
 
     }
+
+    /**
+     * @param int $carrierId
+     * @param string $operatorId
+     * @param string $pinCode
+     * @param array $additionalParameters
+     *
+     * @return ProcessRequestParameters
+     */
+    public function getPinResendParameters(
+        int $carrierId,
+        string $operatorId,
+        string $pinCode,
+        array $additionalParameters
+    ): ProcessRequestParameters
+    {
+        $parameters = new ProcessRequestParameters();
+        $parameters->client = 'vod-store';
+
+        $parameters->additionalData = array_merge(
+            [
+                'carrier'     => $carrierId,
+                'op_id'       => $operatorId,
+                'pin_code'    => $pinCode
+            ],
+            $additionalParameters
+        );
+
+        return $parameters;
+    }
 }

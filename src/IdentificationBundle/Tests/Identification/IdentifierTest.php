@@ -8,7 +8,7 @@
 
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Common\CommonFlowHandler;
-use IdentificationBundle\Identification\Common\ConsentPageFlowHandler;
+use IdentificationBundle\Identification\Common\CommonConsentPageFlowHandler;
 use IdentificationBundle\Identification\Common\HeaderEnrichmentHandler;
 use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\Handler\HasCommonFlow;
@@ -16,6 +16,8 @@ use IdentificationBundle\Identification\Handler\HasCustomFlow;
 use IdentificationBundle\Identification\Handler\HasHeaderEnrichment;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerInterface;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\SessionStorage;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -69,10 +71,10 @@ class IdentifierTest extends TestCase
         $this->logger                  = Mockery::spy(LoggerInterface::class);
         $this->commonFlowHandler       = Mockery::spy(CommonFlowHandler::class);
 
-        $this->consentPageHandler = Mockery::spy(ConsentPageFlowHandler::class);
+        $this->consentPageHandler = Mockery::spy(CommonConsentPageFlowHandler::class);
         $this->session            = new Session(new MockArraySessionStorage());
 
-        $this->dataStorage = new \IdentificationBundle\Identification\Service\IdentificationDataStorage($this->session);
+        $this->dataStorage = new IdentificationDataStorage(new SessionStorage($this->session));
 
 
         $this->identifier = new \IdentificationBundle\Identification\Identifier(
@@ -121,7 +123,7 @@ class IdentifierTest extends TestCase
     {
         $request = new Request();
 
-        $this->session->set('isp_detection_data', ['somedata' => '123']);
+        $this->session->set(IdentificationDataStorage::ISP_DETECTION_DATA_KEY, ['somedata' => '123']);
 
         $this->handlerProvider->allows([
             'get' => Mockery::spy(HasCommonFlow::class, IdentificationHandlerInterface::class)

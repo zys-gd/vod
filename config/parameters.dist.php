@@ -40,7 +40,7 @@ return [
     'RABBIT_MQ_HOST'     => 'rabbitmq.playwing.com',
     'RABBIT_MQ_PORT'     => 5672,
     'RABBIT_MQ_USER'     => 'admin',
-    'RABBIT_MQ_PASSWORD' => 'Pass1234',
+    'RABBIT_MQ_PASSWORD' => 'p6qWPaQH9gaZ',
     'RABBIT_MQ_VHOST'    => '/',
 
     'CAMPAIGN_SESSION_NAME' => 'campaignData',
@@ -66,5 +66,7 @@ return [
     'DRM_API_URL'       => 'http://drm-api-dev-env.utbtaavpnd.eu-west-1.elasticbeanstalk.com/web/api/',
     'S3_ROOT_URL'       => 'https://s3.eu-central-1.amazonaws.com/playwing-appstore',
 
-    'REPORTING_STATS_API_HOST' => 'http://reporting.100sport.tv/a/api'
+    'REPORTING_STATS_API_HOST' => 'http://reporting.100sport.tv/a/api',
+
+    'CROSS_SUBSCRIPTION_SERVICE' => null
 ];

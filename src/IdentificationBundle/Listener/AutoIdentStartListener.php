@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 08.01.19
- * Time: 16:52
- */
 
 namespace IdentificationBundle\Listener;
-
 
 use CountryCarrierDetectionBundle\Service\Interfaces\ICountryCarrierDetection;
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -18,10 +11,10 @@ use IdentificationBundle\Identification\Exception\FailedIdentificationException;
 use IdentificationBundle\Identification\Identifier;
 use IdentificationBundle\Identification\Service\CarrierSelector;
 use IdentificationBundle\Identification\Service\DeviceDataProvider;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\IdentificationStatus;
 use IdentificationBundle\Identification\Service\ISPResolver;
 use IdentificationBundle\Identification\Service\RouteProvider;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use IdentificationBundle\Identification\Service\TokenGenerator;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use Psr\Log\LoggerInterface;
@@ -31,6 +24,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
+/**
+ * Class AutoIdentStartListener
+ */
 class AutoIdentStartListener
 {
     /**
@@ -58,10 +54,6 @@ class AutoIdentStartListener
      */
     private $routeProvider;
     /**
-     * @var IdentificationDataStorage
-     */
-    private $dataStorage;
-    /**
      * @var IdentificationStatus
      */
     private $identificationStatus;
@@ -82,21 +74,20 @@ class AutoIdentStartListener
      */
     private $logger;
 
-
     /**
-     * AutoIdentStartListener constructor.
-     * @param ICountryCarrierDetection                                   $carrierDetection
-     * @param CarrierRepositoryInterface                                 $carrierRepository
-     * @param \IdentificationBundle\Identification\Service\ISPResolver   $ISPResolver
-     * @param Identifier                                                 $identifier
-     * @param TokenGenerator                                             $generator
-     * @param \IdentificationBundle\Identification\Service\RouteProvider $routeProvider
-     * @param IdentificationDataStorage                                  $dataStorage
-     * @param IdentificationStatus                                       $identificationStatus
-     * @param AnnotationReader                                           $annotationReader
-     * @param CarrierSelector                                            $carrierSelector
-     * @param DeviceDataProvider                                         $deviceDataProvider
-     * @param LoggerInterface                                            $logger
+     * AutoIdentStartListener constructor
+     *
+     * @param ICountryCarrierDetection   $carrierDetection
+     * @param CarrierRepositoryInterface $carrierRepository
+     * @param ISPResolver                $ISPResolver
+     * @param Identifier                 $identifier
+     * @param TokenGenerator             $generator
+     * @param RouteProvider              $routeProvider
+     * @param IdentificationStatus       $identificationStatus
+     * @param AnnotationReader           $annotationReader
+     * @param CarrierSelector            $carrierSelector
+     * @param DeviceDataProvider         $deviceDataProvider
+     * @param LoggerInterface            $logger
      */
     public function __construct(
         ICountryCarrierDetection $carrierDetection,
@@ -105,21 +96,18 @@ class AutoIdentStartListener
         Identifier $identifier,
         TokenGenerator $generator,
         RouteProvider $routeProvider,
-        IdentificationDataStorage $dataStorage,
         IdentificationStatus $identificationStatus,
         AnnotationReader $annotationReader,
         CarrierSelector $carrierSelector,
         DeviceDataProvider $deviceDataProvider,
         LoggerInterface $logger
-    )
-    {
+    ) {
         $this->carrierDetection     = $carrierDetection;
         $this->carrierRepository    = $carrierRepository;
         $this->ISPResolver          = $ISPResolver;
         $this->identifier           = $identifier;
         $this->generator            = $generator;
         $this->routeProvider        = $routeProvider;
-        $this->dataStorage          = $dataStorage;
         $this->identificationStatus = $identificationStatus;
         $this->annotationReader     = $annotationReader;
         $this->carrierSelector      = $carrierSelector;
@@ -216,25 +204,28 @@ class AutoIdentStartListener
     }
 
     /**
-     * @param $request
-     * @param $session
-     * @return string
+     * @param string $ipAddress
+     * @param SessionInterface $session
+     *
+     * @return int|null
      */
     private function detectCarrier(string $ipAddress, SessionInterface $session): ?int
     {
-
-        if (!$session->has('isp_detection_data')) {
+        if (!$carrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($session)) {
             $carrierISP = $this->carrierDetection->getCarrier($ipAddress);
             $carrierId  = null;
+
+            $this->logger->debug('Carrier ISP', [
+                'ISP'    => $carrierISP
+            ]);
+
             if ($carrierISP) {
                 $carrierId = $this->resolveISP($carrierISP);
             }
+
             if ($carrierId) {
                 $this->carrierSelector->selectCarrier($carrierId);
             }
-        } else {
-            $ispDetectionData = $session->get('isp_detection_data');
-            $carrierId        = $ispDetectionData['carrier_id'];
         }
 
         return $carrierId;
@@ -242,7 +233,7 @@ class AutoIdentStartListener
 
     private function startWifiFlow(SessionInterface $session): Response
     {
-        $this->dataStorage->storeValue('is_wifi_flow', true);
+        $this->identificationStatus->startWifiFlow();
 
         return new RedirectResponse($this->routeProvider->getLinkToWifiFlowPage());
 

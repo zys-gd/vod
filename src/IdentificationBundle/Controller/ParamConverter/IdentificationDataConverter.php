@@ -10,7 +10,7 @@ namespace IdentificationBundle\Controller\ParamConverter;
 
 
 use IdentificationBundle\Identification\DTO\IdentificationData;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,11 +28,11 @@ class IdentificationDataConverter implements ParamConverterInterface
      */
     public function apply(Request $request, ParamConverter $configuration)
     {
-        if (!$identificationData = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession())) {
+        if (!$identificationToken = IdentificationFlowDataExtractor::extractIdentificationToken($request->getSession())) {
             throw new BadRequestHttpException('Identification data is not found');
         }
 
-        $object = new IdentificationData($identificationData['identification_token']);
+        $object = new IdentificationData($identificationToken);
 
 
         $request->attributes->set($configuration->getName(), $object);

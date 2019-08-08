@@ -10,7 +10,7 @@ namespace Tests\Core;
 
 
 use App\Domain\Entity\Carrier;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use IdentificationBundle\Entity\User;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
@@ -32,7 +32,7 @@ class TestEntityProvider
         $user->setIdentifier($identifier);
         $user->setCountry('country');
         $user->setIp('255.255.255.255');
-        $user->setUrlId(sprintf('urlid_%s', $identifier));
+        $user->setShortUrlId(sprintf('urlid_%s', $identifier));
         $user->setCarrier($carrier);
         $user->setIdentificationToken($identificationRequestToken);
 

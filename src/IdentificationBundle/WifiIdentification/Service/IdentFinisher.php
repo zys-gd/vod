@@ -1,21 +1,17 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 14.01.19
- * Time: 16:53
- */
 
 namespace IdentificationBundle\WifiIdentification\Service;
-
 
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\TokenGenerator;
 use IdentificationBundle\Identification\Service\UserFactory;
 
+/**
+ * Class IdentFinisher
+ */
 class IdentFinisher
 {
     /**
@@ -35,7 +31,6 @@ class IdentFinisher
      */
     private $entityManager;
 
-
     /**
      * IdentFinisher constructor.
      * @param TokenGenerator            $tokenGenerator
@@ -43,25 +38,44 @@ class IdentFinisher
      * @param IdentificationDataStorage $identificationDataStorage
      * @param EntityManagerInterface    $entityManager
      */
-    public function __construct(TokenGenerator $tokenGenerator, UserFactory $userFactory, IdentificationDataStorage $identificationDataStorage, EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        TokenGenerator $tokenGenerator,
+        UserFactory $userFactory,
+        IdentificationDataStorage $identificationDataStorage,
+        EntityManagerInterface $entityManager
+    ) {
         $this->tokenGenerator            = $tokenGenerator;
         $this->userFactory               = $userFactory;
         $this->identificationDataStorage = $identificationDataStorage;
         $this->entityManager             = $entityManager;
     }
 
-    public function finish(string $msisdn, CarrierInterface $carrier, string $ip): void
+    /**
+     * @param string $msisdn
+     * @param CarrierInterface $carrier
+     * @param string $ip
+     *
+     * @return User
+     *
+     * @throws \Exception
+     */
+    public function finish(string $msisdn, CarrierInterface $carrier, string $ip): User
     {
-
         $token = $this->tokenGenerator->generateToken();
         $user  = $this->userFactory->create($msisdn, $carrier, $ip, $token);
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
-        $this->identificationDataStorage->storeIdentificationToken($token);
+        $this->identificationDataStorage->setIdentificationToken($token);
+
+        return $user;
     }
 
+    /**
+     * @param User $user
+     * @param string $msisdn
+     * @param string $ip
+     */
     public function finishForExistingUser(User $user, string $msisdn, string $ip): void
     {
         $token = $this->tokenGenerator->generateToken();
@@ -73,6 +87,6 @@ class IdentFinisher
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
-        $this->identificationDataStorage->storeIdentificationToken($token);
+        $this->identificationDataStorage->setIdentificationToken($token);
     }
 }

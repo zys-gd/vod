@@ -4,7 +4,7 @@ namespace App\Admin\Sonata;
 
 use App\Domain\Entity\GameImage;
 use App\Domain\Service\Games\ImagePathProvider;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

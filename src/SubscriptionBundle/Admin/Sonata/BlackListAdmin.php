@@ -2,7 +2,7 @@
 
 namespace SubscriptionBundle\Admin\Sonata;
 
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -81,11 +81,14 @@ class BlackListAdmin extends AbstractAdmin
             ->add('alias');
     }
 
+
+
     /**
      * @param ListMapper $listMapper
      */
     protected function configureListFields(ListMapper $listMapper)
     {
+
         $listMapper
             ->add('uuid')
             ->add('billingCarrierId')
@@ -101,7 +104,6 @@ class BlackListAdmin extends AbstractAdmin
                 ]
             ]);
     }
-
     /**
      * @param FormMapper $formMapper
      */

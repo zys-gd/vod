@@ -10,6 +10,7 @@ namespace IdentificationBundle\Identification\Service;
 
 
 use IdentificationBundle\Identification\Exception\MissingCarrierException;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 
 class CarrierSelector
@@ -41,6 +42,11 @@ class CarrierSelector
             throw new MissingCarrierException('Carrier not found');
         }
 
-        $this->identificationDataStorage->storeCarrierId($carrierId);
+        $this->identificationDataStorage->setCarrierId($carrierId);
+    }
+
+    public function removeCarrier(): void
+    {
+        $this->identificationDataStorage->cleanCarrier();
     }
 }

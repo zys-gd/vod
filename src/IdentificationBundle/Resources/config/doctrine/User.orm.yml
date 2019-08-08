@@ -30,10 +30,6 @@ IdentificationBundle\Entity\User:
             nullable: true
             options:
                 default: null
-        urlId:
-            type: string
-            nullable: true
-            length: 100
         shortUrlId:
             type: string
             nullable: true
@@ -63,9 +59,6 @@ IdentificationBundle\Entity\User:
             type: string
             nullable: true
         identificationUrl:
-            type: text
-            nullable: true
-        providerId:
             type: text
             nullable: true
 

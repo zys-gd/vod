@@ -9,6 +9,7 @@
 namespace SubscriptionBundle\Service\Action\Unsubscribe;
 
 
+use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Notification\API\Exception\NotificationSendFailedException;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
@@ -56,18 +57,23 @@ class Unsubscriber
      * @var UnsubscribeParametersProvider
      */
     private $parametersProvider;
+    /**
+     * @var ApiConnector
+     */
+    private $crossSubscriptionApi;
 
 
     /**
      * Unsubscriber constructor.
-     * @param LoggerInterface               $logger
-     * @param EntitySaveHelper              $entitySaveHelper
-     * @param FakeResponseProvider          $fakeResponseProvider
-     * @param Notifier                      $notifier
-     * @param UnsubscribeProcess            $unsubscribeProcess
-     * @param OnUnsubscribeUpdater          $onUnsubscribeUpdater
-     * @param SubscriptionStatisticSender   $subscriptionStatisticSender
-     * @param UnsubscribeParametersProvider $parametersProvider
+     * @param LoggerInterface                                             $logger
+     * @param EntitySaveHelper                                            $entitySaveHelper
+     * @param FakeResponseProvider                                        $fakeResponseProvider
+     * @param Notifier                                                    $notifier
+     * @param UnsubscribeProcess                                          $unsubscribeProcess
+     * @param OnUnsubscribeUpdater                                        $onUnsubscribeUpdater
+     * @param SubscriptionStatisticSender                                 $subscriptionStatisticSender
+     * @param UnsubscribeParametersProvider                               $parametersProvider
+     * @param \Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector $crossSubscriptionApi
      */
     public function __construct(
         LoggerInterface $logger,
@@ -77,7 +83,8 @@ class Unsubscriber
         UnsubscribeProcess $unsubscribeProcess,
         OnUnsubscribeUpdater $onUnsubscribeUpdater,
         SubscriptionStatisticSender $subscriptionStatisticSender,
-        UnsubscribeParametersProvider $parametersProvider
+        UnsubscribeParametersProvider $parametersProvider,
+        ApiConnector $crossSubscriptionApi
     )
     {
         $this->logger                      = $logger;
@@ -88,12 +95,15 @@ class Unsubscriber
         $this->onUnsubscribeUpdater        = $onUnsubscribeUpdater;
         $this->subscriptionStatisticSender = $subscriptionStatisticSender;
         $this->parametersProvider          = $parametersProvider;
+        $this->crossSubscriptionApi        = $crossSubscriptionApi;
     }
 
-    public function unsubscribe(Subscription $subscription, SubscriptionPack $subscriptionPack)
+    public function unsubscribe(
+        Subscription $subscription,
+        SubscriptionPack $subscriptionPack,
+        array $additionalParameters = []
+    )
     {
-
-
         $subscription->setStatus(Subscription::IS_PENDING);
         $subscription->setCurrentStage(Subscription::ACTION_UNSUBSCRIBE);
         $this->entitySaveHelper->persistAndSave($subscription);
@@ -102,7 +112,7 @@ class Unsubscriber
 
             $previousStatus = $subscription->getStatus();
             $previousStage  = $subscription->getCurrentStage();
-            $response = $this->fakeResponseProvider->getDummyResult(
+            $response       = $this->fakeResponseProvider->getDummyResult(
                 $subscription,
                 UnsubscribeProcess::PROCESS_METHOD_UNSUBSCRIBE
             );
@@ -115,6 +125,9 @@ class Unsubscriber
                     $subscription->getUser()->getCarrier()
                 );
                 $this->onUnsubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
+
+                $user = $subscription->getUser();
+
                 return $response;
 
             } catch (NotificationSendFailedException $exception) {
@@ -126,15 +139,17 @@ class Unsubscriber
             }
 
         } else {
+            $parameters = $this->parametersProvider->provideParameters($subscription, $additionalParameters);
 
-            $parameters = $this->parametersProvider->provideParameters($subscription);
             try {
                 $response = $this->unsubscribeProcess->doUnsubscribe($parameters);
                 $this->onUnsubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
+
                 return $response;
 
             } catch (UnsubscribingProcessException $exception) {
                 $subscription->setStatus(Subscription::IS_ERROR);
+                $subscription->setError('unsubscribing_process_exception');
                 throw $exception;
             } finally {
                 $this->entitySaveHelper->persistAndSave($subscription);

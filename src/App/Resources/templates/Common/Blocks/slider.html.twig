@@ -1,6 +1,6 @@
 {% macro render(aVideos, categories) %}
     {% import '@App/Components/Blocks/Main/see_all.html.twig' as  see_all %}
-    {% import '@App/Components/Blocks/Main/slider_element_video.html.twig' as  slider_element_video %}
+    {% import "@App/Components/Blocks/Main/video_preview.html.twig" as  video_preview %}
 
     <div class="slider-block">
         {% for category, videos in aVideos %}
@@ -8,16 +8,15 @@
             {% set categoryData = categories[category] %}
             <div class="categories-block d-flex flex-column">
 
-                {{ see_all.render(category,  path('show_category',{'categoryUuid': categoryData.uuid})) }}
+                {{ see_all.render("category.#{categoryData.uuid}",  path('show_category',{'categoryUuid': categoryData.uuid})) }}
 
                 <div class="d-flex slider slider-big">
                     {% for video in videos %}
-                        {{ slider_element_video.render(video, categoryData) }}
+                        {{ video_preview.render('d-flex flex-column video-element x-play-button', video) }}
                     {% endfor %}
                 </div>
             </div>
         {% endfor %}
-
     </div>
 
     <script>

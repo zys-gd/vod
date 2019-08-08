@@ -1,26 +1,29 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 15.01.19
- * Time: 13:51
- */
 
 namespace IdentificationBundle\Twig;
 
-
 use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CarrierRepository;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
+use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class IdentificationStatusExtension extends \Twig_Extension
+/**
+ * Class IdentificationStatusExtension
+ */
+class IdentificationStatusExtension extends AbstractExtension
 {
     /**
      * @var IdentificationDataStorage
      */
     private $dataStorage;
+    /**
+     * @var WifiIdentificationDataStorage
+     */
+    private $wifiIdentificationDataStorage;
     /**
      * @var SessionInterface
      */
@@ -30,58 +33,65 @@ class IdentificationStatusExtension extends \Twig_Extension
      */
     private $carrierRepository;
 
-
     /**
      * IdentificationStatusExtension constructor.
      *
      * @param IdentificationDataStorage $dataStorage
-     * @param SessionInterface          $session
-     * @param CarrierRepository         $carrierRepository
+     * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
+     * @param SessionInterface $session
+     * @param CarrierRepository $carrierRepository
      */
-    public function __construct(IdentificationDataStorage $dataStorage,
+    public function __construct(
+        IdentificationDataStorage $dataStorage,
+        WifiIdentificationDataStorage $wifiIdentificationDataStorage,
         SessionInterface $session,
-        CarrierRepository $carrierRepository)
-    {
+        CarrierRepository $carrierRepository
+    ) {
         $this->dataStorage = $dataStorage;
         $this->session = $session;
         $this->carrierRepository = $carrierRepository;
-    }
-
-    public function getFunctions()
-    {
-        return [
-
-            new \Twig_SimpleFunction('isCarrierDetected', [$this, 'isCarrierDetected']),
-
-            new \Twig_SimpleFunction('isIdentified', function () {
-                $identificationData = $this->dataStorage->readIdentificationData();
-                return isset($identificationData['identification_token']) && $identificationData['identification_token'];
-            }),
-            new \Twig_SimpleFunction('isConsentFlow', function () {
-                $token = $this->dataStorage->readValue('consentFlow[token]');
-                return (bool)$token;
-            }),
-
-            new \Twig_SimpleFunction('isWifiFlow', function () {
-                return (bool)$this->dataStorage->readValue('is_wifi_flow');
-            }),
-
-            new \Twig_SimpleFunction('getIdentificationToken', function () {
-                $identificationData = $this->dataStorage->readIdentificationData();
-                return $identificationData['identification_token'] ?? null;
-            }),
-
-            new \Twig_SimpleFunction('isOtp', [$this, 'isOtp']),
-        ];
+        $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
     }
 
     /**
-     * @return bool
+     * @return TwigFunction[]
      */
-    public function isCarrierDetected(): bool
+    public function getFunctions()
     {
-        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
-        return isset($ispDetectionData['carrier_id']) && $ispDetectionData['carrier_id'];
+        return [
+            new TwigFunction('isCarrierDetected', function () {
+                return (bool) IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
+            }),
+
+            new TwigFunction('getCarrierId', function () {
+                return IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
+            }),
+
+            new TwigFunction('isIdentified', function () {
+                return (bool) $this->dataStorage->getIdentificationToken();
+            }),
+
+            new TwigFunction('isConsentFlow', function () {
+                $token = $this->dataStorage->readValue(IdentificationDataStorage::CONSENT_FLOW_TOKEN_KEY);
+                return (bool)$token;
+            }),
+
+            new TwigFunction('isWifiFlow', function () {
+                return (bool)$this->wifiIdentificationDataStorage->isWifiFlow();
+            }),
+
+            new TwigFunction('getIdentificationToken', function () {
+                return $this->dataStorage->getIdentificationToken();
+            }),
+
+            new TwigFunction('isOtp', [$this, 'isOtp']),
+
+            new TwigFunction('isClickableSubImage', function () {
+                // todo rework after task with landing page
+                return false;
+                //return (bool)$this->dataStorage->readValue('is_clickable_sub_image');
+            })
+        ];
     }
 
     /**
@@ -89,12 +99,15 @@ class IdentificationStatusExtension extends \Twig_Extension
      */
     public function isOtp(): bool
     {
-        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
-        if (isset($ispDetectionData['carrier_id']) && $ispDetectionData['carrier_id']) {
+        $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
+
+        if ($billingCarrierId) {
             /** @var Carrier $carrier */
-            $carrier = $this->carrierRepository->findOneByBillingId($ispDetectionData['carrier_id']);
+            $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
+
             return $carrier->isConfirmationClick();
         }
+
         return false;
     }
 }

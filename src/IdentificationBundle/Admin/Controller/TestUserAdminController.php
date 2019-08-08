@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\TestUser;
 use IdentificationBundle\Repository\TestUserRepository;
 use IdentificationBundle\Repository\UserRepository;
+use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
 use Sonata\AdminBundle\Controller\CRUDController;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Repository\SubscriptionRepository;
@@ -35,25 +36,33 @@ class TestUserAdminController extends CRUDController
      * @var SubscriptionRepository
      */
     private $subscriptionRepository;
+    /**
+     * @var ApiConnector
+     */
+    private $apiConnector;
 
     /**
      * TestUserAdminController constructor
      *
-     * @param UserRepository $userRepository
-     * @param TestUserRepository $testUserRepository
+     * @param UserRepository         $userRepository
+     * @param TestUserRepository     $testUserRepository
      * @param SubscriptionRepository $subscriptionRepository
      * @param EntityManagerInterface $entityManager
+     * @param ApiConnector           $apiConnector
      */
     public function __construct(
         UserRepository $userRepository,
         TestUserRepository $testUserRepository,
         SubscriptionRepository $subscriptionRepository,
-        EntityManagerInterface $entityManager
-    ) {
-        $this->userRepository = $userRepository;
-        $this->testUserRepository = $testUserRepository;
+        EntityManagerInterface $entityManager,
+        ApiConnector $apiConnector
+    )
+    {
+        $this->userRepository         = $userRepository;
+        $this->testUserRepository     = $testUserRepository;
         $this->subscriptionRepository = $subscriptionRepository;
-        $this->entityManager = $entityManager;
+        $this->entityManager          = $entityManager;
+        $this->apiConnector           = $apiConnector;
     }
 
     /**
@@ -67,7 +76,7 @@ class TestUserAdminController extends CRUDController
     public function dropUserDataAction(string $id)
     {
         /** @var TestUser $testUser */
-        $testUser = $this->testUserRepository->find($id);
+        $testUser       = $this->testUserRepository->find($id);
         $userIdentifier = $testUser->getUserIdentifier();
 
         $response = new RedirectResponse($this->generateUrl('admin_identification_testuser_list'));
@@ -100,7 +109,7 @@ class TestUserAdminController extends CRUDController
     public function setStatusForRenewAction(string $id)
     {
         /** @var TestUser $testUser */
-        $testUser = $this->testUserRepository->find($id);
+        $testUser       = $this->testUserRepository->find($id);
         $userIdentifier = $testUser->getUserIdentifier();
 
         $user = $this->userRepository->findOneBy(['identifier' => $userIdentifier]);
@@ -109,7 +118,6 @@ class TestUserAdminController extends CRUDController
 
         if (!$user) {
             $this->addFlash('error', sprintf('User with identifier %s not found', $userIdentifier));
-
             return $response;
         }
 
@@ -133,5 +141,30 @@ class TestUserAdminController extends CRUDController
         $this->addFlash('success', sprintf('Subscription for user with identifier %s queued for renew', $userIdentifier));
 
         return $response;
+    }
+
+
+    public function cleanFromCrossSubscriptionAction(string $id)
+    {
+        /** @var TestUser $testUser */
+        $testUser = $this->testUserRepository->find($id);
+
+
+        $response = new RedirectResponse($this->generateUrl('admin_identification_testuser_list'));
+
+        $msisdn    = $testUser->getUserIdentifier();
+        $carrierId = $testUser->getCarrier()->getBillingCarrierId();
+
+        if (!$this->apiConnector->checkIfExists($msisdn, $carrierId)) {
+            $this->addFlash('error', sprintf('Msisdn "%s" for carrier "%s" is not exists or service is not available.', $msisdn, $carrierId));
+            return $response;
+
+        }
+
+        $this->apiConnector->deregisterSubscription($msisdn, $carrierId);
+        $this->addFlash('success', sprintf('Request to remove msisdn "%s" for carrier "%s" has been successfully sent.', $msisdn, $carrierId));
+
+        return $response;
+
     }
 }

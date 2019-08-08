@@ -48,7 +48,7 @@
             </div>
 
             <div class="d-flex align-items-center justify-content-center mt-10">
-                {{ subscribe_buttons.render() }}
+                {{ subscribe_buttons.render('buttons.join.now') }}
             </div>
 
         {#{% elseif hasInActiveSubscription() %}#}
@@ -63,7 +63,7 @@
             </div>
 
             <div class="d-flex align-items-center justify-content-center mt-5">
-                {{ subscribe_buttons.render() }}
+                {{ subscribe_buttons.render('buttons.join.now') }}
             </div>
         {% endif %}
     </div>

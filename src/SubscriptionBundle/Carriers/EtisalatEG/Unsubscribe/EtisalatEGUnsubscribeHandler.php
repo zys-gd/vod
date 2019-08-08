@@ -32,4 +32,9 @@ class EtisalatEGUnsubscribeHandler implements UnsubscriptionHandlerInterface
     {
         // TODO: Implement applyPostUnsubscribeChanges() method.
     }
+
+    public function getAdditionalUnsubscribeParameters(): array
+    {
+        return [];
+    }
 }

@@ -9,7 +9,7 @@
 namespace Service;
 
 use App\Domain\Entity\Carrier;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use SubscriptionBundle\Entity\SubscriptionPack;

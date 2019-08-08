@@ -1,0 +1,22 @@
+services:
+  SubscriptionBundle\Service\VisitCAPTool\VisitStorage:
+    arguments: ['@subscription.captool.redis_client', '@SubscriptionBundle\Service\VisitCAPTool\ConstraintValidityChecker']
+
+  SubscriptionBundle\Service\VisitCAPTool\ConstraintValidityChecker: ~
+
+  SubscriptionBundle\Service\VisitCAPTool\VisitChecker:
+    arguments: ['@SubscriptionBundle\Service\VisitCAPTool\VisitStorage', '@SubscriptionBundle\Service\VisitCAPTool\KeyGenerator']
+
+  SubscriptionBundle\Service\VisitCAPTool\VisitTracker:
+    arguments:
+      - '@SubscriptionBundle\Service\VisitCAPTool\ConstraintValidityChecker'
+      - '@SubscriptionBundle\Service\VisitCAPTool\VisitStorage'
+      - '@SubscriptionBundle\Service\VisitCAPTool\KeyGenerator'
+      - '@logger'
+
+  SubscriptionBundle\Service\VisitCAPTool\VisitNotifier:
+    arguments: ['@SubscriptionBundle\Service\VisitCAPTool\ConstraintValidityChecker', '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender', '@SubscriptionBundle\Service\EntitySaveHelper']
+
+  SubscriptionBundle\Service\VisitCAPTool\KeyGenerator: ~
+
+  SubscriptionBundle\Service\VisitCAPTool\ConstraintAvailabilityChecker: ~

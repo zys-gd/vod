@@ -1,0 +1,28 @@
+services:
+    IdentificationBundle\Carriers\OrangeEGTpay\OrangeEGIdentificationHandler:
+        arguments:
+            - '@ExtrasBundle\Utils\LocalExtractor'
+        tags:
+            - {name: identification.identification_handler}
+
+    IdentificationBundle\Carriers\OrangeEGTpay\OrangeEGWifiIdentificationHandler:
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@doctrine.orm.entity_manager'
+            - '@router'
+            - '@ExtrasBundle\Utils\LocalExtractor'
+            - '@SubscriptionBundle\Repository\SubscriptionRepository'
+            - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
+        tags:
+            - { name: identification.wifi_identification_handler }
+
+    IdentificationBundle\Carriers\OrangeEGTpay\OrangeEGIdentificationCallbackHandler:
+        tags:
+            - { name: identification.identification_callback_handler }
+
+    IdentificationBundle\Carriers\OrangeEGTpay\OrangeEGAlreadySubscribedHandler:
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@IdentificationBundle\Identification\Service\IdentificationStatus'
+        tags:
+            - { name: identification.already_subscribed_handler }

@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 08.01.19
- * Time: 16:45
- */
 
 namespace App\Controller;
-
 
 use App\CarrierTemplate\TemplateConfigurator;
 use App\Domain\DTO\BatchOfGames;
@@ -24,13 +17,16 @@ use ExtrasBundle\Utils\ArraySorter;
 use IdentificationBundle\Controller\ControllerWithIdentification;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
-use IdentificationBundle\Identification\Service\IdentificationFlowDataExtractor;
-use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
+use IdentificationBundle\Identification\Service\AlreadySubscribedIdentFinisher;
+use IdentificationBundle\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class HomeController
+ */
 class HomeController extends AbstractController implements
     ControllerWithISPDetection,
     AppControllerInterface,
@@ -70,15 +66,27 @@ class HomeController extends AbstractController implements
     private $videoSerializer;
 
     /**
+     * @var UserRepository
+     */
+    private $userRepository;
+
+    /**
+     * @var AlreadySubscribedIdentFinisher
+     */
+    private $alreadySubscribedIdentFinisher;
+
+    /**
      * HomeController constructor.
      *
-     * @param TemplateConfigurator                      $templateConfigurator
-     * @param MainCategoryRepository                    $mainCategoryRepository
-     * @param UploadedVideoRepository                   $videoRepository
-     * @param UploadedVideoSerializer                   $videoSerializer
-     * @param GameRepository                            $gameRepository
+     * @param TemplateConfigurator $templateConfigurator
+     * @param MainCategoryRepository $mainCategoryRepository
+     * @param UploadedVideoRepository $videoRepository
+     * @param UploadedVideoSerializer $videoSerializer
+     * @param GameRepository $gameRepository
      * @param CountryCategoryPriorityOverrideRepository $categoryOverrideRepository
-     * @param ContentStatisticSender                    $contentStatisticSender
+     * @param ContentStatisticSender $contentStatisticSender
+     * @param UserRepository $userRepository
+     * @param AlreadySubscribedIdentFinisher $alreadySubscribedIdentFinisher
      */
     public function __construct(
         TemplateConfigurator $templateConfigurator,
@@ -87,18 +95,20 @@ class HomeController extends AbstractController implements
         UploadedVideoSerializer $videoSerializer,
         GameRepository $gameRepository,
         CountryCategoryPriorityOverrideRepository $categoryOverrideRepository,
-        ContentStatisticSender $contentStatisticSender
-    )
-    {
-        $this->templateConfigurator       = $templateConfigurator;
-        $this->mainCategoryRepository     = $mainCategoryRepository;
-        $this->videoRepository            = $videoRepository;
-        $this->videoSerializer            = $videoSerializer;
-        $this->gameRepository             = $gameRepository;
-        $this->categoryOverrideRepository = $categoryOverrideRepository;
-        $this->contentStatisticSender     = $contentStatisticSender;
+        ContentStatisticSender $contentStatisticSender,
+        UserRepository $userRepository,
+        AlreadySubscribedIdentFinisher $alreadySubscribedIdentFinisher
+    ) {
+        $this->templateConfigurator           = $templateConfigurator;
+        $this->mainCategoryRepository         = $mainCategoryRepository;
+        $this->videoRepository                = $videoRepository;
+        $this->videoSerializer                = $videoSerializer;
+        $this->gameRepository                 = $gameRepository;
+        $this->categoryOverrideRepository     = $categoryOverrideRepository;
+        $this->contentStatisticSender         = $contentStatisticSender;
+        $this->userRepository                 = $userRepository;
+        $this->alreadySubscribedIdentFinisher = $alreadySubscribedIdentFinisher;
     }
-
 
     /**
      * @Route("/",name="index")
@@ -139,11 +149,14 @@ class HomeController extends AbstractController implements
             5
         );
 
-        $identificationData = IdentificationFlowDataExtractor::extractIdentificationData($request->getSession());
-        $campaignToken      = AffiliateVisitSaver::extractCampaignToken($request->getSession());
-        $this->contentStatisticSender->trackVisit($identificationData, $data, $campaignToken);
+        if ($this->alreadySubscribedIdentFinisher->needToHandle($request)) {
+            $this->alreadySubscribedIdentFinisher->tryToIdentify($request);
+        }
+
+        $this->contentStatisticSender->trackVisit($request->getSession());
 
         $template = $this->templateConfigurator->getTemplate('home', $data->getCarrierId());
+
         return $this->render($template, [
             'categoryVideos'  => array_slice($categoryVideos, 1, 3),
             'categories'      => $indexedCategoryData,

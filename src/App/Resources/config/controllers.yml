@@ -2,6 +2,13 @@ services:
     _defaults:
         tags: ['controller.service_arguments']
 
+    App\API\Controller\AffiliateBannedPublishersController:
+        arguments:
+            - '@App\Domain\Repository\AffiliateBannedPublisherRepository'
+            - '@App\Domain\Repository\AffiliateRepository'
+            - '@App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherCreator'
+            - '@App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherRemover'
+
     App\API\Controller\APIController:
         arguments: ['@App\Domain\Service\VideoProcessing\CallbackVoter', '@App\Domain\Service\VideoProcessing\Callback\EagerType']
 
@@ -22,6 +29,9 @@ services:
     App\Admin\Controller\SubcategoryAdminController:
         arguments: ['@doctrine.orm.entity_manager']
 
+    App\Admin\Controller\CampaignAdminController:
+        arguments:
+            - '@form.factory'
 
     App\Controller\ContentController:
         arguments:
@@ -36,6 +46,8 @@ services:
             - '@App\Domain\Repository\GameRepository'
             - '@App\Domain\Repository\CountryCategoryPriorityOverrideRepository'
             - '@App\Domain\Service\Piwik\ContentStatisticSender'
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@IdentificationBundle\Identification\Service\AlreadySubscribedIdentFinisher'
 
     App\Controller\LPController:
         arguments:
@@ -45,13 +57,17 @@ services:
             - '%images_base_url%'
             - '@App\Domain\Service\CarrierOTPVerifier'
             - '%default_redirect_url%'
-            - '@IdentificationBundle\Identification\Service\IdentificationDataStorage'
+            - '@App\CarrierTemplate\TemplateConfigurator'
+            - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
             - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
             - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier'
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
             - '@SubscriptionBundle\Service\VisitCAPTool\VisitTracker'
             - '@SubscriptionBundle\Service\VisitCAPTool\VisitNotifier'
             - '@logger'
+            - '@IdentificationBundle\Identification\Service\CarrierSelector'
+            - '@SubscriptionBundle\Service\SubscribeUrlResolver'
+            - '@SubscriptionBundle\Service\VisitCAPTool\ConstraintAvailabilityChecker'
 
     App\Controller\ErrorController:
         arguments:
@@ -97,11 +113,12 @@ services:
             - '@App\Domain\Service\Piwik\ContentStatisticSender'
             - '@App\CarrierTemplate\TemplateConfigurator'
 
-    App\Controller\VideosController:
+    App\Controller\VideoController:
         arguments:
             - '@App\Domain\Repository\UploadedVideoRepository'
             - '@App\Domain\Repository\MainCategoryRepository'
             - '@App\Domain\Service\VideoProcessing\UploadedVideoSerializer'
+            - '@App\Domain\Repository\UploadedVideoRepository'
 
     App\Controller\TrackEventController:
         arguments:
@@ -109,6 +126,14 @@ services:
             - '@App\Domain\Service\Piwik\ContentStatisticSender'
             - '@SubscriptionBundle\Service\SubscriptionExtractor'
 
-
-    App\Controller\PlayerController:
-        arguments: ['@App\Domain\Repository\UploadedVideoRepository', '@App\Domain\Repository\MainCategoryRepository']
+    App\Controller\SubnotifController:
+        arguments:
+            - '@SubscriptionBundle\Service\Notification\Notifier'
+            - '@App\Domain\Repository\CarrierRepository'
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@session'
+            - '@ExtrasBundle\Utils\LocalExtractor'
+            - '@SubscriptionBundle\Service\SubscriptionPackProvider'
+            - '@App\Domain\Service\Translator\Translator'
+            - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\RouteProvider'

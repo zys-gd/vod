@@ -2,19 +2,25 @@
 
 namespace App\Admin\Sonata;
 
+use App\Admin\Form\Type\AffiliateBannedPublisherType;
 use App\Admin\Form\Type\AffiliateConstantType;
 use App\Admin\Form\Type\AffiliateParameterType;
 use App\Domain\Entity\Affiliate;
+use App\Domain\Entity\Carrier;
 use App\Domain\Entity\Country;
 use App\Domain\Repository\AffiliateRepository;
-use App\Utils\UuidGenerator;
+use App\Domain\Service\Campaign\CampaignService;
+use ExtrasBundle\Utils\UuidGenerator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Show\ShowMapper;
+use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -31,34 +37,49 @@ class AffiliateAdmin extends AbstractAdmin
      * @var AffiliateRepository
      */
     private $affiliateRepository;
+    /**
+     * @var CampaignService
+     */
+    private $campaignService;
 
     /**
      * AffiliateAdmin constructor
      *
-     * @param string $code
-     * @param string $class
-     * @param string $baseControllerName
+     * @param string              $code
+     * @param string              $class
+     * @param string              $baseControllerName
      * @param AffiliateRepository $affiliateRepository
+     * @param CampaignService     $campaignService
      */
     public function __construct(
         string $code,
         string $class,
         string $baseControllerName,
-        AffiliateRepository $affiliateRepository
-    ) {
+        AffiliateRepository $affiliateRepository,
+        CampaignService $campaignService
+    )
+    {
         $this->affiliateRepository = $affiliateRepository;
+        $this->campaignService     = $campaignService;
 
         parent::__construct($code, $class, $baseControllerName);
     }
 
     /**
      * @return Affiliate
-     *
      * @throws \Exception
      */
     public function getNewInstance(): Affiliate
     {
         return new Affiliate(UuidGenerator::generate());
+    }
+
+    /**
+     * @param $obj
+     */
+    public function preUpdate($obj)
+    {
+        $this->generateTestLink($obj);
     }
 
     /**
@@ -94,8 +115,8 @@ class AffiliateAdmin extends AbstractAdmin
             ])
             ->add('_action', null, [
                 'actions' => [
-                    'show' => [],
-                    'edit' => [],
+                    'show'   => [],
+                    'edit'   => [],
                     'delete' => [],
                 ]
             ]);
@@ -116,7 +137,7 @@ class AffiliateAdmin extends AbstractAdmin
             ->add('skypeId')
             ->add('isLpOff', null, [
                 'label' => 'Turn off LP showing',
-                'help' => 'If consent page exist, then show it. Otherwise will try to subscribe'
+                'help'  => 'If consent page exist, then show it. Otherwise will try to subscribe'
             ])
             ->add('enabled');
     }
@@ -131,6 +152,9 @@ class AffiliateAdmin extends AbstractAdmin
         $this->buildMiscSection($formMapper);
         $this->buildConstantSection($formMapper);
         $this->buildParametersSection($formMapper);
+        $this->buildUniqueFlowSection($formMapper);
+        $this->buildBannedPublishersSection($formMapper);
+
     }
 
     /**
@@ -146,16 +170,16 @@ class AffiliateAdmin extends AbstractAdmin
                     'CPC' => Affiliate::CPC_TYPE,
                     'CPA' => Affiliate::CPA_TYPE
                 ],
-                'label' => 'Type'
+                'label'   => 'Type'
             ])
             ->add('name', TextType::class, [
-                'label' => 'Name',
+                'label'       => 'Name',
                 'constraints' => [
                     new Callback(function (string $name, ExecutionContextInterface $context) {
                         $affiliates = $this->affiliateRepository->findBy(['name' => $name]);
                         /** @var Affiliate $affiliate */
                         $affiliate = empty($affiliates) ? null : $affiliates[0];
-                        $subject = $this->getSubject();
+                        $subject   = $this->getSubject();
 
                         if ($affiliate && $affiliate->getUuid() !== $subject->getUuid()) {
                             $context
@@ -166,15 +190,30 @@ class AffiliateAdmin extends AbstractAdmin
                 ]
             ])
             ->add('postbackUrl', UrlType::class, [
-                'required' => true,
-                'label' => 'Postback URL',
+                'required'    => true,
+                'label'       => 'Postback URL',
                 'constraints' => [
                     new NotBlank()
                 ]
             ])
-            ->add('isLpOff', null, [
-                'label' => 'Turn off LP showing',
-                'help' => 'If consent page exist, then show it. Otherwise will try to subscribe'
+            ->add('isLpOff', ChoiceFieldMaskType::class, [
+                'label'   => 'Turn off LP showing',
+                'help'    => 'If consent page exist, then show it. Otherwise will try to subscribe',
+                'choices' => [
+                    'No'  => 0,
+                    'Yes' => 1,
+                ],
+                'map'     => [
+                    1 => ['carriers', 'carriers2'],
+                ],
+            ])
+            ->add('carriers', EntityType::class, [
+                'class'       => Carrier::class,
+                'expanded'    => false,
+                'required'    => false,
+                'multiple'    => true,
+                'placeholder' => 'Please select carriers',
+                'help'        => 'If empty, then for all carriers. Otherwise landing will be turned off only for chosen carriers.'
             ])
             ->end()
             ->end();
@@ -189,21 +228,21 @@ class AffiliateAdmin extends AbstractAdmin
             ->tab('Contact details')
             ->with('', ['box_class' => 'box-solid'])
             ->add('country', EntityType::class, [
-                'class' => Country::class,
+                'class'        => Country::class,
                 'choice_label' => 'countryName',
-                'label' => 'Based in'
+                'label'        => 'Based in'
             ])
             ->add('commercialContact', TextType::class, [
                 'required' => false,
-                'label' => 'Commercial Contact person'
+                'label'    => 'Commercial Contact person'
             ])
             ->add('technicalContact', TextType::class, [
                 'required' => false,
-                'label' => 'Technical Contact person'
+                'label'    => 'Technical Contact person'
             ])
             ->add('skypeId', TextType::class, [
                 'required' => false,
-                'label' => 'Skype ID'
+                'label'    => 'Skype ID'
             ])
             ->add('url', TextType::class, [
                 'required' => false
@@ -223,13 +262,13 @@ class AffiliateAdmin extends AbstractAdmin
             ->add('enabled', ChoiceType::class, [
                 'choices' => [
                     'Yes' => true,
-                    'No' => false
+                    'No'  => false
                 ],
-                'label' => 'Enable this affiliate?'
+                'label'   => 'Enable this affiliate?'
             ])
             ->add('subPriceName', TextType::class, [
                 'required' => false,
-                'label' => 'Name of subscription price parameter. Fill JUST when the partner requires!'
+                'label'    => 'Name of subscription price parameter. Fill JUST when the partner requires!'
             ])
             ->end()
             ->end();
@@ -244,10 +283,10 @@ class AffiliateAdmin extends AbstractAdmin
             ->tab('Constants')
             ->with('', ['box_class' => 'box-solid'])
             ->add('constants', CollectionType::class, [
-                'entry_type' => AffiliateConstantType::class,
+                'entry_type'   => AffiliateConstantType::class,
                 'by_reference' => false,
                 'allow_delete' => true,
-                'allow_add' => true
+                'allow_add'    => true
             ])
             ->end()
             ->end();
@@ -262,17 +301,62 @@ class AffiliateAdmin extends AbstractAdmin
             ->tab('Parameters')
             ->with('', ['box_class' => 'box-solid'])
             ->add('parameters', CollectionType::class, [
-                'entry_type' => AffiliateParameterType::class,
+                'entry_type'   => AffiliateParameterType::class,
                 'by_reference' => false,
                 'allow_delete' => true,
-                'allow_add' => true
+                'allow_add'    => true
             ])
             ->end()
+            ->end();
+    }
+
+    private function buildUniqueFlowSection(FormMapper $formMapper)
+    {
+        $formMapper
+            ->tab('Unique Flow')
+            ->with('Affiliate', ['box_class' => 'box box-primary'])
+            ->add('uniqueFlow', CheckboxType::class, [
+                'required' => false,
+                'label'    => 'Unique Flow'
+            ])
+            ->add('uniqueParameter', TextType::class, [
+                'required' => false,
+                'label'    => 'Unique Parameter'
+            ])
+            ->end()
+            ->end();
+    }
+
+    private function buildBannedPublishersSection(FormMapper $formMapper)
+    {
+        $formMapper
+            ->tab('Banned Publishers')
+            ->with('', ['box_class' => 'box-solid'])
+            ->add('bannedPublishers', CollectionType::class, [
+                'entry_type'   => AffiliateBannedPublisherType::class,
+                'allow_delete' => true,
+                'allow_add'    => true,
+                'by_reference' => false,
+                'label'        => 'Publisher identification keys'
+            ])
             ->end();
     }
 
     public function postUpdate($object)
     {
         $this->affiliateRepository->switchStatusRelatedCampaigns($object);
+    }
+
+    /**
+     * @param Affiliate $affiliate
+     */
+    protected function generateTestLink(Affiliate $affiliate)
+    {
+        /** @var CampaignInterface[] $campaigs */
+        $campaigns = $affiliate->getCampaigns();
+
+        foreach ($campaigns as $campaign) {
+            $this->campaignService->generateTestLink($campaign);
+        }
     }
 }

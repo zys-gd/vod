@@ -8,21 +8,27 @@
 
 namespace Controller\Action;
 
+use CountryCarrierDetectionBundle\Service\MaxMindIpInfo;
 use ExtrasBundle\Testing\Core\AbstractFunctionalTest;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
+use PiwikBundle\Service\PiwikDataMapper;
 use PiwikBundle\Service\PiwikTracker;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\BillingFramework\Notification\API\RequestSender as NotificationService;
 use SubscriptionBundle\BillingFramework\Process\API\RequestSender;
 use SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider;
+use SubscriptionBundle\Piwik\DataMapper\PiwikSubscriptionDataMapper;
+use SubscriptionBundle\Piwik\DataMapper\PiwikUnsubscriptionDataMapper;
+use SubscriptionBundle\Piwik\ProcessResultVerifier;
 use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use SubscriptionBundle\Service\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
+use SubscriptionBundle\Service\SubscriptionVoter\BatchSubscriptionVoter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Tests\DataFixtures\LoadCampaignTestData;
 use Tests\DataFixtures\LoadSubscriptionTestData;
@@ -61,6 +67,7 @@ class SubscribeActionTest extends AbstractFunctionalTest
      */
     private $campaignConfirmationHandlerProvider;
     private $subscriptionLimiter;
+    private $voter;
 
     public function testSubscribeWithoutIdentWillFallIntoError()
     {
@@ -70,27 +77,27 @@ class SubscribeActionTest extends AbstractFunctionalTest
         $this->assertEquals(400, $client->getResponse()->getStatusCode(), 'error is missing');
     }
 
-    // public function testSubscribeActionWithRedirect()
-    // {
-    //     $client = $this->makeClient();
-    //
-    //     $this->session->set('identification_data', ['identification_token' => 'token_for_user_without_subscription']);
-    //
-    //     $ispDetectionData = [
-    //         'isp_name'   => 'Jazz PK',
-    //         'carrier_id' => 338,
-    //     ];
-    //     $this->session->set('isp_detection_data', $ispDetectionData);
-    //
-    //     $this->httpClient->allows([
-    //         'request' => TestBillingResponseProvider::createSuccessfulRedirectResponse('renew', 'billing_redirect_url')
-    //     ]);
-    //
-    //     $client->request('GET', 'subscribe');
-    //     $this->assertStatusCode(302, $client);
-    //     $this->assertTrue($client->getResponse()->isRedirect('billing_redirect_url'), 'redirect is missing');
-    //
-    // }
+    public function testSubscribeActionWithRedirect()
+    {
+        $client = $this->makeClient();
+
+        $this->session->set('identification_data', ['identification_token' => 'token_for_user_without_subscription']);
+
+        $ispDetectionData = [
+            'isp_name'   => 'Jazz PK',
+            'carrier_id' => 338,
+        ];
+        $this->session->set('isp_detection_data', $ispDetectionData);
+
+        $this->httpClient->allows([
+            'request' => TestBillingResponseProvider::createSuccessfulRedirectResponse('renew', 'billing_redirect_url')
+        ]);
+
+        $client->request('GET', 'subscribe');
+        $this->assertStatusCode(302, $client);
+        $this->assertTrue($client->getResponse()->isRedirect('billing_redirect_url'), 'redirect is missing');
+
+    }
 
     public function testUserIsRedirectedOnNotAllowedResub()
     {
@@ -192,6 +199,8 @@ class SubscribeActionTest extends AbstractFunctionalTest
         $container->set('talentica.piwic_statistic_sender', $this->piwikStatisticSender);
         $container->set('subscription.http.client', $this->httpClient);
         $container->set('SubscriptionBundle\Service\CAPTool\SubscriptionLimiter', $this->subscriptionLimiter);
+        $container->set('SubscriptionBundle\Service\SubscriptionVoter\BatchSubscriptionVoter', $this->voter);
+
     }
 
     protected function getFixturesListLoadedForEachTest(): array
@@ -205,6 +214,9 @@ class SubscribeActionTest extends AbstractFunctionalTest
     protected function initializeServices(ContainerInterface $container)
     {
 
+        $this->voter = Mockery::spy(BatchSubscriptionVoter::class);
+        $this->voter->allows(['checkIfSubscriptionAllowed' => true]);
+
         $this->httpClient                   = \Mockery::spy(Client::class);
         $this->subscriptionPackDataProvider = \Mockery::spy(SubscriptionPackDataProvider::class);
         $this->notificationService          = \Mockery::spy(NotificationService::class);
@@ -212,6 +224,11 @@ class SubscribeActionTest extends AbstractFunctionalTest
         $this->piwikStatisticSender         = Mockery::spy(SubscriptionStatisticSender::class, [
             Mockery::spy(LoggerInterface::class),
             Mockery::spy(PiwikTracker::class),
+            Mockery::spy(PiwikDataMapper::class),
+            Mockery::spy(PiwikSubscriptionDataMapper::class),
+            Mockery::spy(MaxMindIpInfo::class),
+            Mockery::spy(PiwikUnsubscriptionDataMapper::class),
+            Mockery::spy(ProcessResultVerifier::class),
         ])->makePartial();
     }
 

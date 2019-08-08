@@ -7,7 +7,7 @@
  */
 
 use App\Domain\Entity\Carrier;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use IdentificationBundle\Entity\User;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -53,12 +53,14 @@ class UnsubscriberTest extends TestCase
     {
 
         $user     = new User(UuidGenerator::generate());
+        $user->setIdentifier('ident');
         $subscriptionPack = new SubscriptionPack(UuidGenerator::generate());
         $subscriptionPack->setProviderManagedSubscriptions(true);
         $subscription = new Subscription(UuidGenerator::generate());
         $subscription->setSubscriptionPack($subscriptionPack);
         $subscription->setUser($user);
         $carrier = new Carrier(UuidGenerator::generate());
+        $carrier->setBillingCarrierId(0);
         $user->setCarrier($carrier);
 
         $this->carrierTrackingTypeChecker->allows([
@@ -75,12 +77,14 @@ class UnsubscriberTest extends TestCase
     {
 
         $user     = new User(UuidGenerator::generate());
+        $user->setIdentifier('ident');
         $subscriptionPack = new SubscriptionPack(UuidGenerator::generate());
         $subscriptionPack->setProviderManagedSubscriptions(true);
         $subscription = new Subscription(UuidGenerator::generate());
         $subscription->setSubscriptionPack($subscriptionPack);
         $subscription->setUser($user);
         $carrier = new Carrier(UuidGenerator::generate());
+        $carrier->setBillingCarrierId(0);
         $user->setCarrier($carrier);
 
         $this->carrierTrackingTypeChecker->allows([
@@ -109,7 +113,8 @@ class UnsubscriberTest extends TestCase
             $this->unsubscribeProcess,
             Mockery::spy(OnUnsubscribeUpdater::class),
             $this->piwikSender,
-            Mockery::spy(\SubscriptionBundle\Service\Action\Unsubscribe\UnsubscribeParametersProvider::class)
+            Mockery::spy(\SubscriptionBundle\Service\Action\Unsubscribe\UnsubscribeParametersProvider::class),
+            Mockery::spy(\Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector::class)
         );
 
     }

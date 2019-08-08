@@ -36,7 +36,7 @@ class PiwikSubscriptionSignature
     /**
      * @param string           $action
      * @param bool             $resultStatus
-     * @param int              $chargePaid
+     * @param int|null         $chargePaid
      * @param SubscriptionPack $subscriptionPack
      * @param Campaign|null    $campaign
      *
@@ -44,7 +44,7 @@ class PiwikSubscriptionSignature
      */
     public function get(string $action,
         bool $resultStatus,
-        int $chargePaid,
+        ?int $chargePaid,
         SubscriptionPack $subscriptionPack,
         Campaign $campaign = null): string
     {
@@ -56,13 +56,13 @@ class PiwikSubscriptionSignature
     }
 
     /**
-     * @param int              $chargePaid
+     * @param int|null         $chargePaid
      * @param SubscriptionPack $subscriptionPack
      * @param Campaign|null    $campaign
      *
      * @return string
      */
-    private function getAdditionalMark(int $chargePaid, SubscriptionPack $subscriptionPack, Campaign $campaign = null)
+    private function getAdditionalMark(?int $chargePaid, SubscriptionPack $subscriptionPack, Campaign $campaign = null)
     {
         if ($subscriptionPack->isFirstSubscriptionPeriodIsFree()) {
             return '-freetrial';
@@ -72,11 +72,11 @@ class PiwikSubscriptionSignature
             return '-freetrial';
         }
 
-        if ($subscriptionPack->isZeroCreditSubAvailable() && $chargePaid == 0) {
+        if ($subscriptionPack->isZeroCreditSubAvailable() && $chargePaid === 0) {
             return '-zerocredit';
         }
 
-        if ($campaign && $campaign->isZeroCreditSubAvailable() && $chargePaid == 0) {
+        if ($campaign && $campaign->isZeroCreditSubAvailable() && $chargePaid === 0) {
             return '-zerocredit';
         }
 

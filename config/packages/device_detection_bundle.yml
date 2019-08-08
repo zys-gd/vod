@@ -1,0 +1,8 @@
+device_detection:
+  logger:
+    service_id: 'logger'
+  cache:
+    service_id: 'cache.app'
+  db_paths:
+    optimized_database: "%kernel.root_dir%/../var/devicedetection/optimized"
+    database: "%kernel.root_dir%/../var/devicedetection/database/db.json"

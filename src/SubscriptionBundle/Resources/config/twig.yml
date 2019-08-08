@@ -1,6 +1,13 @@
 services:
+
+  SubscriptionBundle\Admin\Twig\CounterInfoExtension:
+    arguments: ['@SubscriptionBundle\Admin\Service\ConstraintByAffiliateCapCalculator']
+    tags:
+      - { name: twig.extension }
+
   SubscriptionBundle\Twig\SubscriptionStatusExtension:
     tags:
       - { name: twig.extension }
     arguments:
-      ['@session', '@SubscriptionBundle\Service\SubscriptionExtractor']
+      ['@session', '@SubscriptionBundle\Service\SubscriptionExtractor', '@app.cache.array_default']
+

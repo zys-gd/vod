@@ -1,6 +1,7 @@
 services:
     subscription.http.client:
         class: "%guzzle.client.class%"
+        factory: ['@SubscriptionBundle\Affiliate\Service\GuzzleClientFactory','getClient']
         tags:
             - { name: guzzle.client }
 
@@ -95,13 +96,19 @@ services:
             - '@SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber'
             -
     SubscriptionBundle\Service\Blacklist\BlacklistChecker:
-        arguments: ['@IdentificationBundle\Repository\UserRepository', '@SubscriptionBundle\Repository\BlackListRepository']
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@SubscriptionBundle\Repository\BlackListRepository'
+            - '@logger'
 
     SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator:
         arguments:
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
-            - '@app.cache.default.subscription'
+            - '@app.cache.default.blacklist'
             - '@SubscriptionBundle\Service\Blacklist\BlacklistSaver'
+            - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@logger'
 
     SubscriptionBundle\Service\Notification\Email\CAPNotificationSender:
         arguments:
@@ -112,9 +119,16 @@ services:
 
     SubscriptionBundle\Service\SubscriptionSerializer: ~
 
+    SubscriptionBundle\Service\SubscribeUrlResolver:
+        arguments:
+            - '@router'
+            - '@SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider'
+
     SubscriptionBundle\Service\ZeroCreditSubscriptionChecking:
         arguments:
             - '@SubscriptionBundle\Service\CampaignExtractor'
+
+    SubscriptionBundle\Service\Action\Common\ProcessResultSuccessChecker: ~
 
 parameters:
     subscription.subscription.class: SubscriptionBundle\Entity\SubscriptionPack

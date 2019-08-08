@@ -44,26 +44,22 @@ class VODKernel extends BaseKernel
         $container->setParameter('container.dumper.inline_class_loader', true);
 
         $confDir = $this->getProjectDir() . '/config';
+
+        if (in_array($this->environment, ['stage', 'stage_debug'])) {
+            $loader->load($confDir . '/{packages}/prod/**/*' . self::CONFIG_EXTS, 'glob');
+        }
+        if (in_array($this->environment, ['ci_dev'])) {
+            $loader->load($confDir . '/{packages}/dev/**/*' . self::CONFIG_EXTS, 'glob');
+        }
+
         $loader->load($confDir . '/{packages}/*' . self::CONFIG_EXTS, 'glob');
         $loader->load($confDir . '/{packages}/' . $this->environment . '/**/*' . self::CONFIG_EXTS, 'glob');
         $loader->load($confDir . '/{services}' . self::CONFIG_EXTS, 'glob');
         $loader->load($confDir . '/{services}_' . $this->environment . self::CONFIG_EXTS, 'glob');
 
-        if ($this->environment === 'stage') {
-            $loader->load($confDir . '/{packages}/prod/**/*' . self::CONFIG_EXTS, 'glob');
-        }
 
         $appConfDir = $this->getProjectDir() . '/src/App/Resources/config/';
-        $loader->load($appConfDir . 'services.yml');
-        $loader->load($appConfDir . 'admin.yml');
-        $loader->load($appConfDir . 'twig.yml');
-        $loader->load($appConfDir . 'repositories.yml');
-        $loader->load($appConfDir . 'controllers.yml');
-        $loader->load($appConfDir . 'listeners.yml');
-        $loader->load($appConfDir . 'identification-bundle.yml');
-        $loader->load($appConfDir . 'subscription-bundle.yml');
-        $loader->load($appConfDir . 'carrier-templates.yml');
-        $loader->load($appConfDir . 'commands.yml');
+        $loader->load($appConfDir . '*' . self::CONFIG_EXTS, 'glob');
 
         $fixturesDir = $this->getProjectDir() . '/src/DataFixtures/config/';
         $loader->load($fixturesDir . 'fixtures.yml');
@@ -128,8 +124,6 @@ class VODKernel extends BaseKernel
             $versionHash = file_get_contents($dest);
             $container->setParameter('app_version_hash', $versionHash);
         }
-
-
     }
 
     protected function build(ContainerBuilder $container): void

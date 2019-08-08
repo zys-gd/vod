@@ -13,3 +13,11 @@ services:
     App\CarrierTemplate\Handler\TelenorPKDotTemplateHandler:
         tags:
             - { name: app.carrier_template_handler }
+
+    App\CarrierTemplate\Handler\VodafoneEgyptTpay:
+        tags:
+            - { name: app.carrier_template_handler }
+
+    App\CarrierTemplate\Handler\OrangeEgyptTpay:
+        tags:
+            - { name: app.carrier_template_handler }

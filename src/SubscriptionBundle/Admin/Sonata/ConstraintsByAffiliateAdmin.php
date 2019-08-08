@@ -4,7 +4,7 @@ namespace SubscriptionBundle\Admin\Sonata;
 
 use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Carrier;
-use App\Utils\UuidGenerator;
+use ExtrasBundle\Utils\UuidGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\CarrierInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -12,6 +12,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use SubscriptionBundle\Admin\Service\ConstraintByAffiliateCapCalculator;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository;
 use SubscriptionBundle\Service\CAPTool\DTO\AffiliateLimiterData;
@@ -43,35 +44,21 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
      * @var EntityManagerInterface
      */
     private $entityManager;
+
     /**
-     * @var LimiterStorage
+     * @var ConstraintByAffiliateCapCalculator
      */
-    private $limiterDataStorage;
-    /**
-     * @var StorageKeyGenerator
-     */
-    private $storageKeyGenerator;
-    /**
-     * @var VisitStorage
-     */
-    private $visitStorage;
-    /**
-     * @var KeyGenerator
-     */
-    private $keyGenerator;
+    private $affiliateCapCalculator;
 
     /**
      * ConstraintsByAffiliateAdmin constructor
      *
-     * @param string                          $code
-     * @param string                          $class
-     * @param string                          $baseControllerName
-     * @param ConstraintByAffiliateRepository $constraintByAffiliateRepository
-     * @param EntityManagerInterface          $entityManager
-     * @param LimiterStorage                  $limiterDataStorage
-     * @param StorageKeyGenerator             $storageKeyGenerator
-     * @param VisitStorage                    $visitStorage
-     * @param KeyGenerator                    $keyGenerator
+     * @param string                             $code
+     * @param string                             $class
+     * @param string                             $baseControllerName
+     * @param ConstraintByAffiliateRepository    $constraintByAffiliateRepository
+     * @param EntityManagerInterface             $entityManager
+     * @param ConstraintByAffiliateCapCalculator $affiliateCapCalculator
      */
     public function __construct(
         string $code,
@@ -79,20 +66,13 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
         string $baseControllerName,
         ConstraintByAffiliateRepository $constraintByAffiliateRepository,
         EntityManagerInterface $entityManager,
-        LimiterStorage $limiterDataStorage,
-        StorageKeyGenerator $storageKeyGenerator,
-        VisitStorage $visitStorage,
-        KeyGenerator $keyGenerator
+        ConstraintByAffiliateCapCalculator $affiliateCapCalculator
     )
     {
         $this->constraintByAffiliateRepository = $constraintByAffiliateRepository;
         $this->entityManager                   = $entityManager;
-        $this->limiterDataStorage              = $limiterDataStorage;
-
+        $this->affiliateCapCalculator          = $affiliateCapCalculator;
         parent::__construct($code, $class, $baseControllerName);
-        $this->storageKeyGenerator = $storageKeyGenerator;
-        $this->visitStorage        = $visitStorage;
-        $this->keyGenerator        = $keyGenerator;
     }
 
     /**
@@ -162,6 +142,7 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
             ->add('isCapAlertDispatch', 'boolean', [
                 'label' => 'Is email sent today'
             ])
+            ->add('counter', 'string', ['template' => '@SubscriptionAdmin/ConstraintByAffiliate/counter.html.twig'])
             ->add('_action', null, [
                 'actions' => [
                     'show'   => [],
@@ -218,20 +199,9 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
         /** @var ConstraintByAffiliate $subject */
         $subject = $this->getSubject();
 
-        if ($subject->getCapType() === ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE) {
-            $key       = $this->storageKeyGenerator->generateAffiliateConstraintKey($subject);
-            $pending   = $this->limiterDataStorage->getPendingSubscriptionAmount($key);
-            $finished  = $this->limiterDataStorage->getFinishedSubscriptionAmount($key);
-            $available = $pending + $finished;
-        } else {
-            $key       = $this->keyGenerator->generateVisitKey(
-                $subject->getCarrier(),
-                $subject->getAffiliate()
-            );
-            $available = $this->visitStorage->getVisitCount($key);
-        }
+        $used = $this->affiliateCapCalculator->calculateCounter($subject);
 
-        $subject->setCounter($available);
+        $subject->setCounter($used);
 
         $showMapper
             ->add('affiliate')

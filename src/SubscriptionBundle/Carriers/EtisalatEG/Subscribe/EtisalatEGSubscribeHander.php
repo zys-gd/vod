@@ -11,7 +11,7 @@ namespace SubscriptionBundle\Carriers\EtisalatEG\Subscribe;
 
 use App\Domain\Constants\ConstBillingCarrierId;
 use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
-use IdentificationBundle\Identification\Service\IdentificationDataStorage;
+use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use Symfony\Component\HttpFoundation\Request;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerInterface;
@@ -21,18 +21,18 @@ use IdentificationBundle\Entity\User;
 class EtisalatEGSubscribeHander implements SubscriptionHandlerInterface, HasCommonFlow
 {
     /**
-     * @var IdentificationDataStorage
+     * @var WifiIdentificationDataStorage
      */
-    private $identificationDataStorage;
+    private $wifiIdentificationDataStorage;
 
 
     /**
      * EtisalatEGSubscribeHander constructor.
-     * @param IdentificationDataStorage $identificationDataStorage
+     * @param WifiIdentificationDataStorage $identificationDataStorage
      */
-    public function __construct(IdentificationDataStorage $identificationDataStorage)
+    public function __construct(WifiIdentificationDataStorage $identificationDataStorage)
     {
-        $this->identificationDataStorage = $identificationDataStorage;
+        $this->wifiIdentificationDataStorage = $identificationDataStorage;
     }
 
     public function canHandle(\IdentificationBundle\Entity\CarrierInterface $carrier): bool
@@ -45,13 +45,13 @@ class EtisalatEGSubscribeHander implements SubscriptionHandlerInterface, HasComm
     public function getAdditionalSubscribeParams(Request $request, User $User): array
     {
         /** @var PinRequestResult $pinRequestResult */
-        $pinRequestResult = $this->identificationDataStorage->readPreviousOperationResult('pinRequest');
+        $pinRequestResult = $this->wifiIdentificationDataStorage->getPinRequestResult();
 
         $contractId = $pinRequestResult->getRawData()['subscription_contract_id'];
 
         return [
             'subscription_contract_id' => $contractId,
-            'url_id'                   => $User->getUrlId()
+            'url_id'                   => $User->getShortUrlId()
         ];
     }
 

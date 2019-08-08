@@ -33,6 +33,11 @@ services:
         arguments:
             - App\Domain\Entity\Campaign
 
+    App\Domain\Repository\CampaignScheduleRepository:
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - App\Domain\Entity\CampaignSchedule
+
     App\Domain\Repository\GameRepository:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
@@ -62,3 +67,8 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - App\Domain\Entity\VideoPartner
+
+    App\Domain\Repository\AffiliateBannedPublisherRepository:
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - App\Domain\Entity\AffiliateBannedPublisher
