@@ -1,13 +1,12 @@
 {% macro render() %}
     {% import '@App/Components/Buttons/button.html.twig' as button %}
 
-    {% set countries = getCountries() %}
     {% set carrierCountry = getCarrierCountry() %}
     {% set carrierId = getCarrierId()  %}
     <div class="">
         <select name="country" class="w-75 mb-3 select" required>
             <option value="">{{ translate('wifi.form.select_country') }}</option>
-            {% for country in countries %}
+            {% for country in getCountries() %}
                 <option value="{{ country.code }}" {% if carrierCountry and carrierCountry.code == country.code  %} selected {% endif %}>{{ country.name }}</option>
             {% endfor %}
         </select>
