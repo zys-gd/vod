@@ -28,7 +28,7 @@
 
         $(document).on('change', 'select[name="country"]', (e) => changeCountry(e));
 
-        $(document).on('change', 'select[name="carrier_id"]', (e) => changeCarrier(e, "{{ path('select_carrier_wifi') }}"));
+        $(document).on('change', 'select[name="carrier_id"]', (e) => changeCarrier(e));
 
 
         // submit pin form
@@ -261,7 +261,7 @@
             })
         }
 
-        function changeCarrier(e, url) {
+        function changeCarrier(e) {
             let carrierId = String(e.target.options[e.target.selectedIndex].value);
 
             if (carrierId.length === 0) {
@@ -270,7 +270,7 @@
             }
 
             $.ajax({
-                url: url,
+                url: "{{ path('select_carrier_wifi') }}",
                 method: 'GET',
                 data: {carrierId},
                 beforeSend: () => {
