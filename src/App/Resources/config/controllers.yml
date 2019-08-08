@@ -68,6 +68,7 @@ services:
             - '@IdentificationBundle\Identification\Service\CarrierSelector'
             - '@SubscriptionBundle\Service\SubscribeUrlResolver'
             - '@IdentificationBundle\Identification\Service\PassthroughChecker'
+            - '@SubscriptionBundle\Service\VisitCAPTool\ConstraintAvailabilityChecker'
 
     App\Controller\ErrorController:
         arguments:
