@@ -39,6 +39,22 @@ try {
     $response->send();
     $kernel->terminate($request, $response);
 } catch (\Throwable $exception) {
-    throw $exception;
+
+    $log = sprintf(
+        'Uncaught PHP Exception %s: "%s" at %s line %s',
+        get_class($exception),
+        $exception->getMessage(),
+        $exception->getFile(),
+        $exception->getLine()
+    );
+
+    if ($_SERVER['APP_DEBUG']) {
+        http_response_code(500);
+        echo $exception->getMessage();
+        error_log($log);
+    } else {
+        error_log($log);
+        throw $exception;
+    }
 }
 
