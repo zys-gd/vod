@@ -123,22 +123,24 @@ class LPController extends AbstractController implements ControllerWithISPDetect
     /**
      * LPController constructor.
      *
-     * @param ContentStatisticSender     $contentStatisticSender
-     * @param CampaignRepository         $campaignRepository
-     * @param LandingPageACL             $landingPageAccessResolver
-     * @param string                     $imageBaseUrl
-     * @param CarrierOTPVerifier         $OTPVerifier
-     * @param string                     $defaultRedirectUrl
-     * @param TemplateConfigurator       $templateConfigurator
+     * @param ContentStatisticSender        $contentStatisticSender
+     * @param CampaignRepository            $campaignRepository
+     * @param LandingPageACL                $landingPageAccessResolver
+     * @param string                        $imageBaseUrl
+     * @param CarrierOTPVerifier            $OTPVerifier
+     * @param string                        $defaultRedirectUrl
+     * @param TemplateConfigurator          $templateConfigurator
      * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
-     * @param SubscriptionLimiter $limiter
-     * @param SubscriptionLimitNotifier $subscriptionLimitNotifier
-     * @param CarrierRepositoryInterface $carrierRepository
-     * @param VisitTracker $visitTracker
-     * @param VisitNotifier $notifier
-     * @param LoggerInterface $logger
-     * @param CarrierSelector $carrierSelector
-     * @param SubscribeUrlResolver $subscribeUrlResolver
+     * @param SubscriptionLimiter           $limiter
+     * @param SubscriptionLimitNotifier     $subscriptionLimitNotifier
+     * @param CarrierRepositoryInterface    $carrierRepository
+     * @param VisitTracker                  $visitTracker
+     * @param VisitNotifier                 $notifier
+     * @param LoggerInterface               $logger
+     * @param CarrierSelector               $carrierSelector
+     * @param SubscribeUrlResolver          $subscribeUrlResolver
+     * @param PassthroughChecker            $passthroughChecker
+     * @param ConstraintAvailabilityChecker $visitConstraintChecker
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
@@ -157,8 +159,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         LoggerInterface $logger,
         CarrierSelector $carrierSelector,
         SubscribeUrlResolver $subscribeUrlResolver,
-        PassthroughChecker $passthroughChecker
-        SubscribeUrlResolver $subscribeUrlResolver,
+        PassthroughChecker $passthroughChecker,
         ConstraintAvailabilityChecker $visitConstraintChecker
     )
     {
@@ -178,7 +179,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->logger                        = $logger;
         $this->carrierSelector               = $carrierSelector;
         $this->subscribeUrlResolver          = $subscribeUrlResolver;
-        $this->passthroughChecker        = $passthroughChecker;
+        $this->passthroughChecker            = $passthroughChecker;
         $this->visitConstraintChecker        = $visitConstraintChecker;
     }
 
@@ -377,6 +378,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
     /**
      * @param $cid
+     *
      * @return Campaign|null
      */
     private function resolveCampaignFromRequest($cid): ?Campaign
