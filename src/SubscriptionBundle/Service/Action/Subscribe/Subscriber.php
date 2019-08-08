@@ -25,6 +25,7 @@ use SubscriptionBundle\Service\CampaignExtractor;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimitCompleter;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\SubscriptionCreator;
+use SubscriptionBundle\Service\SubscriptionSerializer;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class Subscriber
@@ -82,21 +83,19 @@ class Subscriber
     /**
      * Subscriber constructor.
      *
-     * @param LoggerInterface                   $logger
-     * @param EntitySaveHelper                  $entitySaveHelper
-     * @param SessionInterface                  $session
-     * @param SubscriptionCreator               $subscriptionCreator
-     * @param PromotionalResponseChecker        $promotionalResponseChecker
-     * @param FakeResponseProvider              $fakeResponseProvider
-     * @param Notifier                          $notifier
-     * @param SubscribeProcess                  $subscribeProcess
-     * @param OnSubscribeUpdater                $onSubscribeUpdater
-     * @param SubscribeParametersProvider       $subscribeParametersProvider
-     * @param SubscriptionLimitCompleter  $subscriptionLimitCompleter
-     * @param SubscriptionCounterUpdater        $subscriptionCounterUpdater
-     * @param SubscriptionSerializer            $subscriptionSerializer
-     * @param SubscribePerformer                $subscribePerformer
-     * @param SubscribePromotionalPerformer     $subscribePromotionalPerformer
+     * @param LoggerInterface               $logger
+     * @param EntitySaveHelper              $entitySaveHelper
+     * @param SessionInterface              $session
+     * @param SubscriptionCreator           $subscriptionCreator
+     * @param PromotionalResponseChecker    $promotionalResponseChecker
+     * @param OnSubscribeUpdater            $onSubscribeUpdater
+     * @param SubscriptionLimitCompleter    $subscriptionLimitCompleter
+     * @param SubscriptionSerializer        $subscriptionSerializer
+     * @param SubscribePerformer            $subscribePerformer
+     * @param SubscribePromotionalPerformer $subscribePromotionalPerformer
+     * @param ApiConnector                  $crossSubscriptionApi
+     * @param ProcessResultSuccessChecker   $resultSuccessChecker
+     * @param CampaignExtractor             $campaignExtractor
      */
     public function __construct(
         LoggerInterface $logger,
@@ -110,8 +109,7 @@ class Subscriber
         SubscribePerformer $subscribePerformer,
         SubscribePromotionalPerformer $subscribePromotionalPerformer,
         ApiConnector $crossSubscriptionApi,
-        ProcessResultSuccessChecker $resultSuccessChecker
-        SubscribePromotionalPerformer $subscribePromotionalPerformer,
+        ProcessResultSuccessChecker $resultSuccessChecker,
         CampaignExtractor $campaignExtractor
     )
     {
@@ -126,20 +124,7 @@ class Subscriber
         $this->subscribePromotionalPerformer = $subscribePromotionalPerformer;
         $this->crossSubscriptionApi          = $crossSubscriptionApi;
         $this->resultSuccessChecker          = $resultSuccessChecker;
-        $this->logger                        = $logger;
-        $this->entitySaveHelper              = $entitySaveHelper;
-        $this->session                       = $session;
-        $this->subscriptionCreator           = $subscriptionCreator;
-        $this->promotionalResponseChecker    = $promotionalResponseChecker;
-        $this->fakeResponseProvider          = $fakeResponseProvider;
-        $this->notifier                      = $notifier;
-        $this->subscribeProcess              = $subscribeProcess;
-        $this->onSubscribeUpdater            = $onSubscribeUpdater;
-        $this->subscribeParametersProvider   = $subscribeParametersProvider;
-        $this->subscriptionLimitCompleter    = $subscriptionLimitCompleter;
         $this->subscriptionSerializer        = $subscriptionSerializer;
-        $this->subscribePerformer            = $subscribePerformer;
-        $this->subscribePromotionalPerformer = $subscribePromotionalPerformer;
         $this->campaignExtractor             = $campaignExtractor;
     }
 
