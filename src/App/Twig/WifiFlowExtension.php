@@ -112,11 +112,13 @@ class WifiFlowExtension extends AbstractExtension
         return [
             new TwigFunction('getCountryCarrierList', [$this, 'getCountryCarrierList']),
             new TwigFunction('getCountries', [$this, 'getCountries']),
-            new TwigFunction('getCarrierCountry', [$this, 'getCarrierCountry'])
+            new TwigFunction('getCarrierCountry', [$this, 'getCarrierCountry']),
+            new TwigFunction('getCarrierOffer', [$this, 'getCarrierOffer'])
         ];
     }
 
     /**
+     * @TODO Remove this method
      * @return array
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -207,5 +209,26 @@ class WifiFlowExtension extends AbstractExtension
         })->toArray();
 
         return ['code' => $country->getCountryCode(), 'name' => $country->getCountryName(), 'countryCarriers' => $resultCountryCarriersMapper];
+    }
+
+    public function getCarrierOffer()
+    {
+        $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
+
+        if(!$billingCarrierId) {
+            return;
+        }
+
+        $wifi_offer = $this->translator->translate(
+            'wifi.offer',
+            $billingCarrierId,
+            $this->localExtractor->getLocal()
+        );
+        $wifi_offer = $this->shortcodeReplacer->do(
+            $this->dataAggregator->getGlobalParameters($billingCarrierId),
+            $wifi_offer
+        );
+
+        return $wifi_offer;
     }
 }

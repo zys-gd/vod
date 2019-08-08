@@ -1,9 +1,7 @@
 {% macro render() %}
     {% import '@App/Components/Buttons/button.html.twig' as button %}
 
-    {% set countriesCarriers = getCountryCarrierList() %}
     {% set countries = getCountries() %}
-    {#TODO: IMPLEMENT CARRIER COLLECTIONS TOO #}
     {% set carrierCountry = getCarrierCountry() %}
     {% set carrierId = getCarrierId()  %}
     <div class="">
