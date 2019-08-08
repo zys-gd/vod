@@ -338,6 +338,19 @@ class LPController extends AbstractController implements ControllerWithISPDetect
     }
 
     /**
+     * @Route("/lp/resest-wifi-lp", name="reset_wifi_lp", methods={"GET"}, condition="request.isXmlHttpRequest()")
+     *
+     * @return string
+     */
+    public function resetWifiLP()
+    {
+        $this->carrierSelector->removeCarrier();
+        $template = $this->templateConfigurator->getTemplate('landing_wifi', 0);
+        $html = $this->renderView($template);
+        return new JsonResponse($html, Response::HTTP_OK);
+    }
+
+    /**
      * @param Request $request
      *
      * @return Carrier|null

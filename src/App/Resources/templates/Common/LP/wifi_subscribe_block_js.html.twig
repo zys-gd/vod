@@ -26,9 +26,7 @@
 
         $('.x-subscribe-image').removeAttr('href').removeAttr('class');
 
-        $(document).on('change', 'select[name="country"]', (e) =>
-            changeCountry(e, "{{ path('fetch_carriers_for_country') }}", "{{ translate('wifi.form.select_carrier') }}")
-        );
+        $(document).on('change', 'select[name="country"]', (e) => changeCountry(e));
 
         $(document).on('change', 'select[name="carrier_id"]', (e) => changeCarrier(e, "{{ path('select_carrier_wifi') }}"));
 
@@ -237,42 +235,60 @@
             $('footer').html(footer);
         }
 
-        function changeCountry(e, url, defaultSelectText) {
+        function changeCountry(e) {
             let countryCode = String(e.target.options[e.target.selectedIndex].value);
-            if (countryCode.length > 0) {
-                $.ajax({
-                    url: url,
-                    method: 'GET',
-                    data: {countryCode},
-                    beforeSend: () => {
-                        clearOptionsForCarrierSelect(String(defaultSelectText));
-                        $._loader();
-                    },
-                    success: (response) => response.map(item => fillOptionsForCarrierSelect(item)),
-                    error: (response) => {
-                        if (this._response.responseJSON.data.hasOwnProperty('redirectUrl')) {
-                            window.location = this._response.responseJSON.data.redirectUrl;
-                        }
-                    },
-                    complete: () => $._loader(true)
-                })
+
+            if (countryCode.length === 0) {
+                resetWifiLP();
+                return;
             }
+
+            $.ajax({
+                url: "{{ path('fetch_carriers_for_country') }}",
+                method: 'GET',
+                data: {countryCode},
+                beforeSend: () => {
+                    clearOptionsForCarrierSelect("{{ translate('wifi.form.select_carrier') }}");
+                    $._loader();
+                },
+                success: (response) => response.map(item => fillOptionsForCarrierSelect(item)),
+                error: (response) => {
+                    if (this._response.responseJSON.data.hasOwnProperty('redirectUrl')) {
+                        window.location = this._response.responseJSON.data.redirectUrl;
+                    }
+                },
+                complete: () => $._loader(true)
+            })
         }
 
         function changeCarrier(e, url) {
             let carrierId = String(e.target.options[e.target.selectedIndex].value);
-            if (carrierId.length > 0) {
-                $.ajax({
-                    url: url,
-                    method: 'GET',
-                    data: {carrierId},
-                    beforeSend: () => {
-                        $._loader();
-                    },
-                    success: response => replaceBodyContent(response),
-                    complete: () => $._loader(true),
-                })
+
+            if (carrierId.length === 0) {
+                resetWifiLP();
+                return;
             }
+
+            $.ajax({
+                url: url,
+                method: 'GET',
+                data: {carrierId},
+                beforeSend: () => {
+                    $._loader();
+                },
+                success: response => replaceBodyContent(response),
+                complete: () => $._loader(true),
+            })
+        }
+
+        function resetWifiLP() {
+            $.ajax({
+                url: "{{ path('reset_wifi_lp') }}",
+                method: 'GET',
+                beforeSend: () => $._loader(),
+                success: response => replaceBodyContent(response),
+                complete: () => $._loader(true),
+            })
         }
 
     });
