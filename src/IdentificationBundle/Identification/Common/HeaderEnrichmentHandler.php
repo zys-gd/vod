@@ -103,8 +103,7 @@ class HeaderEnrichmentHandler
                 $msisdn, $carrier, $request->getClientIp(), $token, null, $deviceData
             );
             $this->entityManager->persist($user);
-        }
-        else {
+        } else {
             $user->setIdentificationToken($token);
         }
 
