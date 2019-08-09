@@ -96,8 +96,7 @@ class DataAggregator
 
         if ($this->arrayCacheService->hasCache($key)) {
             $carrier = $this->arrayCacheService->getValue($key);
-        }
-        else {
+        } else {
             $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);;
             $this->arrayCacheService->saveCache($key, $carrier, 96000);
         }
@@ -110,8 +109,7 @@ class DataAggregator
 
         if ($this->arrayCacheService->hasCache($key)) {
             $pack = $this->arrayCacheService->getValue($key);
-        }
-        else {
+        } else {
             $pack = $this->subscriptionPackProvider->getActiveSubscriptionPackFromCarrier($carrier);;
             $this->arrayCacheService->saveCache($key, $pack, 96000);
         }
