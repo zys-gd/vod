@@ -150,15 +150,13 @@ class Subscriber
         $campaign = $this->campaignExtractor->getCampaignForSubscription($subscription);
         $isFreeTrialSubscriptionFromCampaign = $campaign && $campaign->isFreeTrialSubscription();
 
-        try{
-            if (
-                ($subscription->getSubscriptionPack()->isFirstSubscriptionPeriodIsFree() || $isFreeTrialSubscriptionFromCampaign)
-                && !$subscription->getSubscriptionPack()->isProviderManagedSubscriptions()
-            ) {
-                $tierIdWithZeroValue = $this->getPriceTierIdWithZeroValue($subscription->getSubscriptionPack()->getCarrier());
-                $subscription->setPromotionTierId($tierIdWithZeroValue);
-            }
-        } catch (\Throwable $e) { }
+        if (
+            ($subscription->getSubscriptionPack()->isFirstSubscriptionPeriodIsFree() || $isFreeTrialSubscriptionFromCampaign)
+            && !$subscription->getSubscriptionPack()->isProviderManagedSubscriptions()
+        ) {
+            $tierIdWithZeroValue = $this->getPriceTierIdWithZeroValue();
+            $subscription->setPromotionTierId($tierIdWithZeroValue);
+        }
 
         try {
 
@@ -242,7 +240,7 @@ class Subscriber
     }
 
 //TODO: remove fake
-    private function getPriceTierIdWithZeroValue($carrierId)
+    private function getPriceTierIdWithZeroValue()
     {
         return 0;
     }
@@ -258,7 +256,7 @@ class Subscriber
         $subscriptionPack = $subscription->getSubscriptionPack();
         if ($subscriptionPack->isFirstSubscriptionPeriodIsFree() || $isFreeTrialSubscriptionFromCampaign
         ) {
-            $tierIdWithZeroValue = $this->getPriceTierIdWithZeroValue($subscriptionPack->getCarrier()->getBillingCarrierId());
+            $tierIdWithZeroValue = $this->getPriceTierIdWithZeroValue();
             $subscription->setPromotionTierId($tierIdWithZeroValue);
         }
     }
