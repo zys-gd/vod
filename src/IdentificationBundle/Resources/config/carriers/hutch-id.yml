@@ -1,0 +1,14 @@
+services:
+    IdentificationBundle\Carriers\HutchID\HutchIDIdentificationHandler:
+        tags:
+            - { name: identification.identification_handler }
+
+    IdentificationBundle\Carriers\HutchID\HutchIDWifiIdentificationHandler:
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'
+        tags:
+            - { name: identification.wifi_identification_handler }
+
+    IdentificationBundle\Carriers\HutchID\HutchIDIdentificationCallbackHandler:
+        tags:
+            - { name: identification.identification_callback_handler }

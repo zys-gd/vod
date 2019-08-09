@@ -6,6 +6,10 @@ subscription.consent_page_subscribe:
     path: /consent-subscribe
     defaults: {_controller: 'SubscriptionBundle\Controller\Actions\ConsentPageSubscribeAction'}
 
+subscription.passthrough_page_subscribe:
+    path: /passthrough-subscribe
+    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\PassthroughBackAction'}
+
 subscription.subscribe:
     path: /subscribe
     defaults: {_controller: 'SubscriptionBundle\Controller\Actions\SubscribeAction'}

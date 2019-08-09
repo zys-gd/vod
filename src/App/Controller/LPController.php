@@ -15,6 +15,7 @@ use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Exception\MissingCarrierException;
 use IdentificationBundle\Identification\Service\CarrierSelector;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\PassthroughChecker;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use Psr\Log\LoggerInterface;
@@ -111,6 +112,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      */
     private $subscribeUrlResolver;
     /**
+     * @var PassthroughChecker
+     */
+    private $passthroughChecker;
+    /**
      * @var ConstraintAvailabilityChecker
      */
     private $visitConstraintChecker;
@@ -134,6 +139,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param LoggerInterface               $logger
      * @param CarrierSelector               $carrierSelector
      * @param SubscribeUrlResolver          $subscribeUrlResolver
+     * @param PassthroughChecker            $passthroughChecker
      * @param ConstraintAvailabilityChecker $visitConstraintChecker
      */
     public function __construct(
@@ -153,6 +159,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         LoggerInterface $logger,
         CarrierSelector $carrierSelector,
         SubscribeUrlResolver $subscribeUrlResolver,
+        PassthroughChecker $passthroughChecker,
         ConstraintAvailabilityChecker $visitConstraintChecker
     )
     {
@@ -172,6 +179,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->logger                        = $logger;
         $this->carrierSelector               = $carrierSelector;
         $this->subscribeUrlResolver          = $subscribeUrlResolver;
+        $this->passthroughChecker            = $passthroughChecker;
         $this->visitConstraintChecker        = $visitConstraintChecker;
     }
 
@@ -278,20 +286,22 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      */
     public function handleCarrierSelect(Request $request)
     {
-        if (!$carrierId = $request->get('carrier_id', '')) {
+        if (!$billingCarrierId = $request->get('carrier_id', '')) {
             $this->carrierSelector->removeCarrier();
 
             return $this->getSimpleJsonResponse('');
         }
 
         try {
-            $this->carrierSelector->selectCarrier((int)$carrierId);
-            $offerTemplate = $this->templateConfigurator->getTemplate('landing_offer', $carrierId);
+            $this->carrierSelector->selectCarrier((int)$billingCarrierId);
+            $offerTemplate = $this->templateConfigurator->getTemplate('landing_offer', $billingCarrierId);
+            $carrier       = $this->carrierRepository->findOneByBillingId($billingCarrierId);
 
             $data = [
-                'success'    => true,
-                'annotation' => $this->renderView('@App/Components/Ajax/annotation.html.twig'),
-                'offer'      => $this->renderView($offerTemplate)
+                'success'     => true,
+                'annotation'  => $this->renderView('@App/Components/Ajax/annotation.html.twig'),
+                'offer'       => $this->renderView($offerTemplate),
+                'passthrough' => $this->passthroughChecker->isCarrierPassthrough($carrier)
             ];
 
             return $this->getSimpleJsonResponse('Successfully selected', 200, [], $data);
@@ -368,6 +378,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
     /**
      * @param $cid
+     *
      * @return Campaign|null
      */
     private function resolveCampaignFromRequest($cid): ?Campaign

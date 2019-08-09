@@ -2,24 +2,20 @@
 
 namespace IdentificationBundle\Identification\Common;
 
-use IdentificationBundle\Identification\Handler\PassthroughFlow\HasPassthroughFlow;
 use IdentificationBundle\BillingFramework\Process\IdentProcess;
 use IdentificationBundle\BillingFramework\Process\PassthroughProcess;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Common\Async\AsyncIdentStarter;
-use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow;
-use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasConsentPageFlow;
-use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCustomConsentPageFlow;
+use IdentificationBundle\Identification\Handler\PassthroughFlow\HasPassthroughFlow;
 use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\TokenGenerator;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
-/**
- * Class ConsentPageFlowHandler
- */
-class CommonConsentPageFlowHandler
+
+class CommonPassthroughFlowHandler
 {
     /**
      * @var IdentificationDataStorage
@@ -87,49 +83,38 @@ class CommonConsentPageFlowHandler
 
     /**
      * @param Request            $request
-     * @param HasConsentPageFlow $handler
+     * @param HasPassthroughFlow $handler
      * @param CarrierInterface   $carrier
      * @param string             $token
      *
      * @return Response
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function process(
-        Request $request,
-        HasConsentPageFlow $handler,
+    public function process(Request $request,
+        HasPassthroughFlow $handler,
         CarrierInterface $carrier,
-        string $token
-    ): Response
+        string $token): Response
     {
-        if ($handler instanceof HasCommonConsentPageFlow) {
-            $additionalParams = $handler->getAdditionalIdentificationParams($request);
-            $successUrl       = $this->router->generate('subscription.consent_page_subscribe', [], RouterInterface::ABSOLUTE_URL);
-            $waitPageUrl      = $this
-                ->router
-                ->generate('wait_for_callback', ['successUrl' => $successUrl], RouterInterface::ABSOLUTE_URL);
 
-            $parameters = $this->requestParametersProvider->prepareRequestParameters(
-                $token,
-                $carrier->getBillingCarrierId(),
-                $request->getClientIp(),
-                $waitPageUrl,
-                $request->headers->all(),
-                $additionalParams
-            );
+        $additionalParams = $handler->getAdditionalIdentificationParams($request);
+        $successUrl       = $this->router->generate('subscription.passthrough_page_subscribe', [], RouterInterface::ABSOLUTE_URL);
+        $waitPageUrl      = $this
+            ->router
+            ->generate('wait_for_callback', ['successUrl' => $successUrl], RouterInterface::ABSOLUTE_URL);
 
-            $processResult = $this->identProcess->doIdent($parameters);
+        $parameters = $this->requestParametersProvider->prepareRequestParameters(
+            $token,
+            $carrier->getBillingCarrierId(),
+            $request->getClientIp(),
+            $waitPageUrl,
+            $request->headers->all(),
+            $additionalParams
+        );
 
-            $this->dataStorage->storeValue(
-                IdentificationDataStorage::CONSENT_FLOW_TOKEN_KEY,
-                $this->generator->generateToken()
-            );
+        $passthrowLink = $this->passthroughProcess->runPassthrough($parameters);
 
-            return $this->asyncIdentStarter->start($processResult, $token);
-        }
+        $this->dataStorage->storeValue('passthroughFlow[token]', $this->generator->generateToken());
 
-        if ($handler instanceof HasCustomConsentPageFlow) {
-            return $handler->process($request, $carrier, $token);
-        }
-
-        throw new \RuntimeException('Handlers for identification should have according interfaces');
+        return new RedirectResponse($passthrowLink);
     }
 }
