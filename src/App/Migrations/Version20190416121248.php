@@ -14,7 +14,7 @@ final class Version20190416121248 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql("
-            ALTER TABLE subscription_packs ADD carrier_uuid CHAR(36) DEFAULT NULL COMMENT '(DC2Type:guid)' AFTER carrier_id;
+            ALTER TABLE subscription_packs ADD carrier_uuid CHAR(36) DEFAULT NULL COMMENT '(DC2Type:guid)';
             ALTER TABLE subscription_packs ADD CONSTRAINT FK_43C6615483122C21 FOREIGN KEY (carrier_uuid) REFERENCES carriers (uuid);
             ALTER TABLE subscription_packs ADD INDEX IDX_43C6615483122C21(carrier_uuid);
         ");

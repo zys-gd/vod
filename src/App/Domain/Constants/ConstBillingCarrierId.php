@@ -39,6 +39,7 @@ class ConstBillingCarrierId
     const OOREDOO_MYANMAR       = 2233;
     const DU_UAE                = 2008;
     const TELENOR_PAKISTAN_DOT  = 2252;
-    const VODAFONE_EGYPT_TPAY   = 2253; // todo may be changed for live
+    const VODAFONE_EGYPT_TPAY   = 2253;
     const ORANGE_EGYPT_TPAY     = 2254;
+    const HUTCH_INDONESIA       = 2255;
 }

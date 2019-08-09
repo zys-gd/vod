@@ -310,6 +310,7 @@ class CampaignAdmin extends AbstractAdmin
                 'prototype'    => true,
                 'by_reference' => false
             ])
+            ->add('freeTrialSubscription')
             ->end()
             ->end();
     }

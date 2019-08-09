@@ -3119,5 +3119,45 @@
             "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
+    },
+    {
+        "uuid": "5125f53c-3206-4665-afb3-eee9e5b15661",
+        "key": "messages.subscription_popup.confirmation_text",
+        "translation": "Hai %phone%, Anda akan berlangganan layanan 100% sport dengan tarif %currency% %price%/%period%",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": {
+            "uuid": "038275ac-dae1-446a-8eac-17a26fb69ea2"
+        }
+    },
+    {
+        "uuid": "b00fe180-17e2-4663-a2ed-2278b707ea27",
+        "key": "messages.subscription_popup.confirmation_title",
+        "translation": "",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": {
+            "uuid": "038275ac-dae1-446a-8eac-17a26fb69ea2"
+        }
+    },
+    {
+        "uuid": "e31516b6-9bb2-40f9-98a2-b076005793f5",
+        "key": "messages.subscription_popup.confirmation_text",
+        "translation": "Hi %phone%, you will be subscribed to service 100% sport with rate %currency% %price%/%period%",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "ae0414be-b2c8-49d8-8a07-8809ce517910",
+        "key": "messages.subscription_popup.confirmation_title",
+        "translation": "",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
     }
 ]
