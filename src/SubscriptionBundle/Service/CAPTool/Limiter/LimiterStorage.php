@@ -60,7 +60,8 @@ class LimiterStorage
 
     public function storeFinishedSubscription(string $key, string $uuid): void
     {
-        $timeout = $this->calculateSecondsUntilTomorrow();
+        /*$timeout = $this->calculateSecondsUntilTomorrow();*/
+        $timeout = 0;
 
         $this->redis->set(sprintf('finished_%s[%s]', $key, $uuid), json_encode([
             'uuid' => $uuid
