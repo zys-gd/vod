@@ -41,46 +41,20 @@ services:
         tags:
             - { name: twig.extension }
 
-    App\Twig\WifiFlowExtension:
+    App\Twig\LPExtension:
         arguments:
-            - '@App\Domain\Repository\CarrierRepository'
-            - '@SubscriptionBundle\Repository\SubscriptionPackRepository'
-            - '@App\Domain\Repository\CountryRepository'
-            - '@App\Domain\Service\Translator\Translator'
-            - '@App\Domain\Service\Translator\ShortcodeReplacer'
-            - '@App\Domain\Service\Translator\DataAggregator'
-            - '@ExtrasBundle\Utils\LocalExtractor'
             - '@session'
+            - '@App\CarrierTemplate\TemplateConfigurator'
+            - '@App\Domain\Repository\CarrierRepository'
+            - '@SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface'
+            - '@App\Domain\Repository\CountryRepository'
+            - '%images_base_url%'
         tags:
             - { name: twig.extension }
 
     App\Twig\AuditExtension:
         tags:
             - { name: twig.extension }
-
-    App\Twig\LPClickableSubscribeImageExtension:
-        arguments:
-            - '@session'
-            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
-            - '@SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface'
-        tags:
-            - { name: twig.extension }
-
-    App\Twig\LPCampaignDataExtension:
-        arguments:
-            - '@session'
-            - '@App\Domain\Repository\CampaignRepository'
-            - '%images_base_url%'
-        tags:
-          - { name: twig.extension }
-
-    App\Twig\LPTwigImporterExtension:
-        arguments:
-            - '@session'
-            - '@App\CarrierTemplate\TemplateConfigurator'
-        tags:
-            - { name: twig.extension }
-
 
     twig.extension.date:
         class: Twig_Extensions_Extension_Date

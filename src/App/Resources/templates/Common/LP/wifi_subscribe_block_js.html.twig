@@ -26,9 +26,13 @@
 
         $('.x-subscribe-image').removeAttr('href').removeAttr('class');
 
-        $(document).on('change', 'select[name="country"]', (e) => changeCountry(e));
+        $(document).on('change', 'select[name="country"]', function () {
+            changeCountry(this)
+        });
 
-        $(document).on('change', 'select[name="carrier_id"]', (e) => changeCarrier(e));
+        $(document).on('change', 'select[name="carrier_id"]', function () {
+            changeCarrier(this)
+        });
 
 
         // submit pin form
@@ -235,8 +239,8 @@
             $('footer').html(footer);
         }
 
-        function changeCountry(e) {
-            let countryCode = String(e.target.options[e.target.selectedIndex].value);
+        function changeCountry(el) {
+            let countryCode = String($(el).val());
 
             if (countryCode.length === 0) {
                 resetWifiLP();
@@ -261,8 +265,8 @@
             })
         }
 
-        function changeCarrier(e) {
-            let carrierId = String(e.target.options[e.target.selectedIndex].value);
+        function changeCarrier(el) {
+            let carrierId = String($(el).val());
 
             if (carrierId.length === 0) {
                 resetWifiLP();
