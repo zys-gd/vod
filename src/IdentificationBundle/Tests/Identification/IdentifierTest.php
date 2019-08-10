@@ -58,8 +58,8 @@ class IdentifierTest extends TestCase
      */
     private $session;
 
-    private $dataStorage;
     private $consentPageHandler;
+    private $passthroughFlowHandler;
 
     protected function setUp()/* The :void return type declaration that should be here would cause a BC issue */
     {
@@ -72,9 +72,8 @@ class IdentifierTest extends TestCase
         $this->commonFlowHandler       = Mockery::spy(CommonFlowHandler::class);
 
         $this->consentPageHandler = Mockery::spy(CommonConsentPageFlowHandler::class);
-        $this->session            = new Session(new MockArraySessionStorage());
-
-        $this->dataStorage = new IdentificationDataStorage(new SessionStorage($this->session));
+        $this->passthroughFlowHandler = Mockery::spy(\IdentificationBundle\Identification\Common\CommonPassthroughFlowHandler::class);
+        $this->session                = new Session(new MockArraySessionStorage());
 
 
         $this->identifier = new \IdentificationBundle\Identification\Identifier(
@@ -83,7 +82,8 @@ class IdentifierTest extends TestCase
             $this->logger,
             $this->commonFlowHandler,
             $this->headerEnrichmentHandler,
-            $this->consentPageHandler
+            $this->consentPageHandler,
+            $this->passthroughFlowHandler
         );
 
         $this->carrierRepository->allows([

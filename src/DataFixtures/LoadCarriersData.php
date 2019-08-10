@@ -41,7 +41,8 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $countryCode                             = $row['countryCode'];
             $isp                                     = $row['isp'];
             $published                               = $row['published'];
-            $isConfirmationClick                     = $row['isConfirmationClick'];
+            $isConfirmationClick                     = $row['isConfirmationClick'] ?? false;
+            $isConfirmationPopup                     = $row['isConfirmationPopup'] ?? false;
             $trialInitializer                        = $row['trialInitializer'];
             $trialPeriod                             = $row['trialPeriod'];
             $subscriptionPeriod                      = $row['subscriptionPeriod'];
@@ -69,6 +70,7 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $carrier->setSubscriptionPeriod($subscriptionPeriod);
             $carrier->setOperatorId($operatorId);
             $carrier->setIsConfirmationClick($isConfirmationClick);
+            $carrier->setIsConfirmationPopup($isConfirmationPopup);
             $carrier->setResubAllowed($resubAllowed);
             $carrier->setIsCampaignsOnPause($isCampaignsOnPause);
             $carrier->setSubscribeAttempts((int)$subscribeAttempts);

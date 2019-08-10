@@ -3,6 +3,7 @@
     {% import '@App/Components/Forms/wifi_phone.html.twig' as wifi_phone %}
     {% import '@App/Components/Forms/wifi_pin.html.twig' as wifi_pin %}
     {% import '@App/Components/Forms/wifi_select.html.twig' as wifi_select %}
+    {% import "@App/Components/Buttons/link.html.twig" as  link %}
 
     <form data-form="pin" id="wifi_form"
           class="d-flex flex-column w-75 text-center">
@@ -12,12 +13,22 @@
         </div>
         <div id="wifi_form_step">
             {{ wifi_select.render() }}
-            {{ wifi_phone.render() }}
+
+            {% if not isCarrierPassthrough() %}
+                {{ wifi_phone.render() }}
+            {% endif %}
         </div>
-        <div class="error" style="color: red;font-size: 18px;font-weight: bold;"></div>
-        <div id="wifi_button">
-            {{ button.renderSubmitButton(translate('buttons.subscribe'), 'x-send-pin-button') }}
-        </div>
+
+        {% if isCarrierPassthrough() %}
+            <div id="passthrough_link" class="disabled">
+                {{ link.render(url('identify_and_subscribe'), translate('buttons.subscribe'), 'list-inline-item') }}
+            </div>
+        {% else %}
+            <div id="wifi_button">
+                {{ button.renderSubmitButton(translate('buttons.subscribe'), 'x-send-pin-button') }}
+            </div>
+        {% endif %}
+
         <div class="">
             <span id="wifi_offer">{% if isCarrierDetected() %} {{ translate('wifi.offer') }} {% endif %}</span>
         </div>

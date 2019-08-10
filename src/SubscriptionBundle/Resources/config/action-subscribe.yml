@@ -1,17 +1,20 @@
 services:
     SubscriptionBundle\Service\Action\Subscribe\Subscriber:
         arguments:
-            - '@monolog.logger.subscription'
+            - '@logger'
             - '@SubscriptionBundle\Service\EntitySaveHelper'
             - '@session'
             - '@SubscriptionBundle\Service\SubscriptionCreator'
             - '@SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker'
             - '@SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater'
             - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitCompleter'
+            - '@SubscriptionBundle\Service\SubscriptionSerializer'
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePerformer'
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePromotionalPerformer'
             - '@cross_subscription.api_connector'
             - '@SubscriptionBundle\Service\Action\Common\ProcessResultSuccessChecker'
+            - '@SubscriptionBundle\Service\CampaignExtractor'
+
 
     SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider:
         arguments: ['@SubscriptionBundle\Service\Action\Subscribe\Handler\DefaultHandler']

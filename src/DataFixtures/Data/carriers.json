@@ -9978,5 +9978,33 @@
         "subscriptionPeriod": 1,
         "subscribeAttempts": 5,
         "isLpOff": false
+    },
+    {
+        "name": "Hutch Indonesia",
+        "countryCode": "ID",
+        "isp": "Three Indonesia|Three Indonesia|Hutchison CP Telecommunications, PT (ID)|Ruko Malaka Country|Three Indonesia (ID)",
+        "published": true,
+        "isConfirmationClick": false,
+        "pinIdentSupport": true,
+        "resubAllowed": false,
+        "isCampaignsOnPause": false,
+        "subscribeAttempts": 0,
+        "isUnlimitedSubscriptionAttemptsAllowed": true,
+        "isCaptcha": false,
+        "numberOfAllowedSubscriptionsByConstraint": null,
+        "redirectUrl": null,
+        "counter": 0,
+        "flushDate": null,
+        "isCapAlertDispatch": false,
+        "uuid": "038275ac-dae1-446a-8eac-17a26fb69ea2",
+        "default_language": null,
+        "campaigns": [],
+        "billingCarrierId": 2255,
+        "operatorId": 0,
+        "trialInitializer": "carrier",
+        "trialPeriod": 0,
+        "subscriptionPeriod": 3,
+        "isLpOff": false,
+        "isConfirmationPopup": true
     }
 ]

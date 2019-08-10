@@ -16,6 +16,7 @@ use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Exception\MissingCarrierException;
 use IdentificationBundle\Identification\Service\CarrierSelector;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
+use IdentificationBundle\Identification\Service\PassthroughChecker;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use Psr\Log\LoggerInterface;
@@ -270,7 +271,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      */
     public function selectCarrierAction(Request $request)
     {
-
         if (!$carrierId = $request->get('carrierId', '')) {
             $this->carrierSelector->removeCarrier();
 
@@ -368,6 +368,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
     /**
      * @param $cid
+     *
      * @return Campaign|null
      */
     private function resolveCampaignFromRequest($cid): ?Campaign
