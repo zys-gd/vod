@@ -73,6 +73,7 @@ class SubscriptionExtension extends ConfigurableExtension
         $loader->load('jazz-pk.yml');
         $loader->load('vodafone-eg-tpay.yml');
         $loader->load('orange-eg-tpay.yml');
+        $loader->load('hutch_id.yml');
 
         $definition = $container->getDefinition('SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler');
 

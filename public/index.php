@@ -6,15 +6,15 @@ use Symfony\Component\HttpFoundation\Request;
 
 require dirname(__DIR__) . '/config/bootstrap.php';
 
+
 if (isset($_COOKIE['SNOOKER_IN_COLOMBO'])) {
     $_SERVER['APP_ENV']   = $_ENV['APP_ENV'] = $_COOKIE['SNOOKER_IN_COLOMBO'];
-    $_SERVER['APP_DEBUG'] = ($_SERVER['APP_ENV'] !== 'prod');
+    $_SERVER['APP_DEBUG'] = (in_array($_SERVER['APP_ENV'], ['dev', 'stage_debug']));
 }
 
 
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);
-
     Debug::enable();
 }
 
@@ -39,6 +39,22 @@ try {
     $response->send();
     $kernel->terminate($request, $response);
 } catch (\Throwable $exception) {
-    throw $exception;
+
+    $log = sprintf(
+        'Uncaught PHP Exception %s: "%s" at %s line %s',
+        get_class($exception),
+        $exception->getMessage(),
+        $exception->getFile(),
+        $exception->getLine()
+    );
+
+    if ($_SERVER['APP_DEBUG'] || (in_array($_SERVER['APP_ENV'], ['ci_dev', 'stage_debug']))) {
+        http_response_code(500);
+        echo $exception->getMessage();
+        error_log($log);
+    } else {
+        error_log($log);
+        throw $exception;
+    }
 }
 

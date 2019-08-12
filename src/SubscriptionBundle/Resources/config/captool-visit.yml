@@ -18,3 +18,5 @@ services:
     arguments: ['@SubscriptionBundle\Service\VisitCAPTool\ConstraintValidityChecker', '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender', '@SubscriptionBundle\Service\EntitySaveHelper']
 
   SubscriptionBundle\Service\VisitCAPTool\KeyGenerator: ~
+
+  SubscriptionBundle\Service\VisitCAPTool\ConstraintAvailabilityChecker: ~
