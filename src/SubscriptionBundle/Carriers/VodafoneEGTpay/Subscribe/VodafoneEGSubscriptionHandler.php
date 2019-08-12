@@ -108,7 +108,7 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
     public function getSubscriptionErrorResponse(SubscribingProcessException $exception): Response
     {
         $billingData = $exception->getBillingData();
-        $failReason = $billingData->provider_fields->fail_reason;
+        $failReason = $billingData ? $billingData->provider_fields->fail_reason : null;
 
         switch ($failReason) {
             case SubscribingProcessException::FAIL_REASON_NOT_ENOUGH_CREDIT:

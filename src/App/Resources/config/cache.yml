@@ -17,3 +17,10 @@ services:
     arguments:
       - '1'
       - 'subscriptions'
+
+  app.cache.default.blacklist:
+    class: ExtrasBundle\Cache\Redis\RedisCacheService
+    factory: [ '@app.cache.redis_factory', 'createCacheService']
+    arguments:
+      - '4'
+      - 'blacklist'

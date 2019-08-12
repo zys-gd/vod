@@ -17,6 +17,6 @@ class ShortcodeReplacer
         foreach ($parameters as $key => $value) {
             $replacement = str_replace($key, $value, $replacement);
         }
-        return $replacement;
+        return (string)$replacement;
     }
 }

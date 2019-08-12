@@ -191,31 +191,34 @@ class CommonFlowHandler
             return $this->handleSubscribe($request, $User, $subscriber);
         }
 
+        if ($this->checker->isStatusOkForTryAgainSubscription($subscription)) {
+            return $this->handleSubscribe($request, $User, $subscriber);
+        }
+
         if ($this->checker->isStatusOkForResubscribe($subscription)) {
             return $this->handleResubscribeAttempt($request, $User, $subscription, $subscriber);
-
         }
-        else {
-            $this->logger->debug('`Subscribe` is not possible. User already have an active subscription.');
-            if (
-                $subscriber instanceof HasCustomResponses &&
-                $response = $subscriber->createResponseForExistingSubscription($request, $User, $subscription)
-            ) {
-                return $response;
-            }
 
-            $redirect     = $request->get('redirect', false);
-            $redirect_url = $request->get('location', '/');
-            $updatedUrl   = $this->urlParamAppender->appendUrl($redirect_url, [
-                'err_handle' => 'already_subscribed'
-            ]);
-
-            if ($redirect) {
-                return new RedirectResponse($updatedUrl);
-            }
-
-            throw new ExistingSubscriptionException('You already have an active subscription.', $subscription);
+        $this->logger->debug('`Subscribe` is not possible. User already have an active subscription.');
+        if (
+            $subscriber instanceof HasCustomResponses &&
+            $response = $subscriber->createResponseForExistingSubscription($request, $User, $subscription)
+        ) {
+            return $response;
         }
+
+        $redirect     = $request->get('redirect', false);
+        $redirect_url = $request->get('location', '/');
+        $updatedUrl   = $this->urlParamAppender->appendUrl($redirect_url, [
+            'err_handle' => 'already_subscribed'
+        ]);
+
+        if ($redirect) {
+            return new RedirectResponse($updatedUrl);
+        }
+
+        throw new ExistingSubscriptionException('You already have an active subscription.', $subscription);
+
     }
 
 
@@ -255,8 +258,7 @@ class CommonFlowHandler
             $additionalData = $subscriber->getAdditionalSubscribeParams($request, $user);
             $result         = $this->subscriber->resubscribe($subscription, $subscriptionPack, $additionalData);
 
-        }
-        else {
+        } else {
             $this->logger->debug('Resubscription is not allowed.', [
                 'packId'      => $subpackId,
                 'carrierName' => $subpackName
@@ -264,17 +266,15 @@ class CommonFlowHandler
 
             if ($request->get('is_ajax_request', null)) {
                 return $this->getSimpleJsonResponse('', 200, [], ['resub_not_allowed' => true]);
-            }
-            else {
+            } else {
                 return new RedirectResponse($this->router->generate($this->resubNotAllowedRoute));
             }
         }
 
 
         if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
-            $isAffTracked = $subscriber->isAffiliateTrackedForResub($result, $user);
-        }
-        else {
+            $isAffTracked = $subscriber->isAffiliateTrackedForResub($result);
+        } else {
             $isAffTracked = ($result->isSuccessful() && $result->isFinal());
             $this->logger->debug('Is need to track affiliate log?', [
                 'result'       => $result,
@@ -288,8 +288,7 @@ class CommonFlowHandler
 
         if ($subscriber instanceof HasCustomPiwikTrackingRules) {
             $isPiwikTracked = $subscriber->isPiwikTrackedForResub($result);
-        }
-        else {
+        } else {
             $isPiwikTracked = ($result->isFailedOrSuccessful() && $result->isFinal());;
         }
         if ($isPiwikTracked) {
@@ -321,9 +320,8 @@ class CommonFlowHandler
         list($newSubscription, $result) = $this->subscriber->subscribe($user, $subscriptionPack, $additionalData);
 
         if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
-            $isAffTracked = $subscriber->isAffiliateTrackedForSub($result, $user);
-        }
-        else {
+            $isAffTracked = $subscriber->isAffiliateTrackedForSub($result);
+        } else {
             $isAffTracked = ($result->isSuccessful() && $result->isFinal());
         }
 
@@ -334,8 +332,7 @@ class CommonFlowHandler
 
         if ($subscriber instanceof HasCustomPiwikTrackingRules) {
             $isPiwikTracked = $subscriber->isPiwikTrackedForSub($result);
-        }
-        else {
+        } else {
             $isPiwikTracked = ($result->isFailedOrSuccessful() && $result->isFinal());
         }
 

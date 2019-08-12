@@ -104,6 +104,7 @@ class CarrierAdmin extends AbstractAdmin
             ->add('isp')
             ->add('published')
             ->add('isConfirmationClick')
+            ->add('isConfirmationPopup')
             ->add('trialInitializer')
             ->add('trialPeriod')
             ->add('subscriptionPeriod')
@@ -132,6 +133,7 @@ class CarrierAdmin extends AbstractAdmin
             ->add('isp')
             ->add('published')
             ->add('isConfirmationClick')
+            ->add('isConfirmationPopup')
             ->add('trialInitializer')
             ->add('trialPeriod')
             ->add('subscriptionPeriod')
@@ -170,6 +172,7 @@ class CarrierAdmin extends AbstractAdmin
             ->add('isp')
             ->add('published')
             ->add('isConfirmationClick')
+            ->add('isConfirmationPopup')
             ->add('isLpOff', null, [
                 'label' => 'Turn off LP showing',
                 'help' => 'If consent page exist, then show it. Otherwise will try to subscribe'
@@ -221,6 +224,7 @@ class CarrierAdmin extends AbstractAdmin
             ->add('isp')
             ->add('published')
             ->add('isConfirmationClick')
+            ->add('isConfirmationPopup')
             ->add('isLpOff', null, [
                 'label' => 'Turn off LP showing',
                 'help' => 'If consent page exist, then show it. Otherwise will try to subscribe'

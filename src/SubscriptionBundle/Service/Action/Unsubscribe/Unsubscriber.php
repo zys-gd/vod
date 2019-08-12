@@ -102,7 +102,8 @@ class Unsubscriber
         Subscription $subscription,
         SubscriptionPack $subscriptionPack,
         array $additionalParameters = []
-    ) {
+    )
+    {
         $subscription->setStatus(Subscription::IS_PENDING);
         $subscription->setCurrentStage(Subscription::ACTION_UNSUBSCRIBE);
         $this->entitySaveHelper->persistAndSave($subscription);
@@ -144,12 +145,11 @@ class Unsubscriber
                 $response = $this->unsubscribeProcess->doUnsubscribe($parameters);
                 $this->onUnsubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
 
-                $user = $subscription->getUser();
-
                 return $response;
 
             } catch (UnsubscribingProcessException $exception) {
                 $subscription->setStatus(Subscription::IS_ERROR);
+                $subscription->setError('unsubscribing_process_exception');
                 throw $exception;
             } finally {
                 $this->entitySaveHelper->persistAndSave($subscription);

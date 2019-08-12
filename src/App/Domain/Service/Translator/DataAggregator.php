@@ -68,6 +68,7 @@ class DataAggregator
      * @param int $billingCarrierId
      *
      * @return array
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function getGlobalParameters(int $billingCarrierId): array
     {
@@ -80,6 +81,7 @@ class DataAggregator
             '%price%'       => $subscriptionPack->getTierPrice(),
             '%currency%'    => $subscriptionPack->getFinalCurrency(),
             '%credits%'     => $subscriptionPack->getCredits(),
+            '%duration%'    => $subscriptionPack->getFinalPeriodForSubscription(),
             '%period%'      => $this
                 ->translator
                 ->translate('period.' . $subscriptionPack->convertPeriod2Text(), $billingCarrierId, $languageCode),

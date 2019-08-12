@@ -3,6 +3,7 @@
     {% import '@App/Components/Forms/wifi_phone.html.twig' as wifi_phone %}
     {% import '@App/Components/Forms/wifi_pin.html.twig' as wifi_pin %}
     {% import '@App/Components/Forms/wifi_select.html.twig' as wifi_select %}
+    {% import "@App/Components/Buttons/link.html.twig" as  link %}
 
     <form data-form="pin" id="wifi_form"
           class="d-flex flex-column w-75 text-center">
@@ -16,6 +17,9 @@
         </div>
         <div id="wifi_button">
             {{ button.renderSubmitButton(translate('buttons.subscribe'), 'x-send-pin-button') }}
+        </div>
+        <div id="passthrough_link" class="disabled">
+            {{ link.render(url('identify_and_subscribe'), translate('buttons.subscribe'), 'list-inline-item') }}
         </div>
         <div class="">
             <span id="wifi_offer">{% if isCarrierDetected() %}{{ translate('wifi.offer') }}{% endif %}</span>
@@ -63,6 +67,7 @@
 
             addValidationAttributes(carrierId);
         }
+        compilePassthrough({{ isCarrierPassthrough() }});
 
         $(document).on('change', 'select[name="country"]', function () {
             var carrierSelect = $('select[name="carrier_id"]');
@@ -79,6 +84,7 @@
 
                 if (carrierId && carrierId === _carrier.billingCarrierId) {
                     option.attr('selected', 'selected');
+                    compilePassthrough({{ isCarrierPassthrough() }});
                 }
 
                 carrierSelect.append(option);
@@ -106,6 +112,7 @@
                         $('footer').prepend(result.data.annotation);
                         $('#landing-offer-container').removeClass('mt-2').html(result.data.offer);
                         addValidationAttributes(carrierId);
+                        compilePassthrough(result.data.passthrough);
                     } else if (result.data.message) {
                         showAlert({title: result.data.message});
                     }
@@ -315,6 +322,18 @@
 
             if (pinPatterns[carrierId]) {
                 $("input[name='pin_code']").attr('pattern', pinPatterns[carrierId])
+            }
+        }
+        
+        function compilePassthrough(isCarrierPassthrough) {
+            if( isCarrierPassthrough ) {
+                $('#wifi_button').hide();
+                $('#passthrough_link').show();
+                input_phone.hide().removeAttr('required');
+            } else {
+                $('#wifi_button').show();
+                $('#passthrough_link').hide();
+                input_phone.show().attr('required');
             }
         }
     </script>

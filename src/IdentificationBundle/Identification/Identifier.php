@@ -11,15 +11,16 @@ namespace IdentificationBundle\Identification;
 
 use IdentificationBundle\Identification\Common\CommonFlowHandler;
 use IdentificationBundle\Identification\Common\CommonConsentPageFlowHandler;
+use IdentificationBundle\Identification\Common\CommonPassthroughFlowHandler;
 use IdentificationBundle\Identification\Common\HeaderEnrichmentHandler;
 use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\DTO\IdentifyResult;
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasConsentPageFlow;
 use IdentificationBundle\Identification\Handler\HasCommonFlow;
-use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow;
 use IdentificationBundle\Identification\Handler\HasCustomFlow;
 use IdentificationBundle\Identification\Handler\HasHeaderEnrichment;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
+use IdentificationBundle\Identification\Handler\PassthroughFlow\HasPassthroughFlow;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,16 +51,22 @@ class Identifier
      * @var CommonConsentPageFlowHandler
      */
     private $consentPageFlowHandler;
+    /**
+     * @var CommonPassthroughFlowHandler
+     */
+    private $passthroughFlowHandler;
 
 
     /**
      * Identifier constructor.
-     * @param IdentificationHandlerProvider                                       $handlerProvider
-     * @param CarrierRepositoryInterface                                          $carrierRepository
-     * @param LoggerInterface                                                     $logger
-     * @param CommonFlowHandler                                                   $commonFlowHandler
-     * @param \IdentificationBundle\Identification\Common\HeaderEnrichmentHandler $headerEnrichmentHandler
-     * @param CommonConsentPageFlowHandler                                              $consentPageFlowHandler
+     *
+     * @param IdentificationHandlerProvider $handlerProvider
+     * @param CarrierRepositoryInterface    $carrierRepository
+     * @param LoggerInterface               $logger
+     * @param CommonFlowHandler             $commonFlowHandler
+     * @param HeaderEnrichmentHandler       $headerEnrichmentHandler
+     * @param CommonConsentPageFlowHandler  $consentPageFlowHandler
+     * @param CommonPassthroughFlowHandler  $passthroughFlowHandler
      */
     public function __construct(
         IdentificationHandlerProvider $handlerProvider,
@@ -67,7 +74,8 @@ class Identifier
         LoggerInterface $logger,
         CommonFlowHandler $commonFlowHandler,
         HeaderEnrichmentHandler $headerEnrichmentHandler,
-        CommonConsentPageFlowHandler $consentPageFlowHandler
+        CommonConsentPageFlowHandler $consentPageFlowHandler,
+        CommonPassthroughFlowHandler $passthroughFlowHandler
     )
     {
         $this->handlerProvider         = $handlerProvider;
@@ -76,9 +84,13 @@ class Identifier
         $this->commonFlowHandler       = $commonFlowHandler;
         $this->headerEnrichmentHandler = $headerEnrichmentHandler;
         $this->consentPageFlowHandler  = $consentPageFlowHandler;
+        $this->passthroughFlowHandler  = $passthroughFlowHandler;
     }
 
-    public function identify(int $carrierBillingId, Request $request, string $token, DeviceData $deviceData): IdentifyResult
+    public function identify(int $carrierBillingId,
+        Request $request,
+        string $token,
+        DeviceData $deviceData): IdentifyResult
     {
         $carrier = $this->carrierRepository->findOneByBillingId($carrierBillingId);
 
@@ -92,22 +104,29 @@ class Identifier
             $this->headerEnrichmentHandler->process($request, $handler, $carrier, $token, $deviceData);
             return new IdentifyResult();
 
-        } else if ($handler instanceof HasConsentPageFlow) {
+        }
+        if ($handler instanceof HasConsentPageFlow) {
             $response = $this->consentPageFlowHandler->process($request, $handler, $carrier, $token);
             return new IdentifyResult($response);
 
-        } else if ($handler instanceof HasCustomFlow) {
+        }
+        if ($handler instanceof HasPassthroughFlow) {
+            $response = $this->passthroughFlowHandler->process($request, $handler, $carrier, $token);
+            return new IdentifyResult($response);
+
+        }
+        if ($handler instanceof HasCustomFlow) {
             $handler->process($request);
             return new IdentifyResult();
 
-        } else if ($handler instanceof HasCommonFlow) {
+        }
+        if ($handler instanceof HasCommonFlow) {
             $response = $this->commonFlowHandler->process($request, $handler, $token, $carrier);
             return new IdentifyResult($response);
 
-        } else {
-            throw new \RuntimeException('Handlers for identification should have according interfaces');
         }
 
+        throw new \RuntimeException('Handlers for identification should have according interfaces');
     }
 
 }
