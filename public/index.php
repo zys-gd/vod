@@ -14,8 +14,11 @@ if (isset($_COOKIE['SNOOKER_IN_COLOMBO'])) {
 
 
 if ($_SERVER['APP_DEBUG']) {
-    umask(0000);
     Debug::enable();
+}
+
+if (in_array($_SERVER['APP_ENV'], ['dev', 'ci_dev', 'stage', 'stage_debug'])) {
+    umask(0000);
 }
 
 require_once __DIR__ . '/../profiler/include.php';
