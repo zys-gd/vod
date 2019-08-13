@@ -72,5 +72,16 @@ class SubscriptionEligibilityChecker
 
     }
 
+    public function isStatusOkForTryAgainSubscription(Subscription $subscription): bool
+    {
+
+        if ($subscription->isNotEnoughCredit()) {
+            return true;
+        }
+
+
+        return false;
+    }
+
 
 }

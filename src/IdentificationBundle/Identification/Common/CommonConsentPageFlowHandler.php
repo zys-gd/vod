@@ -3,7 +3,10 @@
 namespace IdentificationBundle\Identification\Common;
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use IdentificationBundle\Identification\Handler\PassthroughFlow\HasPassthroughFlow;
 use IdentificationBundle\BillingFramework\Process\IdentProcess;
+use IdentificationBundle\BillingFramework\Process\PassthroughProcess;
+use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Common\Async\AsyncIdentStarter;
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow;
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasConsentPageFlow;
@@ -48,16 +51,21 @@ class CommonConsentPageFlowHandler
      * @var AsyncIdentStarter
      */
     private $asyncIdentStarter;
+    /**
+     * @var PassthroughProcess
+     */
+    private $passthroughProcess;
 
     /**
      * ConsentPageFlowHandler constructor
      *
-     * @param RouterInterface $router
+     * @param RouterInterface           $router
      * @param IdentificationDataStorage $dataStorage
-     * @param TokenGenerator $generator
+     * @param TokenGenerator            $generator
      * @param RequestParametersProvider $requestParametersProvider
-     * @param IdentProcess $identProcess
-     * @param AsyncIdentStarter $asyncIdentStarter
+     * @param IdentProcess              $identProcess
+     * @param AsyncIdentStarter         $asyncIdentStarter
+     * @param PassthroughProcess        $passthroughProcess
      */
     public function __construct(
         RouterInterface $router,
@@ -65,21 +73,24 @@ class CommonConsentPageFlowHandler
         TokenGenerator $generator,
         RequestParametersProvider $requestParametersProvider,
         IdentProcess $identProcess,
-        AsyncIdentStarter $asyncIdentStarter
-    ) {
-        $this->router = $router;
-        $this->dataStorage = $dataStorage;
-        $this->generator = $generator;
+        AsyncIdentStarter $asyncIdentStarter,
+        PassthroughProcess $passthroughProcess
+    )
+    {
+        $this->router                    = $router;
+        $this->dataStorage               = $dataStorage;
+        $this->generator                 = $generator;
         $this->requestParametersProvider = $requestParametersProvider;
-        $this->identProcess = $identProcess;
-        $this->asyncIdentStarter = $asyncIdentStarter;
+        $this->identProcess              = $identProcess;
+        $this->asyncIdentStarter         = $asyncIdentStarter;
+        $this->passthroughProcess        = $passthroughProcess;
     }
 
     /**
-     * @param Request $request
+     * @param Request            $request
      * @param HasConsentPageFlow $handler
-     * @param CarrierInterface $carrier
-     * @param string $token
+     * @param CarrierInterface   $carrier
+     * @param string             $token
      *
      * @return Response
      */
@@ -92,8 +103,8 @@ class CommonConsentPageFlowHandler
     {
         if ($handler instanceof HasCommonConsentPageFlow) {
             $additionalParams = $handler->getAdditionalIdentificationParams($request);
-            $successUrl = $this->router->generate('subscription.consent_page_subscribe', [], RouterInterface::ABSOLUTE_URL);
-            $waitPageUrl = $this
+            $successUrl       = $this->router->generate('subscription.consent_page_subscribe', [], RouterInterface::ABSOLUTE_URL);
+            $waitPageUrl      = $this
                 ->router
                 ->generate('wait_for_callback', ['successUrl' => $successUrl], RouterInterface::ABSOLUTE_URL);
 
@@ -114,7 +125,9 @@ class CommonConsentPageFlowHandler
             );
 
             return $this->asyncIdentStarter->start($processResult, $token);
-        } elseif ($handler instanceof HasCustomConsentPageFlow) {
+        }
+
+        if ($handler instanceof HasCustomConsentPageFlow) {
             return $handler->process($request, $carrier, $token);
         }
 

@@ -52,6 +52,11 @@ class Carrier implements CarrierInterface, HasUuid
     private $isConfirmationClick = false;
 
     /**
+     * @var bool
+     */
+    private $isConfirmationPopup = false;
+
+    /**
      * Can be store|carrier
      * @var string
      */
@@ -740,5 +745,21 @@ class Carrier implements CarrierInterface, HasUuid
         $this->trackAffiliateOnZeroCreditSub = $trackAffiliateOnZeroCreditSub;
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isConfirmationPopup(): bool
+    {
+        return $this->isConfirmationPopup;
+    }
+
+    /**
+     * @param bool $isConfirmationPopup
+     */
+    public function setIsConfirmationPopup(bool $isConfirmationPopup): void
+    {
+        $this->isConfirmationPopup = $isConfirmationPopup;
     }
 }

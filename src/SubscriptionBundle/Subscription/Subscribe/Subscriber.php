@@ -68,6 +68,14 @@ class Subscriber
      * @var \Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector
      */
     private $crossSubscriptionApi;
+    /**
+     * @var ProcessResultSuccessChecker
+     */
+    private $resultSuccessChecker;
+    /**
+     * @var CampaignExtractor
+     */
+    private $campaignExtractor;
 
     /**
      * Subscriber constructor.
@@ -93,7 +101,9 @@ class Subscriber
         SubscriptionLimitCompleter $subscriptionLimitCompleter,
         SubscribePerformer $subscribePerformer,
         SubscribePromotionalPerformer $subscribePromotionalPerformer,
-        ApiConnector $crossSubscriptionApi
+        ApiConnector $crossSubscriptionApi,
+        ProcessResultSuccessChecker $resultSuccessChecker,
+        CampaignExtractor $campaignExtractor
     )
     {
         $this->logger                        = $logger;
@@ -106,6 +116,9 @@ class Subscriber
         $this->subscribePerformer            = $subscribePerformer;
         $this->subscribePromotionalPerformer = $subscribePromotionalPerformer;
         $this->crossSubscriptionApi          = $crossSubscriptionApi;
+        $this->resultSuccessChecker          = $resultSuccessChecker;
+        $this->subscriptionSerializer        = $subscriptionSerializer;
+        $this->campaignExtractor             = $campaignExtractor;
     }
 
 
@@ -128,21 +141,28 @@ class Subscriber
         $subscription = $this->createPendingSubscription($user, $plan);
         $subscription->setAffiliateToken(json_encode($var));
 
+        $campaign = $this->campaignExtractor->getCampaignForSubscription($subscription);
+        $isFreeTrialSubscriptionFromCampaign = $campaign && $campaign->isFreeTrialSubscription();
+
         try {
 
             if ($this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription)) {
                 $response = $this->subscribePromotionalPerformer->doSubscribe($subscription);
-                if (!$plan->isFirstSubscriptionPeriodIsFree()) {
+                if (!$plan->isFirstSubscriptionPeriodIsFree() && !$isFreeTrialSubscriptionFromCampaign) {
                     $response = $this->subscribePerformer->doSubscribe($subscription, $additionalData);
                 }
-            } else {
+            }
+            else {
                 $response = $this->subscribePerformer->doSubscribe($subscription, $additionalData);
 
             }
 
             $this->onSubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
             $this->subscriptionLimitCompleter->finishProcess($response, $subscription);
-            $this->crossSubscriptionApi->registerSubscription($user->getIdentifier(), $user->getBillingCarrierId());
+
+            if ($this->resultSuccessChecker->isSuccessful($response)) {
+                $this->crossSubscriptionApi->registerSubscription($user->getIdentifier(), $user->getBillingCarrierId());
+            }
 
             return [$subscription, $response];
 
@@ -184,24 +204,31 @@ class Subscriber
      * @throws SubscribingProcessException
      */
     public function resubscribe(Subscription $existingSubscription,
-                                SubscriptionPack $plan,
-                                $additionalData = []): ProcessResult
+        SubscriptionPack $plan,
+        $additionalData = []): ProcessResult
     {
         $subscription = $existingSubscription;
-
-        $this->applyResubscribeTierChanges($subscription);
 
         try {
 
             if ($this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription)) {
                 $response = $this->subscribePromotionalPerformer->doSubscribe($subscription);
                 $this->subscribePerformer->doSubscribe($subscription, $additionalData);
-            } else {
+            }
+            else {
                 $response = $this->subscribePerformer->doSubscribe($subscription, $additionalData);
             }
 
 
             $this->onSubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
+
+            $user = $subscription->getUser();
+
+            if ($this->resultSuccessChecker->isSuccessful($response)) {
+                $this->crossSubscriptionApi->registerSubscription($user->getIdentifier(), $user->getBillingCarrierId());
+            }
+
+
             $subscription->setCurrentStage(Subscription::ACTION_SUBSCRIBE);
             return $response;
 
@@ -211,25 +238,6 @@ class Subscriber
         } finally {
             $this->entitySaveHelper->persistAndSave($subscription);
         }
-    }
-
-    /**
-     * @param $subscription
-     */
-    protected function applyResubscribeTierChanges(Subscription $subscription)
-    {
-        $subscriptionPack = $subscription->getSubscriptionPack();
-        if ($subscriptionPack->isFirstSubscriptionPeriodIsFree() /*&&*/
-            /*$subscriptionPack->isFirstSubscriptionPeriodIsFreeMultiple()*/
-        ) {
-            $tierIdWithZeroValue = $this->getPriceTierIdWithZeroValue($subscriptionPack->getCarrier()->getBillingCarrierId());
-            $subscription->setPromotionTierId($tierIdWithZeroValue);
-        }
-    }
-
-    private function getPriceTierIdWithZeroValue($carrierId)
-    {
-        return 0;
     }
 
 }

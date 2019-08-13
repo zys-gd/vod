@@ -93,7 +93,7 @@ class TranslatorExtension extends AbstractExtension
      *
      * @return string|null
      * @throws WrongTranslationKey
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function translate(string $translationKey, array $parameters = []): ?string
     {
@@ -113,6 +113,7 @@ class TranslatorExtension extends AbstractExtension
      *
      * @return string|null
      * @throws WrongTranslationKey
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function translateWithoutReplace(string $translationKey): ?string
     {

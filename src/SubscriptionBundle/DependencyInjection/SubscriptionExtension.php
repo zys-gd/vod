@@ -70,6 +70,7 @@ class SubscriptionExtension extends ConfigurableExtension
         $loader->load('jazz-pk.yml');
         $loader->load('vodafone-eg-tpay.yml');
         $loader->load('orange-eg-tpay.yml');
+        $loader->load('hutch_id.yml');
 
         $definition = $container->getDefinition('SubscriptionBundle\CAPTool\Subscription\Notificaton\EmailProvider');
         DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['cap_tool']['notification']['mail_to'], '_cap_notification_mail_to_placeholder_');

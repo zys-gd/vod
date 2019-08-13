@@ -11,6 +11,7 @@ namespace IdentificationBundle\Identification\Handler;
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow;
+use IdentificationBundle\Identification\Handler\PassthroughFlow\HasPassthroughFlow;
 
 class IdentificationHandlerProvider
 {
@@ -48,7 +49,8 @@ class IdentificationHandlerProvider
             HasCommonFlow::class,
             HasCustomFlow::class,
             HasHeaderEnrichment::class,
-            HasCommonConsentPageFlow::class
+            HasCommonConsentPageFlow::class,
+            HasPassthroughFlow::class
         ];
 
         $usedInterfaces = [];

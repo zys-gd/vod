@@ -15,6 +15,7 @@ services:
             - '@IdentificationBundle\Identification\Common\CommonFlowHandler'
             - '@IdentificationBundle\Identification\Common\HeaderEnrichmentHandler'
             - '@IdentificationBundle\Identification\Common\CommonConsentPageFlowHandler'
+            - '@IdentificationBundle\Identification\Common\CommonPassthroughFlowHandler'
 
     IdentificationBundle\Identification\Common\CommonFlowHandler:
         arguments:
@@ -79,6 +80,7 @@ services:
             - '@IdentificationBundle\Repository\UserRepository'
             - '@IdentificationBundle\Identification\Service\IdentificationStatus'
             - '@IdentificationBundle\Identification\Common\PostPaidHandler'
+            - '@logger'
 
     IdentificationBundle\Identification\Service\RouteProvider:
         arguments:
@@ -111,6 +113,16 @@ services:
             - '@IdentificationBundle\Repository\UserRepository'
 
 
+    IdentificationBundle\Identification\Common\CommonPassthroughFlowHandler:
+        arguments:
+            - '@router'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\TokenGenerator'
+            - '@IdentificationBundle\Identification\Common\RequestParametersProvider'
+            - '@IdentificationBundle\BillingFramework\Process\IdentProcess'
+            - '@IdentificationBundle\Identification\Common\Async\AsyncIdentStarter'
+            - '@IdentificationBundle\BillingFramework\Process\PassthroughProcess'
+
     IdentificationBundle\Identification\Common\CommonConsentPageFlowHandler:
         arguments:
             - '@router'
@@ -119,6 +131,7 @@ services:
             - '@IdentificationBundle\Identification\Common\RequestParametersProvider'
             - '@IdentificationBundle\BillingFramework\Process\IdentProcess'
             - '@IdentificationBundle\Identification\Common\Async\AsyncIdentStarter'
+            - '@IdentificationBundle\BillingFramework\Process\PassthroughProcess'
 
     IdentificationBundle\Identification\Service\CarrierSelector:
         arguments:
@@ -135,6 +148,10 @@ services:
             - '@SubscriptionBundle\BillingFramework\Process\API\LinkCreator'
             - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
             - '@SubscriptionBundle\BillingFramework\BillingOptionsProvider'
+
+    IdentificationBundle\Identification\Service\PassthroughChecker:
+        arguments:
+            - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
 
     IdentificationBundle\Identification\Handler\AlreadySubscribedHandlerProvider: ~
 

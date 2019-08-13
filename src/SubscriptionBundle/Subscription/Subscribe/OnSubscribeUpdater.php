@@ -14,11 +14,12 @@ use SubscriptionBundle\CAPTool\DTO\CarrierLimiterData;
 use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Common\CommonSubscriptionUpdater;
+use SubscriptionBundle\Service\Action\Common\ProcessResultSuccessChecker;
+use SubscriptionBundle\Service\CAPTool\DTO\CarrierLimiterData;
 use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
 use SubscriptionBundle\Subscription\Renew\Service\RenewDateCalculator;
 use SubscriptionBundle\Subscription\Subscribe\Service\CreditsCalculator;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class OnSubscribeUpdater
 {
@@ -38,11 +39,10 @@ class OnSubscribeUpdater
      * @var CommonSubscriptionUpdater
      */
     private $commonSubscriptionUpdater;
-    private $eventDispatcher;
     /**
-     * @var SubscriptionLimiter
+     * @var ProcessResultSuccessChecker
      */
-    private $subscriptionLimiter;
+    private $resultSuccessChecker;
 
 
     /**
@@ -51,32 +51,27 @@ class OnSubscribeUpdater
      * @param \SubscriptionBundle\Subscription\Common\SubscriptionExtractor        $subscriptionProvider
      * @param \SubscriptionBundle\Subscription\Subscribe\Service\CreditsCalculator $creditsCalculator
      * @param \SubscriptionBundle\Subscription\Renew\Service\RenewDateCalculator   $renewDateCalculator
-     * @param EventDispatcherInterface                                             $eventDispatcher
-     * @param CommonSubscriptionUpdater                                            $commonSubscriptionUpdater
-     * @param SubscriptionLimiter                                                  $subscriptionLimiter
+     * @param  CommonSubscriptionUpdater                                            $commonSubscriptionUpdater
+     * @param ProcessResultSuccessChecker                     $resultSuccessChecker
      */
     public function __construct(
         SubscriptionExtractor $subscriptionProvider,
         CreditsCalculator $creditsCalculator,
         RenewDateCalculator $renewDateCalculator,
-        EventDispatcherInterface $eventDispatcher,
         CommonSubscriptionUpdater $commonSubscriptionUpdater,
-        SubscriptionLimiter $subscriptionLimiter
+        ProcessResultSuccessChecker $resultSuccessChecker
     )
     {
         $this->subscriptionProvider      = $subscriptionProvider;
         $this->creditsCalculator         = $creditsCalculator;
         $this->renewDateCalculator       = $renewDateCalculator;
-        $this->eventDispatcher           = $eventDispatcher;
         $this->commonSubscriptionUpdater = $commonSubscriptionUpdater;
-        $this->subscriptionLimiter       = $subscriptionLimiter;
+        $this->resultSuccessChecker      = $resultSuccessChecker;
     }
 
     /**
-     * @param Subscription     $subscription
-     * @param ProcessResult    $processResponse
-     * @param SessionInterface $session
-     *
+     * @param Subscription  $subscription
+     * @param ProcessResult $processResponse
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function updateSubscriptionByResponse(Subscription $subscription, ProcessResult $processResponse)
@@ -96,7 +91,7 @@ class OnSubscribeUpdater
      */
     public function updateSubscriptionByCallbackResponse(Subscription $subscription, ProcessResult $result)
     {
-        $isSuccessful = !$result->isFailed() && !$result->getError();
+        $isSuccessful = $this->resultSuccessChecker->isSuccessful($result);
 
         if ($isSuccessful) {
             $this->applySuccess($subscription);

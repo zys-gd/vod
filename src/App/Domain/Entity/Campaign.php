@@ -114,6 +114,9 @@ class Campaign implements CampaignInterface, HasUuid
     /** @var bool */
     private $zeroCreditSubAvailable = false;
 
+    /** @var bool  */
+    private $freeTrialSubscription = false;
+
     /**
      * @var Collection
      */
@@ -582,6 +585,22 @@ class Campaign implements CampaignInterface, HasUuid
     public function setZeroCreditSubAvailable(bool $zeroCreditSubAvailable): void
     {
         $this->zeroCreditSubAvailable = $zeroCreditSubAvailable;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFreeTrialSubscription(): bool
+    {
+        return $this->freeTrialSubscription;
+    }
+
+    /**
+     * @param bool $freeTrialSubscription
+     */
+    public function setFreeTrialSubscription(bool $freeTrialSubscription): void
+    {
+        $this->freeTrialSubscription = $freeTrialSubscription;
     }
 
     /**

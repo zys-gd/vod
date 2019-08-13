@@ -165,30 +165,36 @@ class CommonFlowHandler
             return $this->handleSubscribe($request, $User, $subscriber);
         }
 
+        if ($this->checker->isStatusOkForTryAgainSubscription($subscription)) {
+            return $this->handleSubscribe($request, $User, $subscriber);
+        }
+
         if ($this->checker->isStatusOkForResubscribe($subscription)) {
             return $this->handleResubscribeAttempt($request, $User, $subscription, $subscriber);
 
-        } else {
-            $this->logger->debug('`Subscribe` is not possible. User already have an active subscription.');
-            if (
-                $subscriber instanceof HasCustomResponses &&
-                $response = $subscriber->createResponseForExistingSubscription($request, $User, $subscription)
-            ) {
-                return $response;
-            }
-
-            $redirect     = $request->get('redirect', false);
-            $redirect_url = $request->get('location', '/');
-            $updatedUrl   = $this->urlParamAppender->appendUrl($redirect_url, [
-                'err_handle' => 'already_subscribed'
-            ]);
-
-            if ($redirect) {
-                return new RedirectResponse($updatedUrl);
-            }
-
-            throw new ExistingSubscriptionException('You already have an active subscription.', $subscription);
         }
+
+        $this->logger->debug('`Subscribe` is not possible. User already have an active subscription.');
+        if (
+            $subscriber instanceof HasCustomResponses &&
+            $response = $subscriber->createResponseForExistingSubscription($request, $User, $subscription)
+        ) {
+            return $response;
+        }
+
+
+        $redirect     = $request->get('redirect', false);
+        $redirect_url = $request->get('location', '/');
+        $updatedUrl   = $this->urlParamAppender->appendUrl($redirect_url, [
+            'err_handle' => 'already_subscribed'
+        ]);
+
+        if ($redirect) {
+            return new RedirectResponse($updatedUrl);
+        }
+
+        throw new ExistingSubscriptionException('You already have an active subscription.', $subscription);
+
     }
 
     /**

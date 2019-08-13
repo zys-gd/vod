@@ -52,6 +52,7 @@ class IdentificationStatusExtension extends AbstractExtension
         $this->session           = $session;
         $this->carrierRepository = $carrierRepository;
         $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
+        $this->session                       = $session;
     }
 
     /**
@@ -61,7 +62,7 @@ class IdentificationStatusExtension extends AbstractExtension
     {
         return [
             new TwigFunction('isCarrierDetected', function () {
-                return (bool) IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
+                return (bool)IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
             }),
 
             new TwigFunction('getCarrierId', function () {
@@ -69,7 +70,7 @@ class IdentificationStatusExtension extends AbstractExtension
             }),
 
             new TwigFunction('isIdentified', function () {
-                return (bool) $this->dataStorage->getIdentificationToken();
+                return (bool)$this->dataStorage->getIdentificationToken();
             }),
 
             new TwigFunction('isConsentFlow', function () {
@@ -85,13 +86,6 @@ class IdentificationStatusExtension extends AbstractExtension
                 return $this->dataStorage->getIdentificationToken();
             }),
 
-            new TwigFunction('isOtp', [$this, 'isOtp']),
-
-            new TwigFunction('isClickableSubImage', function () {
-                // todo rework after task with landing page
-                return false;
-                //return (bool)$this->dataStorage->readValue('is_clickable_sub_image');
-            })
         ];
     }
 

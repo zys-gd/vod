@@ -23,6 +23,7 @@ class LoadCampaignsData extends AbstractFixture implements ContainerAwareInterfa
      * Load data fixtures with the passed EntityManager
      *
      * @param ObjectManager $manager
+     *
      * @throws Exception
      */
     public function load(ObjectManager $manager)
@@ -33,18 +34,19 @@ class LoadCampaignsData extends AbstractFixture implements ContainerAwareInterfa
         foreach ($data as $row) {
 
 
-            $affiliate_id                  = $row['affiliate']['uuid'];
-            $image                         = $row['imageName'];
-            $bg_color                      = $row['bgColor'];
-            $text_color                    = $row['textColor'];
-            $carriers                      = $row['carriers'];
-            $campaign_token                = $row['campaignToken'];
-            $is_pause                      = $row['isPause'];
-            $ppd                           = $row['ppd'] ?? null;
-            $sub                           = $row['sub'] ?? null;
-            $click                         = $row['click'] ?? null;
-            $test_url                      = $row['testUrl'];
-            $uuid                          = $row['uuid'];
+            $affiliate_id          = $row['affiliate']['uuid'];
+            $image                 = $row['imageName'];
+            $bg_color              = $row['bgColor'];
+            $text_color            = $row['textColor'];
+            $carriers              = $row['carriers'];
+            $campaign_token        = $row['campaignToken'];
+            $is_pause              = $row['isPause'];
+            $ppd                   = $row['ppd'] ?? null;
+            $sub                   = $row['sub'] ?? null;
+            $click                 = $row['click'] ?? null;
+            $test_url              = $row['testUrl'];
+            $uuid                  = $row['uuid'];
+            $freeTrialSubscription = $row['freeTrialSubscription'] ?? 0;
 
             $campaign = new Campaign($uuid);
 
@@ -78,6 +80,7 @@ class LoadCampaignsData extends AbstractFixture implements ContainerAwareInterfa
             $campaign->setPpd($ppd);
             $campaign->setClick($click);
             $campaign->setSub($sub);
+            $campaign->setFreeTrialSubscription($freeTrialSubscription);
 
 
             $this->addReference(sprintf('campaign_%s', $uuid), $campaign);
@@ -93,7 +96,6 @@ class LoadCampaignsData extends AbstractFixture implements ContainerAwareInterfa
     /**
      * This method must return an array of fixtures classes
      * on which the implementing class depends on
-     *
      * @return array
      */
     function getDependencies()

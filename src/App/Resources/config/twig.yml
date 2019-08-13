@@ -1,12 +1,11 @@
 services:
+    _defaults:
+        tags: ['twig.extension']
+
     App\Twig\VideoProcessingHelperExtension:
-        tags:
-            - { name: twig.extension }
         arguments: ['%cloudinary_cloud_name%']
 
     App\Twig\TranslatorExtension:
-        tags:
-            - { name: twig.extension }
         arguments:
             - '@App\Domain\Service\Translator\Translator'
             - '@session'
@@ -20,26 +19,17 @@ services:
             - '@router'
             - '@session'
             - '@App\Domain\Repository\CountryCategoryPriorityOverrideRepository'
-        tags:
-            - { name: twig.extension }
+
 
     App\Twig\GamesExtension:
-        tags:
-            - { name: twig.extension }
         arguments:
           ['@App\Domain\Service\Games\ImagePathProvider']
 
-    App\Twig\FileRegistrarExtension:
-        tags:
-            - { name: twig.extension }
+    App\Twig\FileRegistrarExtension: ~
 
-    Phive\Twig\Extensions\Deferred\DeferredExtension:
-        tags:
-            - { name: twig.extension }
+    Phive\Twig\Extensions\Deferred\DeferredExtension: ~
 
-    App\Twig\StringEncodingExtension:
-        tags:
-            - { name: twig.extension }
+    App\Twig\StringEncodingExtension: ~
 
     App\Twig\WifiFlowExtension:
         arguments:
@@ -50,14 +40,21 @@ services:
             - '@App\Domain\Service\Translator\ShortcodeReplacer'
             - '@App\Domain\Service\Translator\DataAggregator'
             - '@ExtrasBundle\Utils\LocalExtractor'
-        tags:
-            - { name: twig.extension }
 
-    App\Twig\AuditExtension:
-        tags:
-            - { name: twig.extension }
+    App\Twig\AuditExtension: ~
+
+    App\Twig\CarrierOptionsExtension:
+        arguments:
+            - '@session'
+            - '@App\Domain\Repository\CarrierRepository'
+            - '@IdentificationBundle\Identification\Service\PassthroughChecker'
+
+    App\Twig\UserInformationExtension:
+        arguments:
+            - '@request_stack'
+            - '@SubscriptionBundle\Service\UserExtractor'
+            - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
+            - '@App\Domain\Repository\CarrierRepository'
 
     twig.extension.date:
         class: Twig_Extensions_Extension_Date
-        tags:
-            - { name: twig.extension }
