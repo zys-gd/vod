@@ -150,14 +150,6 @@ class Subscriber
         $campaign = $this->campaignExtractor->getCampaignForSubscription($subscription);
         $isFreeTrialSubscriptionFromCampaign = $campaign && $campaign->isFreeTrialSubscription();
 
-        if (
-            ($subscription->getSubscriptionPack()->isFirstSubscriptionPeriodIsFree() || $isFreeTrialSubscriptionFromCampaign)
-            && !$subscription->getSubscriptionPack()->isProviderManagedSubscriptions()
-        ) {
-            $tierIdWithZeroValue = $this->getPriceTierIdWithZeroValue();
-            $subscription->setPromotionTierId($tierIdWithZeroValue);
-        }
-
         try {
 
             if ($this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription)) {
@@ -206,8 +198,6 @@ class Subscriber
     {
         $subscription = $existingSubscription;
 
-        $this->applyResubscribeTierChanges($subscription);
-
         try {
 
             if ($this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription)) {
@@ -236,28 +226,6 @@ class Subscriber
             throw $exception;
         } finally {
             $this->entitySaveHelper->persistAndSave($subscription);
-        }
-    }
-
-//TODO: remove fake
-    private function getPriceTierIdWithZeroValue()
-    {
-        return 0;
-    }
-
-    /**
-     * @param $subscription
-     */
-    protected function applyResubscribeTierChanges(Subscription $subscription)
-    {
-        $campaign = $this->campaignExtractor->getCampaignForSubscription($subscription);
-        $isFreeTrialSubscriptionFromCampaign = $campaign && $campaign->isFreeTrialSubscription();
-
-        $subscriptionPack = $subscription->getSubscriptionPack();
-        if ($subscriptionPack->isFirstSubscriptionPeriodIsFree() || $isFreeTrialSubscriptionFromCampaign
-        ) {
-            $tierIdWithZeroValue = $this->getPriceTierIdWithZeroValue();
-            $subscription->setPromotionTierId($tierIdWithZeroValue);
         }
     }
 

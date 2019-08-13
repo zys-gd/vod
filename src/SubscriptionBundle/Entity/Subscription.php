@@ -90,12 +90,6 @@ class Subscription implements HasUuid
      */
     private $affiliateToken;
 
-
-    /**
-     * @var null| integer
-     */
-    private $promotionTierId = null;
-
     /**
      * @var number
      */
@@ -285,23 +279,6 @@ class Subscription implements HasUuid
     {
         return !!isset($this->redirectUrl);
     }
-
-    /**
-     * @return int|null
-     */
-    public function getPromotionTierId()
-    {
-        return $this->promotionTierId;
-    }
-
-    /**
-     * @param int|null $promotionTierId
-     */
-    public function setPromotionTierId($promotionTierId)
-    {
-        $this->promotionTierId = $promotionTierId;
-    }
-
 
     /**
      * @return \DateTime
