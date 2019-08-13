@@ -58,6 +58,8 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @var SubscriptionLimitNotifier
      */
     private $subscriptionLimitNotifier;
+
+    // TODO move out from ident bundle
     /**
      * @var BlacklistAttemptRegistrator
      */

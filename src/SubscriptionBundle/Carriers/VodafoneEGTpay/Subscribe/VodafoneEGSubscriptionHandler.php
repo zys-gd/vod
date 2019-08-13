@@ -136,13 +136,13 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
         $carrier = $user->getCarrier();
 
         $isSuccess = $result->isFailedOrSuccessful() && $result->isFinal();
-        $isZeroCreditsSub = $this->zeroCreditSubscriptionChecking->isAvailable($carrier);
+        $isZeroCreditsSub = $this->zeroCreditSubscriptionChecking->isZeroCreditAvailable($carrier);
 
         if ($isZeroCreditsSub) {
             return $isSuccess && $carrier->getTrackAffiliateOnZeroCreditSub();
-        } else {
-            return $isSuccess;
         }
+
+        return $isSuccess;
     }
 
     /**

@@ -154,10 +154,11 @@ class OrangeEGWifiIdentificationHandler implements
     {
         $data = $pinRequestResult->getRawData();
         $carrierRepository = $this->entityManager->getRepository(Carrier::class);
+        $carrier = $carrierRepository->findOneByBillingId(ConstBillingCarrierId::ORANGE_EGYPT_TPAY);
 
         $isZeroCreditSub = $this
             ->zeroCreditSubscriptionChecking
-            ->isAvailable($carrierRepository->findOneByBillingId(ConstBillingCarrierId::ORANGE_EGYPT_TPAY));
+            ->isZeroCreditAvailable($carrier);
 
         if (empty($data['subscription_contract_id']) || (!$isZeroCreditSub && empty($data['transactionId']))) {
             throw new WifiIdentConfirmException("Can't process pin verification. Missing required parameters");

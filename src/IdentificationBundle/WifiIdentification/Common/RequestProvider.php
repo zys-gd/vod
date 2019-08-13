@@ -11,6 +11,7 @@ use SubscriptionBundle\Service\ZeroCreditSubscriptionChecking;
  */
 class RequestProvider
 {
+    // TODO move out from ident bundle
     /**
      * @var ZeroCreditSubscriptionChecking
      */
@@ -44,7 +45,7 @@ class RequestProvider
         $parameters = new ProcessRequestParameters();
 
         $parameters->client = 'vod-store';
-        $parameters->zeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isAvailable($carrier);
+        $parameters->zeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isZeroCreditAvailable($carrier);
 
         $parameters->additionalData = array_merge(
             [
@@ -79,7 +80,7 @@ class RequestProvider
         $parameters = new ProcessRequestParameters();
 
         $parameters->client = 'vod-store';
-        $parameters->zeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isAvailable($carrier);
+        $parameters->zeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isZeroCreditAvailable($carrier);
 
         $parameters->additionalData = array_merge(
             [

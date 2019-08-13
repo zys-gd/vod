@@ -48,7 +48,7 @@ class ZeroCreditSubscriptionChecking
      *
      * @return bool
      */
-    public function isAvailable(CarrierInterface $carrier): bool
+    public function isZeroCreditAvailable(CarrierInterface $carrier): bool
     {
         $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPackFromCarrier($carrier);
 

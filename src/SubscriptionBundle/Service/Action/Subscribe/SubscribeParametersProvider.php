@@ -56,7 +56,7 @@ class SubscribeParametersProvider
         $parameters                         = $this->parametersProvider->prepareRequestParameters($subscription);
         $parameters->additionalData         = $additionalInfo;
         $parameters->chargeProduct          = $subscription->getUuid();
-        $parameters->zeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isAvailable($carrier);
+        $parameters->zeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isZeroCreditAvailable($carrier);
         $parameters->chargeTier             = $subscriptionPack->getTierId();
 
         $parameters->chargeStrategy = $subscriptionPack->getBuyStrategyId();
