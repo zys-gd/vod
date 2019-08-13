@@ -1,0 +1,25 @@
+services:
+    SubscriptionBundle\Carriers\HutchID\Subscribe\HutchIDSubscriptionHandler:
+        tags:
+            - { name: subscription.subscription_handler }
+
+    SubscriptionBundle\Carriers\HutchID\Unsubscribe\HutchIDUnsubscribeHandler:
+        tags:
+            - { name: subscription.unsubscription_handler }
+
+    SubscriptionBundle\Carriers\HutchID\Callback\HutchIDCallbackSubscribe:
+        tags:
+            - {name: subscription.callback_carrier_handler, type: subscribe}
+        arguments:
+            - '@SubscriptionBundle\Service\Callback\Common\CommonFlowHandler'
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@SubscriptionBundle\Service\SubscriptionCreator'
+            - '@SubscriptionBundle\Repository\SubscriptionRepository'
+            - '@SubscriptionBundle\Repository\SubscriptionPackRepository'
+
+    SubscriptionBundle\Carriers\HutchID\Notification\HutchIDNotificationHandler:
+        arguments:
+            - '@App\Domain\Repository\LanguageRepository'
+        tags:
+            - { name: subscription.notification_handler, type: subscribe }
+            - { name: subscription.notification_handler, type: unsubscribe }
