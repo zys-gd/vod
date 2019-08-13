@@ -2,6 +2,11 @@ services:
     IdentificationBundle\BillingFramework\Process\IdentProcess:
         arguments: ['@logger', '@SubscriptionBundle\BillingFramework\Process\API\RequestSender']
 
+    IdentificationBundle\BillingFramework\Process\PassthroughProcess:
+        arguments:
+        - '@logger'
+        - '@SubscriptionBundle\BillingFramework\Process\API\RequestSender'
+
     IdentificationBundle\BillingFramework\Process\AfterPixelProcess:
         arguments: ['@logger', '@SubscriptionBundle\BillingFramework\Process\API\RequestSender']
 

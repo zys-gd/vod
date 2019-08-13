@@ -45,6 +45,7 @@ class Client
 
     /**
      * BillingFrameworkAPI constructor.
+     *
      * @param EventDispatcherInterface $eventDispatcher
      * @param ClientInterface          $httpClient
      * @param LinkCreator              $billingFrameworkLinkCreator
@@ -69,6 +70,7 @@ class Client
     /**
      * @param array        $options
      * @param              $method
+     *
      * @return null|stdClass|stdClass[]
      * @throws BillingFrameworkException
      * @throws BillingFrameworkProcessException
@@ -81,11 +83,25 @@ class Client
     }
 
     /**
+     * @param array $options
+     * @param       $method
+     *
+     * @return ResponseInterface
+     * @throws BillingFrameworkException
+     * @throws GuzzleException
+     */
+    public function sendPostProcessRequestWithoutExtraction(array $options, $method): ResponseInterface
+    {
+        $url      = $this->billingFrameworkLinkCreator->createProcessLink($method);
+        $response = $this->makePostRequestWithoutExtraction($url, $options);
+        return $response;
+    }
+
+    /**
      * @param string $method
      * @param array  $options
      *
      * @return stdClass|stdClass[]|null
-     *
      * @throws BillingFrameworkException
      * @throws BillingFrameworkProcessException
      */
@@ -97,6 +113,7 @@ class Client
 
     /**
      * @param ResponseInterface $response
+     *
      * @return null | stdClass | stdClass[]
      */
     private function extractContentFromResponse(ResponseInterface $response): ?stdClass
@@ -124,6 +141,7 @@ class Client
     /**
      * @param string      $method
      * @param string|null $id
+     *
      * @return stdClass
      * @throws BillingFrameworkException
      * @throws BillingFrameworkProcessException
@@ -142,7 +160,8 @@ class Client
             $response = $this->performGetRequest($url);
             $cachedResponse->set($response);
             $this->cache->save($cachedResponse);
-        } else {
+        }
+        else {
             $response = $cachedResponse->get();
         }
 
@@ -160,6 +179,7 @@ class Client
 
     /**
      * @param $url
+     *
      * @return null|stdClass|stdClass[]
      * @throws BillingFrameworkProcessException
      * @throws BillingFrameworkException
@@ -185,6 +205,7 @@ class Client
      * @param       $url
      * @param array $params
      * @param bool  $isJson
+     *
      * @return null|stdClass|stdClass[]
      * @throws BillingFrameworkException
      * @throws BillingFrameworkProcessException
@@ -197,7 +218,8 @@ class Client
                 $options = [
                     RequestOptions::JSON => $params,
                 ];
-            } else {
+            }
+            else {
                 $options = [
                     RequestOptions::FORM_PARAMS => $params,
                 ];
@@ -212,12 +234,41 @@ class Client
         } catch (\Exception $e) {
             throw new BillingFrameworkException($e->getMessage(), $e->getCode(), $e);
         }
+    }
 
+    /**
+     * @param string $requestType
+     * @param string $url
+     * @param array  $params
+     * @param bool   $isJson
+     *
+     * @return ResponseInterface
+     * @throws BillingFrameworkException
+     * @throws GuzzleException
+     */
+    private function makePostRequestWithoutExtraction(
+        string $url,
+        array $params = [],
+        bool $isJson = false): ResponseInterface
+    {
+        $options = $isJson
+            ? [RequestOptions::JSON => $params]
+            : [RequestOptions::FORM_PARAMS => $params];
 
+        try {
+            return $this->httpClient->request('POST', $url, $options);
+        } catch (ClientException $e) {
+            throw $this->makeBillingResponseException($e);
+        } catch (GuzzleException $e) {
+            throw new BillingFrameworkException($e->getMessage(), $e->getCode(), $e);
+        } catch (\Exception $e) {
+            throw new BillingFrameworkException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 
     /**
      * @param $e
+     *
      * @return BillingFrameworkProcessException
      */
     private function makeBillingResponseException(ClientException $e): BillingFrameworkProcessException

@@ -1,21 +1,20 @@
 services:
     SubscriptionBundle\Service\Action\Subscribe\Subscriber:
         arguments:
-            - '@monolog.logger.subscription'
+            - '@logger'
             - '@SubscriptionBundle\Service\EntitySaveHelper'
             - '@session'
             - '@SubscriptionBundle\Service\SubscriptionCreator'
             - '@SubscriptionBundle\Service\Action\Common\PromotionalResponseChecker'
-            - '@SubscriptionBundle\Service\Action\Common\FakeResponseProvider'
-            - '@SubscriptionBundle\Service\Notification\Notifier'
-            - '@SubscriptionBundle\BillingFramework\Process\SubscribeProcess'
             - '@SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater'
-            - '@SubscriptionBundle\Service\Action\Subscribe\SubscribeParametersProvider'
             - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitCompleter'
             - '@SubscriptionBundle\Service\SubscriptionSerializer'
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePerformer'
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscribePromotionalPerformer'
             - '@cross_subscription.api_connector'
+            - '@SubscriptionBundle\Service\Action\Common\ProcessResultSuccessChecker'
+            - '@SubscriptionBundle\Service\CampaignExtractor'
+
 
     SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider:
         arguments: ['@SubscriptionBundle\Service\Action\Subscribe\Handler\DefaultHandler']
@@ -61,9 +60,8 @@ services:
             - '@SubscriptionBundle\Service\SubscriptionExtractor'
             - '@SubscriptionBundle\Service\CreditsCalculator'
             - '@SubscriptionBundle\Service\RenewDateCalculator'
-            - '@event_dispatcher'
             - '@SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater'
-            - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
+            - '@SubscriptionBundle\Service\Action\Common\ProcessResultSuccessChecker'
 
     SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator:
         arguments:

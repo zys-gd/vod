@@ -146,7 +146,9 @@ class PixelIdentConfirmer
      * @param CarrierInterface $carrier
      * @param string           $identificationToken
      * @param DeviceData       $deviceData
+     *
      * @return User
+     * @throws \Exception
      */
     private function saveUser(string $processId, ProcessResult $result, CarrierInterface $carrier, string $identificationToken, DeviceData $deviceData): User
     {

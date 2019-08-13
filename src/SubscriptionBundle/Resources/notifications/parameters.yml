@@ -19,3 +19,7 @@ parameters:
             en:
                 subscribe: "Welcome to 100%sport! Click here to access _shortautologin_url_ _currency_ _price_/day. To unsub or avoid auto-renewal charges send STOP to 6170"
                 unsubscribe: "You have been unsubscribed from 100%sport. To subscribe again, please _unsub_url_."
+        dot.hutchid:
+            id:
+                subscribe: "Terima kasih telah berlangganan layanan 100% Sport dengan tarif Rp _price_/3 hari selama 60 hari. Stop: UNREG 100SPORT. CS: 0895355290340"
+                unsubscribe: "Terima kasih, Anda telah berhenti berlangganan layanan 100% Sport. Untuk kembali berlangganan ketik REG 100SPORT ke 98686. CS: 0895355290340"
