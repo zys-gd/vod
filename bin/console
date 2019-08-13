@@ -33,7 +33,7 @@ if ($_SERVER['APP_DEBUG']) {
     }
 }
 
-if (in_array($_SERVER['APP_ENV'], ['dev', 'ci_dev', 'stage', 'stage_debug'])) {
+if ($_SERVER['APP_DEBUG']) {
     umask(0000);
 }
 
