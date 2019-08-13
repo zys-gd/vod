@@ -320,7 +320,7 @@ class CommonFlowHandler
         list($newSubscription, $result) = $this->subscriber->subscribe($user, $subscriptionPack, $additionalData);
 
         if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
-            $isAffTracked = $subscriber->isAffiliateTrackedForSub($result);
+            $isAffTracked = $subscriber->isAffiliateTrackedForSub($result, $user);
         } else {
             $isAffTracked = ($result->isSuccessful() && $result->isFinal());
         }
