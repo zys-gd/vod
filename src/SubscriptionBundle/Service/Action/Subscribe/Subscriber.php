@@ -182,7 +182,7 @@ class Subscriber
 
         } catch (SubscribingProcessException $exception) {
             $subscription->setStatus(Subscription::IS_ERROR);
-            $subscription->setError('subscribing_process_exception');
+            $subscription->setError(sprintf('subscribing_process_exception:%s', $exception->getOperationPrefix()));
             throw $exception;
         } finally {
             $this->entitySaveHelper->persistAndSave($subscription);
