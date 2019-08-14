@@ -1,10 +1,9 @@
 <?php
 
-namespace IdentificationBundle\Carriers\HutchID;
+namespace IdentificationBundle\Carriers\OrangeTNMM;
 
 use App\Domain\Constants\ConstBillingCarrierId;
 use IdentificationBundle\Entity\CarrierInterface;
-use IdentificationBundle\Identification\Handler\HasHeaderEnrichment;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerInterface;
 use IdentificationBundle\Identification\Handler\PassthroughFlow\HasPassthroughFlow;
 use Symfony\Component\HttpFoundation\Request;
