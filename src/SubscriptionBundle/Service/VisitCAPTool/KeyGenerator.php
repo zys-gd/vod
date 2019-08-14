@@ -17,6 +17,6 @@ class KeyGenerator
         \SubscriptionBundle\Entity\Affiliate\AffiliateInterface $affiliate
     )
     {
-        return sprintf('visit-%s-%s', $affiliate->getUuid(), $carrier->getBillingCarrierId());
+        return sprintf('%s-%s', $affiliate->getUuid(), $carrier->getBillingCarrierId());
     }
 }
