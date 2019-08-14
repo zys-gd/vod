@@ -101,7 +101,7 @@ class CommonConsentPageFlowHandler
     ): Response
     {
         if ($handler instanceof HasCommonConsentPageFlow) {
-            $additionalParams = $handler->getAdditionalIdentificationParams($request);
+            $additionalParams = $handler->getAdditionalIdentificationParams($request, $carrier);
             $successUrl       = $this->router->generate('subscription.consent_page_subscribe', [], RouterInterface::ABSOLUTE_URL);
             $waitPageUrl      = $this
                 ->router
