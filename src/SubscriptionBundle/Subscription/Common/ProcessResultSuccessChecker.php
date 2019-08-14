@@ -6,7 +6,7 @@
  * Time: 14:33
  */
 
-namespace SubscriptionBundle\Service\Action\Common;
+namespace SubscriptionBundle\Subscription\Common;
 
 
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;

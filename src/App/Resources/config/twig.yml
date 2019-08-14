@@ -52,7 +52,7 @@ services:
     App\Twig\UserInformationExtension:
         arguments:
             - '@request_stack'
-            - '@SubscriptionBundle\Service\UserExtractor'
+            - '@IdentificationBundle\User\Service\UserExtractor'
             - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
             - '@App\Domain\Repository\CarrierRepository'
 

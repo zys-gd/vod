@@ -4,19 +4,19 @@
 namespace SubscriptionBundle\Controller\Actions;
 
 
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\Identification\DTO\IdentificationData;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Identification\Handler\PassthroughFlow\HasPassthroughFlow;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
+use IdentificationBundle\User\Service\UserExtractor;
 use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException;
-use SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter;
-use SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\ConsentPageFlow\HasConsentPageFlow;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
-use SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator;
-use SubscriptionBundle\Service\UserExtractor;
+use SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator;
+use SubscriptionBundle\Subscription\Subscribe\Common\CommonFlowHandler;
+use SubscriptionBundle\Subscription\Subscribe\Handler\ConsentPageFlow\HasConsentPageFlow;
+use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider;
+use SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -105,13 +105,13 @@ class PassthroughBackAction
      * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function __invoke(Request $request, ISPData $ispData)
+    public function __invoke(Request $request, IdentificationData $identificationData, ISPData $ispData)
     {
 
         $carrierId           = $ispData->getCarrierId();
-
-        $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
-        $user    = $this->userExtractor->getUserByIdentificationData($identificationData);
+        $identificationToken = $identificationData->getIdentificationToken();
+        $carrier             = $this->carrierRepository->findOneByBillingId($carrierId);
+        $user                = $this->userExtractor->getUserByIdentificationData($identificationData);
 
         $this->ensurePassthroughFlowIsAvailable($carrier);
 

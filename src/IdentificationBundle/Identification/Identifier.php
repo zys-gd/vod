@@ -11,6 +11,7 @@ namespace IdentificationBundle\Identification;
 
 use IdentificationBundle\Identification\Common\CommonConsentPageFlowHandler;
 use IdentificationBundle\Identification\Common\CommonFlowHandler;
+use IdentificationBundle\Identification\Common\CommonPassthroughFlowHandler;
 use IdentificationBundle\Identification\Common\HeaderEnrichmentHandler;
 use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\DTO\IdentifyResult;

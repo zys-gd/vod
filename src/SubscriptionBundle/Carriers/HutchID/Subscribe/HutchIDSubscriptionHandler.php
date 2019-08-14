@@ -2,13 +2,13 @@
 
 namespace SubscriptionBundle\Carriers\HutchID\Subscribe;
 
-use App\Domain\Constants\ConstBillingCarrierId;
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Entity\User;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCommonFlow;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerInterface;
+use SubscriptionBundle\Subscription\Subscribe\Handler\HasCommonFlow;
+use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 
@@ -21,12 +21,12 @@ class HutchIDSubscriptionHandler implements SubscriptionHandlerInterface, HasCom
      */
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::HUTCH_INDONESIA;
+        return $carrier->getBillingCarrierId() === ID::HUTCH_INDONESIA;
     }
 
     /**
      * @param Request $request
-     * @param User $user
+     * @param User    $user
      *
      * @return array
      */
@@ -36,7 +36,7 @@ class HutchIDSubscriptionHandler implements SubscriptionHandlerInterface, HasCom
     }
 
     /**
-     * @param Subscription $subscription
+     * @param Subscription  $subscription
      * @param ProcessResult $result
      */
     public function afterProcess(Subscription $subscription, ProcessResult $result): void

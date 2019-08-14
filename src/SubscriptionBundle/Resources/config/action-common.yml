@@ -27,4 +27,4 @@ services:
   SubscriptionBundle\Subscription\Common\RouteProvider:
     arguments: ['@router', '_resub_not_allowed_route_placeholder_', '_action_not_allowed_url_placeholder_','_callback_host_placeholder_']
 
-
+  SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker: ~

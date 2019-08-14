@@ -11,8 +11,8 @@ services:
             - '@SubscriptionBundle\Subscription\Subscribe\Common\SubscribePerformer'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\SubscribePromotionalPerformer'
             - '@cross_subscription.api_connector'
-            - '@SubscriptionBundle\Service\Action\Common\ProcessResultSuccessChecker'
-            - '@SubscriptionBundle\Service\CampaignExtractor'
+            - '@SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker'
+            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
 
 
     SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider:

@@ -11,7 +11,7 @@ return [
     Symfony\Bundle\MonologBundle\MonologBundle::class                     => ['all' => true],
     Symfony\Bundle\DebugBundle\DebugBundle::class                         => ['dev' => true, 'test' => true, 'stage' => true, 'stage_debug' => true, 'ci_dev' => true],
     Symfony\Bundle\MakerBundle\MakerBundle::class                         => ['dev' => true],
-    Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class             => ['dev' => true, 'test' => true, 'stage' => true, 'stage_debug' => true, 'ci_dev' =>true],
+    Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class             => ['dev' => true, 'test' => true, 'stage' => true, 'stage_debug' => true, 'ci_dev' => true],
     Symfony\Bundle\WebServerBundle\WebServerBundle::class                 => ['dev' => true, 'ci_dev' => true],
     Symfony\Bundle\SecurityBundle\SecurityBundle::class                   => ['all' => true],
     Sonata\DatagridBundle\SonataDatagridBundle::class                     => ['all' => true],
@@ -24,7 +24,7 @@ return [
     DeviceDetectionBundle\DeviceDetectionBundle::class                    => ['all' => true],
     CountryCarrierDetectionBundle\CountryCarrierDetectionBundle::class    => ['all' => true],
     Playwing\DiffToolBundle\DiffToolBundle::class                         => ['dev' => true, 'ci_dev' => true, 'test' => true],
-    Liip\FunctionalTestBundle\LiipFunctionalTestBundle::class             => ['dev' => true, 'ci_dev' =>true, 'test' => true],
+    Liip\FunctionalTestBundle\LiipFunctionalTestBundle::class             => ['dev' => true, 'ci_dev' => true, 'test' => true],
     IdentificationBundle\IdentificationBundle::class                      => ['all' => true],
     SubscriptionBundle\SubscriptionBundle::class                          => ['all' => true],
     Emoe\GuzzleBundle\EmoeGuzzleBundle::class                             => ['all' => true],
@@ -35,4 +35,5 @@ return [
     DataDog\PagerBundle\DataDogPagerBundle::class                         => ['all' => true],
     Playwing\CrossSubscriptionAPIBundle\CrossSubscriptionAPIBundle::class => ['all' => true],
     \CommonDataBundle\CommonDataBundle::class                             => ['all' => true],
+    \PiwikBundle\PiwikBundle::class                                       => ['all' => true],
 ];

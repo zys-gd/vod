@@ -4,16 +4,16 @@
 namespace SubscriptionBundle\Carriers\HutchID\Callback;
 
 
-use App\Domain\Constants\ConstBillingCarrierId;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Repository\SubscriptionPackRepository;
 use SubscriptionBundle\Repository\SubscriptionRepository;
-use SubscriptionBundle\Service\Callback\Common\CommonFlowHandler;
-use SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerInterface;
-use SubscriptionBundle\Service\Callback\Impl\HasCustomFlow;
-use SubscriptionBundle\Service\SubscriptionCreator;
+use SubscriptionBundle\Subscription\Callback\Common\CommonFlowHandler;
+use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerInterface;
+use SubscriptionBundle\Subscription\Callback\Impl\HasCustomFlow;
+use SubscriptionBundle\Subscription\Common\SubscriptionFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCustomFlow
@@ -27,7 +27,7 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
      */
     private $userRepository;
     /**
-     * @var SubscriptionCreator
+     * @var SubscriptionFactory
      */
     private $subscriptionCreator;
     /**
@@ -39,9 +39,10 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
      */
     private $subscriptionPackRepository;
 
-    public function __construct(CommonFlowHandler $commonFlowHandler,
+    public function __construct(
+        CommonFlowHandler $commonFlowHandler,
         UserRepository $userRepository,
-        SubscriptionCreator $subscriptionCreator,
+        SubscriptionFactory $subscriptionCreator,
         SubscriptionRepository $subscriptionRepository,
         SubscriptionPackRepository $subscriptionPackRepository)
     {
@@ -54,14 +55,14 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
 
     public function canHandle(Request $request, int $carrierId): bool
     {
-        return $carrierId === ConstBillingCarrierId::HUTCH_INDONESIA;
+        return $carrierId === ID::HUTCH_INDONESIA;
     }
 
     /**
      * @param Request $request
      * @param string  $type
      *
-     * @throws \SubscriptionBundle\Exception\SubscriptionException
+     * @throws \Exception
      */
     public function process(Request $request, string $type)
     {
@@ -77,6 +78,6 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
             $this->subscriptionCreator->createAndSave($user, $subscriptionPack);
         }
 
-        $this->commonFlowHandler->process($request, ConstBillingCarrierId::HUTCH_INDONESIA, $type);
+        $this->commonFlowHandler->process($request, ID::HUTCH_INDONESIA, $type);
     }
 }

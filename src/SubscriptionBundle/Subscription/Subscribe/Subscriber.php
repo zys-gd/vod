@@ -13,12 +13,13 @@ use IdentificationBundle\Entity\User;
 use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
+use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException;
 use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitCompleter;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
-use SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater;
+use SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Subscription\Common\PromotionalResponseChecker;
 use SubscriptionBundle\Subscription\Common\SubscriptionFactory;
@@ -69,7 +70,7 @@ class Subscriber
      */
     private $crossSubscriptionApi;
     /**
-     * @var ProcessResultSuccessChecker
+     * @var \SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker
      */
     private $resultSuccessChecker;
     /**
@@ -80,16 +81,18 @@ class Subscriber
     /**
      * Subscriber constructor.
      *
-     * @param LoggerInterface                                             $logger
-     * @param EntitySaveHelper                                            $entitySaveHelper
-     * @param SessionInterface                                            $session
-     * @param \SubscriptionBundle\Subscription\Common\SubscriptionFactory $subscriptionCreator
+     * @param LoggerInterface                                                     $logger
+     * @param EntitySaveHelper                                                    $entitySaveHelper
+     * @param SessionInterface                                                    $session
+     * @param \SubscriptionBundle\Subscription\Common\SubscriptionFactory         $subscriptionCreator
      * @param PromotionalResponseChecker                                  $promotionalResponseChecker
-     * @param OnSubscribeUpdater                                          $onSubscribeUpdater
-     * @param SubscriptionLimitCompleter                                  $subscriptionLimitCompleter
-     * @param SubscribePerformer                                          $subscribePerformer
-     * @param SubscribePromotionalPerformer                               $subscribePromotionalPerformer
-     * @param ApiConnector                                                $crossSubscriptionApi
+     * @param OnSubscribeUpdater                                                  $onSubscribeUpdater
+     * @param SubscriptionLimitCompleter                                          $subscriptionLimitCompleter
+     * @param SubscribePerformer                                                  $subscribePerformer
+     * @param SubscribePromotionalPerformer                                       $subscribePromotionalPerformer
+     * @param ApiConnector                                                        $crossSubscriptionApi
+     * @param \SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker $resultSuccessChecker
+     * @param CampaignExtractor                                                   $campaignExtractor
      */
     public function __construct(
         LoggerInterface $logger,
@@ -117,7 +120,6 @@ class Subscriber
         $this->subscribePromotionalPerformer = $subscribePromotionalPerformer;
         $this->crossSubscriptionApi          = $crossSubscriptionApi;
         $this->resultSuccessChecker          = $resultSuccessChecker;
-        $this->subscriptionSerializer        = $subscriptionSerializer;
         $this->campaignExtractor             = $campaignExtractor;
     }
 

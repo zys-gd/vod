@@ -10,16 +10,12 @@ namespace SubscriptionBundle\Subscription\Subscribe;
 
 
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
-use SubscriptionBundle\CAPTool\DTO\CarrierLimiterData;
-use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter;
 use SubscriptionBundle\Entity\Subscription;
+use SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker;
 use SubscriptionBundle\Subscription\Common\CommonSubscriptionUpdater;
-use SubscriptionBundle\Service\Action\Common\ProcessResultSuccessChecker;
-use SubscriptionBundle\Service\CAPTool\DTO\CarrierLimiterData;
 use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
 use SubscriptionBundle\Subscription\Renew\Service\RenewDateCalculator;
 use SubscriptionBundle\Subscription\Subscribe\Service\CreditsCalculator;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class OnSubscribeUpdater
 {
@@ -40,7 +36,7 @@ class OnSubscribeUpdater
      */
     private $commonSubscriptionUpdater;
     /**
-     * @var ProcessResultSuccessChecker
+     * @var \SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker
      */
     private $resultSuccessChecker;
 
@@ -51,8 +47,8 @@ class OnSubscribeUpdater
      * @param \SubscriptionBundle\Subscription\Common\SubscriptionExtractor        $subscriptionProvider
      * @param \SubscriptionBundle\Subscription\Subscribe\Service\CreditsCalculator $creditsCalculator
      * @param \SubscriptionBundle\Subscription\Renew\Service\RenewDateCalculator   $renewDateCalculator
-     * @param  CommonSubscriptionUpdater                                            $commonSubscriptionUpdater
-     * @param ProcessResultSuccessChecker                     $resultSuccessChecker
+     * @param  CommonSubscriptionUpdater                                           $commonSubscriptionUpdater
+     * @param \SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker  $resultSuccessChecker
      */
     public function __construct(
         SubscriptionExtractor $subscriptionProvider,
