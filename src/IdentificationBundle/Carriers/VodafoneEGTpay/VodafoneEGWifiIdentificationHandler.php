@@ -6,6 +6,7 @@ use App\Domain\Constants\ConstBillingCarrierId;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use ExtrasBundle\Utils\LocalExtractor;
+use IdentificationBundle\WifiIdentification\DTO\PhoneValidationOptions;
 use IdentificationBundle\BillingFramework\Process\DTO\{PinRequestResult, PinVerifyResult};
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\Entity\CarrierInterface;
@@ -232,5 +233,16 @@ class VodafoneEGWifiIdentificationHandler implements
     private function cleanMsisnd(string $mobileNumber): string
     {
         return str_replace('+', '', $mobileNumber);
+    }
+
+    public function getPhoneValidationOptions(): PhoneValidationOptions
+    {
+
+        return new PhoneValidationOptions(
+            '+201XXXXXXXXX',
+            '^\+201[0-9]{9}$',
+            'XXXXX',
+            '^[0-9][0-9]{5}$'
+        );
     }
 }

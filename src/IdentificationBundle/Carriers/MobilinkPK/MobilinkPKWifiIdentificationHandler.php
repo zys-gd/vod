@@ -14,6 +14,7 @@ use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Handler\HasPostPaidRestriction;
 use IdentificationBundle\Repository\UserRepository;
+use IdentificationBundle\WifiIdentification\DTO\PhoneValidationOptions;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
 
 class MobilinkPKWifiIdentificationHandler implements WifiIdentificationHandlerInterface, HasPostPaidRestriction
@@ -51,5 +52,15 @@ class MobilinkPKWifiIdentificationHandler implements WifiIdentificationHandlerIn
     public function getExistingUser(string $msisdn): ?User
     {
         return $this->repository->findOneByMsisdn($msisdn);
+    }
+
+    public function getPhoneValidationOptions(): PhoneValidationOptions
+    {
+        return new PhoneValidationOptions(
+            '+9230XXXXXXXX',
+            '^\+9230[0-9]{8}$',
+            'XXXXX',
+            '^[0-9]{1,5}$'
+        );
     }
 }

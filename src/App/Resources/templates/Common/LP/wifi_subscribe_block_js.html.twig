@@ -158,10 +158,10 @@
                 .html(params.html_wifi_pin)
                 .append(input_phone);
 
+            addPinValidation();
+
             form.attr('data-form', 'confirm');
             input_phone.addClass('d-none');
-
-            addValidationAttributes(response.data.carrierId);
         }
 
         function PinErrorResponseResolver(response) {
@@ -201,25 +201,15 @@
 
         }
 
-        // TODO find more flexible way to apply validation attributes#}
-        function addValidationAttributes(carrierId) {
-            var pinPatterns = {
-                2253: '^[0-9][0-9]{5}$',
-                2254: '^[0-9][0-9]{5}$'
-            };
+        function addPinValidation() {
+            {% if isCarrierDetected()  %}
+                let pinPlaceholder = "{{ getPinValidationOptions().placeholder }}";
+                let pinPattern = "{{ getPinValidationOptions().pattern }}";
 
-            var msisdnPatterns = {
-                2253: '^\\+(201)[0-9]{9}$',
-                2254: '^\\+(201)[0-9]{9}$'
-            };
-
-            if (msisdnPatterns[carrierId]) {
-                $("input[name='mobile_number']").attr('pattern', msisdnPatterns[carrierId])
-            }
-
-            if (pinPatterns[carrierId]) {
-                $("input[name='pin_code']").attr('pattern', pinPatterns[carrierId])
-            }
+                $('input[name=pin_code]')
+                    .attr('placeholder', pinPlaceholder)
+                    .attr('pattern', pinPattern);
+            {% endif %}
         }
 
         function fillOptionsForCarrierSelect({id, name}) {

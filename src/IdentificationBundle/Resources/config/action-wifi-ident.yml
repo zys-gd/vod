@@ -62,3 +62,8 @@ services:
     IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage:
         arguments:
             - '@IdentificationBundle\Identification\Service\Session\SessionStorage'
+
+    IdentificationBundle\WifiIdentification\WifiPhoneOptionsProvider:
+        arguments:
+            - '@IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerProvider'
+            - '@App\Domain\Repository\CarrierRepository'
