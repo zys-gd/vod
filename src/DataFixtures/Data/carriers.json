@@ -10025,7 +10025,9 @@
         "flushDate": null,
         "isCapAlertDispatch": false,
         "uuid": "21f27f1f-884c-4b11-9216-c8cf07241bf1",
-        "default_language": null,
+        "default_language": {
+            "uuid": "5179f269-ebd4-11e8-95c4-02bb250f0f22"
+        },
         "campaigns": [],
         "billingCarrierId": 2256,
         "operatorId": 0,
