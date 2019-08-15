@@ -38,7 +38,7 @@ class VisitChecker
     {
         $key = $this->keyGenerator->generateVisitKey($carrier, $constraintByAffiliate->getAffiliate());
 
-        $count = $this->visitStorage->getVisitCount($key);
+        $count = $this->visitStorage->getVisitCount($key, new \DateTimeImmutable());
 
         return $constraintByAffiliate->getNumberOfActions() <= $count;
 

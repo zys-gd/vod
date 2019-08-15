@@ -74,7 +74,7 @@ class SubscribePromotionalPerformer
                 'subscription' => $this->subscriptionSerializer->serializeShort($subscription)
             ]);
 
-            throw new SubscribingProcessException('Error while trying to subscribe', 0, $e);
+            throw new SubscribingProcessException('Error while trying to subscribe (sending notification)', 0, $e, null, null, 'subscription_notification');
         }
 
         return $this->fakeResponseProvider->getDummyResult(

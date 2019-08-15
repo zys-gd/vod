@@ -68,7 +68,7 @@ class ConstraintByAffiliateCapCalculator
                 $subject->getCarrier(),
                 $subject->getAffiliate()
             );
-            $available = $this->visitStorage->getVisitCount($key);
+            $available = $this->visitStorage->getVisitCount($key, new \DateTimeImmutable());
         }
 
         return (int)$available;

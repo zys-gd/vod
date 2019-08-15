@@ -32,6 +32,7 @@ class VodafoneEGIdentificationHandler implements IdentificationHandlerInterface,
 
     /**
      * @param CarrierInterface $carrier
+     *
      * @return bool
      */
     public function canHandle(CarrierInterface $carrier): bool
@@ -41,11 +42,16 @@ class VodafoneEGIdentificationHandler implements IdentificationHandlerInterface,
 
     /**
      * @param Request $request
+     * @param CarrierInterface $carrier
      *
      * @return array
      */
-    public function getAdditionalIdentificationParams(Request $request): array
+    public function getAdditionalIdentificationParams(Request $request, CarrierInterface $carrier): array
     {
-        return ['lang' => $this->localExtractor->getLocal()];
+        $defaultLang = $carrier->getDefaultLanguage();
+
+        $lang = empty($defaultLang) ? $this->localExtractor->getLocal() : $defaultLang->getCode();
+
+        return ['lang' => $lang];
     }
 }

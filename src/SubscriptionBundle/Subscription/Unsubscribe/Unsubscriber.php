@@ -138,6 +138,10 @@ class Unsubscriber
                 return $response;
 
             } catch (UnsubscribingProcessException $exception) {
+                $this->logger->debug('Unsubscribe error', [
+                    'message' => $exception->getMessage(),
+                    'code' => $exception->getCode()
+                ]);
                 $subscription->setStatus(Subscription::IS_ERROR);
                 $subscription->setError('unsubscribing_process_exception');
                 throw $exception;

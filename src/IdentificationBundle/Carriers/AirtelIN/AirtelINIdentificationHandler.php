@@ -38,10 +38,11 @@ class AirtelINIdentificationHandler implements HasCommonConsentPageFlow, HasCons
 
     /**
      * @param Request $request
+     * @param CarrierInterface $carrier
      *
      * @return array
      */
-    public function getAdditionalIdentificationParams(Request $request): array
+    public function getAdditionalIdentificationParams(Request $request, CarrierInterface $carrier): array
     {
         // TODO: Implement getAdditionalIdentificationParams() method.
     }

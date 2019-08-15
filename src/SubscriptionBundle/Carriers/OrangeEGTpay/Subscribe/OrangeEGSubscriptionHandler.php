@@ -82,9 +82,12 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
      */
     public function getAdditionalSubscribeParams(Request $request, User $user): array
     {
+        $defaultLang = $user->getCarrier()->getDefaultLanguage();
+        $lang = empty($defaultLang) ? $this->localExtractor->getLocal() : $defaultLang->getCode();
+
         $data = [
             'url_id'       => $user->getShortUrlId(),
-            'lang'         => $this->localExtractor->getLocal(),
+            'lang'         => $lang,
             'redirect_url' => $this->routeProvider->getLinkToHomepage()
         ];
 
