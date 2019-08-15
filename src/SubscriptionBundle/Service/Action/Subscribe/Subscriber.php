@@ -173,6 +173,11 @@ class Subscriber
             return [$subscription, $response];
 
         } catch (SubscribingProcessException $exception) {
+            $this->logger->debug('Error while subscribing', [
+                'message' => $exception->getMessage(),
+                'billingData' => $exception->getBillingData(),
+                'code' => $exception->getCode()
+            ]);
             $subscription->setStatus(Subscription::IS_ERROR);
             $subscription->setError(sprintf('subscribing_process_exception:%s', $exception->getOperationPrefix()));
             throw $exception;
