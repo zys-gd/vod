@@ -28,11 +28,13 @@ if ($input->hasParameterOption('--no-debug', true)) {
 require dirname(__DIR__) . '/config/bootstrap.php';
 
 if ($_SERVER['APP_DEBUG']) {
-    umask(0000);
-
     if (class_exists(Debug::class)) {
         Debug::enable();
     }
+}
+
+if ($_SERVER['APP_DEBUG']) {
+    umask(0000);
 }
 
 

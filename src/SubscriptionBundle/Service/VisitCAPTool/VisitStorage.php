@@ -27,39 +27,36 @@ class VisitStorage
 
     public function cleanVisits(string $key = 'visit-*'): void
     {
-        $keys = $this->redis->keys($key);
-        $this->redis->del($keys);
+
     }
 
     /**
-     * @param string $key
-     * @param string $visitInfo
+     * @param string                  $key
+     * @param string                  $visitInfo
+     * @param \DateTimeInterface|null $dateTime
      */
-    public function storeVisit(string $key, string $visitInfo): void
+    public function storeVisit(string $key, string $visitInfo, \DateTimeInterface $dateTime = null): void
     {
-        //$timeout = $this->calculateSecondsUntilTomorrow();
-        $timeout = 0;
-
-        $this->redis->set(sprintf('%s-%s', $key, $visitInfo), $visitInfo, $timeout);
-    }
-
-    public function getVisitCount(string $key): int
-    {
-        $keys = $this->redis->keys(sprintf("%s-*", $key));
-
-        return count($keys);
-    }
-
-
-    private function calculateSecondsUntilTomorrow(): int
-    {
-        $midnight = strtotime("tomorrow 00:00:00");
-
-        if ($midnight === false) {
-            return 0;
+        if ($dateTime) {
+            $date = $dateTime->format('Ymd');
+        } else {
+            $date = date('Ymd');
         }
 
-        $timeTo = $midnight - time();
-        return $timeTo;
+        $this->redis->pfAdd(sprintf('visit-%s-%s', $key, $date), [$visitInfo]);
     }
+
+    public function getVisitCount(string $key, \DateTimeInterface $dateTime = null): int
+    {
+        if ($dateTime) {
+            $date = $dateTime->format('Ymd');
+        } else {
+            $date = date('Ymd');
+        }
+
+        $count = $this->redis->pfCount(sprintf('visit-%s-%s', $key, $date));
+
+        return $count;
+    }
+
 }

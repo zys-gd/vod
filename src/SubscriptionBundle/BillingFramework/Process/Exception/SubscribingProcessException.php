@@ -16,21 +16,27 @@ class SubscribingProcessException extends AbstractProcessException
      * @var \stdClass
      */
     private $rawResponse;
+    /**
+     * @var string
+     */
+    private $operationPrefix;
 
     /**
      * SubscribingProcessException constructor
      *
-     * @param string $message
-     * @param int|null $code
-     * @param string $billingMessage
+     * @param string         $message
+     * @param int|null       $code
+     * @param string         $billingMessage
      * @param Throwable|null $previous
-     * @param \stdClass $rawResponse
+     * @param \stdClass      $rawResponse
      */
-    public function __construct(string $message = "", int $code = null, string $billingMessage = "", Throwable $previous = null, \stdClass $rawResponse = null)
+    public function __construct(string $message = "", int $code = null, string $billingMessage = "", Throwable $previous = null, \stdClass $rawResponse = null, string $operationPrefix = '')
     {
-        $this->rawResponse = $rawResponse;
 
         parent::__construct($message, $code, $billingMessage, $previous);
+
+        $this->rawResponse     = $rawResponse;
+        $this->operationPrefix = $operationPrefix;
     }
 
     /**
@@ -46,4 +52,14 @@ class SubscribingProcessException extends AbstractProcessException
 
         return $data;
     }
+
+    /**
+     * @return string
+     */
+    public function getOperationPrefix(): string
+    {
+        return $this->operationPrefix;
+    }
+
+
 }
