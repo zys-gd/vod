@@ -12,17 +12,15 @@ interface HasCustomAffiliateTrackingRules
 {
     /**
      * @param ProcessResult $result
-     * @param User $user
      *
      * @return bool
      */
-    public function isAffiliateTrackedForSub(ProcessResult $result, User $user): bool;
+    public function isAffiliateTrackedForSub(ProcessResult $result): bool;
 
     /**
      * @param ProcessResult $result
-     * @param User $user
      *
      * @return bool
      */
-    public function isAffiliateTrackedForResub(ProcessResult $result, User $user): bool;
+    public function isAffiliateTrackedForResub(ProcessResult $result): bool;
 }
