@@ -89,7 +89,7 @@ interface CarrierInterface
     /**
      * @return integer
      */
-    public function getSubscribeAttempts();
+    public function getSubscribeAttempts(): int;
 
     /**
      * @return mixed
