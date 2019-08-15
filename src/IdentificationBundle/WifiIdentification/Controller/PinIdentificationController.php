@@ -75,16 +75,16 @@ class PinIdentificationController extends AbstractController implements APIContr
     /**
      * PinIdentificationController constructor
      *
-     * @param WifiIdentSMSSender                                                $identSMSSender
-     * @param WifiIdentConfirmator                                              $identConfirmator
-     * @param ErrorCodeResolver                                                 $errorCodeResolver
-     * @param SubscriptionLimiter                                               $limiter
-     * @param CarrierRepositoryInterface                                        $carrierRepository
-     * @param SubscriptionLimitNotifier                                         $subscriptionLimitNotifier
-     * @param \SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter $blacklistVoter
-     * @param BlacklistAttemptRegistrator                                       $blacklistAttemptRegistrator
-     * @param WifiPhoneOptionsProvider                                          $phoneOptionsProvider
-     * @param RouteProvider                                                     $routeProvider
+     * @param WifiIdentSMSSender          $identSMSSender
+     * @param WifiIdentConfirmator        $identConfirmator
+     * @param ErrorCodeResolver           $errorCodeResolver
+     * @param SubscriptionLimiter         $limiter
+     * @param CarrierRepositoryInterface  $carrierRepository
+     * @param SubscriptionLimitNotifier   $subscriptionLimitNotifier
+     * @param BlacklistVoter              $blacklistVoter
+     * @param BlacklistAttemptRegistrator $blacklistAttemptRegistrator
+     * @param WifiPhoneOptionsProvider    $phoneOptionsProvider
+     * @param RouteProvider               $routeProvider
      */
     public function __construct(
         WifiIdentSMSSender $identSMSSender,
@@ -142,8 +142,8 @@ class PinIdentificationController extends AbstractController implements APIContr
         $billingCarrierId = $ispData->getCarrierId();
         $cleanPhoneNumber = str_replace('+', '', $mobileNumber);
 
-        if ($this->blacklistVoter->isPhoneNumberBlacklisted($cleanPhoneNumber)
-            || $this->blacklistAttemptRegistrator->isSubscriptionAttemptRaised($cleanPhoneNumber, (int)$billingCarrierId)
+        if ($this->blacklistVoter->isPhoneNumberBlacklisted($cleanPhoneNumber) ||
+            $this->blacklistAttemptRegistrator->isSubscriptionAttemptRaised($cleanPhoneNumber, (int)$billingCarrierId)
         ) {
             return $this->getSimpleJsonResponse('User in black list', 200, [], [
                 'success' => false, 'redirectUrl' => $this->blacklistVoter->getRedirectUrl()
