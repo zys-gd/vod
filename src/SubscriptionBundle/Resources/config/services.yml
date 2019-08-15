@@ -126,9 +126,8 @@ services:
 
     SubscriptionBundle\Service\ZeroCreditSubscriptionChecking:
         arguments:
-            - '@SubscriptionBundle\Service\CampaignExtractor'
-            - '@session'
             - '@SubscriptionBundle\Service\SubscriptionPackProvider'
+            - '@App\Domain\Repository\CarrierRepository'
 
     SubscriptionBundle\Service\Action\Common\ProcessResultSuccessChecker: ~
 

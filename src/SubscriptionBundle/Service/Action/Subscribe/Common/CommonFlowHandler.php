@@ -28,6 +28,7 @@ use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomResponses;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomAffiliateTrackingRules;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerProvider;
 use SubscriptionBundle\Service\Action\Subscribe\Subscriber;
+use SubscriptionBundle\Service\CampaignExtractor;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\SubscriptionExtractor;
 use SubscriptionBundle\Service\SubscriptionPackProvider;
@@ -105,6 +106,10 @@ class CommonFlowHandler
      * @var SubscriptionEventTracker
      */
     private $subscriptionEventTracker;
+    /**
+     * @var CampaignExtractor
+     */
+    private $campaignExtractor;
 
     /**
      * CommonSubscriber constructor.
@@ -125,6 +130,7 @@ class CommonFlowHandler
      * @param EntitySaveHelper               $entitySaveHelper
      * @param string                         $resubNotAllowedRoute
      * @param SubscriptionEventTracker       $subscriptionEventTracker
+     * @param CampaignExtractor              $campaignExtractor
      */
     public function __construct(
         SubscriptionExtractor $subscriptionProvider,
@@ -142,7 +148,8 @@ class CommonFlowHandler
         UserInfoMapper $infoMapper,
         EntitySaveHelper $entitySaveHelper,
         string $resubNotAllowedRoute,
-        SubscriptionEventTracker $subscriptionEventTracker
+        SubscriptionEventTracker $subscriptionEventTracker,
+        CampaignExtractor $campaignExtractor
     )
     {
         $this->subscriptionPackProvider       = $subscriptionPackProvider;
@@ -161,6 +168,7 @@ class CommonFlowHandler
         $this->entitySaveHelper               = $entitySaveHelper;
         $this->resubNotAllowedRoute           = $resubNotAllowedRoute;
         $this->subscriptionEventTracker       = $subscriptionEventTracker;
+        $this->campaignExtractor              = $campaignExtractor;
     }
 
 
@@ -315,12 +323,13 @@ class CommonFlowHandler
     {
         $additionalData   = $subscriber->getAdditionalSubscribeParams($request, $user);
         $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
+        $campaign         = $this->campaignExtractor->getCampaignFromSession($request->getSession());
 
         /** @var ProcessResult $result */
         list($newSubscription, $result) = $this->subscriber->subscribe($user, $subscriptionPack, $additionalData);
 
         if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
-            $isAffTracked = $subscriber->isAffiliateTrackedForSub($result, $user);
+            $isAffTracked = $subscriber->isAffiliateTrackedForSub($result, $campaign);
         } else {
             $isAffTracked = ($result->isSuccessful() && $result->isFinal());
         }

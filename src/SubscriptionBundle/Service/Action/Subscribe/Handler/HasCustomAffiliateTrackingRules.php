@@ -2,8 +2,9 @@
 
 namespace SubscriptionBundle\Service\Action\Subscribe\Handler;
 
-use IdentificationBundle\Entity\User;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
+use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Interface HasCustomAffiliateTrackingRules
@@ -11,11 +12,12 @@ use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 interface HasCustomAffiliateTrackingRules
 {
     /**
-     * @param ProcessResult $result
+     * @param ProcessResult     $result
+     * @param CampaignInterface $campaign
      *
      * @return bool
      */
-    public function isAffiliateTrackedForSub(ProcessResult $result): bool;
+    public function isAffiliateTrackedForSub(ProcessResult $result, CampaignInterface $campaign): bool;
 
     /**
      * @param ProcessResult $result

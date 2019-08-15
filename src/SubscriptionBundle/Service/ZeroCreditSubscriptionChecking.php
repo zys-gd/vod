@@ -2,9 +2,8 @@
 
 namespace SubscriptionBundle\Service;
 
-use App\Domain\Entity\Campaign;
-use IdentificationBundle\Entity\CarrierInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use IdentificationBundle\Repository\CarrierRepositoryInterface;
+use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 
 /**
  * Class ZeroCreditSubscriptionChecking
@@ -12,56 +11,39 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class ZeroCreditSubscriptionChecking
 {
     /**
-     * @var CampaignExtractor
-     */
-    private $campaignExtractor;
-
-    /**
-     * @var SessionInterface
-     */
-    private $session;
-
-    /**
      * @var SubscriptionPackProvider
      */
     private $subscriptionPackProvider;
+    /**
+     * @var CarrierRepositoryInterface
+     */
+    private $carrierRepository;
 
     /**
      * ZeroCreditSubscriptionChecking constructor
      *
-     * @param CampaignExtractor $campaignExtractor
-     * @param SessionInterface $session
-     * @param SubscriptionPackProvider $subscriptionPackProvider
+     * @param SubscriptionPackProvider   $subscriptionPackProvider
+     * @param CarrierRepositoryInterface $carrierRepository
      */
     public function __construct(
-        CampaignExtractor $campaignExtractor,
-        SessionInterface $session,
-        SubscriptionPackProvider $subscriptionPackProvider
+        SubscriptionPackProvider $subscriptionPackProvider,
+        CarrierRepositoryInterface $carrierRepository
     ) {
-        $this->campaignExtractor = $campaignExtractor;
-        $this->session = $session;
         $this->subscriptionPackProvider = $subscriptionPackProvider;
+        $this->carrierRepository = $carrierRepository;
     }
 
     /**
-     * @param CarrierInterface $carrier
+     * @param int                    $billingCarrierId
+     * @param CampaignInterface|null $campaign
      *
      * @return bool
      */
-    public function isZeroCreditAvailable(CarrierInterface $carrier): bool
+    public function isZeroCreditAvailable(int $billingCarrierId, CampaignInterface $campaign = null): bool
     {
+        $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
         $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPackFromCarrier($carrier);
 
-        if ($subscriptionPack->isZeroCreditSubAvailable()) {
-            /** @var Campaign $campaign */
-            $campaign = $this->campaignExtractor->getCampaignFromSession($this->session);
-            if ($campaign && !$campaign->isZeroCreditSubAvailable()) {
-                return false;
-            }
-
-            return true;
-        }
-
-        return false;
+        return $subscriptionPack->isZeroCreditSubAvailable() && (!$campaign || $campaign->isZeroCreditSubAvailable());
     }
 }

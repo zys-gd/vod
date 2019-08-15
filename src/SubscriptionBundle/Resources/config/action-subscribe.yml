@@ -37,6 +37,7 @@ services:
             - '@SubscriptionBundle\Service\EntitySaveHelper'
             - '_resub_not_allowed_route_placeholder_'
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEventTracker'
+            - '@SubscriptionBundle\Service\CampaignExtractor'
 
     SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker: ~
 
@@ -87,6 +88,7 @@ services:
             - '@request_stack'
             - '@router'
             - '@SubscriptionBundle\Service\ZeroCreditSubscriptionChecking'
+            - '@SubscriptionBundle\Service\CampaignExtractor'
 
     SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEventTracker:
         arguments:
@@ -108,3 +110,4 @@ services:
             - '@ExtrasBundle\Utils\UrlParamAppender'
             - '@router.default'
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator'
+            - '@SubscriptionBundle\Service\CampaignExtractor'

@@ -11,6 +11,7 @@ use IdentificationBundle\Entity\User;
 use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException;
+use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\ConsentPageFlow\HasConsentPageFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomAffiliateTrackingRules;
@@ -138,16 +139,19 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
     }
 
     /**
-     * @param ProcessResult $result
+     * @param ProcessResult     $result
+     * @param CampaignInterface $campaign
      *
      * @return bool
      */
-    public function isAffiliateTrackedForSub(ProcessResult $result): bool
+    public function isAffiliateTrackedForSub(ProcessResult $result, CampaignInterface $campaign): bool
     {
         $carrier = $this->carrierRepository->findOneByBillingId(ConstBillingCarrierId::ORANGE_EGYPT_TPAY);
 
         $isSuccess = $result->isFailedOrSuccessful() && $result->isFinal();
-        $isZeroCreditsSub = $this->zeroCreditSubscriptionChecking->isZeroCreditAvailable($carrier);
+        $isZeroCreditsSub = $this
+            ->zeroCreditSubscriptionChecking
+            ->isZeroCreditAvailable(ConstBillingCarrierId::ORANGE_EGYPT_TPAY, $campaign);
 
         if ($isZeroCreditsSub) {
             return $isSuccess && $carrier->getTrackAffiliateOnZeroCreditSub();

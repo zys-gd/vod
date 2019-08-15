@@ -15,9 +15,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
 use SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter;
 use SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator;
+use SubscriptionBundle\Service\CampaignExtractor;
 use SubscriptionBundle\Service\CAPTool\Exception\CapToolAccessException;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
+use SubscriptionBundle\Service\ZeroCreditSubscriptionChecking;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,7 +61,6 @@ class PinIdentificationController extends AbstractController implements APIContr
      */
     private $subscriptionLimitNotifier;
 
-    // TODO move out from ident bundle
     /**
      * @var BlacklistAttemptRegistrator
      */
@@ -72,20 +73,30 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var CampaignExtractor
+     */
+    private $campaignExtractor;
+    /**
+     * @var ZeroCreditSubscriptionChecking
+     */
+    private $zeroCreditSubscriptionChecking;
 
     /**
      * PinIdentificationController constructor
      *
-     * @param WifiIdentSMSSender $identSMSSender
-     * @param WifiIdentConfirmator $identConfirmator
-     * @param ErrorCodeResolver $errorCodeResolver
-     * @param SubscriptionLimiter $limiter
-     * @param string $defaultRedirectUrl
-     * @param CarrierRepositoryInterface $carrierRepository
-     * @param SubscriptionLimitNotifier $subscriptionLimitNotifier
-     * @param BlacklistVoter $blacklistVoter
-     * @param BlacklistAttemptRegistrator $blacklistAttemptRegistrator
-     * @param LoggerInterface $logger
+     * @param WifiIdentSMSSender             $identSMSSender
+     * @param WifiIdentConfirmator           $identConfirmator
+     * @param ErrorCodeResolver              $errorCodeResolver
+     * @param SubscriptionLimiter            $limiter
+     * @param string                         $defaultRedirectUrl
+     * @param CarrierRepositoryInterface     $carrierRepository
+     * @param SubscriptionLimitNotifier      $subscriptionLimitNotifier
+     * @param BlacklistVoter                 $blacklistVoter
+     * @param BlacklistAttemptRegistrator    $blacklistAttemptRegistrator
+     * @param LoggerInterface                $logger
+     * @param CampaignExtractor              $campaignExtractor
+     * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
      */
     public function __construct(
         WifiIdentSMSSender $identSMSSender,
@@ -97,18 +108,22 @@ class PinIdentificationController extends AbstractController implements APIContr
         SubscriptionLimitNotifier $subscriptionLimitNotifier,
         BlacklistVoter $blacklistVoter,
         BlacklistAttemptRegistrator $blacklistAttemptRegistrator,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        CampaignExtractor $campaignExtractor,
+        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
     ) {
-        $this->identSMSSender              = $identSMSSender;
-        $this->identConfirmator            = $identConfirmator;
-        $this->errorCodeResolver           = $errorCodeResolver;
-        $this->limiter                     = $limiter;
-        $this->defaultRedirectUrl          = $defaultRedirectUrl;
-        $this->carrierRepository           = $carrierRepository;
-        $this->subscriptionLimitNotifier   = $subscriptionLimitNotifier;
-        $this->blacklistVoter              = $blacklistVoter;
-        $this->blacklistAttemptRegistrator = $blacklistAttemptRegistrator;
-        $this->logger                      = $logger;
+        $this->identSMSSender                 = $identSMSSender;
+        $this->identConfirmator               = $identConfirmator;
+        $this->errorCodeResolver              = $errorCodeResolver;
+        $this->limiter                        = $limiter;
+        $this->defaultRedirectUrl             = $defaultRedirectUrl;
+        $this->carrierRepository              = $carrierRepository;
+        $this->subscriptionLimitNotifier      = $subscriptionLimitNotifier;
+        $this->blacklistVoter                 = $blacklistVoter;
+        $this->blacklistAttemptRegistrator    = $blacklistAttemptRegistrator;
+        $this->logger                         = $logger;
+        $this->campaignExtractor              = $campaignExtractor;
+        $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
     }
 
     /**
@@ -155,8 +170,11 @@ class PinIdentificationController extends AbstractController implements APIContr
         $postData = $request->request->all();
         $isResend = isset($postData['resend-pin']);
 
+        $campaign = $this->campaignExtractor->getCampaignFromSession($request->getSession());
+        $isZeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isZeroCreditAvailable($billingCarrierId, $campaign);
+
         try {
-            $this->identSMSSender->sendSMS($billingCarrierId, $mobileNumber, $isResend);
+            $this->identSMSSender->sendSMS($billingCarrierId, $mobileNumber, $isZeroCreditSubAvailable, $isResend);
             $data = ['success' => true, 'carrierId' => $billingCarrierId, 'isResend' => $isResend];
 
             return $this->getSimpleJsonResponse('Sent', 200, [], $data);
@@ -192,13 +210,16 @@ class PinIdentificationController extends AbstractController implements APIContr
         }
 
         $carrierId = $ispData->getCarrierId();
+        $campaign = $this->campaignExtractor->getCampaignFromSession($request->getSession());
+        $isZeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isZeroCreditAvailable($carrierId, $campaign);
 
         try {
             $response = $this->identConfirmator->confirm(
                 $carrierId,
                 $pinCode,
                 $mobileNumber,
-                $request->getClientIp()
+                $request->getClientIp(),
+                $isZeroCreditSubAvailable
             );
 
             return $response;

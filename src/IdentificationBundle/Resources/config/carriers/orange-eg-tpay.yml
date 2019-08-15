@@ -8,12 +8,10 @@ services:
     IdentificationBundle\Carriers\OrangeEGTpay\OrangeEGWifiIdentificationHandler:
         arguments:
             - '@IdentificationBundle\Repository\UserRepository'
-            - '@doctrine.orm.entity_manager'
             - '@router'
             - '@ExtrasBundle\Utils\LocalExtractor'
             - '@SubscriptionBundle\Repository\SubscriptionRepository'
             - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
-            - '@SubscriptionBundle\Service\ZeroCreditSubscriptionChecking'
         tags:
             - { name: identification.wifi_identification_handler }
 

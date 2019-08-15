@@ -3,8 +3,6 @@
 namespace IdentificationBundle\Carriers\OrangeEGTpay;
 
 use App\Domain\Constants\ConstBillingCarrierId;
-use App\Domain\Entity\Carrier;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\BillingFramework\Process\DTO\{PinRequestResult, PinVerifyResult};
@@ -20,7 +18,6 @@ use IdentificationBundle\WifiIdentification\Handler\HasCustomPinVerifyRules;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
 use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use SubscriptionBundle\Repository\SubscriptionRepository;
-use SubscriptionBundle\Service\ZeroCreditSubscriptionChecking;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -37,11 +34,6 @@ class OrangeEGWifiIdentificationHandler implements
      * @var UserRepository
      */
     private $userRepository;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
 
     /**
      * @var RouterInterface
@@ -64,37 +56,26 @@ class OrangeEGWifiIdentificationHandler implements
     private $wifiIdentificationDataStorage;
 
     /**
-     * @var ZeroCreditSubscriptionChecking
-     */
-    private $zeroCreditSubscriptionChecking;
-
-    /**
      * OrangeEGWifiIdentificationHandler constructor
      *
      * @param UserRepository $userRepository
-     * @param EntityManagerInterface $entityManager
      * @param RouterInterface $router
      * @param LocalExtractor $localExtractor
      * @param SubscriptionRepository $subscriptionRepository
      * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
-     * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
      */
     public function __construct(
         UserRepository $userRepository,
-        EntityManagerInterface $entityManager,
         RouterInterface $router,
         LocalExtractor $localExtractor,
         SubscriptionRepository $subscriptionRepository,
-        WifiIdentificationDataStorage $wifiIdentificationDataStorage,
-        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
+        WifiIdentificationDataStorage $wifiIdentificationDataStorage
     ) {
         $this->userRepository = $userRepository;
-        $this->entityManager = $entityManager;
         $this->router = $router;
         $this->localExtractor = $localExtractor;
         $this->subscriptionRepository = $subscriptionRepository;
         $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
-        $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
     }
 
     /**
@@ -147,26 +128,24 @@ class OrangeEGWifiIdentificationHandler implements
 
     /**
      * @param PinRequestResult $pinRequestResult
+     * @param bool             $isZeroCreditSubAvailable
      *
      * @return array
      */
-    public function getAdditionalPinVerifyParams(PinRequestResult $pinRequestResult): array
+    public function getAdditionalPinVerifyParams(
+        PinRequestResult $pinRequestResult,
+        bool $isZeroCreditSubAvailable
+    ): array
     {
         $data = $pinRequestResult->getRawData();
-        $carrierRepository = $this->entityManager->getRepository(Carrier::class);
-        $carrier = $carrierRepository->findOneByBillingId(ConstBillingCarrierId::ORANGE_EGYPT_TPAY);
 
-        $isZeroCreditSub = $this
-            ->zeroCreditSubscriptionChecking
-            ->isZeroCreditAvailable($carrier);
-
-        if (empty($data['subscription_contract_id']) || (!$isZeroCreditSub && empty($data['transactionId']))) {
+        if (empty($data['subscription_contract_id']) || (!$isZeroCreditSubAvailable && empty($data['transactionId']))) {
             throw new WifiIdentConfirmException("Can't process pin verification. Missing required parameters");
         }
 
         $additionalData = ['client_user' => $data['subscription_contract_id']];
 
-        if (!$isZeroCreditSub) {
+        if (!$isZeroCreditSubAvailable) {
             $additionalData['transactionId'] = $data['transactionId'];
         }
 
