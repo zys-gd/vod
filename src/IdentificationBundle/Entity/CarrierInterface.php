@@ -92,6 +92,11 @@ interface CarrierInterface
     public function getSubscribeAttempts();
 
     /**
+     * @return mixed
+     */
+    public function getDefaultLanguage();
+
+    /**
      * @return bool
      */
     public function getTrackAffiliateOnZeroCreditSub(): bool;
