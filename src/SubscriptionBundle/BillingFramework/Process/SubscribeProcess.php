@@ -64,12 +64,13 @@ class SubscribeProcess
                 $exception->getBillingCode(),
                 $exception->getResponse()->getMessage(),
                 null,
-                $exception->getRawResponse()
+                $exception->getRawResponse(),
+                'subscription_process'
             );
 
         } catch (BillingFrameworkException $exception) {
             $this->logger->error('Error while trying to subscribe', ['subscriptionId' => $parameters->clientId, 'params' => $parameters]);
-            throw new SubscribingProcessException('Error while trying to subscribe', 0, $exception);
+            throw new SubscribingProcessException('Error while trying to subscribe', 0, $exception, null, null, 'subscription_billing_request');
         }
     }
 

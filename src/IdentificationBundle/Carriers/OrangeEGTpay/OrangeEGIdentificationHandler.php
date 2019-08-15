@@ -42,11 +42,16 @@ class OrangeEGIdentificationHandler implements IdentificationHandlerInterface, H
 
     /**
      * @param Request $request
+     * @param CarrierInterface $carrier
      *
      * @return array
      */
-    public function getAdditionalIdentificationParams(Request $request): array
+    public function getAdditionalIdentificationParams(Request $request, CarrierInterface $carrier): array
     {
-        return ['lang' => $this->localExtractor->getLocal()];
+        $defaultLang = $carrier->getDefaultLanguage();
+
+        $lang = empty($defaultLang) ? $this->localExtractor->getLocal() : $defaultLang->getCode();
+
+        return ['lang' => $lang];
     }
 }
