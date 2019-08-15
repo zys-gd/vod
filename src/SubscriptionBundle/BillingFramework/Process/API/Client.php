@@ -10,8 +10,6 @@ namespace SubscriptionBundle\BillingFramework\Process\API;
 
 
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\BadResponseException;
-use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
@@ -191,12 +189,10 @@ class Client
             $response         = $this->httpClient->request('GET', $url);
             $preparedResponse = $this->extractContentFromResponse($response);
             return $preparedResponse;
-        } catch (ClientException $e) {
+        } catch (RequestException $e) {
             throw $this->convertRequestException($e);
-        } catch (GuzzleException $e) {
-            throw new BillingFrameworkException(null, $e->getCode(), $e);
         } catch (\Exception $e) {
-            throw new BillingFrameworkException(null, $e->getCode(), $e);
+            throw $this->convertException($e);
         }
 
 
