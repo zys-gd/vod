@@ -70,7 +70,14 @@ class SubscribeProcess
 
         } catch (BillingFrameworkException $exception) {
             $this->logger->error('Error while trying to subscribe', ['subscriptionId' => $parameters->clientId, 'params' => $parameters]);
-            throw new SubscribingProcessException('Error while trying to subscribe', 0, $exception, null, null, 'subscription_billing_request');
+            throw new SubscribingProcessException(
+                'Error while trying to subscribe',
+                0,
+                $exception,
+                null,
+                null,
+                'subscription_billing_request'
+            );
         }
     }
 
