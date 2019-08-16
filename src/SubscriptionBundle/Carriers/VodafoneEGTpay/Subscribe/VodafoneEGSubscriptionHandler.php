@@ -3,6 +3,7 @@
 namespace SubscriptionBundle\Carriers\VodafoneEGTpay\Subscribe;
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use App\Domain\Repository\CarrierRepository;
 use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\BillingFramework\Process\DTO\PinVerifyResult;
@@ -11,9 +12,12 @@ use IdentificationBundle\Identification\Service\RouteProvider;
 use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException;
+use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Subscribe\Handler\ConsentPageFlow\HasConsentPageFlow;
+use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomAffiliateTrackingRules;
 use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerInterface;
+use SubscriptionBundle\Service\ZeroCreditSubscriptionChecking;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +26,7 @@ use Symfony\Component\Routing\RouterInterface;
 /**
  * Class VodafoneEGTpaySubscriptionHandler
  */
-class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, HasConsentPageFlow
+class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, HasConsentPageFlow, HasCustomAffiliateTrackingRules
 {
     /**
      * @var LocalExtractor
@@ -44,6 +48,16 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
     private $routeProvider;
 
     /**
+     * @var ZeroCreditSubscriptionChecking
+     */
+    private $zeroCreditSubscriptionChecking;
+
+    /**
+     * @var CarrierRepository
+     */
+    private $carrierRepository;
+
+    /**
      * VodafoneEGSubscriptionHandler constructor
      *
      * @param LocalExtractor                $localExtractor
@@ -55,13 +69,17 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
         LocalExtractor $localExtractor,
         WifiIdentificationDataStorage $wifiIdentificationDataStorage,
         RouterInterface $router,
-        RouteProvider $routeProvider
+        RouteProvider $routeProvider,
+        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking,
+        CarrierRepository $carrierRepository
     )
     {
-        $this->localExtractor                = $localExtractor;
-        $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
-        $this->router                        = $router;
-        $this->routeProvider                 = $routeProvider;
+        $this->localExtractor                 = $localExtractor;
+        $this->wifiIdentificationDataStorage  = $wifiIdentificationDataStorage;
+        $this->router                         = $router;
+        $this->routeProvider                  = $routeProvider;
+        $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
+        $this->carrierRepository              = $carrierRepository;
     }
 
     /**
@@ -83,7 +101,7 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
     public function getAdditionalSubscribeParams(Request $request, User $user): array
     {
         $defaultLang = $user->getCarrier()->getDefaultLanguage();
-        $lang = empty($defaultLang) ? $this->localExtractor->getLocal() : $defaultLang->getCode();
+        $lang        = empty($defaultLang) ? $this->localExtractor->getLocal() : $defaultLang->getCode();
 
         $data = [
             'url_id'       => $user->getShortUrlId(),
@@ -125,6 +143,38 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
         }
 
         return new RedirectResponse($redirectUrl);
+    }
+
+    /**
+     * @param ProcessResult     $result
+     * @param CampaignInterface $campaign
+     *
+     * @return bool
+     */
+    public function isAffiliateTrackedForSub(ProcessResult $result, CampaignInterface $campaign): bool
+    {
+        $carrier = $this->carrierRepository->findOneByBillingId(ConstBillingCarrierId::VODAFONE_EGYPT_TPAY);
+
+        $isSuccess        = $result->isFailedOrSuccessful() && $result->isFinal();
+        $isZeroCreditsSub = $this
+            ->zeroCreditSubscriptionChecking
+            ->isZeroCreditAvailable(ConstBillingCarrierId::VODAFONE_EGYPT_TPAY, $campaign);
+
+        if ($isZeroCreditsSub) {
+            return $isSuccess && $carrier->getTrackAffiliateOnZeroCreditSub();
+        }
+
+        return $isSuccess;
+    }
+
+    /**
+     * @param ProcessResult $result
+     *
+     * @return bool
+     */
+    public function isAffiliateTrackedForResub(ProcessResult $result): bool
+    {
+        return false;
     }
 
     /**

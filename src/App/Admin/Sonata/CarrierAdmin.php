@@ -113,7 +113,8 @@ class CarrierAdmin extends AbstractAdmin
             ->add('isUnlimitedSubscriptionAttemptsAllowed')
             ->add('subscribeAttempts')
             ->add('isLpOff')
-            ->add('isClickableSubImage');
+            ->add('isClickableSubImage')
+            ->add('trackAffiliateOnZeroCreditSub');
     }
 
     /**

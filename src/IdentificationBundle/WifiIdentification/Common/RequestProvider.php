@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 14.01.19
- * Time: 11:08
- */
 
 namespace IdentificationBundle\WifiIdentification\Common;
 
@@ -12,6 +6,9 @@ namespace IdentificationBundle\WifiIdentification\Common;
 use SubscriptionBundle\BillingFramework\BillingOptionsProvider;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters;
 
+/**
+ * Class RequestProvider
+ */
 class RequestProvider
 {
     /**
@@ -29,55 +26,79 @@ class RequestProvider
         $this->billingOptionsProvider = $billingOptionsProvider;
     }
 
+    /**
+     * @param string $msisdn
+     * @param int    $carrierId
+     * @param string $operatorId
+     * @param string $body
+     * @param array  $additionalParameters
+     * @param bool   $isZeroCreditSubAvailable
+     *
+     * @return ProcessRequestParameters
+     */
     public function getPinRequestParameters(
         string $msisdn,
         int $carrierId,
         string $operatorId,
         string $body,
-        array $additionalParameters
+        array $additionalParameters,
+        bool $isZeroCreditSubAvailable
     ): ProcessRequestParameters
     {
-
         $parameters = new ProcessRequestParameters();
 
-        $parameters->client         = $this->billingOptionsProvider->getClientId();
+        $parameters->client = $this->billingOptionsProvider->getClientId();
+        $parameters->zeroCreditSubAvailable = $isZeroCreditSubAvailable;
         $parameters->additionalData = array_merge(
             [
-                'body'    => $body,
-                'msisdn'  => $msisdn,
+                'body' => $body,
+                'msisdn' => $msisdn,
                 'carrier' => $carrierId,
-                'op_id'   => $operatorId,
+                'op_id' => $operatorId
             ],
             $additionalParameters
         );
+
         return $parameters;
     }
 
+    /**
+     * @param string $msisdn
+     * @param int    $carrierId
+     * @param string $operatorId
+     * @param string $pinCode
+     * @param string $clientUser
+     * @param array  $additionalParameters
+     * @param bool   $isZeroCreditSubAvailable
+     *
+     * @return ProcessRequestParameters
+     */
     public function getPinVerifyParameters(
         string $msisdn,
         int $carrierId,
         string $operatorId,
         string $pinCode,
         string $clientUser,
-        array $additionalParameters
+        array $additionalParameters,
+        bool $isZeroCreditSubAvailable
     ): ProcessRequestParameters
     {
+        $parameters = new ProcessRequestParameters();
 
-        $parameters                 = new ProcessRequestParameters();
-        $parameters->client         = $this->billingOptionsProvider->getClientId();
+        $parameters->client = $this->billingOptionsProvider->getClientId();
+        $parameters->zeroCreditSubAvailable = $isZeroCreditSubAvailable;
         $parameters->additionalData = array_merge(
             [
-                'msisdn'      => $msisdn,
-                'carrier'     => $carrierId,
-                'op_id'       => $operatorId,
-                'pin_code'    => $pinCode,
+                'msisdn' => $msisdn,
+                'carrier' => $carrierId,
+                'op_id' => $operatorId,
+                'pin_code' => $pinCode,
                 'client_user' => $clientUser
             ],
             $additionalParameters
-
         );
-        return $parameters;
 
+        return $parameters;
     }
 
     /**

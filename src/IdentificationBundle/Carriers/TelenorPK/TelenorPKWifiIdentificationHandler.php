@@ -59,7 +59,10 @@ class TelenorPKWifiIdentificationHandler implements WifiIdentificationHandlerInt
         return $this->repository->findOneByPartialMsisdnMatch($modifiedMsisdn);
     }
 
-    public function getAdditionalPinVerifyParams(PinRequestResult $pinRequestResult): array
+    public function getAdditionalPinVerifyParams(
+        PinRequestResult $pinRequestResult,
+        bool $isZeroCreditSubAvailable
+    ): array
     {
         return ['otpId' => $pinRequestResult->getRawData()['otpId']];
     }

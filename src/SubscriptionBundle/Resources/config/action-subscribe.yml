@@ -30,7 +30,7 @@ services:
             - '@ExtrasBundle\Utils\UrlParamAppender'
             - '@SubscriptionBundle\Service\EntitySaveHelper'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventTracker'
-            - '@SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking'
+            - '@SubscriptionBundle\Subscription\Subscribe\Common\CampaignExtractor'
             - '@SubscriptionBundle\Subscription\Common\RouteProvider'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\AffiliateNotifier'
 
@@ -76,7 +76,12 @@ services:
     SubscriptionBundle\Subscription\Subscribe\Handler\DefaultHandler: ~
 
     SubscriptionBundle\Subscription\Subscribe\SubscribeParametersProvider:
-        arguments: ['@SubscriptionBundle\Subscription\Common\RequestParametersProvider', '@request_stack', '@router']
+        arguments:
+            - '@SubscriptionBundle\Subscription\Common\RequestParametersProvider'
+            - '@request_stack'
+            - '@router'
+            - '@SubscriptionBundle\Service\ZeroCreditSubscriptionChecking'
+            - '@SubscriptionBundle\Service\CampaignExtractor'
 
     SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventTracker:
         arguments:

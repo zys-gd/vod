@@ -92,6 +92,11 @@ class ConsentFlowHandler
     private $affiliateNotifier;
 
     /**
+     * @var CampaignExtractor
+     */
+    private $campaignExtractor;
+
+    /**
      * ConsentFlowHandler constructor
      *
      * @param LoggerInterface                $logger
@@ -119,7 +124,9 @@ class ConsentFlowHandler
         UrlParamAppender $urlParamAppender,
         RouterInterface $router,
         CommonResponseCreator $commonResponseCreator,
-        AffiliateNotifier $affiliateNotifier
+        AffiliateNotifier $affiliateNotifier,
+        CampaignExtractor $campaignExtractor
+
     )
     {
         $this->logger                         = $logger;
@@ -198,14 +205,14 @@ class ConsentFlowHandler
     public function handleSubscribe(Request $request, User $user, HasConsentPageFlow $subscriber): Response
     {
         $additionalData = $subscriber->getAdditionalSubscribeParams($request, $user);
-
         $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
+        $campaign = $this->campaignExtractor->getCampaignFromSession($request->getSession());
 
         /** @var ProcessResult $result */
         list($newSubscription, $result) = $this->subscriber->subscribe($user, $subscriptionPack, $additionalData);
 
         if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
-            $isAffTracked = $subscriber->isAffiliateTrackedForSub($result);
+            $isAffTracked = $subscriber->isAffiliateTrackedForSub($result, $campaign);
         } else {
             $isAffTracked = ($result->isSuccessful() && $result->isFinal());
         }

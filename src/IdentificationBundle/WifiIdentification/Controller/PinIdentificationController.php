@@ -12,6 +12,7 @@ use IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeResolver;
 use IdentificationBundle\WifiIdentification\WifiIdentConfirmator;
 use IdentificationBundle\WifiIdentification\WifiIdentSMSSender;
 use IdentificationBundle\WifiIdentification\WifiPhoneOptionsProvider;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitNotifier;
 use SubscriptionBundle\Subscription\Common\RouteProvider;
@@ -32,7 +33,7 @@ class PinIdentificationController extends AbstractController implements APIContr
 {
     use ResponseTrait;
     /**
-     * @var \IdentificationBundle\WifiIdentification\WifiIdentSMSSender
+     * @var WifiIdentSMSSender
      */
     private $identSMSSender;
     /**
@@ -55,6 +56,7 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @var SubscriptionLimitNotifier
      */
     private $subscriptionLimitNotifier;
+
     /**
      * @var BlacklistAttemptRegistrator
      */
@@ -71,6 +73,18 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @var RouteProvider
      */
     private $routeProvider;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+    /**
+     * @var CampaignExtractor
+     */
+    private $campaignExtractor;
+    /**
+     * @var ZeroCreditSubscriptionChecking
+     */
+    private $zeroCreditSubscriptionChecking;
 
     /**
      * PinIdentificationController constructor
@@ -96,7 +110,10 @@ class PinIdentificationController extends AbstractController implements APIContr
         BlacklistVoter $blacklistVoter,
         BlacklistAttemptRegistrator $blacklistAttemptRegistrator,
         WifiPhoneOptionsProvider $phoneOptionsProvider,
-        RouteProvider $routeProvider
+        RouteProvider $routeProvider,
+        LoggerInterface $logger,
+        CampaignExtractor $campaignExtractor,
+        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
     )
     {
         $this->identSMSSender              = $identSMSSender;
@@ -155,12 +172,20 @@ class PinIdentificationController extends AbstractController implements APIContr
         $postData = $request->request->all();
         $isResend = isset($postData['resend-pin']);
 
+        $campaign = $this->campaignExtractor->getCampaignFromSession($request->getSession());
+        $isZeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isZeroCreditAvailable($billingCarrierId, $campaign);
+
         try {
-            $this->identSMSSender->sendSMS($billingCarrierId, $mobileNumber, $isResend);
+            $this->identSMSSender->sendSMS($billingCarrierId, $mobileNumber, $isZeroCreditSubAvailable, $isResend);
             $data = ['success' => true, 'carrierId' => $billingCarrierId, 'isResend' => $isResend];
 
             return $this->getSimpleJsonResponse('Sent', 200, [], $data);
         } catch (PinRequestProcessException $exception) {
+            $this->logger->debug('Send pin error. Try to resolve error message', [
+                'code' => $exception->getCode(),
+                'carrierId' => $billingCarrierId
+            ]);
+
             $message = $this->errorCodeResolver->resolveMessage($exception->getCode(), $billingCarrierId);
             return $this->getSimpleJsonResponse($message, 200, [], ['success' => false, 'code' => $exception->getCode()]);
         } catch (\Exception $exception) {
@@ -187,13 +212,16 @@ class PinIdentificationController extends AbstractController implements APIContr
         }
 
         $carrierId = $ispData->getCarrierId();
+        $campaign = $this->campaignExtractor->getCampaignFromSession($request->getSession());
+        $isZeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isZeroCreditAvailable($carrierId, $campaign);
 
         try {
             $response = $this->identConfirmator->confirm(
                 $carrierId,
                 $pinCode,
                 $mobileNumber,
-                $request->getClientIp()
+                $request->getClientIp(),
+                $isZeroCreditSubAvailable
             );
 
             return $response;

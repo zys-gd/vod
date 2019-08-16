@@ -75,7 +75,7 @@ class CommonFlowHandler
      */
     private $subscriptionEventTracker;
     /**
-     * @var ZeroCreditSubscriptionChecking
+     * @var CampaignExtractor
      */
     private $zeroCreditSubscriptionChecking;
     /**
@@ -118,7 +118,9 @@ class CommonFlowHandler
         SubscriptionEventTracker $subscriptionEventTracker,
         ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking,
         RouteProvider $routeProvider,
-        AffiliateNotifier $affiliateNotifier
+        AffiliateNotifier $affiliateNotifier,
+        CampaignExtractor $campaignExtractor
+
     )
     {
 
@@ -132,7 +134,7 @@ class CommonFlowHandler
         $this->urlParamAppender               = $urlParamAppender;
         $this->entitySaveHelper               = $entitySaveHelper;
         $this->subscriptionEventTracker       = $subscriptionEventTracker;
-        $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
+        $this->campaignExtractor              = $campaignExtractor;
         $this->routeProvider                  = $routeProvider;
         $this->affiliateNotifier              = $affiliateNotifier;
     }
@@ -254,7 +256,7 @@ class CommonFlowHandler
 
     /**
      * @param Request      $request
-     * @param User         $User
+     * @param User         $user
      * @param Subscription $subscription
      * @param              $subscriber
      *
@@ -264,13 +266,13 @@ class CommonFlowHandler
      */
     private function handleResubscribeAttempt(
         Request $request,
-        User $User,
+        User $user,
         Subscription $subscription,
         HasCommonFlow $subscriber
     ): Response
     {
 
-        $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($User);
+        $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
         $subpackId        = $subscriptionPack->getUuid();
         $subpackName      = $subscriptionPack->getName();
 
@@ -285,7 +287,7 @@ class CommonFlowHandler
                 'carrierName' => $subpackName
             ]);
 
-            $additionalData = $subscriber->getAdditionalSubscribeParams($request, $User);
+            $additionalData = $subscriber->getAdditionalSubscribeParams($request, $user);
             $result         = $this->subscriber->resubscribe($subscription, $subscriptionPack, $additionalData);
 
         } else {
@@ -329,7 +331,7 @@ class CommonFlowHandler
         $subscriber->afterProcess($subscription, $result);
         $this->entitySaveHelper->saveAll();
 
-        return $this->commonResponseCreator->createCommonHttpResponse($request, $User);
+        return $this->commonResponseCreator->createCommonHttpResponse($request, $user);
     }
 
 }

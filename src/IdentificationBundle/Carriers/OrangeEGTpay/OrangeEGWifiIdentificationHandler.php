@@ -3,7 +3,6 @@
 namespace IdentificationBundle\Carriers\OrangeEGTpay;
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\BillingFramework\ID;
@@ -38,11 +37,6 @@ class OrangeEGWifiIdentificationHandler implements
     private $userRepository;
 
     /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
      * @var RouterInterface
      */
     private $router;
@@ -66,15 +60,13 @@ class OrangeEGWifiIdentificationHandler implements
      * OrangeEGWifiIdentificationHandler constructor
      *
      * @param UserRepository            $userRepository
-     * @param EntityManagerInterface    $entityManager
-     * @param RouterInterface           $router
+     * @param  RouterInterface           $router
      * @param LocalExtractor            $localExtractor
      * @param SubscriptionRepository    $subscriptionRepository
      * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
      */
     public function __construct(
         UserRepository $userRepository,
-        EntityManagerInterface $entityManager,
         RouterInterface $router,
         LocalExtractor $localExtractor,
         SubscriptionRepository $subscriptionRepository,
@@ -82,7 +74,6 @@ class OrangeEGWifiIdentificationHandler implements
     )
     {
         $this->userRepository            = $userRepository;
-        $this->entityManager             = $entityManager;
         $this->router                    = $router;
         $this->localExtractor            = $localExtractor;
         $this->subscriptionRepository    = $subscriptionRepository;
@@ -139,18 +130,28 @@ class OrangeEGWifiIdentificationHandler implements
 
     /**
      * @param PinRequestResult $pinRequestResult
+     * @param bool             $isZeroCreditSubAvailable
      *
      * @return array
      */
-    public function getAdditionalPinVerifyParams(PinRequestResult $pinRequestResult): array
+    public function getAdditionalPinVerifyParams(
+        PinRequestResult $pinRequestResult,
+        bool $isZeroCreditSubAvailable
+    ): array
     {
         $data = $pinRequestResult->getRawData();
 
-        if (empty($data['subscription_contract_id']) || empty($data['transactionId'])) {
+        if (empty($data['subscription_contract_id']) || (!$isZeroCreditSubAvailable && empty($data['transactionId']))) {
             throw new WifiIdentConfirmException("Can't process pin verification. Missing required parameters");
         }
 
-        return ['client_user' => $data['subscription_contract_id'], 'transactionId' => $data['transactionId']];
+        $additionalData = ['client_user' => $data['subscription_contract_id']];
+
+        if (!$isZeroCreditSubAvailable) {
+            $additionalData['transactionId'] = $data['transactionId'];
+        }
+
+        return $additionalData;
     }
 
     /**

@@ -10,8 +10,8 @@ namespace SubscriptionBundle\BillingFramework\Process\API;
 
 
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -160,8 +160,7 @@ class Client
             $response = $this->performGetRequest($url);
             $cachedResponse->set($response);
             $this->cache->save($cachedResponse);
-        }
-        else {
+        } else {
             $response = $cachedResponse->get();
         }
 
@@ -190,12 +189,10 @@ class Client
             $response         = $this->httpClient->request('GET', $url);
             $preparedResponse = $this->extractContentFromResponse($response);
             return $preparedResponse;
-        } catch (ClientException $e) {
-            throw $this->makeBillingResponseException($e);
-        } catch (GuzzleException $e) {
-            throw new BillingFrameworkException(null, $e->getCode(), $e);
+        } catch (RequestException $e) {
+            throw $this->convertRequestException($e);
         } catch (\Exception $e) {
-            throw new BillingFrameworkException(null, $e->getCode(), $e);
+            throw $this->convertException($e);
         }
 
 
@@ -209,6 +206,7 @@ class Client
      * @return null|stdClass|stdClass[]
      * @throws BillingFrameworkException
      * @throws BillingFrameworkProcessException
+     * @throws GuzzleException
      */
     public function makePostRequest($url, array $params, bool $isJson = false): ?stdClass
     {
@@ -218,8 +216,7 @@ class Client
                 $options = [
                     RequestOptions::JSON => $params,
                 ];
-            }
-            else {
+            } else {
                 $options = [
                     RequestOptions::FORM_PARAMS => $params,
                 ];
@@ -227,23 +224,21 @@ class Client
             $response         = $this->httpClient->request('POST', $url, $options);
             $preparedResponse = $this->extractContentFromResponse($response);
             return $preparedResponse;
-        } catch (ClientException $e) {
-            throw $this->makeBillingResponseException($e);
-        } catch (GuzzleException $e) {
-            throw new BillingFrameworkException($e->getMessage(), $e->getCode(), $e);
+        } catch (RequestException $e) {
+            throw $this->convertRequestException($e);
         } catch (\Exception $e) {
-            throw new BillingFrameworkException($e->getMessage(), $e->getCode(), $e);
+            throw $this->convertException($e);
         }
     }
 
     /**
-     * @param string $requestType
      * @param string $url
      * @param array  $params
      * @param bool   $isJson
      *
      * @return ResponseInterface
      * @throws BillingFrameworkException
+     * @throws BillingFrameworkProcessException
      * @throws GuzzleException
      */
     private function makePostRequestWithoutExtraction(
@@ -257,24 +252,21 @@ class Client
 
         try {
             return $this->httpClient->request('POST', $url, $options);
-        } catch (ClientException $e) {
-            throw $this->makeBillingResponseException($e);
-        } catch (GuzzleException $e) {
-            throw new BillingFrameworkException($e->getMessage(), $e->getCode(), $e);
+        } catch (RequestException $e) {
+            throw $this->convertRequestException($e);
         } catch (\Exception $e) {
-            throw new BillingFrameworkException($e->getMessage(), $e->getCode(), $e);
+            throw $this->convertException($e);
         }
     }
 
-    /**
-     * @param $e
-     *
-     * @return BillingFrameworkProcessException
-     */
-    private function makeBillingResponseException(ClientException $e): BillingFrameworkProcessException
+    private function convertRequestException(RequestException $e): BillingFrameworkProcessException
     {
         $content          = $this->extractContentFromResponse($e->getResponse());
-        $processException = new BillingFrameworkProcessException(null, $e->getCode(), $e);
+        $processException = new BillingFrameworkProcessException(
+            sprintf('%s: %s', get_class($e), $e->getMessage()),
+            $e->getCode(),
+            $e
+        );
         $processException->setRawResponse($content);
         try {
             $processException->setResponse($this->responseMapper->map('', $content));
@@ -285,5 +277,14 @@ class Client
         } catch (EmptyResponse $exception) {
         }
         return $processException;
+    }
+
+    private function convertException(\Exception $e): BillingFrameworkException
+    {
+        return new BillingFrameworkException(
+            sprintf('%s: %s', get_class($e), $e->getMessage()),
+            $e->getCode(),
+            $e
+        );
     }
 }

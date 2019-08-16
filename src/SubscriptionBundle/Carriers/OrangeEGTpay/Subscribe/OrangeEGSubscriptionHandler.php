@@ -3,6 +3,7 @@
 namespace SubscriptionBundle\Carriers\OrangeEGTpay\Subscribe;
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use App\Domain\Repository\CarrierRepository;
 use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\BillingFramework\Process\DTO\PinVerifyResult;
@@ -11,9 +12,12 @@ use IdentificationBundle\Identification\Service\RouteProvider;
 use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException;
+use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Subscribe\Handler\ConsentPageFlow\HasConsentPageFlow;
+use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomAffiliateTrackingRules;
 use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerInterface;
+use SubscriptionBundle\Service\ZeroCreditSubscriptionChecking;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +26,7 @@ use Symfony\Component\Routing\RouterInterface;
 /**
  * Class OrangeEGSubscriptionHandler
  */
-class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasConsentPageFlow
+class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasConsentPageFlow, HasCustomAffiliateTrackingRules
 {
     /**
      * @var LocalExtractor
@@ -44,24 +48,39 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
 
 
     /**
+     * @var ZeroCreditSubscriptionChecking
+     */
+    private $zeroCreditSubscriptionChecking;
+
+    /**
+     * @var CarrierRepository
+     */
+    private $carrierRepository;
+
+    /**
      * VodafoneEGSubscriptionHandler constructor
      *
      * @param LocalExtractor            $localExtractor
      * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
      * @param RouteProvider             $routeProvider
-     * @param RouterInterface           $router
+     * @param RouterInterface           $router* @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
+     * @param CarrierRepository              $carrierRepository
      */
     public function __construct(
         LocalExtractor $localExtractor,
         WifiIdentificationDataStorage $wifiIdentificationDataStorage,
         RouteProvider $routeProvider,
-        RouterInterface $router
+        RouterInterface $router,
+        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking,
+        CarrierRepository $carrierRepository
     )
     {
         $this->localExtractor            = $localExtractor;
         $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
         $this->routeProvider             = $routeProvider;
         $this->router                    = $router;
+        $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
+        $this->carrierRepository = $carrierRepository;
     }
 
     /**
@@ -127,6 +146,38 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
         }
 
         return new RedirectResponse($redirectUrl);
+    }
+
+    /**
+     * @param ProcessResult     $result
+     * @param CampaignInterface $campaign
+     *
+     * @return bool
+     */
+    public function isAffiliateTrackedForSub(ProcessResult $result, CampaignInterface $campaign): bool
+    {
+        $carrier = $this->carrierRepository->findOneByBillingId(ConstBillingCarrierId::ORANGE_EGYPT_TPAY);
+
+        $isSuccess = $result->isFailedOrSuccessful() && $result->isFinal();
+        $isZeroCreditsSub = $this
+            ->zeroCreditSubscriptionChecking
+            ->isZeroCreditAvailable(ConstBillingCarrierId::ORANGE_EGYPT_TPAY, $campaign);
+
+        if ($isZeroCreditsSub) {
+            return $isSuccess && $carrier->getTrackAffiliateOnZeroCreditSub();
+        }
+
+        return $isSuccess;
+    }
+
+    /**
+     * @param ProcessResult $result
+     *
+     * @return bool
+     */
+    public function isAffiliateTrackedForResub(ProcessResult $result): bool
+    {
+        return false;
     }
 
     /**

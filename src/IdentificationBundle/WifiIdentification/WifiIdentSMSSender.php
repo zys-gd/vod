@@ -110,11 +110,17 @@ class WifiIdentSMSSender
     /**
      * @param int    $carrierId
      * @param string $mobileNumber
+     * @param bool   $isZeroCreditSubAvailable
      * @param bool   $isResend
      *
      * @throws BillingFrameworkException
      */
-    public function sendSMS(int $carrierId, string $mobileNumber, bool $isResend = false): void
+    public function sendSMS(
+        int $carrierId,
+        string $mobileNumber,
+        bool $isZeroCreditSubAvailable,
+        bool $isResend = false
+    ): void
     {
         $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
         $handler = $this->handlerProvider->get($carrier);
@@ -163,7 +169,8 @@ class WifiIdentSMSSender
             $carrier->getBillingCarrierId(),
             $carrier->getOperatorId(),
             $body,
-            $additionalParameters
+            $additionalParameters,
+            $isZeroCreditSubAvailable
         );
 
         try {

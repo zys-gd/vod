@@ -33,6 +33,7 @@
         "allow_bonus_credit_multiple": 0,
         "bonus_credit": 0,
         "provider_managed_subscriptions": 0,
+        "zero_credit_sub_available": 0,
         "created": "2017-12-07 13:55:10",
         "updated": "2018-03-29 11:56:06"
     },
@@ -70,6 +71,7 @@
         "allow_bonus_credit_multiple": 0,
         "bonus_credit": 0,
         "provider_managed_subscriptions": 1,
+        "zero_credit_sub_available": 0,
         "created": "2017-12-07 13:58:19",
         "updated": "2017-12-07 13:58:19"
     },
@@ -107,6 +109,7 @@
         "allow_bonus_credit_multiple": 0,
         "bonus_credit": 0,
         "provider_managed_subscriptions": 0,
+        "zero_credit_sub_available": 0,
         "created": "2017-12-08 09:51:28",
         "updated": "2018-04-18 08:10:01"
     },
@@ -144,6 +147,7 @@
         "allow_bonus_credit_multiple": 0,
         "bonus_credit": 0,
         "provider_managed_subscriptions": 1,
+        "zero_credit_sub_available": 0,
         "created": "2017-12-07 14:48:03",
         "updated": "2018-01-23 15:17:44"
     },
@@ -181,6 +185,7 @@
         "allow_bonus_credit_multiple": 0,
         "bonus_credit": 0,
         "provider_managed_subscriptions": 0,
+        "zero_credit_sub_available": 0,
         "created": "2017-12-08 09:51:28",
         "updated": "2018-04-18 08:10:01"
     },
@@ -190,7 +195,7 @@
         "status": 1,
         "name": "Orange EG via TPAY",
         "description": "",
-        "is_resub_allowed": 1,
+        "is_resub_allowed": 0,
         "carrier_name": "Orange EG via TPAY",
         "carrier_id": 2254,
         "tier_id": 2,
@@ -218,7 +223,8 @@
         "allow_bonus_credit_multiple": 0,
         "bonus_credit": 0,
         "provider_managed_subscriptions": 1,
-        "created": "2019-06-18 14:25:49",
+        "zero_credit_sub_available": 0,
+    "created": "2019-06-18 14:25:49",
         "updated": "2019-06-18 14:25:49"
     },
     {
@@ -227,7 +233,7 @@
         "status": 1,
         "name": "Vodafone EG via TPAY",
         "description": "",
-        "is_resub_allowed": 1,
+        "is_resub_allowed": 0,
         "carrier_name": "Vodafone EG via TPAY",
         "carrier_id": 2253,
         "tier_id": 2,
@@ -255,6 +261,7 @@
         "allow_bonus_credit_multiple": 0,
         "bonus_credit": 0,
         "provider_managed_subscriptions": 1,
+        "zero_credit_sub_available": 0,
         "created": "2019-06-18 14:25:49",
         "updated": "2019-06-18 14:25:49"
     },
