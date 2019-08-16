@@ -16,6 +16,7 @@
             <tr>
                 <th><b>Time</b></th>
                 <th><b>Content</b></th>
+                <th><b>Result</b></th>
             </tr>
             </thead>
             {% for call in  collector.calls %}
@@ -23,6 +24,9 @@
                     <td>{{ call.time }}</td>
                     <td style="word-break: break-word">
                         {{ call.data }}
+                    </td>
+                    <td>
+                        {{ call.result }}
                     </td>
                 </tr>
             {% endfor %}

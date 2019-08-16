@@ -31,9 +31,12 @@ class TraceableSender implements SenderInterface
 
     public function sendEvent($data, string $timestamp): bool
     {
-        $this->calls[] = ['time' => $timestamp, 'data' => $data];
 
-        return $this->sender->sendEvent($data, $timestamp);
+        $result        = $this->sender->sendEvent($data, $timestamp);
+
+        $this->calls[] = ['time' => $timestamp, 'data' => $data, 'result' => $result];
+
+        return $result;
     }
 
     public function getCalls(): array
