@@ -2,33 +2,36 @@
 
 namespace SubscriptionBundle\Service\Action\SubscribeBack;
 
-use Symfony\Component\HttpFoundation\Request;
+use IdentificationBundle\Entity\CarrierInterface;
+use SubscriptionBundle\Service\Action\SubscribeBack\Handler\DefaultHandler;
+use SubscriptionBundle\Service\Action\SubscribeBack\Handler\SubscribeBackHandlerInterface;
 
 class SubscribeBackHandlerProvider
 {
     /**
-     * @var AbstractSubscribeBackHandler[]
+     * @var SubscribeBackHandlerInterface[]
      */
     private $handlers = [];
 
-    public function __construct(... $handlers)
+    public function __construct(DefaultHandler $handler)
     {
-
-        /** @var AbstractSubscribeBackHandler[] $handlers */
-        foreach ($handlers as $handler) {
-
-            if (!$handler instanceof AbstractSubscribeBackHandler) {
-                throw new \InvalidArgumentException(sprintf('%s is not instance of %s', get_class($handler), AbstractSubscribeBackHandler::class));
-            }
-
-            $this->handlers[] = $handler;
-        }
+        $this->defaultHandler = $handler;
     }
 
-    public function getHandler(Request $request): AbstractSubscribeBackHandler
+    public function addHandler(SubscribeBackHandlerInterface $handler)
+    {
+        $this->handlers[] = $handler;
+    }
+
+    /**
+     * @param CarrierInterface $carrier
+     *
+     * @return SubscribeBackHandlerInterface
+     */
+    public function getHandler(CarrierInterface $carrier): SubscribeBackHandlerInterface
     {
         foreach ($this->handlers as $handler) {
-            if ($handler->canHandle($request)) {
+            if ($handler->canHandle($carrier)) {
                 return $handler;
             }
         }

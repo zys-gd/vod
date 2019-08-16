@@ -1,31 +1,6 @@
 services:
-#  handler.subscribe_back.zain:
-#      class: SubscriptionBundle\Carriers\ZainIQ\SubscribeBack\ZainHandler
-#      arguments: ["@subscription.zain.service"]
+    SubscriptionBundle\Service\Action\SubscribeBack\Handler\DefaultHandler: ~
 
-
-
-# SubscriptionBundle\Service\Action\SubscribeBack\SubscribeBackHandlerProvider:
-#     arguments:
-#       - "@handler.subscribe_back.tim"
-#       - "@handler.subscribe_back.robi"
-#       - "@handler.subscribe_back.airtel"
-#       - "@handler.subscribe_back.ooredoo"
-#       - '@subscription.dialog_lk_subscribeback_handler'
-
-
-
-#  subscription.zain.service:
-#      class: SubscriptionBundle\Carriers\ZainIQ\SubscribeBack\ZainBackSubscriber
-#      arguments:
-#        - "@affiliate.affiliate.service"
-#        - '@SubscriptionBundle\Service\SubscriptionPackProvider'
-#        - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
-#        - '@affiliate.user_info_mapper'
-#        - '@app.carriers'
-#        - '@?'
-#        - '@?'
-#        - '@?'
-#        - '@SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper'
-#        - '@?'
-#
+    SubscriptionBundle\Service\Action\SubscribeBack\SubscribeBackHandlerProvider:
+        arguments:
+            - '@SubscriptionBundle\Service\Action\SubscribeBack\Handler\DefaultHandler'
