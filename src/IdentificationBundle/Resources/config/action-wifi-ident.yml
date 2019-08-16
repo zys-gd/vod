@@ -84,3 +84,6 @@ services:
             - '@SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator'
             - '@IdentificationBundle\WifiIdentification\WifiPhoneOptionsProvider'
             - '@SubscriptionBundle\Subscription\Common\RouteProvider'
+            - '@logger'
+            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
+            - '@SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking'

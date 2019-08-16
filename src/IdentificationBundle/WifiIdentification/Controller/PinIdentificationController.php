@@ -91,16 +91,19 @@ class PinIdentificationController extends AbstractController implements APIContr
     /**
      * PinIdentificationController constructor
      *
-     * @param WifiIdentSMSSender          $identSMSSender
-     * @param WifiIdentConfirmator        $identConfirmator
-     * @param ErrorCodeResolver           $errorCodeResolver
-     * @param SubscriptionLimiter         $limiter
-     * @param CarrierRepositoryInterface  $carrierRepository
-     * @param SubscriptionLimitNotifier   $subscriptionLimitNotifier
-     * @param BlacklistVoter              $blacklistVoter
-     * @param BlacklistAttemptRegistrator $blacklistAttemptRegistrator
-     * @param WifiPhoneOptionsProvider    $phoneOptionsProvider
-     * @param RouteProvider               $routeProvider
+     * @param WifiIdentSMSSender             $identSMSSender
+     * @param WifiIdentConfirmator           $identConfirmator
+     * @param ErrorCodeResolver              $errorCodeResolver
+     * @param SubscriptionLimiter            $limiter
+     * @param CarrierRepositoryInterface     $carrierRepository
+     * @param SubscriptionLimitNotifier      $subscriptionLimitNotifier
+     * @param BlacklistVoter                 $blacklistVoter
+     * @param BlacklistAttemptRegistrator    $blacklistAttemptRegistrator
+     * @param WifiPhoneOptionsProvider       $phoneOptionsProvider
+     * @param RouteProvider                  $routeProvider
+     * @param LoggerInterface                $logger
+     * @param CampaignExtractor              $campaignExtractor
+     * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
      */
     public function __construct(
         WifiIdentSMSSender $identSMSSender,
