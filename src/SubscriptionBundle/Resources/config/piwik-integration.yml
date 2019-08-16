@@ -5,7 +5,7 @@ services:
 
     SubscriptionBundle\Piwik\EventPublisher:
         arguments:
-            - '@SubscriptionBundle\Piwik\Senders\RabbitMQ'
+            - '@SubscriptionBundle\Piwik\Profiler\TraceableSender'
             - '@SubscriptionBundle\Piwik\Formatter\LegacyPiwikFormatter'
 
     SubscriptionBundle\Piwik\Service\AdditionalDataProvider: ~
@@ -44,3 +44,12 @@ services:
     SubscriptionBundle\Piwik\DataMapper\UserInformationMapper:
         arguments:
             - '@SubscriptionBundle\Piwik\Service\AffiliateStringProvider'
+
+    SubscriptionBundle\Piwik\Profiler\TraceableSender:
+        arguments:
+            - '@SubscriptionBundle\Piwik\Senders\RabbitMQ'
+
+    SubscriptionBundle\Piwik\Profiler\TraceableSenderCollector:
+        arguments: ['@SubscriptionBundle\Piwik\Profiler\TraceableSender']
+        tags:
+            - { name: data_collector,  template: '@Subscription/profiler/piwik_events.html.twig', id: 'subscription.piwik_events_collector'  }

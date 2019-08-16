@@ -1,0 +1,43 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+
+{% block panel %}
+    <h2>Piwik Sendings</h2>
+
+
+    {% if not collector.calls | length %}
+        <div class="empty">
+            <p>No requests sent.</p>
+        </div>
+    {% else %}
+
+        <table>
+            <thead>
+            <tr>
+                <th><b>Time</b></th>
+                <th><b>Content</b></th>
+            </tr>
+            </thead>
+            {% for call in  collector.calls %}
+                <tr>
+                    <td>{{ call.time }}</td>
+                    <td style="word-break: break-word">
+                        {{ call.data }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <div></div>
+    {% endif %}
+{% endblock %}
+
+
+{% block menu %}
+    {# This left-hand menu appears when using the full-screen profiler. #}
+
+
+    <span class="label {% if not collector.calls | length %}disabled {% endif %}">
+    <strong>Piwik Sendings</strong>
+    </span>
+
+{% endblock %}

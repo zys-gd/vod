@@ -155,9 +155,9 @@ class SubscribeAction extends AbstractController
      */
     public function __invoke(Request $request, IdentificationData $identificationData, ISPData $ISPData)
     {
-        if (!$this->subscriptionVoter->checkIfSubscriptionAllowed($request, $identificationData, $ISPData)) {
+       /* if (!$this->subscriptionVoter->checkIfSubscriptionAllowed($request, $identificationData, $ISPData)) {
             return new RedirectResponse($this->routeProvider->getLinkToHomepage(['err_handle' => 'subscription_restricted']));
-        }
+        }*/
 
         if ($this->postPaidHandler->isPostPaidRestricted()) {
             return new RedirectResponse($this->routeProvider->getLinkToHomepage(['err_handle' => 'postpaid_restricted']));
