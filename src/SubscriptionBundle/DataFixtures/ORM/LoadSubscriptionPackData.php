@@ -60,7 +60,7 @@ class LoadSubscriptionPackData extends AbstractFixture implements ContainerAware
             $updated                             = $row['updated'];
             $is_resub_allowed                    = $row['is_resub_allowed'];
             $displayCurrency                     = $row['display_currency'] ?? '';
-            $zeroCreditSubAvailable              = $row['zero_credit_sub_available'];
+            $zeroCreditSubAvailable              = $row['zero_credit_sub_available'] ?? 0;
 
 
             $pack = new SubscriptionPack($uuid);
