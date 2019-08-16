@@ -482,7 +482,7 @@ class Carrier implements CarrierInterface, HasUuid
     /**
      * @return integer
      */
-    public function getSubscribeAttempts()
+    public function getSubscribeAttempts(): int
     {
         return $this->subscribeAttempts;
     }

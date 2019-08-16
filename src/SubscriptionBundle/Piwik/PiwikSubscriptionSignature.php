@@ -72,11 +72,11 @@ class PiwikSubscriptionSignature
             return '-freetrial';
         }
 
-        if ($subscriptionPack->isZeroCreditSubAvailable() && $chargePaid === 0) {
+        if ($subscriptionPack->isZeroCreditSubAvailable() && ($chargePaid === 0 || !$chargePaid)) {
             return '-zerocredit';
         }
 
-        if ($campaign && $campaign->isZeroCreditSubAvailable() && $chargePaid === 0) {
+        if ($campaign && $campaign->isZeroCreditSubAvailable() && ($chargePaid === 0 || !$chargePaid)) {
             return '-zerocredit';
         }
 

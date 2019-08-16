@@ -8,7 +8,6 @@ services:
     IdentificationBundle\Carriers\OrangeEGTpay\OrangeEGWifiIdentificationHandler:
         arguments:
             - '@IdentificationBundle\Repository\UserRepository'
-            - '@doctrine.orm.entity_manager'
             - '@router'
             - '@ExtrasBundle\Utils\LocalExtractor'
             - '@SubscriptionBundle\Repository\SubscriptionRepository'

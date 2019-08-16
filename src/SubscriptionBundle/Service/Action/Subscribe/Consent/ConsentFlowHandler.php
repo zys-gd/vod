@@ -15,6 +15,7 @@ use SubscriptionBundle\Service\Action\Subscribe\Common\{CommonResponseCreator, S
 use SubscriptionBundle\Service\Action\Subscribe\Handler\ConsentPageFlow\HasConsentPageFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\{HasCustomAffiliateTrackingRules, HasCustomPiwikTrackingRules, HasCustomResponses};
 use SubscriptionBundle\Service\Action\Subscribe\Subscriber;
+use SubscriptionBundle\Service\CampaignExtractor;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\SubscriptionExtractor;
 use SubscriptionBundle\Service\SubscriptionPackProvider;
@@ -84,19 +85,25 @@ class ConsentFlowHandler
     private $commonResponseCreator;
 
     /**
+     * @var CampaignExtractor
+     */
+    private $campaignExtractor;
+
+    /**
      * ConsentFlowHandler constructor
      *
-     * @param LoggerInterface $logger
-     * @param SubscriptionExtractor $subscriptionExtractor
-     * @param SubscriptionPackProvider $subscriptionPackProvider
-     * @param Subscriber $subscriber
-     * @param SubscriptionEventTracker $subscriptionEventTracker
-     * @param EntitySaveHelper $entitySaveHelper
-     * @param RouteProvider $routeProvider
+     * @param LoggerInterface                $logger
+     * @param SubscriptionExtractor          $subscriptionExtractor
+     * @param SubscriptionPackProvider       $subscriptionPackProvider
+     * @param Subscriber                     $subscriber
+     * @param SubscriptionEventTracker       $subscriptionEventTracker
+     * @param EntitySaveHelper               $entitySaveHelper
+     * @param RouteProvider                  $routeProvider
      * @param SubscriptionEligibilityChecker $subscriptionEligibilityChecker
-     * @param UrlParamAppender $urlParamAppender
-     * @param RouterInterface $router
-     * @param CommonResponseCreator $commonResponseCreator
+     * @param UrlParamAppender               $urlParamAppender
+     * @param RouterInterface                $router
+     * @param CommonResponseCreator          $commonResponseCreator
+     * @param CampaignExtractor              $campaignExtractor
      */
     public function __construct(
         LoggerInterface $logger,
@@ -109,7 +116,8 @@ class ConsentFlowHandler
         SubscriptionEligibilityChecker $subscriptionEligibilityChecker,
         UrlParamAppender $urlParamAppender,
         RouterInterface $router,
-        CommonResponseCreator $commonResponseCreator
+        CommonResponseCreator $commonResponseCreator,
+        CampaignExtractor $campaignExtractor
     ) {
         $this->logger = $logger;
         $this->subscriptionExtractor = $subscriptionExtractor;
@@ -122,6 +130,7 @@ class ConsentFlowHandler
         $this->urlParamAppender = $urlParamAppender;
         $this->router = $router;
         $this->commonResponseCreator = $commonResponseCreator;
+        $this->campaignExtractor = $campaignExtractor;
     }
 
     /**
@@ -186,14 +195,14 @@ class ConsentFlowHandler
     public function handleSubscribe(Request $request, User $user, HasConsentPageFlow $subscriber): Response
     {
         $additionalData = $subscriber->getAdditionalSubscribeParams($request, $user);
-
         $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
+        $campaign = $this->campaignExtractor->getCampaignFromSession($request->getSession());
 
         /** @var ProcessResult $result */
         list($newSubscription, $result) = $this->subscriber->subscribe($user, $subscriptionPack, $additionalData);
 
         if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
-            $isAffTracked = $subscriber->isAffiliateTrackedForSub($result);
+            $isAffTracked = $subscriber->isAffiliateTrackedForSub($result, $campaign);
         } else {
             $isAffTracked = ($result->isSuccessful() && $result->isFinal());
         }
