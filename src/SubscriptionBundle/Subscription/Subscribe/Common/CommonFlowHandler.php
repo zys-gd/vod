@@ -12,6 +12,7 @@ use ExtrasBundle\Controller\Traits\ResponseTrait;
 use ExtrasBundle\Utils\UrlParamAppender;
 use IdentificationBundle\Entity\User;
 use Psr\Log\LoggerInterface;
+use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\EntitySaveHelper;
@@ -74,9 +75,7 @@ class CommonFlowHandler
      * @var SubscriptionEventTracker
      */
     private $subscriptionEventTracker;
-    /**
-     * @var CampaignExtractor
-     */
+
     private $zeroCreditSubscriptionChecking;
     /**
      * @var RouteProvider
@@ -86,6 +85,10 @@ class CommonFlowHandler
      * @var AffiliateNotifier
      */
     private $affiliateNotifier;
+    /**
+     * @var CampaignExtractor
+     */
+    private $campaignExtractor;
 
 
     /**
@@ -104,6 +107,7 @@ class CommonFlowHandler
      * @param \SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
      * @param \SubscriptionBundle\Subscription\Common\RouteProvider                            $routeProvider
      * @param AffiliateNotifier                                                                $affiliateNotifier
+     * @param CampaignExtractor                                                                $campaignExtractor
      */
     public function __construct(
         SubscriptionExtractor $subscriptionProvider,
@@ -134,9 +138,10 @@ class CommonFlowHandler
         $this->urlParamAppender               = $urlParamAppender;
         $this->entitySaveHelper               = $entitySaveHelper;
         $this->subscriptionEventTracker       = $subscriptionEventTracker;
-        $this->campaignExtractor              = $campaignExtractor;
         $this->routeProvider                  = $routeProvider;
         $this->affiliateNotifier              = $affiliateNotifier;
+        $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
+        $this->campaignExtractor              = $campaignExtractor;
     }
 
 
@@ -213,16 +218,14 @@ class CommonFlowHandler
 
         $additionalData   = $subscriber->getAdditionalSubscribeParams($request, $User);
         $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($User);
+        $campaign         = $this->campaignExtractor->getCampaignFromSession($request->getSession());
 
-        if ($this->zeroCreditSubscriptionChecking->isAvailable($request->getSession(), $subscriptionPack)) {
-            $additionalData['zero_credit_sub_available'] = true;
-        }
 
         /** @var ProcessResult $result */
         list($newSubscription, $result) = $this->subscriber->subscribe($User, $subscriptionPack, $additionalData);
 
         if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
-            $isAffTracked = $subscriber->isAffiliateTrackedForSub($result);
+            $isAffTracked = $subscriber->isAffiliateTrackedForSub($result, $campaign);
         } else {
             $isAffTracked = ($result->isSuccessful() && $result->isFinal());
         }

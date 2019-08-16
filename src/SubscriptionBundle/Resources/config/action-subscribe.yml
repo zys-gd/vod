@@ -30,9 +30,10 @@ services:
             - '@ExtrasBundle\Utils\UrlParamAppender'
             - '@SubscriptionBundle\Service\EntitySaveHelper'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventTracker'
-            - '@SubscriptionBundle\Subscription\Subscribe\Common\CampaignExtractor'
+            - '@SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking'
             - '@SubscriptionBundle\Subscription\Common\RouteProvider'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\AffiliateNotifier'
+            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
 
     SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEligibilityChecker: ~
 
@@ -52,8 +53,8 @@ services:
             - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
             - '@SubscriptionBundle\Subscription\Subscribe\Service\CreditsCalculator'
             - '@SubscriptionBundle\Subscription\Renew\Service\RenewDateCalculator'
-            - '@event_dispatcher'
             - '@SubscriptionBundle\Subscription\Common\CommonSubscriptionUpdater'
+            - '@SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker'
             - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter'
 
     SubscriptionBundle\Subscription\Subscribe\Common\CommonResponseCreator:
@@ -80,8 +81,8 @@ services:
             - '@SubscriptionBundle\Subscription\Common\RequestParametersProvider'
             - '@request_stack'
             - '@router'
-            - '@SubscriptionBundle\Service\ZeroCreditSubscriptionChecking'
-            - '@SubscriptionBundle\Service\CampaignExtractor'
+            - '@SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking'
+            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
 
     SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventTracker:
         arguments:
@@ -148,7 +149,8 @@ services:
 
     SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking:
         arguments:
-            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
+            - '@SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider'
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
 
     SubscriptionBundle\Subscription\Subscribe\Service\SubscribeUrlResolver:
         arguments:

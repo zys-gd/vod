@@ -14,8 +14,10 @@ use IdentificationBundle\WifiIdentification\WifiIdentSMSSender;
 use IdentificationBundle\WifiIdentification\WifiPhoneOptionsProvider;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitNotifier;
 use SubscriptionBundle\Subscription\Common\RouteProvider;
+use SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking;
 use SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter;
 use SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator;
 use SubscriptionBundle\CAPTool\Subscription\Exception\CapToolAccessException;
@@ -116,16 +118,19 @@ class PinIdentificationController extends AbstractController implements APIContr
         ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
     )
     {
-        $this->identSMSSender              = $identSMSSender;
-        $this->identConfirmator            = $identConfirmator;
-        $this->errorCodeResolver           = $errorCodeResolver;
-        $this->limiter                     = $limiter;
-        $this->carrierRepository           = $carrierRepository;
-        $this->subscriptionLimitNotifier   = $subscriptionLimitNotifier;
-        $this->blacklistVoter              = $blacklistVoter;
-        $this->blacklistAttemptRegistrator = $blacklistAttemptRegistrator;
-        $this->phoneOptionsProvider        = $phoneOptionsProvider;
-        $this->routeProvider               = $routeProvider;
+        $this->identSMSSender                 = $identSMSSender;
+        $this->identConfirmator               = $identConfirmator;
+        $this->errorCodeResolver              = $errorCodeResolver;
+        $this->limiter                        = $limiter;
+        $this->carrierRepository              = $carrierRepository;
+        $this->subscriptionLimitNotifier      = $subscriptionLimitNotifier;
+        $this->blacklistVoter                 = $blacklistVoter;
+        $this->blacklistAttemptRegistrator    = $blacklistAttemptRegistrator;
+        $this->phoneOptionsProvider           = $phoneOptionsProvider;
+        $this->routeProvider                  = $routeProvider;
+        $this->logger                         = $logger;
+        $this->campaignExtractor              = $campaignExtractor;
+        $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
     }
 
     /**
@@ -172,7 +177,7 @@ class PinIdentificationController extends AbstractController implements APIContr
         $postData = $request->request->all();
         $isResend = isset($postData['resend-pin']);
 
-        $campaign = $this->campaignExtractor->getCampaignFromSession($request->getSession());
+        $campaign                 = $this->campaignExtractor->getCampaignFromSession($request->getSession());
         $isZeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isZeroCreditAvailable($billingCarrierId, $campaign);
 
         try {
@@ -182,7 +187,7 @@ class PinIdentificationController extends AbstractController implements APIContr
             return $this->getSimpleJsonResponse('Sent', 200, [], $data);
         } catch (PinRequestProcessException $exception) {
             $this->logger->debug('Send pin error. Try to resolve error message', [
-                'code' => $exception->getCode(),
+                'code'      => $exception->getCode(),
                 'carrierId' => $billingCarrierId
             ]);
 
@@ -211,8 +216,8 @@ class PinIdentificationController extends AbstractController implements APIContr
             throw new BadRequestHttpException('`mobile_number` is required');
         }
 
-        $carrierId = $ispData->getCarrierId();
-        $campaign = $this->campaignExtractor->getCampaignFromSession($request->getSession());
+        $carrierId                = $ispData->getCarrierId();
+        $campaign                 = $this->campaignExtractor->getCampaignFromSession($request->getSession());
         $isZeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isZeroCreditAvailable($carrierId, $campaign);
 
         try {

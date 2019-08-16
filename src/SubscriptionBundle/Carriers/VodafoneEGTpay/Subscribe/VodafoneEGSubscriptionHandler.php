@@ -15,9 +15,9 @@ use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessExce
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Subscribe\Handler\ConsentPageFlow\HasConsentPageFlow;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomAffiliateTrackingRules;
+use SubscriptionBundle\Subscription\Subscribe\Handler\HasCustomAffiliateTrackingRules;
 use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerInterface;
-use SubscriptionBundle\Service\ZeroCreditSubscriptionChecking;
+use SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -153,12 +153,12 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
      */
     public function isAffiliateTrackedForSub(ProcessResult $result, CampaignInterface $campaign): bool
     {
-        $carrier = $this->carrierRepository->findOneByBillingId(ConstBillingCarrierId::VODAFONE_EGYPT_TPAY);
+        $carrier = $this->carrierRepository->findOneByBillingId(ID::VODAFONE_EGYPT_TPAY);
 
         $isSuccess        = $result->isFailedOrSuccessful() && $result->isFinal();
         $isZeroCreditsSub = $this
             ->zeroCreditSubscriptionChecking
-            ->isZeroCreditAvailable(ConstBillingCarrierId::VODAFONE_EGYPT_TPAY, $campaign);
+            ->isZeroCreditAvailable(ID::VODAFONE_EGYPT_TPAY, $campaign);
 
         if ($isZeroCreditsSub) {
             return $isSuccess && $carrier->getTrackAffiliateOnZeroCreditSub();

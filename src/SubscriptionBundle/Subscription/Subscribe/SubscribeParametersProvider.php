@@ -5,8 +5,8 @@ namespace SubscriptionBundle\Subscription\Subscribe;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Common\RequestParametersProvider;
-use SubscriptionBundle\Service\CampaignExtractor;
-use SubscriptionBundle\Service\ZeroCreditSubscriptionChecking;
+use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
+use SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 

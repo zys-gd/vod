@@ -124,8 +124,7 @@ class ConsentFlowHandler
         UrlParamAppender $urlParamAppender,
         RouterInterface $router,
         CommonResponseCreator $commonResponseCreator,
-        AffiliateNotifier $affiliateNotifier,
-        CampaignExtractor $campaignExtractor
+        AffiliateNotifier $affiliateNotifier
 
     )
     {

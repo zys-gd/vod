@@ -4,10 +4,7 @@ namespace SubscriptionBundle\Subscription\Subscribe\Common;
 
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
-
-use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
-use SubscriptionBundle\Entity\SubscriptionPack;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider;
 
 /**
  * Class ZeroCreditSubscriptionChecking
