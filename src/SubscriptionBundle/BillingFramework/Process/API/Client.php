@@ -261,14 +261,22 @@ class Client
 
     private function convertRequestException(RequestException $e): BillingFrameworkProcessException
     {
-        $content          = $this->extractContentFromResponse($e->getResponse());
         $processException = new BillingFrameworkProcessException(
             sprintf('%s: %s', get_class($e), $e->getMessage()),
             $e->getCode(),
             $e
         );
-        $processException->setRawResponse($content);
+
         try {
+            $response = $e->getResponse();
+
+            if (!$response) {
+                throw new EmptyResponse();
+            }
+
+            $content = $this->extractContentFromResponse($response);
+
+            $processException->setRawResponse($content);
             $processException->setResponse($this->responseMapper->map('', $content));
 
             if (isset($content->data) && isset($content->data->code)) {
@@ -276,6 +284,7 @@ class Client
             }
         } catch (EmptyResponse $exception) {
         }
+
         return $processException;
     }
 
