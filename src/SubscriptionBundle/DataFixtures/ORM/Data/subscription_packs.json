@@ -303,7 +303,7 @@
     {
         "uuid": "6a26b883-a448-4929-a147-0f45fb31f514",
         "country_uuid": "51045d4c-ebd4-11e8-95c4-02bb250f0f22",
-        "carrier_uuid": "21f27f1f-884c-4b11-9216-c8cf07241bf1",
+        "carrier_id": "2256",
         "status": "1",
         "name": "Orange Tunisia via MondiaMedia",
         "description": null,
