@@ -13,7 +13,6 @@ use SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter;
 use SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler as Subscriber;
 use SubscriptionBundle\Service\Action\SubscribeBack\Handler\SubscribeBackHandlerInterface;
 use SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator;
-use SubscriptionBundle\Service\UserExtractor;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;

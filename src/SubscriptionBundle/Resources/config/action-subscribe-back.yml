@@ -1,6 +1,16 @@
 services:
     SubscriptionBundle\Service\Action\SubscribeBack\Handler\DefaultHandler: ~
 
+    SubscriptionBundle\Service\Action\SubscribeBack\Common\CommonFlowHandler:
+        arguments:
+            - '@SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler'
+            - '@IdentificationBundle\Identification\Service\UserFactory'
+            - '@SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter'
+            - '@SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator'
+            - '@router'
+            - '@IdentificationBundle\Identification\Service\DeviceDataProvider'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
+
     SubscriptionBundle\Service\Action\SubscribeBack\SubscribeBackHandlerProvider:
         arguments:
             - '@SubscriptionBundle\Service\Action\SubscribeBack\Handler\DefaultHandler'
