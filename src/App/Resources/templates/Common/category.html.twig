@@ -30,7 +30,7 @@
                 <div class="d-flex flex-row category-content-open-link x-show-subcategory-button">
                     <div class="category-title {% if not selectedSubcategory %}active{% endif %}">
                         <a href="{{ path('show_category',{'categoryUuid':category.uuid}) }}">
-                            {{ category.title }}
+                            {{ translate("category." ~ category.uuid) }}
                         </a>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
                             <div class="games-page-container">
                                 <div class="d-flex flex-wrap align-items-center justify-content-around x-games-block"></div>
                                 <div class="load-more-button-block d-flex align-items-center justify-content-center">
-                                    <div>{{ button_gray.render('Load More', 'load-more-button x-load-more-videos-button') }}</div>
+                                    <div>{{ button_gray.render(translate('buttons.load_more'), 'load-more-button x-load-more-videos-button') }}</div>
                                 </div>
                             </div>
                         {% endif %}

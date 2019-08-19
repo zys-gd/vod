@@ -12,27 +12,6 @@ body {
     margin: 0 auto;
 }
 
-.right-text-direction {
-    direction: RTL;
-}
-
-.right-text-direction div {
-    direction: RTL;
-}
-
-.right-text-direction li {
-    text-align: right;
-    list-style-type: none;
-}
-
-.right-text-direction .slick-slider {
-    direction: LTR !important;
-}
-
-.right-text-direction .slick-slider div {
-    direction: LTR !important;
-}
-
 a button {
     border: none;
     font-family: 'Kanit', sans-serif;
@@ -447,6 +426,45 @@ body {
 
 .footer_menu_separator .separator_left {
     margin-left: 0;
+}
+
+/* Right direction settings for arabic language*/
+
+.right-text-direction {
+    direction: RTL;
+}
+
+.right-text-direction div {
+    direction: RTL;
+}
+
+.right-text-direction li {
+    text-align: right;
+}
+
+.right-text-direction .slick-slider {
+    direction: LTR;
+}
+
+.right-text-direction .slick-slider div {
+    direction: LTR;
+}
+
+.right-text-direction .header-container {
+    direction: LTR;
+}
+
+.right-text-direction .sidebar-nav_header {
+    direction: LTR;
+}
+
+.right-text-direction .navbar-list {
+    direction: LTR;
+}
+
+.right-text-direction .footer-menu_link {
+    padding: 3px;
+    margin: 0 3px;
 }
 
 #_loader {

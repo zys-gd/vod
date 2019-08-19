@@ -38,24 +38,16 @@ class EagerType implements CallbackHandlerInterface
     ];
 
     /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
      * EagerType constructor.
      * @param UploadedVideoRepository $repository
      * @param EntityManager $entityManager
-     * @param LoggerInterface $logger
      */
     public function __construct(
         UploadedVideoRepository $repository,
-        EntityManager $entityManager,
-        LoggerInterface $logger
+        EntityManager $entityManager
     ) {
         $this->repository    = $repository;
         $this->entityManager = $entityManager;
-        $this->logger = $logger;
     }
 
     public function isSupports(Request $request): bool
@@ -100,25 +92,11 @@ class EagerType implements CallbackHandlerInterface
         $transformation = array_shift($eager);
         $options = [];
 
-        $this->logger->debug('Extract options from cloudinary callback data', [
-            'request_data' => $request->request->all(),
-            'eager' => $eager,
-            'transformation' => $transformation
-        ]);
-
         if (!empty($transformation)) {
             $transformationChain = explode('/', $transformation['transformation']);
 
-            $this->logger->debug('Get transformation chain', [
-                'transformation_chain' => $transformationChain
-            ]);
-
             foreach ($transformationChain as $transformation) {
                 $transformationParams = explode(',', $transformation);
-
-                $this->logger->debug('Processing transformation', [
-                    'transformation' => $transformation
-                ]);
 
                 foreach ($transformationParams as $param) {
                     $params = explode('_', $param);
@@ -126,19 +104,9 @@ class EagerType implements CallbackHandlerInterface
                     $key = $params[0];
                     $value = empty($params[1]) ? null : $params[1];
 
-                    $this->logger->debug('Processing transformation parameters', [
-                        'parameters' => $params,
-                        'key' => $key,
-                        'value' => $value
-                    ]);
-
                     if (!empty($this->optionsTobeSaved[$key])) {
                         $fullName = $this->optionsTobeSaved[$key];
                         $options[$fullName] = $value;
-
-                        $this->logger->debug('Add options to uploaded video', [
-                            'fullName' => $fullName
-                        ]);
                     }
                 }
             }

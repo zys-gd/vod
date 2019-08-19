@@ -12,10 +12,11 @@ interface HasCustomPinVerifyRules
 {
     /**
      * @param PinRequestResult $pinRequestResult
+     * @param bool             $isZeroCreditSubAvailable
      *
      * @return array
      */
-    public function getAdditionalPinVerifyParams(PinRequestResult $pinRequestResult): array;
+    public function getAdditionalPinVerifyParams(PinRequestResult $pinRequestResult, bool $isZeroCreditSubAvailable): array;
 
     /**
      * @param PinVerifyResult $parameters
