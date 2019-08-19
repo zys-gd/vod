@@ -66,7 +66,7 @@ class SubscriptionExtension extends ConfigurableExtension
             $container,
             new FileLocator(__DIR__ . '/../Resources/config/carriers')
         );
-        //$loader->load('orange-eg.yml');
+
         //$loader->load('orange-tn.yml');
         $loader->load('etisalat-eg.yml');
         $loader->load('telenor-pk.yml');
@@ -74,6 +74,7 @@ class SubscriptionExtension extends ConfigurableExtension
         $loader->load('vodafone-eg-tpay.yml');
         $loader->load('orange-eg-tpay.yml');
         $loader->load('hutch_id.yml');
+        $loader->load('zain-ksa.yml');
 
         $definition = $container->getDefinition('SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler');
 
