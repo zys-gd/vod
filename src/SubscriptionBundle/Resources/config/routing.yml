@@ -1,5 +1,5 @@
 subscription.subscribe_back:
-    path: /subscribe_back
+    path: /subscribeback
     defaults: {_controller: 'SubscriptionBundle\Controller\Actions\SubscribeBackAction'}
 
 subscription.consent_page_subscribe:
@@ -7,7 +7,7 @@ subscription.consent_page_subscribe:
     defaults: {_controller: 'SubscriptionBundle\Controller\Actions\ConsentPageSubscribeAction'}
 
 subscription.passthrough_page_subscribe:
-    path: /subscribe_back
+    path: /subscribeback
 
 subscription.subscribe:
     path: /subscribe
