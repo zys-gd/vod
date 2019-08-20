@@ -14,6 +14,9 @@ services:
             - '@SubscriptionBundle\Service\SubscriptionExtractor'
             - '@ExtrasBundle\Utils\UrlParamAppender'
             - '@IdentificationBundle\Repository\UserRepository'
+            - '@IdentificationBundle\Identification\Service\TokenGenerator'
+            - '@SubscriptionBundle\Service\CampaignExtractor'
+            - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEventTracker'
 
     SubscriptionBundle\Service\Action\SubscribeBack\Handler\SubscribeBackHandlerProvider:
         arguments:

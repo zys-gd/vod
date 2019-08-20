@@ -49,9 +49,10 @@ class Subscriber
      * @param SubscriptionPack $subscriptionPack
      * @param string           $billingProcessId
      *
+     * @return array
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function subscribe(User $user, SubscriptionPack $subscriptionPack, string $billingProcessId)
+    public function subscribe(User $user, SubscriptionPack $subscriptionPack, string $billingProcessId): array
     {
         $processResult   = $this->dataProvider->getProcessData($billingProcessId);
         $newSubscription = $this->createPendingSubscription($user, $subscriptionPack);
@@ -60,6 +61,8 @@ class Subscriber
 
         $this->entitySaveHelper->persistAndSave($user);
         $this->entitySaveHelper->persistAndSave($newSubscription);
+
+        return [$newSubscription, $processResult];
     }
 
     /**
