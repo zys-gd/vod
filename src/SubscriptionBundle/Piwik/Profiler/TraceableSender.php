@@ -9,6 +9,7 @@
 namespace SubscriptionBundle\Piwik\Profiler;
 
 
+use ExtrasBundle\Utils\TimestampGenerator;
 use SubscriptionBundle\Piwik\Senders\SenderInterface;
 
 class TraceableSender implements SenderInterface
@@ -29,12 +30,15 @@ class TraceableSender implements SenderInterface
         $this->sender = $sender;
     }
 
-    public function sendEvent($data, string $timestamp): bool
+    public function sendEvent($data): bool
     {
+        $result = $this->sender->sendEvent($data);
 
-        $result        = $this->sender->sendEvent($data, $timestamp);
-
-        $this->calls[] = ['time' => $timestamp, 'data' => $data, 'result' => $result];
+        $this->calls[] = [
+            'time'   => TimestampGenerator::generateMicrotime(),
+            'data'   => $data,
+            'result' => $result
+        ];
 
         return $result;
     }

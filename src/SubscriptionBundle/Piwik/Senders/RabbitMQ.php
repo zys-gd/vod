@@ -83,19 +83,16 @@ class RabbitMQ implements SenderInterface
     }
 
     /**
-     * @param array  $data
-     * @param string $timestamp
+     * @param array $data
      * @return bool
      */
-    public function sendEvent($data, string $timestamp): bool
+    public function sendEvent($data): bool
     {
         if (empty($this->connection)) {
             $this->initConnection();
         }
 
-        $preparedData = [$data, $timestamp];
-
-        $message = new AMQPMessage(json_encode($preparedData));
+        $message = new AMQPMessage(json_encode($data));
         $this->channel->basic_publish($message, $this->exchangeName);
 
         return true;

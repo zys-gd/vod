@@ -39,11 +39,9 @@ class EventPublisher
      */
     public function publish(ConversionEvent $conversionEvent): bool
     {
-        $data   = $this->formatter->prepareFormattedData($conversionEvent);
-        $result = $this->sender->sendEvent(
-            $data,
-            TimestampGenerator::generateMicrotime()
-        );
+        $data = $this->formatter->prepareFormattedData($conversionEvent);
+
+        $result = $this->sender->sendEvent($data);
 
         return $result;
     }

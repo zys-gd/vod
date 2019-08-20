@@ -9,6 +9,7 @@
 namespace SubscriptionBundle\Piwik\Formatter;
 
 
+use ExtrasBundle\Utils\TimestampGenerator;
 use SubscriptionBundle\Piwik\DTO\ConversionEvent;
 
 class LegacyPiwikFormatter implements FormatterInterface
@@ -20,7 +21,7 @@ class LegacyPiwikFormatter implements FormatterInterface
         $orderInformation = $event->getOrderInformation();
 
         $legacyPiwikVariables = [
-            'idsite'     => 1,
+            'idsite'     => 2,
             'rec'        => 1,
             'apiv'       => 1,
             'r'          => 443213,
@@ -34,7 +35,7 @@ class LegacyPiwikFormatter implements FormatterInterface
             'revenue'  => $orderInformation->getPrice(),
             'country'  => $userInformation->getCountry(),
             'cip'      => $userInformation->getIp(),
-            '_cvar'    => [
+            '_cvar'    => json_encode([
                 '1'  => ['msisdn', $userInformation->getMsisdn()],
                 '2'  => ['connection', $userInformation->getConnection()],
                 '3'  => ['conversion_mode', false],
@@ -45,7 +46,7 @@ class LegacyPiwikFormatter implements FormatterInterface
                 /*'9'  => 'aff_publisher',*/
                 '11' => ['device_screen_height', $userInformation->getDeviceHeight()],
                 '12' => ['device_screen_width', $userInformation->getDeviceWidth()]
-            ],
+            ]),
             'ec_items' => [
                 $orderInformation->getAlias(),
                 $orderInformation->getAlias(),
@@ -57,6 +58,12 @@ class LegacyPiwikFormatter implements FormatterInterface
 
         $queryString = http_build_query(array_merge($legacyPiwikVariables, $customVariables));
 
-        return sprintf('http://piwik.playwing.com/piwik.php?%s', $queryString);
+
+        return [
+            'piwikData' => [
+                sprintf('http://piwik.playwing.com/piwik.php?%s', $queryString),
+                TimestampGenerator::generateMicrotime()
+            ]
+        ];
     }
 }

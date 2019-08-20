@@ -11,5 +11,5 @@ namespace SubscriptionBundle\Piwik\Senders;
 
 interface SenderInterface
 {
-    public function sendEvent($data, string $timestamp): bool;
+    public function sendEvent($data): bool;
 }
