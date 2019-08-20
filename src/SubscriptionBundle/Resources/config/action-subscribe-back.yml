@@ -3,14 +3,25 @@ services:
 
     SubscriptionBundle\Service\Action\SubscribeBack\Common\CommonFlowHandler:
         arguments:
-            - '@SubscriptionBundle\Service\Action\Subscribe\Common\CommonFlowHandler'
+            - '@SubscriptionBundle\Service\Action\SubscribeBack\Subscriber'
             - '@IdentificationBundle\Identification\Service\UserFactory'
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter'
             - '@SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator'
             - '@router'
             - '@IdentificationBundle\Identification\Service\DeviceDataProvider'
             - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
+            - '@SubscriptionBundle\Service\SubscriptionPackProvider'
+            - '@SubscriptionBundle\Service\SubscriptionExtractor'
+            - '@ExtrasBundle\Utils\UrlParamAppender'
+            - '@IdentificationBundle\Repository\UserRepository'
 
-    SubscriptionBundle\Service\Action\SubscribeBack\SubscribeBackHandlerProvider:
+    SubscriptionBundle\Service\Action\SubscribeBack\Handler\SubscribeBackHandlerProvider:
         arguments:
             - '@SubscriptionBundle\Service\Action\SubscribeBack\Handler\DefaultHandler'
+
+    SubscriptionBundle\Service\Action\SubscribeBack\Subscriber:
+        arguments:
+        - '@SubscriptionBundle\Service\EntitySaveHelper'
+        - '@SubscriptionBundle\Service\SubscriptionCreator'
+        - '@SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater'
+        - '@IdentificationBundle\BillingFramework\Data\DataProvider'

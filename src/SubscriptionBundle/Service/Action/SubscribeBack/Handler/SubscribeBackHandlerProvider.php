@@ -1,10 +1,8 @@
 <?php
 
-namespace SubscriptionBundle\Service\Action\SubscribeBack;
+namespace SubscriptionBundle\Service\Action\SubscribeBack\Handler;
 
 use IdentificationBundle\Entity\CarrierInterface;
-use SubscriptionBundle\Service\Action\SubscribeBack\Handler\DefaultHandler;
-use SubscriptionBundle\Service\Action\SubscribeBack\Handler\SubscribeBackHandlerInterface;
 
 class SubscribeBackHandlerProvider
 {
@@ -12,6 +10,11 @@ class SubscribeBackHandlerProvider
      * @var SubscribeBackHandlerInterface[]
      */
     private $handlers = [];
+
+    /**
+     * @var SubscribeBackHandlerInterface
+     */
+    private $defaultHandler;
 
     public function __construct(DefaultHandler $handler)
     {
@@ -36,6 +39,6 @@ class SubscribeBackHandlerProvider
             }
         }
 
-        throw new \InvalidArgumentException("Cannot get according handler");
+        return $this->defaultHandler;
     }
 }

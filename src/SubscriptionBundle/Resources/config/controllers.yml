@@ -29,7 +29,7 @@ services:
 
     SubscriptionBundle\Controller\Actions\SubscribeBackAction:
         arguments:
-            - '@SubscriptionBundle\Service\Action\SubscribeBack\SubscribeBackHandlerProvider'
+            - '@SubscriptionBundle\Service\Action\SubscribeBack\Handler\SubscribeBackHandlerProvider'
             - '@App\Domain\Repository\CarrierRepository'
             - '@SubscriptionBundle\Service\Action\SubscribeBack\Common\CommonFlowHandler'
 
