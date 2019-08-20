@@ -47,13 +47,13 @@ class LegacyPiwikFormatter implements FormatterInterface
                 '11' => ['device_screen_height', $userInformation->getDeviceHeight()],
                 '12' => ['device_screen_width', $userInformation->getDeviceWidth()]
             ]),
-            'ec_items' => [
+            'ec_items' => json_encode([
                 $orderInformation->getAlias(),
                 $orderInformation->getAlias(),
                 $orderInformation->getAction(),
                 $orderInformation->getPrice(),
                 1
-            ],
+            ]),
         ];
 
         $queryString = http_build_query(array_merge($legacyPiwikVariables, $customVariables));
