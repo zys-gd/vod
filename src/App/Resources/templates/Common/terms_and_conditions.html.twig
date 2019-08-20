@@ -8,15 +8,14 @@
 {% endblock %}
 
 {% block header_content %}
-    {{ header.render('100% Sport<br/> Terms and Conditions') }}
+    {{ header.render(translate('terms.title')) }}
 {% endblock header_content %}
 
 
 {% block body %}
     <div class="flex-column terms_and_conditions_container">
         <div class="terms_and_conditions_disclaimer">
-            These terms ("Terms and Conditions") are the particular conditions of a legal agreement between you,
-            on the one side, and ORIGINDATA Ltd (hereinafter mentioned as "100% sports"), on the other side.
+            {{ translate('terms.text.description') }}
         </div>
 
         <h1> 1/{{ translate('terms.block_1.title.1') }} </h1>
