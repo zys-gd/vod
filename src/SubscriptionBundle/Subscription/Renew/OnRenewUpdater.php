@@ -47,14 +47,14 @@ class OnRenewUpdater
      * @param \SubscriptionBundle\Subscription\Common\SubscriptionExtractor        $subscriptionProvider
      * @param \SubscriptionBundle\Subscription\Subscribe\Service\CreditsCalculator $creditsCalculator
      * @param EventDispatcherInterface                                             $eventDispatcher
-     * @param \SubscriptionBundle\Subscription\Common\CommonSubscriptionUpdater    $commonSubscriptionUpdater
+     * @param CommonSubscriptionUpdater                                            $commonSubscriptionUpdater
      */
     public function __construct(
         RenewDateCalculator $renewDateCalculator,
         SubscriptionExtractor $subscriptionProvider,
         CreditsCalculator $creditsCalculator,
         EventDispatcherInterface $eventDispatcher,
-        \SubscriptionBundle\Subscription\Common\CommonSubscriptionUpdater $commonSubscriptionUpdater
+        CommonSubscriptionUpdater $commonSubscriptionUpdater
     )
     {
         $this->renewDateCalculator       = $renewDateCalculator;

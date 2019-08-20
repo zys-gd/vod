@@ -22,6 +22,9 @@ class SubscriptionCapReachedOnCarrier extends CapToolAccessException
     public function __construct(CarrierInterface $carrier)
     {
         $this->carrier = $carrier;
+
+        parent::__construct();
+
     }
 
     /**

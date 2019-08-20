@@ -21,6 +21,9 @@ class VisitCapReached extends CapToolAccessException
     public function __construct(ConstraintByAffiliate $constraint)
     {
         $this->constraint = $constraint;
+
+        parent::__construct();
+
     }
 
     /**

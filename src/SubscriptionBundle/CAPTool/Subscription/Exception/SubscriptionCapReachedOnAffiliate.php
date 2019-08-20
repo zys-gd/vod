@@ -29,6 +29,8 @@ class SubscriptionCapReachedOnAffiliate extends CapToolAccessException
     {
         $this->constraint = $constraint;
         $this->carrier    = $carrier;
+
+        parent::__construct();
     }
 
     /**

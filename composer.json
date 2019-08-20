@@ -17,10 +17,12 @@
     ],
     "require": {
         "php": "^7.2",
+        "ext-PDO": "^7.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "^1.6",
         "ext-mbstring": "*",
+        "ext-openssl": "^7.2",
         "ext-redis": "*",
         "aws/aws-sdk-php": "^3.84",
         "beberlei/DoctrineExtensions": "^1.2",

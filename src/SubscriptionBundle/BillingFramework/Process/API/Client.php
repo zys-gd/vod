@@ -74,6 +74,7 @@ class Client
      * @return null|stdClass|stdClass[]
      * @throws BillingFrameworkException
      * @throws BillingFrameworkProcessException
+     * @throws GuzzleException
      */
     public function sendPostProcessRequest(array $options, $method): ?stdClass
     {

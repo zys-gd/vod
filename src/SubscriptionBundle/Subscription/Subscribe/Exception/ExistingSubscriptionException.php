@@ -19,7 +19,7 @@ class ExistingSubscriptionException extends \Exception
      */
     private $subscription;
 
-    public function __construct(string $message = "", Subscription $subscription)
+    public function __construct(string $message, Subscription $subscription)
     {
         parent::__construct($message, 0, null);
         $this->subscription = $subscription;

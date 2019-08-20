@@ -230,7 +230,7 @@ class AffiliateSender
             foreach ($paramsList as $output => $input) {
                 try{
                     $query[$output] = $campaignParams[$input]; // !isset($campaignParams[$input])
-                } catch (\ErrorException $e) {
+                } catch (\Error $e) {
                     throw new WrongIncomingParameters();
                 }
             }

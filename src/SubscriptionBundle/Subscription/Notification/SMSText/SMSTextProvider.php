@@ -9,13 +9,10 @@
 namespace SubscriptionBundle\Subscription\Notification\SMSText;
 
 
-use AppBundle\Service\Domain\Carrier\CarrierProvider;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use CommonDataBundle\Entity\Interfaces\LanguageInterface;
-use SubscriptionBundle\BillingFramework\Listener\NotificationContentProvider;
 use SubscriptionBundle\BillingFramework\Notification\Exception\MissingSMSTextException;
 use SubscriptionBundle\Entity\SubscriptionPack;
-use SubscriptionBundle\Subscription\Notification\Common\SMSTexts\MessageKeyHandlerProvider;
 
 class SMSTextProvider
 {
@@ -50,7 +47,11 @@ class SMSTextProvider
                 break;
             }
             throw new MissingSMSTextException(
-                sprintf('SMS Texts for carrier `%s` and language `%s` are not found', $carrier->getBillingCarrierId(), $language->getCode())
+                sprintf(
+                    'SMS Texts for carrier `%s` and language `%s` are not found',
+                    $carrier->getBillingCarrierId(),
+                    $language->getCode()
+                )
             );
         }
 
@@ -64,7 +65,7 @@ class SMSTextProvider
         return $texts[$notificationType];
     }
 
-    private function extractFromSubscriptionPack($notificationType, SubscriptionPack $subscriptionPack)
+    private function extractFromSubscriptionPack($notificationType, SubscriptionPack $subscriptionPack): string
     {
         if ($notificationType === 'subscribe') {
             return $subscriptionPack->getWelcomeSMSText();
@@ -77,6 +78,8 @@ class SMSTextProvider
         if ($notificationType === 'renewing') {
             return $subscriptionPack->getRenewalSMSText();
         }
+
+        return '';
     }
 
 }

@@ -179,13 +179,4 @@ class SubscriptionLimiter
         return !(bool)$this->subscriptionExtractor->getExistingSubscriptionForUser($user);
     }
 
-    /**
-     * @param SessionInterface $session
-     *
-     * @return bool
-     */
-    public function canStartProcess(SessionInterface $session): bool
-    {
-        // TODO: Implement canStartProcess() method.
-    }
 }
