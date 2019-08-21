@@ -35,7 +35,7 @@ class BillingFrameworkProcessException extends BillingFrameworkException
         $this->response = $response;
     }
 
-    public function setRawResponse(\stdClass $rawResponse)
+    public function setRawResponse(\stdClass $rawResponse = null)
     {
         $this->rawResponse = $rawResponse;
 
