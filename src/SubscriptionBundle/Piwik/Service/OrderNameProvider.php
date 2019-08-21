@@ -77,7 +77,11 @@ class OrderNameProvider
             return '-zerocredit';
         }
 
-        if ($campaign && $campaign->isZeroCreditSubAvailable() && $chargePaid === 0) {
+        $carrierBillingId = $subscriptionPack->getCarrier()->getBillingCarrierId();
+
+        if ($this->creditSubscriptionChecking->isZeroCreditAvailable($carrierBillingId, $campaign)
+            && ($chargePaid === 0 || !$chargePaid)
+        ) {
             return '-zerocredit';
         }
 
