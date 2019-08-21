@@ -261,7 +261,12 @@ class Client
 
     private function convertRequestException(RequestException $e): BillingFrameworkProcessException
     {
-        $content          = $this->extractContentFromResponse($e->getResponse());
+        if ($response = $e->getResponse()) {
+            $content = $this->extractContentFromResponse($response);
+        } else {
+            $content = null;
+        }
+
         $processException = new BillingFrameworkProcessException(
             sprintf('%s: %s', get_class($e), $e->getMessage()),
             $e->getCode(),
