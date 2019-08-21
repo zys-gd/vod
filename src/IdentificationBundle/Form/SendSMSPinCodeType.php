@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Constraints\Callback;
 
-class LPType extends AbstractType
+class SendSMSPinCodeType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -40,15 +40,17 @@ class LPType extends AbstractType
         $resolver->setDefaults([
             'country' => null,
             'mobile_number' => null,
-            'pin_code' => null,
-            'pin_validation_pattern' => null,
             'constraints' => [
                 new Callback([$this, 'validatePhoneNumberByCountryCode']),
-                new Callback([$this, 'validatePinCode'])
             ]
         ]);
     }
 
+    /**
+     * @param array                     $data
+     * @param ExecutionContextInterface $context
+     * @throws \libphonenumber\NumberParseException
+     */
     public function validatePhoneNumberByCountryCode(array $data, ExecutionContextInterface $context): void
     {
         $countryCode = $data['country'];
@@ -61,17 +63,6 @@ class LPType extends AbstractType
         if ($countryCode != $foundCountryCode) {
             $context
                 ->buildViolation('Invalid `mobile number` format')
-                ->addViolation();
-        }
-    }
-
-    public function validatePinCode(array $data, ExecutionContextInterface $context): void
-    {
-        $pinCode = $data['pin_code'] ?? '';
-        $pinPattern = $data['pin_validation_pattern'] ?? '';
-        if($pinCode && $pinPattern && !preg_match("/$pinPattern/",$pinCode)) {
-            $context
-                ->buildViolation('Invalid `pin_code` format')
                 ->addViolation();
         }
     }

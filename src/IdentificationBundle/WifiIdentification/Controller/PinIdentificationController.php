@@ -2,25 +2,30 @@
 
 namespace IdentificationBundle\WifiIdentification\Controller;
 
+use App\Domain\Entity\Carrier;
 use App\Domain\Entity\Country;
 use App\Domain\Repository\CountryRepository;
 use ExtrasBundle\API\Controller\APIControllerInterface;
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\BillingFramework\Process\Exception\PinVerifyProcessException;
-use IdentificationBundle\Form\LPType;
+use IdentificationBundle\Form\LPConfirmSMSPinCodeType;
+use IdentificationBundle\Form\SendSMSPinCodeType;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeResolver;
 use IdentificationBundle\WifiIdentification\WifiIdentConfirmator;
 use IdentificationBundle\WifiIdentification\WifiIdentSMSSender;
 use IdentificationBundle\WifiIdentification\WifiPhoneOptionsProvider;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\Controller\Traits\ResponseTrait;
 use SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter;
 use SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator;
+use SubscriptionBundle\Service\CampaignExtractor;
 use SubscriptionBundle\Service\CAPTool\Exception\CapToolAccessException;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
 use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
+use SubscriptionBundle\Service\ZeroCreditSubscriptionChecking;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +40,7 @@ class PinIdentificationController extends AbstractController implements APIContr
 {
     use ResponseTrait;
     /**
-     * @var \IdentificationBundle\WifiIdentification\WifiIdentSMSSender
+     * @var WifiIdentSMSSender
      */
     private $identSMSSender;
     /**
@@ -66,6 +71,7 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @var SubscriptionLimitNotifier
      */
     private $subscriptionLimitNotifier;
+
     /**
      * @var BlacklistAttemptRegistrator
      */
@@ -78,6 +84,18 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @var WifiPhoneOptionsProvider
      */
     private $wifiPhoneOptionsProvider;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+    /**
+     * @var CampaignExtractor
+     */
+    private $campaignExtractor;
+    /**
+     * @var ZeroCreditSubscriptionChecking
+     */
+    private $zeroCreditSubscriptionChecking;
 
     /**
      * PinIdentificationController constructor
@@ -93,6 +111,9 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @param BlacklistVoter              $blacklistVoter
      * @param BlacklistAttemptRegistrator $blacklistAttemptRegistrator
      * @param WifiPhoneOptionsProvider    $wifiPhoneOptionsProvider
+     * @param LoggerInterface                $logger
+     * @param CampaignExtractor              $campaignExtractor
+     * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
      */
     public function __construct(
         WifiIdentSMSSender $identSMSSender,
@@ -105,19 +126,25 @@ class PinIdentificationController extends AbstractController implements APIContr
         SubscriptionLimitNotifier $subscriptionLimitNotifier,
         BlacklistVoter $blacklistVoter,
         BlacklistAttemptRegistrator $blacklistAttemptRegistrator,
-        WifiPhoneOptionsProvider $wifiPhoneOptionsProvider
-    )
-    {    $this->identSMSSender              = $identSMSSender;
+        WifiPhoneOptionsProvider $wifiPhoneOptionsProvider,
+        LoggerInterface $logger,
+        CampaignExtractor $campaignExtractor,
+        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
+    ) {
+        $this->identSMSSender              = $identSMSSender;
         $this->identConfirmator            = $identConfirmator;
         $this->errorCodeResolver           = $errorCodeResolver;
         $this->limiter                     = $limiter;
         $this->defaultRedirectUrl          = $defaultRedirectUrl;
         $this->carrierRepository           = $carrierRepository;
-        $this->countryRepository = $countryRepository;
+        $this->countryRepository           = $countryRepository;
         $this->subscriptionLimitNotifier   = $subscriptionLimitNotifier;
         $this->blacklistVoter              = $blacklistVoter;
         $this->blacklistAttemptRegistrator = $blacklistAttemptRegistrator;
-        $this->wifiPhoneOptionsProvider = $wifiPhoneOptionsProvider;
+        $this->wifiPhoneOptionsProvider    = $wifiPhoneOptionsProvider;
+        $this->logger                         = $logger;
+        $this->campaignExtractor              = $campaignExtractor;
+        $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
     }
 
     /**
@@ -142,7 +169,7 @@ class PinIdentificationController extends AbstractController implements APIContr
         $billingCarrierId = $ispData->getCarrierId();
         $countryCode = $this->extractCountryCode($billingCarrierId, $request->get('country', ''));
 
-        $form = $this->createForm(LPType::class,
+        $form = $this->createForm(SendSMSPinCodeType::class,
             ['country' => $countryCode, 'mobile_number' => $mobileNumber],
             ['csrf_protection' => false, 'allow_extra_fields'=> true]
         );
@@ -176,13 +203,19 @@ class PinIdentificationController extends AbstractController implements APIContr
         }
 
         $this->limiter->reserveSlotForSubscription($request->getSession());
-
+        $campaign = $this->campaignExtractor->getCampaignFromSession($request->getSession());
+        $isZeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isZeroCreditAvailable($billingCarrierId, $campaign);
         try {
-            $this->identSMSSender->sendSMS($billingCarrierId, $mobileNumber, $isResend);
+            $this->identSMSSender->sendSMS($billingCarrierId, $mobileNumber, $isZeroCreditSubAvailable, $isResend);
             $data = ['carrierId' => $billingCarrierId, 'isResend' => $isResend];
 
             return $this->getSimpleJsonResponse('Sent', Response::HTTP_OK, [], $data);
         } catch (PinRequestProcessException $exception) {
+            $this->logger->debug('Send pin error. Try to resolve error message', [
+                'code' => $exception->getCode(),
+                'carrierId' => $billingCarrierId
+            ]);
+
             $message = $this->errorCodeResolver->resolveMessage($exception->getCode(), $billingCarrierId);
             return $this->getSimpleJsonResponse($message, Response::HTTP_BAD_REQUEST, [], ['code' => $exception->getCode()]);
         } catch (\Exception $exception) {
@@ -200,23 +233,22 @@ class PinIdentificationController extends AbstractController implements APIContr
      */
     public function confirmSMSPinCodeAction(Request $request, ISPData $ispData)
     {
+        if (!$mobileNumber = $request->get('mobile_number')) {
+            throw new BadRequestHttpException('`mobile_number` is required');
+        }
+
         if (!$pinCode = $request->get('pin_code', '')) {
             throw new BadRequestHttpException('`pin_code` is required');
         }
 
         $postData = $request->request->all();
         $billingCarrierId = $ispData->getCarrierId();
-        $mobileNumber = $request->get('mobile_number');
-        $countryCode = $this->extractCountryCode($billingCarrierId, $request->get('country', ''));
+        $campaign = $this->campaignExtractor->getCampaignFromSession($request->getSession());
         $phoneNumberExtension = $this->wifiPhoneOptionsProvider->getPhoneValidationOptions($billingCarrierId);
+        $isZeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isZeroCreditAvailable($billingCarrierId, $campaign);
 
-        $form = $this->createForm(LPType::class,
-            [
-                'country' => $countryCode,
-                'mobile_number' => $mobileNumber,
-                'pin_code' => $pinCode,
-                'pin_validation_pattern' => $phoneNumberExtension->getPinRegexPattern()
-            ],
+        $form = $this->createForm(LPConfirmSMSPinCodeType::class,
+            ['pin_code' => $pinCode, 'pin_validation_pattern' => $phoneNumberExtension->getPinRegexPattern()],
             ['csrf_protection' => false, 'allow_extra_fields'=> true]
         );
         $form->submit($postData);
@@ -230,7 +262,8 @@ class PinIdentificationController extends AbstractController implements APIContr
                 $billingCarrierId,
                 $pinCode,
                 $mobileNumber,
-                $request->getClientIp()
+                $request->getClientIp(),
+                $isZeroCreditSubAvailable
             );
 
             return $response;
@@ -252,9 +285,9 @@ class PinIdentificationController extends AbstractController implements APIContr
         if($countryCode) {
             return $countryCode;
         } elseif($billingCarrierId && !$countryCode) {
-            /** @var Country $country */
-            $country = $this->countryRepository->findCountryByBillingCarrierId($billingCarrierId);
-            return $country->getCountryCode();
+            /** @var Carrier $carrier */
+            $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
+            return $carrier->getCountryCode();
         }
         return null;
     }

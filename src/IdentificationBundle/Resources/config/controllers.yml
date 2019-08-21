@@ -50,6 +50,9 @@ services:
         - '@SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter'
         - '@SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator'
         - '@IdentificationBundle\WifiIdentification\WifiPhoneOptionsProvider'
+        - '@logger'
+        - '@SubscriptionBundle\Service\CampaignExtractor'
+        - '@SubscriptionBundle\Service\ZeroCreditSubscriptionChecking'
 
     IdentificationBundle\Identification\Controller\AsyncIdentController:
       arguments:

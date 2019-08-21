@@ -68,7 +68,10 @@ class EtisalatEGWifiIdentificationHandler implements
         return true;
     }
 
-    public function getAdditionalPinVerifyParams(PinRequestResult $pinRequestResult): array
+    public function getAdditionalPinVerifyParams(
+        PinRequestResult $pinRequestResult,
+        bool $isZeroCreditSubAvailable
+    ): array
     {
         $contractId = $pinRequestResult->getRawData()['subscription_contract_id'];
 
