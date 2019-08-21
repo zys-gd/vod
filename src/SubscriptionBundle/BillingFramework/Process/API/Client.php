@@ -281,6 +281,7 @@ class Client
             }
         } catch (EmptyResponse $exception) {
         }
+
         return $processException;
     }
 
