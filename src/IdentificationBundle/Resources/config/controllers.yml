@@ -45,7 +45,6 @@ services:
         - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
         - '%default_redirect_url%'
         - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
-        - '@App\Domain\Repository\CountryRepository'
         - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier'
         - '@SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter'
         - '@SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator'
