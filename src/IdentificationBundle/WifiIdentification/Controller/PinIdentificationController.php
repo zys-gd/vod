@@ -241,7 +241,9 @@ class PinIdentificationController extends AbstractController implements APIContr
             ['pin_code' => $pinCode, 'pin_validation_pattern' => $phoneNumberExtension->getPinRegexPattern()],
             ['csrf_protection' => false, 'allow_extra_fields'=> true]
         );
+
         $form->submit($postData);
+
         if (!$form->isValid()) {
             $errors = $form->getErrors(true);
             return $this->getSimpleJsonResponse($errors->current()->getMessage(), Response::HTTP_UNPROCESSABLE_ENTITY);
