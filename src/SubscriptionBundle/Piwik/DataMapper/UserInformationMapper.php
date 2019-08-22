@@ -41,7 +41,7 @@ class UserInformationMapper
             $user->getIp(),
             // Kinda risky, because im not sure if we always have userConnection type.
             // We can use $this->maxMindIpInfo->getConnectionType() instead but what about renews etc?
-            $user->getConnectionType(),
+            (string)$user->getConnectionType(),
             $user->getIdentifier(),
             (int)$user->getBillingCarrierId(),
             $providerId,
