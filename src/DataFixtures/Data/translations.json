@@ -424,7 +424,7 @@
     },
     {
         "uuid": "727b838c-641e-42db-b1b9-171b68e50ef4",
-        "key": "buttons.unsubscribe",
+        "key": "buttons.leave",
         "translation": "Leave 100% sport",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
@@ -2016,7 +2016,7 @@
     {
         "uuid": "68e479c3-9b7a-4c41-a46f-c098db682e57",
         "key": "menu.footer.faq",
-        "translation": "FAQ (\u0627\u0644\u0623\u0633\u0626\u0644\u0629 \u0627\u0644\u0634\u0627\u0626\u0639\u0629)",
+        "translation": "\u0627\u0644\u0623\u0633\u0626\u0644\u0629 \u0627\u0644\u0634\u0627\u0626\u0639\u0629",
         "language": {
             "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -2298,7 +2298,7 @@
     {
         "uuid": "9d14b2ee-3aae-4eef-a0b2-64b2344b1189",
         "key": "terms.block_6.text.1",
-        "translation": "\u0627\u0644\u0623\u0641\u0631\u0627\u062f \u0627\u0644\u0630\u064a\u0646 \u064a\u0628\u0644\u063a\u0648\u0646 \u0627\u0644\u0633\u0646 \u0627\u0644\u0642\u0627\u0646\u0648\u0646\u064a\u0629 \u0648\u0627\u0644\u0642\u0635\u0631 \u0627\u0644\u0623\u062d\u0631\u0627\u0631 \u0627\u0644\u0630\u064a\u0646 \u0623\u0639\u0645\u0627\u0631\u0647\u0645 (\u0623\u0643\u062b\u0631 \u0645\u0646 14 \u0633\u0646\u0629) \u0641\u0642\u0637 \u064a\u0645\u0643\u0646 \u0623\u0646 \u064a\u0646\u0637\u0628\u0642 \u0639\u0644\u064a\u0647\u0645 \u0648\u0627\u0644\u062a\u0639\u0627\u0642\u062f \u0639\u0644\u0649 \u062e\u062f\u0645\u0627\u062a Playwing. \u0627\u0644\u0642\u0635\u0631 \u063a\u064a\u0631 \u0627\u0644\u0623\u062d\u0631\u0627\u0631 \u064a\u0645\u0643\u0646\u0647\u0645 \u0641\u0642\u0637 \u0627\u0633\u062a\u062e\u062f\u0627\u0645 \u062e\u062f\u0645\u0627\u062a Playwing \u062a\u062d\u062a \u062a\u0631\u062e\u064a\u0635 \u0645\u0646 \u0648\u0627\u0644\u062f\u064a\u0647\u0645 \u0623\u0648 \u0627\u0644\u0623\u0648\u0635\u064a\u0627\u0621 \u0627\u0644\u0642\u0627\u0646\u0648\u0646\u064a\u064a\u0646\u060c \u0627\u0644\u0630\u064a \u0633\u064a\u0643\u0648\u0646 \u0641\u064a \u0623\u064a \u062d\u0627\u0644 \u0645\u0633\u0626\u0648\u0644\u064a\u0646 \u0639\u0646 \u0623\u0641\u0639\u0627\u0644 \u0639\u0627\u0626\u0644\u0627\u062a\u0647\u0645. Playwing \u0644\u0627 \u064a\u0645\u0643\u0646\u0647\u0627 \u0623\u0646 \u062a\u062d\u0644 \u0628\u0623\u064a \u062d\u0627\u0644 \u0645\u0646 \u0627\u0644\u0623\u062d\u0648\u0627\u0644 \u0645\u062d\u0644 \u0627\u0644\u0631\u0642\u0627\u0628\u0629 \u0627\u0644\u0623\u0628\u0648\u064a\u0629 \u0644\u0644\u0645\u0639\u0644\u0645\u064a\u0646 \u0627\u0644\u0642\u0627\u0646\u0648\u0646\u064a\u064a\u0646\u060c \u0644\u0630\u0644\u0643 \u0633\u0648\u0641 \u064a\u0639\u062a\u0628\u0631 \u0635\u0627\u062d\u0628 \u062e\u0637 \u0627\u0644\u0647\u0627\u062a\u0641 \u0627\u0644\u062c\u0648\u0627\u0644 \u0645\u0633\u0626\u0648\u0644\u0627 \u0639\u0646 \u062c\u0645\u064a\u0639 \u0627\u0644\u0622\u062b\u0627\u0631.",
+        "translation": "\u0627\u0644\u0623\u0641\u0631\u0627\u062f \u0627\u0644\u0630\u064a\u0646 \u064a\u0628\u0644\u063a\u0648\u0646 \u0627\u0644\u0633\u0646 \u0627\u0644\u0642\u0627\u0646\u0648\u0646\u064a\u0629 \u0648\u0627\u0644\u0642\u0635\u0631 \u0627\u0644\u0623\u062d\u0631\u0627\u0631 \u0627\u0644\u0630\u064a\u0646 \u0623\u0639\u0645\u0627\u0631\u0647\u0645 (\u0623\u0643\u062b\u0631 \u0645\u0646 14 \u0633\u0646\u0629) \u0641\u0642\u0637 \u064a\u0645\u0643\u0646 \u0623\u0646 \u064a\u0646\u0637\u0628\u0642 \u0639\u0644\u064a\u0647\u0645 \u0648\u0627\u0644\u062a\u0639\u0627\u0642\u062f \u0639\u0644\u0649 \u062e\u062f\u0645\u0627\u062a 100sport. \u0627\u0644\u0642\u0635\u0631 \u063a\u064a\u0631 \u0627\u0644\u0623\u062d\u0631\u0627\u0631 \u064a\u0645\u0643\u0646\u0647\u0645 \u0641\u0642\u0637 \u0627\u0633\u062a\u062e\u062f\u0627\u0645 \u062e\u062f\u0645\u0627\u062a 100sport\u062a\u062d\u062a \u062a\u0631\u062e\u064a\u0635 \u0645\u0646 \u0648\u0627\u0644\u062f\u064a\u0647\u0645 \u0623\u0648 \u0627\u0644\u0623\u0648\u0635\u064a\u0627\u0621 \u0627\u0644\u0642\u0627\u0646\u0648\u0646\u064a\u064a\u0646\u060c \u0627\u0644\u0630\u064a \u0633\u064a\u0643\u0648\u0646 \u0641\u064a \u0623\u064a \u062d\u0627\u0644 \u0645\u0633\u0626\u0648\u0644\u064a\u0646 \u0639\u0646 \u0623\u0641\u0639\u0627\u0644 \u0639\u0627\u0626\u0644\u0627\u062a\u0647\u0645. 100sport\u0644\u0627 \u064a\u0645\u0643\u0646\u0647\u0627 \u0623\u0646 \u062a\u062d\u0644 \u0628\u0623\u064a \u062d\u0627\u0644 \u0645\u0646 \u0627\u0644\u0623\u062d\u0648\u0627\u0644 \u0645\u062d\u0644 \u0627\u0644\u0631\u0642\u0627\u0628\u0629 \u0627\u0644\u0623\u0628\u0648\u064a\u0629 \u0644\u0644\u0645\u0639\u0644\u0645\u064a\u0646 \u0627\u0644\u0642\u0627\u0646\u0648\u0646\u064a\u064a\u0646\u060c \u0644\u0630\u0644\u0643 \u0633\u0648\u0641 \u064a\u0639\u062a\u0628\u0631 \u0635\u0627\u062d\u0628 \u062e\u0637 \u0627\u0644\u0647\u0627\u062a\u0641 \u0627\u0644\u062c\u0648\u0627\u0644 \u0645\u0633\u0626\u0648\u0644\u0627 \u0639\u0646 \u062c\u0645\u064a\u0639 \u0627\u0644\u0622\u062b\u0627\u0631.",
         "language": {
             "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -2453,7 +2453,7 @@
     {
         "uuid": "bccb6a7a-bf74-4eb1-931d-c502f5df086e",
         "key": "annotation_block.text.2",
-        "translation": "\u0634\u0627\u0647\u062f \u0645\u0642\u0627\u0637\u0639 \u0641\u064a\u062f\u064a\u0648 \u063a\u064a\u0631 \u0645\u062d\u062f\u0648\u062f\u0629 \u0645\u0646 \u0631\u064a\u0627\u0636\u0627\u062a\u0643 \u0648\u0641\u0631\u0642\u0643 \u0627\u0644\u0645\u0641\u0636\u0644\u0629! <br\/> \u0641\u0642\u0637%price% %currency% \u0644\u0643\u0644 %period%\t\u0625\u0645\u0643\u0627\u0646\u064a\u0629 \u0627\u0644\u0648\u0635\u0648\u0644 \u0625\u0644\u0649 \u0645\u0626\u0627\u062a \u0645\u0646 \u0645\u0642\u0627\u0637\u0639 \u0641\u064a\u062f\u064a\u0648 \u0627\u0644\u0623\u0644\u0639\u0627\u0628 \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0648\u0627\u0644\u0623\u062e\u0628\u0627\u0631 \u0643\u0644 \u064a\u0648\u0645. \u062a\u0631\u0642\u0628 \u0645\u0639\u0646\u0627!",
+        "translation": "\u0634\u0627\u0647\u062f \u0645\u0642\u0627\u0637\u0639 \u0641\u064a\u062f\u064a\u0648 \u0627\u0644\u0623\u0644\u0639\u0627\u0628 \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u063a\u064a\u0631 \u0627\u0644\u0645\u062d\u062f\u0648\u062f\u0629 \u0645\u0642\u0627\u0628\u0644 %price% \u062c\u0646\u064a\u0647 \u0645\u0635\u0631\u064a \u0641\u0642\u0637 \u0641\u064a \u0627\u0644\u064a\u0648\u0645 \u0627\u0644\u0648\u0627\u062d\u062f\u0625\u0645\u0643\u0627\u0646\u064a\u0629 \u0627\u0644\u0648\u0635\u0648\u0644 \u0625\u0644\u0649 \u0645\u0626\u0627\u062a \u0645\u0646 \u0645\u0642\u0627\u0637\u0639 \u0641\u064a\u062f\u064a\u0648 \u0627\u0644\u0623\u0644\u0639\u0627\u0628 \u0627\u0644\u0631\u064a\u0627\u0636\u064a\u0629 \u0648\u0627\u0644\u0623\u062e\u0628\u0627\u0631 \u0643\u0644 \u064a\u0648\u0645. \u062a\u0631\u0642\u0628 \u0645\u0639\u0646\u0627!",
         "language": {
             "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -2752,7 +2752,7 @@
     {
         "uuid": "fbf58a6d-91dc-4ebd-9604-e59554a2ba59",
         "key": "subscription.status.not_subscribe",
-        "translation": "\u0645\u0631\u062d\u0628\u0627 \u0628\u0643\u0645 \u0641\u064a 100 \u066a \u0631\u064a\u0627\u0636\u0629! <small> \u0627\u062d\u0635\u0644 \u0639\u0644\u0649 \u0645\u0642\u0627\u0637\u0639 \u0641\u064a\u062f\u064a\u0648 \u063a\u064a\u0631 \u0645\u062d\u062f\u0648\u062f\u0629 \u0644\u0643\u0644\u066a period\u066a \u0645\u0642\u0627\u0628\u0644\u066a price \u0641\u0642\u0637\u066a \/\u066a currency\u066a <\/ small>",
+        "translation": "\u0645\u0631\u062d\u0628\u0627 \u0628\u0643\u0645 \u0641\u064a 100 \u066a \u0631\u064a\u0627\u0636\u0629! \u0627\u062d\u0635\u0644 \u0639\u0644\u0649 \u0645\u0642\u0627\u0637\u0639 \u0641\u064a\u062f\u064a\u0648 \u063a\u064a\u0631 \u0645\u062d\u062f\u0648\u062f\u0629 \u0643\u0644 \u064a\u0648\u0645 \u0645\u0642\u0627\u0628\u0644 2.5 \u062c\u0646\u064a\u0647 \u0641\u0642\u0637",
         "language": {
             "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -2855,7 +2855,7 @@
     {
         "uuid": "39a3lo7d-159c-479e-8d87-fcf4757a9e8d",
         "key": "annotation_block.text.3",
-        "translation": "\u064a\u0645\u0643\u0646\u0643 \u0625\u0644\u063a\u0627\u0621 \u0627\u0634\u062a\u0631\u0627\u0643\u0643 \u0641\u064a \u0623\u064a \u0648\u0642\u062a \u0645\u0646 \u0642\u0633\u0645 \"\u062d\u0633\u0627\u0628\u064a\" \u0623\u0648 \u0639\u0646 \u0637\u0631\u064a\u0642 \u0625\u0631\u0633\u0627\u0644 UNSUB SPORT \u0625\u0644\u0649 6699",
+        "translation": "\u064a\u0645\u0643\u0646\u0643 \u0625\u0644\u063a\u0627\u0621 \u0627\u0634\u062a\u0631\u0627\u0643\u0643 \u0641\u064a \u0623\u064a \u0648\u0642\u062a \u0645\u0646 \u0642\u0633\u0645 \"\"\u062d\u0633\u0627\u0628\u064a\"\" \u0623\u0648 \u0639\u0646 \u0637\u0631\u064a\u0642 \u0625\u0631\u0633\u0627\u0644 UNSUB 100 \u0625\u0644\u0649 6699",
         "language": {
             "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -2866,7 +2866,7 @@
     {
         "uuid": "39be4544-159c-479e-8d87-fs5d6f7a9e8d",
         "key": "annotation_block.text.3",
-        "translation": "You can cancel your subscription anytime from My Account section or by sending UNSUB SPORT to 6699",
+        "translation": "You can cancel your subscription anytime from My Account section or by sending UNSUB 100 to 6699",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -2877,7 +2877,7 @@
     {
         "uuid": "39be4544-159c-as93-8d87-fcf4757a9e12",
         "key": "annotation_block.text.3",
-        "translation": "\u064a\u0645\u0643\u0646\u0643 \u0625\u0644\u063a\u0627\u0621 \u0627\u0634\u062a\u0631\u0627\u0643\u0643 \u0641\u064a \u0623\u064a \u0648\u0642\u062a \u0645\u0646 \u0642\u0633\u0645 \"\u062d\u0633\u0627\u0628\u064a\" \u0623\u0648 \u0639\u0646 \u0637\u0631\u064a\u0642 \u0625\u0631\u0633\u0627\u0644 UNSUB SPORT \u0625\u0644\u0649 5030",
+        "translation": "\u064a\u0645\u0643\u0646\u0643 \u0625\u0644\u063a\u0627\u0621 \u0627\u0634\u062a\u0631\u0627\u0643\u0643 \u0641\u064a \u0623\u064a \u0648\u0642\u062a \u0645\u0646 \u0642\u0633\u0645 \"\u062d\u0633\u0627\u0628\u064a\" \u0623\u0648 \u0639\u0646 \u0637\u0631\u064a\u0642 \u0625\u0631\u0633\u0627\u0644 UNSUB 100 \u0625\u0644\u0649 5030",
         "language": {
             "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -2888,22 +2888,13 @@
     {
         "uuid": "39s5d6f9-159c-479e-8d87-fcf4757a9e8d",
         "key": "annotation_block.text.3",
-        "translation": "You can cancel your subscription anytime from My Account section or by sending UNSUB SPORT to 5030",
+        "translation": "You can cancel your subscription anytime from My Account section or by sending UNSUB 100 to 5030",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": {
             "uuid": "7c8385df-8d56-464a-98ff-66c55a7a5741"
         }
-    },
-    {
-        "uuid": "4bb3fc5b-63c0-4974-8b4b-e9a2e5be5a6f",
-        "key": "buttons.unsubscribe",
-        "translation": "\u0625\u0644\u063a\u0627\u0621 \u0627\u0644\u0627\u0634\u062a\u0631\u0627\u0643 \u0645\u0646 %100 sport",
-        "language": {
-            "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": null
     },
     {
         "uuid": "810aos5s-0eb7-4357-bfdc-f906144e2489",
@@ -3049,6 +3040,42 @@
         "carrier": null
     },
     {
+        "uuid": "6fdf584g-494a-4b09-8b08-b573e7a8860c",
+        "key": "account.header-text",
+        "translation": "\u0645\u0639\u0644\u0648\u0645\u0627\u062a \u0627\u0644\u0627\u0634\u062a\u0631\u0627\u0643",
+        "language": {
+            "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "al98s74g-494a-4b09-8b08-b573e7a8812a",
+        "key": "account.header-text",
+        "translation": "Subscription info",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "6fdf584g-494a-4b09-8b08-b573e7dk8jf6",
+        "key": "terms.title",
+        "translation": "100% Sport <br\/> \u0634\u0631\u0648\u0637 \u0648\u0623\u062d\u0643\u0627\u0645",
+        "language": {
+            "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "al98s74g-29d7-4b09-8b08-b573e7dk8jf1",
+        "key": "terms.title",
+        "translation": "100% Sport <br\/> Terms and Conditions",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
         "uuid": "4aa5s23b-d93j-4a9f-a344-a3f5121298hf",
         "key": "messages.error.wifi_blacklisted",
         "translation": "You can not subscribe to 100% Sport.Your phone number has been blacklisted from subscribing.",
@@ -3121,6 +3148,1393 @@
         "translation": "",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "010f169d-0460-4d7a-ab92-575e8b7293df",
+        "key": "category.986e13fa-9dfe-42e6-92f2-2cff6f60b42e",
+        "translation": "Kriket",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "018da077-1187-4841-a178-f83d2ece7ed0",
+        "key": "terms.block_10.text.1",
+        "translation": "Menurut Undang-undang Perlindungan Data 1998, pengguna memiliki hak untuk mengakses, memperbaiki dan\/atau membantah data pribadi apa pun dengan menulis ke data controller ORIGINDATA Ltd, 3rd Floor, 207 Regent Street, London W1B 3HH, UK.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "01baa06f-5115-426c-83b9-2c0542375a0f",
+        "key": "navbar.menu.account",
+        "translation": "Akun Saya",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "021b8029-399a-45c8-b232-68b1f6bbb9b3",
+        "key": "messages.error.subscription_restricted",
+        "translation": "Pelanggan yang terhormat, maaf, tetapi Anda sudah berlangganan atau telah berlangganan salah satu layanan kami, dalam hal ini, kemungkinan berlangganan untuk Anda terbatas dan tidak mungkin.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "04c2ab27-45ec-4159-85b5-f12d89b468a0",
+        "key": "faq.q.2",
+        "translation": "Di mana saya dapat menonton semua video?",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "063a4384-e3bc-4cfc-8b6c-fc8dbf7ace63",
+        "key": "terms.block_7.text.2",
+        "translation": "Demikian juga, Anda menyatakan dan sepakat bahwa penggunaan layanan 100% sports tidak diizinkan untuk keperluan niaga dan keperluan lain yang tidak berkaitan yang dijelaskan dalam Persyaratan dan Ketentuan ini.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "071c8055-e421-4467-86dd-da25e89d031c",
+        "key": "messages.error.not_enough_credit",
+        "translation": "Maaf, tetapi Anda tidak memiliki saldo yang cukup untuk berlangganan, harap isi ulang saldo Anda dan coba lagi",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "075d2c0f-b485-4f99-a3b0-24d12075aabb",
+        "key": "buttons.confirm",
+        "translation": "memastikan",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "0a0d3c41-b3b2-47da-b052-bc0a9a943488",
+        "key": "wifi.terms_confirmation",
+        "translation": "Saya telah membaca dan menyetujui <a href=\"%terms_url%\"> Syarat dan Ketentuan <\/a>",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "0ac274ef-b02a-4074-9b7b-db771363f839",
+        "key": "buttons.see_all",
+        "translation": "Lihat semua",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "0cbfff61-1632-454f-b268-aa96f70be6e2",
+        "key": "account.text.leave",
+        "translation": "Jika Anda ingin meninggalkan layanan ini, silakan klik tautan di bawah ini.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "0df9ad25-3a4a-4ab8-aa4c-ed3fdddab298",
+        "key": "buttons.submit",
+        "translation": "Menyerahkan",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "10229235-8daf-4258-b7a6-794f8cf1250c",
+        "key": "category.ab6ad264-bd64-4fd0-9010-9c8e503a1ad3",
+        "translation": "Sepak Bola",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "117e71d3-58b6-42dd-9054-67c46c66a0b7",
+        "key": "terms.text.description",
+        "translation": "Persyaratan ini (\"Persyaratan dan Ketentuan\") adalah ketentuan khusus perjanjian hukum antara Anda, pada satu sisi, dan ORIGINDATA Ltd (selanjutnya disebut sebagai \"100% sports\"), pada sisi lainnya.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "17e52b2b-8596-4600-8827-04efbd1c1328",
+        "key": "account.subscription.status.not_subscribe",
+        "translation": "Dapatkan video tanpa batas setiap %period% dengan hanya %price% \/%currency%",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "189b1ced-ba4d-44d6-aa01-3b5a2069722e",
+        "key": "wifi.offer",
+        "translation": "%price% %currency% per 3 hari",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "190ead92-c147-45ba-8666-175fb85b3649",
+        "key": "annotation_block.text.3",
+        "translation": "Anda dapat membatalkan langganan Anda kapan pun dari bagian Akun Saya",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "1a6da892-7079-40a3-8e22-e32d72423949",
+        "key": "terms.block_11.title.1",
+        "translation": "Modififikasi",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "1f18d244-9d78-424e-8559-4b5c6221d6db",
+        "key": "promotional.landing",
+        "translation": "Video tidak terbatas untuk olahraga dan tim favorit Anda",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "2010fdb3-fd80-4d3c-86d0-1b08054cc360",
+        "key": "buttons.join",
+        "translation": "Ikut",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "20f219fb-3a60-4fb0-8fd4-6cfca77b20dd",
+        "key": "terms.block_6.text.2",
+        "translation": "Anda harus memiliki semua sumber daya yang diperlukan (perangkat genggam, perangkat lunak, sambungan internet) untuk menggunakan layanan 100% sports. 100% sports boleh menghentikan layanannya untuk melaksanakan pekerjaan perbaikan, pengoreksian, dan perawatan. 100% sports juga boleh memodifikasi secara sementara atau permanen produk atau layanan tertentu.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "2249b026-c6ca-4fc3-ae8e-4506aaf2a316",
+        "key": "wifi.form.input_pin",
+        "translation": "Kode PIN",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "22b87d73-5850-4655-bcb7-fd2401e90800",
+        "key": "wifi.form.button.apply",
+        "translation": "Menerapkan",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "273860d5-15de-495b-80d7-60594716097e",
+        "key": "category.games",
+        "translation": "Game Olahraga",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "279b1a78-0e67-49da-aa53-399819812dba",
+        "key": "messages.action.unsubscribe.confirmation.1",
+        "translation": "Anda bukan lagi anggota 100% Sports",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "287276e5-3a28-4186-84b1-213b0e9c31ea",
+        "key": "player.related_videos",
+        "translation": "Video yang berhubungan",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "2ae34b85-b698-43c0-8371-7c11a98f9bd8",
+        "key": "terms.block_9.text.1",
+        "translation": "Semua konten, game, desain, dan kode pemograman di dalam portal seluler 100% sports sepenuhnya dilindungi oleh hak cipta: reproduksi, komunikasi, penyebaran, dan distribusi unsur apa pun dilarang sepenuhnya kecuali jika Anda memiliki wewenang yang diperlukan",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "2b245b1a-6af6-4868-8ab3-af40da4e953f",
+        "key": "message.error.pin_request_limit_exceeded",
+        "translation": "Batas permintaan PIN tercapai. Silakan coba lagi nanti!",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "2c0f2ee3-698a-436b-a0ab-adfc05dda8ae",
+        "key": "internal-server-error",
+        "translation": "Sorry, the service is unavailable now. We are doing our best to resolve it!  If you want to go back to 100%sport please click <a href=\"%url%\">here<\/a>.",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "2e7a6c0a-e359-4076-94ea-743eee724589",
+        "key": "subscription.text.enjoy",
+        "translation": "Nikmati video olahraga tidak terbatas!",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "303ee05d-aca4-4eea-9ab5-4e42d088203f",
+        "key": "terms.block_9.text.3",
+        "translation": "100% sports memiliki hak untuk secara sepihak menghapus, menambah, atau memodifikasi konten, layanan atau utilitas yang tersedia pada situs web 100% sports.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "31076c44-f198-4290-9806-f8b9f305d7d8",
+        "key": "terms.block_5.text.1",
+        "translation": "Biaya total layanan langganan ini akan diiklankan dalam setiap halaman tempat Anda dapat mendaftar untuk mendapatkan layanan 100% sports. Jumlah total atau sebagian dari layanan berkontrak akan ditagih setiap minggu atau haris seperti yang diperinci oleh operator seluler Anda. Namun, harga maksimum untuk langganan adalah %price% per minggu.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "349415c4-6029-4c61-aef5-c4a7acb13a4a",
+        "key": "contact_us.field.mandatory",
+        "translation": "Bidang wajib",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "36df43c1-e2e9-48f0-8714-31a529bd96ae",
+        "key": "category.bb215764-2aad-4ca5-83cf-78f841a230e8",
+        "translation": "Kualifier",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "381f74ab-c6a2-4b61-b63b-9ed07df8d65b",
+        "key": "terms.block_8.text.2",
+        "translation": "100% sports tidak memiliki tanggung jawab jika produk atau layanan yang diminta tidak disampaikan atau dilaksanakan dengan benar ketika masalah ini tidak dapat disangkutkan dengan 100% sports (termasuk, tetapi tidak terbatas pada, situasi seperti video Anda tidak dapat dimuat kaena masalah konektivitas operator atau persoalan teknis yang berkaitan dengan konfigurasi perangkat genggam Anda).",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "383085ad-a853-4df6-bda3-e61e244d34b4",
+        "key": "category.dbeb8e19-ea7f-4443-970d-b113ecf819d9",
+        "translation": "Tenis",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "387000b9-f476-4984-a6e2-ebd8a45b4336",
+        "key": "terms.block_12.text.1",
+        "translation": "\"Nama: ORIGINDATA Ltd \nAlamat: 3rd Floor, 207 Regent street, London W1B 3HH, UK. \nNomor PPN: GB 250 2427 42 \nNomor Pendaftaran Perusahaan: 10294628\"",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "3af83010-b425-4a12-8222-c03e31d2ae8f",
+        "key": "annotation_block.text.1",
+        "translation": "Biayanya akan ditambahkan pada tagihan telepon seluler Anda",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "3b4c3fd7-84e6-4e37-b7a1-920fac191e00",
+        "key": "terms.block_9.title.1",
+        "translation": "Hak milik intelektual dan industrial",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "3ba30a12-7953-4dd4-b42c-15d73994f19d",
+        "key": "player.close",
+        "translation": "Dekat",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "3cc13c21-a8d5-4fee-ab88-4dc823b29756",
+        "key": "lure_block.text",
+        "translation": "Mencakup lebih dari 40 jenis olahraga!",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "40ea29f7-f496-4646-93fc-b6221f0e1290",
+        "key": "faq.a.1",
+        "translation": "100% sports adalah layanan langganan yang otomatis diperbarui setiap minggu atau hari (sebagaimana yang benar) kecuali jika Anda berhenti berlangganan. Anda dapat mengakhiri langganan Anda kapan pun Anda ingin hanya dengan memasuki menu pribadi Anda pada <service URL> (ikon pada kanan atas tampilan) dan mengklik tautan Tinggalkan 100% sports. Tergantung operator seluler Anda, Anda dapat dapat mengakhiri langganan Anda dengan mengirimkan SMS.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "431f9d36-5121-455c-9c3c-e2619e95eb4f",
+        "key": "contact_us.text.2",
+        "translation": "Hubungi kami menggunakan formulir kontak di bawah ini.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "43e66946-e196-4b71-b8f7-881d0f7e9721",
+        "key": "terms.block_7.text.1",
+        "translation": "100% sports tidak bertanggung gugat atas kerugian atau kerusakan apa pun yang disebabkan penggunaan secara tidak layak atas layanan yang diberikan oleh 100% sports di luar kontrolnya atau yang berasal dari sebab-sebab yang tidak dapat disangkutkan dengannya. Anda harus tidak menyalahgunakan layanan 100% sports dan menghargai peraturan perundang-undangan pihak ketiga, termasuk hak merek dagang, paten, hak cipta, dan hak milik intelektual dan industrial lain.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "455e29af-3a82-4b60-95ef-6677e7008fa2",
+        "key": "terms.block_1.text.1",
+        "translation": "100% sports adalah layanan seluler yang menyediakan game seluler 100% sports mengemukakan layanan ini: - Langganan mingguan yang akan otomatis diaktifkan ketika Anda mengonfirmasi langganan Anda pada situs seluler 100% sports (<a href='%home_url%'>100% sport situs seluler<\/a>).",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "46f517fc-8d4a-461c-bbe6-1d8b047f8389",
+        "key": "terms.block_6.title.1",
+        "translation": "Akses layanan",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "470a2adc-0bfc-420c-95ab-29ae4e226581",
+        "key": "contact_us.field.email",
+        "translation": "Alamat email",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "497873b5-d522-4af6-bcad-8df13b6f9f82",
+        "key": "terms.block_12.title.1",
+        "translation": "Informasi tentang Perusahaan",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "49efdfd2-599f-4f58-8b8c-b4b3fa01d13a",
+        "key": "terms.block_2.title.1",
+        "translation": "Ketentuan",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "4a0b5ec6-3bf7-4c1d-bf98-db47f809ccba",
+        "key": "not-found-error",
+        "translation": "Maaf, URL ini tidak ada atau tidak lagi tersedia. Jika Anda ingin kembali ke olahraga 100%, silakan tekan <a href=\"%url%\"> di sini <\/a>.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "4a3d0530-5236-4a40-8e1b-f44e6edb5fad",
+        "key": "menu.footer.terms",
+        "translation": "T&C",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "4aos524b-f755-4a9f-a344-a2d58f7das52",
+        "key": "copyright",
+        "translation": "\u00a9ORIGINDATA 2019 \u062c\u0645\u064a\u0639 \u0627\u0644\u062d\u0642\u0648\u0642 \u0645\u062d\u0641\u0648\u0638\u0629",
+        "language": {
+            "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": {
+            "uuid": "7c8385df-8d56-464a-98ff-66c55a7a5741"
+        }
+    },
+    {
+        "uuid": "4aos524b-f755-4a9f-a344-a2iu7d58f7d8",
+        "key": "copyright",
+        "translation": "\u00a9ORIGINDATA 2019 \u062c\u0645\u064a\u0639 \u0627\u0644\u062d\u0642\u0648\u0642 \u0645\u062d\u0641\u0648\u0638\u0629",
+        "language": {
+            "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": {
+            "uuid": "99a362ea-72cd-45d5-bbcc-18f16b8451ed"
+        }
+    },
+    {
+        "uuid": "4d58f74b-f755-4a9f-a344-a3f512ss2y63",
+        "key": "copyright",
+        "translation": "\u00a9ORIGINDATA 2019 All rights reserved",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": {
+            "uuid": "7c8385df-8d56-464a-98ff-66c55a7a5741"
+        }
+    },
+    {
+        "uuid": "4d58f9d5-f755-4a9f-a344-a3f512ss2y63",
+        "key": "copyright",
+        "translation": "\u00a9ORIGINDATA 2019 All rights reserved",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": {
+            "uuid": "99a362ea-72cd-45d5-bbcc-18f16b8451ed"
+        }
+    },
+    {
+        "uuid": "4fa74b44-5355-4613-a631-15db4e3fed37",
+        "key": "subscription.status.error",
+        "translation": "Aduh! Maaf, tetapi ada yang tidak beres. Kami tidak dapat melanjutkan berlangganan. Silakan coba lagi nanti",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "50ecdb7e-9a6e-459e-8a29-2c7a6c085a9f",
+        "key": "terms.block_5.text.3",
+        "translation": "Ongkos mungkin berbeda bergantung pada operator seluler. Harga persisnya akan ditampilkan bersama dengan ketentuan layanan sebelum Anda berlangganan atau membeli.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "57accffb-6545-4830-98dd-9a902cb19607",
+        "key": "category.e14034f0-ac4d-4925-94d4-cbf9d61fae93",
+        "translation": "Lain-lain",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "57d2e0a1-9bdd-415b-aa6f-1882a20d0dfd",
+        "key": "terms.block_3.title.1",
+        "translation": "Keterangan layanan",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "58a3fe90-85cb-477a-b472-4cee091f6a23",
+        "key": "account.text.subscribed",
+        "translation": "Anda adalah bagian dari 100% sports sejak",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "5a0493ab-951a-47b4-a5c9-0833d770b31a",
+        "key": "offer.annotation_block",
+        "translation": "Tonton video olahraga tanpa batas hanya dengan %price%%currency% per 3 hari",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "5d37bfb0-7ecd-437d-98ef-1bb6fff33414",
+        "key": "terms.block_6.text.1",
+        "translation": "Hanya individu berumur legal dan orang muda beremansipasi (emancipated minors) (di atas 14 tahun) dapat menerapkan dan membuat kontrak layanan 100% sports. Orang muda beremansipasi hanya dapat menggunakan layanan 100% sports di bawah otorisasi dari orang tua atau pengawas hukum mereka, yang akan selalu bertanggung jawab atas tindakan pihak dependen mereka itu. 100% tidak dapat menggantikan dengan cara apa pun kontrol orang tua sebagai tutor hukum, sehingga pemilik sambungan telepon seluler akan dianggap bertanggung jawab untuk semua hal.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "5d4b723d-6bb7-493e-b4e8-880dda340579",
+        "key": "game.title.description",
+        "translation": "Deskripsi",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "5e5d24e7-2f25-42e2-8292-e78caa09b498",
+        "key": "wros",
+        "translation": "Maaf, 100%sport hanya tersedia untuk perangkat Android",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "5e8f43e1-f64e-4c77-9b4a-d7c7e2f55695",
+        "key": "faq.q.6",
+        "translation": "Situs web seluler tidak mendeteksi akun saya dan langganan saya pada 100% sports",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "5ef43f1d-1d15-4e0b-9ab6-f4fa3057f260",
+        "key": "category.244b3d58-fb86-4ba1-b221-9a0f3916306d",
+        "translation": "Kombat",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "60904bd6-23a7-4e6f-a7ba-03531efa90a2",
+        "key": "menu.hamburger.faq",
+        "translation": "Pertanyaan Umum",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "617d9c0d-3201-4820-bb93-cf6db5aad8fe",
+        "key": "terms.block_10.title.1",
+        "translation": "Data pribadi",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "641e58d5-0443-4de6-abcb-8242cda58027",
+        "key": "terms.block_11.text.1",
+        "translation": "100% sports memiliki hak untuk memodifikasi Persyaratan dan Ketentuan ini, termasuk harga dan apa pun hal lain yang berkaitan dengan langganan.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "66773bcc-bb8d-4fd2-b696-87b37e178030",
+        "key": "buttons.send",
+        "translation": "Kirim",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "670f7b46-2dc5-45fa-b9fb-d9ebe9951c11",
+        "key": "navbar.menu.sport_games",
+        "translation": "Game Olahraga",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "679f74cd-f51d-4c5d-9765-177c228ed1d6",
+        "key": "menu.footer.contact_us",
+        "translation": "Hubungi kami",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "68893ec9-d192-4f0b-a198-4d1e52715d15",
+        "key": "buttons.download",
+        "translation": "UNDUH",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "69785fcc-9676-4bee-be26-e3bb2a9bfebc",
+        "key": "messages.error.already_subscribed",
+        "translation": "Anda telah mempunyai langganan aktif.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "6a1163dc-1537-4760-b7cb-0028f975b500",
+        "key": "terms.block_5.title.1",
+        "translation": "Pembayaran",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "6a341b1b-405b-42d3-9a43-5ee033497e9c",
+        "key": "wifi.button",
+        "translation": "BERLANGGANAN",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "6aad35c0-c1ca-4552-966e-c09b513e6be4",
+        "key": "wifi.warning",
+        "translation": "Maaf, kami tidak dapat mengenali identitas pengguna Anda. Silakan pilih Negara, Operator, dan ketika nomor seluler Anda. Anda akan menerima kode Nomor Identitas Pribadi lewat SMS",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "6cc408e3-6b79-4f2c-a4d4-f912210ca12c",
+        "key": "terms.block_8.text.1",
+        "translation": "100% sports tidak bertanggung jawab atas ketersediaan teknis atau konten Web \/ Wap \/ situs internet seluler pihak ketiga tempat Anda mengakses lewat tautan yang disertakan pada situs web mereka. Karena itu, 100% sports tidak menyetujui dan tidak mendukung produk, layanan, konten, informasi, data, file, dan material apa pun yang ditampilkan pada situs web pihak ketiga. Demikian juga 100% sports tidak mengontrol dan tidak bertanggung jawab atas kualitas, legalitas, keandalan, dan kegunaan konten dan layanan pada situs-situr eksternal bertautan yang tidak berkaitan dengan 100% sports.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "707167d8-137c-48c6-91c2-f301d19d1104",
+        "key": "category.70b66027-8e25-400b-8e44-cc4dc399f350",
+        "translation": "Atletik",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "718e1c22-266f-4d86-831d-c0e82b6ea57e",
+        "key": "faq.q.5",
+        "translation": "Saya berlangganan 100% sports, jika saya berhenti berlangganan, berapa lama lagi saya masih akan dapat mengakses video?",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "71e4aad4-3cd1-4324-83a9-17157b9d1761",
+        "key": "terms.block_9.text.2",
+        "translation": "Selain itu, semua simbol (logo, huruf, ikon, dll) pada situs web 100% dimiliki oleh 100% sports atau para pihak ketiga dan reproduksi atau distribusinya dilarang sepenuhnya tanpa izin yang jelas. Juga dilarang untuk menyalin, mereproduksi, atau menggunakan semua atau sebagian dari Persyaratan dan Ketentuan ini tanpa persetujuan dari 100% sports.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "74f52c08-3b31-47d3-9431-845e146cca76",
+        "key": "buttons.load_more",
+        "translation": "Muat lebih banyak",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "762c68b7-6aa0-49f9-bd7c-f1b0c313a54f",
+        "key": "terms.block_1.title.1",
+        "translation": "Objek",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "76c5d18c-72b1-4fc1-bd66-1d125aa19669",
+        "key": "category.15157409-49a4-4823-a7f9-654ac1d7c12f",
+        "translation": "Video viral",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "79f54d05-7c08-4c69-95a0-949f0eb78188",
+        "key": "subscription.text.resubscribe",
+        "translation": "Untuk berlangganan lagi, silakan Hubungi Kami",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "7ea2ceae-3798-486d-989b-0ac972b8a24d",
+        "key": "buttons.continue",
+        "translation": "Terus",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "8358003d-fe7a-4c24-9249-6b06ddb22010",
+        "key": "terms.block_3.title.1.1",
+        "translation": "Langganan",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "83a4857d-e7c0-404c-b383-75bab0d4f1b0",
+        "key": "contact_us.field.comments",
+        "translation": "Komentar",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "845e406e-18d3-44c5-8e70-4c7189baec3b",
+        "key": "category.4ec02ca3-779f-454a-8280-f59cd9600c2a",
+        "translation": "Golf",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "84c394f2-26e3-432d-bf53-900484b6869f",
+        "key": "subscription.status.unsubscribed",
+        "translation": "Anda telah berhenti berlangganan dari 100% sports",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "84cfec76-44b4-47b1-9aef-ea3ba1a0f598",
+        "key": "messages.action.resend_pin",
+        "translation": "Kode PIN baru telah berhasil dikirim",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "889642a6-dc89-4c7d-a1b8-574b0cb279b5",
+        "key": "navbar.menu.faq",
+        "translation": "Pertanyaan Umum",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "899ef875-12cd-4e36-8939-81055ab033fd",
+        "key": "menu.hamburger.contact_us",
+        "translation": "HUBUNGI KAMI",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "89c5c1fe-5019-4237-b6c5-18e90c5d15e6",
+        "key": "menu.footer.faq",
+        "translation": "Pertanyaan Umum",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "8ccd3ad8-1897-45ef-aace-fac6785c98ff",
+        "key": "messages.error.wrong_phone_number",
+        "translation": "Anda memasukkan nomor telepon yang salah. Silakan masukkan nomor telepon yang benar dengan kode panggilan internasional",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "8fcdb89a-fac0-408d-a97c-4505634d7842",
+        "key": "buttons.subscribe",
+        "translation": "BERLANGGANAN",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "908b422f-d382-4d12-b1ee-a177fea6df0a",
+        "key": "landing.text.pay2watch",
+        "translation": "Klik <span class=\"play-text-link red\">bermain<\/span><br\/> dan terus menonton!",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "91723a90-29be-48b5-9108-39633a88e676",
+        "key": "message.error.invalid_pin",
+        "translation": "Kode PIN tidak valid",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "924b7fb6-68cb-4329-8bfb-545a45b4295d",
+        "key": "messages.info.remind_credentials",
+        "translation": "SMS dengan detail berhasil dikirim ke perangkat Anda",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "985ca181-3ea1-4487-b96b-56acef003762",
+        "key": "menu.hamburger.terms",
+        "translation": "Persyaratan dan Ketentuan",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "9fb7fa25-362e-4e39-8270-04c1a22dbefd",
+        "key": "category.title",
+        "translation": "Kategori",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "a1dc57d1-8f75-414d-ae42-8b3d9a1349ec",
+        "key": "faq.a.3",
+        "translation": "Pertama-tama, pastikan bahwa Anda memiliki izin untuk menginstal aplikasi dari berbagai toko pada Google Play: di perangkat Anda, pergi ke setelan \/ Keamanan \/ Administrasi Perangkat dan aktifkan Sumber Tak Dikenal Bolehkan instalasi aplikasi dari sumber tidak dikenal. Selain itu, Anda bisa memeriksa apakah Anda memiliki ruang cukup dalam penyimpanan Anda. Jika masalah masih ada, jangan ragu-ragu untuk menghubungi kami.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "a215a599-7499-4541-b7b2-5ff935b0f9c1",
+        "key": "offer.account",
+        "translation": "Tontonlah video olahraga tidak terbatas hanya dengan %currency% %price% + pajak per 3 hari - TAWARAN EKSKLUSIF: HARI PERTAMA GRATIS!",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "a2fa8eb5-bd46-46b5-8f1f-50e68fc7cfb7",
+        "key": "navbar.menu.home",
+        "translation": "Rumah",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "a504356a-c871-43d5-b452-ee98c43ac639",
+        "key": "buttons.wifi.resend_pin",
+        "translation": "Kirim ulang SMS dengan kode PIN",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "aa560a39-f783-4f7a-b0f3-3831b000f490",
+        "key": "buttons.leave",
+        "translation": "Tinggalkan 100% sports",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "ab919ddd-d4bb-4d59-9cdb-ff06b0058960",
+        "key": "buttons.unsubscribe",
+        "translation": "Tinggalkan 100% sports",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "ad1faf54-c2ae-499f-b190-2d12c3619f13",
+        "key": "wifi.form.button.send_sms",
+        "translation": "Kirim SMS",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "ae017113-3ca9-4c73-ba2f-ab7736467f8d",
+        "key": "messages.action.unsubscribe.confirmation.2",
+        "translation": "Silakan lanjutkan kunjungan Anda pada halaman beranda kami",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "b87a7146-f533-4fa9-93ab-86fe371981c5",
+        "key": "buttons.yes",
+        "translation": "Ya",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "bb0032b5-05e0-4a1d-8540-d2032f0a7afc",
+        "key": "terms.block_2.text.1",
+        "translation": "Layanan ini hanya tersedia bagi pengguna di %country%. Anda harus memiliki izin dari perusaahaan penyedia jasa untuk menggunakan layanan ini.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "bc78b8fb-e044-4bca-aaf2-d4a48685ea98",
+        "key": "terms.block_3.text.1",
+        "translation": "Layanan langganan ini memungkinkan Anda untuk menonton video olahraga tidak terbatas setiap minggu pada ponsel Anda dari katalog 100% sports dengan harga %price% (+ biaya sambungan WAP). Selama berlangganan 100% sports, Anda akan dapat menonton konten tidak terbatas setiap minggu",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "bc99e11a-a6f8-4abb-92af-44bba8053d1d",
+        "key": "wifi.form.select_carrier",
+        "translation": "Pilih operator",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "bddc1968-6064-4f8b-b20d-204424b891b6",
+        "key": "navbar.menu.contacts",
+        "translation": "Hubungi kami",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "be3a180a-9eee-47d4-a889-d62a9329a8f5",
+        "key": "buttons.no",
+        "translation": "Tidak",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "c000a0b2-fda3-4852-82ef-efa8963a7c66",
+        "key": "faq.a.6",
+        "translation": "Periksa apakah sambungan 3G atau WIFI Anda berfungsi dengan benar. Jika demikian halnya, dan masalah ini masih berlanjut, silakan hubungi kami dengan menyebutkan masalah, nomor telepon, operator seluler, dan perangkat genggam Anda.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "c6ded84f-99c0-4186-bbf1-d8a0835bb4d0",
+        "key": "subscription.status.not_subscribe",
+        "translation": "\u0645\u0631\u062d\u0628\u0627 \u0628\u0643\u0645 \u0641\u064a 100 \u066a \u0631\u064a\u0627\u0636\u0629! \u0627\u062d\u0635\u0644 \u0639\u0644\u0649 \u0645\u0642\u0627\u0637\u0639 \u0641\u064a\u062f\u064a\u0648 \u063a\u064a\u0631 \u0645\u062d\u062f\u0648\u062f\u0629 \u0643\u0644 \u064a\u0648\u0645 \u0645\u0642\u0627\u0628\u0644 2.5 \u062c\u0646\u064a\u0647 \u0641\u0642\u0637",
+        "language": {
+            "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": {
+            "uuid": "5142f9ec-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "c8e2d9da-8e43-4ae9-960a-418ff1d3ccde",
+        "key": "contact_us.text.1",
+        "translation": "Anda punya pertanyaan tentang 100% sports? Kami akan memberikan Anda jawaban yang jelas.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "c95aff48-53df-422a-acc7-c98cf7e65f76",
+        "key": "wifi.pin_notif",
+        "translation": "Selamat datang:%wifi_phone% Ketikkan kode PIN yang diterima melalui SMS dan klik SUBSCRIBE!",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "c9d4f073-2996-4941-a61c-d135095a94a0",
+        "key": "terms.block_7.title.1",
+        "translation": "Tanggung gugat pengguna",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "ca8ca05a-4389-4bff-9b99-bd478ee5d5cf",
+        "key": "terms.block_3.text.2",
+        "translation": "Untuk bergabung dengan layanan berlangganan dan mendapat akses ke video dan game, Anda harus mengklik tombol langganan pada situs web seluler 100% sports. Begitu langganan Anda dikonfirmasi, Anda akan diarahkan ulang ke halaman beranda kami dan dapat menikmati game dan video olahraga menurut katalog 100% sports.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "cdbb94f0-1b62-4d59-bbb2-d50fa4f48b6b",
+        "key": "terms.block_8.text.3",
+        "translation": "Jika Anda mendeteksi konten yang tidak legal, hubungi kami segera",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "cdc05cf1-ce59-4e67-968e-d3aca1f1f0d8",
+        "key": "buttons.join.now",
+        "translation": "AYO BERGABUNG, GRATIS",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "cf14560b-95c1-4b42-83df-6c6b6b30adc0",
+        "key": "faq.a.4",
+        "translation": "Ya, semua konten yang disediakan oleh 100% sprots benar-benar aman bagi perangkat genggam dan data pribadi Anda.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "d088a993-7dc3-4d6a-b926-e2dd0683b511",
+        "key": "not-found-error",
+        "translation": "Sorry, this URL doesn't exist or is no longer available. If you want to go back to the 100%sport please press <a href=\"%url%\">here<\/a>.",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "d59d8f37-b341-42ad-95ab-9642fd7dbc4a",
+        "key": "category.51d606c2-ab33-44ec-8098-05994b0e75e5",
+        "translation": "Olahraga Ekstrem",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "d884768e-f049-4397-8aad-7b26d3a6f25d",
+        "key": "navbar.menu.terms",
+        "translation": "Persyaratan dan Ketentuan",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "da99e462-77b7-4181-8cfe-bb5d980c35e8",
+        "key": "annotation_block.text.4",
+        "translation": "Biaya pengunduhan data akan berlaku sebagai tarif per bundel atau paket",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "dac85970-f2cc-4215-bf56-b42cccec8a35",
+        "key": "annotation_block.text.2",
+        "translation": "Tontonlah video olahraga tidak terbatas hanya dengan %currency% %price% + pajak per 3 hari - TAWARAN EKSKLUSIF: HARI PERTAMA GRATIS!Akses ratusan video olahraga dan berita setiap hari! Tetaplah di sini!",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "dcec8840-33a2-4bc2-847d-e0b463a6054d",
+        "key": "terms.block_3.text.3",
+        "translation": "Langganan 3 hari Anda akan otomatis diperbarui kecuali jika Anda berhenti berlangganan. Anda dapat mengakhiri langganan Anda kapan pun Anda ingin dari menu pribadi Anda dengan mengklik tautan Tinggalkan 100% sports. 100% sports berhak untuk mengakhiri langganan kapan pun.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "dd236547-b5f6-4b3c-9ad4-20b70b59aedd",
+        "key": "terms.block_5.text.4",
+        "translation": "Akses ke situs web 100% sports lewat sambungan seluler 3G atau 4G mungkin menambah biaya navigasi tambahan. Jumlah biaya ini akan tergantung pada taraf dan ketentuan yang Anda miliki kontraknya dengan operator seluler Anda, sehingga 100% sports tidak dapat dianggap bertanggung jawab untuk biaya tersebut.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "dd813d1b-0b52-4be8-a8f7-9efecc2c2459",
+        "key": "category.f49a555c-d10e-45c6-a6cb-de09cb59658f",
+        "translation": "Bola Basket",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "ddf318e8-39fa-40cc-9adc-107107d525e0",
+        "key": "wifi.form.select_country",
+        "translation": "Pilih negara",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "dfa1f54a-e7ce-437c-8ac9-070f3759efc1",
+        "key": "terms.block_5.text.2",
+        "translation": "Untuk pengguna pascabayar, biaya akan ditambahkan pada tagihan telepon seluler Anda. Jika Anda pengguna prabayar, Anda harus memastikan bahwa Anda memiliki cukup saldo pada kartu prabayar Anda untuk melengkapi langganan Anda dan\/atau membeli.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "e1d0b792-bea3-48d4-adeb-de2df811b075",
+        "key": "game.other_games",
+        "translation": "Permainan lainnya",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "e3e41b6b-7490-4b61-82b9-0728c8e07263",
+        "key": "internal-server-error",
+        "translation": "Maaf, layanan tidak tersedia sekarang. Kami melakukan yang terbaik untuk menyelesaikannya! Jika Anda ingin kembali ke olahraga 100%, klik <a href=\"%url%\"> di sini <\/a>.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "e41e921c-2fce-4333-b512-01120d28fa4c",
+        "key": "buttons.wifi.change_number",
+        "translation": "Ubah nomor",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "e44a743f-1823-4636-bd90-fc106c789ca9",
+        "key": "messages.action.unsubscribe.confirm",
+        "translation": "Anda yakin ingin berhenti berlangganan?",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "e54a4841-d4dc-4a48-b710-de03fd424c25",
+        "key": "whoops",
+        "translation": "Aduh. Kami tidak dapat melanjutkan permintaan Anda. Silakan coba lagi nanti. Jika Anda ingin kembali ke olahraga 100%, silakan tekan <a href=\"%url%\"> di sini <\/a>.",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "e59cddbd-4160-42d6-bc80-02680f0b1bf7",
+        "key": "subscription.status.not_enough_credit",
+        "translation": "Maaf, tetapi Anda tidak memiliki saldo yang cukup untuk berlangganan, harap isi ulang saldo Anda dan coba lagi",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "e6c1826e-b70d-40e2-83ae-a9e6d5740269",
+        "key": "category.74558a73-902b-46cc-ab90-48a104585d38",
+        "translation": "Olahraga Motor",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "e7cfb7fc-6748-4428-b7a4-0869ca88b5b6",
+        "key": "category.d25f4027-8e25-400b-8e44-cc4dc39fg52f",
+        "translation": "Olahraga musim dingin",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "e8e17eb0-c33c-4615-80d1-7c92d8e0bac1",
+        "key": "faq.q.4",
+        "translation": "Amankah melihat-lihat video dan mengunduh permainan dari 100% sports?",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "e8f79ad7-d61f-4680-b546-b7691854260e",
+        "key": "faq.a.5",
+        "translation": "Anda akan tetap memiliki akses ke 100% sports sampai periode berbayar terakhir berakhir. Sebagai contoh, dalam hal langganan harian yang telah diperbarui hari ini, Anda akan dapat melihat semua video sampai tanggal sekarang berakhir. Atau jika Anda berlangganan mingguan dan pembaruan terakhir Anda terjadi pada hari Senin, Anda akan memiliki akses sampai Minggu (7 hari).",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "e9367917-1e97-4eb1-9cf5-2d13761f0b37",
+        "key": "terms.block_4.text.1",
+        "translation": "Hubungi kami",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "e9c48061-034f-4b98-9f30-7d7290c2ff17",
+        "key": "terms.block_4.title.1",
+        "translation": "Bantuan dan dukungan",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "ed02f66c-8f7a-45d3-9795-aa46c9d20f69",
+        "key": "offer.landing",
+        "translation": "Tonton video tanpa batas olahraga dan tim favorit Anda! <br\/> Hanya %price% %currency% per 3 hari",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "ef0d647a-c025-4503-9f86-68f88a8b4dd8",
+        "key": "subscription.status.subscribed",
+        "translation": "Anda berlangganan 100% sports!Nikmati konten tanpa batas",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "f39e38c4-108a-4815-89ba-25cd4fe8e2fe",
+        "key": "faq.a.2",
+        "translation": "Untuk menonton dan menikmati video olahraga Anda, Anda harus mengakses halaman beranda kami <a href='%home_url%'>Beranda<\/a> dan mengklik video yang tersedia. Anda dapat menelusuri keseluruhan katalog kami pada menu utama (mencari berdasarkan judul atau kategori).",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "f434dda0-0282-4663-8056-0c82452c16e6",
+        "key": "category.related_videos",
+        "translation": "Video yang berhubungan",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "f4b19120-29c9-4c9b-b767-fca70b02881e",
+        "key": "faq.q.3",
+        "translation": "Saya sudah mengunduh satu game olahraga tetapi saya tidak dapat menginstalnya pada perangkat genggam saya, apa yang terjadi?",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "f71e932a-1b07-4465-b8a7-3cf82f1d343a",
+        "key": "menu.hamburger.account",
+        "translation": "Akun Saya",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "ffdecac4-721d-439d-bb86-3a51de5cb4f1",
+        "key": "terms.block_8.title.1",
+        "translation": "Tanggung gugat 100% sports",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
     }

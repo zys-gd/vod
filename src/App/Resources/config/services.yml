@@ -10,7 +10,6 @@ services:
         arguments:
             - '@App\Domain\Repository\UploadedVideoRepository'
             - '@doctrine.orm.entity_manager'
-            - '@logger'
 
     App\Domain\Service\VideoProcessing\CallbackVoter:
         arguments: ['@App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector']

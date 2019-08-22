@@ -125,19 +125,24 @@ class WifiIdentConfirmator
     }
 
     /**
-     * @param int $carrierId
+     * @param int    $carrierId
      * @param string $pinCode
      * @param string $mobileNumber
      * @param string $ip
      *
+     * @param bool   $isZeroCreditSubAvailable
+     *
      * @return JsonResponse
      *
-     * @throws AlreadyIdentifiedException
-     * @throws MissingIdentificationDataException
-     * @throws FailedIdentificationException
      * @throws \Exception
      */
-    public function confirm(int $carrierId, string $pinCode, string $mobileNumber, string $ip): JsonResponse
+    public function confirm(
+        int $carrierId,
+        string $pinCode,
+        string $mobileNumber,
+        string $ip,
+        bool $isZeroCreditSubAvailable
+    ): JsonResponse
     {
         $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
         $handler = $this->handlerProvider->get($carrier);
@@ -175,7 +180,7 @@ class WifiIdentConfirmator
             }
         } else {
             if ($handler instanceof HasCustomPinVerifyRules) {
-                $additionalParams = $handler->getAdditionalPinVerifyParams($pinRequestResult);
+                $additionalParams = $handler->getAdditionalPinVerifyParams($pinRequestResult, $isZeroCreditSubAvailable);
             } else {
                 $additionalParams = [];
             }
@@ -186,7 +191,8 @@ class WifiIdentConfirmator
                 $carrier->getOperatorId(),
                 $pinCode,
                 $pinRequestResult->getUserIdentifier(),
-                $additionalParams
+                $additionalParams,
+                $isZeroCreditSubAvailable
             );
 
             try {
