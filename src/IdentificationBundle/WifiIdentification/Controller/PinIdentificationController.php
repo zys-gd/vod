@@ -159,7 +159,10 @@ class PinIdentificationController extends AbstractController implements APIContr
         $billingCarrierId = $ispData->getCarrierId();
         $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
 
-        $form = $this->createForm(SendSMSPinCodeType::class, ['country' => $carrier->getCountryCode(), 'mobile_number' => $mobileNumber]);
+        $form = $this->createForm(SendSMSPinCodeType::class, [
+            'country' => $carrier->getCountryCode(),
+            'mobile_number' => $mobileNumber
+        ]);
 
         $form->submit($postData);
 
@@ -237,10 +240,10 @@ class PinIdentificationController extends AbstractController implements APIContr
         $phoneNumberExtension = $this->wifiPhoneOptionsProvider->getPhoneValidationOptions($billingCarrierId);
         $isZeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isZeroCreditAvailable($billingCarrierId, $campaign);
 
-        $form = $this->createForm(LPConfirmSMSPinCodeType::class,
-            ['pin_code' => $pinCode, 'pin_validation_pattern' => $phoneNumberExtension->getPinRegexPattern()],
-            ['csrf_protection' => false, 'allow_extra_fields'=> true]
-        );
+        $form = $this->createForm(LPConfirmSMSPinCodeType::class, [
+            'pin_code' => $pinCode,
+            'pin_validation_pattern' => $phoneNumberExtension->getPinRegexPattern()
+        ]);
 
         $form->submit($postData);
 

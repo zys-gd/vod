@@ -41,7 +41,9 @@ class LPConfirmSMSPinCodeType extends AbstractType
             'pin_validation_pattern' => null,
             'constraints' => [
                 new Callback([$this, 'validatePinCode'])
-            ]
+            ],
+            'csrf_protection' => false,
+            'allow_extra_fields'=> true
         ]);
     }
 
