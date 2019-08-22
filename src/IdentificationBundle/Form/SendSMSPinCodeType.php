@@ -4,7 +4,6 @@
 namespace IdentificationBundle\Form;
 
 
-use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use libphonenumber\PhoneNumberUtil;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -42,7 +41,9 @@ class SendSMSPinCodeType extends AbstractType
             'mobile_number' => null,
             'constraints' => [
                 new Callback([$this, 'validatePhoneNumberByCountryCode']),
-            ]
+            ],
+            'csrf_protection' => false,
+            'allow_extra_fields'=> true
         ]);
     }
 

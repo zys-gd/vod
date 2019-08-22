@@ -2,9 +2,6 @@
 
 namespace IdentificationBundle\WifiIdentification\Controller;
 
-use App\Domain\Entity\Carrier;
-use App\Domain\Entity\Country;
-use App\Domain\Repository\CountryRepository;
 use ExtrasBundle\API\Controller\APIControllerInterface;
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\BillingFramework\Process\Exception\PinVerifyProcessException;
@@ -64,10 +61,6 @@ class PinIdentificationController extends AbstractController implements APIContr
      */
     private $carrierRepository;
     /**
-     * @var CountryRepository
-     */
-    private $countryRepository;
-    /**
      * @var SubscriptionLimitNotifier
      */
     private $subscriptionLimitNotifier;
@@ -106,7 +99,6 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @param SubscriptionLimiter            $limiter
      * @param string                         $defaultRedirectUrl
      * @param CarrierRepositoryInterface     $carrierRepository
-     * @param CountryRepository              $countryRepository
      * @param SubscriptionLimitNotifier      $subscriptionLimitNotifier
      * @param BlacklistVoter                 $blacklistVoter
      * @param BlacklistAttemptRegistrator    $blacklistAttemptRegistrator
@@ -122,7 +114,6 @@ class PinIdentificationController extends AbstractController implements APIContr
         SubscriptionLimiter $limiter,
         string $defaultRedirectUrl,
         CarrierRepositoryInterface $carrierRepository,
-        CountryRepository $countryRepository,
         SubscriptionLimitNotifier $subscriptionLimitNotifier,
         BlacklistVoter $blacklistVoter,
         BlacklistAttemptRegistrator $blacklistAttemptRegistrator,
@@ -137,7 +128,6 @@ class PinIdentificationController extends AbstractController implements APIContr
         $this->limiter                        = $limiter;
         $this->defaultRedirectUrl             = $defaultRedirectUrl;
         $this->carrierRepository              = $carrierRepository;
-        $this->countryRepository              = $countryRepository;
         $this->subscriptionLimitNotifier      = $subscriptionLimitNotifier;
         $this->blacklistVoter                 = $blacklistVoter;
         $this->blacklistAttemptRegistrator    = $blacklistAttemptRegistrator;
@@ -167,13 +157,12 @@ class PinIdentificationController extends AbstractController implements APIContr
         $isResend = isset($postData['resend-pin']);
         $mobileNumber = $request->get('mobile_number', '');
         $billingCarrierId = $ispData->getCarrierId();
-        $countryCode = $this->extractCountryCode($billingCarrierId, $request->get('country', ''));
+        $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
 
-        $form = $this->createForm(SendSMSPinCodeType::class,
-            ['country' => $countryCode, 'mobile_number' => $mobileNumber],
-            ['csrf_protection' => false, 'allow_extra_fields'=> true]
-        );
+        $form = $this->createForm(SendSMSPinCodeType::class, ['country' => $carrier->getCountryCode(), 'mobile_number' => $mobileNumber]);
+
         $form->submit($postData);
+
         if (!$form->isValid()) {
             $errors = $form->getErrors(true);
             return $this->getSimpleJsonResponse($errors->current()->getMessage(), Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -274,22 +263,5 @@ class PinIdentificationController extends AbstractController implements APIContr
         } catch (\Exception $exception) {
             return $this->getSimpleJsonResponse($exception->getMessage(), 200, [], ['success' => false]);
         }
-    }
-
-    /**
-     * @param $billingCarrierId
-     * @param $countryCode
-     * @return string|null
-     */
-    protected function extractCountryCode($billingCarrierId, $countryCode)
-    {
-        if($countryCode) {
-            return $countryCode;
-        } elseif($billingCarrierId && !$countryCode) {
-            /** @var Carrier $carrier */
-            $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
-            return $carrier->getCountryCode();
-        }
-        return null;
     }
 }
