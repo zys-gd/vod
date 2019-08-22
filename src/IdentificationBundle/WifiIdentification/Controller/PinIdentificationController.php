@@ -100,17 +100,17 @@ class PinIdentificationController extends AbstractController implements APIContr
     /**
      * PinIdentificationController constructor
      *
-     * @param WifiIdentSMSSender          $identSMSSender
-     * @param WifiIdentConfirmator        $identConfirmator
-     * @param ErrorCodeResolver           $errorCodeResolver
-     * @param SubscriptionLimiter         $limiter
-     * @param string                      $defaultRedirectUrl
-     * @param CarrierRepositoryInterface  $carrierRepository
-     * @param CountryRepository           $countryRepository
-     * @param SubscriptionLimitNotifier   $subscriptionLimitNotifier
-     * @param BlacklistVoter              $blacklistVoter
-     * @param BlacklistAttemptRegistrator $blacklistAttemptRegistrator
-     * @param WifiPhoneOptionsProvider    $wifiPhoneOptionsProvider
+     * @param WifiIdentSMSSender             $identSMSSender
+     * @param WifiIdentConfirmator           $identConfirmator
+     * @param ErrorCodeResolver              $errorCodeResolver
+     * @param SubscriptionLimiter            $limiter
+     * @param string                         $defaultRedirectUrl
+     * @param CarrierRepositoryInterface     $carrierRepository
+     * @param CountryRepository              $countryRepository
+     * @param SubscriptionLimitNotifier      $subscriptionLimitNotifier
+     * @param BlacklistVoter                 $blacklistVoter
+     * @param BlacklistAttemptRegistrator    $blacklistAttemptRegistrator
+     * @param WifiPhoneOptionsProvider       $wifiPhoneOptionsProvider
      * @param LoggerInterface                $logger
      * @param CampaignExtractor              $campaignExtractor
      * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
@@ -131,17 +131,17 @@ class PinIdentificationController extends AbstractController implements APIContr
         CampaignExtractor $campaignExtractor,
         ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
     ) {
-        $this->identSMSSender              = $identSMSSender;
-        $this->identConfirmator            = $identConfirmator;
-        $this->errorCodeResolver           = $errorCodeResolver;
-        $this->limiter                     = $limiter;
-        $this->defaultRedirectUrl          = $defaultRedirectUrl;
-        $this->carrierRepository           = $carrierRepository;
-        $this->countryRepository           = $countryRepository;
-        $this->subscriptionLimitNotifier   = $subscriptionLimitNotifier;
-        $this->blacklistVoter              = $blacklistVoter;
-        $this->blacklistAttemptRegistrator = $blacklistAttemptRegistrator;
-        $this->wifiPhoneOptionsProvider    = $wifiPhoneOptionsProvider;
+        $this->identSMSSender                 = $identSMSSender;
+        $this->identConfirmator               = $identConfirmator;
+        $this->errorCodeResolver              = $errorCodeResolver;
+        $this->limiter                        = $limiter;
+        $this->defaultRedirectUrl             = $defaultRedirectUrl;
+        $this->carrierRepository              = $carrierRepository;
+        $this->countryRepository              = $countryRepository;
+        $this->subscriptionLimitNotifier      = $subscriptionLimitNotifier;
+        $this->blacklistVoter                 = $blacklistVoter;
+        $this->blacklistAttemptRegistrator    = $blacklistAttemptRegistrator;
+        $this->wifiPhoneOptionsProvider       = $wifiPhoneOptionsProvider;
         $this->logger                         = $logger;
         $this->campaignExtractor              = $campaignExtractor;
         $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
@@ -203,6 +203,7 @@ class PinIdentificationController extends AbstractController implements APIContr
         }
 
         $this->limiter->reserveSlotForSubscription($request->getSession());
+
         $campaign = $this->campaignExtractor->getCampaignFromSession($request->getSession());
         $isZeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isZeroCreditAvailable($billingCarrierId, $campaign);
         try {
