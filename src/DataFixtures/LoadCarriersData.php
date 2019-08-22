@@ -55,7 +55,7 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $flushdate                               = $row['flushDate'];
 
 
-            $defaultLanguageId = $row['default_language']['uuid'];
+            $defaultLanguageId = $row['defaultLanguage']['uuid'];
 
             $carrier = new Carrier($uuid);
 
