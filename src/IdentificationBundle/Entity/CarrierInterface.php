@@ -82,11 +82,6 @@ interface CarrierInterface
     public function getIsCampaignsOnPause(): bool;
 
     /**
-     * @return boolean
-     */
-    public function getResubAllowed(): bool;
-
-    /**
      * @return integer
      */
     public function getSubscribeAttempts(): int;

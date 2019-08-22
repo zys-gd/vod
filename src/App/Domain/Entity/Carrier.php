@@ -78,10 +78,6 @@ class Carrier implements CarrierInterface, HasUuid
      */
     private $operatorId = null;
 
-    /**
-     * @var boolean
-     */
-    private $resubAllowed = false;
 
     /**
      * @var boolean
@@ -397,30 +393,6 @@ class Carrier implements CarrierInterface, HasUuid
     public function isPublished()
     {
         return $this->published;
-    }
-
-    /**
-     * Set resubAllowed
-     *
-     * @param boolean $resubAllowed
-     *
-     * @return Carrier
-     */
-    public function setResubAllowed($resubAllowed)
-    {
-        $this->resubAllowed = $resubAllowed;
-
-        return $this;
-    }
-
-    /**
-     * Get resubAllowed
-     *
-     * @return boolean
-     */
-    public function getResubAllowed(): bool
-    {
-        return $this->resubAllowed;
     }
 
     /**

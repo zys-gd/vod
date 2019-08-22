@@ -49,10 +49,6 @@ App\Domain\Entity\Carrier:
             type: integer
             options:
                 default: 7
-        resubAllowed:
-            type: boolean
-            options:
-                default: false
         isCampaignsOnPause:
             type: boolean
             options:
