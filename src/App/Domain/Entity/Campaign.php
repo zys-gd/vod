@@ -648,7 +648,7 @@ class Campaign implements CampaignInterface, HasUuid
     /**
      * @return \DateTime
      */
-    public function getDateCreated(): \DateTime
+    public function getDateCreated(): ?\DateTime
     {
         return $this->dateCreated;
     }
@@ -656,7 +656,7 @@ class Campaign implements CampaignInterface, HasUuid
     /**
      * @param \DateTime $dateCreated
      */
-    public function setDateCreated(\DateTime $dateCreated): void
+    public function setDateCreated(\DateTime $dateCreated = null): void
     {
         $this->dateCreated = $dateCreated;
     }
