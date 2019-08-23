@@ -52,10 +52,6 @@ class SubscribeActionTest extends AbstractFunctionalTest
      */
     private $notificationService;
 
-    /**
-     * @var SubscriptionStatisticSender|MockInterface
-     */
-    private $piwikStatisticSender;
 
     /** @var  RequestSender|MockInterface */
     private $requestSender;
@@ -195,7 +191,6 @@ class SubscribeActionTest extends AbstractFunctionalTest
         $container->set('SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider', $this->subscriptionPackDataProvider);
         $container->set('SubscriptionBundle\BillingFramework\Notification\API\RequestSender', $this->notificationService);
         $container->set('SubscriptionBundle\BillingFramework\Process\API\RequestSender', $this->requestSender);
-        $container->set('talentica.piwic_statistic_sender', $this->piwikStatisticSender);
         $container->set('subscription.http.client', $this->httpClient);
         $container->set('SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter', $this->subscriptionLimiter);
         $container->set('SubscriptionBundle\Subscription\Subscribe\Voter\BatchSubscriptionVoter', $this->voter);
@@ -220,15 +215,7 @@ class SubscribeActionTest extends AbstractFunctionalTest
         $this->subscriptionPackDataProvider = \Mockery::spy(SubscriptionPackDataProvider::class);
         $this->notificationService          = \Mockery::spy(NotificationService::class);
         $this->subscriptionLimiter          = Mockery::spy(SubscriptionLimiter::class);
-        $this->piwikStatisticSender         = Mockery::spy(SubscriptionStatisticSender::class, [
-            Mockery::spy(LoggerInterface::class),
-            Mockery::spy(PiwikTracker::class),
-            Mockery::spy(PiwikDataMapper::class),
-            Mockery::spy(PiwikSubscriptionDataMapper::class),
-            Mockery::spy(MaxMindIpInfo::class),
-            Mockery::spy(PiwikUnsubscriptionDataMapper::class),
-            Mockery::spy(ProcessResultVerifier::class),
-        ])->makePartial();
+   
     }
 
     protected static function getKernelClass()

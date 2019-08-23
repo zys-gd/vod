@@ -68,15 +68,15 @@ class SMSTextProvider
     private function extractFromSubscriptionPack($notificationType, SubscriptionPack $subscriptionPack): string
     {
         if ($notificationType === 'subscribe') {
-            return $subscriptionPack->getWelcomeSMSText();
+            return (string)$subscriptionPack->getWelcomeSMSText();
         }
 
         if ($notificationType === 'unsubscribe') {
-            return $subscriptionPack->getUnsubscribeSMSText();
+            return (string)$subscriptionPack->getUnsubscribeSMSText();
         }
 
         if ($notificationType === 'renewing') {
-            return $subscriptionPack->getRenewalSMSText();
+            return (string)$subscriptionPack->getRenewalSMSText();
         }
 
         return '';

@@ -10,6 +10,7 @@ services:
       - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeParametersProvider'
       - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeEventChecker'
       - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeEventTracker'
+      - '@logger'
 
   SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider:
     arguments: ['@SubscriptionBundle\Subscription\Unsubscribe\Handler\DefaultHandler']

@@ -2,14 +2,18 @@
 
 use ExtrasBundle\Utils\UuidGenerator;
 use IdentificationBundle\Entity\User;
+use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateSender;
+use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
+use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitCompleter;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use SubscriptionBundle\Subscription\Common\FakeResponseProvider;
+use SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker;
 use SubscriptionBundle\Subscription\Common\PromotionalResponseChecker;
 use SubscriptionBundle\Subscription\Subscribe\Common\SubscribePerformer;
 use SubscriptionBundle\Subscription\Subscribe\Common\SubscribePromotionalPerformer;
@@ -32,10 +36,6 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
 
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
-    /**
-     * @var SubscriptionStatisticSender|\Mockery\MockInterface
-     */
-    private $piwikSender;
 
     /**
      * @var \SubscriptionBundle\Subscription\Subscribe\Subscriber
@@ -111,9 +111,7 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
     protected function setUp()
     {
 
-        $this->piwikSender                   = Mockery::spy(SubscriptionStatisticSender::class);
         $this->subscriptionCreator           = Mockery::spy(SubscriptionFactory::class);
-        $this->affiliateService              = Mockery::spy(AffiliateSender::class);
         $this->subscribeProcess              = Mockery::spy(SubscribeProcess::class);
         $this->subscribePromotionalPerformer = Mockery::spy(SubscribePromotionalPerformer::class);
         $this->subscribePerformer            = Mockery::spy(SubscribePerformer::class);
@@ -125,16 +123,13 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
             Mockery::spy(SessionInterface::class),
             $this->subscriptionCreator,
             Mockery::spy(PromotionalResponseChecker::class),
-            Mockery::spy(FakeResponseProvider::class),
-            Mockery::spy(Notifier::class),
-            $this->subscribeProcess,
             Mockery::spy(OnSubscribeUpdater::class),
-            Mockery::spy(SubscribeParametersProvider::class),
-            Mockery::spy(\SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitCompleter::class),
-            Mockery::spy(\SubscriptionBundle\Subscription\Common\SubscriptionSerializer::class),
+            Mockery::spy(SubscriptionLimitCompleter::class),
             $this->subscribePerformer,
             $this->subscribePromotionalPerformer,
-            Mockery::spy(\Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector::class)
+            Mockery::spy(ApiConnector::class),
+            Mockery::spy(ProcessResultSuccessChecker::class),
+            Mockery::spy(CampaignExtractor::class)
         );
 
     }

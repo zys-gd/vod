@@ -9,6 +9,7 @@
 namespace SubscriptionBundle\Subscription\Unsubscribe;
 
 
+use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Notification\API\Exception\NotificationSendFailedException;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\Exception\UnsubscribingProcessException;
@@ -54,7 +55,10 @@ class Unsubscriber
      * @var UnsubscribeEventTracker
      */
     private $unsubscribeEventTracker;
-
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
 
     /**
@@ -76,18 +80,21 @@ class Unsubscriber
         OnUnsubscribeUpdater $onUnsubscribeUpdater,
         UnsubscribeParametersProvider $parametersProvider,
         UnsubscribeEventChecker $unsubscribeEventChecker,
-        UnsubscribeEventTracker $unsubscribeEventTracker
+        UnsubscribeEventTracker $unsubscribeEventTracker,
+        LoggerInterface $logger
     )
     {
-        $this->entitySaveHelper            = $entitySaveHelper;
-        $this->fakeResponseProvider        = $fakeResponseProvider;
-        $this->notifier                    = $notifier;
-        $this->unsubscribeProcess          = $unsubscribeProcess;
-        $this->onUnsubscribeUpdater        = $onUnsubscribeUpdater;
-        $this->parametersProvider          = $parametersProvider;
-        $this->unsubscribeEventChecker     = $unsubscribeEventChecker;
-        $this->unsubscribeEventTracker     = $unsubscribeEventTracker;
+        $this->entitySaveHelper        = $entitySaveHelper;
+        $this->fakeResponseProvider    = $fakeResponseProvider;
+        $this->notifier                = $notifier;
+        $this->unsubscribeProcess      = $unsubscribeProcess;
+        $this->onUnsubscribeUpdater    = $onUnsubscribeUpdater;
+        $this->parametersProvider      = $parametersProvider;
+        $this->unsubscribeEventChecker = $unsubscribeEventChecker;
+        $this->unsubscribeEventTracker = $unsubscribeEventTracker;
+        $this->logger                  = $logger;
     }
+
     public function unsubscribe(
         Subscription $subscription,
         SubscriptionPack $subscriptionPack,
@@ -140,7 +147,7 @@ class Unsubscriber
             } catch (UnsubscribingProcessException $exception) {
                 $this->logger->debug('Unsubscribe error', [
                     'message' => $exception->getMessage(),
-                    'code' => $exception->getCode()
+                    'code'    => $exception->getCode()
                 ]);
                 $subscription->setStatus(Subscription::IS_ERROR);
                 $subscription->setError('unsubscribing_process_exception');
