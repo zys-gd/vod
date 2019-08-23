@@ -263,7 +263,7 @@ SubscriptionBundle\Entity\SubscriptionPack:
             targetEntity: SubscriptionBundle\Entity\Subscription
             cascade: {  }
             fetch: LAZY
-            mappedBy: plan
+            mappedBy: subscriptionPack
             inversedBy: null
             orphanRemoval: false
             orderBy: null

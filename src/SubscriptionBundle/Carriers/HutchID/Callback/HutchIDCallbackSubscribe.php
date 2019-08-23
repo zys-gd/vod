@@ -50,7 +50,7 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
      *
      * @param CommonFlowHandler          $commonFlowHandler
      * @param UserRepository             $userRepository
-     * @param SubscriptionCreator        $subscriptionCreator
+     * @param SubscriptionFactory        $subscriptionCreator
      * @param SubscriptionRepository     $subscriptionRepository
      * @param SubscriptionPackRepository $subscriptionPackRepository
      * @param EntitySaveHelper           $entitySaveHelper
