@@ -5,6 +5,7 @@ namespace SubscriptionBundle\Carriers\HutchID\Callback;
 
 
 use IdentificationBundle\BillingFramework\ID;
+use IdentificationBundle\Entity\User;
 use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
@@ -13,6 +14,7 @@ use SubscriptionBundle\Repository\SubscriptionRepository;
 use SubscriptionBundle\Subscription\Callback\Common\CommonFlowHandler;
 use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerInterface;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCustomFlow;
+use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Subscription\Common\SubscriptionFactory;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -38,19 +40,36 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
      * @var SubscriptionPackRepository
      */
     private $subscriptionPackRepository;
+    /**
+     * @var EntitySaveHelper
+     */
+    private $entitySaveHelper;
 
+    /**
+     * HutchIDCallbackSubscribe constructor.
+     *
+     * @param CommonFlowHandler          $commonFlowHandler
+     * @param UserRepository             $userRepository
+     * @param SubscriptionCreator        $subscriptionCreator
+     * @param SubscriptionRepository     $subscriptionRepository
+     * @param SubscriptionPackRepository $subscriptionPackRepository
+     * @param EntitySaveHelper           $entitySaveHelper
+     */
     public function __construct(
         CommonFlowHandler $commonFlowHandler,
         UserRepository $userRepository,
         SubscriptionFactory $subscriptionCreator,
         SubscriptionRepository $subscriptionRepository,
-        SubscriptionPackRepository $subscriptionPackRepository)
+        SubscriptionPackRepository $subscriptionPackRepository,
+        EntitySaveHelper $entitySaveHelper
+    )
     {
         $this->commonFlowHandler          = $commonFlowHandler;
         $this->userRepository             = $userRepository;
         $this->subscriptionCreator        = $subscriptionCreator;
         $this->subscriptionRepository     = $subscriptionRepository;
         $this->subscriptionPackRepository = $subscriptionPackRepository;
+        $this->entitySaveHelper           = $entitySaveHelper;
     }
 
     public function canHandle(Request $request, int $carrierId): bool
@@ -75,7 +94,10 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
             $carrier = $user->getCarrier();
             /** @var SubscriptionPack $subscriptionPack */
             $subscriptionPack = $this->subscriptionPackRepository->findOneBy(['carrier' => $carrier, 'status' => 1]);
-            $this->subscriptionCreator->createAndSave($user, $subscriptionPack);
+
+            $subscription = $this->subscriptionCreator->create($user, $subscriptionPack);
+            $subscription->setCurrentStage(Subscription::ACTION_SUBSCRIBE);
+            $this->entitySaveHelper->persistAndSave($subscription);
         }
 
         $this->commonFlowHandler->process($request, ID::HUTCH_INDONESIA, $type);

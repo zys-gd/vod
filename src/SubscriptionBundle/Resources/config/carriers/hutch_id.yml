@@ -16,6 +16,7 @@ services:
             - '@SubscriptionBundle\Subscription\Common\SubscriptionFactory'
             - '@SubscriptionBundle\Repository\SubscriptionRepository'
             - '@SubscriptionBundle\Repository\SubscriptionPackRepository'
+            - '@SubscriptionBundle\Service\EntitySaveHelper'
 
     SubscriptionBundle\Carriers\HutchID\Notification\HutchIDNotificationHandler:
         arguments:
