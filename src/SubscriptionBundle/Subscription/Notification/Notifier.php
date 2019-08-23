@@ -86,54 +86,49 @@ class Notifier
         CarrierInterface $carrier
     )
     {
-        try {
-            $handler = $this->notificationHandlerProvider->get($processType, $carrier);
+        $handler = $this->notificationHandlerProvider->get($processType, $carrier);
 
-            if (!$handler->isNotificationShouldBeSent()) {
-                return;
-            }
-
-            $User = $subscription->getUser();
-
-            if ($handler->isProcessIdUsedInNotification()) {
-                $processId = $this->processIdExtractor->extractProcessId($User);
-            } else {
-                $processId = null;
-            }
-
-            $variables = $this->defaultSMSVariablesProvider->getDefaultSMSVariables(
-                $subscriptionPack,
-                $subscription,
-                $User
-            );
-
-            try {
-                $body = $this->SMSTextProvider->getSMSText(
-                    $processType,
-                    $carrier,
-                    $subscriptionPack,
-                    $handler->getSmsLanguage()
-                );
-            } catch (MissingSMSTextException $exception) {
-                $this->logger->error($exception->getMessage(), ['pack' => $subscriptionPack]);
-                throw  $exception;
-            }
-
-
-            $notification = $this->messageCompiler->compileNotification(
-                $processType,
-                $User,
-                $body,
-                $processId,
-                $variables
-            );
-
-            $this->sender->sendNotification($notification, $carrier->getBillingCarrierId());
-
-
-        } catch (MissingSMSTextException $exception) {
-            $this->logger->error('Missing sms text');
+        if (!$handler->isNotificationShouldBeSent()) {
+            return;
         }
+
+        $User = $subscription->getUser();
+
+        if ($handler->isProcessIdUsedInNotification()) {
+            $processId = $this->processIdExtractor->extractProcessId($User);
+        } else {
+            $processId = null;
+        }
+
+        $variables = $this->defaultSMSVariablesProvider->getDefaultSMSVariables(
+            $subscriptionPack,
+            $subscription,
+            $User
+        );
+
+        try {
+            $body = $this->SMSTextProvider->getSMSText(
+                $processType,
+                $carrier,
+                $subscriptionPack,
+                $handler->getSmsLanguage()
+            );
+        } catch (MissingSMSTextException $exception) {
+            $this->logger->error($exception->getMessage(), ['pack' => $subscriptionPack]);
+            throw  $exception;
+        }
+
+
+        $notification = $this->messageCompiler->compileNotification(
+            $processType,
+            $User,
+            $body,
+            $processId,
+            $variables
+        );
+
+        $this->sender->sendNotification($notification, $carrier->getBillingCarrierId());
+
 
     }
 
