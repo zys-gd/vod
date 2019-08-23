@@ -11,6 +11,7 @@ use ExtrasBundle\Utils\UuidGenerator;
 use IdentificationBundle\Entity\User;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\UnsubscribeProcess;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
@@ -68,9 +69,11 @@ class UnsubscriberTest extends TestCase
         ]);
 
         $this->unsubscriber->unsubscribe($subscription, $subscriptionPack);
+        $this->unsubscriber->trackEventsForUnsubscribe($subscription, Mockery::spy(ProcessResult::class));
+
 
         $this->unsubscribeProcess->shouldHaveReceived('doUnsubscribe')->once();
-        $this->unsubscribeEventTracker->shouldNotHaveReceived('trackUnsubscribe');
+        $this->unsubscribeEventTracker->shouldHaveReceived('trackUnsubscribe')->once();
 
     }
 
@@ -93,6 +96,7 @@ class UnsubscriberTest extends TestCase
         ]);
 
         $this->unsubscriber->unsubscribe($subscription, $subscriptionPack);
+        $this->unsubscriber->trackEventsForUnsubscribe($subscription, Mockery::spy(ProcessResult::class));
 
         $this->unsubscribeProcess->shouldHaveReceived('doUnsubscribe')->once();
         $this->unsubscribeEventTracker->shouldNotHaveReceived('trackUnsubscribe');
@@ -113,8 +117,9 @@ class UnsubscriberTest extends TestCase
             $this->unsubscribeProcess,
             Mockery::spy(OnUnsubscribeUpdater::class),
             Mockery::spy(UnsubscribeParametersProvider::class),
-            Mockery::spy(UnsubscribeEventChecker::class),
-            $this->unsubscribeEventTracker
+            $this->unsubscribeEventChecker,
+            $this->unsubscribeEventTracker,
+            Mockery::spy(LoggerInterface::class)
         );
 
     }
