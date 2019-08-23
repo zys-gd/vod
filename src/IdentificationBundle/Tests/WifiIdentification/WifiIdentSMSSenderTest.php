@@ -88,7 +88,7 @@ class WifiIdentSMSSenderTest extends TestCase
 
         $this->expectException(\IdentificationBundle\Identification\Exception\AlreadyIdentifiedException::class);
 
-        $this->wifiIdentSMSSender->sendSMS(0, '1234567890');
+        $this->wifiIdentSMSSender->sendSMS(0, '1234567890', false);
     }
 
     public function testPinRequestIsSend()
@@ -117,7 +117,7 @@ class WifiIdentSMSSenderTest extends TestCase
             'doPinRequest' => Mockery::spy(\IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult::class)
         ]);
 
-        $this->wifiIdentSMSSender->sendSMS(0, '1234567890');
+        $this->wifiIdentSMSSender->sendSMS(0, '1234567890', false);
 
         $this->assertNotEmpty($this->wifiIdentificationDataStorage->getPinRequestResult());
 

@@ -46,6 +46,9 @@ class SMSTextProvider
                 $texts = $handler->getTexts();
                 break;
             }
+        }
+
+        if (!$texts) {
             throw new MissingSMSTextException(
                 sprintf(
                     'SMS Texts for carrier `%s` and language `%s` are not found',
