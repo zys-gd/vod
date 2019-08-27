@@ -138,7 +138,10 @@ class SubscriptionPackAdmin extends AbstractAdmin
     {
         $object->setBuyStrategyId($object->getBuyStrategyId()->id);
         $object->setRenewStrategyId($object->getRenewStrategyId()->id);
+        $object->setTierId($object->getTierId()->id);
         $this->markSubscriptionPacksWithSameCarrierAsInactive($object);
+
+        parent::preUpdate($object);
     }
 
     /**

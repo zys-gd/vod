@@ -34,6 +34,8 @@ services:
             - '@SubscriptionBundle\Subscription\Common\RouteProvider'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\AffiliateNotifier'
             - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
+            - '@SubscriptionBundle\Service\Action\Subscribe\AfterSubscriptionProcessTracker'
+
 
     SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEligibilityChecker: ~
 
@@ -164,3 +166,7 @@ services:
       arguments: ['@SubscriptionBundle\Affiliate\Service\AffiliateSender', '@SubscriptionBundle\Affiliate\Service\UserInfoMapper']
 
     SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventChecker: ~
+
+    SubscriptionBundle\Service\Action\Subscribe\AfterSubscriptionProcessTracker:
+      arguments:
+        - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEventTracker'

@@ -53,11 +53,6 @@ class ConsentFlowHandler
     private $subscriber;
 
     /**
-     * @var SubscriptionEventTracker
-     */
-    private $subscriptionEventTracker;
-
-    /**
      * @var RouteProvider
      */
     private $routeProvider;
@@ -95,6 +90,10 @@ class ConsentFlowHandler
      * @var CampaignExtractor
      */
     private $campaignExtractor;
+    /**
+     * @var AfterSubscriptionProcessTracker
+     */
+    private $afterSubscriptionProcessTracker;
 
     /**
      * ConsentFlowHandler constructor
@@ -117,14 +116,15 @@ class ConsentFlowHandler
         SubscriptionExtractor $subscriptionExtractor,
         SubscriptionPackProvider $subscriptionPackProvider,
         Subscriber $subscriber,
-        SubscriptionEventTracker $subscriptionEventTracker,
         EntitySaveHelper $entitySaveHelper,
         RouteProvider $routeProvider,
         SubscriptionEligibilityChecker $subscriptionEligibilityChecker,
         UrlParamAppender $urlParamAppender,
         RouterInterface $router,
         CommonResponseCreator $commonResponseCreator,
-        AffiliateNotifier $affiliateNotifier
+        AffiliateNotifier $affiliateNotifier,
+        AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
+
 
     )
     {
@@ -148,7 +148,6 @@ class ConsentFlowHandler
      * @param HasConsentPageFlow $subscriber
      *
      * @return Response
-     *
      * @throws \SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound
      * @throws NonUniqueResultException
      */
@@ -172,7 +171,8 @@ class ConsentFlowHandler
             ]);
 
             return $this->handleResubscribe($request, $user, $subscriber, $subscription);
-        } else {
+        }
+        else {
             $this->logger->debug('`Subscribe` is not possible. User already have an active subscription.');
 
             if (
@@ -197,38 +197,19 @@ class ConsentFlowHandler
      * @param HasConsentPageFlow $subscriber
      *
      * @return Response
-     *
      * @throws \SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound
      * @throws NonUniqueResultException
      */
     public function handleSubscribe(Request $request, User $user, HasConsentPageFlow $subscriber): Response
     {
-        $additionalData = $subscriber->getAdditionalSubscribeParams($request, $user);
+        $additionalData   = $subscriber->getAdditionalSubscribeParams($request, $user);
         $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
-        $campaign = $this->campaignExtractor->getCampaignFromSession($request->getSession());
+        $campaign         = $this->campaignExtractor->getCampaignFromSession($request->getSession());
 
         /** @var ProcessResult $result */
         list($newSubscription, $result) = $this->subscriber->subscribe($user, $subscriptionPack, $additionalData);
 
-        if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
-            $isAffTracked = $subscriber->isAffiliateTrackedForSub($result, $campaign);
-        } else {
-            $isAffTracked = ($result->isSuccessful() && $result->isFinal());
-        }
-
-        if ($isAffTracked) {
-            $this->affiliateNotifier->notifyAffiliateAboutSubscription($newSubscription, $request->getSession());
-        }
-
-        if ($subscriber instanceof HasCustomPiwikTrackingRules) {
-            $isPiwikTracked = $subscriber->isPiwikTrackedForSub($result);
-        } else {
-            $isPiwikTracked = ($result->isFailedOrSuccessful() && $result->isFinal());
-        }
-
-        if ($isPiwikTracked) {
-            $this->subscriptionEventTracker->trackSubscribe($newSubscription, $result);
-        }
+        $this->afterSubscriptionProcessTracker->track($result, $newSubscription, $subscriber, $campaign);
 
         $subscriber->afterProcess($newSubscription, $result);
         $this->entitySaveHelper->saveAll();
@@ -243,7 +224,6 @@ class ConsentFlowHandler
      * @param Subscription       $subscription
      *
      * @return Response
-     *
      * @throws \SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound
      * @throws NonUniqueResultException
      */
@@ -266,7 +246,8 @@ class ConsentFlowHandler
 
             $additionalData = $subscriber->getAdditionalSubscribeParams($request, $user);
             $result         = $this->subscriber->resubscribe($subscription, $subscriptionPack, $additionalData);
-        } else {
+        }
+        else {
             $this->logger->debug('Resubscription is not allowed.', [
                 'packId'      => $subscriptionPack->getUuid(),
                 'carrierName' => $subscriptionPack->getName()
@@ -274,34 +255,13 @@ class ConsentFlowHandler
 
             if ($request->get('is_ajax_request', null)) {
                 return $this->getSimpleJsonResponse('', 200, [], ['resub_not_allowed' => true]);
-            } else {
+            }
+            else {
                 return new RedirectResponse($this->router->generate('resub_not_allowed'));
             }
         }
 
-        if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
-            $isAffTracked = $subscriber->isAffiliateTrackedForResub($result);
-        } else {
-            $isAffTracked = ($result->isSuccessful() && $result->isFinal());
-            $this->logger->debug('Is need to track affiliate log?', [
-                'result'       => $result,
-                'isAffTracked' => $isAffTracked
-            ]);
-        }
-
-        if ($isAffTracked) {
-            $this->affiliateNotifier->notifyAffiliateAboutSubscription($subscription, $request->getSession());
-        }
-
-        if ($subscriber instanceof HasCustomPiwikTrackingRules) {
-            $isPiwikTracked = $subscriber->isPiwikTrackedForResub($result);
-        } else {
-            $isPiwikTracked = ($result->isFailedOrSuccessful() && $result->isFinal());;
-        }
-
-        if ($isPiwikTracked) {
-            $this->subscriptionEventTracker->trackResubscribe($subscription, $result);
-        }
+        $this->afterSubscriptionProcessTracker->track($result, $subscription, $subscriber);
 
         $subscriber->afterProcess($subscription, $result);
         $this->entitySaveHelper->saveAll();

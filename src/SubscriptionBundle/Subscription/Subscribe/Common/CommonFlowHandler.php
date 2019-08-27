@@ -89,6 +89,10 @@ class CommonFlowHandler
      * @var CampaignExtractor
      */
     private $campaignExtractor;
+    /**
+     * @var AfterSubscriptionProcessTracker
+     */
+    private $afterSubscriptionProcessTracker;
 
 
     /**
@@ -123,7 +127,9 @@ class CommonFlowHandler
         ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking,
         RouteProvider $routeProvider,
         AffiliateNotifier $affiliateNotifier,
-        CampaignExtractor $campaignExtractor
+        CampaignExtractor $campaignExtractor,
+        AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
+
 
     )
     {
@@ -142,6 +148,7 @@ class CommonFlowHandler
         $this->affiliateNotifier              = $affiliateNotifier;
         $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
         $this->campaignExtractor              = $campaignExtractor;
+        $this->afterSubscriptionProcessTracker = $afterSubscriptionProcessTracker;
     }
 
 
@@ -306,30 +313,7 @@ class CommonFlowHandler
             }
         }
 
-
-        if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
-            $isAffTracked = $subscriber->isAffiliateTrackedForResub($result);
-        } else {
-            $isAffTracked = ($result->isSuccessful() && $result->isFinal());
-            $this->logger->debug('Is need to track affiliate log?', [
-                'result'       => $result,
-                'isAffTracked' => $isAffTracked
-            ]);
-        }
-        if ($isAffTracked) {
-            $this->affiliateNotifier->notifyAffiliateAboutSubscription($subscription, $request->getSession());
-        }
-
-
-        if ($subscriber instanceof HasCustomPiwikTrackingRules) {
-            $isPiwikTracked = $subscriber->isPiwikTrackedForResub($result);
-        } else {
-            $isPiwikTracked = ($result->isFailedOrSuccessful() && $result->isFinal());;
-        }
-        if ($isPiwikTracked) {
-            $this->subscriptionEventTracker->trackResubscribe($subscription, $result);
-        }
-
+        $this->afterSubscriptionProcessTracker->track($result, $subscription, $subscriber);
 
         $subscriber->afterProcess($subscription, $result);
         $this->entitySaveHelper->saveAll();

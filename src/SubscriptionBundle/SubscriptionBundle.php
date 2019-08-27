@@ -29,5 +29,6 @@ class SubscriptionBundle extends Bundle
 
         $container->addCompilerPass(new TwigAdditionalPathsExtension());
         $container->addCompilerPass(new SMSTextHandlerPass());
+        $container->addCompilerPass(new SubscribeBackHandlerPass());
     }
 }

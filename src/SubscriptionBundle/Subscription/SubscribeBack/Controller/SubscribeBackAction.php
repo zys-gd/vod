@@ -10,6 +10,10 @@ namespace SubscriptionBundle\Subscription\SubscribeBack\Controller;
 
 
 use SubscriptionBundle\Subscription\SubscribeBack\SubscribeBackHandlerProvider;
+use IdentificationBundle\Identification\DTO\ISPData;
+use IdentificationBundle\Repository\CarrierRepositoryInterface;
+use SubscriptionBundle\Service\Action\SubscribeBack\Common\CommonFlowHandler;
+use SubscriptionBundle\Service\Action\SubscribeBack\Handler\SubscribeBackHandlerProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -21,31 +25,47 @@ class SubscribeBackAction
      */
     private $subscribeBackHandlerProvider;
     /**
-     * @var RouterInterface
+     * @var CarrierRepositoryInterface
      */
-    private $router;
-
+    private $carrierRepository;
+    /**
+     * @var CommonFlowHandler
+     */
+    private $commonFlowHandler;
 
     /**
      * SubscribeBackAction constructor.
+     *
      * @param SubscribeBackHandlerProvider $subscribeBackHandlerProvider
+     * @param CarrierRepositoryInterface   $carrierRepository
+     * @param CommonFlowHandler            $commonFlowHandler
      */
-    public function __construct(SubscribeBackHandlerProvider $subscribeBackHandlerProvider, RouterInterface $router)
+    public function __construct(
+        SubscribeBackHandlerProvider $subscribeBackHandlerProvider,
+        CarrierRepositoryInterface $carrierRepository,
+        CommonFlowHandler $commonFlowHandler
+    )
     {
         $this->subscribeBackHandlerProvider = $subscribeBackHandlerProvider;
-        $this->router                       = $router;
+        $this->carrierRepository            = $carrierRepository;
+        $this->commonFlowHandler            = $commonFlowHandler;
     }
 
     /**
-     * Unusual action, when we are receiving user already subscribed on provider side.
      * @param Request $request
-     * @return Response
+     * @param ISPData $ispData
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response|void
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, ISPData $ispData)
     {
-        $handler = $this->subscribeBackHandlerProvider->getHandler($request);
+        $carrierId = $ispData->getCarrierId();
+        $carrier   = $this->carrierRepository->findOneByBillingId($carrierId);
+        $handler   = $this->subscribeBackHandlerProvider->getHandler($carrier);
 
-        return $handler->handleRequest($request);
+        return $this->commonFlowHandler->process($request, $carrier, $handler);
     }
 
 
