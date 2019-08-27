@@ -95,19 +95,19 @@ class SubscribeAction extends AbstractController
     /**
      * SubscribeAction constructor.
      *
-     * @param \IdentificationBundle\User\Service\UserExtractor $userExtractor
-     * @param CommonFlowHandler                                $commonFlowHandler
-     * @param SubscriptionHandlerProvider                      $handlerProvider
-     * @param BlacklistVoter                                   $blacklistVoter
-     * @param IdentificationHandlerProvider                    $identificationHandlerProvider
-     * @param CarrierRepositoryInterface                       $carrierRepository
-     * @param PostPaidHandler                                            $postPaidHandler
-     * @param CampaignConfirmationHandlerProvider                        $campaignConfirmationHandlerProvider
-     * @param SubscriptionLimiter                                        $subscriptionLimiter
-     * @param BlacklistAttemptRegistrator                                $blacklistDeducter
-     * @param BatchSubscriptionVoter                                     $subscriptionVoter
-     * @param RouteProvider                                              $routeProvider
-     * @param \SubscriptionBundle\Subscription\Common\RouteProvider      $subscriptionRouteProvider
+     * @param \IdentificationBundle\User\Service\UserExtractor      $userExtractor
+     * @param CommonFlowHandler                                     $commonFlowHandler
+     * @param SubscriptionHandlerProvider                           $handlerProvider
+     * @param BlacklistVoter                                        $blacklistVoter
+     * @param IdentificationHandlerProvider                         $identificationHandlerProvider
+     * @param CarrierRepositoryInterface                            $carrierRepository
+     * @param PostPaidHandler                                       $postPaidHandler
+     * @param CampaignConfirmationHandlerProvider                   $campaignConfirmationHandlerProvider
+     * @param SubscriptionLimiter                                   $subscriptionLimiter
+     * @param BlacklistAttemptRegistrator                           $blacklistDeducter
+     * @param BatchSubscriptionVoter                                $subscriptionVoter
+     * @param RouteProvider                                         $routeProvider
+     * @param \SubscriptionBundle\Subscription\Common\RouteProvider $subscriptionRouteProvider
      */
     public function __construct(
         UserExtractor $userExtractor,
@@ -155,9 +155,9 @@ class SubscribeAction extends AbstractController
      */
     public function __invoke(Request $request, IdentificationData $identificationData, ISPData $ISPData)
     {
-       /* if (!$this->subscriptionVoter->checkIfSubscriptionAllowed($request, $identificationData, $ISPData)) {
+        if (!$this->subscriptionVoter->checkIfSubscriptionAllowed($request, $identificationData, $ISPData)) {
             return new RedirectResponse($this->routeProvider->getLinkToHomepage(['err_handle' => 'subscription_restricted']));
-        }*/
+        }
 
         if ($this->postPaidHandler->isPostPaidRestricted()) {
             return new RedirectResponse($this->routeProvider->getLinkToHomepage(['err_handle' => 'postpaid_restricted']));
