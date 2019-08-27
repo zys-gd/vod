@@ -17,6 +17,10 @@ services:
             - '@SubscriptionBundle\Repository\SubscriptionRepository'
             - '@SubscriptionBundle\Repository\SubscriptionPackRepository'
             - '@SubscriptionBundle\Service\EntitySaveHelper'
+            - '@App\Domain\Repository\CarrierRepository'
+            - '@IdentificationBundle\Identification\Service\TokenGenerator'
+            - '@IdentificationBundle\Identification\Service\UserFactory'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
 
     SubscriptionBundle\Carriers\HutchID\Notification\HutchIDNotificationHandler:
         arguments:
