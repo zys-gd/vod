@@ -56,7 +56,7 @@ class AfterSubscriptionProcessTracker
             $isAffTracked = ($processResult->isSuccessful() && $processResult->isFinal());
         }
 
-        if ($isAffTracked) {
+        if ($isAffTracked && $campaign) {
             $this->affiliateNotifier->notifyAffiliateAboutSubscription($subscription, $campaign);
         }
 

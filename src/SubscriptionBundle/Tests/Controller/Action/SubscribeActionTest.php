@@ -25,6 +25,7 @@ use SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider;
 
 use SubscriptionBundle\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
 use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter;
+use SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider;
 use SubscriptionBundle\Subscription\Subscribe\Voter\BatchSubscriptionVoter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Tests\DataFixtures\LoadCampaignTestData;
@@ -61,6 +62,12 @@ class SubscribeActionTest extends AbstractFunctionalTest
     private $campaignConfirmationHandlerProvider;
     private $subscriptionLimiter;
     private $voter;
+
+
+    /**
+     * @var MockInterface|SMSTextProvider
+     */
+    private $smsTextProvider;
 
     public function testSubscribeWithoutIdentWillFallIntoError()
     {
@@ -126,6 +133,10 @@ class SubscribeActionTest extends AbstractFunctionalTest
 
         $this->httpClient->allows([
             'request' => TestBillingResponseProvider::createSuccessfulFinalResponse('subscribe')
+        ]);
+
+        $this->smsTextProvider->allows([
+            'getSMSText' => 'Text'
         ]);
 
         $client->request('GET', 'subscribe');
@@ -194,6 +205,7 @@ class SubscribeActionTest extends AbstractFunctionalTest
         $container->set('subscription.http.client', $this->httpClient);
         $container->set('SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter', $this->subscriptionLimiter);
         $container->set('SubscriptionBundle\Subscription\Subscribe\Voter\BatchSubscriptionVoter', $this->voter);
+        $container->set('SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider', $this->smsTextProvider);
 
     }
 
@@ -215,7 +227,7 @@ class SubscribeActionTest extends AbstractFunctionalTest
         $this->subscriptionPackDataProvider = \Mockery::spy(SubscriptionPackDataProvider::class);
         $this->notificationService          = \Mockery::spy(NotificationService::class);
         $this->subscriptionLimiter          = Mockery::spy(SubscriptionLimiter::class);
-   
+        $this->smsTextProvider              = Mockery::spy(SMSTextProvider::class);
     }
 
     protected static function getKernelClass()
