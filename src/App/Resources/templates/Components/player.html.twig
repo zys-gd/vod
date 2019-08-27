@@ -113,6 +113,7 @@
                     loadMoreFunc = () => {
                         let mrvbScrollTop = modalRelatedVideosBlock.scrollTop;
                         let mrvbHeight = modalRelatedVideosBlock.scrollHeight;
+                        console.log(Math.round(mrvbScrollTop),  Math.round(mrvbHeight - modalRelatedVideosBlock.offsetHeight))
                         if (Math.round(mrvbScrollTop) >= Math.round(mrvbHeight - modalRelatedVideosBlock.offsetHeight)
                             && isAllowRequest
                             && !isLast
