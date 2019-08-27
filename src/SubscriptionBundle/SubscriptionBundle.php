@@ -4,6 +4,7 @@ namespace SubscriptionBundle;
 
 use SubscriptionBundle\DependencyInjection\Compiler\CampaignConfirmationPass;
 use SubscriptionBundle\DependencyInjection\Compiler\RenewHandlerPass;
+use SubscriptionBundle\DependencyInjection\Compiler\SubscribeBackHandlerPass;
 use SubscriptionBundle\DependencyInjection\Compiler\SubscriptionVoterPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -24,5 +25,6 @@ class SubscriptionBundle extends Bundle
         $container->addCompilerPass(new RenewHandlerPass());
         $container->addCompilerPass(new CampaignConfirmationPass());
         $container->addCompilerPass(new SubscriptionVoterPass());
+        $container->addCompilerPass(new SubscribeBackHandlerPass());
     }
 }

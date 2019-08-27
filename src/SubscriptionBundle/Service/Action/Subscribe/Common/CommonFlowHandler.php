@@ -22,6 +22,7 @@ use SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound;
 use SubscriptionBundle\Exception\ExistingSubscriptionException;
 use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
 use SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier;
+use SubscriptionBundle\Service\Action\Subscribe\AfterSubscriptionProcessTracker;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCommonFlow;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomPiwikTrackingRules;
 use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomResponses;
@@ -102,35 +103,36 @@ class CommonFlowHandler
      * @var string
      */
     private $resubNotAllowedRoute;
-    /**
-     * @var SubscriptionEventTracker
-     */
-    private $subscriptionEventTracker;
+
     /**
      * @var CampaignExtractor
      */
     private $campaignExtractor;
+    /**
+     * @var AfterSubscriptionProcessTracker
+     */
+    private $afterSubscriptionProcessTracker;
 
     /**
      * CommonSubscriber constructor.
      *
-     * @param SubscriptionExtractor          $subscriptionProvider
-     * @param SubscriptionPackProvider       $subscriptionPackProvider
-     * @param Subscriber                     $subscriber
-     * @param SubscriptionEligibilityChecker $checker
-     * @param LoggerInterface                $logger
-     * @param RedirectUrlNullifier           $redirectUrlNullifier
-     * @param SubscriptionHandlerProvider    $handlerProvider
-     * @param CommonResponseCreator          $commonResponseCreator
-     * @param UrlParamAppender               $urlParamAppender
-     * @param RouterInterface                $router
-     * @param AffiliateSender                $affiliateService
-     * @param SubscriptionStatisticSender    $subscriptionStatisticSender
-     * @param UserInfoMapper                 $infoMapper
-     * @param EntitySaveHelper               $entitySaveHelper
-     * @param string                         $resubNotAllowedRoute
-     * @param SubscriptionEventTracker       $subscriptionEventTracker
-     * @param CampaignExtractor              $campaignExtractor
+     * @param SubscriptionExtractor           $subscriptionProvider
+     * @param SubscriptionPackProvider        $subscriptionPackProvider
+     * @param Subscriber                      $subscriber
+     * @param SubscriptionEligibilityChecker  $checker
+     * @param LoggerInterface                 $logger
+     * @param RedirectUrlNullifier            $redirectUrlNullifier
+     * @param SubscriptionHandlerProvider     $handlerProvider
+     * @param CommonResponseCreator           $commonResponseCreator
+     * @param UrlParamAppender                $urlParamAppender
+     * @param RouterInterface                 $router
+     * @param AffiliateSender                 $affiliateService
+     * @param SubscriptionStatisticSender     $subscriptionStatisticSender
+     * @param UserInfoMapper                  $infoMapper
+     * @param EntitySaveHelper                $entitySaveHelper
+     * @param string                          $resubNotAllowedRoute
+     * @param CampaignExtractor               $campaignExtractor
+     * @param AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
      */
     public function __construct(
         SubscriptionExtractor $subscriptionProvider,
@@ -148,8 +150,8 @@ class CommonFlowHandler
         UserInfoMapper $infoMapper,
         EntitySaveHelper $entitySaveHelper,
         string $resubNotAllowedRoute,
-        SubscriptionEventTracker $subscriptionEventTracker,
-        CampaignExtractor $campaignExtractor
+        CampaignExtractor $campaignExtractor,
+        AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
     )
     {
         $this->subscriptionPackProvider       = $subscriptionPackProvider;
@@ -167,8 +169,8 @@ class CommonFlowHandler
         $this->infoMapper                     = $infoMapper;
         $this->entitySaveHelper               = $entitySaveHelper;
         $this->resubNotAllowedRoute           = $resubNotAllowedRoute;
-        $this->subscriptionEventTracker       = $subscriptionEventTracker;
         $this->campaignExtractor              = $campaignExtractor;
+        $this->afterSubscriptionProcessTracker = $afterSubscriptionProcessTracker;
     }
 
 
@@ -279,30 +281,7 @@ class CommonFlowHandler
             }
         }
 
-
-        if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
-            $isAffTracked = $subscriber->isAffiliateTrackedForResub($result);
-        } else {
-            $isAffTracked = ($result->isSuccessful() && $result->isFinal());
-            $this->logger->debug('Is need to track affiliate log?', [
-                'result'       => $result,
-                'isAffTracked' => $isAffTracked
-            ]);
-        }
-        if ($isAffTracked) {
-            $this->subscriptionEventTracker->trackAffiliate($subscription);
-        }
-
-
-        if ($subscriber instanceof HasCustomPiwikTrackingRules) {
-            $isPiwikTracked = $subscriber->isPiwikTrackedForResub($result);
-        } else {
-            $isPiwikTracked = ($result->isFailedOrSuccessful() && $result->isFinal());;
-        }
-        if ($isPiwikTracked) {
-            $this->subscriptionEventTracker->trackPiwikForResubscribe($subscription, $result);
-        }
-
+        $this->afterSubscriptionProcessTracker->track($result, $subscription, $subscriber);
 
         $subscriber->afterProcess($subscription, $result);
         $this->entitySaveHelper->saveAll();
@@ -328,26 +307,7 @@ class CommonFlowHandler
         /** @var ProcessResult $result */
         list($newSubscription, $result) = $this->subscriber->subscribe($user, $subscriptionPack, $additionalData);
 
-        if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
-            $isAffTracked = $subscriber->isAffiliateTrackedForSub($result, $campaign);
-        } else {
-            $isAffTracked = ($result->isSuccessful() && $result->isFinal());
-        }
-
-        if ($isAffTracked) {
-            $this->subscriptionEventTracker->trackAffiliate($newSubscription);
-        }
-
-
-        if ($subscriber instanceof HasCustomPiwikTrackingRules) {
-            $isPiwikTracked = $subscriber->isPiwikTrackedForSub($result);
-        } else {
-            $isPiwikTracked = ($result->isFailedOrSuccessful() && $result->isFinal());
-        }
-
-        if ($isPiwikTracked) {
-            $this->subscriptionEventTracker->trackPiwikForSubscribe($newSubscription, $result);
-        }
+        $this->afterSubscriptionProcessTracker->track($result, $newSubscription, $subscriber, $campaign);
 
         $subscriber->afterProcess($newSubscription, $result);
         $this->entitySaveHelper->saveAll();

@@ -107,7 +107,7 @@ SubscriptionBundle\Entity\Subscription:
     manyToOne:
         user:
             targetEntity: IdentificationBundle\Entity\User
-            cascade: {  }
+            cascade: ["persist"]
             fetch: LAZY
             mappedBy: null
             inversedBy: null

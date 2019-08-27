@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 interface HasCommonConsentPageFlow
 {
     /**
-     * @param Request $request
+     * @param Request          $request
      * @param CarrierInterface $carrier
      *
      * @return array

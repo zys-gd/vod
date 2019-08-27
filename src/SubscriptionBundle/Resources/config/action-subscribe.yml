@@ -36,8 +36,8 @@ services:
             - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
             - '@SubscriptionBundle\Service\EntitySaveHelper'
             - '_resub_not_allowed_route_placeholder_'
-            - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEventTracker'
             - '@SubscriptionBundle\Service\CampaignExtractor'
+            - '@SubscriptionBundle\Service\Action\Subscribe\AfterSubscriptionProcessTracker'
 
     SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker: ~
 
@@ -99,15 +99,19 @@ services:
 
     SubscriptionBundle\Service\Action\Subscribe\Consent\ConsentFlowHandler:
         arguments:
-            - '@logger'
-            - '@SubscriptionBundle\Service\SubscriptionExtractor'
-            - '@SubscriptionBundle\Service\SubscriptionPackProvider'
-            - '@SubscriptionBundle\Service\Action\Subscribe\Subscriber'
+        - '@logger'
+        - '@SubscriptionBundle\Service\SubscriptionExtractor'
+        - '@SubscriptionBundle\Service\SubscriptionPackProvider'
+        - '@SubscriptionBundle\Service\Action\Subscribe\Subscriber'
+        - '@SubscriptionBundle\Service\EntitySaveHelper'
+        - '@IdentificationBundle\Identification\Service\RouteProvider'
+        - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker'
+        - '@ExtrasBundle\Utils\UrlParamAppender'
+        - '@router.default'
+        - '@SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator'
+        - '@SubscriptionBundle\Service\CampaignExtractor'
+        - '@SubscriptionBundle\Service\Action\Subscribe\AfterSubscriptionProcessTracker'
+
+    SubscriptionBundle\Service\Action\Subscribe\AfterSubscriptionProcessTracker:
+        arguments:
             - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEventTracker'
-            - '@SubscriptionBundle\Service\EntitySaveHelper'
-            - '@IdentificationBundle\Identification\Service\RouteProvider'
-            - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEligibilityChecker'
-            - '@ExtrasBundle\Utils\UrlParamAppender'
-            - '@router.default'
-            - '@SubscriptionBundle\Service\Action\Subscribe\Common\CommonResponseCreator'
-            - '@SubscriptionBundle\Service\CampaignExtractor'
