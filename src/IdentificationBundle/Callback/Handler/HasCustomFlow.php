@@ -9,7 +9,7 @@
 namespace IdentificationBundle\Callback\Handler;
 
 
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 
 interface HasCustomFlow

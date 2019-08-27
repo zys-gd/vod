@@ -2,12 +2,12 @@
 
 namespace SubscriptionBundle\Carriers\OrangeEGTpay\Unsubscribe;
 
-use App\Domain\Constants\ConstBillingCarrierId;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use ExtrasBundle\Utils\LocalExtractor;
-use IdentificationBundle\Entity\CarrierInterface;
+use IdentificationBundle\BillingFramework\ID;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerInterface;
+use SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerInterface;
 
 /**
  * Class VodafoneEGUnsubscribeHandler
@@ -36,7 +36,7 @@ class OrangeEGUnsubscribeHandler implements UnsubscriptionHandlerInterface
      */
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::ORANGE_EGYPT_TPAY;
+        return $carrier->getBillingCarrierId() === ID::ORANGE_EGYPT_TPAY;
     }
 
     /**

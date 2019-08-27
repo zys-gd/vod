@@ -9,13 +9,13 @@
 namespace App\CarrierTemplate\Handler;
 
 
-use App\Domain\Constants\ConstBillingCarrierId;
+use IdentificationBundle\BillingFramework\ID;
 
 class EtisalatEGTemplateHandler implements TemplateHandlerInterface
 {
     public function canHandle(int $billingCarrierId): bool
     {
-        return ConstBillingCarrierId::ETISALAT_EGYPT === $billingCarrierId;
+        return ID::ETISALAT_EGYPT === $billingCarrierId;
     }
 
     public function getFullTemplatePath(string $templateName): string

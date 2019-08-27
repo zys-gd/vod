@@ -2,8 +2,8 @@
 
 namespace IdentificationBundle\Carriers\OrangeTNMM;
 
-use App\Domain\Constants\ConstBillingCarrierId;
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerInterface;
 use IdentificationBundle\Identification\Handler\PassthroughFlow\HasPassthroughFlow;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +20,7 @@ class OrangeTNMMIdentificationHandler implements
      */
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::ORANGE_TUNISIA_MM;
+        return $carrier->getBillingCarrierId() === ID::ORANGE_TUNISIA_MM;
     }
 
     /**

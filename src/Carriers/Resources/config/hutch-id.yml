@@ -1,0 +1,4 @@
+services:
+  Carriers\HutchID\SMS\IDTextsHandler:
+    tags:
+      - { name: subscription.sms_text_handler }

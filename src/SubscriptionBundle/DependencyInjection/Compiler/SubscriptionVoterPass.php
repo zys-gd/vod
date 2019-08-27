@@ -2,8 +2,8 @@
 
 namespace SubscriptionBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 class SubscriptionVoterPass implements CompilerPassInterface
@@ -11,7 +11,7 @@ class SubscriptionVoterPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
 
-        $definition = $container->findDefinition('SubscriptionBundle\Service\SubscriptionVoter\BatchSubscriptionVoter');
+        $definition = $container->findDefinition('SubscriptionBundle\Subscription\Subscribe\Voter\BatchSubscriptionVoter');
 
         $taggedServices = $container->findTaggedServiceIds('subscription.voter');
 

@@ -4,16 +4,16 @@ namespace App\Controller;
 
 use App\Domain\Repository\CarrierRepository;
 use App\Domain\Service\Translator\Translator;
+use ExtrasBundle\Controller\Traits\ResponseTrait;
 use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Service\RouteProvider;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
-use SubscriptionBundle\Controller\Traits\ResponseTrait;
-use SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound;
-use SubscriptionBundle\Service\Notification\Notifier;
-use SubscriptionBundle\Service\SubscriptionPackProvider;
+use SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound;
+use SubscriptionBundle\Subscription\Notification\Notifier;
+use SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -115,6 +115,7 @@ class SubnotifController
      * @return JsonResponse
      *
      * @throws ActiveSubscriptionPackNotFound
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function sendRemindSms(Request $request, ISPData $data)
     {

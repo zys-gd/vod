@@ -9,7 +9,7 @@ services:
     factory: [ '@app.cache.default_factory', 'createCacheService']
     arguments:
       - '1'
-      - 'translations'
+      - '%app_version_hash%_translations'
 
   app.cache.default.subscription:
     class: ExtrasBundle\Cache\Redis\RedisCacheService

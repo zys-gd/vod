@@ -2,8 +2,8 @@
 
 namespace App\Domain\Entity;
 
+use CommonDataBundle\Entity\Interfaces\HasUuid;
 use JsonSerializable;
-use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 
 /**
  * Subcategory

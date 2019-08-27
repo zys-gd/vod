@@ -21,7 +21,7 @@ App\Domain\Entity\CountryCategoryPriorityOverride:
                 name: main_category_id
                 referencedColumnName: uuid
         country:
-            targetEntity: App\Domain\Entity\Country
+            targetEntity: CommonDataBundle\Entity\Country
             inversedBy: null
             orphanRemoval: true
             joinColumn:

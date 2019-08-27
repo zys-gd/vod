@@ -9,18 +9,18 @@
 namespace IdentificationBundle\Callback;
 
 
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\BillingFramework\Process\IdentProcess;
-use IdentificationBundle\Entity\CarrierInterface;
-use IdentificationBundle\Entity\User;
-use IdentificationBundle\Identification\Common\PostPaidHandler;
-use IdentificationBundle\Identification\Handler\HasPostPaidRestriction;
-use IdentificationBundle\Identification\Service\UserFactory;
-use IdentificationBundle\Repository\CarrierRepositoryInterface;
-use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\Callback\Handler\HasCommonFlow;
 use IdentificationBundle\Callback\Handler\HasCustomFlow;
 use IdentificationBundle\Callback\Handler\IdentCallbackHandlerProvider;
+use IdentificationBundle\Entity\User;
+use IdentificationBundle\Identification\Common\PostPaidHandler;
+use IdentificationBundle\Identification\Handler\HasPostPaidRestriction;
+use IdentificationBundle\User\Service\UserFactory;
+use IdentificationBundle\Repository\CarrierRepositoryInterface;
+use IdentificationBundle\Repository\UserRepository;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\API\Exception\EmptyResponse;
@@ -34,7 +34,7 @@ class IdentCallbackProcessor
      */
     private $mapper;
     /**
-     * @var \IdentificationBundle\Identification\Service\UserFactory
+     * @var \IdentificationBundle\User\Service\UserFactory
      */
     private $userFactory;
     /**
@@ -66,14 +66,14 @@ class IdentCallbackProcessor
     /**
      * IdentCallbackProcessor constructor.
      *
-     * @param ProcessResponseMapper        $mapper
-     * @param UserFactory                  $userFactory
-     * @param CarrierRepositoryInterface   $carrierRepository
-     * @param LoggerInterface              $logger
-     * @param EntityManagerInterface       $entityManager
-     * @param UserRepository               $userRepository
-     * @param IdentCallbackHandlerProvider $handlerProvider
-     * @param PostPaidHandler              $postPaidHandler
+     * @param ProcessResponseMapper                          $mapper
+     * @param \IdentificationBundle\User\Service\UserFactory $userFactory
+     * @param CarrierRepositoryInterface                     $carrierRepository
+     * @param LoggerInterface                                $logger
+     * @param EntityManagerInterface                         $entityManager
+     * @param UserRepository                                 $userRepository
+     * @param IdentCallbackHandlerProvider                   $handlerProvider
+     * @param PostPaidHandler                                $postPaidHandler
      */
     public function __construct(
         ProcessResponseMapper $mapper,

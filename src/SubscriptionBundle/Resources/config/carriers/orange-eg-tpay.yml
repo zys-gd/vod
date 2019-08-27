@@ -3,8 +3,9 @@ services:
         arguments:
             - '@ExtrasBundle\Utils\LocalExtractor'
             - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
+            - '@IdentificationBundle\Identification\Service\RouteProvider'
             - '@router'
-            - '@SubscriptionBundle\Service\ZeroCreditSubscriptionChecking'
+            - '@SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking'
             - '@App\Domain\Repository\CarrierRepository'
         tags:
             - { name: subscription.subscription_handler }

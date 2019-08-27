@@ -2,12 +2,10 @@
 
 namespace SubscriptionBundle\Carriers\HutchID\Unsubscribe;
 
-use App\Domain\Constants\ConstBillingCarrierId;
-use ExtrasBundle\Utils\LocalExtractor;
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerInterface;
+use SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerInterface;
 
 class HutchIDUnsubscribeHandler implements UnsubscriptionHandlerInterface
 {

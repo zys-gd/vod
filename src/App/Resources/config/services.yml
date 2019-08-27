@@ -30,7 +30,7 @@ services:
         arguments:
             - '@App\Domain\Repository\TranslationRepository'
             - '@App\Domain\Repository\CarrierRepository'
-            - '@App\Domain\Repository\LanguageRepository'
+            - '@CommonDataBundle\Repository\LanguageRepository'
             - '@app.cache.default.translation'
             - '@app.cache.array_default'
 
@@ -69,7 +69,7 @@ services:
             - '@App\Domain\Service\Translator\Translator'
             - '@ExtrasBundle\Utils\LocalExtractor'
             - '@app.cache.array_default'
-            - '@SubscriptionBundle\Service\SubscriptionPackProvider'
+            - '@SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider'
 
     App\Domain\Service\Piwik\ContentStatisticSender:
         arguments:
@@ -86,15 +86,15 @@ services:
 
     App\Domain\Service\Piwik\DataMapper\PiwikGameDataMapper:
         arguments:
-            - '@SubscriptionBundle\Service\CampaignExtractor'
+            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
 
     App\Domain\Service\Piwik\DataMapper\PiwikVideoDataMapper:
         arguments:
-            - '@SubscriptionBundle\Service\CampaignExtractor'
+            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
 
     App\Domain\ACL\Accessors\VisitConstraintByAffiliate:
         arguments:
-            - '@SubscriptionBundle\Service\VisitCAPTool\VisitChecker'
+            - '@SubscriptionBundle\CAPTool\Visit\VisitChecker'
 
     App\Domain\ACL\Accessors\VisitAccessorByCampaign: ~
 
@@ -105,7 +105,7 @@ services:
             - '@App\Domain\Repository\CarrierRepository'
             - '@App\Domain\Repository\CampaignRepository'
             - '@session'
-            - '@SubscriptionBundle\Service\CAPTool\Limiter\SubscriptionCapChecker'
+            - '@SubscriptionBundle\CAPTool\Subscription\Limiter\SubscriptionCapChecker'
             - '@logger'
             - '@App\Domain\Repository\CampaignScheduleRepository'
             - '@App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherChecker'

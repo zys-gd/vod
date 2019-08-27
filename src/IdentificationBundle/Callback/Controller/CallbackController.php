@@ -9,8 +9,8 @@
 namespace IdentificationBundle\Callback\Controller;
 
 
+use ExtrasBundle\Controller\Traits\ResponseTrait;
 use IdentificationBundle\Callback\IdentCallbackProcessor;
-use SubscriptionBundle\Controller\Traits\ResponseTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;

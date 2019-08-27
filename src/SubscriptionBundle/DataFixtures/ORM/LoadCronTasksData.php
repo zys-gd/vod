@@ -9,9 +9,9 @@
 namespace SubscriptionBundle\DataFixtures\ORM;
 
 
-use ExtrasBundle\Utils\UuidGenerator;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use ExtrasBundle\Utils\UuidGenerator;
 use SubscriptionBundle\Entity\CronTask;
 
 class LoadCronTasksData extends AbstractFixture

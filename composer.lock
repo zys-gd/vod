@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5928b882216502cc8100fb8ffae6fcc7",
+    "content-hash": "dcd6cb0970276a9304d57e77cebe3089",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -3670,13 +3670,14 @@
             "source": {
                 "type": "git",
                 "url": "https://git-codecommit.eu-west-1.amazonaws.com/v1/repos/store-difftool-module",
-                "reference": "9a7c4583ec51dac78971fc5d19dab36c0703b0f8"
+                "reference": "b8276f724dfa07e5e7f730b4b5945de0d647f4c8"
             },
             "require": {
                 "doctrine/doctrine-bundle": ">=1.6.4",
                 "doctrine/orm": "^2.5",
                 "php": ">=7.0",
-                "symfony/console": "3.*|4.2.*",
+                "playwing/store-commons": "dev-master",
+                "symfony/console": "3.*|4.*",
                 "symfony/filesystem": "3.*|4.*"
             },
             "require-dev": {
@@ -3698,7 +3699,7 @@
                     "email": "dmitriy.bichenko@playwing.net"
                 }
             ],
-            "time": "2019-01-08T12:10:24+00:00"
+            "time": "2019-07-25T10:11:17+00:00"
         },
         {
             "name": "playwing/store-commons",
@@ -3706,7 +3707,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git-codecommit.eu-west-1.amazonaws.com/v1/repos/store-commons-module",
-                "reference": "8c172009d1638cea8576b4de6fe1e7f826501c7f"
+                "reference": "b229fc47ad4e499009b17bb2081ad0782a2b5591"
             },
             "require": {
                 "doctrine/orm": "^2.5",
@@ -3739,7 +3740,7 @@
                     "email": "dmitriy.bichenko@playwing.net"
                 }
             ],
-            "time": "2019-07-26T10:50:36+00:00"
+            "time": "2019-08-01T10:13:31+00:00"
         },
         {
             "name": "predis/predis",
@@ -10862,10 +10863,12 @@
     "prefer-lowest": false,
     "platform": {
         "php": "^7.2",
+        "ext-pdo": "^7.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "^1.6",
         "ext-mbstring": "*",
+        "ext-openssl": "^7.2",
         "ext-redis": "*"
     },
     "platform-dev": []

@@ -2,9 +2,9 @@
 
 namespace IdentificationBundle\Identification\Common;
 
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\BillingFramework\Process\IdentProcess;
 use IdentificationBundle\BillingFramework\Process\PassthroughProcess;
-use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Common\Async\AsyncIdentStarter;
 use IdentificationBundle\Identification\Handler\PassthroughFlow\HasPassthroughFlow;
 use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;

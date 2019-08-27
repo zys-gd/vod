@@ -9,7 +9,7 @@
 namespace IdentificationBundle\Identification\Service;
 
 
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 
 class ISPResolver
 {

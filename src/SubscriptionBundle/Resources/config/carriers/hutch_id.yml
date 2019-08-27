@@ -11,16 +11,16 @@ services:
         tags:
             - {name: subscription.callback_carrier_handler, type: subscribe}
         arguments:
-            - '@SubscriptionBundle\Service\Callback\Common\CommonFlowHandler'
+            - '@SubscriptionBundle\Subscription\Callback\Common\CommonFlowHandler'
             - '@IdentificationBundle\Repository\UserRepository'
-            - '@SubscriptionBundle\Service\SubscriptionCreator'
+            - '@SubscriptionBundle\Subscription\Common\SubscriptionFactory'
             - '@SubscriptionBundle\Repository\SubscriptionRepository'
             - '@SubscriptionBundle\Repository\SubscriptionPackRepository'
             - '@SubscriptionBundle\Service\EntitySaveHelper'
 
     SubscriptionBundle\Carriers\HutchID\Notification\HutchIDNotificationHandler:
         arguments:
-            - '@App\Domain\Repository\LanguageRepository'
+            - '@CommonDataBundle\Repository\Interfaces\LanguageRepositoryInterface'
         tags:
             - { name: subscription.notification_handler, type: subscribe }
             - { name: subscription.notification_handler, type: unsubscribe }

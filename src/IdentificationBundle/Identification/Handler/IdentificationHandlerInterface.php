@@ -9,7 +9,7 @@
 namespace IdentificationBundle\Identification\Handler;
 
 
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 
 interface IdentificationHandlerInterface
 {

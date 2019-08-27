@@ -1,46 +1,51 @@
 services:
-  SubscriptionBundle\Service\Callback\Impl\DefaultHandler:
+
+  SubscriptionBundle\Subscription\Callback\Controller\ListenAction:
+    arguments: ['@SubscriptionBundle\Subscription\Callback\Common\CommonFlowHandler', '@logger', '@SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerProvider']
+    tags: ['controller.service_arguments']
+
+
+  SubscriptionBundle\Subscription\Callback\Impl\DefaultHandler:
     arguments: ['@IdentificationBundle\Repository\UserRepository']
 
-  SubscriptionBundle\Service\Callback\Common\CommonFlowHandler:
+  SubscriptionBundle\Subscription\Callback\Common\CommonFlowHandler:
       arguments:
         - '@logger'
-        - '@SubscriptionBundle\Service\Callback\Common\CallbackTypeHandlerProvider'
+        - '@SubscriptionBundle\Subscription\Callback\Common\CallbackTypeHandlerProvider'
         - '@SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper'
         - '@SubscriptionBundle\Repository\SubscriptionRepository'
-        - '@IdentificationBundle\Repository\UserRepository'
-        - '@event_dispatcher'
         - '@SubscriptionBundle\Service\EntitySaveHelper'
         - '@SubscriptionBundle\Affiliate\Service\AffiliateSender'
-        - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
         - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
-        - '@SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider'
+        - '@SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerProvider'
+        - '@SubscriptionBundle\Piwik\DataMapper\ConversionEventMapper'
+        - '@SubscriptionBundle\Piwik\EventPublisher'
 
       public: false
 
-  SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerProvider:
+  SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerProvider:
       arguments:
-        - '@SubscriptionBundle\Service\Callback\Impl\DefaultHandler'
+        - '@SubscriptionBundle\Subscription\Callback\Impl\DefaultHandler'
 
-  SubscriptionBundle\Service\Callback\Common\CallbackTypeHandlerProvider:
+  SubscriptionBundle\Subscription\Callback\Common\CallbackTypeHandlerProvider:
       arguments:
-        - '@SubscriptionBundle\Service\Callback\Common\Type\UnsubscriptionCallbackHandler'
-        - '@SubscriptionBundle\Service\Callback\Common\Type\SubscriptionCallbackHandler'
-        - '@SubscriptionBundle\Service\Callback\Common\Type\RenewCallbackHandler'
+        - '@SubscriptionBundle\Subscription\Callback\Common\Type\UnsubscriptionCallbackHandler'
+        - '@SubscriptionBundle\Subscription\Callback\Common\Type\SubscriptionCallbackHandler'
+        - '@SubscriptionBundle\Subscription\Callback\Common\Type\RenewCallbackHandler'
 
-  SubscriptionBundle\Service\Callback\Common\Type\AbstractCallbackHandler: ~
+  SubscriptionBundle\Subscription\Callback\Common\Type\AbstractCallbackHandler: ~
 
-  SubscriptionBundle\Service\Callback\Common\Type\UnsubscriptionCallbackHandler:
+  SubscriptionBundle\Subscription\Callback\Common\Type\UnsubscriptionCallbackHandler:
         arguments:
-            - '@SubscriptionBundle\Service\Action\Unsubscribe\OnUnsubscribeUpdater'
+            - '@SubscriptionBundle\Subscription\Unsubscribe\OnUnsubscribeUpdater'
 
-  SubscriptionBundle\Service\Callback\Common\Type\SubscriptionCallbackHandler:
+  SubscriptionBundle\Subscription\Callback\Common\Type\SubscriptionCallbackHandler:
       arguments:
-          - '@SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater'
-          - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitCompleter'
+          - '@SubscriptionBundle\Subscription\Subscribe\OnSubscribeUpdater'
+          - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitCompleter'
           - '@cross_subscription.api_connector'
 
-  SubscriptionBundle\Service\Callback\Common\Type\RenewCallbackHandler:
+  SubscriptionBundle\Subscription\Callback\Common\Type\RenewCallbackHandler:
       arguments:
-          - '@SubscriptionBundle\Service\Action\Renew\OnRenewUpdater'
+          - '@SubscriptionBundle\Subscription\Renew\OnRenewUpdater'
           - '@event_dispatcher'
