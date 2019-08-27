@@ -47,7 +47,7 @@ try {
 
     if ($_SERVER['APP_DEBUG']) {
         http_response_code(500);
-        echo $exception->getMessage();
+        echo $log;
         error_log($log);
     } else {
         error_log($log);
