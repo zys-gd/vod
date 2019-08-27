@@ -10,30 +10,33 @@ namespace SubscriptionBundle\BillingFramework\Process\API;
 
 
 use ExtrasBundle\Utils\UrlParamAppender;
+use SubscriptionBundle\BillingFramework\BillingOptionsProvider;
 
 class LinkCreator
 {
-
-    private $billingFrameworkEndpoint;
     /**
      * @var UrlParamAppender
      */
     private $urlParamAppender;
+    /**
+     * @var BillingOptionsProvider
+     */
+    private $billingOptionsProvider;
 
     /**
      * BillingFrameworkLinkCreator constructor.
-     * @param                  $billingFrameworkEndpoint
-     * @param UrlParamAppender $urlParamAppender
+     * @param BillingOptionsProvider $billingOptionsProvider
+     * @param UrlParamAppender       $urlParamAppender
      */
-    public function __construct(string $billingFrameworkEndpoint, UrlParamAppender $urlParamAppender)
+    public function __construct(BillingOptionsProvider $billingOptionsProvider, UrlParamAppender $urlParamAppender)
     {
-        $this->billingFrameworkEndpoint = $billingFrameworkEndpoint;
-        $this->urlParamAppender         = $urlParamAppender;
+        $this->urlParamAppender       = $urlParamAppender;
+        $this->billingOptionsProvider = $billingOptionsProvider;
     }
 
     public function createProcessLink(string $method, array $params = []): string
     {
-        $url = sprintf('%s/process/%s', $this->billingFrameworkEndpoint, $method);
+        $url = sprintf('%s/process/%s', $this->billingOptionsProvider->getApiHost(), $method);
 
         return $this->urlParamAppender->appendUrl($url, $params);
     }
@@ -41,16 +44,16 @@ class LinkCreator
     public function createDataLink(string $method, string $id = null): string
     {
         if ($id) {
-            return sprintf('%s/data/%s/%s', $this->billingFrameworkEndpoint, $method, $id);
+            return sprintf('%s/data/%s/%s', $this->billingOptionsProvider->getApiHost(), $method, $id);
         } else {
-            return sprintf('%s/data/%s', $this->billingFrameworkEndpoint, $method);
+            return sprintf('%s/data/%s', $this->billingOptionsProvider->getApiHost(), $method);
 
         }
     }
 
     public function createCustomLink(string $path): string
     {
-        return sprintf('%s/%s', $this->billingFrameworkEndpoint, $path);
+        return sprintf('%s/%s', $this->billingOptionsProvider->getApiHost(), $path);
     }
 
 }

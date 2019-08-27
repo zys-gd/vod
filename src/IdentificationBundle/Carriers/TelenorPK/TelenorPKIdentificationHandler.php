@@ -9,8 +9,8 @@
 namespace IdentificationBundle\Carriers\TelenorPK;
 
 
-use App\Domain\Constants\ConstBillingCarrierId;
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Handler\HasCommonFlow;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerInterface;
@@ -36,7 +36,7 @@ class TelenorPKIdentificationHandler implements IdentificationHandlerInterface, 
 
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::TELENOR_PAKISTAN_DOT;
+        return $carrier->getBillingCarrierId() === ID::TELENOR_PAKISTAN_DOT;
     }
 
     public function getAdditionalIdentificationParams(Request $request): array

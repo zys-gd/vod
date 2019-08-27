@@ -2,7 +2,7 @@
 
 namespace SubscriptionBundle\Entity;
 
-use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
+use CommonDataBundle\Entity\Interfaces\HasUuid;
 
 class Log implements HasUuid
 {

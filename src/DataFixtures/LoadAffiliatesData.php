@@ -10,6 +10,7 @@ namespace DataFixtures;
 
 
 use App\Domain\Entity\Affiliate;
+use CommonDataBundle\DataFixtures\LoadCountriesData;
 use DataFixtures\Utils\FixtureDataLoader;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;

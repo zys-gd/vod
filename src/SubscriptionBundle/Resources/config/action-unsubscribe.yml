@@ -1,24 +1,92 @@
 services:
-  SubscriptionBundle\Service\Action\Unsubscribe\Unsubscriber:
-      arguments:
-        - '@logger'
-        - '@SubscriptionBundle\Service\EntitySaveHelper'
-        - '@SubscriptionBundle\Service\Action\Common\FakeResponseProvider'
-        - '@SubscriptionBundle\Service\Notification\Notifier'
-        - '@SubscriptionBundle\BillingFramework\Process\UnsubscribeProcess'
-        - '@SubscriptionBundle\Service\Action\Unsubscribe\OnUnsubscribeUpdater'
-        - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
-        - '@SubscriptionBundle\Service\Action\Unsubscribe\UnsubscribeParametersProvider'
-        - '@cross_subscription.api_connector'
 
-  SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerProvider:
-      arguments: ['@SubscriptionBundle\Service\Action\Unsubscribe\Handler\DefaultHandler']
+  SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber:
+    arguments:
+      - '@SubscriptionBundle\Service\EntitySaveHelper'
+      - '@SubscriptionBundle\Subscription\Common\FakeResponseProvider'
+      - '@SubscriptionBundle\Subscription\Notification\Notifier'
+      - '@SubscriptionBundle\BillingFramework\Process\UnsubscribeProcess'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\OnUnsubscribeUpdater'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeParametersProvider'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeEventChecker'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeEventTracker'
+      - '@logger'
 
-  SubscriptionBundle\Service\Action\Unsubscribe\Handler\DefaultHandler: ~
+  SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider:
+    arguments: ['@SubscriptionBundle\Subscription\Unsubscribe\Handler\DefaultHandler']
+
+  SubscriptionBundle\Subscription\Unsubscribe\Handler\DefaultHandler: ~
+
+  SubscriptionBundle\Subscription\Unsubscribe\OnUnsubscribeUpdater:
+    arguments: ['@event_dispatcher', '@SubscriptionBundle\Subscription\Common\CommonSubscriptionUpdater']
+
+  SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeParametersProvider:
+    arguments: ['@SubscriptionBundle\Subscription\Common\RequestParametersProvider']
 
 
-  SubscriptionBundle\Service\Action\Unsubscribe\OnUnsubscribeUpdater:
-      arguments: ['@event_dispatcher', '@SubscriptionBundle\Service\Action\Common\CommonSubscriptionUpdater']
+  SubscriptionBundle\Subscription\Unsubscribe\Controller\FakeUnsubscribeAction:
+    tags: ['controller.service_arguments']
+    arguments:
+      - '@IdentificationBundle\User\Service\UserExtractor'
+      - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscriptionEligibilityChecker'
+      - '@SubscriptionBundle\Service\EntitySaveHelper'
 
-  SubscriptionBundle\Service\Action\Unsubscribe\UnsubscribeParametersProvider:
-      arguments: ['@SubscriptionBundle\Service\Action\Common\RequestParametersProvider']
+  SubscriptionBundle\Subscription\Unsubscribe\Controller\UnsubscribeAction:
+    tags: ['controller.service_arguments']
+    arguments:
+      - '@IdentificationBundle\User\Service\UserExtractor'
+      - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
+      - '@SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscriptionEligibilityChecker'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
+      - '@cross_subscription.api_connector'
+
+  SubscriptionBundle\Subscription\Unsubscribe\Admin\Sonata\UnsubscriptionAdmin:
+    arguments:
+      - ~
+      - SubscriptionBundle\Entity\Subscription
+      - 'SubscriptionBundle\Subscription\Unsubscribe\Admin\Controller\UnsubscriptionAdminController'
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: user_management, label: Unsubscriptions }
+
+
+  SubscriptionBundle\Subscription\Unsubscribe\Admin\Controller\UnsubscriptionAdminController:
+    tags: ['controller.service_arguments']
+    arguments:
+      - '@form.factory'
+      - '@SubscriptionBundle\Repository\SubscriptionRepository'
+      - '@IdentificationBundle\Repository\UserRepository'
+      - '@SubscriptionBundle\Repository\BlackListRepository'
+      - '@SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\Admin\Service\AdminUnsubscriber'
+
+  SubscriptionBundle\Subscription\Unsubscribe\Admin\Service\AdminUnsubscriber:
+    arguments:
+      - '@SubscriptionBundle\Blacklist\BlacklistFactory'
+      - '@SubscriptionBundle\Repository\SubscriptionRepository'
+      - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber'
+      - '@SubscriptionBundle\Service\EntitySaveHelper'
+
+  SubscriptionBundle\Subscription\Unsubscribe\Admin\Form\UnsubscribeByAffiliateForm:
+    arguments: ['@doctrine.orm.entity_manager']
+    tags:
+      - { name: form.type }
+
+
+  SubscriptionBundle\Subscription\Unsubscribe\Admin\Form\UnsubscribeByCampaignForm:
+    arguments: ['@doctrine.orm.entity_manager']
+    tags:
+      - { name: form.type }
+
+  SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeEventChecker: ~
+
+  SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeEventTracker:
+    arguments:
+      - '@logger'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeEventChecker'
+      - '@SubscriptionBundle\Piwik\DataMapper\ConversionEventMapper'
+      - '@SubscriptionBundle\Piwik\EventPublisher'

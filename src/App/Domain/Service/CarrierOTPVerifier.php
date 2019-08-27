@@ -2,8 +2,8 @@
 
 namespace App\Domain\Service;
 
-use App\Domain\Constants\ConstBillingCarrierId;
 use App\Domain\Repository\CarrierRepository;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -27,7 +27,7 @@ class CarrierOTPVerifier
      * @var array
      */
     private $otpCarriers = [
-        ConstBillingCarrierId::MOBILINK_PAKISTAN
+        ID::MOBILINK_PAKISTAN
     ];
 
     /**

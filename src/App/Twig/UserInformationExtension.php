@@ -9,7 +9,7 @@ use IdentificationBundle\Identification\Handler\HasHeaderEnrichment;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
-use SubscriptionBundle\Service\UserExtractor;
+use IdentificationBundle\User\Service\UserExtractor;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\AbstractExtension;
@@ -29,10 +29,7 @@ class UserInformationExtension extends AbstractExtension
      * @var CarrierRepositoryInterface
      */
     private $carrierRepository;
-    /**
-     * @var Request
-     */
-    private $request;
+
     /**
      * @var RequestStack
      */

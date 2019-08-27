@@ -1,13 +1,13 @@
 services:
   subscription.jazz_pk_notification_handler:
       class: SubscriptionBundle\Carriers\JazzPK\Notification\JazzPKNotificationHandler
-      arguments: ['@IdentificationBundle\Repository\LanguageRepositoryInterface']
+      arguments: ['@CommonDataBundle\Repository\Interfaces\LanguageRepositoryInterface']
       tags:
         - { name: subscription.notification_handler, type: subscribe }
         - { name: subscription.notification_handler, type: unsubscribe }
 
   subscription.jazz_pk_subscribe_handler:
       class: SubscriptionBundle\Carriers\JazzPK\Subscribe\JazzPKSubscribeHandler
-      arguments: ['@SubscriptionBundle\Service\Notification\Notifier']
+      arguments: ['@SubscriptionBundle\Subscription\Notification\Notifier']
       tags:
         - { name: subscription.subscription_handler }

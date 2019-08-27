@@ -2,7 +2,7 @@
 
 namespace IdentificationBundle\Carriers\VodafoneEGTpay;
 
-use App\Domain\Constants\ConstBillingCarrierId;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeMappers\ErrorCodeMapperInterface;
 
 /**
@@ -25,6 +25,6 @@ class VodafoneEGTpayErrorCodeMapper implements ErrorCodeMapperInterface
 
     public function canHandle(int $billingCarrierId): bool
     {
-        return $billingCarrierId === ConstBillingCarrierId::VODAFONE_EGYPT_TPAY;
+        return $billingCarrierId === ID::VODAFONE_EGYPT_TPAY;
     }
 }

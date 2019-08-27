@@ -9,8 +9,8 @@
 namespace IdentificationBundle\Carriers\AirtelIN;
 
 
-use App\Domain\Constants\ConstBillingCarrierId;
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow;
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasConsentPageFlow;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerInterface;
@@ -33,7 +33,7 @@ class AirtelINIdentificationHandler implements HasCommonConsentPageFlow, HasCons
 
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() == ConstBillingCarrierId::AIRTEL_INDIA;
+        return $carrier->getBillingCarrierId() == ID::AIRTEL_INDIA;
     }
 
     /**

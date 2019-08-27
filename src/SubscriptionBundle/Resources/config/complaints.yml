@@ -1,0 +1,21 @@
+services:
+
+    SubscriptionBundle\ComplaintsTool\Admin\Sonata\ComplaintsAdmin:
+        arguments:
+            - ~
+            - IdentificationBundle\Entity\User
+            - 'SubscriptionBundle\ComplaintsTool\Admin\Controller\ComplaintsAdminController'
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: user_management, label: Complaints }
+
+
+    SubscriptionBundle\ComplaintsTool\Admin\Controller\ComplaintsAdminController:
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@form.factory'
+            - '@SubscriptionBundle\ReportingTool\ReportingToolDataProvider'
+            - '@doctrine.orm.entity_manager'
+            - '@SubscriptionBundle\Repository\SubscriptionRepository'
+            - '@SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository'
+            - '@SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface'
+            - '@CommonDataBundle\Repository\CountryRepository'

@@ -2,7 +2,7 @@
 
 namespace IdentificationBundle\Repository;
 
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 
 /**
  * Interface CarrierRepositoryInterface

@@ -11,11 +11,11 @@ namespace SubscriptionBundle\BillingFramework\Process\API;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkException;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
+use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkException;
 use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkProcessException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RequestSender
 {
@@ -42,7 +42,7 @@ class RequestSender
 
 
     /**
-     * RequestSender constructor.
+     * EventPublisher constructor.
      * @param EventDispatcherInterface   $eventDispatcher
      * @param Client                     $apiClient
      * @param LoggerInterface            $logger

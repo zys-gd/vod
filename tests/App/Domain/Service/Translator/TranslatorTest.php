@@ -9,16 +9,18 @@
 namespace App\Tests\App\Domain\Service\Translator;
 
 use App\Domain\Entity\Carrier;
-use App\Domain\Entity\Language;
+use CommonDataBundle\Entity\Language;
 use App\Domain\Entity\Translation;
 use App\Domain\Repository\CarrierRepository;
-use App\Domain\Repository\LanguageRepository;
+use CommonDataBundle\Repository\LanguageRepository;
 use App\Domain\Repository\TranslationRepository;
 use App\Domain\Service\Translator\Translator;
+use ExtrasBundle\Cache\ArrayCache\ArrayCacheService;
 use ExtrasBundle\Utils\UuidGenerator;
 use ExtrasBundle\Cache\ICacheService;
 use PHPUnit\Framework\TestCase;
 use Mockery;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 class TranslatorTest extends TestCase
 {
@@ -34,6 +36,7 @@ class TranslatorTest extends TestCase
     private $languagesRepository;
     /** @var Translator|\Mockery\MockInterface */
     private $translatorProvider;
+    private $arrayCache;
 
     /**
      * @throws \Psr\Cache\InvalidArgumentException
@@ -41,13 +44,14 @@ class TranslatorTest extends TestCase
     public function testGetTranslationWithoutCache()
     {
         $this->cache->shouldReceive('hasCache')->andReturn(false);
+        $this->arrayCache->shouldReceive('hasCache')->andReturn(false);
 
         $oLanguage = $this->mockLanguageEntity();
-        $this->languagesRepository->shouldReceive('findOneBy')->twice()->with(['code' => 'en'])->andReturn($oLanguage);
+        $this->languagesRepository->shouldReceive('findOneBy')->once()->with(['code' => 'en'])->andReturn($oLanguage);
 
         $oTranslation = $this->mockTranslationEntity($oLanguage);
 
-        $this->translationRepository->shouldReceive('findBy')->twice()->with([
+        $this->translationRepository->shouldReceive('findBy')->once()->with([
             'language' => $oLanguage,
             'carrier'  => null
         ])->andReturn([$oTranslation]);
@@ -57,34 +61,20 @@ class TranslatorTest extends TestCase
         // default text
         $this->assertEquals('This service is only available for users in [Country]. You must have permission from the carrier to use this service.', $result);
 
-        // default arabic text
-        $oArLanguage = Mockery::spy(Language::class);
-        $oArLanguage->allows([
-            'getUuid' => '5179ee29-ebd4-11e8-95c4-02bb250f0f22',
-            'getCode' => 'ar'
-        ]);
-        $this->languagesRepository->shouldReceive('findOneBy')->with(['code' => 'ar'])->andReturn($oArLanguage);
-
-        $oArTranslation = Mockery::spy(Translation::class);
-        $oArTranslation->allows([
-            'getKey'         => 'terms.block_2.text.1',
-            'getTranslation' => 'some arabic text',
-            'getCarrier'     => null,
-            'getLanguage'    => $oArLanguage
-        ]);
-
-        $this->translationRepository->shouldReceive('findBy')->with([
-            'language' => $oArLanguage,
-            'carrier'  => null
-        ])->andReturn([$oArTranslation]);
-
-        $result = $this->translatorProvider->translate('terms.block_2.text.1', null, 'ar');
-        $this->assertEquals('some arabic text', $result);
     }
 
     public function testGetTranslationWithCache()
     {
-        $this->setCacheData();
+
+        $this->cache->shouldReceive('hasCache')->andReturn(true);
+
+        $oLanguage    = $this->mockLanguageEntity();
+        $oTranslation = $this->mockTranslationEntity($oLanguage);
+        $aTexts       = [
+            "{$oTranslation->getKey()}" => $oTranslation->getTranslation()
+        ];
+        $this->cache->shouldReceive('getValue')->andReturn($aTexts);
+
         $result = $this->translatorProvider->translate('terms.block_2.text.1', null, 'en');
 
         // default text
@@ -108,17 +98,6 @@ class TranslatorTest extends TestCase
         return $oTranslation;
     }
 
-    protected function setCacheData()
-    {
-        $this->cache->shouldReceive('hasCache')->andReturn(true);
-
-        $oLanguage    = $this->mockLanguageEntity();
-        $oTranslation = $this->mockTranslationEntity($oLanguage);
-        $aTexts       = [
-            "{$oTranslation->getKey()}" => $oTranslation->getTranslation()
-        ];
-        $this->cache->shouldReceive('getValue')->andReturn($aTexts);
-    }
 
     protected function setUp()
     {
@@ -126,12 +105,14 @@ class TranslatorTest extends TestCase
         $this->carrierRepository     = Mockery::spy(CarrierRepository::class);
         $this->cache                 = Mockery::spy(ICacheService::class);
         $this->languagesRepository   = Mockery::spy(LanguageRepository::class);
-
-        $this->translatorProvider = new Translator(
+        $this->arrayCache            = Mockery::spy(ArrayCacheService::class);
+        $this->translatorProvider    = new Translator(
             $this->translationRepository,
             $this->carrierRepository,
             $this->languagesRepository,
-            $this->cache
+            $this->cache,
+            $this->arrayCache
+
         );
     }
 

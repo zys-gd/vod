@@ -13,7 +13,7 @@ use App\Domain\ACL\Accessors\SubscribeExternalAPICheck;
 use IdentificationBundle\Identification\DTO\IdentificationData;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Repository\UserRepository;
-use SubscriptionBundle\Service\SubscriptionVoter\SubscriptionVoterInterface;
+use SubscriptionBundle\Subscription\Subscribe\Voter\SubscriptionVoterInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class SubscribeACL implements SubscriptionVoterInterface

@@ -40,15 +40,16 @@ class SessionStorageTest extends TestCase
 
     public function testStoreStorageValue()
     {
-        $this->sessionStorage->storeStorageValue('key', 'value');
-        $this->assertEquals('value', $this->session->get(SessionStorage::STORAGE_KEY . '[key]'));
+        $this->sessionStorage->storeValue('key', 'value');
+
+        $this->assertEquals('value', $this->session->get('key'));
     }
 
     public function testReadStorageValue()
     {
-        $this->session->set(SessionStorage::STORAGE_KEY . '[key]', 'value');
+        $this->session->set('key', 'value');
 
-        $value = $this->sessionStorage->readStorageValue('key');
+        $value = $this->sessionStorage->readValue('key');
 
         $this->assertEquals($value, 'value');
     }

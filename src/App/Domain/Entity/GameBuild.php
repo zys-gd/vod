@@ -2,10 +2,10 @@
 
 namespace App\Domain\Entity;
 
+use CommonDataBundle\Entity\Interfaces\HasUuid;
 use DeviceDetectionBundle\Service\Device;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**

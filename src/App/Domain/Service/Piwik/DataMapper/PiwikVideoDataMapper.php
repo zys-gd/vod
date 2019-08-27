@@ -4,11 +4,10 @@
 namespace App\Domain\Service\Piwik\DataMapper;
 
 
-use App\Domain\Entity\Game;
 use App\Domain\Entity\UploadedVideo;
 use PiwikBundle\Service\DTO\EcommerceDTO;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Service\CampaignExtractor;
+use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 
 class PiwikVideoDataMapper
 {

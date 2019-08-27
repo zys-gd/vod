@@ -17,10 +17,10 @@ use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataEx
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
-use SubscriptionBundle\Service\CAPTool\Exception\SubscriptionCapReachedOnAffiliate;
-use SubscriptionBundle\Service\CAPTool\Exception\SubscriptionCapReachedOnCarrier;
-use SubscriptionBundle\Service\CAPTool\Exception\VisitCapReached;
-use SubscriptionBundle\Service\CAPTool\Limiter\SubscriptionCapChecker;
+use SubscriptionBundle\CAPTool\Exception\SubscriptionCapReachedOnAffiliate;
+use SubscriptionBundle\CAPTool\Exception\SubscriptionCapReachedOnCarrier;
+use SubscriptionBundle\CAPTool\Exception\VisitCapReached;
+use SubscriptionBundle\CAPTool\Subscription\Limiter\SubscriptionCapChecker;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -204,7 +204,7 @@ class LandingPageACL
      * @param Carrier               $carrier
      * @param ConstraintByAffiliate $constraint
      *
-     * @throws \SubscriptionBundle\Service\CAPTool\Exception\VisitCapReached
+     * @throws \SubscriptionBundle\CAPTool\Exception\VisitCapReached
      */
     private function ensureVisitCapIsNotReached(Carrier $carrier, ConstraintByAffiliate $constraint): void
     {

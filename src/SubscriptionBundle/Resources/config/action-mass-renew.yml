@@ -1,17 +1,29 @@
 services:
-  SubscriptionBundle\Service\Action\MassRenew\MassRenewer:
+  SubscriptionBundle\Subscription\MassRenew\MassRenewer:
     arguments:
       - '@SubscriptionBundle\BillingFramework\Process\MassRenewProcess'
-      - '@SubscriptionBundle\Service\Action\MassRenew\MassRenewParametersProvider'
-      - '@SubscriptionBundle\Service\Action\Renew\OnRenewUpdater'
+      - '@SubscriptionBundle\Subscription\MassRenew\MassRenewParametersProvider'
+      - '@SubscriptionBundle\Subscription\Renew\OnRenewUpdater'
       - '@SubscriptionBundle\Service\EntitySaveHelper'
 
-  SubscriptionBundle\Service\Action\MassRenew\MassRenewParametersProvider:
-    arguments: ['%host%', '@router', '@SubscriptionBundle\Service\SubscriptionPackProvider']
-
-  SubscriptionBundle\Service\Action\Renew\Common\CommonFlowHandler:
+  SubscriptionBundle\Subscription\MassRenew\MassRenewParametersProvider:
     arguments:
-      - '@SubscriptionBundle\Service\Action\MassRenew\MassRenewer'
+      - '@SubscriptionBundle\Subscription\Common\RouteProvider'
+      - '@SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider'
+      - '@SubscriptionBundle\BillingFramework\BillingOptionsProvider'
+
+  SubscriptionBundle\Subscription\Renew\Common\CommonFlowHandler:
+    arguments:
+      - '@SubscriptionBundle\Subscription\MassRenew\MassRenewer'
       - '@SubscriptionBundle\Repository\SubscriptionRepository'
-      - '@SubscriptionBundle\Service\Action\Renew\Handler\RenewHandlerProvider'
+      - '@SubscriptionBundle\Subscription\Renew\Handler\RenewHandlerProvider'
       - '@doctrine.orm.entity_manager'
+
+  SubscriptionBundle\Subscription\MassRenew\Command\MassRenewCommand:
+    arguments:
+      - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+      - '@cron.task'
+      - '@SubscriptionBundle\Subscription\Renew\Handler\RenewHandlerProvider'
+      - '@SubscriptionBundle\Subscription\Renew\Common\CommonFlowHandler'
+    tags:
+      - { name: console.command }

@@ -10,7 +10,6 @@ class PiwikTracker
 {
     const TRACK_SUBSCRIBE   = 'trackSubscribe';
     const TRACK_RESUBSCRIBE = 'trackResubscribe';
-    const TRACK_RENEW       = 'trackRenew';
     const TRACK_UNSUBSCRIBE = 'trackUnsubscribe';
 
     /**

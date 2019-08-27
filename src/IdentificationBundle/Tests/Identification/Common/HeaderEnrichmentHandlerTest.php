@@ -6,7 +6,7 @@
  * Time: 10:46
  */
 
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\Identification\Common\HeaderEnrichmentHandler;
 use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\Handler\HasHeaderEnrichment;
@@ -29,7 +29,7 @@ class HeaderEnrichmentHandlerTest extends \PHPUnit\Framework\TestCase
      */
     private $entityManager;
     /**
-     * @var \Mockery\MockInterface|\IdentificationBundle\Identification\Service\UserFactory
+     * @var \Mockery\MockInterface|\IdentificationBundle\User\Service\UserFactory
      */
     private $userFactory;
     /**
@@ -61,7 +61,7 @@ class HeaderEnrichmentHandlerTest extends \PHPUnit\Framework\TestCase
 
         $this->entityManager           = Mockery::spy(\Doctrine\ORM\EntityManagerInterface::class);
         $this->userRepository          = Mockery::spy(\IdentificationBundle\Repository\UserRepository::class);
-        $this->userFactory             = Mockery::spy(\IdentificationBundle\Identification\Service\UserFactory::class);
+        $this->userFactory             = Mockery::spy(\IdentificationBundle\User\Service\UserFactory::class);
         $this->session                 = new Session(new MockArraySessionStorage());
         $sessionStorage                = new \IdentificationBundle\Identification\Service\Session\SessionStorage($this->session);
         $this->dataStorage             = new \IdentificationBundle\Identification\Service\Session\IdentificationDataStorage($sessionStorage);
@@ -71,7 +71,8 @@ class HeaderEnrichmentHandlerTest extends \PHPUnit\Framework\TestCase
             $this->entityManager,
             $this->userRepository,
             $this->identificationStatus,
-            Mockery::spy(\IdentificationBundle\Identification\Common\PostPaidHandler::class)
+            Mockery::spy(\IdentificationBundle\Identification\Common\PostPaidHandler::class),
+            Mockery::spy(\Psr\Log\LoggerInterface::class)
 
         );
 

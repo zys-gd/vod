@@ -12,7 +12,7 @@ class CampaignConfirmationPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $definition = $container->findDefinition('SubscriptionBundle\Service\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider');
+        $definition = $container->findDefinition('SubscriptionBundle\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider');
 
         $taggedServices = $container->findTaggedServiceIds('subscription.campaign_confirmation_handler');
 
