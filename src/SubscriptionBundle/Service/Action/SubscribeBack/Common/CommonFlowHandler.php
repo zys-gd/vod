@@ -202,7 +202,7 @@ class CommonFlowHandler
             /** @var ProcessResult $result */
             list($newSubscription, $result) = $this->subscriber->subscribe($user, $subscriptionPack, $billingProcessId);
 
-            $this->afterSubscriptionProcessTracker->track($result, $newSubscription, $handler, $campaign);
+            $this->afterSubscriptionProcessTracker->trackSubscribe($result, $newSubscription, $handler, $campaign);
 
             return new RedirectResponse($redirect_url);
         } catch (\Exception $exception) {

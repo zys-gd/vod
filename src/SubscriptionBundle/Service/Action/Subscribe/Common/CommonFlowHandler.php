@@ -281,7 +281,7 @@ class CommonFlowHandler
             }
         }
 
-        $this->afterSubscriptionProcessTracker->track($result, $subscription, $subscriber);
+        $this->afterSubscriptionProcessTracker->trackResubscribe($result, $subscription, $subscriber);
 
         $subscriber->afterProcess($subscription, $result);
         $this->entitySaveHelper->saveAll();
@@ -307,7 +307,7 @@ class CommonFlowHandler
         /** @var ProcessResult $result */
         list($newSubscription, $result) = $this->subscriber->subscribe($user, $subscriptionPack, $additionalData);
 
-        $this->afterSubscriptionProcessTracker->track($result, $newSubscription, $subscriber, $campaign);
+        $this->afterSubscriptionProcessTracker->trackSubscribe($result, $newSubscription, $subscriber, $campaign);
 
         $subscriber->afterProcess($newSubscription, $result);
         $this->entitySaveHelper->saveAll();

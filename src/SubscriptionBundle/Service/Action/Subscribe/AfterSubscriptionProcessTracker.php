@@ -34,7 +34,7 @@ class AfterSubscriptionProcessTracker
      * @param                        $subscriber
      * @param CampaignInterface|null $campaign
      */
-    public function track(
+    public function trackSubscribe(
         ProcessResult $processResult,
         Subscription $subscription,
         $subscriber,
@@ -61,6 +61,36 @@ class AfterSubscriptionProcessTracker
 
         if ($isPiwikTracked) {
             $this->subscriptionEventTracker->trackPiwikForSubscribe($subscription, $processResult);
+        }
+    }
+
+    public function trackResubscribe(
+        ProcessResult $processResult,
+        Subscription $subscription,
+        $subscriber,
+        CampaignInterface $campaign = null
+    ): void
+    {
+        if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
+            $isAffTracked = $subscriber->isAffiliateTrackedForSub($processResult, $campaign);
+        }
+        else {
+            $isAffTracked = ($processResult->isSuccessful() && $processResult->isFinal());
+        }
+
+        if ($isAffTracked) {
+            $this->subscriptionEventTracker->trackAffiliate($subscription);
+        }
+
+        if ($subscriber instanceof HasCustomPiwikTrackingRules) {
+            $isPiwikTracked = $subscriber->isPiwikTrackedForResub($processResult);
+        }
+        else {
+            $isPiwikTracked = ($processResult->isFailedOrSuccessful() && $processResult->isFinal());
+        }
+
+        if ($isPiwikTracked) {
+            $this->subscriptionEventTracker->trackPiwikForResubscribe($subscription, $processResult);
         }
     }
 }
