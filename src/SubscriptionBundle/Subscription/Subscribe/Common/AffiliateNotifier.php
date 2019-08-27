@@ -9,9 +9,11 @@
 namespace SubscriptionBundle\Subscription\Subscribe\Common;
 
 
+use App\Domain\Entity\Campaign;
 use SubscriptionBundle\Affiliate\Service\AffiliateSender;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
+use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -38,13 +40,14 @@ class AffiliateNotifier
         $this->infoMapper = $infoMapper;
     }
 
-    public function notifyAffiliateAboutSubscription(Subscription $subscription, SessionInterface $session): void
+    public function notifyAffiliateAboutSubscription(Subscription $subscription, CampaignInterface $campaign): void
     {
         $this->sender->checkAffiliateEligibilityAndSendEvent(
             $subscription,
             $this->infoMapper->mapFromUser($subscription->getUser()),
             $subscription->getAffiliateToken(),
-            AffiliateVisitSaver::extractCampaignToken($session)
+            $campaign->getCampaignToken()
+
         );
     }
 

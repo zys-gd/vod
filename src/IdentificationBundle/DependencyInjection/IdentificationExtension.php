@@ -46,6 +46,7 @@ class IdentificationExtension extends ConfigurableExtension
         $service->replaceArgument(2, $mergedConfig['homepage_route']);
         $service->replaceArgument(3, $mergedConfig['landing_route']);
         $service->replaceArgument(4, $mergedConfig['my_account_route']);
+        $service->replaceArgument(5, $mergedConfig['wrong_carrier_route']);
     }
 
 }

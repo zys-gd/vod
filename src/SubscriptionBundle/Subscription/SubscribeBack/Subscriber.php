@@ -8,6 +8,7 @@ use IdentificationBundle\BillingFramework\Data\DataProvider;
 use IdentificationBundle\Entity\User;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
+use SubscriptionBundle\Subscription\Common\SubscriptionFactory;
 use SubscriptionBundle\Subscription\Subscribe\OnSubscribeUpdater;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\SubscriptionCreator;
@@ -33,7 +34,7 @@ class Subscriber
 
     public function __construct(
         EntitySaveHelper $entitySaveHelper,
-        SubscriptionCreator $subscriptionCreator,
+        SubscriptionFactory $subscriptionCreator,
         OnSubscribeUpdater $subscribeUpdater,
         DataProvider $dataProvider
     )

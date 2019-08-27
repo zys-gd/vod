@@ -4,7 +4,7 @@
 namespace SubscriptionBundle\Subscription\SubscribeBack\Handler;
 
 
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class DefaultHandler implements SubscribeBackHandlerInterface

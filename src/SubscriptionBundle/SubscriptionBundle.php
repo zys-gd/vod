@@ -7,6 +7,7 @@ use SubscriptionBundle\DependencyInjection\Compiler\CampaignConfirmationPass;
 use SubscriptionBundle\DependencyInjection\Compiler\NotificationHandlerPass;
 use SubscriptionBundle\DependencyInjection\Compiler\RenewHandlerPass;
 use SubscriptionBundle\DependencyInjection\Compiler\SMSTextHandlerPass;
+use SubscriptionBundle\DependencyInjection\Compiler\SubscribeBackHandlerPass;
 use SubscriptionBundle\DependencyInjection\Compiler\SubscriptionHandlerPass;
 use SubscriptionBundle\DependencyInjection\Compiler\SubscriptionVoterPass;
 use SubscriptionBundle\DependencyInjection\Compiler\TwigAdditionalPathsExtension;

@@ -6,6 +6,7 @@ use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\Identification\DTO\{IdentificationData, ISPData};
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow as IdentConsentPageFlow;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
+use IdentificationBundle\Identification\Service\RouteProvider;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\User\Service\UserExtractor;
 use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException;
@@ -49,11 +50,6 @@ class ConsentPageSubscribeAction
     private $consentFlowHandler;
 
     /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
      * @var BlacklistAttemptRegistrator
      */
     private $blacklistAttemptRegistrator;
@@ -62,6 +58,10 @@ class ConsentPageSubscribeAction
      * @var \SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter
      */
     private $blacklistVoter;
+    /**
+     * @var RouteProvider
+     */
+    private $routeProvider;
 
     /**
      * ConsentPageSubscribeAction constructor
@@ -71,9 +71,9 @@ class ConsentPageSubscribeAction
      * @param SubscriptionHandlerProvider                                       $subscriptionHandlerProvider
      * @param \IdentificationBundle\User\Service\UserExtractor                  $userExtractor
      * @param ConsentFlowHandler                                                $consentFlowHandler
-     * @param RouterInterface                                                   $router
      * @param \SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter $blacklistVoter
      * @param BlacklistAttemptRegistrator                                       $blacklistAttemptRegistrator
+     * @param RouteProvider                                                     $routeProvider
      */
     public function __construct(
         CarrierRepositoryInterface $carrierRepository,
@@ -81,9 +81,9 @@ class ConsentPageSubscribeAction
         SubscriptionHandlerProvider $subscriptionHandlerProvider,
         UserExtractor $userExtractor,
         ConsentFlowHandler $consentFlowHandler,
-        RouterInterface $router,
         BlacklistVoter $blacklistVoter,
-        BlacklistAttemptRegistrator $blacklistAttemptRegistrator
+        BlacklistAttemptRegistrator $blacklistAttemptRegistrator,
+        RouteProvider $routeProvider
     )
     {
         $this->carrierRepository             = $carrierRepository;
@@ -91,9 +91,9 @@ class ConsentPageSubscribeAction
         $this->subscriptionHandlerProvider   = $subscriptionHandlerProvider;
         $this->userExtractor                 = $userExtractor;
         $this->consentFlowHandler            = $consentFlowHandler;
-        $this->router                        = $router;
         $this->blacklistVoter                = $blacklistVoter;
         $this->blacklistAttemptRegistrator   = $blacklistAttemptRegistrator;
+        $this->routeProvider                 = $routeProvider;
     }
 
     /**
@@ -136,7 +136,7 @@ class ConsentPageSubscribeAction
         } catch (SubscribingProcessException $exception) {
             return $subscriber->getSubscriptionErrorResponse($exception);
         } catch (\Exception $exception) {
-            return new RedirectResponse($this->router->generate('whoops'));
+            return new RedirectResponse($this->routeProvider->getLinkToWrongCarrierPage());
         }
     }
 

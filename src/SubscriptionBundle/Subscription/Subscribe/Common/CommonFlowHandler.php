@@ -20,10 +20,9 @@ use SubscriptionBundle\Subscription\Common\RouteProvider;
 use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
 use SubscriptionBundle\Subscription\Subscribe\Exception\ExistingSubscriptionException;
 use SubscriptionBundle\Subscription\Subscribe\Handler\HasCommonFlow;
-use SubscriptionBundle\Subscription\Subscribe\Handler\HasCustomAffiliateTrackingRules;
-use SubscriptionBundle\Subscription\Subscribe\Handler\HasCustomPiwikTrackingRules;
 use SubscriptionBundle\Subscription\Subscribe\Handler\HasCustomResponses;
 use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider;
+use SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker;
 use SubscriptionBundle\Subscription\Subscribe\Subscriber;
 use SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound;
 use SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider;
@@ -112,6 +111,7 @@ class CommonFlowHandler
      * @param \SubscriptionBundle\Subscription\Common\RouteProvider                            $routeProvider
      * @param AffiliateNotifier                                                                $affiliateNotifier
      * @param CampaignExtractor                                                                $campaignExtractor
+     * @param AfterSubscriptionProcessTracker                                                  $afterSubscriptionProcessTracker
      */
     public function __construct(
         SubscriptionExtractor $subscriptionProvider,
@@ -231,26 +231,7 @@ class CommonFlowHandler
         /** @var ProcessResult $result */
         list($newSubscription, $result) = $this->subscriber->subscribe($User, $subscriptionPack, $additionalData);
 
-        if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
-            $isAffTracked = $subscriber->isAffiliateTrackedForSub($result, $campaign);
-        } else {
-            $isAffTracked = ($result->isSuccessful() && $result->isFinal());
-        }
-
-        if ($isAffTracked) {
-            $this->affiliateNotifier->notifyAffiliateAboutSubscription($newSubscription, $request->getSession());
-        }
-
-
-        if ($subscriber instanceof HasCustomPiwikTrackingRules) {
-            $isPiwikTracked = $subscriber->isPiwikTrackedForSub($result);
-        } else {
-            $isPiwikTracked = ($result->isFailedOrSuccessful() && $result->isFinal());
-        }
-
-        if ($isPiwikTracked) {
-            $this->subscriptionEventTracker->trackSubscribe($newSubscription, $result);
-        }
+        $this->afterSubscriptionProcessTracker->track($result, $newSubscription, $subscriber, $campaign);
 
         $subscriber->afterProcess($newSubscription, $result);
         $this->entitySaveHelper->saveAll();

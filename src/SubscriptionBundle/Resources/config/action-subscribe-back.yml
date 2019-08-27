@@ -4,19 +4,19 @@ services:
     SubscriptionBundle\Subscription\SubscribeBack\Common\CommonFlowHandler:
         arguments:
             - '@SubscriptionBundle\Subscription\SubscribeBack\Subscriber'
-            - '@IdentificationBundle\Identification\Service\UserFactory'
-            - '@SubscriptionBundle\Subscription\Subscribe\Common\BlacklistVoter'
-            - '@SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator'
-            - '@router'
+            - '@IdentificationBundle\User\Service\UserFactory'
+            - '@SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter'
+            - '@SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator'
             - '@IdentificationBundle\Identification\Service\DeviceDataProvider'
             - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
-            - '@SubscriptionBundle\Service\SubscriptionPackProvider'
-            - '@SubscriptionBundle\Service\SubscriptionExtractor'
+            - '@SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider'
+            - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
             - '@ExtrasBundle\Utils\UrlParamAppender'
             - '@IdentificationBundle\Repository\UserRepository'
             - '@IdentificationBundle\Identification\Service\TokenGenerator'
-            - '@SubscriptionBundle\Service\CampaignExtractor'
-            - '@SubscriptionBundle\Subscription\Subscribe\Service\AfterSubscriptionProcessTracker'
+            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
+            - '@SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker'
+            - '@IdentificationBundle\Identification\Service\RouteProvider'
 
     SubscriptionBundle\Subscription\SubscribeBack\Handler\SubscribeBackHandlerProvider:
         arguments:
@@ -24,7 +24,7 @@ services:
 
     SubscriptionBundle\Subscription\SubscribeBack\Subscriber:
         arguments:
-        - '@SubscriptionBundle\SubscriptionPack\EntitySaveHelper'
-        - '@SubscriptionBundle\Service\SubscriptionCreator'
+        - '@SubscriptionBundle\Service\EntitySaveHelper'
+        - '@SubscriptionBundle\Subscription\Common\SubscriptionFactory'
         - '@SubscriptionBundle\Subscription\Subscribe\OnSubscribeUpdater'
         - '@IdentificationBundle\BillingFramework\Data\DataProvider'

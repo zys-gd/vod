@@ -11,7 +11,7 @@ use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Subscription\Subscribe\Service\AfterSubscriptionProcessTracker;
+use SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
 use SubscriptionBundle\Subscription\Subscribe\Common\{AffiliateNotifier,
@@ -91,25 +91,25 @@ class ConsentFlowHandler
      */
     private $campaignExtractor;
     /**
-     * @var \SubscriptionBundle\Subscription\Subscribe\Service\AfterSubscriptionProcessTracker
+     * @var \SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker
      */
     private $afterSubscriptionProcessTracker;
 
     /**
      * ConsentFlowHandler constructor
      *
-     * @param LoggerInterface                 $logger
-     * @param SubscriptionExtractor           $subscriptionExtractor
-     * @param SubscriptionPackProvider        $subscriptionPackProvider
-     * @param Subscriber                      $subscriber
-     * @param EntitySaveHelper                $entitySaveHelper
-     * @param RouteProvider                   $routeProvider
-     * @param SubscriptionEligibilityChecker  $subscriptionEligibilityChecker
-     * @param UrlParamAppender                $urlParamAppender
-     * @param RouterInterface                 $router
-     * @param CommonResponseCreator           $commonResponseCreator
-     * @param AffiliateNotifier               $affiliateNotifier
-     * @param AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
+     * @param LoggerInterface                                                                   $logger
+     * @param SubscriptionExtractor                                                             $subscriptionExtractor
+     * @param SubscriptionPackProvider                                                          $subscriptionPackProvider
+     * @param Subscriber                                                                        $subscriber
+     * @param EntitySaveHelper                                                                  $entitySaveHelper
+     * @param RouteProvider                                                                     $routeProvider
+     * @param SubscriptionEligibilityChecker                                                    $subscriptionEligibilityChecker
+     * @param UrlParamAppender                                                                  $urlParamAppender
+     * @param RouterInterface                                                                   $router
+     * @param CommonResponseCreator                                                             $commonResponseCreator
+     * @param AffiliateNotifier                                                                 $affiliateNotifier
+     * @param \SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
      */
     public function __construct(
         LoggerInterface $logger,

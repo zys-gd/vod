@@ -14,17 +14,16 @@ use IdentificationBundle\User\Service\UserFactory;
 use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator;
-use SubscriptionBundle\Subscription\Subscribe\Service\AfterSubscriptionProcessTracker;
-
-use SubscriptionBundle\Subscription\SubscribeBack\Handler\SubscribeBackHandlerInterface;
-
+use SubscriptionBundle\Subscription\Common\RouteProvider;
 use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
+use SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker;
 use SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter;
+use SubscriptionBundle\Subscription\SubscribeBack\Handler\SubscribeBackHandlerInterface;
+use SubscriptionBundle\Subscription\SubscribeBack\Subscriber;
 use SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
 
 class CommonFlowHandler
 {
@@ -41,10 +40,7 @@ class CommonFlowHandler
      * @var BlacklistAttemptRegistrator
      */
     private $blacklistAttemptRegistrator;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+
     /**
      * @var UserFactory
      */
@@ -83,34 +79,37 @@ class CommonFlowHandler
     private $campaignExtractor;
 
     /**
-     * @var AfterSubscriptionProcessTracker
+     * @var \SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker
      */
     private $afterSubscriptionProcessTracker;
+    /**
+     * @var RouteProvider
+     */
+    private $routeProvider;
 
     /**
      * CommonFlowHandler constructor.
      *
-     * @param Subscriber                      $subscriber
-     * @param UserFactory                     $userFactory
-     * @param BlacklistVoter                  $blacklistVoter
-     * @param BlacklistAttemptRegistrator     $blacklistAttemptRegistrator
-     * @param RouterInterface                 $router
-     * @param DeviceDataProvider              $deviceDataProvider
-     * @param IdentificationDataStorage       $identificationDataStorage
-     * @param SubscriptionPackProvider        $subscriptionPackProvider
-     * @param SubscriptionExtractor           $subscriptionExtractor
-     * @param UrlParamAppender                $urlParamAppender
-     * @param UserRepository                  $userRepository
-     * @param TokenGenerator                  $generator
-     * @param CampaignExtractor               $campaignExtractor
-     * @param AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
+     * @param Subscriber                                                                        $subscriber
+     * @param UserFactory                                                                       $userFactory
+     * @param BlacklistVoter                                                                    $blacklistVoter
+     * @param BlacklistAttemptRegistrator                                                       $blacklistAttemptRegistrator
+     * @param DeviceDataProvider                                         $deviceDataProvider
+     * @param IdentificationDataStorage                                  $identificationDataStorage
+     * @param SubscriptionPackProvider                                                          $subscriptionPackProvider
+     * @param SubscriptionExtractor                                                             $subscriptionExtractor
+     * @param UrlParamAppender                                                                  $urlParamAppender
+     * @param UserRepository                                                                    $userRepository
+     * @param TokenGenerator                                                                    $generator
+     * @param CampaignExtractor                                                                 $campaignExtractor
+     * @param \SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
+     * @param \IdentificationBundle\Identification\Service\RouteProvider                        $routeProvider
      */
     public function __construct(
         Subscriber $subscriber,
         UserFactory $userFactory,
         BlacklistVoter $blacklistVoter,
         BlacklistAttemptRegistrator $blacklistAttemptRegistrator,
-        RouterInterface $router,
         DeviceDataProvider $deviceDataProvider,
         IdentificationDataStorage $identificationDataStorage,
         SubscriptionPackProvider $subscriptionPackProvider,
@@ -119,13 +118,13 @@ class CommonFlowHandler
         UserRepository $userRepository,
         TokenGenerator $generator,
         CampaignExtractor $campaignExtractor,
-        AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
+        AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker,
+        \IdentificationBundle\Identification\Service\RouteProvider $routeProvider
     )
     {
         $this->subscriber                      = $subscriber;
         $this->blacklistVoter                  = $blacklistVoter;
         $this->blacklistAttemptRegistrator     = $blacklistAttemptRegistrator;
-        $this->router                          = $router;
         $this->userFactory                     = $userFactory;
         $this->deviceDataProvider              = $deviceDataProvider;
         $this->identificationDataStorage       = $identificationDataStorage;
@@ -136,6 +135,7 @@ class CommonFlowHandler
         $this->generator                       = $generator;
         $this->campaignExtractor               = $campaignExtractor;
         $this->afterSubscriptionProcessTracker = $afterSubscriptionProcessTracker;
+        $this->routeProvider                   = $routeProvider;
     }
 
     /**
@@ -144,7 +144,6 @@ class CommonFlowHandler
      * @param SubscribeBackHandlerInterface $handler
      *
      * @return RedirectResponse
-     * @throws \SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound
      */
@@ -157,8 +156,7 @@ class CommonFlowHandler
         $msisdn           = $request->get('msisdn');
         $billingProcessId = $request->get('bf_process_id');
         $campaign         = $this->campaignExtractor->getCampaignFromSession($request->getSession());
-
-        $redirect_url = $this->router->generate('index');
+        $redirectUrl      = $this->routeProvider->getLinkToHomepage();
 
         $user                = $this->userRepository->findOneByMsisdn($msisdn);
         $identificationToken = $this->identificationDataStorage->getIdentificationToken();
@@ -183,7 +181,7 @@ class CommonFlowHandler
 
         $subscription = $this->subscriptionExtractor->getExistingSubscriptionForUser($user);
         if ($subscription) {
-            $updatedUrl = $this->urlParamAppender->appendUrl($redirect_url, [
+            $updatedUrl = $this->urlParamAppender->appendUrl($redirectUrl, [
                 'err_handle' => 'already_subscribed'
             ]);
 
@@ -202,9 +200,9 @@ class CommonFlowHandler
 
             $this->afterSubscriptionProcessTracker->track($result, $newSubscription, $handler, $campaign);
 
-            return new RedirectResponse($redirect_url);
+            return new RedirectResponse($redirectUrl);
         } catch (\Exception $exception) {
-            return new RedirectResponse($this->router->generate('whoops'));
+            return new RedirectResponse($this->routeProvider->getLinkToWrongCarrierPage());
         }
     }
 }

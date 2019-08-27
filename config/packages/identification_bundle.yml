@@ -12,6 +12,7 @@ identification:
   homepage_route: 'index'
   landing_route: 'landing'
   my_account_route: 'account'
+  wrong_carrier_route: 'whoops'
 
 services:
   IdentificationBundle\Repository\CarrierRepositoryInterface: '@App\Domain\Repository\CarrierRepository'
