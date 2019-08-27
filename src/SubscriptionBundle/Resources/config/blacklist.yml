@@ -1,0 +1,38 @@
+services:
+
+  SubscriptionBundle\Blacklist\BlacklistFactory: ~
+
+  SubscriptionBundle\Blacklist\BlacklistSaver:
+    arguments:
+      - '@IdentificationBundle\Repository\UserRepository'
+      - '@doctrine.orm.entity_manager'
+      - '@SubscriptionBundle\Repository\SubscriptionRepository'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber'
+      -
+  SubscriptionBundle\Blacklist\BlacklistChecker:
+    arguments:
+      - '@IdentificationBundle\Repository\UserRepository'
+      - '@SubscriptionBundle\Repository\BlackListRepository'
+      - '@logger'
+
+  SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator:
+    arguments:
+      - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+      - '@app.cache.default.subscription'
+      - '@SubscriptionBundle\Blacklist\BlacklistSaver'
+      - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
+      - '@IdentificationBundle\Repository\UserRepository'
+      - '@logger'
+
+
+  SubscriptionBundle\Blacklist\Admin\Sonata\BlackListAdmin:
+    arguments:
+      - ~
+      - SubscriptionBundle\Entity\BlackList
+      - ~
+      - '@SubscriptionBundle\Blacklist\BlacklistSaver'
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: black_list_management, label: Black list }
+    calls:
+      - [ setTemplate, [edit, '@@SubscriptionAdmin/BlackList/edit.html.twig']]

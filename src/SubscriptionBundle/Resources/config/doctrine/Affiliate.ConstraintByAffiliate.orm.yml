@@ -29,11 +29,11 @@ SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate:
 
     manyToOne:
         affiliate:
-            targetEntity: App\Domain\Entity\Affiliate
+            targetEntity: SubscriptionBundle\Entity\Affiliate\AffiliateInterface
             inversedBy: constraints
             joinColumn:
                 referencedColumnName: uuid
         carrier:
-            targetEntity: App\Domain\Entity\Carrier
+            targetEntity: CommonDataBundle\Entity\Interfaces\CarrierInterface
             joinColumn:
                 referencedColumnName: uuid

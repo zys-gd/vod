@@ -10,6 +10,7 @@ namespace IdentificationBundle\Identification\Common\Pixel;
 
 
 use IdentificationBundle\BillingFramework\Process\AfterPixelProcess;
+use SubscriptionBundle\BillingFramework\BillingOptionsProvider;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters;
 
 class PixelIdentVerifier
@@ -18,14 +19,21 @@ class PixelIdentVerifier
      * @var AfterPixelProcess
      */
     private $afterPixelProcess;
+    /**
+     * @var BillingOptionsProvider
+     */
+    private $billingOptionsProvider;
 
 
     /**
      * PixelIdentVerifier constructor.
+     * @param AfterPixelProcess      $afterPixelProcess
+     * @param BillingOptionsProvider $billingOptionsProvider
      */
-    public function __construct(AfterPixelProcess $afterPixelProcess)
+    public function __construct(AfterPixelProcess $afterPixelProcess, BillingOptionsProvider $billingOptionsProvider)
     {
-        $this->afterPixelProcess = $afterPixelProcess;
+        $this->afterPixelProcess      = $afterPixelProcess;
+        $this->billingOptionsProvider = $billingOptionsProvider;
     }
 
     public function isIdentSuccess(int $carrierId, string $processId): bool
@@ -47,7 +55,7 @@ class PixelIdentVerifier
     private function prepareParams(string $processId, $carrier): ProcessRequestParameters
     {
         $parameters                 = new ProcessRequestParameters();
-        $parameters->client         = 'vod-store';
+        $parameters->client         = $this->billingOptionsProvider->getClientId();
         $parameters->carrier        = $carrier;
         $parameters->additionalData = ['process' => $processId];
 

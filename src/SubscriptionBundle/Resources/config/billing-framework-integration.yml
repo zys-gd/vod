@@ -1,6 +1,10 @@
 services:
+
+    SubscriptionBundle\BillingFramework\BillingOptionsProvider:
+        arguments: ['_billing_api_host_placeholder_','_client_id_placeholder_']
+
     SubscriptionBundle\BillingFramework\Process\API\LinkCreator:
-        arguments: ['%billing_api_host%', '@ExtrasBundle\Utils\UrlParamAppender']
+        arguments: ['@SubscriptionBundle\BillingFramework\BillingOptionsProvider', '@ExtrasBundle\Utils\UrlParamAppender']
 
     SubscriptionBundle\BillingFramework\Notification\API\RequestSender:
         arguments:
@@ -27,7 +31,7 @@ services:
             - '@logger'
 
     SubscriptionBundle\BillingFramework\Notification\API\MessageCreator:
-        arguments: ['@logger', '@router']
+        arguments: ['@logger', '@router', '@SubscriptionBundle\BillingFramework\BillingOptionsProvider']
 
     SubscriptionBundle\BillingFramework\Process\UnsubscribeProcess:
         arguments:

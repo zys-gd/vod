@@ -3,8 +3,7 @@
 namespace SubscriptionBundle\Entity\Game;
 
 
-use App\Domain\Entity\Game;
-use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
+use CommonDataBundle\Entity\Interfaces\HasUuid;
 use SubscriptionBundle\Entity\Subscription;
 
 class SubscribedGame implements HasUuid
@@ -13,7 +12,7 @@ class SubscribedGame implements HasUuid
     private $uuid;
 
     /**
-     * @var Game
+     * @var GameInterface
      */
     private $game;
 
@@ -59,17 +58,17 @@ class SubscribedGame implements HasUuid
     }
 
     /**
-     * @return Game
+     * @return GameInterface
      */
-    public function getGame(): Game
+    public function getGame(): GameInterface
     {
         return $this->game;
     }
 
     /**
-     * @param Game|int $game
+     * @param GameInterface $game
      */
-    public function setGame($game)
+    public function setGame(GameInterface $game)
     {
         $this->game = $game;
     }

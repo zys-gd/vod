@@ -9,7 +9,7 @@
 namespace IdentificationBundle\Repository;
 
 
-use IdentificationBundle\Entity\LanguageInterface;
+use CommonDataBundle\Entity\Interfaces\LanguageInterface;
 
 interface LanguageRepositoryInterface
 {

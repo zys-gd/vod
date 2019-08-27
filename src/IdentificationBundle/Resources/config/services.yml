@@ -13,10 +13,6 @@ services:
     arguments:
       ['@device_detection.service.device', '@CountryCarrierDetectionBundle\Service\ConnectionTypeService']
 
-  IdentificationBundle\Identification\Service\AlreadySubscribedIdentFinisher:
-    arguments:
-      - '@IdentificationBundle\Identification\Service\IdentificationStatus'
-      - '@IdentificationBundle\Identification\Handler\AlreadySubscribedHandlerProvider'
 
   IdentificationBundle\Identification\Service\Session\SessionStorage:
     arguments:

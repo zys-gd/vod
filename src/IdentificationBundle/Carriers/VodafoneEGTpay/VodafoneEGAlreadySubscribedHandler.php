@@ -2,7 +2,7 @@
 
 namespace IdentificationBundle\Carriers\VodafoneEGTpay;
 
-use App\Domain\Constants\ConstBillingCarrierId;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Identification\Handler\AlreadySubscribedHandler;
 use IdentificationBundle\Identification\Service\IdentificationStatus;
 use IdentificationBundle\Repository\UserRepository;
@@ -45,7 +45,7 @@ class VodafoneEGAlreadySubscribedHandler implements AlreadySubscribedHandler
      */
     public function canHandle(int $billingCarrierId): bool
     {
-        return $billingCarrierId === ConstBillingCarrierId::VODAFONE_EGYPT_TPAY;
+        return $billingCarrierId === ID::VODAFONE_EGYPT_TPAY;
     }
 
     /**

@@ -1,8 +1,0 @@
-doctrine:
-  orm:
-    resolve_target_entities:
-      SubscriptionBundle\Entity\Affiliate\CampaignInterface: App\Domain\Entity\Campaign
-
-
-subscription:
-  resub_not_allowed_route: 'resub_not_allowed'

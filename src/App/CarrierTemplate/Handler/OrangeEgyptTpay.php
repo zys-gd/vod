@@ -2,7 +2,7 @@
 
 namespace App\CarrierTemplate\Handler;
 
-use App\Domain\Constants\ConstBillingCarrierId;
+use IdentificationBundle\BillingFramework\ID;
 
 /**
  * Class OrangeEgyptTpay
@@ -16,7 +16,7 @@ class OrangeEgyptTpay implements TemplateHandlerInterface
      */
     public function canHandle(int $billingCarrierId): bool
     {
-        return ConstBillingCarrierId::ORANGE_EGYPT_TPAY === $billingCarrierId;
+        return ID::ORANGE_EGYPT_TPAY === $billingCarrierId;
     }
 
     /**

@@ -2,10 +2,10 @@
 
 namespace App\Domain\Entity;
 
-use ExtrasBundle\Utils\UuidGenerator;
+use CommonDataBundle\Entity\Interfaces\HasUuid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
+use ExtrasBundle\Utils\UuidGenerator;
 use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use Symfony\Component\HttpFoundation\File\File;

@@ -2,6 +2,8 @@
 
 namespace IdentificationBundle\Entity;
 
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+
 /**
  * Class User
  */

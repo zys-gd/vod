@@ -4,5 +4,6 @@ services:
             - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
             - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
             - '@session'
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
         tags:
             - { name: twig.extension }

@@ -64,7 +64,8 @@ class AsyncIdentFinisherTest extends TestCase
 
         $user = Mockery::spy(User::class);
         $user->allows([
-            'getBillingCarrierId' => 0
+            'getBillingCarrierId' => 0,
+            'getIdentificationProcessId' => 'id'
         ]);
 
         $this->userRepository->allows([

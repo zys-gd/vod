@@ -1,11 +1,48 @@
 doctrine:
   orm:
     resolve_target_entities:
-      IdentificationBundle\Entity\CarrierInterface: App\Domain\Entity\Carrier
-      IdentificationBundle\Entity\LanguageInterface: App\Domain\Entity\Language
+      CommonDataBundle\Entity\Interfaces\CarrierInterface: App\Domain\Entity\Carrier
+      CommonDataBundle\Entity\Interfaces\LanguageInterface: CommonDataBundle\Entity\Language
+      SubscriptionBundle\Entity\Affiliate\CampaignInterface: App\Domain\Entity\Campaign
+      SubscriptionBundle\Entity\Affiliate\AffiliateInterface: App\Domain\Entity\Affiliate
+      SubscriptionBundle\Entity\Game\GameInterface: App\Domain\Entity\Game
 
 identification:
   wifi_flow_redirect_route: 'landing'
   homepage_route: 'index'
   landing_route: 'landing'
   my_account_route: 'account'
+  wrong_carrier_route: 'whoops'
+
+services:
+  IdentificationBundle\Repository\CarrierRepositoryInterface: '@App\Domain\Repository\CarrierRepository'
+  CommonDataBundle\Repository\Interfaces\LanguageRepositoryInterface: '@CommonDataBundle\Repository\LanguageRepository'
+  SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface: '@App\Domain\Repository\CampaignRepository'
+  IdentificationBundle\Identification\Service\TranslatorInterface: '@App\Domain\Service\Translator\Translator'
+
+
+subscription:
+  action_not_allowed_url: '%default_redirect_url%'
+  resub_not_allowed_route: 'resub_not_allowed'
+  callback_host: '%host%'
+  billing_framework:
+    api_host: '%billing_api_host%'
+    client_id: 'vod-store'
+
+  reporting_tool:
+    api_host: '%reporting_stats_api_host%'
+
+  cap_tool:
+    notification:
+      mail_to:   '%cap_notification_mail_to%'
+      mail_from: '%cap_notification_mail_from%'
+
+  event_tracking:
+    rabbit_mq:
+      host: '%rabbit_mq_host%'
+      port: '%rabbit_mq_port%'
+      user: '%rabbit_mq_user%'
+      password: '%rabbit_mq_password%'
+      vhost: '%rabbit_mq_vhost%'
+      exchange_name: 'piwik-vod'
+      queue_name: 'piwik-events-vod'

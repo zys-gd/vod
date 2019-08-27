@@ -1,0 +1,19 @@
+SubscriptionBundle\Entity\ExchangeRate:
+    type: entity
+    table: exchange_rates
+    repositoryClass: SubscriptionBundle\Repository\ExchangeRateRepository
+
+    id:
+        uuid:
+            type: guid
+    fields:
+        currencyCode:
+            type: string
+
+        currencyName:
+            type: string
+
+        exchangeRate:
+            type: decimal
+            precision: 12
+            scale: 2

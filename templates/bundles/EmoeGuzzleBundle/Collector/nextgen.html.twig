@@ -1,0 +1,134 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% import _self as helper %}
+
+{% block toolbar %}
+    {% set warningThreshold = 5 %}
+
+    {% set icon %}
+        <span class="icon">{{ include('@EmoeGuzzle/Icon/Icon.svg') }}</span>
+        <span class="sf-toolbar-value">{{ collector.requests|length }}</span>
+        {% set status = collector.errorRequests|length ? 'red' : collector.requests|length > warningThreshold ? 'yellow' %}
+    {% endset %}
+    {% set text %}
+        <div class="sf-toolbar-info-piece">
+            <b>Total Requests</b>
+            <span class="sf-toolbar-status {% if collector.requests|length > warningThreshold %}sf-toolbar-status-yellow{% endif %}">{{ collector.requests|length }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Success</b>
+            <span class="sf-toolbar-status">{{ collector.requests|length - collector.errorRequests|length }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Errors</b>
+            <span class="sf-toolbar-status {% if collector.errorRequests|length %}sf-toolbar-status-red{% endif %}">{{ collector.errorRequests|length }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Total Duration</b>
+            <span>{{ collector.totalDuration }} ms</span>
+        </div>
+    {% endset %}
+    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: profiler_url, status: status|default('') }) }}
+{% endblock %}
+
+{% block menu %}
+    {% set warningThreshold = 5 %}
+
+    {% set statusClass = collector.errorRequests|length ? 'label-status-error' : collector.requests|length > warningThreshold ? 'label-status-warning' %}
+    <span class="label {{ statusClass }} {{ collector.requests|length == 0 ? 'disabled' }}">
+        <span class="icon"><img
+                    src="data:image/png;base64,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"
+                    alt=""/></span>
+        <strong>Guzzle</strong>
+        {% if collector.errorRequests|length %}
+            <span class="count">
+                <span>{{ collector.errorRequests|length }}</span>
+            </span>
+        {% elseif collector.requests|length > warningThreshold %}
+            <span class="count">
+                <span>{{ collector.requests|length }}</span>
+            </span>
+        {% endif %}
+    </span>
+{% endblock %}
+
+{% block panel %}
+    {% set timeThreshold = 500 %}
+
+    <h2>HTTP requests</h2>
+
+    {% if collector.requests|length == 0 %}
+        <div class="empty">
+            <p>No requests sent.</p>
+        </div>
+    {% else %}
+        {% set methods = ['GET', 'POST', 'PUT', 'DELETE', 'OTHER'] %}
+        {# sort collected logs in groups #}
+        {% set groups = {} %}
+        {% for request in collector.requests %}
+            {% if request.method in methods %}
+                {% set groups = groups|merge({(request.method): (groups[request.method]|default([])|merge([request]))}) %}
+            {% else %}
+                {% set groups = groups|merge({'OTHER': [request]}) %}
+            {% endif %}
+        {% endfor %}
+        {% set groups = groups|merge({'ALL': collector.requests}) %}
+
+        <div class="sf-tabs">
+            {% for method in ['ALL']|merge(methods) %}
+                <div class="tab">
+                    <h3 class="tab-title">{{ method }} <span
+                                class="badge">{{ groups[method]|default([])|length }}</span></h3>
+
+                    <div class="tab-content">
+                        {% if groups[method] is defined %}
+                            <table class="logs">
+                                <tbody>
+                                {% for request in groups[method] %}
+                                    {% set id = method ~ loop.index %}
+                                    {% set class = request.is_error ? 'status-error' : request.time > timeThreshold ? 'status-warning' : '' %}
+                                    <tr class="{{ class }}">
+                                        <td>
+                                            <button class="btn-link text-small sf-toggle"
+                                                    data-toggle-selector="#{{ id }}"
+                                                    data-toggle-alt-content="Hide details">Show details
+                                            </button>
+                                        </td>
+                                        <td class="font-normal text-small">
+                                            <code>{{ request.message }} ({{ request.time|number_format }} ms)</code>
+                                            <div id="{{ id }}" class="hidden">
+                                                <strong>Request:</strong>
+                                                <pre style="
+                                                   width: 1440px;
+                                                   white-space: pre-wrap;
+                                                   white-space: -moz-pre-wrap;
+                                                   white-space: -pre-wrap;
+                                                   white-space: -o-pre-wrap;
+                                                   word-wrap: break-word;
+                                                ">{{ request.request }}</pre>
+                                                <strong>Response:</strong>
+                                                <pre style="
+                                                   width: 1440px;
+                                                   white-space: pre-wrap;
+                                                   white-space: -moz-pre-wrap;
+                                                   white-space: -pre-wrap;
+                                                   white-space: -o-pre-wrap;
+                                                   word-wrap: break-word;
+                                                ">{{ request.response }}</pre>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <div class="empty">
+                                <p>There are no log messages of this level.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

@@ -9,9 +9,9 @@
 namespace IdentificationBundle\Identification\Common\Pixel;
 
 
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\BillingFramework\Data\DataProvider;
-use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Common\PostPaidHandler;
 use IdentificationBundle\Identification\DTO\DeviceData;
@@ -21,7 +21,7 @@ use IdentificationBundle\Identification\Handler\HasPostPaidRestriction;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Identification\Service\IdentificationStatus;
 use IdentificationBundle\Identification\Service\TokenGenerator;
-use IdentificationBundle\Identification\Service\UserFactory;
+use IdentificationBundle\User\Service\UserFactory;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
@@ -33,7 +33,7 @@ class PixelIdentConfirmer
      */
     private $entityManager;
     /**
-     * @var UserFactory
+     * @var \IdentificationBundle\User\Service\UserFactory
      */
     private $userFactory;
     /**
