@@ -1,18 +1,18 @@
 <?php declare(strict_types=1);
 
 
-use IdentificationBundle\Entity\CarrierInterface;
-use IdentificationBundle\Identification\Service\UserFactory;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use IdentificationBundle\User\Service\UserFactory;
 use PHPUnit\Framework\TestCase;
 
 class UserFactoryTest extends TestCase
 {
-    /** @var UserFactory */
+    /** @var \IdentificationBundle\User\Service\UserFactory */
     private $userFactory;
 
     protected function setUp()
     {
-        $this->userFactory = new UserFactory();
+        $this->userFactory = new UserFactory(Mockery::spy(\SubscriptionBundle\Subscription\Notification\Common\ShortUrlHashGenerator::class));
     }
 
     public function testCreate()

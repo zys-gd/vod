@@ -9,17 +9,16 @@
 namespace IdentificationBundle\Carriers\EtisalatEG;
 
 
-use App\Domain\Constants\ConstBillingCarrierId;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
 use IdentificationBundle\BillingFramework\Process\DTO\PinVerifyResult;
-use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\DTO\PhoneValidationOptions;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinVerifyRules;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
-use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 
 class EtisalatEGWifiIdentificationHandler implements
     WifiIdentificationHandlerInterface,
@@ -49,7 +48,7 @@ class EtisalatEGWifiIdentificationHandler implements
 
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return ConstBillingCarrierId::ETISALAT_EGYPT === $carrier->getBillingCarrierId();
+        return ID::ETISALAT_EGYPT === $carrier->getBillingCarrierId();
     }
 
 

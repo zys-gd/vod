@@ -9,8 +9,8 @@
 namespace IdentificationBundle\Carriers\HutchID;
 
 
-use App\Domain\Constants\ConstBillingCarrierId;
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\DTO\PhoneValidationOptions;
@@ -35,7 +35,7 @@ class HutchIDWifiIdentificationHandler implements WifiIdentificationHandlerInter
 
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::HUTCH_INDONESIA;
+        return $carrier->getBillingCarrierId() === ID::HUTCH_INDONESIA;
     }
 
     public function getRedirectUrl()

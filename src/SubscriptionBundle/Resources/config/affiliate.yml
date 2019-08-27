@@ -1,7 +1,20 @@
 services:
+
+
+
+    SubscriptionBundle\Affiliate\Admin\Sonata\AffiliateLogAdmin:
+        arguments:
+            - ~
+            - SubscriptionBundle\Entity\Affiliate\AffiliateLog
+            - ~
+            - '@IdentificationBundle\Repository\TestUserRepository'
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: affiliate_management, label: Affiliate log }
+
+
     SubscriptionBundle\Affiliate\Service\AffiliateSender:
         arguments:
-            - '@App\Domain\Repository\CampaignRepository'
+            - '@SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface'
             - '@doctrine.orm.entity_manager'
             - '@SubscriptionBundle\Affiliate\Service\GuzzleClientFactory'
             - '@SubscriptionBundle\Affiliate\Service\AffiliateLogFactory'
@@ -12,3 +25,7 @@ services:
     SubscriptionBundle\Affiliate\Service\GuzzleClientFactory: ~
 
     SubscriptionBundle\Affiliate\Service\AffiliateLogFactory: ~
+
+    SubscriptionBundle\Affiliate\Service\CampaignExtractor:
+        arguments:
+            - '@SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface'

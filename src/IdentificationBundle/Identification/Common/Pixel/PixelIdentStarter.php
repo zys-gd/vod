@@ -9,9 +9,9 @@
 namespace IdentificationBundle\Identification\Common\Pixel;
 
 
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use ExtrasBundle\SignatureCheck\ParametersProvider;
 use ExtrasBundle\SignatureCheck\SignatureHandler;
-use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Service\RouteProvider;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use Symfony\Component\HttpFoundation\RedirectResponse;

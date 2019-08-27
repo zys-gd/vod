@@ -4,7 +4,7 @@
 namespace IdentificationBundle\Identification\Service;
 
 
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Identification\Handler\PassthroughFlow\HasPassthroughFlow;
 

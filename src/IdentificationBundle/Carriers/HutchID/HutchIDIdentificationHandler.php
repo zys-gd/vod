@@ -2,11 +2,10 @@
 
 namespace IdentificationBundle\Carriers\HutchID;
 
-use App\Domain\Constants\ConstBillingCarrierId;
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Identification\Handler\HasHeaderEnrichment;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerInterface;
-use IdentificationBundle\Identification\Handler\PassthroughFlow\HasPassthroughFlow;
 use Symfony\Component\HttpFoundation\Request;
 
 
@@ -21,7 +20,7 @@ class HutchIDIdentificationHandler implements
      */
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::HUTCH_INDONESIA;
+        return $carrier->getBillingCarrierId() === ID::HUTCH_INDONESIA;
     }
 
     /**

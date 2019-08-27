@@ -8,7 +8,7 @@ services:
     IdentificationBundle\WifiIdentification\Service\IdentFinisher:
         arguments:
             - '@IdentificationBundle\Identification\Service\TokenGenerator'
-            - '@IdentificationBundle\Identification\Service\UserFactory'
+            - '@IdentificationBundle\User\Service\UserFactory'
             - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
             - '@doctrine.orm.entity_manager'
 
@@ -49,7 +49,9 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
 
-    IdentificationBundle\WifiIdentification\Common\RequestProvider: ~
+    IdentificationBundle\WifiIdentification\Common\RequestProvider:
+        arguments:
+            - '@SubscriptionBundle\BillingFramework\BillingOptionsProvider'
 
     IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeResolver:
         arguments:
@@ -59,11 +61,29 @@ services:
 
     IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeMappers\ErrorCodeMapperProvider: ~
 
+
     IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage:
-        arguments:
-            - '@IdentificationBundle\Identification\Service\Session\SessionStorage'
+      arguments:
+        - '@IdentificationBundle\Identification\Service\Session\SessionStorage'
 
     IdentificationBundle\WifiIdentification\WifiPhoneOptionsProvider:
+        arguments: ['@IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerProvider', '@IdentificationBundle\Repository\CarrierRepositoryInterface']
+
+
+
+    IdentificationBundle\WifiIdentification\Controller\PinIdentificationController:
+        tags: ['controller.service_arguments']
         arguments:
-            - '@IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerProvider'
-            - '@App\Domain\Repository\CarrierRepository'
+            - '@IdentificationBundle\WifiIdentification\WifiIdentSMSSender'
+            - '@IdentificationBundle\WifiIdentification\WifiIdentConfirmator'
+            - '@IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeResolver'
+            - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter'
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+            - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitNotifier'
+            - '@SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter'
+            - '@SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator'
+            - '@IdentificationBundle\WifiIdentification\WifiPhoneOptionsProvider'
+            - '@SubscriptionBundle\Subscription\Common\RouteProvider'
+            - '@logger'
+            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
+            - '@SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking'

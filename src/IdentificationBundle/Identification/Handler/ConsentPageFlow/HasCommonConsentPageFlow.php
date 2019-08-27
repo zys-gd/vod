@@ -2,7 +2,7 @@
 
 namespace IdentificationBundle\Identification\Handler\ConsentPageFlow;
 
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

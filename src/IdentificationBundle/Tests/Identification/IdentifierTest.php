@@ -6,9 +6,9 @@
  * Time: 10:58
  */
 
-use IdentificationBundle\Entity\CarrierInterface;
-use IdentificationBundle\Identification\Common\CommonFlowHandler;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\Identification\Common\CommonConsentPageFlowHandler;
+use IdentificationBundle\Identification\Common\CommonFlowHandler;
 use IdentificationBundle\Identification\Common\HeaderEnrichmentHandler;
 use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\Handler\HasCommonFlow;
@@ -17,7 +17,6 @@ use IdentificationBundle\Identification\Handler\HasHeaderEnrichment;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerInterface;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
-use IdentificationBundle\Identification\Service\Session\SessionStorage;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;

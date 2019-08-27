@@ -2,8 +2,8 @@
 
 namespace App\Domain\Entity;
 
+use CommonDataBundle\Entity\Interfaces\HasUuid;
 use Doctrine\Common\Collections\ArrayCollection;
-use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 
 /**
  * Class Developer

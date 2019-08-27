@@ -2,12 +2,11 @@
 
 namespace IdentificationBundle\WifiIdentification\Service;
 
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\TokenGenerator;
-use IdentificationBundle\Identification\Service\UserFactory;
 
 /**
  * Class IdentFinisher
@@ -19,7 +18,7 @@ class IdentFinisher
      */
     private $tokenGenerator;
     /**
-     * @var UserFactory
+     * @var \IdentificationBundle\User\Service\UserFactory
      */
     private $userFactory;
     /**
@@ -33,14 +32,14 @@ class IdentFinisher
 
     /**
      * IdentFinisher constructor.
-     * @param TokenGenerator            $tokenGenerator
-     * @param UserFactory               $userFactory
-     * @param IdentificationDataStorage $identificationDataStorage
-     * @param EntityManagerInterface    $entityManager
+     * @param TokenGenerator                                 $tokenGenerator
+     * @param \IdentificationBundle\User\Service\UserFactory $userFactory
+     * @param IdentificationDataStorage                      $identificationDataStorage
+     * @param EntityManagerInterface                         $entityManager
      */
     public function __construct(
         TokenGenerator $tokenGenerator,
-        UserFactory $userFactory,
+        \IdentificationBundle\User\Service\UserFactory $userFactory,
         IdentificationDataStorage $identificationDataStorage,
         EntityManagerInterface $entityManager
     ) {

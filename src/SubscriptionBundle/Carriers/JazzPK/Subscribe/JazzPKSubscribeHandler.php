@@ -9,13 +9,12 @@
 namespace SubscriptionBundle\Carriers\JazzPK\Subscribe;
 
 
-use App\Domain\Constants\ConstBillingCarrierId;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Entity\User;
-use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCommonFlow;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerInterface;
-use SubscriptionBundle\Service\Notification\Notifier;
+use SubscriptionBundle\Subscription\Notification\Notifier;
+use SubscriptionBundle\Subscription\Subscribe\Handler\HasCommonFlow;
+use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class JazzPKSubscribeHandler implements SubscriptionHandlerInterface, HasCommonFlow
@@ -35,9 +34,9 @@ class JazzPKSubscribeHandler implements SubscriptionHandlerInterface, HasCommonF
         $this->notifier = $notifier;
     }
 
-    public function canHandle(\IdentificationBundle\Entity\CarrierInterface $carrier): bool
+    public function canHandle(\CommonDataBundle\Entity\Interfaces\CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::MOBILINK_PAKISTAN;
+        return $carrier->getBillingCarrierId() === ID::MOBILINK_PAKISTAN;
     }
 
     public function getAdditionalSubscribeParams(Request $request, User $User): array

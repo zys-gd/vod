@@ -9,14 +9,14 @@
 namespace IdentificationBundle\Identification\Common;
 
 
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\Exception\FailedIdentificationException;
 use IdentificationBundle\Identification\Handler\HasHeaderEnrichment;
 use IdentificationBundle\Identification\Handler\HasPostPaidRestriction;
 use IdentificationBundle\Identification\Service\IdentificationStatus;
-use IdentificationBundle\Identification\Service\UserFactory;
+use IdentificationBundle\User\Service\UserFactory;
 use IdentificationBundle\Repository\UserRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 class HeaderEnrichmentHandler
 {
     /**
-     * @var UserFactory
+     * @var \IdentificationBundle\User\Service\UserFactory
      */
     private $userFactory;
     /**

@@ -2,15 +2,11 @@
 
 namespace SubscriptionBundle\Repository;
 
-use App\Domain\Entity\Carrier;
-use Carbon\Carbon;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use DateTime;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Internal\Hydration\IterableResult;
-use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Exception\SubscriptionException;
 
 /**
  * SubscriptionRepository
@@ -65,79 +61,11 @@ class SubscriptionRepository extends EntityRepository
         return $existingActiveSubscription;
     }
 
-    /**
-     * @param Carbon $startDate
-     * @param Carbon $endDate
-     * @return IterableResult
-     * @throws SubscriptionException
-     */
-    public function findRenewableSubscription($startDate, $endDate)
-    {
-        $qb = $this->createQueryBuilder('s');
-
-        $now = Carbon::now();
-        if (!$endDate || $endDate->greaterThan($now)) {
-            throw new SubscriptionException('End date must be provided and it needs to be less than current time.');
-        }
-
-        if ($startDate && $endDate) {
-            if ($startDate->greaterThan($now) || $endDate->greaterThan($now)) {
-                throw new SubscriptionException('Start date needs to be less than current datetime');
-            }
-
-            if ($startDate->greaterThan($endDate)) {
-                throw new SubscriptionException('Start date needs to be less than end date');
-            }
-
-            $qb->where('s.renewDate BETWEEN :startDate AND :endDate')
-                ->setParameter('startDate', $startDate->format('Y-m-d H:i:s'));
-
-        } else {
-
-            $qb->where('s.renewDate <= :endDate');
-        }
-
-        $qb->join('s.plan', 'p', 'WITH', 's.plan = p.id');
-        $qb->andWhere('s.status = :activeStatus')
-            ->andWhere('p.providerManagedSubscriptions = :providerManagedSubscriptions')
-            ->addOrderBy('s.renewDate', 'DESC')
-            ->setParameter('providerManagedSubscriptions', 0)
-            ->setParameter('activeStatus', Subscription::IS_ACTIVE)
-            ->setParameter('endDate', $endDate->format('Y-m-d H:i:s'));
-
-
-        $existingActiveSubscriptionIterator = $qb->getQuery()->iterate();
-        return $existingActiveSubscriptionIterator;
-    }
-
-    public function findPendingSubscription()
-    {
-        $qb = $this->createQueryBuilder('s');
-
-        /*     $now = new \DateTime();
-             $alertTime = clone $now;
-             $alertTime->modify( '-2 hour' )->format('Y-m-d H:i:s');*/
-//        $alertTime = Carbon::now(-2);
-
-        $qb->select('count(s.id)');
-//            ->where('s.renewDate >= :alertTime')
-//            ->setParameter('alertTime', $alertTime);
-
-        //     $qb->join('s.plan', 'p', 'WITH', 's.plan = p.id');
-        $qb->andWhere('s.status = :pendingStatus')
-            //     ->andWhere('p.providerManagedSubscriptions = :providerManagedSubscriptions')
-            ->addOrderBy('s.renewDate', 'DESC')
-            //  ->setParameter('providerManagedSubscriptions', 0)
-            ->setParameter('pendingStatus', Subscription::IS_PENDING);
-
-        $pendingSubCount = (integer)$qb->getQuery()->getSingleScalarResult();
-        var_dump($pendingSubCount);
-        return $pendingSubCount;
-    }
 
     /**
-     * @param Carrier $carrier
+     * @param CarrierInterface $carrier
      * @return Subscription[]
+     * @throws \Exception
      */
     public function getExpiredSubscriptions(CarrierInterface $carrier)
     {

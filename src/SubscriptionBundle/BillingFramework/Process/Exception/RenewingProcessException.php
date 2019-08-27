@@ -9,9 +9,6 @@
 namespace SubscriptionBundle\BillingFramework\Process\Exception;
 
 
-use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
-use Throwable;
-
 class RenewingProcessException extends \RuntimeException
 {
 

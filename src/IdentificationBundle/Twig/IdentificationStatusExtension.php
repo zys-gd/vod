@@ -2,8 +2,10 @@
 
 namespace IdentificationBundle\Twig;
 
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
+use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig\Extension\AbstractExtension;
@@ -26,22 +28,29 @@ class IdentificationStatusExtension extends AbstractExtension
      * @var SessionInterface
      */
     private $session;
+    /**
+     * @var CarrierRepositoryInterface
+     */
+    private $carrierRepository;
 
     /**
      * IdentificationStatusExtension constructor.
      *
-     * @param IdentificationDataStorage     $dataStorage
+     * @param IdentificationDataStorage  $dataStorage
      * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
-     * @param SessionInterface              $session
+     * @param SessionInterface           $session
+     * @param CarrierRepositoryInterface $carrierRepository
      */
     public function __construct(
         IdentificationDataStorage $dataStorage,
         WifiIdentificationDataStorage $wifiIdentificationDataStorage,
-        SessionInterface $session
+        SessionInterface $session,
+        CarrierRepositoryInterface $carrierRepository
     )
     {
-
-        $this->dataStorage                   = $dataStorage;
+        $this->dataStorage       = $dataStorage;
+        $this->session           = $session;
+        $this->carrierRepository = $carrierRepository;
         $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
         $this->session                       = $session;
     }
@@ -80,5 +89,37 @@ class IdentificationStatusExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * @return bool
+     */
+    public function isCarrierDetected(): bool
+    {
+        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
+        return isset($ispDetectionData['carrier_id']) && $ispDetectionData['carrier_id'];
+    }
 
+    /**
+     * @return int|null
+     */
+    public function getCarrierId(): ?int
+    {
+        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
+        return empty($ispDetectionData['carrier_id']) ? null : (int)$ispDetectionData['carrier_id'];
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOtp(): bool
+    {
+        $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
+
+        if ($billingCarrierId) {
+            /** @var CarrierInterface $carrier */
+            $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
+            return $carrier->isConfirmationClick();
+        }
+
+        return false;
+    }
 }

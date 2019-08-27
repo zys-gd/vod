@@ -74,4 +74,5 @@ class PhoneValidationOptions
     {
         return $this->pinPlaceholder;
     }
+
 }

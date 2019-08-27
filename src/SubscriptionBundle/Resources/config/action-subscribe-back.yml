@@ -1,30 +1,30 @@
 services:
-    SubscriptionBundle\Service\Action\SubscribeBack\Handler\DefaultHandler: ~
+    SubscriptionBundle\Subscription\SubscribeBack\Handler\DefaultHandler: ~
 
-    SubscriptionBundle\Service\Action\SubscribeBack\Common\CommonFlowHandler:
+    SubscriptionBundle\Subscription\SubscribeBack\Common\CommonFlowHandler:
         arguments:
-            - '@SubscriptionBundle\Service\Action\SubscribeBack\Subscriber'
-            - '@IdentificationBundle\Identification\Service\UserFactory'
-            - '@SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter'
-            - '@SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator'
-            - '@router'
+            - '@SubscriptionBundle\Subscription\SubscribeBack\Subscriber'
+            - '@IdentificationBundle\User\Service\UserFactory'
+            - '@SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter'
+            - '@SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator'
             - '@IdentificationBundle\Identification\Service\DeviceDataProvider'
             - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
-            - '@SubscriptionBundle\Service\SubscriptionPackProvider'
-            - '@SubscriptionBundle\Service\SubscriptionExtractor'
+            - '@SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider'
+            - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
             - '@ExtrasBundle\Utils\UrlParamAppender'
             - '@IdentificationBundle\Repository\UserRepository'
             - '@IdentificationBundle\Identification\Service\TokenGenerator'
-            - '@SubscriptionBundle\Service\CampaignExtractor'
-            - '@SubscriptionBundle\Service\Action\Subscribe\AfterSubscriptionProcessTracker'
+            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
+            - '@SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker'
+            - '@IdentificationBundle\Identification\Service\RouteProvider'
 
-    SubscriptionBundle\Service\Action\SubscribeBack\Handler\SubscribeBackHandlerProvider:
+    SubscriptionBundle\Subscription\SubscribeBack\Handler\SubscribeBackHandlerProvider:
         arguments:
-            - '@SubscriptionBundle\Service\Action\SubscribeBack\Handler\DefaultHandler'
+            - '@SubscriptionBundle\Subscription\SubscribeBack\Handler\DefaultHandler'
 
-    SubscriptionBundle\Service\Action\SubscribeBack\Subscriber:
+    SubscriptionBundle\Subscription\SubscribeBack\Subscriber:
         arguments:
         - '@SubscriptionBundle\Service\EntitySaveHelper'
-        - '@SubscriptionBundle\Service\SubscriptionCreator'
-        - '@SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater'
+        - '@SubscriptionBundle\Subscription\Common\SubscriptionFactory'
+        - '@SubscriptionBundle\Subscription\Subscribe\OnSubscribeUpdater'
         - '@IdentificationBundle\BillingFramework\Data\DataProvider'

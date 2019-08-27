@@ -9,8 +9,7 @@
 namespace App\Domain\Repository;
 
 
-use App\Domain\Entity\Carrier;
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Entity\SubscriptionPack;
 
