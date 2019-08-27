@@ -7,7 +7,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\TokenGenerator;
-use IdentificationBundle\User\Service\UserFactory;
 
 /**
  * Class IdentFinisher

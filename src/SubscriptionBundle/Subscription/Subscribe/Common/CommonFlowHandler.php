@@ -294,7 +294,7 @@ class CommonFlowHandler
             }
         }
 
-        $this->afterSubscriptionProcessTracker->track($result, $subscription, $subscriber);
+        $this->afterSubscriptionProcessTracker->track($result, $subscription, $subscriber, null, true);
 
         $subscriber->afterProcess($subscription, $result);
         $this->entitySaveHelper->saveAll();

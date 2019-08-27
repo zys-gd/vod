@@ -38,14 +38,16 @@ class AfterSubscriptionProcessTracker
     /**
      * @param ProcessResult          $processResult
      * @param Subscription           $subscription
-     * @param                        $subscriber
+     * @param object                 $subscriber
      * @param CampaignInterface|null $campaign
+     * @param bool                   $isResubscribe
      */
     public function track(
         ProcessResult $processResult,
         Subscription $subscription,
         object $subscriber,
-        CampaignInterface $campaign = null
+        CampaignInterface $campaign = null,
+        bool $isResubscribe = false
     ): void
     {
         if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
@@ -65,7 +67,15 @@ class AfterSubscriptionProcessTracker
         }
 
         if ($isPiwikTracked) {
-            $this->subscriptionEventTracker->trackSubscribe($subscription, $processResult);
+
+            // Not best idea definitely. Not even close. However, im not sure if duplicate code is an better option.
+            //
+            // I'll prefer siding with the evil we know over the evil we don't.
+            if ($isResubscribe) {
+                $this->subscriptionEventTracker->trackResubscribe($subscription, $processResult);
+            } else {
+                $this->subscriptionEventTracker->trackSubscribe($subscription, $processResult);
+            }
         }
     }
 }
