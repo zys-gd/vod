@@ -16,6 +16,7 @@ use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Repository\UserRepository;
+use IdentificationBundle\WifiIdentification\DTO\PhoneValidationOptions;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinVerifyRules;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
@@ -95,5 +96,15 @@ class EtisalatEGWifiIdentificationHandler implements
     public function getMsisdnFromResult(PinVerifyResult $pinVerifyResult, string $phoneNumber): string
     {
         return $phoneNumber;
+    }
+
+    public function getPhoneValidationOptions(): PhoneValidationOptions
+    {
+        return new PhoneValidationOptions(
+            '+XXXXXXXXXXXX',
+            '^[0-9]{12}$',
+            '',
+            ''
+        );
     }
 }

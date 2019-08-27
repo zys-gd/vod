@@ -16,6 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
+use IdentificationBundle\WifiIdentification\WifiPhoneOptionsProvider;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface;
 use SubscriptionBundle\Repository\SubscriptionPackRepository;
@@ -49,6 +50,10 @@ class LPExtension extends AbstractExtension
      * @var string
      */
     private $imageBaseUrl;
+    /**
+     * @var WifiPhoneOptionsProvider
+     */
+    private $wifiPhoneOptionsProvider;
 
     /**
      * LPExtension constructor.
@@ -57,7 +62,7 @@ class LPExtension extends AbstractExtension
      * @param CarrierRepositoryInterface  $carrierRepository
      * @param CampaignRepositoryInterface $campaignRepository
      * @param CountryRepository           $countryRepository
-     * @param string                      $imageBaseUrl
+     * @param WifiPhoneOptionsProvider    $wifiPhoneOptionsProvider
      */
     public function __construct(
         SessionInterface $session,
@@ -65,6 +70,7 @@ class LPExtension extends AbstractExtension
         CarrierRepositoryInterface $carrierRepository,
         CampaignRepositoryInterface $campaignRepository,
         CountryRepository $countryRepository,
+        WifiPhoneOptionsProvider $wifiPhoneOptionsProvider,
         string $imageBaseUrl
     )
     {
@@ -73,6 +79,7 @@ class LPExtension extends AbstractExtension
         $this->carrierRepository = $carrierRepository;
         $this->campaignRepository = $campaignRepository;
         $this->countryRepository = $countryRepository;
+        $this->wifiPhoneOptionsProvider = $wifiPhoneOptionsProvider;
         $this->imageBaseUrl = $imageBaseUrl;
     }
 
@@ -83,7 +90,9 @@ class LPExtension extends AbstractExtension
             new TwigFunction('getCarrierCountry', [$this, 'getCarrierCountry']),
             new TwigFunction('isClickableSubImage', [$this, 'isClickableSubImage']),
             new TwigFunction('LPImporter', [$this, 'getLPImportPath']),
-            new TwigFunction('getCampaignData', [$this, 'getCampaignData'])
+            new TwigFunction('getCampaignData', [$this, 'getCampaignData']),
+            new TwigFunction('getPhoneValidationOptions', [$this, 'getPhoneValidationOptions']),
+            new TwigFunction('getPinValidationOptions', [$this, 'getPinValidationOptions'])
         ];
     }
 
@@ -173,6 +182,28 @@ class LPExtension extends AbstractExtension
             throw new \InvalidArgumentException('Wrong parameter');
         }
         return $campaignData[$key];
+    }
+
+    public function getPhoneValidationOptions()
+    {
+        $billingCarrierId = (int)IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
+        $phoneValidationOptions = $this->wifiPhoneOptionsProvider->getPhoneValidationOptions($billingCarrierId);
+
+        return [
+            'placeholder' => $phoneValidationOptions->getPhonePlaceholder(),
+            'pattern' => $phoneValidationOptions->getPhoneRegexPattern()
+        ];
+    }
+
+    public function getPinValidationOptions()
+    {
+        $billingCarrierId = (int)IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
+        $phoneValidationOptions = $this->wifiPhoneOptionsProvider->getPhoneValidationOptions($billingCarrierId);
+
+        return [
+            'placeholder' => $phoneValidationOptions->getPinPlaceholder(),
+            'pattern' => $phoneValidationOptions->getPinRegexPattern()
+        ];
     }
 
     private function extractCampaignData()

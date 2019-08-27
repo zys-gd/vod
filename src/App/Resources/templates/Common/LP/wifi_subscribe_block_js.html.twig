@@ -2,300 +2,290 @@
     {% import '@App/Components/Forms/wifi_phone.html.twig' as wifi_phone %}
     {% import '@App/Components/Forms/wifi_pin.html.twig' as wifi_pin %}
     {% import '@App/Components/Forms/wifi_select.html.twig' as wifi_select %}
-<script>
-    $(document).ready(() => {
-        var form = $('#wifi_form');
-        var carrierId = + '{{ getCarrierId() }}';
+    <script>
+        $(document).ready(() => {
+            var form = $('#wifi_form');
+            var carrierId = +'{{ getCarrierId() }}';
 
-        var $wifi_form_step = $('#wifi_form_step');
-        var $wifi_warning   = $('.wifi_form__warning');
-        var phone;
-        var input_phone     = $('input[name=mobile_number]');
+            var wifiFormStep = $('#wifi_form_step');
+            var wifiFormWarning = $('.wifi_form__warning');
+            var phone;
+            var phoneTarget = $('input[name=mobile_number]');
 
-        var params = {
-            html_wifi_phone: $('<div />').html('{{ html2string(wifi_phone.render()) }}').text(),
-            html_wifi_pin  : $('<div />').html('{{ html2string(wifi_pin.render()) }}').text(),
-            pin_notif      : $('<div />').html('{{ html2string(translate('wifi.pin_notif')|nl2br) }}').text(),
-            warning        : $('<div />').html('{{ html2string(translate('wifi.warning')|nl2br) }}').text()
-        };
-
-
-        if (window.performance && window.performance.navigation.type == window.performance.navigation.TYPE_BACK_FORWARD) {
-            location.reload()
-        }
-
-        $('.x-subscribe-image').removeAttr('href').removeAttr('class');
-
-        $(document).on('change', 'select[name="country"]', function () {
-            changeCountry(this)
-        });
-
-        $(document).on('change', 'select[name="carrier_id"]', function () {
-            changeCarrier(this)
-        });
+            var params = {
+                html_wifi_phone: $('<div />').html('{{ html2string(wifi_phone.render()) }}').text(),
+                html_wifi_pin: $('<div />').html('{{ html2string(wifi_pin.render()) }}').text(),
+                pin_notif: $('<div />').html('{{ html2string(translate('wifi.pin_notif')|nl2br) }}').text(),
+                warning: $('<div />').html('{{ html2string(translate('wifi.warning')|nl2br) }}').text()
+            };
 
 
-        // submit pin form
-        $(document).on('submit', 'form[data-form=pin]', function (e) {
-            form = $('#wifi_form');
-            $wifi_form_step = $('#wifi_form_step');
-            $wifi_warning   = $('.wifi_form__warning');
-
-            e.preventDefault();
-            if (!$('#terms-and-conditions-checkbox').is(':checked')) {
-                $('#terms-and-conditions').focus();
-                return;
+            if (window.performance && window.performance.navigation.type == window.performance.navigation.TYPE_BACK_FORWARD) {
+                location.reload()
             }
-            $.ajax({
-                url: "{{ path('send_sms_pin_code') }}",
-                method: "POST",
-                data: form.serialize(),
-                beforeSend: () => $._loader(),
-                success: response => new PinSuccessResponseResolver(response),
-                error: response => new PinErrorResponseResolver(response).resolve(),
-                complete: () => $._loader(true)
+
+            $('.x-subscribe-image').removeAttr('href').removeAttr('class');
+
+            $(document).on('change', 'select[name="country"]', function () {
+                changeCountry(this)
             });
-        });
 
-        // confirm pin code
-        $(document).on('submit', 'form[data-form=confirm]', function (e) {
-            e.preventDefault();
-            $._loader();
+            $(document).on('change', 'select[name="carrier_id"]', function () {
+                changeCarrier(this)
+            });
 
-            $.ajax({
-                url    : "{{ path('confirm_sms_pin_code') }}",
-                method : "POST",
-                data   : form.serialize(),
-                success: function (result) {
-                    if (result.data.success) {
+
+            // submit pin form
+            $(document).on('submit', 'form[data-form=pin]', function (e) {
+                form = $('#wifi_form');
+                wifiFormStep = $('#wifi_form_step');
+                wifiFormWarning = $('.wifi_form__warning');
+
+                e.preventDefault();
+                if (!$('#terms-and-conditions-checkbox').is(':checked')) {
+                    $('#terms-and-conditions').focus();
+                    return;
+                }
+                $.ajax({
+                    url: "{{ path('send_sms_pin_code') }}",
+                    method: "POST",
+                    data: form.serialize(),
+                    beforeSend: () => $._loader(),
+                    success: response => new PinSuccessResponseResolver(response),
+                    error: response => new PinErrorResponseResolver(response).resolve(),
+                    complete: () => $._loader(true)
+                });
+            });
+
+            // confirm pin code
+            $(document).on('submit', 'form[data-form=confirm]', function (e) {
+                e.preventDefault();
+                $._loader();
+
+                $.ajax({
+                    url: "{{ path('confirm_sms_pin_code') }}",
+                    method: "POST",
+                    data: form.serialize(),
+                    success: function (result) {
+                        if (result.data.success) {
+                            window.location = result.data.redirectUrl;
+                        } else {
+                            $._loader(true);
+                            showAlert({title: result.data.message});
+                        }
+                    }
+                });
+            });
+
+            $(document).on('click', '#send-reminder', function () {
+                let phoneNumber = phone.replace('+', '');
+
+                $.ajax({
+                    url: "{{ path('remind_credentials') }}",
+                    method: 'POST',
+                    data: {
+                        phoneNumber: phoneNumber
+                    },
+                    complete: function () {
+                        $('.fc-content .button-confirm').click();
+                    },
+                    success: function (result) {
                         window.location = result.data.redirectUrl;
-                    } else {
-                        $._loader(true);
-                        showAlert({title: result.data.message});
                     }
+                })
+            });
+
+            // re-send pin code
+            $(document).on('click', '#resend-pin', function (event) {
+                event.preventDefault();
+                var form = $(this).closest('form');
+                var resendPinMarker = $('<input type="hidden" name="resend-pin" />');
+
+                form.append(resendPinMarker);
+
+                $(this).closest('form').attr('data-form', 'pin').submit();
+
+                $(document).ajaxSuccess(function (event, request, settings) {
+                    if (settings.url === '{{ path('send_sms_pin_code') }}') {
+                        resendPinMarker.remove();
+                    }
+                });
+            });
+
+            // change phone number
+            $(document).on('click', '#change-number', function (event) {
+                event.preventDefault();
+                $._loader();
+                wifiFormStep.html(params.html_wifi_phone);
+                wifiFormWarning.html(params.warning);
+                form.attr('data-form', 'pin');
+                $('input[name=mobile_number]').val(phone);
+                $._loader(true);
+            });
+
+            $(document).on('focus blur', 'input[name=mobile_number]', function () {
+                if ($(this).val() === '') {
+                    $(this).val('+');
                 }
             });
-        });
 
-        $(document).on('click', '#send-reminder', function () {
-            let phoneNumber = phone.replace('+', '');
-
-            $.ajax({
-                url: "{{ path('remind_credentials') }}",
-                method: 'POST',
-                data: {
-                    phoneNumber: phoneNumber
-                },
-                complete: function() {
-                    $('.fc-content .button-confirm').click();
-                },
-                success: function(result) {
-                    window.location = result.data.redirectUrl;
-                }
-            })
-        });
-
-        // re-send pin code
-        $(document).on('click', '#resend-pin', function (event) {
-            event.preventDefault();
-            var form = $(this).closest('form');
-            var resendPinMarker = $('<input type="hidden" name="resend-pin" />');
-
-            form.append(resendPinMarker);
-
-            $(this).closest('form').attr('data-form', 'pin').submit();
-
-            $(document).ajaxSuccess(function (event, request, settings) {
-                if (settings.url === '{{ path('send_sms_pin_code') }}') {
-                    resendPinMarker.remove();
-                }
+            $(document).on('focus', '#terms-and-conditions', function (e) {
+                e.preventDefault();
+                $(this).addClass('highlighting-item');
             });
-        });
 
-        // change phone number
-        $(document).on('click', '#change-number', function (event) {
-            event.preventDefault();
-            $._loader();
-            $wifi_form_step.html(params.html_wifi_phone);
-            $wifi_warning.html(params.warning);
-            form.attr('data-form', 'pin');
-            $('input[name=mobile_number]').val(phone);
-            $._loader(true);
-        });
+            $(document).on('focusout', '#terms-and-conditions', function (e) {
+                e.preventDefault();
+                $(this).removeClass('highlighting-item');
+            });
 
-        $(document).on('focus blur', 'input[name=mobile_number]', function () {
-            if ($(this).val() === '') {
-                $(this).val('+');
-            }
-        });
-
-        $(document).on('focus', '#terms-and-conditions', function (e) {
-            e.preventDefault();
-            $(this).addClass('highlighting-item');
-        });
-
-        $(document).on('focusout', '#terms-and-conditions', function(e) {
-            e.preventDefault();
-            $(this).removeClass('highlighting-item');
-        });
-
-        $(document).on('mousedown', '#terms-and-conditions', function(e) {
-            e.stopImmediatePropagation();
-            e.preventDefault();
-        });
+            $(document).on('mousedown', '#terms-and-conditions', function (e) {
+                e.stopImmediatePropagation();
+                e.preventDefault();
+            });
 
 
-        function PinSuccessResponseResolver(response) {
-            if(response.data.isResend) {
-                showAlert({title: 'New PIN-code', message: 'has been successfully sent'});
-            }
-
-            input_phone = $('input[name=mobile_number]');
-            phone = input_phone.val();
-
-            $wifi_warning.html(params.pin_notif.replace(/%wifi_phone%/, phone));
-            $wifi_form_step
-                .html(params.html_wifi_pin)
-                .append(input_phone);
-
-            form.attr('data-form', 'confirm');
-            input_phone.addClass('d-none');
-
-            addValidationAttributes(response.data.carrierId);
-        }
-
-        function PinErrorResponseResolver(response) {
-            this._response = response;
-
-            this.resolve = () => {
-                switch (true) {
-                    case this._response.status === 422:
-                        _validationFlow();
-                        break;
-                    case this._response.status === 400 && this._response.responseJSON.data.hasOwnProperty('redirectUrl'):
-                        _redirectFlow();
-                        break;
-                    case this._response.status === 400:
-                        _defaultFlow();
-                        break;
-                    case this._response.responseJSON.data.hasOwnProperty('code') &&
-                    (this._response.responseJSON.data.code === 102 || this._response.responseJSON.data.code === 103):
-                        _limitExceededFlow();
-                        break;
+            function PinSuccessResponseResolver(response) {
+                if (response.data.isResend) {
+                    showAlert({title: 'New PIN-code', message: 'has been successfully sent'});
                 }
-            };
 
-            let _redirectFlow = () => {
-                window.location = this._response.responseJSON.data.redirectUrl;
-            };
-            let _validationFlow = () => {
-                showAlert({title: this._response.responseJSON.data.message});
-            };
-            let _defaultFlow = () => {
-                showAlert({title: this._response.responseJSON.data.message});
-            };
-            let _limitExceededFlow = () => {
+                phoneTarget = $('input[name=mobile_number]');
+                phone = phoneTarget.val();
+
+                wifiFormWarning.html(params.pin_notif.replace(/%wifi_phone%/, phone));
+                wifiFormStep
+                    .html(params.html_wifi_pin)
+                    .append(phoneTarget);
+
+                addPinValidation();
+
                 form.attr('data-form', 'confirm');
-                _defaultFlow();
-            };
-
-        }
-
-        // TODO find more flexible way to apply validation attributes#}
-        function addValidationAttributes(carrierId) {
-            var pinPatterns = {
-                2253: '^[0-9][0-9]{5}$',
-                2254: '^[0-9][0-9]{5}$'
-            };
-
-            var msisdnPatterns = {
-                2253: '^\\+(201)[0-9]{9}$',
-                2254: '^\\+(201)[0-9]{9}$'
-            };
-
-            if (msisdnPatterns[carrierId]) {
-                $("input[name='mobile_number']").attr('pattern', msisdnPatterns[carrierId])
+                phoneTarget.addClass('d-none');
             }
 
-            if (pinPatterns[carrierId]) {
-                $("input[name='pin_code']").attr('pattern', pinPatterns[carrierId])
-            }
-        }
+            function PinErrorResponseResolver(response) {
+                this._response = response;
 
-        function fillOptionsForCarrierSelect({id, name}) {
-            let template = `<option value='${id}'>${name}</option>`;
-            $('select[name="carrier_id"]').append(template);
-        }
-
-        function clearOptionsForCarrierSelect(defaultCarrierSelectText) {
-            let template = `<option value=''>${defaultCarrierSelectText}</option>`;
-            $('select[name="carrier_id"]').empty().append(template);
-        }
-
-        function replaceBodyContent(html) {
-            let mainPageContainer = $(html).filter('#main-page-container').html();
-            let footer = $(html).filter('footer').html();
-            $('.media-body').html(mainPageContainer);
-            $('footer').html(footer);
-        }
-
-        function changeCountry(el) {
-            let countryCode = String($(el).val());
-
-            if (countryCode.length === 0) {
-                resetWifiLP();
-                return;
-            }
-
-            $.ajax({
-                url: "{{ path('fetch_carriers_for_country') }}",
-                method: 'GET',
-                data: {countryCode},
-                beforeSend: () => {
-                    clearOptionsForCarrierSelect("{{ translate('wifi.form.select_carrier') }}");
-                    $._loader();
-                },
-                success: (response) => response.map(item => fillOptionsForCarrierSelect(item)),
-                error: (response) => {
-                    if (this._response.responseJSON.data.hasOwnProperty('redirectUrl')) {
-                        window.location = this._response.responseJSON.data.redirectUrl;
+                this.resolve = () => {
+                    switch (true) {
+                        case this._response.status === 422:
+                            _validationFlow();
+                            break;
+                        case this._response.status === 400 && this._response.responseJSON.data.hasOwnProperty('redirectUrl'):
+                            _redirectFlow();
+                            break;
+                        case this._response.status === 400:
+                            _defaultFlow();
+                            break;
+                        case this._response.responseJSON.data.hasOwnProperty('code') &&
+                        (this._response.responseJSON.data.code === 102 || this._response.responseJSON.data.code === 103):
+                            _limitExceededFlow();
+                            break;
                     }
-                },
-                complete: () => $._loader(true)
-            })
-        }
+                };
 
-        function changeCarrier(el) {
-            let carrierId = String($(el).val());
+                let _redirectFlow = () => {
+                    window.location = this._response.responseJSON.data.redirectUrl;
+                };
+                let _validationFlow = () => {
+                    showAlert({title: this._response.responseJSON.data.message});
+                };
+                let _defaultFlow = () => {
+                    showAlert({title: this._response.responseJSON.data.message});
+                };
+                let _limitExceededFlow = () => {
+                    form.attr('data-form', 'confirm');
+                    _defaultFlow();
+                };
 
-            if (carrierId.length === 0) {
-                resetWifiLP();
-                return;
             }
 
-            $.ajax({
-                url: "{{ path('select_carrier_wifi') }}",
-                method: 'GET',
-                data: {carrierId},
-                beforeSend: () => {
-                    $._loader();
-                },
-                success: response => replaceBodyContent(response),
-                complete: () => $._loader(true),
-            })
-        }
+            function addPinValidation() {
+                {% if isCarrierDetected() %}
+                let pinPlaceholder = "{{ getPinValidationOptions().placeholder }}";
+                let pinPattern = "{{ getPinValidationOptions().pattern }}";
 
-        function resetWifiLP() {
-            $.ajax({
-                url: "{{ path('reset_wifi_lp') }}",
-                method: 'GET',
-                beforeSend: () => $._loader(),
-                success: response => replaceBodyContent(response),
-                complete: () => $._loader(true),
-            })
-        }
+                $('input[name=pin_code]')
+                    .attr('placeholder', pinPlaceholder)
+                    .attr('pattern', pinPattern);
+                {% endif %}
+            }
 
-    });
+            function fillOptionsForCarrierSelect({id, name}) {
+                let template = `<option value='${id}'>${name}</option>`;
+                $('select[name="carrier_id"]').append(template);
+            }
 
-</script>
+            function clearOptionsForCarrierSelect(defaultCarrierSelectText) {
+                let template = `<option value=''>${defaultCarrierSelectText}</option>`;
+                $('select[name="carrier_id"]').empty().append(template);
+            }
+
+            function replaceBodyContent(html) {
+                let mainPageContainer = $(html).filter('#main-page-container').html();
+                let footer = $(html).filter('footer').html();
+                $('.media-body').html(mainPageContainer);
+                $('footer').html(footer);
+            }
+
+            function changeCountry(el) {
+                let countryCode = String($(el).val());
+
+                if (countryCode.length === 0) {
+                    resetWifiLP();
+                    return;
+                }
+
+                $.ajax({
+                    url: "{{ path('fetch_carriers_for_country') }}",
+                    method: 'GET',
+                    data: {countryCode},
+                    beforeSend: () => {
+                        clearOptionsForCarrierSelect("{{ translate('wifi.form.select_carrier') }}");
+                        $._loader();
+                    },
+                    success: (response) => response.map(item => fillOptionsForCarrierSelect(item)),
+                    error: (response) => {
+                        if (this._response.responseJSON.data.hasOwnProperty('redirectUrl')) {
+                            window.location = this._response.responseJSON.data.redirectUrl;
+                        }
+                    },
+                    complete: () => $._loader(true)
+                })
+            }
+
+            function changeCarrier(el) {
+                let carrierId = String($(el).val());
+
+                if (carrierId.length === 0) {
+                    resetWifiLP();
+                    return;
+                }
+
+                $.ajax({
+                    url: "{{ path('select_carrier_wifi') }}",
+                    method: 'GET',
+                    data: {carrierId},
+                    beforeSend: () => {
+                        $._loader();
+                    },
+                    success: response => replaceBodyContent(response),
+                    complete: () => $._loader(true),
+                })
+            }
+
+            function resetWifiLP() {
+                $.ajax({
+                    url: "{{ path('reset_wifi_lp') }}",
+                    method: 'GET',
+                    beforeSend: () => $._loader(),
+                    success: response => replaceBodyContent(response),
+                    complete: () => $._loader(true),
+                })
+            }
+
+        });
+
+    </script>
 {% endmacro %}

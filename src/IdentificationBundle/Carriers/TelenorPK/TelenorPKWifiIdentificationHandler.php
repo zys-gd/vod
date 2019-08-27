@@ -15,6 +15,7 @@ use IdentificationBundle\BillingFramework\Process\DTO\PinVerifyResult;
 use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Repository\UserRepository;
+use IdentificationBundle\WifiIdentification\DTO\PhoneValidationOptions;
 use IdentificationBundle\WifiIdentification\Exception\WifiIdentConfirmException;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinVerifyRules;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
@@ -83,5 +84,15 @@ class TelenorPKWifiIdentificationHandler implements WifiIdentificationHandlerInt
         }
 
         return $pinVerifyResult->getRawData()['user_identifier'];
+    }
+
+    public function getPhoneValidationOptions(): PhoneValidationOptions
+    {
+        return new PhoneValidationOptions(
+            '+923XXXXXXXXX',
+            '^\+923[0-9]{9}$',
+            'XXXXX',
+            '^[0-9]{1,5}$'
+        );
     }
 }
