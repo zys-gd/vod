@@ -1,11 +1,11 @@
 services:
     SubscriptionBundle\Subscription\SubscribeBack\Handler\DefaultHandler: ~
 
-    SubscriptionBundle\Service\Action\SubscribeBack\Common\CommonFlowHandler:
+    SubscriptionBundle\Subscription\SubscribeBack\Common\CommonFlowHandler:
         arguments:
-            - '@SubscriptionBundle\Service\Action\SubscribeBack\Subscriber'
+            - '@SubscriptionBundle\Subscription\SubscribeBack\Subscriber'
             - '@IdentificationBundle\Identification\Service\UserFactory'
-            - '@SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter'
+            - '@SubscriptionBundle\Subscription\Subscribe\Common\BlacklistVoter'
             - '@SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator'
             - '@router'
             - '@IdentificationBundle\Identification\Service\DeviceDataProvider'
@@ -16,15 +16,15 @@ services:
             - '@IdentificationBundle\Repository\UserRepository'
             - '@IdentificationBundle\Identification\Service\TokenGenerator'
             - '@SubscriptionBundle\Service\CampaignExtractor'
-            - '@SubscriptionBundle\Service\Action\Subscribe\AfterSubscriptionProcessTracker'
+            - '@SubscriptionBundle\Subscription\Subscribe\Service\AfterSubscriptionProcessTracker'
 
-    SubscriptionBundle\Service\Action\SubscribeBack\Handler\SubscribeBackHandlerProvider:
+    SubscriptionBundle\Subscription\SubscribeBack\Handler\SubscribeBackHandlerProvider:
         arguments:
-            - '@SubscriptionBundle\Service\Action\SubscribeBack\Handler\DefaultHandler'
+            - '@SubscriptionBundle\Subscription\SubscribeBack\Handler\DefaultHandler'
 
-    SubscriptionBundle\Service\Action\SubscribeBack\Subscriber:
+    SubscriptionBundle\Subscription\SubscribeBack\Subscriber:
         arguments:
         - '@SubscriptionBundle\SubscriptionPack\EntitySaveHelper'
         - '@SubscriptionBundle\Service\SubscriptionCreator'
-        - '@SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater'
+        - '@SubscriptionBundle\Subscription\Subscribe\OnSubscribeUpdater'
         - '@IdentificationBundle\BillingFramework\Data\DataProvider'

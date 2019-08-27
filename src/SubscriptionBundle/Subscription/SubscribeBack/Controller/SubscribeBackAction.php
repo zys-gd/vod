@@ -9,14 +9,11 @@
 namespace SubscriptionBundle\Subscription\SubscribeBack\Controller;
 
 
-use SubscriptionBundle\Subscription\SubscribeBack\SubscribeBackHandlerProvider;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
-use SubscriptionBundle\Service\Action\SubscribeBack\Common\CommonFlowHandler;
-use SubscriptionBundle\Service\Action\SubscribeBack\Handler\SubscribeBackHandlerProvider;
+use SubscriptionBundle\Subscription\SubscribeBack\Common\CommonFlowHandler;
+use SubscriptionBundle\Subscription\SubscribeBack\Handler\SubscribeBackHandlerProvider;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
 
 class SubscribeBackAction
 {
@@ -55,9 +52,9 @@ class SubscribeBackAction
      * @param Request $request
      * @param ISPData $ispData
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response|void
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound
+     * @throws \SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound
      */
     public function __invoke(Request $request, ISPData $ispData)
     {

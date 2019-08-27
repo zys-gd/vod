@@ -1,14 +1,14 @@
 <?php
 
 
-namespace SubscriptionBundle\Service\Action\SubscribeBack;
+namespace SubscriptionBundle\Subscription\SubscribeBack;
 
 
 use IdentificationBundle\BillingFramework\Data\DataProvider;
 use IdentificationBundle\Entity\User;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
-use SubscriptionBundle\Service\Action\Subscribe\OnSubscribeUpdater;
+use SubscriptionBundle\Subscription\Subscribe\OnSubscribeUpdater;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Service\SubscriptionCreator;
 

@@ -1,15 +1,15 @@
 <?php
 
 
-namespace SubscriptionBundle\Service\Action\Subscribe;
+namespace SubscriptionBundle\Subscription\Subscribe\Service;
 
 
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEventTracker;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomAffiliateTrackingRules;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomPiwikTrackingRules;
+use SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventTracker;
+use SubscriptionBundle\Subscription\Subscribe\Handler\HasCustomAffiliateTrackingRules;
+use SubscriptionBundle\Subscription\Subscribe\Handler\HasCustomPiwikTrackingRules;
 
 class AfterSubscriptionProcessTracker
 {

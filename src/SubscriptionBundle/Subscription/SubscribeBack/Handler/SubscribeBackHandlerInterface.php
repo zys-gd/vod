@@ -1,10 +1,10 @@
 <?php
 
 
-namespace SubscriptionBundle\Service\Action\SubscribeBack\Handler;
+namespace SubscriptionBundle\Subscription\SubscribeBack\Handler;
 
 
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 interface SubscribeBackHandlerInterface

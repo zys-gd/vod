@@ -6,8 +6,8 @@ namespace SubscriptionBundle\Carriers\OrangeTNMM\Subscribe;
 
 use App\Domain\Constants\ConstBillingCarrierId;
 use IdentificationBundle\Entity\CarrierInterface;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\HasPassthroughFlow;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerInterface;
+use SubscriptionBundle\Subscription\Subscribe\Handler\HasPassthroughFlow;
+use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class OrangeTNMMSubscriptionHandler implements SubscriptionHandlerInterface, HasPassthroughFlow

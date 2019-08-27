@@ -10,7 +10,7 @@ class SubscribeBackHandlerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $definition = $container->findDefinition('SubscriptionBundle\Service\Action\SubscribeBack\Handler\SubscribeBackHandlerProvider');
+        $definition = $container->findDefinition('SubscriptionBundle\Subscription\SubscribeBack\Handler\SubscribeBackHandlerProvider');
 
         $taggedServices = $container->findTaggedServiceIds('subscription.subscribeback_handler');
 

@@ -34,7 +34,7 @@ services:
             - '@SubscriptionBundle\Subscription\Common\RouteProvider'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\AffiliateNotifier'
             - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
-            - '@SubscriptionBundle\Service\Action\Subscribe\AfterSubscriptionProcessTracker'
+            - '@SubscriptionBundle\Subscription\Subscribe\Service\AfterSubscriptionProcessTracker'
 
 
     SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEligibilityChecker: ~
@@ -99,7 +99,6 @@ services:
             - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
             - '@SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider'
             - '@SubscriptionBundle\Subscription\Subscribe\Subscriber'
-            - '@SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventTracker'
             - '@SubscriptionBundle\Service\EntitySaveHelper'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEligibilityChecker'
@@ -167,6 +166,6 @@ services:
 
     SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventChecker: ~
 
-    SubscriptionBundle\Service\Action\Subscribe\AfterSubscriptionProcessTracker:
+    SubscriptionBundle\Subscription\Subscribe\AfterSubscriptionProcessTracker:
       arguments:
-        - '@SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEventTracker'
+        - '@SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventTracker'

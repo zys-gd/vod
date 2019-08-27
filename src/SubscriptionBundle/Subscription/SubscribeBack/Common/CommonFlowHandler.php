@@ -1,29 +1,26 @@
 <?php
 
 
-namespace SubscriptionBundle\Service\Action\SubscribeBack\Common;
+namespace SubscriptionBundle\Subscription\SubscribeBack\Common;
 
 
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use ExtrasBundle\Utils\UrlParamAppender;
-use IdentificationBundle\Entity\CarrierInterface;
-use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Service\DeviceDataProvider;
 use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\TokenGenerator;
-use IdentificationBundle\Identification\Service\UserFactory;
 use IdentificationBundle\Repository\UserRepository;
+use IdentificationBundle\User\Service\UserFactory;
+use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
-use SubscriptionBundle\Service\Action\Subscribe\AfterSubscriptionProcessTracker;
-use SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter;
-use SubscriptionBundle\Service\Action\Subscribe\Common\SubscriptionEventTracker;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomAffiliateTrackingRules;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomPiwikTrackingRules;
-use SubscriptionBundle\Service\Action\SubscribeBack\Subscriber;
-use SubscriptionBundle\Service\Action\SubscribeBack\Handler\SubscribeBackHandlerInterface;
-use SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator;
-use SubscriptionBundle\Service\CampaignExtractor;
-use SubscriptionBundle\Service\SubscriptionExtractor;
-use SubscriptionBundle\Service\SubscriptionPackProvider;
+use SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator;
+use SubscriptionBundle\Subscription\Subscribe\Service\AfterSubscriptionProcessTracker;
+
+use SubscriptionBundle\Subscription\SubscribeBack\Handler\SubscribeBackHandlerInterface;
+
+use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
+use SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter;
+use SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -146,9 +143,10 @@ class CommonFlowHandler
      * @param CarrierInterface              $carrier
      * @param SubscribeBackHandlerInterface $handler
      *
-     * @return RedirectResponse|void
+     * @return RedirectResponse
      * @throws \SubscriptionBundle\Exception\ActiveSubscriptionPackNotFound
      * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound
      */
     public function process(
         Request $request,

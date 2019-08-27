@@ -1,7 +1,7 @@
 <?php
 
 
-namespace SubscriptionBundle\Service\Action\SubscribeBack\Handler;
+namespace SubscriptionBundle\Subscription\SubscribeBack\Handler;
 
 
 use IdentificationBundle\Entity\CarrierInterface;
