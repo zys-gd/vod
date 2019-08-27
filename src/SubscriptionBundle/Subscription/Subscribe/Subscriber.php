@@ -156,7 +156,9 @@ class Subscriber
             }
             else {
                 $response = $this->subscribePerformer->doSubscribe($subscription, $additionalData);
-
+                if($response->isSuccessful()) {
+                    $this->subscribePromotionalPerformer->doSubscribe($subscription);
+                }
             }
 
             $this->onSubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
