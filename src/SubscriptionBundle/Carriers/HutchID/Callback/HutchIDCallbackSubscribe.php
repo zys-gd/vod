@@ -13,6 +13,7 @@ use IdentificationBundle\User\Service\UserFactory;
 use SubscriptionBundle\Affiliate\Service\AffiliateSender;
 use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
 use SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper;
+use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
 use SubscriptionBundle\Carriers\HutchID\Subscribe\HutchIDSMSSubscriber;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
@@ -27,6 +28,7 @@ use SubscriptionBundle\Subscription\Callback\Impl\HasCustomFlow;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCustomTrackingRules;
 use SubscriptionBundle\Subscription\Common\SubscriptionFactory;
+use SubscriptionBundle\Subscription\Notification\Notifier;
 use Symfony\Component\HttpFoundation\Request;
 
 class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCustomFlow
@@ -99,6 +101,10 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
      * @var EventPublisher
      */
     private $conversionEventPublisher;
+    /**
+     * @var Notifier
+     */
+    private $notifier;
 
     /**
      * HutchIDCallbackSubscribe constructor.
@@ -120,6 +126,7 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
      * @param AffiliateSender             $affiliateSender
      * @param ConversionEventMapper       $conversionEventMapper
      * @param EventPublisher              $conversionEventPublisher
+     * @param Notifier                    $notifier
      */
     public function __construct(
         CommonFlowHandler $commonFlowHandler,
@@ -138,7 +145,8 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
         UserInfoMapper $infoMapper,
         AffiliateSender $affiliateSender,
         ConversionEventMapper $conversionEventMapper,
-        EventPublisher $conversionEventPublisher
+        EventPublisher $conversionEventPublisher,
+        Notifier $notifier
     )
     {
         $this->commonFlowHandler           = $commonFlowHandler;
@@ -158,6 +166,7 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
         $this->affiliateSender             = $affiliateSender;
         $this->conversionEventMapper       = $conversionEventMapper;
         $this->conversionEventPublisher    = $conversionEventPublisher;
+        $this->notifier                    = $notifier;
     }
 
     public function canHandle(Request $request, int $carrierId): bool
@@ -176,8 +185,6 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
     {
         $requestParams = (Object)$request->request->all();
 
-        // dirty hock
-        // reset billing subscription
         try {
             if ($requestParams->provider_fields['source'] != 'SMS') {
                 throw new \Exception();
@@ -216,6 +223,15 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
             $this->hutchIDSMSSubscriber->subscribe($subscription, $processResponse);
             $this->entitySaveHelper->persistAndSave($subscription);
 
+            // send SMS
+            $this->notifier->sendNotification(
+                SubscribeProcess::PROCESS_METHOD_SUBSCRIBE,
+                $subscription,
+                $subscription->getSubscriptionPack(),
+                $carrier
+            );
+
+            // track event
             if ($this instanceof HasCustomTrackingRules) {
                 $isNeedToBeTracked = $this->isNeedToBeTracked($processResponse);
             }
