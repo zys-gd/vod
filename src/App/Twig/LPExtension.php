@@ -8,6 +8,7 @@ use App\CarrierTemplate\TemplateConfigurator;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
 use CommonDataBundle\Entity\Country;
+use CommonDataBundle\Repository\Interfaces\CountryRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
@@ -44,6 +45,10 @@ class LPExtension extends AbstractExtension
      * @var WifiPhoneOptionsProvider
      */
     private $wifiPhoneOptionsProvider;
+    /**
+     * @var CountryRepositoryInterface
+     */
+    private $countryRepository;
 
     /**
      * LPExtension constructor.
@@ -58,6 +63,7 @@ class LPExtension extends AbstractExtension
         TemplateConfigurator $templateConfigurator,
         CarrierRepositoryInterface $carrierRepository,
         CampaignRepositoryInterface $campaignRepository,
+        CountryRepositoryInterface $countryRepository,
         WifiPhoneOptionsProvider $wifiPhoneOptionsProvider,
         string $imageBaseUrl
     )
@@ -68,6 +74,7 @@ class LPExtension extends AbstractExtension
         $this->campaignRepository = $campaignRepository;
         $this->wifiPhoneOptionsProvider = $wifiPhoneOptionsProvider;
         $this->imageBaseUrl = $imageBaseUrl;
+        $this->countryRepository = $countryRepository;
     }
 
     public function getFunctions()

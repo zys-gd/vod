@@ -37,6 +37,7 @@ services:
             - '@App\CarrierTemplate\TemplateConfigurator'
             - '@App\Domain\Repository\CarrierRepository'
             - '@SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface'
+            - '@CommonDataBundle\Repository\CountryRepository'
             - '@IdentificationBundle\WifiIdentification\WifiPhoneOptionsProvider'
             - '%images_base_url%'
 
