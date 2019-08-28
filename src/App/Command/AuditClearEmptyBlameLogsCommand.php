@@ -3,13 +3,13 @@
 namespace App\Command;
 
 use DataDog\AuditBundle\Entity\AuditLog;
+use Doctrine\DBAL\ConnectionException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use \Doctrine\DBAL\ConnectionException;
-use \Throwable;
+use Throwable;
 
 class AuditClearEmptyBlameLogsCommand extends Command
 {

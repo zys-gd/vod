@@ -9,16 +9,16 @@
 namespace SubscriptionBundle\Carriers\EtisalatEG\Callback;
 
 
-use App\Domain\Constants\ConstBillingCarrierId;
 use AppBundle\Constant\Carrier;
+use IdentificationBundle\BillingFramework\ID;
+use IdentificationBundle\Entity\User;
 use IdentificationBundle\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Request;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerInterface;
-use SubscriptionBundle\Service\Callback\Impl\HasCommonFlow;
-use SubscriptionBundle\Service\Callback\Impl\HasCustomTrackingRules;
-use IdentificationBundle\Entity\User;
+use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerInterface;
+use SubscriptionBundle\Subscription\Callback\Impl\HasCommonFlow;
+use SubscriptionBundle\Subscription\Callback\Impl\HasCustomTrackingRules;
+use Symfony\Component\HttpFoundation\Request;
 
 class EtisalatEGCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCustomTrackingRules, HasCommonFlow
 {
@@ -38,7 +38,7 @@ class EtisalatEGCallbackSubscribe implements CarrierCallbackHandlerInterface, Ha
 
     public function canHandle(Request $request, int $carrierId): bool
     {
-        return $carrierId == ConstBillingCarrierId::ETISALAT_EGYPT;
+        return $carrierId == ID::ETISALAT_EGYPT;
     }
 
     public function afterProcess(Subscription $subscription, User $User, ProcessResult $processResponse)

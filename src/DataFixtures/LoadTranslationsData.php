@@ -10,10 +10,11 @@ namespace DataFixtures;
 
 
 use App\Domain\Entity\Translation;
+use CommonDataBundle\DataFixtures\LoadLanguagesData;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Playwing\DiffToolBundle\Utils\FixtureDataLoader;
+use ExtrasBundle\Utils\FixtureDataLoader;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 

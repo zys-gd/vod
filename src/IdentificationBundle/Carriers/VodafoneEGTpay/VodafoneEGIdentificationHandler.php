@@ -2,9 +2,9 @@
 
 namespace IdentificationBundle\Carriers\VodafoneEGTpay;
 
-use App\Domain\Constants\ConstBillingCarrierId;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use ExtrasBundle\Utils\LocalExtractor;
-use IdentificationBundle\Entity\CarrierInterface;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow;
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasConsentPageFlow;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerInterface;
@@ -37,7 +37,7 @@ class VodafoneEGIdentificationHandler implements IdentificationHandlerInterface,
      */
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::VODAFONE_EGYPT_TPAY;
+        return $carrier->getBillingCarrierId() === ID::VODAFONE_EGYPT_TPAY;
     }
 
     /**

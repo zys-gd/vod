@@ -9,11 +9,9 @@
 namespace IdentificationBundle\WifiIdentification\Handler;
 
 
-use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
-use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\Entity\User;
-use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
+use IdentificationBundle\WifiIdentification\DTO\PhoneValidationOptions;
 
 interface WifiIdentificationHandlerInterface
 {
@@ -25,5 +23,6 @@ interface WifiIdentificationHandlerInterface
 
     public function getExistingUser(string $msisdn): ?User;
 
+    public function getPhoneValidationOptions(): PhoneValidationOptions;
 
 }

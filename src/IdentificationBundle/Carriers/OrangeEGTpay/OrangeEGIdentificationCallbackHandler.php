@@ -2,7 +2,7 @@
 
 namespace IdentificationBundle\Carriers\OrangeEGTpay;
 
-use App\Domain\Constants\ConstBillingCarrierId;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Callback\Handler\HasCommonFlow;
 use IdentificationBundle\Callback\Handler\IdentCallbackHandlerInterface;
 use IdentificationBundle\Entity\User;
@@ -20,7 +20,7 @@ class OrangeEGIdentificationCallbackHandler implements IdentCallbackHandlerInter
      */
     public function canHandle(int $carrierId): bool
     {
-        return $carrierId === ConstBillingCarrierId::ORANGE_EGYPT_TPAY;
+        return $carrierId === ID::ORANGE_EGYPT_TPAY;
     }
 
     /**

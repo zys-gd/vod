@@ -11,7 +11,7 @@ use IdentificationBundle\Identification\Service\ISPResolver;
 use IdentificationBundle\Identification\Service\RouteProvider;
 use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\TokenGenerator;
-use IdentificationBundle\Identification\Service\UserFactory;
+use IdentificationBundle\User\Service\UserFactory;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -45,7 +45,7 @@ class FakeIdentificationController extends AbstractController
      */
     private $ISPResolver;
     /**
-     * @var UserFactory
+     * @var \IdentificationBundle\User\Service\UserFactory
      */
     private $userFactory;
     /**
@@ -68,16 +68,16 @@ class FakeIdentificationController extends AbstractController
     /**
      * FakeIdentificationController constructor.
      *
-     * @param ICountryCarrierDetection $carrierDetection
-     * @param CarrierRepositoryInterface $carrierRepository
-     * @param UserRepository $userRepository
-     * @param ISPResolver $ISPResolver
-     * @param Identifier $identifier
-     * @param TokenGenerator $generator
-     * @param UserFactory $userFactory
-     * @param EntityManager $entityManager
-     * @param RouteProvider $routeProvider
-     * @param IdentificationDataStorage $identificationDataStorage
+     * @param ICountryCarrierDetection                       $carrierDetection
+     * @param CarrierRepositoryInterface                     $carrierRepository
+     * @param UserRepository                                 $userRepository
+     * @param ISPResolver                                    $ISPResolver
+     * @param Identifier                                     $identifier
+     * @param TokenGenerator                                 $generator
+     * @param \IdentificationBundle\User\Service\UserFactory $userFactory
+     * @param EntityManager                                  $entityManager
+     * @param RouteProvider                                  $routeProvider
+     * @param IdentificationDataStorage                      $identificationDataStorage
      */
     public function __construct(
         ICountryCarrierDetection $carrierDetection,

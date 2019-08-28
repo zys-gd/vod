@@ -11,17 +11,19 @@ namespace SubscriptionBundle\Twig;
 
 use ExtrasBundle\Cache\ArrayCache\ArrayCacheService;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Service\SubscriptionExtractor;
+use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class SubscriptionStatusExtension extends \Twig_Extension
+class SubscriptionStatusExtension extends AbstractExtension
 {
     /**
      * @var SessionInterface
      */
     private $session;
     /**
-     * @var SubscriptionExtractor
+     * @var \SubscriptionBundle\Subscription\Common\SubscriptionExtractor
      */
     private $subscriptionExtractor;
     /**
@@ -33,8 +35,8 @@ class SubscriptionStatusExtension extends \Twig_Extension
     /**
      * SubscriptionStatusExtension constructor.
      *
-     * @param SessionInterface      $session
-     * @param SubscriptionExtractor $subscriptionExtractor
+     * @param SessionInterface                                              $session
+     * @param \SubscriptionBundle\Subscription\Common\SubscriptionExtractor $subscriptionExtractor
      */
     public function __construct(SessionInterface $session, SubscriptionExtractor $subscriptionExtractor, ArrayCacheService $arrayCacheService)
     {
@@ -46,13 +48,31 @@ class SubscriptionStatusExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('hasActiveSubscription', [$this, 'hasActiveSubscription']),
-            new \Twig_SimpleFunction('hasInActiveSubscription', [$this, 'hasInActiveSubscription']),
-            new \Twig_SimpleFunction('isSubscriptionExist', [$this, 'isSubscriptionExist']),
-            new \Twig_SimpleFunction('isUnsubscribed', [$this, 'isUnsubscribed']),
-            new \Twig_SimpleFunction('hasSubscriptionWithError', [$this, 'hasSubscriptionWithError']),
-            new \Twig_SimpleFunction('isNotEnoughCredit', [$this, 'isNotEnoughCredit']),
-            new \Twig_SimpleFunction('isNotFullyPaid', [$this, 'isNotFullyPaid']),
+            new TwigFunction('hasActiveSubscription', [$this, 'hasActiveSubscription']),
+            new TwigFunction('hasInActiveSubscription', [$this, 'hasInActiveSubscription']),
+            new TwigFunction('isSubscriptionExist', [$this, 'isSubscriptionExist']),
+            new TwigFunction('isUnsubscribed', [$this, 'isUnsubscribed']),
+            new TwigFunction('hasSubscriptionWithError', [$this, 'hasSubscriptionWithError']),
+            new TwigFunction('isNotEnoughCredit', [$this, 'isNotEnoughCredit']),
+            new TwigFunction('isNotFullyPaid', [$this, 'isNotFullyPaid']),
+
+            new TwigFunction('isSubscribable', function () {
+                return !$this->isSubscriptionExist() || $this->isUnsubscribed() || $this->isNotEnoughCredit();
+            }),
+            new TwigFunction('isUnsubscribable', function () {
+
+                if ($this->isNotEnoughCredit()) {
+                    return false;
+                }
+                if ($this->isUnsubscribed()) {
+                    return false;
+                }
+                if (!$this->hasActiveSubscription()) {
+                    return false;
+                }
+                return true;
+
+            })
         ];
     }
 

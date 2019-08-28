@@ -2,7 +2,7 @@
 
 namespace SubscriptionBundle\Entity\Affiliate;
 
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 
 /**
  * Campaign

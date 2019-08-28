@@ -2,9 +2,9 @@
 
 namespace App\Domain\ACL\Accessors;
 
-use IdentificationBundle\Entity\CarrierInterface;
-use SubscriptionBundle\Service\VisitCAPTool\VisitChecker;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
+use SubscriptionBundle\CAPTool\Visit\VisitChecker;
 
 /**
  * Class VisitConstraintByAffiliateService

@@ -64,7 +64,7 @@ IdentificationBundle\Entity\User:
 
     manyToOne:
         carrier:
-            targetEntity: \IdentificationBundle\Entity\CarrierInterface
+            targetEntity: \CommonDataBundle\Entity\Interfaces\CarrierInterface
             fetch: EAGER
             joinColumn:
                 name: carrier_id

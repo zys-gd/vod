@@ -10,14 +10,14 @@ namespace App\Twig;
 
 
 use App\Domain\Entity\Carrier;
-use App\Domain\Entity\Country;
 use App\Domain\Repository\CarrierRepository;
-use App\Domain\Repository\CountryRepository;
 use App\Domain\Service\Translator\DataAggregator;
 use App\Domain\Service\Translator\ShortcodeReplacer;
 use App\Domain\Service\Translator\Translator;
+use CommonDataBundle\Entity\Country;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use CommonDataBundle\Repository\CountryRepository;
 use ExtrasBundle\Utils\LocalExtractor;
-use IdentificationBundle\Entity\CarrierInterface;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Repository\SubscriptionPackRepository;
 use Twig\Extension\AbstractExtension;

@@ -9,30 +9,34 @@
 namespace IdentificationBundle\Identification\Common;
 
 
+use SubscriptionBundle\BillingFramework\BillingOptionsProvider;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
+use SubscriptionBundle\Subscription\Common\RouteProvider;
 
 class RequestParametersProvider
 {
     /**
-     * @var RouterInterface
+     * @var \SubscriptionBundle\Subscription\Common\RouteProvider
      */
-    private $router;
+    private $routeProvider;
+    /**
+     * @var BillingOptionsProvider
+     */
+    private $billingOptionsProvider;
 
 
     /**
-     * @param RouterInterface $router
+     * @param \SubscriptionBundle\Subscription\Common\RouteProvider $routeProvider
+     * @param BillingOptionsProvider                                $billingOptionsProvider
      */
     public function __construct(
-        RouterInterface $router
+        RouteProvider $routeProvider,
+        BillingOptionsProvider $billingOptionsProvider
     )
     {
 
-        $this->router = $router;
+        $this->routeProvider          = $routeProvider;
+        $this->billingOptionsProvider = $billingOptionsProvider;
     }
 
     /**
@@ -56,9 +60,9 @@ class RequestParametersProvider
 
 
         $parameters               = new ProcessRequestParameters();
-        $parameters->listener     = $this->router->generate('identify_callback', [], UrlGeneratorInterface::ABSOLUTE_URL);
-        $parameters->client       = 'vod-store';
-        $parameters->listenerWait = $this->router->generate('identify_callback', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $parameters->listener     = $this->routeProvider->getAbsoluteLinkForCallback('identify_callback');
+        $parameters->client       = $this->billingOptionsProvider->getClientId();
+        $parameters->listenerWait = $this->routeProvider->getAbsoluteLinkForCallback('identify_callback');
         $parameters->clientId     = $identificationToken;
         $parameters->carrier      = $carrierId;
         $parameters->userIp       = $clientIp;

@@ -2,6 +2,7 @@
 
 namespace IdentificationBundle\Entity;
 
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**

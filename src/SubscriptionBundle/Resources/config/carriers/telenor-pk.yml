@@ -4,7 +4,7 @@ services:
         tags:
           - {name: subscription.subscription_handler}
         arguments:
-          ['@SubscriptionBundle\Service\Notification\Notifier']
+          ['@SubscriptionBundle\Subscription\Notification\Notifier']
 
     subscription.telenor_pk_notification_handler:
         class: SubscriptionBundle\Carriers\TelenorPK\Notification\TelenorPKNotificationHandler
@@ -12,16 +12,16 @@ services:
           - {name: subscription.notification_handler, type: subscribe}
           - {name: subscription.notification_handler, type: unsubscribe}
           - {name: subscription.notification_handler, type: notify_renew}
-        arguments: ['@App\Domain\Repository\LanguageRepository']
+        arguments: ['@CommonDataBundle\Repository\LanguageRepository']
 
     subscription.telenor_pk_renew_handler:
         class: SubscriptionBundle\Carriers\TelenorPK\Renew\TelenorPKRenewHandler
         tags:
           - {name: subscription.renew_handler}
         arguments:
-          - '@SubscriptionBundle\Service\Notification\Notifier'
-          - '@SubscriptionBundle\Service\SubscriptionPackProvider'
-          - '@SubscriptionBundle\Service\Action\Renew\Common\RenewAlertTypeProvider'
+          - '@SubscriptionBundle\Subscription\Notification\Notifier'
+          - '@SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider'
+          - '@SubscriptionBundle\Subscription\Renew\Common\RenewAlertTypeProvider'
 
     SubscriptionBundle\Carriers\TelenorPK\Callback\TelenorPKCallbackHandler:
       tags:

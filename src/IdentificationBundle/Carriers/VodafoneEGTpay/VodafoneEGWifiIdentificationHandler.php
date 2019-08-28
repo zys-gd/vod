@@ -2,14 +2,15 @@
 
 namespace IdentificationBundle\Carriers\VodafoneEGTpay;
 
-use App\Domain\Constants\ConstBillingCarrierId;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use ExtrasBundle\Utils\LocalExtractor;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\BillingFramework\Process\DTO\{PinRequestResult, PinVerifyResult};
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
-use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Repository\UserRepository;
+use IdentificationBundle\WifiIdentification\DTO\PhoneValidationOptions;
 use IdentificationBundle\WifiIdentification\Exception\WifiIdentConfirmException;
 use IdentificationBundle\WifiIdentification\Handler\HasConsentPageFlow;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinRequestRules;
@@ -58,10 +59,10 @@ class VodafoneEGWifiIdentificationHandler implements
     /**
      * VodafonePKWifiIdentificationHandler constructor
      *
-     * @param UserRepository $userRepository
-     * @param RouterInterface $router
-     * @param LocalExtractor $localExtractor
-     * @param SubscriptionRepository $subscriptionRepository
+     * @param UserRepository            $userRepository
+     * @param  RouterInterface           $router
+     * @param LocalExtractor            $localExtractor
+     * @param SubscriptionRepository    $subscriptionRepository
      * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
      */
     public function __construct(
@@ -70,11 +71,12 @@ class VodafoneEGWifiIdentificationHandler implements
         LocalExtractor $localExtractor,
         SubscriptionRepository $subscriptionRepository,
         WifiIdentificationDataStorage $wifiIdentificationDataStorage
-    ) {
-        $this->userRepository = $userRepository;
-        $this->router = $router;
-        $this->localExtractor = $localExtractor;
-        $this->subscriptionRepository = $subscriptionRepository;
+    )
+    {
+        $this->userRepository            = $userRepository;
+        $this->router                    = $router;
+        $this->localExtractor            = $localExtractor;
+        $this->subscriptionRepository    = $subscriptionRepository;
         $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
     }
 
@@ -85,7 +87,7 @@ class VodafoneEGWifiIdentificationHandler implements
      */
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::VODAFONE_EGYPT_TPAY;
+        return $carrier->getBillingCarrierId() === ID::VODAFONE_EGYPT_TPAY;
     }
 
     /**
@@ -154,7 +156,7 @@ class VodafoneEGWifiIdentificationHandler implements
 
     /**
      * @param PinVerifyResult $pinVerifyResult
-     * @param string $phoneNumber
+     * @param string          $phoneNumber
      *
      * @return string
      */
@@ -187,7 +189,7 @@ class VodafoneEGWifiIdentificationHandler implements
     public function getAdditionalPinResendParameters(PinRequestResult $pinRequestResult): array
     {
         $pinRequestResultData = $pinRequestResult->getRawData();
-        $clientUser = empty($pinRequestResultData['subscription_contract_id'])
+        $clientUser           = empty($pinRequestResultData['subscription_contract_id'])
             ? null
             : $pinRequestResultData['subscription_contract_id'];
 
@@ -233,5 +235,16 @@ class VodafoneEGWifiIdentificationHandler implements
     private function cleanMsisnd(string $mobileNumber): string
     {
         return str_replace('+', '', $mobileNumber);
+    }
+
+    public function getPhoneValidationOptions(): PhoneValidationOptions
+    {
+
+        return new PhoneValidationOptions(
+            '+(201)XXXXXXXXX',
+            '^\+(201)[0-9]{9}$',
+            'XXXXX',
+            '^[0-9][0-9]{5}$'
+        );
     }
 }

@@ -9,9 +9,9 @@
 namespace IdentificationBundle\Tests\Identification\Common\PixelIdent;
 
 
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use ExtrasBundle\SignatureCheck\ParametersProvider;
 use ExtrasBundle\SignatureCheck\SignatureHandler;
-use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Common\Pixel\PixelIdentStarter;
 use IdentificationBundle\Identification\Service\RouteProvider;
 use Mockery;
@@ -20,7 +20,6 @@ use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
 
 class PixelIdentStarterTest extends TestCase

@@ -1,42 +1,70 @@
 services:
 
-
-
-    SubscriptionBundle\Service\CAPTool\SubscriptionLimitCompleter:
+    SubscriptionBundle\CAPTool\Subscription\Notificaton\EmailProvider:
         arguments:
-            - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimiter'
-            -
-    SubscriptionBundle\Service\CAPTool\SubscriptionLimiter:
+            - '_cap_notification_mail_to_placeholder_'
+            - '_cap_notification_mail_from_placeholder_'
+
+    SubscriptionBundle\CAPTool\Subscription\Notificaton\CAPNotificationSender:
         arguments:
-        - '@SubscriptionBundle\Service\CAPTool\Limiter\LimiterStorage'
-        - '@SubscriptionBundle\Service\SubscriptionExtractor'
-        - '@SubscriptionBundle\Service\CAPTool\Limiter\LimiterDataMapper'
-        - '@SubscriptionBundle\Service\CAPTool\Limiter\SubscriptionCapChecker'
-        - '@SubscriptionBundle\Service\CAPTool\Limiter\StorageKeyGenerator'
-        - '@SubscriptionBundle\Service\CampaignExtractor'
+            - '@ExtrasBundle\Email\EmailSender'
+            - '@SubscriptionBundle\CAPTool\Subscription\Notificaton\EmailProvider'
+
+    SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitCompleter:
+        arguments:
+            - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter'
+
+    SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter:
+        arguments:
+        - '@SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterStorage'
+        - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
+        - '@SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterDataMapper'
+        - '@SubscriptionBundle\CAPTool\Subscription\Limiter\SubscriptionCapChecker'
+        - '@SubscriptionBundle\CAPTool\Subscription\Limiter\StorageKeyGenerator'
+        - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
         - '@logger'
-        - '@SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier'
+        - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitNotifier'
 
 
-    SubscriptionBundle\Service\CAPTool\Limiter\LimiterStorage:
+    SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterStorage:
         arguments:
             - '@subscription.captool.redis_client'
 
 
-    SubscriptionBundle\Service\CAPTool\Limiter\LimiterDataMapper:
+    SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterDataMapper:
         arguments:
-            - '@SubscriptionBundle\Service\CampaignExtractor'
-            - '@App\Domain\Repository\CarrierRepository'
+            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
 
-    SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier:
+    SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitNotifier:
         arguments:
-            - '@SubscriptionBundle\Service\Notification\Email\CAPNotificationSender'
+            - '@SubscriptionBundle\CAPTool\Subscription\Notificaton\CAPNotificationSender'
             - '@SubscriptionBundle\Service\EntitySaveHelper'
 
-    SubscriptionBundle\Service\CAPTool\Limiter\SubscriptionCapChecker:
+    SubscriptionBundle\CAPTool\Subscription\Limiter\SubscriptionCapChecker:
         arguments:
-            - '@SubscriptionBundle\Service\CAPTool\Limiter\LimiterStorage'
-            - '@SubscriptionBundle\Service\CAPTool\Limiter\StorageKeyGenerator'
+            - '@SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterStorage'
+            - '@SubscriptionBundle\CAPTool\Subscription\Limiter\StorageKeyGenerator'
             - '@logger'
 
-    SubscriptionBundle\Service\CAPTool\Limiter\StorageKeyGenerator: ~
+    SubscriptionBundle\CAPTool\Subscription\Limiter\StorageKeyGenerator: ~
+
+
+
+    SubscriptionBundle\CAPTool\Subscription\Command\ResetConstraintsByAffiliateCounters:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository'
+            - '@SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterStorage'
+            - '@SubscriptionBundle\CAPTool\Subscription\Limiter\StorageKeyGenerator'
+        tags:
+            - { name: console.command }
+
+    SubscriptionBundle\CAPTool\Subscription\Command\ResetConstraintsByCarrierCounters:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+            - '@SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterStorage'
+            - '@SubscriptionBundle\CAPTool\Subscription\Limiter\StorageKeyGenerator'
+        tags:
+            - { name: console.command }

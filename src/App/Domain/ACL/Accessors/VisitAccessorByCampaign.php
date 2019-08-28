@@ -3,7 +3,7 @@
 namespace App\Domain\ACL\Accessors;
 
 use App\Domain\Entity\Campaign;
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 
 /**
  * Class VisitAccessorByCampaign

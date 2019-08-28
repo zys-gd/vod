@@ -2,7 +2,7 @@
 
 namespace App\CarrierTemplate\Handler;
 
-use App\Domain\Constants\ConstBillingCarrierId;
+use IdentificationBundle\BillingFramework\ID;
 
 /**
  * Class VodafoneEgyptTpay
@@ -16,7 +16,7 @@ class VodafoneEgyptTpay implements TemplateHandlerInterface
      */
     public function canHandle(int $billingCarrierId): bool
     {
-        return ConstBillingCarrierId::VODAFONE_EGYPT_TPAY === $billingCarrierId;
+        return ID::VODAFONE_EGYPT_TPAY === $billingCarrierId;
     }
 
     /**

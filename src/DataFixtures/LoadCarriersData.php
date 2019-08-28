@@ -10,6 +10,7 @@ namespace DataFixtures;
 
 
 use App\Domain\Entity\Carrier;
+use CommonDataBundle\DataFixtures\LoadLanguagesData;
 use DataFixtures\Utils\FixtureDataLoader;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -55,7 +56,7 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $flushdate                               = $row['flushDate'];
 
 
-            $defaultLanguageId = $row['defaultLanguage']['uuid'];
+            $defaultLanguageId = $row['defaultLanguage']['uuid'] ?? null;
 
             $carrier = new Carrier($uuid);
 

@@ -1,2 +1,2 @@
 services:
-  SubscriptionBundle\Service\SubscriptionVoter\BatchSubscriptionVoter: ~
+  SubscriptionBundle\Subscription\Subscribe\Voter\BatchSubscriptionVoter: ~

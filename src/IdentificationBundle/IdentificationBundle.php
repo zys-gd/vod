@@ -3,9 +3,10 @@
 namespace IdentificationBundle;
 
 use IdentificationBundle\DependencyInjection\Compiler\AlreadySubscribedHandlerPass;
+use IdentificationBundle\DependencyInjection\Compiler\ErrorCodeMapperPass;
 use IdentificationBundle\DependencyInjection\Compiler\IdentificationCallbackHandlerPass;
 use IdentificationBundle\DependencyInjection\Compiler\IdentificationHandlerPass;
-use IdentificationBundle\DependencyInjection\Compiler\ErrorCodeMapperPass;
+use IdentificationBundle\DependencyInjection\Compiler\TwigAdditionalPathsExtension;
 use IdentificationBundle\DependencyInjection\Compiler\WifiIdentificationHandlerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -27,6 +28,8 @@ class IdentificationBundle extends Bundle
         $container->addCompilerPass(new WifiIdentificationHandlerPass());
         $container->addCompilerPass(new ErrorCodeMapperPass());
         $container->addCompilerPass(new AlreadySubscribedHandlerPass());
+
+        $container->addCompilerPass(new TwigAdditionalPathsExtension());
     }
 
 }
