@@ -21,6 +21,13 @@ services:
             - '@IdentificationBundle\Identification\Service\TokenGenerator'
             - '@IdentificationBundle\User\Service\UserFactory'
             - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
+            - '@SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper'
+            - '@SubscriptionBundle\Carriers\HutchID\Subscribe\HutchIDSMSSubscriber'
+            - '@SubscriptionBundle\Subscription\Callback\Common\Type\SubscriptionCallbackHandler'
+            - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
+            - '@SubscriptionBundle\Affiliate\Service\AffiliateSender'
+            - '@SubscriptionBundle\Piwik\DataMapper\ConversionEventMapper'
+            - '@SubscriptionBundle\Piwik\EventPublisher'
 
     SubscriptionBundle\Carriers\HutchID\Notification\HutchIDNotificationHandler:
         arguments:
@@ -28,3 +35,7 @@ services:
         tags:
             - { name: subscription.notification_handler, type: subscribe }
             - { name: subscription.notification_handler, type: unsubscribe }
+
+    SubscriptionBundle\Carriers\HutchID\Subscribe\HutchIDSMSSubscriber:
+        arguments:
+            - '@SubscriptionBundle\Subscription\Callback\Common\Type\SubscriptionCallbackHandler'
