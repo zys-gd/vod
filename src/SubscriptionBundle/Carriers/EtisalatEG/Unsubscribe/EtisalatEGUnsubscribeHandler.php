@@ -9,18 +9,18 @@
 namespace SubscriptionBundle\Carriers\EtisalatEG\Unsubscribe;
 
 
-use App\Domain\Constants\ConstBillingCarrierId;
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use IdentificationBundle\BillingFramework\ID;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Service\Action\Unsubscribe\Handler\UnsubscriptionHandlerInterface;
+use SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerInterface;
 
 class EtisalatEGUnsubscribeHandler implements UnsubscriptionHandlerInterface
 {
 
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::ETISALAT_EGYPT;
+        return $carrier->getBillingCarrierId() === ID::ETISALAT_EGYPT;
     }
 
     public function isPiwikNeedToBeTracked(ProcessResult $processResult): bool

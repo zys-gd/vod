@@ -9,7 +9,6 @@
 namespace App\Domain\Service\Games;
 
 
-use App\Domain\Entity\Game;
 use App\Domain\Entity\GameImage;
 
 class GameImagesSerializer

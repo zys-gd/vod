@@ -4,8 +4,8 @@
 namespace App\Domain\Entity;
 
 
+use CommonDataBundle\Entity\Interfaces\HasUuid;
 use DateTime;
-use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 
 

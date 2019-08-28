@@ -1,0 +1,29 @@
+services:
+  IdentificationBundle\User\Service\UserExtractor:
+    arguments: ['@router.default', '@logger', '@IdentificationBundle\Repository\UserRepository']
+
+
+  IdentificationBundle\User\Service\UserFactory:
+    arguments:
+      - '@SubscriptionBundle\Subscription\Notification\Common\ShortUrlHashGenerator'
+
+  IdentificationBundle\User\Admin\Sonata\TestUserAdmin:
+   arguments:
+     - ~
+     - IdentificationBundle\Entity\TestUser
+     - 'IdentificationBundle\User\Admin\Controller\TestUserAdminController'
+     - '@doctrine.orm.entity_manager'
+   tags:
+     - { name: sonata.admin, manager_type: orm, group: user_management, label: Test users }
+
+  IdentificationBundle\User\Admin\Controller\TestUserAdminController:
+    arguments:
+      - '@IdentificationBundle\Repository\UserRepository'
+      - '@IdentificationBundle\Repository\TestUserRepository'
+      - '@SubscriptionBundle\Repository\SubscriptionRepository'
+      - '@doctrine.orm.entity_manager'
+      - '@cross_subscription.api_connector'
+    calls:
+      - [setContainer, ['@service_container']]
+    tags:
+      - { name: controller.service_arguments }

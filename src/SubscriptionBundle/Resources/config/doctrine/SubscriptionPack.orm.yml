@@ -263,13 +263,13 @@ SubscriptionBundle\Entity\SubscriptionPack:
             targetEntity: SubscriptionBundle\Entity\Subscription
             cascade: {  }
             fetch: LAZY
-            mappedBy: plan
+            mappedBy: subscriptionPack
             inversedBy: null
             orphanRemoval: false
             orderBy: null
     manyToOne:
         country:
-            targetEntity: App\Domain\Entity\Country
+            targetEntity: CommonDataBundle\Entity\Country
             cascade: {  }
             fetch: LAZY
             mappedBy: null
@@ -280,7 +280,7 @@ SubscriptionBundle\Entity\SubscriptionPack:
             orphanRemoval: false
 
         carrier:
-            targetEntity: App\Domain\Entity\Carrier
+            targetEntity: CommonDataBundle\Entity\Interfaces\CarrierInterface
             fetch: LAZY
             mappedBy: null
             inversedBy: null

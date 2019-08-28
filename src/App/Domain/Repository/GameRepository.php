@@ -13,7 +13,6 @@ use App\Domain\DTO\BatchOfGames;
 use App\Domain\Entity\Game;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Symfony\Bundle\FrameworkBundle\Tests\Fixtures\Validation\Category;
 
 class GameRepository extends EntityRepository
 {

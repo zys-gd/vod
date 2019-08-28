@@ -10,8 +10,9 @@ use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Service\CarrierOTPVerifier;
 use App\Domain\Service\Piwik\ContentStatisticSender;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use ExtrasBundle\Controller\Traits\ResponseTrait;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
-use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Exception\MissingCarrierException;
 use IdentificationBundle\Identification\Service\CarrierSelector;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
@@ -21,17 +22,16 @@ use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorag
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
-use SubscriptionBundle\Controller\Traits\ResponseTrait;
-use SubscriptionBundle\Service\CAPTool\Exception\CapToolAccessException;
-use SubscriptionBundle\Service\CAPTool\Exception\SubscriptionCapReachedOnAffiliate;
-use SubscriptionBundle\Service\CAPTool\Exception\SubscriptionCapReachedOnCarrier;
-use SubscriptionBundle\Service\CAPTool\Exception\VisitCapReached;
-use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
-use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
-use SubscriptionBundle\Service\SubscribeUrlResolver;
-use SubscriptionBundle\Service\VisitCAPTool\ConstraintAvailabilityChecker;
-use SubscriptionBundle\Service\VisitCAPTool\VisitNotifier;
-use SubscriptionBundle\Service\VisitCAPTool\VisitTracker;
+use SubscriptionBundle\CAPTool\Subscription\Exception\CapToolAccessException;
+use SubscriptionBundle\CAPTool\Subscription\Exception\SubscriptionCapReachedOnAffiliate;
+use SubscriptionBundle\CAPTool\Subscription\Exception\SubscriptionCapReachedOnCarrier;
+use SubscriptionBundle\CAPTool\Subscription\Exception\VisitCapReached;
+use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter;
+use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitNotifier;
+use SubscriptionBundle\CAPTool\Visit\VisitNotifier;
+use SubscriptionBundle\CAPTool\Visit\ConstraintAvailabilityChecker;
+use SubscriptionBundle\CAPTool\Visit\VisitTracker;
+use SubscriptionBundle\Subscription\Subscribe\Service\SubscribeUrlResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -108,7 +108,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      */
     private $carrierSelector;
     /**
-     * @var SubscribeUrlResolver
+     * @var \SubscriptionBundle\Subscription\Subscribe\Common\\SubscriptionBundle\Subscription\Subscribe\Service\SubscribeUrlResolver
      */
     private $subscribeUrlResolver;
     /**
@@ -123,22 +123,22 @@ class LPController extends AbstractController implements ControllerWithISPDetect
     /**
      * LPController constructor.
      *
-     * @param ContentStatisticSender        $contentStatisticSender
-     * @param CampaignRepository            $campaignRepository
-     * @param LandingPageACL                $landingPageAccessResolver
-     * @param string                        $imageBaseUrl
-     * @param CarrierOTPVerifier            $OTPVerifier
-     * @param string                        $defaultRedirectUrl
-     * @param TemplateConfigurator          $templateConfigurator
+     * @param ContentStatisticSender                                                  $contentStatisticSender
+     * @param CampaignRepository                                                      $campaignRepository
+     * @param LandingPageACL                                                          $landingPageAccessResolver
+     * @param string                                                                  $imageBaseUrl
+     * @param CarrierOTPVerifier                                                      $OTPVerifier
+     * @param string                                                                  $defaultRedirectUrl
+     * @param TemplateConfigurator                                                    $templateConfigurator
      * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
-     * @param SubscriptionLimiter           $limiter
-     * @param SubscriptionLimitNotifier     $subscriptionLimitNotifier
-     * @param CarrierRepositoryInterface    $carrierRepository
-     * @param VisitTracker                  $visitTracker
-     * @param VisitNotifier                 $notifier
-     * @param LoggerInterface               $logger
-     * @param CarrierSelector               $carrierSelector
-     * @param SubscribeUrlResolver          $subscribeUrlResolver
+     * @param SubscriptionLimiter                                                     $limiter
+     * @param SubscriptionLimitNotifier                                               $subscriptionLimitNotifier
+     * @param CarrierRepositoryInterface                                              $carrierRepository
+     * @param VisitTracker                                                            $visitTracker
+     * @param VisitNotifier                                                           $notifier
+     * @param LoggerInterface                                                         $logger
+     * @param CarrierSelector                                                         $carrierSelector
+     * @param \SubscriptionBundle\Subscription\Subscribe\Service\SubscribeUrlResolver          $subscribeUrlResolver
      * @param PassthroughChecker            $passthroughChecker
      * @param ConstraintAvailabilityChecker $visitConstraintChecker
      */

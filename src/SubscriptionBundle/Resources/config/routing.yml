@@ -1,64 +1,51 @@
 subscription.subscribe_back:
-    path: /subscribe_back
-    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\SubscribeBackAction'}
+    path: /subscribeback
+    defaults: {_controller: 'SubscriptionBundle\Subscription\SubscribeBack\Controller\SubscribeBackAction'}
 
 subscription.consent_page_subscribe:
     path: /consent-subscribe
-    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\ConsentPageSubscribeAction'}
+    defaults: {_controller: 'SubscriptionBundle\Subscription\Subscribe\Controller\ConsentPageSubscribeAction'}
 
 subscription.passthrough_page_subscribe:
-    path: /passthrough-subscribe
-    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\PassthroughBackAction'}
+    path: /subscribeback
 
 subscription.subscribe:
     path: /subscribe
-    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\SubscribeAction'}
-
-
+    defaults: {_controller: 'SubscriptionBundle\Subscription\Subscribe\Controller\SubscribeAction'}
 
 subscription.unsubscribe:
     path: /unsubscribe
-    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\UnsubscribeAction'}
-
-subscription.redirect:
-    path: /subscribe/redirect
-    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\RedirectAction'}
+    defaults: {_controller: 'SubscriptionBundle\Subscription\Unsubscribe\Controller\UnsubscribeAction'}
 
 subscription.listen:
     path: /v2/callback/listen
-    defaults: { _controller: 'SubscriptionBundle\Controller\Actions\ListenAction'}
+    defaults: { _controller: 'SubscriptionBundle\Subscription\Callback\Controller\ListenAction'}
 
 subscription.listen.adapter:
     path: /callback/listen
-    defaults: { _controller: 'SubscriptionBundle\Controller\Actions\ListenAction'}
+    defaults: { _controller: 'SubscriptionBundle\Subscription\Callback\Controller\ListenAction'}
 
-subscription.wait_listen:
-    path: /wait
-    defaults: { _controller: 'SubscriptionBundle\Controller\Actions\WaitAction'}
 
-subscription.get-subscription:
-    path: /get-subscription
-    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\GetSubscriptionAction'}
 #talentica_subscription.subscription-buy-a-product:
 #    path: /buy/{id}
 #    defaults: {_controller: subscription:Subscription:buy}
 
 subscription.fake_subscribe:
     path: /fake/subscribe
-    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\Fake\SubscribeAction'}
+    defaults: {_controller: 'SubscriptionBundle\Subscription\Subscribe\Controller\FakeSubscribeAction'}
 
 subscription.fake_unsubscribe:
     path: /fake/unsubscribe
-    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\Fake\UnsubscribeAction'}
+    defaults: {_controller: 'SubscriptionBundle\Subscription\Unsubscribe\Controller\FakeUnsubscribeAction'}
 
 subscription.fake_renew:
     path: /fake/renew/{carrierId}
-    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\Fake\RenewAction'}
+    defaults: {_controller: 'SubscriptionBundle\Subscription\Renew\Controller\RenewAction'}
 
 subscription.fake_alert:
     path: /fake/alert/{carrierId}
-    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\Fake\AlertAction'}
+    defaults: {_controller: 'SubscriptionBundle\Subscription\Renew\Controller\AlertAction'}
 
 google_campaign:
     path: /google_campaign
-    defaults: {_controller: SubscriptionBundle\Service\CampaignConfirmation\Controller\CampaignConfirmationController::googlePageAction}
+    defaults: {_controller: SubscriptionBundle\CampaignConfirmation\Controller\CampaignConfirmationController::googlePageAction}

@@ -2,21 +2,22 @@
 
 namespace SubscriptionBundle\Carriers\OrangeEGTpay\Subscribe;
 
-use App\Domain\Constants\ConstBillingCarrierId;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use App\Domain\Repository\CarrierRepository;
 use ExtrasBundle\Utils\LocalExtractor;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\BillingFramework\Process\DTO\PinVerifyResult;
-use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
+use IdentificationBundle\Identification\Service\RouteProvider;
 use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\ConsentPageFlow\HasConsentPageFlow;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomAffiliateTrackingRules;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerInterface;
-use SubscriptionBundle\Service\ZeroCreditSubscriptionChecking;
+use SubscriptionBundle\Subscription\Subscribe\Handler\ConsentPageFlow\HasConsentPageFlow;
+use SubscriptionBundle\Subscription\Subscribe\Handler\HasCustomAffiliateTrackingRules;
+use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerInterface;
+use SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,11 +37,15 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
      * @var WifiIdentificationDataStorage
      */
     private $wifiIdentificationDataStorage;
-
+    /**
+     * @var RouteProvider
+     */
+    private $routeProvider;
     /**
      * @var RouterInterface
      */
     private $router;
+
 
     /**
      * @var ZeroCreditSubscriptionChecking
@@ -55,22 +60,25 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
     /**
      * VodafoneEGSubscriptionHandler constructor
      *
-     * @param LocalExtractor                 $localExtractor
-     * @param WifiIdentificationDataStorage  $wifiIdentificationDataStorage
-     * @param RouterInterface                $router
-     * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
+     * @param LocalExtractor            $localExtractor
+     * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
+     * @param RouteProvider             $routeProvider
+     * @param RouterInterface           $router* @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
      * @param CarrierRepository              $carrierRepository
      */
     public function __construct(
         LocalExtractor $localExtractor,
         WifiIdentificationDataStorage $wifiIdentificationDataStorage,
+        RouteProvider $routeProvider,
         RouterInterface $router,
         ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking,
         CarrierRepository $carrierRepository
-    ) {
-        $this->localExtractor = $localExtractor;
+    )
+    {
+        $this->localExtractor            = $localExtractor;
         $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
-        $this->router = $router;
+        $this->routeProvider             = $routeProvider;
+        $this->router                    = $router;
         $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
         $this->carrierRepository = $carrierRepository;
     }
@@ -82,12 +90,12 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
      */
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::ORANGE_EGYPT_TPAY;
+        return $carrier->getBillingCarrierId() === ID::ORANGE_EGYPT_TPAY;
     }
 
     /**
      * @param Request $request
-     * @param User $user
+     * @param User    $user
      *
      * @return array
      */
@@ -97,12 +105,12 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
         $lang = empty($defaultLang) ? $this->localExtractor->getLocal() : $defaultLang->getCode();
 
         $data = [
-            'url_id' => $user->getShortUrlId(),
-            'lang' => $lang,
-            'redirect_url' => $this->router->generate('index', [], RouterInterface::ABSOLUTE_URL)
+            'url_id'       => $user->getShortUrlId(),
+            'lang'         => $lang,
+            'redirect_url' => $this->routeProvider->getLinkToHomepage()
         ];
 
-        if ((bool) $this->wifiIdentificationDataStorage->isWifiFlow()) {
+        if ((bool)$this->wifiIdentificationDataStorage->isWifiFlow()) {
             /** @var PinVerifyResult $pinVerifyResult */
             $pinVerifyResult = $this->wifiIdentificationDataStorage->getPinVerifyResult();
             $rawData = $pinVerifyResult->getRawData();
@@ -121,17 +129,19 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
     public function getSubscriptionErrorResponse(SubscribingProcessException $exception): Response
     {
         $billingData = $exception->getBillingData();
-        $failReason = $billingData ? $billingData->provider_fields->fail_reason : null;
+        $failReason = $billingData
+            ? $billingData->provider_fields->fail_reason
+            : null;
 
         switch ($failReason) {
             case SubscribingProcessException::FAIL_REASON_NOT_ENOUGH_CREDIT:
-                $redirectUrl = $this->router->generate('index', ['err_handle' => 'not_enough_credit']);
+                $redirectUrl = $this->routeProvider->getLinkToHomepage(['err_handle' => 'not_enough_credit']);
                 break;
             case SubscribingProcessException::FAIL_REASON_BLACKLISTED:
                 $redirectUrl = $this->router->generate('blacklisted_user');
                 break;
             default:
-                $redirectUrl = $this->router->generate('whoops');
+                $redirectUrl = $this->routeProvider->getLinkToWifiFlowPage();
                 break;
         }
 
@@ -146,12 +156,12 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
      */
     public function isAffiliateTrackedForSub(ProcessResult $result, CampaignInterface $campaign): bool
     {
-        $carrier = $this->carrierRepository->findOneByBillingId(ConstBillingCarrierId::ORANGE_EGYPT_TPAY);
+        $carrier = $this->carrierRepository->findOneByBillingId(ID::ORANGE_EGYPT_TPAY);
 
         $isSuccess = $result->isFailedOrSuccessful() && $result->isFinal();
         $isZeroCreditsSub = $this
             ->zeroCreditSubscriptionChecking
-            ->isZeroCreditAvailable(ConstBillingCarrierId::ORANGE_EGYPT_TPAY, $campaign);
+            ->isZeroCreditAvailable(ID::ORANGE_EGYPT_TPAY, $campaign);
 
         if ($isZeroCreditsSub) {
             return $isSuccess && $carrier->getTrackAffiliateOnZeroCreditSub();
@@ -171,7 +181,7 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
     }
 
     /**
-     * @param Subscription $subscription
+     * @param Subscription  $subscription
      * @param ProcessResult $result
      */
     public function afterProcess(Subscription $subscription, ProcessResult $result): void

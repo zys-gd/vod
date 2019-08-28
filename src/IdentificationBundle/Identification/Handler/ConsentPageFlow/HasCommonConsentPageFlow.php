@@ -2,7 +2,7 @@
 
 namespace IdentificationBundle\Identification\Handler\ConsentPageFlow;
 
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 interface HasCommonConsentPageFlow
 {
     /**
-     * @param Request $request
+     * @param Request          $request
      * @param CarrierInterface $carrier
      *
      * @return array

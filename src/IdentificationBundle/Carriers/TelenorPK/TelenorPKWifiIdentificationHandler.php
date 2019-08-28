@@ -9,12 +9,13 @@
 namespace IdentificationBundle\Carriers\TelenorPK;
 
 
-use App\Domain\Constants\ConstBillingCarrierId;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
 use IdentificationBundle\BillingFramework\Process\DTO\PinVerifyResult;
-use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Repository\UserRepository;
+use IdentificationBundle\WifiIdentification\DTO\PhoneValidationOptions;
 use IdentificationBundle\WifiIdentification\Exception\WifiIdentConfirmException;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinVerifyRules;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
@@ -38,7 +39,7 @@ class TelenorPKWifiIdentificationHandler implements WifiIdentificationHandlerInt
 
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::TELENOR_PAKISTAN_DOT;
+        return $carrier->getBillingCarrierId() === ID::TELENOR_PAKISTAN_DOT;
     }
 
     public function getRedirectUrl()
@@ -83,5 +84,13 @@ class TelenorPKWifiIdentificationHandler implements WifiIdentificationHandlerInt
         }
 
         return $pinVerifyResult->getRawData()['user_identifier'];
+    }
+
+    public function getPhoneValidationOptions(): PhoneValidationOptions
+    {
+        return new PhoneValidationOptions(
+            '',
+            ''
+        );
     }
 }

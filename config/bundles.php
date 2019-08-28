@@ -30,10 +30,10 @@ return [
     Emoe\GuzzleBundle\EmoeGuzzleBundle::class                             => ['all' => true],
     Misd\PhoneNumberBundle\MisdPhoneNumberBundle::class                   => ['all' => true],
     ExtrasBundle\ExtrasBundle::class                                      => ['all' => true],
-    PiwikBundle\PiwikBundle::class                                        => ['all' => true],
-    LegacyBundle\LegacyBundle::class                                      => ['all' => true],
     FOS\UserBundle\FOSUserBundle::class                                   => ['all' => true],
     DataDog\AuditBundle\DataDogAuditBundle::class                         => ['all' => true],
     DataDog\PagerBundle\DataDogPagerBundle::class                         => ['all' => true],
     Playwing\CrossSubscriptionAPIBundle\CrossSubscriptionAPIBundle::class => ['all' => true],
+    \CommonDataBundle\CommonDataBundle::class                             => ['all' => true],
+    \PiwikBundle\PiwikBundle::class                                       => ['all' => true],
 ];

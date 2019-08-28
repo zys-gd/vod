@@ -3,11 +3,11 @@
 namespace App\Domain\Service\Translator;
 
 use App\Domain\Entity\Carrier;
-use App\Domain\Entity\Language;
 use App\Domain\Entity\Translation;
 use App\Domain\Repository\CarrierRepository;
-use App\Domain\Repository\LanguageRepository;
 use App\Domain\Repository\TranslationRepository;
+use CommonDataBundle\Entity\Language;
+use CommonDataBundle\Repository\LanguageRepository;
 use ExtrasBundle\Cache\ArrayCache\ArrayCacheService;
 use ExtrasBundle\Cache\ICacheService;
 use IdentificationBundle\Identification\Service\TranslatorInterface;
@@ -53,9 +53,9 @@ class Translator implements TranslatorInterface
      * Translator constructor
      *
      * @param TranslationRepository $translationRepository
-     * @param CarrierRepository $carrierRepository
-     * @param LanguageRepository $languageRepository
-     * @param ICacheService $cache
+     * @param CarrierRepository     $carrierRepository
+     * @param LanguageRepository    $languageRepository
+     * @param ICacheService         $cache
      */
     public function __construct(
         TranslationRepository $translationRepository,
@@ -63,7 +63,8 @@ class Translator implements TranslatorInterface
         LanguageRepository $languageRepository,
         ICacheService $cache,
         ArrayCacheService $arrayCacheService
-    ) {
+    )
+    {
         $this->translationRepository = $translationRepository;
         $this->cache                 = $cache;
         $this->languageRepository    = $languageRepository;
@@ -95,10 +96,11 @@ class Translator implements TranslatorInterface
             } elseif ($this->cache->hasCache($cacheKey)) {
                 $this->texts = $this->cache->getValue($cacheKey);
                 $this->arrayCacheService->saveCache($cacheKey, $this->texts, 86400);
+            } else {
+                $this
+                    ->retrieveFromDB($billingCarrierId, $languageCode)
+                    ->pushTexts2Cache($cacheKey);
             }
-            $this
-                ->initializeTexts($billingCarrierId, $languageCode)
-                ->pushTexts2Cache($cacheKey);
         }
 
         return $this->texts[$translationKey] ?? null;
@@ -151,7 +153,7 @@ class Translator implements TranslatorInterface
      *
      * @return $this
      */
-    private function initializeTexts($billingCarrierId, string $languageCode)
+    private function retrieveFromDB($billingCarrierId, string $languageCode)
     {
         /** @var Language $defaultLanguage */
         $defaultLanguage = $this->languageRepository->findOneBy(['code' => self::DEFAULT_LOCALE]);

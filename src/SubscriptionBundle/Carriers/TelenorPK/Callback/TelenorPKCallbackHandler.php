@@ -9,13 +9,13 @@
 namespace SubscriptionBundle\Carriers\TelenorPK\Callback;
 
 
-use App\Domain\Constants\ConstBillingCarrierId;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerInterface;
-use SubscriptionBundle\Service\Callback\Impl\HasCommonFlow;
+use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerInterface;
+use SubscriptionBundle\Subscription\Callback\Impl\HasCommonFlow;
 use Symfony\Component\HttpFoundation\Request;
 
 class TelenorPKCallbackHandler implements CarrierCallbackHandlerInterface, HasCommonFlow
@@ -42,7 +42,7 @@ class TelenorPKCallbackHandler implements CarrierCallbackHandlerInterface, HasCo
 
     public function canHandle(Request $request, int $carrierId): bool
     {
-        return $carrierId === ConstBillingCarrierId::TELENOR_PAKISTAN_DOT;
+        return $carrierId === ID::TELENOR_PAKISTAN_DOT;
     }
 
     public function getUser(string $msisdn): ?User

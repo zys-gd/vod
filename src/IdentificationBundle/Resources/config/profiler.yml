@@ -1,16 +1,6 @@
 services:
-  IdentificationBundle\Profiler\IdentDataCollector:
-      tags:
-          - { name: data_collector, template: '@Identification/profiler/debug_ident.html.twig', id: 'identification.ident_data_collector' }
-      arguments:
-          - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
-          - '@SubscriptionBundle\Repository\SubscriptionRepository'
-          - '@IdentificationBundle\Repository\UserRepository'
 
-  IdentificationBundle\Profiler\FakeCarrierIdentifier:
-    tags:
-      - {name: data_collector, template: '@Identification/profiler/fake_carrier_identifier.html.twig', id: 'identification.fake_carrier_identifier'}
-    arguments: ['@App\Domain\Repository\CarrierRepository']
+
 
   IdentificationBundle\Profiler\FakeActions:
     tags:

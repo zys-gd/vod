@@ -1,14 +1,14 @@
 services:
-    SubscriptionBundle\Service\CampaignConfirmation\Controller\CampaignConfirmationController: ~
+    SubscriptionBundle\CampaignConfirmation\Controller\CampaignConfirmationController: ~
 
-    SubscriptionBundle\Service\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider:
+    SubscriptionBundle\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider:
         arguments:
-            - '@SubscriptionBundle\Service\CampaignConfirmation\Handler\Common\CommonCampaignConfirmationHandler'
-            - '@SubscriptionBundle\Service\CampaignExtractor'
+            - '@SubscriptionBundle\CampaignConfirmation\Handler\Common\CommonCampaignConfirmationHandler'
+            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
 
-    SubscriptionBundle\Service\CampaignConfirmation\Handler\Common\CommonCampaignConfirmationHandler: ~
+    SubscriptionBundle\CampaignConfirmation\Handler\Common\CommonCampaignConfirmationHandler: ~
 
-    SubscriptionBundle\Service\CampaignConfirmation\Handler\Google\GoogleCampaignHandler:
+    SubscriptionBundle\CampaignConfirmation\Handler\Google\GoogleCampaignHandler:
         tags:
             - {name: 'subscription.campaign_confirmation_handler'}
         arguments:

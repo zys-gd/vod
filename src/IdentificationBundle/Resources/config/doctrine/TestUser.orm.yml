@@ -24,6 +24,6 @@ IdentificationBundle\Entity\TestUser:
 
     manyToOne:
         carrier:
-            targetEntity: App\Domain\Entity\Carrier
+            targetEntity: CommonDataBundle\Entity\Interfaces\CarrierInterface
             joinColumn:
                 referencedColumnName: uuid

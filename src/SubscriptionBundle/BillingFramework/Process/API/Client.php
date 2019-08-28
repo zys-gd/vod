@@ -74,6 +74,7 @@ class Client
      * @return null|stdClass|stdClass[]
      * @throws BillingFrameworkException
      * @throws BillingFrameworkProcessException
+     * @throws GuzzleException
      */
     public function sendPostProcessRequest(array $options, $method): ?stdClass
     {
@@ -261,7 +262,12 @@ class Client
 
     private function convertRequestException(RequestException $e): BillingFrameworkProcessException
     {
-        $content          = $this->extractContentFromResponse($e->getResponse());
+        if ($response = $e->getResponse()) {
+            $content = $this->extractContentFromResponse($response);
+        } else {
+            $content = null;
+        }
+
         $processException = new BillingFrameworkProcessException(
             sprintf('%s: %s', get_class($e), $e->getMessage()),
             $e->getCode(),
@@ -276,6 +282,7 @@ class Client
             }
         } catch (EmptyResponse $exception) {
         }
+
         return $processException;
     }
 

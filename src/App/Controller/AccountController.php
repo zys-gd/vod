@@ -6,7 +6,7 @@ use App\CarrierTemplate\TemplateConfigurator;
 use App\Domain\Repository\CarrierRepository;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
-use SubscriptionBundle\Service\SubscriptionExtractor;
+use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;

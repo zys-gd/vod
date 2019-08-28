@@ -9,15 +9,15 @@ use App\Domain\Entity\GameBuild;
 use App\Domain\Entity\GameImage;
 use App\Domain\Repository\GameBuildRepository;
 use App\Domain\Repository\GameRepository;
-use App\Domain\Service\Piwik\ContentStatisticSender;
 use App\Domain\Service\Games\DrmApkProvider;
 use App\Domain\Service\Games\ExcludedGamesProvider;
 use App\Domain\Service\Games\GameImagesSerializer;
 use App\Domain\Service\Games\GameSerializer;
+use App\Domain\Service\Piwik\ContentStatisticSender;
 use IdentificationBundle\Identification\DTO\ISPData;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Service\SubscriptionExtractor;
+use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -44,7 +44,7 @@ class GamesController extends AbstractController implements AppControllerInterfa
      */
     private $drmApkProvider;
     /**
-     * @var SubscriptionExtractor
+     * @var \SubscriptionBundle\Subscription\Common\SubscriptionExtractor
      */
     private $subscriptionExtractor;
     /**

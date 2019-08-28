@@ -3,9 +3,9 @@
 namespace DataFixtures;
 
 use App\Domain\Entity\VideoPartner;
+use DataFixtures\Utils\FixtureDataLoader;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use DataFixtures\Utils\FixtureDataLoader;
 
 /**
  * Class LoadVideoPartnersData

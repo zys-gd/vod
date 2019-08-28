@@ -2,9 +2,8 @@
 
 namespace SubscriptionBundle\Repository\Affiliate;
 
-use Doctrine\ORM\AbstractQuery;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use Doctrine\ORM\EntityRepository;
-use IdentificationBundle\Entity\CarrierInterface;
 use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 

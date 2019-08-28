@@ -126,6 +126,6 @@ App\Domain\Entity\Carrier:
 
     manyToOne:
         defaultLanguage:
-            targetEntity: App\Domain\Entity\Language
+            targetEntity: CommonDataBundle\Entity\Language
             joinColumn:
                 referencedColumnName: uuid

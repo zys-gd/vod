@@ -2,7 +2,8 @@
 
 namespace App\Domain\Entity;
 
-use Playwing\DiffToolBundle\Entity\Interfaces\HasUuid;
+use CommonDataBundle\Entity\Country;
+use CommonDataBundle\Entity\Interfaces\HasUuid;
 
 /**
  * Class CountryCategoryPriorityOverride

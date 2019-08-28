@@ -2,12 +2,12 @@
 
 namespace App\Admin\Sonata;
 
-use App\Domain\Entity\Country;
 use App\Domain\Entity\CountryCategoryPriorityOverride;
 use App\Domain\Entity\MainCategory;
 use App\Domain\Repository\CountryCategoryPriorityOverrideRepository;
-use ExtrasBundle\Utils\UuidGenerator;
+use CommonDataBundle\Entity\Country;
 use Doctrine\ORM\EntityRepository;
+use ExtrasBundle\Utils\UuidGenerator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

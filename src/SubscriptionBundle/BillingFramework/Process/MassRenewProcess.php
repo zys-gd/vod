@@ -9,7 +9,7 @@
 namespace SubscriptionBundle\BillingFramework\Process;
 
 
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Process\API\Client;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters;

@@ -5,4 +5,28 @@ services:
     arguments:
       - '2'
       -
+        class: 'Redis'
         timeout: 3
+
+  SubscriptionBundle\CAPTool\Admin\Sonata\ConstraintsByAffiliateAdmin:
+    arguments:
+      - ~
+      - SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate
+      - ~
+      - '@SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository'
+      - '@doctrine.orm.entity_manager'
+      - '@SubscriptionBundle\CAPTool\Admin\Service\ConstraintByAffiliateCapCalculator'
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: affiliate_management, label: Constraints by affiliate }
+
+  SubscriptionBundle\CAPTool\Admin\Service\ConstraintByAffiliateCapCalculator:
+    arguments:
+      - '@SubscriptionBundle\CAPTool\Subscription\Limiter\StorageKeyGenerator'
+      - '@SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterStorage'
+      - '@SubscriptionBundle\CAPTool\Visit\KeyGenerator'
+      - '@SubscriptionBundle\CAPTool\Visit\VisitStorage'
+
+  SubscriptionBundle\CAPTool\Admin\Twig\CounterInfoExtension:
+    arguments: ['@SubscriptionBundle\CAPTool\Admin\Service\ConstraintByAffiliateCapCalculator']
+    tags:
+      - { name: twig.extension }

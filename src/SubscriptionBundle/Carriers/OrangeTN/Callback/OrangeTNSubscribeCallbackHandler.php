@@ -2,15 +2,15 @@
 
 namespace SubscriptionBundle\Carriers\OrangeTN\Callback;
 
-use App\Domain\Constants\ConstBillingCarrierId;
 use AppBundle\Constant\Carrier;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Service\Callback\Impl\CarrierCallbackHandlerInterface;
-use SubscriptionBundle\Service\Callback\Impl\HasCommonFlow;
-use SubscriptionBundle\Service\Callback\Impl\HasCustomTrackingRules;
+use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerInterface;
+use SubscriptionBundle\Subscription\Callback\Impl\HasCommonFlow;
+use SubscriptionBundle\Subscription\Callback\Impl\HasCustomTrackingRules;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -35,7 +35,7 @@ class OrangeTNSubscribeCallbackHandler implements CarrierCallbackHandlerInterfac
 
     public function canHandle(Request $request, int $carrierId): bool
     {
-        return $carrierId == ConstBillingCarrierId::ORANGE_TUNISIA;
+        return $carrierId == ID::ORANGE_TUNISIA;
     }
 
     public function afterProcess(Subscription $subscription, User $User, ProcessResult $processResponse)
