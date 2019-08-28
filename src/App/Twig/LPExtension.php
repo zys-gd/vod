@@ -7,19 +7,13 @@ namespace App\Twig;
 use App\CarrierTemplate\TemplateConfigurator;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
-use App\Domain\Entity\Country;
-use App\Domain\Repository\CountryRepository;
-use App\Domain\Service\Translator\DataAggregator;
-use App\Domain\Service\Translator\ShortcodeReplacer;
-use App\Domain\Service\Translator\Translator;
+use CommonDataBundle\Entity\Country;
 use Doctrine\Common\Collections\ArrayCollection;
-use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\WifiIdentification\WifiPhoneOptionsProvider;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface;
-use SubscriptionBundle\Repository\SubscriptionPackRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -43,10 +37,6 @@ class LPExtension extends AbstractExtension
      */
     private $campaignRepository;
     /**
-     * @var CountryRepository
-     */
-    private $countryRepository;
-    /**
      * @var string
      */
     private $imageBaseUrl;
@@ -61,7 +51,6 @@ class LPExtension extends AbstractExtension
      * @param TemplateConfigurator        $templateConfigurator
      * @param CarrierRepositoryInterface  $carrierRepository
      * @param CampaignRepositoryInterface $campaignRepository
-     * @param CountryRepository           $countryRepository
      * @param WifiPhoneOptionsProvider    $wifiPhoneOptionsProvider
      */
     public function __construct(
@@ -69,7 +58,6 @@ class LPExtension extends AbstractExtension
         TemplateConfigurator $templateConfigurator,
         CarrierRepositoryInterface $carrierRepository,
         CampaignRepositoryInterface $campaignRepository,
-        CountryRepository $countryRepository,
         WifiPhoneOptionsProvider $wifiPhoneOptionsProvider,
         string $imageBaseUrl
     )
@@ -78,7 +66,6 @@ class LPExtension extends AbstractExtension
         $this->templateConfigurator = $templateConfigurator;
         $this->carrierRepository = $carrierRepository;
         $this->campaignRepository = $campaignRepository;
-        $this->countryRepository = $countryRepository;
         $this->wifiPhoneOptionsProvider = $wifiPhoneOptionsProvider;
         $this->imageBaseUrl = $imageBaseUrl;
     }
@@ -98,7 +85,7 @@ class LPExtension extends AbstractExtension
 
     public function getCountries()
     {
-        $activeCarrierCountries = new ArrayCollection($this->countryRepository->findEnabledCarriersCountryCodes());
+        $activeCarrierCountries = new ArrayCollection($this->carrierRepository->findEnabledCarriersCountries());
 
         /** @var Country $country */
         $activeCarrierCountries = $activeCarrierCountries->map(function ($country) {
