@@ -31,6 +31,7 @@ class Configuration implements ConfigurationInterface
             ->scalarNode('homepage_route')->isRequired()->end()
             ->scalarNode('landing_route')->isRequired()->end()
             ->scalarNode('my_account_route')->isRequired()->end()
+            ->scalarNode('wrong_carrier_route')->isRequired()->end()
             ->end();
 
 

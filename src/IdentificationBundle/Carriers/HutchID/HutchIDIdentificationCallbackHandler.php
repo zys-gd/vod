@@ -2,7 +2,6 @@
 
 namespace IdentificationBundle\Carriers\HutchID;
 
-use App\Domain\Constants\ConstBillingCarrierId;
 use IdentificationBundle\Callback\Handler\HasCommonFlow;
 use IdentificationBundle\Callback\Handler\IdentCallbackHandlerInterface;
 use IdentificationBundle\Entity\User;

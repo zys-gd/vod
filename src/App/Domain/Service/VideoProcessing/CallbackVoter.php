@@ -9,9 +9,9 @@
 namespace App\Domain\Service\VideoProcessing;
 
 
+use App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector;
 
 class CallbackVoter
 {

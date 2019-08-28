@@ -9,20 +9,19 @@
 namespace SubscriptionBundle\Carriers\OrangeTN\Subscribe;
 
 
-use App\Domain\Constants\ConstBillingCarrierId;
-use AppBundle\Constant\Carrier as CarrierConst;
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use IdentificationBundle\BillingFramework\ID;
+use IdentificationBundle\Entity\User;
+use SubscriptionBundle\Entity\Subscription;
+use SubscriptionBundle\Subscription\Common\RedirectUrlNullifier;
+use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
+use SubscriptionBundle\Subscription\Subscribe\Handler\HasCommonFlow;
+use SubscriptionBundle\Subscription\Subscribe\Handler\HasCustomResponses;
+use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
-use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Service\Action\Common\RedirectUrlNullifier;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCommonFlow;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCustomResponses;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerInterface;
-use SubscriptionBundle\Service\SubscriptionExtractor;
-use IdentificationBundle\Entity\User;
 
 class OrangeTNHandler implements SubscriptionHandlerInterface, HasCustomResponses, HasCommonFlow
 {
@@ -44,8 +43,8 @@ class OrangeTNHandler implements SubscriptionHandlerInterface, HasCustomResponse
     /**
      * OrangeTunisiaHandler constructor.
      *
-     * @param SubscriptionExtractor $subscriptionProvider
-     * @param RedirectUrlNullifier  $redirectUrlNullifier
+     * @param \SubscriptionBundle\Subscription\Common\SubscriptionExtractor $subscriptionProvider
+     * @param RedirectUrlNullifier                                          $redirectUrlNullifier
      */
     public function __construct(
         SubscriptionExtractor $subscriptionProvider,
@@ -60,7 +59,7 @@ class OrangeTNHandler implements SubscriptionHandlerInterface, HasCustomResponse
 
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() == ConstBillingCarrierId::ORANGE_TUNISIA;
+        return $carrier->getBillingCarrierId() == ID::ORANGE_TUNISIA;
     }
 
     public function getAdditionalSubscribeParams(Request $request, User $User): array

@@ -2,9 +2,9 @@
 
 namespace IdentificationBundle\Identification\Common;
 
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\BillingFramework\Process\IdentProcess;
 use IdentificationBundle\BillingFramework\Process\PassthroughProcess;
-use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Identification\Common\Async\AsyncIdentStarter;
 use IdentificationBundle\Identification\Handler\PassthroughFlow\HasPassthroughFlow;
 use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
@@ -95,9 +95,8 @@ class CommonPassthroughFlowHandler
         CarrierInterface $carrier,
         string $token): Response
     {
-
         $additionalParams = $handler->getAdditionalIdentificationParams($request);
-        $successUrl       = $this->router->generate('subscription.passthrough_page_subscribe', [], RouterInterface::ABSOLUTE_URL);
+        $successUrl       = $this->router->generate('subscription.subscribe_back', [], RouterInterface::ABSOLUTE_URL);
         $waitPageUrl      = $this
             ->router
             ->generate('wait_for_callback', ['successUrl' => $successUrl], RouterInterface::ABSOLUTE_URL);
@@ -113,7 +112,7 @@ class CommonPassthroughFlowHandler
 
         $passthrowLink = $this->passthroughProcess->runPassthrough($parameters);
 
-        $this->dataStorage->storeValue('passthroughFlow[token]', $this->generator->generateToken());
+        $this->dataStorage->setIdentificationToken($this->generator->generateToken());
 
         return new RedirectResponse($passthrowLink);
     }

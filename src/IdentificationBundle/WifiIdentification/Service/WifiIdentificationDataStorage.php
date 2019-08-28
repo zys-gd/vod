@@ -72,7 +72,11 @@ class WifiIdentificationDataStorage
      */
     public function getPinRequestResult(): ?PinRequestResult
     {
-        return $this->storage->readOperationResult('pinRequest');
+        $result = $this->storage->readOperationResult('pinRequest');
+
+        return $result
+            ? $result
+            : null;
     }
 
     /**

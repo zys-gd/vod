@@ -4,14 +4,14 @@
 namespace App\CarrierTemplate\Handler;
 
 
-use App\Domain\Constants\ConstBillingCarrierId;
+use IdentificationBundle\BillingFramework\ID;
 
 class TelenorPKDotTemplateHandler implements TemplateHandlerInterface
 {
 
     public function canHandle(int $billingCarrierId): bool
     {
-        return $billingCarrierId === ConstBillingCarrierId::TELENOR_PAKISTAN_DOT;
+        return $billingCarrierId === ID::TELENOR_PAKISTAN_DOT;
     }
 
     public function getFullTemplatePath(string $templateName): string

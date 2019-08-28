@@ -2,7 +2,7 @@
 
 namespace App\Admin\Sonata;
 
-use App\Domain\Entity\Language;
+use CommonDataBundle\Entity\Language;
 use ExtrasBundle\Utils\UuidGenerator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;

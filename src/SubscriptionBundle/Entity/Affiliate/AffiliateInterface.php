@@ -3,7 +3,6 @@
 namespace SubscriptionBundle\Entity\Affiliate;
 
 use Doctrine\Common\Collections\Collection;
-use IdentificationBundle\Entity\CarrierInterface;
 
 /**
  * Interface AffiliateInterface

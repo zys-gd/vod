@@ -9,8 +9,8 @@
 namespace IdentificationBundle\Carriers\MobilinkPK;
 
 
-use App\Domain\Constants\ConstBillingCarrierId;
-use IdentificationBundle\Entity\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Handler\CommonFlow\HasCustomPixelIdent;
 use IdentificationBundle\Identification\Handler\HasCommonFlow;
@@ -37,7 +37,7 @@ class MobilinkPKIdentificationHandler implements
 
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::MOBILINK_PAKISTAN;
+        return $carrier->getBillingCarrierId() === ID::MOBILINK_PAKISTAN;
     }
 
     public function getAdditionalIdentificationParams(Request $request): array

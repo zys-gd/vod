@@ -2,7 +2,7 @@
 
 namespace IdentificationBundle\Carriers\VodafoneEGTpay;
 
-use App\Domain\Constants\ConstBillingCarrierId;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Callback\Handler\HasCommonFlow;
 use IdentificationBundle\Callback\Handler\IdentCallbackHandlerInterface;
 use IdentificationBundle\Entity\User;
@@ -20,7 +20,7 @@ class VodafoneEGIdentificationCallbackHandler implements IdentCallbackHandlerInt
      */
     public function canHandle(int $carrierId): bool
     {
-        return $carrierId === ConstBillingCarrierId::VODAFONE_EGYPT_TPAY;
+        return $carrierId === ID::VODAFONE_EGYPT_TPAY;
     }
 
     /**

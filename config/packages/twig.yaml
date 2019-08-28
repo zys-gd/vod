@@ -17,10 +17,7 @@ twig:
 
     paths:
       '%kernel.project_dir%/src/App/Resources/templates': App
-      '%kernel.project_dir%/src/SubscriptionBundle/Resources/views': Subscription
       '%kernel.project_dir%/src/App/Admin/Resources/templates': Admin
-      '%kernel.project_dir%/src/SubscriptionBundle/Admin/Resources/templates': SubscriptionAdmin
-      '%kernel.project_dir%/src/IdentificationBundle/Admin/Resources/templates': IdentificationAdmin
 
     form_themes:
         - '@SonataCore/Form/datepicker.html.twig'

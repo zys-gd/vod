@@ -3,23 +3,26 @@
 namespace IdentificationBundle\WifiIdentification\Controller;
 
 use ExtrasBundle\API\Controller\APIControllerInterface;
+use ExtrasBundle\Controller\Traits\ResponseTrait;
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\BillingFramework\Process\Exception\PinVerifyProcessException;
+use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeResolver;
 use IdentificationBundle\WifiIdentification\WifiIdentConfirmator;
 use IdentificationBundle\WifiIdentification\WifiIdentSMSSender;
+use IdentificationBundle\WifiIdentification\WifiPhoneOptionsProvider;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use SubscriptionBundle\Controller\Traits\ResponseTrait;
-use SubscriptionBundle\Service\Action\Subscribe\Common\BlacklistVoter;
-use SubscriptionBundle\Service\Blacklist\BlacklistAttemptRegistrator;
-use SubscriptionBundle\Service\CampaignExtractor;
-use SubscriptionBundle\Service\CAPTool\Exception\CapToolAccessException;
-use SubscriptionBundle\Service\CAPTool\SubscriptionLimiter;
-use SubscriptionBundle\Service\CAPTool\SubscriptionLimitNotifier;
-use SubscriptionBundle\Service\ZeroCreditSubscriptionChecking;
+use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
+use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitNotifier;
+use SubscriptionBundle\Subscription\Common\RouteProvider;
+use SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking;
+use SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter;
+use SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator;
+use SubscriptionBundle\CAPTool\Subscription\Exception\CapToolAccessException;
+use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,10 +52,6 @@ class PinIdentificationController extends AbstractController implements APIContr
      */
     private $limiter;
     /**
-     * @var string
-     */
-    private $defaultRedirectUrl;
-    /**
      * @var CarrierRepositoryInterface
      */
     private $carrierRepository;
@@ -69,6 +68,14 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @var BlacklistVoter
      */
     private $blacklistVoter;
+    /**
+     * @var WifiPhoneOptionsProvider
+     */
+    private $phoneOptionsProvider;
+    /**
+     * @var RouteProvider
+     */
+    private $routeProvider;
     /**
      * @var LoggerInterface
      */
@@ -89,11 +96,12 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @param WifiIdentConfirmator           $identConfirmator
      * @param ErrorCodeResolver              $errorCodeResolver
      * @param SubscriptionLimiter            $limiter
-     * @param string                         $defaultRedirectUrl
      * @param CarrierRepositoryInterface     $carrierRepository
      * @param SubscriptionLimitNotifier      $subscriptionLimitNotifier
      * @param BlacklistVoter                 $blacklistVoter
      * @param BlacklistAttemptRegistrator    $blacklistAttemptRegistrator
+     * @param WifiPhoneOptionsProvider       $phoneOptionsProvider
+     * @param RouteProvider                  $routeProvider
      * @param LoggerInterface                $logger
      * @param CampaignExtractor              $campaignExtractor
      * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
@@ -103,24 +111,27 @@ class PinIdentificationController extends AbstractController implements APIContr
         WifiIdentConfirmator $identConfirmator,
         ErrorCodeResolver $errorCodeResolver,
         SubscriptionLimiter $limiter,
-        string $defaultRedirectUrl,
         CarrierRepositoryInterface $carrierRepository,
         SubscriptionLimitNotifier $subscriptionLimitNotifier,
         BlacklistVoter $blacklistVoter,
         BlacklistAttemptRegistrator $blacklistAttemptRegistrator,
+        WifiPhoneOptionsProvider $phoneOptionsProvider,
+        RouteProvider $routeProvider,
         LoggerInterface $logger,
         CampaignExtractor $campaignExtractor,
         ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
-    ) {
+    )
+    {
         $this->identSMSSender                 = $identSMSSender;
         $this->identConfirmator               = $identConfirmator;
         $this->errorCodeResolver              = $errorCodeResolver;
         $this->limiter                        = $limiter;
-        $this->defaultRedirectUrl             = $defaultRedirectUrl;
         $this->carrierRepository              = $carrierRepository;
         $this->subscriptionLimitNotifier      = $subscriptionLimitNotifier;
         $this->blacklistVoter                 = $blacklistVoter;
         $this->blacklistAttemptRegistrator    = $blacklistAttemptRegistrator;
+        $this->phoneOptionsProvider           = $phoneOptionsProvider;
+        $this->routeProvider                  = $routeProvider;
         $this->logger                         = $logger;
         $this->campaignExtractor              = $campaignExtractor;
         $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
@@ -150,15 +161,15 @@ class PinIdentificationController extends AbstractController implements APIContr
             $this->limiter->ensureCapIsNotReached($request->getSession());
         } catch (CapToolAccessException $exception) {
             return $this->getSimpleJsonResponse('Subscription limit has been reached', 200, [], [
-                'success' => false, 'redirectUrl' => $this->defaultRedirectUrl
+                'success' => false, 'redirectUrl' => $this->routeProvider->getActionIsNotAllowedUrl()
             ]);
         }
 
         $billingCarrierId = $ispData->getCarrierId();
         $cleanPhoneNumber = str_replace('+', '', $mobileNumber);
 
-        if ($this->blacklistVoter->isPhoneNumberBlacklisted($cleanPhoneNumber)
-            || $this->blacklistAttemptRegistrator->isSubscriptionAttemptRaised($cleanPhoneNumber, (int) $billingCarrierId)
+        if ($this->blacklistVoter->isPhoneNumberBlacklisted($cleanPhoneNumber) ||
+            $this->blacklistAttemptRegistrator->isSubscriptionAttemptRaised($cleanPhoneNumber, (int)$billingCarrierId)
         ) {
             return $this->getSimpleJsonResponse('User in black list', 200, [], [
                 'success' => false, 'redirectUrl' => $this->blacklistVoter->getRedirectUrl()
@@ -170,7 +181,7 @@ class PinIdentificationController extends AbstractController implements APIContr
         $postData = $request->request->all();
         $isResend = isset($postData['resend-pin']);
 
-        $campaign = $this->campaignExtractor->getCampaignFromSession($request->getSession());
+        $campaign                 = $this->campaignExtractor->getCampaignFromSession($request->getSession());
         $isZeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isZeroCreditAvailable($billingCarrierId, $campaign);
 
         try {
@@ -180,7 +191,7 @@ class PinIdentificationController extends AbstractController implements APIContr
             return $this->getSimpleJsonResponse('Sent', 200, [], $data);
         } catch (PinRequestProcessException $exception) {
             $this->logger->debug('Send pin error. Try to resolve error message', [
-                'code' => $exception->getCode(),
+                'code'      => $exception->getCode(),
                 'carrierId' => $billingCarrierId
             ]);
 
@@ -199,7 +210,7 @@ class PinIdentificationController extends AbstractController implements APIContr
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function confirmSMSPinCodeAction(Request $request, ISPData $ispData)
+    public function confirmSMSPinCodeAction(Request $request, ISPData $ispData, DeviceData $deviceData)
     {
         if (!$pinCode = $request->get('pin_code', '')) {
             throw new BadRequestHttpException('`pin_code` is required');
@@ -209,8 +220,8 @@ class PinIdentificationController extends AbstractController implements APIContr
             throw new BadRequestHttpException('`mobile_number` is required');
         }
 
-        $carrierId = $ispData->getCarrierId();
-        $campaign = $this->campaignExtractor->getCampaignFromSession($request->getSession());
+        $carrierId                = $ispData->getCarrierId();
+        $campaign                 = $this->campaignExtractor->getCampaignFromSession($request->getSession());
         $isZeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isZeroCreditAvailable($carrierId, $campaign);
 
         try {
@@ -219,13 +230,40 @@ class PinIdentificationController extends AbstractController implements APIContr
                 $pinCode,
                 $mobileNumber,
                 $request->getClientIp(),
-                $isZeroCreditSubAvailable
+                $isZeroCreditSubAvailable,
+                $deviceData
             );
 
             return $response;
         } catch (PinVerifyProcessException $exception) {
             $message = $this->errorCodeResolver->resolveMessage($exception->getCode(), $carrierId);
             return $this->getSimpleJsonResponse($message, 200, [], ['success' => false]);
+        } catch (\Exception $exception) {
+            return $this->getSimpleJsonResponse($exception->getMessage(), 200, [], ['success' => false]);
+        }
+    }
+
+    /**
+     * @Method("GET")
+     * @Route("/pincode/phone-options",name="wifi_phone_options")
+     * @param Request $request
+     * @param ISPData $ispData
+     *
+     * @return JsonResponse
+     */
+    public function getPhoneMaskOptions(Request $request, ISPData $ispData): JsonResponse
+    {
+
+        try {
+
+            $phoneValidationOptions = $this->phoneOptionsProvider->getPhoneValidationOptions($ispData->getCarrierId());
+
+            return $this->getSimpleJsonResponse('', 200, [], ['phoneOptions' => [
+                'placeholder'       => $phoneValidationOptions->getPhonePlaceholder(),
+                'phoneRegexPattern' => $phoneValidationOptions->getPhoneRegexPattern(),
+                'pinRegexPattern'   => $phoneValidationOptions->getPinRegexPattern()
+            ]]);
+
         } catch (\Exception $exception) {
             return $this->getSimpleJsonResponse($exception->getMessage(), 200, [], ['success' => false]);
         }

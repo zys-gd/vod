@@ -10,6 +10,7 @@ namespace SubscriptionBundle\BillingFramework\Notification\API;
 
 
 use Psr\Log\LoggerInterface;
+use SubscriptionBundle\BillingFramework\BillingOptionsProvider;
 use SubscriptionBundle\BillingFramework\Notification\API\DTO\NotificationMessage;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -23,26 +24,33 @@ class MessageCreator
      * @var RouterInterface
      */
     private $router;
+    /**
+     * @var BillingOptionsProvider
+     */
+    private $billingOptionsProvider;
 
     /**
      * MessageCreator constructor.
-     * @param LoggerInterface $logger
-     * @param RouterInterface $router
+     * @param LoggerInterface        $logger
+     * @param RouterInterface        $router
+     * @param BillingOptionsProvider $billingOptionsProvider
      */
     public function __construct(
         LoggerInterface $logger,
-        RouterInterface $router
+        RouterInterface $router,
+        BillingOptionsProvider $billingOptionsProvider
     )
     {
-        $this->logger = $logger;
-        $this->router = $router;
+        $this->logger                 = $logger;
+        $this->router                 = $router;
+        $this->billingOptionsProvider = $billingOptionsProvider;
     }
 
     public function createMessage(string $identifier, string $type, string $body, int $operatorId): NotificationMessage
     {
 
         $notificationMessage = new NotificationMessage();
-        $notificationMessage->setClient('vod-store');
+        $notificationMessage->setClient($this->billingOptionsProvider->getClientId());
         $notificationMessage->setType($type);
         $notificationMessage->setBody($body);
         $notificationMessage->setPhone($identifier);

@@ -1,31 +1,30 @@
 services:
-#  handler.subscribe_back.zain:
-#      class: SubscriptionBundle\Carriers\ZainIQ\SubscribeBack\ZainHandler
-#      arguments: ["@subscription.zain.service"]
+    SubscriptionBundle\Subscription\SubscribeBack\Handler\DefaultHandler: ~
 
+    SubscriptionBundle\Subscription\SubscribeBack\Common\CommonFlowHandler:
+        arguments:
+            - '@SubscriptionBundle\Subscription\SubscribeBack\Subscriber'
+            - '@IdentificationBundle\User\Service\UserFactory'
+            - '@SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter'
+            - '@SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator'
+            - '@IdentificationBundle\Identification\Service\DeviceDataProvider'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
+            - '@SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider'
+            - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
+            - '@ExtrasBundle\Utils\UrlParamAppender'
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@IdentificationBundle\Identification\Service\TokenGenerator'
+            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
+            - '@SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker'
+            - '@IdentificationBundle\Identification\Service\RouteProvider'
 
+    SubscriptionBundle\Subscription\SubscribeBack\Handler\SubscribeBackHandlerProvider:
+        arguments:
+            - '@SubscriptionBundle\Subscription\SubscribeBack\Handler\DefaultHandler'
 
-# SubscriptionBundle\Service\Action\SubscribeBack\SubscribeBackHandlerProvider:
-#     arguments:
-#       - "@handler.subscribe_back.tim"
-#       - "@handler.subscribe_back.robi"
-#       - "@handler.subscribe_back.airtel"
-#       - "@handler.subscribe_back.ooredoo"
-#       - '@subscription.dialog_lk_subscribeback_handler'
-
-
-
-#  subscription.zain.service:
-#      class: SubscriptionBundle\Carriers\ZainIQ\SubscribeBack\ZainBackSubscriber
-#      arguments:
-#        - "@affiliate.affiliate.service"
-#        - '@SubscriptionBundle\Service\SubscriptionPackProvider'
-#        - '@SubscriptionBundle\Piwik\SubscriptionStatisticSender'
-#        - '@affiliate.user_info_mapper'
-#        - '@app.carriers'
-#        - '@?'
-#        - '@?'
-#        - '@?'
-#        - '@SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper'
-#        - '@?'
-#
+    SubscriptionBundle\Subscription\SubscribeBack\Subscriber:
+        arguments:
+        - '@SubscriptionBundle\Service\EntitySaveHelper'
+        - '@SubscriptionBundle\Subscription\Common\SubscriptionFactory'
+        - '@SubscriptionBundle\Subscription\Subscribe\OnSubscribeUpdater'
+        - '@IdentificationBundle\BillingFramework\Data\DataProvider'

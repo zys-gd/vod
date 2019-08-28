@@ -9,9 +9,9 @@
 namespace IdentificationBundle\Tests\Identification\Common\PixelIdent;
 
 
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use IdentificationBundle\BillingFramework\Data\DataProvider;
-use IdentificationBundle\Entity\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer;
 use IdentificationBundle\Identification\Common\PostPaidHandler;
@@ -24,7 +24,7 @@ use IdentificationBundle\Identification\Service\Session\IdentificationDataStorag
 use IdentificationBundle\Identification\Service\IdentificationStatus;
 use IdentificationBundle\Identification\Service\Session\SessionStorage;
 use IdentificationBundle\Identification\Service\TokenGenerator;
-use IdentificationBundle\Identification\Service\UserFactory;
+use IdentificationBundle\User\Service\UserFactory;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;

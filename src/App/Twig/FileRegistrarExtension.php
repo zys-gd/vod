@@ -8,7 +8,7 @@
 
 namespace App\Twig;
 use Twig\Extension\AbstractExtension;
-use \Twig\TwigFunction;
+use Twig\TwigFunction;
 
 class FileRegistrarExtension extends AbstractExtension
 {

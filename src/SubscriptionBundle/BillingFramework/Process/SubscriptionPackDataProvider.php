@@ -9,15 +9,13 @@
 namespace SubscriptionBundle\BillingFramework\Process;
 
 
-use App\Domain\Entity\Carrier;
-use App\Domain\Entity\Country;
 use ExtrasBundle\Utils\UuidGenerator;
-use SubscriptionBundle\DTO\Strategy;
-use SubscriptionBundle\DTO\Tier;
 use stdClass;
+use SubscriptionBundle\BillingFramework\Process\API\Client;
 use SubscriptionBundle\BillingFramework\Process\Exception\BillingFrameworkException;
 use SubscriptionBundle\Entity\Price;
-use SubscriptionBundle\BillingFramework\Process\API\Client;
+use SubscriptionBundle\SubscriptionPack\DTO\Strategy;
+use SubscriptionBundle\SubscriptionPack\DTO\Tier;
 
 
 class SubscriptionPackDataProvider

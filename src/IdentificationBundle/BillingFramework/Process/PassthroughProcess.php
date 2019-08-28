@@ -5,7 +5,6 @@ namespace IdentificationBundle\BillingFramework\Process;
 
 
 use IdentificationBundle\BillingFramework\Process\Exception\IdentProcessException;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessRequestParameters;
 use SubscriptionBundle\BillingFramework\Process\API\RequestSender;

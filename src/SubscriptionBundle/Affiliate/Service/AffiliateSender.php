@@ -8,15 +8,15 @@
 
 namespace SubscriptionBundle\Affiliate\Service;
 
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use IdentificationBundle\Entity\CarrierInterface;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\DTO\UserInfo;
+use SubscriptionBundle\Affiliate\Exception\WrongIncomingParameters;
 use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 use SubscriptionBundle\Entity\Affiliate\AffiliateLog;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Exception\WrongIncomingParameters;
 use SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface;
 
 class AffiliateSender
@@ -230,7 +230,7 @@ class AffiliateSender
             foreach ($paramsList as $output => $input) {
                 try{
                     $query[$output] = $campaignParams[$input]; // !isset($campaignParams[$input])
-                } catch (\ErrorException $e) {
+                } catch (\Error $e) {
                     throw new WrongIncomingParameters();
                 }
             }
