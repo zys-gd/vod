@@ -3,7 +3,6 @@
 namespace SubscriptionBundle\Subscription\Callback\Common;
 
 use IdentificationBundle\Entity\User;
-use IdentificationBundle\Repository\UserRepository;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateSender;
 use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
@@ -19,7 +18,6 @@ use SubscriptionBundle\Subscription\Callback\Common\Type\UnsubscriptionCallbackH
 use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerProvider;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCommonFlow;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCustomTrackingRules;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -116,7 +114,7 @@ class CommonFlowHandler
         $this->conversionEventPublisher       = $conversionEventPublisher;
     }
 
-    public function process(Request $request, string $carrierId, string $type)
+    public function process(Request $request, string $carrierId, string $type): Subscription
     {
         $requestParams = (Object)$request->request->all();
 
@@ -203,6 +201,8 @@ class CommonFlowHandler
                 'carrier' => $carrier->getBillingCarrierId()
             ]);
         }
+
+        return $subscription;
     }
 
 }
