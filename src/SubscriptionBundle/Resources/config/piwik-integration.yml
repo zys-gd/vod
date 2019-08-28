@@ -7,6 +7,7 @@ services:
         arguments:
             - '@SubscriptionBundle\Piwik\Profiler\TraceableSender'
             - '@SubscriptionBundle\Piwik\Formatter\LegacyPiwikFormatter'
+            - '@logger'
 
     SubscriptionBundle\Piwik\Service\AdditionalDataProvider: ~
 

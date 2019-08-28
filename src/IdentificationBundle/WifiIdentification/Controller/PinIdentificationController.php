@@ -6,6 +6,7 @@ use ExtrasBundle\API\Controller\APIControllerInterface;
 use ExtrasBundle\Controller\Traits\ResponseTrait;
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\BillingFramework\Process\Exception\PinVerifyProcessException;
+use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeResolver;
@@ -209,7 +210,7 @@ class PinIdentificationController extends AbstractController implements APIContr
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function confirmSMSPinCodeAction(Request $request, ISPData $ispData)
+    public function confirmSMSPinCodeAction(Request $request, ISPData $ispData, DeviceData $deviceData)
     {
         if (!$pinCode = $request->get('pin_code', '')) {
             throw new BadRequestHttpException('`pin_code` is required');
@@ -229,7 +230,8 @@ class PinIdentificationController extends AbstractController implements APIContr
                 $pinCode,
                 $mobileNumber,
                 $request->getClientIp(),
-                $isZeroCreditSubAvailable
+                $isZeroCreditSubAvailable,
+                $deviceData
             );
 
             return $response;

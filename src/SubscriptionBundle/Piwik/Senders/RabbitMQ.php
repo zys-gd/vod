@@ -15,8 +15,6 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class RabbitMQ implements SenderInterface
 {
-    const EXCHANGE_NAME = 'piwik-vod';
-    const QUEUE_NAME = 'piwik-events-vod';
     /**
      * @var string
      */

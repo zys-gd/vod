@@ -2,6 +2,12 @@ framework:
   cache:
     app: app_redis_connection_adapter
 
+
+extras:
+  cache:
+    redis_prefix: 'v%app_version_hash%'
+
+
 doctrine:
   orm:
     metadata_cache_driver:

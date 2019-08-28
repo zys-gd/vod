@@ -106,7 +106,7 @@ class WifiIdentConfirmatorTest extends TestCase
         $this->expectException(MissingIdentificationDataException::class);
 
 
-        $this->wifiIdentConfirmator->confirm(0, '1234', '123456789', '1237.0.0.1', false);
+        $this->wifiIdentConfirmator->confirm(0, '1234', '123456789', '1237.0.0.1', false, Mockery::spy(\IdentificationBundle\Identification\DTO\DeviceData::class));
     }
 
 
@@ -134,7 +134,7 @@ class WifiIdentConfirmatorTest extends TestCase
 
         $this->expectException(\IdentificationBundle\Identification\Exception\FailedIdentificationException::class);
 
-        $this->wifiIdentConfirmator->confirm(0, '1234', '123456789', '1237.0.0.1', false);
+        $this->wifiIdentConfirmator->confirm(0, '1234', '123456789', '1237.0.0.1', false, Mockery::spy(\IdentificationBundle\Identification\DTO\DeviceData::class));
     }
 
     public function testArePinVerifyRequestSent()
@@ -156,7 +156,7 @@ class WifiIdentConfirmatorTest extends TestCase
         ]);
 
 
-        $this->wifiIdentConfirmator->confirm(0, '1234', '123456789', '1237.0.0.1', false);
+        $this->wifiIdentConfirmator->confirm(0, '1234', '123456789', '1237.0.0.1', false, Mockery::spy(\IdentificationBundle\Identification\DTO\DeviceData::class));
 
         $this->assertEmpty($this->wifiIdentificationDataStorage->getPinRequestResult());
 
