@@ -3707,7 +3707,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git-codecommit.eu-west-1.amazonaws.com/v1/repos/store-commons-module",
-                "reference": "c731e20d28bc8e62cf799ddc8cfe6fd5c41028c9"
+                "reference": "f6786a759a301d5924a91071e10ca8d82b11c80f"
             },
             "require": {
                 "doctrine/orm": "^2.5",
@@ -3742,7 +3742,7 @@
                     "email": "dmitriy.bichenko@playwing.net"
                 }
             ],
-            "time": "2019-08-28T08:40:46+00:00"
+            "time": "2019-08-28T11:14:55+00:00"
         },
         {
             "name": "predis/predis",
