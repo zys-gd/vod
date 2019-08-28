@@ -56,7 +56,9 @@ class LPExtension extends AbstractExtension
      * @param TemplateConfigurator        $templateConfigurator
      * @param CarrierRepositoryInterface  $carrierRepository
      * @param CampaignRepositoryInterface $campaignRepository
+     * @param CountryRepositoryInterface  $countryRepository
      * @param WifiPhoneOptionsProvider    $wifiPhoneOptionsProvider
+     * @param string                      $imageBaseUrl
      */
     public function __construct(
         SessionInterface $session,
