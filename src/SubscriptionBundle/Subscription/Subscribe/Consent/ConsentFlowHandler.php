@@ -109,6 +109,7 @@ class ConsentFlowHandler
      * @param RouterInterface                                                                   $router
      * @param CommonResponseCreator                                                             $commonResponseCreator
      * @param AffiliateNotifier                                                                 $affiliateNotifier
+     * @param CampaignExtractor                                                                 $campaignExtractor
      * @param \SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
      */
     public function __construct(
@@ -123,6 +124,7 @@ class ConsentFlowHandler
         RouterInterface $router,
         CommonResponseCreator $commonResponseCreator,
         AffiliateNotifier $affiliateNotifier,
+        CampaignExtractor $campaignExtractor,
         AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
 
 
@@ -139,6 +141,7 @@ class ConsentFlowHandler
         $this->router                          = $router;
         $this->commonResponseCreator           = $commonResponseCreator;
         $this->affiliateNotifier               = $affiliateNotifier;
+        $this->campaignExtractor = $campaignExtractor;
         $this->afterSubscriptionProcessTracker = $afterSubscriptionProcessTracker;
     }
 
