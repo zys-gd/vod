@@ -201,17 +201,6 @@
 
             }
 
-            function addPinValidation() {
-                {% if isCarrierDetected() %}
-                let pinPlaceholder = "{{ getPinValidationOptions().placeholder }}";
-                let pinPattern = "{{ getPinValidationOptions().pattern }}";
-
-                $('input[name=pin_code]')
-                    .attr('placeholder', pinPlaceholder)
-                    .attr('pattern', pinPattern);
-                {% endif %}
-            }
-
             function fillOptionsForCarrierSelect({id, name}) {
                 let template = `<option value='${id}'>${name}</option>`;
                 $('select[name="carrier_id"]').append(template);
