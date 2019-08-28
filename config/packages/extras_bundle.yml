@@ -19,4 +19,5 @@ extras:
   cache:
     redis_host: '%redis_host%'
     redis_port: '%redis_port%'
+    redis_prefix: 'vdefault'
     use_array_cache: false
