@@ -1,6 +1,6 @@
 {% macro render(placeholder, btnClass, blockClass) %}
     {% import "@App/Components/Buttons/link.html.twig" as  link %}
-    {% import "@App/Common/Blocks/wifi_subscribe_block.html.twig" as wifi_subscribe_block %}
+    {% import LPImporter("Blocks/wifi_subscribe_block.html.twig") as wifi_subscribe_block %}
 
     <div class="d-flex align-items-start justify-content-center  {{ blockClass }}">
         {% if not hasActiveSubscription() or not isNotFullyPaid() %}

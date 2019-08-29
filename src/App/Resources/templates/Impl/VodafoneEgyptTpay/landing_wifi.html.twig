@@ -2,7 +2,6 @@
 {% import "@App/Components/Blocks/Header/header_lp.html.twig" as  header %}
 {% import "@App/Components/Blocks/Footer/annotation.html.twig" as  annotation %}
 {% import "@App/Components/Blocks/Footer/menu.html.twig" as  footer_menu %}
-{% import LPImporter("LP/wifi_subscribe_block_js.html.twig") as subJS %}
 
 {# IMPORT SECTIONS #}
 {% import LPImporter("LP/Sections/banner_section.html.twig") as banner_section %}
@@ -18,7 +17,7 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {{ subJS.render() }}
+    {% include LPImporter("LP/wifi_subscribe_block_js.html.twig") %}
 {% endblock %}
 
 

@@ -10,4 +10,17 @@
                required/>
     </div>
 
+    <script>
+        //Yrii 'params' variable fix(((
+        function addPhoneValidation() {
+            {% if isCarrierDetected() %}
+                let phonePlaceholder = "{{ getPhoneValidationOptions().placeholder }}";
+                let phonePattern = "{{ getPhoneValidationOptions().pattern }}";
+
+                $('input[name=mobile_number]')
+                    .attr('placeholder', phonePlaceholder)
+                    .attr('pattern', phonePattern);
+            {% endif %}
+        }
+    </script>
 {% endmacro %}
