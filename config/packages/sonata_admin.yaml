@@ -1,5 +1,6 @@
 sonata_admin:
     title: 'Sport videos'
+    persist_filters: true
     security:
         handler: sonata.admin.security.handler.role
 

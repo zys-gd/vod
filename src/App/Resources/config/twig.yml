@@ -31,15 +31,15 @@ services:
 
     App\Twig\StringEncodingExtension: ~
 
-    App\Twig\WifiFlowExtension:
+    App\Twig\LPExtension:
         arguments:
+            - '@session'
+            - '@App\CarrierTemplate\TemplateConfigurator'
             - '@App\Domain\Repository\CarrierRepository'
-            - '@SubscriptionBundle\Repository\SubscriptionPackRepository'
+            - '@SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface'
             - '@CommonDataBundle\Repository\CountryRepository'
-            - '@App\Domain\Service\Translator\Translator'
-            - '@App\Domain\Service\Translator\ShortcodeReplacer'
-            - '@App\Domain\Service\Translator\DataAggregator'
-            - '@ExtrasBundle\Utils\LocalExtractor'
+            - '@IdentificationBundle\WifiIdentification\WifiPhoneOptionsProvider'
+            - '%images_base_url%'
 
     App\Twig\AuditExtension: ~
 

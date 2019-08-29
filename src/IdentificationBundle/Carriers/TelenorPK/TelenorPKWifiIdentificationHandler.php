@@ -89,8 +89,10 @@ class TelenorPKWifiIdentificationHandler implements WifiIdentificationHandlerInt
     public function getPhoneValidationOptions(): PhoneValidationOptions
     {
         return new PhoneValidationOptions(
-            '',
-            ''
+            '+923XXXXXXXXX',
+            '^\+923[0-9]{9}$',
+            'XXXXX',
+            '^[0-9]{1,5}$'
         );
     }
 }

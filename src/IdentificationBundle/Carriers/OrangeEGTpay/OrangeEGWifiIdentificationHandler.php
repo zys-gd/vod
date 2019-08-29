@@ -240,8 +240,8 @@ class OrangeEGWifiIdentificationHandler implements
     public function getPhoneValidationOptions(): PhoneValidationOptions
     {
         return new PhoneValidationOptions(
-            '+(201)XXXXXXXXX',
-            '^\+(201)[0-9]{9}$',
+            '+201XXXXXXXXX',
+            '^\+201[0-9]{9}$',
             'XXXXX',
             '^[0-9][0-9]{5}$'
         );

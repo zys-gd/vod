@@ -82,7 +82,7 @@ class ErrorCodeResolver
                 return $this->translator->translate('messages.error.wifi_blacklisted', $billingCarrierId, $lang);
 
             default:
-                return 'Internal Error';
+                return $this->translator->translate('whoops.short', $billingCarrierId, $lang);
                 break;
         }
 

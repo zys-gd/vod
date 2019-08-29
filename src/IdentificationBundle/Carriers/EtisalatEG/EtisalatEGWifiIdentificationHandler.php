@@ -101,7 +101,9 @@ class EtisalatEGWifiIdentificationHandler implements
     {
         return new PhoneValidationOptions(
             '+XXXXXXXXXXXX',
-            '^[0-9]{12}$'
+            '^[0-9]{12}$',
+            '',
+            ''
         );
     }
 }

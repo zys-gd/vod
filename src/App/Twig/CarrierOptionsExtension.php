@@ -54,13 +54,6 @@ class CarrierOptionsExtension extends AbstractExtension
             new TwigFunction('isConfirmationPopup', [$this, 'isConfirmationPopup']),
 
             new TwigFunction('isCarrierPassthrough', [$this, 'isCarrierPassthrough']),
-
-            new TwigFunction('isClickableSubImage', function () {
-                // todo rework after task with landing page
-                return false;
-                //return (bool)$this->dataStorage->readValue('is_clickable_sub_image');
-            })
-
         ];
     }
 

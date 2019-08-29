@@ -5,9 +5,9 @@ namespace App\CarrierTemplate\Handler;
 use IdentificationBundle\BillingFramework\ID;
 
 /**
- * Class VodafoneEgyptTpay
+ * Class OrangeEgyptTpay
  */
-class VodafoneEgyptTpay implements TemplateHandlerInterface
+class OrangeEgyptTpayTemplateHandler implements TemplateHandlerInterface
 {
     /**
      * @param int $billingCarrierId
@@ -16,7 +16,7 @@ class VodafoneEgyptTpay implements TemplateHandlerInterface
      */
     public function canHandle(int $billingCarrierId): bool
     {
-        return ID::VODAFONE_EGYPT_TPAY === $billingCarrierId;
+        return ID::ORANGE_EGYPT_TPAY === $billingCarrierId;
     }
 
     /**
@@ -26,6 +26,6 @@ class VodafoneEgyptTpay implements TemplateHandlerInterface
      */
     public function getFullTemplatePath(string $templateName): string
     {
-        return '@App/Impl/VodafoneEgyptTpay/' . $templateName . '.html.twig';
+        return '@App/Impl/OrangeEgyptTpay/' . $templateName . '.html.twig';
     }
 }
