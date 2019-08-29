@@ -45,7 +45,7 @@ try {
         $exception->getLine()
     );
 
-    if ($_SERVER['APP_DEBUG']) {
+    if ($_SERVER['APP_DEBUG'] && !$_SERVER['APP_SHOW_DEBUG_INFO']) {
         http_response_code(500);
         echo $log;
         error_log($log);

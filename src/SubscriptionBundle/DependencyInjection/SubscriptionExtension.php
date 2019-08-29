@@ -13,6 +13,7 @@ use ExtrasBundle\Config\DefinitionReplacer;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 
 class SubscriptionExtension extends ConfigurableExtension
@@ -96,5 +97,8 @@ class SubscriptionExtension extends ConfigurableExtension
         DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['event_tracking']['rabbit_mq']['vhost'], '_rabbitmq_vhost_placeholder_');
         DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['event_tracking']['rabbit_mq']['exchange_name'], '_rabbitmq_exchange_name_placeholder_');
         DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['event_tracking']['rabbit_mq']['queue_name'], '_rabbitmq_queue_name_placeholder_');
+
+        $definition = $container->getDefinition('SubscriptionBundle\DataFixtures\ORM\LoadSubscriptionPackData');
+        DefinitionReplacer::replacePlaceholder($definition, new Reference($mergedConfig['fixtures']['carrier_fixture']), '_carrier_fixture_service_placeholder_');
     }
 }
