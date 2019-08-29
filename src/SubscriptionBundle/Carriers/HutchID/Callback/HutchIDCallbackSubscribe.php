@@ -10,6 +10,7 @@ use IdentificationBundle\Identification\Service\TokenGenerator;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\User\Service\UserFactory;
+use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper;
 use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
@@ -23,6 +24,7 @@ use SubscriptionBundle\Subscription\Callback\Common\CommonFlowHandler;
 use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerInterface;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCustomFlow;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCustomTrackingRules;
+use SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker;
 use SubscriptionBundle\Subscription\Common\SubscriptionFactory;
 use SubscriptionBundle\Subscription\Notification\Notifier;
 use SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventTracker;
@@ -92,25 +94,35 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var ProcessResultSuccessChecker
+     */
+    private $resultSuccessChecker;
+    /**
+     * @var ApiConnector
+     */
+    private $crossSubscriptionApi;
 
     /**
      * HutchIDCallbackSubscribe constructor.
      *
-     * @param CommonFlowHandler          $commonFlowHandler
-     * @param UserRepository             $userRepository
-     * @param SubscriptionFactory        $subscriptionCreator
-     * @param SubscriptionRepository     $subscriptionRepository
-     * @param SubscriptionPackRepository $subscriptionPackRepository
-     * @param EntitySaveHelper           $entitySaveHelper
-     * @param CarrierRepositoryInterface $carrierRepository
-     * @param TokenGenerator             $generator
-     * @param UserFactory                $userFactory
-     * @param IdentificationDataStorage  $identificationDataStorage
-     * @param ProcessResponseMapper      $processResponseMapper
-     * @param HutchIDSMSSubscriber       $hutchIDSMSSubscriber
-     * @param Notifier                   $notifier
-     * @param SubscriptionEventTracker   $subscriptionEventTracker
-     * @param LoggerInterface            $logger
+     * @param CommonFlowHandler           $commonFlowHandler
+     * @param UserRepository              $userRepository
+     * @param SubscriptionFactory         $subscriptionCreator
+     * @param SubscriptionRepository      $subscriptionRepository
+     * @param SubscriptionPackRepository  $subscriptionPackRepository
+     * @param EntitySaveHelper            $entitySaveHelper
+     * @param CarrierRepositoryInterface  $carrierRepository
+     * @param TokenGenerator              $generator
+     * @param UserFactory                 $userFactory
+     * @param IdentificationDataStorage   $identificationDataStorage
+     * @param ProcessResponseMapper       $processResponseMapper
+     * @param HutchIDSMSSubscriber        $hutchIDSMSSubscriber
+     * @param Notifier                    $notifier
+     * @param SubscriptionEventTracker    $subscriptionEventTracker
+     * @param LoggerInterface             $logger
+     * @param ProcessResultSuccessChecker $processResultSuccessChecker
+     * @param ApiConnector                $apiConnector
      */
     public function __construct(
         CommonFlowHandler $commonFlowHandler,
@@ -127,7 +139,9 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
         HutchIDSMSSubscriber $hutchIDSMSSubscriber,
         Notifier $notifier,
         SubscriptionEventTracker $subscriptionEventTracker,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ProcessResultSuccessChecker $processResultSuccessChecker,
+        ApiConnector $apiConnector
     )
     {
         $this->commonFlowHandler          = $commonFlowHandler;
@@ -145,6 +159,8 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
         $this->notifier                   = $notifier;
         $this->subscriptionEventTracker   = $subscriptionEventTracker;
         $this->logger                     = $logger;
+        $this->resultSuccessChecker       = $processResultSuccessChecker;
+        $this->crossSubscriptionApi       = $apiConnector;
     }
 
     public function canHandle(Request $request, int $carrierId): bool
@@ -161,7 +177,8 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
      */
     public function process(Request $request, string $type)
     {
-        $requestParams = (Object)$request->request->all();
+        $requestParams   = (Object)$request->request->all();
+        $processResponse = $this->processResponseMapper->map($type, (object)['data' => $requestParams]);
 
         try {
             if ($requestParams->provider_fields['source'] != 'SMS') {
@@ -197,12 +214,12 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
                 $subscription = $this->subscriptionCreator->create($user, $subscriptionPack);
             }
 
-            $processResponse = $this->processResponseMapper->map($type, (object)['data' => $requestParams]);
             $this->hutchIDSMSSubscriber->subscribe($subscription, $processResponse);
             $this->entitySaveHelper->persistAndSave($subscription);
 
             // send SMS
-            if ($subscription->isSubscribed()) {
+            if ($subscription->isSubscribed() && $this->resultSuccessChecker->isSuccessful($processResponse)) {
+                $this->logger->debug('Hutch ID listen callback created successful subscription. Start tracking');
                 $this->notifier->sendNotification(
                     SubscribeProcess::PROCESS_METHOD_SUBSCRIBE,
                     $subscription,
@@ -218,6 +235,8 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
                 if ($isNeedToBeTracked) {
                     $this->subscriptionEventTracker->trackSubscribe($subscription, $processResponse);
                 }
+
+                $this->crossSubscriptionApi->registerSubscription($user->getIdentifier(), $user->getBillingCarrierId());
             }
 
             $this->logger->debug('Hutch ID listen callback created subscription', [$subscription]);

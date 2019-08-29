@@ -25,7 +25,9 @@ services:
             - '@SubscriptionBundle\Carriers\HutchID\Subscribe\HutchIDSMSSubscriber'
             - '@SubscriptionBundle\Subscription\Notification\Notifier'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventTracker'
-            - '@monolog.logger_prototype'
+            - '@logger'
+            - '@SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker'
+            - '@cross_subscription.api_connector'
 
     SubscriptionBundle\Carriers\HutchID\Callback\HutchIDCallbackUnsubscribe:
         arguments:

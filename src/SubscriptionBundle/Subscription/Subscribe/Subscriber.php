@@ -42,7 +42,7 @@ class Subscriber
      */
     private $session;
     /**
-     * @var \SubscriptionBundle\Subscription\Common\SubscriptionFactory
+     * @var SubscriptionFactory
      */
     private $subscriptionCreator;
     /**
@@ -66,11 +66,11 @@ class Subscriber
      */
     private $subscribePromotionalPerformer;
     /**
-     * @var \Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector
+     * @var ApiConnector
      */
     private $crossSubscriptionApi;
     /**
-     * @var \SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker
+     * @var ProcessResultSuccessChecker
      */
     private $resultSuccessChecker;
     /**
@@ -81,18 +81,18 @@ class Subscriber
     /**
      * Subscriber constructor.
      *
-     * @param LoggerInterface                                                     $logger
-     * @param EntitySaveHelper                                                    $entitySaveHelper
-     * @param SessionInterface                                                    $session
-     * @param \SubscriptionBundle\Subscription\Common\SubscriptionFactory         $subscriptionCreator
-     * @param PromotionalResponseChecker                                  $promotionalResponseChecker
-     * @param OnSubscribeUpdater                                                  $onSubscribeUpdater
-     * @param SubscriptionLimitCompleter                                          $subscriptionLimitCompleter
-     * @param SubscribePerformer                                                  $subscribePerformer
-     * @param SubscribePromotionalPerformer                                       $subscribePromotionalPerformer
-     * @param ApiConnector                                                        $crossSubscriptionApi
-     * @param \SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker $resultSuccessChecker
-     * @param CampaignExtractor                                                   $campaignExtractor
+     * @param LoggerInterface               $logger
+     * @param EntitySaveHelper              $entitySaveHelper
+     * @param SessionInterface              $session
+     * @param SubscriptionFactory           $subscriptionCreator
+     * @param PromotionalResponseChecker    $promotionalResponseChecker
+     * @param OnSubscribeUpdater            $onSubscribeUpdater
+     * @param SubscriptionLimitCompleter    $subscriptionLimitCompleter
+     * @param SubscribePerformer            $subscribePerformer
+     * @param SubscribePromotionalPerformer $subscribePromotionalPerformer
+     * @param ApiConnector                  $crossSubscriptionApi
+     * @param ProcessResultSuccessChecker   $resultSuccessChecker
+     * @param CampaignExtractor             $campaignExtractor
      */
     public function __construct(
         LoggerInterface $logger,
@@ -143,7 +143,7 @@ class Subscriber
         $subscription = $this->createPendingSubscription($user, $plan);
         $subscription->setAffiliateToken(json_encode($var));
 
-        $campaign = $this->campaignExtractor->getCampaignForSubscription($subscription);
+        $campaign                            = $this->campaignExtractor->getCampaignForSubscription($subscription);
         $isFreeTrialSubscriptionFromCampaign = $campaign && $campaign->isFreeTrialSubscription();
 
         try {
@@ -205,9 +205,11 @@ class Subscriber
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws SubscribingProcessException
      */
-    public function resubscribe(Subscription $existingSubscription,
+    public function resubscribe(
+        Subscription $existingSubscription,
         SubscriptionPack $plan,
-        $additionalData = []): ProcessResult
+        $additionalData = []
+    ): ProcessResult
     {
         $subscription = $existingSubscription;
 
