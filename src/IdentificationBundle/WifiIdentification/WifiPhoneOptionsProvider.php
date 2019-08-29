@@ -28,6 +28,7 @@ class WifiPhoneOptionsProvider
     /**
      * WifiPhoneOptionsProvider constructor.
      * @param WifiIdentificationHandlerProvider $provider
+     * @param CarrierRepositoryInterface        $carrierRepository
      */
     public function __construct(WifiIdentificationHandlerProvider $provider, CarrierRepositoryInterface $carrierRepository)
     {

@@ -72,6 +72,15 @@ class Configuration implements ConfigurationInterface
                 ->end()
             ->end();
 
+        $rootNode
+            ->children()
+                ->arrayNode('fixtures')
+                    ->children()
+                        ->scalarNode('carrier_fixture')->isRequired()->end()
+                    ->end()
+                ->end()
+            ->end();
+
         return $treeBuilder;
     }
 }

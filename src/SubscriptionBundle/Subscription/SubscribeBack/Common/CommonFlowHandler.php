@@ -11,10 +11,14 @@ use IdentificationBundle\Identification\Service\Session\IdentificationDataStorag
 use IdentificationBundle\Identification\Service\TokenGenerator;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\User\Service\UserFactory;
+use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
+use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator;
 use IdentificationBundle\Identification\Service\RouteProvider;
+use SubscriptionBundle\Entity\Subscription;
+use SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker;
 use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
 use SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker;
 use SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter;
@@ -86,6 +90,18 @@ class CommonFlowHandler
      * @var RouteProvider
      */
     private $routeProvider;
+    /**
+     * @var ProcessResultSuccessChecker
+     */
+    private $resultSuccessChecker;
+    /**
+     * @var ApiConnector
+     */
+    private $crossSubscriptionApi;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * CommonFlowHandler constructor.
@@ -104,6 +120,9 @@ class CommonFlowHandler
      * @param CampaignExtractor               $campaignExtractor
      * @param AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
      * @param RouteProvider                   $routeProvider
+     * @param ProcessResultSuccessChecker     $processResultSuccessChecker
+     * @param ApiConnector                    $apiConnector
+     * @param LoggerInterface                 $logger
      */
     public function __construct(
         Subscriber $subscriber,
@@ -119,7 +138,10 @@ class CommonFlowHandler
         TokenGenerator $generator,
         CampaignExtractor $campaignExtractor,
         AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker,
-        RouteProvider $routeProvider
+        RouteProvider $routeProvider,
+        ProcessResultSuccessChecker $processResultSuccessChecker,
+        ApiConnector $apiConnector,
+        LoggerInterface $logger
     )
     {
         $this->subscriber                      = $subscriber;
@@ -136,6 +158,9 @@ class CommonFlowHandler
         $this->campaignExtractor               = $campaignExtractor;
         $this->afterSubscriptionProcessTracker = $afterSubscriptionProcessTracker;
         $this->routeProvider                   = $routeProvider;
+        $this->resultSuccessChecker            = $processResultSuccessChecker;
+        $this->crossSubscriptionApi            = $apiConnector;
+        $this->logger                          = $logger;
     }
 
     /**
@@ -153,6 +178,11 @@ class CommonFlowHandler
         SubscribeBackHandlerInterface $handler
     ): Response
     {
+        $this->logger->debug('Start subscribeBack process', [
+            'carrier' => $carrier,
+            'handler' => get_class($handler)
+        ]);
+
         $msisdn           = $request->get('msisdn');
         $billingProcessId = $request->get('bf_process_id');
         $campaign         = $this->campaignExtractor->getCampaignFromSession($request->getSession());
@@ -177,6 +207,8 @@ class CommonFlowHandler
             );
 
             $this->identificationDataStorage->setIdentificationToken($newToken);
+
+            $this->logger->debug('Create new user', ['user' => $user]);
         }
 
         $subscription = $this->subscriptionExtractor->getExistingSubscriptionForUser($user);
@@ -195,10 +227,18 @@ class CommonFlowHandler
         }
 
         try {
+            /** @var Subscription $newSubscription */
             /** @var ProcessResult $result */
             list($newSubscription, $result) = $this->subscriber->subscribe($user, $subscriptionPack, $billingProcessId);
 
             $this->afterSubscriptionProcessTracker->track($result, $newSubscription, $handler, $campaign);
+
+            if ($newSubscription->isSubscribed() && $this->resultSuccessChecker->isSuccessful($result)) {
+                $this->crossSubscriptionApi->registerSubscription($user->getIdentifier(), $user->getBillingCarrierId());
+            }
+
+            $this->logger->debug('Create new subscription', ['subscription' => $subscription]);
+            $this->logger->debug('Finish subscribeBack process');
 
             return new RedirectResponse($redirectUrl);
         } catch (\Exception $exception) {

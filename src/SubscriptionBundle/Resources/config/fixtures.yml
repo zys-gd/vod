@@ -6,6 +6,8 @@ services:
 
     SubscriptionBundle\DataFixtures\ORM\LoadSubscriptionPackData:
         tags: ['doctrine.fixture.orm']
+        arguments:
+          ['_carrier_fixture_service_placeholder_']
 
     SubscriptionBundle\DataFixtures\ORM\LoadCronTasksData:
         tags: ['doctrine.fixture.orm']

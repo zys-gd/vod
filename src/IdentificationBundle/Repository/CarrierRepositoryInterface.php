@@ -25,4 +25,9 @@ interface CarrierRepositoryInterface
      * @return array
      */
     public function findAll();
+
+    /**
+     * @return array
+     */
+    public function findEnabledCarriersCountries(): array;
 }
