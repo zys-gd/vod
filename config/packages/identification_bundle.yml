@@ -46,3 +46,6 @@ subscription:
       vhost: '%rabbit_mq_vhost%'
       exchange_name: 'piwik-vod'
       queue_name: 'piwik-events-vod'
+
+  fixtures:
+    carrier_fixture: DataFixtures\LoadCarriersData
