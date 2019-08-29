@@ -10,6 +10,7 @@ namespace SubscriptionBundle\Subscription\SubscribeBack\Controller;
 
 
 use IdentificationBundle\Identification\DTO\ISPData;
+use IdentificationBundle\Identification\Service\RouteProvider;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Subscription\SubscribeBack\Common\CommonFlowHandler;
 use SubscriptionBundle\Subscription\SubscribeBack\Handler\SubscribeBackHandlerProvider;
@@ -29,6 +30,10 @@ class SubscribeBackAction
      * @var CommonFlowHandler
      */
     private $commonFlowHandler;
+    /**
+     * @var RouteProvider
+     */
+    private $routeProvider;
 
     /**
      * SubscribeBackAction constructor.
@@ -36,16 +41,19 @@ class SubscribeBackAction
      * @param SubscribeBackHandlerProvider $subscribeBackHandlerProvider
      * @param CarrierRepositoryInterface   $carrierRepository
      * @param CommonFlowHandler            $commonFlowHandler
+     * @param RouteProvider                $routeProvider
      */
     public function __construct(
         SubscribeBackHandlerProvider $subscribeBackHandlerProvider,
         CarrierRepositoryInterface $carrierRepository,
-        CommonFlowHandler $commonFlowHandler
+        CommonFlowHandler $commonFlowHandler,
+        RouteProvider $routeProvider
     )
     {
         $this->subscribeBackHandlerProvider = $subscribeBackHandlerProvider;
         $this->carrierRepository            = $carrierRepository;
         $this->commonFlowHandler            = $commonFlowHandler;
+        $this->routeProvider                = $routeProvider;
     }
 
     /**
@@ -62,7 +70,11 @@ class SubscribeBackAction
         $carrier   = $this->carrierRepository->findOneByBillingId($carrierId);
         $handler   = $this->subscribeBackHandlerProvider->getHandler($carrier);
 
-        return $this->commonFlowHandler->process($request, $carrier, $handler);
+        try {
+            return $this->commonFlowHandler->process($request, $carrier, $handler);
+        } catch (\Throwable $e) {
+            $this->routeProvider->getLinkToHomepage(['err_handle' => 'subscribe_error']);
+        }
     }
 
 

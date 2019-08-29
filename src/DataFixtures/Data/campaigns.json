@@ -982,38 +982,6 @@
         ]
     },
     {
-        "uuid": "2ed3cff3-2310-4356-b719-e4ab61bfbcf6",
-        "imageName": "eb098e55fc0868386a9383c938f2ea63e7924e92.png",
-        "bgColor": "#ffffff",
-        "textColor": "#000000",
-        "campaignToken": "5d5a6b6591336",
-        "testUrl": "\/lp?cid=5d5a6b6591336&pk_campaign=4de05414-680d-4032-9d6e-ddcd11c0f8cd&pk_kwd=2ed3cff3-2310-4356-b719-e4ab61bfbcf6&max_max=testValue",
-        "isPause": false,
-        "counter": 0,
-        "flushDate": null,
-        "ppd": "0.00",
-        "sub": "0.00",
-        "click": "0.00",
-        "isLpOff": false,
-        "isClickableSubImage": false,
-        "zeroCreditSubAvailable": false,
-        "freeTrialSubscription": false,
-        "dateCreated": "2019-08-19T09:27:01+03:00",
-        "creator": "admin",
-        "schedule": null,
-        "affiliate": {
-            "uuid": "4de05414-680d-4032-9d6e-ddcd11c0f8cd"
-        },
-        "mainCategory": {
-            "uuid": "15157409-49a4-4823-a7f9-654ac1d7c12f"
-        },
-        "carriers": [
-            {
-                "uuid": "51dj58d7-ebd4-12e8-91c4-02bb25dlf94j"
-            }
-        ]
-    },
-    {
         "uuid": "4413244a-baf3-4eb8-b492-f544fedf1367",
         "imageName": "75141c8982581994bd3078ee052841dec2968e2c.jpeg",
         "bgColor": "#ffffff",
