@@ -28,6 +28,15 @@ services:
             - '@SubscriptionBundle\Affiliate\Service\AffiliateSender'
             - '@SubscriptionBundle\Piwik\DataMapper\ConversionEventMapper'
             - '@SubscriptionBundle\Piwik\EventPublisher'
+            - '@SubscriptionBundle\Subscription\Notification\Notifier'
+
+    SubscriptionBundle\Carriers\HutchID\Callback\HutchIDCallbackUnsubscribe:
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@SubscriptionBundle\Repository\SubscriptionRepository'
+            - '@SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber'
+        tags:
+            - { name: subscription.callback_carrier_handler, type: unsubscribe}
 
     SubscriptionBundle\Carriers\HutchID\Notification\HutchIDNotificationHandler:
         arguments:
