@@ -2,11 +2,12 @@
 
 namespace IdentificationBundle\Carriers\ZainKSA;
 
-use App\Domain\Constants\ConstBillingCarrierId;
-use IdentificationBundle\Entity\CarrierInterface;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Repository\UserRepository;
+use IdentificationBundle\WifiIdentification\DTO\PhoneValidationOptions;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 
 /**
  * Class ZainKSAWifiIdentificationHandler
@@ -37,7 +38,7 @@ class ZainKSAWifiIdentificationHandler implements WifiIdentificationHandlerInter
      */
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::ZAIN_SAUDI_ARABIA;
+        return $carrier->getBillingCarrierId() === ID::ZAIN_SAUDI_ARABIA;
     }
 
     /**
@@ -56,6 +57,19 @@ class ZainKSAWifiIdentificationHandler implements WifiIdentificationHandlerInter
     public function getExistingUser(string $msisdn): ?User
     {
         return $this->userRepository->findOneByMsisdn($msisdn);
+    }
+
+    /**
+     * @return PhoneValidationOptions
+     */
+    public function getPhoneValidationOptions(): PhoneValidationOptions
+    {
+        return new PhoneValidationOptions(
+            '+9665XXXXXXXX',
+            '^\+9665[0-9]{8}$',
+            'XXXXX',
+            '^[0-9]{1,5}$'
+        );
     }
 
     public function getRedirectUrl()

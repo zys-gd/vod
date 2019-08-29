@@ -2,14 +2,14 @@
 
 namespace SubscriptionBundle\Carriers\ZainKSA\Subscribe;
 
-use App\Domain\Constants\ConstBillingCarrierId;
-use IdentificationBundle\Entity\CarrierInterface;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Entity\User;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\HasCommonFlow;
-use SubscriptionBundle\Service\Action\Subscribe\Handler\SubscriptionHandlerInterface;
+use SubscriptionBundle\Subscription\Subscribe\Handler\HasCommonFlow;
+use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 
 /**
  * Class ZainKSASubscribeHandler
@@ -23,7 +23,7 @@ class ZainKSASubscribeHandler implements SubscriptionHandlerInterface, HasCommon
      */
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::ZAIN_SAUDI_ARABIA;
+        return $carrier->getBillingCarrierId() === ID::ZAIN_SAUDI_ARABIA;
     }
 
     /**

@@ -2,8 +2,7 @@
 
 namespace IdentificationBundle\Carriers\ZainKSA;
 
-use App\Domain\Constants\ConstBillingCarrierId;
-use IdentificationBundle\Entity\CarrierInterface;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Handler\CommonFlow\HasCustomPixelIdent;
 use IdentificationBundle\Identification\Handler\HasCommonFlow;
@@ -11,6 +10,7 @@ use IdentificationBundle\Identification\Handler\IdentificationHandlerInterface;
 use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use Symfony\Component\HttpFoundation\Request;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 
 /**
  * Class ZainSAIdentificationHandler
@@ -39,7 +39,7 @@ class ZainKSAIdentificationHandler implements IdentificationHandlerInterface, Ha
      */
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() === ConstBillingCarrierId::ZAIN_SAUDI_ARABIA;
+        return $carrier->getBillingCarrierId() === ID::ZAIN_SAUDI_ARABIA;
     }
 
     /**

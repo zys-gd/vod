@@ -2,7 +2,7 @@
 
 namespace IdentificationBundle\Carriers\ZainKSA;
 
-use App\Domain\Constants\ConstBillingCarrierId;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Callback\Handler\HasCommonFlow;
 use IdentificationBundle\Callback\Handler\IdentCallbackHandlerInterface;
 use IdentificationBundle\Entity\User;
@@ -21,7 +21,7 @@ class ZainKSAIdentificationCallbackHandler implements IdentCallbackHandlerInterf
      */
     public function canHandle(int $carrierId): bool
     {
-        return $carrierId === ConstBillingCarrierId::ZAIN_SAUDI_ARABIA;
+        return $carrierId === ID::ZAIN_SAUDI_ARABIA;
     }
 
     /**
