@@ -21,8 +21,6 @@ services:
         - '@SubscriptionBundle\Piwik\DataMapper\ConversionEventMapper'
         - '@SubscriptionBundle\Piwik\EventPublisher'
 
-      public: false
-
   SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerProvider:
       arguments:
         - '@SubscriptionBundle\Subscription\Callback\Impl\DefaultHandler'

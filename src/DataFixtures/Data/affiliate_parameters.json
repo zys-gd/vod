@@ -146,7 +146,7 @@
     {
         "uuid": "5194533f-ebd4-11e8-95c4-02bb250f0f22",
         "inputName": "clickid",
-        "outputName": "cid",
+        "outputName": "transaction_id",
         "affiliate": {
             "uuid": "514fe2c2-ebd4-11e8-95c4-02bb250f0f22"
         }
@@ -576,14 +576,6 @@
         }
     },
     {
-        "uuid": "9c507ab9-593d-4fcc-be42-12755737f78a",
-        "inputName": "test",
-        "outputName": "test",
-        "affiliate": {
-            "uuid": "2a5f3b0a-b5ac-4128-a910-d3063162cdda"
-        }
-    },
-    {
         "uuid": "ad889463-fab9-4d73-bb7c-463d49189a43",
         "inputName": "clickid",
         "outputName": "clickid",
@@ -629,6 +621,198 @@
         "outputName": "subid",
         "affiliate": {
             "uuid": "514fda89-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "093cb030-2202-4629-823d-6295ad7a635f",
+        "inputName": "test",
+        "outputName": "test",
+        "affiliate": {
+            "uuid": "4de05414-680d-4032-9d6e-ddcd11c0f8cd"
+        }
+    },
+    {
+        "uuid": "10207141-a91f-4a0d-a1cc-e085ae631727",
+        "inputName": "tid",
+        "outputName": "tid",
+        "affiliate": {
+            "uuid": "b257128e-b169-4591-bcec-79cb5d8c21f0"
+        }
+    },
+    {
+        "uuid": "13ad9bcb-01dd-4013-8a97-4bdd61933218",
+        "inputName": "pubid",
+        "outputName": "aff_id",
+        "affiliate": {
+            "uuid": "ad96b490-27b4-4ed6-910b-54c2081dde05"
+        }
+    },
+    {
+        "uuid": "154ed2cc-c5e5-4102-8432-a1533327bdc6",
+        "inputName": "clickid",
+        "outputName": "clickid",
+        "affiliate": {
+            "uuid": "6f4b503c-c888-4ae7-85c2-11dfa62a2561"
+        }
+    },
+    {
+        "uuid": "1f175e91-0260-4669-8232-69628d8a6e78",
+        "inputName": "publisher_id",
+        "outputName": "pid",
+        "affiliate": {
+            "uuid": "394b7098-8fd9-48c2-a03a-a19cdfd4211a"
+        }
+    },
+    {
+        "uuid": "287373e1-d71e-494b-b79a-c412f051234b",
+        "inputName": "sub2",
+        "outputName": "sub2",
+        "affiliate": {
+            "uuid": "7acc4a04-e7eb-4477-b109-9b7ec513a9bd"
+        }
+    },
+    {
+        "uuid": "2f4b2557-1b18-46d2-a2a3-8adc3f60c62e",
+        "inputName": "tid",
+        "outputName": "tid",
+        "affiliate": {
+            "uuid": "2fdfceb6-6c7d-41d5-afba-5bc4421b222f"
+        }
+    },
+    {
+        "uuid": "43c62c47-8821-4521-aebe-5b6d94919f98",
+        "inputName": "pubid",
+        "outputName": "source_id",
+        "affiliate": {
+            "uuid": "6f4b503c-c888-4ae7-85c2-11dfa62a2561"
+        }
+    },
+    {
+        "uuid": "4dc23a15-aeec-458d-9f13-c9ed3b6fde1b",
+        "inputName": "pubid",
+        "outputName": "pubid",
+        "affiliate": {
+            "uuid": "b257128e-b169-4591-bcec-79cb5d8c21f0"
+        }
+    },
+    {
+        "uuid": "52dab4e9-ae94-4783-a766-7c68520c5a30",
+        "inputName": "clickid",
+        "outputName": "clickid",
+        "affiliate": {
+            "uuid": "7acc4a04-e7eb-4477-b109-9b7ec513a9bd"
+        }
+    },
+    {
+        "uuid": "75af7edc-08dd-4e15-8fe6-e13ad2b722c8",
+        "inputName": "clickid",
+        "outputName": "clickid",
+        "affiliate": {
+            "uuid": "08b2f3d5-f79a-44c3-9e9d-49b1bbecd7c6"
+        }
+    },
+    {
+        "uuid": "99a11788-e90a-422e-b3dd-c994d7084e0b",
+        "inputName": "pid",
+        "outputName": "pid",
+        "affiliate": {
+            "uuid": "08b2f3d5-f79a-44c3-9e9d-49b1bbecd7c6"
+        }
+    },
+    {
+        "uuid": "9f919682-915a-476b-87b8-836d4a84db99",
+        "inputName": "pubid",
+        "outputName": "pubid",
+        "affiliate": {
+            "uuid": "aba2681a-8e72-4c8b-b1fb-2db0be6c08dd"
+        }
+    },
+    {
+        "uuid": "9fcdb6a2-0128-4491-8273-e66a3a08d5dd",
+        "inputName": "clickid",
+        "outputName": "tid",
+        "affiliate": {
+            "uuid": "ad96b490-27b4-4ed6-910b-54c2081dde05"
+        }
+    },
+    {
+        "uuid": "a16457e3-b05a-4f3c-84c8-3a20b69c611f",
+        "inputName": "pubid",
+        "outputName": "sub_pub_id",
+        "affiliate": {
+            "uuid": "514fe2c2-ebd4-11e8-95c4-02bb250f0f22"
+        }
+    },
+    {
+        "uuid": "a6c1433a-2e60-41ff-b61b-ed7cbe57fec2",
+        "inputName": "pubid",
+        "outputName": "pid",
+        "affiliate": {
+            "uuid": "7acc4a04-e7eb-4477-b109-9b7ec513a9bd"
+        }
+    },
+    {
+        "uuid": "b4b75dc9-51d4-4f0c-bae4-c16fbf3c95f5",
+        "inputName": "pub_id",
+        "outputName": "pub_id",
+        "affiliate": {
+            "uuid": "30f4a792-97cd-4327-968b-bc07289c781b"
+        }
+    },
+    {
+        "uuid": "c02a5ca2-fa91-4246-b28c-841c9815bf2b",
+        "inputName": "clickid",
+        "outputName": "txid",
+        "affiliate": {
+            "uuid": "aba2681a-8e72-4c8b-b1fb-2db0be6c08dd"
+        }
+    },
+    {
+        "uuid": "d87214d6-2a05-48ce-b856-e3cd909ad0eb",
+        "inputName": "source_id",
+        "outputName": "sub5",
+        "affiliate": {
+            "uuid": "394b7098-8fd9-48c2-a03a-a19cdfd4211a"
+        }
+    },
+    {
+        "uuid": "e86e1d22-1c32-48c8-adcc-478c4056d588",
+        "inputName": "clickid",
+        "outputName": "clickid",
+        "affiliate": {
+            "uuid": "394b7098-8fd9-48c2-a03a-a19cdfd4211a"
+        }
+    },
+    {
+        "uuid": "eb43e453-8c7e-4e52-934b-92bfad2e3605",
+        "inputName": "oliclick",
+        "outputName": "oliclick",
+        "affiliate": {
+            "uuid": "30f4a792-97cd-4327-968b-bc07289c781b"
+        }
+    },
+    {
+        "uuid": "f76ba6ba-65cb-4e48-b024-f49f6b85fe4e",
+        "inputName": "pubid",
+        "outputName": "p",
+        "affiliate": {
+            "uuid": "af9cb92f-cdc5-4eed-bcb7-dae5b6ace970"
+        }
+    },
+    {
+        "uuid": "f8882d2d-08aa-41fa-a671-12483df47fee",
+        "inputName": "clickid",
+        "outputName": "hwdid",
+        "affiliate": {
+            "uuid": "af9cb92f-cdc5-4eed-bcb7-dae5b6ace970"
+        }
+    },
+    {
+        "uuid": "fcf8cbb4-0510-4434-95c9-2b6461ad19e3",
+        "inputName": "pubid",
+        "outputName": "pubid",
+        "affiliate": {
+            "uuid": "2fdfceb6-6c7d-41d5-afba-5bc4421b222f"
         }
     }
 ]

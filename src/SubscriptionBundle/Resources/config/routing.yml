@@ -32,11 +32,11 @@ subscription.listen.adapter:
 
 subscription.fake_subscribe:
     path: /fake/subscribe
-    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\Fake\SubscribeAction'}
+    defaults: {_controller: 'SubscriptionBundle\Subscription\Subscribe\Controller\FakeSubscribeAction'}
 
 subscription.fake_unsubscribe:
     path: /fake/unsubscribe
-    defaults: {_controller: 'SubscriptionBundle\Controller\Actions\Fake\UnsubscribeAction'}
+    defaults: {_controller: 'SubscriptionBundle\Subscription\Unsubscribe\Controller\FakeUnsubscribeAction'}
 
 subscription.fake_renew:
     path: /fake/renew/{carrierId}

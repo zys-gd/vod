@@ -9,3 +9,6 @@ services:
 
     SubscriptionBundle\DataFixtures\ORM\LoadCronTasksData:
         tags: ['doctrine.fixture.orm']
+
+    SubscriptionBundle\DataFixtures\ORM\LoadExchangeRatesData:
+        tags: ['doctrine.fixture.orm']

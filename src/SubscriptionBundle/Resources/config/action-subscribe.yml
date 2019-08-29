@@ -106,6 +106,7 @@ services:
             - '@router.default'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\CommonResponseCreator'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\AffiliateNotifier'
+            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker'
 
     SubscriptionBundle\Subscription\Subscribe\Controller\SubscribeAction:

@@ -67,21 +67,13 @@ class UnsubscribeEventTracker
         if (!$this->unsubscribeEventChecker->isNeedToBeTracked($processResult)) {
             return;
         }
-        try {
-            $conversionEvent = $this->conversionEventMapper->map(
-                'unsubscribe',
-                $processResult,
-                $user,
-                $subscription
-            );
-            $result          = $this->eventPublisher->publish($conversionEvent);
-            $this->logger->info('Sending is finished', ['result' => $result]);
-        } catch (\Exception $ex) {
-            $this->logger->info('Exception on piwik sending', [
-                'msg'  => $ex->getMessage(),
-                'line' => $ex->getLine(),
-                'code' => $ex->getCode()
-            ]);
-        }
+        $conversionEvent = $this->conversionEventMapper->map(
+            'unsubscribe',
+            $processResult,
+            $user,
+            $subscription
+        );
+        $this->eventPublisher->publish($conversionEvent);
+
     }
 }

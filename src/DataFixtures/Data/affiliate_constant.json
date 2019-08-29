@@ -246,5 +246,93 @@
         "affiliate": {
             "uuid": "514ff8df-ebd4-11e8-95c4-02bb250f0f22"
         }
+    },
+    {
+        "uuid": "12213139-31d6-4da6-928d-f515326c8aa6",
+        "name": "pass",
+        "value": "dspopt-S4_PIUg.2V7VnAEEqn",
+        "affiliate": {
+            "uuid": "6f4b503c-c888-4ae7-85c2-11dfa62a2561"
+        }
+    },
+    {
+        "uuid": "1f7e5528-ce13-4f9e-839d-468fc686255a",
+        "name": "secure",
+        "value": "d60814888ce4d4bfbff7ac9be8bfbe2f",
+        "affiliate": {
+            "uuid": "08b2f3d5-f79a-44c3-9e9d-49b1bbecd7c6"
+        }
+    },
+    {
+        "uuid": "4a883896-abd4-4ed9-bed3-ffbe33c90520",
+        "name": "mid",
+        "value": "1601",
+        "affiliate": {
+            "uuid": "ad96b490-27b4-4ed6-910b-54c2081dde05"
+        }
+    },
+    {
+        "uuid": "58dbda29-7fd1-4548-8954-5a519de80ef6",
+        "name": "secure",
+        "value": "20b326462044b11637a3a425923794e2",
+        "affiliate": {
+            "uuid": "394b7098-8fd9-48c2-a03a-a19cdfd4211a"
+        }
+    },
+    {
+        "uuid": "5de7a941-9924-48dd-b6f3-e7e3094991ba",
+        "name": "auth_token",
+        "value": "hrzquk",
+        "affiliate": {
+            "uuid": "b257128e-b169-4591-bcec-79cb5d8c21f0"
+        }
+    },
+    {
+        "uuid": "8f84e5c8-af2b-441f-a46d-b5bb0ad31298",
+        "name": "auth_token",
+        "value": "78775",
+        "affiliate": {
+            "uuid": "ad96b490-27b4-4ed6-910b-54c2081dde05"
+        }
+    },
+    {
+        "uuid": "9b2cea48-f60b-4605-8566-2d25e3265900",
+        "name": "advname",
+        "value": "playwing",
+        "affiliate": {
+            "uuid": "6f4b503c-c888-4ae7-85c2-11dfa62a2561"
+        }
+    },
+    {
+        "uuid": "a70b13f8-78a2-4a5c-b94b-9762b28a43a9",
+        "name": "mid",
+        "value": "1677",
+        "affiliate": {
+            "uuid": "b257128e-b169-4591-bcec-79cb5d8c21f0"
+        }
+    },
+    {
+        "uuid": "bb20953e-b616-4d6c-ac5d-76d29426c1f2",
+        "name": "advid",
+        "value": "329",
+        "affiliate": {
+            "uuid": "6f4b503c-c888-4ae7-85c2-11dfa62a2561"
+        }
+    },
+    {
+        "uuid": "c7f1167e-cf8a-4542-b60a-ff01a8ce8f4c",
+        "name": "token",
+        "value": "7e90ff1",
+        "affiliate": {
+            "uuid": "af9cb92f-cdc5-4eed-bcb7-dae5b6ace970"
+        }
+    },
+    {
+        "uuid": "cd1d4110-2bd1-4b7e-994a-5151588d7dd5",
+        "name": "adv",
+        "value": "OriginData",
+        "affiliate": {
+            "uuid": "30f4a792-97cd-4327-968b-bc07289c781b"
+        }
     }
 ]

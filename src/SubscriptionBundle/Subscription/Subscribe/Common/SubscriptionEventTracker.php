@@ -39,9 +39,9 @@ class SubscriptionEventTracker
     /**
      * SubscriptionEventTracker constructor.
      * @param SubscriptionEventChecker $trackPossibilityChecker
-     * @param ConversionEventMapper        $conversionEventMapper
-     * @param EventPublisher               $eventPublisher
-     * @param LoggerInterface              $logger
+     * @param ConversionEventMapper    $conversionEventMapper
+     * @param EventPublisher           $eventPublisher
+     * @param LoggerInterface          $logger
      */
     public function __construct(
         SubscriptionEventChecker $trackPossibilityChecker,
@@ -51,33 +51,26 @@ class SubscriptionEventTracker
     )
     {
 
-        $this->trackPossibilityChecker     = $trackPossibilityChecker;
-        $this->conversionEventMapper       = $conversionEventMapper;
-        $this->eventPublisher              = $eventPublisher;
-        $this->logger                      = $logger;
+        $this->trackPossibilityChecker = $trackPossibilityChecker;
+        $this->conversionEventMapper   = $conversionEventMapper;
+        $this->eventPublisher          = $eventPublisher;
+        $this->logger                  = $logger;
     }
+
     public function trackSubscribe(Subscription $subscription, ProcessResult $response): void
     {
         $this->logger->info('Trying to send subscribe event');
         if (!$this->trackPossibilityChecker->isSubscribeNeedToBeTracked($response)) {
             return;
         }
-        try {
-            $conversionEvent = $this->conversionEventMapper->map(
-                'subscribe',
-                $response,
-                $subscription->getUser(),
-                $subscription
-            );
-            $result          = $this->eventPublisher->publish($conversionEvent);
-            $this->logger->info('Sending is finished', ['result' => $result]);
-        } catch (\Exception $ex) {
-            $this->logger->info('Exception on piwik sending', [
-                'msg'  => $ex->getMessage(),
-                'line' => $ex->getLine(),
-                'code' => $ex->getCode()
-            ]);
-        }
+        $conversionEvent = $this->conversionEventMapper->map(
+            'subscribe',
+            $response,
+            $subscription->getUser(),
+            $subscription
+        );
+        $this->eventPublisher->publish($conversionEvent);
+
     }
 
     public function trackResubscribe(Subscription $subscription, ProcessResult $response): void
@@ -86,21 +79,12 @@ class SubscriptionEventTracker
         if (!$this->trackPossibilityChecker->isSubscribeNeedToBeTracked($response)) {
             return;
         }
-        try {
-            $conversionEvent = $this->conversionEventMapper->map(
-                'resubscribe',
-                $response,
-                $subscription->getUser(),
-                $subscription
-            );
-            $result          = $this->eventPublisher->publish($conversionEvent);
-            $this->logger->info('Sending is finished', ['result' => $result]);
-        } catch (\Exception $ex) {
-            $this->logger->info('Exception on piwik sending', [
-                'msg'  => $ex->getMessage(),
-                'line' => $ex->getLine(),
-                'code' => $ex->getCode()
-            ]);
-        }
+        $conversionEvent = $this->conversionEventMapper->map(
+            'resubscribe',
+            $response,
+            $subscription->getUser(),
+            $subscription
+        );
+        $this->eventPublisher->publish($conversionEvent);
     }
 }
