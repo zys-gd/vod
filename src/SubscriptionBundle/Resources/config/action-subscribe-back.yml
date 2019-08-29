@@ -17,6 +17,9 @@ services:
             - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
+            - '@SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker'
+            - '@cross_subscription.api_connector'
+            - '@logger'
 
     SubscriptionBundle\Subscription\SubscribeBack\Handler\SubscribeBackHandlerProvider:
         arguments:
