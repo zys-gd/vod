@@ -91,7 +91,7 @@ class ConsentFlowHandler
      */
     private $campaignExtractor;
     /**
-     * @var \SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker
+     * @var AfterSubscriptionProcessTracker
      */
     private $afterSubscriptionProcessTracker;
 
@@ -110,7 +110,7 @@ class ConsentFlowHandler
      * @param CommonResponseCreator                                                             $commonResponseCreator
      * @param AffiliateNotifier                                                                 $affiliateNotifier
      * @param CampaignExtractor                                                                 $campaignExtractor
-     * @param \SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
+     * @param AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
      */
     public function __construct(
         LoggerInterface $logger,
@@ -141,7 +141,7 @@ class ConsentFlowHandler
         $this->router                          = $router;
         $this->commonResponseCreator           = $commonResponseCreator;
         $this->affiliateNotifier               = $affiliateNotifier;
-        $this->campaignExtractor = $campaignExtractor;
+        $this->campaignExtractor               = $campaignExtractor;
         $this->afterSubscriptionProcessTracker = $afterSubscriptionProcessTracker;
     }
 
@@ -174,7 +174,8 @@ class ConsentFlowHandler
             ]);
 
             return $this->handleResubscribe($request, $user, $subscriber, $subscription);
-        } else {
+        }
+        else {
             $this->logger->debug('`Subscribe` is not possible. User already have an active subscription.');
 
             if (
@@ -211,7 +212,7 @@ class ConsentFlowHandler
         /** @var ProcessResult $result */
         list($newSubscription, $result) = $this->subscriber->subscribe($user, $subscriptionPack, $additionalData);
 
-        $this->afterSubscriptionProcessTracker->trackSubscribe($result, $newSubscription, $subscriber, $campaign);
+        $this->afterSubscriptionProcessTracker->track($result, $newSubscription, $subscriber, $campaign);
 
         $subscriber->afterProcess($newSubscription, $result);
         $this->entitySaveHelper->saveAll();
@@ -261,7 +262,7 @@ class ConsentFlowHandler
             }
         }
 
-        $this->afterSubscriptionProcessTracker->trackResubscribe($result, $subscription, $subscriber, null, true);
+        $this->afterSubscriptionProcessTracker->track($result, $subscription, $subscriber, null, true);
 
         $subscriber->afterProcess($subscription, $result);
         $this->entitySaveHelper->saveAll();

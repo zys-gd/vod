@@ -13,7 +13,7 @@ use GuzzleHttp\Client;
 
 class GuzzleClientFactory
 {
-    public function getClient(array $config): Client
+    public function getClient(array $config = []): Client
     {
 
         $mergedConfig = array_merge(['connect_timeout' => 60, 'read_timeout' => 60, 'timeout' => 60], $config);

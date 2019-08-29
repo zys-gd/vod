@@ -9,9 +9,12 @@
 namespace App\Domain\Repository;
 
 
+use CommonDataBundle\Entity\Country;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use Doctrine\ORM\AbstractQuery;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Entity\SubscriptionPack;
+use function Doctrine\ORM\QueryBuilder;
 
 class CarrierRepository extends \Doctrine\ORM\EntityRepository implements CarrierRepositoryInterface
 {
@@ -23,6 +26,7 @@ class CarrierRepository extends \Doctrine\ORM\EntityRepository implements Carrie
     {
         return $this->findBy(['published' => true]);
     }
+
 
     /**
      * @param int $billingCarrierId
@@ -54,5 +58,19 @@ class CarrierRepository extends \Doctrine\ORM\EntityRepository implements Carrie
         /** @var SubscriptionPack $subscriptionPack */
         $subscriptionPack = $qb->getQuery()->getOneOrNullResult();
         return $subscriptionPack;
+    }
+
+    /**
+     * @return array
+     */
+    public function findEnabledCarriersCountries(): array
+    {
+        $qb = $this->createQueryBuilder('v');
+        $qb->where($qb->expr()->eq('v.published', true))
+            ->innerJoin(Country::class, 'c','WITH', 'c.countryCode = v.countryCode')
+            ->select('c')
+            ->groupBy('c.countryCode');
+
+        return $qb->getQuery()->getResult(AbstractQuery::HYDRATE_OBJECT);
     }
 }

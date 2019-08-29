@@ -12,9 +12,21 @@ use SubscriptionBundle\Entity\SubscriptionPack;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadSubscriptionPackData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
+class LoadSubscriptionPackData extends AbstractFixture implements DependentFixtureInterface
 {
-    use ContainerAwareTrait;
+    /**
+     * @var DependentFixtureInterface
+     */
+    private $carrierFixture;
+
+    /**
+     * LoadSubscriptionPackData constructor.
+     */
+    public function __construct(DependentFixtureInterface $carrierFixture)
+    {
+        $this->carrierFixture = $carrierFixture;
+    }
+
 
     /**
      * Load data fixtures with the passed EntityManager
@@ -76,8 +88,15 @@ class LoadSubscriptionPackData extends AbstractFixture implements ContainerAware
             $pack->setName($name);
             $pack->setDescription($description);
 
-            /** @var CarrierInterface $carrier */
-            $carrier = $this->getReference(sprintf('carrier_with_internal_id_%s', $carrier_id));
+
+            try {
+
+                /** @var CarrierInterface $carrier */
+                $carrier = $this->getReference(sprintf('carrier_with_internal_id_%s', $carrier_id));
+            } catch (\OutOfBoundsException $exception) {
+                echo "Missing carrier with internal ID `$carrier_id` for subscription pack `$uuid`. Skipping.\n\r ";
+                continue;
+            }
             $pack->setCarrier($carrier);
 
             $pack->setTierPrice($tier_price);
@@ -123,6 +142,9 @@ class LoadSubscriptionPackData extends AbstractFixture implements ContainerAware
      */
     function getDependencies()
     {
-        return [LoadCountriesData::class];
+        return [
+            LoadCountriesData::class,
+            get_class($this->carrierFixture)
+        ];
     }
 }
