@@ -35,11 +35,11 @@ class CommonFlowHandler
 
     use ResponseTrait;
     /**
-     * @var \SubscriptionBundle\Subscription\Common\SubscriptionExtractor
+     * @var SubscriptionExtractor
      */
     private $subscriptionProvider;
     /**
-     * @var \SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider
+     * @var SubscriptionPackProvider
      */
     private $subscriptionPackProvider;
     /**
@@ -97,21 +97,21 @@ class CommonFlowHandler
     /**
      * CommonSubscriber constructor.
      *
-     * @param \SubscriptionBundle\Subscription\Common\SubscriptionExtractor                    $subscriptionProvider
-     * @param \SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider                    $subscriptionPackProvider
-     * @param Subscriber                                                                       $subscriber
-     * @param SubscriptionEligibilityChecker                                                   $checker
-     * @param LoggerInterface                                                                  $logger
-     * @param SubscriptionHandlerProvider                                                      $handlerProvider
-     * @param CommonResponseCreator                                                            $commonResponseCreator
-     * @param UrlParamAppender                                                                 $urlParamAppender
-     * @param EntitySaveHelper                                                                 $entitySaveHelper
-     * @param SubscriptionEventTracker                                                         $subscriptionEventTracker
-     * @param \SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
-     * @param \SubscriptionBundle\Subscription\Common\RouteProvider                            $routeProvider
-     * @param AffiliateNotifier                                                                $affiliateNotifier
-     * @param CampaignExtractor                                                                $campaignExtractor
-     * @param AfterSubscriptionProcessTracker                                                  $afterSubscriptionProcessTracker
+     * @param SubscriptionExtractor           $subscriptionProvider
+     * @param SubscriptionPackProvider        $subscriptionPackProvider
+     * @param Subscriber                      $subscriber
+     * @param SubscriptionEligibilityChecker  $checker
+     * @param LoggerInterface                 $logger
+     * @param SubscriptionHandlerProvider     $handlerProvider
+     * @param CommonResponseCreator           $commonResponseCreator
+     * @param UrlParamAppender                $urlParamAppender
+     * @param EntitySaveHelper                $entitySaveHelper
+     * @param SubscriptionEventTracker        $subscriptionEventTracker
+     * @param ZeroCreditSubscriptionChecking  $zeroCreditSubscriptionChecking
+     * @param RouteProvider                   $routeProvider
+     * @param AffiliateNotifier               $affiliateNotifier
+     * @param CampaignExtractor               $campaignExtractor
+     * @param AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
      */
     public function __construct(
         SubscriptionExtractor $subscriptionProvider,
@@ -129,28 +129,24 @@ class CommonFlowHandler
         AffiliateNotifier $affiliateNotifier,
         CampaignExtractor $campaignExtractor,
         AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
-
-
     )
     {
-
-        $this->subscriptionProvider           = $subscriptionProvider;
-        $this->subscriptionPackProvider       = $subscriptionPackProvider;
-        $this->subscriber                     = $subscriber;
-        $this->checker                        = $checker;
-        $this->logger                         = $logger;
-        $this->handlerProvider                = $handlerProvider;
-        $this->commonResponseCreator          = $commonResponseCreator;
-        $this->urlParamAppender               = $urlParamAppender;
-        $this->entitySaveHelper               = $entitySaveHelper;
-        $this->subscriptionEventTracker       = $subscriptionEventTracker;
-        $this->routeProvider                  = $routeProvider;
-        $this->affiliateNotifier              = $affiliateNotifier;
-        $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
-        $this->campaignExtractor              = $campaignExtractor;
+        $this->subscriptionProvider            = $subscriptionProvider;
+        $this->subscriptionPackProvider        = $subscriptionPackProvider;
+        $this->subscriber                      = $subscriber;
+        $this->checker                         = $checker;
+        $this->logger                          = $logger;
+        $this->handlerProvider                 = $handlerProvider;
+        $this->commonResponseCreator           = $commonResponseCreator;
+        $this->urlParamAppender                = $urlParamAppender;
+        $this->entitySaveHelper                = $entitySaveHelper;
+        $this->subscriptionEventTracker        = $subscriptionEventTracker;
+        $this->routeProvider                   = $routeProvider;
+        $this->affiliateNotifier               = $affiliateNotifier;
+        $this->zeroCreditSubscriptionChecking  = $zeroCreditSubscriptionChecking;
+        $this->campaignExtractor               = $campaignExtractor;
         $this->afterSubscriptionProcessTracker = $afterSubscriptionProcessTracker;
     }
-
 
     /**
      * @param Request $request

@@ -41,6 +41,12 @@ class CampaignAdmin extends AbstractAdmin
      */
     private $container;
 
+    protected $datagridValues = [
+        '_page' => 1,
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'dateCreated',
+    ];
+
     /**
      * CampaignAdmin constructor
      *
@@ -178,6 +184,7 @@ class CampaignAdmin extends AbstractAdmin
                 'label' => 'Clickable image'
             ])
             ->add('carriers')
+            ->add('dateCreated')
             ->add('_action', null, [
                 'actions' => [
                     'show'   => [],

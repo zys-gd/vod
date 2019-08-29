@@ -14,7 +14,7 @@ use IdentificationBundle\User\Service\UserFactory;
 use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator;
-use SubscriptionBundle\Subscription\Common\RouteProvider;
+use IdentificationBundle\Identification\Service\RouteProvider;
 use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
 use SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker;
 use SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter;
@@ -79,7 +79,7 @@ class CommonFlowHandler
     private $campaignExtractor;
 
     /**
-     * @var \SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker
+     * @var AfterSubscriptionProcessTracker
      */
     private $afterSubscriptionProcessTracker;
     /**
@@ -90,20 +90,20 @@ class CommonFlowHandler
     /**
      * CommonFlowHandler constructor.
      *
-     * @param Subscriber                                                                        $subscriber
-     * @param UserFactory                                                                       $userFactory
-     * @param BlacklistVoter                                                                    $blacklistVoter
-     * @param BlacklistAttemptRegistrator                                                       $blacklistAttemptRegistrator
-     * @param DeviceDataProvider                                         $deviceDataProvider
-     * @param IdentificationDataStorage                                  $identificationDataStorage
-     * @param SubscriptionPackProvider                                                          $subscriptionPackProvider
-     * @param SubscriptionExtractor                                                             $subscriptionExtractor
-     * @param UrlParamAppender                                                                  $urlParamAppender
-     * @param UserRepository                                                                    $userRepository
-     * @param TokenGenerator                                                                    $generator
-     * @param CampaignExtractor                                                                 $campaignExtractor
-     * @param \SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
-     * @param \IdentificationBundle\Identification\Service\RouteProvider                        $routeProvider
+     * @param Subscriber                      $subscriber
+     * @param UserFactory                     $userFactory
+     * @param BlacklistVoter                  $blacklistVoter
+     * @param BlacklistAttemptRegistrator     $blacklistAttemptRegistrator
+     * @param DeviceDataProvider              $deviceDataProvider
+     * @param IdentificationDataStorage       $identificationDataStorage
+     * @param SubscriptionPackProvider        $subscriptionPackProvider
+     * @param SubscriptionExtractor           $subscriptionExtractor
+     * @param UrlParamAppender                $urlParamAppender
+     * @param UserRepository                  $userRepository
+     * @param TokenGenerator                  $generator
+     * @param CampaignExtractor               $campaignExtractor
+     * @param AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
+     * @param RouteProvider                   $routeProvider
      */
     public function __construct(
         Subscriber $subscriber,
@@ -119,7 +119,7 @@ class CommonFlowHandler
         TokenGenerator $generator,
         CampaignExtractor $campaignExtractor,
         AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker,
-        \IdentificationBundle\Identification\Service\RouteProvider $routeProvider
+        RouteProvider $routeProvider
     )
     {
         $this->subscriber                      = $subscriber;
@@ -198,7 +198,7 @@ class CommonFlowHandler
             /** @var ProcessResult $result */
             list($newSubscription, $result) = $this->subscriber->subscribe($user, $subscriptionPack, $billingProcessId);
 
-            $this->afterSubscriptionProcessTracker->trackSubscribe($result, $newSubscription, $handler, $campaign);
+            $this->afterSubscriptionProcessTracker->track($result, $newSubscription, $handler, $campaign);
 
             return new RedirectResponse($redirectUrl);
         } catch (\Exception $exception) {

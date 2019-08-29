@@ -13,6 +13,7 @@ use IdentificationBundle\User\Service\UserFactory;
 use SubscriptionBundle\Affiliate\Service\AffiliateSender;
 use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
 use SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper;
+use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
 use SubscriptionBundle\Carriers\HutchID\Subscribe\HutchIDSMSSubscriber;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
@@ -20,13 +21,15 @@ use SubscriptionBundle\Piwik\DataMapper\ConversionEventMapper;
 use SubscriptionBundle\Piwik\EventPublisher;
 use SubscriptionBundle\Repository\SubscriptionPackRepository;
 use SubscriptionBundle\Repository\SubscriptionRepository;
+use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Subscription\Callback\Common\CommonFlowHandler;
 use SubscriptionBundle\Subscription\Callback\Common\Type\SubscriptionCallbackHandler;
 use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerInterface;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCustomFlow;
-use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCustomTrackingRules;
 use SubscriptionBundle\Subscription\Common\SubscriptionFactory;
+use SubscriptionBundle\Subscription\Notification\Notifier;
+use SubscriptionBundle\Subscription\Subscribe\Exception\SubscriptionFlowException;
 use Symfony\Component\HttpFoundation\Request;
 
 class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCustomFlow
@@ -99,6 +102,10 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
      * @var EventPublisher
      */
     private $conversionEventPublisher;
+    /**
+     * @var Notifier
+     */
+    private $notifier;
 
     /**
      * HutchIDCallbackSubscribe constructor.
@@ -120,6 +127,7 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
      * @param AffiliateSender             $affiliateSender
      * @param ConversionEventMapper       $conversionEventMapper
      * @param EventPublisher              $conversionEventPublisher
+     * @param Notifier                    $notifier
      */
     public function __construct(
         CommonFlowHandler $commonFlowHandler,
@@ -138,7 +146,8 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
         UserInfoMapper $infoMapper,
         AffiliateSender $affiliateSender,
         ConversionEventMapper $conversionEventMapper,
-        EventPublisher $conversionEventPublisher
+        EventPublisher $conversionEventPublisher,
+        Notifier $notifier
     )
     {
         $this->commonFlowHandler           = $commonFlowHandler;
@@ -158,6 +167,7 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
         $this->affiliateSender             = $affiliateSender;
         $this->conversionEventMapper       = $conversionEventMapper;
         $this->conversionEventPublisher    = $conversionEventPublisher;
+        $this->notifier                    = $notifier;
     }
 
     public function canHandle(Request $request, int $carrierId): bool
@@ -176,11 +186,9 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
     {
         $requestParams = (Object)$request->request->all();
 
-        // dirty hock
-        // reset billing subscription
         try {
             if ($requestParams->provider_fields['source'] != 'SMS') {
-                throw new \Exception();
+                throw new SubscriptionFlowException();
             }
 
             $billingCarrierId = $requestParams->carrier;
@@ -192,7 +200,7 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
                 $user     = $this->userFactory->create(
                     $requestParams->provider_user,
                     $carrier,
-                    $request->getClientIp(),
+                    null,
                     $newToken
                 );
 
@@ -209,37 +217,44 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
                 $subscriptionPack = $this->subscriptionPackRepository->findOneBy(['carrier' => $carrier, 'status' => 1]);
 
                 $subscription = $this->subscriptionCreator->create($user, $subscriptionPack);
-                $subscription->setCurrentStage(Subscription::ACTION_SUBSCRIBE);
             }
 
             $processResponse = $this->processResponseMapper->map($type, (object)['data' => $requestParams]);
             $this->hutchIDSMSSubscriber->subscribe($subscription, $processResponse);
             $this->entitySaveHelper->persistAndSave($subscription);
 
-            if ($this instanceof HasCustomTrackingRules) {
-                $isNeedToBeTracked = $this->isNeedToBeTracked($processResponse);
-            }
-            else {
-                $isNeedToBeTracked = ($type !== 'subscribe');
-            }
-
-            if ($isNeedToBeTracked) {
-                $userInfo = $this->infoMapper->mapFromUser($subscription->getUser());
-                if ($type === 'subscribe') {
-                    $this->affiliateSender->checkAffiliateEligibilityAndSendEvent($subscription, $userInfo);
-                }
-                $event = $this->conversionEventMapper->map(
-                    $this->subscriptionCallbackHandler->getPiwikEventName(),
-                    $processResponse,
-                    $subscription->getUser(),
-                    $subscription
+            // send SMS
+            if ($subscription->isSubscribed()) {
+                $this->notifier->sendNotification(
+                    SubscribeProcess::PROCESS_METHOD_SUBSCRIBE,
+                    $subscription,
+                    $subscription->getSubscriptionPack(),
+                    $carrier
                 );
-                $this->conversionEventPublisher->publish($event);
+
+
+                // track event
+                if ($this instanceof HasCustomTrackingRules) {
+                    $isNeedToBeTracked = $this->isNeedToBeTracked($processResponse);
+                }
+                else {
+                    $isNeedToBeTracked = ($type !== 'subscribe');
+                }
+
+                if ($isNeedToBeTracked) {
+                    $event = $this->conversionEventMapper->map(
+                        $this->subscriptionCallbackHandler->getPiwikEventName(),
+                        $processResponse,
+                        $subscription->getUser(),
+                        $subscription
+                    );
+                    $this->conversionEventPublisher->publish($event);
+                }
             }
 
             return $subscription;
 
-        } catch (\Throwable $e) {
+        } catch (SubscriptionFlowException $e) {
             return $this->commonFlowHandler->process($request, ID::HUTCH_INDONESIA, $type);
         }
     }
