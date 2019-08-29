@@ -34,6 +34,7 @@ services:
             - '@IdentificationBundle\Repository\UserRepository'
             - '@SubscriptionBundle\Repository\SubscriptionRepository'
             - '@SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber'
+            - '@cross_subscription.api_connector'
         tags:
             - { name: subscription.callback_carrier_handler, type: unsubscribe}
 
