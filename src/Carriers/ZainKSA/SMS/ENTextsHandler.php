@@ -1,0 +1,36 @@
+<?php
+
+namespace Carriers\ZainKSA\SMS;
+
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use CommonDataBundle\Entity\Interfaces\LanguageInterface;
+use IdentificationBundle\BillingFramework\ID;
+use SubscriptionBundle\Subscription\Notification\SMSText\CarrierSMSHandlerInterface;
+
+/**
+ * Class ENTextsHandler
+ */
+class ENTextsHandler implements CarrierSMSHandlerInterface
+{
+    /**
+     * @param CarrierInterface  $carrier
+     * @param LanguageInterface $language
+     *
+     * @return bool
+     */
+    public function isSupports(CarrierInterface $carrier, LanguageInterface $language): bool
+    {
+        return $carrier->getBillingCarrierId() === ID::ZAIN_SAUDI_ARABIA && $language->getCode() == 'en';
+    }
+
+    /**
+     * @return array
+     */
+    public function getTexts(): array
+    {
+        return [
+            'subscribe'   => "Welcome to 100%sport! Click here to access _shortautologin_url_ _currency_ _price_/day. To unsub or avoid auto-renewal charges send STOP to 6170", //TODO change sms cred
+            'unsubscribe' => "You have been unsubscribed from 100%sport. To subscribe again, please _unsub_url_."
+        ];
+    }
+}

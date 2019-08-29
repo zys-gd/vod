@@ -1,0 +1,3 @@
+services:
+    Carriers\ZainKSA\SMS\ENTextsHandler:
+        tags: ['subscription.sms_text_handler']
