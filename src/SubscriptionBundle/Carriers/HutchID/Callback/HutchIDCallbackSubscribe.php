@@ -196,7 +196,8 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
                     $requestParams->provider_user,
                     $carrier,
                     null,
-                    $newToken
+                    $newToken,
+                    $processResponse->getId()
                 );
 
                 $this->entitySaveHelper->persistAndSave($user);
