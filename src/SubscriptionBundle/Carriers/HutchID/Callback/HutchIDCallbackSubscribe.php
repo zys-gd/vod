@@ -10,25 +10,22 @@ use IdentificationBundle\Identification\Service\TokenGenerator;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\User\Service\UserFactory;
-use SubscriptionBundle\Affiliate\Service\AffiliateSender;
-use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
+use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper;
 use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
 use SubscriptionBundle\Carriers\HutchID\Subscribe\HutchIDSMSSubscriber;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
-use SubscriptionBundle\Piwik\DataMapper\ConversionEventMapper;
-use SubscriptionBundle\Piwik\EventPublisher;
 use SubscriptionBundle\Repository\SubscriptionPackRepository;
 use SubscriptionBundle\Repository\SubscriptionRepository;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Subscription\Callback\Common\CommonFlowHandler;
-use SubscriptionBundle\Subscription\Callback\Common\Type\SubscriptionCallbackHandler;
 use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerInterface;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCustomFlow;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCustomTrackingRules;
 use SubscriptionBundle\Subscription\Common\SubscriptionFactory;
 use SubscriptionBundle\Subscription\Notification\Notifier;
+use SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventTracker;
 use SubscriptionBundle\Subscription\Subscribe\Exception\SubscriptionFlowException;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -82,52 +79,38 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
      * @var HutchIDSMSSubscriber
      */
     private $hutchIDSMSSubscriber;
-    /**
-     * @var SubscriptionCallbackHandler
-     */
-    private $subscriptionCallbackHandler;
-    /**
-     * @var UserInfoMapper
-     */
-    private $infoMapper;
-    /**
-     * @var AffiliateSender
-     */
-    private $affiliateSender;
-    /**
-     * @var ConversionEventMapper
-     */
-    private $conversionEventMapper;
-    /**
-     * @var EventPublisher
-     */
-    private $conversionEventPublisher;
+
     /**
      * @var Notifier
      */
     private $notifier;
+    /**
+     * @var SubscriptionEventTracker
+     */
+    private $subscriptionEventTracker;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * HutchIDCallbackSubscribe constructor.
      *
-     * @param CommonFlowHandler           $commonFlowHandler
-     * @param UserRepository              $userRepository
-     * @param SubscriptionFactory         $subscriptionCreator
-     * @param SubscriptionRepository      $subscriptionRepository
-     * @param SubscriptionPackRepository  $subscriptionPackRepository
-     * @param EntitySaveHelper            $entitySaveHelper
-     * @param CarrierRepositoryInterface  $carrierRepository
-     * @param TokenGenerator              $generator
-     * @param UserFactory                 $userFactory
-     * @param IdentificationDataStorage   $identificationDataStorage
-     * @param ProcessResponseMapper       $processResponseMapper
-     * @param HutchIDSMSSubscriber        $hutchIDSMSSubscriber
-     * @param SubscriptionCallbackHandler $subscriptionCallbackHandler
-     * @param UserInfoMapper              $infoMapper
-     * @param AffiliateSender             $affiliateSender
-     * @param ConversionEventMapper       $conversionEventMapper
-     * @param EventPublisher              $conversionEventPublisher
-     * @param Notifier                    $notifier
+     * @param CommonFlowHandler          $commonFlowHandler
+     * @param UserRepository             $userRepository
+     * @param SubscriptionFactory        $subscriptionCreator
+     * @param SubscriptionRepository     $subscriptionRepository
+     * @param SubscriptionPackRepository $subscriptionPackRepository
+     * @param EntitySaveHelper           $entitySaveHelper
+     * @param CarrierRepositoryInterface $carrierRepository
+     * @param TokenGenerator             $generator
+     * @param UserFactory                $userFactory
+     * @param IdentificationDataStorage  $identificationDataStorage
+     * @param ProcessResponseMapper      $processResponseMapper
+     * @param HutchIDSMSSubscriber       $hutchIDSMSSubscriber
+     * @param Notifier                   $notifier
+     * @param SubscriptionEventTracker   $subscriptionEventTracker
+     * @param LoggerInterface            $logger
      */
     public function __construct(
         CommonFlowHandler $commonFlowHandler,
@@ -142,32 +125,26 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
         IdentificationDataStorage $identificationDataStorage,
         ProcessResponseMapper $processResponseMapper,
         HutchIDSMSSubscriber $hutchIDSMSSubscriber,
-        SubscriptionCallbackHandler $subscriptionCallbackHandler,
-        UserInfoMapper $infoMapper,
-        AffiliateSender $affiliateSender,
-        ConversionEventMapper $conversionEventMapper,
-        EventPublisher $conversionEventPublisher,
-        Notifier $notifier
+        Notifier $notifier,
+        SubscriptionEventTracker $subscriptionEventTracker,
+        LoggerInterface $logger
     )
     {
-        $this->commonFlowHandler           = $commonFlowHandler;
-        $this->userRepository              = $userRepository;
-        $this->subscriptionCreator         = $subscriptionCreator;
-        $this->subscriptionRepository      = $subscriptionRepository;
-        $this->subscriptionPackRepository  = $subscriptionPackRepository;
-        $this->entitySaveHelper            = $entitySaveHelper;
-        $this->carrierRepository           = $carrierRepository;
-        $this->generator                   = $generator;
-        $this->userFactory                 = $userFactory;
-        $this->identificationDataStorage   = $identificationDataStorage;
-        $this->processResponseMapper       = $processResponseMapper;
-        $this->hutchIDSMSSubscriber        = $hutchIDSMSSubscriber;
-        $this->subscriptionCallbackHandler = $subscriptionCallbackHandler;
-        $this->infoMapper                  = $infoMapper;
-        $this->affiliateSender             = $affiliateSender;
-        $this->conversionEventMapper       = $conversionEventMapper;
-        $this->conversionEventPublisher    = $conversionEventPublisher;
-        $this->notifier                    = $notifier;
+        $this->commonFlowHandler          = $commonFlowHandler;
+        $this->userRepository             = $userRepository;
+        $this->subscriptionCreator        = $subscriptionCreator;
+        $this->subscriptionRepository     = $subscriptionRepository;
+        $this->subscriptionPackRepository = $subscriptionPackRepository;
+        $this->entitySaveHelper           = $entitySaveHelper;
+        $this->carrierRepository          = $carrierRepository;
+        $this->generator                  = $generator;
+        $this->userFactory                = $userFactory;
+        $this->identificationDataStorage  = $identificationDataStorage;
+        $this->processResponseMapper      = $processResponseMapper;
+        $this->hutchIDSMSSubscriber       = $hutchIDSMSSubscriber;
+        $this->notifier                   = $notifier;
+        $this->subscriptionEventTracker   = $subscriptionEventTracker;
+        $this->logger                     = $logger;
     }
 
     public function canHandle(Request $request, int $carrierId): bool
@@ -188,6 +165,7 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
 
         try {
             if ($requestParams->provider_fields['source'] != 'SMS') {
+                $this->logger->info('Hutch ID listen callback source is not SMS');
                 throw new SubscriptionFlowException();
             }
 
@@ -232,29 +210,21 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
                     $carrier
                 );
 
-
                 // track event
+                $isNeedToBeTracked = true;
                 if ($this instanceof HasCustomTrackingRules) {
                     $isNeedToBeTracked = $this->isNeedToBeTracked($processResponse);
                 }
-                else {
-                    $isNeedToBeTracked = ($type !== 'subscribe');
-                }
-
                 if ($isNeedToBeTracked) {
-                    $event = $this->conversionEventMapper->map(
-                        $this->subscriptionCallbackHandler->getPiwikEventName(),
-                        $processResponse,
-                        $subscription->getUser(),
-                        $subscription
-                    );
-                    $this->conversionEventPublisher->publish($event);
+                    $this->subscriptionEventTracker->trackSubscribe($subscription, $processResponse);
                 }
             }
 
+            $this->logger->debug('Hutch ID listen callback created subscription', [$subscription]);
             return $subscription;
 
         } catch (SubscriptionFlowException $e) {
+            $this->logger->info('Hutch ID listen callback through common flow');
             return $this->commonFlowHandler->process($request, ID::HUTCH_INDONESIA, $type);
         }
     }

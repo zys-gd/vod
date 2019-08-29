@@ -23,12 +23,9 @@ services:
             - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
             - '@SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper'
             - '@SubscriptionBundle\Carriers\HutchID\Subscribe\HutchIDSMSSubscriber'
-            - '@SubscriptionBundle\Subscription\Callback\Common\Type\SubscriptionCallbackHandler'
-            - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
-            - '@SubscriptionBundle\Affiliate\Service\AffiliateSender'
-            - '@SubscriptionBundle\Piwik\DataMapper\ConversionEventMapper'
-            - '@SubscriptionBundle\Piwik\EventPublisher'
             - '@SubscriptionBundle\Subscription\Notification\Notifier'
+            - '@SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventTracker'
+            - '@monolog.logger_prototype'
 
     SubscriptionBundle\Carriers\HutchID\Callback\HutchIDCallbackUnsubscribe:
         arguments:
