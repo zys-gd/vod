@@ -228,6 +228,7 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
                 );
 
                 // track event
+                // TODO: use afterSubscriptionProcessTracker?
                 $isNeedToBeTracked = true;
                 if ($this instanceof HasCustomTrackingRules) {
                     $isNeedToBeTracked = $this->isNeedToBeTracked($processResponse);
