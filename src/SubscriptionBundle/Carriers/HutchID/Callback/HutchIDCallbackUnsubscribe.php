@@ -6,32 +6,15 @@ namespace SubscriptionBundle\Carriers\HutchID\Callback;
 
 use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Entity\User;
-use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
-use IdentificationBundle\Identification\Service\TokenGenerator;
-use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Repository\UserRepository;
-use IdentificationBundle\User\Service\UserFactory;
-use SubscriptionBundle\Affiliate\Service\AffiliateSender;
-use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
-use SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper;
-use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
-use SubscriptionBundle\Carriers\HutchID\Subscribe\HutchIDSMSSubscriber;
+use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
+use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Entity\SubscriptionPack;
-use SubscriptionBundle\Piwik\DataMapper\ConversionEventMapper;
-use SubscriptionBundle\Piwik\EventPublisher;
-use SubscriptionBundle\Repository\SubscriptionPackRepository;
 use SubscriptionBundle\Repository\SubscriptionRepository;
-use SubscriptionBundle\Subscription\Callback\Common\CommonFlowHandler;
-use SubscriptionBundle\Subscription\Callback\Common\Type\SubscriptionCallbackHandler;
 use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerInterface;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCustomFlow;
-use SubscriptionBundle\Service\EntitySaveHelper;
-use SubscriptionBundle\Subscription\Callback\Impl\HasCustomTrackingRules;
-use SubscriptionBundle\Subscription\Common\SubscriptionFactory;
-use SubscriptionBundle\Subscription\Notification\Notifier;
-use Symfony\Component\HttpFoundation\Request;
 use SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber;
+use Symfony\Component\HttpFoundation\Request;
 
 class HutchIDCallbackUnsubscribe implements CarrierCallbackHandlerInterface, HasCustomFlow
 {
@@ -48,6 +31,10 @@ class HutchIDCallbackUnsubscribe implements CarrierCallbackHandlerInterface, Has
      * @var Unsubscriber
      */
     private $unsubscriber;
+    /**
+     * @var ApiConnector
+     */
+    private $crossSubscriptionApi;
 
     /**
      * HutchIDCallbackUnsubscribe constructor.
@@ -55,16 +42,19 @@ class HutchIDCallbackUnsubscribe implements CarrierCallbackHandlerInterface, Has
      * @param UserRepository         $userRepository
      * @param SubscriptionRepository $subscriptionRepository
      * @param Unsubscriber           $unsubscriber
+     * @param ApiConnector           $apiConnector
      */
     public function __construct(
         UserRepository $userRepository,
         SubscriptionRepository $subscriptionRepository,
-        Unsubscriber $unsubscriber
+        Unsubscriber $unsubscriber,
+        ApiConnector $apiConnector
     )
     {
         $this->userRepository         = $userRepository;
         $this->subscriptionRepository = $subscriptionRepository;
         $this->unsubscriber           = $unsubscriber;
+        $this->crossSubscriptionApi   = $apiConnector;
     }
 
     public function canHandle(Request $request, int $carrierId): bool
@@ -88,7 +78,13 @@ class HutchIDCallbackUnsubscribe implements CarrierCallbackHandlerInterface, Has
         /** @var Subscription $subscription */
         $subscription = $this->subscriptionRepository->findOneBy(['user' => $user]);
 
-        $this->unsubscriber->unsubscribe($subscription, $subscription->getSubscriptionPack());
+        /** @var ProcessResult $processResult */
+        $processResult = $this->unsubscriber->unsubscribe($subscription, $subscription->getSubscriptionPack());
+
+        if ($processResult->isSuccessful() && $processResult->isFinal()) {
+            $this->unsubscriber->trackEventsForUnsubscribe($subscription, $processResult);
+            $this->crossSubscriptionApi->deregisterSubscription($user->getIdentifier(), $user->getBillingCarrierId());
+        }
 
         return $subscription;
     }
