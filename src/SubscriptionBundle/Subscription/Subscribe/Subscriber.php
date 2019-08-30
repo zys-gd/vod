@@ -149,16 +149,18 @@ class Subscriber
         try {
 
             if ($this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription)) {
-                $response = $this->subscribePromotionalPerformer->doSubscribe($subscription);
+
                 if (!$plan->isFirstSubscriptionPeriodIsFree() && !$isFreeTrialSubscriptionFromCampaign) {
                     $response = $this->subscribePerformer->doSubscribe($subscription, $additionalData);
-                }
-            }
-            else {
-                $response = $this->subscribePerformer->doSubscribe($subscription, $additionalData);
-                if($response->isSuccessful()) {
+                    if ($response->isSuccessful()) {
+                        $this->subscribePromotionalPerformer->doSubscribe($subscription);
+                    }
+                } else {
                     $this->subscribePromotionalPerformer->doSubscribe($subscription);
                 }
+
+            } else {
+                $response = $this->subscribePerformer->doSubscribe($subscription, $additionalData);
             }
 
             $this->onSubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
@@ -220,8 +222,7 @@ class Subscriber
             if ($this->promotionalResponseChecker->isPromotionalResponseNeeded($subscription)) {
                 $response = $this->subscribePromotionalPerformer->doSubscribe($subscription);
                 $this->subscribePerformer->doSubscribe($subscription, $additionalData);
-            }
-            else {
+            } else {
                 $response = $this->subscribePerformer->doSubscribe($subscription, $additionalData);
             }
 
