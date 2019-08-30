@@ -195,7 +195,7 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
                 $user     = $this->userFactory->create(
                     $requestParams->provider_user,
                     $carrier,
-                    null,
+                    '',
                     $newToken,
                     $processResponse->getId()
                 );
