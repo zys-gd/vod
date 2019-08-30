@@ -152,7 +152,7 @@ class Subscriber
 
                 if (!$plan->isFirstSubscriptionPeriodIsFree() && !$isFreeTrialSubscriptionFromCampaign) {
                     $response = $this->subscribePerformer->doSubscribe($subscription, $additionalData);
-                    if ($response->isSuccessful()) {
+                    if ($this->resultSuccessChecker->isSuccessful($response)) {
                         $this->subscribePromotionalPerformer->doSubscribe($subscription);
                     }
                 } else {
