@@ -11,7 +11,9 @@
 
     <div class="d-flex align-items-start justify-content-center mb-n-2 {{ blockClass }}">
         {% if not hasActiveSubscription() or not isNotFullyPaid() %}
-            {% if isIdentified() and not isConsentFlow() %}
+            {% if isCarrierPassthrough() %}
+                {{ link.render(getPassthroughLink(), translate(placeholder), btnClass) }}
+            {% elseif isIdentified() and not isConsentFlow() %}
                 {{ link.render(url('subscription.subscribe'), translate(placeholder), btnClass) }}
             {% elseif isConsentFlow() %}
                 {{ link.render(url('subscription.consent_page_subscribe'), translate(placeholder), btnClass) }}

@@ -49,6 +49,15 @@ services:
             - '@App\Domain\Repository\CarrierRepository'
             - '@IdentificationBundle\Identification\Service\PassthroughChecker'
 
+    App\Twig\PassthroughExtension:
+        arguments:
+            - '@IdentificationBundle\BillingFramework\Process\PassthroughProcess'
+            - '@IdentificationBundle\Identification\Common\RequestParametersProvider'
+            - '@request_stack'
+            - '@router'
+            - '@App\Domain\Repository\CarrierRepository'
+            - '@IdentificationBundle\Identification\Service\PassthroughChecker'
+
     App\Twig\UserInformationExtension:
         arguments:
             - '@request_stack'
