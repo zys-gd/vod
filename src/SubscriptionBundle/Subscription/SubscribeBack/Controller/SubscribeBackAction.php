@@ -14,7 +14,9 @@ use IdentificationBundle\Identification\Service\RouteProvider;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Subscription\SubscribeBack\Common\CommonFlowHandler;
 use SubscriptionBundle\Subscription\SubscribeBack\Handler\SubscribeBackHandlerProvider;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class SubscribeBackAction
 {
@@ -60,9 +62,7 @@ class SubscribeBackAction
      * @param Request $request
      * @param ISPData $ispData
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound
+     * @return RedirectResponse|Response
      */
     public function __invoke(Request $request, ISPData $ispData)
     {
@@ -73,7 +73,7 @@ class SubscribeBackAction
         try {
             return $this->commonFlowHandler->process($request, $carrier, $handler);
         } catch (\Throwable $e) {
-            $this->routeProvider->getLinkToHomepage(['err_handle' => 'subscribe_error']);
+            return new RedirectResponse($this->routeProvider->getLinkToHomepage(['err_handle' => 'subscribe_error']));
         }
     }
 
