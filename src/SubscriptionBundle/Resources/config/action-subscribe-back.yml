@@ -1,4 +1,12 @@
 services:
+    SubscriptionBundle\Subscription\SubscribeBack\Controller\SubscribeBackAction:
+        arguments:
+            - '@SubscriptionBundle\Subscription\SubscribeBack\Handler\SubscribeBackHandlerProvider'
+            - '@App\Domain\Repository\CarrierRepository'
+            - '@SubscriptionBundle\Subscription\SubscribeBack\Common\CommonFlowHandler'
+            - '@IdentificationBundle\Identification\Service\RouteProvider'
+        tags: ['controller.service_arguments']
+
     SubscriptionBundle\Subscription\SubscribeBack\Handler\DefaultHandler: ~
 
     SubscriptionBundle\Subscription\SubscribeBack\Common\CommonFlowHandler:
@@ -27,7 +35,7 @@ services:
 
     SubscriptionBundle\Subscription\SubscribeBack\Subscriber:
         arguments:
-        - '@SubscriptionBundle\Service\EntitySaveHelper'
-        - '@SubscriptionBundle\Subscription\Common\SubscriptionFactory'
-        - '@SubscriptionBundle\Subscription\Subscribe\OnSubscribeUpdater'
-        - '@IdentificationBundle\BillingFramework\Data\DataProvider'
+            - '@SubscriptionBundle\Service\EntitySaveHelper'
+            - '@SubscriptionBundle\Subscription\Common\SubscriptionFactory'
+            - '@SubscriptionBundle\Subscription\Subscribe\OnSubscribeUpdater'
+            - '@IdentificationBundle\BillingFramework\Data\DataProvider'
