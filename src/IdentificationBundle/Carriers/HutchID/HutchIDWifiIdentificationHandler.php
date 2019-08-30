@@ -57,7 +57,7 @@ class HutchIDWifiIdentificationHandler implements WifiIdentificationHandlerInter
     {
         return new PhoneValidationOptions(
             '+62XXXXXXXXXX',
-            '^\+62[0-9]{8}$',
+            '^\+62[0-9]{10}$',
             'XXXXX',
             '^[0-9]{1,5}$'
         );
