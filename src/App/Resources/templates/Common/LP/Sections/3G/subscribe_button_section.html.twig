@@ -2,7 +2,7 @@
     {% import "@App/Components/Buttons/link.html.twig" as  link %}
 
     {% set btnClass %}
-        {% if isOtp() %}
+        {% if isConfirmationClick() %}
             {{ btnClass~ ' x-otp-button' }}
         {% else %}
             {{ btnClass ~ ' x-subscribe-button' }}
