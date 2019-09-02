@@ -85,6 +85,10 @@ App\Domain\Entity\Campaign:
         creator:
             type: string
             nullable: true
+        isConfirmationClick:
+            type: boolean
+            options:
+                default: false
 
 
     lifecycleCallbacks: {  }

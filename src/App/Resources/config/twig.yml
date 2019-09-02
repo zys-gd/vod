@@ -48,6 +48,7 @@ services:
             - '@session'
             - '@App\Domain\Repository\CarrierRepository'
             - '@IdentificationBundle\Identification\Service\PassthroughChecker'
+            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
 
     App\Twig\PassthroughExtension:
         arguments:

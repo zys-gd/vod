@@ -37,17 +37,7 @@ interface CampaignInterface
     public function isZeroCreditSubAvailable(): bool;
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getImagePath(): string;
-
-    /**
-     * @return string|null
-     */
-    public function getBgColor(): ?string;
-
-    /**
-     * @return mixed
-     */
-    public function getMainCategory();
+    public function isConfirmationClick(): bool;
 }
