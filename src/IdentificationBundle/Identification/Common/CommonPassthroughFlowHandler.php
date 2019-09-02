@@ -86,7 +86,6 @@ class CommonPassthroughFlowHandler
         string $token
     ): Response
     {
-
         if ($handler->isCommonFlowShouldBeUsed($request)) {
             return $this->commonFlowHandler->process($request, $this->defaultHandler, $token, $carrier);
         }

@@ -25,6 +25,6 @@ class OrangeTNMMIdentificationHandler implements
 
     public function isCommonFlowShouldBeUsed(Request $request): bool
     {
-        return false;
+        return $request->attributes->get('_route') != 'landing';
     }
 }
