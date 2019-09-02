@@ -3,16 +3,14 @@
 namespace IdentificationBundle\Identification\Common;
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
-use IdentificationBundle\BillingFramework\Process\IdentProcess;
 use IdentificationBundle\BillingFramework\Process\PassthroughProcess;
-use IdentificationBundle\Identification\Common\Async\AsyncIdentStarter;
 use IdentificationBundle\Identification\Handler\PassthroughFlow\HasPassthroughFlow;
+use IdentificationBundle\Identification\Service\PassthroughRequestPreparer;
 use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\TokenGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
 
 
 class CommonPassthroughFlowHandler
@@ -28,57 +26,33 @@ class CommonPassthroughFlowHandler
     private $generator;
 
     /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var RequestParametersProvider
-     */
-    private $requestParametersProvider;
-
-    /**
-     * @var IdentProcess
-     */
-    private $identProcess;
-
-    /**
-     * @var AsyncIdentStarter
-     */
-    private $asyncIdentStarter;
-    /**
      * @var PassthroughProcess
      */
     private $passthroughProcess;
+    /**
+     * @var PassthroughRequestPreparer
+     */
+    private $passthroughRequestPreparer;
 
     /**
      * ConsentPageFlowHandler constructor
      *
-     * @param RouterInterface           $router
-     * @param IdentificationDataStorage $dataStorage
-     * @param TokenGenerator            $generator
-     * @param RequestParametersProvider $requestParametersProvider
-     * @param IdentProcess              $identProcess
-     * @param AsyncIdentStarter         $asyncIdentStarter
-     * @param PassthroughProcess        $passthroughProcess
+     * @param IdentificationDataStorage  $dataStorage
+     * @param TokenGenerator             $generator
+     * @param PassthroughProcess         $passthroughProcess
+     * @param PassthroughRequestPreparer $passthroughRequestPreparer
      */
     public function __construct(
-        RouterInterface $router,
         IdentificationDataStorage $dataStorage,
         TokenGenerator $generator,
-        RequestParametersProvider $requestParametersProvider,
-        IdentProcess $identProcess,
-        AsyncIdentStarter $asyncIdentStarter,
-        PassthroughProcess $passthroughProcess
+        PassthroughProcess $passthroughProcess,
+        PassthroughRequestPreparer $passthroughRequestPreparer
     )
     {
-        $this->router                    = $router;
-        $this->dataStorage               = $dataStorage;
-        $this->generator                 = $generator;
-        $this->requestParametersProvider = $requestParametersProvider;
-        $this->identProcess              = $identProcess;
-        $this->asyncIdentStarter         = $asyncIdentStarter;
-        $this->passthroughProcess        = $passthroughProcess;
+        $this->dataStorage                = $dataStorage;
+        $this->generator                  = $generator;
+        $this->passthroughProcess         = $passthroughProcess;
+        $this->passthroughRequestPreparer = $passthroughRequestPreparer;
     }
 
     /**
@@ -90,29 +64,18 @@ class CommonPassthroughFlowHandler
      * @return Response
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function process(Request $request,
+    public function process(
+        Request $request,
         HasPassthroughFlow $handler,
         CarrierInterface $carrier,
-        string $token): Response
+        string $token
+    ): Response
     {
-        $additionalParams = $handler->getAdditionalIdentificationParams($request);
-        $successUrl       = $this->router->generate('subscription.subscribe_back', [], RouterInterface::ABSOLUTE_URL);
-        $waitPageUrl      = $this
-            ->router
-            ->generate('wait_for_callback', ['successUrl' => $successUrl], RouterInterface::ABSOLUTE_URL);
-
-        $parameters = $this->requestParametersProvider->prepareRequestParameters(
-            $token,
-            $carrier->getBillingCarrierId(),
-            $request->getClientIp(),
-            $waitPageUrl,
-            $request->headers->all(),
-            $additionalParams
-        );
+        $parameters = $this->passthroughRequestPreparer->getProcessRequestParameters($request);
 
         $passthrowLink = $this->passthroughProcess->runPassthrough($parameters);
 
-        $this->dataStorage->setIdentificationToken($this->generator->generateToken());
+        $this->dataStorage->setIdentificationToken($parameters->clientId);
 
         return new RedirectResponse($passthrowLink);
     }
