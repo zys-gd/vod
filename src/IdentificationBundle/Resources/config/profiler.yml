@@ -1,7 +1,4 @@
 services:
-
-
-
-  IdentificationBundle\Profiler\FakeActions:
-    tags:
-      - { name: data_collector, template: '@Identification/profiler/fake_actions.html.twig', id: 'identification.fake_actions' }
+    IdentificationBundle\Profiler\FakeActions:
+        tags:
+            - { name: data_collector, template: '@Identification/profiler/fake_actions.html.twig', id: 'identification.fake_actions' }

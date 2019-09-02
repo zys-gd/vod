@@ -189,7 +189,7 @@ class Campaign implements CampaignInterface, HasUuid
      * Get thumbnail path
      * @return string
      */
-    public function getImagePath()
+    public function getImagePath(): string
     {
         return static::RESOURCE_IMAGE . '/' . $this->getImageName();
     }
@@ -351,7 +351,7 @@ class Campaign implements CampaignInterface, HasUuid
      * Get bgColor
      * @return string
      */
-    public function getBgColor()
+    public function getBgColor(): ?string
     {
         return $this->bgColor;
     }
