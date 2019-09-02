@@ -12,7 +12,7 @@
     <div class="d-flex align-items-start justify-content-center mb-n-2 {{ blockClass }}">
         {% if not hasActiveSubscription() or not isNotFullyPaid() %}
             {% if isCarrierPassthrough() %}
-                {{ link.render(getPassthroughLink(), translate(placeholder), btnClass) }}
+                {{ link.render(url('identify_by_passthrough'), translate(placeholder), btnClass) }}
             {% elseif isIdentified() and not isConsentFlow() %}
                 {{ link.render(url('subscription.subscribe'), translate(placeholder), btnClass) }}
             {% elseif isConsentFlow() %}

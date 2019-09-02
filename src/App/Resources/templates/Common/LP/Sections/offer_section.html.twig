@@ -2,4 +2,12 @@
     <div id="landing-offer-container" class="mt-2">
         {% include LPImporter("LP/landing_offer.html.twig") %}
     </div>
+    {% set campaignCategory = getCampaignData('category') %}
+    {% if campaignCategory %}
+        <div>
+            <h2 class="h1 lp-category-title">
+                {{ translate('category.' ~ campaignCategory.uuid) }}: #{{ getCampaignData('campaignToken') }}
+            </h2>
+        </div>
+    {% endif %}
 {% endmacro %}

@@ -1,4 +1,4 @@
 services:
-    IdentificationBundle\Carriers\OrangeTNMM\OrangeTNMMIdentificationHandler:
+    Carriers\OrangeTNMM\Identification\OrangeTNMMIdentificationHandler:
         tags:
             - { name: identification.identification_handler }

@@ -87,14 +87,17 @@ class Identifier
         $this->passthroughFlowHandler  = $passthroughFlowHandler;
     }
 
-    public function identify(int $carrierBillingId,
+    public function identify(
+        int $carrierBillingId,
         Request $request,
         string $token,
-        DeviceData $deviceData): IdentifyResult
+        DeviceData $deviceData
+    ): IdentifyResult
     {
         $carrier = $this->carrierRepository->findOneByBillingId($carrierBillingId);
 
         $handler = $this->handlerProvider->get($carrier);
+
         $this->logger->debug('Resolved handler for identification', [
             'className' => get_class($handler),
             'carrierId' => $carrierBillingId

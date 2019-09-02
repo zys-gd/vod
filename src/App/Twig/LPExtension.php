@@ -7,6 +7,7 @@ namespace App\Twig;
 use App\CarrierTemplate\TemplateConfigurator;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
+use App\Domain\Service\Campaign\CampaignSerializer;
 use CommonDataBundle\Entity\Country;
 use CommonDataBundle\Repository\Interfaces\CountryRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -38,10 +39,6 @@ class LPExtension extends AbstractExtension
      */
     private $campaignRepository;
     /**
-     * @var string
-     */
-    private $imageBaseUrl;
-    /**
      * @var WifiPhoneOptionsProvider
      */
     private $wifiPhoneOptionsProvider;
@@ -49,16 +46,21 @@ class LPExtension extends AbstractExtension
      * @var CountryRepositoryInterface
      */
     private $countryRepository;
+    /**
+     * @var CampaignSerializer
+     */
+    private $campaignSerializer;
 
     /**
      * LPExtension constructor.
+     *
      * @param SessionInterface            $session
      * @param TemplateConfigurator        $templateConfigurator
      * @param CarrierRepositoryInterface  $carrierRepository
      * @param CampaignRepositoryInterface $campaignRepository
      * @param CountryRepositoryInterface  $countryRepository
      * @param WifiPhoneOptionsProvider    $wifiPhoneOptionsProvider
-     * @param string                      $imageBaseUrl
+     * @param CampaignSerializer          $campaignSerializer
      */
     public function __construct(
         SessionInterface $session,
@@ -67,16 +69,15 @@ class LPExtension extends AbstractExtension
         CampaignRepositoryInterface $campaignRepository,
         CountryRepositoryInterface $countryRepository,
         WifiPhoneOptionsProvider $wifiPhoneOptionsProvider,
-        string $imageBaseUrl
-    )
-    {
+        CampaignSerializer $campaignSerializer
+    ) {
         $this->session = $session;
         $this->templateConfigurator = $templateConfigurator;
         $this->carrierRepository = $carrierRepository;
         $this->campaignRepository = $campaignRepository;
         $this->wifiPhoneOptionsProvider = $wifiPhoneOptionsProvider;
-        $this->imageBaseUrl = $imageBaseUrl;
         $this->countryRepository = $countryRepository;
+        $this->campaignSerializer = $campaignSerializer;
     }
 
     public function getFunctions()
@@ -88,7 +89,8 @@ class LPExtension extends AbstractExtension
             new TwigFunction('LPImporter', [$this, 'getLPImportPath']),
             new TwigFunction('getCampaignData', [$this, 'getCampaignData']),
             new TwigFunction('getPhoneValidationOptions', [$this, 'getPhoneValidationOptions']),
-            new TwigFunction('getPinValidationOptions', [$this, 'getPinValidationOptions'])
+            new TwigFunction('getPinValidationOptions', [$this, 'getPinValidationOptions']),
+            new TwigFunction('getCampaignCategory', [$this, 'getPinValidationOptions'])
         ];
     }
 
@@ -175,8 +177,9 @@ class LPExtension extends AbstractExtension
         $campaignData = $this->extractCampaignData();
 
         if (!array_key_exists($key, $campaignData)) {
-            throw new \InvalidArgumentException('Wrong parameter');
+            return null;
         }
+
         return $campaignData[$key];
     }
 
@@ -202,25 +205,23 @@ class LPExtension extends AbstractExtension
         ];
     }
 
-    private function extractCampaignData()
+    private function extractCampaignData(): array
     {
         $campaignBanner = null;
         $background = null;
 
         $cid = $this->session->get('campaign_id', '');
+
         /** @var Campaign $campaign */
         $campaign = $this->campaignRepository->findOneBy([
             'campaignToken' => $cid,
             'isPause' => false
         ]);
-        if ($campaign) {
-            $campaignBanner = $this->imageBaseUrl . '/' . $campaign->getImagePath();
-            $background = $campaign->getBgColor();
+
+        if (!$campaign) {
+            return [];
         }
 
-        return [
-            'campaign_banner' => $campaignBanner,
-            'background' => $background
-        ];
+        return $this->campaignSerializer->serialize($campaign);
     }
 }

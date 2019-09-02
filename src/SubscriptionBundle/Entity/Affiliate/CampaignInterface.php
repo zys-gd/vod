@@ -36,5 +36,20 @@ interface CampaignInterface
      */
     public function isZeroCreditSubAvailable(): bool;
 
+    /**
+     * @return string
+     */
+    public function getImagePath(): string;
+
+    /**
+     * @return string|null
+     */
+    public function getBgColor(): ?string;
+
+    /**
+     * @return mixed
+     */
+    public function getMainCategory();
+
     public function isFreeTrialSubscription(): bool;
 }
