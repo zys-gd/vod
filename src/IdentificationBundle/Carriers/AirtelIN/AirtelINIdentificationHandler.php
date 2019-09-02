@@ -46,4 +46,14 @@ class AirtelINIdentificationHandler implements HasCommonConsentPageFlow, HasCons
     {
         // TODO: Implement getAdditionalIdentificationParams() method.
     }
+
+    /**
+     * @param Request $request
+     *
+     * @return bool
+     */
+    public function needHandle(Request $request): bool
+    {
+        return true;
+    }
 }

@@ -42,4 +42,14 @@ class HutchIDIdentificationHandler implements
     {
         return $request->headers->get('x-msp-msisdn');
     }
+
+    /**
+     * @param Request $request
+     *
+     * @return bool
+     */
+    public function needHandle(Request $request): bool
+    {
+        return true;
+    }
 }

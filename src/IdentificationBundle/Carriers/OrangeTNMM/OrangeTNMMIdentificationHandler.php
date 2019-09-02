@@ -22,4 +22,14 @@ class OrangeTNMMIdentificationHandler implements
     {
         return $carrier->getBillingCarrierId() === ID::ORANGE_TUNISIA_MM;
     }
+
+    /**
+     * @param Request $request
+     *
+     * @return bool
+     */
+    public function needHandle(Request $request): bool
+    {
+        return true;
+    }
 }

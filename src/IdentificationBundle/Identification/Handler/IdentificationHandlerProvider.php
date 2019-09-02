@@ -12,6 +12,7 @@ namespace IdentificationBundle\Identification\Handler;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow;
 use IdentificationBundle\Identification\Handler\PassthroughFlow\HasPassthroughFlow;
+use Symfony\Component\HttpFoundation\Request;
 
 class IdentificationHandlerProvider
 {
@@ -28,6 +29,7 @@ class IdentificationHandlerProvider
 
     /**
      * IdentificationHandlerProvider constructor.
+     *
      * @param DefaultHandler $defaultHandler
      */
     public function __construct(DefaultHandler $defaultHandler)
@@ -69,10 +71,14 @@ class IdentificationHandlerProvider
         }
     }
 
-    public function get(CarrierInterface $carrier): IdentificationHandlerInterface
+    public function get(CarrierInterface $carrier, Request $request = null): IdentificationHandlerInterface
     {
         foreach ($this->handlers as $handler) {
-            if ($handler->canHandle($carrier)) {
+            $canHandle  = $handler->canHandle($carrier);
+            $needHandle = $request
+                ? $handler->needHandle($request)
+                : true;
+            if ($canHandle && $needHandle) {
                 return $handler;
             }
         }

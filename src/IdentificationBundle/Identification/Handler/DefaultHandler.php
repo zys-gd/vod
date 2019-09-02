@@ -44,4 +44,14 @@ class DefaultHandler implements IdentificationHandlerInterface, HasCommonFlow
     {
         return $this->repository->findOneByMsisdn($msisdn);
     }
+
+    /**
+     * @param Request $request
+     *
+     * @return bool
+     */
+    public function needHandle(Request $request): bool
+    {
+        return true;
+    }
 }

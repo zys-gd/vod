@@ -10,9 +10,22 @@ namespace IdentificationBundle\Identification\Handler;
 
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 interface IdentificationHandlerInterface
 {
+    /**
+     * @param CarrierInterface $carrier
+     *
+     * @return bool
+     */
     public function canHandle(CarrierInterface $carrier): bool;
+
+    /**
+     * @param Request $request
+     *
+     * @return bool
+     */
+    public function needHandle(Request $request): bool;
 
 }
