@@ -35,4 +35,6 @@ interface CampaignInterface
      * @return bool
      */
     public function isZeroCreditSubAvailable(): bool;
+
+    public function isFreeTrialSubscription(): bool;
 }
