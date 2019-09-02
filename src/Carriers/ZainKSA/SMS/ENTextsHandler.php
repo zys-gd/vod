@@ -29,8 +29,8 @@ class ENTextsHandler implements CarrierSMSHandlerInterface
     public function getTexts(): array
     {
         return [
-            'subscribe'   => "Welcome to 100%sport! Click here to access _shortautologin_url_ _currency_ _price_/day. To unsub or avoid auto-renewal charges send STOP to 6170", //TODO change sms cred
-            'unsubscribe' => "You have been unsubscribed from 100%sport. To subscribe again, please _unsub_url_."
+            'subscribe'   => "Welcome to 100%sport! Click here to watch all videos _shortautologin_url_ _currency_ _price_/day. To unsub visit _unsub_url_.",
+            'unsubscribe' => "You have been unsubscribed from 100%sport. To subscribe again, please _contact_us_url_."
         ];
     }
 }
