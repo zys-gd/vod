@@ -39,7 +39,7 @@ services:
             - '@SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface'
             - '@CommonDataBundle\Repository\CountryRepository'
             - '@IdentificationBundle\WifiIdentification\WifiPhoneOptionsProvider'
-            - '%images_base_url%'
+            - '@App\Domain\Service\Campaign\CampaignSerializer'
 
     App\Twig\AuditExtension: ~
 
