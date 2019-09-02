@@ -32,6 +32,7 @@ class CampaignSerializer
     public function serialize(CampaignInterface $campaign): array
     {
         return [
+            'campaignToken' => $campaign->getCampaignToken(),
             'category' => $campaign->getMainCategory(),
             'banner' => $this->imageUrl . '/' . $campaign->getImagePath(),
             'background' => $campaign->getBgColor()

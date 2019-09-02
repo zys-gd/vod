@@ -201,6 +201,10 @@
     animation: highlight 2000ms ease-out;
 }
 
+.lp-category-title {
+    font-weight: bold !important;
+}
+
 @keyframes highlight {
     0% {
         background-color: red;
