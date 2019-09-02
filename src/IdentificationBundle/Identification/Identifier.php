@@ -97,9 +97,6 @@ class Identifier
         $carrier = $this->carrierRepository->findOneByBillingId($carrierBillingId);
 
         $handler = $this->handlerProvider->get($carrier);
-        if (!$handler->needHandle($request)) {
-            $handler = $this->handlerProvider->getCommonHandler();
-        }
 
         $this->logger->debug('Resolved handler for identification', [
             'className' => get_class($handler),

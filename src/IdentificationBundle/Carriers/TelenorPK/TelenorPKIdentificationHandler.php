@@ -51,13 +51,4 @@ class TelenorPKIdentificationHandler implements IdentificationHandlerInterface, 
         return $this->repository->findOneByPartialMsisdnMatch($modifiedMsisdn);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return bool
-     */
-    public function needHandle(Request $request): bool
-    {
-        return true;
-    }
 }

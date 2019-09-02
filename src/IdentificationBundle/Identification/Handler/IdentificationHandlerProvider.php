@@ -81,9 +81,4 @@ class IdentificationHandlerProvider
 
         return $this->defaultHandler;
     }
-
-    public function getCommonHandler(): IdentificationHandlerInterface
-    {
-        return $this->defaultHandler;
-    }
 }

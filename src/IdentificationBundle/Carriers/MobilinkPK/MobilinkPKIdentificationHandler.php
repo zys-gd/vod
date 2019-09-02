@@ -54,9 +54,4 @@ class MobilinkPKIdentificationHandler implements
     {
         return $this->repository->findOneByMsisdn($msisdn);
     }
-
-    public function needHandle(Request $request): bool
-    {
-        return true;
-    }
 }

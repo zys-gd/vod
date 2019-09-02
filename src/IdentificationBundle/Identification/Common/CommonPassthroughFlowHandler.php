@@ -4,6 +4,7 @@ namespace IdentificationBundle\Identification\Common;
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\BillingFramework\Process\PassthroughProcess;
+use IdentificationBundle\Identification\Handler\DefaultHandler;
 use IdentificationBundle\Identification\Handler\PassthroughFlow\HasPassthroughFlow;
 use IdentificationBundle\Identification\Service\PassthroughRequestPreparer;
 use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
@@ -33,6 +34,14 @@ class CommonPassthroughFlowHandler
      * @var PassthroughRequestPreparer
      */
     private $passthroughRequestPreparer;
+    /**
+     * @var DefaultHandler
+     */
+    private $commonFlowHandler;
+    /**
+     * @var DefaultHandler
+     */
+    private $defaultHandler;
 
     /**
      * ConsentPageFlowHandler constructor
@@ -41,18 +50,24 @@ class CommonPassthroughFlowHandler
      * @param TokenGenerator             $generator
      * @param PassthroughProcess         $passthroughProcess
      * @param PassthroughRequestPreparer $passthroughRequestPreparer
+     * @param CommonFlowHandler          $commonFlowHandler
+     * @param DefaultHandler             $defaultHandler
      */
     public function __construct(
         IdentificationDataStorage $dataStorage,
         TokenGenerator $generator,
         PassthroughProcess $passthroughProcess,
-        PassthroughRequestPreparer $passthroughRequestPreparer
+        PassthroughRequestPreparer $passthroughRequestPreparer,
+        CommonFlowHandler $commonFlowHandler,
+        DefaultHandler $defaultHandler
     )
     {
         $this->dataStorage                = $dataStorage;
         $this->generator                  = $generator;
         $this->passthroughProcess         = $passthroughProcess;
         $this->passthroughRequestPreparer = $passthroughRequestPreparer;
+        $this->commonFlowHandler          = $commonFlowHandler;
+        $this->defaultHandler             = $defaultHandler;
     }
 
     /**
@@ -71,12 +86,15 @@ class CommonPassthroughFlowHandler
         string $token
     ): Response
     {
-        $parameters = $this->passthroughRequestPreparer->getProcessRequestParameters($request);
 
-        $passthrowLink = $this->passthroughProcess->runPassthrough($parameters);
+        if ($handler->isCommonFlowShouldBeUsed($request)) {
+            return $this->commonFlowHandler->process($request, $this->defaultHandler, $token, $carrier);
+        }
 
+        $parameters      = $this->passthroughRequestPreparer->getProcessRequestParameters($request);
+        $passthroughLink = $this->passthroughProcess->runPassthrough($parameters);
         $this->dataStorage->setIdentificationToken($parameters->clientId);
 
-        return new RedirectResponse($passthrowLink);
+        return new RedirectResponse($passthroughLink);
     }
 }

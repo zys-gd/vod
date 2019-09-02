@@ -21,11 +21,6 @@ interface IdentificationHandlerInterface
      */
     public function canHandle(CarrierInterface $carrier): bool;
 
-    /**
-     * @param Request $request
-     *
-     * @return bool
-     */
-    public function needHandle(Request $request): bool;
+
 
 }
