@@ -12,6 +12,7 @@ use IdentificationBundle\Identification\Service\TokenGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use IdentificationBundle\Identification\Common\CommonFlowHandler as CommonIdentificationFlow;
 
 
 class CommonPassthroughFlowHandler
@@ -50,7 +51,7 @@ class CommonPassthroughFlowHandler
      * @param TokenGenerator             $generator
      * @param PassthroughProcess         $passthroughProcess
      * @param PassthroughRequestPreparer $passthroughRequestPreparer
-     * @param CommonFlowHandler          $commonFlowHandler
+     * @param CommonIdentificationFlow   $commonFlowHandler
      * @param DefaultHandler             $defaultHandler
      */
     public function __construct(
@@ -58,7 +59,7 @@ class CommonPassthroughFlowHandler
         TokenGenerator $generator,
         PassthroughProcess $passthroughProcess,
         PassthroughRequestPreparer $passthroughRequestPreparer,
-        CommonFlowHandler $commonFlowHandler,
+        CommonIdentificationFlow $commonFlowHandler,
         DefaultHandler $defaultHandler
     )
     {
