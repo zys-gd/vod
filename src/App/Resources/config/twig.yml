@@ -31,21 +31,30 @@ services:
 
     App\Twig\StringEncodingExtension: ~
 
-    App\Twig\WifiFlowExtension:
+    App\Twig\LPExtension:
         arguments:
+            - '@session'
+            - '@App\CarrierTemplate\TemplateConfigurator'
             - '@App\Domain\Repository\CarrierRepository'
-            - '@SubscriptionBundle\Repository\SubscriptionPackRepository'
+            - '@SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface'
             - '@CommonDataBundle\Repository\CountryRepository'
-            - '@App\Domain\Service\Translator\Translator'
-            - '@App\Domain\Service\Translator\ShortcodeReplacer'
-            - '@App\Domain\Service\Translator\DataAggregator'
-            - '@ExtrasBundle\Utils\LocalExtractor'
+            - '@IdentificationBundle\WifiIdentification\WifiPhoneOptionsProvider'
+            - '@App\Domain\Service\Campaign\CampaignSerializer'
 
     App\Twig\AuditExtension: ~
 
     App\Twig\CarrierOptionsExtension:
         arguments:
             - '@session'
+            - '@App\Domain\Repository\CarrierRepository'
+            - '@IdentificationBundle\Identification\Service\PassthroughChecker'
+
+    App\Twig\PassthroughExtension:
+        arguments:
+            - '@IdentificationBundle\BillingFramework\Process\PassthroughProcess'
+            - '@IdentificationBundle\Identification\Common\RequestParametersProvider'
+            - '@request_stack'
+            - '@router'
             - '@App\Domain\Repository\CarrierRepository'
             - '@IdentificationBundle\Identification\Service\PassthroughChecker'
 

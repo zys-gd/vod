@@ -141,3 +141,7 @@ services:
             - '@doctrine.orm.entity_manager'
 
     App\Domain\Service\Games\GameImageSizeProvider: ~
+
+    App\Domain\Service\Campaign\CampaignSerializer:
+        arguments:
+            - '%images_base_url%'

@@ -53,13 +53,14 @@
                 'already_subscribed': '{{ translate('messages.error.already_subscribed') | raw }}',
                 'postpaid_restricted': '{{ translate('messages.error.postpaid_restricted') }}',
                 'subscription_restricted': '{{ translate('messages.error.subscription_restricted') }}',
-                'not_enough_credit': '{{ translate('messages.error.not_enough_credit') }}'
+                'not_enough_credit': '{{ translate('messages.error.not_enough_credit') }}',
+                'subscribe_error': '{{ translate('messages.error.subscribe_error') }}'
             };
             return texts[key] || null;
         }
 
         $(document).ready(function () {
-            var url       = new URL(window.location.href);
+            var url = new URL(window.location.href);
             var errHandle = url.searchParams.get("err_handle");
             var message;
             if (errHandle && (message = resolveErrorMessage(errHandle))) {

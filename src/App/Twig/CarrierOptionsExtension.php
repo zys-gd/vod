@@ -53,13 +53,6 @@ class CarrierOptionsExtension extends AbstractExtension
 
             new TwigFunction('isConfirmationPopup', [$this, 'isConfirmationPopup']),
 
-            new TwigFunction('isCarrierPassthrough', [$this, 'isCarrierPassthrough']),
-
-            new TwigFunction('isClickableSubImage', function () {
-                // todo rework after task with landing page
-                return false;
-                //return (bool)$this->dataStorage->readValue('is_clickable_sub_image');
-            })
 
         ];
     }
@@ -98,18 +91,5 @@ class CarrierOptionsExtension extends AbstractExtension
         return false;
     }
 
-    /**
-     * @return bool
-     */
-    public function isCarrierPassthrough(): bool
-    {
-        $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
-        try {
-            $billingCarrierId = (int)$ispDetectionData['carrier_id'];
-            $carrier          = $this->carrierRepository->findOneByBillingId($billingCarrierId);
-            return $this->passthroughChecker->isCarrierPassthrough($carrier);
-        } catch (\Throwable $e) {
-            return false;
-        }
-    }
+
 }

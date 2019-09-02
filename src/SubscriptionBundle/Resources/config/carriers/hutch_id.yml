@@ -23,18 +23,18 @@ services:
             - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
             - '@SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper'
             - '@SubscriptionBundle\Carriers\HutchID\Subscribe\HutchIDSMSSubscriber'
-            - '@SubscriptionBundle\Subscription\Callback\Common\Type\SubscriptionCallbackHandler'
-            - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
-            - '@SubscriptionBundle\Affiliate\Service\AffiliateSender'
-            - '@SubscriptionBundle\Piwik\DataMapper\ConversionEventMapper'
-            - '@SubscriptionBundle\Piwik\EventPublisher'
             - '@SubscriptionBundle\Subscription\Notification\Notifier'
+            - '@SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventTracker'
+            - '@logger'
+            - '@SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker'
+            - '@cross_subscription.api_connector'
 
     SubscriptionBundle\Carriers\HutchID\Callback\HutchIDCallbackUnsubscribe:
         arguments:
             - '@IdentificationBundle\Repository\UserRepository'
             - '@SubscriptionBundle\Repository\SubscriptionRepository'
             - '@SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber'
+            - '@cross_subscription.api_connector'
         tags:
             - { name: subscription.callback_carrier_handler, type: unsubscribe}
 

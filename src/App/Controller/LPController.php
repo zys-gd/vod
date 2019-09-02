@@ -10,17 +10,16 @@ use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Service\CarrierOTPVerifier;
 use App\Domain\Service\Piwik\ContentStatisticSender;
+use Doctrine\Common\Collections\ArrayCollection;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use ExtrasBundle\Controller\Traits\ResponseTrait;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\Exception\MissingCarrierException;
 use IdentificationBundle\Identification\Service\CarrierSelector;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
-use IdentificationBundle\Identification\Service\PassthroughChecker;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use Psr\Log\LoggerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\CAPTool\Subscription\Exception\CapToolAccessException;
 use SubscriptionBundle\CAPTool\Subscription\Exception\SubscriptionCapReachedOnAffiliate;
@@ -108,13 +107,9 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      */
     private $carrierSelector;
     /**
-     * @var \SubscriptionBundle\Subscription\Subscribe\Common\\SubscriptionBundle\Subscription\Subscribe\Service\SubscribeUrlResolver
+     * @var SubscribeUrlResolver
      */
     private $subscribeUrlResolver;
-    /**
-     * @var PassthroughChecker
-     */
-    private $passthroughChecker;
     /**
      * @var ConstraintAvailabilityChecker
      */
@@ -123,24 +118,23 @@ class LPController extends AbstractController implements ControllerWithISPDetect
     /**
      * LPController constructor.
      *
-     * @param ContentStatisticSender                                                  $contentStatisticSender
-     * @param CampaignRepository                                                      $campaignRepository
-     * @param LandingPageACL                                                          $landingPageAccessResolver
-     * @param string                                                                  $imageBaseUrl
-     * @param CarrierOTPVerifier                                                      $OTPVerifier
-     * @param string                                                                  $defaultRedirectUrl
-     * @param TemplateConfigurator                                                    $templateConfigurator
-     * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
-     * @param SubscriptionLimiter                                                     $limiter
-     * @param SubscriptionLimitNotifier                                               $subscriptionLimitNotifier
-     * @param CarrierRepositoryInterface                                              $carrierRepository
-     * @param VisitTracker                                                            $visitTracker
-     * @param VisitNotifier                                                           $notifier
-     * @param LoggerInterface                                                         $logger
-     * @param CarrierSelector                                                         $carrierSelector
-     * @param \SubscriptionBundle\Subscription\Subscribe\Service\SubscribeUrlResolver          $subscribeUrlResolver
-     * @param PassthroughChecker            $passthroughChecker
-     * @param ConstraintAvailabilityChecker $visitConstraintChecker
+     * @param ContentStatisticSender                $contentStatisticSender
+     * @param CampaignRepository                    $campaignRepository
+     * @param LandingPageACL                        $landingPageAccessResolver
+     * @param string                                $imageBaseUrl
+     * @param CarrierOTPVerifier                    $OTPVerifier
+     * @param string                                $defaultRedirectUrl
+     * @param TemplateConfigurator                  $templateConfigurator
+     * @param WifiIdentificationDataStorage         $wifiIdentificationDataStorage
+     * @param SubscriptionLimiter                   $limiter
+     * @param SubscriptionLimitNotifier             $subscriptionLimitNotifier
+     * @param CarrierRepositoryInterface            $carrierRepository
+     * @param VisitTracker                          $visitTracker
+     * @param VisitNotifier                         $notifier
+     * @param LoggerInterface                       $logger
+     * @param CarrierSelector                       $carrierSelector
+     * @param SubscribeUrlResolver                  $subscribeUrlResolver
+     * @param ConstraintAvailabilityChecker         $visitConstraintChecker
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
@@ -159,7 +153,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         LoggerInterface $logger,
         CarrierSelector $carrierSelector,
         SubscribeUrlResolver $subscribeUrlResolver,
-        PassthroughChecker $passthroughChecker,
         ConstraintAvailabilityChecker $visitConstraintChecker
     )
     {
@@ -179,7 +172,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->logger                        = $logger;
         $this->carrierSelector               = $carrierSelector;
         $this->subscribeUrlResolver          = $subscribeUrlResolver;
-        $this->passthroughChecker            = $passthroughChecker;
         $this->visitConstraintChecker        = $visitConstraintChecker;
     }
 
@@ -198,10 +190,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
     public function landingPageAction(Request $request)
     {
         $session        = $request->getSession();
-        $campaignBanner = null;
-        $background     = null;
 
         $cid      = $request->get('cid', '');
+
+        /** @var Campaign $campaign */
         $campaign = $this->resolveCampaignFromRequest($cid);
         if ($cid && !$campaign) {
             return RedirectResponse::create($this->defaultRedirectUrl);
@@ -215,13 +207,9 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             if ($this->landingPageAccessResolver->isAffiliatePublisherBanned($request, $campaign)) {
                 return new RedirectResponse($this->defaultRedirectUrl);
             }
-
-            $campaignBanner = $this->imageBaseUrl . '/' . $campaign->getImagePath();
-            $background     = $campaign->getBgColor();
         }
 
         $carrier = $this->resolveCarrierFromRequest($request);
-        $this->checkClickableSubImage($carrier, $campaign);
         if ($carrier && $campaign) {
             $this->logger->debug('Start CAP checking', ['carrier' => $carrier]);
             try {
@@ -255,14 +243,11 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
 
+        $isWifiFlow = (bool)$this->wifiIdentificationDataStorage->isWifiFlow();
         $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($session);
-
         $this->contentStatisticSender->trackVisit($session);
 
-        if ($carrier
-            && !(bool)$this->wifiIdentificationDataStorage->isWifiFlow()
-            && $this->landingPageAccessResolver->isLandingDisabled($request)
-        ) {
+        if ($carrier && !$isWifiFlow && $this->landingPageAccessResolver->isLandingDisabled($request)) {
             return new RedirectResponse($this->subscribeUrlResolver->getSubscribeRoute($carrier));
         }
 
@@ -270,94 +255,97 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             $this->OTPVerifier->forceWifi($session);
         }
 
-        $template = $this->templateConfigurator->getTemplate('landing', (int)$billingCarrierId);
+        $template = $this->templateConfigurator->getTemplate($isWifiFlow ? 'landing_wifi' : 'landing_3g', (int)$billingCarrierId);
 
-        return $this->render($template, [
-            'campaignBanner' => $campaignBanner,
-            'background'     => $background
-        ]);
+        return $this->render($template);
     }
 
     /**
-     * @Route("/lp/select-carrier-wifi", name="select_carrier_wifi")
+     * @Route("/lp/select-carrier-wifi", name="select_carrier_wifi", methods={"GET"}, condition="request.isXmlHttpRequest()")
+     *
      * @param Request $request
      *
      * @return JsonResponse
      */
-    public function handleCarrierSelect(Request $request)
+    public function selectCarrierAction(Request $request)
     {
-        if (!$billingCarrierId = $request->get('carrier_id', '')) {
+        if (!$carrierId = $request->get('carrierId', '')) {
             $this->carrierSelector->removeCarrier();
 
-            return $this->getSimpleJsonResponse('');
+            return new JsonResponse(['error' => 'Missing `carrier_id` parameter'], Response::HTTP_BAD_REQUEST);
         }
 
-        try {
-            $this->carrierSelector->selectCarrier((int)$billingCarrierId);
-            $offerTemplate = $this->templateConfigurator->getTemplate('landing_offer', $billingCarrierId);
-            $carrier       = $this->carrierRepository->findOneByBillingId($billingCarrierId);
-
-            $data = [
-                'success'     => true,
-                'annotation'  => $this->renderView('@App/Components/Ajax/annotation.html.twig'),
-                'offer'       => $this->renderView($offerTemplate),
-                'passthrough' => $this->passthroughChecker->isCarrierPassthrough($carrier)
-            ];
-
-            return $this->getSimpleJsonResponse('Successfully selected', 200, [], $data);
-        } catch (MissingCarrierException $exception) {
-            return $this->getSimpleJsonResponse($exception->getMessage(), 200, [], ['success' => false]);
-        }
-    }
-
-    /**
-     * @Method("POST")
-     * @Route("/after_carrier_selected", name="ajax_after_carrier_selected")
-     * @return JsonResponse
-     */
-    public function ajaxAfterCarrierSelected(Request $request)
-    {
-
-        if (!$request->isXmlHttpRequest()) {
-            throw new BadRequestHttpException();
+        if (!(bool)$this->wifiIdentificationDataStorage->isWifiFlow()) {
+            return new JsonResponse(['error' => 'Error flow'], Response::HTTP_BAD_REQUEST);
         }
 
-
-        try {
-            $session  = $request->getSession();
-            $cid      = $session->get('campaign_id', '');
-            $carrier  = $this->resolveCarrierFromRequest($request);
-            $campaign = $this->resolveCampaignFromRequest($cid);
-
-            if (!$campaign) {
-                return $this->getSimpleJsonResponse('success', 200, [], [
-                    'success' => true,
-                ]);
-            }
-
-
+        $session = $request->getSession();
+        $cid = $session->get('campaign_id', '');
+        $campaign = $this->resolveCampaignFromRequest($cid);
+        if ($campaign) {
+            $carrier = $this->resolveCarrierFromRequest($request);
             try {
                 $this->landingPageAccessResolver->ensureCanAccessByVisits($campaign, $carrier);
             } catch (VisitCapReached $capReached) {
-                return $this->getSimpleJsonResponse('success', 200, [], [
-                    'success'     => false,
+                return $this->getSimpleJsonResponse('success', Response::HTTP_BAD_REQUEST, [], [
                     'redirectUrl' => $this->defaultRedirectUrl
                 ]);
             }
 
             $this->visitTracker->trackVisit($carrier, $campaign, $session->getId());
-
-
-            return $this->getSimpleJsonResponse('success', 200, [], [
-                'success' => true,
-            ]);
-
-        } catch (\Exception $exception) {
-            return $this->getSimpleJsonResponse('success', 500, [], [
-                'success' => false,
-                'error'   => $exception->getMessage()
-            ]);
         }
+
+        try {
+            $this->carrierSelector->selectCarrier((int)$carrierId);
+            $template = $this->templateConfigurator->getTemplate('landing_wifi', (int)$carrierId);
+            $html = $this->renderView($template);
+
+            return new JsonResponse($html, Response::HTTP_OK);
+        } catch (MissingCarrierException $exception) {
+            return new JsonResponse([
+                'error' => $exception->getMessage()
+            ], $exception->getCode());
+        }
+    }
+
+    /**
+     * @Route("/lp/fetch-carriers-for-country", name="fetch_carriers_for_country", methods={"GET"}, condition="request.isXmlHttpRequest()")
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function fetchCarrierForCountry(Request $request)
+    {
+        if(!$countryCode = $request->get('countryCode')) {
+            return new JsonResponse(['error' => 'Missing `countryCode` parameter']);
+        }
+
+        $countryCarriers = new ArrayCollection(
+            $this->carrierRepository->findBy(['published' => true, 'countryCode' => $countryCode])
+        );
+
+        $resultMapper = $countryCarriers->map(function (Carrier $carrier) {
+            return [
+                'id' => $carrier->getBillingCarrierId(),
+                'name' => $carrier->getName()
+            ];
+        })->toArray();
+
+
+        return new JsonResponse($resultMapper, Response::HTTP_OK);
+    }
+
+    /**
+     * @Route("/lp/resest-wifi-lp", name="reset_wifi_lp", methods={"GET"}, condition="request.isXmlHttpRequest()")
+     *
+     * @return string
+     */
+    public function resetWifiLP()
+    {
+        $this->carrierSelector->removeCarrier();
+        $template = $this->templateConfigurator->getTemplate('landing_wifi', 0);
+        $html = $this->renderView($template);
+        return new JsonResponse($html, Response::HTTP_OK);
     }
 
     /**
@@ -390,27 +378,5 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         ]);
 
         return $campaign ?? null;
-    }
-
-    /**
-     * TODO: Transfer to separate class for additional session data
-     *
-     * @param Carrier|null  $carrier
-     * @param Campaign|null $campaign
-     */
-    public function checkClickableSubImage(Carrier $carrier = null, Campaign $campaign = null)
-    {
-        //is_clickable_sub_image has default value - true
-        //1.Highest priority in carrier that has value not equal the default
-        //2.Next if the campaign has value not equal the default
-        //3.All other situations
-//        if ($carrier !== null && $carrier->isClickableSubImage() === false) {
-//            $this->dataStorage->storeIsClickableSubImage(false);
-//        } else if ($carrier !== null && $carrier->isClickableSubImage() === true
-//            && $campaign !== null && $campaign->isClickableSubImage() === false) {
-//            $this->dataStorage->storeIsClickableSubImage(false);
-//        } else {
-//            $this->dataStorage->storeIsClickableSubImage(true);
-//        }
     }
 }
