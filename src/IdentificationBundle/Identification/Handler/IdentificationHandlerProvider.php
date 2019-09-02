@@ -71,18 +71,19 @@ class IdentificationHandlerProvider
         }
     }
 
-    public function get(CarrierInterface $carrier, Request $request = null): IdentificationHandlerInterface
+    public function get(CarrierInterface $carrier): IdentificationHandlerInterface
     {
         foreach ($this->handlers as $handler) {
-            $canHandle  = $handler->canHandle($carrier);
-            $needHandle = $request
-                ? $handler->needHandle($request)
-                : true;
-            if ($canHandle && $needHandle) {
+            if ($handler->canHandle($carrier)) {
                 return $handler;
             }
         }
 
+        return $this->defaultHandler;
+    }
+
+    public function getCommonHandler(): IdentificationHandlerInterface
+    {
         return $this->defaultHandler;
     }
 }
