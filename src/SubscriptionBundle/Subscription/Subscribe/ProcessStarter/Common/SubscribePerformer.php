@@ -1,6 +1,6 @@
 <?php
 
-namespace SubscriptionBundle\Subscription\Subscribe\Common;
+namespace SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common;
 
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
