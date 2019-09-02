@@ -1,6 +1,6 @@
 <?php
 
-namespace IdentificationBundle\Carriers\OrangeTNMM;
+namespace Carriers\OrangeTNMM\Identification;
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\BillingFramework\ID;
