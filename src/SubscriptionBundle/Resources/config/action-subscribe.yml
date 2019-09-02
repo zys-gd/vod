@@ -180,5 +180,5 @@ services:
             - '@SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker'
             - '@SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SubscribePerformer'
             - '@SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SendNotificationPerformer'
-            - '@SubscriptionBundle\Subscription\Common\PromotionalResponseChecker'
+            - '@SubscriptionBundle\Subscription\Common\SendNotificationChecker'
             - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
