@@ -1,6 +1,6 @@
 <?php
 
-namespace SubscriptionBundle\Subscription\Subscribe\Common;
+namespace SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common;
 
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Notification\API\Exception\NotificationSendFailedException;
@@ -13,10 +13,10 @@ use SubscriptionBundle\Subscription\Common\SubscriptionSerializer;
 use SubscriptionBundle\Subscription\Notification\Notifier;
 
 /**
- * Class SubscribePromotionalPerformer
+ * Class SendNotificationPerformer
  * @package SubscriptionBundle\Subscription\Subscribe\Common
  */
-class SubscribePromotionalPerformer
+class SendNotificationPerformer
 {
     /** @var LoggerInterface */
     private $logger;
@@ -54,8 +54,9 @@ class SubscribePromotionalPerformer
      * @param Subscription $subscription
      *
      * @return ProcessResult
+     * @throws \SubscriptionBundle\BillingFramework\Notification\Exception\MissingSMSTextException
      */
-    public function doSubscribe(Subscription $subscription): ProcessResult
+    public function doSentNotification(Subscription $subscription): ProcessResult
     {
 
         $carrier = $subscription->getUser()->getCarrier();
