@@ -1,6 +1,6 @@
 <?php
 
-namespace IdentificationBundle\Carriers\OrangeTNMM;
+namespace Carriers\OrangeTNMM\Identification;
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\BillingFramework\ID;
@@ -23,13 +23,8 @@ class OrangeTNMMIdentificationHandler implements
         return $carrier->getBillingCarrierId() === ID::ORANGE_TUNISIA_MM;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return array
-     */
-    public function getAdditionalIdentificationParams(Request $request): array
+    public function isCommonFlowShouldBeUsed(Request $request): bool
     {
-        return [];
+        return $request->attributes->get('_route') != 'landing';
     }
 }

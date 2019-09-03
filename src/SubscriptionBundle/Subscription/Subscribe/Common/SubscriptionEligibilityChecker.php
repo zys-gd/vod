@@ -40,10 +40,6 @@ class SubscriptionEligibilityChecker
 
     public function isResubscriptionAfterUnsubscribeCase(Subscription $subscription, SubscriptionPack $pack): bool
     {
-        if ($subscription->getUser()->getCarrier()->getResubAllowed()) {
-            return true;
-        }
-
         if (!$subscription->isInActive()) {
             return false;
         }

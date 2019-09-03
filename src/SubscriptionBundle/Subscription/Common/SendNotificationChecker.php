@@ -11,11 +11,11 @@ namespace SubscriptionBundle\Subscription\Common;
 
 use SubscriptionBundle\Entity\Subscription;
 
-class PromotionalResponseChecker
+class SendNotificationChecker
 {
 
 
-    public function isPromotionalResponseNeeded(Subscription $subscription)
+    public function isNotificationShouldBeSent(Subscription $subscription)
     {
         $isProviderManaged = $subscription->getSubscriptionPack()->isProviderManagedSubscriptions();
 

@@ -106,20 +106,4 @@ class IdentificationStatusExtension extends AbstractExtension
         $ispDetectionData = IdentificationFlowDataExtractor::extractIspDetectionData($this->session);
         return empty($ispDetectionData['carrier_id']) ? null : (int)$ispDetectionData['carrier_id'];
     }
-
-    /**
-     * @return bool
-     */
-    public function isOtp(): bool
-    {
-        $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
-
-        if ($billingCarrierId) {
-            /** @var CarrierInterface $carrier */
-            $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
-            return $carrier->isConfirmationClick();
-        }
-
-        return false;
-    }
 }

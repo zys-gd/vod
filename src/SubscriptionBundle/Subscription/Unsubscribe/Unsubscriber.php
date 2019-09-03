@@ -63,6 +63,7 @@ class Unsubscriber
 
     /**
      * Unsubscriber constructor.
+     *
      * @param EntitySaveHelper              $entitySaveHelper
      * @param FakeResponseProvider          $fakeResponseProvider
      * @param Notifier                      $notifier
@@ -71,6 +72,7 @@ class Unsubscriber
      * @param UnsubscribeParametersProvider $parametersProvider
      * @param UnsubscribeEventChecker       $unsubscribeEventChecker
      * @param UnsubscribeEventTracker       $unsubscribeEventTracker
+     * @param LoggerInterface               $logger
      */
     public function __construct(
         EntitySaveHelper $entitySaveHelper,
@@ -99,7 +101,7 @@ class Unsubscriber
         Subscription $subscription,
         SubscriptionPack $subscriptionPack,
         array $additionalParameters = []
-    )
+    ): ProcessResult
     {
         $subscription->setStatus(Subscription::IS_PENDING);
         $subscription->setCurrentStage(Subscription::ACTION_UNSUBSCRIBE);

@@ -55,6 +55,11 @@ class HutchIDWifiIdentificationHandler implements WifiIdentificationHandlerInter
 
     public function getPhoneValidationOptions(): PhoneValidationOptions
     {
-        // TODO: Implement getPhoneValidationOptions() method.
+        return new PhoneValidationOptions(
+            '+62XXXXXXXXXX',
+            '^\+62[0-9]{10,14}$',
+            'XXXXX',
+            '^[0-9]{1,5}$'
+        );
     }
 }

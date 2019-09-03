@@ -116,13 +116,12 @@ services:
 
     IdentificationBundle\Identification\Common\CommonPassthroughFlowHandler:
         arguments:
-            - '@router'
             - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
             - '@IdentificationBundle\Identification\Service\TokenGenerator'
-            - '@IdentificationBundle\Identification\Common\RequestParametersProvider'
-            - '@IdentificationBundle\BillingFramework\Process\IdentProcess'
-            - '@IdentificationBundle\Identification\Common\Async\AsyncIdentStarter'
             - '@IdentificationBundle\BillingFramework\Process\PassthroughProcess'
+            - '@IdentificationBundle\Identification\Service\PassthroughRequestPreparer'
+            - '@IdentificationBundle\Identification\Common\CommonFlowHandler'
+            - '@IdentificationBundle\Identification\Handler\DefaultHandler'
 
     IdentificationBundle\Identification\Common\CommonConsentPageFlowHandler:
         arguments:
@@ -162,56 +161,69 @@ services:
             - '@IdentificationBundle\Identification\Handler\AlreadySubscribedHandlerProvider'
 
     IdentificationBundle\Identification\Controller\PixelIdentController:
-      tags: ['controller.service_arguments']
-      arguments:
-        - '@IdentificationBundle\Identification\Common\Pixel\PixelIdentVerifier'
-        - '@IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer'
-        - '@IdentificationBundle\Identification\Service\RouteProvider'
-        - '@IdentificationBundle\BillingFramework\Data\DataProvider'
-        - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
-        - '@logger'
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@IdentificationBundle\Identification\Common\Pixel\PixelIdentVerifier'
+            - '@IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer'
+            - '@IdentificationBundle\Identification\Service\RouteProvider'
+            - '@IdentificationBundle\BillingFramework\Data\DataProvider'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
+            - '@logger'
 
     IdentificationBundle\Identification\Controller\IdentificationController:
-      tags: ['controller.service_arguments']
-      arguments:
-        - '@IdentificationBundle\Identification\Identifier'
-        - '@IdentificationBundle\Identification\Service\TokenGenerator'
-        - '@IdentificationBundle\Identification\IdentifierByUrl'
-        - '@IdentificationBundle\Identification\Service\RouteProvider'
-        - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
-        - '@logger'
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@IdentificationBundle\Identification\Identifier'
+            - '@IdentificationBundle\Identification\Service\TokenGenerator'
+            - '@IdentificationBundle\Identification\IdentifierByUrl'
+            - '@IdentificationBundle\Identification\Service\RouteProvider'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
+            - '@logger'
 
     IdentificationBundle\Identification\Controller\FakeIdentificationController:
-      tags: ['controller.service_arguments']
-      arguments:
-        - '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
-        - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
-        - '@IdentificationBundle\Repository\UserRepository'
-        - '@IdentificationBundle\Identification\Service\ISPResolver'
-        - '@IdentificationBundle\Identification\Identifier'
-        - '@IdentificationBundle\Identification\Service\TokenGenerator'
-        - '@IdentificationBundle\User\Service\UserFactory'
-        - '@doctrine.orm.entity_manager'
-        - '@IdentificationBundle\Identification\Service\RouteProvider'
-        - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@IdentificationBundle\Identification\Service\ISPResolver'
+            - '@IdentificationBundle\Identification\Identifier'
+            - '@IdentificationBundle\Identification\Service\TokenGenerator'
+            - '@IdentificationBundle\User\Service\UserFactory'
+            - '@doctrine.orm.entity_manager'
+            - '@IdentificationBundle\Identification\Service\RouteProvider'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
 
 
     IdentificationBundle\Identification\Controller\AsyncIdentController:
-      tags: ['controller.service_arguments']
-      arguments:
-          - '@IdentificationBundle\Identification\Service\RouteProvider'
-          - '@IdentificationBundle\Identification\Common\Async\AsyncIdentFinisher'
-          - '@IdentificationBundle\Identification\Common\Async\AsyncIdentStatusProvider'
+        tags: ['controller.service_arguments']
+        arguments:
+            - '@IdentificationBundle\Identification\Service\RouteProvider'
+            - '@IdentificationBundle\Identification\Common\Async\AsyncIdentFinisher'
+            - '@IdentificationBundle\Identification\Common\Async\AsyncIdentStatusProvider'
 
     IdentificationBundle\Identification\Profiler\IdentDataCollector:
-      tags:
-        - { name: data_collector, template: '@Identification/profiler/debug_ident.html.twig', id: 'identification.ident_data_collector' }
-      arguments:
-        - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
-        - '@SubscriptionBundle\Repository\SubscriptionRepository'
-        - '@IdentificationBundle\Repository\UserRepository'
+        tags:
+            - { name: data_collector, template: '@Identification/profiler/debug_ident.html.twig', id: 'identification.ident_data_collector' }
+        arguments:
+            - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
+            - '@SubscriptionBundle\Repository\SubscriptionRepository'
+            - '@IdentificationBundle\Repository\UserRepository'
 
     IdentificationBundle\Identification\Profiler\FakeCarrierIdentifier:
-      tags:
-        - {name: data_collector, template: '@Identification/profiler/fake_carrier_identifier.html.twig', id: 'identification.fake_carrier_identifier'}
-      arguments: ['@IdentificationBundle\Repository\CarrierRepositoryInterface']
+        tags:
+            - {name: data_collector, template: '@Identification/profiler/fake_carrier_identifier.html.twig', id: 'identification.fake_carrier_identifier'}
+        arguments: ['@IdentificationBundle\Repository\CarrierRepositoryInterface']
+
+    IdentificationBundle\Identification\Controller\PassthroughController:
+        arguments:
+            - '@IdentificationBundle\BillingFramework\Process\PassthroughProcess'
+            - '@IdentificationBundle\Identification\Common\RequestParametersProvider'
+            - '@IdentificationBundle\Identification\Service\PassthroughRequestPreparer'
+        tags: ['controller.service_arguments']
+
+    IdentificationBundle\Identification\Service\PassthroughRequestPreparer:
+        arguments:
+            - '@router'
+            - '@IdentificationBundle\Identification\Common\RequestParametersProvider'
+            - '@IdentificationBundle\Identification\Service\TokenGenerator'

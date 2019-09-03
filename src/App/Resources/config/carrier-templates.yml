@@ -14,10 +14,14 @@ services:
         tags:
             - { name: app.carrier_template_handler }
 
-    App\CarrierTemplate\Handler\VodafoneEgyptTpay:
+    App\CarrierTemplate\Handler\VodafoneEgyptTpayTemplateHandler:
         tags:
             - { name: app.carrier_template_handler }
 
-    App\CarrierTemplate\Handler\OrangeEgyptTpay:
+    App\CarrierTemplate\Handler\OrangeEgyptTpayTemplateHandler:
+        tags:
+            - { name: app.carrier_template_handler }
+
+    App\CarrierTemplate\Handler\OrangeTNMMTemplateHandler:
         tags:
             - { name: app.carrier_template_handler }

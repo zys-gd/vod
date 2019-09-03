@@ -6,6 +6,9 @@ use ExtrasBundle\API\Controller\APIControllerInterface;
 use ExtrasBundle\Controller\Traits\ResponseTrait;
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\BillingFramework\Process\Exception\PinVerifyProcessException;
+use IdentificationBundle\Identification\DTO\DeviceData;
+use IdentificationBundle\Form\LPConfirmSMSPinCodeType;
+use IdentificationBundle\Form\SendSMSPinCodeType;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\WifiIdentification\PinVerification\ErrorCodeResolver;
@@ -25,6 +28,7 @@ use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -152,42 +156,56 @@ class PinIdentificationController extends AbstractController implements APIContr
      */
     public function sendSMSPinCodeAction(Request $request, ISPData $ispData)
     {
-        if (!$mobileNumber = $request->get('mobile_number', '')) {
-            throw new BadRequestHttpException('`mobile_number` is required');
+        $postData = $request->request->all();
+        $isResend = isset($postData['resend-pin']);
+        $mobileNumber = $request->get('mobile_number', '');
+        $billingCarrierId = $ispData->getCarrierId();
+        $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
+
+        $form = $this->createForm(SendSMSPinCodeType::class, [
+            'country' => $carrier->getCountryCode(),
+            'mobile_number' => $mobileNumber
+        ]);
+
+        $form->submit($postData);
+
+        if (!$form->isValid()) {
+            $errors = $form->getErrors(true);
+            return $this->getSimpleJsonResponse($errors->current()->getMessage(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         try {
             $this->limiter->ensureCapIsNotReached($request->getSession());
         } catch (CapToolAccessException $exception) {
-            return $this->getSimpleJsonResponse('Subscription limit has been reached', 200, [], [
-                'success' => false, 'redirectUrl' => $this->routeProvider->getActionIsNotAllowedUrl()
-            ]);
+            return $this->getSimpleJsonResponse(
+                'Subscription limit has been reached',
+                Response::HTTP_BAD_REQUEST,
+                [],
+                ['redirectUrl' => $this->routeProvider->getActionIsNotAllowedUrl()]
+            );
         }
 
-        $billingCarrierId = $ispData->getCarrierId();
         $cleanPhoneNumber = str_replace('+', '', $mobileNumber);
-
         if ($this->blacklistVoter->isPhoneNumberBlacklisted($cleanPhoneNumber) ||
-            $this->blacklistAttemptRegistrator->isSubscriptionAttemptRaised($cleanPhoneNumber, (int)$billingCarrierId)
+            $this->blacklistAttemptRegistrator->isSubscriptionAttemptRaised($cleanPhoneNumber, (int) $billingCarrierId)
         ) {
-            return $this->getSimpleJsonResponse('User in black list', 200, [], [
-                'success' => false, 'redirectUrl' => $this->blacklistVoter->getRedirectUrl()
-            ]);
+            return $this->getSimpleJsonResponse(
+                'User in black list',
+                Response::HTTP_BAD_REQUEST,
+                [],
+                ['redirectUrl' => $this->blacklistVoter->getRedirectUrl()]
+            );
         }
 
         $this->limiter->reserveSlotForSubscription($request->getSession());
 
-        $postData = $request->request->all();
-        $isResend = isset($postData['resend-pin']);
-
-        $campaign                 = $this->campaignExtractor->getCampaignFromSession($request->getSession());
+        $campaign = $this->campaignExtractor->getCampaignFromSession($request->getSession());
         $isZeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isZeroCreditAvailable($billingCarrierId, $campaign);
-
         try {
             $this->identSMSSender->sendSMS($billingCarrierId, $mobileNumber, $isZeroCreditSubAvailable, $isResend);
-            $data = ['success' => true, 'carrierId' => $billingCarrierId, 'isResend' => $isResend];
+            $data = ['carrierId' => $billingCarrierId, 'isResend' => $isResend];
 
-            return $this->getSimpleJsonResponse('Sent', 200, [], $data);
+            return $this->getSimpleJsonResponse('Sent', Response::HTTP_OK, [], $data);
         } catch (PinRequestProcessException $exception) {
             $this->logger->debug('Send pin error. Try to resolve error message', [
                 'code'      => $exception->getCode(),
@@ -195,75 +213,65 @@ class PinIdentificationController extends AbstractController implements APIContr
             ]);
 
             $message = $this->errorCodeResolver->resolveMessage($exception->getCode(), $billingCarrierId);
-            return $this->getSimpleJsonResponse($message, 200, [], ['success' => false, 'code' => $exception->getCode()]);
+            return $this->getSimpleJsonResponse($message, Response::HTTP_BAD_REQUEST, [], ['code' => $exception->getCode()]);
         } catch (\Exception $exception) {
-            return $this->getSimpleJsonResponse($exception->getMessage(), 200, [], ['success' => false]);
+            return $this->getSimpleJsonResponse($exception->getMessage(), Response::HTTP_BAD_REQUEST, []);
         }
     }
 
     /**
      * @Method("POST")
      * @Route("/pincode/confirm",name="confirm_sms_pin_code")
-     * @param Request $request
-     * @param ISPData $ispData
+     * @param Request    $request
+     * @param ISPData    $ispData
+     * @param DeviceData $deviceData
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function confirmSMSPinCodeAction(Request $request, ISPData $ispData)
+    public function confirmSMSPinCodeAction(Request $request, ISPData $ispData, DeviceData $deviceData)
     {
+        if (!$mobileNumber = $request->get('mobile_number')) {
+            throw new BadRequestHttpException('`mobile_number` is required');
+        }
+
         if (!$pinCode = $request->get('pin_code', '')) {
             throw new BadRequestHttpException('`pin_code` is required');
         }
 
-        if (!$mobileNumber = $request->get('mobile_number', '')) {
-            throw new BadRequestHttpException('`mobile_number` is required');
-        }
+        $postData = $request->request->all();
+        $billingCarrierId = $ispData->getCarrierId();
+        $campaign = $this->campaignExtractor->getCampaignFromSession($request->getSession());
+        $phoneNumberExtension = $this->phoneOptionsProvider->getPhoneValidationOptions($billingCarrierId);
+        $isZeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isZeroCreditAvailable($billingCarrierId, $campaign);
 
-        $carrierId                = $ispData->getCarrierId();
-        $campaign                 = $this->campaignExtractor->getCampaignFromSession($request->getSession());
-        $isZeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isZeroCreditAvailable($carrierId, $campaign);
+        $form = $this->createForm(LPConfirmSMSPinCodeType::class, [
+            'pin_code' => $pinCode,
+            'pin_validation_pattern' => $phoneNumberExtension->getPinRegexPattern()
+        ]);
+
+        $form->submit($postData);
+
+        if (!$form->isValid()) {
+            $errors = $form->getErrors(true);
+            return $this->getSimpleJsonResponse($errors->current()->getMessage(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
         try {
             $response = $this->identConfirmator->confirm(
-                $carrierId,
+                $billingCarrierId,
                 $pinCode,
                 $mobileNumber,
                 $request->getClientIp(),
-                $isZeroCreditSubAvailable
+                $isZeroCreditSubAvailable,
+                $deviceData
             );
 
             return $response;
         } catch (PinVerifyProcessException $exception) {
-            $message = $this->errorCodeResolver->resolveMessage($exception->getCode(), $carrierId);
-            return $this->getSimpleJsonResponse($message, 200, [], ['success' => false]);
+            $message = $this->errorCodeResolver->resolveMessage($exception->getCode(), $billingCarrierId);
+            return $this->getSimpleJsonResponse($message, Response::HTTP_OK, [], ['success' => false]);
         } catch (\Exception $exception) {
-            return $this->getSimpleJsonResponse($exception->getMessage(), 200, [], ['success' => false]);
-        }
-    }
-
-    /**
-     * @Method("GET")
-     * @Route("/pincode/phone-options",name="wifi_phone_options")
-     * @param Request $request
-     * @param ISPData $ispData
-     *
-     * @return JsonResponse
-     */
-    public function getPhoneMaskOptions(Request $request, ISPData $ispData): JsonResponse
-    {
-
-        try {
-
-            $phoneValidationOptions = $this->phoneOptionsProvider->getPhoneValidationOptions($ispData->getCarrierId());
-
-            return $this->getSimpleJsonResponse('', 200, [], ['phoneOptions' => [
-                'placeholder'       => $phoneValidationOptions->getPhonePlaceholder(),
-                'phoneRegexPattern' => $phoneValidationOptions->getPhoneRegexPattern(),
-                'pinRegexPattern'   => $phoneValidationOptions->getPinRegexPattern()
-            ]]);
-
-        } catch (\Exception $exception) {
-            return $this->getSimpleJsonResponse($exception->getMessage(), 200, [], ['success' => false]);
+            return $this->getSimpleJsonResponse($exception->getMessage(), Response::HTTP_OK, [], ['success' => false]);
         }
     }
 }

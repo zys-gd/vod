@@ -21,6 +21,22 @@ services:
             - '@IdentificationBundle\Identification\Service\TokenGenerator'
             - '@IdentificationBundle\User\Service\UserFactory'
             - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
+            - '@SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper'
+            - '@SubscriptionBundle\Carriers\HutchID\Subscribe\HutchIDSMSSubscriber'
+            - '@SubscriptionBundle\Subscription\Notification\Notifier'
+            - '@SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventTracker'
+            - '@logger'
+            - '@SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker'
+            - '@cross_subscription.api_connector'
+
+    SubscriptionBundle\Carriers\HutchID\Callback\HutchIDCallbackUnsubscribe:
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@SubscriptionBundle\Repository\SubscriptionRepository'
+            - '@SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber'
+            - '@cross_subscription.api_connector'
+        tags:
+            - { name: subscription.callback_carrier_handler, type: unsubscribe}
 
     SubscriptionBundle\Carriers\HutchID\Notification\HutchIDNotificationHandler:
         arguments:
@@ -28,3 +44,7 @@ services:
         tags:
             - { name: subscription.notification_handler, type: subscribe }
             - { name: subscription.notification_handler, type: unsubscribe }
+
+    SubscriptionBundle\Carriers\HutchID\Subscribe\HutchIDSMSSubscriber:
+        arguments:
+            - '@SubscriptionBundle\Subscription\Callback\Common\Type\SubscriptionCallbackHandler'

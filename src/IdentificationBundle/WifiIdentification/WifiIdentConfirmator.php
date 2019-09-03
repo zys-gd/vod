@@ -8,6 +8,7 @@ use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
 use IdentificationBundle\BillingFramework\Process\Exception\PinVerifyProcessException;
 use IdentificationBundle\BillingFramework\Process\PinVerifyProcess;
 use IdentificationBundle\Identification\Common\PostPaidHandler;
+use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\Exception\FailedIdentificationException;
 use IdentificationBundle\Identification\Exception\MissingIdentificationDataException;
 use IdentificationBundle\Identification\Handler\HasPostPaidRestriction;
@@ -89,7 +90,7 @@ class WifiIdentConfirmator
      * @param PinVerifyProcess                  $pinVerifyProcess
      * @param RequestProvider                   $requestProvider
      * @param MsisdnCleaner                     $msisdnCleaner
-     * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
+     * @param WifiIdentificationDataStorage     $wifiIdentificationDataStorage
      * @param IdentFinisher                     $identFinisher
      * @param SubscriptionRepository            $subscriptionRepository
      * @param UserRepository                    $userRepository
@@ -126,13 +127,14 @@ class WifiIdentConfirmator
     }
 
     /**
-     * @param int    $carrierId
-     * @param string $pinCode
-     * @param string $mobileNumber
-     * @param string $ip
+     * @param int        $carrierId
+     * @param string     $pinCode
+     * @param string     $mobileNumber
+     * @param string     $ip
      *
-     * @param bool   $isZeroCreditSubAvailable
+     * @param bool       $isZeroCreditSubAvailable
      *
+     * @param DeviceData $deviceData
      * @return JsonResponse
      *
      * @throws \Exception
@@ -142,7 +144,8 @@ class WifiIdentConfirmator
         string $pinCode,
         string $mobileNumber,
         string $ip,
-        bool $isZeroCreditSubAvailable
+        bool $isZeroCreditSubAvailable,
+        DeviceData $deviceData
     ): JsonResponse
     {
         $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
@@ -179,9 +182,9 @@ class WifiIdentConfirmator
 
             $user = $handler->getExistingUser($msisdn);
             if ($user) {
-                $this->identFinisher->finishForExistingUser($user, $msisdn, $ip);
+                $this->identFinisher->finishForExistingUser($user, $msisdn, $ip, $deviceData);
             } else {
-                $this->identFinisher->finish($msisdn, $carrier, $ip);
+                $this->identFinisher->finish($msisdn, $carrier, $ip, $deviceData);
             }
 
             $this->wifiIdentificationDataStorage->cleanPinRequestResult();
@@ -224,9 +227,9 @@ class WifiIdentConfirmator
 
             $user = $handler->getExistingUser($finalMsisdn);
             if ($user) {
-                $this->identFinisher->finishForExistingUser($user, $msisdn, $ip);
+                $this->identFinisher->finishForExistingUser($user, $msisdn, $ip, $deviceData);
             } else {
-                $this->identFinisher->finish($finalMsisdn, $carrier, $ip);
+                $this->identFinisher->finish($finalMsisdn, $carrier, $ip, $deviceData);
             }
 
             $this->wifiIdentificationDataStorage->cleanPinRequestResult();

@@ -5,14 +5,11 @@ services:
             - '@SubscriptionBundle\Service\EntitySaveHelper'
             - '@session'
             - '@SubscriptionBundle\Subscription\Common\SubscriptionFactory'
-            - '@SubscriptionBundle\Subscription\Common\PromotionalResponseChecker'
             - '@SubscriptionBundle\Subscription\Subscribe\OnSubscribeUpdater'
             - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitCompleter'
-            - '@SubscriptionBundle\Subscription\Subscribe\Common\SubscribePerformer'
-            - '@SubscriptionBundle\Subscription\Subscribe\Common\SubscribePromotionalPerformer'
             - '@cross_subscription.api_connector'
             - '@SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker'
-            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
+            - '@SubscriptionBundle\Subscription\Subscribe\ProcessStarter\SubscribeProcessStarterProvider'
 
 
     SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider:
@@ -64,12 +61,12 @@ services:
             - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
             - '@SubscriptionBundle\Subscription\Common\RedirectUrlNullifier'
 
-    SubscriptionBundle\Subscription\Subscribe\Common\SubscribePerformer:
+    SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SubscribePerformer:
         arguments:
             - '@SubscriptionBundle\BillingFramework\Process\SubscribeProcess'
             - '@SubscriptionBundle\Subscription\Subscribe\SubscribeParametersProvider'
 
-    SubscriptionBundle\Subscription\Subscribe\Common\SubscribePromotionalPerformer:
+    SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SendNotificationPerformer:
         arguments:
             - '@logger'
             - '@SubscriptionBundle\Subscription\Notification\Notifier'
@@ -106,6 +103,7 @@ services:
             - '@router.default'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\CommonResponseCreator'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\AffiliateNotifier'
+            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker'
 
     SubscriptionBundle\Subscription\Subscribe\Controller\SubscribeAction:
@@ -171,3 +169,16 @@ services:
       arguments:
         - '@SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventTracker'
         - '@SubscriptionBundle\Subscription\Subscribe\Common\AffiliateNotifier'
+
+
+    SubscriptionBundle\Subscription\Subscribe\ProcessStarter\SubscribeProcessStarterProvider:
+        arguments:
+            - '@SubscriptionBundle\Subscription\Subscribe\ProcessStarter\CommonStarter'
+
+    SubscriptionBundle\Subscription\Subscribe\ProcessStarter\CommonStarter:
+        arguments:
+            - '@SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker'
+            - '@SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SubscribePerformer'
+            - '@SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SendNotificationPerformer'
+            - '@SubscriptionBundle\Subscription\Common\SendNotificationChecker'
+            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'

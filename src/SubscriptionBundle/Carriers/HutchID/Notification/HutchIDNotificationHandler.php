@@ -36,7 +36,7 @@ class HutchIDNotificationHandler implements NotificationHandlerInterface
 
     public function isProcessIdUsedInNotification(): bool
     {
-        return false;
+        return true;
     }
 
     public function getSmsLanguage(): LanguageInterface

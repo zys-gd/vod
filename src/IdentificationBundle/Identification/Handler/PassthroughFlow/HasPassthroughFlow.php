@@ -6,5 +6,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 interface HasPassthroughFlow
 {
-    public function getAdditionalIdentificationParams(Request $request): array;
+    public function isCommonFlowShouldBeUsed(Request $request): bool;
+
 }

@@ -57,8 +57,8 @@ class MobilinkPKWifiIdentificationHandler implements WifiIdentificationHandlerIn
     public function getPhoneValidationOptions(): PhoneValidationOptions
     {
         return new PhoneValidationOptions(
-            '+9230XXXXXXXX',
-            '^\+9230[0-9]{8}$',
+            '+923XXXXXXXXX',
+            '^\+923[0-9]{9}$',
             'XXXXX',
             '^[0-9]{1,5}$'
         );

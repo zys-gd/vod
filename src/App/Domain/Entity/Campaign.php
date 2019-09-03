@@ -189,7 +189,7 @@ class Campaign implements CampaignInterface, HasUuid
      * Get thumbnail path
      * @return string
      */
-    public function getImagePath()
+    public function getImagePath(): string
     {
         return static::RESOURCE_IMAGE . '/' . $this->getImageName();
     }
@@ -351,7 +351,7 @@ class Campaign implements CampaignInterface, HasUuid
      * Get bgColor
      * @return string
      */
-    public function getBgColor()
+    public function getBgColor(): ?string
     {
         return $this->bgColor;
     }
@@ -648,7 +648,7 @@ class Campaign implements CampaignInterface, HasUuid
     /**
      * @return \DateTime
      */
-    public function getDateCreated(): \DateTime
+    public function getDateCreated(): ?\DateTime
     {
         return $this->dateCreated;
     }
@@ -656,7 +656,7 @@ class Campaign implements CampaignInterface, HasUuid
     /**
      * @param \DateTime $dateCreated
      */
-    public function setDateCreated(\DateTime $dateCreated): void
+    public function setDateCreated(\DateTime $dateCreated = null): void
     {
         $this->dateCreated = $dateCreated;
     }

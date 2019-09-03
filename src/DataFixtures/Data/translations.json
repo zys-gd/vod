@@ -3040,6 +3040,15 @@
         "carrier": null
     },
     {
+        "uuid": "e493273d-3256-4561-8eff-8c27e5ce5b1e",
+        "key": "messages.error.subscribe_error",
+        "translation": "Sorry, but you got error during subscribe",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
         "uuid": "6fdf584g-494a-4b09-8b08-b573e7a8860c",
         "key": "account.header-text",
         "translation": "\u0645\u0639\u0644\u0648\u0645\u0627\u062a \u0627\u0644\u0627\u0634\u062a\u0631\u0627\u0643",
@@ -3114,7 +3123,7 @@
     {
         "uuid": "5125f53c-3206-4665-afb3-eee9e5b15661",
         "key": "messages.subscription_popup.confirmation_text",
-        "translation": "Hai %phone%, Anda akan berlangganan layanan 100% sport dengan tarif %currency% %price%/%period%",
+        "translation": "Hai %phone%, Anda akan berlangganan layanan 100% sport dengan tarif %currency% %price%\/%period",
         "language": {
             "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -3136,7 +3145,7 @@
     {
         "uuid": "e31516b6-9bb2-40f9-98a2-b076005793f5",
         "key": "messages.subscription_popup.confirmation_text",
-        "translation": "Hi %phone%, you will be subscribed to service 100% sport with rate %currency% %price%/%period%",
+        "translation": "Hi %phone%, you will be subscribed to service 100% sport with rate %currency% %price%\/%period%",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -4535,6 +4544,159 @@
         "translation": "Tanggung gugat 100% sports",
         "language": {
             "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "0750e04d-dee0-4dec-ba79-b14d6011b515",
+        "key": "buttons.load_more",
+        "translation": "Charger plus",
+        "language": {
+            "uuid": "5179f269-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "089108e1-4293-4e2f-82b9-3d060723f77b",
+        "key": "buttons.continue",
+        "translation": "Continuer",
+        "language": {
+            "uuid": "5179f269-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "2ab0aa0c-54aa-4b88-9729-9c8499df3724",
+        "key": "messages.error.already_subscribed",
+        "translation": "Vous avez d\u00e9j\u00e0 un abonnement existant",
+        "language": {
+            "uuid": "5179f269-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "32fd83ea-deea-4aac-b945-47e199fd0f0c",
+        "key": "wifi.warning",
+        "translation": "Whooops! Nous n'avons pas pu reconna\u00eetre votre num\u00e9ro de portable. Veuillez s\u00e9lectionner votre pays, votre op\u00e9rateur et taper votre num\u00e9ro de t\u00e9l\u00e9phone portable. Vous recevrez un code PIN via Sms.",
+        "language": {
+            "uuid": "5179f269-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "3616bf5d-29a1-4117-be75-08673f0846f9",
+        "key": "offer.account",
+        "translation": "Regardez des vid\u00e9os illimit\u00e9es de vos sports et \u00e9quipes pr\u00e9f\u00e9r\u00e9s! <br\/> Seulement %price% %currency% par %period%",
+        "language": {
+            "uuid": "5179f269-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "5003d749-6a67-4e67-a328-dad0886fa4bb",
+        "key": "wros",
+        "translation": "D\u00e9sol\u00e9, 100%sport est disponible uniquement pour les appareils Android.",
+        "language": {
+            "uuid": "5179f269-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "54c1e8a8-66bb-4f39-b13a-ae541eb1848c",
+        "key": "terms.block_2.text.1",
+        "translation": "Ce service est uniquement disponible pour les utilisateurs en Tunisie. Vous devez avoir la permission du transporteur pour utiliser ce service.",
+        "language": {
+            "uuid": "5179f269-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "575c240b-8b0b-411e-9f9d-d5df40b7ffdf",
+        "key": "wifi.offer",
+        "translation": "%price% %currency% par %period%",
+        "language": {
+            "uuid": "5179f269-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "5a9303c2-ba9f-4366-8655-1bd006496f16",
+        "key": "lure_block.text",
+        "translation": "Plus de 40 sports couverts !",
+        "language": {
+            "uuid": "5179f269-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "5daaa320-a556-4d7a-b94a-ddb60b8267fd",
+        "key": "terms.block_9.text.2",
+        "translation": "En outre, tous les symboles (logos, polices, ic\u00f4nes, etc.) du site Web 100% sport sont la propri\u00e9t\u00e9 de 100% sport ou de tiers et leur reproduction ou distribution est totalement interdite sans autorisation expresse. Aussi, il est interdit de copier, reproduire ou utiliser tout ou partie de ces Termes et Conditions sans le consentement de 100% sport.",
+        "language": {
+            "uuid": "5179f269-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "90b447d3-6cc3-4b50-9980-6739be7e0ed1",
+        "key": "terms.block_6.text.2",
+        "translation": "Vous devez disposer de toutes les ressources n\u00e9cessaires (combin\u00e9, logiciel, connexion Internet) pour utiliser des services 100% sports. 100% sports peut interrompre ses services pour effectuer des travaux de r\u00e9paration, de correction et d\u2019entretien. 100% sports peut \u00e9galement modifier de mani\u00e8re temporaire ou permanente des services ou des produits sp\u00e9cifiques.",
+        "language": {
+            "uuid": "5179f269-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "9fd2af47-4a15-4a60-8ee5-3425cdde6a8a",
+        "key": "player.related_videos",
+        "translation": "Vid\u00e9os connexes",
+        "language": {
+            "uuid": "5179f269-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "b34e9e58-452f-4b38-82c0-3fb6c3457e91",
+        "key": "buttons.join.now",
+        "translation": "ADH\u00c9RER",
+        "language": {
+            "uuid": "5179f269-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "b938c7cd-8346-4bd7-a8e8-295926c59de1",
+        "key": "contact_us.text.1",
+        "translation": "Vous avez une question \u00e0 propos de 100% sport ? Nous vous donnerons des r\u00e9ponses claires !",
+        "language": {
+            "uuid": "5179f269-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "bd063994-bab4-48ac-8806-08ac11be3cf1",
+        "key": "annotation_block.text.3",
+        "translation": "Vous pouvez annuler votre abonnement \u00e0 tout moment \u00e0 partir de la section Mon compte.",
+        "language": {
+            "uuid": "5179f269-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "de74d859-8bc7-470f-82c3-f945c33dee9c",
+        "key": "subscription.text.enjoy",
+        "translation": "Profitez de vid\u00e9os de sport illimit\u00e9es !",
+        "language": {
+            "uuid": "5179f269-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "ebc2a30d-77af-496c-b2c0-0f6c1cad3604",
+        "key": "wifi.form.button.send_sms",
+        "translation": "Envoyer un SMS",
+        "language": {
+            "uuid": "5179f269-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
     }
