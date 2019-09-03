@@ -78,4 +78,9 @@ class SubscriptionCallbackHandler extends AbstractCallbackHandler
 
         $this->crossSubscriptionApi->registerSubscription($user->getIdentifier(), $user->getBillingCarrierId());
     }
+
+    public function isActionAllowedForSubscription(Subscription $subscription): bool
+    {
+        return true;
+    }
 }
