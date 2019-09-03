@@ -155,6 +155,10 @@ class CommonFlowHandler
             throw new \Exception("Selected carrier does not fit to selected subscription");
         }
 
+        if (!$callbackTypeHandler->isActionAllowedForSubscription($subscription)) {
+            throw new \Exception("Action is not allowed for subscription");
+        }
+
         $this->logger->debug(
             'Callback subscription before update',
             ["subscription" => $subscription]

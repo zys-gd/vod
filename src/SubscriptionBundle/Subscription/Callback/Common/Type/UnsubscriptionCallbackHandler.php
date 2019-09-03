@@ -57,4 +57,14 @@ class UnsubscriptionCallbackHandler extends AbstractCallbackHandler
     {
         // TODO: Implement afterProcess() method.
     }
+
+
+    public function isActionAllowedForSubscription(Subscription $subscription): bool
+    {
+        if ($subscription->isActive()) {
+            return true;
+        }
+
+        return false;
+    }
 }
