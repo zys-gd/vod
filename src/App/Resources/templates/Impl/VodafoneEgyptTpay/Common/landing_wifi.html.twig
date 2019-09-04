@@ -6,7 +6,7 @@
 {# IMPORT SECTIONS #}
 {% import LPImporter("Common/LP/Sections/banner_section.html.twig") as banner_section %}
 {% import LPImporter("Common/LP/Sections/Wifi/subscribe_button_section.html.twig") as subscribe_button_section %}
-{% import LPImporter("Common/LP/Sections/offer_section.html.twig") as offer_section %}
+{% import LPImporter("Common/LP/Sections/Wifi/offer_section.html.twig") as offer_section %}
 {% import LPImporter("Common/LP/Sections/icons_chanel_section.html.twig") as icons_chanel_section %}
 {% import LPImporter("Common/LP/Sections/lure_text_section.html.twig") as lure_text_section %}
 {# END IMPORT SECTIONS #}
@@ -20,12 +20,14 @@
     {% include LPImporter("Common/LP/wifi_subscribe_block_js.html.twig") %}
 {% endblock %}
 
+
 {% block stylesheets %}
     {{ parent() }}
     <link href="{{ asset('/css/lp.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
+
     <div class="d-flex flex-column align-items-center justify-content-top w-100" style="background: {{ getCampaignData('background') }}">
 
         <!-- BANNER SECTION WITH SUB IMAGE -->
@@ -37,7 +39,7 @@
         <!-- END SUBSCRIBE BUTTON SECTION -->
 
         <!-- OFFER SECTION -->
-        {{ offer_section.render()  }}
+        {{ offer_section.render() }}
         <!-- END OFFER SECTION -->
 
         <!-- ICONS CHANEL SECTION -->

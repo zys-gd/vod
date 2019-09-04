@@ -1,6 +1,10 @@
 services:
-  Carriers\TelenorPK\SMS\ENTextsHandler:
-    tags: ['subscription.sms_text_handler']
+    Carriers\TelenorPK\SMS\ENTextsHandler:
+        tags: ['subscription.sms_text_handler']
 
-  Carriers\TelenorPK\SMS\URTextsHandler:
-    tags: ['subscription.sms_text_handler']
+    Carriers\TelenorPK\SMS\URTextsHandler:
+        tags: ['subscription.sms_text_handler']
+
+    Carriers\TelenorPK\Template\TelenorPKDotTemplateHandler:
+        tags:
+            - { name: store_commons.template_handler }

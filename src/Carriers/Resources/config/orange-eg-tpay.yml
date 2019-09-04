@@ -1,0 +1,4 @@
+services:
+    Carriers\OrangeEGTpay\Template\OrangeEGTpayTemplateHandler:
+        tags:
+            - { name: store_commons.template_handler }

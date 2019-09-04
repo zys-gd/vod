@@ -4,12 +4,12 @@
 namespace App\Twig;
 
 
-use App\CarrierTemplate\TemplateConfigurator;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
 use App\Domain\Service\Campaign\CampaignSerializer;
 use CommonDataBundle\Entity\Country;
 use CommonDataBundle\Repository\Interfaces\CountryRepositoryInterface;
+use CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator;
 use Doctrine\Common\Collections\ArrayCollection;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
@@ -162,8 +162,13 @@ class LPExtension extends AbstractExtension
     public function getLPImportPath(string $baseFilePath): string
     {
         $billingCarrierId = (int)IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
-        $baseFilePath = str_replace('.html.twig', '', $baseFilePath);
-        return $this->templateConfigurator->getTemplate($baseFilePath, $billingCarrierId);
+
+        $urlParts = explode('/', $baseFilePath);
+
+        $templateName = str_replace('.html.twig', '', array_pop($urlParts));
+        $templatePath = implode('/', $urlParts);
+
+        return $this->templateConfigurator->getTemplate($templateName, $billingCarrierId, $templatePath);
     }
 
     /**

@@ -1,0 +1,4 @@
+services:
+    Carriers\OrangeTNMM\Template\OrangeTNMMTemplateHandler:
+        tags:
+            - { name: store_commons.template_handler }

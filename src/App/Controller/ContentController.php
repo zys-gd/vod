@@ -8,7 +8,7 @@
 
 namespace App\Controller;
 
-use App\CarrierTemplate\TemplateConfigurator;
+use CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator;
 use IdentificationBundle\Identification\DTO\ISPData;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,6 +40,7 @@ class ContentController extends AbstractController implements AppControllerInter
     public function faqAction(ISPData $data)
     {
         $template = $this->templateConfigurator->getTemplate('faq', $data->getCarrierId());
+
         return $this->render($template);
     }
 
@@ -52,6 +53,7 @@ class ContentController extends AbstractController implements AppControllerInter
     public function termsAndConditionsAction(ISPData $data)
     {
         $template = $this->templateConfigurator->getTemplate('terms_and_conditions', $data->getCarrierId());
+
         return $this->render($template);
     }
 }
