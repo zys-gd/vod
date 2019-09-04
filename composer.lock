@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dcd6cb0970276a9304d57e77cebe3089",
+    "content-hash": "152c933114fdce1cd4947b70515945be",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2643,6 +2643,51 @@
             "time": "2018-03-04T11:30:31+00:00"
         },
         {
+            "name": "m6web/redis-mock",
+            "version": "v2.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/M6Web/RedisMock.git",
+                "reference": "a869f5374645830869a464dbb14c18acf80a1bef"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/M6Web/RedisMock/zipball/a869f5374645830869a464dbb14c18acf80a1bef",
+                "reference": "a869f5374645830869a464dbb14c18acf80a1bef",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "atoum/atoum": "master-dev",
+                "predis/predis": "~0.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "M6Web\\Component\\RedisMock": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "M6Web",
+                    "email": "opensource@m6web.fr",
+                    "homepage": "http://tech.m6web.fr/"
+                }
+            ],
+            "description": "Library providing a PHP mock for Redis",
+            "keywords": [
+                "mock",
+                "redis"
+            ],
+            "time": "2016-10-30T19:34:36+00:00"
+        },
+        {
             "name": "markbaker/complex",
             "version": "1.4.7",
             "source": {
@@ -3707,7 +3752,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git-codecommit.eu-west-1.amazonaws.com/v1/repos/store-commons-module",
-                "reference": "b345f0115e544a206c92ccf68862e891627cccb4"
+                "reference": "1232386c14989ac93f370f24693a80a86a479004"
             },
             "require": {
                 "doctrine/orm": "^2.5",
@@ -3742,7 +3787,7 @@
                     "email": "dmitriy.bichenko@playwing.net"
                 }
             ],
-            "time": "2019-08-29T15:14:28+00:00"
+            "time": "2019-09-04T11:53:38+00:00"
         },
         {
             "name": "predis/predis",
@@ -8413,20 +8458,20 @@
         },
         {
             "name": "liip/functional-test-bundle",
-            "version": "dev-master",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipFunctionalTestBundle.git",
-                "reference": "ef66ad891ae3562109616e19666b5d81c392ccd8"
+                "reference": "455230da50d66b8ed4fb8e017ba02cddbb52bedb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipFunctionalTestBundle/zipball/ef66ad891ae3562109616e19666b5d81c392ccd8",
-                "reference": "ef66ad891ae3562109616e19666b5d81c392ccd8",
+                "url": "https://api.github.com/repos/liip/LiipFunctionalTestBundle/zipball/455230da50d66b8ed4fb8e017ba02cddbb52bedb",
+                "reference": "455230da50d66b8ed4fb8e017ba02cddbb52bedb",
                 "shasum": ""
             },
             "require": {
-                "doctrine/annotations": "^1.3",
+                "doctrine/common": "^2.0",
                 "php": "^7.1",
                 "symfony/browser-kit": "^3.4 || ^4.1",
                 "symfony/framework-bundle": "^3.4 || ^4.1"
@@ -8436,6 +8481,7 @@
             },
             "require-dev": {
                 "doctrine/doctrine-bundle": "^1.8",
+                "doctrine/doctrine-fixtures-bundle": "^3.0.2",
                 "doctrine/orm": "^2.6",
                 "phpunit/phpunit": "^6.1 || ^7.0",
                 "symfony/monolog-bundle": "^3.1",
@@ -8445,7 +8491,8 @@
             },
             "suggest": {
                 "brianium/paratest": "Required when using paratest to parallelize tests",
-                "liip/test-fixtures-bundle": "Efficient loading of Doctrine fixtures in functional test-cases for Symfony applications"
+                "doctrine/dbal": "Required when using the fixture loading functionality with an ORM and SQLite",
+                "doctrine/orm": "Required when using the fixture loading functionality with an ORM and SQLite"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -8477,7 +8524,78 @@
                 "symfony",
                 "testing"
             ],
-            "time": "2019-07-26T15:17:19+00:00"
+            "time": "2019-06-30T17:32:30+00:00"
+        },
+        {
+            "name": "liip/test-fixtures-bundle",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/liip/LiipTestFixturesBundle.git",
+                "reference": "728f96ac84ecba794b34254c61f4b8e6977f8797"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/liip/LiipTestFixturesBundle/zipball/728f96ac84ecba794b34254c61f4b8e6977f8797",
+                "reference": "728f96ac84ecba794b34254c61f4b8e6977f8797",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/common": "^2.0",
+                "php": "^7.1",
+                "symfony/framework-bundle": "^3.4 || ^4.1"
+            },
+            "require-dev": {
+                "doctrine/data-fixtures": "^1.3",
+                "doctrine/doctrine-bundle": "^1.8",
+                "doctrine/doctrine-fixtures-bundle": "^3.0.2",
+                "doctrine/orm": "^2.6",
+                "jackalope/jackalope-doctrine-dbal": "^1.3",
+                "phpunit/phpunit": "^7.5 || ^8.0",
+                "symfony/monolog-bundle": "^3.2",
+                "symfony/phpunit-bridge": "^3.4 || ^4.1",
+                "symfony/symfony": "^3.4 || ^4.1",
+                "theofidry/alice-data-fixtures": "^1.0.1"
+            },
+            "suggest": {
+                "doctrine/dbal": "Required when using the fixture loading functionality with an ORM and SQLite",
+                "doctrine/doctrine-fixtures-bundle": "Required when using the fixture loading functionality",
+                "doctrine/orm": "Required when using the fixture loading functionality with an ORM and SQLite",
+                "hautelook/alice-bundle": "Required when using loadFixtureFiles functionality with custom providers",
+                "theofidry/alice-data-fixtures": "Required when using loadFixtureFiles functionality"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Liip\\TestFixturesBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Liip AG",
+                    "homepage": "http://www.liip.ch/"
+                },
+                {
+                    "name": "Community contributions",
+                    "homepage": "https://github.com/liip/LiipTestFixturesBundle/contributors"
+                }
+            ],
+            "description": "This bundles enables efficient loading of Doctrine fixtures in functional test-cases for Symfony applications",
+            "keywords": [
+                "fixtures",
+                "symfony",
+                "testing"
+            ],
+            "time": "2019-08-05T20:41:19+00:00"
         },
         {
             "name": "mockery/mockery",
@@ -10852,8 +10970,7 @@
         "league/flysystem-aws-s3-v3": 20,
         "playwing/cross-subscription-api-connector": 20,
         "playwing/difftool": 20,
-        "playwing/store-commons": 20,
-        "liip/functional-test-bundle": 20
+        "playwing/store-commons": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
