@@ -54,4 +54,5 @@ class VodafoneEGIdentificationHandler implements IdentificationHandlerInterface,
 
         return ['lang' => $lang];
     }
+
 }

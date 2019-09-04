@@ -4,7 +4,6 @@ use ExtrasBundle\Utils\UuidGenerator;
 use IdentificationBundle\Entity\User;
 use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
 use Psr\Log\LoggerInterface;
-use SubscriptionBundle\Affiliate\Service\AffiliateSender;
 use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
@@ -12,17 +11,15 @@ use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitCompleter;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Piwik\SubscriptionStatisticSender;
-use SubscriptionBundle\Subscription\Common\FakeResponseProvider;
-use SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker;
-use SubscriptionBundle\Subscription\Common\PromotionalResponseChecker;
-use SubscriptionBundle\Subscription\Subscribe\Common\SubscribePerformer;
-use SubscriptionBundle\Subscription\Subscribe\Common\SubscribePromotionalPerformer;
-use SubscriptionBundle\Subscription\Subscribe\OnSubscribeUpdater;
-use SubscriptionBundle\Subscription\Subscribe\SubscribeParametersProvider;
 use SubscriptionBundle\Service\CapConstraint\SubscriptionCounterUpdater;
 use SubscriptionBundle\Service\EntitySaveHelper;
-use SubscriptionBundle\Subscription\Notification\Notifier;
+use SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker;
+use SubscriptionBundle\Subscription\Common\SendNotificationChecker;
 use SubscriptionBundle\Subscription\Common\SubscriptionFactory;
+use SubscriptionBundle\Subscription\Subscribe\OnSubscribeUpdater;
+use SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SubscribePerformer;
+use SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SendNotificationPerformer;
+use SubscriptionBundle\Subscription\Subscribe\ProcessStarter\SubscribeProcessStarterProvider;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
@@ -52,6 +49,8 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
     private $subscriptionCreator;
     private $subscribePromotionalPerformer;
     private $subscribePerformer;
+    private $subscribeProcessStarterProvider;
+    private $commonStarter;
 
 
     public function testSubscribe()
@@ -61,6 +60,7 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
 
         $subscriptionPack = new SubscriptionPack(UuidGenerator::generate());
         $subscriptionPack->setProviderManagedSubscriptions(true);
+        $subscriptionPack->setCarrier(Mockery::spy(\CommonDataBundle\Entity\Interfaces\CarrierInterface::class));
         $user = new User(UuidGenerator::generate());
         $user->setCarrier($carrier);
         $user->setIdentifier('test');
@@ -95,6 +95,7 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
         $existingSubscription->setUser($user);
         $subscriptionPack = new SubscriptionPack(UuidGenerator::generate());
         $subscriptionPack->setProviderManagedSubscriptions(true);
+        $subscriptionPack->setCarrier(Mockery::spy(\CommonDataBundle\Entity\Interfaces\CarrierInterface::class));
         $existingSubscription->setSubscriptionPack($subscriptionPack);
 
         $this->subscriber->resubscribe($existingSubscription, $subscriptionPack);
@@ -113,23 +114,27 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
 
         $this->subscriptionCreator           = Mockery::spy(SubscriptionFactory::class);
         $this->subscribeProcess              = Mockery::spy(SubscribeProcess::class);
-        $this->subscribePromotionalPerformer = Mockery::spy(SubscribePromotionalPerformer::class);
+        $this->subscribePromotionalPerformer = Mockery::spy(SendNotificationPerformer::class);
         $this->subscribePerformer            = Mockery::spy(SubscribePerformer::class);
+        $this->commonStarter                 = new \SubscriptionBundle\Subscription\Subscribe\ProcessStarter\CommonStarter(
+            Mockery::spy(ProcessResultSuccessChecker::class),
+            $this->subscribePerformer,
+            $this->subscribePromotionalPerformer,
+            Mockery::spy(SendNotificationChecker::class),
+            Mockery::spy(CampaignExtractor::class)
+        );
 
-
-        $this->subscriber = new \SubscriptionBundle\Subscription\Subscribe\Subscriber(
+        $this->subscribeProcessStarterProvider = new SubscribeProcessStarterProvider($this->commonStarter);
+        $this->subscriber                      = new \SubscriptionBundle\Subscription\Subscribe\Subscriber(
             Mockery::spy(LoggerInterface::class),
             Mockery::spy(EntitySaveHelper::class),
             Mockery::spy(SessionInterface::class),
             $this->subscriptionCreator,
-            Mockery::spy(PromotionalResponseChecker::class),
             Mockery::spy(OnSubscribeUpdater::class),
             Mockery::spy(SubscriptionLimitCompleter::class),
-            $this->subscribePerformer,
-            $this->subscribePromotionalPerformer,
             Mockery::spy(ApiConnector::class),
             Mockery::spy(ProcessResultSuccessChecker::class),
-            Mockery::spy(CampaignExtractor::class)
+            $this->subscribeProcessStarterProvider
         );
 
     }

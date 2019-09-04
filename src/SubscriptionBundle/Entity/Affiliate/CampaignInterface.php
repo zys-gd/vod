@@ -39,5 +39,17 @@ interface CampaignInterface
     /**
      * @return bool
      */
+    public function getBgColor(): ?string;
+
+    /**
+     * @return mixed
+     */
+    public function getMainCategory();
+
+    public function isFreeTrialSubscription(): bool;
+
+    /**
+     * @return bool
+     */
     public function isConfirmationClick(): bool;
 }

@@ -9,11 +9,9 @@
 namespace SubscriptionBundle\Subscription\Callback\Common\Type;
 
 
-use PiwikBundle\Service\EventPublisher;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\RenewProcess;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Subscription\Callback\Common\SubscriptionStatusChanger;
 use SubscriptionBundle\Subscription\Renew\OnRenewUpdater;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -52,10 +50,17 @@ class RenewCallbackHandler extends AbstractCallbackHandler
 
     public function getPiwikEventName(): string
     {
-        return EventPublisher::TRACK_RENEW;
+        return 'trackRenew';
     }
 
     public function afterProcess(Subscription $subscription, ProcessResult $response): void
     {
     }
+
+
+    public function isActionAllowedForSubscription(Subscription $subscription): bool
+    {
+        return true;
+    }
+
 }
