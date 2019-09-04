@@ -79,7 +79,7 @@ class PixelIdentController extends AbstractController
 
 
     /**
-     *
+     * @SignatureCheckIsRequired
      * @Route("/pixel/show-page",name="show_pixel_page")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response

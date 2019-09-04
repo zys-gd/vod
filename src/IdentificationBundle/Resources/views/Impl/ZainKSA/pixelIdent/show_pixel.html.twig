@@ -6,17 +6,21 @@
     <link rel="stylesheet" href="{{ asset('bundles/identification/css/showPixel.css') }}">
 </head>
 <body>
+
+<img src="{{ asset('bundles/identification/img/ajax-loader.gif') }}" alt="loading">
+
+</body>
+</html>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
 <script>
     let pixelUrl = '{{ pixelUrl | raw }}';
-    console.log(pixelUrl);
     let urlParts = pixelUrl.split('?');
-    console.log(urlParts);
 
     let parameters = urlParts.pop();
-    console.log(parameters);
-
     let parametersParts = parameters.split('&');
-    console.log(parametersParts);
+
     let headers = {};
 
     parametersParts.forEach(function (parameter) {
@@ -24,20 +28,12 @@
         headers[parameterParts[0]] = parameterParts[1];
     });
 
-    console.log(headers);
-
     $.ajax({
         url: 'http://www.dot-jo.biz/appgw/',
         type: 'GET',
         headers: headers
     });
-
-    {% import "@Identification/Components/status_check_script.twig" as status_check_script %}
-    {{ status_check_script.render(statusActionUrl, confirmUrl, successUrl, failureUrl, 5) }}
 </script>
 
-<img src="{{ asset('bundles/identification/img/ajax-loader.gif') }}" alt="">
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-</body>
-</html>
+{% import "@Identification/Components/status_check_script.twig" as status_check_script %}
+{{ status_check_script.render(statusActionUrl, confirmUrl, successUrl, failureUrl, 5) }}
