@@ -9,6 +9,7 @@
 namespace IdentificationBundle\Identification\Controller;
 
 
+use CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator;
 use ExtrasBundle\SignatureCheck\Annotation\SignatureCheckIsRequired;
 use IdentificationBundle\BillingFramework\Data\DataProvider;
 use IdentificationBundle\Identification\Common\Pixel\PixelIdentConfirmer;
@@ -53,6 +54,10 @@ class PixelIdentController extends AbstractController
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var TemplateConfigurator
+     */
+    private $templateConfigurator;
 
     public function __construct(
         PixelIdentVerifier $pixelIdentVerifier,
@@ -60,21 +65,21 @@ class PixelIdentController extends AbstractController
         RouteProvider $routeProvider,
         DataProvider $billingDataProvider,
         IdentificationDataStorage $identificationDataStorage,
-        LoggerInterface $logger
-    )
-    {
-
+        LoggerInterface $logger,
+        TemplateConfigurator $templateConfigurator
+    ) {
         $this->pixelIdentVerifier        = $pixelIdentVerifier;
         $this->confirmer                 = $confirmer;
         $this->routeProvider             = $routeProvider;
         $this->billingDataProvider       = $billingDataProvider;
         $this->identificationDataStorage = $identificationDataStorage;
         $this->logger                    = $logger;
+        $this->templateConfigurator      = $templateConfigurator;
     }
 
 
     /**
-     * @SignatureCheckIsRequired
+     *
      * @Route("/pixel/show-page",name="show_pixel_page")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -108,8 +113,9 @@ class PixelIdentController extends AbstractController
             $successUrl = $this->routeProvider->getLinkToHomepage();
         }
 
+        $template = $this->templateConfigurator->getTemplate('show_pixel', (int) $carrier, '@Identification/pixelIdent');
 
-        return $this->render('@Identification/pixelIdent/show_pixel.twig', [
+        return $this->render($template, [
             'pixelUrl'        => $pixelUrl,
             'confirmUrl'      => $this->generateUrl('confirm_pixel_ident', ['processId' => $processId]),
             'successUrl'      => $successUrl,

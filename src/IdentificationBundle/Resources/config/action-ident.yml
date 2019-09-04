@@ -168,6 +168,7 @@ services:
             - '@IdentificationBundle\BillingFramework\Data\DataProvider'
             - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
             - '@logger'
+            - '@CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator'
 
     IdentificationBundle\Identification\Controller\IdentificationController:
         tags: ['controller.service_arguments']

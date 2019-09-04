@@ -168,7 +168,7 @@ class LPExtension extends AbstractExtension
         $templateName = str_replace('.html.twig', '', array_pop($urlParts));
         $templatePath = implode('/', $urlParts);
 
-        return $this->templateConfigurator->getTemplate($templateName, $billingCarrierId, $templatePath);
+        return $this->templateConfigurator->getTemplate($templateName, $billingCarrierId, "@App/$templatePath");
     }
 
     /**
