@@ -88,6 +88,12 @@
                 $(document).on('click', '.x-play-button', function () {
                     openModal();
 
+                    //Magic shit. Don't touch
+                    let playerHeight = Math.ceil($('#video-player-frame').innerHeight());
+                    let windowHeight = window.innerHeight;
+                    let modalRelatedVideosBlockHeight = minusPercent(windowHeight - playerHeight, 30);
+                    $('.modal-related-videos-block').css('height', modalRelatedVideosBlockHeight);
+
                     let isLast = false;
                     let batchRelatedVideosRoute = '{{ url('load_more_video') }}';
                     let options = ($(this).attr('data-options')) ? JSON.parse($(this).attr('data-options')) : undefined;
@@ -113,7 +119,7 @@
                     loadMoreFunc = () => {
                         let mrvbScrollTop = modalRelatedVideosBlock.scrollTop;
                         let mrvbHeight = modalRelatedVideosBlock.scrollHeight;
-                        console.log(Math.round(mrvbScrollTop), Math.round(mrvbHeight - modalRelatedVideosBlock.offsetHeight))
+
                         if (Math.round(mrvbScrollTop) >= Math.round(mrvbHeight - modalRelatedVideosBlock.offsetHeight)
                             && isAllowRequest
                             && !isLast
@@ -150,6 +156,10 @@
                     isFirstQuery = true;
                     closeModal()
                 });
+
+                function minusPercent(n,p) {
+                    return n - (n * (p/100));
+                }
 
             })
         </script>

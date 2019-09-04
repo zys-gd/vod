@@ -50,4 +50,6 @@ interface CampaignInterface
      * @return mixed
      */
     public function getMainCategory();
+
+    public function isFreeTrialSubscription(): bool;
 }

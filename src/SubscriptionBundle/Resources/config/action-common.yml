@@ -17,7 +17,7 @@ services:
       - '@SubscriptionBundle\Subscription\Common\RouteProvider'
       - '@SubscriptionBundle\BillingFramework\BillingOptionsProvider'
 
-  SubscriptionBundle\Subscription\Common\PromotionalResponseChecker: ~
+  SubscriptionBundle\Subscription\Common\SendNotificationChecker: ~
 
   SubscriptionBundle\Subscription\Common\CommonSubscriptionUpdater:
     arguments: ['@event_dispatcher']

@@ -279,9 +279,12 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             return new JsonResponse(['error' => 'Error flow'], Response::HTTP_BAD_REQUEST);
         }
 
+        $this->carrierSelector->selectCarrier((int)$carrierId);
+
         $session = $request->getSession();
         $cid = $session->get('campaign_id', '');
         $campaign = $this->resolveCampaignFromRequest($cid);
+
         if ($campaign) {
             $carrier = $this->resolveCarrierFromRequest($request);
             try {
@@ -296,7 +299,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         }
 
         try {
-            $this->carrierSelector->selectCarrier((int)$carrierId);
             $template = $this->templateConfigurator->getTemplate('landing_wifi', (int)$carrierId);
             $html = $this->renderView($template);
 

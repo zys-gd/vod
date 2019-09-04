@@ -180,7 +180,8 @@ class CommonFlowHandler
     {
         $this->logger->debug('Start subscribeBack process', [
             'carrier' => $carrier,
-            'handler' => get_class($handler)
+            'handler' => get_class($handler),
+            'request' => $request
         ]);
 
         $msisdn           = $request->get('msisdn');

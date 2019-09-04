@@ -170,8 +170,14 @@
     "liip/functional-test-bundle": {
         "version": "2.x-dev"
     },
+    "liip/test-fixtures-bundle": {
+        "version": "1.2.0"
+    },
     "liuggio/fastest": {
         "version": "v1.6.1"
+    },
+    "m6web/redis-mock": {
+        "version": "v2.8.0"
     },
     "markbaker/complex": {
         "version": "1.4.7"

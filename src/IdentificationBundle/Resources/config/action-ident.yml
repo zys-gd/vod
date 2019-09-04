@@ -121,6 +121,8 @@ services:
             - '@IdentificationBundle\Identification\Service\TokenGenerator'
             - '@IdentificationBundle\BillingFramework\Process\PassthroughProcess'
             - '@IdentificationBundle\Identification\Service\PassthroughRequestPreparer'
+            - '@IdentificationBundle\Identification\Common\CommonFlowHandler'
+            - '@IdentificationBundle\Identification\Handler\DefaultHandler'
 
     IdentificationBundle\Identification\Common\CommonConsentPageFlowHandler:
         arguments:

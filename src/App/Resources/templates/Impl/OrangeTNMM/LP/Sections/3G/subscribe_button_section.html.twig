@@ -1,0 +1,40 @@
+{% macro render(placeholder, btnClass, blockClass) %}
+    {% import "@App/Components/Buttons/link.html.twig" as  link %}
+
+    {% set btnClass %}
+        {% if isConfirmationClick() %}
+            {{ btnClass~ ' x-otp-button' }}
+        {% else %}
+            {{ btnClass ~ ' x-subscribe-button' }}
+        {% endif %}
+    {% endset %}
+
+    <div class="d-flex align-items-start justify-content-center mb-n-2 {{ blockClass }}">
+        {{ link.render(url('identify_by_passthrough'), translate(placeholder), btnClass) }}
+    </div>
+
+    <script type="text/javascript">
+
+        $(document).on('click', '.x-subscribe-button', function (e) {
+            $._loader(false);
+        });
+        $(document).on('click', '.x-otp-button', function (e) {
+            e.preventDefault();
+            if ($(this).is('a')) {
+                $('.x-otp-button').each((key, el) => {
+                    $(el).removeClass('x-otp-button')
+                        .addClass('x-subscribe-button')
+                        .find('button').text('{{ translate('buttons.confirm') }}');
+                });
+            }
+            else if($(this).is('button')) {
+                $('.x-otp-button').each((key, el) => {
+                    $(el).removeClass('x-otp-button')
+                        .addClass('x-subscribe-button')
+                        .text('{{ translate('buttons.confirm') }}');
+                });
+            }
+        });
+
+    </script>
+{% endmacro %}
