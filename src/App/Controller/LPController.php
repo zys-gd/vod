@@ -9,7 +9,7 @@ use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Service\CarrierOTPVerifier;
-use App\Domain\Service\Piwik\ContentStatisticSender;
+use App\Piwik\ContentStatisticSender;
 use Doctrine\Common\Collections\ArrayCollection;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use ExtrasBundle\Controller\Traits\ResponseTrait;

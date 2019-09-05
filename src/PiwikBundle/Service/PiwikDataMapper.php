@@ -102,12 +102,12 @@ class PiwikDataMapper
     }
 
     /**
-     * @param DTO\PiwikDTO $piwikDTO
-     * @param bool         $clear
+     * @param \App\Piwik\DTO\VisitDTO $piwikDTO
+     * @param bool                    $clear
      *
      * @throws \Exception
      */
-    public function mapData(DTO\PiwikDTO $piwikDTO, bool $clear = true)
+    public function mapData(\App\Piwik\DTO\VisitDTO $piwikDTO, bool $clear = true)
     {
         $clear && $this->piwikClient->clearCustomVariables();
 

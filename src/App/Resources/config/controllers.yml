@@ -45,13 +45,13 @@ services:
             - '@App\Domain\Service\VideoProcessing\UploadedVideoSerializer'
             - '@App\Domain\Repository\GameRepository'
             - '@App\Domain\Repository\CountryCategoryPriorityOverrideRepository'
-            - '@App\Domain\Service\Piwik\ContentStatisticSender'
+            - '@App\Piwik\ContentStatisticSender'
             - '@IdentificationBundle\Repository\UserRepository'
             - '@IdentificationBundle\Identification\Service\AlreadySubscribedIdentFinisher'
 
     App\Controller\LPController:
         arguments:
-            - '@App\Domain\Service\Piwik\ContentStatisticSender'
+            - '@App\Piwik\ContentStatisticSender'
             - '@App\Domain\Repository\CampaignRepository'
             - '@App\Domain\ACL\LandingPageACL'
             - '%images_base_url%'
@@ -78,7 +78,7 @@ services:
             - '@App\Domain\Repository\MainCategoryRepository'
             - '@App\Domain\Repository\UploadedVideoRepository'
             - '@App\Domain\Repository\SubcategoryRepository'
-            - '@App\Domain\Service\Piwik\ContentStatisticSender'
+            - '@App\Piwik\ContentStatisticSender'
             - '@App\CarrierTemplate\TemplateConfigurator'
             - '@App\Domain\Service\VideoProcessing\UploadedVideoSerializer'
 
@@ -110,7 +110,7 @@ services:
             - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
             - '@App\Domain\Service\Games\GameImagesSerializer'
             - '@App\Domain\Service\Games\ExcludedGamesProvider'
-            - '@App\Domain\Service\Piwik\ContentStatisticSender'
+            - '@App\Piwik\ContentStatisticSender'
             - '@App\CarrierTemplate\TemplateConfigurator'
 
     App\Controller\VideoController:
@@ -123,7 +123,7 @@ services:
     App\Controller\TrackEventController:
         arguments:
             - '@App\Domain\Repository\UploadedVideoRepository'
-            - '@App\Domain\Service\Piwik\ContentStatisticSender'
+            - '@App\Piwik\ContentStatisticSender'
             - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
 
     App\Controller\SubnotifController:
