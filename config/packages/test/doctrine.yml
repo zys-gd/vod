@@ -1,5 +1,5 @@
 parameters:
-  doctrine.dbal.connection_factory.class: ExtrasBundle\Testing\Fastest\FastestConnectionFactory
+  doctrine.dbal.connection_factory.class: ExtrasBundle\Testing\Paratest\ParatestConnectionFactory
 
 doctrine:
   dbal:
