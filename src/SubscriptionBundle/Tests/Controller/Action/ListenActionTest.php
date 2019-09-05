@@ -82,7 +82,7 @@ class ListenActionTest extends \ExtrasBundle\Testing\Core\AbstractFunctionalTest
 //            'GENERIC_CARRIER'   => [LoadSubscriptionTestData::GENERIC_CARRIER],
             'ZONG_PAKISTAN' => [ID::MOBILINK_PAKISTAN],
 //            'ETISALAT_EGYPT'    => [ID::ETISALAT_EGYPT],
-//            'TELENOR_PAKISTAN'  => [ID::TELENOR_PAKISTAN],
+            'TELENOR_PAKISTAN'  => [ID::TELENOR_PAKISTAN_DOT],
 //            'ORANGE_TUNISIA'    => [ID::ORANGE_TUNISIA],
 //            'ORANGE_EGYPT'      => [ID::ORANGE_EGYPT],
 //            'TELENOR_MYANMAR'   => [ID::TELENOR_MYANMAR],
