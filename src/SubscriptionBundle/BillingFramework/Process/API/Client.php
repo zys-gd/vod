@@ -224,6 +224,11 @@ class Client
             }
             $response         = $this->httpClient->request('POST', $url, $options);
             $preparedResponse = $this->extractContentFromResponse($response);
+
+            if (!$preparedResponse) {
+                throw new BillingFrameworkProcessException('Empty response', 444);
+            }
+
             return $preparedResponse;
         } catch (RequestException $e) {
             throw $this->convertRequestException($e);
