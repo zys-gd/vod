@@ -225,10 +225,6 @@ class Client
             $response         = $this->httpClient->request('POST', $url, $options);
             $preparedResponse = $this->extractContentFromResponse($response);
 
-            if (!$preparedResponse) {
-                throw new BillingFrameworkProcessException('Empty response', 444);
-            }
-
             return $preparedResponse;
         } catch (RequestException $e) {
             throw $this->convertRequestException($e);
@@ -280,6 +276,10 @@ class Client
         );
         $processException->setRawResponse($content);
         try {
+            if (!$content) {
+                throw new EmptyResponse('Empty response', 444);
+            }
+
             $processException->setResponse($this->responseMapper->map('', $content));
 
             if (isset($content->data) && isset($content->data->code)) {
