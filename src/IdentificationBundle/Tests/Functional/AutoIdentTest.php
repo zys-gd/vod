@@ -15,6 +15,7 @@ use IdentificationBundle\BillingFramework\Process\IdentProcess;
 use IdentificationBundle\Identification\Service\DeviceDataProvider;
 use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use Mockery;
+use Redis;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -25,6 +26,7 @@ class AutoIdentTest extends AbstractFunctionalTest
      * @var Mockery\MockInterface|IdentProcess
      */
     private $identProcess;
+    private $redisConnectionProvider;
 
     protected static function getKernelClass()
     {
@@ -78,7 +80,7 @@ class AutoIdentTest extends AbstractFunctionalTest
         $this->session->set('storage[is_wifi_flow]', true);
         $this->session->set(IdentificationDataStorage::IDENTIFICATION_DATA_KEY, ['carrier_id' => null]);
 
-        $client->request('get', '/',['f' => 1]);
+        $client->request('get', '/', ['f' => 1]);
 
         $location = $client->getResponse()->headers->get('Location');
         $this->assertContains('lp', $location, 'redirect is missing');
@@ -90,7 +92,7 @@ class AutoIdentTest extends AbstractFunctionalTest
     {
         $client = $this->makeClient();
 
-        $client->request('get', '/lp',['f' => 1]);
+        $client->request('get', '/lp', ['f' => 1]);
 
         $this->assertFalse($client->getResponse()->isRedirect(), 'redirect is triggered');
         $this->assertArrayHasKey('storage[is_wifi_flow]', $this->session->all(), 'wifi flow are not set');
@@ -103,7 +105,7 @@ class AutoIdentTest extends AbstractFunctionalTest
 
         $this->session->set('storage[is_wifi_flow]', true);
 
-        $client->request('get', '/lp',['f' => 1]);
+        $client->request('get', '/lp', ['f' => 1]);
 
         $this->assertFalse($client->getResponse()->isRedirect(), 'redirect is triggered');
 
@@ -111,7 +113,9 @@ class AutoIdentTest extends AbstractFunctionalTest
 
     protected function initializeServices(ContainerInterface $container)
     {
-        $this->identProcess = Mockery::spy(IdentProcess::class);
+        $this->identProcess            = Mockery::spy(IdentProcess::class);
+        $this->redisConnectionProvider = Mockery::spy(\ExtrasBundle\Cache\Redis\RedisConnectionProvider::class);
+        $this->redisConnectionProvider->allows(['create' => Mockery::mock(Redis::class)]);
     }
 
     protected function getFixturesListLoadedForEachTest(): array
@@ -124,7 +128,7 @@ class AutoIdentTest extends AbstractFunctionalTest
     protected function configureWebClientClientContainer(ContainerInterface $container)
     {
         $container->set('IdentificationBundle\BillingFramework\Process\IdentProcess', $this->identProcess);
-
+        $container->set('app.cache.redis_connection_provider', $this->redisConnectionProvider);
         $container->set('IdentificationBundle\Identification\Service\DeviceDataProvider', Mockery::mock(DeviceDataProvider::class)->shouldIgnoreMissing());
     }
 }

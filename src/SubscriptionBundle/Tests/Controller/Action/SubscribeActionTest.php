@@ -18,6 +18,7 @@ use Mockery\MockInterface;
 use PiwikBundle\Service\PiwikDataMapper;
 use PiwikBundle\Service\PiwikTracker;
 use Psr\Log\LoggerInterface;
+use Redis;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\BillingFramework\Notification\API\RequestSender as NotificationService;
 use SubscriptionBundle\BillingFramework\Process\API\RequestSender;
@@ -69,6 +70,7 @@ class SubscribeActionTest extends AbstractFunctionalTest
      * @var MockInterface|SMSTextProvider
      */
     private $smsTextProvider;
+    private $redisConnectionProvider;
 
     public function testSubscribeWithoutIdentWillFallIntoError()
     {
@@ -207,6 +209,7 @@ class SubscribeActionTest extends AbstractFunctionalTest
         $container->set('SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter', $this->subscriptionLimiter);
         $container->set('SubscriptionBundle\Subscription\Subscribe\Voter\BatchSubscriptionVoter', $this->voter);
         $container->set('SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider', $this->smsTextProvider);
+        $container->set('app.cache.redis_connection_provider', $this->redisConnectionProvider);
 
     }
 
@@ -230,6 +233,9 @@ class SubscribeActionTest extends AbstractFunctionalTest
         $this->notificationService          = \Mockery::spy(NotificationService::class);
         $this->subscriptionLimiter          = Mockery::spy(SubscriptionLimiter::class);
         $this->smsTextProvider              = Mockery::spy(SMSTextProvider::class);
+        $this->redisConnectionProvider      = Mockery::spy(\ExtrasBundle\Cache\Redis\RedisConnectionProvider::class);
+
+        $this->redisConnectionProvider->allows(['create' => Mockery::mock(Redis::class)]);
     }
 
     protected static function getKernelClass()

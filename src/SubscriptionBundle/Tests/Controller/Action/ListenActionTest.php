@@ -74,15 +74,16 @@ class ListenActionTest extends \ExtrasBundle\Testing\Core\AbstractFunctionalTest
      * @var \SubscriptionBundle\Piwik\EventPublisher|Mock
      */
     private $eventPublisher;
+    private $redisConnectionProvider;
 
 
     public function carrierIdProvider()
     {
         return [
 //            'GENERIC_CARRIER'   => [LoadSubscriptionTestData::GENERIC_CARRIER],
-            'ZONG_PAKISTAN' => [ID::MOBILINK_PAKISTAN],
+            'ZONG_PAKISTAN'    => [ID::MOBILINK_PAKISTAN],
 //            'ETISALAT_EGYPT'    => [ID::ETISALAT_EGYPT],
-            'TELENOR_PAKISTAN'  => [ID::TELENOR_PAKISTAN_DOT],
+            'TELENOR_PAKISTAN' => [ID::TELENOR_PAKISTAN_DOT],
 //            'ORANGE_TUNISIA'    => [ID::ORANGE_TUNISIA],
 //            'ORANGE_EGYPT'      => [ID::ORANGE_EGYPT],
 //            'TELENOR_MYANMAR'   => [ID::TELENOR_MYANMAR],
@@ -255,7 +256,6 @@ class ListenActionTest extends \ExtrasBundle\Testing\Core\AbstractFunctionalTest
     }
 
 
-
     public function testCallbackForFailedSubscribeWithPiwik()
     {
         /** @var Subscription $subscription */
@@ -383,10 +383,13 @@ class ListenActionTest extends \ExtrasBundle\Testing\Core\AbstractFunctionalTest
             'getHandler' => $carrierHandler
         ]);
 
-        $this->subscriptionRepo = $container->get('SubscriptionBundle\Repository\SubscriptionRepository');
-        $this->billableUserRepo = $container->get('IdentificationBundle\Repository\UserRepository');
-        $this->affiliateLogRepo = $container->get('SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository');
-        $this->entityManager    = $container->get('doctrine.orm.entity_manager');
+        $this->subscriptionRepo        = $container->get('SubscriptionBundle\Repository\SubscriptionRepository');
+        $this->billableUserRepo        = $container->get('IdentificationBundle\Repository\UserRepository');
+        $this->affiliateLogRepo        = $container->get('SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository');
+        $this->entityManager           = $container->get('doctrine.orm.entity_manager');
+        $this->redisConnectionProvider = Mockery::spy(\ExtrasBundle\Cache\Redis\RedisConnectionProvider::class);
+
+        $this->redisConnectionProvider->allows(['create' => Mockery::mock(Redis::class)]);
     }
 
     protected function getPrequisiteFixturesList(): array
@@ -405,6 +408,8 @@ class ListenActionTest extends \ExtrasBundle\Testing\Core\AbstractFunctionalTest
     protected function configureWebClientClientContainer(ContainerInterface $container)
     {
         $container->set('SubscriptionBundle\Piwik\EventPublisher', $this->eventPublisher);
+
+        $container->set('app.cache.redis_connection_provider', $this->redisConnectionProvider);
     }
 
     protected static function getKernelClass()
