@@ -276,10 +276,6 @@ class Client
         );
         $processException->setRawResponse($content);
         try {
-            if (!$content) {
-                throw new EmptyResponse();
-            }
-
             $processException->setResponse($this->responseMapper->map('', $content));
 
             if (isset($content->data) && isset($content->data->code)) {
