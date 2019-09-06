@@ -242,8 +242,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
 
-        $isWifiFlow = (bool)$this->wifiIdentificationDataStorage->isWifiFlow();
         $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($session);
+        $isWifiFlow = $billingCarrierId ? false : true;
         $this->contentStatisticSender->trackVisit($session);
 
         if ($carrier && !$isWifiFlow && $this->landingPageAccessResolver->isLandingDisabled($request)) {
