@@ -330,7 +330,7 @@
         "allow_bonus_credit": "0",
         "allow_bonus_credit_multiple": "0",
         "bonus_credit": "0",
-        "provider_managed_subscriptions": "0",
+        "provider_managed_subscriptions": "1",
         "created": "2019-08-19 14:57:48",
         "updated": "2019-08-19 14:57:48",
         "zero_credit_sub_available": "0"
