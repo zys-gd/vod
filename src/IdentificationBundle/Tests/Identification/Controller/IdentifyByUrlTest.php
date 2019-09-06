@@ -10,6 +10,7 @@ namespace IdentificationBundle\Tests\Identification\Controller;
 
 
 use CountryCarrierDetectionBundle\Service\IpService;
+use ExtrasBundle\Cache\Redis\MockeryRedisDummyTrait;
 use ExtrasBundle\Testing\Core\AbstractFunctionalTest;
 use Mockery;
 use Redis;
@@ -17,8 +18,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class IdentifyByUrlTest extends AbstractFunctionalTest
 {
+
+    use MockeryRedisDummyTrait;
+
     private $ipService;
-    private $redisConnectionProvider;
 
     protected static function getKernelClass()
     {
@@ -56,9 +59,6 @@ class IdentifyByUrlTest extends AbstractFunctionalTest
     protected function initializeServices(ContainerInterface $container)
     {
         $this->ipService               = Mockery::spy(IpService::class);
-        $this->redisConnectionProvider = Mockery::spy(\ExtrasBundle\Cache\Redis\RedisConnectionProvider::class);
-
-        $this->redisConnectionProvider->allows(['create' => Mockery::mock(Redis::class)]);
     }
 
     protected function getFixturesListLoadedForEachTest(): array
@@ -68,7 +68,7 @@ class IdentifyByUrlTest extends AbstractFunctionalTest
 
     protected function configureWebClientClientContainer(ContainerInterface $container)
     {
-        $container->set('app.cache.redis_connection_provider', $this->redisConnectionProvider);
+        $container->set('app.cache.redis_connection_provider', $this->getRedisConnectionProviderMock());
         $container->set('CountryCarrierDetectionBundle\Service\IpService', $this->ipService);
     }
 }

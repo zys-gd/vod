@@ -10,6 +10,7 @@ namespace IdentificationBundle\Tests\Functional;
 
 
 use DataFixtures\LoadCarriersData;
+use ExtrasBundle\Cache\Redis\MockeryRedisDummyTrait;
 use ExtrasBundle\Testing\Core\AbstractFunctionalTest;
 use IdentificationBundle\BillingFramework\Process\IdentProcess;
 use IdentificationBundle\Identification\Service\DeviceDataProvider;
@@ -21,6 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class AutoIdentTest extends AbstractFunctionalTest
 {
+    use MockeryRedisDummyTrait;
 
     /**
      * @var Mockery\MockInterface|IdentProcess
@@ -128,7 +130,7 @@ class AutoIdentTest extends AbstractFunctionalTest
     protected function configureWebClientClientContainer(ContainerInterface $container)
     {
         $container->set('IdentificationBundle\BillingFramework\Process\IdentProcess', $this->identProcess);
-        $container->set('app.cache.redis_connection_provider', $this->redisConnectionProvider);
+        $container->set('app.cache.redis_connection_provider', $this->getRedisConnectionProviderMock());
         $container->set('IdentificationBundle\Identification\Service\DeviceDataProvider', Mockery::mock(DeviceDataProvider::class)->shouldIgnoreMissing());
     }
 }

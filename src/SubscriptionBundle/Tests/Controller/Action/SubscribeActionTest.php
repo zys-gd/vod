@@ -9,6 +9,7 @@
 namespace Controller\Action;
 
 use CountryCarrierDetectionBundle\Service\MaxMindIpInfo;
+use ExtrasBundle\Cache\Redis\MockeryRedisDummyTrait;
 use ExtrasBundle\Testing\Core\AbstractFunctionalTest;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -36,6 +37,7 @@ use SubscriptionBundle\Tests\BillingFramework\TestBillingResponseProvider;
 
 class SubscribeActionTest extends AbstractFunctionalTest
 {
+    use MockeryRedisDummyTrait;
 
     use MockeryPHPUnitIntegration;
 
@@ -209,7 +211,7 @@ class SubscribeActionTest extends AbstractFunctionalTest
         $container->set('SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter', $this->subscriptionLimiter);
         $container->set('SubscriptionBundle\Subscription\Subscribe\Voter\BatchSubscriptionVoter', $this->voter);
         $container->set('SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider', $this->smsTextProvider);
-        $container->set('app.cache.redis_connection_provider', $this->redisConnectionProvider);
+        $container->set('app.cache.redis_connection_provider', $this->getRedisConnectionProviderMock());
 
     }
 

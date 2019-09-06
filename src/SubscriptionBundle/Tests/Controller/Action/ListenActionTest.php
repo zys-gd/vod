@@ -24,6 +24,7 @@ use Tests\DataFixtures\LoadSubscriptionTestData;
 class ListenActionTest extends \ExtrasBundle\Testing\Core\AbstractFunctionalTest
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+    use \ExtrasBundle\Cache\Redis\MockeryRedisDummyTrait;
 
     const EXAMPLE_AFFILIATE_SESSION_KEY = 'affiliate_key';
     const COMMON_CARRIER_ID = 10241024;
@@ -383,13 +384,10 @@ class ListenActionTest extends \ExtrasBundle\Testing\Core\AbstractFunctionalTest
             'getHandler' => $carrierHandler
         ]);
 
-        $this->subscriptionRepo        = $container->get('SubscriptionBundle\Repository\SubscriptionRepository');
-        $this->billableUserRepo        = $container->get('IdentificationBundle\Repository\UserRepository');
-        $this->affiliateLogRepo        = $container->get('SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository');
-        $this->entityManager           = $container->get('doctrine.orm.entity_manager');
-        $this->redisConnectionProvider = Mockery::spy(\ExtrasBundle\Cache\Redis\RedisConnectionProvider::class);
-
-        $this->redisConnectionProvider->allows(['create' => Mockery::mock(Redis::class)]);
+        $this->subscriptionRepo = $container->get('SubscriptionBundle\Repository\SubscriptionRepository');
+        $this->billableUserRepo = $container->get('IdentificationBundle\Repository\UserRepository');
+        $this->affiliateLogRepo = $container->get('SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository');
+        $this->entityManager    = $container->get('doctrine.orm.entity_manager');
     }
 
     protected function getPrequisiteFixturesList(): array
@@ -409,7 +407,7 @@ class ListenActionTest extends \ExtrasBundle\Testing\Core\AbstractFunctionalTest
     {
         $container->set('SubscriptionBundle\Piwik\EventPublisher', $this->eventPublisher);
 
-        $container->set('app.cache.redis_connection_provider', $this->redisConnectionProvider);
+        $container->set('app.cache.redis_connection_provider', $this->getRedisConnectionProviderMock());
     }
 
     protected static function getKernelClass()
