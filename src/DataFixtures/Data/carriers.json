@@ -6858,5 +6858,33 @@
         "defaultLanguage": null,
         "campaigns": [],
         "affiliates": []
+    },
+    {
+        "name": "Orange TN MM",
+        "countryCode": "TN",
+        "isp": "Orange Internet|Orange Tunisia|Tunisia Telecom|Orange Tunisia Smartphone customer|Tunisie Telecom|ORANGE|Orange Tunisie",
+        "published": true,
+        "isConfirmationClick": true,
+        "pinIdentSupport": false,
+        "resubAllowed": false,
+        "isCampaignsOnPause": false,
+        "subscribeAttempts": 0,
+        "isUnlimitedSubscriptionAttemptsAllowed": true,
+        "isCaptcha": false,
+        "numberOfAllowedSubscriptionsByConstraint": null,
+        "redirectUrl": null,
+        "counter": 0,
+        "flushDate": null,
+        "isCapAlertDispatch": false,
+        "uuid": "21f27f1f-884c-4b11-9216-c8cf07241bf1",
+        "default_language": null,
+        "campaigns": [],
+        "billingCarrierId": 2256,
+        "operatorId": 0,
+        "trialInitializer": "carrier",
+        "trialPeriod": 0,
+        "subscriptionPeriod": 3,
+        "isLpOff": false,
+        "isConfirmationPopup": false
     }
 ]
