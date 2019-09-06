@@ -6862,7 +6862,7 @@
     {
         "name": "Orange TN MM",
         "countryCode": "TN",
-        "isp": "Orange Internet|Orange Tunisia|Tunisia Telecom|Orange Tunisia Smartphone customer|Tunisie Telecom|ORANGE|Orange Tunisie",
+        "isp": "Orange Internet|Orange Tunisia|Tunisia Telecom|Orange Tunisia Smartphone customer|Tunisie Telecom|ORANGE|Orange Tunisie|ORANGE-",
         "published": true,
         "isConfirmationClick": true,
         "pinIdentSupport": false,
