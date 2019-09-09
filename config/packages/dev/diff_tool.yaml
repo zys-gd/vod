@@ -1,6 +1,8 @@
 diff_tool:
   paths:
     - '%kernel.project_dir%/src/DataFixtures/Data/'
+    - '%kernel.project_dir%/src/SubscriptionBundle/DataFixtures/ORM/Data/'
+
   entities:
        App\Domain\Entity\Translation:
           fileName: 'translations.json'
@@ -28,4 +30,7 @@ diff_tool:
           ignoredProperties: []
        App\Domain\Entity\Carrier:
           fileName: 'carriers.json'
+          ignoredProperties: []
+       SubscriptionBundle\Entity\SubscriptionPack:
+          fileName: 'subscription_packs.json'
           ignoredProperties: []
