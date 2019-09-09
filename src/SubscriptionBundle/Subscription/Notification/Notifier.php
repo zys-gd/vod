@@ -3,6 +3,7 @@
 namespace SubscriptionBundle\Subscription\Notification;
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use CommonDataBundle\Repository\Interfaces\LanguageRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Notification\API\DTO\SMSRequest;
 use SubscriptionBundle\BillingFramework\Notification\API\RequestSender;
@@ -48,6 +49,10 @@ class Notifier
      * @var SMSTextProvider
      */
     private $SMSTextProvider;
+    /**
+     * @var LanguageRepositoryInterface
+     */
+    private $repository;
 
     /**
      * Notifier constructor.
@@ -58,6 +63,7 @@ class Notifier
      * @param NotificationHandlerProvider                                           $notificationHandlerProvider
      * @param DefaultSMSVariablesProvider                                           $defaultSMSVariablesProvider
      * @param \SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider $SMSTextProvider
+     * @param LanguageRepositoryInterface                                           $repository
      */
     public function __construct(
         MessageCompiler $messageCompiler,
@@ -66,7 +72,8 @@ class Notifier
         ProcessIdExtractor $processIdExtractor,
         NotificationHandlerProvider $notificationHandlerProvider,
         DefaultSMSVariablesProvider $defaultSMSVariablesProvider,
-        SMSTextProvider $SMSTextProvider
+        SMSTextProvider $SMSTextProvider,
+        LanguageRepositoryInterface $repository
     )
     {
         $this->messageCompiler             = $messageCompiler;
@@ -76,6 +83,7 @@ class Notifier
         $this->notificationHandlerProvider = $notificationHandlerProvider;
         $this->defaultSMSVariablesProvider = $defaultSMSVariablesProvider;
         $this->SMSTextProvider             = $SMSTextProvider;
+        $this->repository                  = $repository;
     }
 
 
@@ -92,10 +100,10 @@ class Notifier
             return;
         }
 
-        $User = $subscription->getUser();
+        $user = $subscription->getUser();
 
         if ($handler->isProcessIdUsedInNotification()) {
-            $processId = $this->processIdExtractor->extractProcessId($User);
+            $processId = $this->processIdExtractor->extractProcessId($user);
         } else {
             $processId = null;
         }
@@ -103,25 +111,48 @@ class Notifier
         $variables = $this->defaultSMSVariablesProvider->getDefaultSMSVariables(
             $subscriptionPack,
             $subscription,
-            $User
+            $user
         );
 
-        try {
-            $body = $this->SMSTextProvider->getSMSText(
-                $processType,
-                $carrier,
-                $subscriptionPack,
-                $handler->getSmsLanguage()
-            );
-        } catch (MissingSMSTextException $exception) {
-            $this->logger->error($exception->getMessage(), ['pack' => $subscriptionPack]);
-            throw  $exception;
+
+        $isUserLocaleCanBeUsed = true;
+        $userLanguage          = $user->getLanguageCode();
+        $smsLanguage           = $this->repository->findByCode($userLanguage);
+
+        if ($smsLanguage) {
+            try {
+                $body = $this->SMSTextProvider->getSMSText(
+                    $processType,
+                    $carrier,
+                    $subscriptionPack,
+                    $smsLanguage
+                );
+            } catch (MissingSMSTextException $exception) {
+                $isUserLocaleCanBeUsed = false;
+            }
+        } else {
+            $isUserLocaleCanBeUsed = false;
+        }
+
+        if (!$isUserLocaleCanBeUsed) {
+            try {
+                $body = $this->SMSTextProvider->getSMSText(
+                    $processType,
+                    $carrier,
+                    $subscriptionPack,
+                    $handler->getSmsLanguage()
+                );
+
+            } catch (MissingSMSTextException $exception) {
+                $this->logger->error($exception->getMessage(), ['pack' => $subscriptionPack]);
+                throw $exception;
+            }
         }
 
 
         $notification = $this->messageCompiler->compileNotification(
             $processType,
-            $User,
+            $user,
             $body,
             $processId,
             $variables
