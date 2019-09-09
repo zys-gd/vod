@@ -31,4 +31,21 @@ class EmailProvider
         $this->mailTo   = $mailTo;
         $this->mailFrom = $mailFrom;
     }
+
+    /**
+     * @return string
+     */
+    public function getEmailTo(): string
+    {
+        return $this->mailTo;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmailFrom(): string
+    {
+        return $this->mailFrom;
+    }
+
 }
