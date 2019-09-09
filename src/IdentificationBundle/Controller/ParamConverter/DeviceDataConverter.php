@@ -58,7 +58,8 @@ class DeviceDataConverter implements ParamConverterInterface
             $this->connectionTypeService->get() ?? '',
             '',
             $this->device->getDeviceVendor() ?? '',
-            $this->device->getDeviceModel() ?? ''
+            $this->device->getDeviceModel() ?? '',
+            $request->getLocale()
         );
 
 
