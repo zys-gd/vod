@@ -1,4 +1,20 @@
 services:
-  Carriers\HutchID\SMS\IDTextsHandler:
-    tags:
-      - { name: subscription.sms_text_handler }
+    Carriers\HutchID\SMS\IDTextsHandler:
+        tags:
+            - { name: subscription.sms_text_handler }
+
+    Carriers\HutchID\Identification\HutchIDIdentificationHandler:
+        tags:
+            - { name: identification.identification_handler }
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'
+
+    Carriers\HutchID\Identification\HutchIDWifiIdentificationHandler:
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'
+        tags:
+            - { name: identification.wifi_identification_handler }
+
+    Carriers\HutchID\Identification\HutchIDIdentificationCallbackHandler:
+        tags:
+            - { name: identification.identification_callback_handler }
