@@ -6,7 +6,7 @@
  * Time: 12:57
  */
 
-namespace IdentificationBundle\Carriers\HutchID;
+namespace Carriers\HutchID\Identification;
 
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
@@ -22,7 +22,6 @@ class HutchIDWifiIdentificationHandler implements WifiIdentificationHandlerInter
      * @var UserRepository
      */
     private $repository;
-
 
     /**
      * MobilinkPKWifiIdentificationHandler constructor.

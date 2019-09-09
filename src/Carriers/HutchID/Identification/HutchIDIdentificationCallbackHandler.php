@@ -1,7 +1,8 @@
 <?php
 
-namespace IdentificationBundle\Carriers\HutchID;
+namespace Carriers\HutchID\Identification;
 
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Callback\Handler\HasCommonFlow;
 use IdentificationBundle\Callback\Handler\IdentCallbackHandlerInterface;
 use IdentificationBundle\Entity\User;
@@ -17,7 +18,7 @@ class HutchIDIdentificationCallbackHandler implements IdentCallbackHandlerInterf
      */
     public function canHandle(int $carrierId): bool
     {
-        return false; //$carrierId === ConstBillingCarrierId::HUTCH_INDONESIA;
+        return $carrierId === ID::HUTCH_INDONESIA;
     }
 
     /**
