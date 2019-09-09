@@ -26,3 +26,6 @@ diff_tool:
        App\Domain\Entity\AffiliateConstant:
           fileName: 'affiliate_constant.json'
           ignoredProperties: []
+       App\Domain\Entity\Carrier:
+          fileName: 'carriers.json'
+          ignoredProperties: []
