@@ -37,25 +37,38 @@ class RouteProvider
      * @var string
      */
     private $wrongCarrierRoute;
-
+    /**
+     * @var string
+     */
+    private $contactUsRoute;
 
     /**
      * RouteProvider constructor.
+     *
      * @param RouterInterface $router
      * @param string          $wifiPageRoute
      * @param string          $homepageRoute
      * @param string          $landingRoute
      * @param string          $myAccountRoute
      * @param string          $wrongCarrierRoute
+     * @param string          $contactUsRoute
      */
-    public function __construct(RouterInterface $router, string $wifiPageRoute, string $homepageRoute, string $landingRoute, string $myAccountRoute, string $wrongCarrierRoute)
-    {
+    public function __construct(
+        RouterInterface $router,
+        string $wifiPageRoute,
+        string $homepageRoute,
+        string $landingRoute,
+        string $myAccountRoute,
+        string $wrongCarrierRoute,
+        string $contactUsRoute
+    ) {
         $this->router            = $router;
         $this->wifiPageRoute     = $wifiPageRoute;
         $this->homepageRoute     = $homepageRoute;
         $this->landingRoute      = $landingRoute;
         $this->myAccountRoute    = $myAccountRoute;
         $this->wrongCarrierRoute = $wrongCarrierRoute;
+        $this->contactUsRoute    = $contactUsRoute;
     }
 
     public function getLinkToWifiFlowPage(): string
@@ -86,6 +99,11 @@ class RouteProvider
     public function getLinkToWrongCarrierPage()
     {
         return $this->router->generate($this->wrongCarrierRoute, [], RouterInterface::ABSOLUTE_URL);
+    }
+
+    public function getContactUsLink()
+    {
+        return $this->router->generate($this->contactUsRoute, [], RouterInterface::ABSOLUTE_URL);
     }
 
 
