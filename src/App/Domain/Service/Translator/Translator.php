@@ -193,7 +193,17 @@ class Translator implements TranslatorInterface
                 'language' => $currentLanguage
             ]);
 
-            $translations = array_merge($defaultTexts, $defaultTextsForCurrentLang, $defaultCarrierTexts, $currentCarrierTexts);
+            $defaultTextsForDefaultLang = $this->translationRepository->findBy([
+                'language' => $currentLanguage
+            ]);
+
+            $translations = array_merge(
+                $defaultTexts,
+                $defaultTextsForCurrentLang,
+                $defaultCarrierTexts,
+                $currentCarrierTexts,
+                $defaultTextsForDefaultLang
+            );
         } catch (\Throwable $e) {
             $translations = array_merge($defaultTexts, $defaultTextsForCurrentLang);
         }
