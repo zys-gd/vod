@@ -71,7 +71,8 @@ class DefaultSMSVariablesProvider
             '_unsub_url_'          => $this->provider->getLinkToMyAccount(),
             '_renew_date_'         => $renewDate->format('d-m-Y'),
             '_autologin_url_'      => $url,
-            '_shortautologin_url_' => preg_replace('|\/\/|', '', $shortUrl)
+            '_shortautologin_url_' => preg_replace('|\/\/|', '', $shortUrl),
+            '_contact_us_url_'     => $this->provider->getContactUsLink()
         ];
 
     }
