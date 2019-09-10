@@ -228,6 +228,13 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
                     $carrier
                 );
 
+                $this->notifier->sendNotification(
+                    'subscribe_reminder',
+                    $subscription,
+                    $subscription->getSubscriptionPack(),
+                    $carrier
+                );
+
                 // track event
                 // TODO: use afterSubscriptionProcessTracker?
                 $isNeedToBeTracked = true;
