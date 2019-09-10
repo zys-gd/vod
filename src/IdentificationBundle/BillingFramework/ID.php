@@ -43,4 +43,5 @@ class ID
     const ORANGE_EGYPT_TPAY     = 2254;
     const HUTCH_INDONESIA       = 2255;
     const ORANGE_TUNISIA_MM     = 2256;
+    const ZAIN_SAUDI_ARABIA     = 2257;
 }

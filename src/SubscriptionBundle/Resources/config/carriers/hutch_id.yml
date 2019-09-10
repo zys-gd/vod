@@ -44,6 +44,7 @@ services:
         tags:
             - { name: subscription.notification_handler, type: subscribe }
             - { name: subscription.notification_handler, type: unsubscribe }
+            - { name: subscription.notification_handler, type: notify_renew }
 
     SubscriptionBundle\Carriers\HutchID\Subscribe\HutchIDSMSSubscriber:
         arguments:
