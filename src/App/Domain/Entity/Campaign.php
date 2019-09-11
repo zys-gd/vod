@@ -130,6 +130,11 @@ class Campaign implements CampaignInterface, HasUuid
     private $creator;
 
     /**
+     * @var bool
+     */
+    private $isConfirmationClick = false;
+
+    /**
      * Campaign constructor
      *
      * @param string $uuid
@@ -666,5 +671,19 @@ class Campaign implements CampaignInterface, HasUuid
         $this->creator = $creator;
     }
 
+    /**
+     * @return bool
+     */
+    public function isConfirmationClick(): bool
+    {
+        return $this->isConfirmationClick;
+    }
 
+    /**
+     * @param bool $isConfirmationClick
+     */
+    public function setIsConfirmationClick(bool $isConfirmationClick): void
+    {
+        $this->isConfirmationClick = $isConfirmationClick;
+    }
 }

@@ -8,6 +8,7 @@ use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CarrierRepository;
 use IdentificationBundle\Identification\Service\PassthroughChecker;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
+use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -26,6 +27,10 @@ class CarrierOptionsExtension extends AbstractExtension
      * @var SessionInterface
      */
     private $session;
+    /**
+     * @var CampaignExtractor
+     */
+    private $campaignExtractor;
 
     /**
      * CarrierOptionsExtension constructor.
@@ -33,14 +38,18 @@ class CarrierOptionsExtension extends AbstractExtension
      * @param SessionInterface   $session
      * @param CarrierRepository  $carrierRepository
      * @param PassthroughChecker $passthroughChecker
+     * @param CampaignExtractor  $campaignExtractor
      */
-    public function __construct(SessionInterface $session,
+    public function __construct(
+        SessionInterface $session,
         CarrierRepository $carrierRepository,
-        PassthroughChecker $passthroughChecker)
-    {
+        PassthroughChecker $passthroughChecker,
+        CampaignExtractor $campaignExtractor
+    ) {
         $this->session            = $session;
         $this->carrierRepository  = $carrierRepository;
         $this->passthroughChecker = $passthroughChecker;
+        $this->campaignExtractor  = $campaignExtractor;
     }
 
     /**
@@ -50,10 +59,7 @@ class CarrierOptionsExtension extends AbstractExtension
     {
         return [
             new TwigFunction('isConfirmationClick', [$this, 'isConfirmationClick']),
-
             new TwigFunction('isConfirmationPopup', [$this, 'isConfirmationPopup']),
-
-
         ];
     }
 
@@ -67,6 +73,11 @@ class CarrierOptionsExtension extends AbstractExtension
         if ($billingCarrierId) {
             /** @var Carrier $carrier */
             $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
+            $campaign = $this->campaignExtractor->getCampaignFromSession($this->session);
+
+            if ($carrier->isConfirmationClick() && $campaign) {
+                return $campaign->isConfirmationClick();
+            }
 
             return $carrier->isConfirmationClick();
         }
@@ -90,6 +101,4 @@ class CarrierOptionsExtension extends AbstractExtension
 
         return false;
     }
-
-
 }

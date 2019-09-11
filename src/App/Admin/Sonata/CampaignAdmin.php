@@ -184,6 +184,7 @@ class CampaignAdmin extends AbstractAdmin
             ->add('isClickableSubImage', null, [
                 'label' => 'Clickable image'
             ])
+            ->add('isConfirmationClick')
             ->add('carriers')
             ->add('dateCreated')
             ->add('_action', null, [
@@ -224,6 +225,7 @@ class CampaignAdmin extends AbstractAdmin
             ->add('isClickableSubImage', null, [
                 'label' => 'Clickable image'
             ])
+            ->add('isConfirmationClick')
             ->add('pausedCampaigns', null, [
                 'label'    => 'Paused by Carrier',
                 'template' => '@Admin/Campaign/paused_campaigns.html.twig',
@@ -304,6 +306,7 @@ class CampaignAdmin extends AbstractAdmin
             ->add('isClickableSubImage', null, [
                 'label' => 'Clickable image'
             ])
+            ->add('isConfirmationClick')
             ->add('isLpOff', ChoiceFieldMaskType::class, [
                 'choices' => [
                     'No'  => 0,
