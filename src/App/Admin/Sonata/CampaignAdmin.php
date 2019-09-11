@@ -287,16 +287,16 @@ class CampaignAdmin extends AbstractAdmin
                 'required' => true
             ])
             ->end()
-            ->add('ppd', MoneyType::class, [
-                'label'    => 'PPD',
+            ->add('freeTrialPrice', MoneyType::class, [
+                'label'    => 'Free trial price',
                 'required' => true
             ])
-            ->add('sub', MoneyType::class, [
-                'label'    => 'SUB',
+            ->add('zeroEurPrice', MoneyType::class, [
+                'label'    => '0 Eur Price',
                 'required' => true
             ])
-            ->add('click', MoneyType::class, [
-                'label'    => 'CLICK',
+            ->add('generalPrice', MoneyType::class, [
+                'label'    => 'General Price',
                 'required' => true
             ])
             ->add('isPause', null, [
