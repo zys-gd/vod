@@ -29,12 +29,12 @@ class UserFactory
     }
 
     /**
-     * @param string $msisdn
+     * @param string           $msisdn
      * @param CarrierInterface $carrier
-     * @param string $ip
-     * @param string|null $identificationToken
-     * @param string|null $processId
-     * @param DeviceData|null $deviceData
+     * @param string           $ip
+     * @param string|null      $identificationToken
+     * @param string|null      $processId
+     * @param DeviceData|null  $deviceData
      *
      * @return User
      *
@@ -70,6 +70,7 @@ class UserFactory
             $user->setDeviceModel($deviceData->getDeviceModel());
             $user->setConnectionType($deviceData->getConnectionType());
             $user->setIdentificationUrl($deviceData->getIdentificationUrl());
+            $user->setLanguageCode($deviceData->getBrowserLanguage());
         }
 
         return $user;

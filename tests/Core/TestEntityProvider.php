@@ -34,6 +34,7 @@ class TestEntityProvider
         $user->setIp('255.255.255.255');
         $user->setShortUrlId(sprintf('urlid_%s', $identifier));
         $user->setCarrier($carrier);
+        $user->setLanguageCode('en');
         $user->setIdentificationToken($identificationRequestToken);
 
         return $user;

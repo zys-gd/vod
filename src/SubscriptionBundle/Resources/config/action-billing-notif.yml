@@ -15,6 +15,7 @@ services:
         - '@SubscriptionBundle\Subscription\Notification\Impl\NotificationHandlerProvider'
         - '@SubscriptionBundle\Subscription\Notification\Common\DefaultSMSVariablesProvider'
         - '@SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider'
+        - '@CommonDataBundle\Repository\Interfaces\LanguageRepositoryInterface'
 
   SubscriptionBundle\Subscription\Notification\Common\MessageCompiler:
         arguments:
