@@ -41,9 +41,9 @@ class LoadCampaignsData extends AbstractFixture implements ContainerAwareInterfa
             $carriers              = $row['carriers'];
             $campaign_token        = $row['campaignToken'];
             $is_pause              = $row['isPause'];
-            $ppd                   = $row['ppd'] ?? null;
-            $sub                   = $row['sub'] ?? null;
-            $click                 = $row['click'] ?? null;
+            $freeTrialPrice        = $row['freeTrialPrice'] ?? 0.00;
+            $zeroEurPrice          = $row['zeroEurPrice'] ?? 0.00;
+            $generalPrice          = $row['generalPrice'] ?? 0.00;
             $test_url              = $row['testUrl'];
             $uuid                  = $row['uuid'];
             $freeTrialSubscription = $row['freeTrialSubscription'] ?? 0;
@@ -77,11 +77,11 @@ class LoadCampaignsData extends AbstractFixture implements ContainerAwareInterfa
             $campaign->setTestUrl($test_url);
             $campaign->setUuid($uuid);
 
-            $campaign->setPpd($ppd);
-            $campaign->setClick($click);
-            $campaign->setSub($sub);
             $campaign->setFreeTrialSubscription($freeTrialSubscription);
 
+            $campaign->setFreeTrialPrice($freeTrialPrice);
+            $campaign->setZeroEurPrice($zeroEurPrice);
+            $campaign->setGeneralPrice($generalPrice);
 
             $this->addReference(sprintf('campaign_%s', $uuid), $campaign);
 

@@ -48,21 +48,27 @@ App\Domain\Entity\Campaign:
             nullable: true
             options:
                 default: null
-        ppd:
+        freeTrialPrice:
             type: decimal
             precision: 10
             scale: '2'
-            nullable: true
-        sub:
+            column: free_trial_price
+            options:
+                default: 0.00
+        zeroEurPrice:
             type: decimal
             precision: 10
             scale: '2'
-            nullable: true
-        click:
+            column: zero_eur_price
+            options:
+                default: 0.00
+        generalPrice:
             type: decimal
             precision: 10
             scale: '2'
-            nullable: true
+            column: general_price
+            options:
+                default: 0.00
         isLpOff:
             type: boolean
             options:
