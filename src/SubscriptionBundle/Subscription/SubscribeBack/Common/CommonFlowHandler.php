@@ -204,7 +204,7 @@ class CommonFlowHandler
                 $request->getClientIp(),
                 $newToken,
                 $billingProcessId,
-                $this->deviceDataProvider->get()
+                $this->deviceDataProvider->get($request)
             );
 
             $this->identificationDataStorage->setIdentificationToken($newToken);
