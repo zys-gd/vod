@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\CarrierTemplate\TemplateConfigurator;
 use App\Domain\ACL\Exception\AccessException;
 use App\Domain\ACL\LandingPageACL;
 use App\Domain\Entity\Campaign;
@@ -10,6 +9,7 @@ use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Service\CarrierOTPVerifier;
 use App\Domain\Service\Piwik\ContentStatisticSender;
+use CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator;
 use Doctrine\Common\Collections\ArrayCollection;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use ExtrasBundle\Controller\Traits\ResponseTrait;
@@ -36,7 +36,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -243,8 +242,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
 
-        $isWifiFlow = (bool)$this->wifiIdentificationDataStorage->isWifiFlow();
         $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($session);
+        $isWifiFlow = $billingCarrierId ? false : true;
         $this->contentStatisticSender->trackVisit($session);
 
         if ($carrier && !$isWifiFlow && $this->landingPageAccessResolver->isLandingDisabled($request)) {
@@ -255,7 +254,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             $this->OTPVerifier->forceWifi($session);
         }
 
-        $template = $this->templateConfigurator->getTemplate($isWifiFlow ? 'landing_wifi' : 'landing_3g', (int)$billingCarrierId);
+        $templateName = $isWifiFlow ? 'landing_wifi' : 'landing_3g';
+        $template = $this->templateConfigurator->getTemplate($templateName, (int)$billingCarrierId);
 
         return $this->render($template);
     }
@@ -279,9 +279,12 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             return new JsonResponse(['error' => 'Error flow'], Response::HTTP_BAD_REQUEST);
         }
 
+        $this->carrierSelector->selectCarrier((int)$carrierId);
+
         $session = $request->getSession();
         $cid = $session->get('campaign_id', '');
         $campaign = $this->resolveCampaignFromRequest($cid);
+
         if ($campaign) {
             $carrier = $this->resolveCarrierFromRequest($request);
             try {
@@ -296,7 +299,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         }
 
         try {
-            $this->carrierSelector->selectCarrier((int)$carrierId);
             $template = $this->templateConfigurator->getTemplate('landing_wifi', (int)$carrierId);
             $html = $this->renderView($template);
 

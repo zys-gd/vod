@@ -520,5 +520,14 @@
         "carrier": {
             "uuid": "97400b8f-722b-4339-a48e-a51419bbb143"
         }
+    },
+    {
+        "uuid": "e9dj73l2-523e-4547-9675-4d20533d7ue3",
+        "userIdentifier": "966580099464",
+        "addedAt": "2019-06-24T08:43:19+00:00",
+        "lastTimeUsedAt": "2019-06-24T08:48:47+00:00",
+        "carrier": {
+            "uuid": "51dj58d7-ebd4-12e8-91c4-02bb25dlf94j"
+        }
     }
 ]

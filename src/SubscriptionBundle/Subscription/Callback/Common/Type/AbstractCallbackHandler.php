@@ -22,4 +22,6 @@ abstract class AbstractCallbackHandler
 
     abstract public function afterProcess(Subscription $subscription, ProcessResult $response): void;
 
+    abstract public function isActionAllowedForSubscription(Subscription $subscription): bool;
+
 }

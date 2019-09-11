@@ -1,7 +1,6 @@
 <?php
 
 
-use App\DependencyInjection\Compiler\CarrierTemplateDetectionPass;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
@@ -127,10 +126,5 @@ class VODKernel extends BaseKernel
             $versionHash = file_get_contents($dest);
             $container->setParameter('app_version_hash', $versionHash);
         }
-    }
-
-    protected function build(ContainerBuilder $container): void
-    {
-        $container->addCompilerPass(new CarrierTemplateDetectionPass());
     }
 }

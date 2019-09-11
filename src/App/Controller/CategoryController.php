@@ -2,13 +2,13 @@
 
 namespace App\Controller;
 
-use App\CarrierTemplate\TemplateConfigurator;
 use App\Domain\DTO\BatchOfNotExpiredVideos;
 use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\SubcategoryRepository;
 use App\Domain\Repository\UploadedVideoRepository;
 use App\Domain\Service\Piwik\ContentStatisticSender;
 use App\Domain\Service\VideoProcessing\UploadedVideoSerializer;
+use CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator;
 use IdentificationBundle\Identification\DTO\ISPData;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

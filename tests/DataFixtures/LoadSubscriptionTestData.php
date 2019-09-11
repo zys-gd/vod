@@ -52,11 +52,11 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
 
         $this->createUserForJazzPKSubscribe($manager);
 
-        $pack = $this->createGenericSubscriptionPack($manager);
-        $pack = $this->createGenericCarrier($manager);
+        $this->createGenericCarrier($manager);
+        $this->createGenericSubscriptionPack($manager);
 
-        $allowedResubCarrier = $this->createCarrierWithAllowedResub($manager);
-        $allowedResubCarrierPack = $this->createSubscriptionPackForCarrierWithAllowedResub($manager);
+        $this->createCarrierWithAllowedResub($manager);
+        $this->createSubscriptionPackForCarrierWithAllowedResub($manager);
 
         $this->createUserWithInactiveSubscriptionForCarrierWithAllowedResub($manager);
 
@@ -201,7 +201,7 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
         /** @var SubscriptionPack $subscriptionPackForCarrierWithAllowedResub */
         /** @var Carrier $carrier */
         $subscriptionPackForCarrierWithAllowedResub = $this->getReference('subscription_pack_for_carrier_with_allowed_resub');
-        $carrier = $this->getReference(sprintf('carrier_with_internal_id_%s', $subscriptionPackForCarrierWithAllowedResub
+        $carrier                                    = $this->getReference(sprintf('carrier_with_internal_id_%s', $subscriptionPackForCarrierWithAllowedResub
             ->getCarrier()->getBillingCarrierId()));
 
         $user = TestEntityProvider::createUserWithIdentificationRequest($carrier, 'inactive_subscription_ident_for_carrier_with_allowed_resub_request');
@@ -289,7 +289,6 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
         $carrier->setSubscriptionPeriod(7);
         $carrier->setOperatorId('');
         $carrier->setIsConfirmationClick(false);
-        $carrier->setResubAllowed(false);
         $carrier->setIsCampaignsOnPause(false);
         $carrier->setSubscribeAttempts(0);
         $carrier->setNumberOfAllowedSubscriptionsByConstraint(0);
@@ -314,12 +313,13 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
     {
         $pack = new SubscriptionPack(UuidGenerator::generate());
         $pack->setCredits(2);
+        $pack->setCarrier($this->getReference('generic_carrier'));
         $pack->setName('Generic');
         $pack->setIsResubAllowed(false);
         $pack->setStatus(SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK);
         $pack->setTier('Generic Carrier Tier');
         $pack->setTierId(10241024);
-        $pack->setTierCurrency('Common');
+        $pack->setTierCurrency('PKR');
         $pack->setBuyStrategyId(10241024 + 1);
         $pack->setRenewStrategyId(10241024 + 2);
         $pack->setCreated(new \DateTime());
@@ -351,7 +351,6 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
         $carrier->setTrialPeriod(0);
         $carrier->setSubscriptionPeriod(7);
         $carrier->setOperatorId('');
-        $carrier->setResubAllowed(true);
         $carrier->setIsCampaignsOnPause(false);
         $carrier->setSubscribeAttempts(0);
         $carrier->setNumberOfAllowedSubscriptionsByConstraint(0);
@@ -382,7 +381,7 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
         $pack->setTier('Allowed Resub Carrier Tier');
         $pack->setTierId(10241027);
         $pack->setCarrier($this->getReference('allowed_resub_carrier'));
-        $pack->setTierCurrency('Common');
+        $pack->setTierCurrency('PKR');
         $pack->setBuyStrategyId(10241027 + 1);
         $pack->setRenewStrategyId(10241027 + 2);
         $pack->setCreated(new \DateTime());

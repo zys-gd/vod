@@ -25,8 +25,9 @@ class IDTextsHandler implements CarrierSMSHandlerInterface
     public function getTexts(): array
     {
         return [
-            'subscribe'   => "Terima kasih telah berlangganan layanan 100% Sport dengan tarif Rp _price_/3 hari selama 60 hari. Stop: UNREG 100SPORT. CS: 0895355290340",
-            'unsubscribe' => 'Terima kasih, Anda telah berhenti berlangganan layanan 100% Sports. Untuk kembali berlangganan ketik REG 100SPORT ke 98686. CS: 0895355290340'
+            'subscribe'    => "Terima kasih telah berlangganan layanan 100% Sport dengan tarif Rp _price_/3 hari selama 60 hari. Stop: UNREG 100SPORT. CS: 0895355290340",
+            'unsubscribe'  => 'Terima kasih, Anda telah berhenti berlangganan layanan 100% Sports. Untuk kembali berlangganan ketik REG 100SPORT ke 98686. CS: 0895355290340',
+            'notify_renew' => 'Nikmati video dan berita 100% Sport dari DOT! Download kontennya di _autologin_url_, hanya dengan _currency__price_/3 hr. Stop:UNREG 100SPORT. CS: 0895355290340'
         ];
     }
 }

@@ -54,4 +54,5 @@ class OrangeEGIdentificationHandler implements IdentificationHandlerInterface, H
 
         return ['lang' => $lang];
     }
+
 }

@@ -1,0 +1,8 @@
+services:
+    Carriers\OrangeTNMM\Identification\OrangeTNMMIdentificationHandler:
+        tags:
+            - { name: identification.identification_handler }
+
+    Carriers\OrangeTNMM\Template\OrangeTNMMTemplateHandler:
+        tags:
+            - { name: store_commons.template_handler }

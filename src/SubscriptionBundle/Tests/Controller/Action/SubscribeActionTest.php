@@ -25,6 +25,7 @@ use SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider;
 
 use SubscriptionBundle\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
 use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter;
+use SubscriptionBundle\DataFixtures\ORM\LoadExchangeRatesData;
 use SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider;
 use SubscriptionBundle\Subscription\Subscribe\Voter\BatchSubscriptionVoter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -213,7 +214,8 @@ class SubscribeActionTest extends AbstractFunctionalTest
     {
         return [
             LoadSubscriptionTestData::class,
-            LoadCampaignTestData::class
+            LoadCampaignTestData::class,
+            LoadExchangeRatesData::class
         ];
     }
 
