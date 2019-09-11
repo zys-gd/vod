@@ -1,0 +1,4 @@
+services:
+    Carriers\VodafoneEGTpay\Template\VodafoneEGTpayTemplateHandler:
+        tags:
+            - { name: store_commons.template_handler }

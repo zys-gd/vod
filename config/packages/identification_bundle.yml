@@ -13,6 +13,7 @@ identification:
   landing_route: 'landing'
   my_account_route: 'account'
   wrong_carrier_route: 'whoops'
+  contact_us_route: 'contact_us'
 
 services:
   IdentificationBundle\Repository\CarrierRepositoryInterface: '@App\Domain\Repository\CarrierRepository'

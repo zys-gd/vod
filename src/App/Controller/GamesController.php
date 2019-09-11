@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\CarrierTemplate\TemplateConfigurator;
 use App\Domain\DTO\BatchOfGames;
 use App\Domain\Entity\Game;
 use App\Domain\Entity\GameBuild;
@@ -14,6 +13,7 @@ use App\Domain\Service\Games\ExcludedGamesProvider;
 use App\Domain\Service\Games\GameImagesSerializer;
 use App\Domain\Service\Games\GameSerializer;
 use App\Domain\Service\Piwik\ContentStatisticSender;
+use CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator;
 use IdentificationBundle\Identification\DTO\ISPData;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\Entity\Subscription;
