@@ -121,6 +121,8 @@ class PixelIdentConfirmer
 
         if ($user) {
             $identificationToken = $user->getIdentificationToken();
+            $user->setLanguageCode($deviceData->getBrowserLanguage());
+
         } else {
             $identificationToken = $this->tokenGenerator->generateToken();
             $user                = $this->saveUser(
