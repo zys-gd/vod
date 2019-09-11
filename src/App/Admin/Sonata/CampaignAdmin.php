@@ -180,6 +180,7 @@ class CampaignAdmin extends AbstractAdmin
             ])
             ->add('isLpOff')
             ->add('zeroCreditSubAvailable')
+            ->add('freeTrialSubscription')
             ->add('isClickableSubImage', null, [
                 'label' => 'Clickable image'
             ])
@@ -219,6 +220,7 @@ class CampaignAdmin extends AbstractAdmin
             ->add('isPause', null,
                 ['label' => 'Pause'])
             ->add('zeroCreditSubAvailable')
+            ->add('freeTrialSubscription')
             ->add('isClickableSubImage', null, [
                 'label' => 'Clickable image'
             ])

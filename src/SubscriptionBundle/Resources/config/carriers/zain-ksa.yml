@@ -1,0 +1,10 @@
+services:
+    SubscriptionBundle\Carriers\ZainKSA\Subscribe\ZainKSASubscribeHandler:
+        tags:
+            - { name: subscription.subscription_handler }
+
+    SubscriptionBundle\Carriers\ZainKSA\Notification\ZainKSANotificationHandler:
+        arguments: ['@CommonDataBundle\Repository\Interfaces\LanguageRepositoryInterface']
+        tags:
+            - { name: subscription.notification_handler, type: subscribe }
+            - { name: subscription.notification_handler, type: unsubscribe }
