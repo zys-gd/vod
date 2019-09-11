@@ -87,20 +87,17 @@ class Campaign implements CampaignInterface, HasUuid
     private $flushDate;
 
     /**
-     * @var string
+     * @var float
      */
-    private $ppd;
-
+    private $freeTrialPrice = 0.00;
     /**
-     * @var string
+     * @var float
      */
-    private $sub;
-
+    private $zeroEurPrice = 0.00;
     /**
-     * @var string
+     * @var float
      */
-    private $click;
-
+    private $generalPrice = 0.00;
     /**
      * @var bool
      */
@@ -131,6 +128,11 @@ class Campaign implements CampaignInterface, HasUuid
      * @var string
      */
     private $creator;
+
+    /**
+     * @var bool
+     */
+    private $isConfirmationClick = false;
 
     /**
      * Campaign constructor
@@ -463,61 +465,53 @@ class Campaign implements CampaignInterface, HasUuid
         return $this->flushDate;
     }
 
+
     /**
-     * @return string
+     * @return float
      */
-    public function getPpd()
+    public function getFreeTrialPrice(): float
     {
-        return $this->ppd;
+        return $this->freeTrialPrice;
     }
 
     /**
-     * @param $ppd
-     *
-     * @return Campaign
+     * @param float $freeTrialPrice
      */
-    public function setPpd($ppd)
+    public function setFreeTrialPrice(float $freeTrialPrice): void
     {
-        $this->ppd = $ppd;
-
-        return $this;
-    }
-
-    public function getSub(): ?string
-    {
-        return $this->sub;
+        $this->freeTrialPrice = $freeTrialPrice;
     }
 
     /**
-     * @param $sub
-     *
-     * @return Campaign
+     * @return float
      */
-    public function setSub($sub)
+    public function getZeroEurPrice(): float
     {
-        $this->sub = $sub;
-
-        return $this;
+        return $this->zeroEurPrice;
     }
 
     /**
-     * @return string
+     * @param float $zeroEurPrice
      */
-    public function getClick()
+    public function setZeroEurPrice(float $zeroEurPrice): void
     {
-        return $this->click;
+        $this->zeroEurPrice = $zeroEurPrice;
     }
 
     /**
-     * @param  $click
-     *
-     * @return Campaign
+     * @return float
      */
-    public function setClick($click)
+    public function getGeneralPrice(): float
     {
-        $this->click = $click;
+        return $this->generalPrice;
+    }
 
-        return $this;
+    /**
+     * @param float $generalPrice
+     */
+    public function setGeneralPrice(float $generalPrice): void
+    {
+        $this->generalPrice = $generalPrice;
     }
 
     /**
@@ -677,5 +671,19 @@ class Campaign implements CampaignInterface, HasUuid
         $this->creator = $creator;
     }
 
+    /**
+     * @return bool
+     */
+    public function isConfirmationClick(): bool
+    {
+        return $this->isConfirmationClick;
+    }
 
+    /**
+     * @param bool $isConfirmationClick
+     */
+    public function setIsConfirmationClick(bool $isConfirmationClick): void
+    {
+        $this->isConfirmationClick = $isConfirmationClick;
+    }
 }

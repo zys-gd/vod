@@ -390,6 +390,7 @@ body {
     font-size: 26px;
     font-style: italic;
     position: relative;
+    text-align: center;
 }
 
 .separator-title .before {

@@ -76,7 +76,11 @@ class User
      */
     private $deviceModel;
 
-    private $languageCode;
+    /**
+     * @var string
+     */
+    private $languageCode = '';
+
     /**
      * User constructor
      *
