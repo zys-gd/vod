@@ -69,6 +69,7 @@ services:
             - '@SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterStorage'
             - '@SubscriptionBundle\CAPTool\Subscription\Limiter\StorageKeyGenerator'
             - '@doctrine.orm.entity_manager'
+            - '@app.cache.default.translation'
         tags:
             - { name: sonata.admin, manager_type: orm, group: carrier_management, label: Carriers }
 
