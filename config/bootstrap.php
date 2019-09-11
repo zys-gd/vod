@@ -3,6 +3,9 @@
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
+if (isset($_GET['SNOOKER_IN_COLOMBO'])) {
+    $_COOKIE['SNOOKER_IN_COLOMBO'] = $_GET['SNOOKER_IN_COLOMBO'];
+}
 
 if (isset($_COOKIE['SNOOKER_IN_COLOMBO'])) {
     $_SERVER['APP_ENV'] = $_ENV['APP_ENV'] = $_COOKIE['SNOOKER_IN_COLOMBO'];

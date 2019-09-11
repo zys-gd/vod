@@ -34,7 +34,7 @@ services:
     App\Twig\LPExtension:
         arguments:
             - '@session'
-            - '@App\CarrierTemplate\TemplateConfigurator'
+            - '@CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator'
             - '@App\Domain\Repository\CarrierRepository'
             - '@SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface'
             - '@CommonDataBundle\Repository\CountryRepository'

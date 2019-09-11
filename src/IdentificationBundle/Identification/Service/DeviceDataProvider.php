@@ -12,6 +12,8 @@ namespace IdentificationBundle\Identification\Service;
 use CountryCarrierDetectionBundle\Service\ConnectionTypeService;
 use DeviceDetectionBundle\Service\Device;
 use IdentificationBundle\Identification\DTO\DeviceData;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class DeviceDataProvider
 {
@@ -27,6 +29,8 @@ class DeviceDataProvider
 
     /**
      * DeviceDataProvider constructor.
+     * @param Device                $device
+     * @param ConnectionTypeService $connectionTypeService
      */
     public function __construct(Device $device, ConnectionTypeService $connectionTypeService)
     {
@@ -34,14 +38,14 @@ class DeviceDataProvider
         $this->connectionTypeService = $connectionTypeService;
     }
 
-    public function get(): DeviceData
+    public function get(Request $request): DeviceData
     {
-
         $object = new DeviceData(
             $this->connectionTypeService->get() ?? '',
             '',
             $this->device->getDeviceVendor() ?? '',
-            $this->device->getDeviceModel() ?? ''
+            $this->device->getDeviceModel() ?? '',
+            $request->getLocale()
         );
 
         return $object;
