@@ -9,6 +9,8 @@
 namespace SubscriptionBundle\BillingFramework\Notification\API;
 
 use GuzzleHttp\Client;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Notification\API\DTO\NotificationMessage;
 use SubscriptionBundle\BillingFramework\Notification\API\DTO\SMSRequest;
@@ -45,6 +47,24 @@ class RequestSender
         $data = $this->extractNotificationData($notificationMessage);
         try {
             $response = $this->client->post($this->generateUrl($carrierId), ['json' => $data]);
+            $body     = $response->getBody();
+
+            if (!($body instanceof StreamInterface)) {
+                return null;
+            }
+
+            $contents = $body->getContents();
+            if ($contents) {
+                $data = json_decode($contents, true);
+            }
+
+            if ($data) {
+                return $data;
+            } else {
+                return $contents;
+            }
+
+
         } catch (\Exception $ex) {
             $this->logger->error(
                 'Error while sending notification.',

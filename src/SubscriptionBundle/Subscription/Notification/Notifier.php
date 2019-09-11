@@ -13,6 +13,7 @@ use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Subscription\Notification\Common\DefaultSMSVariablesProvider;
 use SubscriptionBundle\Subscription\Notification\Common\MessageCompiler;
 use SubscriptionBundle\Subscription\Notification\Common\ProcessIdExtractor;
+use SubscriptionBundle\Subscription\Notification\Impl\HasCustomResponseProcessing;
 use SubscriptionBundle\Subscription\Notification\Impl\NotificationHandlerProvider;
 use SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider;
 
@@ -92,12 +93,12 @@ class Notifier
         Subscription $subscription,
         SubscriptionPack $subscriptionPack,
         CarrierInterface $carrier
-    )
+    ): bool
     {
         $handler = $this->notificationHandlerProvider->get($processType, $carrier);
 
         if (!$handler->isNotificationShouldBeSent()) {
-            return;
+            return true;
         }
 
         $user = $subscription->getUser();
@@ -158,7 +159,13 @@ class Notifier
             $variables
         );
 
-        $this->sender->sendNotification($notification, $carrier->getBillingCarrierId());
+        $result = $this->sender->sendNotification($notification, $carrier->getBillingCarrierId());
+
+        if ($handler instanceof HasCustomResponseProcessing) {
+            return $handler->isResponseOk($result);
+        } else {
+            return $this->isResponseOk($result);
+        }
 
 
     }
@@ -169,5 +176,16 @@ class Notifier
 
         $this->sender->sendSMS($request, $carrier->getBillingCarrierId());
 
+    }
+
+    /**
+     * @param $result
+     * @return bool
+     */
+    private function isResponseOk($result): bool
+    {
+        return
+            !is_null($result) &&
+            !(is_array($result) && $result['provider_fields']['error']);
     }
 }
