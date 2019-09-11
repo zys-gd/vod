@@ -4,6 +4,7 @@ namespace App\Admin\Sonata;
 
 use App\Domain\Entity\Carrier;
 use Doctrine\ORM\EntityManagerInterface;
+use ExtrasBundle\Cache\ICacheService;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -44,6 +45,10 @@ class CarrierAdmin extends AbstractAdmin
      * @var StorageKeyGenerator
      */
     private $storageKeyGenerator;
+    /**
+     * @var ICacheService
+     */
+    private $cacheService;
 
     /**
      * CarrierAdmin constructor
@@ -55,6 +60,7 @@ class CarrierAdmin extends AbstractAdmin
      * @param LimiterStorage $limiterDataStorage
      * @param StorageKeyGenerator $storageKeyGenerator
      * @param EntityManagerInterface $entityManager
+     * @param ICacheService $cacheService
      */
     public function __construct(
         string $code,
@@ -63,7 +69,8 @@ class CarrierAdmin extends AbstractAdmin
         SubscriptionLimiter $subscriptionLimiter,
         LimiterStorage $limiterDataStorage,
         StorageKeyGenerator $storageKeyGenerator,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        ICacheService $cacheService
     ) {
         $this->subscriptionLimiter = $subscriptionLimiter;
         $this->limiterDataStorage  = $limiterDataStorage;
@@ -71,6 +78,7 @@ class CarrierAdmin extends AbstractAdmin
         $this->storageKeyGenerator = $storageKeyGenerator;
         $this->code                = $code;
         $this->entityManager       = $entityManager;
+        $this->cacheService = $cacheService;
     }
 
     /**
@@ -78,6 +86,8 @@ class CarrierAdmin extends AbstractAdmin
      */
     public function preUpdate($object)
     {
+        $this->cacheService->deleteCache();
+
         $originalData = $this->entityManager->getUnitOfWork()->getOriginalEntityData($object);
 
         if ($originalData['numberOfAllowedSubscriptionsByConstraint']
