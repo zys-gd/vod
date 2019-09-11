@@ -76,6 +76,7 @@ class User
      */
     private $deviceModel;
 
+    private $languageCode;
     /**
      * User constructor
      *
@@ -341,4 +342,22 @@ class User
         $this->deviceModel = $deviceModel;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getLanguageCode()
+    {
+        return $this->languageCode;
+    }
+
+    /**
+     * @param mixed $languageCode
+     */
+    public function setLanguageCode($languageCode): void
+    {
+        $this->languageCode = $languageCode;
+    }
+
+
 }

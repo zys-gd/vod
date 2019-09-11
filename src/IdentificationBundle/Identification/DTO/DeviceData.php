@@ -27,6 +27,10 @@ class DeviceData
      * @var string
      */
     private $deviceModel;
+    /**
+     * @var string
+     */
+    private $browserLanguage;
 
     /**
      * DeviceData constructor.
@@ -34,13 +38,15 @@ class DeviceData
      * @param string $identificationUrl
      * @param string $deviceManufacturer
      * @param string $deviceModel
+     * @param string $browserLanguage
      */
-    public function __construct(string $connectionType, string $identificationUrl, string $deviceManufacturer, string $deviceModel)
+    public function __construct(string $connectionType, string $identificationUrl, string $deviceManufacturer, string $deviceModel, string $browserLanguage)
     {
         $this->connectionType     = $connectionType;
         $this->identificationUrl  = $identificationUrl;
         $this->deviceManufacturer = $deviceManufacturer;
         $this->deviceModel        = $deviceModel;
+        $this->browserLanguage    = $browserLanguage;
     }
 
 
@@ -76,7 +82,13 @@ class DeviceData
         return $this->deviceModel;
     }
 
-
+    /**
+     * @return string
+     */
+    public function getBrowserLanguage(): string
+    {
+        return $this->browserLanguage;
+    }
 
 
 }
