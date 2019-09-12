@@ -1,12 +1,12 @@
 {% extends '@App/base.html.twig' %}
 
-{% import "@App/Common/Blocks/header.html.twig" as  header %}
+{% import importTemplate("Common/Blocks/header.html.twig") as  header %}
 {% import '@App/Components/Buttons/button.html.twig' as button %}
-{% import "@App/Components/Blocks/Main/game_cell.html.twig" as gameCell %}
-{% import "@App/Components/Blocks/Main/mirror_separator.html.twig" as mirrorSeparator %}
-{% import "@App/Components/Blocks/Footer/footer_menu_separator.html.twig" as  footer_menu_separator %}
-{% import "@App/Components/Blocks/Footer/menu.html.twig" as  footer_menu %}
-{% import "@App/Common/Blocks/download_button.html.twig" as  download_button %}
+{% import importTemplate("Components/Blocks/Main/game_cell.html.twig") as gameCell %}
+{% import importTemplate("Components/Blocks/Main/mirror_separator.html.twig") as mirrorSeparator %}
+{% import importTemplate("Components/Blocks/Footer/footer_menu_separator.html.twig") as  footer_menu_separator %}
+{% import importTemplate("Components/Blocks/Footer/menu.html.twig") as  footer_menu %}
+{% import importTemplate("Common/Blocks/download_button.html.twig") as  download_button %}
 
 {% block header_content %}
     {{ header.render(game.title) }}

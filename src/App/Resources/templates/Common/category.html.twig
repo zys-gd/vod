@@ -1,15 +1,15 @@
 {% extends '@App/base.html.twig' %}
 
-{% import "@App/Common/Blocks/header.html.twig" as  header %}
-{% import "@App/Components/Blocks/Footer/annotation.html.twig" as  footer %}
-{% import "@App/Common/Blocks/slider.html.twig" as  slider %}
-{% import "@App/Components/Blocks/Main/elect.html.twig" as  elect %}
-{% import "@App/Components/Blocks/Main/subscription_status.html.twig" as  subscription_status %}
-{% import "@App/Components/player.html.twig" as  player %}
-{% import "@App/Components/Blocks/Footer/menu.html.twig" as  footer_menu %}
+{% import importTemplate("Common/Blocks/header.html.twig") as  header %}
+{% import importTemplate("Components/Blocks/Footer/annotation.html.twig") as  footer %}
+{% import importTemplate("Common/Blocks/slider.html.twig") as  slider %}
+{% import importTemplate("Components/Blocks/Main/elect.html.twig") as  elect %}
+{% import importTemplate("Components/Blocks/Main/subscription_status.html.twig") as  subscription_status %}
+{% import importTemplate("Components/player.html.twig") as  player %}
+{% import importTemplate("Components/Blocks/Footer/menu.html.twig") as  footer_menu %}
 {% import '@App/Components/Buttons/gray_button.html.twig' as button_gray %}
-{% import "@App/Components/Blocks/Main/mirror_separator.html.twig" as  mirror_separator %}
-{% import "@App/Components/Blocks/Main/video_preview.html.twig" as  video_preview %}
+{% import importTemplate("Components/Blocks/Main/mirror_separator.html.twig") as  mirror_separator %}
+{% import importTemplate("Components/Blocks/Main/video_preview.html.twig") as  video_preview %}
 
 {% block stylesheets %}
     {{ parent() }}

@@ -1,5 +1,5 @@
 {% macro render() %}
-    {% import "@App/Components/Blocks/Main/icons_channels.html.twig" as  icons_channels %}
+    {% import importTemplate("Components/Blocks/Main/icons_channels.html.twig") as  icons_channels %}
 
     <div class="align-items-center justify-content-center row mx-4">
         {{ icons_channels.render() }}

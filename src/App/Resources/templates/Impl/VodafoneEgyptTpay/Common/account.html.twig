@@ -1,8 +1,8 @@
 {% extends '@App/Common/account.html.twig' %}
 
-{% import "@App/Components/subscribe_buttons.html.twig" as subscribe_buttons %}
-{% import "@App/Components/Blocks/Main/mirror_separator.html.twig" as mirrorSeparator %}
-{% import "@App/Common/Blocks/unsubscribe_link.html.twig" as  unsubscribe_link %}
+{% import importTemplate("Components/subscribe_buttons.html.twig") as subscribe_buttons %}
+{% import importTemplate("Components/Blocks/Main/mirror_separator.html.twig") as mirrorSeparator %}
+{% import importTemplate("Common/Blocks/unsubscribe_link.html.twig") as  unsubscribe_link %}
 
 {% block body %}
     <div class="d-flex flex-column align-items-center justify-content-center w-100 text-center account-page-container">

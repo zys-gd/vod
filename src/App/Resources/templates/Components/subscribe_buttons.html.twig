@@ -1,6 +1,6 @@
 {% macro render(placeholder, class) %}
-    {% import "@App/Components/Buttons/link.html.twig" as  link %}
-    {% import "@App/Common/Blocks/wifi_subscribe_block.html.twig" as wifi_subscribe_block %}
+    {% import importTemplate("Components/Buttons/link.html.twig") as  link %}
+    {% import importTemplate("Common/Blocks/wifi_subscribe_block.html.twig") as wifi_subscribe_block %}
 
 
     {% set class %}

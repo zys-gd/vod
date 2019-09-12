@@ -1,14 +1,14 @@
 {% extends '@App/base.html.twig' %}
-{% import "@App/Components/Blocks/Header/header_lp.html.twig" as  header %}
-{% import "@App/Components/Blocks/Footer/annotation.html.twig" as  annotation %}
-{% import "@App/Components/Blocks/Footer/menu.html.twig" as  footer_menu %}
+{% import importTemplate("Components/Blocks/Header/header_lp.html.twig") as  header %}
+{% import importTemplate("Components/Blocks/Footer/annotation.html.twig") as  annotation %}
+{% import importTemplate("Components/Blocks/Footer/menu.html.twig") as  footer_menu %}
 
 {# IMPORT SECTIONS #}
-{% import LPImporter("Common/LP/Sections/banner_section.html.twig") as banner_section %}
-{% import LPImporter("Common/LP/Sections/Wifi/subscribe_button_section.html.twig") as subscribe_button_section %}
-{% import LPImporter("Common/LP/Sections/Wifi/offer_section.html.twig") as offer_section %}
-{% import LPImporter("Common/LP/Sections/icons_chanel_section.html.twig") as icons_chanel_section %}
-{% import LPImporter("Common/LP/Sections/lure_text_section.html.twig") as lure_text_section %}
+{% import importTemplate("Common/LP/Sections/banner_section.html.twig") as banner_section %}
+{% import importTemplate("Common/LP/Sections/Wifi/subscribe_button_section.html.twig") as subscribe_button_section %}
+{% import importTemplate("Common/LP/Sections/Wifi/offer_section.html.twig") as offer_section %}
+{% import importTemplate("Common/LP/Sections/icons_chanel_section.html.twig") as icons_chanel_section %}
+{% import importTemplate("Common/LP/Sections/lure_text_section.html.twig") as lure_text_section %}
 {# END IMPORT SECTIONS #}
 
 {% block header_content %}
@@ -17,7 +17,7 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {% include LPImporter("Common/LP/wifi_subscribe_block_js.html.twig") %}
+    {% include importTemplate("Common/LP/wifi_subscribe_block_js.html.twig") %}
 {% endblock %}
 
 
