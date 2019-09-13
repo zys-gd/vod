@@ -229,7 +229,7 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
                 );
 
                 $this->notifier->sendNotification(
-                    'subscribe_reminder',
+                    'notify_renew',
                     $subscription,
                     $subscription->getSubscriptionPack(),
                     $carrier
