@@ -181,7 +181,7 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
         $processResponse = $this->processResponseMapper->map($type, (object)['data' => $requestParams]);
 
         try {
-            if ($requestParams->provider_fields['source'] != 'SMS') {
+            if ($requestParams->subtype != 'provider') {
                 $this->logger->info('Hutch ID listen callback source is not SMS');
                 throw new SubscriptionFlowException();
             }
