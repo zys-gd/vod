@@ -1027,7 +1027,7 @@
         "bgColor": "#ffffff",
         "textColor": "#000000",
         "campaignToken": "5c9cc32013f22",
-        "testUrl": "\/lp?cid=5c9cc32013f22&pk_campaign=2a5f3b0a-b5ac-4128-a910-d3063162cdda&pk_kwd=4ea1bcae-4c0c-4379-bbca-6f1fa07b6a30&test=testValue",
+        "testUrl": "\/lp?cid=5c9cc32013f22&pk_campaign=4de05414-680d-4032-9d6e-ddcd11c0f8cd&pk_kwd=4ea1bcae-4c0c-4379-bbca-6f1fa07b6a30&test=testValue",
         "isPause": false,
         "counter": 0,
         "flushDate": null,
@@ -1042,7 +1042,7 @@
         "creator": null,
         "schedule": null,
         "affiliate": {
-            "uuid": "2a5f3b0a-b5ac-4128-a910-d3063162cdda"
+            "uuid": "4de05414-680d-4032-9d6e-ddcd11c0f8cd"
         },
         "mainCategory": null,
         "carriers": [
@@ -1057,7 +1057,7 @@
         "bgColor": "#ffffff",
         "textColor": "#000000",
         "campaignToken": "5c8bac70d2eae",
-        "testUrl": "\/lp?cid=5c8bac70d2eae&pk_campaign=2a5f3b0a-b5ac-4128-a910-d3063162cdda&pk_kwd=8c3ff3a0-6215-427c-977a-e86e90fe2305&test=testValue",
+        "testUrl": "\/lp?cid=5c8bac70d2eae&pk_campaign=4de05414-680d-4032-9d6e-ddcd11c0f8cd&pk_kwd=8c3ff3a0-6215-427c-977a-e86e90fe2305&test=testValue",
         "isPause": false,
         "counter": 0,
         "flushDate": null,
@@ -1072,7 +1072,7 @@
         "creator": null,
         "schedule": null,
         "affiliate": {
-            "uuid": "2a5f3b0a-b5ac-4128-a910-d3063162cdda"
+            "uuid": "4de05414-680d-4032-9d6e-ddcd11c0f8cd"
         },
         "mainCategory": null,
         "carriers": [

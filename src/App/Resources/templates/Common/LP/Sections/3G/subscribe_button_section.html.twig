@@ -4,6 +4,8 @@
     {% set btnClass %}
         {% if isConfirmationClick() %}
             {{ btnClass~ ' x-otp-button' }}
+        {% elseif isConfirmationPopup() %}
+            {{ btnClass ~ ' x-popup-button' }}
         {% else %}
             {{ btnClass ~ ' x-subscribe-button' }}
         {% endif %}
@@ -36,8 +38,7 @@
                         .addClass('x-subscribe-button')
                         .find('button').text('{{ translate('buttons.confirm') }}');
                 });
-            }
-            else if($(this).is('button')) {
+            } else if ($(this).is('button')) {
                 $('.x-otp-button').each((key, el) => {
                     $(el).removeClass('x-otp-button')
                         .addClass('x-subscribe-button')
@@ -45,6 +46,25 @@
                 });
             }
         });
+
+        $(document).on('click', '.x-popup-button', function (e) {
+            e.preventDefault();
+
+            var cfg = {
+                title   : '{{ translate('messages.subscription_popup.confirmation_title') }}',
+                message : '{{ translate('messages.subscription_popup.confirmation_text', {'%phone%': getUserIdentifier()}) }}',
+                okButton: '{{ translate('buttons.yes') }}',
+                noButton: '{{ translate('buttons.no') }}',
+            };
+
+            showConfirmPopup(cfg)
+                .then(function () {
+                    $._loader(false);
+
+                    location = "{% if isIdentified() %}{{ url('subscription.subscribe') }}{% else %}{{ url('identify_and_subscribe') }}{% endif %}";
+                });
+        });
+
 
     </script>
 {% endmacro %}
