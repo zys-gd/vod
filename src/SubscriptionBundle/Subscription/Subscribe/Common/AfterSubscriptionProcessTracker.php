@@ -4,14 +4,12 @@
 namespace SubscriptionBundle\Subscription\Subscribe\Common;
 
 
+use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Subscription\Subscribe\Common\AffiliateNotifier;
-use SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventTracker;
 use SubscriptionBundle\Subscription\Subscribe\Handler\HasCustomAffiliateTrackingRules;
 use SubscriptionBundle\Subscription\Subscribe\Handler\HasCustomPiwikTrackingRules;
-use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerInterface;
 
 class AfterSubscriptionProcessTracker
 {
@@ -23,16 +21,27 @@ class AfterSubscriptionProcessTracker
      * @var AffiliateNotifier
      */
     private $affiliateNotifier;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * AfterSubscriptionProcessTracker constructor.
      *
-     * @param SubscriptionEventTracker $subscriptionEventTracker
+     * @param SubscriptionEventTracker                                            $subscriptionEventTracker
+     * @param \SubscriptionBundle\Subscription\Subscribe\Common\AffiliateNotifier $affiliateNotifier
+     * @param LoggerInterface                                                     $logger
      */
-    public function __construct(SubscriptionEventTracker $subscriptionEventTracker, AffiliateNotifier $affiliateNotifier)
+    public function __construct(
+        SubscriptionEventTracker $subscriptionEventTracker,
+        AffiliateNotifier $affiliateNotifier,
+        LoggerInterface $logger
+    )
     {
         $this->subscriptionEventTracker = $subscriptionEventTracker;
         $this->affiliateNotifier        = $affiliateNotifier;
+        $this->logger                   = $logger;
     }
 
     /**
@@ -50,9 +59,14 @@ class AfterSubscriptionProcessTracker
         bool $isResubscribe = false
     ): void
     {
+        $this->logger->debug('Start tracking after subscription', [
+            $processResult
+        ]);
+
         if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
             $isAffTracked = $subscriber->isAffiliateTrackedForSub($processResult, $campaign);
-        } else {
+        }
+        else {
             $isAffTracked = ($processResult->isSuccessful() && $processResult->isFinal());
         }
 
@@ -62,9 +76,16 @@ class AfterSubscriptionProcessTracker
 
         if ($subscriber instanceof HasCustomPiwikTrackingRules) {
             $isPiwikTracked = $subscriber->isPiwikTrackedForSub($processResult);
-        } else {
+        }
+        else {
             $isPiwikTracked = ($processResult->isFailedOrSuccessful() && $processResult->isFinal());
         }
+
+        $this->logger->debug('Tracking after subscription state', [
+            'isAffTracked'   => $isAffTracked,
+            'isPiwikTracked' => $isPiwikTracked,
+            $campaign
+        ]);
 
         if ($isPiwikTracked) {
 
@@ -73,7 +94,8 @@ class AfterSubscriptionProcessTracker
             // I'll prefer siding with the evil we know over the evil we don't.
             if ($isResubscribe) {
                 $this->subscriptionEventTracker->trackResubscribe($subscription, $processResult);
-            } else {
+            }
+            else {
                 $this->subscriptionEventTracker->trackSubscribe($subscription, $processResult);
             }
         }
