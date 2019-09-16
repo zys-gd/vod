@@ -68,7 +68,7 @@ class DefaultSMSVariablesProvider
         return [
             '_price_'              => $pack->getTierPrice(),
             '_intprice_'          => intval($pack->getTierPrice()),
-            '_currency_'           => $pack->getTierCurrency(),
+            '_currency_'           => $pack->getFinalCurrency(),
             '_home_url_'           => $this->provider->getLinkToHomepage(),
             '_shorthome_url_'      => preg_replace('|\/\/|', '', $this->provider->getShortLinkToHomepage()),
             '_unsub_url_'          => $this->provider->getLinkToMyAccount(),
