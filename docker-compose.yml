@@ -1,4 +1,4 @@
-version: '2'
+version: "3.5"
 services:
 
     redis:
@@ -51,6 +51,7 @@ volumes:
 
 networks:
   dev-env:
+   name: vod-dev-env
    driver: bridge
    ipam:
      config:

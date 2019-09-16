@@ -27,7 +27,9 @@ class LoadCronTasksData extends AbstractFixture
     {
         $data = [
             ["1", "mobilinkPakistanMassRenewCronTask", "0"],
-            ["7", "telenorPakistanDOTMassRenewCronTask", "0"],
+            ["2", "telenorPakistanDOTMassRenewCronTask", "0"],
+            ["3", "hutchIndonesiaMassRenewCronTask", "0"],
+            ["4", "zainKSAMassRenewCronTask", "0"],
 
         ];
 
