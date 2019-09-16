@@ -1,14 +1,14 @@
 {% extends '@App/base.html.twig' %}
 
-{% import "@App/Common/Blocks/header.html.twig" as  header %}
-{% import "@App/Components/Blocks/Main/subscription_status.html.twig" as  subscription_status %}
-{% import "@App/Components/subscribe_buttons.html.twig" as subscribe_buttons %}
-{% import "@App/Components/Blocks/Footer/annotation.html.twig" as  annotation %}
-{% import "@App/Components/Buttons/button.html.twig" as  button %}
-{% import "@App/Components/Buttons/link.html.twig" as  link %}
-{% import "@App/Components/Blocks/Footer/menu.html.twig" as  footer_menu %}
-{% import "@App/Components/Blocks/Main/mirror_separator.html.twig" as mirrorSeparator %}
-{% import "@App/Common/Blocks/unsubscribe_link.html.twig" as  unsubscribe_link %}
+{% import importTemplate("Common/Blocks/header.html.twig") as  header %}
+{% import importTemplate("Components/Blocks/Main/subscription_status.html.twig") as  subscription_status %}
+{% import importTemplate("Components/subscribe_buttons.html.twig") as subscribe_buttons %}
+{% import importTemplate("Components/Blocks/Footer/annotation.html.twig") as  annotation %}
+{% import importTemplate("Components/Buttons/button.html.twig") as  button %}
+{% import importTemplate("Components/Buttons/link.html.twig") as  link %}
+{% import importTemplate("Components/Blocks/Footer/menu.html.twig") as  footer_menu %}
+{% import importTemplate("Components/Blocks/Main/mirror_separator.html.twig") as mirrorSeparator %}
+{% import importTemplate("Common/Blocks/unsubscribe_link.html.twig") as  unsubscribe_link %}
 
 {% block stylesheets %}
     {{ parent() }}

@@ -1,4 +1,4 @@
-{% import "@App/Components/Blocks/Main/video_preview.html.twig" as  video_preview %}
+{% import importTemplate("Components/Blocks/Main/video_preview.html.twig") as  video_preview %}
 
 {% for video in videos %}
     {{ video_preview.render('d-flex flex-row related-video x-play-button', video) }}

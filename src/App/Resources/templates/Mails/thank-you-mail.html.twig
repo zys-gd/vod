@@ -1,7 +1,7 @@
 {% extends '@App/base.html.twig' %}
 
-{% import "@App/Common/Blocks/header.html.twig" as  header %}
-{% import "@App/Components/Buttons/link.html.twig" as link %}
+{% import importTemplate("Common/Blocks/header.html.twig") as  header %}
+{% import importTemplate("Components/Buttons/link.html.twig") as link %}
 
 {% block header_content %}
     {{ header.render() }}

@@ -1,6 +1,6 @@
 {% macro render() %}
     {% import '@App/Components/Forms/wifi_select.html.twig' as wifi_select %}
-    {% import "@App/Components/Buttons/link.html.twig" as  link %}
+    {% import importTemplate("Components/Buttons/link.html.twig") as  link %}
 
     <form data-form="pin" id="wifi_form"
           class="d-flex flex-column w-75 text-center">

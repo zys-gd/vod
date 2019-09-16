@@ -1,5 +1,5 @@
 {% macro render() %}
-    {% import "@App/Components/Blocks/Footer/annotation.html.twig" as  annotation %}
+    {% import importTemplate("Components/Blocks/Footer/annotation.html.twig") as  annotation %}
 
     {% if isCarrierDetected() %}
         <div class="mt-2 sub-info">
