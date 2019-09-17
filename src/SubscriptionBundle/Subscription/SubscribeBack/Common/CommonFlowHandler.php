@@ -13,6 +13,7 @@ use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\User\Service\UserFactory;
 use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
 use Psr\Log\LoggerInterface;
+use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator;
@@ -228,9 +229,10 @@ class CommonFlowHandler
         }
 
         try {
+            $affiliateToken = json_encode(AffiliateVisitSaver::extractPageVisitData($request->getSession(), true));
             /** @var Subscription $newSubscription */
             /** @var ProcessResult $result */
-            list($newSubscription, $result) = $this->subscriber->subscribe($user, $subscriptionPack, $billingProcessId);
+            list($newSubscription, $result) = $this->subscriber->subscribe($user, $subscriptionPack, $billingProcessId, $affiliateToken);
 
             $this->afterSubscriptionProcessTracker->track($result, $newSubscription, $handler, $campaign);
 
