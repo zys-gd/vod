@@ -67,7 +67,7 @@ class AfterSubscriptionProcessTracker
             $isAffTracked = $subscriber->isAffiliateTrackedForSub($processResult, $campaign);
         }
         else {
-            $isAffTracked = ($processResult->isSuccessful() && $processResult->isFinal());
+            $isAffTracked = ($processResult->isSuccessful());
         }
 
         if ($isAffTracked && $campaign) {
@@ -78,7 +78,7 @@ class AfterSubscriptionProcessTracker
             $isPiwikTracked = $subscriber->isPiwikTrackedForSub($processResult);
         }
         else {
-            $isPiwikTracked = ($processResult->isFailedOrSuccessful() && $processResult->isFinal());
+            $isPiwikTracked = ($processResult->isFailedOrSuccessful());
         }
 
         $this->logger->debug('Tracking after subscription state', [
