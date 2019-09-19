@@ -1,6 +1,6 @@
 {% macro render(placeholder, btnClass, blockClass) %}
-    {% import "@App/Components/Buttons/link.html.twig" as  link %}
-    {% import LPImporter("Blocks/wifi_subscribe_block.html.twig") as wifi_subscribe_block %}
+    {% import importTemplate("Components/Buttons/link.html.twig") as  link %}
+    {% import importTemplate("Blocks/wifi_subscribe_block.html.twig") as wifi_subscribe_block %}
 
     <div class="d-flex align-items-start justify-content-center  {{ blockClass }}">
         {{ link.render(url('identify_by_passthrough'), translate(placeholder), btnClass) }}

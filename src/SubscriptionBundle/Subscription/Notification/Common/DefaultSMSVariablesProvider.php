@@ -36,9 +36,11 @@ class DefaultSMSVariablesProvider
      * @param RouterInterface     $router
      * @param RenewDateCalculator $renewDateCalculator
      */
-    public function __construct(RouterInterface $router,
-                                RenewDateCalculator $renewDateCalculator,
-                                RouteProvider $provider)
+    public function __construct(
+        RouterInterface $router,
+        RenewDateCalculator $renewDateCalculator,
+        RouteProvider $provider
+    )
     {
         $this->router              = $router;
         $this->renewDateCalculator = $renewDateCalculator;
@@ -65,7 +67,8 @@ class DefaultSMSVariablesProvider
 
         return [
             '_price_'              => $pack->getTierPrice(),
-            '_currency_'           => $pack->getTierCurrency(),
+            '_intprice_'          => intval($pack->getTierPrice()),
+            '_currency_'           => $pack->getFinalCurrency(),
             '_home_url_'           => $this->provider->getLinkToHomepage(),
             '_shorthome_url_'      => preg_replace('|\/\/|', '', $this->provider->getShortLinkToHomepage()),
             '_unsub_url_'          => $this->provider->getLinkToMyAccount(),

@@ -1,8 +1,8 @@
 {% extends '@App/base.html.twig' %}
-{% import "@App/Common/Blocks/header.html.twig" as  header %}
+{% import importTemplate("Common/Blocks/header.html.twig") as  header %}
 {% import '@App/Components/Buttons/small_button.html.twig' as button %}
 {% import '@App/Components/Buttons/gray_button.html.twig' as button_gray %}
-{% import "@App/Components/Blocks/Header/subscription_heading.html.twig" as  subscription_heading %}
+{% import importTemplate("Components/Blocks/Header/subscription_heading.html.twig") as  subscription_heading %}
 
 {% block stylesheets %}
     {{ parent() }}

@@ -26,7 +26,7 @@ services:
             - '@IdentificationBundle\Identification\Common\Pixel\PixelIdentStarter'
             - '@IdentificationBundle\Identification\Common\Async\AsyncIdentStarter'
             - '@router'
-            - '@IdentificationBundle\Identification\Service\RouteProvider'
+            - '@IdentificationBundle\Identification\Service\AffiliateDataSerializer'
 
     IdentificationBundle\Identification\Common\RequestParametersProvider:
         arguments:
@@ -133,6 +133,7 @@ services:
             - '@IdentificationBundle\BillingFramework\Process\IdentProcess'
             - '@IdentificationBundle\Identification\Common\Async\AsyncIdentStarter'
             - '@IdentificationBundle\BillingFramework\Process\PassthroughProcess'
+            - '@IdentificationBundle\Identification\Service\AffiliateDataSerializer'
 
     IdentificationBundle\Identification\Service\CarrierSelector:
         arguments:
@@ -229,3 +230,7 @@ services:
             - '@router'
             - '@IdentificationBundle\Identification\Common\RequestParametersProvider'
             - '@IdentificationBundle\Identification\Service\TokenGenerator'
+            - '@IdentificationBundle\Identification\Service\AffiliateDataSerializer'
+
+    IdentificationBundle\Identification\Service\AffiliateDataSerializer:
+        arguments: ['@SubscriptionBundle\Affiliate\Service\CampaignExtractor']

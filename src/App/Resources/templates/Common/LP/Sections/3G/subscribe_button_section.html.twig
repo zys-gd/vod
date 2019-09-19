@@ -1,5 +1,5 @@
 {% macro render(placeholder, btnClass, blockClass) %}
-    {% import "@App/Components/Buttons/link.html.twig" as  link %}
+    {% import importTemplate("Components/Buttons/link.html.twig") as  link %}
 
     {% set btnClass %}
         {% if isConfirmationClick() %}
