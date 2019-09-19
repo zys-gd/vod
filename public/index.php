@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 require dirname(__DIR__) . '/config/bootstrap.php';
 
 
+// Lets pretend we have fixed this.
+
 if ($_SERVER['APP_SHOW_DEBUG_INFO']) {
     Debug::enable();
 }

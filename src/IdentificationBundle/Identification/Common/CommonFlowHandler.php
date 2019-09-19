@@ -15,6 +15,7 @@ use IdentificationBundle\Identification\Common\Async\AsyncIdentStarter;
 use IdentificationBundle\Identification\Common\Pixel\PixelIdentStarter;
 use IdentificationBundle\Identification\Handler\HasCommonFlow;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
+use IdentificationBundle\Identification\Service\AffiliateDataSerializer;
 use IdentificationBundle\Identification\Service\RouteProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,6 +53,10 @@ class CommonFlowHandler
      * @var RouterInterface
      */
     private $router;
+    /**
+     * @var AffiliateDataSerializer
+     */
+    private $affiliateDataSerializer;
 
 
     /**
@@ -63,6 +68,7 @@ class CommonFlowHandler
      * @param PixelIdentStarter             $pixelIdentStarter
      * @param AsyncIdentStarter             $asyncIdentStarter
      * @param RouterInterface               $router
+     * @param AffiliateDataSerializer       $affiliateDataSerializer
      */
     public function __construct(
         IdentProcess $identProcess,
@@ -71,17 +77,18 @@ class CommonFlowHandler
         RouteProvider $routeProvider,
         PixelIdentStarter $pixelIdentStarter,
         AsyncIdentStarter $asyncIdentStarter,
-        RouterInterface $router
-
+        RouterInterface $router,
+        AffiliateDataSerializer $affiliateDataSerializer
     )
     {
-        $this->identProcess       = $identProcess;
-        $this->handlerProvider    = $handlerProvider;
-        $this->parametersProvider = $parametersProvider;
-        $this->pixelIdentStarter  = $pixelIdentStarter;
-        $this->asyncIdentStarter  = $asyncIdentStarter;
-        $this->routeProvider      = $routeProvider;
-        $this->router             = $router;
+        $this->identProcess            = $identProcess;
+        $this->handlerProvider         = $handlerProvider;
+        $this->parametersProvider      = $parametersProvider;
+        $this->pixelIdentStarter       = $pixelIdentStarter;
+        $this->asyncIdentStarter       = $asyncIdentStarter;
+        $this->routeProvider           = $routeProvider;
+        $this->router                  = $router;
+        $this->affiliateDataSerializer = $affiliateDataSerializer;
     }
 
     public function process(
@@ -94,13 +101,16 @@ class CommonFlowHandler
         $additionalParams = $handler->getAdditionalIdentificationParams($request);
         $successUrl       = $request->get('location', $this->routeProvider->getLinkToHomepage());
         $waitPageUrl      = $this->router->generate('wait_for_callback', ['successUrl' => $successUrl], RouterInterface::ABSOLUTE_URL);
-        $parameters       = $this->parametersProvider->prepareRequestParameters(
+        $affiliateParams  = $this->affiliateDataSerializer->serialize($request->getSession());
+
+
+        $parameters = $this->parametersProvider->prepareRequestParameters(
             $token,
             $carrier->getBillingCarrierId(),
             $request->getClientIp(),
             $waitPageUrl,
             $request->headers->all(),
-            $additionalParams
+            array_merge($affiliateParams, $additionalParams)
         );
 
         $processResult = $this->identProcess->doIdent($parameters);

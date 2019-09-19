@@ -1,6 +1,6 @@
 {% macro render() %}
     <div id="landing-offer-container" class="mt-2">
-        {% include LPImporter("LP/landing_offer.html.twig") %}
+        {% include importTemplate("Common/LP/landing_offer.html.twig") %}
     </div>
     {% set campaignCategory = getCampaignData('category') %}
     {% if campaignCategory %}

@@ -26,7 +26,7 @@ services:
             - '@IdentificationBundle\Identification\Common\Pixel\PixelIdentStarter'
             - '@IdentificationBundle\Identification\Common\Async\AsyncIdentStarter'
             - '@router'
-            - '@IdentificationBundle\Identification\Service\RouteProvider'
+            - '@IdentificationBundle\Identification\Service\AffiliateDataSerializer'
 
     IdentificationBundle\Identification\Common\RequestParametersProvider:
         arguments:
@@ -90,6 +90,7 @@ services:
             - '_landing_route_placeholder_'
             - '_my_account_route_placeholder_'
             - '_wrong_carrier_route_placeholder_'
+            - '_contact_us_route_placeholder_'
 
     IdentificationBundle\Identification\Service\ISPResolver: ~
 
@@ -132,6 +133,7 @@ services:
             - '@IdentificationBundle\BillingFramework\Process\IdentProcess'
             - '@IdentificationBundle\Identification\Common\Async\AsyncIdentStarter'
             - '@IdentificationBundle\BillingFramework\Process\PassthroughProcess'
+            - '@IdentificationBundle\Identification\Service\AffiliateDataSerializer'
 
     IdentificationBundle\Identification\Service\CarrierSelector:
         arguments:
@@ -169,6 +171,7 @@ services:
             - '@IdentificationBundle\BillingFramework\Data\DataProvider'
             - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
             - '@logger'
+            - '@CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator'
 
     IdentificationBundle\Identification\Controller\IdentificationController:
         tags: ['controller.service_arguments']
@@ -227,3 +230,7 @@ services:
             - '@router'
             - '@IdentificationBundle\Identification\Common\RequestParametersProvider'
             - '@IdentificationBundle\Identification\Service\TokenGenerator'
+            - '@IdentificationBundle\Identification\Service\AffiliateDataSerializer'
+
+    IdentificationBundle\Identification\Service\AffiliateDataSerializer:
+        arguments: ['@SubscriptionBundle\Affiliate\Service\CampaignExtractor']

@@ -4008,7 +4008,7 @@
     {
         "uuid": "89c5c1fe-5019-4237-b6c5-18e90c5d15e6",
         "key": "menu.footer.faq",
-        "translation": "Pertanyaan Umum",
+        "translation": "FAQ",
         "language": {
             "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -4496,7 +4496,7 @@
     {
         "uuid": "ef0d647a-c025-4503-9f86-68f88a8b4dd8",
         "key": "subscription.status.subscribed",
-        "translation": "Anda berlangganan 100% sports!Nikmati konten tanpa batas",
+        "translation": "Anda berlangganan 100% sports! Nikmati konten tanpa batas",
         "language": {
             "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -4697,6 +4697,15 @@
         "translation": "Envoyer un SMS",
         "language": {
             "uuid": "5179f269-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "3df66c6d-f478-4f58-9964-af76c5e18480",
+        "key": "messages.error.already_subscribed_on_another_service",
+        "translation": "Dear customer, we are sorry but you are already subscribed to some other subscription service. If you want to subscribe to Playwing, please contact us.",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
     }

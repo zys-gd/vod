@@ -198,7 +198,7 @@ class AffiliateSender
         if (!$affiliate->isUniqueFlow() && $subPriceName = $affiliate->getSubPriceName()) {
             $query = array_merge(
                 $query,
-                [$subPriceName => $campaign->getSub() ?? null]
+                [$subPriceName => $this->calculateAffiliatePriceParameter($campaign)]
             );
         }
 
@@ -207,6 +207,19 @@ class AffiliateSender
         ]);
 
         return $query;
+    }
+
+    protected function calculateAffiliatePriceParameter(CampaignInterface $campaign): float
+    {
+        if ($campaign->isZeroCreditSubAvailable()) {
+            return $campaign->getZeroEurPrice();
+        }
+
+        if ($campaign->isFreeTrialSubscription()) {
+            return $campaign->getFreeTrialPrice();
+        }
+
+        return $campaign->getGeneralPrice();
     }
 
     /**

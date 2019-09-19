@@ -95,6 +95,7 @@ class IdentFinisher
         $user->setDeviceModel($deviceData->getDeviceModel());
         $user->setConnectionType($deviceData->getConnectionType());
         $user->setIdentificationUrl($deviceData->getIdentificationUrl());
+        $user->setLanguageCode($deviceData->getBrowserLanguage());
 
 
         $this->identificationDataStorage->setIdentificationToken($token);

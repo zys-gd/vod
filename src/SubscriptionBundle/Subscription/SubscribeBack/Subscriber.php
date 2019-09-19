@@ -6,6 +6,7 @@ namespace SubscriptionBundle\Subscription\SubscribeBack;
 
 use IdentificationBundle\BillingFramework\Data\DataProvider;
 use IdentificationBundle\Entity\User;
+use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Subscription\Common\SubscriptionFactory;
@@ -53,10 +54,12 @@ class Subscriber
      * @return array
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function subscribe(User $user, SubscriptionPack $subscriptionPack, string $billingProcessId): array
+    public function subscribe(User $user, SubscriptionPack $subscriptionPack, string $billingProcessId, string $affiliateToken = null): array
     {
         $processResult   = $this->dataProvider->getProcessData($billingProcessId);
         $newSubscription = $this->createPendingSubscription($user, $subscriptionPack);
+
+        $newSubscription->setAffiliateToken($affiliateToken);
 
         $this->subscribeUpdater->updateSubscriptionByResponse($newSubscription, $processResult);
 

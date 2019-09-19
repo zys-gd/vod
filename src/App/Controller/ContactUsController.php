@@ -9,10 +9,10 @@
 namespace App\Controller;
 
 
-use App\CarrierTemplate\TemplateConfigurator;
 use App\Domain\Entity\Campaign;
 use App\Domain\Repository\CampaignRepository;
 use App\Form\ContactUsType;
+use CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator;
 use CountryCarrierDetectionBundle\Service\MaxMindIpInfo;
 use DeviceDetectionBundle\Service\Device;
 use ExtrasBundle\Email\EmailSender;
@@ -153,7 +153,9 @@ class ContactUsController extends AbstractController implements AppControllerInt
 
             return $this->render('@App/Mails/thank-you-mail.html.twig');
         }
+
         $template = $this->templateConfigurator->getTemplate('contact_us', $data->getCarrierId());
+
         return $this->render($template, [
                 'form'           => $form->createView(),
                 'userIdentifier' => $userIdentifier

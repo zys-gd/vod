@@ -4,7 +4,6 @@
 namespace App\Twig;
 
 
-use App\CarrierTemplate\TemplateConfigurator;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
 use App\Domain\Service\Campaign\CampaignSerializer;
@@ -26,10 +25,6 @@ class LPExtension extends AbstractExtension
      * @var SessionInterface
      */
     private $session;
-    /**
-     * @var TemplateConfigurator
-     */
-    private $templateConfigurator;
     /**
      * @var CarrierRepositoryInterface
      */
@@ -55,7 +50,6 @@ class LPExtension extends AbstractExtension
      * LPExtension constructor.
      *
      * @param SessionInterface            $session
-     * @param TemplateConfigurator        $templateConfigurator
      * @param CarrierRepositoryInterface  $carrierRepository
      * @param CampaignRepositoryInterface $campaignRepository
      * @param CountryRepositoryInterface  $countryRepository
@@ -64,7 +58,6 @@ class LPExtension extends AbstractExtension
      */
     public function __construct(
         SessionInterface $session,
-        TemplateConfigurator $templateConfigurator,
         CarrierRepositoryInterface $carrierRepository,
         CampaignRepositoryInterface $campaignRepository,
         CountryRepositoryInterface $countryRepository,
@@ -72,7 +65,6 @@ class LPExtension extends AbstractExtension
         CampaignSerializer $campaignSerializer
     ) {
         $this->session = $session;
-        $this->templateConfigurator = $templateConfigurator;
         $this->carrierRepository = $carrierRepository;
         $this->campaignRepository = $campaignRepository;
         $this->wifiPhoneOptionsProvider = $wifiPhoneOptionsProvider;
@@ -86,7 +78,6 @@ class LPExtension extends AbstractExtension
             new TwigFunction('getCountries', [$this, 'getCountries']),
             new TwigFunction('getCarrierCountry', [$this, 'getCarrierCountry']),
             new TwigFunction('isClickableSubImage', [$this, 'isClickableSubImage']),
-            new TwigFunction('LPImporter', [$this, 'getLPImportPath']),
             new TwigFunction('getCampaignData', [$this, 'getCampaignData']),
             new TwigFunction('getPhoneValidationOptions', [$this, 'getPhoneValidationOptions']),
             new TwigFunction('getPinValidationOptions', [$this, 'getPinValidationOptions']),
@@ -157,13 +148,6 @@ class LPExtension extends AbstractExtension
             }
         }
         return true;
-    }
-
-    public function getLPImportPath(string $baseFilePath): string
-    {
-        $billingCarrierId = (int)IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
-        $baseFilePath = str_replace('.html.twig', '', $baseFilePath);
-        return $this->templateConfigurator->getTemplate($baseFilePath, $billingCarrierId);
     }
 
     /**

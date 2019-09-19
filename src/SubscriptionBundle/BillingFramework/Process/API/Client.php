@@ -224,6 +224,7 @@ class Client
             }
             $response         = $this->httpClient->request('POST', $url, $options);
             $preparedResponse = $this->extractContentFromResponse($response);
+
             return $preparedResponse;
         } catch (RequestException $e) {
             throw $this->convertRequestException($e);

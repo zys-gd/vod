@@ -3,6 +3,7 @@
 namespace SubscriptionBundle\Subscription\Notification;
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use CommonDataBundle\Repository\Interfaces\LanguageRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Notification\API\DTO\SMSRequest;
 use SubscriptionBundle\BillingFramework\Notification\API\RequestSender;
@@ -12,6 +13,7 @@ use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Subscription\Notification\Common\DefaultSMSVariablesProvider;
 use SubscriptionBundle\Subscription\Notification\Common\MessageCompiler;
 use SubscriptionBundle\Subscription\Notification\Common\ProcessIdExtractor;
+use SubscriptionBundle\Subscription\Notification\Impl\HasCustomResponseProcessing;
 use SubscriptionBundle\Subscription\Notification\Impl\NotificationHandlerProvider;
 use SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider;
 
@@ -48,6 +50,10 @@ class Notifier
      * @var SMSTextProvider
      */
     private $SMSTextProvider;
+    /**
+     * @var LanguageRepositoryInterface
+     */
+    private $repository;
 
     /**
      * Notifier constructor.
@@ -58,6 +64,7 @@ class Notifier
      * @param NotificationHandlerProvider                                           $notificationHandlerProvider
      * @param DefaultSMSVariablesProvider                                           $defaultSMSVariablesProvider
      * @param \SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider $SMSTextProvider
+     * @param LanguageRepositoryInterface                                           $repository
      */
     public function __construct(
         MessageCompiler $messageCompiler,
@@ -66,7 +73,8 @@ class Notifier
         ProcessIdExtractor $processIdExtractor,
         NotificationHandlerProvider $notificationHandlerProvider,
         DefaultSMSVariablesProvider $defaultSMSVariablesProvider,
-        SMSTextProvider $SMSTextProvider
+        SMSTextProvider $SMSTextProvider,
+        LanguageRepositoryInterface $repository
     )
     {
         $this->messageCompiler             = $messageCompiler;
@@ -76,6 +84,7 @@ class Notifier
         $this->notificationHandlerProvider = $notificationHandlerProvider;
         $this->defaultSMSVariablesProvider = $defaultSMSVariablesProvider;
         $this->SMSTextProvider             = $SMSTextProvider;
+        $this->repository                  = $repository;
     }
 
 
@@ -84,18 +93,18 @@ class Notifier
         Subscription $subscription,
         SubscriptionPack $subscriptionPack,
         CarrierInterface $carrier
-    )
+    ): bool
     {
         $handler = $this->notificationHandlerProvider->get($processType, $carrier);
 
         if (!$handler->isNotificationShouldBeSent()) {
-            return;
+            return true;
         }
 
-        $User = $subscription->getUser();
+        $user = $subscription->getUser();
 
         if ($handler->isProcessIdUsedInNotification()) {
-            $processId = $this->processIdExtractor->extractProcessId($User);
+            $processId = $this->processIdExtractor->extractProcessId($user);
         } else {
             $processId = null;
         }
@@ -103,31 +112,60 @@ class Notifier
         $variables = $this->defaultSMSVariablesProvider->getDefaultSMSVariables(
             $subscriptionPack,
             $subscription,
-            $User
+            $user
         );
 
-        try {
-            $body = $this->SMSTextProvider->getSMSText(
-                $processType,
-                $carrier,
-                $subscriptionPack,
-                $handler->getSmsLanguage()
-            );
-        } catch (MissingSMSTextException $exception) {
-            $this->logger->error($exception->getMessage(), ['pack' => $subscriptionPack]);
-            throw  $exception;
+
+        $isUserLocaleCanBeUsed = true;
+        $userLanguage          = $user->getLanguageCode();
+        $smsLanguage           = $this->repository->findByCode($userLanguage);
+
+        if ($smsLanguage) {
+            try {
+                $body = $this->SMSTextProvider->getSMSText(
+                    $processType,
+                    $carrier,
+                    $subscriptionPack,
+                    $smsLanguage
+                );
+            } catch (MissingSMSTextException $exception) {
+                $isUserLocaleCanBeUsed = false;
+            }
+        } else {
+            $isUserLocaleCanBeUsed = false;
+        }
+
+        if (!$isUserLocaleCanBeUsed) {
+            try {
+                $body = $this->SMSTextProvider->getSMSText(
+                    $processType,
+                    $carrier,
+                    $subscriptionPack,
+                    $handler->getSmsLanguage()
+                );
+
+            } catch (MissingSMSTextException $exception) {
+                $this->logger->error($exception->getMessage(), ['pack' => $subscriptionPack]);
+                throw $exception;
+            }
         }
 
 
         $notification = $this->messageCompiler->compileNotification(
             $processType,
-            $User,
+            $user,
             $body,
             $processId,
             $variables
         );
 
-        $this->sender->sendNotification($notification, $carrier->getBillingCarrierId());
+        $result = $this->sender->sendNotification($notification, $carrier->getBillingCarrierId());
+
+        if ($handler instanceof HasCustomResponseProcessing) {
+            return $handler->isResponseOk($result);
+        } else {
+            return $this->isResponseOk($result);
+        }
 
 
     }
@@ -138,5 +176,16 @@ class Notifier
 
         $this->sender->sendSMS($request, $carrier->getBillingCarrierId());
 
+    }
+
+    /**
+     * @param $result
+     * @return bool
+     */
+    private function isResponseOk($result): bool
+    {
+        return
+            !is_null($result) &&
+            !(is_array($result) && $result['provider_fields']['error']);
     }
 }

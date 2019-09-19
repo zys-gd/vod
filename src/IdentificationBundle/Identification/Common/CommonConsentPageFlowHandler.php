@@ -9,6 +9,7 @@ use IdentificationBundle\Identification\Common\Async\AsyncIdentStarter;
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow;
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasConsentPageFlow;
 use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCustomConsentPageFlow;
+use IdentificationBundle\Identification\Service\AffiliateDataSerializer;
 use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\TokenGenerator;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,6 +54,10 @@ class CommonConsentPageFlowHandler
      * @var PassthroughProcess
      */
     private $passthroughProcess;
+    /**
+     * @var AffiliateDataSerializer
+     */
+    private $affiliateDataSerializer;
 
     /**
      * ConsentPageFlowHandler constructor
@@ -64,6 +69,7 @@ class CommonConsentPageFlowHandler
      * @param IdentProcess              $identProcess
      * @param AsyncIdentStarter         $asyncIdentStarter
      * @param PassthroughProcess        $passthroughProcess
+     * @param AffiliateDataSerializer   $affiliateDataSerializer
      */
     public function __construct(
         RouterInterface $router,
@@ -72,7 +78,8 @@ class CommonConsentPageFlowHandler
         RequestParametersProvider $requestParametersProvider,
         IdentProcess $identProcess,
         AsyncIdentStarter $asyncIdentStarter,
-        PassthroughProcess $passthroughProcess
+        PassthroughProcess $passthroughProcess,
+        AffiliateDataSerializer $affiliateDataSerializer
     )
     {
         $this->router                    = $router;
@@ -82,6 +89,7 @@ class CommonConsentPageFlowHandler
         $this->identProcess              = $identProcess;
         $this->asyncIdentStarter         = $asyncIdentStarter;
         $this->passthroughProcess        = $passthroughProcess;
+        $this->affiliateDataSerializer   = $affiliateDataSerializer;
     }
 
     /**
@@ -106,13 +114,15 @@ class CommonConsentPageFlowHandler
                 ->router
                 ->generate('wait_for_callback', ['successUrl' => $successUrl], RouterInterface::ABSOLUTE_URL);
 
+            $affiliateParams = $this->affiliateDataSerializer->serialize($request->getSession());
+
             $parameters = $this->requestParametersProvider->prepareRequestParameters(
                 $token,
                 $carrier->getBillingCarrierId(),
                 $request->getClientIp(),
                 $waitPageUrl,
                 $request->headers->all(),
-                $additionalParams
+                array_merge($affiliateParams, $additionalParams)
             );
 
             $processResult = $this->identProcess->doIdent($parameters);

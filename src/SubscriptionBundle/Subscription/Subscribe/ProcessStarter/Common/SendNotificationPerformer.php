@@ -62,11 +62,21 @@ class SendNotificationPerformer
         $carrier = $subscription->getUser()->getCarrier();
 
         try {
-            $this->notifier->sendNotification(
+            $result = $this->notifier->sendNotification(
                 SubscribeProcess::PROCESS_METHOD_SUBSCRIBE,
                 $subscription,
                 $subscription->getSubscriptionPack(),
                 $carrier
+            );
+
+            $status = $result
+                ? ProcessResult::STATUS_SUCCESSFUL
+                : ProcessResult::STATUS_FAILED;
+
+            return $this->fakeResponseProvider->getDummyResult(
+                $subscription,
+                SubscribeProcess::PROCESS_METHOD_SUBSCRIBE,
+                $status
             );
 
         } catch (NotificationSendFailedException $e) {
@@ -77,12 +87,6 @@ class SendNotificationPerformer
 
             throw new SubscribingProcessException('Error while trying to subscribe (sending notification)', 0, $e, null, null, 'subscription_notification');
         }
-
-        return $this->fakeResponseProvider->getDummyResult(
-            $subscription,
-            SubscribeProcess::PROCESS_METHOD_SUBSCRIBE,
-            ProcessResult::STATUS_SUCCESSFUL
-        );
 
     }
 }

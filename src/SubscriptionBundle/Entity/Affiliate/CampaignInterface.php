@@ -17,9 +17,19 @@ interface CampaignInterface
     public function getCampaignToken(): string;
 
     /**
-     * @return string|null
+     * @return float
      */
-    public function getSub(): ?string;
+    public function getFreeTrialPrice(): float;
+
+    /**
+     * @return float
+     */
+    public function getZeroEurPrice(): float;
+
+    /**
+     * @return float
+     */
+    public function getGeneralPrice(): float;
 
     /**
      * @return Collection
@@ -37,12 +47,7 @@ interface CampaignInterface
     public function isZeroCreditSubAvailable(): bool;
 
     /**
-     * @return string
-     */
-    public function getImagePath(): string;
-
-    /**
-     * @return string|null
+     * @return bool
      */
     public function getBgColor(): ?string;
 
@@ -52,4 +57,9 @@ interface CampaignInterface
     public function getMainCategory();
 
     public function isFreeTrialSubscription(): bool;
+
+    /**
+     * @return bool
+     */
+    public function isConfirmationClick(): bool;
 }

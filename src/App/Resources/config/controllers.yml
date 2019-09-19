@@ -35,11 +35,11 @@ services:
 
     App\Controller\ContentController:
         arguments:
-        - '@App\CarrierTemplate\TemplateConfigurator'
+        - '@CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator'
 
     App\Controller\HomeController:
         arguments:
-            - '@App\CarrierTemplate\TemplateConfigurator'
+            - '@CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator'
             - '@App\Domain\Repository\MainCategoryRepository'
             - '@App\Domain\Repository\UploadedVideoRepository'
             - '@App\Domain\Service\VideoProcessing\UploadedVideoSerializer'
@@ -57,7 +57,7 @@ services:
             - '%images_base_url%'
             - '@App\Domain\Service\CarrierOTPVerifier'
             - '%default_redirect_url%'
-            - '@App\CarrierTemplate\TemplateConfigurator'
+            - '@CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator'
             - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
             - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter'
             - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitNotifier'
@@ -79,14 +79,14 @@ services:
             - '@App\Domain\Repository\UploadedVideoRepository'
             - '@App\Domain\Repository\SubcategoryRepository'
             - '@App\Piwik\ContentStatisticSender'
-            - '@App\CarrierTemplate\TemplateConfigurator'
+            - '@CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator'
             - '@App\Domain\Service\VideoProcessing\UploadedVideoSerializer'
 
     App\Controller\AccountController:
         arguments:
             - '@App\Domain\Repository\CarrierRepository'
             - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
-            - '@App\CarrierTemplate\TemplateConfigurator'
+            - '@CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator'
 
     App\Controller\ContactUsController:
         arguments:
@@ -97,7 +97,7 @@ services:
         - '@App\Domain\Repository\CampaignRepository'
         - '%contact_us_mail_to%'
         - '%contact_us_mail_from%'
-        - '@App\CarrierTemplate\TemplateConfigurator'
+        - '@CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator'
         - '@device_detection.service.device'
         - '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
 
@@ -111,7 +111,7 @@ services:
             - '@App\Domain\Service\Games\GameImagesSerializer'
             - '@App\Domain\Service\Games\ExcludedGamesProvider'
             - '@App\Piwik\ContentStatisticSender'
-            - '@App\CarrierTemplate\TemplateConfigurator'
+            - '@CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator'
 
     App\Controller\VideoController:
         arguments:

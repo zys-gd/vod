@@ -253,7 +253,7 @@ class AutoIdentStartListener
             $result   = $this->identifier->identify(
                 (int)$carrierId, $request,
                 $token,
-                $this->deviceDataProvider->get()
+                $this->deviceDataProvider->get($request)
             );
             $response = $result->getOverridedResponse();
 

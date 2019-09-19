@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\CarrierTemplate\TemplateConfigurator;
 use App\Domain\DTO\BatchOfGames;
 use App\Domain\Entity\CountryCategoryPriorityOverride;
 use App\Domain\Entity\MainCategory;
@@ -13,6 +12,7 @@ use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\UploadedVideoRepository;
 use App\Piwik\ContentStatisticSender;
 use App\Domain\Service\VideoProcessing\UploadedVideoSerializer;
+use CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator;
 use ExtrasBundle\Utils\ArraySorter;
 use IdentificationBundle\Controller\ControllerWithIdentification;
 use IdentificationBundle\Controller\ControllerWithISPDetection;

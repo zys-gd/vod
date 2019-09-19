@@ -90,6 +90,8 @@ class ProcessResult
     private $providerId;
 
     private $providerUser;
+
+    private $providerFields = [];
     /**
      * @var array
      */
@@ -115,6 +117,7 @@ class ProcessResult
      * @param null   $provider
      * @param null   $providerId
      * @param null   $providerUser
+     * @param array  $providerFields
      * @param array  $clientFields
      * @param int    $chargePaid
      */
@@ -136,6 +139,7 @@ class ProcessResult
         $provider = null,
         $providerId = null,
         $providerUser = null,
+        $providerFields = [],
         $clientFields = [],
         $chargePaid = null
     )
@@ -182,6 +186,7 @@ class ProcessResult
         $this->providerId   = $providerId;
         $this->providerUser = $providerUser;
         $this->clientFields = $clientFields;
+        $this->providerFields = $providerFields;
     }
 
 
@@ -385,5 +390,14 @@ class ProcessResult
     {
         return $this->chargePaid;
     }
+
+    /**
+     * @return array
+     */
+    public function getProviderFields(): array
+    {
+        return $this->providerFields;
+    }
+
 
 }

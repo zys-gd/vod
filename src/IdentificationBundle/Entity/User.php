@@ -77,6 +77,11 @@ class User
     private $deviceModel;
 
     /**
+     * @var string
+     */
+    private $languageCode = '';
+
+    /**
      * User constructor
      *
      * @param string $uuid
@@ -341,4 +346,22 @@ class User
         $this->deviceModel = $deviceModel;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getLanguageCode()
+    {
+        return $this->languageCode;
+    }
+
+    /**
+     * @param mixed $languageCode
+     */
+    public function setLanguageCode($languageCode): void
+    {
+        $this->languageCode = $languageCode;
+    }
+
+
 }

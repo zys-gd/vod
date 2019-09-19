@@ -221,8 +221,16 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
             // send SMS
             if ($subscription->isSubscribed() && $this->resultSuccessChecker->isSuccessful($processResponse)) {
                 $this->logger->debug('Hutch ID listen callback created successful subscription. Start tracking');
+                // subscribe sms
+                // $this->notifier->sendNotification(
+                //     SubscribeProcess::PROCESS_METHOD_SUBSCRIBE,
+                //     $subscription,
+                //     $subscription->getSubscriptionPack(),
+                //     $carrier
+                // );
+
                 $this->notifier->sendNotification(
-                    SubscribeProcess::PROCESS_METHOD_SUBSCRIBE,
+                    'notify_renew',
                     $subscription,
                     $subscription->getSubscriptionPack(),
                     $carrier

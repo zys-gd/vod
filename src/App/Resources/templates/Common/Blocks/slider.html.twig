@@ -1,6 +1,6 @@
 {% macro render(aVideos, categories) %}
     {% import '@App/Components/Blocks/Main/see_all.html.twig' as  see_all %}
-    {% import "@App/Components/Blocks/Main/video_preview.html.twig" as  video_preview %}
+    {% import importTemplate("Components/Blocks/Main/video_preview.html.twig") as  video_preview %}
 
     <div class="slider-block">
         {% for category, videos in aVideos %}

@@ -180,9 +180,11 @@ class CampaignAdmin extends AbstractAdmin
             ])
             ->add('isLpOff')
             ->add('zeroCreditSubAvailable')
+            ->add('freeTrialSubscription')
             ->add('isClickableSubImage', null, [
                 'label' => 'Clickable image'
             ])
+            ->add('isConfirmationClick')
             ->add('carriers')
             ->add('dateCreated')
             ->add('_action', null, [
@@ -219,9 +221,11 @@ class CampaignAdmin extends AbstractAdmin
             ->add('isPause', null,
                 ['label' => 'Pause'])
             ->add('zeroCreditSubAvailable')
+            ->add('freeTrialSubscription')
             ->add('isClickableSubImage', null, [
                 'label' => 'Clickable image'
             ])
+            ->add('isConfirmationClick')
             ->add('pausedCampaigns', null, [
                 'label'    => 'Paused by Carrier',
                 'template' => '@Admin/Campaign/paused_campaigns.html.twig',
@@ -283,16 +287,16 @@ class CampaignAdmin extends AbstractAdmin
                 'required' => true
             ])
             ->end()
-            ->add('ppd', MoneyType::class, [
-                'label'    => 'PPD',
+            ->add('freeTrialPrice', MoneyType::class, [
+                'label'    => 'Free trial price',
                 'required' => true
             ])
-            ->add('sub', MoneyType::class, [
-                'label'    => 'SUB',
+            ->add('zeroEurPrice', MoneyType::class, [
+                'label'    => '0 Eur Price',
                 'required' => true
             ])
-            ->add('click', MoneyType::class, [
-                'label'    => 'CLICK',
+            ->add('generalPrice', MoneyType::class, [
+                'label'    => 'General Price',
                 'required' => true
             ])
             ->add('isPause', null, [
@@ -302,6 +306,7 @@ class CampaignAdmin extends AbstractAdmin
             ->add('isClickableSubImage', null, [
                 'label' => 'Clickable image'
             ])
+            ->add('isConfirmationClick')
             ->add('isLpOff', ChoiceFieldMaskType::class, [
                 'choices' => [
                     'No'  => 0,

@@ -1,19 +1,18 @@
 services:
-  IdentificationBundle\Controller\ParamConverter\ISPDetectionConverter:
-    tags:
-      - { name: request.param_converter, converter: isp_data_converter  }
+    IdentificationBundle\Controller\ParamConverter\ISPDetectionConverter:
+        tags:
+            - { name: request.param_converter, converter: isp_data_converter  }
 
-  IdentificationBundle\Controller\ParamConverter\IdentificationDataConverter:
-    tags:
-      - { name: request.param_converter }
+    IdentificationBundle\Controller\ParamConverter\IdentificationDataConverter:
+        tags:
+            - { name: request.param_converter }
 
-  IdentificationBundle\Controller\ParamConverter\DeviceDataConverter:
-    tags:
-      - { name: request.param_converter }
-    arguments:
-      ['@device_detection.service.device', '@CountryCarrierDetectionBundle\Service\ConnectionTypeService']
+    IdentificationBundle\Controller\ParamConverter\DeviceDataConverter:
+        tags:
+            - { name: request.param_converter }
+        arguments:
+          ['@device_detection.service.device', '@CountryCarrierDetectionBundle\Service\ConnectionTypeService']
 
-
-  IdentificationBundle\Identification\Service\Session\SessionStorage:
-    arguments:
-      - '@session'
+    IdentificationBundle\Identification\Service\Session\SessionStorage:
+        arguments:
+            - '@session'

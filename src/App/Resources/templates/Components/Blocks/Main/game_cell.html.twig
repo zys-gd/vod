@@ -1,6 +1,6 @@
 {% macro render(game) %}
     {% import '@App/Components/Buttons/small_button.html.twig' as button %}
-    {% import "@App/Common/Blocks/download_button.html.twig" as  download_button %}
+    {% import importTemplate("Common/Blocks/download_button.html.twig") as  download_button %}
 
     <div class="d-flex flex-column  x-game-element game-wrapper" data-uuid="{{ game.uuid }}">
         <div class="game">

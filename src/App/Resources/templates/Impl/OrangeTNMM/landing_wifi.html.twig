@@ -1,16 +1,16 @@
 {% extends '@App/base.html.twig' %}
-{% import "@App/Components/Blocks/Header/header_lp.html.twig" as  header %}
-{% import "@App/Components/Blocks/Footer/annotation.html.twig" as  annotation %}
-{% import "@App/Components/Blocks/Footer/menu.html.twig" as  footer_menu %}
+{% import importTemplate("Components/Blocks/Header/header_lp.html.twig") as  header %}
+{% import importTemplate("Components/Blocks/Footer/annotation.html.twig") as  annotation %}
+{% import importTemplate("Components/Blocks/Footer/menu.html.twig") as  footer_menu %}
 
 
 {# IMPORT SECTIONS #}
-{% import LPImporter("LP/Sections/play_text_section.html.twig") as play_text_section %}
-{% import LPImporter("LP/Sections/banner_section.html.twig") as banner_section %}
-{% import LPImporter("LP/Sections/3G/subscribe_button_section.html.twig") as subscribe_button_section %}
-{% import LPImporter("LP/Sections/offer_section.html.twig") as offer_section %}
-{% import LPImporter("LP/Sections/icons_chanel_section.html.twig") as icons_chanel_section %}
-{% import LPImporter("LP/Sections/lure_text_section.html.twig") as lure_text_section %}
+{% import importTemplate("LP/Sections/play_text_section.html.twig") as play_text_section %}
+{% import importTemplate("LP/Sections/banner_section.html.twig") as banner_section %}
+{% import importTemplate("LP/Sections/3G/subscribe_button_section.html.twig") as subscribe_button_section %}
+{% import importTemplate("LP/Sections/offer_section.html.twig") as offer_section %}
+{% import importTemplate("LP/Sections/icons_chanel_section.html.twig") as icons_chanel_section %}
+{% import importTemplate("LP/Sections/lure_text_section.html.twig") as lure_text_section %}
 {# END IMPORT SECTIONS #}
 
 {% block header_content %}

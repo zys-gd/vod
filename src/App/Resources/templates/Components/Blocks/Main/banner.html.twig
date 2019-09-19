@@ -3,7 +3,9 @@
     {#{% set class = class ~ ' x-subscribe-button' %}#}
 
     {% if isClickable %}
-        {% if isIdentified() %}
+        {% if isCarrierPassthrough() %}
+            {% set href = url('identify_by_passthrough') %}
+        {% elseif isIdentified() %}
             {% set href = url('subscription.subscribe') %}
         {% elseif isConsentFlow() %}
             {% set href = url('subscription.consent_page_subscribe') %}
