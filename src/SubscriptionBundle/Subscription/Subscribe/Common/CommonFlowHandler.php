@@ -12,6 +12,7 @@ use ExtrasBundle\Controller\Traits\ResponseTrait;
 use ExtrasBundle\Utils\UrlParamAppender;
 use IdentificationBundle\Entity\User;
 use Psr\Log\LoggerInterface;
+use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
@@ -23,6 +24,7 @@ use SubscriptionBundle\Subscription\Subscribe\Handler\HasCommonFlow;
 use SubscriptionBundle\Subscription\Subscribe\Handler\HasCustomResponses;
 use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider;
 use SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker;
+use SubscriptionBundle\Subscription\Subscribe\Service\PendingSubscriptionCreator;
 use SubscriptionBundle\Subscription\Subscribe\Subscriber;
 use SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound;
 use SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider;
@@ -92,6 +94,10 @@ class CommonFlowHandler
      * @var AfterSubscriptionProcessTracker
      */
     private $afterSubscriptionProcessTracker;
+    /**
+     * @var PendingSubscriptionCreator
+     */
+    private $pendingSubscriptionCreator;
 
 
     /**
@@ -112,6 +118,7 @@ class CommonFlowHandler
      * @param AffiliateNotifier               $affiliateNotifier
      * @param CampaignExtractor               $campaignExtractor
      * @param AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
+     * @param PendingSubscriptionCreator      $pendingSubscriptionCreator
      */
     public function __construct(
         SubscriptionExtractor $subscriptionProvider,
@@ -128,7 +135,8 @@ class CommonFlowHandler
         RouteProvider $routeProvider,
         AffiliateNotifier $affiliateNotifier,
         CampaignExtractor $campaignExtractor,
-        AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
+        AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker,
+        PendingSubscriptionCreator $pendingSubscriptionCreator
     )
     {
         $this->subscriptionProvider            = $subscriptionProvider;
@@ -146,6 +154,7 @@ class CommonFlowHandler
         $this->zeroCreditSubscriptionChecking  = $zeroCreditSubscriptionChecking;
         $this->campaignExtractor               = $campaignExtractor;
         $this->afterSubscriptionProcessTracker = $afterSubscriptionProcessTracker;
+        $this->pendingSubscriptionCreator      = $pendingSubscriptionCreator;
     }
 
     /**
@@ -222,10 +231,11 @@ class CommonFlowHandler
         $additionalData   = $subscriber->getAdditionalSubscribeParams($request, $User);
         $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($User);
         $campaign         = $this->campaignExtractor->getCampaignFromSession($request->getSession());
-
+        $campaignData     = AffiliateVisitSaver::extractPageVisitData($request->getSession(), true);
+        $newSubscription     = $this->pendingSubscriptionCreator->createPendingSubscription($User, $subscriptionPack, $campaignData);
 
         /** @var ProcessResult $result */
-        list($newSubscription, $result) = $this->subscriber->subscribe($User, $subscriptionPack, $additionalData);
+        $result = $this->subscriber->subscribe($newSubscription, $additionalData);
 
         $this->afterSubscriptionProcessTracker->track($result, $newSubscription, $subscriber, $campaign);
 
