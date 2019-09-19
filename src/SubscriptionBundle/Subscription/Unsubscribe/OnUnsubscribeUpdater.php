@@ -60,6 +60,7 @@ class OnUnsubscribeUpdater
             $subscription->setError($processResponse->getError());
             $this->applyFailure($subscription, $processResponse->getError());
         }
+        $subscription->setUpdated(new \DateTime("now"));
     }
 
     /**
