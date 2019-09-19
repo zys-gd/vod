@@ -6,7 +6,7 @@
  * Time: 14:47
  */
 
-namespace SubscriptionBundle\Subscription\Subscribe\Service;
+namespace SubscriptionBundle\Subscription\Subscribe\Common;
 
 
 use IdentificationBundle\Entity\User;

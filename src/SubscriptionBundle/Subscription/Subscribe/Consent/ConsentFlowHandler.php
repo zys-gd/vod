@@ -21,7 +21,7 @@ use SubscriptionBundle\Subscription\Subscribe\Common\{AffiliateNotifier,
     SubscriptionEventTracker};
 use SubscriptionBundle\Subscription\Subscribe\Handler\{HasCustomResponses};
 use SubscriptionBundle\Subscription\Subscribe\Handler\ConsentPageFlow\HasConsentPageFlow;
-use SubscriptionBundle\Subscription\Subscribe\Service\PendingSubscriptionCreator;
+use SubscriptionBundle\Subscription\Subscribe\Common\PendingSubscriptionCreator;
 use SubscriptionBundle\Subscription\Subscribe\Subscriber;
 use SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider;
 use Symfony\Component\HttpFoundation\{RedirectResponse, Request, Response};
@@ -109,15 +109,15 @@ class ConsentFlowHandler
      * @param SubscriptionPackProvider        $subscriptionPackProvider
      * @param Subscriber                      $subscriber
      * @param EntitySaveHelper                $entitySaveHelper
-     * @param RouteProvider                   $routeProvider
-     * @param SubscriptionEligibilityChecker  $subscriptionEligibilityChecker
-     * @param UrlParamAppender                $urlParamAppender
-     * @param RouterInterface                 $router
-     * @param CommonResponseCreator           $commonResponseCreator
-     * @param AffiliateNotifier               $affiliateNotifier
-     * @param CampaignExtractor               $campaignExtractor
-     * @param AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
-     * @param PendingSubscriptionCreator      $pendingSubscriptionCreator
+     * @param RouteProvider                                                                $routeProvider
+     * @param SubscriptionEligibilityChecker                                               $subscriptionEligibilityChecker
+     * @param UrlParamAppender                                                             $urlParamAppender
+     * @param RouterInterface                                                              $router
+     * @param CommonResponseCreator                                                        $commonResponseCreator
+     * @param AffiliateNotifier                                                            $affiliateNotifier
+     * @param CampaignExtractor                                                            $campaignExtractor
+     * @param AfterSubscriptionProcessTracker                                              $afterSubscriptionProcessTracker
+     * @param \SubscriptionBundle\Subscription\Subscribe\Common\PendingSubscriptionCreator $pendingSubscriptionCreator
      */
     public function __construct(
         LoggerInterface $logger,

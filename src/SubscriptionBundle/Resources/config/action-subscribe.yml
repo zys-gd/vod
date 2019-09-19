@@ -29,7 +29,7 @@ services:
             - '@SubscriptionBundle\Subscription\Subscribe\Common\AffiliateNotifier'
             - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker'
-            - '@SubscriptionBundle\Subscription\Subscribe\Service\PendingSubscriptionCreator'
+            - '@SubscriptionBundle\Subscription\Subscribe\Common\PendingSubscriptionCreator'
 
 
     SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEligibilityChecker: ~
@@ -103,7 +103,7 @@ services:
             - '@SubscriptionBundle\Subscription\Subscribe\Common\AffiliateNotifier'
             - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker'
-            - '@SubscriptionBundle\Subscription\Subscribe\Service\PendingSubscriptionCreator'
+            - '@SubscriptionBundle\Subscription\Subscribe\Common\PendingSubscriptionCreator'
 
     SubscriptionBundle\Subscription\Subscribe\Controller\SubscribeAction:
         tags: ['controller.service_arguments']
@@ -184,5 +184,5 @@ services:
             - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
 
 
-    SubscriptionBundle\Subscription\Subscribe\Service\PendingSubscriptionCreator:
+    SubscriptionBundle\Subscription\Subscribe\Common\PendingSubscriptionCreator:
         arguments: ['@logger', '@SubscriptionBundle\Subscription\Common\SubscriptionFactory', '@SubscriptionBundle\Service\EntitySaveHelper']
