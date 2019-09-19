@@ -109,6 +109,7 @@ class OnRenewUpdater
                     $this->applyFailure($subscription, $processResponse->getError());
             }
         }
+        $subscription->setUpdated(new \DateTime("now"));
     }
 
     /**

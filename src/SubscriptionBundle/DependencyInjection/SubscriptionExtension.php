@@ -58,6 +58,7 @@ class SubscriptionExtension extends ConfigurableExtension
         $loader->load('action-common.yml');
         $loader->load('subscription-pack.yml');
         $loader->load('complaints.yml');
+        $loader->load('api.yml');
 
 
         $loader = new YamlFileLoader(

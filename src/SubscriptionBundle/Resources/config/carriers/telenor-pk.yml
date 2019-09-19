@@ -4,7 +4,7 @@ services:
         tags:
           - {name: subscription.subscription_handler}
         arguments:
-          ['@SubscriptionBundle\Subscription\Notification\Notifier']
+          ['@SubscriptionBundle\Subscription\Notification\Notifier', '@IdentificationBundle\Identification\Service\RouteProvider']
 
     subscription.telenor_pk_notification_handler:
         class: SubscriptionBundle\Carriers\TelenorPK\Notification\TelenorPKNotificationHandler
