@@ -111,6 +111,7 @@ class OnSubscribeUpdater
                     $this->applyFailure($subscription, $result->getError());
             }
         }
+        $subscription->setUpdated(new \DateTime("now"));
     }
 
     /**
