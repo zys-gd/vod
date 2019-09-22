@@ -7,20 +7,9 @@
         $(document).ready(() => {
             var form = $('#wifi_form');
             var carrierId = +'{{ getCarrierId() }}';
-
             var wifiFormStep = $('#wifi_form_step');
             var wifiFormWarning = $('.wifi_form__warning');
             var phone;
-            var phoneTarget = $('input[name=mobile_number]');
-
-            //TODO find more flexible solution
-            var params = {
-                html_wifi_phone: $('<div />').html('{{ html2string(wifi_phone.render()) }}').text(),
-                html_wifi_pin: $('<div />').html('{{ html2string(wifi_pin.render()) }}').text(),
-                pin_notif: $('<div />').html('{{ html2string(translate('wifi.pin_notif')|nl2br) }}').text(),
-                warning: $('<div />').html('{{ html2string(translate('wifi.warning')|nl2br) }}').text()
-            };
-
 
             if (window.performance && window.performance.navigation.type == window.performance.navigation.TYPE_BACK_FORWARD) {
                 location.reload()
@@ -61,6 +50,7 @@
 
             // confirm pin code
             $(document).on('submit', 'form[data-form=confirm]', function (e) {
+                form = $('#wifi_form');
                 e.preventDefault();
                 $._loader();
 
@@ -118,11 +108,15 @@
             $(document).on('click', '#change-number', function (event) {
                 event.preventDefault();
                 $._loader();
-                wifiFormStep.html(params.html_wifi_phone);
-                wifiFormWarning.html(params.warning);
-                form.attr('data-form', 'pin');
-                addPhoneValidation();
-                $('input[name=mobile_number]').val(phone);
+
+                $.ajax({
+                    url: "{{ path('change_number') }}",
+                    method: "GET",
+                    data: {phone},
+                    success: (response) => {
+                        replaceBodyContent(response)
+                    }
+                });
                 $._loader(true);
             });
 
@@ -156,15 +150,14 @@
                 phoneTarget = $('input[name=mobile_number]');
                 phone = phoneTarget.val();
 
-                wifiFormWarning.html(params.pin_notif.replace(/%wifi_phone%/, phone));
-                wifiFormStep
-                    .html(params.html_wifi_pin)
-                    .append(phoneTarget);
-
-                addPinValidation();
-
-                form.attr('data-form', 'confirm');
-                phoneTarget.addClass('d-none');
+                $.ajax({
+                    url: "{{ path('pin_confirm') }}",
+                    method: "GET",
+                    data: {phone},
+                    success: (response) => {
+                        replaceBodyContent(response)
+                    }
+                });
             }
 
             function PinErrorResponseResolver(response) {

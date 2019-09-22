@@ -33,7 +33,11 @@
         <!-- END BANNER SECTION WITH SUB IMAGE -->
 
         <!-- SUBSCRIBE BUTTON SECTION -->
-        {{ subscribe_button_section.render('buttons.subscribe', 'btn-lp_big') }}
+        {% if phoneNumber is defined %}
+            {{ subscribe_button_section.render('buttons.subscribe', 'btn-lp_big', '', phoneNumber) }}
+        {% else %}
+            {{ subscribe_button_section.render('buttons.subscribe', 'btn-lp_big') }}
+        {% endif %}
         <!-- END SUBSCRIBE BUTTON SECTION -->
 
         <!-- OFFER SECTION -->
