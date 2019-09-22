@@ -1,8 +1,8 @@
 {% macro render(page_title) %}
 
-    {% import "@App/Components/Blocks/Header/header_main.html.twig" as  header_main %}
-    {% import "@App/Components/Blocks/Header/navbar.html.twig" as  navbar %}
-    {% import "@App/Components/Blocks/Header/page_heading.html.twig" as  page_heading %}
+    {% import importTemplate("Components/Blocks/Header/header_main.html.twig") as  header_main %}
+    {% import importTemplate("Components/Blocks/Header/navbar.html.twig") as  navbar %}
+    {% import importTemplate("Components/Blocks/Header/page_heading.html.twig") as  page_heading %}
 
     {{ navbar.render() }}
 

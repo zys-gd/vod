@@ -97,9 +97,10 @@ class OnSubscribeUpdater
 
         if (!$isSuccessful) {
 
-            $subscription->setError($result->getError());
+            $error = (string)$result->getError();
+            $subscription->setError($error);
 
-            switch ($result->getError()) {
+            switch ($error) {
                 case 'not_enough_credit':
                     $subscription->setStatus(Subscription::IS_ON_HOLD);
                     //TODO: remove?
@@ -108,9 +109,10 @@ class OnSubscribeUpdater
                     }
                     break;
                 default:
-                    $this->applyFailure($subscription, $result->getError());
+                    $this->applyFailure($subscription, $error);
             }
         }
+        $subscription->setUpdated(new \DateTime("now"));
     }
 
     /**

@@ -1,5 +1,5 @@
 {% macro render() %}
-    {% import "@App/Components/Blocks/Main/lure.html.twig" as  red_lure_block %}
+    {% import importTemplate("Components/Blocks/Main/lure.html.twig") as  red_lure_block %}
     <div class="lure_box_wrapper">
         {{ red_lure_block.render(translate('lure_block.text')) }}
     </div>

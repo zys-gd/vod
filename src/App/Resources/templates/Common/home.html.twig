@@ -1,14 +1,14 @@
 {% extends '@App/base.html.twig' %}
 
-{% import "@App/Common/Blocks/header.html.twig" as  header %}
-{% import "@App/Components/Blocks/Main/subscription_status.html.twig" as  subscription_status %}
-{% import "@App/Components/Blocks/Header/subscription_heading.html.twig" as  subscription_heading %}
-{% import "@App/Components/Blocks/Footer/menu.html.twig" as  footer_menu %}
+{% import importTemplate("Common/Blocks/header.html.twig") as  header %}
+{% import importTemplate("Components/Blocks/Main/subscription_status.html.twig") as  subscription_status %}
+{% import importTemplate("Components/Blocks/Header/subscription_heading.html.twig") as  subscription_heading %}
+{% import importTemplate("Components/Blocks/Footer/menu.html.twig") as  footer_menu %}
 
-{% import "@App/Components/player.html.twig" as  player %}
-{% import "@App/Common/Blocks/slider.html.twig" as  slider %}
-{% import "@App/Common/Blocks/grid_video.html.twig" as  grid_video %}
-{% import "@App/Common/Blocks/list_of_games.html.twig" as  list_of_games %}
+{% import importTemplate("Components/player.html.twig") as  player %}
+{% import importTemplate("Common/Blocks/slider.html.twig") as  slider %}
+{% import importTemplate("Common/Blocks/grid_video.html.twig") as  grid_video %}
+{% import importTemplate("Common/Blocks/list_of_games.html.twig") as  list_of_games %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -54,7 +54,8 @@
                 'postpaid_restricted': '{{ translate('messages.error.postpaid_restricted') }}',
                 'subscription_restricted': '{{ translate('messages.error.subscription_restricted') }}',
                 'not_enough_credit': '{{ translate('messages.error.not_enough_credit') }}',
-                'subscribe_error': '{{ translate('messages.error.subscribe_error') }}'
+                'subscribe_error': '{{ translate('messages.error.subscribe_error') }}',
+                'already_subscribed_on_another_service': '{{ translate('messages.error.already_subscribed_on_another_service') }}',
             };
             return texts[key] || null;
         }

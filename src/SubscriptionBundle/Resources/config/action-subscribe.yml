@@ -169,6 +169,7 @@ services:
       arguments:
         - '@SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventTracker'
         - '@SubscriptionBundle\Subscription\Subscribe\Common\AffiliateNotifier'
+        - '@logger'
 
 
     SubscriptionBundle\Subscription\Subscribe\ProcessStarter\SubscribeProcessStarterProvider:

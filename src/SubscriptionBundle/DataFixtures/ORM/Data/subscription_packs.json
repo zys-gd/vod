@@ -364,7 +364,7 @@
         "buyStrategyId": 1,
         "renewStrategyId": "1",
         "firstSubscriptionPeriodIsFreeMultiple": false,
-        "firstSubscriptionPeriodIsFree": false,
+        "firstSubscriptionPeriodIsFree": true,
         "allowBonusCredit": false,
         "allowBonusCreditMultiple": false,
         "bonusCredit": 0,
