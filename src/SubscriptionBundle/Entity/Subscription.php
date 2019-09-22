@@ -121,17 +121,6 @@ class Subscription implements HasUuid
 
     }
 
-
-    /**
-     * Gets triggered every time on update
-
-     * @ORM\PreUpdate
-     */
-    public function onPreUpdate()
-    {
-        $this->updated = new \DateTime("now");
-    }
-
     /**
      * @return int
      */
