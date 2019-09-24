@@ -30,6 +30,8 @@
         <link rel="icon" type="image/png" href="{{ asset('/img/favicon/favicon192.png') }}"
               sizes="192x192">
 
+        <link rel="stylesheet" href="{{ asset(getLocalizationCSSPath()) }}">
+
         {{ compileCss()|raw }}
     {% endblock stylesheets %}
 
@@ -54,7 +56,7 @@
     {% endblock %}
 </head>
 
-<body class="d-flex flex-column min-vh-100 {% if isRightTextDirection() %} right-text-direction {% endif %}">
+<body class="d-flex flex-column min-vh-100 {% if isRightTextDirection() %} right-text-direction {% endif %} {{ getLanguageCode() }}">
 {% block header %}
     <header class="d-flex align-items-center justify-content-center">
         {% block header_content %}
