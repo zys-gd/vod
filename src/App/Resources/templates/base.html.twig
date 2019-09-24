@@ -30,8 +30,6 @@
         <link rel="icon" type="image/png" href="{{ asset('/img/favicon/favicon192.png') }}"
               sizes="192x192">
 
-        <link rel="stylesheet" href="{{ asset(getLocalizationCSSPath()) }}">
-
         {{ compileCss()|raw }}
     {% endblock stylesheets %}
 
@@ -52,27 +50,29 @@
         <script type="text/javascript"
                 src="{{ asset('js/common.js') }}"></script>
 
+    <link rel="stylesheet" class="dynamic" href="{{ asset(getLocalizationCSSPath()) }}">
+
         {{ compileJs()|raw }}
     {% endblock %}
 </head>
 
-<body class="d-flex flex-column min-vh-100 {% if isRightTextDirection() %} right-text-direction {% endif %} {{ getLanguageCode() }}">
+<body class="d-flex flex-column min-vh-100 {% if isRightTextDirection() %} right-text-direction {% endif %}">
 {% block header %}
-    <header class="d-flex align-items-center justify-content-center">
+    <header class="d-flex align-items-center justify-content-center {{ getLanguageCode() }}">
         {% block header_content %}
 
         {% endblock header_content %}
     </header>
 {% endblock header %}
 
-<main class="d-flex media-body" id="main-page-container">
+<main class="d-flex media-body {{ getLanguageCode() }}" id="main-page-container">
     {% block body %}
 
     {% endblock body %}
 </main>
 
 {% block footer %}
-    <footer class="d-flex flex-column align-items-center justify-content-center">
+    <footer class="d-flex flex-column align-items-center justify-content-center {{ getLanguageCode() }}">
         {% block footer_content %}
         {% endblock footer_content %}
 

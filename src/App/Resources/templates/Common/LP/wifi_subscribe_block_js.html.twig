@@ -221,10 +221,24 @@
         }
 
         function replaceBodyContent(html) {
+            let dynamicCss = $(html).filter('.dynamic');
             let mainPageContainer = $(html).filter('#main-page-container').html();
             let footer = $(html).filter('footer').html();
+
+            dynamicCss.map((index, el) => {
+                $('head').append(el);
+            });
             $('.media-body').html(mainPageContainer);
             $('footer').html(footer);
+
+            //apply new locale classes
+            changeLocaleClasses(html);
+        }
+
+        function changeLocaleClasses(html) {
+            $('#main-page-container').removeClass().addClass($(html).filter('#main-page-container').attr('class'));
+            $('footer').removeClass().addClass($(html).filter('footer').attr('class'));
+            $('header').removeClass().addClass($(html).filter('header').attr('class'));
         }
 
         function changeCountry(el) {
