@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SubscriptionDataAction
 {
@@ -57,8 +58,8 @@ class SubscriptionDataAction
 
             return new JsonResponse($formatted);
 
-        } catch (NotFoundException $exception) {
-            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_NOT_FOUND);
+        } catch (HttpException $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], $exception->getCode());
         } catch (\Exception $exception) {
             return new JsonResponse(['error' => 'Something has gone wrong'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }

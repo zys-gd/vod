@@ -27,6 +27,9 @@ use SubscriptionBundle\CampaignConfirmation\Handler\CampaignConfirmationHandlerP
 use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter;
 use SubscriptionBundle\DataFixtures\ORM\LoadExchangeRatesData;
 use SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider;
+use SubscriptionBundle\Subscription\Subscribe\Handler\HasCommonFlow;
+use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerInterface;
+use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider;
 use SubscriptionBundle\Subscription\Subscribe\Voter\BatchSubscriptionVoter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Tests\DataFixtures\LoadCampaignTestData;
@@ -70,6 +73,11 @@ class SubscribeActionTest extends AbstractFunctionalTest
      */
     private $smsTextProvider;
 
+    /**
+     * @var MockInterface|SubscriptionHandlerProvider
+     */
+    private $subscriptionHandlerProvider;
+
     public function testSubscribeWithoutIdentWillFallIntoError()
     {
         $client = $this->makeClient();
@@ -89,6 +97,13 @@ class SubscribeActionTest extends AbstractFunctionalTest
             'carrier_id' => 338,
         ];
         $this->session->set('isp_detection_data', $ispDetectionData);
+
+        $this->subscriptionHandlerProvider->allows([
+            'getSubscriber' => Mockery::spy(
+                SubscriptionHandlerInterface::class,
+                HasCommonFlow::class
+            )
+        ]);
 
         $this->httpClient->allows([
             'request' => TestBillingResponseProvider::createSuccessfulRedirectResponse('renew', 'billing_redirect_url')
@@ -112,6 +127,12 @@ class SubscribeActionTest extends AbstractFunctionalTest
         ];
         $this->session->set('isp_detection_data', $ispDetectionData);
 
+        $this->subscriptionHandlerProvider->allows([
+            'getSubscriber' => Mockery::spy(
+                SubscriptionHandlerInterface::class,
+                HasCommonFlow::class
+            )
+        ]);
         $client->request('GET', 'subscribe');
 
         $this->assertTrue($client->getResponse()->isRedirect('/rsna'), 'redirect is missing');
@@ -140,6 +161,12 @@ class SubscribeActionTest extends AbstractFunctionalTest
             'getSMSText' => 'Text'
         ]);
 
+        $this->subscriptionHandlerProvider->allows([
+            'getSubscriber' => Mockery::spy(
+                SubscriptionHandlerInterface::class,
+                HasCommonFlow::class
+            )
+        ]);
         $client->request('GET', 'subscribe');
 
         $this->assertTrue($client->getResponse()->isRedirect('/'), 'Failed resub');
@@ -157,6 +184,13 @@ class SubscribeActionTest extends AbstractFunctionalTest
         $this->session->set('isp_detection_data', $ispDetectionData);
         $this->httpClient->allows([
             'request' => TestBillingResponseProvider::createSuccessfulFinalResponse('subscribe')
+        ]);
+
+        $this->subscriptionHandlerProvider->allows([
+            'getSubscriber' => Mockery::spy(
+                SubscriptionHandlerInterface::class,
+                HasCommonFlow::class
+            )
         ]);
 
         $client->request('GET', 'subscribe');
@@ -207,6 +241,7 @@ class SubscribeActionTest extends AbstractFunctionalTest
         $container->set('SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter', $this->subscriptionLimiter);
         $container->set('SubscriptionBundle\Subscription\Subscribe\Voter\BatchSubscriptionVoter', $this->voter);
         $container->set('SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider', $this->smsTextProvider);
+        $container->set('SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider', $this->subscriptionHandlerProvider);
 
     }
 
@@ -230,6 +265,7 @@ class SubscribeActionTest extends AbstractFunctionalTest
         $this->notificationService          = \Mockery::spy(NotificationService::class);
         $this->subscriptionLimiter          = Mockery::spy(SubscriptionLimiter::class);
         $this->smsTextProvider              = Mockery::spy(SMSTextProvider::class);
+        $this->subscriptionHandlerProvider  = Mockery::spy(SubscriptionHandlerProvider::class);
     }
 
     protected static function getKernelClass()

@@ -84,6 +84,11 @@ class RequestParametersProvider
         $currentUserRequestHeaders = '';
         if ($request && is_array($request->headers->all())) {
             foreach ($request->headers->all() as $key => $value) {
+
+                if ($key == 'cookie') {
+                    continue;
+                }
+
                 $currentUserRequestHeaders .= "{$key}: {$value[0]}\r\n";
             }
         }
