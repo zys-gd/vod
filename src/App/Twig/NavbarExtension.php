@@ -6,6 +6,7 @@ use App\Domain\Entity\CountryCategoryPriorityOverride;
 use App\Domain\Entity\MainCategory;
 use App\Domain\Repository\CountryCategoryPriorityOverrideRepository;
 use App\Domain\Repository\MainCategoryRepository;
+use App\Domain\Service\DeviceDetection\MobileDetector;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\RouterInterface;
@@ -110,6 +111,11 @@ class NavbarExtension extends AbstractExtension
                 }
                 return $result;
 
+            }),
+            new TwigFunction('isAndroidDevice', function () {
+                $mobileDetector = new MobileDetector();
+
+                return $mobileDetector->isAndroidOS();
             })
         ];
     }
