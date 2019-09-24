@@ -6,13 +6,14 @@ namespace SubscriptionBundle\Subscription\SubscribeBack;
 
 use IdentificationBundle\BillingFramework\Data\DataProvider;
 use IdentificationBundle\Entity\User;
-use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
+use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
+use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitCompleter;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
+use SubscriptionBundle\Service\EntitySaveHelper;
+use SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker;
 use SubscriptionBundle\Subscription\Common\SubscriptionFactory;
 use SubscriptionBundle\Subscription\Subscribe\OnSubscribeUpdater;
-use SubscriptionBundle\Service\EntitySaveHelper;
-use SubscriptionBundle\Service\SubscriptionCreator;
 
 class Subscriber
 {
@@ -21,7 +22,7 @@ class Subscriber
      */
     private $entitySaveHelper;
     /**
-     * @var SubscriptionCreator
+     * @var SubscriptionFactory
      */
     private $subscriptionCreator;
     /**
@@ -32,18 +33,36 @@ class Subscriber
      * @var DataProvider
      */
     private $dataProvider;
+    /**
+     * @var ProcessResultSuccessChecker
+     */
+    private $resultSuccessChecker;
+    /**
+     * @var SubscriptionLimitCompleter
+     */
+    private $limitCompleter;
+    /**
+     * @var ApiConnector
+     */
+    private $crossSubscription;
 
     public function __construct(
         EntitySaveHelper $entitySaveHelper,
         SubscriptionFactory $subscriptionCreator,
         OnSubscribeUpdater $subscribeUpdater,
-        DataProvider $dataProvider
+        DataProvider $dataProvider,
+        ProcessResultSuccessChecker $resultSuccessChecker,
+        SubscriptionLimitCompleter $limitCompleter,
+        ApiConnector $crossSubscription
     )
     {
-        $this->entitySaveHelper    = $entitySaveHelper;
-        $this->subscriptionCreator = $subscriptionCreator;
-        $this->subscribeUpdater    = $subscribeUpdater;
-        $this->dataProvider        = $dataProvider;
+        $this->entitySaveHelper     = $entitySaveHelper;
+        $this->subscriptionCreator  = $subscriptionCreator;
+        $this->subscribeUpdater     = $subscribeUpdater;
+        $this->dataProvider         = $dataProvider;
+        $this->resultSuccessChecker = $resultSuccessChecker;
+        $this->limitCompleter       = $limitCompleter;
+        $this->crossSubscription    = $crossSubscription;
     }
 
     /**
@@ -51,6 +70,7 @@ class Subscriber
      * @param SubscriptionPack $subscriptionPack
      * @param string           $billingProcessId
      *
+     * @param string|null      $affiliateToken
      * @return array
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -62,6 +82,11 @@ class Subscriber
         $newSubscription->setAffiliateToken($affiliateToken);
 
         $this->subscribeUpdater->updateSubscriptionByResponse($newSubscription, $processResult);
+        $this->limitCompleter->finishProcess($processResult, $newSubscription);
+
+        if ($newSubscription->isSubscribed() && $this->resultSuccessChecker->isSuccessful($processResult)) {
+            $this->crossSubscription->registerSubscription($user->getIdentifier(), $user->getBillingCarrierId());
+        }
 
         $this->entitySaveHelper->persistAndSave($user);
         $this->entitySaveHelper->persistAndSave($newSubscription);

@@ -14,7 +14,6 @@ services:
             - '@SubscriptionBundle\Subscription\SubscribeBack\Subscriber'
             - '@IdentificationBundle\User\Service\UserFactory'
             - '@SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter'
-            - '@SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator'
             - '@IdentificationBundle\Identification\Service\DeviceDataProvider'
             - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
             - '@SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider'
@@ -25,8 +24,6 @@ services:
             - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
-            - '@SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker'
-            - '@cross_subscription.api_connector'
             - '@logger'
 
     SubscriptionBundle\Subscription\SubscribeBack\Handler\SubscribeBackHandlerProvider:
@@ -39,3 +36,6 @@ services:
             - '@SubscriptionBundle\Subscription\Common\SubscriptionFactory'
             - '@SubscriptionBundle\Subscription\Subscribe\OnSubscribeUpdater'
             - '@IdentificationBundle\BillingFramework\Data\DataProvider'
+            - '@SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker'
+            - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitCompleter'
+            - '@cross_subscription.api_connector'
