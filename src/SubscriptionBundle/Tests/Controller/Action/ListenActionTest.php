@@ -24,6 +24,7 @@ use Tests\DataFixtures\LoadSubscriptionTestData;
 class ListenActionTest extends \ExtrasBundle\Testing\Core\AbstractFunctionalTest
 {
     use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+    use \ExtrasBundle\Cache\Redis\MockeryRedisDummyTrait;
 
     const EXAMPLE_AFFILIATE_SESSION_KEY = 'affiliate_key';
     const COMMON_CARRIER_ID = 10241024;
@@ -74,15 +75,16 @@ class ListenActionTest extends \ExtrasBundle\Testing\Core\AbstractFunctionalTest
      * @var \SubscriptionBundle\Piwik\EventPublisher|Mock
      */
     private $eventPublisher;
+    private $redisConnectionProvider;
 
 
     public function carrierIdProvider()
     {
         return [
 //            'GENERIC_CARRIER'   => [LoadSubscriptionTestData::GENERIC_CARRIER],
-            'ZONG_PAKISTAN' => [ID::MOBILINK_PAKISTAN],
+            'ZONG_PAKISTAN'    => [ID::MOBILINK_PAKISTAN],
 //            'ETISALAT_EGYPT'    => [ID::ETISALAT_EGYPT],
-            'TELENOR_PAKISTAN'  => [ID::TELENOR_PAKISTAN_DOT],
+            'TELENOR_PAKISTAN' => [ID::TELENOR_PAKISTAN_DOT],
 //            'ORANGE_TUNISIA'    => [ID::ORANGE_TUNISIA],
 //            'ORANGE_EGYPT'      => [ID::ORANGE_EGYPT],
 //            'TELENOR_MYANMAR'   => [ID::TELENOR_MYANMAR],
@@ -255,7 +257,6 @@ class ListenActionTest extends \ExtrasBundle\Testing\Core\AbstractFunctionalTest
     }
 
 
-
     public function testCallbackForFailedSubscribeWithPiwik()
     {
         /** @var Subscription $subscription */
@@ -405,6 +406,8 @@ class ListenActionTest extends \ExtrasBundle\Testing\Core\AbstractFunctionalTest
     protected function configureWebClientClientContainer(ContainerInterface $container)
     {
         $container->set('SubscriptionBundle\Piwik\EventPublisher', $this->eventPublisher);
+
+        $container->set('app.cache.redis_connection_provider', $this->getRedisConnectionProviderMock());
     }
 
     protected static function getKernelClass()
