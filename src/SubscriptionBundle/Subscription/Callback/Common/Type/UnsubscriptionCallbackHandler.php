@@ -41,7 +41,7 @@ class UnsubscriptionCallbackHandler extends AbstractCallbackHandler
 
     public function getPiwikEventName(): string
     {
-        return 'trackUnsubscribe';
+        return 'unsubscribe';
     }
 
 

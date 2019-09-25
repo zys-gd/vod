@@ -1,9 +1,9 @@
 <?php
 
 
-namespace PiwikBundle\Service\DTO;
+namespace App\Piwik\DTO;
 
-class PiwikDTO
+class VisitDTO
 {
     /**
      * @var string|null
