@@ -110,7 +110,8 @@
                     method: "GET",
                     data: {phone},
                     success: (response) => {
-                        replaceBodyContent(response)
+                        replaceBodyContent(response);
+                        $('#terms-and-conditions-checkbox').prop('checked', true);
                     }
                 });
                 $._loader(true);
@@ -151,7 +152,8 @@
                     method: "GET",
                     data: {phone},
                     success: (response) => {
-                        replaceBodyContent(response)
+                        replaceBodyContent(response);
+                        $('#terms-and-conditions-checkbox').prop('checked', true);
                     }
                 });
             }
