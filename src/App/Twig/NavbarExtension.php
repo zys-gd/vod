@@ -111,11 +111,6 @@ class NavbarExtension extends AbstractExtension
                 }
                 return $result;
 
-            }),
-            new TwigFunction('isAndroidDevice', function () {
-                $mobileDetector = new MobileDetector();
-
-                return $mobileDetector->isAndroidOS();
             })
         ];
     }

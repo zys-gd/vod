@@ -39,14 +39,14 @@
         <div class="d-flex flex-column w-100">
             {{ grid_video.render(categoryVideos, categories) }}
         </div>
-        {% if isAndroidDevice() %}
+        {% if isAndroidOS() %}
             <div class="d-flex flex-column w-100">
                 {{ list_of_games.render(games) }}
             </div>
             <div class="after-games-separator"></div>
         {% endif %}
     </div>
-    {{ player.render(categoryVideos|merge(sliderVideos)) }}
+    {{ player.render(categoryVideos|merge(sliderVideos)) }}k
 
     {#    {{ addJs('/js/errors_text.js') }}#}
     <script type="text/javascript">
