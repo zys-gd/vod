@@ -31,21 +31,9 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class Subscriber
 {
     /**
-     * @var LoggerInterface
-     */
-    private $logger;
-    /**
      * @var EntitySaveHelper
      */
     private $entitySaveHelper;
-    /**
-     * @var SessionInterface
-     */
-    private $session;
-    /**
-     * @var SubscriptionFactory
-     */
-    private $subscriptionCreator;
     /**
      * @var OnSubscribeUpdater
      */
@@ -67,13 +55,11 @@ class Subscriber
      */
     private $subscribeProcessStarterProvider;
 
+
     /**
      * Subscriber constructor.
      *
-     * @param LoggerInterface                 $logger
      * @param EntitySaveHelper                $entitySaveHelper
-     * @param SessionInterface                $session
-     * @param SubscriptionFactory             $subscriptionCreator
      * @param OnSubscribeUpdater              $onSubscribeUpdater
      * @param SubscriptionLimitCompleter      $subscriptionLimitCompleter
      * @param ApiConnector                    $crossSubscriptionApi
@@ -81,10 +67,7 @@ class Subscriber
      * @param SubscribeProcessStarterProvider $subscribeProcessStarterProvider
      */
     public function __construct(
-        LoggerInterface $logger,
         EntitySaveHelper $entitySaveHelper,
-        SessionInterface $session,
-        SubscriptionFactory $subscriptionCreator,
         OnSubscribeUpdater $onSubscribeUpdater,
         SubscriptionLimitCompleter $subscriptionLimitCompleter,
         ApiConnector $crossSubscriptionApi,
@@ -92,10 +75,7 @@ class Subscriber
         SubscribeProcessStarterProvider $subscribeProcessStarterProvider
     )
     {
-        $this->logger                          = $logger;
         $this->entitySaveHelper                = $entitySaveHelper;
-        $this->session                         = $session;
-        $this->subscriptionCreator             = $subscriptionCreator;
         $this->onSubscribeUpdater              = $onSubscribeUpdater;
         $this->subscriptionLimitCompleter      = $subscriptionLimitCompleter;
         $this->crossSubscriptionApi            = $crossSubscriptionApi;
@@ -103,25 +83,20 @@ class Subscriber
         $this->subscribeProcessStarterProvider = $subscribeProcessStarterProvider;
     }
 
-
     /**
      * Subscribe user to given subscription pack
      *
-     * @param User             $user
-     * @param SubscriptionPack $plan
-     * @param array            $additionalData
+     * @param Subscription $subscription
+     * @param array        $additionalData
      *
-     * @return array
+     * @return ProcessResult
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function subscribe(User $user, SubscriptionPack $plan, $additionalData = []): array
+    public function subscribe(Subscription $subscription, $additionalData = []): ProcessResult
     {
-        $var = AffiliateVisitSaver::extractPageVisitData($this->session, true);
 
-        $this->logger->debug('Creating subscription', ['campaignData' => $var]);
-
-        $subscription = $this->createPendingSubscription($user, $plan);
-        $subscription->setAffiliateToken(json_encode($var));
+        $plan = $subscription->getSubscriptionPack();
+        $user = $subscription->getUser();
 
         try {
 
@@ -135,7 +110,7 @@ class Subscriber
                 $this->crossSubscriptionApi->registerSubscription($user->getIdentifier(), $user->getBillingCarrierId());
             }
 
-            return [$subscription, $response];
+            return $response;
 
         } catch (SubscribingProcessException $exception) {
             $subscription->setStatus(Subscription::IS_ERROR);
@@ -146,21 +121,6 @@ class Subscriber
         }
 
 
-    }
-
-    /**
-     * @param User             $User
-     * @param SubscriptionPack $plan
-     *
-     * @return Subscription
-     */
-    private function createPendingSubscription(User $User, SubscriptionPack $plan): Subscription
-    {
-        $subscription = $this->subscriptionCreator->create($User, $plan);
-        $subscription->setStatus(Subscription::IS_PENDING);
-        $subscription->setCurrentStage(Subscription::ACTION_SUBSCRIBE);
-        $this->entitySaveHelper->persistAndSave($subscription);
-        return $subscription;
     }
 
 

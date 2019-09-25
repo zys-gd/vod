@@ -8,6 +8,7 @@ use ExtrasBundle\Utils\UrlParamAppender;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Service\RouteProvider;
 use Psr\Log\LoggerInterface;
+use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
@@ -20,6 +21,7 @@ use SubscriptionBundle\Subscription\Subscribe\Common\{AffiliateNotifier,
     SubscriptionEventTracker};
 use SubscriptionBundle\Subscription\Subscribe\Handler\{HasCustomResponses};
 use SubscriptionBundle\Subscription\Subscribe\Handler\ConsentPageFlow\HasConsentPageFlow;
+use SubscriptionBundle\Subscription\Subscribe\Common\PendingSubscriptionCreator;
 use SubscriptionBundle\Subscription\Subscribe\Subscriber;
 use SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider;
 use Symfony\Component\HttpFoundation\{RedirectResponse, Request, Response};
@@ -94,23 +96,28 @@ class ConsentFlowHandler
      * @var AfterSubscriptionProcessTracker
      */
     private $afterSubscriptionProcessTracker;
+    /**
+     * @var PendingSubscriptionCreator
+     */
+    private $pendingSubscriptionCreator;
 
     /**
      * ConsentFlowHandler constructor
      *
-     * @param LoggerInterface                                                                   $logger
-     * @param SubscriptionExtractor                                                             $subscriptionExtractor
-     * @param SubscriptionPackProvider                                                          $subscriptionPackProvider
-     * @param Subscriber                                                                        $subscriber
-     * @param EntitySaveHelper                                                                  $entitySaveHelper
-     * @param RouteProvider                                                                     $routeProvider
-     * @param SubscriptionEligibilityChecker                                                    $subscriptionEligibilityChecker
-     * @param UrlParamAppender                                                                  $urlParamAppender
-     * @param RouterInterface                                                                   $router
-     * @param CommonResponseCreator                                                             $commonResponseCreator
-     * @param AffiliateNotifier                                                                 $affiliateNotifier
-     * @param CampaignExtractor                                                                 $campaignExtractor
-     * @param AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
+     * @param LoggerInterface                 $logger
+     * @param SubscriptionExtractor           $subscriptionExtractor
+     * @param SubscriptionPackProvider        $subscriptionPackProvider
+     * @param Subscriber                      $subscriber
+     * @param EntitySaveHelper                $entitySaveHelper
+     * @param RouteProvider                                                                $routeProvider
+     * @param SubscriptionEligibilityChecker                                               $subscriptionEligibilityChecker
+     * @param UrlParamAppender                                                             $urlParamAppender
+     * @param RouterInterface                                                              $router
+     * @param CommonResponseCreator                                                        $commonResponseCreator
+     * @param AffiliateNotifier                                                            $affiliateNotifier
+     * @param CampaignExtractor                                                            $campaignExtractor
+     * @param AfterSubscriptionProcessTracker                                              $afterSubscriptionProcessTracker
+     * @param \SubscriptionBundle\Subscription\Subscribe\Common\PendingSubscriptionCreator $pendingSubscriptionCreator
      */
     public function __construct(
         LoggerInterface $logger,
@@ -125,7 +132,8 @@ class ConsentFlowHandler
         CommonResponseCreator $commonResponseCreator,
         AffiliateNotifier $affiliateNotifier,
         CampaignExtractor $campaignExtractor,
-        AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
+        AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker,
+        PendingSubscriptionCreator $pendingSubscriptionCreator
 
 
     )
@@ -143,6 +151,7 @@ class ConsentFlowHandler
         $this->affiliateNotifier               = $affiliateNotifier;
         $this->campaignExtractor               = $campaignExtractor;
         $this->afterSubscriptionProcessTracker = $afterSubscriptionProcessTracker;
+        $this->pendingSubscriptionCreator      = $pendingSubscriptionCreator;
     }
 
     /**
@@ -174,8 +183,7 @@ class ConsentFlowHandler
             ]);
 
             return $this->handleResubscribe($request, $user, $subscriber, $subscription);
-        }
-        else {
+        } else {
             $this->logger->debug('`Subscribe` is not possible. User already have an active subscription.');
 
             if (
@@ -208,9 +216,12 @@ class ConsentFlowHandler
         $additionalData   = $subscriber->getAdditionalSubscribeParams($request, $user);
         $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
         $campaign         = $this->campaignExtractor->getCampaignFromSession($request->getSession());
+        $campaignData     = AffiliateVisitSaver::extractPageVisitData($request->getSession(), true);
+        $newSubscription  = $this->pendingSubscriptionCreator->createPendingSubscription($user, $subscriptionPack, $campaignData);
+
 
         /** @var ProcessResult $result */
-        list($newSubscription, $result) = $this->subscriber->subscribe($user, $subscriptionPack, $additionalData);
+        $result = $this->subscriber->subscribe($newSubscription, $additionalData);
 
         $this->afterSubscriptionProcessTracker->track($result, $newSubscription, $subscriber, $campaign);
 
