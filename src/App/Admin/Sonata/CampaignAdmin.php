@@ -104,8 +104,11 @@ class CampaignAdmin extends AbstractAdmin
         $this->generateTestLink($obj);
 
         $originalData = $this->em->getUnitOfWork()->getOriginalEntityData($obj);
-        if($obj->isLpOff() != $originalData['isLpOff']) {
-            $obj->getAffiliate()->setIsLpOff($obj->isLpOff());
+
+        if(count($originalData) > 0) {
+            if (isset($originalData['isLpOff']) && $obj->isLpOff() != $originalData['isLpOff']) {
+                $obj->getAffiliate()->setIsLpOff($obj->isLpOff());
+            }
         }
     }
 
