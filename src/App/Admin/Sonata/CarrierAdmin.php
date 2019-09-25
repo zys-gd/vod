@@ -2,6 +2,8 @@
 
 namespace App\Admin\Sonata;
 
+use App\Domain\Entity\Affiliate;
+use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
 use Doctrine\ORM\EntityManagerInterface;
 use ExtrasBundle\Cache\ICacheService;
@@ -17,6 +19,7 @@ use SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterDataExtractor;
 use SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterStorage;
 use SubscriptionBundle\CAPTool\Subscription\Limiter\StorageKeyGenerator;
 use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter;
+use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -95,6 +98,40 @@ class CarrierAdmin extends AbstractAdmin
         ) {
             $object->setIsCapAlertDispatch(false);
         }
+
+        if ($object->isLpOff() != $originalData['isLpOff']) {
+            $isLpOff = $object->isLpOff();
+            $object->getCampaigns()->map(function (Campaign $campaign) use ($isLpOff) {
+                $campaign->setIsLpOff($isLpOff);
+            });
+
+            $object->getAffiliates()->map(function (Affiliate $affiliate) use ($isLpOff) {
+                $affiliate->setIsLpOff($isLpOff);
+            });
+        }
+
+        if ($object->getIsCampaignsOnPause() != $originalData['isCampaignsOnPause']) {
+            $isCampaignsOnPause = $object->getIsCampaignsOnPause();
+            $object->getCampaigns()->map(function (Campaign $campaign) use ($isCampaignsOnPause) {
+                $campaign->setIsPause($isCampaignsOnPause);
+            });
+        }
+
+        if ($object->isClickableSubImage() != $originalData['isClickableSubImage']) {
+            $isClickableSubImage = $object->isClickableSubImage();
+            $object->getCampaigns()->map(function (Campaign $campaign) use ($isClickableSubImage) {
+                $campaign->setIsClickableSubImage($isClickableSubImage);
+            });
+        }
+
+        if($object->isConfirmationClick() != $originalData['isConfirmationClick']) {
+            $isConfirmationClick = $object->isConfirmationClick();
+            $object->getCampaigns()->map(function (Campaign $campaign) use ($isConfirmationClick) {
+                $campaign->setIsConfirmationClick($isConfirmationClick);
+            });
+        }
+
+
     }
 
     /**
