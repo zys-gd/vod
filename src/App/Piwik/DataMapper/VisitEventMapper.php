@@ -21,15 +21,15 @@ class VisitEventMapper
     {
 
         $userInformation = new UserInformation(
-            $visitDTO->getCountry(),
-            $visitDTO->getIp(),
+            (string)$visitDTO->getCountry(),
+            (string)$visitDTO->getIp(),
             (string)$visitDTO->getConnection(),
-            $visitDTO->getMsisdn(),
-            $visitDTO->getOperator(),
+            (string)$visitDTO->getMsisdn(),
+            (int)$visitDTO->getOperator(),
             0,
             0,
             0,
-            $visitDTO->getAffiliate()
+            (string)$visitDTO->getAffiliate()
         );
 
 
