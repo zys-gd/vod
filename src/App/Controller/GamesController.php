@@ -12,7 +12,7 @@ use App\Domain\Service\Games\DrmApkProvider;
 use App\Domain\Service\Games\ExcludedGamesProvider;
 use App\Domain\Service\Games\GameImagesSerializer;
 use App\Domain\Service\Games\GameSerializer;
-use App\Domain\Service\Piwik\ContentStatisticSender;
+use App\Piwik\ContentStatisticSender;
 use CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator;
 use IdentificationBundle\Identification\DTO\ISPData;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;

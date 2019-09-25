@@ -7,3 +7,10 @@ doctrine:
     driver_class:   ExtrasBundle\Development\DBAL\Sqlite\ModifiedDriver
     path:     '%kernel.cache_dir%/__DBNAME__.db'
     dbname: testdb
+
+
+      #docker exec --user jenkins $PHP_CONTAINER_NAME /application/vendor/liuggio/fastest/fastest \
+      #    -x phpunit.xml.dist \
+      #    "/application/vendor/phpunit/phpunit/phpunit {};" \
+    #    -vvv \
+    #    -p 2
