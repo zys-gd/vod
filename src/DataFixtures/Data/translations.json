@@ -1632,26 +1632,13 @@
         "carrier": null
     },
     {
-        "uuid": "3a52s427-3f40-41a2-99d9-6800s52db39f",
-        "key": "buttons.unsubscribe",
-        "translation": "\u0625\u0644\u063a\u0627\u0621 \u0627\u0644\u0627\u0634\u062a\u0631\u0627\u0643 \u0645\u0646 %100 sport",
-        "language": {
-            "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": {
-            "uuid": "99a362ea-72cd-45d5-bbcc-18f16b8451ed"
-        }
-    },
-    {
         "uuid": "3a928427-3f40-41a2-99d9-6800439eb39f",
         "key": "buttons.unsubscribe",
         "translation": "\u0625\u0644\u063a\u0627\u0621 \u0627\u0644\u0627\u0634\u062a\u0631\u0627\u0643 \u0645\u0646 %100 sport",
         "language": {
             "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
         },
-        "carrier": {
-            "uuid": "7c8385df-8d56-464a-98ff-66c55a7a5741"
-        }
+        "carrier": null
     },
     {
         "uuid": "3c22a420-749c-4e4a-9342-e34652ca670c",
@@ -2162,17 +2149,6 @@
         "carrier": null
     },
     {
-        "uuid": "810ea666-0eb7-4357-bfdc-f906144e2489",
-        "key": "subscription.status.subscribed",
-        "translation": "\u0623\u0646\u062a \u0645\u0634\u062a\u0631\u0643 sport 100% %price% %currency%\/%period%.\u0627\u0633\u062a\u0645\u062a\u0639 \u0628\u0645\u062d\u062a\u0648\u0649 \u063a\u064a\u0631 \u0645\u062d\u062f\u0648\u062f!",
-        "language": {
-            "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": {
-            "uuid": "99a362ea-72cd-45d5-bbcc-18f16b8451ed"
-        }
-    },
-    {
         "uuid": "83bdc603-7ace-4ea1-a4fe-989c2781af02",
         "key": "faq.a.1",
         "translation": "\u062e\u062f\u0645\u0629 %100 sport  \u0647\u064a \u0628\u0645\u062b\u0627\u0628\u0629 \u062e\u062f\u0645\u0629 \u0627\u0634\u062a\u0631\u0627\u0643 \u062a\u062a\u062c\u062f\u062f \u062a\u0644\u0642\u0627\u0626\u064a\u0627 \u0643\u0644 \u0623\u0633\u0628\u0648\u0639 \u0623\u0648 \u064a\u0648\u0645 (\u062d\u0633\u0628 \u0645\u0642\u062a\u0636\u0649 \u0627\u0644\u062d\u0627\u0644) \u0625\u0644\u0627 \u0625\u0630\u0627 \u0642\u0645\u062a \u0628\u0625\u0644\u063a\u0627\u0621 \u0627\u0644\u0627\u0634\u062a\u0631\u0627\u0643. \u064a\u0645\u0643\u0646\u0643 \u0625\u0646\u0647\u0627\u0621 \u0627\u0634\u062a\u0631\u0627\u0643\u0643 \u062d\u064a\u0646\u0645\u0627 \u062a\u0631\u064a\u062f \u0641\u0642\u0637 \u0628\u0627\u0644\u062f\u062e\u0648\u0644 \u0641\u064a \u0642\u0627\u0626\u0645\u062a\u0643 \u0627\u0644\u0634\u062e\u0635\u064a\u0629 \u0639\u0644\u0649 http:\/\/100sport.tv (\u0627\u0644\u0623\u064a\u0642\u0648\u0646\u0629 \u0627\u0644\u0645\u0648\u062c\u0648\u062f\u0629 \u0641\u064a \u0623\u0639\u0644\u0649 \u064a\u0645\u064a\u0646 \u0627\u0644\u0634\u0627\u0634\u0629) \u0648\u0627\u0644\u0646\u0642\u0631 \u0639\u0644\u0649 \u0631\u0627\u0628\u0637 \u062a\u0631\u0643 %100 sport \u0627\u0644\u062e\u0627\u0635 \u0628\u064a. \u0627\u0639\u062a\u0645\u0627\u062f\u0627 \u0639\u0644\u0649 \u0627\u0644\u0634\u0631\u0643\u0629 \u0627\u0644\u0645\u0634\u063a\u0644\u0629 \u0644\u062c\u0648\u0627\u0644\u0643\u060c \u0641\u0625\u0646\u0643 \u064a\u0645\u0643\u0646 \u0623\u0646 \u062a\u0646\u0647\u064a \u0627\u0634\u062a\u0631\u0627\u0643\u0643 \u0628\u0625\u0631\u0633\u0627\u0644 \u0631\u0633\u0627\u0644\u0629 \u0646\u0635\u064a\u0629 \u0642\u0635\u064a\u0631\u0629 SMS.",
@@ -2197,9 +2173,7 @@
         "language": {
             "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
         },
-        "carrier": {
-            "uuid": "7c8385df-8d56-464a-98ff-66c55a7a5741"
-        }
+        "carrier": null
     },
     {
         "uuid": "8aaa21e3-392e-48c0-a47e-6b12f0af3d8d",
@@ -5930,6 +5904,24 @@
         "translation": "Regardez des vid\u00e9os de sport illimit\u00e9es pour seulement 0,50 TND par jour .Acc\u00e9dez \u00e0 des centaines de vid\u00e9os sur le sport et \u00e0 des nouvelles chaque jour. Restez \u00e0 l'\u00e9coute !",
         "language": {
             "uuid": "5179f269-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "1adj83jd-0eb7-4357-b1dc-f90614454722",
+        "key": "annotation_block.text.3",
+        "translation": "\u064a\u0645\u0643\u0646\u0643 \u0625\u0644\u063a\u0627\u0621 \u0627\u0634\u062a\u0631\u0627\u0643\u0643 \u0641\u064a \u0623\u064a \u0648\u0642\u062a \u0645\u0646 \u0642\u0633\u0645 \u062d\u0633\u0627\u0628\u064a",
+        "language": {
+            "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "oa8da666-0eb7-4357-b1dc-f9061445478d",
+        "key": "buttons.join.now",
+        "translation": "\u0627\u0646\u0636\u0645 \u0627\u0644\u0622\u0646",
+        "language": {
+            "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
     }
