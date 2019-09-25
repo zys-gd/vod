@@ -101,12 +101,10 @@ class CarrierAdmin extends AbstractAdmin
 
         if ($object->isLpOff() != $originalData['isLpOff']) {
             $isLpOff = $object->isLpOff();
+
             $object->getCampaigns()->map(function (Campaign $campaign) use ($isLpOff) {
                 $campaign->setIsLpOff($isLpOff);
-            });
-
-            $object->getAffiliates()->map(function (Affiliate $affiliate) use ($isLpOff) {
-                $affiliate->setIsLpOff($isLpOff);
+                $campaign->getAffiliate()->setIsLpOff($isLpOff);
             });
         }
 
