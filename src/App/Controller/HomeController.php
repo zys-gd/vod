@@ -10,7 +10,7 @@ use App\Domain\Repository\CountryCategoryPriorityOverrideRepository;
 use App\Domain\Repository\GameRepository;
 use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\UploadedVideoRepository;
-use App\Domain\Service\Piwik\ContentStatisticSender;
+use App\Piwik\ContentStatisticSender;
 use App\Domain\Service\VideoProcessing\UploadedVideoSerializer;
 use CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator;
 use ExtrasBundle\Utils\ArraySorter;
