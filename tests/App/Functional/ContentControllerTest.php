@@ -11,6 +11,7 @@ namespace App\Tests\App\Functional;
 use App\Domain\Service\Translator\Translator;
 use DataFixtures\LoadCarriersData;
 use DataFixtures\LoadTranslationsData;
+use ExtrasBundle\Cache\Redis\MockeryRedisDummyTrait;
 use ExtrasBundle\Testing\Core\AbstractFunctionalTest;
 use IdentificationBundle\BillingFramework\Process\IdentProcess;
 use Mockery;
@@ -19,6 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ContentControllerTest extends AbstractFunctionalTest
 {
+    use MockeryRedisDummyTrait;
     /**
      * @var Mockery\MockInterface|IdentProcess
      */
@@ -71,5 +73,7 @@ class ContentControllerTest extends AbstractFunctionalTest
     protected function configureWebClientClientContainer(ContainerInterface $container)
     {
         $container->set('App\Domain\Service\Translator\Translator', $this->translationProvider);
+
+        $container->set('app.cache.redis_connection_provider', $this->getRedisConnectionProviderMock());
     }
 }

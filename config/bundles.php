@@ -35,6 +35,6 @@ return [
     DataDog\PagerBundle\DataDogPagerBundle::class => ['all' => true],
     Playwing\CrossSubscriptionAPIBundle\CrossSubscriptionAPIBundle::class => ['all' => true],
     CommonDataBundle\CommonDataBundle::class => ['all' => true],
-    PiwikBundle\PiwikBundle::class => ['all' => true],
+    //PiwikBundle\PiwikBundle::class => ['all' => true],
     Liip\TestFixturesBundle\LiipTestFixturesBundle::class => ['dev' => true, 'test' => true, 'stage' => true, 'stage_debug' => true, 'ci_dev' => true],
 ];
