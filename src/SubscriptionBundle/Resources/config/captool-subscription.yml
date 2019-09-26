@@ -13,6 +13,7 @@ services:
     SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitCompleter:
         arguments:
             - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter'
+            - '@SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker'
 
     SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter:
         arguments:

@@ -1,147 +1,151 @@
 services:
 
-    App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector:
-        arguments:
-            - '%cloudinary_api_key%'
-            - '%cloudinary_api_secret%'
-            - '%cloudinary_cloud_name%'
+  App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector:
+    arguments:
+      - '%cloudinary_api_key%'
+      - '%cloudinary_api_secret%'
+      - '%cloudinary_cloud_name%'
 
-    App\Domain\Service\VideoProcessing\Callback\EagerType:
-        arguments:
-            - '@App\Domain\Repository\UploadedVideoRepository'
-            - '@doctrine.orm.entity_manager'
+  App\Domain\Service\VideoProcessing\Callback\EagerType:
+    arguments:
+      - '@App\Domain\Repository\UploadedVideoRepository'
+      - '@doctrine.orm.entity_manager'
 
-    App\Domain\Service\VideoProcessing\CallbackVoter:
-        arguments: ['@App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector']
+  App\Domain\Service\VideoProcessing\CallbackVoter:
+    arguments: ['@App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector']
 
-    App\Domain\Service\AWSS3\S3Client:
-        public: true
-        arguments:
-            -   credentials:
-                    key: '%aws_s3_key%'
-                    secret: '%aws_s3_secret%'
-                version: '%aws_s3_version%'
-                region: '%aws_s3_region%'
+  App\Domain\Service\AWSS3\S3Client:
+    public: true
+    arguments:
+      - credentials:
+          key: '%aws_s3_key%'
+          secret: '%aws_s3_secret%'
+        version: '%aws_s3_version%'
+        region: '%aws_s3_region%'
 
-    App\Domain\Service\Campaign\CampaignService:
-        public: true
+  App\Domain\Service\Campaign\CampaignService:
+    public: true
 
-    App\Domain\Service\Translator\Translator:
-        arguments:
-            - '@App\Domain\Repository\TranslationRepository'
-            - '@App\Domain\Repository\CarrierRepository'
-            - '@CommonDataBundle\Repository\LanguageRepository'
-            - '@app.cache.default.translation'
-            - '@app.cache.array_default'
+  App\Domain\Service\Translator\Translator:
+    arguments:
+      - '@App\Domain\Repository\TranslationRepository'
+      - '@App\Domain\Repository\CarrierRepository'
+      - '@CommonDataBundle\Repository\LanguageRepository'
+      - '@app.cache.default.translation'
+      - '@app.cache.array_default'
 
-    App\Domain\Service\Translator\ShortcodeReplacer: ~
+  App\Domain\Service\Translator\ShortcodeReplacer: ~
 
-    App\Domain\Service\Games\GameSerializer:
-        arguments:
-            - '@App\Domain\Service\Games\ImagePathProvider'
+  App\Domain\Service\Games\GameSerializer:
+    arguments:
+      - '@App\Domain\Service\Games\ImagePathProvider'
 
-    App\Domain\Service\Games\ExcludedGamesProvider:
-        arguments:
-            - '@device_detection.service.device'
+  App\Domain\Service\Games\ExcludedGamesProvider:
+    arguments:
+      - '@device_detection.service.device'
 
-    App\Domain\Service\Games\GameImagesSerializer:
-        arguments:
-            - '@App\Domain\Service\Games\ImagePathProvider'
+  App\Domain\Service\Games\GameImagesSerializer:
+    arguments:
+      - '@App\Domain\Service\Games\ImagePathProvider'
 
-    App\Domain\Service\Games\ImagePathProvider:
-        arguments: ['%images_base_url%']
+  App\Domain\Service\Games\ImagePathProvider:
+    arguments: ['%images_base_url%']
 
-    App\Domain\Service\Games\DrmApkProvider:
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@App\Domain\Service\AWSS3\S3Client'
-            - '@request_stack'
-            - '%uploads_builds_path%'
-            - '%drm_api_url%'
-            - '%drm_authorize_key%'
-            - '%s3_root_url%'
-        public: true
-
-
-    App\Domain\Service\Translator\DataAggregator:
-        arguments:
-            - '@App\Domain\Repository\CarrierRepository'
-            - '@App\Domain\Service\Translator\Translator'
-            - '@ExtrasBundle\Utils\LocalExtractor'
-            - '@app.cache.array_default'
-            - '@SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider'
-
-    App\Domain\Service\Piwik\ContentStatisticSender:
-        arguments:
-            - '@PiwikBundle\Service\PiwikTracker'
-            - '@IdentificationBundle\Repository\UserRepository'
-            - '@logger'
-            - '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
-            - '@App\Domain\Repository\CarrierRepository'
-            - '@App\Domain\Repository\CampaignRepository'
-            - '@PiwikBundle\Service\PiwikDataMapper'
-            - '@CountryCarrierDetectionBundle\Service\IpService'
-            - '@App\Domain\Service\Piwik\DataMapper\PiwikGameDataMapper'
-            - '@App\Domain\Service\Piwik\DataMapper\PiwikVideoDataMapper'
-
-    App\Domain\Service\Piwik\DataMapper\PiwikGameDataMapper:
-        arguments:
-            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
-
-    App\Domain\Service\Piwik\DataMapper\PiwikVideoDataMapper:
-        arguments:
-            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
-
-    App\Domain\ACL\Accessors\VisitConstraintByAffiliate:
-        arguments:
-            - '@SubscriptionBundle\CAPTool\Visit\VisitChecker'
-
-    App\Domain\ACL\Accessors\VisitAccessorByCampaign: ~
-
-    App\Domain\ACL\LandingPageACL:
-        arguments:
-            - '@App\Domain\ACL\Accessors\VisitConstraintByAffiliate'
-            - '@App\Domain\ACL\Accessors\VisitAccessorByCampaign'
-            - '@App\Domain\Repository\CarrierRepository'
-            - '@App\Domain\Repository\CampaignRepository'
-            - '@session'
-            - '@SubscriptionBundle\CAPTool\Subscription\Limiter\SubscriptionCapChecker'
-            - '@logger'
-            - '@App\Domain\Repository\CampaignScheduleRepository'
-            - '@App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherChecker'
+  App\Domain\Service\Games\DrmApkProvider:
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - '@App\Domain\Service\AWSS3\S3Client'
+      - '@request_stack'
+      - '%uploads_builds_path%'
+      - '%drm_api_url%'
+      - '%drm_authorize_key%'
+      - '%s3_root_url%'
+    public: true
 
 
-    App\Domain\Service\CarrierOTPVerifier:
-        arguments:
-            - '@App\Domain\Repository\CarrierRepository'
-            - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
+  App\Domain\Service\Translator\DataAggregator:
+    arguments:
+      - '@App\Domain\Repository\CarrierRepository'
+      - '@App\Domain\Service\Translator\Translator'
+      - '@ExtrasBundle\Utils\LocalExtractor'
+      - '@app.cache.array_default'
+      - '@SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider'
 
-    App\Domain\Service\VideoProcessing\UploadedVideoSerializer: ~
+  App\Piwik\ContentStatisticSender:
+    arguments:
+      - '@IdentificationBundle\Repository\UserRepository'
+      - '@logger'
+      - '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
+      - '@App\Domain\Repository\CarrierRepository'
+      - '@App\Domain\Repository\CampaignRepository'
+      - '@CountryCarrierDetectionBundle\Service\IpService'
+      - '@App\Piwik\DataMapper\GameEventMapper'
+      - '@App\Piwik\DataMapper\VideoEventMapper'
+      - '@SubscriptionBundle\Piwik\EventPublisher'
+      - '@App\Piwik\DataMapper\VisitEventMapper'
+
+  App\Piwik\DataMapper\VisitEventMapper: ~
+
+  App\Piwik\DataMapper\GameEventMapper:
+    arguments:
+      - '@SubscriptionBundle\Piwik\DataMapper\UserInformationMapper'
+
+  App\Piwik\DataMapper\VideoEventMapper:
+    arguments:
+      - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
+      - '@SubscriptionBundle\Piwik\DataMapper\UserInformationMapper'
+      - '@SubscriptionBundle\Piwik\DataMapper\OrderInformationMapper'
+
+  App\Domain\ACL\Accessors\VisitConstraintByAffiliate:
+    arguments:
+      - '@SubscriptionBundle\CAPTool\Visit\VisitChecker'
+
+  App\Domain\ACL\Accessors\VisitAccessorByCampaign: ~
+
+  App\Domain\ACL\LandingPageACL:
+    arguments:
+      - '@App\Domain\ACL\Accessors\VisitConstraintByAffiliate'
+      - '@App\Domain\ACL\Accessors\VisitAccessorByCampaign'
+      - '@App\Domain\Repository\CarrierRepository'
+      - '@App\Domain\Repository\CampaignRepository'
+      - '@session'
+      - '@SubscriptionBundle\CAPTool\Subscription\Limiter\SubscriptionCapChecker'
+      - '@logger'
+      - '@App\Domain\Repository\CampaignScheduleRepository'
+      - '@App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherChecker'
 
 
-    App\Domain\ACL\SubscribeACL:
-        tags:
-            - { name: subscription.voter }
-        arguments:
-          ['@App\Domain\ACL\Accessors\SubscribeExternalAPICheck', '@IdentificationBundle\Repository\UserRepository']
+  App\Domain\Service\CarrierOTPVerifier:
+    arguments:
+      - '@App\Domain\Repository\CarrierRepository'
+      - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
 
-    App\Domain\ACL\Accessors\SubscribeExternalAPICheck:
-        arguments: ['@cross_subscription.api_connector']
+  App\Domain\Service\VideoProcessing\UploadedVideoSerializer: ~
 
-    App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherChecker:
-        arguments:
-            - '@App\Domain\Repository\AffiliateBannedPublisherRepository'
 
-    App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherCreator:
-        arguments:
-            - '@doctrine.orm.entity_manager'
+  App\Domain\ACL\SubscribeACL:
+    tags:
+      - { name: subscription.voter }
+    arguments:
+      ['@App\Domain\ACL\Accessors\SubscribeExternalAPICheck', '@IdentificationBundle\Repository\UserRepository']
 
-    App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherRemover:
-        arguments:
-            - '@doctrine.orm.entity_manager'
+  App\Domain\ACL\Accessors\SubscribeExternalAPICheck:
+    arguments: ['@cross_subscription.api_connector']
 
-    App\Domain\Service\Games\GameImageSizeProvider: ~
+  App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherChecker:
+    arguments:
+      - '@App\Domain\Repository\AffiliateBannedPublisherRepository'
 
-    App\Domain\Service\Campaign\CampaignSerializer:
-        arguments:
-            - '%images_base_url%'
+  App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherCreator:
+    arguments:
+      - '@doctrine.orm.entity_manager'
+
+  App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherRemover:
+    arguments:
+      - '@doctrine.orm.entity_manager'
+
+  App\Domain\Service\Games\GameImageSizeProvider: ~
+
+  App\Domain\Service\Campaign\CampaignSerializer:
+    arguments:
+      - '%images_base_url%'

@@ -7,19 +7,16 @@ namespace SubscriptionBundle\Subscription\SubscribeBack\Common;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use ExtrasBundle\Utils\UrlParamAppender;
 use IdentificationBundle\Identification\Service\DeviceDataProvider;
+use IdentificationBundle\Identification\Service\RouteProvider;
 use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\TokenGenerator;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\User\Service\UserFactory;
-use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
-use SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator;
-use IdentificationBundle\Identification\Service\RouteProvider;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker;
 use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
 use SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker;
 use SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter;
@@ -41,11 +38,6 @@ class CommonFlowHandler
      * @var BlacklistVoter
      */
     private $blacklistVoter;
-    /**
-     * @var BlacklistAttemptRegistrator
-     */
-    private $blacklistAttemptRegistrator;
-
     /**
      * @var UserFactory
      */
@@ -92,14 +84,6 @@ class CommonFlowHandler
      */
     private $routeProvider;
     /**
-     * @var ProcessResultSuccessChecker
-     */
-    private $resultSuccessChecker;
-    /**
-     * @var ApiConnector
-     */
-    private $crossSubscriptionApi;
-    /**
      * @var LoggerInterface
      */
     private $logger;
@@ -110,7 +94,6 @@ class CommonFlowHandler
      * @param Subscriber                      $subscriber
      * @param UserFactory                     $userFactory
      * @param BlacklistVoter                  $blacklistVoter
-     * @param BlacklistAttemptRegistrator     $blacklistAttemptRegistrator
      * @param DeviceDataProvider              $deviceDataProvider
      * @param IdentificationDataStorage       $identificationDataStorage
      * @param SubscriptionPackProvider        $subscriptionPackProvider
@@ -121,15 +104,12 @@ class CommonFlowHandler
      * @param CampaignExtractor               $campaignExtractor
      * @param AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
      * @param RouteProvider                   $routeProvider
-     * @param ProcessResultSuccessChecker     $processResultSuccessChecker
-     * @param ApiConnector                    $apiConnector
      * @param LoggerInterface                 $logger
      */
     public function __construct(
         Subscriber $subscriber,
         UserFactory $userFactory,
         BlacklistVoter $blacklistVoter,
-        BlacklistAttemptRegistrator $blacklistAttemptRegistrator,
         DeviceDataProvider $deviceDataProvider,
         IdentificationDataStorage $identificationDataStorage,
         SubscriptionPackProvider $subscriptionPackProvider,
@@ -140,14 +120,11 @@ class CommonFlowHandler
         CampaignExtractor $campaignExtractor,
         AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker,
         RouteProvider $routeProvider,
-        ProcessResultSuccessChecker $processResultSuccessChecker,
-        ApiConnector $apiConnector,
         LoggerInterface $logger
     )
     {
         $this->subscriber                      = $subscriber;
         $this->blacklistVoter                  = $blacklistVoter;
-        $this->blacklistAttemptRegistrator     = $blacklistAttemptRegistrator;
         $this->userFactory                     = $userFactory;
         $this->deviceDataProvider              = $deviceDataProvider;
         $this->identificationDataStorage       = $identificationDataStorage;
@@ -159,8 +136,6 @@ class CommonFlowHandler
         $this->campaignExtractor               = $campaignExtractor;
         $this->afterSubscriptionProcessTracker = $afterSubscriptionProcessTracker;
         $this->routeProvider                   = $routeProvider;
-        $this->resultSuccessChecker            = $processResultSuccessChecker;
-        $this->crossSubscriptionApi            = $apiConnector;
         $this->logger                          = $logger;
     }
 
@@ -236,9 +211,6 @@ class CommonFlowHandler
 
             $this->afterSubscriptionProcessTracker->track($result, $newSubscription, $handler, $campaign);
 
-            if ($newSubscription->isSubscribed() && $this->resultSuccessChecker->isSuccessful($result)) {
-                $this->crossSubscriptionApi->registerSubscription($user->getIdentifier(), $user->getBillingCarrierId());
-            }
 
             $this->logger->debug('Create new subscription', ['subscription' => $subscription]);
             $this->logger->debug('Finish subscribeBack process');

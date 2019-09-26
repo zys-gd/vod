@@ -50,7 +50,7 @@ class RenewCallbackHandler extends AbstractCallbackHandler
 
     public function getPiwikEventName(): string
     {
-        return 'trackRenew';
+        return 'renew';
     }
 
     public function afterProcess(Subscription $subscription, ProcessResult $response): void

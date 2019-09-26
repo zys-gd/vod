@@ -52,11 +52,13 @@
             {% endfor %}
 
 
+            {% if isAndroidOS() %}
             <li class="nav-item">
                 <a class="nav-item_link" href="{{ path('game_category') }}">
                     {{ translate('navbar.menu.sport_games') }}
                 </a>
             </li>
+            {% endif %}
 
                 <li class="nav-item pages-link">
                     <a class="nav-item_link" href="{{ path('faq') }}">

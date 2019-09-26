@@ -6,10 +6,12 @@ use App\Admin\Form\Type\AffiliateBannedPublisherType;
 use App\Admin\Form\Type\AffiliateConstantType;
 use App\Admin\Form\Type\AffiliateParameterType;
 use App\Domain\Entity\Affiliate;
+use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
 use App\Domain\Repository\AffiliateRepository;
 use App\Domain\Service\Campaign\CampaignService;
 use CommonDataBundle\Entity\Country;
+use Doctrine\ORM\EntityManagerInterface;
 use ExtrasBundle\Utils\UuidGenerator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -41,26 +43,32 @@ class AffiliateAdmin extends AbstractAdmin
      * @var CampaignService
      */
     private $campaignService;
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
 
     /**
      * AffiliateAdmin constructor
      *
-     * @param string              $code
-     * @param string              $class
-     * @param string              $baseControllerName
+     * @param string $code
+     * @param string $class
+     * @param string $baseControllerName
      * @param AffiliateRepository $affiliateRepository
-     * @param CampaignService     $campaignService
+     * @param CampaignService $campaignService
+     * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         string $code,
         string $class,
         string $baseControllerName,
         AffiliateRepository $affiliateRepository,
-        CampaignService $campaignService
-    )
-    {
+        CampaignService $campaignService,
+        EntityManagerInterface $entityManager
+    ) {
         $this->affiliateRepository = $affiliateRepository;
         $this->campaignService     = $campaignService;
+        $this->entityManager = $entityManager;
 
         parent::__construct($code, $class, $baseControllerName);
     }
@@ -75,11 +83,21 @@ class AffiliateAdmin extends AbstractAdmin
     }
 
     /**
-     * @param $obj
+     * @param Affiliate $obj
      */
     public function preUpdate($obj)
     {
         $this->generateTestLink($obj);
+
+        $originalData = $this->entityManager->getUnitOfWork()->getOriginalEntityData($obj);
+        if(count($originalData) > 0) {
+            if ($obj->isLpOff() != $originalData['isLpOff']) {
+                $isLPOff = $obj->isLpOff();
+                $obj->getCampaigns()->map(function (Campaign $campaign) use ($isLPOff) {
+                    $campaign->setIsLpOff($isLPOff);
+                });
+            }
+        }
     }
 
     /**

@@ -79,7 +79,7 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
         ]);
 
 
-        $this->subscriber->subscribe($user, $subscriptionPack);
+        $this->subscriber->subscribe($subscription);
 
         $this->subscribePerformer->shouldHaveReceived('doSubscribe')->once();
         /*$this->affiliateService->shouldHaveReceived('checkAffiliateEligibilityAndSendEvent')->once();*/
@@ -126,10 +126,7 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
 
         $this->subscribeProcessStarterProvider = new SubscribeProcessStarterProvider($this->commonStarter);
         $this->subscriber                      = new \SubscriptionBundle\Subscription\Subscribe\Subscriber(
-            Mockery::spy(LoggerInterface::class),
             Mockery::spy(EntitySaveHelper::class),
-            Mockery::spy(SessionInterface::class),
-            $this->subscriptionCreator,
             Mockery::spy(OnSubscribeUpdater::class),
             Mockery::spy(SubscriptionLimitCompleter::class),
             Mockery::spy(ApiConnector::class),
