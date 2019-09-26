@@ -21,7 +21,7 @@ class HutchIDSubscriptionHandler implements SubscriptionHandlerInterface, HasCom
      */
     public function canHandle(CarrierInterface $carrier): bool
     {
-        return $carrier->getBillingCarrierId() === ID::HUTCH_INDONESIA;
+        return $carrier->getBillingCarrierId() === ID::HUTCH3_INDONESIA_DOT;
     }
 
     /**
