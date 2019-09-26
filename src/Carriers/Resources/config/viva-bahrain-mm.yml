@@ -1,0 +1,4 @@
+services:
+    Carriers\VivaBahrainMM\Identification\VivaBahrainMMIdentificationHandler:
+        tags:
+            - { name: identification.identification_handler }
