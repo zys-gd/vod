@@ -64,7 +64,7 @@ class SubscriptionDataAction
 
             return new JsonResponse($formatted);
 
-        } catch (HttpException $exception) {
+        } catch (HttpException | NotFoundException $exception) {
             return new JsonResponse(['error' => $exception->getMessage()], $exception->getCode());
         } catch (\Exception $exception) {
 
