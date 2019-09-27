@@ -124,7 +124,8 @@ class FakeCarrierIdentifier extends DataCollector
             ["name" => "Orange Tunisia via MondiaMedia", "ip" => "196.233.233.36", 'carrier' => ID::ORANGE_TUNISIA_MM, 'msisdn' => ''],
             ["name" => "Vodafone EG via Tpay", "ip" => "196.159.145.123", 'carrier' => ID::VODAFONE_EGYPT_TPAY, 'msisdn' => '201057894589'],
             ["name" => "Orange EG via Tpay", "ip" => "45.96.44.38", 'carrier' => ID::ORANGE_EGYPT_TPAY, 'msisdn' => '201211745897'],
-            ["name" => "Zain Saudi Arabia", "ip" => "51.39.204.42", 'carrier' => ID::ZAIN_SAUDI_ARABIA, 'msisdn' => '966580054879']
+            ["name" => "Zain Saudi Arabia", "ip" => "51.39.204.42", 'carrier' => ID::ZAIN_SAUDI_ARABIA, 'msisdn' => '966580054879'],
+            ["name" => "Viva Bahrain", "ip" => "94.76.0.44", 'carrier' => ID::VIVA_BAHRAIN_MM, 'msisdn' => '97333101372']
         ];
     }
 
