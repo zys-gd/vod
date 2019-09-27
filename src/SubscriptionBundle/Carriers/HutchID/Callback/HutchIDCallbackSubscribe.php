@@ -188,7 +188,7 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
 
             $billingCarrierId = $requestParams->carrier;
             $carrier          = $this->carrierRepository->findOneByBillingId($billingCarrierId);
-            $msisdn           = (string)$requestParams->client_user;
+            $msisdn           = $requestParams->client_user ?? $requestParams->provider_user;
             $user             = $this->userRepository->findOneByMsisdn($msisdn);
 
             if (!$user) {
