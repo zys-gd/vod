@@ -10,12 +10,17 @@ namespace App\Functional;
 
 
 use DataFixtures\LoadCarriersData;
+use ExtrasBundle\Cache\Redis\MockeryRedisDummyTrait;
 use ExtrasBundle\Testing\Core\AbstractFunctionalTest;
+use Mockery;
+use Redis;
 use SubscriptionBundle\DataFixtures\ORM\LoadSubscriptionPackData;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ContactUsControllerTest extends AbstractFunctionalTest
 {
+
+    use MockeryRedisDummyTrait;
 
     protected static function getKernelClass()
     {
@@ -67,7 +72,7 @@ class ContactUsControllerTest extends AbstractFunctionalTest
 
     protected function initializeServices(ContainerInterface $container)
     {
-        // TODO: Implement initializeServices() method.
+
     }
 
     protected function getFixturesListLoadedForEachTest(): array
@@ -80,6 +85,6 @@ class ContactUsControllerTest extends AbstractFunctionalTest
 
     protected function configureWebClientClientContainer(ContainerInterface $container)
     {
-        // TODO: Implement configureWebClientClientContainer() method.
+        $container->set('app.cache.redis_connection_provider', $this->getRedisConnectionProviderMock());
     }
 }

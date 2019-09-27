@@ -6,22 +6,29 @@ namespace SubscriptionBundle\CAPTool\Subscription;
 
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
+use SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker;
 
 class SubscriptionLimitCompleter
 {
     /**
-     * @var SubscriptionLimiterInterface
+     * @var SubscriptionLimiter
      */
     private $subscriptionLimiter;
+    /**
+     * @var ProcessResultSuccessChecker
+     */
+    private $resultSuccessChecker;
 
     /**
      * SubscriptionLimitCompleter constructor.
      *
-     * @param SubscriptionLimiter $subscriptionLimiter
+     * @param SubscriptionLimiter         $subscriptionLimiter
+     * @param ProcessResultSuccessChecker $resultSuccessChecker
      */
-    public function __construct(SubscriptionLimiter $subscriptionLimiter)
+    public function __construct(SubscriptionLimiter $subscriptionLimiter, ProcessResultSuccessChecker $resultSuccessChecker)
     {
-        $this->subscriptionLimiter = $subscriptionLimiter;
+        $this->subscriptionLimiter  = $subscriptionLimiter;
+        $this->resultSuccessChecker = $resultSuccessChecker;
     }
 
     /**
@@ -32,7 +39,7 @@ class SubscriptionLimitCompleter
     {
         $user = $subscription->getUser();
 
-        if ($response->isSuccessful() && $response->isFinal()) {
+        if ($this->resultSuccessChecker->isSuccessful($response)) {
             $this->subscriptionLimiter->finishSubscription($user->getCarrier(), $subscription);
         }
 

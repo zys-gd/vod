@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Domain\Entity\UploadedVideo;
 use App\Domain\Repository\UploadedVideoRepository;
-use App\Domain\Service\Piwik\ContentStatisticSender;
+use App\Piwik\ContentStatisticSender;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;

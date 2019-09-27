@@ -2,6 +2,7 @@
 
 namespace SubscriptionBundle\SubscriptionPack\Admin\Sonata;
 
+use App\Domain\Entity\Campaign;
 use CommonDataBundle\Entity\Country;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use CommonDataBundle\Repository\CountryRepository;
@@ -113,6 +114,8 @@ class SubscriptionPackAdmin extends AbstractAdmin
      */
     public function preUpdate($object)
     {
+        $originalData = $this->entityManager->getUnitOfWork()->getOriginalEntityData($object);
+
         $object->setUpdated(new \DateTime('now'));
         // resolve problems with form save and inline list save
         try {
@@ -124,6 +127,15 @@ class SubscriptionPackAdmin extends AbstractAdmin
         }
 
         $this->markSubscriptionPacksWithSameCarrierAsInactive($object);
+
+
+        if ($object->isZeroCreditSubAvailable() != $originalData['zeroCreditSubAvailable']) {
+            $isZeroCreditSubAvailable = $object->isZeroCreditSubAvailable();
+
+            $object->getCarrier()->getCampaigns()->map(function (Campaign $campaign) use ($isZeroCreditSubAvailable) {
+                $campaign->setZeroCreditSubAvailable($isZeroCreditSubAvailable);
+            });
+        }
 
         parent::preUpdate($object);
     }

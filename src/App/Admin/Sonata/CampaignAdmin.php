@@ -96,12 +96,20 @@ class CampaignAdmin extends AbstractAdmin
     }
 
     /**
-     * @param $obj
+     * @param Campaign $obj
      */
     public function preUpdate($obj)
     {
         $this->prepareImage($obj);
         $this->generateTestLink($obj);
+
+        $originalData = $this->em->getUnitOfWork()->getOriginalEntityData($obj);
+
+        if(count($originalData) > 0) {
+            if (isset($originalData['isLpOff']) && $obj->isLpOff() != $originalData['isLpOff']) {
+                $obj->getAffiliate()->setIsLpOff($obj->isLpOff());
+            }
+        }
     }
 
     /**
