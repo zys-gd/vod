@@ -95,6 +95,11 @@ class CarrierOptionsExtension extends AbstractExtension
         if ($billingCarrierId) {
             /** @var Carrier $carrier */
             $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
+            $campaign = $this->campaignExtractor->getCampaignFromSession($this->session);
+
+            if ($carrier->isConfirmationPopup() && $campaign) {
+                return $campaign->isConfirmationPopup();
+            }
 
             return $carrier->isConfirmationPopup();
         }

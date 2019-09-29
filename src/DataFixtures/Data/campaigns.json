@@ -28,7 +28,9 @@
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
         "generalPrice": "0.00",
-        "dateCreated": "2019-08-21T14:09:18+00:00"
+        "dateCreated": null,
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "094696a2-d039-4c95-ac2b-f11ce39d5b86",
@@ -59,7 +61,9 @@
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
         "generalPrice": "0.00",
-        "dateCreated": "2019-08-22T20:44:33+00:00"
+        "dateCreated": null,
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "0afc64b4-ca2f-42eb-b7d5-94db877f984e",
@@ -89,7 +93,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "0b44e721-0eb0-4d14-b061-6f50c867a59f",
@@ -119,7 +125,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "12619a30-fb7b-4ece-aaf5-f984f7a48f7e",
@@ -149,7 +157,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "12fc8a54-3263-4b19-bf66-3ef039f94ead",
@@ -179,7 +189,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "176116a6-1025-4f39-8fb5-cd049cb95c2d",
@@ -209,7 +221,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "1fb2de02-1274-444d-87f9-c8c7c222d304",
@@ -239,7 +253,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "20534881-dad2-456f-b45c-ea6a1cab38c5",
@@ -269,7 +285,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "22e214ac-e6c0-4184-b7cf-850b9bba562a",
@@ -299,7 +317,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "292a5a0a-706e-4f5e-bc61-2bbb168f0405",
@@ -329,7 +349,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "2b4da240-a29a-4a73-ae4b-df1e565b14ab",
@@ -359,7 +381,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "34a3aa66-56d9-4ca6-bbfe-5ffb1a593614",
@@ -389,7 +413,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "497f5074-32e4-42c2-bdf1-771f2ae375fd",
@@ -419,7 +445,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "6d888b47-e783-43c9-be37-bf9a52feb18b",
@@ -449,7 +477,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "6f6e5baf-6f3f-4c9d-9a85-63375fdd060e",
@@ -479,7 +509,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "7d34e1c7-1131-4f8b-b2e0-7e8a130fc5d7",
@@ -509,7 +541,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "82bc7dac-cb4c-454f-8e1c-d8f5df613a40",
@@ -539,7 +573,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "85108c87-b8a0-4f28-98b4-1d71adb496e6",
@@ -569,7 +605,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "a071e1be-e0fc-4bae-a3f6-44cc7a8c4edd",
@@ -599,7 +637,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "bc574bd1-580f-4f50-aee2-4334ff6f9fd3",
@@ -629,7 +669,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "bc73c45f-4250-4cbb-9c39-c68a2e621c04",
@@ -659,7 +701,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "c9697222-ed0d-4412-a7bf-6f8b1d918d52",
@@ -689,7 +733,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "d1b78d26-d3db-4736-9065-b3c5e6acdb86",
@@ -719,7 +765,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "d2a18de1-84bb-42a4-bb6d-9c1dd6cc90e8",
@@ -749,7 +797,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "d33436ac-eaa0-42f1-818c-2131c0a35261",
@@ -779,7 +829,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "d3719fda-33fa-45fe-b897-e92fd3dbdc99",
@@ -809,7 +861,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "d706e76a-28de-44c8-9379-298eb1c328fd",
@@ -839,7 +893,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "dd604319-7a02-4640-bfcf-8bd1a44e05aa",
@@ -869,7 +925,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "e339946c-1cf7-4123-8c10-92e370052c6d",
@@ -899,7 +957,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "e7ee7bb9-f0ad-45d4-88b1-5639c8293035",
@@ -929,7 +989,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "e88ad96d-be3d-478b-9842-673f6a406207",
@@ -959,7 +1021,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "ed021372-d26b-4a60-bd87-cb5f5afdcd90",
@@ -989,7 +1053,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "ff292c77-5ab4-44cb-90f6-e335a9e42e7c",
@@ -1019,7 +1085,9 @@
         "freeTrialSubscription": false,
         "freeTrialPrice": "0.00",
         "zeroEurPrice": "0.00",
-        "generalPrice": "0.00"
+        "generalPrice": "0.00",
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "4ea1bcae-4c0c-4379-bbca-6f1fa07b6a30",
@@ -1049,7 +1117,9 @@
             {
                 "uuid": "5142f9ec-ebd4-11e8-95c4-02bb250f0f22"
             }
-        ]
+        ],
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     },
     {
         "uuid": "8c3ff3a0-6215-427c-977a-e86e90fe2305",
@@ -1079,6 +1149,8 @@
             {
                 "uuid": "97400b8f-722b-4339-a48e-a51419bbb143"
             }
-        ]
+        ],
+        "isConfirmationClick": false,
+        "isConfirmationPopup": false
     }
 ]

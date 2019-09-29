@@ -95,6 +95,10 @@ App\Domain\Entity\Campaign:
             type: boolean
             options:
                 default: false
+        isConfirmationPopup:
+            type: boolean
+            options:
+                default: false
 
 
     lifecycleCallbacks: {  }
