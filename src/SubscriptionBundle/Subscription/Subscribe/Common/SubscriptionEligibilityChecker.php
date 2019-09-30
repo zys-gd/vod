@@ -74,6 +74,9 @@ class SubscriptionEligibilityChecker
         if ($subscription->isNotEnoughCredit()) {
             return true;
         }
+        if ($subscription->getError() == 'subscribed_to_another_service') {
+            return true;
+        }
 
 
         return false;
