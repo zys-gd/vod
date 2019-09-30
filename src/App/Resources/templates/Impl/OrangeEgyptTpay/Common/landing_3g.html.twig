@@ -16,6 +16,11 @@
 {% block header_content %}
 {% endblock header_content %}
 
+{% block javascripts %}
+    {{ parent() }}
+    {{ addJs(asset('js/lp.js')) }}
+{% endblock %}
+
 {% block stylesheets %}
     {{ parent() }}
     <link href="{{ asset('/css/lp.css') }}" rel="stylesheet">

@@ -41,7 +41,7 @@ class ID
     const TELENOR_PAKISTAN_DOT  = 2252;
     const VODAFONE_EGYPT_TPAY   = 2253;
     const ORANGE_EGYPT_TPAY     = 2254;
-    const HUTCH_INDONESIA       = 2255;
+    const HUTCH3_INDONESIA_DOT  = 2255;
     const ORANGE_TUNISIA_MM     = 2256;
     const ZAIN_SAUDI_ARABIA     = 2257;
 }
