@@ -120,9 +120,7 @@ class FakeIdentificationController extends AbstractController
         $session = $request->getSession();
         $session->clear();
 
-        if (!$user = $this->userRepository->findOneByMsisdn($msisdn)) {
-            $user = $this->userRepository->findOneBy(['ip' => $ipAddress]);
-        }
+        $user = $this->userRepository->findOneByMsisdn($msisdn);
 
         if ($user) {
             $this->identificationDataStorage->setIdentificationToken($user->getIdentificationToken());
