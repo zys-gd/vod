@@ -71,10 +71,11 @@ class SubscriptionEligibilityChecker
     public function isStatusOkForTryAgainSubscription(Subscription $subscription): bool
     {
 
-        if ($subscription->isNotEnoughCredit()) {
+        if ($subscription->getError() == 'subscribed_to_another_service') {
             return true;
         }
-        if ($subscription->getError() == 'subscribed_to_another_service') {
+
+        if ($subscription->isNotEnoughCredit()) {
             return true;
         }
 
