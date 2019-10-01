@@ -114,8 +114,9 @@ class FakeIdentificationController extends AbstractController
      */
     public function fakeIdentifyAction(Request $request, DeviceData $deviceData)
     {
-        $ipAddress = $request->get('ip', $request->getClientIp());
-        $msisdn    = $request->get('msisdn', 'fake');
+        $ipAddress        = $request->get('ip', $request->getClientIp());
+        $msisdn           = $request->get('msisdn', 'fake');
+        $billingCarrierId = $request->get('carrierId', null);
 
         $session = $request->getSession();
         $session->clear();
@@ -126,14 +127,17 @@ class FakeIdentificationController extends AbstractController
             $this->identificationDataStorage->setIdentificationToken($user->getIdentificationToken());
             $this->identificationDataStorage->setCarrierId($user->getBillingCarrierId());
         } else {
-            $carrierISP       = $this->carrierDetection->getCarrier($ipAddress);
-            $billingCarrierId = null;
 
-            if ($carrierISP) {
-                try {
-                    $billingCarrierId = $this->resolveISP($carrierISP);
-                } catch (MissingCarrierException $exception) {
-                    throw $exception;
+            if (!$billingCarrierId) {
+                $carrierISP       = $this->carrierDetection->getCarrier($ipAddress);
+                $billingCarrierId = null;
+
+                if ($carrierISP) {
+                    try {
+                        $billingCarrierId = $this->resolveISP($carrierISP);
+                    } catch (MissingCarrierException $exception) {
+                        throw $exception;
+                    }
                 }
             }
 
