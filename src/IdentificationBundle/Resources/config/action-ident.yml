@@ -196,6 +196,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
             - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
+            - '@IdentificationBundle\Repository\TestUserRepository'
 
 
     IdentificationBundle\Identification\Controller\AsyncIdentController:

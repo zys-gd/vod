@@ -37,12 +37,19 @@
                 </div>
                 <br>
 
-                {% for msisdn in data.msisdns %}
-                    <div>
-                        <a href="{{ url('fake_identify',{'msisdn':msisdn, 'carrierId': carrierId}) }}">{{ msisdn }}</a>
+                {% for msisdnData in data.msisdns %}
+                    <div class="{% if msisdnData.isNeverUsed %}is-never-used{% endif %}">
+                        <a href="{{ url('fake_identify',{'msisdn':msisdnData.msisdn, 'carrierId': carrierId}) }}">{{ msisdnData.msisdn }}</a>
                     </div>
                 {% endfor %}
             </div>
         </div>
     {% endfor %}
+
+    <style>
+
+        .is-never-used a {
+            color: silver;
+        }
+    </style>
 </div>

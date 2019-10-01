@@ -60,7 +60,10 @@ class ProfilerPanelExtension extends AbstractExtension
                         $preparedUsers[$id] = ['msisdns' => [], 'name' => $carrier->getName()];
                     }
 
-                    $preparedUsers[$id]['msisdns'][] = $user->getUserIdentifier();
+                    $preparedUsers[$id]['msisdns'][] = [
+                        'msisdn'      => $user->getUserIdentifier(),
+                        'isNeverUsed' => !$user->getLastTimeUsedAt()
+                    ];
                 }
 
                 $preparedUsers = array_filter($preparedUsers, function (array $data) {
