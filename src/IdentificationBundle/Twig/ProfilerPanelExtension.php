@@ -63,6 +63,10 @@ class ProfilerPanelExtension extends AbstractExtension
                     $preparedUsers[$id]['msisdns'][] = $user->getUserIdentifier();
                 }
 
+                $preparedUsers = array_filter($preparedUsers, function (array $data) {
+                    return !empty($data['msisdns']);
+                });
+
                 return $preparedUsers;
 
             })
