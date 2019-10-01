@@ -19,8 +19,22 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ZainKSASubscriptionHandler implements SubscriptionHandlerInterface, HasCustomResponses, HasCommonFlow
+class ZainKSAHandler implements SubscriptionHandlerInterface, HasCustomResponses, HasCommonFlow
 {
+    /**
+     * @var string
+     */
+    private $redirectUrl;
+
+
+    /**
+     * ZainKSAHandler constructor.
+     * @param string $redirectUrl
+     */
+    public function __construct(string $redirectUrl)
+    {
+        $this->redirectUrl = $redirectUrl;
+    }
 
     public function canHandle(\CommonDataBundle\Entity\Interfaces\CarrierInterface $carrier): bool
     {
@@ -35,7 +49,7 @@ class ZainKSASubscriptionHandler implements SubscriptionHandlerInterface, HasCus
     public function createResponseBeforeSubscribeAttempt(Request $request, User $user)
     {
         if (preg_match('/966831\d+/', $user->getIdentifier())) {
-            return new RedirectResponse('google.com');
+            return new RedirectResponse($this->redirectUrl);
         }
     }
 
