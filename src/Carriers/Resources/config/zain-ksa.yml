@@ -8,3 +8,7 @@ services:
     Carriers\ZainKSA\Template\ZainKSATemplateHandler:
         tags:
             - { name: store_commons.template_handler }
+
+    Carriers\ZainKSA\Subscribe\ZainKSASubscriptionHandler:
+        tags:
+            - { name: subscription.subscription_handler }

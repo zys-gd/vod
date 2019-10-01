@@ -17,6 +17,13 @@ use Symfony\Component\HttpFoundation\Response;
 interface HasCustomResponses
 {
     /**
+     * @param Request $request
+     * @param User    $user
+     * @return Response|null
+     */
+    public function createResponseBeforeSubscribeAttempt(Request $request, User $user);
+
+    /**
      * @param Request      $request
      * @param User         $User
      * @param Subscription $subscription

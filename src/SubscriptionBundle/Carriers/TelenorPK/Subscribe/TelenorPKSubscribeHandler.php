@@ -84,4 +84,14 @@ class TelenorPKSubscribeHandler implements SubscriptionHandlerInterface, HasComm
     {
         // TODO: Implement createResponseForExistingSubscription() method.
     }
+
+    /**
+     * @param Request $request
+     * @param User    $user
+     * @return Response|null
+     */
+    public function createResponseBeforeSubscribeAttempt(Request $request, User $user)
+    {
+        // TODO: Implement createResponseBeforeSubscribeAttempt() method.
+    }
 }
