@@ -19,7 +19,7 @@ interface HasCustomResponses
     /**
      * @param Request $request
      * @param User    $user
-     * @return Response|null
+     * @return Response|null|void
      */
     public function createResponseBeforeSubscribeAttempt(Request $request, User $user);
 
@@ -27,7 +27,7 @@ interface HasCustomResponses
      * @param Request      $request
      * @param User         $User
      * @param Subscription $subscription
-     * @return Response|null
+     * @return Response|null|void
      */
     public function createResponseForSuccessfulSubscribe(Request $request, User $User, Subscription $subscription);
 
@@ -36,7 +36,7 @@ interface HasCustomResponses
      * @param Request      $request
      * @param User         $User
      * @param Subscription $subscription
-     * @return Response|null
+     * @return Response|null|void
      */
     public function createResponseForExistingSubscription(Request $request, User $User, Subscription $subscription);
 }

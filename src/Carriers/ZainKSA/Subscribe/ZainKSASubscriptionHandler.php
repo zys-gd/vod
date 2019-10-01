@@ -12,13 +12,14 @@ namespace Carriers\ZainKSA\Subscribe;
 use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Entity\User;
 use SubscriptionBundle\Entity\Subscription;
+use SubscriptionBundle\Subscription\Subscribe\Handler\HasCommonFlow;
 use SubscriptionBundle\Subscription\Subscribe\Handler\HasCustomResponses;
 use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ZainKSASubscriptionHandler implements SubscriptionHandlerInterface, HasCustomResponses
+class ZainKSASubscriptionHandler implements SubscriptionHandlerInterface, HasCustomResponses, HasCommonFlow
 {
 
     public function canHandle(\CommonDataBundle\Entity\Interfaces\CarrierInterface $carrier): bool
@@ -59,4 +60,13 @@ class ZainKSASubscriptionHandler implements SubscriptionHandlerInterface, HasCus
     {
     }
 
+    public function getAdditionalSubscribeParams(Request $request, User $User): array
+    {
+        return [];
+    }
+
+    public function afterProcess(Subscription $subscription, \SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult $result)
+    {
+        // TODO: Implement afterProcess() method.
+    }
 }
