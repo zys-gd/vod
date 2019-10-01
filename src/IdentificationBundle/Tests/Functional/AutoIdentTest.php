@@ -90,7 +90,7 @@ class AutoIdentTest extends AbstractFunctionalTest
     }
 
 
-    /*public function testNoRedirectForLPWhenNoCarrierDetected()
+    public function testNoRedirectForLPWhenNoCarrierDetected()
     {
         $client = $this->makeClient();
 
@@ -98,7 +98,7 @@ class AutoIdentTest extends AbstractFunctionalTest
 
         $this->assertFalse($client->getResponse()->isRedirect(), 'redirect is triggered');
         $this->assertArrayHasKey('storage[is_wifi_flow]', $this->session->all(), 'wifi flow are not set');
-    }*/
+    }
 
 
     public function testNoRedirectOnLPWhenWifiFlow()
