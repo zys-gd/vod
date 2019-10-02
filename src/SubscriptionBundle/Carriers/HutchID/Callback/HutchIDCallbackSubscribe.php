@@ -165,7 +165,7 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
 
     public function canHandle(Request $request, int $carrierId): bool
     {
-        return $carrierId === ID::HUTCH_INDONESIA;
+        return $carrierId === ID::HUTCH3_INDONESIA_DOT;
     }
 
     /**
@@ -188,7 +188,7 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
 
             $billingCarrierId = $requestParams->carrier;
             $carrier          = $this->carrierRepository->findOneByBillingId($billingCarrierId);
-            $msisdn           = (string)$requestParams->client_user;
+            $msisdn           = $requestParams->client_user ?? $requestParams->provider_user;
             $user             = $this->userRepository->findOneByMsisdn($msisdn);
 
             if (!$user) {
@@ -255,7 +255,7 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
 
         } catch (SubscriptionFlowException $e) {
             $this->logger->info('Hutch ID listen callback through common flow');
-            return $this->commonFlowHandler->process($request, ID::HUTCH_INDONESIA, $type);
+            return $this->commonFlowHandler->process($request, ID::HUTCH3_INDONESIA_DOT, $type);
         }
     }
 }

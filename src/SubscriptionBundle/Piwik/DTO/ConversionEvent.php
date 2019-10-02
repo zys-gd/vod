@@ -19,16 +19,25 @@ class ConversionEvent
      * @var OrderInformation
      */
     private $orderInformation;
+    /**
+     * @var array
+     */
+    private $additionalData;
 
     /**
      * ConversionEvent constructor.
      * @param UserInformation  $userInformation
      * @param OrderInformation $orderInformation
+     * @param array            $additionalData
      */
-    public function __construct(UserInformation $userInformation, OrderInformation $orderInformation)
+    public function __construct(UserInformation $userInformation, OrderInformation $orderInformation = null, array $additionalData = [])
     {
         $this->userInformation  = $userInformation;
         $this->orderInformation = $orderInformation;
+
+        $this->ensureAdditionalDataIsCorrect($additionalData);
+
+        $this->additionalData = $additionalData;
     }
 
     /**
@@ -42,9 +51,36 @@ class ConversionEvent
     /**
      * @return OrderInformation
      */
-    public function getOrderInformation(): OrderInformation
+    public function getOrderInformation(): ?OrderInformation
     {
         return $this->orderInformation;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAdditionalData(): array
+    {
+        return $this->additionalData;
+    }
+
+    private function ensureAdditionalDataIsCorrect(array $additionalData): void
+    {
+        // Reporting tool compatibility.
+        $exception = new \RuntimeException(sprintf('Additional data should be in following format: %s', json_encode([
+            '10' => ['PROPERTY_NAME', 'PROPERTY_VALUE']
+        ])));
+
+        foreach ($additionalData as $k => $element) {
+
+            if (!is_numeric($k)) {
+                throw $exception;
+            }
+
+            if (!isset($element[0], $element[1])) {
+                throw $exception;
+            }
+        }
     }
 
 

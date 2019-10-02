@@ -196,6 +196,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
             - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
+            - '@IdentificationBundle\Repository\TestUserRepository'
 
 
     IdentificationBundle\Identification\Controller\AsyncIdentController:
@@ -216,7 +217,6 @@ services:
     IdentificationBundle\Identification\Profiler\FakeCarrierIdentifier:
         tags:
             - {name: data_collector, template: '@Identification/profiler/fake_carrier_identifier.html.twig', id: 'identification.fake_carrier_identifier'}
-        arguments: ['@IdentificationBundle\Repository\CarrierRepositoryInterface']
 
     IdentificationBundle\Identification\Controller\PassthroughController:
         arguments:

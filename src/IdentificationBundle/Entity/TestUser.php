@@ -134,9 +134,9 @@ class TestUser
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTimeInterface
      */
-    public function getLastTimeUsedAt(): \DateTime
+    public function getLastTimeUsedAt(): ?\DateTimeInterface
     {
         return $this->lastTimeUsedAt;
     }

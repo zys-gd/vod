@@ -10,6 +10,7 @@ namespace App\Listener;
 
 
 use App\Controller\AppControllerInterface;
+use App\Controller\GamesController;
 use App\Domain\Service\DeviceDetection\MobileDetector;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
@@ -70,9 +71,13 @@ class AndroidDeviceListener
             return;
         }
 
-        if (!($controller instanceof AppControllerInterface)) {
+        if (!($controller instanceof GamesController)) {
             return;
         }
+
+        /*if (!($controller instanceof AppControllerInterface)) {
+            return;
+        }*/
 
         $wrosRoute = $this->router->generate('wrong_os');
         if ($request->getPathInfo() == $wrosRoute) {

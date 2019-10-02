@@ -79,3 +79,7 @@ services:
 
     twig.extension.date:
         class: Twig_Extensions_Extension_Date
+
+    App\Twig\DeviceOSExtension:
+        tags:
+            - { name: twig.extension }

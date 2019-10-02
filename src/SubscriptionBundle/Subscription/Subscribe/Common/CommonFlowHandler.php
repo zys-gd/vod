@@ -12,6 +12,7 @@ use ExtrasBundle\Controller\Traits\ResponseTrait;
 use ExtrasBundle\Utils\UrlParamAppender;
 use IdentificationBundle\Entity\User;
 use Psr\Log\LoggerInterface;
+use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
@@ -23,6 +24,7 @@ use SubscriptionBundle\Subscription\Subscribe\Handler\HasCommonFlow;
 use SubscriptionBundle\Subscription\Subscribe\Handler\HasCustomResponses;
 use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider;
 use SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker;
+use SubscriptionBundle\Subscription\Subscribe\Common\PendingSubscriptionCreator;
 use SubscriptionBundle\Subscription\Subscribe\Subscriber;
 use SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound;
 use SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider;
@@ -92,6 +94,10 @@ class CommonFlowHandler
      * @var AfterSubscriptionProcessTracker
      */
     private $afterSubscriptionProcessTracker;
+    /**
+     * @var PendingSubscriptionCreator
+     */
+    private $pendingSubscriptionCreator;
 
 
     /**
@@ -112,6 +118,7 @@ class CommonFlowHandler
      * @param AffiliateNotifier               $affiliateNotifier
      * @param CampaignExtractor               $campaignExtractor
      * @param AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
+     * @param PendingSubscriptionCreator      $pendingSubscriptionCreator
      */
     public function __construct(
         SubscriptionExtractor $subscriptionProvider,
@@ -128,7 +135,8 @@ class CommonFlowHandler
         RouteProvider $routeProvider,
         AffiliateNotifier $affiliateNotifier,
         CampaignExtractor $campaignExtractor,
-        AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
+        AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker,
+        PendingSubscriptionCreator $pendingSubscriptionCreator
     )
     {
         $this->subscriptionProvider            = $subscriptionProvider;
@@ -146,6 +154,7 @@ class CommonFlowHandler
         $this->zeroCreditSubscriptionChecking  = $zeroCreditSubscriptionChecking;
         $this->campaignExtractor               = $campaignExtractor;
         $this->afterSubscriptionProcessTracker = $afterSubscriptionProcessTracker;
+        $this->pendingSubscriptionCreator      = $pendingSubscriptionCreator;
     }
 
     /**
@@ -168,15 +177,23 @@ class CommonFlowHandler
         ]);
 
         /** @var HasCommonFlow $subscriber */
-        $subscriber   = $this->handlerProvider->getSubscriber($User->getCarrier());
+        $subscriber = $this->handlerProvider->getSubscriber($User->getCarrier());
+        if (
+            $subscriber instanceof HasCustomResponses &&
+            $response = $subscriber->createResponseBeforeSubscribeAttempt($request, $User)
+        ) {
+            return $response;
+        }
+
         $subscription = $this->subscriptionProvider->getExistingSubscriptionForUser($User);
 
         if (empty($subscription)) {
-            return $this->handleSubscribe($request, $User, $subscriber);
+            $newSubscription = $this->createNewSubscription($request, $User);
+            return $this->handleSubscribeAttempt($request, $User, $newSubscription, $subscriber);
         }
 
         if ($this->checker->isStatusOkForTryAgainSubscription($subscription)) {
-            return $this->handleSubscribe($request, $User, $subscriber);
+            return $this->handleSubscribeAttempt($request, $User, $subscription, $subscriber);
         }
 
         if ($this->checker->isStatusOkForResubscribe($subscription)) {
@@ -210,30 +227,31 @@ class CommonFlowHandler
     /**
      * @param Request       $request
      * @param User          $User
+     * @param Subscription  $subscription
      * @param HasCommonFlow $subscriber
      *
      * @return null|Response
-     * @throws \SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    private function handleSubscribe(Request $request, User $User, HasCommonFlow $subscriber): Response
+    private function handleSubscribeAttempt(
+        Request $request,
+        User $User,
+        Subscription $subscription,
+        HasCommonFlow $subscriber
+    ): Response
     {
 
-        $additionalData   = $subscriber->getAdditionalSubscribeParams($request, $User);
-        $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($User);
-        $campaign         = $this->campaignExtractor->getCampaignFromSession($request->getSession());
+        $additionalData = $subscriber->getAdditionalSubscribeParams($request, $User);
+        $campaign       = $this->campaignExtractor->getCampaignFromSession($request->getSession());
+        $result         = $this->subscriber->subscribe($subscription, $additionalData);
 
+        $this->afterSubscriptionProcessTracker->track($result, $subscription, $subscriber, $campaign);
 
-        /** @var ProcessResult $result */
-        list($newSubscription, $result) = $this->subscriber->subscribe($User, $subscriptionPack, $additionalData);
-
-        $this->afterSubscriptionProcessTracker->track($result, $newSubscription, $subscriber, $campaign);
-
-        $subscriber->afterProcess($newSubscription, $result);
+        $subscriber->afterProcess($subscription, $result);
         $this->entitySaveHelper->saveAll();
 
         if ($subscriber instanceof HasCustomResponses &&
-            $customResponse = $subscriber->createResponseForSuccessfulSubscribe($request, $User, $newSubscription)) {
+            $customResponse = $subscriber->createResponseForSuccessfulSubscribe($request, $User, $subscription)) {
             return $customResponse;
         }
 
@@ -296,6 +314,20 @@ class CommonFlowHandler
         $this->entitySaveHelper->saveAll();
 
         return $this->commonResponseCreator->createCommonHttpResponse($request, $user);
+    }
+
+    /**
+     * @param Request $request
+     * @param User    $User
+     * @return Subscription
+     * @throws ActiveSubscriptionPackNotFound
+     */
+    private function createNewSubscription(Request $request, User $User): Subscription
+    {
+        $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($User);
+        $campaignData     = AffiliateVisitSaver::extractPageVisitData($request->getSession(), true);
+        $newSubscription  = $this->pendingSubscriptionCreator->createPendingSubscription($User, $subscriptionPack, $campaignData);
+        return $newSubscription;
     }
 
 }

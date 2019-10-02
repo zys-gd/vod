@@ -9,6 +9,7 @@
 namespace Controller\Action;
 
 use CountryCarrierDetectionBundle\Service\MaxMindIpInfo;
+use ExtrasBundle\Cache\Redis\MockeryRedisDummyTrait;
 use ExtrasBundle\Testing\Core\AbstractFunctionalTest;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -18,6 +19,7 @@ use Mockery\MockInterface;
 use PiwikBundle\Service\PiwikDataMapper;
 use PiwikBundle\Service\PiwikTracker;
 use Psr\Log\LoggerInterface;
+use Redis;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\BillingFramework\Notification\API\RequestSender as NotificationService;
 use SubscriptionBundle\BillingFramework\Process\API\RequestSender;
@@ -38,6 +40,7 @@ use SubscriptionBundle\Tests\BillingFramework\TestBillingResponseProvider;
 
 class SubscribeActionTest extends AbstractFunctionalTest
 {
+    use MockeryRedisDummyTrait;
 
     use MockeryPHPUnitIntegration;
 
@@ -72,6 +75,7 @@ class SubscribeActionTest extends AbstractFunctionalTest
      * @var MockInterface|SMSTextProvider
      */
     private $smsTextProvider;
+    private $redisConnectionProvider;
 
     /**
      * @var MockInterface|SubscriptionHandlerProvider
@@ -241,6 +245,7 @@ class SubscribeActionTest extends AbstractFunctionalTest
         $container->set('SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter', $this->subscriptionLimiter);
         $container->set('SubscriptionBundle\Subscription\Subscribe\Voter\BatchSubscriptionVoter', $this->voter);
         $container->set('SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider', $this->smsTextProvider);
+        $container->set('app.cache.redis_connection_provider', $this->getRedisConnectionProviderMock());
         $container->set('SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider', $this->subscriptionHandlerProvider);
 
     }
@@ -266,6 +271,9 @@ class SubscribeActionTest extends AbstractFunctionalTest
         $this->subscriptionLimiter          = Mockery::spy(SubscriptionLimiter::class);
         $this->smsTextProvider              = Mockery::spy(SMSTextProvider::class);
         $this->subscriptionHandlerProvider  = Mockery::spy(SubscriptionHandlerProvider::class);
+        $this->redisConnectionProvider      = Mockery::spy(\ExtrasBundle\Cache\Redis\RedisConnectionProvider::class);
+
+        $this->redisConnectionProvider->allows(['create' => Mockery::mock(Redis::class)]);
     }
 
     protected static function getKernelClass()
