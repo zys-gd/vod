@@ -90,12 +90,13 @@ class AffiliateAdmin extends AbstractAdmin
         $this->generateTestLink($obj);
 
         $originalData = $this->entityManager->getUnitOfWork()->getOriginalEntityData($obj);
-
-        if ($obj->isLpOff() != $originalData['isLpOff']) {
-            $isLPOff = $obj->isLpOff();
-            $obj->getCampaigns()->map(function (Campaign $campaign) use ($isLPOff) {
-                $campaign->setIsLpOff($isLPOff);
-            });
+        if(count($originalData) > 0) {
+            if ($obj->isLpOff() != $originalData['isLpOff']) {
+                $isLPOff = $obj->isLpOff();
+                $obj->getCampaigns()->map(function (Campaign $campaign) use ($isLPOff) {
+                    $campaign->setIsLpOff($isLPOff);
+                });
+            }
         }
     }
 

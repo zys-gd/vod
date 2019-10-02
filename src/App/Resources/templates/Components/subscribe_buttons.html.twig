@@ -34,29 +34,12 @@
     {% endif %}
 
     <script type="text/javascript">
-        function firstClickOtpBtn() {
-            let otpBtn = $('.x-otp-button');
-            if (otpBtn.is('a')) {
-                otpBtn.each((key, el) => {
-                    $(el).removeClass('x-otp-button')
-                        .addClass('x-subscribe-button')
-                        .find('button').text('{{ translate('buttons.confirm') }}');
-                });
-            } else if (otpBtn.is('button')) {
-                otpBtn.each((key, el) => {
-                    $(el).removeClass('x-otp-button')
-                        .addClass('x-subscribe-button')
-                        .text('{{ translate('buttons.confirm') }}');
-                });
-            }
-        }
-
         $(document).on('click', '.x-subscribe-button', function (e) {
             $._loader(false);
         });
         $(document).on('click', '.x-otp-button', function (e) {
             e.preventDefault();
-            firstClickOtpBtn()
+            firstClickOtpBtn('{{ translate('buttons.confirm') }}');
         });
 
         $(document).on('click', '.x-popup-button', function (e) {

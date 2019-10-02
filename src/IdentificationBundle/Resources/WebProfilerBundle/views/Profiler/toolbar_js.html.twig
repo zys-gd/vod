@@ -1,0 +1,62 @@
+{% include '@!WebProfiler/Profiler/toolbar_js.html.twig' %}
+
+
+<script>
+
+    $(document).on('change', '#development-identify-popup', function (e) {
+
+        e.preventDefault();
+
+        var carrier = $(this).val();
+        var blockId = '#development-identify-popup-carrier-' + carrier;
+        var html    = $(blockId).html();
+
+        $.fancybox.open({
+            type: 'html',
+            src : html,
+        })
+    });
+
+    $(document).on('click', '#clear_identify', function (e) {
+        e.preventDefault();
+
+        window.location = '{{ path('reset_fake_identify') }}'
+    })
+
+</script>
+
+
+<div style="display: none">
+    {% for carrierId,data in getTestUserData() %}
+        <div id="development-identify-popup-carrier-{{ carrierId }}">
+
+            <div>
+
+                <div>
+                    {{ data.name }}
+                </div>
+                <br>
+
+                {% for msisdnData in data.msisdns %}
+                    {% set isCurrentlyUsed = isIdentified() and getUserIdentifier() == msisdnData.msisdn %}
+
+                    <div class="{% if msisdnData.isNeverUsed %}is-never-used{% endif %} {% if isCurrentlyUsed %}current{% endif %}">
+
+                        {% if isCurrentlyUsed %}(+){% endif %}
+                        <a href="{{ url('fake_identify',{'msisdn':msisdnData.msisdn, 'carrierId': carrierId}) }}">{{ msisdnData.msisdn }}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+
+    <style>
+
+        .is-never-used a {
+            color: silver;
+        }
+        .current a{
+            font-weight: bold;
+        }
+    </style>
+</div>

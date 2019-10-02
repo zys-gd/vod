@@ -8,3 +8,9 @@ services:
     Carriers\ZainKSA\Template\ZainKSATemplateHandler:
         tags:
             - { name: store_commons.template_handler }
+
+    Carriers\ZainKSA\Subscribe\ZainKSAHandler:
+        tags:
+            - { name: subscription.subscription_handler }
+        arguments:
+          ['%default_redirect_url%']

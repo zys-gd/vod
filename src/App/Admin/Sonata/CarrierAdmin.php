@@ -93,42 +93,43 @@ class CarrierAdmin extends AbstractAdmin
 
         $originalData = $this->entityManager->getUnitOfWork()->getOriginalEntityData($object);
 
-        if ($originalData['numberOfAllowedSubscriptionsByConstraint']
-            !== $object->getNumberOfAllowedSubscriptionsByConstraint()
-        ) {
-            $object->setIsCapAlertDispatch(false);
+        if (count($originalData) > 0) {
+            if ($originalData['numberOfAllowedSubscriptionsByConstraint']
+                !== $object->getNumberOfAllowedSubscriptionsByConstraint()
+            ) {
+                $object->setIsCapAlertDispatch(false);
+            }
+
+            if ($object->isLpOff() != $originalData['isLpOff']) {
+                $isLpOff = $object->isLpOff();
+
+                $object->getCampaigns()->map(function (Campaign $campaign) use ($isLpOff) {
+                    $campaign->setIsLpOff($isLpOff);
+                    $campaign->getAffiliate()->setIsLpOff($isLpOff);
+                });
+            }
+
+            if ($object->getIsCampaignsOnPause() != $originalData['isCampaignsOnPause']) {
+                $isCampaignsOnPause = $object->getIsCampaignsOnPause();
+                $object->getCampaigns()->map(function (Campaign $campaign) use ($isCampaignsOnPause) {
+                    $campaign->setIsPause($isCampaignsOnPause);
+                });
+            }
+
+            if ($object->isClickableSubImage() != $originalData['isClickableSubImage']) {
+                $isClickableSubImage = $object->isClickableSubImage();
+                $object->getCampaigns()->map(function (Campaign $campaign) use ($isClickableSubImage) {
+                    $campaign->setIsClickableSubImage($isClickableSubImage);
+                });
+            }
+
+            if ($object->isConfirmationClick() != $originalData['isConfirmationClick']) {
+                $isConfirmationClick = $object->isConfirmationClick();
+                $object->getCampaigns()->map(function (Campaign $campaign) use ($isConfirmationClick) {
+                    $campaign->setIsConfirmationClick($isConfirmationClick);
+                });
+            }
         }
-
-        if ($object->isLpOff() != $originalData['isLpOff']) {
-            $isLpOff = $object->isLpOff();
-
-            $object->getCampaigns()->map(function (Campaign $campaign) use ($isLpOff) {
-                $campaign->setIsLpOff($isLpOff);
-                $campaign->getAffiliate()->setIsLpOff($isLpOff);
-            });
-        }
-
-        if ($object->getIsCampaignsOnPause() != $originalData['isCampaignsOnPause']) {
-            $isCampaignsOnPause = $object->getIsCampaignsOnPause();
-            $object->getCampaigns()->map(function (Campaign $campaign) use ($isCampaignsOnPause) {
-                $campaign->setIsPause($isCampaignsOnPause);
-            });
-        }
-
-        if ($object->isClickableSubImage() != $originalData['isClickableSubImage']) {
-            $isClickableSubImage = $object->isClickableSubImage();
-            $object->getCampaigns()->map(function (Campaign $campaign) use ($isClickableSubImage) {
-                $campaign->setIsClickableSubImage($isClickableSubImage);
-            });
-        }
-
-        if($object->isConfirmationClick() != $originalData['isConfirmationClick']) {
-            $isConfirmationClick = $object->isConfirmationClick();
-            $object->getCampaigns()->map(function (Campaign $campaign) use ($isConfirmationClick) {
-                $campaign->setIsConfirmationClick($isConfirmationClick);
-            });
-        }
-
 
     }
 

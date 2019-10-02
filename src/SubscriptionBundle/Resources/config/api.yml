@@ -1,7 +1,7 @@
 services:
   SubscriptionBundle\API\Controller\SubscriptionDataAction:
     tags: ['controller.service_arguments']
-    arguments: ['@SubscriptionBundle\API\Service\LegacyBillingFormatter', '@SubscriptionBundle\API\Service\SubscriptionInfoProvider']
+    arguments: ['@SubscriptionBundle\API\Service\LegacyBillingFormatter', '@SubscriptionBundle\API\Service\SubscriptionInfoProvider', '@logger']
 
   SubscriptionBundle\API\Service\LegacyBillingFormatter: ~
 

@@ -1,20 +1,27 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: dmitriy
+ * Date: 01.10.19
+ * Time: 17:17
+ */
 
-
-namespace Carriers\OrangeTNMM\Identification;
+namespace IdentificationBundle\Carriers\CellcardKH;
 
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\WifiIdentification\DTO\PhoneValidationOptions;
+use IdentificationBundle\WifiIdentification\Handler\HasCustomMsisdnCleaning;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
 
-class OrangeTNMMWifiIdentificationHandler implements WifiIdentificationHandlerInterface
+class CellcardKHWifiIdentificationHandler implements WifiIdentificationHandlerInterface, HasCustomMsisdnCleaning
 {
 
     public function canHandle(CarrierInterface $carrier): bool
     {
-        // TODO: Implement canHandle() method.
+        return $carrier->getBillingCarrierId() == ID::CELLCARD_CAMBODIA;
     }
 
     public function getRedirectUrl()
@@ -35,5 +42,10 @@ class OrangeTNMMWifiIdentificationHandler implements WifiIdentificationHandlerIn
     public function getPhoneValidationOptions(): PhoneValidationOptions
     {
         // TODO: Implement getPhoneValidationOptions() method.
+    }
+
+    public function cleanMsisdn(string $msisdn): string
+    {
+        return str_replace('+', '', $msisdn);
     }
 }

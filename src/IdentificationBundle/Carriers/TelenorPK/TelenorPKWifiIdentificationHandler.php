@@ -17,10 +17,11 @@ use IdentificationBundle\Entity\User;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\DTO\PhoneValidationOptions;
 use IdentificationBundle\WifiIdentification\Exception\WifiIdentConfirmException;
+use IdentificationBundle\WifiIdentification\Handler\HasCustomMsisdnCleaning;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinVerifyRules;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
 
-class TelenorPKWifiIdentificationHandler implements WifiIdentificationHandlerInterface, HasCustomPinVerifyRules
+class TelenorPKWifiIdentificationHandler implements WifiIdentificationHandlerInterface, HasCustomPinVerifyRules, HasCustomMsisdnCleaning
 {
     /**
      * @var UserRepository
@@ -94,5 +95,10 @@ class TelenorPKWifiIdentificationHandler implements WifiIdentificationHandlerInt
             'XXXXX',
             '^[0-9]{1,5}$'
         );
+    }
+
+    public function cleanMsisdn(string $msisdn): string
+    {
+        return str_replace('+', '', $msisdn);
     }
 }

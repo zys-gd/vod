@@ -29,7 +29,6 @@ class SubscriptionBundle extends Bundle
         $container->addCompilerPass(new CampaignConfirmationPass());
         $container->addCompilerPass(new SubscriptionVoterPass());
 
-        $container->addCompilerPass(new TwigAdditionalPathsExtension());
         $container->addCompilerPass(new SMSTextHandlerPass());
         $container->addCompilerPass(new SubscribeBackHandlerPass());
         $container->addCompilerPass(new SubscribeProcessStarterPass());
