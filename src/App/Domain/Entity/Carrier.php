@@ -127,7 +127,7 @@ class Carrier implements CarrierInterface, HasUuid
     /**
      * @var bool
      */
-    private $isCapAlertDispatch  = false;
+    private $isCapAlertDispatch = false;
 
     /**
      * @var \CommonDataBundle\Entity\Language
@@ -150,7 +150,7 @@ class Carrier implements CarrierInterface, HasUuid
      */
     public function __construct(string $uuid)
     {
-        $this->uuid = $uuid;
+        $this->uuid      = $uuid;
         $this->campaigns = new ArrayCollection();
     }
 

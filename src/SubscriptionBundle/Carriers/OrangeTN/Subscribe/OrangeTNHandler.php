@@ -21,6 +21,7 @@ use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerInterfa
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
 class OrangeTNHandler implements SubscriptionHandlerInterface, HasCustomResponses, HasCommonFlow
@@ -104,5 +105,15 @@ class OrangeTNHandler implements SubscriptionHandlerInterface, HasCustomResponse
     public function createResponseForExistingSubscription(Request $request, User $User, Subscription $subscription)
     {
         // TODO: Implement onExistingSubscription() method.
+    }
+
+    /**
+     * @param Request $request
+     * @param User    $user
+     * @return Response|null
+     */
+    public function createResponseBeforeSubscribeAttempt(Request $request, User $user)
+    {
+        // TODO: Implement createResponseBeforeSubscribeAttempt() method.
     }
 }

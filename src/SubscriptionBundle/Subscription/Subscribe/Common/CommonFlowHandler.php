@@ -177,7 +177,14 @@ class CommonFlowHandler
         ]);
 
         /** @var HasCommonFlow $subscriber */
-        $subscriber   = $this->handlerProvider->getSubscriber($User->getCarrier());
+        $subscriber = $this->handlerProvider->getSubscriber($User->getCarrier());
+        if (
+            $subscriber instanceof HasCustomResponses &&
+            $response = $subscriber->createResponseBeforeSubscribeAttempt($request, $User)
+        ) {
+            return $response;
+        }
+
         $subscription = $this->subscriptionProvider->getExistingSubscriptionForUser($User);
 
         if (empty($subscription)) {

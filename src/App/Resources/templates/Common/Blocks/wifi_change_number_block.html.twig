@@ -1,21 +1,18 @@
-{% macro render() %}
+{% macro render(phoneNumber) %}
     {% import '@App/Components/Buttons/button.html.twig' as button %}
     {% import '@App/Components/Forms/wifi_phone.html.twig' as wifi_phone %}
-    {% import '@App/Components/Forms/wifi_pin.html.twig' as wifi_pin %}
-    {% import '@App/Components/Forms/wifi_select.html.twig' as wifi_select %}
-    {% import importTemplate("Components/Buttons/link.html.twig") as  link %}
 
     <form data-form="pin" id="wifi_form"
           class="d-flex flex-column w-75 text-center">
         <div class="wifi_form__ground"></div>
+
         <div class="align-self-center wifi_form__warning w-75">
             {{ translate('wifi.warning') }}
         </div>
-        <div id="wifi_form_step">
-            {{ wifi_select.render() }}
-            {{ wifi_phone.render() }}
-        </div>
 
+        <div id="wifi_form_step">
+            {{ wifi_phone.render(phoneNumber) }}
+        </div>
 
         <div id="wifi_button">
             {{ button.renderSubmitButton(translate('buttons.subscribe'), 'x-send-pin-button') }}

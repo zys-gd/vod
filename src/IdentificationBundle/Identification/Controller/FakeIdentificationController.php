@@ -4,6 +4,7 @@ namespace IdentificationBundle\Identification\Controller;
 
 use CountryCarrierDetectionBundle\Service\Interfaces\ICountryCarrierDetection;
 use Doctrine\ORM\EntityManager;
+use IdentificationBundle\Entity\TestUser;
 use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\Exception\MissingCarrierException;
 use IdentificationBundle\Identification\Identifier;
@@ -11,6 +12,7 @@ use IdentificationBundle\Identification\Service\ISPResolver;
 use IdentificationBundle\Identification\Service\RouteProvider;
 use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\TokenGenerator;
+use IdentificationBundle\Repository\TestUserRepository;
 use IdentificationBundle\User\Service\UserFactory;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Repository\UserRepository;
@@ -64,6 +66,10 @@ class FakeIdentificationController extends AbstractController
      * @var IdentificationDataStorage
      */
     private $identificationDataStorage;
+    /**
+     * @var TestUserRepository
+     */
+    private $testUserRepository;
 
     /**
      * FakeIdentificationController constructor.
@@ -78,6 +84,7 @@ class FakeIdentificationController extends AbstractController
      * @param EntityManager                                  $entityManager
      * @param RouteProvider                                  $routeProvider
      * @param IdentificationDataStorage                      $identificationDataStorage
+     * @param TestUserRepository                             $testUserRepository
      */
     public function __construct(
         ICountryCarrierDetection $carrierDetection,
@@ -89,7 +96,8 @@ class FakeIdentificationController extends AbstractController
         UserFactory $userFactory,
         EntityManager $entityManager,
         RouteProvider $routeProvider,
-        IdentificationDataStorage $identificationDataStorage
+        IdentificationDataStorage $identificationDataStorage,
+        TestUserRepository $testUserRepository
     )
     {
         $this->carrierDetection          = $carrierDetection;
@@ -102,6 +110,7 @@ class FakeIdentificationController extends AbstractController
         $this->userRepository            = $userRepository;
         $this->routeProvider             = $routeProvider;
         $this->identificationDataStorage = $identificationDataStorage;
+        $this->testUserRepository        = $testUserRepository;
     }
 
     /**
@@ -114,28 +123,30 @@ class FakeIdentificationController extends AbstractController
      */
     public function fakeIdentifyAction(Request $request, DeviceData $deviceData)
     {
-        $ipAddress = $request->get('ip', $request->getClientIp());
-        $msisdn    = $request->get('msisdn', 'fake');
+        $ipAddress        = $request->get('ip', $request->getClientIp());
+        $msisdn           = $request->get('msisdn', 'fake');
+        $billingCarrierId = $request->get('carrierId', null);
 
         $session = $request->getSession();
         $session->clear();
 
-        if (!$user = $this->userRepository->findOneByMsisdn($msisdn)) {
-            $user = $this->userRepository->findOneBy(['ip' => $ipAddress]);
-        }
+        $user = $this->userRepository->findOneByMsisdn($msisdn);
 
         if ($user) {
             $this->identificationDataStorage->setIdentificationToken($user->getIdentificationToken());
             $this->identificationDataStorage->setCarrierId($user->getBillingCarrierId());
         } else {
-            $carrierISP       = $this->carrierDetection->getCarrier($ipAddress);
-            $billingCarrierId = null;
 
-            if ($carrierISP) {
-                try {
-                    $billingCarrierId = $this->resolveISP($carrierISP);
-                } catch (MissingCarrierException $exception) {
-                    throw $exception;
+            if (!$billingCarrierId) {
+                $carrierISP       = $this->carrierDetection->getCarrier($ipAddress);
+                $billingCarrierId = null;
+
+                if ($carrierISP) {
+                    try {
+                        $billingCarrierId = $this->resolveISP($carrierISP);
+                    } catch (MissingCarrierException $exception) {
+                        throw $exception;
+                    }
                 }
             }
 
@@ -148,6 +159,17 @@ class FakeIdentificationController extends AbstractController
             $user    = $this->userFactory->create($msisdn, $carrier, $ipAddress, $token, null, $deviceData);
 
             $this->entityManager->persist($user);
+
+
+            /** @var TestUser $testUser */
+            $testUser = $this->testUserRepository->findOneBy([
+                'userIdentifier' => $msisdn,
+                'carrier'        => $carrier
+            ]);
+            if ($testUser) {
+                $testUser->setLastTimeUsedAt(new \DateTimeImmutable());
+            }
+
             $this->entityManager->flush();
         }
 

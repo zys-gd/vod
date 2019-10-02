@@ -1,8 +1,4 @@
 services:
-    SubscriptionBundle\Carriers\ZainKSA\Subscribe\ZainKSASubscribeHandler:
-        tags:
-            - { name: subscription.subscription_handler }
-
     SubscriptionBundle\Carriers\ZainKSA\Notification\ZainKSANotificationHandler:
         arguments: ['@CommonDataBundle\Repository\Interfaces\LanguageRepositoryInterface']
         tags:

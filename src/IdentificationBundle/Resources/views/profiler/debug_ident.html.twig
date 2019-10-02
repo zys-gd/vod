@@ -27,6 +27,10 @@
                 <b>Token</b>
                 <span class="sf-toolbar-status">{{ collector.currentIdentity.identification.identification_token }}</span>
             </div>
+            <div class="sf-toolbar-info-piece">
+                <b>Msisdn</b>
+                <span class="sf-toolbar-status">{{ collector.currentIdentity.user.identifier }}</span>
+            </div>
         {% endif %}
         <div class="sf-toolbar-info-piece">
             <b>Identified</b>

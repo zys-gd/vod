@@ -1,0 +1,38 @@
+{% macro render(phoneNumber) %}
+    {% import '@App/Components/Buttons/button.html.twig' as button %}
+    {% import '@App/Components/Forms/wifi_pin.html.twig' as wifi_pin %}
+    {% import '@App/Components/Forms/wifi_phone.html.twig' as wifi_phone %}
+
+    <form data-form="confirm" id="wifi_form" class="d-flex flex-column w-75 text-center">
+        <div class="wifi_form__ground"></div>
+        <div class="align-self-center wifi_form__warning w-75">
+            {{ translate('wifi.pin_notif', {'%wifi_phone%': phoneNumber})|nl2br }}
+        </div>
+
+        <div id="wifi_form_step">
+            {{ wifi_pin.render() }}
+            {{ wifi_phone.render(phoneNumber, 'hidden') }}
+
+            <div class="d-flex flex-column justify-content-center mb-2 wifi_form__pin_actions_box">
+                <div>
+                    <a class="wifi_form__pin_actions" id="resend-pin"
+                       href="#">{{ translate('buttons.wifi.resend_pin') }}</a>
+                </div>
+                <div>
+                    <a class="wifi_form__pin_actions" id="change-number"
+                       href="#">{{ translate('buttons.wifi.change_number') }}</a>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="wifi_button">
+            {{ button.renderSubmitButton(translate('buttons.subscribe'), 'x-send-pin-button') }}
+        </div>
+
+        <div class="">
+            <span id="wifi_offer">{% if isCarrierDetected() %} {{ translate('wifi.offer') }} {% endif %}</span>
+        </div>
+    </form>
+
+{% endmacro %}

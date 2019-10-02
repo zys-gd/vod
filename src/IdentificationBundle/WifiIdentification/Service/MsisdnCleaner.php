@@ -17,10 +17,6 @@ class MsisdnCleaner
 {
     public function clean(string $msisdn, CarrierInterface $carrier): string
     {
-        if ($carrier->getBillingCarrierId() == 381 || $carrier->getBillingCarrierId() == 2207) {
-            return str_replace('+', '', $msisdn);
-        }
-
         $phoneUtil   = PhoneNumberUtil::getInstance();
         $phoneNumber = $phoneUtil->parse(preg_replace('/[+\-_() ]/', '', $msisdn), $carrier->getCountryCode());
 
