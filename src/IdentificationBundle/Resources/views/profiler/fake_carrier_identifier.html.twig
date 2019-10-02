@@ -21,7 +21,7 @@
                     <option value="clear">Select Carrier</option>
                     {% for carrierId,data in getTestUserData() %}
                         <option value="{{ carrierId }}">
-                            {{ data.name }}
+                            {{ data.name }} ({{ carrierId }})
                         </option>
                     {% endfor %}
                 </select>
