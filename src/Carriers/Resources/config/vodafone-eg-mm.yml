@@ -1,0 +1,8 @@
+services:
+    Carriers\VodafoneEGMM\Identification\VodafoneEGMMIdentificationHandler:
+        tags:
+            - { name: identification.identification_handler }
+
+    Carriers\VodafoneEGMM\Template\VodafoneEGMMTemplateHandler:
+        tags:
+            - { name: store_commons.template_handler }
