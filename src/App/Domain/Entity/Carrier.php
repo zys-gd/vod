@@ -4,6 +4,7 @@ namespace App\Domain\Entity;
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use CommonDataBundle\Entity\Interfaces\HasUuid;
+use CommonDataBundle\Entity\Interfaces\LanguageInterface;
 use CommonDataBundle\Entity\Language;
 use Doctrine\Common\Collections\ArrayCollection;
 use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
@@ -131,7 +132,7 @@ class Carrier implements CarrierInterface, HasUuid
     /**
      * @var bool
      */
-    private $isCapAlertDispatch  = false;
+    private $isCapAlertDispatch = false;
 
     /**
      * @var \CommonDataBundle\Entity\Language
@@ -159,7 +160,7 @@ class Carrier implements CarrierInterface, HasUuid
      */
     public function __construct(string $uuid)
     {
-        $this->uuid = $uuid;
+        $this->uuid      = $uuid;
         $this->campaigns = new ArrayCollection();
     }
 
@@ -403,7 +404,7 @@ class Carrier implements CarrierInterface, HasUuid
      *
      * @return Carrier
      */
-    public function setDefaultLanguage(Language $defaultLanguage = null)
+    public function setDefaultLanguage(LanguageInterface $defaultLanguage = null): CarrierInterface
     {
         $this->defaultLanguage = $defaultLanguage;
 
@@ -415,7 +416,7 @@ class Carrier implements CarrierInterface, HasUuid
      *
      * @return Language
      */
-    public function getDefaultLanguage()
+    public function getDefaultLanguage(): ?LanguageInterface
     {
         return $this->defaultLanguage;
     }
