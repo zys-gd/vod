@@ -345,8 +345,44 @@ class LPController extends AbstractController implements ControllerWithISPDetect
     public function resetWifiLP()
     {
         $this->carrierSelector->removeCarrier();
+
         $template = $this->templateConfigurator->getTemplate('landing_wifi', 0);
         $html = $this->renderView($template);
+
+        return new JsonResponse($html, Response::HTTP_OK);
+    }
+
+    /**
+     * @Route("/lp/pin-confirm", name="pin_confirm", methods={"GET"}, condition="request.isXmlHttpRequest()")
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function pinConfirmWifiLP(Request $request)
+    {
+        $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($request->getSession());
+
+        $template = $this->templateConfigurator->getTemplate('landing_wifi', $billingCarrierId);
+
+        $html = $this->renderView($template, ['phoneNumber' => (string)$request->get('phone', '')]);
+
+        return new JsonResponse($html, Response::HTTP_OK);
+    }
+
+    /**
+     * @Route("/lp/change-number", name="change_number", methods={"GET"}, condition="request.isXmlHttpRequest()")
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function changeNumberWifiLP(Request $request)
+    {
+        $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($request->getSession());
+
+        $template = $this->templateConfigurator->getTemplate('landing_wifi', $billingCarrierId);
+
+        $html = $this->renderView($template, ['phoneNumber' => (string)$request->get('phone', '')]);
+
         return new JsonResponse($html, Response::HTTP_OK);
     }
 

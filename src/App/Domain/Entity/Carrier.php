@@ -400,9 +400,9 @@ class Carrier implements CarrierInterface, HasUuid
     /**
      * Set defaultLanguage
      *
-     * @param Language $defaultLanguage
+     * @param LanguageInterface $defaultLanguage
      *
-     * @return Carrier
+     * @return CarrierInterface
      */
     public function setDefaultLanguage(LanguageInterface $defaultLanguage = null): CarrierInterface
     {
@@ -414,7 +414,7 @@ class Carrier implements CarrierInterface, HasUuid
     /**
      * Get defaultLanguage
      *
-     * @return Language
+     * @return LanguageInterface
      */
     public function getDefaultLanguage(): ?LanguageInterface
     {

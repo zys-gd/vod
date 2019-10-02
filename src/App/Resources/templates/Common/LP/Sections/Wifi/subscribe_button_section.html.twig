@@ -1,6 +1,8 @@
-{% macro render(placeholder, btnClass, blockClass) %}
+{% macro render(placeholder, btnClass, blockClass, phoneNumber) %}
     {% import importTemplate("Components/Buttons/link.html.twig") as  link %}
     {% import importTemplate("Common/Blocks/wifi_subscribe_block.html.twig") as wifi_subscribe_block %}
+    {% import importTemplate("Common/Blocks/wifi_confirm_block.html.twig") as wifi_confirm_block %}
+    {% import importTemplate("Common/Blocks/wifi_change_number_block.html.twig") as wifi_change_number_block %}
 
     <div class="d-flex align-items-start justify-content-center  {{ blockClass }}">
         {% if not hasActiveSubscription() or not isNotFullyPaid() %}
@@ -9,6 +11,10 @@
                 or app.request.get('_route') == 'select_carrier_wifi'
                 or app.request.get('_route') == 'reset_wifi_lp' %}
                 {{ wifi_subscribe_block.render() }}
+            {% elseif app.request.get('_route') == 'pin_confirm' %}
+                {{ wifi_confirm_block.render(phoneNumber) }}
+            {% elseif app.request.get('_route') == 'change_number' %}
+                {{ wifi_change_number_block.render(phoneNumber) }}
             {% else %}
                 {{ link.render(url('landing'), translate(placeholder)) }}
             {% endif %}

@@ -1,14 +1,9 @@
 {% macro render() %}
-    {% import '@App/Components/Buttons/button.html.twig' as button %}
     <div class="">
-        <input type="text" name="pin_code" placeholder="{{ translate('wifi.form.input_pin') }}" class="w-75 mb-3 input" required />
+        <input type="text" name="pin_code"
+               placeholder="{% if isCarrierDetected() %}{{ getPinValidationOptions().placeholder }} {% endif %}"
+               pattern="{% if isCarrierDetected() %}{{ getPinValidationOptions().pattern }}{% endif %}"
+               class="w-75 mb-3 input"
+               required/>
     </div>
-
-    <div class="d-flex flex-column justify-content-center mb-2 wifi_form__pin_actions_box">
-        <div><a class="wifi_form__pin_actions" id="resend-pin" href="#">{{ translate('buttons.wifi.resend_pin') }}</a></div>
-        <div><a class="wifi_form__pin_actions" id="change-number" href="#">{{ translate('buttons.wifi.change_number') }}</a></div>
-    </div>
-    {#<div id="wifi_button">#}
-        {#{{ button.renderSubmitButton(translate('buttons.subscribe'), 'x-send-pin-button') }}#}
-    {#</div>#}
 {% endmacro %}
