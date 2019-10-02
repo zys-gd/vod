@@ -28,6 +28,11 @@ class OneClickFlowChecker
     {
         /** @var OneClickFlowInterface $carrierHandler */
         $carrierOneClickFlowHandler = $this->oneClickFlowCarriersProvider->get($carrier);
+
+        if(!$carrierOneClickFlowHandler) {
+            return false;
+        }
+
         $carrierOneClickFlowParameters = $carrierOneClickFlowHandler->getParameters();
 
         return in_array($parameter, $carrierOneClickFlowParameters);
