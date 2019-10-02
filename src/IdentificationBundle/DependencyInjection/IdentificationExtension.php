@@ -11,10 +11,11 @@ namespace IdentificationBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 
-class IdentificationExtension extends ConfigurableExtension
+class IdentificationExtension extends ConfigurableExtension implements PrependExtensionInterface
 {
     /**
      * {@inheritdoc}
@@ -50,4 +51,19 @@ class IdentificationExtension extends ConfigurableExtension
         $service->replaceArgument(6, $mergedConfig['contact_us_route']);
     }
 
+    /**
+     * Allow an extension to prepend the extension configurations.
+     */
+    public function prepend(ContainerBuilder $container)
+    {
+        $webProfilerOverride     = realpath(__DIR__ . '/../Resources/WebProfilerBundle/views');
+        $identificationAdminPath = realpath(__DIR__ . '/../Resources/views/Admin');
+
+        $container->loadFromExtension('twig', array(
+            'paths' => array(
+                $webProfilerOverride     => 'WebProfiler',
+                $identificationAdminPath => 'IdentificationAdmin',
+            ),
+        ));
+    }
 }

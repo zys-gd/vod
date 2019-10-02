@@ -28,8 +28,6 @@ class IdentificationBundle extends Bundle
         $container->addCompilerPass(new WifiIdentificationHandlerPass());
         $container->addCompilerPass(new ErrorCodeMapperPass());
         $container->addCompilerPass(new AlreadySubscribedHandlerPass());
-
-        $container->addCompilerPass(new TwigAdditionalPathsExtension());
     }
 
 }
