@@ -2,6 +2,8 @@ services:
     SubscriptionBundle\Carriers\HutchID\Subscribe\HutchIDSubscriptionHandler:
         tags:
             - { name: subscription.subscription_handler }
+        arguments:
+          ['@IdentificationBundle\Identification\Service\RouteProvider']
 
     SubscriptionBundle\Carriers\HutchID\Unsubscribe\HutchIDUnsubscribeHandler:
         tags:

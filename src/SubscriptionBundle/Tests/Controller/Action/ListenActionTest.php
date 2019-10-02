@@ -182,7 +182,7 @@ class ListenActionTest extends \ExtrasBundle\Testing\Core\AbstractFunctionalTest
         $this->eventPublisher->shouldHaveReceived('publish')->withArgs(function (...$args) {
             /** @var \SubscriptionBundle\Piwik\DTO\ConversionEvent $event */
             $event = $args[0];
-            return $event->getOrderInformation()->getAction() == 'trackRenew';
+            return $event->getOrderInformation()->getAction() == 'renew';
         });
     }
 
@@ -221,7 +221,7 @@ class ListenActionTest extends \ExtrasBundle\Testing\Core\AbstractFunctionalTest
         $this->eventPublisher->shouldHaveReceived('publish')->withArgs(function (...$args) {
             /** @var \SubscriptionBundle\Piwik\DTO\ConversionEvent $event */
             $event = $args[0];
-            return $event->getOrderInformation()->getAction() == 'trackRenew';
+            return $event->getOrderInformation()->getAction() == 'renew';
         });
 
 
@@ -349,7 +349,7 @@ class ListenActionTest extends \ExtrasBundle\Testing\Core\AbstractFunctionalTest
         $this->eventPublisher->shouldHaveReceived('publish')->withArgs(function (...$args) {
             /** @var \SubscriptionBundle\Piwik\DTO\ConversionEvent $event */
             $event = $args[0];
-            return $event->getOrderInformation()->getAction() == 'trackUnsubscribe';
+            return $event->getOrderInformation()->getAction() == 'unsubscribe';
         });
     }
 

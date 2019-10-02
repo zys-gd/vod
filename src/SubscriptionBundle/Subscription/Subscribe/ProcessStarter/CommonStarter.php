@@ -81,7 +81,8 @@ class CommonStarter implements SubscribeProcessStarterInterface
         }
 
         if ($pack->isFirstSubscriptionPeriodIsFree() || $isFreeTrialSubscriptionFromCampaign) {
-            return $this->sendNotificationPerformer->doSentNotification($subscription);
+            // Phuck dat.
+            $additionalData = array_merge($additionalData,['isTrial' => true]);
         }
 
         $response = $this->subscribePerformer->doSubscribe($subscription, $additionalData);

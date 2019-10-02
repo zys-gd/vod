@@ -14,6 +14,7 @@ use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\Common\InternalSMS\PinCodeSaver;
 use IdentificationBundle\WifiIdentification\Common\RequestProvider;
 use IdentificationBundle\WifiIdentification\Handler\HasConsentPageFlow;
+use IdentificationBundle\WifiIdentification\Handler\HasCustomMsisdnCleaning;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinRequestRules;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinResendRules;
 use IdentificationBundle\WifiIdentification\Handler\HasInternalSMSHandling;
@@ -149,7 +150,13 @@ class WifiIdentSMSSender
             $pinCode       = $pinCodeObject->getPin();
         }
 
-        $msisdn = $this->cleaner->clean($mobileNumber, $carrier);
+
+        if ($handler instanceof HasCustomMsisdnCleaning) {
+            $msisdn = $handler->cleanMsisdn($mobileNumber);
+        } else {
+            $msisdn = $this->cleaner->clean($mobileNumber, $carrier);
+        }
+
         $body   = $this->messageComposer->composePinCodeMessage('_subtext_', 'en', $pinCode);
 
         if ($isResend && $handler instanceof HasCustomPinResendRules) {
