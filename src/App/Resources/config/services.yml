@@ -113,6 +113,7 @@ services:
       - '@logger'
       - '@App\Domain\Repository\CampaignScheduleRepository'
       - '@App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherChecker'
+      - '@App\OneClickFlow\OneClickFlowChecker'
 
 
   App\Domain\Service\CarrierOTPVerifier:
@@ -149,3 +150,9 @@ services:
   App\Domain\Service\Campaign\CampaignSerializer:
     arguments:
       - '%images_base_url%'
+
+  App\OneClickFlow\OneClickFlowCarriersProvider: ~
+
+  App\OneClickFlow\OneClickFlowChecker:
+    arguments:
+      - '@App\OneClickFlow\OneClickFlowCarriersProvider'

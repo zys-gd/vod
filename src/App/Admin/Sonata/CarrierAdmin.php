@@ -93,42 +93,33 @@ class CarrierAdmin extends AbstractAdmin
 
         $originalData = $this->entityManager->getUnitOfWork()->getOriginalEntityData($object);
 
-        if (count($originalData) > 0) {
-            if ($originalData['numberOfAllowedSubscriptionsByConstraint']
-                !== $object->getNumberOfAllowedSubscriptionsByConstraint()
-            ) {
-                $object->setIsCapAlertDispatch(false);
-            }
+        if ($originalData['numberOfAllowedSubscriptionsByConstraint']
+            !== $object->getNumberOfAllowedSubscriptionsByConstraint()
+        ) {
+            $object->setIsCapAlertDispatch(false);
+        }
 
-            if ($object->isLpOff() != $originalData['isLpOff']) {
-                $isLpOff = $object->isLpOff();
+        if ($object->isOneClickFlow() != $originalData['isOneClickFlow']) {
+            $isOneClickFlow = $object->isOneClickFlow();
 
-                $object->getCampaigns()->map(function (Campaign $campaign) use ($isLpOff) {
-                    $campaign->setIsLpOff($isLpOff);
-                    $campaign->getAffiliate()->setIsLpOff($isLpOff);
-                });
-            }
+            $object->getCampaigns()->map(function (Campaign $campaign) use ($isOneClickFlow) {
+                $campaign->setIsOneClickFlow($isOneClickFlow);
+                $campaign->getAffiliate()->setIsOneClickFlow($isOneClickFlow);
+            });
+        }
 
-            if ($object->getIsCampaignsOnPause() != $originalData['isCampaignsOnPause']) {
-                $isCampaignsOnPause = $object->getIsCampaignsOnPause();
-                $object->getCampaigns()->map(function (Campaign $campaign) use ($isCampaignsOnPause) {
-                    $campaign->setIsPause($isCampaignsOnPause);
-                });
-            }
+        if ($object->getIsCampaignsOnPause() != $originalData['isCampaignsOnPause']) {
+            $isCampaignsOnPause = $object->getIsCampaignsOnPause();
+            $object->getCampaigns()->map(function (Campaign $campaign) use ($isCampaignsOnPause) {
+                $campaign->setIsPause($isCampaignsOnPause);
+            });
+        }
 
-            if ($object->isClickableSubImage() != $originalData['isClickableSubImage']) {
-                $isClickableSubImage = $object->isClickableSubImage();
-                $object->getCampaigns()->map(function (Campaign $campaign) use ($isClickableSubImage) {
-                    $campaign->setIsClickableSubImage($isClickableSubImage);
-                });
-            }
-
-            if ($object->isConfirmationClick() != $originalData['isConfirmationClick']) {
-                $isConfirmationClick = $object->isConfirmationClick();
-                $object->getCampaigns()->map(function (Campaign $campaign) use ($isConfirmationClick) {
-                    $campaign->setIsConfirmationClick($isConfirmationClick);
-                });
-            }
+        if ($object->isClickableSubImage() != $originalData['isClickableSubImage']) {
+            $isClickableSubImage = $object->isClickableSubImage();
+            $object->getCampaigns()->map(function (Campaign $campaign) use ($isClickableSubImage) {
+                $campaign->setIsClickableSubImage($isClickableSubImage);
+            });
         }
 
     }
@@ -147,8 +138,7 @@ class CarrierAdmin extends AbstractAdmin
             ->add('defaultLanguage')
             ->add('isp')
             ->add('published')
-            ->add('isConfirmationClick')
-            ->add('isConfirmationPopup')
+            ->add('isOneClickFlow')
             ->add('trialInitializer')
             ->add('trialPeriod')
             ->add('subscriptionPeriod')
@@ -157,7 +147,6 @@ class CarrierAdmin extends AbstractAdmin
             ->add('isCampaignsOnPause')
             ->add('isUnlimitedSubscriptionAttemptsAllowed')
             ->add('subscribeAttempts')
-            ->add('isLpOff')
             ->add('isClickableSubImage')
             ->add('trackAffiliateOnZeroCreditSub');
     }
@@ -175,8 +164,7 @@ class CarrierAdmin extends AbstractAdmin
             ->add('defaultLanguage', TextType::class)
             ->add('isp')
             ->add('published')
-            ->add('isConfirmationClick')
-            ->add('isConfirmationPopup')
+            ->add('isOneClickFlow')
             ->add('trialInitializer')
             ->add('trialPeriod')
             ->add('subscriptionPeriod')
@@ -190,7 +178,6 @@ class CarrierAdmin extends AbstractAdmin
                 'actions' => [
                     'show'   => [],
                     'edit'   => [],
-                    'delete' => [],
                 ]
             ]);
     }
@@ -213,12 +200,7 @@ class CarrierAdmin extends AbstractAdmin
             ->add('defaultLanguage')
             ->add('isp')
             ->add('published')
-            ->add('isConfirmationClick')
-            ->add('isConfirmationPopup')
-            ->add('isLpOff', null, [
-                'label' => 'Turn off LP showing',
-                'help' => 'If consent page exist, then show it. Otherwise will try to subscribe'
-            ])
+            ->add('isOneClickFlow')
             ->add('trialInitializer')
             ->add('trialPeriod')
             ->add('subscriptionPeriod')
@@ -264,12 +246,7 @@ class CarrierAdmin extends AbstractAdmin
             ->add('default_language')
             ->add('isp')
             ->add('published')
-            ->add('isConfirmationClick')
-            ->add('isConfirmationPopup')
-            ->add('isLpOff', null, [
-                'label' => 'Turn off LP showing',
-                'help' => 'If consent page exist, then show it. Otherwise will try to subscribe'
-            ])
+            ->add('isOneClickFlow')
             ->add('trialInitializer')
             ->add('trialPeriod')
             ->add('subscriptionPeriod')
@@ -292,7 +269,7 @@ class CarrierAdmin extends AbstractAdmin
      */
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->clearExcept(['list', 'edit', 'delete', 'show']);
+        $collection->clearExcept(['list', 'edit', 'show']);
 
         parent::configureRoutes($collection);
     }

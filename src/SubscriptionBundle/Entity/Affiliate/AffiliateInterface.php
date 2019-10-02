@@ -66,4 +66,9 @@ interface AffiliateInterface
      * @return string|null
      */
     public function getUniqueParameter(): ?string;
+
+    /**
+     * @return bool
+     */
+    public function isOneClickFlow(): bool;
 }

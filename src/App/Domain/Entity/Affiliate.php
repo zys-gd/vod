@@ -112,7 +112,7 @@ class Affiliate implements HasUuid, AffiliateInterface
     /**
      * @var bool
      */
-    private $isLpOff = false;
+    private $isOneClickFlow = false;
 
     /** @var ArrayCollection */
     private $bannedPublishers;
@@ -653,17 +653,17 @@ class Affiliate implements HasUuid, AffiliateInterface
     /**
      * @return bool
      */
-    public function isLpOff(): bool
+    public function isOneClickFlow(): bool
     {
-        return $this->isLpOff;
+        return $this->isOneClickFlow;
     }
 
     /**
-     * @param bool $isLpOff
+     * @param bool $isOneClickFlow
      */
-    public function setIsLpOff(bool $isLpOff): void
+    public function setIsOneClickFlow(bool $isOneClickFlow): void
     {
-        $this->isLpOff = $isLpOff;
+        $this->isOneClickFlow = $isOneClickFlow;
     }
 
     /**

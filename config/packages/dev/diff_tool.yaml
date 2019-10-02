@@ -4,33 +4,33 @@ diff_tool:
     - '%kernel.project_dir%/src/SubscriptionBundle/DataFixtures/ORM/Data/'
 
   entities:
-       App\Domain\Entity\Translation:
-          fileName: 'translations.json'
-          ignoredProperties: []
-       App\Domain\Entity\UploadedVideo:
-          fileName: 'uploaded_videos.json'
-          ignoredProperties: []
-       App\Domain\Entity\Subcategory:
-          fileName: 'subcategories.json'
-          ignoredProperties: []
-       App\Domain\Entity\Game:
-          fileName: 'games.json'
-          ignoredProperties: []
-       App\Domain\Entity\Campaign:
-          fileName: 'campaigns.json'
-          ignoredProperties: []
+#       App\Domain\Entity\Translation:
+#          fileName: 'translations.json'
+#          ignoredProperties: []
+#       App\Domain\Entity\UploadedVideo:
+#          fileName: 'uploaded_videos.json'
+#          ignoredProperties: []
+#       App\Domain\Entity\Subcategory:
+#          fileName: 'subcategories.json'
+#          ignoredProperties: []
+#       App\Domain\Entity\Game:
+#          fileName: 'games.json'
+#          ignoredProperties: []
+#       App\Domain\Entity\Campaign:
+#          fileName: 'campaigns.json'
+#          ignoredProperties: []
        App\Domain\Entity\Affiliate:
           fileName: 'affiliates.json'
           ignoredProperties: []
-       App\Domain\Entity\AffiliateParameter:
-          fileName: 'affiliate_parameters.json'
-          ignoredProperties: []
-       App\Domain\Entity\AffiliateConstant:
-          fileName: 'affiliate_constant.json'
-          ignoredProperties: []
-       App\Domain\Entity\Carrier:
-          fileName: 'carriers.json'
-          ignoredProperties: []
-       SubscriptionBundle\Entity\SubscriptionPack:
-          fileName: 'subscription_packs.json'
-          ignoredProperties: []
+#       App\Domain\Entity\AffiliateParameter:
+#          fileName: 'affiliate_parameters.json'
+#          ignoredProperties: []
+#       App\Domain\Entity\AffiliateConstant:
+#          fileName: 'affiliate_constant.json'
+#          ignoredProperties: []
+#       App\Domain\Entity\Carrier:
+#          fileName: 'carriers.json'
+#          ignoredProperties: []
+#       SubscriptionBundle\Entity\SubscriptionPack:
+#          fileName: 'subscription_packs.json'
+#          ignoredProperties: []

@@ -47,6 +47,7 @@ class LoadCampaignsData extends AbstractFixture implements ContainerAwareInterfa
             $test_url              = $row['testUrl'];
             $uuid                  = $row['uuid'];
             $freeTrialSubscription = $row['freeTrialSubscription'] ?? 0;
+            $isOneClickFlow        = $row['isOneClickFlow'];
 
             $campaign = new Campaign($uuid);
 
@@ -82,6 +83,8 @@ class LoadCampaignsData extends AbstractFixture implements ContainerAwareInterfa
             $campaign->setFreeTrialPrice($freeTrialPrice);
             $campaign->setZeroEurPrice($zeroEurPrice);
             $campaign->setGeneralPrice($generalPrice);
+
+            $campaign->setIsOneClickFlow($isOneClickFlow);
 
             $this->addReference(sprintf('campaign_%s', $uuid), $campaign);
 

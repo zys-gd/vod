@@ -42,8 +42,7 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $countryCode                             = $row['countryCode'];
             $isp                                     = $row['isp'];
             $published                               = $row['published'];
-            $isConfirmationClick                     = $row['isConfirmationClick'] ?? false;
-            $isConfirmationPopup                     = $row['isConfirmationPopup'] ?? false;
+            $isOneClickFlow                          = $row['isOneClickFlow'];
             $trialInitializer                        = $row['trialInitializer'];
             $trialPeriod                             = $row['trialPeriod'];
             $subscriptionPeriod                      = $row['subscriptionPeriod'];
@@ -57,20 +56,17 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
 
 
             $defaultLanguageId = $row['defaultLanguage']['uuid'] ?? null;
-
             $carrier = new Carrier($uuid);
-
             $carrier->setBillingCarrierId($billingCarrierId);
             $carrier->setName($name);
             $carrier->setCountryCode($countryCode);
             $carrier->setIsp((string)$isp);
             $carrier->setPublished($published);
+            $carrier->setIsOneClickFlow($isOneClickFlow);
             $carrier->setTrialInitializer($trialInitializer);
             $carrier->setTrialPeriod($trialPeriod);
             $carrier->setSubscriptionPeriod($subscriptionPeriod);
             $carrier->setOperatorId($operatorId);
-            $carrier->setIsConfirmationClick($isConfirmationClick);
-            $carrier->setIsConfirmationPopup($isConfirmationPopup);
             $carrier->setIsCampaignsOnPause($isCampaignsOnPause);
             $carrier->setSubscribeAttempts((int)$subscribeAttempts);
             $carrier->setNumberOfAllowedSubscriptionsByConstraint($numberOfAllowedSubscriptionByConstraint);

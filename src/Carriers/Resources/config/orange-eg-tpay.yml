@@ -2,3 +2,7 @@ services:
     Carriers\OrangeEGTpay\Template\OrangeEGTpayTemplateHandler:
         tags:
             - { name: store_commons.template_handler }
+
+    Carriers\OrangeEGTpay\Subscription\OrangeEGTpayOneClickFlow:
+        tags:
+            - { name: subscription.one_click_flow_handler }

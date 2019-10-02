@@ -4,6 +4,7 @@ namespace App\Domain\Entity;
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use CommonDataBundle\Entity\Interfaces\HasUuid;
+use CommonDataBundle\Entity\Interfaces\LanguageInterface;
 use CommonDataBundle\Entity\Language;
 use Doctrine\Common\Collections\ArrayCollection;
 use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
@@ -45,16 +46,11 @@ class Carrier implements CarrierInterface, HasUuid
     private $published = false;
 
     /**
-     * former lpOtp
-     * is needed subscribe confirmation click
+     * Necessary for determine of carrier lp flow
+     *
      * @var bool
      */
-    private $isConfirmationClick = false;
-
-    /**
-     * @var bool
-     */
-    private $isConfirmationPopup = false;
+    private $isOneClickFlow = false;
 
     /**
      * Can be store|carrier
@@ -137,11 +133,6 @@ class Carrier implements CarrierInterface, HasUuid
      * @var \CommonDataBundle\Entity\Language
      */
     private $defaultLanguage;
-
-    /**
-     * @var bool
-     */
-    private $isLpOff = false;
 
     /**
      * @var bool
@@ -399,11 +390,11 @@ class Carrier implements CarrierInterface, HasUuid
     /**
      * Set defaultLanguage
      *
-     * @param Language $defaultLanguage
+     * @param LanguageInterface $defaultLanguage
      *
-     * @return Carrier
+     * @return CarrierInterface
      */
-    public function setDefaultLanguage(Language $defaultLanguage = null)
+    public function setDefaultLanguage(LanguageInterface $defaultLanguage = null): CarrierInterface
     {
         $this->defaultLanguage = $defaultLanguage;
 
@@ -413,9 +404,9 @@ class Carrier implements CarrierInterface, HasUuid
     /**
      * Get defaultLanguage
      *
-     * @return Language
+     * @return null|Language
      */
-    public function getDefaultLanguage()
+    public function getDefaultLanguage(): ?LanguageInterface
     {
         return $this->defaultLanguage;
     }
@@ -631,38 +622,6 @@ class Carrier implements CarrierInterface, HasUuid
     }
 
     /**
-     * @return bool
-     */
-    public function isConfirmationClick(): bool
-    {
-        return $this->isConfirmationClick;
-    }
-
-    /**
-     * @param bool $isConfirmationClick
-     */
-    public function setIsConfirmationClick(bool $isConfirmationClick): void
-    {
-        $this->isConfirmationClick = $isConfirmationClick;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isLpOff(): bool
-    {
-        return $this->isLpOff;
-    }
-
-    /**
-     * @param bool $isLpOff
-     */
-    public function setIsLpOff(bool $isLpOff): void
-    {
-        $this->isLpOff = $isLpOff;
-    }
-
-    /**
      * @return ArrayCollection|AffiliateInterface[]
      */
     public function getAffiliates()
@@ -720,18 +679,22 @@ class Carrier implements CarrierInterface, HasUuid
     }
 
     /**
+     * Necessary for determine of carrier lp flow
+     *
      * @return bool
      */
-    public function isConfirmationPopup(): bool
+    public function isOneClickFlow(): bool
     {
-        return $this->isConfirmationPopup;
+        return $this->isOneClickFlow;
     }
 
     /**
-     * @param bool $isConfirmationPopup
+     * Necessary for determine of carrier lp flow
+     *
+     * @param bool $isOneClickFlow
      */
-    public function setIsConfirmationPopup(bool $isConfirmationPopup): void
+    public function setIsOneClickFlow(bool $isOneClickFlow): void
     {
-        $this->isConfirmationPopup = $isConfirmationPopup;
+        $this->isOneClickFlow = $isOneClickFlow;
     }
 }

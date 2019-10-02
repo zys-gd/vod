@@ -6,3 +6,7 @@ services:
     Carriers\OrangeTNMM\Template\OrangeTNMMTemplateHandler:
         tags:
             - { name: store_commons.template_handler }
+
+    Carriers\OrangeTNMM\Subscription\OrangeTNMMOneClickFlow:
+        tags:
+            - { name: subscription.one_click_flow_handler }

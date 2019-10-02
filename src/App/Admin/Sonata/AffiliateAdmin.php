@@ -91,10 +91,10 @@ class AffiliateAdmin extends AbstractAdmin
 
         $originalData = $this->entityManager->getUnitOfWork()->getOriginalEntityData($obj);
         if(count($originalData) > 0) {
-            if ($obj->isLpOff() != $originalData['isLpOff']) {
-                $isLPOff = $obj->isLpOff();
-                $obj->getCampaigns()->map(function (Campaign $campaign) use ($isLPOff) {
-                    $campaign->setIsLpOff($isLPOff);
+            if ($obj->isOneClickFlow() != $originalData['isOneClickFlow']) {
+                $isOneClickFlow = $obj->isOneClickFlow();
+                $obj->getCampaigns()->map(function (Campaign $campaign) use ($isOneClickFlow) {
+                    $campaign->setIsOneClickFlow($isOneClickFlow);
                 });
             }
         }
@@ -114,7 +114,7 @@ class AffiliateAdmin extends AbstractAdmin
             ->add('commercialContact')
             ->add('technicalContact')
             ->add('skypeId')
-            ->add('isLpOff')
+            ->add('isOneClickFlow')
             ->add('enabled');
     }
 
@@ -127,7 +127,7 @@ class AffiliateAdmin extends AbstractAdmin
             ->add('name')
             ->add('uuid')
             ->add('url')
-            ->add('isLpOff')
+            ->add('isOneClickFlow')
             ->add('enabled', null, [
                 'label' => 'Is Enabled?'
             ])
@@ -153,7 +153,7 @@ class AffiliateAdmin extends AbstractAdmin
             ->add('commercialContact')
             ->add('technicalContact')
             ->add('skypeId')
-            ->add('isLpOff', null, [
+            ->add('isOneClickFlow', null, [
                 'label' => 'Turn off LP showing',
                 'help'  => 'If consent page exist, then show it. Otherwise will try to subscribe'
             ])
@@ -214,7 +214,7 @@ class AffiliateAdmin extends AbstractAdmin
                     new NotBlank()
                 ]
             ])
-            ->add('isLpOff', ChoiceFieldMaskType::class, [
+            ->add('isOneClickFlow', ChoiceFieldMaskType::class, [
                 'label'   => 'Turn off LP showing',
                 'help'    => 'If consent page exist, then show it. Otherwise will try to subscribe',
                 'choices' => [

@@ -2,3 +2,7 @@ services:
     Carriers\VodafoneEGTpay\Template\VodafoneEGTpayTemplateHandler:
         tags:
             - { name: store_commons.template_handler }
+
+    Carriers\VodafoneEGTpay\Subscription\VodafoneEGTpayOneClickFlow:
+        tags:
+            - { name: subscription.one_click_flow_handler }
