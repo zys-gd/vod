@@ -154,8 +154,8 @@
 .lp-sub-btn button {
     background-image: linear-gradient(#00da33, #00da33, #015c18);
     border-bottom: none;
-    /*font-size: 40px;*/
-    /*padding: 10px 65px;*/
+    font-size: 40px;
+    padding: 10px 65px;
 
 }
 
