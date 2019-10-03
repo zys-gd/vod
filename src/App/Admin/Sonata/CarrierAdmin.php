@@ -170,7 +170,6 @@ class CarrierAdmin extends AbstractAdmin
             ->add('subscriptionPeriod')
             ->add('isCampaignsOnPause')
             ->add('trackAffiliateOnZeroCreditSub')
-            ->add('isLpOff')
             ->add('isClickableSubImage', null, [
                 'label' => 'Clickable image'
             ])
