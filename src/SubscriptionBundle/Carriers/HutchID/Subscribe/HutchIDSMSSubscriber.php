@@ -5,7 +5,7 @@ namespace SubscriptionBundle\Carriers\HutchID\Subscribe;
 
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
-use SubscriptionBundle\Subscription\Callback\Common\Type\SubscriptionCallbackHandler;
+use SubscriptionBundle\Subscription\Callback\Common\Handler\SubscriptionCallbackHandler;
 
 class HutchIDSMSSubscriber
 {
@@ -21,6 +21,6 @@ class HutchIDSMSSubscriber
 
     public function subscribe(Subscription $subscription, ProcessResult $processResponse)
     {
-        $this->subscriptionCallbackHandler->updateSubscriptionByCallbackData($subscription, $processResponse);
+        $this->subscriptionCallbackHandler->doProcess($subscription, $processResponse);
     }
 }

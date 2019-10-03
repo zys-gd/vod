@@ -6,40 +6,46 @@
  * Time: 9:02 PM
  */
 
-namespace SubscriptionBundle\Subscription\Callback\Common\Type;
+namespace SubscriptionBundle\Subscription\Callback\Common\Handler;
 
 
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\RenewProcess;
 use SubscriptionBundle\Entity\Subscription;
+use SubscriptionBundle\Subscription\Callback\Common\Type\Renew\RenewUpdaterProvider;
 use SubscriptionBundle\Subscription\Renew\OnRenewUpdater;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class RenewCallbackHandler extends AbstractCallbackHandler
+class RenewCallbackHandler implements CallbackHandlerInterface
 {
-    private $onRenewUpdater;
     /**
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
+    /**
+     * @var RenewUpdaterProvider
+     */
+    private $renewUpdaterProvider;
 
     /**
      * RenewCallbackHandler constructor.
-     * @param OnRenewUpdater           $onRenewUpdater
      * @param EventDispatcherInterface $eventDispatcher
+     * @param RenewUpdaterProvider     $renewUpdaterProvider
      */
-    public function __construct(OnRenewUpdater $onRenewUpdater, EventDispatcherInterface $eventDispatcher)
+    public function __construct(EventDispatcherInterface $eventDispatcher, RenewUpdaterProvider $renewUpdaterProvider)
     {
-        $this->onRenewUpdater  = $onRenewUpdater;
-        $this->eventDispatcher = $eventDispatcher;
+        $this->eventDispatcher      = $eventDispatcher;
+        $this->renewUpdaterProvider = $renewUpdaterProvider;
     }
 
 
-    public function updateSubscriptionByCallbackData(Subscription $subscription, ProcessResult $response)
+    public function doProcess(Subscription $subscription, ProcessResult $response): void
     {
-        $subscription->setCurrentStage(Subscription::ACTION_RENEW);
+        $carrier = $subscription->getSubscriptionPack()->getCarrier();
 
-        $this->onRenewUpdater->updateSubscriptionByCallbackResponse($subscription, $response);
+        $updater = $this->renewUpdaterProvider->getRenewUpdater($carrier);
+
+        $updater->update($subscription, $response);
 
     }
 
@@ -58,7 +64,7 @@ class RenewCallbackHandler extends AbstractCallbackHandler
     }
 
 
-    public function isActionAllowedForSubscription(Subscription $subscription): bool
+    public function isActionAllowed(Subscription $subscription): bool
     {
         return true;
     }

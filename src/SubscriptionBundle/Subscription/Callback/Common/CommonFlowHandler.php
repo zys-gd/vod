@@ -12,9 +12,10 @@ use SubscriptionBundle\Piwik\DataMapper\ConversionEventMapper;
 use SubscriptionBundle\Piwik\EventPublisher;
 use SubscriptionBundle\Repository\SubscriptionRepository;
 use SubscriptionBundle\Service\EntitySaveHelper;
-use SubscriptionBundle\Subscription\Callback\Common\Type\RenewCallbackHandler;
-use SubscriptionBundle\Subscription\Callback\Common\Type\SubscriptionCallbackHandler;
-use SubscriptionBundle\Subscription\Callback\Common\Type\UnsubscriptionCallbackHandler;
+use SubscriptionBundle\Subscription\Callback\Common\Handler\CallbackHandlerInterface;
+use SubscriptionBundle\Subscription\Callback\Common\Handler\RenewCallbackHandler;
+use SubscriptionBundle\Subscription\Callback\Common\Handler\SubscriptionCallbackHandler;
+use SubscriptionBundle\Subscription\Callback\Common\Handler\UnsubscriptionCallbackHandler;
 use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerProvider;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCommonFlow;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCustomTrackingRules;
@@ -155,7 +156,7 @@ class CommonFlowHandler
             throw new \Exception("Selected carrier does not fit to selected subscription");
         }
 
-        if (!$callbackTypeHandler->isActionAllowedForSubscription($subscription)) {
+        if (!$callbackTypeHandler->isActionAllowed($subscription)) {
             throw new \Exception("Action is not allowed for subscription");
         }
 
@@ -164,8 +165,8 @@ class CommonFlowHandler
             ["subscription" => $subscription]
         );
 
-        /** @var  RenewCallbackHandler|SubscriptionCallbackHandler|UnsubscriptionCallbackHandler $callbackTypeHandler */
-        $callbackTypeHandler->updateSubscriptionByCallbackData($subscription, $processResponse);
+        /** @var  CallbackHandlerInterface $callbackTypeHandler */
+        $callbackTypeHandler->doProcess($subscription, $processResponse);
         $this->logger->debug(
             'Successfully updated',
             ["subscription" => $subscription, "response" => $processResponse]
