@@ -263,7 +263,7 @@
         "operatorId": 0,
         "name": "Vodafone EG",
         "countryCode": "EG",
-        "isp": "Vodafone Egypt",
+        "isp": "",
         "published": true,
         "isConfirmationClick": false,
         "isConfirmationPopup": false,
@@ -350,7 +350,7 @@
     {
         "name": "Vodafone EG",
         "countryCode": "EG",
-        "isp": "Vodafone Egypt",
+        "isp": "Vodafone Egypt|Vodafone Data",
         "published": true,
         "isConfirmationClick": false,
         "pinIdentSupport": false,
