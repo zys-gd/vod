@@ -132,9 +132,6 @@ class Unsubscriber
 
 
         $parameters = $this->parametersProvider->provideParameters($subscription, $additionalParameters);
-        if ($subscriptionPack->isFirstSubscriptionPeriodIsFree()) {
-            $parameters->additionalData = array_merge($parameters->additionalData, ['isTrial' => true]);
-        }
 
         try {
             $response = $this->unsubscribeProcess->doUnsubscribe($parameters);
