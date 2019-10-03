@@ -107,6 +107,12 @@ class UnsubscribeAction extends Controller
             $response = $this->unsubscriber->unsubscribe($subscription, $subscriptionPack, $additionalParameters);
             $handler->applyPostUnsubscribeChanges($subscription);
 
+
+            // Lack of checks?
+            //
+            // $result->isSuccessful() && $result->isFinal()
+            // ProcessResultSuccessChecker::isSuccessful
+            //
             if ($handler->isPiwikNeedToBeTracked($response)) {
                 $this->unsubscriber->trackEventsForUnsubscribe($subscription, $response);
             }
