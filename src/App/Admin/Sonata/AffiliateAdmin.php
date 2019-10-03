@@ -154,7 +154,6 @@ class AffiliateAdmin extends AbstractAdmin
             ->add('technicalContact')
             ->add('skypeId')
             ->add('isOneClickFlow', null, [
-                'label' => 'Turn off LP showing',
                 'help'  => 'If consent page exist, then show it. Otherwise will try to subscribe'
             ])
             ->add('enabled');
@@ -215,7 +214,6 @@ class AffiliateAdmin extends AbstractAdmin
                 ]
             ])
             ->add('isOneClickFlow', ChoiceFieldMaskType::class, [
-                'label'   => 'Turn off LP showing',
                 'help'    => 'If consent page exist, then show it. Otherwise will try to subscribe',
                 'choices' => [
                     'No'  => 0,
