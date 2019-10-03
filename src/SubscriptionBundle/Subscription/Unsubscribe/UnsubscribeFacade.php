@@ -58,7 +58,7 @@ class UnsubscribeFacade
         return $result;
     }
 
-    public function doUnsubscribeWithoutDeregisterFromCrossSub(Subscription $subscription)
+    public function doUnsubscribeWithoutDeregisterFromCrossSub(Subscription $subscription): ProcessResult
     {
 
         $subscriptionPack = $subscription->getSubscriptionPack();
