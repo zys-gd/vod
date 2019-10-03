@@ -102,7 +102,7 @@ class UnsubscribeAction extends Controller
             }
 
             $handler              = $this->handlerProvider->getUnsubscriptionHandler($user->getCarrier());
-            $additionalParameters = $handler->getAdditionalUnsubscribeParameters();
+            $additionalParameters = $handler->getAdditionalUnsubscribeParameters($request);
 
             $response = $this->unsubscriber->unsubscribe($subscription, $subscriptionPack, $additionalParameters);
             $handler->applyPostUnsubscribeChanges($subscription);
