@@ -16,8 +16,7 @@ use IdentificationBundle\Repository\UserRepository;
 use SubscriptionBundle\Entity\BlackList;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Repository\SubscriptionRepository;
-use SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider;
-use SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber;
+use SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeFacade;
 
 class BlacklistSaver
 {
@@ -34,35 +33,28 @@ class BlacklistSaver
      */
     private $subscriptionRepository;
     /**
-     * @var UnsubscriptionHandlerProvider
+     * @var UnsubscribeFacade
      */
-    private $unsubscriptionHandlerProvider;
-    /**
-     * @var Unsubscriber
-     */
-    private $unsubscriber;
+    private $unsubscribeFacade;
 
     /**
      * BlacklistSaver constructor.
-     * @param UserRepository                $userRepository
-     * @param EntityManagerInterface        $entityManager
-     * @param SubscriptionRepository        $subscriptionRepository
-     * @param UnsubscriptionHandlerProvider $unsubscriptionHandlerProvider
-     * @param Unsubscriber                  $unsubscriber
+     * @param UserRepository         $userRepository
+     * @param EntityManagerInterface $entityManager
+     * @param SubscriptionRepository $subscriptionRepository
+     * @param UnsubscribeFacade      $unsubscribeFacade
      */
     public function __construct(
         UserRepository $userRepository,
         EntityManagerInterface $entityManager,
         SubscriptionRepository $subscriptionRepository,
-        UnsubscriptionHandlerProvider $unsubscriptionHandlerProvider,
-        Unsubscriber $unsubscriber
+        UnsubscribeFacade $unsubscribeFacade
     )
     {
-        $this->userRepository                = $userRepository;
-        $this->entityManager                 = $entityManager;
-        $this->subscriptionRepository        = $subscriptionRepository;
-        $this->unsubscriptionHandlerProvider = $unsubscriptionHandlerProvider;
-        $this->unsubscriber                  = $unsubscriber;
+        $this->userRepository         = $userRepository;
+        $this->entityManager          = $entityManager;
+        $this->subscriptionRepository = $subscriptionRepository;
+        $this->unsubscribeFacade      = $unsubscribeFacade;
     }
 
 
@@ -112,14 +104,7 @@ class BlacklistSaver
             $subscription = $this->subscriptionRepository->findOneBy(['user' => $user]);
 
             if ($subscription && $subscription->getCurrentStage() != Subscription::ACTION_UNSUBSCRIBE) {
-                $unsubscriptionHandler = $this->unsubscriptionHandlerProvider->getUnsubscriptionHandler($user->getCarrier());
-
-                $response = $this->unsubscriber->unsubscribe($subscription, $subscription->getSubscriptionPack());
-                $unsubscriptionHandler->applyPostUnsubscribeChanges($subscription);
-
-                if ($unsubscriptionHandler->isPiwikNeedToBeTracked($response)) {
-                    $this->unsubscriber->trackEventsForUnsubscribe($subscription, $response);
-                }
+                $this->unsubscribeFacade->doUnsubscribeWithoutDeregisterFromCrossSub($subscription);
             }
         }
     }

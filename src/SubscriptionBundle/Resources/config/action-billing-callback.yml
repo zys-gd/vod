@@ -43,5 +43,5 @@ services:
 
   SubscriptionBundle\Subscription\Callback\Common\Handler\RenewCallbackHandler:
       arguments:
-          - '@SubscriptionBundle\Subscription\Renew\OnRenewUpdater'
           - '@event_dispatcher'
+          - '@SubscriptionBundle\Subscription\Renew\OnRenewUpdater'

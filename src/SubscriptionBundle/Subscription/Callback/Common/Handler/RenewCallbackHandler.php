@@ -12,7 +12,6 @@ namespace SubscriptionBundle\Subscription\Callback\Common\Handler;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\RenewProcess;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Subscription\Callback\Common\Type\Renew\RenewUpdaterProvider;
 use SubscriptionBundle\Subscription\Renew\OnRenewUpdater;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -23,29 +22,27 @@ class RenewCallbackHandler implements CallbackHandlerInterface
      */
     private $eventDispatcher;
     /**
-     * @var RenewUpdaterProvider
+     * @var OnRenewUpdater
      */
-    private $renewUpdaterProvider;
+    private $onRenewUpdater;
 
     /**
      * RenewCallbackHandler constructor.
      * @param EventDispatcherInterface $eventDispatcher
-     * @param RenewUpdaterProvider     $renewUpdaterProvider
+     * @param OnRenewUpdater           $onRenewUpdater
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher, RenewUpdaterProvider $renewUpdaterProvider)
+    public function __construct(EventDispatcherInterface $eventDispatcher, OnRenewUpdater $onRenewUpdater)
     {
-        $this->eventDispatcher      = $eventDispatcher;
-        $this->renewUpdaterProvider = $renewUpdaterProvider;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->onRenewUpdater  = $onRenewUpdater;
     }
 
 
     public function doProcess(Subscription $subscription, ProcessResult $response): void
     {
-        $carrier = $subscription->getSubscriptionPack()->getCarrier();
+        $subscription->setCurrentStage(Subscription::ACTION_RENEW);
 
-        $updater = $this->renewUpdaterProvider->getRenewUpdater($carrier);
-
-        $updater->update($subscription, $response);
+        $this->onRenewUpdater->updateSubscriptionByCallbackResponse($subscription, $response);
 
     }
 

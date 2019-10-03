@@ -1,7 +1,7 @@
 <?php
 
 
-namespace SubscriptionBundle\Carriers\HutchID\Subscribe;
+namespace SubscriptionBundle\Carriers\HutchID\Callback;
 
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
