@@ -735,4 +735,12 @@ class Carrier implements CarrierInterface, HasUuid
     {
         $this->isConfirmationPopup = $isConfirmationPopup;
     }
+
+    /**
+     * @return bool
+     */
+    public function isOneClickFlow(): bool
+    {
+        // TODO: Implement isOneClickFlow() method.
+    }
 }
