@@ -18,7 +18,7 @@ use SubscriptionBundle\Subscription\Common\SendNotificationChecker;
 use SubscriptionBundle\Subscription\Common\SubscriptionFactory;
 use SubscriptionBundle\Subscription\Subscribe\OnSubscribeUpdater;
 use SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SubscribePerformer;
-use SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SendNotificationPerformer;
+use SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SendSubscribeNotificationPerformer;
 use SubscriptionBundle\Subscription\Subscribe\ProcessStarter\SubscribeProcessStarterProvider;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -114,7 +114,7 @@ class SubscriberTest extends \PHPUnit\Framework\TestCase
 
         $this->subscriptionCreator           = Mockery::spy(SubscriptionFactory::class);
         $this->subscribeProcess              = Mockery::spy(SubscribeProcess::class);
-        $this->subscribePromotionalPerformer = Mockery::spy(SendNotificationPerformer::class);
+        $this->subscribePromotionalPerformer = Mockery::spy(SendSubscribeNotificationPerformer::class);
         $this->subscribePerformer            = Mockery::spy(SubscribePerformer::class);
         $this->commonStarter                 = new \SubscriptionBundle\Subscription\Subscribe\ProcessStarter\CommonStarter(
             Mockery::spy(ProcessResultSuccessChecker::class),

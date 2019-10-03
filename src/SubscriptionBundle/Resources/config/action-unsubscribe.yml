@@ -10,6 +10,8 @@ services:
       - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeParametersProvider'
       - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeEventChecker'
       - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeEventTracker'
+      - '@SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SendUnsubscribeNotificationPerformer'
+      - '@SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker'
       - '@logger'
 
   SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider:
