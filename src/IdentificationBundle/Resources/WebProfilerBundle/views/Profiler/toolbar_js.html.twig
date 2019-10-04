@@ -38,7 +38,11 @@
                 <br>
 
                 {% for msisdnData in data.msisdns %}
-                    <div class="{% if msisdnData.isNeverUsed %}is-never-used{% endif %}">
+                    {% set isCurrentlyUsed = isIdentified() and getUserIdentifier() == msisdnData.msisdn %}
+
+                    <div class="{% if msisdnData.isNeverUsed %}is-never-used{% endif %} {% if isCurrentlyUsed %}current{% endif %}">
+
+                        {% if isCurrentlyUsed %}(+){% endif %}
                         <a href="{{ url('fake_identify',{'msisdn':msisdnData.msisdn, 'carrierId': carrierId}) }}">{{ msisdnData.msisdn }}</a>
                     </div>
                 {% endfor %}
@@ -50,6 +54,9 @@
 
         .is-never-used a {
             color: silver;
+        }
+        .current a{
+            font-weight: bold;
         }
     </style>
 </div>

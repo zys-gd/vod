@@ -14,7 +14,7 @@ class MsisdnCleanerTest extends TestCase
         $this->msisdnCleaner = new MsisdnCleaner();
     }
 
-    public function testCleanTelenorPK()
+    /*public function testCleanTelenorPK()
     {
 
         $carrier = Mockery::mock(\CommonDataBundle\Entity\Interfaces\CarrierInterface::class);
@@ -24,9 +24,9 @@ class MsisdnCleanerTest extends TestCase
         $result = $this->msisdnCleaner->clean('+380915151', $carrier);
 
         $this->assertEquals('380915151', $result);
-    }
+    }*/
 
-    public function testCleanCellcardCambodia()
+    /*public function testCleanCellcardCambodia()
     {
 
         $carrier = Mockery::mock(\CommonDataBundle\Entity\Interfaces\CarrierInterface::class);
@@ -36,6 +36,6 @@ class MsisdnCleanerTest extends TestCase
         $result = $this->msisdnCleaner->clean('+380915151', $carrier);
 
         $this->assertEquals('380915151', $result);
-    }
+    }*/
 
 }
