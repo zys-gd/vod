@@ -58,6 +58,8 @@ class ConstraintByAffiliate
      */
     private $counter;
 
+    private $redirectUrl;
+
     /**
      * ConstraintByAffiliate constructor
      *
@@ -234,4 +236,24 @@ class ConstraintByAffiliate
     {
         return isset($this->counter) ? $this->counter : null;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getRedirectUrl(): ?string
+    {
+        return $this->redirectUrl;
+    }
+
+    /**
+     * @param string $redirectUrl
+     * @return ConstraintByAffiliate
+     */
+    public function setRedirectUrl($redirectUrl)
+    {
+        $this->redirectUrl = $redirectUrl;
+        return $this;
+    }
+
+
 }

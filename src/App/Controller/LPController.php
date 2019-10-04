@@ -9,9 +9,9 @@ use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Service\CarrierOTPVerifier;
 use App\Piwik\ContentStatisticSender;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator;
 use Doctrine\Common\Collections\ArrayCollection;
-use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use ExtrasBundle\Controller\Traits\ResponseTrait;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\Exception\MissingCarrierException;
@@ -21,14 +21,13 @@ use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
+use SubscriptionBundle\CAPTool\Common\CAPToolRedirectUrlResolver;
 use SubscriptionBundle\CAPTool\Subscription\Exception\CapToolAccessException;
-use SubscriptionBundle\CAPTool\Subscription\Exception\SubscriptionCapReachedOnAffiliate;
-use SubscriptionBundle\CAPTool\Subscription\Exception\SubscriptionCapReachedOnCarrier;
 use SubscriptionBundle\CAPTool\Subscription\Exception\VisitCapReached;
 use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter;
 use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitNotifier;
-use SubscriptionBundle\CAPTool\Visit\VisitNotifier;
 use SubscriptionBundle\CAPTool\Visit\ConstraintAvailabilityChecker;
+use SubscriptionBundle\CAPTool\Visit\VisitNotifier;
 use SubscriptionBundle\CAPTool\Visit\VisitTracker;
 use SubscriptionBundle\Subscription\Subscribe\Service\SubscribeUrlResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -113,27 +112,32 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var ConstraintAvailabilityChecker
      */
     private $visitConstraintChecker;
+    /**
+     * @var CAPToolRedirectUrlResolver
+     */
+    private $CAPToolRedirectUrlResolver;
 
     /**
      * LPController constructor.
      *
-     * @param ContentStatisticSender                $contentStatisticSender
-     * @param CampaignRepository                    $campaignRepository
-     * @param LandingPageACL                        $landingPageAccessResolver
-     * @param string                                $imageBaseUrl
-     * @param CarrierOTPVerifier                    $OTPVerifier
-     * @param string                                $defaultRedirectUrl
-     * @param TemplateConfigurator                  $templateConfigurator
-     * @param WifiIdentificationDataStorage         $wifiIdentificationDataStorage
-     * @param SubscriptionLimiter                   $limiter
-     * @param SubscriptionLimitNotifier             $subscriptionLimitNotifier
-     * @param CarrierRepositoryInterface            $carrierRepository
-     * @param VisitTracker                          $visitTracker
-     * @param VisitNotifier                         $notifier
-     * @param LoggerInterface                       $logger
-     * @param CarrierSelector                       $carrierSelector
-     * @param SubscribeUrlResolver                  $subscribeUrlResolver
-     * @param ConstraintAvailabilityChecker         $visitConstraintChecker
+     * @param ContentStatisticSender        $contentStatisticSender
+     * @param CampaignRepository            $campaignRepository
+     * @param LandingPageACL                $landingPageAccessResolver
+     * @param string                        $imageBaseUrl
+     * @param CarrierOTPVerifier            $OTPVerifier
+     * @param string                        $defaultRedirectUrl
+     * @param TemplateConfigurator          $templateConfigurator
+     * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
+     * @param SubscriptionLimiter           $limiter
+     * @param SubscriptionLimitNotifier     $subscriptionLimitNotifier
+     * @param CarrierRepositoryInterface    $carrierRepository
+     * @param VisitTracker                  $visitTracker
+     * @param VisitNotifier                 $notifier
+     * @param LoggerInterface               $logger
+     * @param CarrierSelector               $carrierSelector
+     * @param SubscribeUrlResolver          $subscribeUrlResolver
+     * @param ConstraintAvailabilityChecker $visitConstraintChecker
+     * @param CAPToolRedirectUrlResolver    $CAPToolRedirectUrlResolver
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
@@ -152,7 +156,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         LoggerInterface $logger,
         CarrierSelector $carrierSelector,
         SubscribeUrlResolver $subscribeUrlResolver,
-        ConstraintAvailabilityChecker $visitConstraintChecker
+        ConstraintAvailabilityChecker $visitConstraintChecker,
+        CAPToolRedirectUrlResolver $CAPToolRedirectUrlResolver
     )
     {
         $this->contentStatisticSender        = $contentStatisticSender;
@@ -172,6 +177,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->carrierSelector               = $carrierSelector;
         $this->subscribeUrlResolver          = $subscribeUrlResolver;
         $this->visitConstraintChecker        = $visitConstraintChecker;
+        $this->CAPToolRedirectUrlResolver    = $CAPToolRedirectUrlResolver;
     }
 
 
@@ -182,15 +188,12 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param Request $request
      *
      * @return Response
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
      */
     public function landingPageAction(Request $request)
     {
-        $session        = $request->getSession();
+        $session = $request->getSession();
 
-        $cid      = $request->get('cid', '');
+        $cid = $request->get('cid', '');
 
         /** @var Campaign $campaign */
         $campaign = $this->resolveCampaignFromRequest($cid);
@@ -211,25 +214,14 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $carrier = $this->resolveCarrierFromRequest($request);
         if ($carrier && $campaign) {
             $this->logger->debug('Start CAP checking', ['carrier' => $carrier]);
+
             try {
                 $this->landingPageAccessResolver->ensureCanAccess($campaign, $carrier);
-
-            } catch (SubscriptionCapReachedOnCarrier $e) {
-                $this->logger->debug('CAP checking throw SubscriptionCapReachedOnCarrier');
-                $this->subscriptionLimitNotifier->notifyLimitReachedForCarrier($e->getCarrier());
-                return RedirectResponse::create($this->defaultRedirectUrl);
-
-            } catch (SubscriptionCapReachedOnAffiliate $e) {
-                $this->logger->debug('CAP checking throw SubscriptionCapReachedOnAffiliate');
-                $this->subscriptionLimitNotifier->notifyLimitReachedByAffiliate($e->getConstraint(), $e->getCarrier());
-                return RedirectResponse::create($this->defaultRedirectUrl);
-
-            } catch (VisitCapReached $exception) {
-                $this->logger->debug('CAP checking throw VisitCapReached');
-                $this->visitNotifier->notifyLimitReached($exception->getConstraint(), $carrier);
-                return RedirectResponse::create($this->defaultRedirectUrl);
-
-            } catch (CapToolAccessException | AccessException $exception) {
+            } catch (CapToolAccessException $exception) {
+                $this->logger->debug(sprintf('CAP checking throw %s', get_class($exception)));
+                $url = $this->CAPToolRedirectUrlResolver->resolveUrl($exception);
+                return RedirectResponse::create($url);
+            } catch (AccessException $exception) {
                 $this->logger->debug('CAP checking throw Access Exception');
                 return RedirectResponse::create($this->defaultRedirectUrl);
             }
@@ -243,7 +235,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
 
         $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($session);
-        $isWifiFlow = $billingCarrierId ? false : true;
+        $isWifiFlow       = $billingCarrierId ? false : true;
         $this->contentStatisticSender->trackVisit($session);
 
         if ($carrier && !$isWifiFlow && $this->landingPageAccessResolver->isLandingDisabled($request)) {
@@ -255,7 +247,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         }
 
         $templateName = $isWifiFlow ? 'landing_wifi' : 'landing_3g';
-        $template = $this->templateConfigurator->getTemplate($templateName, (int)$billingCarrierId);
+        $template     = $this->templateConfigurator->getTemplate($templateName, (int)$billingCarrierId);
 
         return $this->render($template);
     }
@@ -281,8 +273,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         $this->carrierSelector->selectCarrier((int)$carrierId);
 
-        $session = $request->getSession();
-        $cid = $session->get('campaign_id', '');
+        $session  = $request->getSession();
+        $cid      = $session->get('campaign_id', '');
         $campaign = $this->resolveCampaignFromRequest($cid);
 
         if ($campaign) {
@@ -291,7 +283,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
                 $this->landingPageAccessResolver->ensureCanAccessByVisits($campaign, $carrier);
             } catch (VisitCapReached $capReached) {
                 return $this->getSimpleJsonResponse('success', Response::HTTP_BAD_REQUEST, [], [
-                    'redirectUrl' => $this->defaultRedirectUrl
+                    'redirectUrl' => $this->CAPToolRedirectUrlResolver->resolveUrl($capReached)
                 ]);
             }
 
@@ -300,7 +292,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         try {
             $template = $this->templateConfigurator->getTemplate('landing_wifi', (int)$carrierId);
-            $html = $this->renderView($template);
+            $html     = $this->renderView($template);
 
             return new JsonResponse($html, Response::HTTP_OK);
         } catch (MissingCarrierException $exception) {
@@ -318,7 +310,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      */
     public function fetchCarrierForCountry(Request $request)
     {
-        if(!$countryCode = $request->get('countryCode')) {
+        if (!$countryCode = $request->get('countryCode')) {
             return new JsonResponse(['error' => 'Missing `countryCode` parameter']);
         }
 
@@ -328,7 +320,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         $resultMapper = $countryCarriers->map(function (Carrier $carrier) {
             return [
-                'id' => $carrier->getBillingCarrierId(),
+                'id'   => $carrier->getBillingCarrierId(),
                 'name' => $carrier->getName()
             ];
         })->toArray();
@@ -347,7 +339,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->carrierSelector->removeCarrier();
 
         $template = $this->templateConfigurator->getTemplate('landing_wifi', 0);
-        $html = $this->renderView($template);
+        $html     = $this->renderView($template);
 
         return new JsonResponse($html, Response::HTTP_OK);
     }
