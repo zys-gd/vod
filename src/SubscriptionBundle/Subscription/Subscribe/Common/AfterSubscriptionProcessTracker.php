@@ -63,7 +63,7 @@ class AfterSubscriptionProcessTracker
             $processResult
         ]);
 
-        if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
+        if ($subscriber instanceof HasCustomAffiliateTrackingRules && $campaign) {
             $isAffTracked = $subscriber->isAffiliateTrackedForSub($processResult, $campaign);
         }
         else {
