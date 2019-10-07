@@ -34,8 +34,8 @@ use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerInterfa
 use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider;
 use SubscriptionBundle\Subscription\Subscribe\Voter\BatchSubscriptionVoter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Tests\DataFixtures\LoadCampaignTestData;
-use Tests\DataFixtures\LoadSubscriptionTestData;
+use SubscriptionBundle\Tests\DataFixtures\LoadCampaignTestData;
+use SubscriptionBundle\Tests\DataFixtures\LoadSubscriptionTestData;
 use SubscriptionBundle\Tests\BillingFramework\TestBillingResponseProvider;
 
 class SubscribeActionTest extends AbstractFunctionalTest

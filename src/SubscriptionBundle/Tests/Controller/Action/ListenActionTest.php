@@ -13,7 +13,7 @@ use SubscriptionBundle\Subscription\Callback\Impl\HasCommonFlow;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCustomTrackingRules;
 use SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Tests\DataFixtures\LoadSubscriptionTestData;
+use SubscriptionBundle\Tests\DataFixtures\LoadSubscriptionTestData;
 
 /**
  * Created by PhpStorm.

@@ -7,7 +7,7 @@
  */
 
 
-namespace Tests\DataFixtures;
+namespace SubscriptionBundle\Tests\DataFixtures;
 
 
 use App\Domain\Entity\Affiliate;

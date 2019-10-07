@@ -19,8 +19,8 @@ use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitNotifier;
 use SubscriptionBundle\DataFixtures\ORM\LoadExchangeRatesData;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Tests\DataFixtures\LoadAffiliateConstraintTestData;
-use Tests\DataFixtures\LoadSubscriptionTestData;
+use SubscriptionBundle\Tests\DataFixtures\LoadAffiliateConstraintTestData;
+use SubscriptionBundle\Tests\DataFixtures\LoadSubscriptionTestData;
 
 class CAPToolOnSubscribeTest extends AbstractFunctionalTest
 {
