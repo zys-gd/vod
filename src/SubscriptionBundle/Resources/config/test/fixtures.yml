@@ -1,0 +1,4 @@
+services:
+    SubscriptionBundle\Tests\DataFixtures\:
+        resource: '../../../Tests/DataFixtures/*.php'
+        tags: ['doctrine.fixture.orm']

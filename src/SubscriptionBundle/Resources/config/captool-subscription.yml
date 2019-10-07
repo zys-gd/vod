@@ -69,3 +69,6 @@ services:
             - '@SubscriptionBundle\CAPTool\Subscription\Limiter\StorageKeyGenerator'
         tags:
             - { name: console.command }
+
+    SubscriptionBundle\CAPTool\Common\CAPToolRedirectUrlResolver:
+        arguments: ['@SubscriptionBundle\Subscription\Common\RouteProvider']

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Tests\DataFixtures;
+namespace SubscriptionBundle\Tests\DataFixtures;
 
 
 use App\Domain\Entity\Affiliate;
@@ -35,6 +35,7 @@ class LoadCampaignTestData extends AbstractFixture implements DependentFixtureIn
     public function load(ObjectManager $manager)
     {
         $this->createGoogleCampaignWithCustomPage($manager);
+        $this->createTestCampaign($manager);
 
         $manager->flush();
     }
@@ -50,6 +51,21 @@ class LoadCampaignTestData extends AbstractFixture implements DependentFixtureIn
         $campaign->setAffiliate($affiliate);
         $manager->persist($campaign);
         $this->addReference('google_campaign', $campaign);
+
+        return $campaign;
+    }
+
+    private function createTestCampaign(ObjectManager $manager)
+    {
+        /** @var Affiliate $affiliate */
+        $affiliate = $this->getReference('affiliate_514fd8a1-ebd4-11e8-95c4-02bb250f0f22');
+
+        $campaign = new Campaign(UuidGenerator::generate());
+        $campaign->setCampaignToken('test_campaign');
+        $campaign->setImageName('test');
+        $campaign->setAffiliate($affiliate);
+        $manager->persist($campaign);
+        $this->addReference('test_campaign', $campaign);
 
         return $campaign;
     }

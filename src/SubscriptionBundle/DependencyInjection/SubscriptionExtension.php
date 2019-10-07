@@ -67,14 +67,18 @@ class SubscriptionExtension extends ConfigurableExtension implements PrependExte
             new FileLocator(__DIR__ . '/../Resources/config/carriers')
         );
 
-        //$loader->load('orange-tn.yml');
-        $loader->load('etisalat-eg.yml');
-        $loader->load('telenor-pk.yml');
-        $loader->load('jazz-pk.yml');
-        $loader->load('vodafone-eg-tpay.yml');
-        $loader->load('orange-eg-tpay.yml');
-        $loader->load('hutch_id.yml');
-        $loader->load('zain-ksa.yml');
+        foreach (glob(__DIR__ . '/../Resources/config/carriers/*.yml') as $file) {
+            $loader->load(basename($file));
+        }
+
+        $loader = new YamlFileLoader(
+            $container,
+            new FileLocator(__DIR__ . '/../Resources/config/test')
+        );
+
+        foreach (glob(__DIR__ . '/../Resources/config/test/*.yml') as $file) {
+            $loader->load(basename($file));
+        }
 
         $definition = $container->getDefinition('SubscriptionBundle\CAPTool\Subscription\Notificaton\EmailProvider');
         DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['cap_tool']['notification']['mail_to'], '_cap_notification_mail_to_placeholder_');
