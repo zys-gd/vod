@@ -15,9 +15,9 @@ services:
         tags:
             - { name: identification.wifi_identification_handler }
 
-    Carriers\HutchID\Subscription\HutchIDOneClickFlow:
+    Carriers\HutchID\OneClick\HutchIDOneClickFlow:
         tags:
-            - { name: subscription.one_click_flow_handler }
+            - { name: app.one_click_flow_handler }
 
     Carriers\HutchID\Identification\HutchIDIdentificationCallbackHandler:
         tags:

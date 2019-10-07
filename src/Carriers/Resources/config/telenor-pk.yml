@@ -5,9 +5,9 @@ services:
     Carriers\TelenorPK\SMS\URTextsHandler:
         tags: ['subscription.sms_text_handler']
 
-    Carriers\TelenorPK\Subscription\TelenorPKOneClickFlow:
+    Carriers\TelenorPK\OneClick\TelenorPKOneClickFlow:
         tags:
-            - { name: subscription.one_click_flow_handler }
+            - { name: app.one_click_flow_handler }
 
     Carriers\TelenorPK\Template\TelenorPKDotTemplateHandler:
         tags:

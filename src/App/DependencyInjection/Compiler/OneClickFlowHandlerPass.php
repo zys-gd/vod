@@ -15,9 +15,9 @@ class OneClickFlowHandlerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $definition = $container->findDefinition('App\OneClickFlow\OneClickFlowCarriersProvider');
+        $definition = $container->findDefinition('App\Domain\Service\OneClickFlow\OneClickFlowCarriersProvider');
 
-        $taggedServices = $container->findTaggedServiceIds('subscription.one_click_flow_handler');
+        $taggedServices = $container->findTaggedServiceIds('app.one_click_flow_handler');
 
         foreach ($taggedServices as $id => $tags) {
             $definition->addMethodCall('addHandler', [new Reference($id)]);

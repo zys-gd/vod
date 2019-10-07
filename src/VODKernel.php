@@ -35,6 +35,11 @@ class VODKernel extends BaseKernel
         }
     }
 
+    protected function build(ContainerBuilder $container): void
+    {
+        $container->addCompilerPass(new OneClickFlowHandlerPass());
+    }
+
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
     {
         $container->addResource(new FileResource($this->getProjectDir() . '/config/bundles.php'));
@@ -42,8 +47,6 @@ class VODKernel extends BaseKernel
         // if you are using symfony/dependency-injection 4.0+ as it's the default behavior
         $container->setParameter('container.autowiring.strict_mode', true);
         $container->setParameter('container.dumper.inline_class_loader', true);
-
-        $container->addCompilerPass(new OneClickFlowHandlerPass());
 
         $confDir = $this->getProjectDir() . '/config';
 

@@ -15,6 +15,6 @@ services:
         arguments:
           ['%default_redirect_url%']
 
-    Carriers\ZainKSA\Subscription\ZainKSAOneClickFlow:
+    Carriers\ZainKSA\OneClick\ZainKSAOneClickFlow:
         tags:
-            - { name: subscription.one_click_flow_handler }
+            - { name: app.one_click_flow_handler }

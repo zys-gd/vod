@@ -6,9 +6,8 @@ namespace App\Twig;
 
 use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CarrierRepository;
-use App\OneClickFlow\OneClickFlowChecker;
-use App\OneClickFlow\OneClickFlowInterface;
-use App\OneClickFlow\OneClickFlowParameters;
+use App\Domain\Service\OneClickFlow\OneClickFlowChecker;
+use App\Domain\Service\OneClickFlow\OneClickFlowParameters;
 use IdentificationBundle\Identification\Service\PassthroughChecker;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
@@ -79,7 +78,7 @@ class CarrierOptionsExtension extends AbstractExtension
      */
     public function isConfirmationClick(): bool
     {
-        return $this->oneClickFlowTwigResolver(OneClickFlowParameters::IS_CONFIRMATION_CLICK);
+        return $this->oneClickFlowTwigResolver(OneClickFlowParameters::CONFIRMATION_CLICK);
     }
 
     /**
@@ -87,7 +86,7 @@ class CarrierOptionsExtension extends AbstractExtension
      */
     public function isConfirmationPopup()
     {
-        return $this->oneClickFlowTwigResolver(OneClickFlowParameters::IS_CONFIRMATION_POP_UP);
+        return $this->oneClickFlowTwigResolver(OneClickFlowParameters::CONFIRMATION_POP_UP);
     }
 
     private function oneClickFlowTwigResolver(int $oneClickFlowRequestedParameter)
@@ -99,7 +98,7 @@ class CarrierOptionsExtension extends AbstractExtension
             $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
             $campaign = $this->campaignExtractor->getCampaignFromSession($this->session);
 
-            $isSupportRequestedFlow = $this->oneClickFlowChecker->check($carrier, $oneClickFlowRequestedParameter);
+            $isSupportRequestedFlow = $this->oneClickFlowChecker->check($billingCarrierId, $oneClickFlowRequestedParameter);
 
             if ($isSupportRequestedFlow) {
                 if ($carrier->isOneClickFlow() && $campaign) {

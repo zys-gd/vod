@@ -13,9 +13,8 @@ use App\Domain\Repository\CampaignRepository;
 use App\Domain\Repository\CampaignScheduleRepository;
 use App\Domain\Repository\CarrierRepository;
 use App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherChecker;
-use App\OneClickFlow\OneClickFlowInterface;
-use App\OneClickFlow\OneClickFlowParameters;
-use App\OneClickFlow\OneClickFlowChecker;
+use App\Domain\Service\OneClickFlow\OneClickFlowParameters;
+use App\Domain\Service\OneClickFlow\OneClickFlowChecker;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\CAPTool\Subscription\Exception\SubscriptionCapReachedOnAffiliate;
@@ -167,7 +166,7 @@ class LandingPageACL
             $campaignToken = $request->get('cid', '');
             /** @var Carrier $carrier */
             $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
-            $isSupportRequestedFlow = $this->oneClickFlowChecker->check($carrier, OneClickFlowParameters::IS_LP_OFF);
+            $isSupportRequestedFlow = $this->oneClickFlowChecker->check($billingCarrierId, OneClickFlowParameters::LP_OFF);
 
             if ($isSupportRequestedFlow) {
                 /** @var Campaign $campaign */

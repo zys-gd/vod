@@ -1,11 +1,11 @@
 <?php
 
 
-namespace App\OneClickFlow;
+namespace App\Domain\Service\OneClickFlow;
 
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
-use App\OneClickFlow\OneClickFlowInterface;
+use App\Domain\Service\OneClickFlow\OneClickFlowInterface;
 
 class OneClickFlowCarriersProvider
 {
@@ -23,14 +23,14 @@ class OneClickFlowCarriersProvider
     }
 
     /**
-     * @param CarrierInterface $carrier
+     * @param int $billingCarrierId
      *
      * @return OneClickFlowInterface|null
      */
-    public function get(CarrierInterface $carrier): ?OneClickFlowInterface
+    public function get($billingCarrierId): ?OneClickFlowInterface
     {
         foreach ($this->handlers as $oneClickFlowHandler) {
-            if ($oneClickFlowHandler->canHandle($carrier)) {
+            if ($oneClickFlowHandler->canHandle($billingCarrierId)) {
                 return $oneClickFlowHandler;
             }
         }

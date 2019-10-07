@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\OneClickFlow;
+namespace App\Domain\Service\OneClickFlow;
 
 
 use App\Domain\Entity\Carrier;
@@ -20,22 +20,23 @@ class OneClickFlowChecker
     }
 
     /**
-     * @param CarrierInterface $carrier
-     * @param int $parameter
+     * @param int $billingCarrierId
+     * @param int $flowType
+     *
      * @return bool
      */
-    public function check(CarrierInterface $carrier, int $parameter): bool
+    public function check(int $billingCarrierId, int $flowType): bool
     {
         /** @var OneClickFlowInterface $carrierHandler */
-        $carrierOneClickFlowHandler = $this->oneClickFlowCarriersProvider->get($carrier);
+        $carrierOneClickFlowHandler = $this->oneClickFlowCarriersProvider->get($billingCarrierId);
 
-        if(!$carrierOneClickFlowHandler) {
+        if (!$carrierOneClickFlowHandler) {
             return false;
         }
 
-        $carrierOneClickFlowParameters = $carrierOneClickFlowHandler->getParameters();
+        $carrierOneClickFlowType = $carrierOneClickFlowHandler->getFlowType();
 
-        return in_array($parameter, $carrierOneClickFlowParameters);
+        return $carrierOneClickFlowType === $flowType;
     }
 }
 
