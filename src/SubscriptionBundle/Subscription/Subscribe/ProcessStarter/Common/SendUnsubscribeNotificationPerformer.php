@@ -50,10 +50,10 @@ class SendUnsubscribeNotificationPerformer
 
     /**
      * @param Subscription $subscription
-     * @return ProcessResult
+     * @return void
      * @throws \SubscriptionBundle\BillingFramework\Notification\Exception\MissingSMSTextException
      */
-    public function doSentNotification(Subscription $subscription): ProcessResult
+    public function doSentNotification(Subscription $subscription): void
     {
         $carrier = $subscription->getUser()->getCarrier();
 
