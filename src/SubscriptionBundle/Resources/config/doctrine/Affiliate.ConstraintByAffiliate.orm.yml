@@ -26,6 +26,9 @@ SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate:
         capType:
             type: string
             nullable: false
+        redirectUrl:
+            type: string
+            nullable: true
 
     manyToOne:
         affiliate:

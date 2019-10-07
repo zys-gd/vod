@@ -3,6 +3,7 @@
 namespace SubscriptionBundle\CAPTool\Admin\Sonata;
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use function Complex\add;
 use Doctrine\ORM\EntityManagerInterface;
 use ExtrasBundle\Utils\RealClassnameResolver;
 use ExtrasBundle\Utils\UuidGenerator;
@@ -135,6 +136,7 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
                 'label' => 'Is email sent today'
             ])
             ->add('counter', 'string', ['template' => '@SubscriptionAdmin/ConstraintByAffiliate/counter.html.twig'])
+            ->add('redirectUrl')
             ->add('_action', null, [
                 'actions' => [
                     'show'   => [],
@@ -179,7 +181,8 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
                     'min' => 0
                 ],
                 'label' => 'Number of allowed actions by constraint'
-            ]);
+            ])
+            ->add('redirectUrl');
     }
 
     /**
@@ -203,6 +206,7 @@ class ConstraintsByAffiliateAdmin extends AbstractAdmin
             ->add('capType', TextType::class, [
                 'label' => 'CAP Type'
             ])
+            ->add('redirectUrl')
             ->add('flushDate')
             ->add('isCapAlertDispatch', 'boolean', [
                 'label' => 'Is email sent today'

@@ -6,7 +6,7 @@
  * Time: 6:35 PM
  */
 
-namespace SubscriptionBundle\Subscription\Callback\Common\Type;
+namespace SubscriptionBundle\Subscription\Callback\Common\Handler;
 
 
 use PiwikBundle\Service\EventPublisher;
@@ -16,7 +16,7 @@ use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Callback\Common\SubscriptionStatusChanger;
 use SubscriptionBundle\Subscription\Unsubscribe\OnUnsubscribeUpdater;
 
-class UnsubscriptionCallbackHandler extends AbstractCallbackHandler
+class UnsubscriptionCallbackHandler implements CallbackHandlerInterface
 {
     private $onUnsubscribeUpdater;
 
@@ -45,7 +45,7 @@ class UnsubscriptionCallbackHandler extends AbstractCallbackHandler
     }
 
 
-    public function updateSubscriptionByCallbackData(Subscription $subscription, ProcessResult $response)
+    public function doProcess(Subscription $subscription, ProcessResult $response): void
     {
         $subscription->setCurrentStage(Subscription::ACTION_UNSUBSCRIBE);
 
@@ -59,7 +59,7 @@ class UnsubscriptionCallbackHandler extends AbstractCallbackHandler
     }
 
 
-    public function isActionAllowedForSubscription(Subscription $subscription): bool
+    public function isActionAllowed(Subscription $subscription): bool
     {
         if ($subscription->isActive()) {
             return true;

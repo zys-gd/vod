@@ -6,7 +6,7 @@
  * Time: 11:53
  */
 
-namespace Tests\DataFixtures;
+namespace SubscriptionBundle\Tests\DataFixtures;
 
 
 use DataFixtures\LoadAffiliatesData;

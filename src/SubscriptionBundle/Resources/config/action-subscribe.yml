@@ -128,6 +128,7 @@ services:
             - '@SubscriptionBundle\Subscription\Subscribe\Voter\BatchSubscriptionVoter'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
             - '@SubscriptionBundle\Subscription\Common\RouteProvider'
+            - '@SubscriptionBundle\CAPTool\Common\CAPToolRedirectUrlResolver'
 
 
     SubscriptionBundle\Subscription\Subscribe\Controller\FakeSubscribeAction:

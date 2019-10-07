@@ -5,15 +5,12 @@ namespace SubscriptionBundle\Carriers\HutchID\Callback;
 
 
 use IdentificationBundle\BillingFramework\ID;
-use IdentificationBundle\Entity\User;
 use IdentificationBundle\Repository\UserRepository;
-use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
-use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Repository\SubscriptionRepository;
 use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerInterface;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCustomFlow;
-use SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber;
+use SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeFacade;
 use Symfony\Component\HttpFoundation\Request;
 
 class HutchIDCallbackUnsubscribe implements CarrierCallbackHandlerInterface, HasCustomFlow
@@ -28,33 +25,26 @@ class HutchIDCallbackUnsubscribe implements CarrierCallbackHandlerInterface, Has
      */
     private $subscriptionRepository;
     /**
-     * @var Unsubscriber
+     * @var UnsubscribeFacade
      */
-    private $unsubscriber;
-    /**
-     * @var ApiConnector
-     */
-    private $crossSubscriptionApi;
+    private $unsubscribeFacade;
 
     /**
      * HutchIDCallbackUnsubscribe constructor.
      *
      * @param UserRepository         $userRepository
      * @param SubscriptionRepository $subscriptionRepository
-     * @param Unsubscriber           $unsubscriber
-     * @param ApiConnector           $apiConnector
+     * @param UnsubscribeFacade      $unsubscribeFacade
      */
     public function __construct(
         UserRepository $userRepository,
         SubscriptionRepository $subscriptionRepository,
-        Unsubscriber $unsubscriber,
-        ApiConnector $apiConnector
+        UnsubscribeFacade $unsubscribeFacade
     )
     {
         $this->userRepository         = $userRepository;
         $this->subscriptionRepository = $subscriptionRepository;
-        $this->unsubscriber           = $unsubscriber;
-        $this->crossSubscriptionApi   = $apiConnector;
+        $this->unsubscribeFacade      = $unsubscribeFacade;
     }
 
     public function canHandle(Request $request, int $carrierId): bool
@@ -72,19 +62,11 @@ class HutchIDCallbackUnsubscribe implements CarrierCallbackHandlerInterface, Has
     public function process(Request $request, string $type)
     {
         $requestParams = (Object)$request->request->all();
-        /** @var User $user */
-        $user = $this->userRepository->findOneByMsisdn($requestParams->provider_user);
 
-        /** @var Subscription $subscription */
-        $subscription = $this->subscriptionRepository->findOneBy(['user' => $user]);
+        $user         = $this->userRepository->findOneByMsisdn($requestParams->provider_user);
+        $subscription = $this->subscriptionRepository->findCurrentSubscriptionByOwner($user);
 
-        /** @var ProcessResult $processResult */
-        $processResult = $this->unsubscriber->unsubscribe($subscription, $subscription->getSubscriptionPack());
-
-        if ($processResult->isSuccessful() && $processResult->isFinal()) {
-            $this->unsubscriber->trackEventsForUnsubscribe($subscription, $processResult);
-            $this->crossSubscriptionApi->deregisterSubscription($user->getIdentifier(), $user->getBillingCarrierId());
-        }
+        $this->unsubscribeFacade->doFullUnsubscribe($subscription);
 
         return $subscription;
     }

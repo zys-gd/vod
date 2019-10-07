@@ -27,23 +27,21 @@ services:
 
   SubscriptionBundle\Subscription\Callback\Common\CallbackTypeHandlerProvider:
       arguments:
-        - '@SubscriptionBundle\Subscription\Callback\Common\Type\UnsubscriptionCallbackHandler'
-        - '@SubscriptionBundle\Subscription\Callback\Common\Type\SubscriptionCallbackHandler'
-        - '@SubscriptionBundle\Subscription\Callback\Common\Type\RenewCallbackHandler'
+        - '@SubscriptionBundle\Subscription\Callback\Common\Handler\UnsubscriptionCallbackHandler'
+        - '@SubscriptionBundle\Subscription\Callback\Common\Handler\SubscriptionCallbackHandler'
+        - '@SubscriptionBundle\Subscription\Callback\Common\Handler\RenewCallbackHandler'
 
-  SubscriptionBundle\Subscription\Callback\Common\Type\AbstractCallbackHandler: ~
-
-  SubscriptionBundle\Subscription\Callback\Common\Type\UnsubscriptionCallbackHandler:
+  SubscriptionBundle\Subscription\Callback\Common\Handler\UnsubscriptionCallbackHandler:
         arguments:
             - '@SubscriptionBundle\Subscription\Unsubscribe\OnUnsubscribeUpdater'
 
-  SubscriptionBundle\Subscription\Callback\Common\Type\SubscriptionCallbackHandler:
+  SubscriptionBundle\Subscription\Callback\Common\Handler\SubscriptionCallbackHandler:
       arguments:
           - '@SubscriptionBundle\Subscription\Subscribe\OnSubscribeUpdater'
           - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitCompleter'
           - '@cross_subscription.api_connector'
 
-  SubscriptionBundle\Subscription\Callback\Common\Type\RenewCallbackHandler:
+  SubscriptionBundle\Subscription\Callback\Common\Handler\RenewCallbackHandler:
       arguments:
-          - '@SubscriptionBundle\Subscription\Renew\OnRenewUpdater'
           - '@event_dispatcher'
+          - '@SubscriptionBundle\Subscription\Renew\OnRenewUpdater'
