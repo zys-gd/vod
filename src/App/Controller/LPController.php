@@ -213,7 +213,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         $carrier = $this->resolveCarrierFromRequest($request);
         if ($carrier && $campaign) {
-            $this->logger->debug('Start CAP checking', ['carrier' => $carrier]);
+            $this->logger->debug('Start CAP checking', ['carrier' => $carrier, 'campaign' => $campaign]);
 
             try {
                 $this->landingPageAccessResolver->ensureCanAccess($campaign, $carrier);
