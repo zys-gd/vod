@@ -1,3 +1,0 @@
-services:
-  Carriers\JazzPK\SMS\ENTextsHandler:
-    tags: ['subscription.sms_text_handler']

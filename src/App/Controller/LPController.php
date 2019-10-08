@@ -188,6 +188,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param Request $request
      *
      * @return Response
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function landingPageAction(Request $request)
     {
@@ -240,7 +241,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->contentStatisticSender->trackVisit($session);
 
         if ($carrier && !$isWifiFlow && $this->landingPageAccessResolver->isLandingDisabled($request)) {
-            return new RedirectResponse($this->subscribeUrlResolver->getSubscribeRoute($carrier, $identificationToken));
+            return new RedirectResponse($this->subscribeUrlResolver->getSubscribeRoute($request, $carrier, $identificationToken));
         }
 
         if (!$cid) {
