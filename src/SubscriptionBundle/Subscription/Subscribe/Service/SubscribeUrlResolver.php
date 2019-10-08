@@ -86,11 +86,10 @@ class SubscribeUrlResolver
             return $passthroughLink;
         }
 
-        if ($subscriber instanceof HasConsentPageFlow || $subscriber instanceof HasCommonConsentPageFlow) {
-            return $this->route->generate('subscription.consent_page_subscribe');
-        }
-
         if ($identificationToken) {
+            if ($identifier instanceof HasCommonConsentPageFlow) {
+                return $this->route->generate('subscription.consent_page_subscribe');
+            }
             return $this->route->generate('subscription.subscribe');
         }
 
