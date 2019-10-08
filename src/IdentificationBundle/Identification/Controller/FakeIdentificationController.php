@@ -4,6 +4,7 @@ namespace IdentificationBundle\Identification\Controller;
 
 use CountryCarrierDetectionBundle\Service\Interfaces\ICountryCarrierDetection;
 use Doctrine\ORM\EntityManager;
+use ExtrasBundle\Utils\UuidGenerator;
 use IdentificationBundle\Entity\TestUser;
 use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\Exception\MissingCarrierException;
@@ -168,6 +169,12 @@ class FakeIdentificationController extends AbstractController
             ]);
             if ($testUser) {
                 $testUser->setLastTimeUsedAt(new \DateTimeImmutable());
+            }else{
+                $testUser = new TestUser(UuidGenerator::generate());
+                $testUser->setCarrier($carrier);
+                $testUser->setUserIdentifier($msisdn);
+                $testUser->setLastTimeUsedAt(new \DateTimeImmutable());
+                $this->entityManager->persist($testUser);
             }
 
             $this->entityManager->flush();

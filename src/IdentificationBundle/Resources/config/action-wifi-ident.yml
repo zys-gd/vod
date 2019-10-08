@@ -83,7 +83,7 @@ services:
             - '@SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter'
             - '@SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator'
             - '@IdentificationBundle\WifiIdentification\WifiPhoneOptionsProvider'
-            - '@SubscriptionBundle\Subscription\Common\RouteProvider'
+            - '@SubscriptionBundle\CAPTool\Common\CAPToolRedirectUrlResolver'
             - '@logger'
             - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking'

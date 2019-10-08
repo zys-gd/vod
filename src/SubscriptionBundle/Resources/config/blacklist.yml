@@ -7,8 +7,7 @@ services:
       - '@IdentificationBundle\Repository\UserRepository'
       - '@doctrine.orm.entity_manager'
       - '@SubscriptionBundle\Repository\SubscriptionRepository'
-      - '@SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
-      - '@SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeFacade'
       -
   SubscriptionBundle\Blacklist\BlacklistChecker:
     arguments:

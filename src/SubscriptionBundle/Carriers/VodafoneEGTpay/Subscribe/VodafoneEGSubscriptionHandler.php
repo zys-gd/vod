@@ -60,10 +60,12 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
     /**
      * VodafoneEGSubscriptionHandler constructor
      *
-     * @param LocalExtractor                $localExtractor
-     * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
-     * @param RouterInterface               $router
-     * @param RouteProvider                 $routeProvider
+     * @param LocalExtractor                 $localExtractor
+     * @param WifiIdentificationDataStorage  $wifiIdentificationDataStorage
+     * @param RouterInterface                $router
+     * @param RouteProvider                  $routeProvider
+     * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
+     * @param CarrierRepository              $carrierRepository
      */
     public function __construct(
         LocalExtractor $localExtractor,

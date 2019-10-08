@@ -7,7 +7,7 @@
  */
 
 
-namespace Tests\DataFixtures;
+namespace SubscriptionBundle\Tests\DataFixtures;
 
 
 use App\Domain\Entity\Affiliate;
@@ -116,7 +116,7 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
     {
 
         /** @var SubscriptionPack $randomSubscriptionPack */
-        $randomSubscriptionPack = $this->getReference('subscription_pack_with_name_Orange EG via TPAY'); // Orange Tunis.
+        $randomSubscriptionPack = $this->getReference('subscription_pack_with_name_Jazz PK'); // Orange Tunis.
         $carrier                = $this->getReference(sprintf('carrier_with_internal_id_%s', $randomSubscriptionPack->getCarrier()->getBillingCarrierId()));
 
         $user = TestEntityProvider::createUserWithIdentificationRequest($carrier, 'token_for_user_without_subscription');
