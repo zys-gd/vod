@@ -71,13 +71,15 @@ class SubscriptionExtension extends ConfigurableExtension implements PrependExte
             $loader->load(basename($file));
         }
 
-        $loader = new YamlFileLoader(
-            $container,
-            new FileLocator(__DIR__ . '/../Resources/config/test')
-        );
+        if ($container->getParameter('kernel.environment') == 'test') {
+            $loader = new YamlFileLoader(
+                $container,
+                new FileLocator(__DIR__ . '/../Resources/config/test')
+            );
 
-        foreach (glob(__DIR__ . '/../Resources/config/test/*.yml') as $file) {
-            $loader->load(basename($file));
+            foreach (glob(__DIR__ . '/../Resources/config/test/*.yml') as $file) {
+                $loader->load(basename($file));
+            }
         }
 
         $definition = $container->getDefinition('SubscriptionBundle\CAPTool\Subscription\Notificaton\EmailProvider');
