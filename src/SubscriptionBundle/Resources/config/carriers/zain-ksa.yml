@@ -1,5 +1,8 @@
 services:
     SubscriptionBundle\Carriers\ZainKSA\Subscribe\ZainKSASubscribeHandler:
+        arguments:
+            - '@App\Domain\Repository\CarrierRepository'
+            - '@SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking'
         tags:
             - { name: subscription.subscription_handler }
 
