@@ -163,6 +163,9 @@ services:
         arguments:
             - '@router'
             - '@SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider'
+            - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
+            - '@IdentificationBundle\Identification\Service\PassthroughRequestPreparer'
+            - '@IdentificationBundle\BillingFramework\Process\PassthroughProcess'
 
     SubscriptionBundle\Subscription\Subscribe\Service\CreditsCalculator:
         arguments: ['@SubscriptionBundle\Subscription\Renew\Service\RenewDateCalculator']

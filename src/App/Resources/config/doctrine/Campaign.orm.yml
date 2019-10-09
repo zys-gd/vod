@@ -69,10 +69,6 @@ App\Domain\Entity\Campaign:
             column: general_price
             options:
                 default: 0.00
-        isLpOff:
-            type: boolean
-            options:
-                default: false
         isClickableSubImage:
             type: boolean
             options:
@@ -91,7 +87,7 @@ App\Domain\Entity\Campaign:
         creator:
             type: string
             nullable: true
-        isConfirmationClick:
+        isOneClickFlow:
             type: boolean
             options:
                 default: false

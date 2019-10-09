@@ -1,0 +1,8 @@
+services:
+    Carriers\VivaBahrainMM\Identification\VivaBahrainMMIdentificationHandler:
+        tags:
+            - { name: identification.identification_handler }
+
+    Carriers\VivaBahrainMM\Template\VivaBahrainMMTemplateHandler:
+        tags:
+            - { name: store_commons.template_handler }

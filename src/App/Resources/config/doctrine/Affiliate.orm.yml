@@ -53,7 +53,7 @@ App\Domain\Entity\Affiliate:
             length: 255
             column: sub_price_name
             nullable: true
-        isLpOff:
+        isOneClickFlow:
             type: boolean
             options:
                 default: false

@@ -6,7 +6,7 @@
  * Time: 17:59
  */
 
-namespace Carriers\JazzPK\SMS;
+namespace Carriers\MobilinkPK\SMS;
 
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;

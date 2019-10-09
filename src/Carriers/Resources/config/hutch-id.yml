@@ -15,6 +15,10 @@ services:
         tags:
             - { name: identification.wifi_identification_handler }
 
+    Carriers\HutchID\OneClick\HutchIDOneClickFlow:
+        tags:
+            - { name: app.one_click_flow_handler }
+
     Carriers\HutchID\Identification\HutchIDIdentificationCallbackHandler:
         tags:
             - { name: identification.identification_callback_handler }

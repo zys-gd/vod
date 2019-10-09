@@ -178,7 +178,7 @@ class CampaignAdminController extends CRUDController
         try {
             /** @var Campaign $selectedModel */
             foreach ($selectedModels as $selectedModel) {
-                $selectedModel->setIsLpOff(true);
+                $selectedModel->setIsOneClickFlow(true);
             }
 
             $modelManager->update($selectedModel);
@@ -214,7 +214,7 @@ class CampaignAdminController extends CRUDController
         try {
             /** @var Campaign $selectedModel */
             foreach ($selectedModels as $selectedModel) {
-                $selectedModel->setIsLpOff(false);
+                $selectedModel->setIsOneClickFlow(false);
             }
 
             $modelManager->update($selectedModel);

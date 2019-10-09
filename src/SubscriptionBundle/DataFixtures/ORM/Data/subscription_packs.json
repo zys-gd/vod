@@ -278,5 +278,45 @@
         "carrier": {
             "uuid": "51dj58d7-ebd4-12e8-91c4-02bb25dlf94j"
         }
+    },
+  {
+    "uuid": "js8d7r74-2bdc-dj74-a7e6-6d7c86fl1d7d",
+    "status": 1,
+    "name": "Viva Bahrain",
+    "description": "",
+    "isResubAllowed": 0,
+    "tierId": 2,
+    "tierPrice": 0.15,
+    "tierCurrency": "BHD",
+    "displayCurrency": "BHD",
+    "credits": 2,
+    "periodicity": 1,
+    "customRenewPeriod": 0,
+    "gracePeriod": 0,
+    "unlimitedGracePeriod": 0,
+    "preferredRenewalStart": null,
+    "preferredRenewalEnd": null,
+    "welcomeSMSText": "",
+    "renewalSMSText": "",
+    "unsubscribeSMSText": "",
+    "buyStrategyId": 1,
+    "renewStrategyId": 1,
+    "unlimited": 0,
+    "firstSubscriptionPeriodIsFree": 0,
+    "firstSubscriptionPeriodIsFreeMultiple": 1,
+    "allowBonusCredit": 0,
+    "allowBonusCreditMultiple": 0,
+    "bonusCredit": 0,
+    "providerManagedSubscriptions": 1,
+    "zeroCreditSubAvailable": 0,
+    "created": "2019-08-16 09:51:28",
+    "updated": "2019-08-16 09:51:28",
+    "country": {
+      "uuid": "5103ad63-ebd4-11e8-95c4-02bb250f0f22"
+    },
+    "carrier": {
+      "uuid": "51dj58d7-ebd4-12e8-91c4-02bb25dlf94j"
     }
+  }
+
 ]

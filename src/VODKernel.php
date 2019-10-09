@@ -1,6 +1,7 @@
 <?php
 
 
+use App\DependencyInjection\Compiler\OneClickFlowHandlerPass;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
@@ -32,6 +33,11 @@ class VODKernel extends BaseKernel
                 yield new $class();
             }
         }
+    }
+
+    protected function build(ContainerBuilder $container): void
+    {
+        $container->addCompilerPass(new OneClickFlowHandlerPass());
     }
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)

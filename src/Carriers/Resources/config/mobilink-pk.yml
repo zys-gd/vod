@@ -1,0 +1,7 @@
+services:
+    Carriers\MobilinkPK\SMS\ENTextsHandler:
+        tags: ['subscription.sms_text_handler']
+
+    Carriers\MobilinkPK\OneClick\MobilinkPKOneClickFlow:
+        tags:
+            - { name: app.one_click_flow_handler }

@@ -288,7 +288,7 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
         $carrier->setTrialPeriod(0);
         $carrier->setSubscriptionPeriod(7);
         $carrier->setOperatorId('');
-        $carrier->setIsConfirmationClick(false);
+        $carrier->setIsOneClickFlow(false);
         $carrier->setIsCampaignsOnPause(false);
         $carrier->setSubscribeAttempts(0);
         $carrier->setNumberOfAllowedSubscriptionsByConstraint(0);

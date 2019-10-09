@@ -1,0 +1,10 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+        {% if isOneClickFlow(object) %}
+            <label class="label label-success">Yes</label>
+        {% else %}
+            <label class="label label-danger">No</label>
+        {% endif %}
+
+{% endblock %}

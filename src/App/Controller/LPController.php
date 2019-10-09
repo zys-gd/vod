@@ -188,6 +188,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param Request $request
      *
      * @return Response
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function landingPageAction(Request $request)
     {
@@ -213,7 +214,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         $carrier = $this->resolveCarrierFromRequest($request);
         if ($carrier && $campaign) {
-            $this->logger->debug('Start CAP checking', ['carrier' => $carrier]);
+            $this->logger->debug('Start CAP checking', ['carrier' => $carrier, 'campaign' => $campaign]);
 
             try {
                 $this->landingPageAccessResolver->ensureCanAccess($campaign, $carrier);
@@ -234,12 +235,15 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
 
-        $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($session);
-        $isWifiFlow       = $billingCarrierId ? false : true;
+        $billingCarrierId    = IdentificationFlowDataExtractor::extractBillingCarrierId($session);
+        $identificationToken = IdentificationFlowDataExtractor::extractIdentificationToken($request->getSession());
+        $isWifiFlow          = $billingCarrierId ? false : true;
         $this->contentStatisticSender->trackVisit($session);
 
-        if ($carrier && !$isWifiFlow && $this->landingPageAccessResolver->isLandingDisabled($request)) {
-            return new RedirectResponse($this->subscribeUrlResolver->getSubscribeRoute($carrier));
+        if ($carrier && !$isWifiFlow && $this->landingPageAccessResolver->isLandingDisabled($carrier, $campaign)) {
+            $subscribeRoute = $this->subscribeUrlResolver->getSubscribeRoute($request, $carrier, $identificationToken);
+            $this->logger->debug('subscribeRoute', [$subscribeRoute]);
+            return new RedirectResponse($subscribeRoute);
         }
 
         if (!$cid) {
@@ -254,7 +258,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
     /**
      * @Route("/lp/select-carrier-wifi", name="select_carrier_wifi", methods={"GET"}, condition="request.isXmlHttpRequest()")
-     *
      * @param Request $request
      *
      * @return JsonResponse
@@ -331,7 +334,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
     /**
      * @Route("/lp/resest-wifi-lp", name="reset_wifi_lp", methods={"GET"}, condition="request.isXmlHttpRequest()")
-     *
      * @return string
      */
     public function resetWifiLP()
@@ -346,8 +348,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
     /**
      * @Route("/lp/pin-confirm", name="pin_confirm", methods={"GET"}, condition="request.isXmlHttpRequest()")
-     *
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function pinConfirmWifiLP(Request $request)
@@ -363,8 +365,8 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
     /**
      * @Route("/lp/change-number", name="change_number", methods={"GET"}, condition="request.isXmlHttpRequest()")
-     *
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function changeNumberWifiLP(Request $request)
