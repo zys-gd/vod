@@ -81,16 +81,16 @@ class LandingPageACL
     /**
      * LandingPageAccessResolver constructor
      *
-     * @param VisitConstraintByAffiliate $visitConstraintByAffiliate
-     * @param VisitAccessorByCampaign $visitAccessorByCampaign
-     * @param CarrierRepository $carrierRepository
-     * @param CampaignRepository $campaignRepository
-     * @param SessionInterface $session
-     * @param SubscriptionCapChecker $subscriptionCapChecker
-     * @param LoggerInterface $logger
-     * @param CampaignScheduleRepository $campaignScheduleRepository
+     * @param VisitConstraintByAffiliate      $visitConstraintByAffiliate
+     * @param VisitAccessorByCampaign         $visitAccessorByCampaign
+     * @param CarrierRepository               $carrierRepository
+     * @param CampaignRepository              $campaignRepository
+     * @param SessionInterface                $session
+     * @param SubscriptionCapChecker          $subscriptionCapChecker
+     * @param LoggerInterface                 $logger
+     * @param CampaignScheduleRepository      $campaignScheduleRepository
      * @param AffiliateBannedPublisherChecker $affiliateBannedPublisherChecker
-     * @param OneClickFlowChecker $oneClickFlowChecker
+     * @param OneClickFlowChecker             $oneClickFlowChecker
      */
     public function __construct(
         VisitConstraintByAffiliate $visitConstraintByAffiliate,
@@ -103,7 +103,8 @@ class LandingPageACL
         CampaignScheduleRepository $campaignScheduleRepository,
         AffiliateBannedPublisherChecker $affiliateBannedPublisherChecker,
         OneClickFlowChecker $oneClickFlowChecker
-    ) {
+    )
+    {
         $this->visitConstraintByAffiliate      = $visitConstraintByAffiliate;
         $this->visitAccessorByCampaign         = $visitAccessorByCampaign;
         $this->carrierCapChecker               = $subscriptionCapChecker;
@@ -113,7 +114,7 @@ class LandingPageACL
         $this->session                         = $session;
         $this->campaignScheduleRepository      = $campaignScheduleRepository;
         $this->affiliateBannedPublisherChecker = $affiliateBannedPublisherChecker;
-        $this->oneClickFlowChecker = $oneClickFlowChecker;
+        $this->oneClickFlowChecker             = $oneClickFlowChecker;
     }
 
     /**
@@ -155,28 +156,21 @@ class LandingPageACL
     }
 
     /**
-     * @param Request $request
+     * @param Carrier       $carrier
+     * @param Campaign|null $campaign
      *
      * @return bool
      */
-    public function isLandingDisabled(Request $request): bool
+    public function isLandingDisabled(Carrier $carrier, Campaign $campaign = null): bool
     {
         try {
-            $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
-            $campaignToken = $request->get('cid', '');
-            /** @var Carrier $carrier */
-            $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
-            $isSupportRequestedFlow = $this->oneClickFlowChecker->check($billingCarrierId, OneClickFlowParameters::LP_OFF);
+            $isSupportRequestedFlow = $this->oneClickFlowChecker->check($carrier->getBillingCarrierId(), OneClickFlowParameters::LP_OFF);
 
-            if ($isSupportRequestedFlow) {
-                /** @var Campaign $campaign */
-                $campaign = $this->campaignRepository->findOneBy(['campaignToken' => $campaignToken]);
-                $isLPOffByAffiliate = false;
-                $isLPOffByCampaign = false;
+            if ($carrier->isOneClickFlow() && $isSupportRequestedFlow) {
 
                 if ($campaign) {
                     /** @var Affiliate $affiliate */
-                    $affiliate = $campaign->getAffiliate();
+                    $affiliate          = $campaign->getAffiliate();
                     $isLPOffByAffiliate = $affiliate->isOneClickFlow() && ($affiliate->hasCarrier($carrier) || empty($affiliate->getCarriers()));
 
                     $isCampaignScheduleExistAndTriggered = $campaign->getSchedule()->isEmpty()
@@ -184,10 +178,12 @@ class LandingPageACL
                         : $this->campaignScheduleRepository->isNowInSchedule($campaign);
 
                     $isLPOffByCampaign = $campaign->isOneClickFlow() && $isCampaignScheduleExistAndTriggered;
+                    return  $isLPOffByAffiliate && $isLPOffByCampaign;
                 }
 
-                return $carrier->isOneClickFlow() || $isLPOffByAffiliate || $isLPOffByCampaign;
+                return true;
             }
+
             return false;
         } catch (\Throwable $e) {
             return false;
@@ -200,8 +196,10 @@ class LandingPageACL
      *
      * @throws SubscriptionCapReachedOnAffiliate
      */
-    private function ensureSubscribeCapIsNotReachedByAffiliate(Carrier $carrier,
-        ConstraintByAffiliate $constraint): void
+    private function ensureSubscribeCapIsNotReachedByAffiliate(
+        Carrier $carrier,
+        ConstraintByAffiliate $constraint
+    ): void
     {
         if ($this->carrierCapChecker->isCapReachedForAffiliate($constraint)) {
             $this->logger->debug('CAP checking on LP', [
