@@ -1,0 +1,23 @@
+{% macro render() %}
+    {% import '@App/Components/Forms/wifi_select.html.twig' as wifi_select %}
+    {% import importTemplate("Components/Buttons/link.html.twig") as  link %}
+
+    <form data-form="pin" id="wifi_form"
+          class="d-flex flex-column w-75 text-center">
+        <div class="wifi_form__ground"></div>
+        <div class="align-self-center wifi_form__warning w-75">
+            {{ translate('wifi.warning') }}
+        </div>
+        <div id="wifi_form_step">
+            {{ wifi_select.render() }}
+        </div>
+
+        <div id="wifi_button">
+            {{ link.render(url('identify_by_passthrough'), translate('buttons.subscribe'), 'list-inline-item') }}
+        </div>
+
+        <div class="">
+            <span id="wifi_offer">{% if isCarrierDetected() %} {{ translate('wifi.offer') }} {% endif %}</span>
+        </div>
+    </form>
+{% endmacro %}
