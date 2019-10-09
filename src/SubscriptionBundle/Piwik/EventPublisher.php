@@ -50,11 +50,11 @@ class EventPublisher
 
         try {
             $result = $this->sender->sendEvent($data);
-            $this->logger->info('Sending is finished', ['result' => $result]);
+            $this->logger->debug('Sending is finished', ['result' => $result]);
             return $result;
 
         } catch (\Exception $ex) {
-            $this->logger->info('Exception on piwik sending', [
+            $this->logger->debug('Exception on piwik sending', [
                 'msg'  => $ex->getMessage(),
                 'line' => $ex->getLine(),
                 'code' => $ex->getCode()

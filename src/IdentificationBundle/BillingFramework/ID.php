@@ -44,4 +44,5 @@ class ID
     const HUTCH3_INDONESIA_DOT  = 2255;
     const ORANGE_TUNISIA_MM     = 2256;
     const ZAIN_SAUDI_ARABIA     = 2257;
+    const VIVA_BAHRAIN_MM       = 2258;
 }
