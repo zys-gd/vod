@@ -13,6 +13,7 @@ services:
       - '@SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SendUnsubscribeNotificationPerformer'
       - '@SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker'
       - '@logger'
+      - '@SubscriptionBundle\Subscription\Common\SendNotificationChecker'
 
   SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider:
     arguments: ['@SubscriptionBundle\Subscription\Unsubscribe\Handler\DefaultHandler']

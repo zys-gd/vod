@@ -8,9 +8,8 @@
 
 namespace SubscriptionBundle\Subscription\Unsubscribe;
 
-
 use Psr\Log\LoggerInterface;
-use SubscriptionBundle\BillingFramework\Notification\API\Exception\NotificationSendFailedException;
+use SubscriptionBundle\BillingFramework\Notification\Exception\MissingSMSTextException;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\Exception\UnsubscribingProcessException;
 use SubscriptionBundle\BillingFramework\Process\UnsubscribeProcess;
@@ -19,9 +18,13 @@ use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Subscription\Common\FakeResponseProvider;
 use SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker;
+use SubscriptionBundle\Subscription\Common\SendNotificationChecker;
 use SubscriptionBundle\Subscription\Notification\Notifier;
 use SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SendUnsubscribeNotificationPerformer;
 
+/**
+ * Class Unsubscriber
+ */
 class Unsubscriber
 {
     /**
@@ -33,7 +36,7 @@ class Unsubscriber
      */
     private $fakeResponseProvider;
     /**
-     * @var \SubscriptionBundle\Subscription\Notification\Notifier
+     * @var Notifier
      */
     private $notifier;
     /**
@@ -69,7 +72,10 @@ class Unsubscriber
      * @var LoggerInterface
      */
     private $logger;
-
+    /**
+     * @var SendNotificationChecker
+     */
+    private $notificationChecker;
 
     /**
      * Unsubscriber constructor.
@@ -85,6 +91,7 @@ class Unsubscriber
      * @param SendUnsubscribeNotificationPerformer $sendUnsubscribeNotificationPerformer
      * @param ProcessResultSuccessChecker          $resultSuccessChecker
      * @param LoggerInterface                      $logger
+     * @param SendNotificationChecker              $notificationChecker
      */
     public function __construct(
         EntitySaveHelper $entitySaveHelper,
@@ -97,9 +104,9 @@ class Unsubscriber
         UnsubscribeEventTracker $unsubscribeEventTracker,
         SendUnsubscribeNotificationPerformer $sendUnsubscribeNotificationPerformer,
         ProcessResultSuccessChecker $resultSuccessChecker,
-        LoggerInterface $logger
-    )
-    {
+        LoggerInterface $logger,
+        SendNotificationChecker $notificationChecker
+    ) {
         $this->entitySaveHelper                     = $entitySaveHelper;
         $this->fakeResponseProvider                 = $fakeResponseProvider;
         $this->notifier                             = $notifier;
@@ -111,14 +118,17 @@ class Unsubscriber
         $this->sendUnsubscribeNotificationPerformer = $sendUnsubscribeNotificationPerformer;
         $this->resultSuccessChecker                 = $resultSuccessChecker;
         $this->logger                               = $logger;
+        $this->notificationChecker                  = $notificationChecker;
     }
 
     /**
      * @param Subscription     $subscription
      * @param SubscriptionPack $subscriptionPack
      * @param array            $additionalParameters
+     *
      * @return ProcessResult
-     * @throws \SubscriptionBundle\BillingFramework\Notification\Exception\MissingSMSTextException
+     *
+     * @throws MissingSMSTextException
      */
     public function unsubscribe(
         Subscription $subscription,
@@ -130,18 +140,20 @@ class Unsubscriber
         $subscription->setCurrentStage(Subscription::ACTION_UNSUBSCRIBE);
         $this->entitySaveHelper->persistAndSave($subscription);
 
-
         $parameters = $this->parametersProvider->provideParameters($subscription, $additionalParameters);
 
         try {
             $response = $this->unsubscribeProcess->doUnsubscribe($parameters);
-            if ($this->resultSuccessChecker->isSuccessful($response)) {
+
+            if ($this->resultSuccessChecker->isSuccessful($response)
+                && $this->notificationChecker->isNotificationShouldBeSent($subscription)
+            ) {
                 $this->sendUnsubscribeNotificationPerformer->doSentNotification($subscription);
             }
+
             $this->onUnsubscribeUpdater->updateSubscriptionByResponse($subscription, $response);
 
             return $response;
-
         } catch (UnsubscribingProcessException $exception) {
             $this->logger->debug('Unsubscribe error', [
                 'message' => $exception->getMessage(),
@@ -171,6 +183,4 @@ class Unsubscriber
             $response
         );
     }
-
-
 }
