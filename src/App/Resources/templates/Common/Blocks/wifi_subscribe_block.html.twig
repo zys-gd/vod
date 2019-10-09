@@ -25,19 +25,4 @@
             <span id="wifi_offer">{% if isCarrierDetected() %} {{ translate('wifi.offer') }} {% endif %}</span>
         </div>
     </form>
-
-    <script>
-        // IMPORTANT!!
-        // in this section you need to write only dynamically changing JS
-        function addPinValidation() {
-            {% if isCarrierDetected() %}
-            let pinPlaceholder = "{{ getPinValidationOptions().placeholder }}";
-            let pinPattern = "{{ getPinValidationOptions().pattern }}";
-
-            $('input[name=pin_code]')
-                .attr('placeholder', pinPlaceholder)
-                .attr('pattern', pinPattern);
-            {% endif %}
-        }
-    </script>
 {% endmacro %}

@@ -1,26 +1,15 @@
-{% macro render(opts) %}
-    {% import '@App/Components/Buttons/button.html.twig' as button %}
+{% macro render(phoneNumber, inputType) %}
+    {% if phoneNumber is not defined %}
+        {% set inputType = 'text' %}
+    {% endif %}
     <div class="">
-        <input type="text" name="mobile_number"
+        <input type="{{ inputType }}" name="mobile_number"
                placeholder="{% if isCarrierDetected() %}{{ getPhoneValidationOptions().placeholder }} {% endif %}"
                class="w-75 mb-3 input masked"
                minlength="6" maxlength="20"
                pattern="{% if isCarrierDetected() %}{{ getPhoneValidationOptions().pattern }}{% endif %}"
+               value="{{ phoneNumber }}"
                title="Please enter the correct phone number with international calling code"
                required/>
     </div>
-
-    <script>
-        //Yrii 'params' variable fix(((
-        function addPhoneValidation() {
-            {% if isCarrierDetected() %}
-                let phonePlaceholder = "{{ getPhoneValidationOptions().placeholder }}";
-                let phonePattern = "{{ getPhoneValidationOptions().pattern }}";
-
-                $('input[name=mobile_number]')
-                    .attr('placeholder', phonePlaceholder)
-                    .attr('pattern', phonePattern);
-            {% endif %}
-        }
-    </script>
 {% endmacro %}

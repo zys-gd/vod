@@ -12,11 +12,12 @@ namespace SubscriptionBundle\DependencyInjection;
 use ExtrasBundle\Config\DefinitionReplacer;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 
-class SubscriptionExtension extends ConfigurableExtension
+class SubscriptionExtension extends ConfigurableExtension implements PrependExtensionInterface
 {
     /**
      * Configures the passed container according to the merged configuration.
@@ -66,14 +67,18 @@ class SubscriptionExtension extends ConfigurableExtension
             new FileLocator(__DIR__ . '/../Resources/config/carriers')
         );
 
-        //$loader->load('orange-tn.yml');
-        $loader->load('etisalat-eg.yml');
-        $loader->load('telenor-pk.yml');
-        $loader->load('jazz-pk.yml');
-        $loader->load('vodafone-eg-tpay.yml');
-        $loader->load('orange-eg-tpay.yml');
-        $loader->load('hutch_id.yml');
-        $loader->load('zain-ksa.yml');
+        foreach (glob(__DIR__ . '/../Resources/config/carriers/*.yml') as $file) {
+            $loader->load(basename($file));
+        }
+
+        $loader = new YamlFileLoader(
+            $container,
+            new FileLocator(__DIR__ . '/../Resources/config/test')
+        );
+
+        foreach (glob(__DIR__ . '/../Resources/config/test/*.yml') as $file) {
+            $loader->load(basename($file));
+        }
 
         $definition = $container->getDefinition('SubscriptionBundle\CAPTool\Subscription\Notificaton\EmailProvider');
         DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['cap_tool']['notification']['mail_to'], '_cap_notification_mail_to_placeholder_');
@@ -102,5 +107,20 @@ class SubscriptionExtension extends ConfigurableExtension
 
         $definition = $container->getDefinition('SubscriptionBundle\DataFixtures\ORM\LoadSubscriptionPackData');
         DefinitionReplacer::replacePlaceholder($definition, new Reference($mergedConfig['fixtures']['carrier_fixture']), '_carrier_fixture_service_placeholder_');
+    }
+
+
+    /**
+     * Allow an extension to prepend the extension configurations.
+     */
+    public function prepend(ContainerBuilder $container)
+    {
+        $identificationAdminPath = realpath(__DIR__ . '/../Resources/views/Admin');
+
+        $container->loadFromExtension('twig', array(
+            'paths' => array(
+                $identificationAdminPath => 'SubscriptionAdmin',
+            ),
+        ));
     }
 }

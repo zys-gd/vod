@@ -9,12 +9,12 @@
 namespace SubscriptionBundle\Subscription\Callback\Common;
 
 
-use SubscriptionBundle\Subscription\Callback\Common\Type\AbstractCallbackHandler;
+use SubscriptionBundle\Subscription\Callback\Common\Handler\CallbackHandlerInterface;
 
 class CallbackTypeHandlerProvider
 {
     /**
-     * @var \SubscriptionBundle\Subscription\Callback\Common\Type\AbstractCallbackHandler[]
+     * @var \SubscriptionBundle\Subscription\Callback\Common\Handler\CallbackHandlerInterface[]
      */
     private $handlers;
 
@@ -27,8 +27,8 @@ class CallbackTypeHandlerProvider
     {
         foreach ($handlers as $handler) {
 
-            if (!$handler instanceof AbstractCallbackHandler) {
-                throw new \InvalidArgumentException(sprintf('%s is not should be instance of %s', get_class($handler), AbstractCallbackHandler::class));
+            if (!$handler instanceof CallbackHandlerInterface) {
+                throw new \InvalidArgumentException(sprintf('%s is not should be instance of %s', get_class($handler), CallbackHandlerInterface::class));
             }
 
             $this->handlers[] = $handler;
@@ -42,6 +42,6 @@ class CallbackTypeHandlerProvider
                 return $helper;
             }
         }
-        throw new \InvalidArgumentException("Unsupported helper");
+        throw new \InvalidArgumentException("Unsupported callback type");
     }
 }

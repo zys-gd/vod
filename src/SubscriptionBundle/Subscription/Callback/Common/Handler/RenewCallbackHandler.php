@@ -6,7 +6,7 @@
  * Time: 9:02 PM
  */
 
-namespace SubscriptionBundle\Subscription\Callback\Common\Type;
+namespace SubscriptionBundle\Subscription\Callback\Common\Handler;
 
 
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
@@ -15,27 +15,30 @@ use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Renew\OnRenewUpdater;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class RenewCallbackHandler extends AbstractCallbackHandler
+class RenewCallbackHandler implements CallbackHandlerInterface
 {
-    private $onRenewUpdater;
     /**
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
+    /**
+     * @var OnRenewUpdater
+     */
+    private $onRenewUpdater;
 
     /**
      * RenewCallbackHandler constructor.
-     * @param OnRenewUpdater           $onRenewUpdater
      * @param EventDispatcherInterface $eventDispatcher
+     * @param OnRenewUpdater           $onRenewUpdater
      */
-    public function __construct(OnRenewUpdater $onRenewUpdater, EventDispatcherInterface $eventDispatcher)
+    public function __construct(EventDispatcherInterface $eventDispatcher, OnRenewUpdater $onRenewUpdater)
     {
-        $this->onRenewUpdater  = $onRenewUpdater;
         $this->eventDispatcher = $eventDispatcher;
+        $this->onRenewUpdater  = $onRenewUpdater;
     }
 
 
-    public function updateSubscriptionByCallbackData(Subscription $subscription, ProcessResult $response)
+    public function doProcess(Subscription $subscription, ProcessResult $response): void
     {
         $subscription->setCurrentStage(Subscription::ACTION_RENEW);
 
@@ -58,7 +61,7 @@ class RenewCallbackHandler extends AbstractCallbackHandler
     }
 
 
-    public function isActionAllowedForSubscription(Subscription $subscription): bool
+    public function isActionAllowed(Subscription $subscription): bool
     {
         return true;
     }

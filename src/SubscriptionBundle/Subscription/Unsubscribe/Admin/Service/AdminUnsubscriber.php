@@ -15,6 +15,7 @@ use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Repository\SubscriptionRepository;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider;
+use SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeFacade;
 use SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber;
 
 class AdminUnsubscriber
@@ -32,43 +33,36 @@ class AdminUnsubscriber
      */
     private $carrierRepository;
     /**
-     * @var UnsubscriptionHandlerProvider
-     */
-    private $unsubscriptionHandlerProvider;
-    /**
-     * @var Unsubscriber
-     */
-    private $unsubscriber;
-    /**
      * @var EntitySaveHelper
      */
     private $entitySaveHelper;
+    /**
+     * @var UnsubscribeFacade
+     */
+    private $unsubscribeFacade;
 
 
     /**
      * AdminUnsubscriber constructor.
-     * @param BlacklistFactory              $blacklistFactory
-     * @param SubscriptionRepository        $subscriptionRepository
-     * @param CarrierRepositoryInterface    $carrierRepository
-     * @param UnsubscriptionHandlerProvider $unsubscriptionHandlerProvider
-     * @param Unsubscriber                  $unsubscriber
-     * @param EntitySaveHelper              $entitySaveHelper
+     * @param BlacklistFactory           $blacklistFactory
+     * @param SubscriptionRepository     $subscriptionRepository
+     * @param CarrierRepositoryInterface $carrierRepository
+     * @param EntitySaveHelper           $entitySaveHelper
+     * @param UnsubscribeFacade          $unsubscribeFacade
      */
     public function __construct(
         BlacklistFactory $blacklistFactory,
         SubscriptionRepository $subscriptionRepository,
         CarrierRepositoryInterface $carrierRepository,
-        UnsubscriptionHandlerProvider $unsubscriptionHandlerProvider,
-        Unsubscriber $unsubscriber,
-        EntitySaveHelper $entitySaveHelper
+        EntitySaveHelper $entitySaveHelper,
+        UnsubscribeFacade $unsubscribeFacade
     )
     {
-        $this->blacklistFactory              = $blacklistFactory;
-        $this->subscriptionRepository        = $subscriptionRepository;
-        $this->carrierRepository             = $carrierRepository;
-        $this->unsubscriptionHandlerProvider = $unsubscriptionHandlerProvider;
-        $this->unsubscriber                  = $unsubscriber;
-        $this->entitySaveHelper              = $entitySaveHelper;
+        $this->blacklistFactory       = $blacklistFactory;
+        $this->subscriptionRepository = $subscriptionRepository;
+        $this->carrierRepository      = $carrierRepository;
+        $this->entitySaveHelper       = $entitySaveHelper;
+        $this->unsubscribeFacade      = $unsubscribeFacade;
     }
 
     public function unsubscribe(Subscription $subscription, bool $addToBlacklist): bool
@@ -76,13 +70,8 @@ class AdminUnsubscriber
         $subscriptionPack = $subscription->getSubscriptionPack();
 
         try {
-            $response              = $this->unsubscriber->unsubscribe($subscription, $subscriptionPack);
-            $unsubscriptionHandler = $this->unsubscriptionHandlerProvider->getUnsubscriptionHandler($subscriptionPack->getCarrier());
-            $unsubscriptionHandler->applyPostUnsubscribeChanges($subscription);
 
-            if ($unsubscriptionHandler->isPiwikNeedToBeTracked($response)) {
-                $this->unsubscriber->trackEventsForUnsubscribe($subscription, $response);
-            }
+            $this->unsubscribeFacade->doFullUnsubscribe($subscription);
 
             if ($addToBlacklist) {
                 $blackList = $this->blacklistFactory->create($subscriptionPack->getCarrier(), $subscription->getUser()->getIdentifier());

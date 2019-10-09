@@ -64,7 +64,14 @@ services:
             - '@SubscriptionBundle\BillingFramework\Process\SubscribeProcess'
             - '@SubscriptionBundle\Subscription\Subscribe\SubscribeParametersProvider'
 
-    SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SendNotificationPerformer:
+    SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SendSubscribeNotificationPerformer:
+        arguments:
+            - '@logger'
+            - '@SubscriptionBundle\Subscription\Notification\Notifier'
+            - '@SubscriptionBundle\Subscription\Common\FakeResponseProvider'
+            - '@SubscriptionBundle\Subscription\Common\SubscriptionSerializer'
+
+    SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SendUnsubscribeNotificationPerformer:
         arguments:
             - '@logger'
             - '@SubscriptionBundle\Subscription\Notification\Notifier'
@@ -121,6 +128,7 @@ services:
             - '@SubscriptionBundle\Subscription\Subscribe\Voter\BatchSubscriptionVoter'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
             - '@SubscriptionBundle\Subscription\Common\RouteProvider'
+            - '@SubscriptionBundle\CAPTool\Common\CAPToolRedirectUrlResolver'
 
 
     SubscriptionBundle\Subscription\Subscribe\Controller\FakeSubscribeAction:
@@ -179,7 +187,7 @@ services:
         arguments:
             - '@SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker'
             - '@SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SubscribePerformer'
-            - '@SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SendNotificationPerformer'
+            - '@SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SendSubscribeNotificationPerformer'
             - '@SubscriptionBundle\Subscription\Common\SendNotificationChecker'
             - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
 

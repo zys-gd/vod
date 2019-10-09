@@ -24,7 +24,7 @@ services:
             - '@IdentificationBundle\User\Service\UserFactory'
             - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
             - '@SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper'
-            - '@SubscriptionBundle\Carriers\HutchID\Subscribe\HutchIDSMSSubscriber'
+            - '@SubscriptionBundle\Carriers\HutchID\Callback\HutchIDSMSSubscriber'
             - '@SubscriptionBundle\Subscription\Notification\Notifier'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventTracker'
             - '@logger'
@@ -35,7 +35,7 @@ services:
         arguments:
             - '@IdentificationBundle\Repository\UserRepository'
             - '@SubscriptionBundle\Repository\SubscriptionRepository'
-            - '@SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber'
+            - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeFacade'
             - '@cross_subscription.api_connector'
         tags:
             - { name: subscription.callback_carrier_handler, type: unsubscribe}
@@ -48,6 +48,11 @@ services:
             - { name: subscription.notification_handler, type: unsubscribe }
             - { name: subscription.notification_handler, type: notify_renew }
 
-    SubscriptionBundle\Carriers\HutchID\Subscribe\HutchIDSMSSubscriber:
+    SubscriptionBundle\Carriers\HutchID\Callback\HutchIDSMSSubscriber:
         arguments:
-            - '@SubscriptionBundle\Subscription\Callback\Common\Type\SubscriptionCallbackHandler'
+            - '@SubscriptionBundle\Subscription\Callback\Common\Handler\SubscriptionCallbackHandler'
+
+    SubscriptionBundle\Carriers\HutchID\Callback\HutchIDCallbackRenew:
+        arguments: ['@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeFacade']
+        tags:
+            - { name: subscription.callback_carrier_handler, type: renew }

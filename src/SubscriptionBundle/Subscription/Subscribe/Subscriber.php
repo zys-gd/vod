@@ -24,7 +24,7 @@ use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Subscription\Common\SendNotificationChecker;
 use SubscriptionBundle\Subscription\Common\SubscriptionFactory;
 use SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SubscribePerformer;
-use SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SendNotificationPerformer;
+use SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SendSubscribeNotificationPerformer;
 use SubscriptionBundle\Subscription\Subscribe\ProcessStarter\SubscribeProcessStarterProvider;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 

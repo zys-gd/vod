@@ -6,6 +6,7 @@ use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class HutchIDUnsubscribeHandler implements UnsubscriptionHandlerInterface
 {
@@ -30,9 +31,10 @@ class HutchIDUnsubscribeHandler implements UnsubscriptionHandlerInterface
     }
 
     /**
+     * @param Request $request
      * @return array
      */
-    public function getAdditionalUnsubscribeParameters(): array
+    public function getAdditionalUnsubscribeParameters(Request $request): array
     {
         return [];
     }
@@ -40,7 +42,7 @@ class HutchIDUnsubscribeHandler implements UnsubscriptionHandlerInterface
     /**
      * @param Subscription $subscription
      */
-    public function applyPostUnsubscribeChanges(Subscription $subscription)
+    public function applyPostUnsubscribeChanges(Subscription $subscription): void
     {
 
     }

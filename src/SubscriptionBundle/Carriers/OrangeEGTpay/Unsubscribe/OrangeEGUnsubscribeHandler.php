@@ -8,6 +8,7 @@ use IdentificationBundle\BillingFramework\ID;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class VodafoneEGUnsubscribeHandler
@@ -50,19 +51,20 @@ class OrangeEGUnsubscribeHandler implements UnsubscriptionHandlerInterface
     }
 
     /**
+     * @param Request $request
      * @return array
      */
-    public function getAdditionalUnsubscribeParameters(): array
+    public function getAdditionalUnsubscribeParameters(Request $request): array
     {
         return [
-            'lang' => $this->localExtractor->getLocal()
+            'lang' => $this->localExtractor->extractLocale($request)
         ];
     }
 
     /**
      * @param Subscription $subscription
      */
-    public function applyPostUnsubscribeChanges(Subscription $subscription)
+    public function applyPostUnsubscribeChanges(Subscription $subscription): void
     {
 
     }

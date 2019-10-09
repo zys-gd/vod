@@ -17,7 +17,7 @@ use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker;
 use SubscriptionBundle\Subscription\Common\SendNotificationChecker;
 use SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SubscribePerformer;
-use SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SendNotificationPerformer;
+use SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SendSubscribeNotificationPerformer;
 
 class CommonStarter implements SubscribeProcessStarterInterface
 {
@@ -31,7 +31,7 @@ class CommonStarter implements SubscribeProcessStarterInterface
      */
     private $subscribePerformer;
     /**
-     * @var SendNotificationPerformer
+     * @var SendSubscribeNotificationPerformer
      */
     private $sendNotificationPerformer;
     /**
@@ -47,14 +47,14 @@ class CommonStarter implements SubscribeProcessStarterInterface
      * CommonStarter constructor.
      * @param ProcessResultSuccessChecker $resultSuccessChecker
      * @param SubscribePerformer          $subscribePerformer
-     * @param SendNotificationPerformer   $subscribePromotionalPerformer
+     * @param SendSubscribeNotificationPerformer   $subscribePromotionalPerformer
      * @param SendNotificationChecker     $sendNotificationChecker
      * @param CampaignExtractor           $campaignExtractor
      */
     public function __construct(
         ProcessResultSuccessChecker $resultSuccessChecker,
         SubscribePerformer $subscribePerformer,
-        SendNotificationPerformer $subscribePromotionalPerformer,
+        SendSubscribeNotificationPerformer $subscribePromotionalPerformer,
         SendNotificationChecker $sendNotificationChecker,
         CampaignExtractor $campaignExtractor
     )

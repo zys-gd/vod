@@ -6,7 +6,7 @@
  * Time: 9:02 PM
  */
 
-namespace SubscriptionBundle\Subscription\Callback\Common\Type;
+namespace SubscriptionBundle\Subscription\Callback\Common\Handler;
 
 
 use PiwikBundle\Service\EventPublisher;
@@ -17,7 +17,7 @@ use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitCompleter;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Subscribe\OnSubscribeUpdater;
 
-class SubscriptionCallbackHandler extends AbstractCallbackHandler
+class SubscriptionCallbackHandler implements CallbackHandlerInterface
 {
 
 
@@ -51,7 +51,7 @@ class SubscriptionCallbackHandler extends AbstractCallbackHandler
         $this->crossSubscriptionApi = $crossSubscriptionApi;
     }
 
-    public function updateSubscriptionByCallbackData(Subscription $subscription, ProcessResult $response)
+    public function doProcess(Subscription $subscription, ProcessResult $response): void
     {
         $subscription->setCurrentStage(Subscription::ACTION_SUBSCRIBE);
 
@@ -79,7 +79,7 @@ class SubscriptionCallbackHandler extends AbstractCallbackHandler
         $this->crossSubscriptionApi->registerSubscription($user->getIdentifier(), $user->getBillingCarrierId());
     }
 
-    public function isActionAllowedForSubscription(Subscription $subscription): bool
+    public function isActionAllowed(Subscription $subscription): bool
     {
         return true;
     }
