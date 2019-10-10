@@ -240,7 +240,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $isWifiFlow          = $billingCarrierId ? false : true;
         $this->contentStatisticSender->trackVisit($session);
 
-        $isLandingDisabled = $this->landingPageAccessResolver->isLandingDisabled($carrier, $campaign);
+        $isLandingDisabled = $carrier ? $this->landingPageAccessResolver->isLandingDisabled($carrier, $campaign) : false;
 
         $this->logger->debug('isLandingDisabled', [
             '$isLandingDisabled' => $isLandingDisabled,
