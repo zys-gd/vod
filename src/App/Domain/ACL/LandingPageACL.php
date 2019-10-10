@@ -165,6 +165,10 @@ class LandingPageACL
     {
         try {
             $isSupportRequestedFlow = $this->oneClickFlowChecker->check($carrier->getBillingCarrierId(), OneClickFlowParameters::LP_OFF);
+            $this->logger->debug('Inside isLandingDisabled()', [
+                '$isSupportRequestedFlow' => $isSupportRequestedFlow,
+                'isOneClickFlow'          => $carrier->isOneClickFlow(),
+            ]);
 
             if ($carrier->isOneClickFlow() && $isSupportRequestedFlow) {
 
@@ -178,7 +182,14 @@ class LandingPageACL
                         : $this->campaignScheduleRepository->isNowInSchedule($campaign);
 
                     $isLPOffByCampaign = $campaign->isOneClickFlow() && $isCampaignScheduleExistAndTriggered;
-                    return  $isLPOffByAffiliate && $isLPOffByCampaign;
+
+                    $this->logger->debug('Inside isLandingDisabled() campaign check', [
+                        '$isLPOffByCampaign'               => $isLPOffByCampaign,
+                        '$isLPOffByAffiliate'              => $isLPOffByAffiliate,
+                        '$affiliate->hasCarrier($carrier)' => $affiliate->hasCarrier($carrier),
+                        'empty($affiliate->getCarriers())' => empty($affiliate->getCarriers())
+                    ]);
+                    return $isLPOffByAffiliate && $isLPOffByCampaign;
                 }
 
                 return true;
