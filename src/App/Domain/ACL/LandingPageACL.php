@@ -165,26 +165,38 @@ class LandingPageACL
     {
         try {
             $isSupportRequestedFlow = $this->oneClickFlowChecker->check($carrier->getBillingCarrierId(), OneClickFlowParameters::LP_OFF);
+            $this->logger->debug('Inside isLandingDisabled()', [
+                '$isSupportRequestedFlow' => $isSupportRequestedFlow,
+                'isOneClickFlow'          => $carrier->isOneClickFlow(),
+            ]);
 
-            if ($carrier->isOneClickFlow() && $isSupportRequestedFlow) {
+            if (!$carrier->isOneClickFlow() || !$isSupportRequestedFlow) {
+                return false;
+            }
 
-                if ($campaign) {
-                    /** @var Affiliate $affiliate */
-                    $affiliate          = $campaign->getAffiliate();
-                    $isLPOffByAffiliate = $affiliate->isOneClickFlow() && ($affiliate->hasCarrier($carrier) || empty($affiliate->getCarriers()));
-
-                    $isCampaignScheduleExistAndTriggered = $campaign->getSchedule()->isEmpty()
-                        ? true
-                        : $this->campaignScheduleRepository->isNowInSchedule($campaign);
-
-                    $isLPOffByCampaign = $campaign->isOneClickFlow() && $isCampaignScheduleExistAndTriggered;
-                    return  $isLPOffByAffiliate && $isLPOffByCampaign;
-                }
-
+            if (!$campaign) {
                 return true;
             }
 
-            return false;
+            /** @var Affiliate $affiliate */
+            $affiliate          = $campaign->getAffiliate();
+            $isLPOffByAffiliate = $affiliate->isOneClickFlow() && ($affiliate->hasCarrier($carrier) || empty($affiliate->getCarriers()));
+
+            $isCampaignScheduleExistAndTriggered = $campaign->getSchedule()->isEmpty()
+                ? true
+                : $this->campaignScheduleRepository->isNowInSchedule($campaign);
+
+            $isLPOffByCampaign = $campaign->isOneClickFlow() && $isCampaignScheduleExistAndTriggered;
+
+            $this->logger->debug('Inside isLandingDisabled() campaign check', [
+                '$isLPOffByCampaign'               => $isLPOffByCampaign,
+                '$isLPOffByAffiliate'              => $isLPOffByAffiliate,
+                '$affiliate->hasCarrier($carrier)' => $affiliate->hasCarrier($carrier),
+                '$affiliate->getCarriers()'        => $affiliate->getCarriers()
+            ]);
+
+            return $isLPOffByAffiliate && $isLPOffByCampaign;
+
         } catch (\Throwable $e) {
             return false;
         }
