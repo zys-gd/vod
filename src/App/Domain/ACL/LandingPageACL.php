@@ -186,6 +186,8 @@ class LandingPageACL
                     $this->logger->debug('Inside isLandingDisabled() campaign check', [
                         '$isLPOffByCampaign' => $isLPOffByCampaign,
                         '$isLPOffByAffiliate' => $isLPOffByAffiliate,
+                        '$affiliate->hasCarrier($carrier)' => $affiliate->hasCarrier($carrier),
+                        'empty($affiliate->getCarriers())' => empty($affiliate->getCarriers())
                     ]);
                     return  $isLPOffByAffiliate && $isLPOffByCampaign;
                 }
