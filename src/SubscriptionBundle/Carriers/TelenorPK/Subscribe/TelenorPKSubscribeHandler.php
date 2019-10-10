@@ -69,7 +69,7 @@ class TelenorPKSubscribeHandler implements SubscriptionHandlerInterface, HasComm
      */
     public function createResponseForSuccessfulSubscribe(Request $request, User $User, Subscription $subscription)
     {
-        if ($subscription->getError() === 'already_subscribed_on_another_service') {
+        if ($subscription->getError() === 'subscribed_to_another_service') {
             return new RedirectResponse($this->routeProvider->getLinkToHomepage(['err_handle' => 'already_subscribed_on_another_service']));
         }
     }

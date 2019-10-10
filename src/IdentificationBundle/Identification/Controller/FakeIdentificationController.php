@@ -90,16 +90,17 @@ class FakeIdentificationController extends AbstractController
         EntityManager $entityManager,
         RouteProvider $routeProvider,
         IdentificationDataStorage $identificationDataStorage
-    ) {
-        $this->carrierDetection = $carrierDetection;
-        $this->identifier = $identifier;
-        $this->tokenGenerator = $generator;
-        $this->carrierRepository = $carrierRepository;
-        $this->ISPResolver = $ISPResolver;
-        $this->userFactory = $userFactory;
-        $this->entityManager = $entityManager;
-        $this->userRepository = $userRepository;
-        $this->routeProvider = $routeProvider;
+    )
+    {
+        $this->carrierDetection          = $carrierDetection;
+        $this->identifier                = $identifier;
+        $this->tokenGenerator            = $generator;
+        $this->carrierRepository         = $carrierRepository;
+        $this->ISPResolver               = $ISPResolver;
+        $this->userFactory               = $userFactory;
+        $this->entityManager             = $entityManager;
+        $this->userRepository            = $userRepository;
+        $this->routeProvider             = $routeProvider;
         $this->identificationDataStorage = $identificationDataStorage;
     }
 
@@ -119,11 +120,13 @@ class FakeIdentificationController extends AbstractController
         $session = $request->getSession();
         $session->clear();
 
-        if ($user = $this->userRepository->findOneBy(['ip' => $ipAddress])) {
+        $user = $this->userRepository->findOneByMsisdn($msisdn);
+
+        if ($user) {
             $this->identificationDataStorage->setIdentificationToken($user->getIdentificationToken());
             $this->identificationDataStorage->setCarrierId($user->getBillingCarrierId());
         } else {
-            $carrierISP = $this->carrierDetection->getCarrier($ipAddress);
+            $carrierISP       = $this->carrierDetection->getCarrier($ipAddress);
             $billingCarrierId = null;
 
             if ($carrierISP) {

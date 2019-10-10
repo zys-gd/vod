@@ -20,20 +20,7 @@
         });
         $(document).on('click', '.x-otp-button', function (e) {
             e.preventDefault();
-            if ($(this).is('a')) {
-                $('.x-otp-button').each((key, el) => {
-                    $(el).removeClass('x-otp-button')
-                        .addClass('x-subscribe-button')
-                        .find('button').text('{{ translate('buttons.confirm') }}');
-                });
-            }
-            else if($(this).is('button')) {
-                $('.x-otp-button').each((key, el) => {
-                    $(el).removeClass('x-otp-button')
-                        .addClass('x-subscribe-button')
-                        .text('{{ translate('buttons.confirm') }}');
-                });
-            }
+            firstClickOtpBtn('{{ translate('buttons.confirm') }}');
         });
 
     </script>

@@ -59,7 +59,7 @@ class HutchIDCallbackUnsubscribe implements CarrierCallbackHandlerInterface, Has
 
     public function canHandle(Request $request, int $carrierId): bool
     {
-        return $carrierId === ID::HUTCH_INDONESIA;
+        return $carrierId === ID::HUTCH3_INDONESIA_DOT;
     }
 
     /**

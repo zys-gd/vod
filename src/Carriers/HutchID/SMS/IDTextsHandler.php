@@ -19,7 +19,7 @@ class IDTextsHandler implements CarrierSMSHandlerInterface
 
     public function isSupports(CarrierInterface $carrier, LanguageInterface $language): bool
     {
-        return $carrier->getBillingCarrierId() === ID::HUTCH_INDONESIA && $language->getCode() == 'id';
+        return $carrier->getBillingCarrierId() === ID::HUTCH3_INDONESIA_DOT && $language->getCode() == 'id';
     }
 
     public function getTexts(): array
