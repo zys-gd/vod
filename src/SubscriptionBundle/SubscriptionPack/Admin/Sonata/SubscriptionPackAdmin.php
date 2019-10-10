@@ -178,6 +178,8 @@ class SubscriptionPackAdmin extends AbstractAdmin
         $collection->add('success', $this->getRouterIdParameter() . '/success');
         $collection->add('texts', $this->getRouterIdParameter() . '/texts');
 
+        $collection->remove('create');
+
         parent::configureRoutes($collection);
     }
 
@@ -378,5 +380,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
             }
         }
     }
+
+
 
 }
