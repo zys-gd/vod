@@ -204,7 +204,6 @@ class SubscriptionPackAdmin extends AbstractAdmin
             ])
             ->add('zeroCreditSubAvailable')
             ->add('status', 'choice', [
-                'editable' => true,
                 'choices'  => array_flip(SubscriptionPack::STATUSES),
             ]);
     }
