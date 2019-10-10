@@ -216,34 +216,10 @@ class SubscriptionPackAdmin extends AbstractAdmin
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-        $tiers      = $this->subscriptionPackDataProvider->getTiers();
-        $strategies = $this->subscriptionPackDataProvider->getBillingStrategies();
-
         $datagridMapper
             ->add('name')
             ->add('country')
             ->add('carrier')
-            // ->add('carrierName', null, [], ChoiceType::class, [
-            //     'choices'      => $carriers,
-            //     'choice_label' => 'name',
-            //     'choice_value' => 'id'
-            // ])
-            // ->add('buyStrategy', null, [], ChoiceType::class, [
-            //     'choices'      => $strategies,
-            //     'choice_label' => 'name',
-            //     'choice_value' => 'id'
-            // ])
-            // ->add('renewStrategy', null, [], ChoiceType::class, [
-            //     'choices'      => $strategies,
-            //     'choice_label' => 'name',
-            //     'choice_value' => 'id'
-            // ])
-            ->add('periodicity')
-            // ->add('tier', null, [], ChoiceType::class, [
-            //     'choices'      => $tiers,
-            //     'choice_label' => 'name',
-            //     'choice_value' => 'id'
-            // ])
             ->add('status', null, [
                 'label' => 'Subscription Pack Active'
             ])
@@ -260,7 +236,6 @@ class SubscriptionPackAdmin extends AbstractAdmin
     {
         $this->buildGeneralSection($formMapper);
         $this->buildBillingStrategySection($formMapper);
-        $this->buildPromotionSections($formMapper);
 
 
     }
@@ -270,66 +245,10 @@ class SubscriptionPackAdmin extends AbstractAdmin
      */
     private function buildGeneralSection(FormMapper $formMapper)
     {
-        /** @var SubscriptionPack $subject */
-        $subject = $this->getSubject();
-        $country = $subject->getCountry();
 
-        $formMapper
-            ->add('name', TextType::class)
-            ->add('description', TextareaType::class, [
-                'required' => false
-            ]);
-
-        if ($country) {
-            $formMapper
-                ->add('country', EntityType::class, [
-                    'attr'    => [
-                        'readonly' => true,
-                    ],
-                    'choices' => [$country],
-                    'class'   => Country::class
-                ]);
-
-            $formMapper
-                ->add('carrier', EntityType::class, [
-                    'attr'    => [
-                        'readonly' => true,
-                    ],
-                    'choices' => [$subject->getCarrier()],
-                    'class'   => RealClassnameResolver::resolveName(CarrierInterface::class, $this->entityManager),
-                ]);
-        } else {
-            $formMapper->add('country', EntityType::class, [
-                'class'        => Country::class,
-                'label'        => 'Country',
-                'expanded'     => false,
-                'required'     => true,
-                'placeholder'  => 'Please select country',
-                'choices'      => $this->getCountryList(),
-                'choice_label' => 'countryName',
-                'choice_value' => 'uuid',
-                'choice_attr'  => function ($data) {
-                    return $data instanceof Country ?
-                        ['data' => $this->getCountryCarriersAsJson($data)]
-                        : $data;
-                },
-            ]);
-
-            $formMapper->add('carrier', EntityType::class, [
-                'class'       => RealClassnameResolver::resolveName(CarrierInterface::class, $this->entityManager),
-                'label'       => 'Carrier',
-                'expanded'    => false,
-                'required'    => true,
-                // 'choices'     => [],
-                'placeholder' => 'Please select carrier'
-            ]);
-        }
 
         $formMapper
             ->add('tierPrice', TextType::class, [
-                'required' => true
-            ])
-            ->add('tierCurrency', TextType::class, [
                 'required' => true
             ])
             ->add('displayCurrency', TextType::class, [
@@ -366,8 +285,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
                 'label'       => 'No of games to be downloaded'
             ])
             ->add('credits', IntegerType::class, [
-                'required' => true,
-                'label'    => 'No Of Games Can Be Downloaded in subscription period'
+                'required' => true
             ]);
 
         $formMapper
@@ -412,13 +330,8 @@ class SubscriptionPackAdmin extends AbstractAdmin
             ->add('renewalSMSText', TextareaType::class, [
                 'required' => false,
                 'label'    => 'Renewal SMS Text'
-            ]);
-
-        $formMapper
-            ->add('status', ChoiceType::class, [
-                'choices' => SubscriptionPack::STATUSES,
-                'label'   => 'Pack Status'
             ])
+
             ->end();
     }
 
@@ -429,48 +342,14 @@ class SubscriptionPackAdmin extends AbstractAdmin
      */
     private function buildBillingStrategySection(FormMapper $formMapper)
     {
-        $billingStrategies = $this->subscriptionPackDataProvider->getBillingStrategies();
-        $billingTiers      = $this->subscriptionPackDataProvider->getTiers();
 
         $formMapper
-            ->with('Billing strategy', [''])
-            ->add('tierId', ChoiceType::class, [
-                'label'        => 'Billing tier for subscription',
-                'choices'      => $billingTiers,
-                'choice_label' => 'name',
-                'choice_value' => function ($billingTier) {
-                    return $billingTier instanceof Tier ? $billingTier->id : $billingTier;
-                }
-            ]);
+            ->with('Billing strategy', ['']);
 
         $formMapper
-            ->add('buyStrategyId', ChoiceType::class, [
-                'label'        => 'Billing strategy for new subscription',
-                'choices'      => $billingStrategies,
-                'choice_label' => 'name',
-                'choice_value' => function ($strategy) {
-                    return $strategy instanceof Strategy ? $strategy->id : $strategy;
-                }
-            ]);
-
-        $formMapper
-            ->add('renewStrategyId', ChoiceType::class, [
-                // 'label'        => 'Renew strategy',
-                'choices'      => $billingStrategies,
-                'choice_label' => 'name',
-                'choice_value' => function ($strategy) {
-                    return $strategy instanceof Strategy ? $strategy->id : $strategy;
-                }
-            ]);
-
-        $formMapper
-            ->add('providerManagedSubscriptions', CheckboxType::class, [
-                'required' => false,
-                'label'    => 'Subscriptions will be managed by provider'
-            ])
             ->add('isResubAllowed', CheckboxType::class, [
                 'required' => false,
-                'label'    => 'Is resubscribe allowed'
+                'label'    => 'Is Resubscribe allowed'
             ]);
 
         $formMapper->add('zeroCreditSubAvailable');
@@ -478,53 +357,6 @@ class SubscriptionPackAdmin extends AbstractAdmin
         $formMapper->end();
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
-    private function buildPromotionSections(FormMapper $formMapper)
-    {
-        $formMapper
-            ->with('Promotion 1', [''])
-            ->add('firstSubscriptionPeriodIsFree', ChoiceFieldMaskType::class, [
-                'choices'  => [
-                    'Yes' => 1,
-                    'No'  => 0
-                ],
-                'map'      => [
-                    1 => ['firstSubscriptionPeriodIsFreeMultiple']
-                ],
-                'required' => true,
-                'label'    => '1st subscription period is free (user will not be charged upon subscription)'
-            ])
-            ->add('firstSubscriptionPeriodIsFreeMultiple', CheckboxType::class, [
-                'label'    => 'The user benefit from the same offer type more than once',
-                'required' => false
-            ])
-            ->end();
-
-        $formMapper
-            ->with('Promotion 2')
-            ->add('allowBonusCredit', ChoiceFieldMaskType::class, [
-                'choices'  => [
-                    'Yes' => 1,
-                    'No'  => 0
-                ],
-                'map'      => [
-                    1 => ['bonusCredit', 'allowBonusCreditMultiple']
-                ],
-                'required' => true,
-                'label'    => 'Add bonus credit for first subscription period'
-            ])
-            ->add('bonusCredit', IntegerType::class, [
-                'label'    => 'Please specify bonus credit',
-                'required' => false
-            ])
-            ->add('allowBonusCreditMultiple', CheckboxType::class, [
-                'label'    => 'The user benefit from the same offer type more than once',
-                'required' => false
-            ])
-            ->end();
-    }
 
     /**
      * @TODO Needs Yuri opinion
@@ -548,31 +380,4 @@ class SubscriptionPackAdmin extends AbstractAdmin
         }
     }
 
-    private function getCountryList()
-    {
-        $carrierInterfaces = $this->carrierRepository->findEnabledCarriers();
-
-        $countriesCarriers = [];
-        foreach ($carrierInterfaces as $carrier) {
-            $countriesCarriers[] = $carrier->getCountryCode();
-        }
-        $countries = $this->countryRepository->findBy(['countryCode' => $countriesCarriers]);
-        return $countries;
-    }
-
-    private function getCountryCarriersAsJson(Country $country)
-    {
-        $carrierInterfaces = $this->carrierRepository->findEnabledCarriers();
-
-        $aCarriers = [];
-        foreach ($carrierInterfaces as $carrier) {
-            $carrierData = [
-                'uuid'             => $carrier->getUuid(),
-                'billingCarrierId' => $carrier->getBillingCarrierId(),
-                'name'             => $carrier->getName(),
-            ];
-            $aCarriers[] = $carrierData;
-        }
-        return json_encode($aCarriers);
-    }
 }
