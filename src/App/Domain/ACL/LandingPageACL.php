@@ -187,7 +187,7 @@ class LandingPageACL
                         '$isLPOffByCampaign'               => $isLPOffByCampaign,
                         '$isLPOffByAffiliate'              => $isLPOffByAffiliate,
                         '$affiliate->hasCarrier($carrier)' => $affiliate->hasCarrier($carrier),
-                        'empty($affiliate->getCarriers())' => empty($affiliate->getCarriers())
+                        'empty($affiliate->getCarriers())' => var_dump($affiliate->getCarriers())
                     ]);
                     return $isLPOffByAffiliate && $isLPOffByCampaign;
                 }
