@@ -41,38 +41,38 @@ class LoadSubscriptionPackData extends AbstractFixture implements DependentFixtu
 
         foreach ($data as $row) {
             $uuid                                = $row['uuid'];
-            $country_uuid                        = $row['country_uuid'];
+            $country_uuid                        = $row['country']['uuid'];
             $status                              = $row['status'];
             $name                                = $row['name'];
             $description                         = $row['description'];
-            $carrier_id                          = $row['carrier_id'];
+            $carrier_id                          = $row['carrier']['uuid'];
             $periodicity                         = $row['periodicity'];
-            $custom_renew_period                 = $row['custom_renew_period'];
-            $grace_period                        = $row['grace_period'];
-            $tier_id                             = $row['tier_id'];
-            $tier_price                          = $row['tier_price'] ?? '';
-            $tier_currency                       = $row['tier_currency'] ?? '';
+            $custom_renew_period                 = $row['customRenewPeriod'];
+            $grace_period                        = $row['gracePeriod'];
+            $tier_id                             = $row['tierId'];
+            $tier_price                          = $row['tierPrice'] ?? '';
+            $tier_currency                       = $row['tierCurrency'] ?? '';
             $credits                             = $row['credits'];
-            $unlimited_grace_period              = $row['unlimited_grace_period'];
-            $preferred_renewal_start             = $row['preferred_renewal_start'];
-            $preferred_renewal_end               = $row['preferred_renewal_end'];
-            $welcome_sms_text                    = $row['welcome_sms_text'];
-            $renewal_sms_text                    = $row['renewal_sms_text'];
-            $unsubscribe_sms_text                = $row['unsubscribe_sms_text'];
-            $buy_strategy_id                     = $row['buy_strategy_id'];
-            $renew_strategy_id                   = $row['renew_strategy_id'];
+            $unlimited_grace_period              = $row['unlimitedGracePeriod'];
+            $preferred_renewal_start             = $row['preferredRenewalStart'];
+            $preferred_renewal_end               = $row['preferredRenewalEnd'];
+            $welcome_sms_text                    = $row['welcomeSMSText'];
+            $renewal_sms_text                    = $row['renewalSMSText'];
+            $unsubscribe_sms_text                = $row['unsubscribeSMSText'];
+            $buy_strategy_id                     = $row['buyStrategyId'];
+            $renew_strategy_id                   = $row['renewStrategyId'];
             $unlimited                           = $row['unlimited'];
-            $is_first_subscription_free          = $row['is_first_subscription_free'];
-            $is_first_subscription_free_multiple = $row['is_first_subscription_free_multiple'];
-            $allow_bonus_credit                  = $row['allow_bonus_credit'];
-            $allow_bonus_credit_multiple         = $row['allow_bonus_credit_multiple'];
-            $bonus_credit                        = $row['bonus_credit'];
-            $provider_managed_subscriptions      = $row['provider_managed_subscriptions'];
+            $is_first_subscription_free          = $row['firstSubscriptionPeriodIsFree'];
+            $is_first_subscription_free_multiple = $row['firstSubscriptionPeriodIsFreeMultiple'];
+            $allow_bonus_credit                  = $row['allowBonusCredit'];
+            $allow_bonus_credit_multiple         = $row['allowBonusCreditMultiple'];
+            $bonus_credit                        = $row['bonusCredit'];
+            $provider_managed_subscriptions      = $row['providerManagedSubscriptions'];
             $created                             = $row['created'];
             $updated                             = $row['updated'];
-            $is_resub_allowed                    = $row['is_resub_allowed'];
-            $displayCurrency                     = $row['display_currency'] ?? '';
-            $zeroCreditSubAvailable              = $row['zero_credit_sub_available'] ?? 0;
+            $is_resub_allowed                    = $row['isResubAllowed'];
+            $displayCurrency                     = $row['displayCurrency'] ?? '';
+            $zeroCreditSubAvailable              = $row['zeroCreditSubAvailable'] ?? 0;
 
 
             $pack = new SubscriptionPack($uuid);
@@ -92,7 +92,7 @@ class LoadSubscriptionPackData extends AbstractFixture implements DependentFixtu
             try {
 
                 /** @var CarrierInterface $carrier */
-                $carrier = $this->getReference(sprintf('carrier_with_internal_id_%s', $carrier_id));
+                $carrier = $this->getReference(sprintf('carrier_%s', $carrier_id));
             } catch (\OutOfBoundsException $exception) {
                 echo "Missing carrier with internal ID `$carrier_id` for subscription pack `$uuid`. Skipping.\n\r ";
                 continue;

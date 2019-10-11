@@ -244,11 +244,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         if ($carrier && !$isWifiFlow) {
             $isLandingDisabled = $this->landingPageAccessResolver->isLandingDisabled($carrier, $campaign);
 
-            $this->logger->debug('isLandingDisabled', [
-                '$isLandingDisabled' => $isLandingDisabled,
-                '$isWifiFlow'        => $isWifiFlow
-            ]);
-
             if ($isLandingDisabled) {
                 $subscribeRoute = $this->subscribeUrlResolver->getSubscribeRoute($request, $carrier, $identificationToken);
                 $this->logger->debug('subscribeRoute', [$subscribeRoute]);
