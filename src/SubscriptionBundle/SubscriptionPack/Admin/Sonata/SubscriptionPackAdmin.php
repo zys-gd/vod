@@ -117,14 +117,6 @@ class SubscriptionPackAdmin extends AbstractAdmin
         $originalData = $this->entityManager->getUnitOfWork()->getOriginalEntityData($object);
 
         $object->setUpdated(new \DateTime('now'));
-        // resolve problems with form save and inline list save
-        try {
-            $object->setBuyStrategyId($object->getBuyStrategyId()->id);
-            $object->setRenewStrategyId($object->getRenewStrategyId()->id);
-            $object->setTierId($object->getTierId()->id);
-        } catch (\Throwable $e) {
-            // then save by default behavior
-        }
 
         $this->markSubscriptionPacksWithSameCarrierAsInactive($object);
 
@@ -148,9 +140,6 @@ class SubscriptionPackAdmin extends AbstractAdmin
      */
     public function prePersist($object)
     {
-        $object->setBuyStrategyId($object->getBuyStrategyId()->id);
-        $object->setRenewStrategyId($object->getRenewStrategyId()->id);
-        $object->setTierId($object->getTierId()->id);
         $this->markSubscriptionPacksWithSameCarrierAsInactive($object);
 
         parent::preUpdate($object);
