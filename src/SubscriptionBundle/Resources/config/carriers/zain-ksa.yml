@@ -3,6 +3,7 @@ services:
         arguments:
             - '@App\Domain\Repository\CarrierRepository'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking'
+            - '@logger'
         tags:
             - { name: subscription.subscription_handler }
 

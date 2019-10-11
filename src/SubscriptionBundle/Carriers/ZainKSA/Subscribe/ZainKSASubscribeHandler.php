@@ -5,6 +5,7 @@ namespace SubscriptionBundle\Carriers\ZainKSA\Subscribe;
 use App\Domain\Repository\CarrierRepository;
 use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Entity\User;
+use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
@@ -29,19 +30,26 @@ class ZainKSASubscribeHandler implements SubscriptionHandlerInterface, HasCommon
      * @var ZeroCreditSubscriptionChecking
      */
     private $zeroCreditSubscriptionChecking;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * ZainKSASubscribeHandler constructor.
      *
      * @param CarrierRepository              $carrierRepository
      * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
+     * @param LoggerInterface                $logger
      */
     public function __construct(
         CarrierRepository $carrierRepository,
-        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
+        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking,
+        LoggerInterface $logger
     ) {
         $this->carrierRepository = $carrierRepository;
         $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
+        $this->logger = $logger;
     }
 
     /**
@@ -65,11 +73,22 @@ class ZainKSASubscribeHandler implements SubscriptionHandlerInterface, HasCommon
         $carrier = $this->carrierRepository->findOneByBillingId(ID::ZAIN_SAUDI_ARABIA);
 
         $isSuccess = $result->isFailedOrSuccessful() && $result->isFinal();
+
         $isZeroCreditsSub = $this
             ->zeroCreditSubscriptionChecking
             ->isZeroCreditAvailable(ID::ZAIN_SAUDI_ARABIA, $campaign);
 
+        $this->logger->debug('start custom isAffiliateTrackedForSub', [
+            '$isSuccess' => $isSuccess,
+            '$isZeroCreditsSub' => $isZeroCreditsSub
+        ]);
+
         if ($isZeroCreditsSub) {
+            $this->logger->debug('result custom isAffiliateTrackedForSub', [
+                '$isTrackForSub' => $carrier->getTrackAffiliateOnZeroCreditSub(),
+                '$isSuccess' => $isSuccess
+            ]);
+
             return $isSuccess && $carrier->getTrackAffiliateOnZeroCreditSub();
         }
 

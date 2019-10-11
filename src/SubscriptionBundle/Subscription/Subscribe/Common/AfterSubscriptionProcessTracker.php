@@ -66,8 +66,11 @@ class AfterSubscriptionProcessTracker
 
         if ($campaign) {
             if ($subscriber instanceof HasCustomAffiliateTrackingRules && $campaign) {
+                $this->logger->debug('Custom affiliate tracking rules is in use');
+
                 $isAffTracked = $subscriber->isAffiliateTrackedForSub($processResult, $campaign);
             } else {
+                $this->logger->debug('Common affiliate tracking rules is in use');
                 $isAffTracked = ($processResult->isSuccessful());
             }
 
