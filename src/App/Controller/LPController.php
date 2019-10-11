@@ -241,7 +241,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->contentStatisticSender->trackVisit($session);
 
 
-        if ($carrier) {
+        if ($carrier && !$isWifiFlow) {
             $isLandingDisabled = $this->landingPageAccessResolver->isLandingDisabled($carrier, $campaign);
 
             $this->logger->debug('isLandingDisabled', [
@@ -249,7 +249,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
                 '$isWifiFlow'        => $isWifiFlow
             ]);
 
-            if (!$isWifiFlow && $isLandingDisabled) {
+            if ($isLandingDisabled) {
                 $subscribeRoute = $this->subscribeUrlResolver->getSubscribeRoute($request, $carrier, $identificationToken);
                 $this->logger->debug('subscribeRoute', [$subscribeRoute]);
                 return new RedirectResponse($subscribeRoute);
