@@ -1,44 +1,101 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 01.10.19
- * Time: 12:40
- */
 
 namespace Carriers\ZainKSA\Subscribe;
 
-
+use App\Domain\Repository\CarrierRepository;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Entity\User;
+use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
+use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
+use SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking;
 use SubscriptionBundle\Subscription\Subscribe\Handler\HasCommonFlow;
+use SubscriptionBundle\Subscription\Subscribe\Handler\HasCustomAffiliateTrackingRules;
 use SubscriptionBundle\Subscription\Subscribe\Handler\HasCustomResponses;
 use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ZainKSAHandler implements SubscriptionHandlerInterface, HasCustomResponses, HasCommonFlow
+/**
+ * Class ZainKSAHandler
+ */
+class ZainKSAHandler implements SubscriptionHandlerInterface, HasCustomResponses, HasCommonFlow, HasCustomAffiliateTrackingRules
 {
     /**
      * @var string
      */
     private $redirectUrl;
 
+    /**
+     * @var CarrierRepository
+     */
+    private $carrierRepository;
+
+    /**
+     * @var ZeroCreditSubscriptionChecking
+     */
+    private $zeroCreditSubscriptionChecking;
+
 
     /**
      * ZainKSAHandler constructor.
-     * @param string $redirectUrl
+     *
+     * @param string                         $redirectUrl
+     * @param CarrierRepository              $carrierRepository
+     * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
      */
-    public function __construct(string $redirectUrl)
-    {
+    public function __construct(
+        string $redirectUrl,
+        CarrierRepository $carrierRepository,
+        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
+    ) {
         $this->redirectUrl = $redirectUrl;
+        $this->carrierRepository = $carrierRepository;
+        $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
     }
 
-    public function canHandle(\CommonDataBundle\Entity\Interfaces\CarrierInterface $carrier): bool
+    /**
+     * @param CarrierInterface $carrier
+     *
+     * @return bool
+     */
+    public function canHandle(CarrierInterface $carrier): bool
     {
         return $carrier->getBillingCarrierId() === ID::ZAIN_SAUDI_ARABIA;
+    }
+
+    /**
+     * @param ProcessResult     $result
+     * @param CampaignInterface $campaign
+     *
+     * @return bool
+     */
+    public function isAffiliateTrackedForSub(ProcessResult $result, CampaignInterface $campaign): bool
+    {
+        $carrier = $this->carrierRepository->findOneByBillingId(ID::ZAIN_SAUDI_ARABIA);
+
+        $isSuccess = $result->isFailedOrSuccessful() && $result->isFinal();
+        $isZeroCreditsSub = $this
+            ->zeroCreditSubscriptionChecking
+            ->isZeroCreditAvailable(ID::ZAIN_SAUDI_ARABIA, $campaign);
+
+        if ($isZeroCreditsSub) {
+            return $isSuccess && $carrier->getTrackAffiliateOnZeroCreditSub();
+        }
+
+        return $isSuccess;
+    }
+
+    /**
+     * @param ProcessResult $result
+     *
+     * @return bool
+     */
+    public function isAffiliateTrackedForResub(ProcessResult $result): bool
+    {
+        return false;
     }
 
     /**
@@ -51,6 +108,19 @@ class ZainKSAHandler implements SubscriptionHandlerInterface, HasCustomResponses
         if (preg_match('/966831\d+/', $user->getIdentifier())) {
             return new RedirectResponse($this->redirectUrl);
         }
+
+        return null;
+    }
+
+    /**
+     * @param Request $request
+     * @param User    $User
+     *
+     * @return array
+     */
+    public function getAdditionalSubscribeParams(Request $request, User $User): array
+    {
+        return [];
     }
 
     /**
@@ -72,11 +142,6 @@ class ZainKSAHandler implements SubscriptionHandlerInterface, HasCustomResponses
      */
     public function createResponseForExistingSubscription(Request $request, User $User, Subscription $subscription)
     {
-    }
-
-    public function getAdditionalSubscribeParams(Request $request, User $User): array
-    {
-        return [];
     }
 
     public function afterProcess(Subscription $subscription, \SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult $result)

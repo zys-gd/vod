@@ -1,12 +1,4 @@
 services:
-    SubscriptionBundle\Carriers\ZainKSA\Subscribe\ZainKSASubscribeHandler:
-        arguments:
-            - '@App\Domain\Repository\CarrierRepository'
-            - '@SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking'
-            - '@logger'
-        tags:
-            - { name: subscription.subscription_handler }
-
     SubscriptionBundle\Carriers\ZainKSA\Notification\ZainKSANotificationHandler:
         arguments: ['@CommonDataBundle\Repository\Interfaces\LanguageRepositoryInterface']
         tags:
