@@ -1,6 +1,4 @@
 services:
-    Carriers\TMobilePolandDimoco\Identification\TMobilePolandDimocoWifiIdentificationHandler:
-        arguments:
-            - '@IdentificationBundle\Repository\UserRepository'
+    Carriers\TMobilePolandDimoco\Template\TMobilePolandDimocoTemplateHandler:
         tags:
-            - { name: identification.wifi_identification_handler }
+            - { name: store_commons.template_handler }

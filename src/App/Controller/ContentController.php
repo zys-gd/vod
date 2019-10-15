@@ -56,4 +56,17 @@ class ContentController extends AbstractController implements AppControllerInter
 
         return $this->render($template);
     }
+
+    /**
+     * @Route("/about-us", name="about_us")
+     * @param ISPData $data
+     *
+     * @return Response
+     */
+    public function aboutAction(ISPData $data)
+    {
+        $template = $this->templateConfigurator->getTemplate('about_us', $data->getCarrierId());
+
+        return $this->render($template);
+    }
 }

@@ -1,0 +1,67 @@
+{% extends '@App/base.html.twig' %}
+{% import importTemplate("Components/Blocks/Header/header_lp.html.twig") as  header %}
+{% import importTemplate("Components/Blocks/Footer/menu.html.twig") as  footer_menu %}
+
+{# IMPORT SECTIONS #}
+{% import importTemplate("Common/LP/Sections/banner_section.html.twig") as banner_section %}
+{% import importTemplate("Common/LP/Sections/3G/subscribe_button_section.html.twig") as subscribe_button_section %}
+{% import importTemplate("Common/LP/Sections/offer_section.html.twig") as offer_section %}
+{% import importTemplate("Common/LP/Sections/disclaimer_section.html.twig") as disclaimer_section %}
+{# END IMPORT SECTIONS #}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ addJs(asset('js/lp.js')) }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('/css/lp.css') }}" rel="stylesheet">
+
+    <style>
+        .lp-sub-btn button {
+            font-size: 30px !important;
+            padding: 5px 40px;
+        }
+
+        .disclaimer-container {
+            max-height: 30vh;
+            overflow-y: scroll;
+            padding: 0 15px;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="d-flex flex-column align-items-center justify-content-top w-100"  style="background: {{ getCampaignData('background') }}">
+        <!-- BANNER SECTION WITH SUB IMAGE -->
+        {{ banner_section.render() }}
+        <!-- END BANNER SECTION WITH SUB IMAGE -->
+
+        <!-- OFFER SECTION -->
+        {{ offer_section.render() }}
+        <!-- END OFFER SECTION -->
+
+        <!-- SUBSCRIBE BUTTON SECTION -->
+        {{ subscribe_button_section.render('buttons.subscribe', 'btn-lp_big', 'lp-sub-btn lp-sub-btn-bottom') }}
+        <!-- END SUBSCRIBE BUTTON SECTION -->
+
+        <!-- ADDITIONAL OFFER SECTION -->
+        <div class="d-flex align-items-center justify-content-center">
+            <div class="d-flex align-items-center justify-content-center">
+                <h2 class="h2">{{ translate('offer.landing.3g.1')|raw }}</h2>
+            </div>
+        </div>
+        <!-- END ADDITIONAL OFFER SECTION -->
+
+        <!-- DISCLAIMER SECTION -->
+        {{ disclaimer_section.render() }}
+        <!-- END DISCLAIMER SECTION -->
+    </div>
+{% endblock body %}
+
+{% block footer_content %}
+    {{ footer_menu.render() }}
+{% endblock footer_content %}

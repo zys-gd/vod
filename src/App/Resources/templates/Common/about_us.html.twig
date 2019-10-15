@@ -1,0 +1,21 @@
+{% extends '@App/base.html.twig' %}
+{% import importTemplate("Common/Blocks/header.html.twig") as  header %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('/css/about-us.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block header_content %}
+    {{ header.render(translate('about_us.title')) }}
+{% endblock header_content %}
+
+{% block body %}
+    <div class="w-100">
+        <ul>
+            <li><span>{{ translate('about_us.name') }}</span>: <span>Origindata SAS</span></li>
+            <li><span>{{ translate('about_us.address') }}</span>: <span>14 Bis rue Daru. 75008, Paris, France.</span></li>
+            <li><span>{{ translate('about_us.vat_number') }}</span>: FR 48849375662<span></span></li>
+        </ul>
+    </div>
+{% endblock %}

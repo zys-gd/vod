@@ -1,6 +1,6 @@
 <?php
 
-namespace Carriers\TMobilePolandDimoco\Identification;
+namespace IdentificationBundle\Carriers\TMobilePolandDimoco;
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\BillingFramework\ID;

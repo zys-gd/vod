@@ -1,0 +1,11 @@
+{% if isCarrierDetected() %}
+    <div class="d-flex align-items-center justify-content-center">
+        <div class="d-flex align-items-center justify-content-center">
+            {% if isWifiFlow() %}
+                <h2 class="h1">{{ translate('offer.landing')|raw }}</h2>
+            {% else %}
+                <h2 class="h2" style="margin-bottom: 0">{{ translate('offer.landing.3g')|raw }}</h2>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}
