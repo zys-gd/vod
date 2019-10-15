@@ -10,7 +10,7 @@
         <p>{{ translate('disclaimer.landing.3g.7')|raw }}</p>
         <p>{{ translate('disclaimer.landing.3g.8')|raw }}</p>
         <p>{{ translate('disclaimer.landing.3g.9')|raw }}</p>
-        <p>{{ translate('disclaimer.landing.3g.10')|raw }}</p>
+        <p>{{ translate('disclaimer.landing.3g.10', {'%terms_url%': path('terms_and_conditions')})|raw }}</p>
         <p>{{ translate('disclaimer.landing.3g.11')|raw }}</p>
     </div>
 {% endmacro %}
