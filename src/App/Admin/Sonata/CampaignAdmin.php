@@ -156,6 +156,8 @@ class CampaignAdmin extends AbstractAdmin
             ->add('textColor')
             ->add('isPause')
             ->add('isOneClickFlow')
+            ->add('isOneClickFlowOnOutOfOffice')
+            ->add('isOneClickFlowOnOutOfOfficeArabicGeo')
             ->add('isClickableSubImage')
             ->add('zeroCreditSubAvailable');
     }
@@ -192,6 +194,8 @@ class CampaignAdmin extends AbstractAdmin
                 'label' => 'Clickable image'
             ])
             ->add('isOneClickFlow')
+            ->add('isOneClickFlowOnOutOfOffice')
+            ->add('isOneClickFlowOnOutOfOfficeArabicGeo')
             ->add('carriers')
             ->add('dateCreated')
             ->add('_action', null, [
@@ -229,6 +233,8 @@ class CampaignAdmin extends AbstractAdmin
                 'label' => 'Clickable image'
             ])
             ->add('isOneClickFlow')
+            ->add('isOneClickFlowOnOutOfOffice')
+            ->add('isOneClickFlowOnOutOfOfficeArabicGeo')
             ->add('pausedCampaigns', null, [
                 'label'    => 'Paused by Carrier',
                 'template' => '@Admin/Campaign/paused_campaigns.html.twig',
@@ -310,6 +316,12 @@ class CampaignAdmin extends AbstractAdmin
                 'label' => 'Clickable image'
             ])
             ->add('isOneClickFlow')
+            ->add('isOneClickFlowOnOutOfOffice', null, [
+                'label' => 'isOneClickFlowOnOutOfOffice'
+            ])
+            ->add('isOneClickFlowOnOutOfOfficeArabicGeo', null, [
+                'label' => 'isOneClickFlowOnOutOfOfficeArabicGeo'
+            ])
             ->add('schedule', CollectionType::class, [
                 'entry_type'   => CampaignScheduleType::class,
                 'allow_delete' => true,
