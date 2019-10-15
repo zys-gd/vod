@@ -129,6 +129,34 @@ final class Version20191011144736 extends AbstractMigration
         $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('du4kd9d7-01z8-43d8-9730-sks8z9p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'annotation_block.text.2', 'Oglądaj nielimitowane filmy sportowe za jedyne %price% %currency% na %period%. Dostęp do setek filmów sportowych i wiadomości każdego dnia. Bądźcie czujni!')");
         $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('du4kd9d7-1z8f-43d8-9730-sks8z9p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'annotation_block.text.3', 'Możesz zrezygnować z subskrypcji w dowolnym momencie w sekcji Moje konto')");
         $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('du4kd1z8-0ebf-43d8-9730-sks8z9p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'annotation_block.text.4', 'Opłaty za pobieranie danych będą naliczane według stawek za pakiet lub paczkę')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('du4kd1z8-0ebf-43d8-9730-sks8z9p3a8z1', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'category.15157409-49a4-4823-a7f9-654ac1d7c12f', 'Filmiki wirusowe')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('du4kd1z8-0ebf-43d8-9730-sks8z9pa8z15', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'category.244b3d58-fb86-4ba1-b221-9a0f3916306d', 'Sporty walki')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('du4kd1z8-0ebf-43d8-9730-sks8z9a8z1d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'category.4ec02ca3-779f-454a-8280-f59cd9600c2a', 'Golf')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('du4kd1z8-0ebf-43d8-9730-sks8za8z18d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'category.51d606c2-ab33-44ec-8098-05994b0e75e5', 'Sporty ekstremalne')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('du4kd1z8-0ebf-43d8-9730-sks8a8z1d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'category.70b66027-8e25-400b-8e44-cc4dc399f350', 'Lekkoatletyka')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('du4kd1z8-0ebf-43d8-9730-s1sa8z13d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'category.74558a73-902b-46cc-ab90-48a104585d38', 'Sporty motorowe')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('du4kd1z8-0ebf-43d8-9730-ska8z1p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'category.986e13fa-9dfe-42e6-92f2-2cff6f60b42e', 'Krykiet')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('du4kd1z8-0ebf-43d8-9730-sa8z19p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'category.ab6ad264-bd64-4fd0-9010-9c8e503a1ad3', 'Piłka nożna')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('du4kd1z8-0ebf-43d8-9730-a8z1z9p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'category.bb215764-2aad-4ca5-83cf-78f841a230e8', 'Kwalifikacje')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('du4kd1z8-0ebf-43d8-a8z1-sks8z9p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'category.d25f4027-8e25-400b-8e44-cc4dc39fg52f', 'Sporty zimowe')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('du4kd1z8-0ebf-a8z1-9730-sks8z9p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'category.dbeb8e19-ea7f-4443-970d-b113ecf819d9', 'Tenis')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('du4kd1z8-a8z1-43d8-9730-sks8z9p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'category.e14034f0-ac4d-4925-94d4-cbf9d61fae93', 'Inne')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('du4ka8z1-0ebf-43d8-9730-sks8z9p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'category.f49a555c-d10e-45c6-a6cb-de09cb59658f', 'Koszykówka')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('du4a8z18-0ebf-43d8-9730-sks8z9p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'category.games', 'Gry sportowe')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('dua8z1z8-0ebf-43d8-9730-sks8z9p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'category.related_videos', 'Powiązane wideo')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da8z11z8-0ebf-43d8-9730-sks8z9p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'category.title', 'Kategoria')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('a8z1d1z8-0ebf-43d8-9730-sks8z9p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'navbar.menu.account', 'Moje konto')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('du4k1j17-0ebf-43d8-9730-sks8z9p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'navbar.menu.home', 'Strona główna')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7s81z8-0ebf-43d8-9730-sks8z9p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'buttons.load_more', 'Załaduj więcej')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7s81z8-0ebf-43d8-9730-sks8z9p3a5a6', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'navbar.menu.terms', 'Regulamin')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7s81z8-0ebf-43d8-9730-ska5a6p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'navbar.menu.contacts', 'Kontakt')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7s81z8-0ebf-43d8-9730-ska5a6p31ay5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'buttons.see_all', 'Zobacz wszystko')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7s81z8-0ebf-43d8-9730-ska5a6p1ay55', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'subscription.status.subscribed', 'Masz subskrypcję 100% Sport')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7s81z8-0ebf-43d8-9730-ska5a61ay5d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'subscription.status.unsubscribed', 'Anulowano subskrypcję 100% Sport')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7s81z8-0ebf-43d8-9730-ska5a1ay58d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'subscription.status.not_subscribe', 'Witaj w 100% Sport! <br/> <small>Oglądaj nieograniczoną liczbę filmów o sporcie za jedyne %price% %currency% na %period%</small>')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7s81z8-0ebf-43d8-9730-ska51ay5d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'subscription.status.error', 'Przepraszam, ale coś poszło nie tak. Nie możemy kontynuować subskrypcji. Proszę spróbuj później')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7s81z8-0ebf-43d8-9730-ska1ay53d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'subscription.status.not_enough_credit', 'Przepraszamy, ale nie masz wystarczającego salda, aby zasubskrybować, doładuj swoje saldo i spróbuj ponownie')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7s81z8-0ebf-43d8-9730-sk1ay5p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'subscription.status.subscribed', 'Masz subskrypcję 100% Sport')");
     }
 
     public function down(Schema $schema) : void
@@ -248,6 +276,34 @@ final class Version20191011144736 extends AbstractMigration
         $this->addSql("DELETE FROM translations WHERE uuid = 'du4kd9d7-01z8-43d8-9730-sks8z9p3d8d5'");
         $this->addSql("DELETE FROM translations WHERE uuid = 'du4kd9d7-1z8f-43d8-9730-sks8z9p3d8d5'");
         $this->addSql("DELETE FROM translations WHERE uuid = 'du4kd1z8-0ebf-43d8-9730-sks8z9p3d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'du4kd1z8-0ebf-43d8-9730-sks8z9p3a8z1'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'du4kd1z8-0ebf-43d8-9730-sks8z9pa8z15'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'du4kd1z8-0ebf-43d8-9730-sks8z9a8z1d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'du4kd1z8-0ebf-43d8-9730-sks8za8z18d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'du4kd1z8-0ebf-43d8-9730-sks8a8z1d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'du4kd1z8-0ebf-43d8-9730-s1sa8z13d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'du4kd1z8-0ebf-43d8-9730-ska8z1p3d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'du4kd1z8-0ebf-43d8-9730-sa8z19p3d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'du4kd1z8-0ebf-43d8-9730-a8z1z9p3d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'du4kd1z8-0ebf-43d8-a8z1-sks8z9p3d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'du4kd1z8-0ebf-a8z1-9730-sks8z9p3d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'du4kd1z8-a8z1-43d8-9730-sks8z9p3d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'du4ka8z1-0ebf-43d8-9730-sks8z9p3d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'du4a8z18-0ebf-43d8-9730-sks8z9p3d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'dua8z1z8-0ebf-43d8-9730-sks8z9p3d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'da8z11z8-0ebf-43d8-9730-sks8z9p3d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'a8z1d1z8-0ebf-43d8-9730-sks8z9p3d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'du4k1j17-0ebf-43d8-9730-sks8z9p3d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'da7s81z8-0ebf-43d8-9730-sks8z9p3d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'da7s81z8-0ebf-43d8-9730-sks8z9p3a5a6'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'da7s81z8-0ebf-43d8-9730-ska5a6p3d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'da7s81z8-0ebf-43d8-9730-ska5a6p31ay5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'da7s81z8-0ebf-43d8-9730-ska5a6p1ay55'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'da7s81z8-0ebf-43d8-9730-ska5a61ay5d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'da7s81z8-0ebf-43d8-9730-ska5a1ay58d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'da7s81z8-0ebf-43d8-9730-ska51ay5d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'da7s81z8-0ebf-43d8-9730-ska1ay53d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'da7s81z8-0ebf-43d8-9730-sk1ay5p3d8d5'");
 
     }
 }
