@@ -98,10 +98,8 @@ class Campaign implements CampaignInterface, HasUuid
      * @var float
      */
     private $generalPrice = 0.00;
-    /**
-     * @var bool
-     */
-    private $isLpOff = false;
+
+    private $isOneClickFlow = false;
 
     /**
      * @var bool
@@ -128,11 +126,6 @@ class Campaign implements CampaignInterface, HasUuid
      * @var string
      */
     private $creator;
-
-    /**
-     * @var bool
-     */
-    private $isConfirmationClick = false;
 
     /**
      * Campaign constructor
@@ -535,22 +528,6 @@ class Campaign implements CampaignInterface, HasUuid
     /**
      * @return bool
      */
-    public function isLpOff(): bool
-    {
-        return $this->isLpOff;
-    }
-
-    /**
-     * @param bool $isLpOff
-     */
-    public function setIsLpOff(bool $isLpOff): void
-    {
-        $this->isLpOff = $isLpOff;
-    }
-
-    /**
-     * @return bool
-     */
     public function isClickableSubImage(): bool
     {
         return $this->isClickableSubImage;
@@ -674,16 +651,17 @@ class Campaign implements CampaignInterface, HasUuid
     /**
      * @return bool
      */
-    public function isConfirmationClick(): bool
+    public function isOneClickFlow(): bool
     {
-        return $this->isConfirmationClick;
+        return $this->isOneClickFlow;
     }
 
     /**
-     * @param bool $isConfirmationClick
+     * @param bool $isOneClickFlow
      */
-    public function setIsConfirmationClick(bool $isConfirmationClick): void
+    public function setIsOneClickFlow(bool $isOneClickFlow): void
     {
-        $this->isConfirmationClick = $isConfirmationClick;
+        $this->isOneClickFlow = $isOneClickFlow;
     }
+
 }

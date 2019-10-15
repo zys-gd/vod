@@ -46,16 +46,11 @@ class Carrier implements CarrierInterface, HasUuid
     private $published = false;
 
     /**
-     * former lpOtp
-     * is needed subscribe confirmation click
+     * Necessary for determine of carrier lp flow
+     *
      * @var bool
      */
-    private $isConfirmationClick = false;
-
-    /**
-     * @var bool
-     */
-    private $isConfirmationPopup = false;
+    private $isOneClickFlow = false;
 
     /**
      * Can be store|carrier
@@ -138,11 +133,6 @@ class Carrier implements CarrierInterface, HasUuid
      * @var \CommonDataBundle\Entity\Language
      */
     private $defaultLanguage;
-
-    /**
-     * @var bool
-     */
-    private $isLpOff = false;
 
     /**
      * @var bool
@@ -414,7 +404,7 @@ class Carrier implements CarrierInterface, HasUuid
     /**
      * Get defaultLanguage
      *
-     * @return LanguageInterface
+     * @return null|Language
      */
     public function getDefaultLanguage(): ?LanguageInterface
     {
@@ -632,38 +622,6 @@ class Carrier implements CarrierInterface, HasUuid
     }
 
     /**
-     * @return bool
-     */
-    public function isConfirmationClick(): bool
-    {
-        return $this->isConfirmationClick;
-    }
-
-    /**
-     * @param bool $isConfirmationClick
-     */
-    public function setIsConfirmationClick(bool $isConfirmationClick): void
-    {
-        $this->isConfirmationClick = $isConfirmationClick;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isLpOff(): bool
-    {
-        return $this->isLpOff;
-    }
-
-    /**
-     * @param bool $isLpOff
-     */
-    public function setIsLpOff(bool $isLpOff): void
-    {
-        $this->isLpOff = $isLpOff;
-    }
-
-    /**
      * @return ArrayCollection|AffiliateInterface[]
      */
     public function getAffiliates()
@@ -721,26 +679,22 @@ class Carrier implements CarrierInterface, HasUuid
     }
 
     /**
-     * @return bool
-     */
-    public function isConfirmationPopup(): bool
-    {
-        return $this->isConfirmationPopup;
-    }
-
-    /**
-     * @param bool $isConfirmationPopup
-     */
-    public function setIsConfirmationPopup(bool $isConfirmationPopup): void
-    {
-        $this->isConfirmationPopup = $isConfirmationPopup;
-    }
-
-    /**
+     * Necessary for determine of carrier lp flow
+     *
      * @return bool
      */
     public function isOneClickFlow(): bool
     {
-        // TODO: Implement isOneClickFlow() method.
+        return $this->isOneClickFlow;
+    }
+
+    /**
+     * Necessary for determine of carrier lp flow
+     *
+     * @param bool $isOneClickFlow
+     */
+    public function setIsOneClickFlow(bool $isOneClickFlow): void
+    {
+        $this->isOneClickFlow = $isOneClickFlow;
     }
 }

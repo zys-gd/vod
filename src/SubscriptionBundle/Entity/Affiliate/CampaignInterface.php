@@ -61,5 +61,5 @@ interface CampaignInterface
     /**
      * @return bool
      */
-    public function isConfirmationClick(): bool;
+    public function isOneClickFlow(): bool;
 }

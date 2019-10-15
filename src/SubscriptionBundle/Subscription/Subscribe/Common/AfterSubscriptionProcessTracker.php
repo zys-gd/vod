@@ -63,21 +63,24 @@ class AfterSubscriptionProcessTracker
             $processResult
         ]);
 
-        if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
-            $isAffTracked = $subscriber->isAffiliateTrackedForSub($processResult, $campaign);
-        }
-        else {
-            $isAffTracked = ($processResult->isSuccessful());
-        }
 
-        if ($isAffTracked && $campaign) {
-            $this->affiliateNotifier->notifyAffiliateAboutSubscription($subscription, $campaign);
+        if ($campaign) {
+            if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
+                $isAffTracked = $subscriber->isAffiliateTrackedForSub($processResult, $campaign);
+            } else {
+                $isAffTracked = ($processResult->isSuccessful());
+            }
+
+            if ($isAffTracked) {
+                $this->affiliateNotifier->notifyAffiliateAboutSubscription($subscription, $campaign);
+            }
+        } else {
+            $isAffTracked = false;
         }
 
         if ($subscriber instanceof HasCustomPiwikTrackingRules) {
             $isPiwikTracked = $subscriber->isPiwikTrackedForSub($processResult);
-        }
-        else {
+        } else {
             $isPiwikTracked = ($processResult->isFailedOrSuccessful());
         }
 
@@ -94,8 +97,7 @@ class AfterSubscriptionProcessTracker
             // I'll prefer siding with the evil we know over the evil we don't.
             if ($isResubscribe) {
                 $this->subscriptionEventTracker->trackResubscribe($subscription, $processResult);
-            }
-            else {
+            } else {
                 $this->subscriptionEventTracker->trackSubscribe($subscription, $processResult);
             }
         }

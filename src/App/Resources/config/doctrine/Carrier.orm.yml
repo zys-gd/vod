@@ -27,15 +27,6 @@ App\Domain\Entity\Carrier:
             type: boolean
             options:
                 default: false
-        isConfirmationClick:
-            type: boolean
-            options:
-                default: false
-        isConfirmationPopup:
-            type: boolean
-            options:
-                default: false
-            #unique: true (should be added at some point...)
         trialInitializer:
             type: string
             options:
@@ -81,15 +72,15 @@ App\Domain\Entity\Carrier:
             nullable: false
             options:
                 default: false
-        isLpOff:
-            type: boolean
-            options:
-                default: false
         isClickableSubImage:
             type: boolean
             options:
                 default: true
         trackAffiliateOnZeroCreditSub:
+            type: boolean
+            options:
+                default: false
+        isOneClickFlow:
             type: boolean
             options:
                 default: false

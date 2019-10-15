@@ -14,6 +14,7 @@ use IdentificationBundle\BillingFramework\ID;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class EtisalatEGUnsubscribeHandler implements UnsubscriptionHandlerInterface
 {
@@ -28,12 +29,16 @@ class EtisalatEGUnsubscribeHandler implements UnsubscriptionHandlerInterface
         return false;
     }
 
-    public function applyPostUnsubscribeChanges(Subscription $subscription)
+    public function applyPostUnsubscribeChanges(Subscription $subscription): void
     {
         // TODO: Implement applyPostUnsubscribeChanges() method.
     }
 
-    public function getAdditionalUnsubscribeParameters(): array
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function getAdditionalUnsubscribeParameters(Request $request): array
     {
         return [];
     }

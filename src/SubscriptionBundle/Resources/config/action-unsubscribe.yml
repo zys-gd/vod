@@ -10,7 +10,10 @@ services:
       - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeParametersProvider'
       - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeEventChecker'
       - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeEventTracker'
+      - '@SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SendUnsubscribeNotificationPerformer'
+      - '@SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker'
       - '@logger'
+      - '@SubscriptionBundle\Subscription\Common\SendNotificationChecker'
 
   SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider:
     arguments: ['@SubscriptionBundle\Subscription\Unsubscribe\Handler\DefaultHandler']
@@ -67,9 +70,8 @@ services:
       - '@SubscriptionBundle\Blacklist\BlacklistFactory'
       - '@SubscriptionBundle\Repository\SubscriptionRepository'
       - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
-      - '@SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
-      - '@SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber'
       - '@SubscriptionBundle\Service\EntitySaveHelper'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeFacade'
 
   SubscriptionBundle\Subscription\Unsubscribe\Admin\Form\UnsubscribeByAffiliateForm:
     arguments: ['@doctrine.orm.entity_manager']
@@ -90,3 +92,9 @@ services:
       - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeEventChecker'
       - '@SubscriptionBundle\Piwik\DataMapper\ConversionEventMapper'
       - '@SubscriptionBundle\Piwik\EventPublisher'
+
+  SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeFacade:
+    arguments:
+      - '@SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
+      - '@cross_subscription.api_connector'

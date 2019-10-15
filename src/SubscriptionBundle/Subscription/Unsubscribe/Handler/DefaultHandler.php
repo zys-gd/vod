@@ -12,6 +12,7 @@ namespace SubscriptionBundle\Subscription\Unsubscribe\Handler;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
+use Symfony\Component\HttpFoundation\Request;
 
 class DefaultHandler implements UnsubscriptionHandlerInterface
 {
@@ -26,12 +27,16 @@ class DefaultHandler implements UnsubscriptionHandlerInterface
         return true;
     }
 
-    public function applyPostUnsubscribeChanges(Subscription $subscription)
+    public function applyPostUnsubscribeChanges(Subscription $subscription): void
     {
         // TODO: Implement applyPostUnsubscribeChanges() method.
     }
 
-    public function getAdditionalUnsubscribeParameters(): array
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function getAdditionalUnsubscribeParameters(Request $request): array
     {
         return [];
     }

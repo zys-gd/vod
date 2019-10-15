@@ -68,6 +68,7 @@ services:
             - '@IdentificationBundle\Identification\Service\CarrierSelector'
             - '@SubscriptionBundle\Subscription\Subscribe\Service\SubscribeUrlResolver'
             - '@SubscriptionBundle\CAPTool\Visit\ConstraintAvailabilityChecker'
+            - '@SubscriptionBundle\CAPTool\Common\CAPToolRedirectUrlResolver'
 
     App\Controller\ErrorController:
         arguments:

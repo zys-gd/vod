@@ -21,7 +21,9 @@ use IdentificationBundle\User\Service\UserExtractor;
 use SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator;
 use SubscriptionBundle\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
 use SubscriptionBundle\CampaignConfirmation\Handler\CustomPage;
+use SubscriptionBundle\CAPTool\Common\CAPToolRedirectUrlResolver;
 use SubscriptionBundle\CAPTool\Subscription\Exception\CapToolAccessException;
+use SubscriptionBundle\CAPTool\Subscription\Exception\SubscriptionCapReachedOnAffiliate;
 use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter;
 use SubscriptionBundle\Subscription\Subscribe\Common\CommonFlowHandler;
 use SubscriptionBundle\Subscription\Subscribe\Exception\ExistingSubscriptionException;
@@ -90,6 +92,10 @@ class SubscribeAction extends AbstractController
      * @var \SubscriptionBundle\Subscription\Common\RouteProvider
      */
     private $subscriptionRouteProvider;
+    /**
+     * @var CAPToolRedirectUrlResolver
+     */
+    private $CAPToolRedirectUrlResolver;
 
 
     /**
@@ -108,6 +114,7 @@ class SubscribeAction extends AbstractController
      * @param BatchSubscriptionVoter                                $subscriptionVoter
      * @param RouteProvider                                         $routeProvider
      * @param \SubscriptionBundle\Subscription\Common\RouteProvider $subscriptionRouteProvider
+     * @param CAPToolRedirectUrlResolver                            $CAPToolRedirectUrlResolver
      */
     public function __construct(
         UserExtractor $userExtractor,
@@ -122,7 +129,8 @@ class SubscribeAction extends AbstractController
         BlacklistAttemptRegistrator $blacklistDeducter,
         BatchSubscriptionVoter $subscriptionVoter,
         RouteProvider $routeProvider,
-        \SubscriptionBundle\Subscription\Common\RouteProvider $subscriptionRouteProvider
+        \SubscriptionBundle\Subscription\Common\RouteProvider $subscriptionRouteProvider,
+        CAPToolRedirectUrlResolver $CAPToolRedirectUrlResolver
     )
     {
 
@@ -139,6 +147,7 @@ class SubscribeAction extends AbstractController
         $this->subscriptionVoter                   = $subscriptionVoter;
         $this->routeProvider                       = $routeProvider;
         $this->subscriptionRouteProvider           = $subscriptionRouteProvider;
+        $this->CAPToolRedirectUrlResolver          = $CAPToolRedirectUrlResolver;
     }
 
     /**
@@ -193,8 +202,8 @@ class SubscribeAction extends AbstractController
         try {
             $this->subscriptionLimiter->ensureCapIsNotReached($request->getSession());
         } catch (CapToolAccessException $exception) {
-            return RedirectResponse::create($this->subscriptionRouteProvider->getActionIsNotAllowedUrl());
-
+            $url = $this->CAPToolRedirectUrlResolver->resolveUrl($exception);
+            return RedirectResponse::create($url);
         }
 
         if ($this->subscriptionLimiter->need2BeLimited($user)) {

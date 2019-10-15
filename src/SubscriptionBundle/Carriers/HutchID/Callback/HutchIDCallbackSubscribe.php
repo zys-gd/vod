@@ -14,7 +14,7 @@ use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper;
 use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
-use SubscriptionBundle\Carriers\HutchID\Subscribe\HutchIDSMSSubscriber;
+use SubscriptionBundle\Carriers\HutchID\Callback\HutchIDSMSSubscriber;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Repository\SubscriptionPackRepository;

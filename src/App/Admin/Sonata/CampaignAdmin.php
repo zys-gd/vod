@@ -106,8 +106,8 @@ class CampaignAdmin extends AbstractAdmin
         $originalData = $this->em->getUnitOfWork()->getOriginalEntityData($obj);
 
         if(count($originalData) > 0) {
-            if (isset($originalData['isLpOff']) && $obj->isLpOff() != $originalData['isLpOff']) {
-                $obj->getAffiliate()->setIsLpOff($obj->isLpOff());
+            if (isset($originalData['isOneClickFlow']) && $obj->isOneClickFlow() != $originalData['isOneClickFlow']) {
+                $obj->getAffiliate()->setIsOneClickFlow($obj->isOneClickFlow());
             }
         }
     }
@@ -155,7 +155,7 @@ class CampaignAdmin extends AbstractAdmin
             ->add('campaignToken')
             ->add('textColor')
             ->add('isPause')
-            ->add('isLpOff')
+            ->add('isOneClickFlow')
             ->add('isClickableSubImage')
             ->add('zeroCreditSubAvailable');
     }
@@ -186,13 +186,12 @@ class CampaignAdmin extends AbstractAdmin
             ->add('landingUrl', null, [
                 'label' => 'Landing page'
             ])
-            ->add('isLpOff')
             ->add('zeroCreditSubAvailable')
             ->add('freeTrialSubscription')
             ->add('isClickableSubImage', null, [
                 'label' => 'Clickable image'
             ])
-            ->add('isConfirmationClick')
+            ->add('isOneClickFlow')
             ->add('carriers')
             ->add('dateCreated')
             ->add('_action', null, [
@@ -222,10 +221,6 @@ class CampaignAdmin extends AbstractAdmin
             ->add('carriers')
             ->add('bgColor')
             ->add('textColor')
-            ->add('isLpOff', null, [
-                'label' => 'Turn off LP showing',
-                'help'  => 'If consent page exist, then show it. Otherwise will try to subscribe'
-            ])
             ->add('isPause', null,
                 ['label' => 'Pause'])
             ->add('zeroCreditSubAvailable')
@@ -233,7 +228,7 @@ class CampaignAdmin extends AbstractAdmin
             ->add('isClickableSubImage', null, [
                 'label' => 'Clickable image'
             ])
-            ->add('isConfirmationClick')
+            ->add('isOneClickFlow')
             ->add('pausedCampaigns', null, [
                 'label'    => 'Paused by Carrier',
                 'template' => '@Admin/Campaign/paused_campaigns.html.twig',
@@ -314,18 +309,7 @@ class CampaignAdmin extends AbstractAdmin
             ->add('isClickableSubImage', null, [
                 'label' => 'Clickable image'
             ])
-            ->add('isConfirmationClick')
-            ->add('isLpOff', ChoiceFieldMaskType::class, [
-                'choices' => [
-                    'No'  => 0,
-                    'Yes' => 1
-                ],
-                'label'   => 'Turn off LP showing',
-                'map'     => [
-                    1 => ['schedule'],
-                ],
-                'help'    => 'If consent page exist, then show it. Otherwise will try to subscribe'
-            ])
+            ->add('isOneClickFlow')
             ->add('schedule', CollectionType::class, [
                 'entry_type'   => CampaignScheduleType::class,
                 'allow_delete' => true,

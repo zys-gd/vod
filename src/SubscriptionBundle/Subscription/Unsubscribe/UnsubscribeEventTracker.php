@@ -63,7 +63,7 @@ class UnsubscribeEventTracker
     ): void
     {
 
-        $this->logger->info('Trying to send unsubscribe event');
+        $this->logger->debug('Trying to send unsubscribe event');
         if (!$this->unsubscribeEventChecker->isNeedToBeTracked($processResult)) {
             return;
         }

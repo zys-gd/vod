@@ -13,4 +13,10 @@ services:
         tags:
             - { name: subscription.subscription_handler }
         arguments:
-          ['%default_redirect_url%']
+          - '%default_redirect_url%'
+          - '@App\Domain\Repository\CarrierRepository'
+          - '@SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking'
+
+    Carriers\ZainKSA\OneClick\ZainKSAOneClickFlow:
+        tags:
+            - { name: app.one_click_flow_handler }
