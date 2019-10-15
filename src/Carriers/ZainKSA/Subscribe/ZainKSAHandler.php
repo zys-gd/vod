@@ -50,9 +50,10 @@ class ZainKSAHandler implements SubscriptionHandlerInterface, HasCustomResponses
         string $redirectUrl,
         CarrierRepository $carrierRepository,
         ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
-    ) {
-        $this->redirectUrl = $redirectUrl;
-        $this->carrierRepository = $carrierRepository;
+    )
+    {
+        $this->redirectUrl                    = $redirectUrl;
+        $this->carrierRepository              = $carrierRepository;
         $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
     }
 
@@ -76,16 +77,19 @@ class ZainKSAHandler implements SubscriptionHandlerInterface, HasCustomResponses
     {
         $carrier = $this->carrierRepository->findOneByBillingId(ID::ZAIN_SAUDI_ARABIA);
 
-        $isSuccess = $result->isFailedOrSuccessful() && $result->isFinal();
+        $isSuccess        = $result->isFailedOrSuccessful() && $result->isFinal();
         $isZeroCreditsSub = $this
             ->zeroCreditSubscriptionChecking
             ->isZeroCreditAvailable(ID::ZAIN_SAUDI_ARABIA, $campaign);
 
         if ($isZeroCreditsSub) {
-            return $isSuccess && $carrier->getTrackAffiliateOnZeroCreditSub();
+            return $isSuccess &&
+                $carrier->getTrackAffiliateOnZeroCreditSub() &&
+                $this->zeroCreditSubscriptionChecking->isZeroCreditSubscriptionPerformed($result);
+        } else {
+            return $isSuccess;
         }
 
-        return $isSuccess;
     }
 
     /**

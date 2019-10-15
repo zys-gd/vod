@@ -162,11 +162,15 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
             ->zeroCreditSubscriptionChecking
             ->isZeroCreditAvailable(ID::VODAFONE_EGYPT_TPAY, $campaign);
 
+
         if ($isZeroCreditsSub) {
-            return $isSuccess && $carrier->getTrackAffiliateOnZeroCreditSub();
+            return $isSuccess &&
+                $carrier->getTrackAffiliateOnZeroCreditSub() &&
+                $this->zeroCreditSubscriptionChecking->isZeroCreditSubscriptionPerformed($result);
+        } else {
+            return $isSuccess;
         }
 
-        return $isSuccess;
     }
 
     /**
