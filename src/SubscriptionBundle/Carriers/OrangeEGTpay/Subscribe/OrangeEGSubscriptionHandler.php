@@ -2,8 +2,8 @@
 
 namespace SubscriptionBundle\Carriers\OrangeEGTpay\Subscribe;
 
-use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use App\Domain\Repository\CarrierRepository;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\BillingFramework\Process\DTO\PinVerifyResult;
@@ -12,12 +12,9 @@ use IdentificationBundle\Identification\Service\RouteProvider;
 use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException;
-use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Subscribe\Handler\ConsentPageFlow\HasConsentPageFlow;
-use SubscriptionBundle\Subscription\Subscribe\Handler\HasCustomAffiliateTrackingRules;
 use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerInterface;
-use SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +23,7 @@ use Symfony\Component\Routing\RouterInterface;
 /**
  * Class OrangeEGSubscriptionHandler
  */
-class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasConsentPageFlow, HasCustomAffiliateTrackingRules
+class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasConsentPageFlow
 {
     /**
      * @var LocalExtractor
@@ -46,12 +43,6 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
      */
     private $router;
 
-
-    /**
-     * @var ZeroCreditSubscriptionChecking
-     */
-    private $zeroCreditSubscriptionChecking;
-
     /**
      * @var CarrierRepository
      */
@@ -63,7 +54,7 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
      * @param LocalExtractor            $localExtractor
      * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
      * @param RouteProvider             $routeProvider
-     * @param RouterInterface           $router* @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
+     * @param RouterInterface           $router*
      * @param CarrierRepository              $carrierRepository
      */
     public function __construct(
@@ -71,7 +62,6 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
         WifiIdentificationDataStorage $wifiIdentificationDataStorage,
         RouteProvider $routeProvider,
         RouterInterface $router,
-        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking,
         CarrierRepository $carrierRepository
     )
     {
@@ -79,7 +69,6 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
         $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
         $this->routeProvider             = $routeProvider;
         $this->router                    = $router;
-        $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
         $this->carrierRepository = $carrierRepository;
     }
 
@@ -146,38 +135,6 @@ class OrangeEGSubscriptionHandler implements SubscriptionHandlerInterface, HasCo
         }
 
         return new RedirectResponse($redirectUrl);
-    }
-
-    /**
-     * @param ProcessResult     $result
-     * @param CampaignInterface $campaign
-     *
-     * @return bool
-     */
-    public function isAffiliateTrackedForSub(ProcessResult $result, CampaignInterface $campaign): bool
-    {
-        $carrier = $this->carrierRepository->findOneByBillingId(ID::ORANGE_EGYPT_TPAY);
-
-        $isSuccess = $result->isFailedOrSuccessful() && $result->isFinal();
-        $isZeroCreditsSub = $this
-            ->zeroCreditSubscriptionChecking
-            ->isZeroCreditAvailable(ID::ORANGE_EGYPT_TPAY, $campaign);
-
-        if ($isZeroCreditsSub) {
-            return $isSuccess && $carrier->getTrackAffiliateOnZeroCreditSub();
-        }
-
-        return $isSuccess;
-    }
-
-    /**
-     * @param ProcessResult $result
-     *
-     * @return bool
-     */
-    public function isAffiliateTrackedForResub(ProcessResult $result): bool
-    {
-        return false;
     }
 
     /**

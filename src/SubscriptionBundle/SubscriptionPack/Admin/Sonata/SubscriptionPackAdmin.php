@@ -117,14 +117,6 @@ class SubscriptionPackAdmin extends AbstractAdmin
         $originalData = $this->entityManager->getUnitOfWork()->getOriginalEntityData($object);
 
         $object->setUpdated(new \DateTime('now'));
-        // resolve problems with form save and inline list save
-        try {
-            $object->setBuyStrategyId($object->getBuyStrategyId()->id);
-            $object->setRenewStrategyId($object->getRenewStrategyId()->id);
-            $object->setTierId($object->getTierId()->id);
-        } catch (\Throwable $e) {
-            // then save by default behavior
-        }
 
         $this->markSubscriptionPacksWithSameCarrierAsInactive($object);
 
@@ -148,9 +140,6 @@ class SubscriptionPackAdmin extends AbstractAdmin
      */
     public function prePersist($object)
     {
-        $object->setBuyStrategyId($object->getBuyStrategyId()->id);
-        $object->setRenewStrategyId($object->getRenewStrategyId()->id);
-        $object->setTierId($object->getTierId()->id);
         $this->markSubscriptionPacksWithSameCarrierAsInactive($object);
 
         parent::preUpdate($object);
@@ -206,7 +195,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
             ])
             ->add('zeroCreditSubAvailable')
             ->add('status', 'choice', [
-                'choices'  => array_flip(SubscriptionPack::STATUSES),
+                'choices' => array_flip(SubscriptionPack::STATUSES),
             ]);
     }
 
@@ -332,7 +321,6 @@ class SubscriptionPackAdmin extends AbstractAdmin
                 'required' => false,
                 'label'    => 'Renewal SMS Text'
             ])
-
             ->end();
     }
 
@@ -353,7 +341,10 @@ class SubscriptionPackAdmin extends AbstractAdmin
                 'label'    => 'Is Resubscribe allowed'
             ]);
 
-        $formMapper->add('zeroCreditSubAvailable');
+        $formMapper
+            ->add('zeroCreditSubAvailable')
+            ->add('trackAffiliateOnZeroCreditSub');
+
 
         $formMapper->end();
     }
@@ -380,7 +371,6 @@ class SubscriptionPackAdmin extends AbstractAdmin
             }
         }
     }
-
 
 
 }
