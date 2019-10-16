@@ -186,6 +186,8 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
                 throw new SubscriptionFlowException();
             }
 
+            $this->logger->debug('Callback listen process debug', [$processResponse, $requestParams]);
+
             $billingCarrierId = $requestParams->carrier;
             $carrier          = $this->carrierRepository->findOneByBillingId($billingCarrierId);
             $msisdn           = $requestParams->client_user ?? $requestParams->provider_user;
