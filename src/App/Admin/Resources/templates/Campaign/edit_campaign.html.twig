@@ -1,0 +1,12 @@
+{% extends '@SonataAdmin/CRUD/edit.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/admin/campaign/jquery.schedule.css') }}"/>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src={{ asset('js/admin/campaign/jquery.schedule.js') }}></script>
+    <script src={{ asset('js/admin/campaign/EditCampaign.js') }}></script>
+{% endblock %}
