@@ -101,7 +101,11 @@ App\Domain\Entity\Campaign:
             nullable: false
             options:
                 default: false
-
+        schedule:
+            type: text
+            nullable: false
+            options:
+                default: ''
 
     lifecycleCallbacks: {  }
 
@@ -127,10 +131,3 @@ App\Domain\Entity\Campaign:
                     carrier_id:
                         referencedColumnName: uuid
             inversedBy: campaigns
-
-    oneToMany:
-        schedule:
-            targetEntity: App\Domain\Entity\CampaignSchedule
-            mappedBy: campaign
-            orphanRemoval: true
-            cascade: ["persist", "remove"]
