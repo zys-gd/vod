@@ -157,6 +157,25 @@ final class Version20191011144736 extends AbstractMigration
         $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7s81z8-0ebf-43d8-9730-ska51ay5d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'subscription.status.error', 'Przepraszam, ale coś poszło nie tak. Nie możemy kontynuować subskrypcji. Proszę spróbuj później')");
         $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7s81z8-0ebf-43d8-9730-ska1ay53d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'subscription.status.not_enough_credit', 'Przepraszamy, ale nie masz wystarczającego salda, aby zasubskrybować, doładuj swoje saldo i spróbuj ponownie')");
         $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7s81z8-0ebf-43d8-9730-sk1ay5p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'subscription.status.subscribed', 'Masz subskrypcję 100% Sport')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7s81z8-0ebf-43d8-9730-sk1ay5p3aj71', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'wifi.warning', 'Ups! Nie rozpoznaliśmy Twojego numeru telefonu komórkowego. Wybierz kraj, operatora i wprowadź swój numer telefonu. Otrzymasz kod PIN w wiadomości SMS')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7s81z8-0ebf-43d8-9730-sk1ay5paj715', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'wifi.offer', '%price% %currency% na %period%')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7s81z8-0ebf-43d8-9730-sk1ay5aj71d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'wifi.terms_confirmation', 'Przeczytałem(-am) <a href=\"%terms_url%\">zasady i warunki</a> oraz wyrażam na nie zgodę')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7s81z8-0ebf-43d8-9730-sk1a1aj718d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'faq.q.1', 'W jaki sposób mogę wypowiedzieć moją subskrypcję 100% Sport?')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7s81z8-0ebf-43d8-9730-sk1aaj71d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'faq.a.1', '100% Sport to usługa subskrybowana, która jest automatycznie odnawiana codziennie lub co tydzień (według potrzeb), pod warunkiem, że użytkownik nie anuluje subskrypcji. Użytkownik może wypowiedzieć subskrypcję w dowolnym momencie poprzez wejście do osobistego menu pod adresem <service URL> (ikona w prawym górnym rogu ekranu) i kliknięcie łącza Opuszczam 100% Sport. W zależności od operatora komórkowego, użytkownik może wypowiedzieć subskrypcję wysyłając SMS.')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7s81z8-0ebf-43d8-9730-sk1aj713d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'faq.q.2', 'Gdzie mogę oglądać wszystkie filmy?')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7s81z8-0ebf-43d8-9730-9kaj71p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'faq.a.2', 'Aby oglądać filmy o sporcie, należy po prostu wejść na naszą stronę główną <homepage link> i kliknąć dowolny dostępny film. Możesz przeglądać nasz cały katalog w menu głównym (wyszukiwać wg tytułu lub kategorii).')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7s81z8-0ebf-43d8-9730-saj715p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'faq.q.3', ' Pobrałem jedną grę sportową, ale nie mogę jej zainstalować na swoim urządzeniu. Co się dzieje?')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7s81z8-0ebf-43d8-9730-aj71y5p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'faq.a.3', 'Po pierwsze, upewnij się, że masz uprawnienia do instalowania aplikacji ze sklepów innych niż Google Play. W tym celu przejdź na swoim urządzeniu do menu Ustawienia / Bezpieczeństwo / Zarządzanie urządzeniem i zezwól na instalację aplikacji z nieznanych źródeł. Dodatkowo możesz sprawdzić, czy masz wystarczającą ilość miejsca w urządzeniu. Jeśli ten problem nadal występuje, nie wahaj się i skontaktuj się z nami.')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7s81z8-0ebf-43d8-aj71-sk1ay5p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'faq.q.4', 'Czy przeglądanie filmów wideo oraz pobieranie gier z 100% Sport jest bezpieczne?')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7s81z8-0ebf-aj71-9730-sk1ay5p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'faq.a.4', 'Tak, wszystkie treści dostarczane przez 100% Sport są całkowicie bezpieczne dla Twojego urządzenia i danych osobowych.')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7s81z8-aj71-43d8-9730-sk1ay5p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'faq.q.5', 'Mam subskrypcję 100% Sport. Jak długo od momentu anulowania subskrypcji będę mieć dostęp do filmów')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7saj71-0ebf-43d8-9730-sk1ay5p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'faq.a.5', 'Dostęp do 100% Sport będzie aktywny do zakończenia się okresu subskrypcji. Na przykład w przypadku subskrypcji dziennej, która została już dzisiaj odnowiona, będziesz mógł zobaczyć wszystkie filmy aż do zakończenia bieżącego dnia. Analogicznie, w przypadku używania subskrypcji tygodniowej, jeśli ostatnie odnowienie miało miejsce w poniedziałek, będziesz mieć dostęp do filmów aż do niedzieli (7 dni).')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('da7aj718-0ebf-43d8-9730-sk1ay5p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'faq.q.6', 'Sieć mobilna nie wykrywa mojego konta i mojej subskrypcji 100% Sport.')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('d1aj71z8-0ebf-43d8-9730-sk1ay5p3d8d5', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'faq.a.6', 'Sprawdź, czy sieć 3G lub połączenie Wi-Fi działa prawidłowo. Jeśli tak, a problem wciąż się powtarza, skontaktuj się nami i opisz swój problem, podaj numer telefonu, operatora komórkowego i urządzenie.')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('d1aj71z8-0ebf-43d8-9730-sk1ayd9d6as4', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'offer.landing', 'Oglądaj nieograniczoną liczbę filmów o sporcie dotyczących Twoich ulubionych dyscyplin sportowych i zespołów! Tylko %price% %currency% za %period%')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('d1aa92hs-0ebf-43d8-9730-sk1ayd9d6as4', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'lure_block.text', 'Ponad 40+ dyscyplin sportowych!')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('d1aa92hs-0ebf-43d8-9730-sk1a1da9c7d1', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'wifi.form.select_country', 'Wybierz kraj')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('d1a9c7d1-0ebf-43d8-9730-sk1ayd9d6as4', '5179fd32-ebd4-11e8-95c4-02bb250f0f22', 'wifi.form.select_carrier', 'Wybierz operatora')");
     }
 
     public function down(Schema $schema) : void
@@ -304,6 +323,24 @@ final class Version20191011144736 extends AbstractMigration
         $this->addSql("DELETE FROM translations WHERE uuid = 'da7s81z8-0ebf-43d8-9730-ska51ay5d8d5'");
         $this->addSql("DELETE FROM translations WHERE uuid = 'da7s81z8-0ebf-43d8-9730-ska1ay53d8d5'");
         $this->addSql("DELETE FROM translations WHERE uuid = 'da7s81z8-0ebf-43d8-9730-sk1ay5p3d8d5'");
-
+        $this->addSql("DELETE FROM translations WHERE uuid = 'da7s81z8-0ebf-43d8-9730-sk1ay5p3aj71'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'da7s81z8-0ebf-43d8-9730-sk1ay5paj715'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'da7s81z8-0ebf-43d8-9730-sk1ay5aj71d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'da7s81z8-0ebf-43d8-9730-sk1a1aj718d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'da7s81z8-0ebf-43d8-9730-sk1aaj71d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'da7s81z8-0ebf-43d8-9730-sk1aj713d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'da7s81z8-0ebf-43d8-9730-9kaj71p3d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'da7s81z8-0ebf-43d8-9730-saj715p3d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'da7s81z8-0ebf-43d8-9730-aj71y5p3d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'da7s81z8-0ebf-43d8-aj71-sk1ay5p3d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'da7s81z8-0ebf-aj71-9730-sk1ay5p3d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'da7s81z8-aj71-43d8-9730-sk1ay5p3d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'da7saj71-0ebf-43d8-9730-sk1ay5p3d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'da7aj718-0ebf-43d8-9730-sk1ay5p3d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'd1aj71z8-0ebf-43d8-9730-sk1ay5p3d8d5'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'd1aj71z8-0ebf-43d8-9730-sk1ayd9d6as4'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'd1aa92hs-0ebf-43d8-9730-sk1ayd9d6as4'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'd1aa92hs-0ebf-43d8-9730-sk1a1da9c7d1'");
+        $this->addSql("DELETE FROM translations WHERE uuid = 'd1a9c7d1-0ebf-43d8-9730-sk1ayd9d6as4'");
     }
 }
