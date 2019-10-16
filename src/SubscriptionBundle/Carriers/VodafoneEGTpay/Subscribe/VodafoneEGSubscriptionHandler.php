@@ -2,8 +2,8 @@
 
 namespace SubscriptionBundle\Carriers\VodafoneEGTpay\Subscribe;
 
-use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use App\Domain\Repository\CarrierRepository;
+use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\BillingFramework\Process\DTO\PinVerifyResult;
@@ -12,12 +12,9 @@ use IdentificationBundle\Identification\Service\RouteProvider;
 use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException;
-use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Subscribe\Handler\ConsentPageFlow\HasConsentPageFlow;
-use SubscriptionBundle\Subscription\Subscribe\Handler\HasCustomAffiliateTrackingRules;
 use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerInterface;
-use SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +23,7 @@ use Symfony\Component\Routing\RouterInterface;
 /**
  * Class VodafoneEGTpaySubscriptionHandler
  */
-class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, HasConsentPageFlow, HasCustomAffiliateTrackingRules
+class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, HasConsentPageFlow
 {
     /**
      * @var LocalExtractor
@@ -48,11 +45,6 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
     private $routeProvider;
 
     /**
-     * @var ZeroCreditSubscriptionChecking
-     */
-    private $zeroCreditSubscriptionChecking;
-
-    /**
      * @var CarrierRepository
      */
     private $carrierRepository;
@@ -64,7 +56,6 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
      * @param WifiIdentificationDataStorage  $wifiIdentificationDataStorage
      * @param RouterInterface                $router
      * @param RouteProvider                  $routeProvider
-     * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
      * @param CarrierRepository              $carrierRepository
      */
     public function __construct(
@@ -72,7 +63,6 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
         WifiIdentificationDataStorage $wifiIdentificationDataStorage,
         RouterInterface $router,
         RouteProvider $routeProvider,
-        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking,
         CarrierRepository $carrierRepository
     )
     {
@@ -80,7 +70,6 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
         $this->wifiIdentificationDataStorage  = $wifiIdentificationDataStorage;
         $this->router                         = $router;
         $this->routeProvider                  = $routeProvider;
-        $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
         $this->carrierRepository              = $carrierRepository;
     }
 
@@ -145,42 +134,6 @@ class VodafoneEGSubscriptionHandler implements SubscriptionHandlerInterface, Has
         }
 
         return new RedirectResponse($redirectUrl);
-    }
-
-    /**
-     * @param ProcessResult     $result
-     * @param CampaignInterface $campaign
-     *
-     * @return bool
-     */
-    public function isAffiliateTrackedForSub(ProcessResult $result, CampaignInterface $campaign): bool
-    {
-        $carrier = $this->carrierRepository->findOneByBillingId(ID::VODAFONE_EGYPT_TPAY);
-
-        $isSuccess        = $result->isFailedOrSuccessful() && $result->isFinal();
-        $isZeroCreditsSub = $this
-            ->zeroCreditSubscriptionChecking
-            ->isZeroCreditAvailable(ID::VODAFONE_EGYPT_TPAY, $campaign);
-
-
-        if ($isZeroCreditsSub) {
-            return $isSuccess &&
-                $carrier->getTrackAffiliateOnZeroCreditSub() &&
-                $this->zeroCreditSubscriptionChecking->isZeroCreditSubscriptionPerformed($result);
-        } else {
-            return $isSuccess;
-        }
-
-    }
-
-    /**
-     * @param ProcessResult $result
-     *
-     * @return bool
-     */
-    public function isAffiliateTrackedForResub(ProcessResult $result): bool
-    {
-        return false;
     }
 
     /**

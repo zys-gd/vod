@@ -195,7 +195,7 @@ class SubscriptionPackAdmin extends AbstractAdmin
             ])
             ->add('zeroCreditSubAvailable')
             ->add('status', 'choice', [
-                'choices'  => array_flip(SubscriptionPack::STATUSES),
+                'choices' => array_flip(SubscriptionPack::STATUSES),
             ]);
     }
 
@@ -321,7 +321,6 @@ class SubscriptionPackAdmin extends AbstractAdmin
                 'required' => false,
                 'label'    => 'Renewal SMS Text'
             ])
-
             ->end();
     }
 
@@ -342,7 +341,10 @@ class SubscriptionPackAdmin extends AbstractAdmin
                 'label'    => 'Is Resubscribe allowed'
             ]);
 
-        $formMapper->add('zeroCreditSubAvailable');
+        $formMapper
+            ->add('zeroCreditSubAvailable')
+            ->add('trackAffiliateOnZeroCreditSub');
+
 
         $formMapper->end();
     }
@@ -369,7 +371,6 @@ class SubscriptionPackAdmin extends AbstractAdmin
             }
         }
     }
-
 
 
 }

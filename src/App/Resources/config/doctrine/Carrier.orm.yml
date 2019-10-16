@@ -76,10 +76,7 @@ App\Domain\Entity\Carrier:
             type: boolean
             options:
                 default: true
-        trackAffiliateOnZeroCreditSub:
-            type: boolean
-            options:
-                default: false
+
         isOneClickFlow:
             type: boolean
             options:

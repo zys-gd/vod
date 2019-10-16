@@ -75,7 +75,6 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $carrier->setIsUnlimitedSubscriptionAttemptsAllowed($isUnlimitedSubscriptionAttemptsAllowed);
             $carrier->setUuid($uuid);
             $carrier->setIsCapAlertDispatch((bool)$isCapAlertDispatch);
-            $carrier->setTrackAffiliateOnZeroCreditSub(false);
 
             if ($defaultLanguageId) {
                 $carrier->setDefaultLanguage($this->getReference(sprintf('language_%s', $defaultLanguageId)));

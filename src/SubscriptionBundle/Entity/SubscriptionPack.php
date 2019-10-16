@@ -200,8 +200,14 @@ class SubscriptionPack implements HasUuid
      */
     private $updated;
 
-    /** @var bool  */
+    /** @var bool */
     private $zeroCreditSubAvailable = false;
+
+    /**
+     * @var bool
+     */
+    private $trackAffiliateOnZeroCreditSub = false;
+
 
     /**
      * SubscriptionPack constructor
@@ -836,7 +842,7 @@ class SubscriptionPack implements HasUuid
      */
     public function convertPeriod2Text(): string
     {
-        switch ($this->getFinalPeriodForSubscription()){
+        switch ($this->getFinalPeriodForSubscription()) {
             case self::DAILY:
                 $periodicityText = 'day';
                 break;
@@ -855,7 +861,7 @@ class SubscriptionPack implements HasUuid
      */
     public function convertPeriodicity2Text(): string
     {
-        switch ($this->getFinalPeriodForSubscription()){
+        switch ($this->getFinalPeriodForSubscription()) {
             case self::DAILY:
                 $periodicityText = 'daily';
                 break;
@@ -883,5 +889,26 @@ class SubscriptionPack implements HasUuid
     public function setZeroCreditSubAvailable(bool $zeroCreditSubAvailable): void
     {
         $this->zeroCreditSubAvailable = $zeroCreditSubAvailable;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function getTrackAffiliateOnZeroCreditSub(): bool
+    {
+        return $this->trackAffiliateOnZeroCreditSub;
+    }
+
+    /**
+     * @param bool $trackAffiliateOnZeroCreditSub
+     *
+     * @return SubscriptionPack
+     */
+    public function setTrackAffiliateOnZeroCreditSub(bool $trackAffiliateOnZeroCreditSub): self
+    {
+        $this->trackAffiliateOnZeroCreditSub = $trackAffiliateOnZeroCreditSub;
+
+        return $this;
     }
 }

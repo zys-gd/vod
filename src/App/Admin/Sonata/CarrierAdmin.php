@@ -206,7 +206,6 @@ class CarrierAdmin extends AbstractAdmin
             ->add('numberOfAllowedSubscriptionsByConstraint', IntegerType::class, ['attr' => ['min' => 0], 'required' => false,])
             ->add('redirectUrl', UrlType::class, ['required' => false])
             ->add('isCampaignsOnPause')
-            ->add('trackAffiliateOnZeroCreditSub')
             ->add('isUnlimitedSubscriptionAttemptsAllowed', null, [
                 'attr' => ["class" => "unlimited-games"]
             ])
