@@ -147,8 +147,7 @@ class CarrierAdmin extends AbstractAdmin
             ->add('isCampaignsOnPause')
             ->add('isUnlimitedSubscriptionAttemptsAllowed')
             ->add('subscribeAttempts')
-            ->add('isClickableSubImage')
-            ->add('trackAffiliateOnZeroCreditSub');
+            ->add('isClickableSubImage');
     }
 
     /**
@@ -169,7 +168,6 @@ class CarrierAdmin extends AbstractAdmin
             ->add('trialPeriod')
             ->add('subscriptionPeriod')
             ->add('isCampaignsOnPause')
-            ->add('trackAffiliateOnZeroCreditSub')
             ->add('isClickableSubImage', null, [
                 'label' => 'Clickable image'
             ])
@@ -248,7 +246,6 @@ class CarrierAdmin extends AbstractAdmin
             ->add('trialInitializer')
             ->add('trialPeriod')
             ->add('subscriptionPeriod')
-            ->add('trackAffiliateOnZeroCreditSub')
             ->add('isCampaignsOnPause')
             ->add('isUnlimitedSubscriptionAttemptsAllowed')
             ->add('subscribeAttempts')
