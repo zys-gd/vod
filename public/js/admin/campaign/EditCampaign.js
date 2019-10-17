@@ -66,7 +66,7 @@ function DataForOnOutOfOfficeOrArabicGeo(arrabicGeo){
 $(document).ready(function () {
     let input = $('input[id*="_when_active_one_click_flow"]')[0];
     containerForFields = $('.sonata-ba-collapsed-fields')[1];
-    standardNameForDiv = $('div[id*="_schedule"]')[0].id;
+    standardNameForDiv = '_schedule';
     $(containerForFields).append("<div class='form-group' id='"+ standardNameForDiv +"'><div id='schedule'></div><div id='scheduler'></div></div>");
 
     hideOrShowOptionForOneClickIfCheckedIsOneClickFlow();
@@ -88,7 +88,7 @@ $(document).ready(function () {
     $('button[name="btn_update_and_list"], button[name="btn_update_and_edit"], button[name="btn_create_and_edit"] ,button[name="btn_create_and_list"], button[name="btn_create_and_create"]').on('click', function (e) {
         let newExportString =  $('#schedule').jqs('export');
         newExportString = newExportString.slice(1, -1);
-        $('input[id*="_when_active_one_click_flow"]').val(newExportString);
+        $('input[id*="_schedule"]').val(newExportString);
     });
 });
 
