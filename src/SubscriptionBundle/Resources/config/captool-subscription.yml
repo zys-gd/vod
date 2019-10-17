@@ -14,6 +14,8 @@ services:
         arguments:
             - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter'
             - '@SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker'
+            - '@SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking'
+            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
 
     SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter:
         arguments:
@@ -22,7 +24,6 @@ services:
         - '@SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterDataMapper'
         - '@SubscriptionBundle\CAPTool\Subscription\Limiter\SubscriptionCapChecker'
         - '@SubscriptionBundle\CAPTool\Subscription\Limiter\StorageKeyGenerator'
-        - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
         - '@logger'
         - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitNotifier'
 
