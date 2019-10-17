@@ -255,6 +255,10 @@ SubscriptionBundle\Entity\SubscriptionPack:
             type: boolean
             options:
                 default: 0
+        trackAffiliateOnZeroCreditSub:
+            type: boolean
+            options:
+                default: false
 
     lifecycleCallbacks: {  }
 
