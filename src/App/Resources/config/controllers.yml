@@ -40,14 +40,10 @@ services:
     App\Controller\HomeController:
         arguments:
             - '@CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator'
-            - '@App\Domain\Repository\MainCategoryRepository'
-            - '@App\Domain\Repository\UploadedVideoRepository'
-            - '@App\Domain\Service\VideoProcessing\UploadedVideoSerializer'
             - '@App\Domain\Repository\GameRepository'
-            - '@App\Domain\Repository\CountryCategoryPriorityOverrideRepository'
             - '@App\Piwik\ContentStatisticSender'
-            - '@IdentificationBundle\Repository\UserRepository'
             - '@IdentificationBundle\Identification\Service\AlreadySubscribedIdentFinisher'
+            - '@App\Domain\Service\HomepageVideoListProvider'
 
     App\Controller\LPController:
         arguments:

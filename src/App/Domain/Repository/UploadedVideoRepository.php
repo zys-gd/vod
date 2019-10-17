@@ -12,36 +12,35 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class UploadedVideoRepository extends \Doctrine\ORM\EntityRepository
 {
+
     /**
-     * @param int $offset
-     * @param int $count
-     *
      * @return array
      *
      * @throws \Exception
      */
-    public function findNotExpiredWithCategories(): array
+    public function findIdsOfNotExpiredVideos(): array
     {
         $queryBuilder = $this->createQueryBuilder('v');
-        $q = $queryBuilder
+        $q            = $queryBuilder
+            ->select('v.uuid as videoId')
             ->leftJoin('v.subcategory', 'subcategory')
             ->leftJoin('subcategory.parent', 'category')
             ->where($queryBuilder->expr()->orX('v.expiredDate > :currentDateTime', 'v.expiredDate IS NULL'))
             ->andWhere('v.status = :status')
             ->andWhere('v.pause = 0')
             ->orderBy('v.createdDate', 'DESC')
+            ->addSelect('category.title as categoryName')
             ->setParameter('currentDateTime', new \DateTime())
-            ->setParameter('status', UploadedVideo::STATUS_READY)
-            ->addSelect('subcategory', 'category');
+            ->setParameter('status', UploadedVideo::STATUS_READY);
 
-        return $q->getQuery()->getResult();
+        return $q->getQuery()->getArrayResult();
     }
 
     /**
      * @param Subcategory[] $subcategories
      *
-     * @param int $offset
-     * @param int $count
+     * @param int           $offset
+     * @param int           $count
      * @return BatchOfNotExpiredVideos
      *
      * @throws \Exception
@@ -57,16 +56,16 @@ class UploadedVideoRepository extends \Doctrine\ORM\EntityRepository
             ->andWhere('v.pause = 0')
             ->orderBy('v.createdDate', 'DESC')
             ->setParameters([
-                'subcategory' => $subcategories,
+                'subcategory'     => $subcategories,
                 'currentDateTime' => new \DateTime(),
-                'status' => UploadedVideo::STATUS_READY
+                'status'          => UploadedVideo::STATUS_READY
             ]);
 
         $queryBuilder->setMaxResults($count);
         $queryBuilder->setFirstResult($offset);
 
         $paginator = new Paginator($queryBuilder);
-        $total = $paginator->count();
+        $total     = $paginator->count();
 
         return new BatchOfNotExpiredVideos(
             $queryBuilder->getQuery()->getResult() ?? [],
@@ -82,11 +81,28 @@ class UploadedVideoRepository extends \Doctrine\ORM\EntityRepository
     public function findExpiredVideo(): array
     {
         $queryBuilder = $this->createQueryBuilder('v');
-        $query = $queryBuilder
+        $query        = $queryBuilder
             ->where(':currentDateTime > v.expiredDate')
             ->setParameter('currentDateTime', new \DateTime())
             ->getQuery();
 
         return $query->getResult();
+    }
+
+    public function findWithCategories(array $ids = []): array
+    {
+        $queryBuilder = $this->createQueryBuilder('v');
+        $q            = $queryBuilder
+            ->leftJoin('v.subcategory', 'subcategory')
+            ->leftJoin('subcategory.parent', 'category')
+            ->orderBy('v.createdDate', 'DESC')
+            ->addSelect('category', 'subcategory');
+
+        if ($ids) {
+            $q->andWhere('v.uuid in (:ids)');
+            $q->setParameter(':ids', $ids);
+        }
+
+        return $q->getQuery()->getResult();
     }
 }
