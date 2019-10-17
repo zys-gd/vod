@@ -1,21 +1,19 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Iliya Kobus
- * Date: 1/17/2019
- * Time: 2:19 PM
- */
 
-namespace App\Controller;
+namespace Carriers\Controller;
 
 use CommonDataBundle\Service\TemplateConfigurator\Exception\TemplateNotFoundException;
 use CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator;
+use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ContentController extends AbstractController implements AppControllerInterface
+/**
+ * Class DimocoController
+ */
+class DimocoController extends AbstractController implements ControllerWithISPDetection
 {
     /**
      * @var TemplateConfigurator
@@ -23,7 +21,7 @@ class ContentController extends AbstractController implements AppControllerInter
     private $templateConfigurator;
 
     /**
-     * ContentController constructor.
+     * TMobilePolandDimocoController constructor
      *
      * @param TemplateConfigurator $templateConfigurator
      */
@@ -33,46 +31,33 @@ class ContentController extends AbstractController implements AppControllerInter
     }
 
     /**
-     * @Route("/faq",name="faq")
+     * @Route("/dimoco-prepayment",name="dimoco_prepayment")
+     *
      * @param ISPData $data
      *
      * @return Response
      *
      * @throws TemplateNotFoundException
      */
-    public function faqAction(ISPData $data)
+    public function prepaymentAction(ISPData $data)
     {
-        $template = $this->templateConfigurator->getTemplate('faq', $data->getCarrierId());
+        $template = $this->templateConfigurator->getTemplate('prepayment', $data->getCarrierId());
 
         return $this->render($template);
     }
 
     /**
-     * @Route("/terms-and-conditions",name="terms_and_conditions")
+     * @Route("/dimoco-payment",name="dimoco_payment")
+     *
      * @param ISPData $data
      *
      * @return Response
      *
      * @throws TemplateNotFoundException
      */
-    public function termsAndConditionsAction(ISPData $data)
+    public function paymentAction(ISPData $data)
     {
-        $template = $this->templateConfigurator->getTemplate('terms_and_conditions', $data->getCarrierId());
-
-        return $this->render($template);
-    }
-
-    /**
-     * @Route("/about-us", name="about_us")
-     * @param ISPData $data
-     *
-     * @return Response
-     *
-     * @throws TemplateNotFoundException
-     */
-    public function aboutUsAction(ISPData $data)
-    {
-        $template = $this->templateConfigurator->getTemplate('about_us', $data->getCarrierId());
+        $template = $this->templateConfigurator->getTemplate('payment', $data->getCarrierId());
 
         return $this->render($template);
     }

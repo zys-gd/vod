@@ -3,12 +3,15 @@
 namespace App\Controller;
 
 use App\Domain\Repository\CarrierRepository;
+use CommonDataBundle\Service\TemplateConfigurator\Exception\TemplateNotFoundException;
 use CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator;
+use Doctrine\ORM\NonUniqueResultException;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
 use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AccountController extends AbstractController implements ControllerWithISPDetection, AppControllerInterface
@@ -48,8 +51,10 @@ class AccountController extends AbstractController implements ControllerWithISPD
      * @param Request $request
      * @param ISPData $data
      *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return Response
+     *
+     * @throws TemplateNotFoundException
+     * @throws NonUniqueResultException
      */
     public function accountAction(Request $request, ISPData $data)
     {

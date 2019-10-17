@@ -10,9 +10,11 @@ use App\Domain\Repository\CampaignRepository;
 use App\Domain\Service\CarrierOTPVerifier;
 use App\Piwik\ContentStatisticSender;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use CommonDataBundle\Service\TemplateConfigurator\Exception\TemplateNotFoundException;
 use CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator;
 use Doctrine\Common\Collections\ArrayCollection;
 use ExtrasBundle\Controller\Traits\ResponseTrait;
+use GuzzleHttp\Exception\GuzzleException;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\Exception\MissingCarrierException;
 use IdentificationBundle\Identification\Service\CarrierSelector;
@@ -188,7 +190,9 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param Request $request
      *
      * @return Response
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     *
+     * @throws GuzzleException
+     * @throws TemplateNotFoundException
      */
     public function landingPageAction(Request $request)
     {
@@ -263,10 +267,18 @@ class LPController extends AbstractController implements ControllerWithISPDetect
     }
 
     /**
-     * @Route("/lp/select-carrier-wifi", name="select_carrier_wifi", methods={"GET"}, condition="request.isXmlHttpRequest()")
+     * @Route(
+     *     "/lp/select-carrier-wifi",
+     *     name="select_carrier_wifi",
+     *     methods={"GET"},
+     *     condition="request.isXmlHttpRequest()"
+     * )
+     *
      * @param Request $request
      *
      * @return JsonResponse
+     *
+     * @throws TemplateNotFoundException
      */
     public function selectCarrierAction(Request $request)
     {
@@ -340,7 +352,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
     /**
      * @Route("/lp/resest-wifi-lp", name="reset_wifi_lp", methods={"GET"}, condition="request.isXmlHttpRequest()")
+     *
      * @return string
+     *
+     * @throws TemplateNotFoundException
      */
     public function resetWifiLP()
     {
@@ -354,9 +369,12 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
     /**
      * @Route("/lp/pin-confirm", name="pin_confirm", methods={"GET"}, condition="request.isXmlHttpRequest()")
+     *
      * @param Request $request
      *
      * @return JsonResponse
+     *
+     * @throws TemplateNotFoundException
      */
     public function pinConfirmWifiLP(Request $request)
     {
@@ -371,9 +389,12 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
     /**
      * @Route("/lp/change-number", name="change_number", methods={"GET"}, condition="request.isXmlHttpRequest()")
+     *
      * @param Request $request
      *
      * @return JsonResponse
+     *
+     * @throws TemplateNotFoundException
      */
     public function changeNumberWifiLP(Request $request)
     {

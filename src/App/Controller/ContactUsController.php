@@ -12,9 +12,11 @@ namespace App\Controller;
 use App\Domain\Entity\Campaign;
 use App\Domain\Repository\CampaignRepository;
 use App\Form\ContactUsType;
+use CommonDataBundle\Service\TemplateConfigurator\Exception\TemplateNotFoundException;
 use CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator;
 use CountryCarrierDetectionBundle\Service\MaxMindIpInfo;
 use DeviceDetectionBundle\Service\Device;
+use Doctrine\ORM\NonUniqueResultException;
 use ExtrasBundle\Email\EmailSender;
 use IdentificationBundle\Identification\DTO\ISPData;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
@@ -23,6 +25,7 @@ use IdentificationBundle\User\Service\UserExtractor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ContactUsController extends AbstractController implements AppControllerInterface
@@ -112,11 +115,13 @@ class ContactUsController extends AbstractController implements AppControllerInt
      * @param Request $request
      * @param ISPData $data
      *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return Response
+     *
+     * @throws NonUniqueResultException
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
+     * @throws TemplateNotFoundException
      */
     public function contactUsAction(Request $request, ISPData $data)
     {

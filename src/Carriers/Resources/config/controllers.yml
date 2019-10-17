@@ -1,0 +1,7 @@
+services:
+    _defaults:
+        tags: ['controller.service_arguments']
+
+    Carriers\Controller\DimocoController:
+        arguments:
+            - '@CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator'
