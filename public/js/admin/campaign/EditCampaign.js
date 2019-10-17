@@ -1,3 +1,7 @@
+/**
+ * imported from store.playwing
+ * with small adaptations
+ */
 let containerForFields,
     standardNameForDiv;
 
@@ -44,14 +48,16 @@ function DataForOnOutOfOfficeOrArabicGeo(arrabicGeo) {
             if (isOneClickFlowOnOutOfOffice.is(':checked')) {
                 $(isOneClickFlowOnOutOfOffice).siblings().click();
             }
-            dataForTable = '{"day":0,"periods":[{"start":"08:00","end":"21:00"}]},{"day":1,"periods":[{"start":"08:00","end":"21:00"}]},{"day":2,"periods":[{"start":"08:00","end":"21:00"}]},{"day":3,"periods":[{"start":"08:00","end":"21:00"}]},{"day":6,"periods":[{"start":"08:00","end":"21:00"}]}';
+            // dataForTable = '{"day":0,"periods":[{"start":"08:00","end":"21:00"}]},{"day":1,"periods":[{"start":"08:00","end":"21:00"}]},{"day":2,"periods":[{"start":"08:00","end":"21:00"}]},{"day":3,"periods":[{"start":"08:00","end":"21:00"}]},{"day":6,"periods":[{"start":"08:00","end":"21:00"}]}';
+            dataForTable = '{"day":0,"periods":[{"start":"00:00","end":"08:00"},{"start":"21:00","end":"00:00"}]},{"day":1,"periods":[{"start":"00:00","end":"08:00"},{"start":"21:00","end":"00:00"}]},{"day":2,"periods":[{"start":"00:00","end":"08:00"},{"start":"21:00","end":"00:00"}]},{"day":3,"periods":[{"start":"00:00","end":"08:00"},{"start":"21:00","end":"00:00"}]},{"day":4,"periods":[{"start":"00:00","end":"00:00"}]},{"day":5,"periods":[{"start":"00:00","end":"00:00"}]},{"day":6,"periods":[{"start":"00:00","end":"08:00"},{"start":"21:00","end":"00:00"}]}';
         }
     } else if (!arrabicGeo) {
         if (isOneClickFlowOnOutOfOffice.is(':checked')) {
             if (isOneClickFlowOnOutOfOfficeArabicGeo.is(':checked')) {
                 $(isOneClickFlowOnOutOfOfficeArabicGeo).siblings().click();
             }
-            dataForTable = '{"day":0,"periods":[{"start":"08:00","end":"21:00"}]},{"day":1,"periods":[{"start":"08:00","end":"21:00"}]},{"day":2,"periods":[{"start":"08:00","end":"21:00"}]},{"day":3,"periods":[{"start":"08:00","end":"21:00"}]},{"day":4,"periods":[{"start":"08:00","end":"21:00"}]}';
+            // dataForTable = '{"day":0,"periods":[{"start":"08:00","end":"21:00"}]},{"day":1,"periods":[{"start":"08:00","end":"21:00"}]},{"day":2,"periods":[{"start":"08:00","end":"21:00"}]},{"day":3,"periods":[{"start":"08:00","end":"21:00"}]},{"day":4,"periods":[{"start":"08:00","end":"21:00"}]}';
+            dataForTable = '{"day":0,"periods":[{"start":"00:00","end":"08:00"},{"start":"21:00","end":"00:00"}]},{"day":1,"periods":[{"start":"00:00","end":"08:00"},{"start":"21:00","end":"00:00"}]},{"day":2,"periods":[{"start":"00:00","end":"08:00"},{"start":"21:00","end":"00:00"}]},{"day":3,"periods":[{"start":"00:00","end":"08:00"},{"start":"21:00","end":"00:00"}]},{"day":4,"periods":[{"start":"00:00","end":"08:00"},{"start":"21:00","end":"00:00"}]},{"day":5,"periods":[{"start":"00:00","end":"00:00"}]},{"day":6,"periods":[{"start":"00:00","end":"00:00"}]}';
         }
     }
 
