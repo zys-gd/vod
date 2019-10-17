@@ -8,11 +8,11 @@ function hideOrShowOptionForOneClickIfCheckedIsOneClickFlow(){
     let isOneClickFlowOnOutOfOfficeArabicGeo = $('div[id*="isOneClickFlowOnOutOfOfficeArabicGeo"]').first();
 
     if (isOneClickFlow.checked) {
-        whenActiveOneClickFlowCalendar.show(400);
+        whenActiveOneClickFlowCalendar.slideDown(200);
     } else {
-        whenActiveOneClickFlowCalendar.hide(400);
-        isOneClickFlowOnOutOfOffice.hide(400);
-        isOneClickFlowOnOutOfOfficeArabicGeo.hide(400);
+        whenActiveOneClickFlowCalendar.slideUp(200);
+        isOneClickFlowOnOutOfOffice.slideUp(200);
+        isOneClickFlowOnOutOfOfficeArabicGeo.slideUp(200);
     }
 }
 
@@ -23,13 +23,13 @@ function hideOrShowTableIfCheckedPermanently(){
     let isOneClickFlowOnOutOfOfficeArabicGeo = $('div[id*="isOneClickFlowOnOutOfOfficeArabicGeo"]').first();
 
     if (isOneClickFlow.checked) {
-        whenActiveOneClickFlowCalendar.show(400);
-        isOneClickFlowOnOutOfOffice.show(400);
-        isOneClickFlowOnOutOfOfficeArabicGeo.show(400);
+        whenActiveOneClickFlowCalendar.slideDown(200);
+        isOneClickFlowOnOutOfOffice.slideDown(200);
+        isOneClickFlowOnOutOfOfficeArabicGeo.slideDown(200);
     } else {
-        whenActiveOneClickFlowCalendar.hide(400);
-        isOneClickFlowOnOutOfOffice.hide(400);
-        isOneClickFlowOnOutOfOfficeArabicGeo.hide(400);
+        whenActiveOneClickFlowCalendar.slideUp(200);
+        isOneClickFlowOnOutOfOffice.slideUp(200);
+        isOneClickFlowOnOutOfOfficeArabicGeo.slideUp(200);
     }
 }
 
@@ -64,8 +64,8 @@ function DataForOnOutOfOfficeOrArabicGeo(arrabicGeo){
 }
 
 $(document).ready(function () {
-    let input = $('input[id*="_when_active_one_click_flow"]')[0];
-    containerForFields = $('.sonata-ba-collapsed-fields')[1];
+    let input = $('input[id*="_schedule"]')[0];
+    containerForFields = $('input[id*="_schedule"]').prev('div');
     standardNameForDiv = '_schedule';
     $(containerForFields).append("<div class='form-group' id='"+ standardNameForDiv +"'><div id='schedule'></div><div id='scheduler'></div></div>");
 
@@ -85,7 +85,7 @@ $(document).ready(function () {
 
     $("#schedule").jqs().jqs('import', JSON.parse( '[' + $(input).val() + ']'));
 
-    $('button[name="btn_update_and_list"], button[name="btn_update_and_edit"], button[name="btn_create_and_edit"] ,button[name="btn_create_and_list"], button[name="btn_create_and_create"]').on('click', function (e) {
+    $(document).on('click', 'button[name="btn_update_and_list"], button[name="btn_update_and_edit"], button[name="btn_create_and_edit"] ,button[name="btn_create_and_list"], button[name="btn_create_and_create"]', function (e) {
         let newExportString =  $('#schedule').jqs('export');
         newExportString = newExportString.slice(1, -1);
         $('input[id*="_schedule"]').val(newExportString);
