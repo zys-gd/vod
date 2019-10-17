@@ -102,16 +102,16 @@ class HomeController extends AbstractController implements
             $this->alreadySubscribedIdentFinisher->tryToIdentify($request);
         }
 
-        list($сategorizedVideos, $indexedCategoryData) = $this->homepageVideoListProvider->getVideosForHomepage($data);
+        list($categorizedVideos, $indexedCategoryData) = $this->homepageVideoListProvider->getVideosForHomepage($data);
 
         $this->contentStatisticSender->trackVisit($request->getSession());
 
         $template = $this->templateConfigurator->getTemplate('home', $data->getCarrierId());
 
         return $this->render($template, [
-            'categoryVideos' => array_slice($сategorizedVideos, 1, 3),
+            'categoryVideos' => array_slice($categorizedVideos, 1, 3),
             'categories'     => $indexedCategoryData,
-            'sliderVideos'   => array_slice($сategorizedVideos, 0, 1),
+            'sliderVideos'   => array_slice($categorizedVideos, 0, 1),
             'games'          => $games->getGames()
         ]);
     }
