@@ -149,6 +149,8 @@ class SubscribeActionACL
             $url = $this->CAPToolRedirectUrlResolver->resolveUrl($exception);
             return RedirectResponse::create($url);
         }
+
+        return null;
     }
 
 
