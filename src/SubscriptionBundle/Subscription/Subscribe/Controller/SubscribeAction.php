@@ -26,6 +26,7 @@ use SubscriptionBundle\CAPTool\Subscription\Exception\CapToolAccessException;
 use SubscriptionBundle\CAPTool\Subscription\Exception\SubscriptionCapReachedOnAffiliate;
 use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter;
 use SubscriptionBundle\Piwik\DataMapper\SubscribeClickEventMapper;
+use SubscriptionBundle\Piwik\DataMapper\UserInformationMapper;
 use SubscriptionBundle\Subscription\Subscribe\Common\CommonFlowHandler;
 use SubscriptionBundle\Subscription\Subscribe\Controller\ACL\SubscribeActionACL;
 use SubscriptionBundle\Subscription\Subscribe\Exception\ExistingSubscriptionException;
@@ -89,12 +90,12 @@ class SubscribeAction extends AbstractController
     )
     {
 
-        $this->userExtractor       = $userExtractor;
-        $this->commonFlowHandler   = $commonFlowHandler;
-        $this->handlerProvider     = $handlerProvider;
-        $this->subscriptionLimiter = $subscriptionLimiter;
-        $this->routeProvider       = $routeProvider;
-        $this->ACL                 = $ACL;
+        $this->userExtractor         = $userExtractor;
+        $this->commonFlowHandler     = $commonFlowHandler;
+        $this->handlerProvider       = $handlerProvider;
+        $this->subscriptionLimiter   = $subscriptionLimiter;
+        $this->routeProvider         = $routeProvider;
+        $this->ACL                   = $ACL;
     }
 
 

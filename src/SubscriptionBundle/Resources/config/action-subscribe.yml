@@ -112,6 +112,7 @@ services:
             - '@SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\PendingSubscriptionCreator'
 
+
     SubscriptionBundle\Subscription\Subscribe\Controller\SubscribeAction:
         tags: ['controller.service_arguments']
         arguments:
@@ -138,13 +139,11 @@ services:
         tags: ['controller.service_arguments']
         arguments:
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
-            - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
             - '@SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider'
             - '@IdentificationBundle\User\Service\UserExtractor'
             - '@SubscriptionBundle\Subscription\Subscribe\Consent\ConsentFlowHandler'
-            - '@SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter'
-            - '@SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
+            - '@SubscriptionBundle\Subscription\Subscribe\Controller\ACL\ConsentSubscribeActionACL'
 
     SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking:
         arguments:
@@ -202,3 +201,13 @@ services:
             - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
             - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter'
             - '@SubscriptionBundle\CAPTool\Common\CAPToolRedirectUrlResolver'
+
+
+    SubscriptionBundle\Subscription\Subscribe\Controller\ACL\ConsentSubscribeActionACL:
+        arguments:
+        - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
+        - '@SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider'
+        - '@SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter'
+        - '@SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator'
+        - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+        - '@IdentificationBundle\Identification\Service\RouteProvider'

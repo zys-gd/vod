@@ -124,24 +124,24 @@ class SubscribeActionACL
             }
         }
 
+        $carrierId           = (int)$ISPData->getCarrierId();
+        $identificationToken = $identificationData->getIdentificationToken();
+
         try {
-            $this->ensureNotConsentPageFlow($ISPData->getCarrierId());
+            $this->ensureNotConsentPageFlow($carrierId);
         } catch (BadRequestHttpException $exception) {
             return new RedirectResponse(
                 $this->routeProvider->getLinkToHomepage(['err_handle' => 'not_available_for_consent_flow'])
             );
         }
 
-        if (
-            $this->blacklistVoter->isUserBlacklisted($request->getSession()) ||
-            !$this->blacklistAttemptRegistrator->registerSubscriptionAttempt(
-                $identificationData->getIdentificationToken(),
-                (int)$ISPData->getCarrierId()
-            )
-        ) {
+        if ($this->blacklistVoter->isUserBlacklisted($request->getSession())) {
             return $this->blacklistVoter->createNotAllowedResponse();
         }
 
+        if (!$this->blacklistAttemptRegistrator->registerSubscriptionAttempt($identificationToken, $carrierId)) {
+            return $this->blacklistVoter->createNotAllowedResponse();
+        }
 
         try {
             $this->subscriptionLimiter->ensureCapIsNotReached($request->getSession());
