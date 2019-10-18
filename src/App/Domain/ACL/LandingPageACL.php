@@ -10,19 +10,18 @@ use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CampaignRepository;
-use App\Domain\Repository\CampaignScheduleRepository;
 use App\Domain\Repository\CarrierRepository;
 use App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherChecker;
-use App\Domain\Service\OneClickFlow\OneClickFlowParameters;
 use App\Domain\Service\OneClickFlow\OneClickFlowChecker;
-use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
+use App\Domain\Service\OneClickFlow\OneClickFlowParameters;
+use App\Domain\Service\OneClickFlow\OneClickFlowScheduler;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\CAPTool\Subscription\Exception\SubscriptionCapReachedOnAffiliate;
 use SubscriptionBundle\CAPTool\Subscription\Exception\SubscriptionCapReachedOnCarrier;
 use SubscriptionBundle\CAPTool\Subscription\Exception\VisitCapReached;
+use SubscriptionBundle\CAPTool\Subscription\Limiter\SubscriptionCapChecker;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
-use SubscriptionBundle\CAPTool\Subscription\Limiter\SubscriptionCapChecker;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -65,10 +64,7 @@ class LandingPageACL
      * @var SessionInterface
      */
     private $session;
-    /**
-     * @var CampaignScheduleRepository
-     */
-    private $campaignScheduleRepository;
+
     /**
      * @var AffiliateBannedPublisherChecker
      */
@@ -77,6 +73,10 @@ class LandingPageACL
      * @var OneClickFlowChecker
      */
     private $oneClickFlowChecker;
+    /**
+     * @var OneClickFlowScheduler
+     */
+    private $oneClickFlowScheduler;
 
     /**
      * LandingPageAccessResolver constructor
@@ -88,9 +88,9 @@ class LandingPageACL
      * @param SessionInterface                $session
      * @param SubscriptionCapChecker          $subscriptionCapChecker
      * @param LoggerInterface                 $logger
-     * @param CampaignScheduleRepository      $campaignScheduleRepository
      * @param AffiliateBannedPublisherChecker $affiliateBannedPublisherChecker
      * @param OneClickFlowChecker             $oneClickFlowChecker
+     * @param OneClickFlowScheduler           $oneClickFlowScheduler
      */
     public function __construct(
         VisitConstraintByAffiliate $visitConstraintByAffiliate,
@@ -100,9 +100,9 @@ class LandingPageACL
         SessionInterface $session,
         SubscriptionCapChecker $subscriptionCapChecker,
         LoggerInterface $logger,
-        CampaignScheduleRepository $campaignScheduleRepository,
         AffiliateBannedPublisherChecker $affiliateBannedPublisherChecker,
-        OneClickFlowChecker $oneClickFlowChecker
+        OneClickFlowChecker $oneClickFlowChecker,
+        OneClickFlowScheduler $oneClickFlowScheduler
     )
     {
         $this->visitConstraintByAffiliate      = $visitConstraintByAffiliate;
@@ -112,9 +112,9 @@ class LandingPageACL
         $this->carrierRepository               = $carrierRepository;
         $this->campaignRepository              = $campaignRepository;
         $this->session                         = $session;
-        $this->campaignScheduleRepository      = $campaignScheduleRepository;
         $this->affiliateBannedPublisherChecker = $affiliateBannedPublisherChecker;
         $this->oneClickFlowChecker             = $oneClickFlowChecker;
+        $this->oneClickFlowScheduler           = $oneClickFlowScheduler;
     }
 
     /**
@@ -178,9 +178,9 @@ class LandingPageACL
             $affiliate          = $campaign->getAffiliate();
             $isLPOffByAffiliate = $affiliate->isOneClickFlow() && ($affiliate->hasCarrier($carrier) || $affiliate->getCarriers()->isEmpty());
 
-            $isCampaignScheduleExistAndTriggered = $campaign->getSchedule()->isEmpty()
-                ? true
-                : $this->campaignScheduleRepository->isNowInSchedule($campaign);
+            $isCampaignScheduleExistAndTriggered = $campaign->getScheduleAsArray()
+                ? $this->oneClickFlowScheduler->isNowInCampaignSchedule($campaign)
+                : true;
 
             $isLPOffByCampaign = $campaign->isOneClickFlow() && $isCampaignScheduleExistAndTriggered;
 
