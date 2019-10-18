@@ -16,6 +16,4 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 interface HasCustomFlow
 {
     public function process(Request $request, SessionInterface $session, \IdentificationBundle\Entity\User $User = null): Response;
-
-    public function updateSubscribeConstraint(array $campaignData): void;
 }

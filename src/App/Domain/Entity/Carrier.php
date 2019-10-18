@@ -134,10 +134,6 @@ class Carrier implements CarrierInterface, HasUuid
      */
     private $defaultLanguage;
 
-    /**
-     * @var bool
-     */
-    private $trackAffiliateOnZeroCreditSub = false;
 
     /**
      * @var bool
@@ -656,26 +652,6 @@ class Carrier implements CarrierInterface, HasUuid
     public function setIsClickableSubImage(bool $isClickableSubImage): void
     {
         $this->isClickableSubImage = $isClickableSubImage;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getTrackAffiliateOnZeroCreditSub(): bool
-    {
-        return $this->trackAffiliateOnZeroCreditSub;
-    }
-
-    /**
-     * @param bool $trackAffiliateOnZeroCreditSub
-     *
-     * @return Carrier
-     */
-    public function setTrackAffiliateOnZeroCreditSub(bool $trackAffiliateOnZeroCreditSub): self
-    {
-        $this->trackAffiliateOnZeroCreditSub = $trackAffiliateOnZeroCreditSub;
-
-        return $this;
     }
 
     /**

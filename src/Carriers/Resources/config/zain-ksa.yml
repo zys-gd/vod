@@ -15,7 +15,6 @@ services:
         arguments:
           - '%default_redirect_url%'
           - '@App\Domain\Repository\CarrierRepository'
-          - '@SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking'
 
     Carriers\ZainKSA\OneClick\ZainKSAOneClickFlow:
         tags:
