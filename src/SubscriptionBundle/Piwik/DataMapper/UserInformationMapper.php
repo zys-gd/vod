@@ -14,6 +14,7 @@ use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Piwik\DTO\UserInformation;
 use SubscriptionBundle\Piwik\Service\AffiliateStringProvider;
+use Symfony\Component\HttpFoundation\Request;
 
 class UserInformationMapper
 {
@@ -32,7 +33,7 @@ class UserInformationMapper
         $this->affiliateStringProvider = $affiliateStringProvider;
     }
 
-    public function mapUserInformation(User $user, Subscription $subscription, int $providerId): UserInformation
+    public function mapUserInformation(int $providerId, User $user, Subscription $subscription): UserInformation
     {
         $affiliateString = $this->affiliateStringProvider->getAffiliateString($subscription);
 
@@ -49,5 +50,24 @@ class UserInformationMapper
             0,
             $affiliateString
         );
+    }
+
+    public function mapFromRequest(Request $request)
+    {
+
+        return new UserInformation(
+            $user->getCountry(),
+            $user->getIp(),
+            // Kinda risky, because im not sure if we always have userConnection type.
+            // We can use $this->maxMindIpInfo->getConnectionType() instead but what about renews etc?
+            (string)$user->getConnectionType(),
+            $user->getIdentifier(),
+            (int)$user->getBillingCarrierId(),
+            $providerId,
+            0,
+            0,
+            $affiliateString
+        );
+
     }
 }

@@ -38,10 +38,10 @@ class ConversionEventMapper
 
     /**
      * ConversionEventMapper constructor.
-     * @param UserInformationMapper                                   $userInformationMapper
-     * @param AdditionalDataProvider                                  $additionalDataProvider
-     * @param AffiliateStringProvider                                 $affiliateStringProvider
-     * @param OrderInformationMapper                                  $informationMapper
+     * @param UserInformationMapper   $userInformationMapper
+     * @param AdditionalDataProvider  $additionalDataProvider
+     * @param AffiliateStringProvider $affiliateStringProvider
+     * @param OrderInformationMapper  $informationMapper
      */
     public function __construct(
         UserInformationMapper $userInformationMapper,
@@ -61,9 +61,7 @@ class ConversionEventMapper
         $provderId = (int)$processResult->getProviderId();
 
         $userInformation  = $this->userInformationMapper->mapUserInformation(
-            $user,
-            $subscription,
-            $provderId
+            $provderId, $user, $subscription
         );
         $orderInformation = $this->informationMapper->map(
             $processResult->getId(),
@@ -73,6 +71,8 @@ class ConversionEventMapper
             $type
         );
 
-        return new ConversionEvent($userInformation, $orderInformation);
+        return new ConversionEvent(
+            $userInformation, $orderInformation->getOrderId(), $orderInformation
+        );
     }
 }
