@@ -118,17 +118,9 @@ services:
             - '@IdentificationBundle\User\Service\UserExtractor'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\CommonFlowHandler'
             - '@SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider'
-            - '@SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter'
-            - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
-            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
-            - '@IdentificationBundle\Identification\Common\PostPaidHandler'
-            - '@SubscriptionBundle\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider'
             - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter'
-            - '@SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator'
-            - '@SubscriptionBundle\Subscription\Subscribe\Voter\BatchSubscriptionVoter'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
-            - '@SubscriptionBundle\Subscription\Common\RouteProvider'
-            - '@SubscriptionBundle\CAPTool\Common\CAPToolRedirectUrlResolver'
+            - '@SubscriptionBundle\Subscription\Subscribe\Controller\ACL\SubscribeActionACL'
 
 
     SubscriptionBundle\Subscription\Subscribe\Controller\FakeSubscribeAction:
@@ -198,3 +190,15 @@ services:
 
     SubscriptionBundle\Subscription\Subscribe\Common\PendingSubscriptionCreator:
         arguments: ['@logger', '@SubscriptionBundle\Subscription\Common\SubscriptionFactory', '@SubscriptionBundle\Service\EntitySaveHelper']
+
+    SubscriptionBundle\Subscription\Subscribe\Controller\ACL\SubscribeActionACL:
+        arguments:
+            - '@IdentificationBundle\Identification\Common\PostPaidHandler'
+            - '@IdentificationBundle\Identification\Service\RouteProvider'
+            - '@SubscriptionBundle\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider'
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+            - '@SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter'
+            - '@SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator'
+            - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
+            - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter'
+            - '@SubscriptionBundle\CAPTool\Common\CAPToolRedirectUrlResolver'

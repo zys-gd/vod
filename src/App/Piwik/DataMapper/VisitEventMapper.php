@@ -16,7 +16,6 @@ class VisitEventMapper
 {
 
 
-
     public function map(\App\Piwik\DTO\VisitDTO $visitDTO): ConversionEvent
     {
 
@@ -33,6 +32,6 @@ class VisitEventMapper
         );
 
 
-        return new ConversionEvent($userInformation);
+        return new ConversionEvent($userInformation, '');
     }
 }
