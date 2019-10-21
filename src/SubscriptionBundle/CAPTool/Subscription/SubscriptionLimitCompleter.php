@@ -4,6 +4,7 @@
 namespace SubscriptionBundle\CAPTool\Subscription;
 
 
+use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
@@ -28,6 +29,10 @@ class SubscriptionLimitCompleter
      * @var CampaignExtractor
      */
     private $campaignExtractor;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * SubscriptionLimitCompleter constructor.
@@ -36,18 +41,21 @@ class SubscriptionLimitCompleter
      * @param ProcessResultSuccessChecker    $resultSuccessChecker
      * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
      * @param CampaignExtractor              $campaignExtractor
+     * @param LoggerInterface                $logger
      */
     public function __construct(
         SubscriptionLimiter $subscriptionLimiter,
         ProcessResultSuccessChecker $resultSuccessChecker,
         ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking,
-        CampaignExtractor $campaignExtractor
+        CampaignExtractor $campaignExtractor,
+        LoggerInterface $logger
     )
     {
         $this->subscriptionLimiter            = $subscriptionLimiter;
         $this->resultSuccessChecker           = $resultSuccessChecker;
         $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
         $this->campaignExtractor              = $campaignExtractor;
+        $this->logger                         = $logger;
     }
 
     /**
@@ -56,9 +64,10 @@ class SubscriptionLimitCompleter
      */
     public function finishProcess(ProcessResult $response, Subscription $subscription): void
     {
-        $user     = $subscription->getUser();
-        $carrier  = $subscription->getSubscriptionPack()->getCarrier();
-        $campaign = $this->campaignExtractor->getCampaignForSubscription($subscription);
+        $user             = $subscription->getUser();
+        $subscriptionPack = $subscription->getSubscriptionPack();
+        $carrier          = $subscriptionPack->getCarrier();
+        $campaign         = $this->campaignExtractor->getCampaignForSubscription($subscription);
 
         if ($this->resultSuccessChecker->isSuccessful($response)) {
             $isCapNeedToBeStored = true;
@@ -66,12 +75,16 @@ class SubscriptionLimitCompleter
                 $this->zeroCreditSubscriptionChecking->isZeroCreditAvailable($carrier->getBillingCarrierId(), $campaign) &&
                 $this->zeroCreditSubscriptionChecking->isZeroCreditSubscriptionPerformed($response)
             ) {
-                $isCapNeedToBeStored = false;
+                $isCapNeedToBeStored = $subscriptionPack->getTrackAffiliateOnZeroCreditSub();
+                $this->logger->debug('Zero credit check is triggered', [
+                    'isCapNeedToBeStored' => $isCapNeedToBeStored
+                ]);
             }
 
             if ($isCapNeedToBeStored) {
                 $this->subscriptionLimiter->finishSubscription($user->getCarrier(), $subscription, $campaign);
             } else {
+                $this->logger->debug('Cap is not need to be stored. Releasing');
                 $this->subscriptionLimiter->releasePendingSlot($user->getCarrier());
             }
             return;

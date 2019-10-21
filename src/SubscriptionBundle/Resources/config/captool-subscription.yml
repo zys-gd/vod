@@ -16,6 +16,7 @@ services:
             - '@SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking'
             - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
+            - '@logger'
 
     SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter:
         arguments:
