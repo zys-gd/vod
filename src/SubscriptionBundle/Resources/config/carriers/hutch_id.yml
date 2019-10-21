@@ -36,7 +36,8 @@ services:
             - '@IdentificationBundle\Repository\UserRepository'
             - '@SubscriptionBundle\Repository\SubscriptionRepository'
             - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeFacade'
-            - '@cross_subscription.api_connector'
+            - '@SubscriptionBundle\Carriers\HutchID\Callback\HutchIDSMSUnsubscriber'
+            - '@SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper'
         tags:
             - { name: subscription.callback_carrier_handler, type: unsubscribe}
 
@@ -51,6 +52,14 @@ services:
     SubscriptionBundle\Carriers\HutchID\Callback\HutchIDSMSSubscriber:
         arguments:
             - '@SubscriptionBundle\Subscription\Callback\Common\Handler\SubscriptionCallbackHandler'
+
+
+    SubscriptionBundle\Carriers\HutchID\Callback\HutchIDSMSUnsubscriber:
+        arguments:
+            - '@SubscriptionBundle\Subscription\Callback\Common\Handler\UnsubscriptionCallbackHandler'
+            - '@SubscriptionBundle\Service\EntitySaveHelper'
+            - '@SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber'
+            - '@cross_subscription.api_connector'
 
     SubscriptionBundle\Carriers\HutchID\Callback\HutchIDCallbackRenew:
         arguments: ['@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeFacade']
