@@ -8,18 +8,17 @@ use App\Domain\Entity\Campaign;
 
 class OneClickFlowScheduler
 {
-    public function isNowInCampaignSchedule(Campaign $campaign): bool
+    public function isNowInCampaignSchedule(array $schedule): bool
     {
-        if ($aSchedule = $this->getScheduleAsArray($campaign->getSchedule())) {
-            $today    = date('N') - 1;
-            $time     = date('H:i');
-            $aPeriods = $aSchedule[$today]['periods'];
-            foreach ($aPeriods as $period) {
-                if ($period['start'] <= $time && $time <= $period['end']) {
-                    return true;
-                }
+        $today    = date('N') - 1;
+        $time     = date('H:i');
+        $aPeriods = $schedule[$today]['periods'];
+        foreach ($aPeriods as $period) {
+            if ($period['start'] <= $time && $time <= $period['end']) {
+                return true;
             }
         }
+
         return false;
     }
 
@@ -28,7 +27,7 @@ class OneClickFlowScheduler
      *
      * @return array|null
      */
-    private function getScheduleAsArray(string $sSchedule): ?array
+    public function getScheduleAsArray(string $sSchedule): ?array
     {
         if (empty($sSchedule)) {
             return null;

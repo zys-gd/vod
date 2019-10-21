@@ -112,8 +112,9 @@ class CarrierOptionsExtension extends AbstractExtension
 
             if ($isSupportRequestedFlow) {
                 if ($carrier->isOneClickFlow() && $campaign) {
-                    $isCampaignScheduleExistAndTriggered = $campaign->getScheduleAsArray()
-                        ? $this->oneClickFlowScheduler->isNowInCampaignSchedule($campaign)
+                    $schedule = $this->oneClickFlowScheduler->getScheduleAsArray($campaign->getSchedule());
+                    $isCampaignScheduleExistAndTriggered = $schedule
+                        ? $this->oneClickFlowScheduler->isNowInCampaignSchedule($schedule)
                         : true;
                     return $campaign->isOneClickFlow() && $isCampaignScheduleExistAndTriggered;
                 }

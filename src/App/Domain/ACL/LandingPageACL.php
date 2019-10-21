@@ -178,8 +178,9 @@ class LandingPageACL
             $affiliate          = $campaign->getAffiliate();
             $isLPOffByAffiliate = $affiliate->isOneClickFlow() && ($affiliate->hasCarrier($carrier) || $affiliate->getCarriers()->isEmpty());
 
-            $isCampaignScheduleExistAndTriggered = $campaign->getScheduleAsArray()
-                ? $this->oneClickFlowScheduler->isNowInCampaignSchedule($campaign)
+            $schedule = $this->oneClickFlowScheduler->getScheduleAsArray($campaign->getSchedule());
+            $isCampaignScheduleExistAndTriggered = $schedule
+                ? $this->oneClickFlowScheduler->isNowInCampaignSchedule($schedule)
                 : true;
 
             $isLPOffByCampaign = $campaign->isOneClickFlow() && $isCampaignScheduleExistAndTriggered;
