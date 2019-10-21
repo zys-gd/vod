@@ -127,12 +127,6 @@ class Campaign implements CampaignInterface, HasUuid
      */
     private $creator;
 
-    /** @var bool */
-    private $isOneClickFlowOnOutOfOffice;
-
-    /** @var bool */
-    private $isOneClickFlowOnOutOfOfficeArabicGeo;
-
     /**
      * Campaign constructor
      *
@@ -143,8 +137,6 @@ class Campaign implements CampaignInterface, HasUuid
         $this->uuid                                 = $uuid;
         $this->campaignToken                        = uniqid();
         $this->carriers                             = new ArrayCollection();
-        $this->isOneClickFlowOnOutOfOffice          = false;
-        $this->isOneClickFlowOnOutOfOfficeArabicGeo = false;
     }
 
     /**
@@ -644,37 +636,4 @@ class Campaign implements CampaignInterface, HasUuid
     {
         $this->isOneClickFlow = $isOneClickFlow;
     }
-
-    /**
-     * @return bool
-     */
-    public function isOneClickFlowOnOutOfOffice(): bool
-    {
-        return $this->isOneClickFlowOnOutOfOffice;
-    }
-
-    /**
-     * @param bool $isOneClickFlowOnOutOfOffice
-     */
-    public function setIsOneClickFlowOnOutOfOffice(bool $isOneClickFlowOnOutOfOffice): void
-    {
-        $this->isOneClickFlowOnOutOfOffice = $isOneClickFlowOnOutOfOffice;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isOneClickFlowOnOutOfOfficeArabicGeo(): bool
-    {
-        return $this->isOneClickFlowOnOutOfOfficeArabicGeo;
-    }
-
-    /**
-     * @param bool $isOneClickFlowOnOutOfOfficeArabicGeo
-     */
-    public function setIsOneClickFlowOnOutOfOfficeArabicGeo(bool $isOneClickFlowOnOutOfOfficeArabicGeo): void
-    {
-        $this->isOneClickFlowOnOutOfOfficeArabicGeo = $isOneClickFlowOnOutOfOfficeArabicGeo;
-    }
-
 }

@@ -20,6 +20,7 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -154,8 +155,6 @@ class CampaignAdmin extends AbstractAdmin
             ->add('textColor')
             ->add('isPause')
             ->add('isOneClickFlow')
-            ->add('isOneClickFlowOnOutOfOffice')
-            ->add('isOneClickFlowOnOutOfOfficeArabicGeo')
             ->add('isClickableSubImage')
             ->add('zeroCreditSubAvailable');
     }
@@ -192,8 +191,6 @@ class CampaignAdmin extends AbstractAdmin
                 'label' => 'Clickable image'
             ])
             ->add('isOneClickFlow')
-            ->add('isOneClickFlowOnOutOfOffice')
-            ->add('isOneClickFlowOnOutOfOfficeArabicGeo')
             ->add('carriers')
             ->add('dateCreated')
             ->add('_action', null, [
@@ -231,8 +228,6 @@ class CampaignAdmin extends AbstractAdmin
                 'label' => 'Clickable image'
             ])
             ->add('isOneClickFlow')
-            ->add('isOneClickFlowOnOutOfOffice')
-            ->add('isOneClickFlowOnOutOfOfficeArabicGeo')
             ->add('pausedCampaigns', null, [
                 'label'    => 'Paused by Carrier',
                 'template' => '@Admin/Campaign/paused_campaigns.html.twig',
@@ -314,12 +309,6 @@ class CampaignAdmin extends AbstractAdmin
                 'label' => 'Clickable image'
             ])
             ->add('isOneClickFlow')
-            ->add('isOneClickFlowOnOutOfOffice', null, [
-                'label' => 'isOneClickFlowOnOutOfOffice'
-            ])
-            ->add('isOneClickFlowOnOutOfOfficeArabicGeo', null, [
-                'label' => 'isOneClickFlowOnOutOfOfficeArabicGeo'
-            ])
             ->add('schedule', HiddenType::class)
             ->add('freeTrialSubscription')
             ->end()

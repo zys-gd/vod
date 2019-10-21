@@ -91,16 +91,6 @@ App\Domain\Entity\Campaign:
             type: boolean
             options:
                 default: false
-        isOneClickFlowOnOutOfOffice:
-            type: boolean
-            nullable: false
-            options:
-                default: false
-        isOneClickFlowOnOutOfOfficeArabicGeo:
-            type: boolean
-            nullable: false
-            options:
-                default: false
         schedule:
             type: text
             nullable: false
