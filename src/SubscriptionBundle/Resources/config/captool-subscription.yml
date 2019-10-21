@@ -27,6 +27,7 @@ services:
         - '@SubscriptionBundle\CAPTool\Subscription\Limiter\StorageKeyGenerator'
         - '@logger'
         - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitNotifier'
+        - '@SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking'
 
 
     SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterStorage:

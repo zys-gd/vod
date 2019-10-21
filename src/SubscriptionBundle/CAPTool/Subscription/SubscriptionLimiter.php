@@ -16,6 +16,7 @@ use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
+use SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SubscriptionLimiter
@@ -50,17 +51,22 @@ class SubscriptionLimiter
      * @var SubscriptionLimitNotifier
      */
     private $notifier;
+    /**
+     * @var ZeroCreditSubscriptionChecking
+     */
+    private $zeroCreditSubscriptionChecking;
 
     /**
      * SubscriptionLimiter constructor.
      *
-     * @param LimiterStorage            $limiterDataStorage
-     * @param SubscriptionExtractor     $subscriptionExtractor
-     * @param LimiterDataMapper         $limiterDataMapper
-     * @param SubscriptionCapChecker    $carrierCapChecker
-     * @param StorageKeyGenerator       $storageKeyGenerator
-     * @param LoggerInterface           $logger
-     * @param SubscriptionLimitNotifier $notifier
+     * @param LimiterStorage                 $limiterDataStorage
+     * @param SubscriptionExtractor          $subscriptionExtractor
+     * @param LimiterDataMapper              $limiterDataMapper
+     * @param SubscriptionCapChecker         $carrierCapChecker
+     * @param StorageKeyGenerator            $storageKeyGenerator
+     * @param LoggerInterface                $logger
+     * @param SubscriptionLimitNotifier      $notifier
+     * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
      */
     public function __construct(
         LimiterStorage $limiterDataStorage,
@@ -69,16 +75,18 @@ class SubscriptionLimiter
         SubscriptionCapChecker $carrierCapChecker,
         StorageKeyGenerator $storageKeyGenerator,
         LoggerInterface $logger,
-        SubscriptionLimitNotifier $notifier
+        SubscriptionLimitNotifier $notifier,
+        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
     )
     {
-        $this->subscriptionExtractor = $subscriptionExtractor;
-        $this->limiterDataMapper     = $limiterDataMapper;
-        $this->limiterDataStorage    = $limiterDataStorage;
-        $this->carrierCapChecker     = $carrierCapChecker;
-        $this->storageKeyGenerator   = $storageKeyGenerator;
-        $this->logger                = $logger;
-        $this->notifier              = $notifier;
+        $this->subscriptionExtractor          = $subscriptionExtractor;
+        $this->limiterDataMapper              = $limiterDataMapper;
+        $this->limiterDataStorage             = $limiterDataStorage;
+        $this->carrierCapChecker              = $carrierCapChecker;
+        $this->storageKeyGenerator            = $storageKeyGenerator;
+        $this->logger                         = $logger;
+        $this->notifier                       = $notifier;
+        $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
     }
 
     /**
@@ -131,15 +139,21 @@ class SubscriptionLimiter
     /**
      * @param CarrierInterface       $carrier
      * @param Subscription           $subscription
+     * @param bool                   $isAffiliateCapNeedToBeTracked
      * @param CampaignInterface|null $campaign
      */
-    public function finishSubscription(CarrierInterface $carrier, Subscription $subscription, CampaignInterface $campaign = null): void
+    public function finishSubscription(
+        CarrierInterface $carrier,
+        Subscription $subscription,
+        bool $isAffiliateCapNeedToBeTracked,
+        CampaignInterface $campaign = null
+    ): void
     {
         $key = $this->storageKeyGenerator->generateKey($carrier);
 
         $this->limiterDataStorage->storeFinishedSubscription($key, $subscription->getUuid());
 
-        if ($campaign) {
+        if ($campaign && $isAffiliateCapNeedToBeTracked) {
             $affiliate  = $campaign->getAffiliate();
             $constraint = $affiliate->getConstraint(
                 ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE,

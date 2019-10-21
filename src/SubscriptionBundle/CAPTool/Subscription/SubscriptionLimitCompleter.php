@@ -70,24 +70,23 @@ class SubscriptionLimitCompleter
         $campaign         = $this->campaignExtractor->getCampaignForSubscription($subscription);
 
         if ($this->resultSuccessChecker->isSuccessful($response)) {
-            $isCapNeedToBeStored = true;
+
+            $affiliateCapIsNeedToBeTracked = true;
             if (
                 $this->zeroCreditSubscriptionChecking->isZeroCreditAvailable($carrier->getBillingCarrierId(), $campaign) &&
                 $this->zeroCreditSubscriptionChecking->isZeroCreditSubscriptionPerformed($response)
             ) {
-                $isCapNeedToBeStored = $subscriptionPack->getTrackAffiliateOnZeroCreditSub();
+                $affiliateCapIsNeedToBeTracked = $subscriptionPack->getTrackAffiliateOnZeroCreditSub();
                 $this->logger->debug('Zero credit check is triggered', [
-                    'isCapNeedToBeStored' => $isCapNeedToBeStored
+                    'affiliateCapIsNeedToBeTracked' => $affiliateCapIsNeedToBeTracked
                 ]);
             }
-
-            if ($isCapNeedToBeStored) {
-                $this->subscriptionLimiter->finishSubscription($user->getCarrier(), $subscription, $campaign);
-            } else {
-                $this->logger->debug('Cap is not need to be stored. Releasing');
-                $this->subscriptionLimiter->releasePendingSlot($user->getCarrier());
-            }
-            return;
+            $this->subscriptionLimiter->finishSubscription(
+                $user->getCarrier(),
+                $subscription,
+                $affiliateCapIsNeedToBeTracked,
+                $campaign
+            );
 
         } else {
             switch ($response->getError()) {
