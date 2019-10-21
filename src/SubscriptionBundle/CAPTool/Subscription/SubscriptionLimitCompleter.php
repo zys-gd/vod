@@ -70,7 +70,7 @@ class SubscriptionLimitCompleter
             }
 
             if ($isCapNeedToBeStored) {
-                $this->subscriptionLimiter->finishSubscription($user->getCarrier(), $subscription);
+                $this->subscriptionLimiter->finishSubscription($user->getCarrier(), $subscription, $campaign);
             } else {
                 $this->subscriptionLimiter->releasePendingSlot($user->getCarrier());
             }
