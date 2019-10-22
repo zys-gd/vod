@@ -6,16 +6,17 @@ namespace SubscriptionBundle\CAPTool\Subscription;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\Entity\User;
 use Psr\Log\LoggerInterface;
-use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 use SubscriptionBundle\CAPTool\Subscription\Exception\SubscriptionCapReachedOnAffiliate;
 use SubscriptionBundle\CAPTool\Subscription\Exception\SubscriptionCapReachedOnCarrier;
 use SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterDataMapper;
 use SubscriptionBundle\CAPTool\Subscription\Limiter\LimiterStorage;
 use SubscriptionBundle\CAPTool\Subscription\Limiter\StorageKeyGenerator;
 use SubscriptionBundle\CAPTool\Subscription\Limiter\SubscriptionCapChecker;
+use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
+use SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SubscriptionLimiter
@@ -41,10 +42,7 @@ class SubscriptionLimiter
      * @var StorageKeyGenerator
      */
     private $storageKeyGenerator;
-    /**
-     * @var \SubscriptionBundle\Affiliate\Service\CampaignExtractor
-     */
-    private $campaignExtractor;
+
     /**
      * @var LoggerInterface
      */
@@ -53,18 +51,22 @@ class SubscriptionLimiter
      * @var SubscriptionLimitNotifier
      */
     private $notifier;
+    /**
+     * @var ZeroCreditSubscriptionChecking
+     */
+    private $zeroCreditSubscriptionChecking;
 
     /**
      * SubscriptionLimiter constructor.
      *
-     * @param LimiterStorage                                          $limiterDataStorage
-     * @param SubscriptionExtractor                                   $subscriptionExtractor
-     * @param LimiterDataMapper                                       $limiterDataMapper
-     * @param SubscriptionCapChecker                                  $carrierCapChecker
-     * @param StorageKeyGenerator                                     $storageKeyGenerator
-     * @param \SubscriptionBundle\Affiliate\Service\CampaignExtractor $campaignExtractor
-     * @param LoggerInterface                                         $logger
-     * @param SubscriptionLimitNotifier                               $notifier
+     * @param LimiterStorage                 $limiterDataStorage
+     * @param SubscriptionExtractor          $subscriptionExtractor
+     * @param LimiterDataMapper              $limiterDataMapper
+     * @param SubscriptionCapChecker         $carrierCapChecker
+     * @param StorageKeyGenerator            $storageKeyGenerator
+     * @param LoggerInterface                $logger
+     * @param SubscriptionLimitNotifier      $notifier
+     * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
      */
     public function __construct(
         LimiterStorage $limiterDataStorage,
@@ -72,19 +74,19 @@ class SubscriptionLimiter
         LimiterDataMapper $limiterDataMapper,
         SubscriptionCapChecker $carrierCapChecker,
         StorageKeyGenerator $storageKeyGenerator,
-        CampaignExtractor $campaignExtractor,
         LoggerInterface $logger,
-        SubscriptionLimitNotifier $notifier
+        SubscriptionLimitNotifier $notifier,
+        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
     )
     {
-        $this->subscriptionExtractor = $subscriptionExtractor;
-        $this->limiterDataMapper     = $limiterDataMapper;
-        $this->limiterDataStorage    = $limiterDataStorage;
-        $this->carrierCapChecker     = $carrierCapChecker;
-        $this->storageKeyGenerator   = $storageKeyGenerator;
-        $this->campaignExtractor     = $campaignExtractor;
-        $this->logger                = $logger;
-        $this->notifier              = $notifier;
+        $this->subscriptionExtractor          = $subscriptionExtractor;
+        $this->limiterDataMapper              = $limiterDataMapper;
+        $this->limiterDataStorage             = $limiterDataStorage;
+        $this->carrierCapChecker              = $carrierCapChecker;
+        $this->storageKeyGenerator            = $storageKeyGenerator;
+        $this->logger                         = $logger;
+        $this->notifier                       = $notifier;
+        $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
     }
 
     /**
@@ -135,16 +137,23 @@ class SubscriptionLimiter
     }
 
     /**
-     * @param CarrierInterface $carrier
-     * @param Subscription     $subscription
+     * @param CarrierInterface       $carrier
+     * @param Subscription           $subscription
+     * @param bool                   $isAffiliateCapNeedToBeTracked
+     * @param CampaignInterface|null $campaign
      */
-    public function finishSubscription(CarrierInterface $carrier, Subscription $subscription): void
+    public function finishSubscription(
+        CarrierInterface $carrier,
+        Subscription $subscription,
+        bool $isAffiliateCapNeedToBeTracked,
+        CampaignInterface $campaign = null
+    ): void
     {
         $key = $this->storageKeyGenerator->generateKey($carrier);
 
         $this->limiterDataStorage->storeFinishedSubscription($key, $subscription->getUuid());
 
-        if ($campaign = $this->campaignExtractor->getCampaignForSubscription($subscription)) {
+        if ($campaign && $isAffiliateCapNeedToBeTracked) {
             $affiliate  = $campaign->getAffiliate();
             $constraint = $affiliate->getConstraint(
                 ConstraintByAffiliate::CAP_TYPE_SUBSCRIBE,
