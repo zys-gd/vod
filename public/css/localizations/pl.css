@@ -1,4 +1,12 @@
 .footer-menu_link {
-    padding: 0.5vw 2.5vw !important;
-    margin: 0 1vw !important;
+    padding: 0.2vw 0.3vw !important;
+    margin: 0 0.5vw !important;
+}
+
+@media screen and (max-width: 400px) {
+    .footer-menu_link {
+        font-size: 0.8rem !important;
+        padding: 0.5vw 1.5vw !important;
+        margin: 0 1vw !important;
+    }
 }
