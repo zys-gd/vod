@@ -267,6 +267,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param Request $request
      *
      * @return JsonResponse
+     * @throws \CommonDataBundle\Service\TemplateConfigurator\Exception\TemplateNotFoundException
      */
     public function selectCarrierAction(Request $request)
     {
