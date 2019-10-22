@@ -223,6 +223,7 @@ services:
             - '@IdentificationBundle\BillingFramework\Process\PassthroughProcess'
             - '@IdentificationBundle\Identification\Common\RequestParametersProvider'
             - '@IdentificationBundle\Identification\Service\PassthroughRequestPreparer'
+            - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
         tags: ['controller.service_arguments']
 
     IdentificationBundle\Identification\Service\PassthroughRequestPreparer:
