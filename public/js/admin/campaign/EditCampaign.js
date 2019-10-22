@@ -60,7 +60,9 @@ $(document).ready(function () {
     .jqs('import', JSON.parse('[' + $(input).val() + ']'));
 
 
-    $(document).on('click', 'button[name="btn_update_and_list"], button[name="btn_update_and_edit"], button[name="btn_create_and_edit"] ,button[name="btn_create_and_list"], button[name="btn_create_and_create"]', function (e) {
+    $(document).on('submit', 'form[role="form"]', function (e) {
+        $(this).find('.nav-tabs-custom .tab-content > div:first').addClass('fade active in');
+        $(this).find('.nav-tabs-custom a:first').click();
         let newExportString = $('#schedule').jqs('export');
         newExportString = newExportString.slice(1, -1);
         $('input[id*="_schedule"]').val(newExportString);
