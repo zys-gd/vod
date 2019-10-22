@@ -87,7 +87,7 @@ class CarrierOptionsExtension extends AbstractExtension
      */
     public function isConfirmationClick(): bool
     {
-        return $this->oneClickFlowTwigResolver(OneClickFlowParameters::CONFIRMATION_CLICK);
+        return !$this->oneClickFlowTwigResolver(OneClickFlowParameters::CONFIRMATION_CLICK);
     }
 
     /**
@@ -95,7 +95,7 @@ class CarrierOptionsExtension extends AbstractExtension
      */
     public function isConfirmationPopup()
     {
-        return $this->oneClickFlowTwigResolver(OneClickFlowParameters::CONFIRMATION_POP_UP);
+        return !$this->oneClickFlowTwigResolver(OneClickFlowParameters::CONFIRMATION_POP_UP);
     }
 
     private function oneClickFlowTwigResolver(int $oneClickFlowRequestedParameter)
@@ -121,7 +121,7 @@ class CarrierOptionsExtension extends AbstractExtension
                 return $carrier->isOneClickFlow();
             }
         }
-        return false;
+        return true;
     }
 
 }

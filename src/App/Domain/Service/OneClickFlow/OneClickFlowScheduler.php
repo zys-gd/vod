@@ -35,10 +35,10 @@ class OneClickFlowScheduler
         $aSchedule = json_decode("[$sSchedule]", true);
         $count     = 0;
         array_walk($aSchedule, function (&$item) use (&$count) {
-            if (!empty($item['periods'])) {
+            if (empty($item['periods'])) {
                 $count++;
             }
         });
-        return $count == count($aSchedule) ? $aSchedule : null;
+        return $count == count($aSchedule) ? null : $aSchedule;
     }
 }
