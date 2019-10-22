@@ -31,16 +31,19 @@ class CronTaskStatus
         $this->cronTaskRepository = $cronTaskRepository;
     }
 
-    public function getCronTaskByName(String $name)
+    public function initializeCronTaskByName(String $name)
     {
-        $this->getCronTask(['cronName' => $name]);
+        $this->initializeCronTask([
+            'cronName' => $name,
+            'isPaused' => false
+        ]);
         return $this;
     }
 
-    public function getCronTask(array $params = null)
+    private function initializeCronTask(array $params = null): void
     {
         if (is_null($params)) {
-            return $this->cronTask;
+            return;
         }
 
         $this->cronTask = $this->cronTaskRepository->findOneBy($params);
@@ -51,8 +54,6 @@ class CronTaskStatus
                 throw new TaskRunningException('The task already runs!');
             }
         }
-
-        return $this;
     }
 
     public function isRunning()
@@ -75,6 +76,7 @@ class CronTaskStatus
     protected function setStatus($status)
     {
         if ($this->cronTask) {
+            $this->cronTask->setLastUpdatedAt(new \DateTimeImmutable());
             $this->cronTask->setIsRunning($status);
             $this->save();
         } else {
