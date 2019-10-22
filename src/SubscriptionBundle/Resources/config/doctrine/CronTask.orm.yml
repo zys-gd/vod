@@ -22,4 +22,11 @@ SubscriptionBundle\Entity\CronTask:
             nullable: false
             precision: 0
             column: is_running
+        lastUpdatedAt:
+            type: datetime
+            nullable: true
+        isPaused:
+            type: smallint
+            scale: 0
+
     lifecycleCallbacks: {  }

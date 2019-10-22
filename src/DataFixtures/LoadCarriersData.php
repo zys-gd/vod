@@ -42,7 +42,7 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $countryCode                             = $row['countryCode'];
             $isp                                     = $row['isp'];
             $published                               = $row['published'];
-            $isOneClickFlow                          = $row['isOneClickFlow'];
+            $isOneClickFlow                          = $row['isOneClickFlow'] ?? 0;
             $trialInitializer                        = $row['trialInitializer'];
             $trialPeriod                             = $row['trialPeriod'];
             $subscriptionPeriod                      = $row['subscriptionPeriod'];
