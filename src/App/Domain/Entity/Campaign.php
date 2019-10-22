@@ -134,9 +134,10 @@ class Campaign implements CampaignInterface, HasUuid
      */
     public function __construct(string $uuid)
     {
-        $this->uuid                                 = $uuid;
-        $this->campaignToken                        = uniqid();
-        $this->carriers                             = new ArrayCollection();
+        $this->uuid          = $uuid;
+        $this->campaignToken = uniqid();
+        $this->carriers      = new ArrayCollection();
+        $this->schedule      = '';
     }
 
     /**
