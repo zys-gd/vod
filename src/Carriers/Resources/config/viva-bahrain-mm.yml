@@ -6,3 +6,7 @@ services:
     Carriers\VivaBahrainMM\Template\VivaBahrainMMTemplateHandler:
         tags:
             - { name: store_commons.template_handler }
+
+    Carriers\VivaBahrainMM\OneClick\VivaBahrainMMOneClickFlow:
+        tags:
+            - { name: app.one_click_flow_handler }
