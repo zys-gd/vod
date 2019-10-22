@@ -119,7 +119,7 @@ class ListenActionTest extends \ExtrasBundle\Testing\Core\AbstractFunctionalTest
         /** @var Subscription $subscription */
         $subscription = $this->getObjectFromFixture('subscription_for_default_billable_user');
         /** @var SubscriptionPack $subscriptionPack */
-        $subscriptionPack = $this->getObjectFromFixture(sprintf('subscription_pack_for_carrier_%s', $carrierId));
+        $subscriptionPack = $this->getObjectFromFixture(sprintf('subscription_pack_for_carrier_with_internal_id_%s', $carrierId));
         $expectedCredits  = 5;
 
         $this->performFixtureChange(function () use ($subscription, $expectedCredits, $subscriptionPack) {

@@ -17,7 +17,10 @@ use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Subscription\Common\FakeResponseProvider;
+use SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker;
+use SubscriptionBundle\Subscription\Common\SendNotificationChecker;
 use SubscriptionBundle\Subscription\Notification\Notifier;
+use SubscriptionBundle\Subscription\Subscribe\ProcessStarter\Common\SendUnsubscribeNotificationPerformer;
 use SubscriptionBundle\Subscription\Unsubscribe\OnUnsubscribeUpdater;
 use SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeEventChecker;
 use SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeEventTracker;
@@ -119,7 +122,10 @@ class UnsubscriberTest extends TestCase
             Mockery::spy(UnsubscribeParametersProvider::class),
             $this->unsubscribeEventChecker,
             $this->unsubscribeEventTracker,
-            Mockery::spy(LoggerInterface::class)
+            Mockery::spy(SendUnsubscribeNotificationPerformer::class),
+            Mockery::spy(ProcessResultSuccessChecker::class),
+            Mockery::spy(LoggerInterface::class),
+            Mockery::spy(SendNotificationChecker::class)
         );
 
     }
