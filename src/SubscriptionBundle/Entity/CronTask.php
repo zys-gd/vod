@@ -16,6 +16,16 @@ class CronTask implements HasUuid
     private $isRunning;
 
     /**
+     * @var \DateTimeInterface
+     */
+    private $lastUpdatedAt;
+
+    /**
+     * @var bool
+     */
+    private $isPaused = false;
+
+    /**
      * CronTask constructor.
      * @param string $uuid
      */
@@ -82,5 +92,39 @@ class CronTask implements HasUuid
     {
         $this->isRunning = $isRunning;
     }
+
+    /**
+     * @return \DateTimeInterface
+     */
+    public function getLastUpdatedAt(): \DateTimeInterface
+    {
+        return $this->lastUpdatedAt;
+    }
+
+    /**
+     * @param \DateTimeInterface $lastUpdatedAt
+     */
+    public function setLastUpdatedAt(\DateTimeInterface $lastUpdatedAt): void
+    {
+        $this->lastUpdatedAt = $lastUpdatedAt;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPaused(): bool
+    {
+        return $this->isPaused;
+    }
+
+    /**
+     * @param bool $isPaused
+     */
+    public function setIsPaused(bool $isPaused): void
+    {
+        $this->isPaused = $isPaused;
+    }
+
+
 
 }
