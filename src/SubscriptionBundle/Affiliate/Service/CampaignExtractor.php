@@ -4,6 +4,7 @@
 namespace SubscriptionBundle\Affiliate\Service;
 
 
+use ExtrasBundle\Cache\ArrayCache\ArrayCacheService;
 use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
@@ -16,29 +17,53 @@ class CampaignExtractor
      * @var CampaignRepositoryInterface
      */
     private $campaignRepository;
+    /**
+     * @var ArrayCacheService
+     */
+    private $arrayCacheService;
 
-    public function __construct(CampaignRepositoryInterface $campaignRepository)
+    /**
+     * CampaignExtractor constructor.
+     * @param CampaignRepositoryInterface $campaignRepository
+     * @param ArrayCacheService           $arrayCacheService
+     */
+    public function __construct(CampaignRepositoryInterface $campaignRepository, ArrayCacheService $arrayCacheService)
     {
         $this->campaignRepository = $campaignRepository;
+        $this->arrayCacheService  = $arrayCacheService;
     }
 
     /**
      * @param SessionInterface $session
      *
      * @return CampaignInterface|null
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function getCampaignFromSession(SessionInterface $session): ?CampaignInterface
     {
         $campaignToken = AffiliateVisitSaver::extractCampaignToken($session);
-        return $campaignToken ?
-            $this->campaignRepository->findOneByCampaignToken($campaignToken)
-            : null;
+
+        if (!$campaignToken) {
+            return null;
+        }
+
+        $key = sprintf('%s_%s', $campaignToken, 'campaign');
+
+        if ($this->arrayCacheService->hasCache($key)) {
+            $campaign = $this->arrayCacheService->getValue($key);
+        } else {
+            $campaign = $this->campaignRepository->findOneByCampaignToken($campaignToken);
+            $this->arrayCacheService->saveCache($key, $campaign, 84600);
+        }
+
+        return $campaign;
     }
 
     /**
      * @param SessionInterface $session
      *
      * @return AffiliateInterface|null
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function extractAffiliateFromCampaign(SessionInterface $session): ?AffiliateInterface
     {

@@ -159,3 +159,6 @@ services:
 
   App\Domain\Service\HomepageVideoListProvider:
     arguments: ['@App\Domain\Repository\UploadedVideoRepository', '@App\Domain\Repository\MainCategoryRepository', '@App\Domain\Repository\CountryCategoryPriorityOverrideRepository', '@App\Domain\Service\VideoProcessing\UploadedVideoSerializer', '@app.cache.default']
+
+  App\Domain\Service\CarrierProvider:
+    arguments: ['@app.cache.array_default', '@IdentificationBundle\Repository\CarrierRepositoryInterface']

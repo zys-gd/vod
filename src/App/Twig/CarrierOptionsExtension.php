@@ -4,8 +4,8 @@
 namespace App\Twig;
 
 
-use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CarrierRepository;
+use App\Domain\Service\CarrierProvider;
 use App\Domain\Service\OneClickFlow\OneClickFlowChecker;
 use App\Domain\Service\OneClickFlow\OneClickFlowParameters;
 use IdentificationBundle\Identification\Service\PassthroughChecker;
@@ -37,29 +37,37 @@ class CarrierOptionsExtension extends AbstractExtension
      * @var OneClickFlowChecker
      */
     private $oneClickFlowChecker;
+    /**
+     * @var CarrierProvider
+     */
+    private $carrierProvider;
 
     /**
      * CarrierOptionsExtension constructor.
      *
-     * @param SessionInterface $session
-     * @param CarrierRepository $carrierRepository
-     * @param PassthroughChecker $passthroughChecker
-     * @param CampaignExtractor $campaignExtractor
+     * @param SessionInterface    $session
+     * @param CarrierRepository   $carrierRepository
+     * @param PassthroughChecker  $passthroughChecker
+     * @param CampaignExtractor   $campaignExtractor
      * @param OneClickFlowChecker $oneClickFlowChecker
+     * @param CarrierProvider     $carrierProvider
      */
     public function __construct(
         SessionInterface $session,
         CarrierRepository $carrierRepository,
         PassthroughChecker $passthroughChecker,
         CampaignExtractor $campaignExtractor,
-        OneClickFlowChecker $oneClickFlowChecker
+        OneClickFlowChecker $oneClickFlowChecker,
+        CarrierProvider $carrierProvider
+
     )
     {
-        $this->session = $session;
-        $this->carrierRepository = $carrierRepository;
-        $this->passthroughChecker = $passthroughChecker;
-        $this->campaignExtractor = $campaignExtractor;
+        $this->session             = $session;
+        $this->carrierRepository   = $carrierRepository;
+        $this->passthroughChecker  = $passthroughChecker;
+        $this->campaignExtractor   = $campaignExtractor;
         $this->oneClickFlowChecker = $oneClickFlowChecker;
+        $this->carrierProvider     = $carrierProvider;
     }
 
     /**
@@ -91,11 +99,12 @@ class CarrierOptionsExtension extends AbstractExtension
 
     private function oneClickFlowTwigResolver(int $oneClickFlowRequestedParameter)
     {
+
         $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
 
         if ($billingCarrierId) {
-            /** @var Carrier $carrier */
-            $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
+
+            $carrier  = $this->carrierProvider->fetchCarrierIfNeeded($billingCarrierId);
             $campaign = $this->campaignExtractor->getCampaignFromSession($this->session);
 
             $isSupportRequestedFlow = $this->oneClickFlowChecker->check($billingCarrierId, $oneClickFlowRequestedParameter);
