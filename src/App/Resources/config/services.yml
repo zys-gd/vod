@@ -111,9 +111,9 @@ services:
       - '@session'
       - '@SubscriptionBundle\CAPTool\Subscription\Limiter\SubscriptionCapChecker'
       - '@logger'
-      - '@App\Domain\Repository\CampaignScheduleRepository'
       - '@App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherChecker'
       - '@App\Domain\Service\OneClickFlow\OneClickFlowChecker'
+      - '@App\Domain\Service\OneClickFlow\OneClickFlowScheduler'
 
 
   App\Domain\Service\CarrierOTPVerifier:
@@ -156,6 +156,8 @@ services:
       - '@App\Domain\Service\OneClickFlow\OneClickFlowCarriersProvider'
 
   App\Domain\Service\OneClickFlow\OneClickFlowCarriersProvider: ~
+
+  App\Domain\Service\OneClickFlow\OneClickFlowScheduler: ~
 
   App\Domain\Service\HomepageVideoListProvider:
     arguments: ['@App\Domain\Repository\UploadedVideoRepository', '@App\Domain\Repository\MainCategoryRepository', '@App\Domain\Repository\CountryCategoryPriorityOverrideRepository', '@App\Domain\Service\VideoProcessing\UploadedVideoSerializer', '@app.cache.default']
