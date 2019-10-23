@@ -45,7 +45,7 @@ class ProfilerPanelExtension extends AbstractExtension
                     $users = $this->arrayCacheService->getValue('testUsers');
                 } else {
                     $users = $this->testUserRepository->findActiveUsers();
-                    $this->arrayCacheService->saveCache('testUsers', $users, 0);
+                    $this->arrayCacheService->saveCache('testUsers', $users);
                 }
 
                 $preparedUsers = [];

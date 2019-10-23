@@ -53,7 +53,7 @@ class CampaignExtractor
             $campaign = $this->arrayCacheService->getValue($key);
         } else {
             $campaign = $this->campaignRepository->findOneByCampaignToken($campaignToken);
-            $this->arrayCacheService->saveCache($key, $campaign, 84600);
+            $this->arrayCacheService->saveCache($key, $campaign);
         }
 
         return $campaign;

@@ -42,7 +42,7 @@ class CarrierProvider
             $carrier = $this->arrayCacheService->getValue($key);
         } else {
             $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
-            $this->arrayCacheService->saveCache($key, $carrier, 84600);
+            $this->arrayCacheService->saveCache($key, $carrier);
         }
 
         if (!$carrier) {
