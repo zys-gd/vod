@@ -2,7 +2,6 @@
 
 namespace App\Admin\Sonata;
 
-use App\Admin\Form\Type\CampaignScheduleType;
 use App\Admin\Sonata\Traits\InitDoctrine;
 use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Campaign;
@@ -17,14 +16,14 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
-use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
@@ -310,13 +309,7 @@ class CampaignAdmin extends AbstractAdmin
                 'label' => 'Clickable image'
             ])
             ->add('isOneClickFlow')
-            ->add('schedule', CollectionType::class, [
-                'entry_type'   => CampaignScheduleType::class,
-                'allow_delete' => true,
-                'allow_add'    => true,
-                'prototype'    => true,
-                'by_reference' => false
-            ])
+            ->add('schedule', HiddenType::class)
             ->add('freeTrialSubscription')
             ->end()
             ->end();
@@ -432,5 +425,17 @@ class CampaignAdmin extends AbstractAdmin
         ];
 
         return $actions;
+    }
+
+    public function getTemplate($name)
+    {
+        switch ($name) {
+            case 'edit':
+                return '@Admin/Campaign/edit_campaign.html.twig';
+                break;
+            default:
+                return parent::getTemplateRegistry()->getTemplate($name);
+                break;
+        }
     }
 }

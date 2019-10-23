@@ -50,6 +50,7 @@ services:
             - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
             - '@App\Domain\Service\OneClickFlow\OneClickFlowChecker'
             - '@App\Domain\Service\CarrierProvider'
+            - '@App\Domain\Service\OneClickFlow\OneClickFlowScheduler'
 
     App\Twig\PassthroughExtension:
         arguments:
