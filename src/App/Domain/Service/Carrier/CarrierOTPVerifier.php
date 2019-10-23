@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Service;
+namespace App\Domain\Service\Carrier;
 
 use App\Domain\Repository\CarrierRepository;
 use IdentificationBundle\BillingFramework\ID;

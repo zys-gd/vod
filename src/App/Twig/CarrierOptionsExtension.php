@@ -6,7 +6,7 @@ namespace App\Twig;
 
 use App\Domain\Entity\Campaign;
 use App\Domain\Repository\CarrierRepository;
-use App\Domain\Service\CarrierProvider;
+use App\Domain\Service\Carrier\CarrierProvider;
 use App\Domain\Service\OneClickFlow\OneClickFlowChecker;
 use App\Domain\Service\OneClickFlow\OneClickFlowParameters;
 use App\Domain\Service\OneClickFlow\OneClickFlowScheduler;
@@ -44,19 +44,19 @@ class CarrierOptionsExtension extends AbstractExtension
      */
     private $oneClickFlowScheduler;
     /**
-     * @var CarrierProvider
+     * @var \App\Domain\Service\Carrier\CarrierProvider
      */
     private $carrierProvider;
 
     /**
      * CarrierOptionsExtension constructor.
      *
-     * @param SessionInterface    $session
-     * @param CarrierRepository   $carrierRepository
-     * @param PassthroughChecker  $passthroughChecker
-     * @param CampaignExtractor   $campaignExtractor
-     * @param OneClickFlowChecker $oneClickFlowChecker
-     * @param CarrierProvider     $carrierProvider
+     * @param SessionInterface                            $session
+     * @param CarrierRepository                           $carrierRepository
+     * @param PassthroughChecker                          $passthroughChecker
+     * @param CampaignExtractor                           $campaignExtractor
+     * @param OneClickFlowChecker                         $oneClickFlowChecker
+     * @param \App\Domain\Service\Carrier\CarrierProvider $carrierProvider
      */
     public function __construct(
         SessionInterface $session,

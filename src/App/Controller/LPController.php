@@ -7,7 +7,7 @@ use App\Domain\ACL\LandingPageACL;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CampaignRepository;
-use App\Domain\Service\CarrierOTPVerifier;
+use App\Domain\Service\Carrier\CarrierOTPVerifier;
 use App\Piwik\ContentStatisticSender;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator;
@@ -61,7 +61,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      */
     private $landingPageAccessResolver;
     /**
-     * @var CarrierOTPVerifier
+     * @var \App\Domain\Service\Carrier\CarrierOTPVerifier
      */
     private $OTPVerifier;
     /**
@@ -120,19 +120,19 @@ class LPController extends AbstractController implements ControllerWithISPDetect
     /**
      * LPController constructor.
      *
-     * @param ContentStatisticSender        $contentStatisticSender
-     * @param CampaignRepository            $campaignRepository
-     * @param LandingPageACL                $landingPageAccessResolver
-     * @param string                        $imageBaseUrl
-     * @param CarrierOTPVerifier            $OTPVerifier
-     * @param string                        $defaultRedirectUrl
-     * @param TemplateConfigurator          $templateConfigurator
-     * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
-     * @param SubscriptionLimiter           $limiter
-     * @param SubscriptionLimitNotifier     $subscriptionLimitNotifier
-     * @param CarrierRepositoryInterface    $carrierRepository
-     * @param VisitTracker                  $visitTracker
-     * @param VisitNotifier                 $notifier
+     * @param ContentStatisticSender                         $contentStatisticSender
+     * @param CampaignRepository                             $campaignRepository
+     * @param LandingPageACL                                 $landingPageAccessResolver
+     * @param string                                         $imageBaseUrl
+     * @param \App\Domain\Service\Carrier\CarrierOTPVerifier $OTPVerifier
+     * @param string                                         $defaultRedirectUrl
+     * @param TemplateConfigurator                           $templateConfigurator
+     * @param WifiIdentificationDataStorage                  $wifiIdentificationDataStorage
+     * @param SubscriptionLimiter                            $limiter
+     * @param SubscriptionLimitNotifier                      $subscriptionLimitNotifier
+     * @param CarrierRepositoryInterface                     $carrierRepository
+     * @param VisitTracker                                   $visitTracker
+     * @param VisitNotifier                                  $notifier
      * @param LoggerInterface               $logger
      * @param CarrierSelector               $carrierSelector
      * @param SubscribeUrlResolver          $subscribeUrlResolver
