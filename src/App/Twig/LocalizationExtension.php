@@ -65,9 +65,10 @@ class LocalizationExtension extends AbstractExtension
     public function getLanguageCodeInLowerCase()
     {
         $localLanguageCode = $this->localExtractor->getLocal();
-        $billingCarrierId  = (int)IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
+
+        $billingCarrierId  = (int) IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
         /** @var CarrierInterface $carrier */
-        $carrier = $this->carrierProvider->fetchCarrierIfNeeded($billingCarrierId);
+        $carrier = $billingCarrierId ? $this->carrierProvider->fetchCarrierIfNeeded($billingCarrierId) : null;
 
         if ($carrier && $carrier->getDefaultLanguage()) {
             return strtolower($carrier->getDefaultLanguage()->getCode());
