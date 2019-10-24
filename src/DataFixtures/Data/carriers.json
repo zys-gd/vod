@@ -389,5 +389,27 @@
         "isClickableSubImage": true,
         "trackAffiliateOnZeroCreditSub": false,
         "affiliates": []
+    },
+    {
+        "uuid": "3de06e41-f889-4f95-aac3-ebd310f85dd8",
+        "billingCarrierId": 340,
+        "operatorId": 0,
+        "name": "Zong PK",
+        "countryCode": "PK",
+        "isp": "CMPak Limited|CMPak Zong",
+        "published": true,
+        "isOneClickFlow": false,
+        "trialInitializer": "store",
+        "trialPeriod": 1,
+        "subscriptionPeriod": 1,
+        "isCampaignsOnPause": false,
+        "subscribeAttempts": 1,
+        "isUnlimitedSubscriptionAttemptsAllowed": true,
+        "numberOfAllowedSubscriptionsByConstraint": 1,
+        "redirectUrl": "https:\/\/www.google.com\/",
+        "flushDate": null,
+        "isCapAlertDispatch": true,
+        "isClickableSubImage": true,
+        "trackAffiliateOnZeroCreditSub": false
     }
 ]
