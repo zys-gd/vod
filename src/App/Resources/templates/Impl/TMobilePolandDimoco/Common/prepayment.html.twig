@@ -17,6 +17,7 @@
             $('#payment-confirm-form').submit((event) => {
                 event.preventDefault();
 
+                $._loader(false);
                 window.location.href = "{{ path('dimoco_payment') }}";
             })
         })
