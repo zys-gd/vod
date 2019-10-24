@@ -62,13 +62,16 @@ class TMobilePolandDimocoWifiIdentificationHandler implements WifiIdentification
         return $this->repository->findOneByMsisdn($msisdn);
     }
 
+    /**
+     * @return bool
+     */
+    public function areSMSSentByBilling(): bool
+    {
+        return false;
+    }
+
     public function getRedirectUrl()
     {
         // TODO: Implement getRedirectUrl() method.
-    }
-
-    public function areSMSSentByBilling(): bool
-    {
-        // TODO: Implement areSMSSentByBilling() method.
     }
 }
