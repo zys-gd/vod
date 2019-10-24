@@ -109,11 +109,11 @@ class Campaign implements CampaignInterface, HasUuid
     /** @var bool */
     private $zeroCreditSubAvailable = false;
 
-    /** @var bool  */
+    /** @var bool */
     private $freeTrialSubscription = false;
 
     /**
-     * @var Collection
+     * @var string
      */
     private $schedule;
 
@@ -137,7 +137,7 @@ class Campaign implements CampaignInterface, HasUuid
         $this->uuid          = $uuid;
         $this->campaignToken = uniqid();
         $this->carriers      = new ArrayCollection();
-        $this->schedule      = new ArrayCollection();
+        $this->schedule      = '';
     }
 
     /**
@@ -575,43 +575,17 @@ class Campaign implements CampaignInterface, HasUuid
     }
 
     /**
-     * @return Collection
+     * @return string
      */
-    public function getSchedule(): Collection
+    public function getSchedule(): string
     {
         return $this->schedule;
     }
 
     /**
-     * @param CampaignSchedule $schedule
-     *
-     * @return $this
+     * @param string $schedule
      */
-    public function addSchedule(CampaignSchedule $schedule)
-    {
-        $this->schedule->add($schedule);
-
-        $schedule->setCampaign($this);
-
-        return $this;
-    }
-
-    /**
-     * @param CampaignSchedule $schedule
-     *
-     * @return $this
-     */
-    public function removeSchedule(CampaignSchedule $schedule)
-    {
-        $this->schedule->removeElement($schedule);
-
-        return $this;
-    }
-
-    /**
-     * @param Collection $schedule
-     */
-    public function setSchedule(Collection $schedule): void
+    public function setSchedule(string $schedule): void
     {
         $this->schedule = $schedule;
     }
@@ -663,5 +637,4 @@ class Campaign implements CampaignInterface, HasUuid
     {
         $this->isOneClickFlow = $isOneClickFlow;
     }
-
 }

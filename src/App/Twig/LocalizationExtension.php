@@ -4,6 +4,7 @@
 namespace App\Twig;
 
 
+use App\Domain\Service\CarrierProvider;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
@@ -24,31 +25,32 @@ class LocalizationExtension extends AbstractExtension
      */
     private $session;
     /**
-     * @var CarrierRepositoryInterface
-     */
-    private $carrierRepository;
-    /**
      * @var Filesystem
      */
     private $filesystem;
+    /**
+     * @var CarrierProvider
+     */
+    private $carrierProvider;
 
     /**
      * LocalizationExtension constructor.
-     * @param LocalExtractor $localExtractor
-     * @param Session $session
-     * @param CarrierRepositoryInterface $carrier
-     * @param Filesystem $filesystem
+     * @param LocalExtractor  $localExtractor
+     * @param Session         $session
+     * @param Filesystem      $filesystem
+     * @param CarrierProvider $carrierProvider
      */
     public function __construct(
         LocalExtractor $localExtractor,
         Session $session,
-        CarrierRepositoryInterface $carrier,
-        Filesystem $filesystem
-    ) {
-        $this->localExtractor = $localExtractor;
-        $this->session = $session;
-        $this->carrierRepository = $carrier;
-        $this->filesystem = $filesystem;
+        Filesystem $filesystem,
+        CarrierProvider $carrierProvider
+    )
+    {
+        $this->localExtractor  = $localExtractor;
+        $this->session         = $session;
+        $this->filesystem      = $filesystem;
+        $this->carrierProvider = $carrierProvider;
     }
 
     public function getFunctions()
@@ -63,11 +65,12 @@ class LocalizationExtension extends AbstractExtension
     public function getLanguageCodeInLowerCase()
     {
         $localLanguageCode = $this->localExtractor->getLocal();
-        $billingCarrierId = (int)IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
-        /** @var CarrierInterface $carrier */
-        $carrier = $this->carrierRepository->findOneByBillingId($billingCarrierId);
 
-        if($carrier && $carrier->getDefaultLanguage()) {
+        $billingCarrierId  = (int) IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
+        /** @var CarrierInterface $carrier */
+        $carrier = $billingCarrierId ? $this->carrierProvider->fetchCarrierIfNeeded($billingCarrierId) : null;
+
+        if ($carrier && $carrier->getDefaultLanguage()) {
             return strtolower($carrier->getDefaultLanguage()->getCode());
         }
 
@@ -76,7 +79,7 @@ class LocalizationExtension extends AbstractExtension
 
     public function getLocalizationCSSPath()
     {
-        $langCode = $this->getLanguageCodeInLowerCase();
+        $langCode            = $this->getLanguageCodeInLowerCase();
         $localizationCSSPath = "css/localizations/$langCode.css";
 
         if (!$this->filesystem->exists($localizationCSSPath)) {

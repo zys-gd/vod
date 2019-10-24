@@ -1,12 +1,12 @@
 services:
-    Carriers\VivaBahrainMM\Identification\VivaBahrainMMIdentificationHandler:
+    Carriers\VodafoneEGMM\Identification\VodafoneEGMMIdentificationHandler:
         tags:
             - { name: identification.identification_handler }
 
-    Carriers\VivaBahrainMM\Template\VivaBahrainMMTemplateHandler:
+    Carriers\VodafoneEGMM\Template\VodafoneEGMMTemplateHandler:
         tags:
             - { name: store_commons.template_handler }
 
-    Carriers\VivaBahrainMM\OneClick\VivaBahrainMMOneClickFlow:
+    Carriers\VodafoneEGMM\OneClick\VodafoneEGMMOneClickFlow:
         tags:
             - { name: app.one_click_flow_handler }

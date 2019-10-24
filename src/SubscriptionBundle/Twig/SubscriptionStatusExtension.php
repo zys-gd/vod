@@ -164,7 +164,7 @@ class SubscriptionStatusExtension extends AbstractExtension
             $subscription = $this->arrayCacheService->getValue($key);
         } else {
             $subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($this->session);
-            $this->arrayCacheService->saveCache($key, $subscription, 0);
+            $this->arrayCacheService->saveCache($key, $subscription);
         }
         return $subscription;
 

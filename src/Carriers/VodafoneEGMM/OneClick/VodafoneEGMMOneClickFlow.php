@@ -1,14 +1,14 @@
 <?php
 
 
-namespace Carriers\MobilinkPK\OneClick;
+namespace Carriers\VodafoneEGMM\OneClick;
 
 
 use App\Domain\Service\OneClickFlow\OneClickFlowInterface;
 use App\Domain\Service\OneClickFlow\OneClickFlowParameters;
 use IdentificationBundle\BillingFramework\ID;
 
-class MobilinkPKOneClickFlow implements OneClickFlowInterface
+class VodafoneEGMMOneClickFlow implements OneClickFlowInterface
 {
     /**
      * @param int $billingCarrierId
@@ -17,11 +17,11 @@ class MobilinkPKOneClickFlow implements OneClickFlowInterface
      */
     public function canHandle(int $billingCarrierId): bool
     {
-        return false; //$billingCarrierId === ID::MOBILINK_PAKISTAN;
+        return $billingCarrierId === ID::VODAFONE_EGYPT_MM;
     }
 
     public function getFlowType(): ?int
     {
-        return  OneClickFlowParameters::CONFIRMATION_CLICK;
+        return  OneClickFlowParameters::LP_OFF;
     }
 }

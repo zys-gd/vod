@@ -95,7 +95,7 @@ class Translator implements TranslatorInterface
                 $this->texts = $this->arrayCacheService->getValue($cacheKey);
             } elseif ($this->cache->hasCache($cacheKey)) {
                 $this->texts = $this->cache->getValue($cacheKey);
-                $this->arrayCacheService->saveCache($cacheKey, $this->texts, 86400);
+                $this->arrayCacheService->saveCache($cacheKey, $this->texts);
             } else {
                 $this
                     ->retrieveFromDB($billingCarrierId, $languageCode)
@@ -225,7 +225,7 @@ class Translator implements TranslatorInterface
 
     private function pushTexts2Cache($cacheKey)
     {
-        $this->arrayCacheService->saveCache($cacheKey, $this->texts, 86400);
+        $this->arrayCacheService->saveCache($cacheKey, $this->texts);
         $this->cache->saveCache($cacheKey, $this->texts, 86400);
         return $this;
     }

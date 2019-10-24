@@ -48,11 +48,13 @@ class LoadCampaignsData extends AbstractFixture implements ContainerAwareInterfa
             $uuid                  = $row['uuid'];
             $freeTrialSubscription = $row['freeTrialSubscription'] ?? 0;
             $isOneClickFlow        = $row['isOneClickFlow'];
+            $schedule              = $row['schedule '] ?? '';
 
             $campaign = new Campaign($uuid);
 
             $affiliate = $this->getReference(sprintf('affiliate_%s', $affiliate_id));
             $campaign->setAffiliate($affiliate);
+            $campaign->setSchedule($schedule);
 
 
             $campaign->setImageName($image);
