@@ -1,0 +1,4 @@
+services:
+    Carriers\ZongPK\OneClick\ZongPKOneClickFlow:
+        tags:
+            - { name: app.one_click_flow_handler }

@@ -18,7 +18,6 @@ class ZongPKWifiIdentificationHandler implements WifiIdentificationHandlerInterf
      */
     private $repository;
 
-
     /**
      * MobilinkPKWifiIdentificationHandler constructor.
      *
@@ -52,8 +51,8 @@ class ZongPKWifiIdentificationHandler implements WifiIdentificationHandlerInterf
     public function getPhoneValidationOptions(): PhoneValidationOptions
     {
         return new PhoneValidationOptions(
-            '+923XXXXXXXXX',
-            '^\+923[0-9]{9}$',
+            '+9231XXXXXXXX',
+            '^\+9231[0-9]{6,11}$',
             'XXXXX',
             '^[0-9]{1,5}$'
         );
