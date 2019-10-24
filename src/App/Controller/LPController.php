@@ -133,11 +133,11 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param CarrierRepositoryInterface                     $carrierRepository
      * @param VisitTracker                                   $visitTracker
      * @param VisitNotifier                                  $notifier
-     * @param LoggerInterface               $logger
-     * @param CarrierSelector               $carrierSelector
-     * @param SubscribeUrlResolver          $subscribeUrlResolver
-     * @param ConstraintAvailabilityChecker $visitConstraintChecker
-     * @param CAPToolRedirectUrlResolver    $CAPToolRedirectUrlResolver
+     * @param LoggerInterface                                $logger
+     * @param CarrierSelector                                $carrierSelector
+     * @param SubscribeUrlResolver                           $subscribeUrlResolver
+     * @param ConstraintAvailabilityChecker                  $visitConstraintChecker
+     * @param CAPToolRedirectUrlResolver                     $CAPToolRedirectUrlResolver
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
@@ -233,7 +233,9 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             $this->logger->debug('Finish CAP checking');
         }
 
-        AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
+        if ($cid) {
+            AffiliateVisitSaver::savePageVisitData($session, $request->query->all());
+        }
 
         $billingCarrierId    = IdentificationFlowDataExtractor::extractBillingCarrierId($session);
         $identificationToken = IdentificationFlowDataExtractor::extractIdentificationToken($request->getSession());
