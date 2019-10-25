@@ -71,6 +71,11 @@ class SubscriptionLimitCompleter
 
         if ($this->resultSuccessChecker->isSuccessful($response)) {
 
+            $this->logger->debug('Cap section', [
+                'campaign' => $campaign
+                    ? $campaign->getCampaignToken()
+                    : ''
+            ]);
             $affiliateCapIsNeedToBeTracked = true;
             if (
                 $this->zeroCreditSubscriptionChecking->isZeroCreditAvailable($carrier->getBillingCarrierId(), $campaign) &&
@@ -80,7 +85,11 @@ class SubscriptionLimitCompleter
                 $this->logger->debug('Zero credit check is triggered', [
                     'affiliateCapIsNeedToBeTracked' => $affiliateCapIsNeedToBeTracked
                 ]);
+            } else {
+                $this->logger->debug('Zero credit is not required');
             }
+
+
             $this->subscriptionLimiter->finishSubscription(
                 $user->getCarrier(),
                 $subscription,

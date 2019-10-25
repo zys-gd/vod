@@ -49,7 +49,7 @@ services:
             - '@IdentificationBundle\Identification\Service\PassthroughChecker'
             - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
             - '@App\Domain\Service\OneClickFlow\OneClickFlowChecker'
-            - '@App\Domain\Service\CarrierProvider'
+            - '@App\Domain\Service\Carrier\CarrierProvider'
             - '@App\Domain\Service\OneClickFlow\OneClickFlowScheduler'
 
     App\Twig\PassthroughExtension:
@@ -78,7 +78,7 @@ services:
             - '@ExtrasBundle\Utils\LocalExtractor'
             - '@session'
             - '@Symfony\Component\Filesystem\Filesystem'
-            - '@App\Domain\Service\CarrierProvider'
+            - '@App\Domain\Service\Carrier\CarrierProvider'
 
     twig.extension.date:
         class: Twig_Extensions_Extension_Date

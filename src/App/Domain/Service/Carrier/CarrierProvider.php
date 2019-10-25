@@ -6,7 +6,7 @@
  * Time: 14:13
  */
 
-namespace App\Domain\Service;
+namespace App\Domain\Service\Carrier;
 
 
 use App\Domain\Entity\Carrier;
