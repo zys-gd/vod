@@ -1,0 +1,11 @@
+services:
+    SubscriptionBundle\Carriers\ZongPK\Notification\ZongPKNotificationHandler:
+        arguments: ['@CommonDataBundle\Repository\Interfaces\LanguageRepositoryInterface']
+        tags:
+            - { name: subscription.notification_handler, type: subscribe }
+            - { name: subscription.notification_handler, type: unsubscribe }
+
+    SubscriptionBundle\Carriers\ZongPK\Subscribe\ZongPKSubscribeHandler:
+        arguments: ['@SubscriptionBundle\Subscription\Notification\Notifier', '@IdentificationBundle\Identification\Service\RouteProvider']
+        tags:
+            - { name: subscription.subscription_handler }
