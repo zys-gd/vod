@@ -116,7 +116,7 @@ services:
       - '@App\Domain\Service\OneClickFlow\OneClickFlowScheduler'
 
 
-  App\Domain\Service\CarrierOTPVerifier:
+  App\Domain\Service\Carrier\CarrierOTPVerifier:
     arguments:
       - '@App\Domain\Repository\CarrierRepository'
       - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
@@ -162,5 +162,5 @@ services:
   App\Domain\Service\HomepageVideoListProvider:
     arguments: ['@App\Domain\Repository\UploadedVideoRepository', '@App\Domain\Repository\MainCategoryRepository', '@App\Domain\Repository\CountryCategoryPriorityOverrideRepository', '@App\Domain\Service\VideoProcessing\UploadedVideoSerializer', '@app.cache.default']
 
-  App\Domain\Service\CarrierProvider:
-    arguments: ['@app.cache.array_default', '@IdentificationBundle\Repository\CarrierRepositoryInterface']
+  App\Domain\Service\Carrier\CarrierProvider:
+    arguments: ['@app.cache.array_default', '@App\Domain\Repository\CarrierRepository']

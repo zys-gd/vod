@@ -4,7 +4,7 @@
 namespace App\Twig;
 
 
-use App\Domain\Service\CarrierProvider;
+use App\Domain\Service\Carrier\CarrierProvider;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
