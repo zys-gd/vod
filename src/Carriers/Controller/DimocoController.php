@@ -31,7 +31,7 @@ class DimocoController extends AbstractController implements ControllerWithISPDe
     }
 
     /**
-     * @Route("/dimoco-prepayment",name="dimoco_prepayment")
+     * @Route("/prepayment", name="prepayment")
      *
      * @param ISPData $data
      *
@@ -47,7 +47,7 @@ class DimocoController extends AbstractController implements ControllerWithISPDe
     }
 
     /**
-     * @Route("/dimoco-payment",name="dimoco_payment")
+     * @Route("/payment",name="payment")
      *
      * @param ISPData $data
      *
@@ -58,6 +58,22 @@ class DimocoController extends AbstractController implements ControllerWithISPDe
     public function paymentAction(ISPData $data)
     {
         $template = $this->templateConfigurator->getTemplate('payment', $data->getCarrierId());
+
+        return $this->render($template);
+    }
+
+    /**
+     * @Route("/payment-confirmation", name="payment_confirmation")
+     *
+     * @param ISPData $data
+     *
+     * @return Response
+     *
+     * @throws TemplateNotFoundException
+     */
+    public function confirmationAction(ISPData $data)
+    {
+        $template = $this->templateConfigurator->getTemplate('payment_confirmation', $data->getCarrierId());
 
         return $this->render($template);
     }
