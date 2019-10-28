@@ -1,6 +1,6 @@
 <?php
 
-namespace SubscriptionBundle\Carriers\TMobilePolandDimoco\Subscribe;
+namespace Carriers\TMobilePolandDimoco\Subscribe;
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\BillingFramework\ID;
@@ -10,12 +10,28 @@ use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Subscribe\Handler\HasCommonFlow;
 use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Class TMobilePolandDimocoSubscribeHandler
  */
 class TMobilePolandDimocoSubscribeHandler implements SubscriptionHandlerInterface, HasCommonFlow
 {
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
+     * TMobilePolandDimocoSubscribeHandler constructor.
+     *
+     * @param RouterInterface $router
+     */
+    public function __construct(RouterInterface $router)
+    {
+        $this->router = $router;
+    }
+
     /**
      * @param CarrierInterface $carrier
      *
@@ -34,7 +50,9 @@ class TMobilePolandDimocoSubscribeHandler implements SubscriptionHandlerInterfac
      */
     public function getAdditionalSubscribeParams(Request $request, User $User): array
     {
-        return [];
+        return [
+            'redirect_url' => $this->router->generate('payment_confirmation')
+        ];
     }
 
     /**

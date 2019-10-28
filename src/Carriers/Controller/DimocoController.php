@@ -7,6 +7,7 @@ use CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -65,14 +66,21 @@ class DimocoController extends AbstractController implements ControllerWithISPDe
     /**
      * @Route("/payment-confirmation", name="payment_confirmation")
      *
+     * @param Request $request
      * @param ISPData $data
      *
      * @return Response
      *
      * @throws TemplateNotFoundException
      */
-    public function confirmationAction(ISPData $data)
+    public function confirmationAction(Request $request, ISPData $data)
     {
+        $result = $request->query->get('result', null);
+
+        if (empty($result) || $result !== 'successful') {
+            return $this->redirectToRoute('index', ['err_handle' => 'subscribe_error']);
+        }
+
         $template = $this->templateConfigurator->getTemplate('payment_confirmation', $data->getCarrierId());
 
         return $this->render($template);

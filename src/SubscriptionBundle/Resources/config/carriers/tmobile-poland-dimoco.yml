@@ -1,4 +1,0 @@
-services:
-    SubscriptionBundle\Carriers\TMobilePolandDimoco\Subscribe\TMobilePolandDimocoSubscribeHandler:
-        tags:
-            - { name: subscription.subscription_handler }

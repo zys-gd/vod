@@ -2,3 +2,9 @@ services:
     Carriers\TMobilePolandDimoco\Template\TMobilePolandDimocoTemplateHandler:
         tags:
             - { name: store_commons.template_handler }
+
+    Carriers\TMobilePolandDimoco\Subscribe\TMobilePolandDimocoSubscribeHandler:
+        arguments:
+            - '@router'
+        tags:
+            - { name: subscription.subscription_handler }
