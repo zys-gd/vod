@@ -201,7 +201,7 @@ class CommonFlowHandler
             $this->conversionEventPublisher->publish($event);
         } else {
             $carrier = $subscription->getUser()->getCarrier();
-            $this->logger->info('Event should be already tracked. Ignoring', [
+            $this->logger->debug('Event should be already tracked. Ignoring', [
                 'event'   => $callbackTypeHandler->getPiwikEventName(),
                 'carrier' => $carrier->getBillingCarrierId()
             ]);
@@ -209,5 +209,4 @@ class CommonFlowHandler
 
         return $subscription;
     }
-
 }
