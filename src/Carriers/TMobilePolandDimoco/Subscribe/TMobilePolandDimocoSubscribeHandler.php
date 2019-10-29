@@ -10,6 +10,7 @@ use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Subscribe\Handler\HasCommonFlow;
 use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -51,7 +52,7 @@ class TMobilePolandDimocoSubscribeHandler implements SubscriptionHandlerInterfac
     public function getAdditionalSubscribeParams(Request $request, User $User): array
     {
         return [
-            'redirect_url' => $this->router->generate('payment_confirmation')
+            'redirect_url' => $this->router->generate('payment_confirmation', [], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
     }
 
