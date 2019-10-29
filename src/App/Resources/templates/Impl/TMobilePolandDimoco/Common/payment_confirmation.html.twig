@@ -1,0 +1,44 @@
+{% extends '@App/base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .payment-confirmation-container {
+            padding-top: 15vh;
+        }
+
+        .payment-confirmation-container p {
+            margin: 10px 5px;
+            font-style: italic;
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(() => {
+            setTimeout(() => {
+                window.location.href = "{{ path('index') }}";
+            }, 5000);
+        })
+    </script>
+{% endblock %}
+
+{% block header %}
+    <div class="d-flex flex-row justify-content-end mt-2 pr-3">
+        <div class="text-right mt-1"><span class="header-logo"></span></div>
+    </div>
+{% endblock header %}
+
+{% block body %}
+    <div class="d-flex flex-column w-100 payment-confirmation-container">
+        <p>Twoja transakcja zakończyła się powodzeniem.</p>
+        <p>Dziękujemy za skorzystanie z usługi.</p>
+        <p>Za chwilę zostaniesz przekierowany do serwisu. Jeśli to nie nastąpi w ciągu kilku minut, kliknij <a href="{{ path('index') }}">Kontynuuj</a></p>
+    </div>
+{% endblock %}
+
+{% block footer %}
+
+{% endblock footer %}
