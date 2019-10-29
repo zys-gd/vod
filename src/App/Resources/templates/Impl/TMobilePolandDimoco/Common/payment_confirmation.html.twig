@@ -19,6 +19,7 @@
     <script>
         $(document).ready(() => {
             setTimeout(() => {
+                $._loader(false);
                 window.location.href = "{{ path('index') }}";
             }, 5000);
         })
