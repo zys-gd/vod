@@ -14,5 +14,6 @@ services:
         arguments:
             - '@IdentificationBundle\Repository\UserRepository'
             - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
+            - '@router'
         tags:
             - { name: identification.wifi_identification_handler }

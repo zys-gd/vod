@@ -6,18 +6,22 @@ use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
 use IdentificationBundle\BillingFramework\Process\DTO\PinVerifyResult;
+use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\DTO\PhoneValidationOptions;
 use IdentificationBundle\WifiIdentification\Exception\WifiIdentConfirmException;
+use IdentificationBundle\WifiIdentification\Handler\HasCustomPinRequestRules;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinVerifyRules;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
 use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Class TMobilePolandDimocoWifiIdentificationHandler
  */
-class TMobilePolandDimocoWifiIdentificationHandler implements WifiIdentificationHandlerInterface, HasCustomPinVerifyRules
+class TMobilePolandDimocoWifiIdentificationHandler implements WifiIdentificationHandlerInterface, HasCustomPinVerifyRules, HasCustomPinRequestRules
 {
     /**
      * @var UserRepository
@@ -30,15 +34,22 @@ class TMobilePolandDimocoWifiIdentificationHandler implements WifiIdentification
     private $storage;
 
     /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
      * TMobilePolandDimocoWifiIdentificationHandler constructor
      *
-     * @param UserRepository   $repository
+     * @param UserRepository                $repository
      * @param WifiIdentificationDataStorage $storage
+     * @param RouterInterface               $router
      */
-    public function __construct(UserRepository $repository, WifiIdentificationDataStorage $storage)
+    public function __construct(UserRepository $repository, WifiIdentificationDataStorage $storage, RouterInterface $router)
     {
         $this->repository = $repository;
         $this->storage = $storage;
+        $this->router = $router;
     }
 
     /**
@@ -84,7 +95,6 @@ class TMobilePolandDimocoWifiIdentificationHandler implements WifiIdentification
 
     public function getRedirectUrl()
     {
-
     }
 
     /**
@@ -129,5 +139,33 @@ class TMobilePolandDimocoWifiIdentificationHandler implements WifiIdentification
     public function afterFailedPinVerify(\Exception $exception): void
     {
         // TODO: Implement afterFailedPinVerify() method.
+    }
+
+    /**
+     * @return array
+     */
+    public function getAdditionalPinRequestParams(): array
+    {
+        return [
+            'redirect_url' => $this->router->generate('payment_confirmation', [], UrlGeneratorInterface::ABSOLUTE_URL)
+        ];
+    }
+
+    /**
+     * @param PinRequestResult $result
+     */
+    public function afterSuccessfulPinRequest(PinRequestResult $result): void
+    {
+        // TODO: Implement afterSuccessfulPinRequest() method.
+    }
+
+    /**
+     * @param PinRequestProcessException $exception
+     *
+     * @return string|null
+     */
+    public function getPinRequestErrorMessage(PinRequestProcessException $exception): ?string
+    {
+        return $exception->getMessage();
     }
 }
