@@ -1,10 +1,4 @@
 services:
-    IdentificationBundle\Carriers\TMobilePolandDimoco\TMobilePolandDimocoWifiIdentificationHandler:
-        arguments:
-            - '@IdentificationBundle\Repository\UserRepository'
-        tags:
-            - { name: identification.wifi_identification_handler }
-
     IdentificationBundle\Carriers\TMobilePolandDimoco\TMobilePolandDimocoIdentificationHandler:
         arguments:
             - '@IdentificationBundle\Repository\UserRepository'

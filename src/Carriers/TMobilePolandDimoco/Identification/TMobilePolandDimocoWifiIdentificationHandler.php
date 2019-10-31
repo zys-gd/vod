@@ -1,6 +1,6 @@
 <?php
 
-namespace IdentificationBundle\Carriers\TMobilePolandDimoco;
+namespace Carriers\TMobilePolandDimoco\Identification;
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\BillingFramework\ID;
@@ -12,6 +12,7 @@ use IdentificationBundle\WifiIdentification\DTO\PhoneValidationOptions;
 use IdentificationBundle\WifiIdentification\Exception\WifiIdentConfirmException;
 use IdentificationBundle\WifiIdentification\Handler\HasCustomPinVerifyRules;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
+use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 
 /**
  * Class TMobilePolandDimocoWifiIdentificationHandler
@@ -24,13 +25,20 @@ class TMobilePolandDimocoWifiIdentificationHandler implements WifiIdentification
     private $repository;
 
     /**
+     * @var WifiIdentificationDataStorage
+     */
+    private $storage;
+
+    /**
      * TMobilePolandDimocoWifiIdentificationHandler constructor
      *
-     * @param UserRepository $repository
+     * @param UserRepository   $repository
+     * @param WifiIdentificationDataStorage $storage
      */
-    public function __construct(UserRepository $repository)
+    public function __construct(UserRepository $repository, WifiIdentificationDataStorage $storage)
     {
         $this->repository = $repository;
+        $this->storage = $storage;
     }
 
     /**
@@ -112,7 +120,7 @@ class TMobilePolandDimocoWifiIdentificationHandler implements WifiIdentification
      */
     public function afterSuccessfulPinVerify(PinVerifyResult $parameters): void
     {
-        // TODO: Implement afterSuccessfulPinVerify() method.
+        $this->storage->setPinVerifyResult($parameters);
     }
 
     /**

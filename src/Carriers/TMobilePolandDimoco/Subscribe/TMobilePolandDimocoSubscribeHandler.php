@@ -5,6 +5,7 @@ namespace Carriers\TMobilePolandDimoco\Subscribe;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Entity\User;
+use IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Subscribe\Handler\HasCommonFlow;
@@ -24,13 +25,20 @@ class TMobilePolandDimocoSubscribeHandler implements SubscriptionHandlerInterfac
     private $router;
 
     /**
+     * @var WifiIdentificationDataStorage
+     */
+    private $storage;
+
+    /**
      * TMobilePolandDimocoSubscribeHandler constructor.
      *
-     * @param RouterInterface $router
+     * @param RouterInterface               $router
+     * @param WifiIdentificationDataStorage $storage
      */
-    public function __construct(RouterInterface $router)
+    public function __construct(RouterInterface $router, WifiIdentificationDataStorage $storage)
     {
         $this->router = $router;
+        $this->storage = $storage;
     }
 
     /**
@@ -51,9 +59,15 @@ class TMobilePolandDimocoSubscribeHandler implements SubscriptionHandlerInterfac
      */
     public function getAdditionalSubscribeParams(Request $request, User $User): array
     {
-        return [
+        $additionalData = [
             'redirect_url' => $this->router->generate('payment_confirmation', [], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
+
+        if ($this->storage->isWifiFlow() && $pinVerifyResult = $this->storage->getPinVerifyResult()) {
+            $additionalData['process_via_pin_flow'] = $pinVerifyResult->getRawData()['transactionId'];
+        }
+
+        return $additionalData;
     }
 
     /**
