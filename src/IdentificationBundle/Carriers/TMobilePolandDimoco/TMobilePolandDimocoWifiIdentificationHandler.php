@@ -7,7 +7,6 @@ use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\BillingFramework\Process\DTO\PinRequestResult;
 use IdentificationBundle\BillingFramework\Process\DTO\PinVerifyResult;
 use IdentificationBundle\Entity\User;
-use IdentificationBundle\Identification\Service\RouteProvider;
 use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\DTO\PhoneValidationOptions;
 use IdentificationBundle\WifiIdentification\Exception\WifiIdentConfirmException;
@@ -25,20 +24,13 @@ class TMobilePolandDimocoWifiIdentificationHandler implements WifiIdentification
     private $repository;
 
     /**
-     * @var RouteProvider
-     */
-    private $routeProvider;
-
-    /**
      * TMobilePolandDimocoWifiIdentificationHandler constructor
      *
      * @param UserRepository $repository
-     * @param RouteProvider  $routeProvider
      */
-    public function __construct(UserRepository $repository, RouteProvider $routeProvider)
+    public function __construct(UserRepository $repository)
     {
         $this->repository = $repository;
-        $this->routeProvider = $routeProvider;
     }
 
     /**
@@ -82,12 +74,9 @@ class TMobilePolandDimocoWifiIdentificationHandler implements WifiIdentification
         return false;
     }
 
-    /**
-     * @return string
-     */
     public function getRedirectUrl()
     {
-        return $this->routeProvider->getLinkToHomepage();
+
     }
 
     /**
