@@ -46,9 +46,9 @@ class TMobilePolandDimocoWifiIdentificationHandler implements WifiIdentification
     {
         return new PhoneValidationOptions(
             '+48XXXXXXXXXX',
-            '^\+48[0-9]{10,14}$',
-            'XXXXX',
-            '^[0-9]{1,5}$'
+            '^\+48[0-9]{9}$',
+            'XXXX',
+            '^[0-9]{4}$'
         );
     }
 
