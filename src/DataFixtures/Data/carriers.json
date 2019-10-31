@@ -405,7 +405,7 @@
         "isCampaignsOnPause": false,
         "subscribeAttempts": 1,
         "isUnlimitedSubscriptionAttemptsAllowed": true,
-        "numberOfAllowedSubscriptionsByConstraint": 1,
+        "numberOfAllowedSubscriptionsByConstraint": 0,
         "redirectUrl": "https:\/\/www.google.com\/",
         "flushDate": null,
         "isCapAlertDispatch": true,
