@@ -7,13 +7,14 @@ interface OneClickFlowInterface
 {
     /**
      * @param int $billingCarrierId
+     * @param int $flowType
      *
      * @return bool
      */
-    public function canHandle(int $billingCarrierId): bool;
+    public function canHandle(int $billingCarrierId, int $flowType): bool;
 
     /**
-     * @return int|null
+     * @return int
      */
-    public function getFlowType(): ?int;
+    public function getFlowType(): int;
 }

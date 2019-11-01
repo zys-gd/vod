@@ -17,3 +17,9 @@ services:
             - '@router'
         tags:
             - { name: identification.wifi_identification_handler }
+
+    Carriers\TMobilePolandDimoco\OneClick\TMobilePLDimocoOneClickHandler:
+        arguments:
+            - '@router'
+        tags:
+            - { name: app.one_click_flow_handler }

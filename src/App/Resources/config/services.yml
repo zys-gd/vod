@@ -112,7 +112,6 @@ services:
       - '@SubscriptionBundle\CAPTool\Subscription\Limiter\SubscriptionCapChecker'
       - '@logger'
       - '@App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherChecker'
-      - '@App\Domain\Service\OneClickFlow\OneClickFlowChecker'
       - '@App\Domain\Service\OneClickFlow\OneClickFlowScheduler'
 
 
@@ -150,10 +149,6 @@ services:
   App\Domain\Service\Campaign\CampaignSerializer:
     arguments:
       - '%images_base_url%'
-
-  App\Domain\Service\OneClickFlow\OneClickFlowChecker:
-    arguments:
-      - '@App\Domain\Service\OneClickFlow\OneClickFlowCarriersProvider'
 
   App\Domain\Service\OneClickFlow\OneClickFlowCarriersProvider: ~
 

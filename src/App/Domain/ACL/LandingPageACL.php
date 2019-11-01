@@ -12,8 +12,6 @@ use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Repository\CarrierRepository;
 use App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherChecker;
-use App\Domain\Service\OneClickFlow\OneClickFlowChecker;
-use App\Domain\Service\OneClickFlow\OneClickFlowParameters;
 use App\Domain\Service\OneClickFlow\OneClickFlowScheduler;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\CAPTool\Subscription\Exception\SubscriptionCapReachedOnAffiliate;
@@ -69,10 +67,7 @@ class LandingPageACL
      * @var AffiliateBannedPublisherChecker
      */
     private $affiliateBannedPublisherChecker;
-    /**
-     * @var OneClickFlowChecker
-     */
-    private $oneClickFlowChecker;
+
     /**
      * @var OneClickFlowScheduler
      */
@@ -89,7 +84,6 @@ class LandingPageACL
      * @param SubscriptionCapChecker          $subscriptionCapChecker
      * @param LoggerInterface                 $logger
      * @param AffiliateBannedPublisherChecker $affiliateBannedPublisherChecker
-     * @param OneClickFlowChecker             $oneClickFlowChecker
      * @param OneClickFlowScheduler           $oneClickFlowScheduler
      */
     public function __construct(
@@ -101,7 +95,6 @@ class LandingPageACL
         SubscriptionCapChecker $subscriptionCapChecker,
         LoggerInterface $logger,
         AffiliateBannedPublisherChecker $affiliateBannedPublisherChecker,
-        OneClickFlowChecker $oneClickFlowChecker,
         OneClickFlowScheduler $oneClickFlowScheduler
     )
     {
@@ -113,7 +106,6 @@ class LandingPageACL
         $this->campaignRepository              = $campaignRepository;
         $this->session                         = $session;
         $this->affiliateBannedPublisherChecker = $affiliateBannedPublisherChecker;
-        $this->oneClickFlowChecker             = $oneClickFlowChecker;
         $this->oneClickFlowScheduler           = $oneClickFlowScheduler;
     }
 
@@ -161,12 +153,10 @@ class LandingPageACL
      *
      * @return bool
      */
-    public function isLandingDisabled(Carrier $carrier, Campaign $campaign = null): bool
+    public function checkLandingCanBeDisabled(Carrier $carrier, Campaign $campaign = null): bool
     {
         try {
-            $isSupportRequestedFlow = $this->oneClickFlowChecker->check($carrier->getBillingCarrierId(), OneClickFlowParameters::LP_OFF);
-
-            if (!$carrier->isOneClickFlow() || !$isSupportRequestedFlow) {
+            if (!$carrier->isOneClickFlow()) {
                 return false;
             }
 
