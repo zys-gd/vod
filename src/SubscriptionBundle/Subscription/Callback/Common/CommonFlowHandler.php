@@ -189,15 +189,24 @@ class CommonFlowHandler
 
         if ($isNeedToBeTracked) {
             $userInfo = $this->infoMapper->mapFromUser($subscription->getUser());
-            if ($type === 'subscribe') {
-                $this->affiliateSender->checkAffiliateEligibilityAndSendEvent($subscription, $userInfo);
+            $affiliateToken = $subscription->getAffiliateToken();
+
+            if ($type === 'subscribe' && $affiliateToken && !empty($affiliateToken['cid'])) {
+                $this->affiliateSender->checkAffiliateEligibilityAndSendEvent(
+                    $subscription,
+                    $userInfo,
+                    $affiliateToken,
+                    $affiliateToken['cid']
+                );
             }
+
             $event = $this->conversionEventMapper->map(
                 $callbackTypeHandler->getPiwikEventName(),
                 $processResponse,
                 $subscription->getUser(),
                 $subscription
             );
+
             $this->conversionEventPublisher->publish($event);
         } else {
             $carrier = $subscription->getUser()->getCarrier();
