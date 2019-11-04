@@ -25,6 +25,7 @@ services:
             - '@SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
             - '@logger'
+            - '@SubscriptionBundle\Subscription\Common\RouteProvider'
 
     SubscriptionBundle\Subscription\SubscribeBack\Handler\SubscribeBackHandlerProvider:
         arguments:
