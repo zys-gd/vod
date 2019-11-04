@@ -224,17 +224,18 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $isWifiFlow          = $billingCarrierId ? false : true;
         $this->contentStatisticSender->trackVisit($session);
 
-        if ($carrier
-            && $clickHandler = $this->oneClickHandlerProvider->get($carrier->getBillingCarrierId(), OneClickFlowParameters::LP_OFF)
-            && $this->landingPageAccessResolver->checkLandingCanBeDisabled($carrier, $campaign)
-        ) {
-            if ($clickHandler instanceof HasCustomOneClickRedirectRules) {
-                $redirectUrl = $clickHandler->getRedirectUrl();
-            } else {
-                $redirectUrl = $this->subscribeUrlResolver->getSubscribeRoute($request, $carrier, $identificationToken);
-            }
+        if ($carrier) {
+            $clickHandler = $this->oneClickHandlerProvider->get($carrier->getBillingCarrierId(), OneClickFlowParameters::LP_OFF);
 
-            return new RedirectResponse($redirectUrl);
+            if ($clickHandler && $this->landingPageAccessResolver->checkLandingCanBeDisabled($carrier, $campaign)) {
+                if ($clickHandler instanceof HasCustomOneClickRedirectRules) {
+                    $redirectUrl = $clickHandler->getRedirectUrl();
+                } else {
+                    $redirectUrl = $this->subscribeUrlResolver->getSubscribeRoute($request, $carrier, $identificationToken);
+                }
+
+                return new RedirectResponse($redirectUrl);
+            }
         }
 
         if (!$cid) {
