@@ -51,7 +51,7 @@ services:
             - '@App\Domain\Repository\CampaignRepository'
             - '@App\Domain\ACL\LandingPageACL'
             - '%images_base_url%'
-            - '@App\Domain\Service\CarrierOTPVerifier'
+            - '@App\Domain\Service\Carrier\CarrierOTPVerifier'
             - '%default_redirect_url%'
             - '@CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator'
             - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
@@ -84,6 +84,10 @@ services:
             - '@App\Domain\Repository\CarrierRepository'
             - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
             - '@CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator'
+            - '@App\Domain\Repository\MainCategoryRepository'
+            - '@App\Domain\Repository\SubcategoryRepository'
+            - '@App\Domain\Repository\UploadedVideoRepository'
+            - '@App\Domain\Service\VideoProcessing\UploadedVideoSerializer'
 
     App\Controller\ContactUsController:
         arguments:

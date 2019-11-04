@@ -56,9 +56,9 @@ class LoadSubscriptionPackData extends AbstractFixture implements DependentFixtu
             $unlimited_grace_period              = $row['unlimitedGracePeriod'];
             $preferred_renewal_start             = $row['preferredRenewalStart'];
             $preferred_renewal_end               = $row['preferredRenewalEnd'];
-            $welcome_sms_text                    = $row['welcomeSMSText'];
-            $renewal_sms_text                    = $row['renewalSMSText'];
-            $unsubscribe_sms_text                = $row['unsubscribeSMSText'];
+            $welcome_sms_text                    = $row['welcomeSMSText'] ?? '';
+            $renewal_sms_text                    = $row['renewalSMSText'] ?? '';
+            $unsubscribe_sms_text                = $row['unsubscribeSMSText'] ?? '';
             $buy_strategy_id                     = $row['buyStrategyId'];
             $renew_strategy_id                   = $row['renewStrategyId'];
             $unlimited                           = $row['unlimited'];
@@ -70,18 +70,13 @@ class LoadSubscriptionPackData extends AbstractFixture implements DependentFixtu
             $provider_managed_subscriptions      = $row['providerManagedSubscriptions'];
             $created                             = $row['created'];
             $updated                             = $row['updated'];
-            $is_resub_allowed                    = $row['isResubAllowed'];
+            $is_resub_allowed                    = $row['isResubAllowed'] ?? 0;
             $displayCurrency                     = $row['displayCurrency'] ?? '';
             $zeroCreditSubAvailable              = $row['zeroCreditSubAvailable'] ?? 0;
 
 
             $pack = new SubscriptionPack($uuid);
-            $this->addReference(sprintf('subscription_pack_%s', $uuid), $pack);
-            $this->addReference(sprintf('subscription_pack_with_name_%s', $name), $pack);
 
-            if ($status == SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK) {
-                $this->addReference(sprintf('subscription_pack_for_carrier_%s', $carrier_id), $pack);
-            }
 
             $pack->setCountry($this->getReference(sprintf('country_%s', $country_uuid)));
             $pack->setStatus($status);
@@ -97,6 +92,15 @@ class LoadSubscriptionPackData extends AbstractFixture implements DependentFixtu
                 echo "Missing carrier with internal ID `$carrier_id` for subscription pack `$uuid`. Skipping.\n\r ";
                 continue;
             }
+
+            $this->addReference(sprintf('subscription_pack_%s', $uuid), $pack);
+            $this->addReference(sprintf('subscription_pack_with_name_%s', $name), $pack);
+
+            if ($status == SubscriptionPack::ACTIVE_SUBSCRIPTION_PACK) {
+                $this->addReference(sprintf('subscription_pack_for_carrier_%s', $carrier_id), $pack);
+                $this->addReference(sprintf('subscription_pack_for_carrier_with_internal_id_%s', $carrier->getBillingCarrierId()), $pack);
+            }
+
             $pack->setCarrier($carrier);
 
             $pack->setTierPrice($tier_price);

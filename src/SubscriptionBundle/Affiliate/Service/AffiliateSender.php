@@ -17,6 +17,7 @@ use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 use SubscriptionBundle\Entity\Affiliate\AffiliateLog;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
+use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface;
 
 class AffiliateSender
@@ -61,11 +62,11 @@ class AffiliateSender
         LoggerInterface $logger
     )
     {
-        $this->campaignRepository = $campaignRepository;
-        $this->entityManager = $entityManager;
-        $this->clientFactory = $clientFactory;
+        $this->campaignRepository  = $campaignRepository;
+        $this->entityManager       = $entityManager;
+        $this->clientFactory       = $clientFactory;
         $this->affiliateLogFactory = $affiliateLogFactory;
-        $this->logger = $logger;
+        $this->logger              = $logger;
     }
 
     public function checkAffiliateEligibilityAndSendEvent(
@@ -76,7 +77,7 @@ class AffiliateSender
     ): void
     {
         $this->logger->debug('start AffiliateSender::checkAffiliateEligibilityAndSendEvent()', [
-            'userInfo' => $userInfo,
+            'userInfo'       => $userInfo,
             'campaignParams' => $campaignParams,
             '$campaignToken' => $campaignToken
         ]);
@@ -104,12 +105,12 @@ class AffiliateSender
 
 
         try {
-            $data = ['query' => $this->getPostBackParameters($affiliate, $campaign, $campaignParams)];
+            $data = ['query' => $this->getPostBackParameters($affiliate, $campaign, $campaignParams, $subscription->getSubscriptionPack())];
 
             $fullUrl = $affiliate->getPostbackUrl() . '?' . http_build_query($data['query']);
 
             $this->logger->debug('check content', [
-                'userInfo' => $data,
+                'userInfo'       => $data,
                 'campaignParams' => $fullUrl,
                 '$campaignToken' => $campaignToken
             ]);
@@ -174,31 +175,36 @@ class AffiliateSender
      * @param AffiliateInterface $affiliate
      * @param CampaignInterface  $campaign
      * @param array              $campaignParams
+     * @param SubscriptionPack   $subscriptionPack
      *
      * @return array
      * @throws WrongIncomingParameters
      */
-    private function getPostBackParameters(AffiliateInterface $affiliate,
-                                           CampaignInterface $campaign,
-                                           array $campaignParams): array
+    private function getPostBackParameters(
+        AffiliateInterface $affiliate,
+        CampaignInterface $campaign,
+        array $campaignParams,
+        SubscriptionPack $subscriptionPack
+    ): array
     {
         $query = [];
 
         if ($affiliate->isUniqueFlow()) {
             $query = $this->jumpIntoUniqueFlow($affiliate, $campaignParams);
-        } else {
-        $paramsList = $affiliate->getParamsList();
-        $constantsList = $affiliate->getConstantsList();
-        $query = $this->jumpIntoStandartFlow($paramsList, $constantsList, $campaignParams, $query);
-        $this->logger->debug('check content in getPostBackParameters()', [
-            'query' => $query
-        ]);
+        }
+        else {
+            $paramsList    = $affiliate->getParamsList();
+            $constantsList = $affiliate->getConstantsList();
+            $query         = $this->jumpIntoStandartFlow($paramsList, $constantsList, $campaignParams, $query);
+            $this->logger->debug('check content in getPostBackParameters()', [
+                'query' => $query
+            ]);
         };
 
         if (!$affiliate->isUniqueFlow() && $subPriceName = $affiliate->getSubPriceName()) {
             $query = array_merge(
                 $query,
-                [$subPriceName => $this->calculateAffiliatePriceParameter($campaign)]
+                [$subPriceName => $this->calculateAffiliatePriceParameter($campaign, $subscriptionPack)]
             );
         }
 
@@ -209,13 +215,16 @@ class AffiliateSender
         return $query;
     }
 
-    protected function calculateAffiliatePriceParameter(CampaignInterface $campaign): float
+    protected function calculateAffiliatePriceParameter(
+        CampaignInterface $campaign,
+        SubscriptionPack $subscriptionPack
+    ): float
     {
         if ($campaign->isZeroCreditSubAvailable()) {
             return $campaign->getZeroEurPrice();
         }
 
-        if ($campaign->isFreeTrialSubscription()) {
+        if ($campaign->isFreeTrialSubscription() || $subscriptionPack->isFirstSubscriptionPeriodIsFree()) {
             return $campaign->getFreeTrialPrice();
         }
 
@@ -234,14 +243,14 @@ class AffiliateSender
     private function jumpIntoStandartFlow(array $paramsList, array $constantsList, array $campaignParams, array $query)
     {
         $this->logger->debug('debug AffiliateSender::jumpIntoStandartFlow()', [
-            'paramsList (from DB)' => $paramsList,
+            'paramsList (from DB)'      => $paramsList,
             'campaignParams (from url)' => $campaignParams,
-            'constantsList' => $constantsList,
+            'constantsList'             => $constantsList,
         ]);
 
         if (!empty($paramsList)) {
             foreach ($paramsList as $output => $input) {
-                try{
+                try {
                     $query[$output] = $campaignParams[$input]; // !isset($campaignParams[$input])
                 } catch (\Error $e) {
                     throw new WrongIncomingParameters();
@@ -259,7 +268,7 @@ class AffiliateSender
 
     /**
      * @param AffiliateInterface $affiliate
-     * @param array     $campaignParams
+     * @param array              $campaignParams
      *
      * @return array|string
      */

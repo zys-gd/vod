@@ -85,7 +85,7 @@ class MassRenewCommand extends Command
             throw new \InvalidArgumentException('No cron tasks for selected carrier');
         }
 
-        $this->cronTaskStatus->getCronTaskByName($taskName);
+        $this->cronTaskStatus->initializeCronTaskByName($taskName);
         try {
             $this->cronTaskStatus->start();
         } catch (\Exception $e) {
