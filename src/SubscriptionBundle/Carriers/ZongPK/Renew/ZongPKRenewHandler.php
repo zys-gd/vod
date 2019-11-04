@@ -48,6 +48,12 @@ class ZongPKCallbackRenew implements CarrierCallbackHandlerInterface, HasCommonF
         $this->userRepository    = $userRepository;
     }
 
+    /**
+     * @param Request $request
+     * @param int     $carrierId
+     *
+     * @return bool
+     */
     public function canHandle(Request $request, int $carrierId): bool
     {
         return $carrierId === ID::ZONG_PAKISTAN;
