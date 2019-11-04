@@ -26,6 +26,7 @@ use SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use SubscriptionBundle\Subscription\Common\RouteProvider as SubscriptionRouteProvider;
 
 class CommonFlowHandler
 {
@@ -87,6 +88,10 @@ class CommonFlowHandler
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var SubscriptionRouteProvider
+     */
+    private $subscriptionRouteProvider;
 
     /**
      * CommonFlowHandler constructor.
@@ -105,6 +110,7 @@ class CommonFlowHandler
      * @param AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
      * @param RouteProvider                   $routeProvider
      * @param LoggerInterface                 $logger
+     * @param SubscriptionRouteProvider       $subscriptionRouteProvider
      */
     public function __construct(
         Subscriber $subscriber,
@@ -120,7 +126,8 @@ class CommonFlowHandler
         CampaignExtractor $campaignExtractor,
         AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker,
         RouteProvider $routeProvider,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        SubscriptionRouteProvider $subscriptionRouteProvider
     )
     {
         $this->subscriber                      = $subscriber;
@@ -137,6 +144,7 @@ class CommonFlowHandler
         $this->afterSubscriptionProcessTracker = $afterSubscriptionProcessTracker;
         $this->routeProvider                   = $routeProvider;
         $this->logger                          = $logger;
+        $this->subscriptionRouteProvider       = $subscriptionRouteProvider;
     }
 
     /**
@@ -146,6 +154,7 @@ class CommonFlowHandler
      *
      * @return RedirectResponse
      * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Psr\Cache\InvalidArgumentException
      * @throws \SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound
      */
     public function process(
@@ -189,16 +198,22 @@ class CommonFlowHandler
             $this->logger->debug('Create new user', ['user' => $user]);
         }
 
-        $subscription = $this->subscriptionExtractor->getExistingSubscriptionForUser($user);
-        if ($subscription) {
-            $updatedUrl = $this->urlParamAppender->appendUrl($redirectUrl, [
-                'err_handle' => 'already_subscribed'
-            ]);
+        $subscription     = $this->subscriptionExtractor->getExistingSubscriptionForUser($user);
+        $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
 
-            return new RedirectResponse($updatedUrl);
+        if ($subscription) {
+            if ($subscription->isSubscribed()) {
+                $updatedUrl = $this->urlParamAppender->appendUrl($redirectUrl, [
+                    'err_handle' => 'already_subscribed'
+                ]);
+                return new RedirectResponse($updatedUrl);
+            }
+
+            if (!$subscriptionPack->isResubAllowed()) {
+                return new RedirectResponse($this->subscriptionRouteProvider->getResubNotAllowedRoute());
+            }
         }
 
-        $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
 
         if ($this->blacklistVoter->isPhoneNumberBlacklisted($msisdn)) {
             return $this->blacklistVoter->createNotAllowedResponse();
