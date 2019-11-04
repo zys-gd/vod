@@ -21,6 +21,7 @@ class LoadCronTasksData extends AbstractFixture
      * Load data fixtures with the passed EntityManager
      *
      * @param ObjectManager $manager
+     *
      * @throws \Exception
      */
     public function load(ObjectManager $manager)
@@ -30,6 +31,7 @@ class LoadCronTasksData extends AbstractFixture
             ["2", "telenorPakistanDOTMassRenewCronTask", "0"],
             ["3", "hutchIndonesiaMassRenewCronTask", "0"],
             ["4", "zainKSAMassRenewCronTask", "0"],
+            ["4", "zongPKMassRenewCronTask", "0"],
 
         ];
 
