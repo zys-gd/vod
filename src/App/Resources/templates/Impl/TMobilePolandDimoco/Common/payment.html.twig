@@ -18,7 +18,7 @@
                 event.preventDefault();
 
                 $._loader(false);
-                window.location.href = "{{ path('identify_and_subscribe') }}";
+                window.location.href = "{% if isIdentified() %}{{ url('subscription.subscribe') }}{% else %}{{ url('identify_and_subscribe') }}{% endif %}";
             })
         })
     </script>
