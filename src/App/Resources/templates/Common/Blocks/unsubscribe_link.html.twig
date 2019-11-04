@@ -8,33 +8,35 @@
         $(document).ready(function () {
             $('[data-action="unsubscribe"]').click(function () {
                 var cfg = {
-                    title   : '{{ translate('messages.action.unsubscribe.confirm') }}',
-                    message : "",
-                    okButton: '{{ translate('buttons.yes') }}',
-                    noButton: '{{ translate('buttons.no') }}',
+                    title        : '{{ translate('messages.action.unsubscribe.confirm') }}',
+                    message      : "",
+                    okButton     : '{{ translate('buttons.yes') }}',
+                    noButton     : '{{ translate('buttons.no') }}',
+                    noButtonClass: '',
+                    okButtonClass: 'button-gray bg-gray'
                 };
                 showConfirmPopup(cfg)
                     .then(function () {
                         $._loader(false);
 
                         $.ajax("{{ path('subscription.unsubscribe') }}")
-                            .done(function () {
-                                $._loader(true);
-                                showAlert({
-                                    title   : '{{ translate('messages.action.unsubscribe.confirmation.1') }}',
-                                    message : '{{ translate('messages.action.unsubscribe.confirmation.2') }}',
-                                    reload  : false,
-                                    callback: function () {
-                                        window.location = '{{ url('index') }}'
-                                    }
-                                });
-                            })
-                            .fail(function (msg) {
-                                $._loader(true);
-                                $.fancyAlert({
-                                    title: JSON.parse(msg.responseText).data.message
-                                });
-                            })
+                         .done(function () {
+                             $._loader(true);
+                             showAlert({
+                                           title   : '{{ translate('messages.action.unsubscribe.confirmation.1') }}',
+                                           message : '{{ translate('messages.action.unsubscribe.confirmation.2') }}',
+                                           reload  : false,
+                                           callback: function () {
+                                               window.location = '{{ url('index') }}'
+                                           }
+                                       });
+                         })
+                         .fail(function (msg) {
+                             $._loader(true);
+                             $.fancyAlert({
+                                              title: JSON.parse(msg.responseText).data.message
+                                          });
+                         })
                     });
             });
         });

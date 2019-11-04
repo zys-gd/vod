@@ -67,6 +67,13 @@ class HomepageVideoListProvider
         $this->cacheService               = $cacheService;
     }
 
+    /**
+     * @param ISPData $data
+     * @param int     $countForEachCategory
+     *
+     * @return array
+     * @throws \Exception
+     */
     public function getVideosForHomepage(ISPData $data, $countForEachCategory = 4): array
     {
 
