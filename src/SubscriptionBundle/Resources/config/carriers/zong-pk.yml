@@ -9,3 +9,11 @@ services:
         arguments: ['@SubscriptionBundle\Subscription\Notification\Notifier', '@IdentificationBundle\Identification\Service\RouteProvider']
         tags:
             - { name: subscription.subscription_handler }
+
+    SubscriptionBundle\Carriers\ZongPK\Callback\ZongPKCallbackRenew:
+        arguments:
+            - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeFacade'
+            - '@SubscriptionBundle\Subscription\Notification\Notifier'
+            - '@IdentificationBundle\Repository\UserRepository'
+        tags:
+            - { name: subscription.callback_carrier_handler, type: renew }
