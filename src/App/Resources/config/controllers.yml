@@ -81,6 +81,10 @@ services:
             - '@App\Domain\Repository\CarrierRepository'
             - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
             - '@CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator'
+            - '@App\Domain\Repository\MainCategoryRepository'
+            - '@App\Domain\Repository\SubcategoryRepository'
+            - '@App\Domain\Repository\UploadedVideoRepository'
+            - '@App\Domain\Service\VideoProcessing\UploadedVideoSerializer'
 
     App\Controller\ContactUsController:
         arguments:
