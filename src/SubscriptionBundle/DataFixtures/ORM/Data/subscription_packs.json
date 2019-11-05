@@ -416,5 +416,46 @@
         "carrier": {
             "uuid": "3de06e41-f889-4f95-aac3-ebd310f85dd8"
         }
+    },
+    {
+        "uuid": "d7ejd9e8-2bdc-dj74-a7e6-6d7c86f1hf8d",
+        "status": true,
+        "name": "TMobile PL",
+        "description": "",
+        "isResubAllowed": false,
+        "tierPrice": "13.00",
+        "tierCurrency": "PLN",
+        "displayCurrency": "PLN",
+        "credits": "2",
+        "periodicity": 7,
+        "customRenewPeriod": 0,
+        "gracePeriod": 0,
+        "unlimitedGracePeriod": false,
+        "preferredRenewalStart": null,
+        "preferredRenewalEnd": null,
+        "welcomeSMSText": "",
+        "renewalSMSText": "",
+        "unsubscribeSMSText": "",
+        "tierId": 2,
+        "buyStrategyId": 1,
+        "renewStrategyId": "1",
+        "unlimited": false,
+        "firstSubscriptionPeriodIsFreeMultiple": false,
+        "firstSubscriptionPeriodIsFree": false,
+        "allowBonusCredit": false,
+        "allowBonusCreditMultiple": false,
+        "bonusCredit": 0,
+        "providerManagedSubscriptions": true,
+        "created": null,
+        "updated": null,
+        "zeroCreditSubAvailable": false,
+        "trackAffiliateOnZeroCreditSub": false,
+        "subscriptions": null,
+        "country": {
+            "uuid": "5104482b-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": {
+            "uuid": "dh14iu7d-ebd4-12e8-91c4-02bb25d3dh7e"
+        }
     }
 ]
