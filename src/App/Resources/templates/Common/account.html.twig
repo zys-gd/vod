@@ -87,6 +87,7 @@
 {% endblock body %}
 
 {% block footer_content %}
+    {{ parent() }}
     {% if not isSubscriptionExist() %}
         {{ annotation.render() }}
     {% endif %}

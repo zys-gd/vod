@@ -131,5 +131,6 @@
 {% endblock %}
 
 {% block footer_content %}
+    {{ parent() }}
     {{ footer_menu.render() }}
 {% endblock footer_content %}

@@ -67,6 +67,7 @@ services:
             - '@IdentificationBundle\User\Service\UserExtractor'
             - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
             - '@App\Domain\Repository\CarrierRepository'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
 
     App\Twig\TemplateImporterExtension:
         arguments:

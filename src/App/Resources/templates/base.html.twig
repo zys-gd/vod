@@ -78,6 +78,7 @@
 {% block footer %}
     <footer class="d-flex flex-column align-items-center justify-content-center {{ getLanguageCode() }}">
         {% block footer_content %}
+            {% include importTemplate("Components/Blocks/Footer/cookies_disclaimer.html.twig") %}
         {% endblock footer_content %}
 
         <div class="d-flex justify-content-around mt-3">
