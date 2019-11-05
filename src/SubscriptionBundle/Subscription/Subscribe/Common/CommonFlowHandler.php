@@ -165,6 +165,7 @@ class CommonFlowHandler
      * @throws \SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound
      * @throws \SubscriptionBundle\Subscription\Subscribe\Exception\ExistingSubscriptionException
      * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function process(Request $request, User $User): Response
     {
@@ -232,6 +233,7 @@ class CommonFlowHandler
      *
      * @return null|Response
      * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     private function handleSubscribeAttempt(
         Request $request,
