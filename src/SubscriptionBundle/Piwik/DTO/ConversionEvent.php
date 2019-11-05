@@ -35,7 +35,12 @@ class ConversionEvent
      * @param OrderInformation $orderInformation
      * @param array            $additionalData
      */
-    public function __construct(UserInformation $userInformation, string $conversionName = '', OrderInformation $orderInformation = null, array $additionalData = [])
+    public function __construct(
+        UserInformation $userInformation,
+        string $conversionName = '',
+        OrderInformation $orderInformation = null,
+        array $additionalData = []
+    )
     {
         $this->userInformation  = $userInformation;
         $this->orderInformation = $orderInformation;

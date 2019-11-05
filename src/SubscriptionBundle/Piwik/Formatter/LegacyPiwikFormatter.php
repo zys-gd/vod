@@ -67,6 +67,10 @@ class LegacyPiwikFormatter implements FormatterInterface
             ]);
         }
 
+        if ($event->getConversionName()) {
+            $variables['ec_id'] = $event->getConversionName();
+        }
+
 
         $finalVariables         = array_merge($legacyPiwikVariables, $variables);
         $filteredFinalVariables = array_filter($finalVariables, function ($element) {

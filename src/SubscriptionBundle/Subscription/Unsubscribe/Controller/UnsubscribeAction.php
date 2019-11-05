@@ -14,6 +14,7 @@ use IdentificationBundle\User\Service\UserExtractor;
 use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
 use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
 use SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEligibilityChecker;
+use SubscriptionBundle\Subscription\Unsubscribe\Controller\Event\UnsubscribeClickEventTracker;
 use SubscriptionBundle\Subscription\Unsubscribe\Exception\AlreadyUnsubscribedException;
 use SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider;
 use SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber;
@@ -56,6 +57,10 @@ class UnsubscribeAction extends Controller
      * @var ApiConnector
      */
     private $crossSubscriptionAPI;
+    /**
+     * @var UnsubscribeClickEventTracker
+     */
+    private $clickEventTracker;
 
 
     /**
@@ -68,6 +73,7 @@ class UnsubscribeAction extends Controller
      * @param UnsubscriptionEligibilityChecker                              $checker
      * @param UnsubscriptionHandlerProvider                                 $handlerProvider
      * @param ApiConnector                                                  $crossSubscriptionAPI
+     * @param UnsubscribeClickEventTracker                                  $clickEventTracker
      */
     public function __construct(
         UserExtractor $UserProvider,
@@ -76,7 +82,8 @@ class UnsubscribeAction extends Controller
         Unsubscriber $unsubscriber,
         UnsubscriptionEligibilityChecker $checker,
         UnsubscriptionHandlerProvider $handlerProvider,
-        ApiConnector $crossSubscriptionAPI
+        ApiConnector $crossSubscriptionAPI,
+        UnsubscribeClickEventTracker $clickEventTracker
 
     )
     {
@@ -87,10 +94,13 @@ class UnsubscribeAction extends Controller
         $this->subscriptionProvider     = $subscriptionProvider;
         $this->handlerProvider          = $handlerProvider;
         $this->crossSubscriptionAPI     = $crossSubscriptionAPI;
+        $this->clickEventTracker        = $clickEventTracker;
     }
 
     public function __invoke(Request $request)
     {
+        $this->clickEventTracker->trackEvent($request);
+
         $response = null;
         try {
             $user             = $this->UserProvider->getUserFromRequest($request);

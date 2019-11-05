@@ -9,36 +9,21 @@
 namespace SubscriptionBundle\Subscription\Subscribe\Controller;
 
 
-use ExtrasBundle\Controller\Traits\ResponseTrait;
-use IdentificationBundle\Identification\Common\PostPaidHandler;
 use IdentificationBundle\Identification\DTO\IdentificationData;
 use IdentificationBundle\Identification\DTO\ISPData;
-use IdentificationBundle\Identification\Handler\ConsentPageFlow\HasCommonConsentPageFlow;
-use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Identification\Service\RouteProvider;
-use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\User\Service\UserExtractor;
-use SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator;
-use SubscriptionBundle\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
-use SubscriptionBundle\CampaignConfirmation\Handler\CustomPage;
-use SubscriptionBundle\CAPTool\Common\CAPToolRedirectUrlResolver;
-use SubscriptionBundle\CAPTool\Subscription\Exception\CapToolAccessException;
-use SubscriptionBundle\CAPTool\Subscription\Exception\SubscriptionCapReachedOnAffiliate;
 use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter;
-use SubscriptionBundle\Piwik\DataMapper\SubscribeClickEventMapper;
-use SubscriptionBundle\Piwik\DataMapper\UserInformationMapper;
 use SubscriptionBundle\Subscription\Subscribe\Common\CommonFlowHandler;
 use SubscriptionBundle\Subscription\Subscribe\Controller\ACL\SubscribeActionACL;
+use SubscriptionBundle\Subscription\Subscribe\Controller\Event\SubscribeClickEventTracker;
 use SubscriptionBundle\Subscription\Subscribe\Exception\ExistingSubscriptionException;
 use SubscriptionBundle\Subscription\Subscribe\Handler\HasCustomFlow;
 use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider;
-use SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter;
-use SubscriptionBundle\Subscription\Subscribe\Voter\BatchSubscriptionVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class SubscribeAction extends AbstractController
 {
@@ -69,6 +54,10 @@ class SubscribeAction extends AbstractController
      * @var SubscribeActionACL
      */
     private $ACL;
+    /**
+     * @var SubscribeClickEventTracker
+     */
+    private $clickEventTracker;
 
     /**
      * SubscribeAction constructor.
@@ -79,6 +68,7 @@ class SubscribeAction extends AbstractController
      * @param SubscriptionLimiter                              $subscriptionLimiter
      * @param RouteProvider                                    $routeProvider
      * @param SubscribeActionACL                               $ACL
+     * @param SubscribeClickEventTracker                       $clickEventTracker
      */
     public function __construct(
         UserExtractor $userExtractor,
@@ -86,16 +76,18 @@ class SubscribeAction extends AbstractController
         SubscriptionHandlerProvider $handlerProvider,
         SubscriptionLimiter $subscriptionLimiter,
         RouteProvider $routeProvider,
-        SubscribeActionACL $ACL
+        SubscribeActionACL $ACL,
+        SubscribeClickEventTracker $clickEventTracker
     )
     {
 
-        $this->userExtractor         = $userExtractor;
-        $this->commonFlowHandler     = $commonFlowHandler;
-        $this->handlerProvider       = $handlerProvider;
-        $this->subscriptionLimiter   = $subscriptionLimiter;
-        $this->routeProvider         = $routeProvider;
-        $this->ACL                   = $ACL;
+        $this->userExtractor       = $userExtractor;
+        $this->commonFlowHandler   = $commonFlowHandler;
+        $this->handlerProvider     = $handlerProvider;
+        $this->subscriptionLimiter = $subscriptionLimiter;
+        $this->routeProvider       = $routeProvider;
+        $this->ACL                 = $ACL;
+        $this->clickEventTracker   = $clickEventTracker;
     }
 
 
@@ -110,6 +102,7 @@ class SubscribeAction extends AbstractController
      */
     public function __invoke(Request $request, IdentificationData $identificationData, ISPData $ISPData)
     {
+        $this->clickEventTracker->trackEvent($request);
 
         if ($aclOverride = $this->ACL->checkIfActionIsAllowed($request, $ISPData, $identificationData)) {
             return $aclOverride;

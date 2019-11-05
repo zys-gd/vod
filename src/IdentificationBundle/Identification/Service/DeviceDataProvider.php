@@ -41,7 +41,7 @@ class DeviceDataProvider
     public function get(Request $request): DeviceData
     {
         $object = new DeviceData(
-            $this->connectionTypeService->get() ?? '',
+            $this->connectionTypeService->getByIp($request->getClientIp()) ?? '',
             '',
             $this->device->getDeviceVendor() ?? '',
             $this->device->getDeviceModel() ?? '',

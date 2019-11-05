@@ -122,6 +122,7 @@ services:
             - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
             - '@SubscriptionBundle\Subscription\Subscribe\Controller\ACL\SubscribeActionACL'
+            - '@SubscriptionBundle\Subscription\Subscribe\Controller\Event\SubscribeClickEventTracker'
 
 
     SubscriptionBundle\Subscription\Subscribe\Controller\FakeSubscribeAction:
@@ -144,6 +145,7 @@ services:
             - '@SubscriptionBundle\Subscription\Subscribe\Consent\ConsentFlowHandler'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
             - '@SubscriptionBundle\Subscription\Subscribe\Controller\ACL\ConsentSubscribeActionACL'
+            - '@SubscriptionBundle\Subscription\Subscribe\Controller\Event\SubscribeClickEventTracker'
 
     SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking:
         arguments:
@@ -211,3 +213,9 @@ services:
         - '@SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator'
         - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
         - '@IdentificationBundle\Identification\Service\RouteProvider'
+
+    SubscriptionBundle\Subscription\Subscribe\Controller\Event\SubscribeClickEventTracker:
+        arguments:
+            - '@SubscriptionBundle\Piwik\DataMapper\UserInformationMapper'
+            - '@SubscriptionBundle\Piwik\DataMapper\SubscribeClickEventMapper'
+            - '@SubscriptionBundle\Piwik\EventPublisher'

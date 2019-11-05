@@ -42,9 +42,17 @@ services:
             - '@SubscriptionBundle\Piwik\Service\OrderNameProvider'
             - '@SubscriptionBundle\Piwik\Service\CurrencyConverter'
 
+    SubscriptionBundle\Piwik\DataMapper\SubscribeClickEventMapper: ~
+
+    SubscriptionBundle\Piwik\DataMapper\UnsubscribeClickEventMapper: ~
+
     SubscriptionBundle\Piwik\DataMapper\UserInformationMapper:
         arguments:
             - '@SubscriptionBundle\Piwik\Service\AffiliateStringProvider'
+            - '@IdentificationBundle\User\Service\UserExtractor'
+            - '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
+            - '@IdentificationBundle\Identification\Service\CarrierResolver'
+            - '@IdentificationBundle\Identification\Service\DeviceDataProvider'
 
     SubscriptionBundle\Piwik\Profiler\TraceableSender:
         arguments:

@@ -94,6 +94,9 @@ services:
 
     IdentificationBundle\Identification\Service\ISPResolver: ~
 
+    IdentificationBundle\Identification\Service\CarrierResolver:
+        arguments: ['@IdentificationBundle\Identification\Service\ISPResolver', '@App\Domain\Repository\CarrierRepository']
+
     IdentificationBundle\Identification\Service\Session\IdentificationDataStorage:
         arguments: ['@IdentificationBundle\Identification\Service\Session\SessionStorage']
 

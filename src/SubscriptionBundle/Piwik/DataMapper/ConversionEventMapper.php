@@ -64,11 +64,7 @@ class ConversionEventMapper
             $provderId, $user, $subscription
         );
         $orderInformation = $this->informationMapper->map(
-            $processResult->getId(),
-            $processResult->getChargePaid(),
-            $processResult->isSuccessful(),
-            $subscription,
-            $type
+            $subscription, $type, $processResult->isSuccessful(), $processResult->getId(), $processResult->getChargePaid()
         );
 
         return new ConversionEvent(

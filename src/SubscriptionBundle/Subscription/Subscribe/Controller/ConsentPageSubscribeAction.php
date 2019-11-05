@@ -9,6 +9,7 @@ use IdentificationBundle\User\Service\UserExtractor;
 use SubscriptionBundle\BillingFramework\Process\Exception\SubscribingProcessException;
 use SubscriptionBundle\Subscription\Subscribe\Consent\ConsentFlowHandler;
 use SubscriptionBundle\Subscription\Subscribe\Controller\ACL\ConsentSubscribeActionACL;
+use SubscriptionBundle\Subscription\Subscribe\Controller\Event\SubscribeClickEventTracker;
 use SubscriptionBundle\Subscription\Subscribe\Handler\ConsentPageFlow\{HasCustomConsentPageFlow};
 use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider;
 use Symfony\Component\HttpFoundation\{RedirectResponse, Request, Response};
@@ -45,6 +46,10 @@ class ConsentPageSubscribeAction
      * @var ConsentSubscribeActionACL
      */
     private $ACL;
+    /**
+     * @var SubscribeClickEventTracker
+     */
+    private $clickEventTracker;
 
 
     /**
@@ -56,6 +61,7 @@ class ConsentPageSubscribeAction
      * @param ConsentFlowHandler                               $consentFlowHandler
      * @param RouteProvider                                    $routeProvider
      * @param ConsentSubscribeActionACL                        $ACL
+     * @param SubscribeClickEventTracker                       $clickEventTracker
      */
     public function __construct(
         CarrierRepositoryInterface $carrierRepository,
@@ -63,7 +69,8 @@ class ConsentPageSubscribeAction
         UserExtractor $userExtractor,
         ConsentFlowHandler $consentFlowHandler,
         RouteProvider $routeProvider,
-        ConsentSubscribeActionACL $ACL
+        ConsentSubscribeActionACL $ACL,
+        SubscribeClickEventTracker $clickEventTracker
     )
     {
         $this->carrierRepository           = $carrierRepository;
@@ -72,6 +79,7 @@ class ConsentPageSubscribeAction
         $this->consentFlowHandler          = $consentFlowHandler;
         $this->routeProvider               = $routeProvider;
         $this->ACL                         = $ACL;
+        $this->clickEventTracker           = $clickEventTracker;
     }
 
 
@@ -86,6 +94,8 @@ class ConsentPageSubscribeAction
      */
     public function __invoke(Request $request, IdentificationData $identificationData, ISPData $ispData): Response
     {
+        $this->clickEventTracker->trackEvent($request);
+
         if ($aclOverride = $this->ACL->checkIfActionIsAllowed($request, $ispData, $identificationData)) {
             return $aclOverride;
         }
