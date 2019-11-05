@@ -100,7 +100,7 @@ services:
       - '@SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
       - '@cross_subscription.api_connector'
 
-  SubscriptionBundle\Subscription\Subscribe\Controller\Event\UnsubscribeClickEventTracker:
+  SubscriptionBundle\Subscription\Unsubscribe\Controller\Event\UnsubscribeClickEventTracker:
     arguments:
       - '@SubscriptionBundle\Piwik\DataMapper\UserInformationMapper'
       - '@SubscriptionBundle\Piwik\DataMapper\UnsubscribeClickEventMapper'
