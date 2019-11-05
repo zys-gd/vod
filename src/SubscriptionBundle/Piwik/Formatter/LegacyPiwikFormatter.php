@@ -55,8 +55,6 @@ class LegacyPiwikFormatter implements FormatterInterface
             $variables = array_merge($variables, [
                 'ec_id'    => $orderInformation->getOrderId(),
                 'revenue'  => $orderInformation->getPrice(),
-                'country'  => $userInformation->getCountry(),
-                'cip'      => $userInformation->getIp(),
                 'ec_items' => json_encode([
                     $orderInformation->getAlias(),
                     $orderInformation->getAlias(),
@@ -70,7 +68,10 @@ class LegacyPiwikFormatter implements FormatterInterface
         if ($event->getConversionName()) {
             $variables['ec_id'] = $event->getConversionName();
         }
-
+        $variables = array_merge($variables, [
+            'country' => $userInformation->getCountry(),
+            'cip'     => $userInformation->getIp(),
+        ]);
 
         $finalVariables         = array_merge($legacyPiwikVariables, $variables);
         $filteredFinalVariables = array_filter($finalVariables, function ($element) {
