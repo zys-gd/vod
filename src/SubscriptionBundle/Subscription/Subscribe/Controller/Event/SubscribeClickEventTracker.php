@@ -9,7 +9,7 @@
 namespace SubscriptionBundle\Subscription\Subscribe\Controller\Event;
 
 
-use SubscriptionBundle\Piwik\DataMapper\UnsubscribeClickEventMapper;
+use SubscriptionBundle\Piwik\DataMapper\SubscribeClickEventMapper;
 use SubscriptionBundle\Piwik\DataMapper\UserInformationMapper;
 use SubscriptionBundle\Piwik\EventPublisher;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +21,7 @@ class SubscribeClickEventTracker
      */
     private $userInformationMapper;
     /**
-     * @var UnsubscribeClickEventMapper
+     * @var SubscribeClickEventMapper
      */
     private $subscribeClickEventMapper;
     /**
@@ -32,13 +32,13 @@ class SubscribeClickEventTracker
 
     /**
      * SubscribeClickEventTracker constructor.
-     * @param UserInformationMapper       $userInformationMapper
-     * @param UnsubscribeClickEventMapper $subscribeClickEventMapper
-     * @param EventPublisher              $eventPublisher
+     * @param UserInformationMapper     $userInformationMapper
+     * @param SubscribeClickEventMapper $subscribeClickEventMapper
+     * @param EventPublisher            $eventPublisher
      */
     public function __construct(
         UserInformationMapper $userInformationMapper,
-        UnsubscribeClickEventMapper $subscribeClickEventMapper,
+        SubscribeClickEventMapper $subscribeClickEventMapper,
         EventPublisher $eventPublisher
     )
     {
