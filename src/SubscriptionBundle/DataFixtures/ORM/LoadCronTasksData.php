@@ -42,6 +42,8 @@ class LoadCronTasksData extends AbstractFixture
             $cronTask->setCronName($name);
             $cronTask->setIsRunning($isRunning);
 
+            $this->addReference(sprintf('cron_task_%s', $id), $cronTask);
+
             $manager->persist($cronTask);
         }
 
