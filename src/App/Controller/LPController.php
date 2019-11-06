@@ -227,7 +227,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         if ($carrier) {
             $clickHandler = $this->oneClickHandlerProvider->get($carrier->getBillingCarrierId(), OneClickFlowParameters::LP_OFF);
 
-            if ($clickHandler && $this->landingPageAccessResolver->checkLandingCanBeDisabled($carrier, $campaign)) {
+            if ($clickHandler && $this->landingPageAccessResolver->isLandingDisabled($carrier, $campaign)) {
                 if ($clickHandler instanceof HasCustomOneClickRedirectRules) {
                     $redirectUrl = $clickHandler->getRedirectUrl();
                 } else {

@@ -153,7 +153,7 @@ class LandingPageACL
      *
      * @return bool
      */
-    public function checkLandingCanBeDisabled(Carrier $carrier, Campaign $campaign = null): bool
+    public function isLandingDisabled(Carrier $carrier, Campaign $campaign = null): bool
     {
         try {
             if (!$carrier->isOneClickFlow()) {
