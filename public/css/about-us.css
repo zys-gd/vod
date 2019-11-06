@@ -1,8 +1,8 @@
-ul {
+.about-us-container ul {
     list-style: none;
     padding-top: 50%;
 }
 
-li {
+.about-us-container li {
     margin-bottom: 10px;
 }

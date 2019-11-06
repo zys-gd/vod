@@ -10,3 +10,15 @@
         margin: 0 1vw !important;
     }
 }
+
+@media screen and (max-width: 420px) {
+    .categories-see-all-button {
+        font-size: 18px !important;
+    }
+}
+
+@media screen and (max-width: 385px) {
+    .categories-see-all-button {
+        font-size: 16px !important;
+    }
+}
