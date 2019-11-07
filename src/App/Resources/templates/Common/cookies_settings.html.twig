@@ -1,0 +1,33 @@
+{% extends '@App/base.html.twig' %}
+{% import importTemplate("Common/Blocks/header.html.twig") as  header %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block header_content %}
+    {{ header.render(translate('cookies_settings.title')) }}
+{% endblock header_content %}
+
+
+{% block body %}
+    <div class="flex-column pr-2 pl-2 pt-2">
+        <p>{{ translate('cookies_settings.text.introduction') }}</p>
+
+        <ul>
+            <li>{{ translate('cookies_settings.list.1') }}</li>
+            <li>{{ translate('cookies_settings.list.2') }}</li>
+            <li>{{ translate('cookies_settings.list.3') }}</li>
+            <li>{{ translate('cookies_settings.list.4') }}</li>
+            <li>{{ translate('cookies_settings.list.5') }}</li>
+            <li>{{ translate('cookies_settings.list.6') }}</li>
+        </ul>
+
+        <p> {{ translate('cookies_settings.text.1') }} </p>
+
+        <p> {{ translate('cookies_settings.text.2') }} </p>
+
+        <p> {{ translate('cookies_settings.text.3') }} </p>
+    </div>
+{% endblock %}

@@ -1,0 +1,6 @@
+services:
+    SubscriptionBundle\Carriers\TMobilePolandDimoco\Callback\TMobilePolandDimocoCallbackHandler:
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'
+        tags:
+            - {name: subscription.callback_carrier_handler, type: subscribe}

@@ -1,0 +1,59 @@
+{% if isCookiesDisclaimerShow() %}
+    <style>
+        .cookies-disclaimer {
+            position: fixed;
+            z-index: 9999;
+            width: 100%;
+            height: 20%;
+            top: 80%;
+            background-color: white;
+            padding: 5px 15px;
+            border: 2px solid red;
+            text-align: center;
+            font-size: 1.9vh;
+        }
+
+        .cookies-disclaimer > img {
+            position: fixed;
+            left: 94%;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        @media screen and (max-width: 390px) and (max-height: 675px) {
+            .cookies-disclaimer {
+                font-size: 1.7vh;
+            }
+        }
+
+        @media screen and (min-width: 570px) and (min-height: 700px) {
+            .cookies-disclaimer {
+                font-size: 2.3vh;
+            }
+        }
+
+        @media screen and (min-width: 1150px) {
+            .cookies-disclaimer {
+                font-size: 2.5vh;
+                height: 15%;
+                top: 85%;
+            }
+        }
+    </style>
+    <div class="cookies-disclaimer">
+        <img src="{{ asset('img/close_icon.png') }}" alt="close">
+        <span>{{ translate('footer.cookies_disclaimer', {'%cookies_settings_url%': path('cookies_settings')}) | raw }}</span>
+    </div>
+    <script>
+        $(document).ready(() => {
+            $('.cookies-disclaimer > img').click(() => {
+                $('.cookies-disclaimer').remove();
+                $.ajax({
+                    url : "{{ path('close_cookies_disclaimer') }}",
+                    method : 'GET'
+                })
+            })
+        });
+    </script>
+{% endif %}

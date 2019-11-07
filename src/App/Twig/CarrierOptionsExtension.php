@@ -6,7 +6,8 @@ namespace App\Twig;
 
 use App\Domain\Entity\Campaign;
 use App\Domain\Repository\CarrierRepository;
-use App\Domain\Service\CarrierProvider;
+use App\Domain\Service\Carrier\CarrierProvider;
+use App\Domain\Service\OneClickFlow\OneClickFlowCarriersProvider;
 use App\Domain\Service\OneClickFlow\OneClickFlowChecker;
 use App\Domain\Service\OneClickFlow\OneClickFlowParameters;
 use App\Domain\Service\OneClickFlow\OneClickFlowScheduler;
@@ -36,9 +37,9 @@ class CarrierOptionsExtension extends AbstractExtension
      */
     private $campaignExtractor;
     /**
-     * @var OneClickFlowChecker
+     * @var OneClickFlowCarriersProvider
      */
-    private $oneClickFlowChecker;
+    private $oneClickFlowCarriersProvider;
     /**
      * @var OneClickFlowScheduler
      */
@@ -51,30 +52,31 @@ class CarrierOptionsExtension extends AbstractExtension
     /**
      * CarrierOptionsExtension constructor.
      *
-     * @param SessionInterface    $session
-     * @param CarrierRepository   $carrierRepository
-     * @param PassthroughChecker  $passthroughChecker
-     * @param CampaignExtractor   $campaignExtractor
-     * @param OneClickFlowChecker $oneClickFlowChecker
-     * @param CarrierProvider     $carrierProvider
+     * @param SessionInterface             $session
+     * @param CarrierRepository            $carrierRepository
+     * @param PassthroughChecker           $passthroughChecker
+     * @param CampaignExtractor            $campaignExtractor
+     * @param OneClickFlowCarriersProvider $oneClickFlowCarriersProvider
+     * @param CarrierProvider              $carrierProvider
+     * @param OneClickFlowScheduler        $oneClickFlowScheduler
      */
     public function __construct(
         SessionInterface $session,
         CarrierRepository $carrierRepository,
         PassthroughChecker $passthroughChecker,
         CampaignExtractor $campaignExtractor,
-        OneClickFlowChecker $oneClickFlowChecker,
+        OneClickFlowCarriersProvider $oneClickFlowCarriersProvider,
         CarrierProvider $carrierProvider,
         OneClickFlowScheduler $oneClickFlowScheduler
     )
     {
-        $this->session             = $session;
-        $this->carrierRepository   = $carrierRepository;
-        $this->passthroughChecker  = $passthroughChecker;
-        $this->campaignExtractor   = $campaignExtractor;
-        $this->oneClickFlowChecker = $oneClickFlowChecker;
-        $this->carrierProvider     = $carrierProvider;
-        $this->oneClickFlowScheduler = $oneClickFlowScheduler;
+        $this->session                      = $session;
+        $this->carrierRepository            = $carrierRepository;
+        $this->passthroughChecker           = $passthroughChecker;
+        $this->campaignExtractor            = $campaignExtractor;
+        $this->oneClickFlowCarriersProvider = $oneClickFlowCarriersProvider;
+        $this->carrierProvider              = $carrierProvider;
+        $this->oneClickFlowScheduler        = $oneClickFlowScheduler;
     }
 
     /**
@@ -115,9 +117,9 @@ class CarrierOptionsExtension extends AbstractExtension
             /** @var Campaign|null $campaign */
             $campaign = $this->campaignExtractor->getCampaignFromSession($this->session);
 
-            $isSupportRequestedFlow = $this->oneClickFlowChecker->check($billingCarrierId, $oneClickFlowRequestedParameter);
+            $handler = $this->oneClickFlowCarriersProvider->get($billingCarrierId, $oneClickFlowRequestedParameter);
 
-            if ($isSupportRequestedFlow) {
+            if ($handler) {
                 if ($carrier->isOneClickFlow() && $campaign) {
                     $schedule = $this->oneClickFlowScheduler->getScheduleAsArray($campaign->getSchedule());
                     $isCampaignScheduleExistAndTriggered = $schedule

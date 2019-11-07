@@ -1,6 +1,7 @@
 api:
     resource: ../../src/App/API/Controller/
     type: annotation
+
 app:
     resource: ../../src/App/Controller/
     type: annotation
@@ -8,3 +9,7 @@ app:
 identification:
     resource: '@IdentificationBundle/Resources/config/routes/routes.yaml'
     prefix: identification/
+
+carriers:
+    resource: ../../src/Carriers/Controller/
+    type: annotation

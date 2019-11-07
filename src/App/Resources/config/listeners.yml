@@ -1,5 +1,0 @@
-services:
-  App\Listener\AndroidDeviceListener:
-    arguments: ['@router']
-    tags:
-        - { name: kernel.event_listener, event: kernel.controller, priority: 16 }

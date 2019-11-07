@@ -1,0 +1,6 @@
+services:
+    IdentificationBundle\Carriers\TMobilePolandDimoco\TMobilePolandDimocoIdentificationHandler:
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'
+        tags:
+            - { name: identification.identification_handler }

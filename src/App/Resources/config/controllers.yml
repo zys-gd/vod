@@ -36,6 +36,7 @@ services:
     App\Controller\ContentController:
         arguments:
         - '@CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator'
+        - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
 
     App\Controller\HomeController:
         arguments:
@@ -50,21 +51,18 @@ services:
             - '@App\Piwik\ContentStatisticSender'
             - '@App\Domain\Repository\CampaignRepository'
             - '@App\Domain\ACL\LandingPageACL'
-            - '%images_base_url%'
-            - '@App\Domain\Service\CarrierOTPVerifier'
+            - '@App\Domain\Service\Carrier\CarrierOTPVerifier'
             - '%default_redirect_url%'
             - '@CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator'
             - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
-            - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter'
-            - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitNotifier'
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
             - '@SubscriptionBundle\CAPTool\Visit\VisitTracker'
-            - '@SubscriptionBundle\CAPTool\Visit\VisitNotifier'
             - '@logger'
             - '@IdentificationBundle\Identification\Service\CarrierSelector'
             - '@SubscriptionBundle\Subscription\Subscribe\Service\SubscribeUrlResolver'
             - '@SubscriptionBundle\CAPTool\Visit\ConstraintAvailabilityChecker'
             - '@SubscriptionBundle\CAPTool\Common\CAPToolRedirectUrlResolver'
+            - '@App\Domain\Service\OneClickFlow\OneClickFlowCarriersProvider'
 
     App\Controller\ErrorController:
         arguments:
@@ -84,6 +82,10 @@ services:
             - '@App\Domain\Repository\CarrierRepository'
             - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
             - '@CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator'
+            - '@App\Domain\Repository\MainCategoryRepository'
+            - '@App\Domain\Repository\SubcategoryRepository'
+            - '@App\Domain\Repository\UploadedVideoRepository'
+            - '@App\Domain\Service\VideoProcessing\UploadedVideoSerializer'
 
     App\Controller\ContactUsController:
         arguments:

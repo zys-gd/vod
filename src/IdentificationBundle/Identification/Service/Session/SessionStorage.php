@@ -29,13 +29,14 @@ class SessionStorage implements StorageInterface
     }
 
     /**
-     * @param string $key
+     * @param string     $key
+     * @param null|mixed $defaultValue
      *
      * @return mixed
      */
-    public function readValue(string $key)
+    public function readValue(string $key, $defaultValue = null)
     {
-        return $this->session->get($key);
+        return $this->session->get($key, $defaultValue);
     }
 
     /**

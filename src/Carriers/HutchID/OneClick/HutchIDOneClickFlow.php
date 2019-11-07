@@ -11,12 +11,12 @@ use IdentificationBundle\BillingFramework\ID;
 class HutchIDOneClickFlow implements  OneClickFlowInterface
 {
 
-    public function canHandle(int $billingCarrierId): bool
+    public function canHandle(int $billingCarrierId, int $flowType): bool
     {
-        return $billingCarrierId === ID::HUTCH3_INDONESIA_DOT;
+        return $billingCarrierId === ID::HUTCH3_INDONESIA_DOT && $flowType === $this->getFlowType();
     }
 
-    public function getFlowType(): ?int
+    public function getFlowType(): int
     {
         return  OneClickFlowParameters::CONFIRMATION_POP_UP;
     }

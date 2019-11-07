@@ -1,0 +1,13 @@
+{% macro render(aMenuLinks) %}
+    <div class="d-flex justify-content-around footer-menu">
+        <a class="col footer-menu_link" href="{{ path('terms_and_conditions') }}">
+            <button>{{ translate('menu.footer.terms') }}</button>
+        </a>
+        <a class="col footer-menu_link" href="{{ path('about_us') }}">
+            <button>{{ translate('menu.footer.imprint') }}</button>
+        </a>
+        <a class="col footer-menu_link" href="{{ path('contact_us') }}">
+            <button>{{ translate('menu.footer.contact_us') }}</button>
+        </a>
+    </div>
+{% endmacro render %}

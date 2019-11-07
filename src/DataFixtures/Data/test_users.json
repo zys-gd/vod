@@ -529,5 +529,14 @@
         "carrier": {
             "uuid": "51dj58d7-ebd4-12e8-91c4-02bb25dlf94j"
         }
+    },
+    {
+        "uuid": "d8d7d5l2-523e-4547-9675-4d20533d7ue3",
+        "userIdentifier": "48694878641",
+        "addedAt": "2019-06-24T08:43:19+00:00",
+        "lastTimeUsedAt": "2019-06-24T08:48:47+00:00",
+        "carrier": {
+            "uuid": "dh14iu7d-ebd4-12e8-91c4-02bb25d3dh7e"
+        }
     }
 ]

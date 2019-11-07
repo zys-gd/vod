@@ -14,15 +14,16 @@ class TelenorPKOneClickFlow implements OneClickFlowInterface
 
     /**
      * @param int $billingCarrierId
+     * @param int $flowType
      *
      * @return bool
      */
-    public function canHandle(int $billingCarrierId): bool
+    public function canHandle(int $billingCarrierId, int $flowType): bool
     {
-        return $billingCarrierId === ID::TELENOR_PAKISTAN_DOT;
+        return $billingCarrierId === ID::TELENOR_PAKISTAN_DOT && $flowType === $this->getFlowType();
     }
 
-    public function getFlowType(): ?int
+    public function getFlowType(): int
     {
         return  OneClickFlowParameters::CONFIRMATION_CLICK;
     }

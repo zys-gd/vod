@@ -48,6 +48,7 @@
 {% endblock body %}
 
 {% block footer_content %}
+    {{ parent() }}
     {{ footer_menu_separator.render() }}
     {{ footer_menu.render() }}
 {% endblock footer_content %}

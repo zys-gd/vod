@@ -24,13 +24,14 @@ class OneClickFlowCarriersProvider
 
     /**
      * @param int $billingCarrierId
+     * @param int $flowType
      *
      * @return OneClickFlowInterface|null
      */
-    public function get($billingCarrierId): ?OneClickFlowInterface
+    public function get(int $billingCarrierId, int $flowType): ?OneClickFlowInterface
     {
         foreach ($this->handlers as $oneClickFlowHandler) {
-            if ($oneClickFlowHandler->canHandle($billingCarrierId)) {
+            if ($oneClickFlowHandler->canHandle($billingCarrierId, $flowType)) {
                 return $oneClickFlowHandler;
             }
         }

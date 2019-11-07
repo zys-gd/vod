@@ -9,6 +9,8 @@
 {% import importTemplate("Components/Blocks/Footer/menu.html.twig") as  footer_menu %}
 {% import importTemplate("Components/Blocks/Main/mirror_separator.html.twig") as mirrorSeparator %}
 {% import importTemplate("Common/Blocks/unsubscribe_link.html.twig") as  unsubscribe_link %}
+{% import importTemplate("Common/Blocks/grid_video.html.twig") as  grid_video %}
+{% import importTemplate("Components/player.html.twig") as  player %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -23,6 +25,11 @@
     <div class="d-flex flex-column align-items-center justify-content-center w-100 text-center account-page-container">
 
         {% if hasActiveSubscription() or isNotFullyPaid() %}
+            <div class="d-flex flex-column w-100 mb-5">
+                {{ grid_video.render(categoryVideos, categories) }}
+            </div>
+            {{ player.render(categoryVideos) }}
+
             <div class="d-flex align-items-center justify-content-center">
                 <p class="red"> {{ translate('subscription.status.subscribed')|raw }}</p>
             </div>
@@ -80,6 +87,7 @@
 {% endblock body %}
 
 {% block footer_content %}
+    {{ parent() }}
     {% if not isSubscriptionExist() %}
         {{ annotation.render() }}
     {% endif %}
