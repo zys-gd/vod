@@ -48,7 +48,6 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $subscriptionPeriod                      = $row['subscriptionPeriod'];
             $isCampaignsOnPause                      = $row['isCampaignsOnPause'];
             $subscribeAttempts                       = $row['subscribeAttempts'];
-            $isUnlimitedSubscriptionAttemptsAllowed  = $row['isUnlimitedSubscriptionAttemptsAllowed'];
             $numberOfAllowedSubscriptionByConstraint = $row['numberOfAllowedSubscriptionsByConstraint'];
             $redirectUrl                             = $row['redirectUrl'];
             $isCapAlertDispatch                      = $row['isCapAlertDispatch'];
@@ -72,7 +71,6 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $carrier->setNumberOfAllowedSubscriptionsByConstraint($numberOfAllowedSubscriptionByConstraint);
             $carrier->setRedirectUrl($redirectUrl);
             $carrier->setFlushDate($flushdate ? \DateTime::createFromFormat('Y-m-d', $flushdate) : null);
-            $carrier->setIsUnlimitedSubscriptionAttemptsAllowed($isUnlimitedSubscriptionAttemptsAllowed);
             $carrier->setUuid($uuid);
             $carrier->setIsCapAlertDispatch((bool)$isCapAlertDispatch);
 
