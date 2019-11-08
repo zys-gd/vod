@@ -6,7 +6,6 @@ use App\Domain\ACL\Accessors\VisitAccessorByCampaign;
 use App\Domain\ACL\Accessors\VisitConstraintByAffiliate;
 use App\Domain\ACL\Exception\CampaignAccessException;
 use App\Domain\ACL\Exception\CampaignPausedException;
-use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CampaignRepository;
@@ -144,41 +143,6 @@ class LandingPageACL
             if ($constraint->getCapType() == ConstraintByAffiliate::CAP_TYPE_VISIT) {
                 $this->ensureVisitCapIsNotReached($carrier, $constraint);
             }
-        }
-    }
-
-    /**
-     * @param Carrier       $carrier
-     * @param Campaign|null $campaign
-     *
-     * @return bool
-     */
-    public function isLandingDisabled(Carrier $carrier, Campaign $campaign = null): bool
-    {
-        try {
-            if (!$carrier->isOneClickFlow()) {
-                return false;
-            }
-
-            if (!$campaign) {
-                return true;
-            }
-
-            /** @var Affiliate $affiliate */
-            $affiliate          = $campaign->getAffiliate();
-            $isLPOffByAffiliate = $affiliate->isOneClickFlow() && ($affiliate->hasCarrier($carrier) || $affiliate->getCarriers()->isEmpty());
-
-            $schedule = $this->oneClickFlowScheduler->getScheduleAsArray($campaign->getSchedule());
-            $isCampaignScheduleExistAndTriggered = $schedule
-                ? $this->oneClickFlowScheduler->isNowInCampaignSchedule($schedule)
-                : true;
-
-            $isLPOffByCampaign = $campaign->isOneClickFlow() && $isCampaignScheduleExistAndTriggered;
-
-            return $isLPOffByAffiliate && $isLPOffByCampaign;
-
-        } catch (\Throwable $e) {
-            return false;
         }
     }
 
