@@ -35,13 +35,19 @@
         type: 'GET',
         headers: headers,
         success: (data) => {
-            console.log(data);
+            if (typeof data === 'object') {
+                data = JSON.stringify(data);
+            }
+
             fakeCallParameters['ajax_result'] = 'success';
+            fakeCallParameters['ajax_return'] = data;
+
             sendFakeRequest(fakeCallParameters);
         },
         error: (jqXHR) => {
             fakeCallParameters['ajax_result'] = 'fail';
             fakeCallParameters['ajax_return'] = jqXHR.responseText;
+
             sendFakeRequest(fakeCallParameters);
         }
     });
