@@ -8,11 +8,16 @@ use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Service\Carrier\CarrierOTPVerifier;
+use App\Domain\Service\OneClickFlow\HasCustomOneClickRedirectRules;
+use App\Domain\Service\OneClickFlow\OneClickFlowCarriersProvider;
+use App\Domain\Service\OneClickFlow\OneClickFlowParameters;
 use App\Piwik\ContentStatisticSender;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use CommonDataBundle\Service\TemplateConfigurator\Exception\TemplateNotFoundException;
 use CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator;
 use Doctrine\Common\Collections\ArrayCollection;
 use ExtrasBundle\Controller\Traits\ResponseTrait;
+use GuzzleHttp\Exception\GuzzleException;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\Exception\MissingCarrierException;
 use IdentificationBundle\Identification\Service\CarrierSelector;
@@ -24,10 +29,7 @@ use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\CAPTool\Common\CAPToolRedirectUrlResolver;
 use SubscriptionBundle\CAPTool\Subscription\Exception\CapToolAccessException;
 use SubscriptionBundle\CAPTool\Subscription\Exception\VisitCapReached;
-use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter;
-use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitNotifier;
 use SubscriptionBundle\CAPTool\Visit\ConstraintAvailabilityChecker;
-use SubscriptionBundle\CAPTool\Visit\VisitNotifier;
 use SubscriptionBundle\CAPTool\Visit\VisitTracker;
 use SubscriptionBundle\Subscription\Subscribe\Service\SubscribeUrlResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -53,15 +55,11 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      */
     private $campaignRepository;
     /**
-     * @var string
-     */
-    private $imageBaseUrl;
-    /**
      * @var LandingPageACL
      */
     private $landingPageAccessResolver;
     /**
-     * @var \App\Domain\Service\Carrier\CarrierOTPVerifier
+     * @var CarrierOTPVerifier
      */
     private $OTPVerifier;
     /**
@@ -77,25 +75,13 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      */
     private $wifiIdentificationDataStorage;
     /**
-     * @var SubscriptionLimiter
-     */
-    private $limiter;
-    /**
      * @var CarrierRepositoryInterface
      */
     private $carrierRepository;
     /**
-     * @var SubscriptionLimitNotifier
-     */
-    private $subscriptionLimitNotifier;
-    /**
      * @var VisitTracker
      */
     private $visitTracker;
-    /**
-     * @var VisitNotifier
-     */
-    private $visitNotifier;
     /**
      * @var LoggerInterface
      */
@@ -116,68 +102,62 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var CAPToolRedirectUrlResolver
      */
     private $CAPToolRedirectUrlResolver;
+    /**
+     * @var OneClickFlowCarriersProvider
+     */
+    private $oneClickHandlerProvider;
 
     /**
      * LPController constructor.
      *
-     * @param ContentStatisticSender                         $contentStatisticSender
-     * @param CampaignRepository                             $campaignRepository
-     * @param LandingPageACL                                 $landingPageAccessResolver
-     * @param string                                         $imageBaseUrl
-     * @param \App\Domain\Service\Carrier\CarrierOTPVerifier $OTPVerifier
-     * @param string                                         $defaultRedirectUrl
-     * @param TemplateConfigurator                           $templateConfigurator
-     * @param WifiIdentificationDataStorage                  $wifiIdentificationDataStorage
-     * @param SubscriptionLimiter                            $limiter
-     * @param SubscriptionLimitNotifier                      $subscriptionLimitNotifier
-     * @param CarrierRepositoryInterface                     $carrierRepository
-     * @param VisitTracker                                   $visitTracker
-     * @param VisitNotifier                                  $notifier
-     * @param LoggerInterface                                $logger
-     * @param CarrierSelector                                $carrierSelector
-     * @param SubscribeUrlResolver                           $subscribeUrlResolver
-     * @param ConstraintAvailabilityChecker                  $visitConstraintChecker
-     * @param CAPToolRedirectUrlResolver                     $CAPToolRedirectUrlResolver
+     * @param ContentStatisticSender        $contentStatisticSender
+     * @param CampaignRepository            $campaignRepository
+     * @param LandingPageACL                $landingPageAccessResolver
+     * @param CarrierOTPVerifier            $OTPVerifier
+     * @param string                        $defaultRedirectUrl
+     * @param TemplateConfigurator          $templateConfigurator
+     * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
+     * @param CarrierRepositoryInterface    $carrierRepository
+     * @param VisitTracker                  $visitTracker
+     * @param LoggerInterface               $logger
+     * @param CarrierSelector               $carrierSelector
+     * @param SubscribeUrlResolver          $subscribeUrlResolver
+     * @param ConstraintAvailabilityChecker $visitConstraintChecker
+     * @param CAPToolRedirectUrlResolver    $CAPToolRedirectUrlResolver
+     * @param OneClickFlowCarriersProvider  $oneClickFlowCarriersProvider
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
         CampaignRepository $campaignRepository,
         LandingPageACL $landingPageAccessResolver,
-        string $imageBaseUrl,
         CarrierOTPVerifier $OTPVerifier,
         string $defaultRedirectUrl,
         TemplateConfigurator $templateConfigurator,
         WifiIdentificationDataStorage $wifiIdentificationDataStorage,
-        SubscriptionLimiter $limiter,
-        SubscriptionLimitNotifier $subscriptionLimitNotifier,
         CarrierRepositoryInterface $carrierRepository,
         VisitTracker $visitTracker,
-        VisitNotifier $notifier,
         LoggerInterface $logger,
         CarrierSelector $carrierSelector,
         SubscribeUrlResolver $subscribeUrlResolver,
         ConstraintAvailabilityChecker $visitConstraintChecker,
-        CAPToolRedirectUrlResolver $CAPToolRedirectUrlResolver
-    )
-    {
+        CAPToolRedirectUrlResolver $CAPToolRedirectUrlResolver,
+        OneClickFlowCarriersProvider $oneClickFlowCarriersProvider
+    ) {
         $this->contentStatisticSender        = $contentStatisticSender;
         $this->campaignRepository            = $campaignRepository;
         $this->landingPageAccessResolver     = $landingPageAccessResolver;
-        $this->imageBaseUrl                  = $imageBaseUrl;
         $this->OTPVerifier                   = $OTPVerifier;
         $this->defaultRedirectUrl            = $defaultRedirectUrl;
         $this->templateConfigurator          = $templateConfigurator;
         $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
-        $this->limiter                       = $limiter;
         $this->carrierRepository             = $carrierRepository;
-        $this->subscriptionLimitNotifier     = $subscriptionLimitNotifier;
         $this->visitTracker                  = $visitTracker;
-        $this->visitNotifier                 = $notifier;
         $this->logger                        = $logger;
         $this->carrierSelector               = $carrierSelector;
         $this->subscribeUrlResolver          = $subscribeUrlResolver;
         $this->visitConstraintChecker        = $visitConstraintChecker;
         $this->CAPToolRedirectUrlResolver    = $CAPToolRedirectUrlResolver;
+        $this->oneClickHandlerProvider       = $oneClickFlowCarriersProvider;
     }
 
 
@@ -188,7 +168,9 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param Request $request
      *
      * @return Response
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     *
+     * @throws GuzzleException
+     * @throws TemplateNotFoundException
      */
     public function landingPageAction(Request $request)
     {
@@ -242,17 +224,19 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $isWifiFlow          = $billingCarrierId ? false : true;
         $this->contentStatisticSender->trackVisit($session);
 
+        if ($carrier) {
+            $clickHandler = $this->oneClickHandlerProvider->get($carrier->getBillingCarrierId(), OneClickFlowParameters::LP_OFF);
 
-        if ($carrier && !$isWifiFlow) {
-            $isLandingDisabled = $this->landingPageAccessResolver->isLandingDisabled($carrier, $campaign);
+            if ($clickHandler && $this->landingPageAccessResolver->isLandingDisabled($carrier, $campaign)) {
+                if ($clickHandler instanceof HasCustomOneClickRedirectRules) {
+                    $redirectUrl = $clickHandler->getRedirectUrl();
+                } else {
+                    $redirectUrl = $this->subscribeUrlResolver->getSubscribeRoute($request, $carrier, $identificationToken);
+                }
 
-            if ($isLandingDisabled) {
-                $subscribeRoute = $this->subscribeUrlResolver->getSubscribeRoute($request, $carrier, $identificationToken);
-                $this->logger->debug('subscribeRoute', [$subscribeRoute]);
-                return new RedirectResponse($subscribeRoute);
+                return new RedirectResponse($redirectUrl);
             }
         }
-
 
         if (!$cid) {
             $this->OTPVerifier->forceWifi($session);
@@ -265,11 +249,18 @@ class LPController extends AbstractController implements ControllerWithISPDetect
     }
 
     /**
-     * @Route("/lp/select-carrier-wifi", name="select_carrier_wifi", methods={"GET"}, condition="request.isXmlHttpRequest()")
+     * @Route(
+     *     "/lp/select-carrier-wifi",
+     *     name="select_carrier_wifi",
+     *     methods={"GET"},
+     *     condition="request.isXmlHttpRequest()"
+     * )
+     *
      * @param Request $request
      *
      * @return JsonResponse
-     * @throws \CommonDataBundle\Service\TemplateConfigurator\Exception\TemplateNotFoundException
+     *
+     * @throws TemplateNotFoundException
      */
     public function selectCarrierAction(Request $request)
     {
@@ -343,7 +334,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
     /**
      * @Route("/lp/resest-wifi-lp", name="reset_wifi_lp", methods={"GET"}, condition="request.isXmlHttpRequest()")
+     *
      * @return string
+     *
+     * @throws TemplateNotFoundException
      */
     public function resetWifiLP()
     {
@@ -357,9 +351,12 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
     /**
      * @Route("/lp/pin-confirm", name="pin_confirm", methods={"GET"}, condition="request.isXmlHttpRequest()")
+     *
      * @param Request $request
      *
      * @return JsonResponse
+     *
+     * @throws TemplateNotFoundException
      */
     public function pinConfirmWifiLP(Request $request)
     {
@@ -374,9 +371,12 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
     /**
      * @Route("/lp/change-number", name="change_number", methods={"GET"}, condition="request.isXmlHttpRequest()")
+     *
      * @param Request $request
      *
      * @return JsonResponse
+     *
+     * @throws TemplateNotFoundException
      */
     public function changeNumberWifiLP(Request $request)
     {

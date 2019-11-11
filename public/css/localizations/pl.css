@@ -1,0 +1,24 @@
+.footer-menu_link {
+    padding: 0.2vw 0.3vw !important;
+    margin: 0 0.5vw !important;
+}
+
+@media screen and (max-width: 400px) {
+    .footer-menu_link {
+        font-size: 0.8rem !important;
+        padding: 0.5vw 1.5vw !important;
+        margin: 0 1vw !important;
+    }
+}
+
+@media screen and (max-width: 420px) {
+    .categories-see-all-button {
+        font-size: 18px !important;
+    }
+}
+
+@media screen and (max-width: 385px) {
+    .categories-see-all-button {
+        font-size: 16px !important;
+    }
+}

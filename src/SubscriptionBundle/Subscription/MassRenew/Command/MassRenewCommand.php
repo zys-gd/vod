@@ -20,7 +20,8 @@ class MassRenewCommand extends Command
         ID::MOBILINK_PAKISTAN    => 'mobilinkPakistanMassRenewCronTask',
         ID::TELENOR_PAKISTAN_DOT => 'telenorPakistanDOTMassRenewCronTask',
         ID::HUTCH3_INDONESIA_DOT => 'hutchIndonesiaMassRenewCronTask',
-        ID::ZAIN_SAUDI_ARABIA    => 'zainKSAMassRenewCronTask'
+        ID::ZAIN_SAUDI_ARABIA    => 'zainKSAMassRenewCronTask',
+        ID::ZONG_PAKISTAN        => 'zongPKMassRenewCronTask'
     ];
 
     /**
@@ -44,6 +45,7 @@ class MassRenewCommand extends Command
 
     /**
      * MassRenewCommand constructor.
+     *
      * @param CarrierRepositoryInterface $carrierRepository
      * @param CronTaskStatus             $cronTaskStatus
      * @param RenewHandlerProvider       $renewHandlerProvider
@@ -97,7 +99,8 @@ class MassRenewCommand extends Command
 
         if ($handler instanceof HasCommonFlow) {
             $result = $this->commonFlowHandler->process($carrier);
-        } else {
+        }
+        else {
             throw new \RuntimeException('Handlers for renew should have according interfaces');
         }
 

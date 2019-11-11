@@ -21,6 +21,7 @@ class LoadCronTasksData extends AbstractFixture
      * Load data fixtures with the passed EntityManager
      *
      * @param ObjectManager $manager
+     *
      * @throws \Exception
      */
     public function load(ObjectManager $manager)
@@ -30,7 +31,7 @@ class LoadCronTasksData extends AbstractFixture
             ["2", "telenorPakistanDOTMassRenewCronTask", "0"],
             ["3", "hutchIndonesiaMassRenewCronTask", "0"],
             ["4", "zainKSAMassRenewCronTask", "0"],
-
+            ["5", "zongPKMassRenewCronTask", "0"],
         ];
 
 
@@ -41,8 +42,9 @@ class LoadCronTasksData extends AbstractFixture
             $cronTask->setCronName($name);
             $cronTask->setIsRunning($isRunning);
 
-            $manager->persist($cronTask);
             $this->addReference(sprintf('cron_task_%s', $id), $cronTask);
+
+            $manager->persist($cronTask);
         }
 
         $manager->flush();

@@ -208,6 +208,7 @@ services:
             - '@IdentificationBundle\Identification\Service\RouteProvider'
             - '@IdentificationBundle\Identification\Common\Async\AsyncIdentFinisher'
             - '@IdentificationBundle\Identification\Common\Async\AsyncIdentStatusProvider'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
 
     IdentificationBundle\Identification\Profiler\IdentDataCollector:
         tags:

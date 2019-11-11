@@ -13,7 +13,9 @@ use App\Domain\Service\Games\ExcludedGamesProvider;
 use App\Domain\Service\Games\GameImagesSerializer;
 use App\Domain\Service\Games\GameSerializer;
 use App\Piwik\ContentStatisticSender;
+use CommonDataBundle\Service\TemplateConfigurator\Exception\TemplateNotFoundException;
 use CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator;
+use Doctrine\ORM\NonUniqueResultException;
 use IdentificationBundle\Identification\DTO\ISPData;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use SubscriptionBundle\Entity\Subscription;
@@ -22,6 +24,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -104,10 +107,13 @@ class GamesController extends AbstractController implements AppControllerInterfa
     /**
      * @Route("/games/",name="game_category")
      * @Method("GET")
+     *
      * @param Request $request
      * @param ISPData $data
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
+     *
+     * @throws TemplateNotFoundException
      */
     public function showCategoryContentAction(Request $request, ISPData $data)
     {
@@ -124,12 +130,15 @@ class GamesController extends AbstractController implements AppControllerInterfa
     /**
      * @Route("game/{gameUuid}", name="game_content")
      * @Method("GET")
+     *
      * @param Request $request
      * @param ISPData $data
      * @param string  $gameUuid
      *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return Response
+     *
+     * @throws NonUniqueResultException
+     * @throws TemplateNotFoundException
      */
     public function showGameContentAction(Request $request, ISPData $data, string $gameUuid = '')
     {
@@ -167,6 +176,7 @@ class GamesController extends AbstractController implements AppControllerInterfa
     /**
      * @Route("/games/load-more",name="load_more")
      * @Method("GET")
+     *
      * @param Request $request
      *
      * @return JsonResponse
@@ -193,10 +203,12 @@ class GamesController extends AbstractController implements AppControllerInterfa
     /**
      * @Route("/games/download", name="download_game")
      * @Method("GET")
+     *
      * @param Request $request
      *
      * @return JsonResponse
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     *
+     * @throws NonUniqueResultException
      */
     public function downloadAction(Request $request)
     {

@@ -104,6 +104,14 @@ a button {
     text-align: center;
 }
 
+.h2 {
+    font-family: "Kanit";
+    font-style: italic;
+    font-weight: 400;
+    font-size: 18px;
+    text-align: center;
+}
+
 .btn_wrapper {
 
 }

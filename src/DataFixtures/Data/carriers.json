@@ -13,7 +13,6 @@
         "subscriptionPeriod": 7,
         "isCampaignsOnPause": false,
         "subscribeAttempts": 0,
-        "isUnlimitedSubscriptionAttemptsAllowed": true,
         "numberOfAllowedSubscriptionsByConstraint": null,
         "redirectUrl": null,
         "flushDate": null,
@@ -38,7 +37,6 @@
         "subscriptionPeriod": 1,
         "isCampaignsOnPause": false,
         "subscribeAttempts": 5,
-        "isUnlimitedSubscriptionAttemptsAllowed": false,
         "numberOfAllowedSubscriptionsByConstraint": 2860,
         "redirectUrl": "https:\/\/www.google.com\/",
         "flushDate": null,
@@ -57,9 +55,6 @@
             },
             {
                 "uuid": "0b44e721-0eb0-4d14-b061-6f50c867a59f"
-            },
-            {
-                "uuid": "10fce88a-6a6a-451a-861e-d9c66900faa3"
             },
             {
                 "uuid": "12619a30-fb7b-4ece-aaf5-f984f7a48f7e"
@@ -83,22 +78,13 @@
                 "uuid": "292a5a0a-706e-4f5e-bc61-2bbb168f0405"
             },
             {
-                "uuid": "2de45958-52e4-44ae-bd20-389d7bc50686"
-            },
-            {
                 "uuid": "34a3aa66-56d9-4ca6-bbfe-5ffb1a593614"
             },
             {
-                "uuid": "4413244a-baf3-4eb8-b492-f544fedf1367"
-            },
-            {
-                "uuid": "4c37d5bc-fb3c-4df2-b40e-62683da47eaf"
+                "uuid": "4ea1bcae-4c0c-4379-bbca-6f1fa07b6a30"
             },
             {
                 "uuid": "6d888b47-e783-43c9-be37-bf9a52feb18b"
-            },
-            {
-                "uuid": "6dd3863d-bbb5-4941-86d4-4fd1322922ff"
             },
             {
                 "uuid": "6f6e5baf-6f3f-4c9d-9a85-63375fdd060e"
@@ -110,19 +96,31 @@
                 "uuid": "82bc7dac-cb4c-454f-8e1c-d8f5df613a40"
             },
             {
-                "uuid": "95862c5d-912e-4169-ba12-357cef85ec0d"
-            },
-            {
-                "uuid": "a831de26-e55b-45ee-a24d-efb364a84b08"
-            },
-            {
-                "uuid": "ab8f787a-b26b-4471-816a-b7400a0e4010"
-            },
-            {
                 "uuid": "bc574bd1-580f-4f50-aee2-4334ff6f9fd3"
             },
             {
                 "uuid": "bc73c45f-4250-4cbb-9c39-c68a2e621c04"
+            },
+            {
+                "uuid": "c9697222-ed0d-4412-a7bf-6f8b1d918d52"
+            },
+            {
+                "uuid": "d2a18de1-84bb-42a4-bb6d-9c1dd6cc90e8"
+            },
+            {
+                "uuid": "d3719fda-33fa-45fe-b897-e92fd3dbdc99"
+            },
+            {
+                "uuid": "dd604319-7a02-4640-bfcf-8bd1a44e05aa"
+            },
+            {
+                "uuid": "e7ee7bb9-f0ad-45d4-88b1-5639c8293035"
+            },
+            {
+                "uuid": "ed021372-d26b-4a60-bd87-cb5f5afdcd90"
+            },
+            {
+                "uuid": "ff292c77-5ab4-44cb-90f6-e335a9e42e7c"
             },
             {
                 "uuid": "bee224e6-4267-4e93-b5bc-c2cf986a6070"
@@ -177,7 +175,6 @@
         "subscriptionPeriod": 1,
         "isCampaignsOnPause": false,
         "subscribeAttempts": 5,
-        "isUnlimitedSubscriptionAttemptsAllowed": true,
         "numberOfAllowedSubscriptionsByConstraint": null,
         "redirectUrl": null,
         "flushDate": null,
@@ -202,7 +199,6 @@
         "subscriptionPeriod": 7,
         "isCampaignsOnPause": false,
         "subscribeAttempts": 5,
-        "isUnlimitedSubscriptionAttemptsAllowed": false,
         "numberOfAllowedSubscriptionsByConstraint": 3000,
         "redirectUrl": "https:\/\/www.google.com\/",
         "flushDate": null,
@@ -226,6 +222,9 @@
                 "uuid": "85108c87-b8a0-4f28-98b4-1d71adb496e6"
             },
             {
+                "uuid": "8c3ff3a0-6215-427c-977a-e86e90fe2305"
+            },
+            {
                 "uuid": "a071e1be-e0fc-4bae-a3f6-44cc7a8c4edd"
             },
             {
@@ -236,9 +235,6 @@
             },
             {
                 "uuid": "d706e76a-28de-44c8-9379-298eb1c328fd"
-            },
-            {
-                "uuid": "de33b63b-9dd3-41ab-b87c-ae576be10ed3"
             },
             {
                 "uuid": "e339946c-1cf7-4123-8c10-92e370052c6d"
@@ -263,7 +259,6 @@
         "subscriptionPeriod": 1,
         "isCampaignsOnPause": false,
         "subscribeAttempts": 5,
-        "isUnlimitedSubscriptionAttemptsAllowed": true,
         "numberOfAllowedSubscriptionsByConstraint": null,
         "redirectUrl": null,
         "flushDate": null,
@@ -284,7 +279,6 @@
         "resubAllowed": false,
         "isCampaignsOnPause": false,
         "subscribeAttempts": 0,
-        "isUnlimitedSubscriptionAttemptsAllowed": true,
         "isCaptcha": false,
         "numberOfAllowedSubscriptionsByConstraint": null,
         "redirectUrl": null,
@@ -318,7 +312,6 @@
         "resubAllowed": false,
         "isCampaignsOnPause": false,
         "subscribeAttempts": 5,
-        "isUnlimitedSubscriptionAttemptsAllowed": false,
         "numberOfAllowedSubscriptionsByConstraint": 1000,
         "redirectUrl": null,
         "flushDate": null,
@@ -347,7 +340,6 @@
         "subscriptionPeriod": 1,
         "isCampaignsOnPause": false,
         "subscribeAttempts": 1,
-        "isUnlimitedSubscriptionAttemptsAllowed": true,
         "numberOfAllowedSubscriptionsByConstraint": null,
         "redirectUrl": null,
         "flushDate": null,
@@ -369,7 +361,6 @@
         "resubAllowed": false,
         "isCampaignsOnPause": false,
         "subscribeAttempts": 0,
-        "isUnlimitedSubscriptionAttemptsAllowed": true,
         "isCaptcha": false,
         "numberOfAllowedSubscriptionsByConstraint": null,
         "redirectUrl": null,
@@ -388,6 +379,53 @@
         "isConfirmationPopup": false,
         "isClickableSubImage": true,
         "trackAffiliateOnZeroCreditSub": false,
+        "affiliates": [],
+        "isOneClickFlow": false
+    },
+    {
+        "uuid": "3de06e41-f889-4f95-aac3-ebd310f85dd8",
+        "billingCarrierId": 340,
+        "operatorId": 0,
+        "name": "Zong PK",
+        "countryCode": "PK",
+        "isp": "CMPak Limited|CMPak Zong",
+        "published": true,
+        "isOneClickFlow": false,
+        "trialInitializer": "store",
+        "trialPeriod": 1,
+        "subscriptionPeriod": 1,
+        "isCampaignsOnPause": false,
+        "subscribeAttempts": 1,
+        "numberOfAllowedSubscriptionsByConstraint": 0,
+        "redirectUrl": "https:\/\/www.google.com\/",
+        "flushDate": null,
+        "isCapAlertDispatch": true,
+        "isClickableSubImage": true,
+        "trackAffiliateOnZeroCreditSub": false,
+        "campaigns": [],
+        "affiliates": []
+    },
+    {
+        "uuid": "dh14iu7d-ebd4-12e8-91c4-02bb25d3dh7e",
+        "billingCarrierId": 2260,
+        "operatorId": 0,
+        "name": "TMobile Poland",
+        "countryCode": "PL",
+        "isp": "T-mobile Polska|blueconnect|T-Mobile Polska S.A.",
+        "published": true,
+        "trialInitializer": "carrier",
+        "trialPeriod": 0,
+        "subscriptionPeriod": 7,
+        "isCampaignsOnPause": false,
+        "subscribeAttempts": 1,
+        "numberOfAllowedSubscriptionsByConstraint": null,
+        "redirectUrl": null,
+        "flushDate": null,
+        "isCapAlertDispatch": false,
+        "isClickableSubImage": true,
+        "isOneClickFlow": false,
+        "defaultLanguage": null,
+        "campaigns": [],
         "affiliates": []
     }
 ]

@@ -546,7 +546,7 @@ class Subscription implements HasUuid
      */
     public function isNotEnoughCredit()
     {
-        return $this->currentStage == self::ACTION_SUBSCRIBE && $this->status == self::IS_ON_HOLD && $this->getError() == 'not_enough_credit';
+        return ($this->currentStage == self::ACTION_SUBSCRIBE || $this->currentStage == self::ACTION_RENEW) && $this->status == self::IS_ON_HOLD && $this->getError() == 'not_enough_credit';
     }
 
     /**

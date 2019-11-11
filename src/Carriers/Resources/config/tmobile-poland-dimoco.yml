@@ -1,0 +1,25 @@
+services:
+    Carriers\TMobilePolandDimoco\Template\TMobilePolandDimocoTemplateHandler:
+        tags:
+            - { name: store_commons.template_handler }
+
+    Carriers\TMobilePolandDimoco\Subscribe\TMobilePolandDimocoSubscribeHandler:
+        arguments:
+            - '@router'
+            - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
+        tags:
+            - { name: subscription.subscription_handler }
+
+    Carriers\TMobilePolandDimoco\Identification\TMobilePolandDimocoWifiIdentificationHandler:
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@IdentificationBundle\WifiIdentification\Service\WifiIdentificationDataStorage'
+            - '@router'
+        tags:
+            - { name: identification.wifi_identification_handler }
+
+    Carriers\TMobilePolandDimoco\OneClick\TMobilePLDimocoOneClickHandler:
+        arguments:
+            - '@router'
+        tags:
+            - { name: app.one_click_flow_handler }

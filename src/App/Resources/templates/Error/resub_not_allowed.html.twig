@@ -16,9 +16,7 @@
 {% block body %}
     <div class="d-flex align-items-center justify-content-center w-100">
         <div class="rsna-disclaimer-text">
-            You can not subscribe to 100% Sport because you have already been unsubscribed.
-            <br>
-            If you want to subscribe anew, please <a class="contact-us-link red" href="{{ url('contact_us') }}">Contact Us</a>
+            {{ translate('resub_not_allowed', {'%contact_us_url%': path('contact_us')}) | raw }}
         </div>
     </div>
 {% endblock %}

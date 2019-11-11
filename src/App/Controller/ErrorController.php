@@ -47,16 +47,6 @@ class ErrorController extends AbstractController
     }
 
     /**
-     * @Route("/wros",name="wrong_os")
-     * @param Request $request
-     * @return Response
-     */
-    public function wrongOS(Request $request)
-    {
-        return $this->render('@App/Error/wrong_os.html.twig');
-    }
-
-    /**
      * @Route("/rsna",name="resub_not_allowed")
      * @param Request $request
      * @return Response

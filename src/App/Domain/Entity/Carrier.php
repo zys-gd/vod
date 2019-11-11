@@ -110,11 +110,6 @@ class Carrier implements CarrierInterface, HasUuid
     private $flushDate;
 
     /**
-     * @var bool
-     */
-    private $isUnlimitedSubscriptionAttemptsAllowed = true;
-
-    /**
      * @var Campaign[] | ArrayCollection
      */
     private $campaigns;
@@ -445,22 +440,6 @@ class Carrier implements CarrierInterface, HasUuid
     public function getSubscribeAttempts(): int
     {
         return $this->subscribeAttempts;
-    }
-
-    /**
-     * @param bool $isUnlimitedSubscriptionAttemptsAllowed
-     */
-    public function setIsUnlimitedSubscriptionAttemptsAllowed(bool $isUnlimitedSubscriptionAttemptsAllowed)
-    {
-        $this->isUnlimitedSubscriptionAttemptsAllowed = $isUnlimitedSubscriptionAttemptsAllowed;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isUnlimitedSubscriptionAttemptsAllowed(): bool
-    {
-        return $this->isUnlimitedSubscriptionAttemptsAllowed;
     }
 
     /**

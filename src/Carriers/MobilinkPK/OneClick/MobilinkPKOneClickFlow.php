@@ -12,15 +12,16 @@ class MobilinkPKOneClickFlow implements OneClickFlowInterface
 {
     /**
      * @param int $billingCarrierId
+     * @param int $flowType
      *
      * @return bool
      */
-    public function canHandle(int $billingCarrierId): bool
+    public function canHandle(int $billingCarrierId, int $flowType): bool
     {
-        return false; //$billingCarrierId === ID::MOBILINK_PAKISTAN;
+        return false; //$billingCarrierId === ID::MOBILINK_PAKISTAN && $flowType === $this->getFlowType();
     }
 
-    public function getFlowType(): ?int
+    public function getFlowType(): int
     {
         return  OneClickFlowParameters::CONFIRMATION_CLICK;
     }

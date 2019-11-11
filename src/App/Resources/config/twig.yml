@@ -48,7 +48,7 @@ services:
             - '@App\Domain\Repository\CarrierRepository'
             - '@IdentificationBundle\Identification\Service\PassthroughChecker'
             - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
-            - '@App\Domain\Service\OneClickFlow\OneClickFlowChecker'
+            - '@App\Domain\Service\OneClickFlow\OneClickFlowCarriersProvider'
             - '@App\Domain\Service\Carrier\CarrierProvider'
             - '@App\Domain\Service\OneClickFlow\OneClickFlowScheduler'
 
@@ -67,6 +67,7 @@ services:
             - '@IdentificationBundle\User\Service\UserExtractor'
             - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
             - '@App\Domain\Repository\CarrierRepository'
+            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
 
     App\Twig\TemplateImporterExtension:
         arguments:

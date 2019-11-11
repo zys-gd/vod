@@ -7,6 +7,7 @@ namespace App\Twig;
 use IdentificationBundle\Identification\DTO\IdentificationData;
 use IdentificationBundle\Identification\Handler\HasHeaderEnrichment;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
+use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\User\Service\UserExtractor;
@@ -21,10 +22,12 @@ class UserInformationExtension extends AbstractExtension
      * @var UserExtractor
      */
     private $userExtractor;
+
     /**
      * @var IdentificationHandlerProvider
      */
     private $handlerProvider;
+
     /**
      * @var CarrierRepositoryInterface
      */
@@ -36,29 +39,42 @@ class UserInformationExtension extends AbstractExtension
     private $requestStack;
 
     /**
+     * @var IdentificationDataStorage
+     */
+    private $identificationDataStorage;
+
+    /**
      * UserInformationExtension constructor.
      *
      * @param RequestStack                  $requestStack
      * @param UserExtractor                 $userExtractor
      * @param IdentificationHandlerProvider $handlerProvider
      * @param CarrierRepositoryInterface    $carrierRepository
+     * @param IdentificationDataStorage     $identificationDataStorage
      */
-    public function __construct(RequestStack $requestStack,
+    public function __construct(
+        RequestStack $requestStack,
         UserExtractor $userExtractor,
         IdentificationHandlerProvider $handlerProvider,
-        CarrierRepositoryInterface $carrierRepository)
-    {
-        $this->userExtractor     = $userExtractor;
-        $this->handlerProvider   = $handlerProvider;
-        $this->carrierRepository = $carrierRepository;
-        $this->requestStack      = $requestStack;
+        CarrierRepositoryInterface $carrierRepository,
+        IdentificationDataStorage $identificationDataStorage
+    ) {
+        $this->userExtractor             = $userExtractor;
+        $this->handlerProvider           = $handlerProvider;
+        $this->carrierRepository         = $carrierRepository;
+        $this->requestStack              = $requestStack;
+        $this->identificationDataStorage = $identificationDataStorage;
     }
 
     public function getFunctions()
     {
         return [
             new TwigFunction('getUserIdentifier', [$this, 'getUserIdentifier']),
-
+            new TwigFunction('isCookiesDisclaimerShow', function () {
+                return (bool) $this
+                    ->identificationDataStorage
+                    ->readValue(IdentificationDataStorage::COOKIES_DISCLAIMER_SHOW_KEY, true);
+            })
         ];
     }
 

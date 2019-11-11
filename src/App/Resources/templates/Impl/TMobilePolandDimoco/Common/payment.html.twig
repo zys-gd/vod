@@ -1,0 +1,62 @@
+{% extends '@App/Impl/TMobilePolandDimoco/payment_base.html.twig' %}
+{% import importTemplate("Common/LP/Sections/banner_section.html.twig") as banner_section %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .confirm-payment-button {
+            font-size: 15px;
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(() => {
+            $('#payment-confirm-form').submit((event) => {
+                event.preventDefault();
+
+                $._loader(false);
+                window.location.href = "{% if isIdentified() %}{{ url('subscription.subscribe') }}{% else %}{{ url('identify_and_subscribe') }}{% endif %}";
+            })
+        })
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div class="d-flex flex-column w-100 mt-1">
+        <div>{{ banner_section.render() }}</div>
+        <div class="payment-text pl-3 mt-2">
+            <p>
+                <span>100% Sport</span> <br>
+                <span>{{ translate('payment.offer') }}</span>
+            </p>
+        </div>
+        <div class="payment-text pr-3 pl-3">
+            <p>{{ translate('payment.info.1', {'%terms_url%': path('terms_and_conditions')}) | raw }}</p>
+            <p>{{ translate('payment.info.2') }}</p>
+            <form id="payment-confirm-form">
+                <div class="payment-text">
+                    <label>
+                        <input type="checkbox" required>
+                        <span>{{ translate('payment.info.3') }}</span>
+                    </label>
+                </div>
+                <div class="mt-3 mb-4 text-center">
+                    <button
+                            type="submit"
+                            class="confirm-payment-button"
+                    >
+                        {{ translate('payment.button') }}
+                    </button>
+                </div>
+            </form>
+            <p>{{ translate('payment.info.4') }}</p>
+            <p>{{ translate('payment.info.5') }}</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer_content %}
+{% endblock footer_content %}

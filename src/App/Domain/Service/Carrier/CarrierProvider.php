@@ -27,6 +27,9 @@ class CarrierProvider
 
     /**
      * CarrierProvider constructor.
+     *
+     * @param ArrayCacheService $arrayCacheService
+     * @param CarrierRepository $carrierRepository
      */
     public function __construct(ArrayCacheService $arrayCacheService, CarrierRepository $carrierRepository)
     {

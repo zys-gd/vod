@@ -23,8 +23,6 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\Form\Type\CollectionType;
-use SubscriptionBundle\SubscriptionPack\DTO\Tier;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -55,7 +53,6 @@ class GameAdmin extends AbstractAdmin
     const POSTER_FIELD_LABEL = 'Poster';
     const THUMBNAIL_FIELD_LABEL = 'Thumbnail';
     const DEVELOPER_FIELD_LABEL = 'Developer';
-    const TIER_FIELD_LABEL = 'Tier';
     const RATING_FIELD_LABEL = 'Rating';
     const TAGS_FIELD_LABEL = 'Tags';
     const COUNTRIES_FIELD_LABEL = 'Deactivated countries';
@@ -280,9 +277,6 @@ class GameAdmin extends AbstractAdmin
             ->add('developer', null, [
                 'label' => static::DEVELOPER_FIELD_LABEL
             ])
-            ->add('tier', null, [
-                'label' => static::TIER_FIELD_LABEL
-            ])
             ->add('rating', ChoiceType::class, [
                 'label'   => static::RATING_FIELD_LABEL,
                 'choices' => Game::getAvailableRatings()
@@ -392,12 +386,6 @@ class GameAdmin extends AbstractAdmin
                 'multiple'    => false,
                 'label'       => static::DEVELOPER_FIELD_LABEL,
                 'placeholder' => 'Select developer'
-            ])
-            ->add('tier', EntityType::class, [
-                'class'       => Tier::class,
-                'required'    => true,
-                'label'       => static::TIER_FIELD_LABEL,
-                'placeholder' => 'Select tier'
             ])
             ->add('rating', ChoiceType::class, [
                 'placeholder' => 'Select rating',

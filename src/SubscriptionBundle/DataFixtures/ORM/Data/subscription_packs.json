@@ -376,5 +376,86 @@
         "carrier": {
             "uuid": "ac8ac2ed-2885-40b2-acf5-874aef51e34d"
         }
+    },
+    {
+        "uuid": "27261246-9034-438f-ba37-274d5079b138",
+        "status": true,
+        "name": "Zong PK",
+        "description": "",
+        "isResubAllowed": false,
+        "tierPrice": "50",
+        "tierCurrency": "PKR",
+        "displayCurrency": "",
+        "credits": "2",
+        "periodicity": 7,
+        "customRenewPeriod": 0,
+        "gracePeriod": 1,
+        "unlimitedGracePeriod": false,
+        "preferredRenewalStart": "1970-01-01T02:00:00+02:00",
+        "preferredRenewalEnd": "1970-01-01T21:00:00+02:00",
+        "welcomeSMSText": null,
+        "renewalSMSText": null,
+        "unsubscribeSMSText": null,
+        "tierId": 2,
+        "buyStrategyId": 14,
+        "renewStrategyId": 14,
+        "unlimited": false,
+        "firstSubscriptionPeriodIsFreeMultiple": false,
+        "firstSubscriptionPeriodIsFree": true,
+        "allowBonusCredit": false,
+        "allowBonusCreditMultiple": false,
+        "bonusCredit": 0,
+        "providerManagedSubscriptions": false,
+        "created": "2017-12-07T13:55:10+02:00",
+        "updated": "2018-03-29T11:56:06+03:00",
+        "zeroCreditSubAvailable": false,
+        "subscriptions": null,
+        "country": {
+            "uuid": "510447c2-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": {
+            "uuid": "3de06e41-f889-4f95-aac3-ebd310f85dd8"
+        }
+    },
+    {
+        "uuid": "d7ejd9e8-2bdc-dj74-a7e6-6d7c86f1hf8d",
+        "status": true,
+        "name": "TMobile PL",
+        "description": "",
+        "isResubAllowed": false,
+        "tierPrice": "13.00",
+        "tierCurrency": "PLN",
+        "displayCurrency": "PLN",
+        "credits": "2",
+        "periodicity": 7,
+        "customRenewPeriod": 0,
+        "gracePeriod": 0,
+        "unlimitedGracePeriod": false,
+        "preferredRenewalStart": null,
+        "preferredRenewalEnd": null,
+        "welcomeSMSText": "",
+        "renewalSMSText": "",
+        "unsubscribeSMSText": "",
+        "tierId": 2,
+        "buyStrategyId": 1,
+        "renewStrategyId": "1",
+        "unlimited": false,
+        "firstSubscriptionPeriodIsFreeMultiple": false,
+        "firstSubscriptionPeriodIsFree": false,
+        "allowBonusCredit": false,
+        "allowBonusCreditMultiple": false,
+        "bonusCredit": 0,
+        "providerManagedSubscriptions": true,
+        "created": null,
+        "updated": null,
+        "zeroCreditSubAvailable": false,
+        "trackAffiliateOnZeroCreditSub": false,
+        "subscriptions": null,
+        "country": {
+            "uuid": "5104482b-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": {
+            "uuid": "dh14iu7d-ebd4-12e8-91c4-02bb25d3dh7e"
+        }
     }
 ]

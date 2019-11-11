@@ -14,7 +14,7 @@ class IdentificationDataStorage
     const REDIRECT_IDENT_TOKEN_KEY = 'redirectIdent[token]';
     const POST_PAID_RESTRICTED_KEY = 'isPostPaidRestricted';
     const SUBSCRIBE_AFTER_IDENT_KEY = 'subscribeAfterIdent';
-
+    const COOKIES_DISCLAIMER_SHOW_KEY = 'isCookiesDisclaimerShow';
     const IDENTIFICATION_DATA_KEY = 'identification_data';
     const ISP_DETECTION_DATA_KEY = 'isp_detection_data';
 
@@ -43,13 +43,14 @@ class IdentificationDataStorage
     }
 
     /**
-     * @param string $key
+     * @param string     $key
+     * @param null|mixed $defaultValue
      *
      * @return mixed
      */
-    public function readValue(string $key)
+    public function readValue(string $key, $defaultValue = null)
     {
-        return $this->storage->readValue(SessionStorage::STORAGE_KEY . "[$key]");
+        return $this->storage->readValue(SessionStorage::STORAGE_KEY . "[$key]", $defaultValue);
     }
 
     /**
