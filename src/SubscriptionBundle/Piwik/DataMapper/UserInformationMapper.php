@@ -15,6 +15,8 @@ use CountryCarrierDetectionBundle\Service\Interfaces\ICountryCarrierDetection;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Service\CarrierResolver;
 use IdentificationBundle\Identification\Service\DeviceDataProvider;
+use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
+use IdentificationBundle\Twig\IdentificationStatusExtension;
 use IdentificationBundle\User\Service\UserExtractor;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Piwik\DTO\UserInformation;
@@ -112,12 +114,16 @@ class UserInformationMapper
         } else {
 
             $deviceData = $this->deviceDataProvider->get($request);
-            $isp        = $this->carrierDetection->getCarrier($request->getClientIp());
-            $carrierId  = $this->carrierResolver->resolveCarrierByISP((string)$isp);
+
+            if (!$carrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($request->getSession())) {
+                $isp       = $this->carrierDetection->getCarrier($request->getClientIp());
+                $carrierId = $this->carrierResolver->resolveCarrierByISP((string)$isp);
+            }
+
 
             /** @var CarrierInterface $carrier */
-            $carrier   = $this->carrierProvider->fetchCarrierIfNeeded($carrierId);
-            $country   = $carrier ? $carrier->getCountryCode() : '';
+            $carrier = $this->carrierProvider->fetchCarrierIfNeeded($carrierId);
+            $country = $carrier ? $carrier->getCountryCode() : '';
 
             return new UserInformation(
                 $country,
