@@ -8,7 +8,6 @@ use App\Domain\Entity\Campaign;
 use App\Domain\Repository\CarrierRepository;
 use App\Domain\Service\Carrier\CarrierProvider;
 use App\Domain\Service\OneClickFlow\OneClickFlowCarriersProvider;
-use App\Domain\Service\OneClickFlow\OneClickFlowChecker;
 use App\Domain\Service\OneClickFlow\OneClickFlowParameters;
 use App\Domain\Service\OneClickFlow\OneClickFlowScheduler;
 use IdentificationBundle\Identification\Service\PassthroughChecker;
@@ -92,6 +91,7 @@ class CarrierOptionsExtension extends AbstractExtension
 
     /**
      * @return bool
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function isConfirmationClick(): bool
     {
@@ -100,12 +100,20 @@ class CarrierOptionsExtension extends AbstractExtension
 
     /**
      * @return bool
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function isConfirmationPopup()
     {
         return !$this->oneClickFlowTwigResolver(OneClickFlowParameters::CONFIRMATION_POP_UP);
     }
 
+    /**
+     * @param int $oneClickFlowRequestedParameter
+     *
+     * @return bool
+     * @throws \Psr\Cache\InvalidArgumentException
+     *
+     */
     private function oneClickFlowTwigResolver(int $oneClickFlowRequestedParameter)
     {
 
