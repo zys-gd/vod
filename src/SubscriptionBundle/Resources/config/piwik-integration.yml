@@ -53,6 +53,7 @@ services:
             - '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
             - '@IdentificationBundle\Identification\Service\CarrierResolver'
             - '@IdentificationBundle\Identification\Service\DeviceDataProvider'
+            - '@App\Domain\Service\Carrier\CarrierProvider'
 
     SubscriptionBundle\Piwik\Profiler\TraceableSender:
         arguments:

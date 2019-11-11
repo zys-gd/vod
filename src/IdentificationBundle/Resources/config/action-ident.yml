@@ -229,6 +229,7 @@ services:
             - '@IdentificationBundle\Identification\Service\PassthroughRequestPreparer'
             - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
             - '@SubscriptionBundle\Subscription\Common\RouteProvider'
+            - '@SubscriptionBundle\Subscription\Subscribe\Controller\Event\SubscribeClickEventTracker'
         tags: ['controller.service_arguments']
 
     IdentificationBundle\Identification\Service\PassthroughRequestPreparer:

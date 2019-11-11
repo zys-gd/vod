@@ -9,10 +9,10 @@
 namespace SubscriptionBundle\Piwik\DataMapper;
 
 
+use App\Domain\Service\Carrier\CarrierProvider;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use CountryCarrierDetectionBundle\Service\Interfaces\ICountryCarrierDetection;
 use IdentificationBundle\Entity\User;
-use IdentificationBundle\Identification\DTO\DeviceData;
 use IdentificationBundle\Identification\Service\CarrierResolver;
 use IdentificationBundle\Identification\Service\DeviceDataProvider;
 use IdentificationBundle\User\Service\UserExtractor;
@@ -43,6 +43,10 @@ class UserInformationMapper
      * @var DeviceDataProvider
      */
     private $deviceDataProvider;
+    /**
+     * @var CarrierProvider
+     */
+    private $carrierProvider;
 
 
     /**
@@ -52,13 +56,15 @@ class UserInformationMapper
      * @param ICountryCarrierDetection $carrierDetection
      * @param CarrierResolver          $carrierResolver
      * @param DeviceDataProvider       $deviceDataProvider
+     * @param CarrierProvider          $carrierProvider
      */
     public function __construct(
         AffiliateStringProvider $affiliateStringProvider,
         UserExtractor $userExtractor,
         ICountryCarrierDetection $carrierDetection,
         CarrierResolver $carrierResolver,
-        DeviceDataProvider $deviceDataProvider
+        DeviceDataProvider $deviceDataProvider,
+        CarrierProvider $carrierProvider
     )
     {
         $this->affiliateStringProvider = $affiliateStringProvider;
@@ -66,6 +72,7 @@ class UserInformationMapper
         $this->carrierDetection        = $carrierDetection;
         $this->carrierResolver         = $carrierResolver;
         $this->deviceDataProvider      = $deviceDataProvider;
+        $this->carrierProvider         = $carrierProvider;
     }
 
     public function mapUserInformation(int $providerId, User $user, Subscription $subscription): UserInformation
@@ -106,10 +113,11 @@ class UserInformationMapper
 
             $deviceData = $this->deviceDataProvider->get($request);
             $isp        = $this->carrierDetection->getCarrier($request->getClientIp());
+            $carrierId  = $this->carrierResolver->resolveCarrierByISP((string)$isp);
+
             /** @var CarrierInterface $carrier */
-            $carrier   = $this->carrierResolver->resolveCarrierByISP($isp);
+            $carrier   = $this->carrierProvider->fetchCarrierIfNeeded($carrierId);
             $country   = $carrier ? $carrier->getCountryCode() : '';
-            $carrierId = $carrier ? $carrier->getBillingCarrierId() : 0;
 
             return new UserInformation(
                 $country,
