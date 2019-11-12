@@ -17,7 +17,8 @@
     <div class="d-flex align-items-center justify-content-center w-100">
         <div class="disclaimer-text">
             {% set title = translate('wrong_cookie_page.backlink_title') %}
-            {% set backLinkHtml = '<a class="history-back" href="'~ url('landing')~'">'~title~'</a>' %}
+            {% set href = "javascript:history.back()" %}
+            {% set backLinkHtml = '<a class="history-back" href="'~ href ~'">'~title~'</a>' %}
 
             {{ translate('wrong_cookie_page.text', {'%backLink%' : backLinkHtml }) |  raw }}
         </div>
