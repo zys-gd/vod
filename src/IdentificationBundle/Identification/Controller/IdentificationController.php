@@ -139,14 +139,4 @@ class IdentificationController extends AbstractController
         return $this->redirect($this->routeProvider->getLinkToHomepage());
 
     }
-
-    /**
-     * @Route("/fakecall", name="fake_call")
-     *
-     * @return Response
-     */
-    public function fakeCall()
-    {
-        return new Response('Fake call ok');
-    }
 }

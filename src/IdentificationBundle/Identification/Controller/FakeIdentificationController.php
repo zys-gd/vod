@@ -20,6 +20,7 @@ use IdentificationBundle\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -195,6 +196,16 @@ class FakeIdentificationController extends AbstractController
         $session->clear();
 
         return new RedirectResponse($this->routeProvider->getLinkToHomepage());
+    }
+
+    /**
+     * @Route("/fakecall", name="fake_call")
+     *
+     * @return Response
+     */
+    public function fakeCall()
+    {
+        return new Response('Fake call ok');
     }
 
     /**
