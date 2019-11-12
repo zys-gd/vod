@@ -49,19 +49,19 @@ class OrderInformationMapper
     }
 
     /**
-     * @param int|null     $responseId
-     * @param int|null     $chargePaid
-     * @param bool         $resultStatus
      * @param Subscription $subscription
      * @param string       $action
+     * @param bool         $resultStatus
+     * @param int|null     $responseId
+     * @param int|null     $chargePaid
      * @return OrderInformation
      */
     public function map(
-        ?int $responseId,
-        ?int $chargePaid,
-        bool $resultStatus,
         Subscription $subscription,
-        string $action
+        string $action,
+        bool $resultStatus,
+        ?int $responseId,
+        ?int $chargePaid
     ): OrderInformation
     {
 

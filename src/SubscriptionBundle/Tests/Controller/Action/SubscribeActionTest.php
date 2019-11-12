@@ -243,7 +243,6 @@ class SubscribeActionTest extends AbstractFunctionalTest
         $container->set('SubscriptionBundle\BillingFramework\Process\API\RequestSender', $this->requestSender);
         $container->set('subscription.http.client', $this->httpClient);
         $container->set('SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter', $this->subscriptionLimiter);
-        $container->set('SubscriptionBundle\Subscription\Subscribe\Voter\BatchSubscriptionVoter', $this->voter);
         $container->set('SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider', $this->smsTextProvider);
         $container->set('app.cache.redis_connection_provider', $this->getRedisConnectionProviderMock());
         $container->set('SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider', $this->subscriptionHandlerProvider);

@@ -23,14 +23,24 @@ class ConversionEvent
      * @var array
      */
     private $additionalData;
+    /**
+     * @var string
+     */
+    private $conversionName;
 
     /**
      * ConversionEvent constructor.
      * @param UserInformation  $userInformation
+     * @param string           $conversionName
      * @param OrderInformation $orderInformation
      * @param array            $additionalData
      */
-    public function __construct(UserInformation $userInformation, OrderInformation $orderInformation = null, array $additionalData = [])
+    public function __construct(
+        UserInformation $userInformation,
+        string $conversionName = '',
+        OrderInformation $orderInformation = null,
+        array $additionalData = []
+    )
     {
         $this->userInformation  = $userInformation;
         $this->orderInformation = $orderInformation;
@@ -38,6 +48,12 @@ class ConversionEvent
         $this->ensureAdditionalDataIsCorrect($additionalData);
 
         $this->additionalData = $additionalData;
+
+        if (!$conversionName && $orderInformation) {
+            $this->conversionName = $orderInformation->getOrderId();
+        } else {
+            $this->conversionName = (string)$conversionName;
+        }
     }
 
     /**
@@ -81,6 +97,14 @@ class ConversionEvent
                 throw $exception;
             }
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getConversionName(): string
+    {
+        return $this->conversionName;
     }
 
 

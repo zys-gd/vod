@@ -11,6 +11,7 @@ namespace SubscriptionBundle\Piwik\Service;
 
 use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 use SubscriptionBundle\Entity\Subscription;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class AffiliateStringProvider
 {
@@ -37,6 +38,18 @@ class AffiliateStringProvider
     {
         try {
             $campaign  = $this->campaignExtractor->getCampaignForSubscription($subscription);
+            $affiliate = $campaign->getAffiliate();
+
+            return $affiliate->getUuid() . '@' . $campaign->getUuid();
+        } catch (\Throwable $e) {
+            return null;
+        }
+    }
+
+    public function getAffiliateStringForSession(SessionInterface $session): ?string
+    {
+        try {
+            $campaign  = $this->campaignExtractor->getCampaignFromSession($session);
             $affiliate = $campaign->getAffiliate();
 
             return $affiliate->getUuid() . '@' . $campaign->getUuid();
