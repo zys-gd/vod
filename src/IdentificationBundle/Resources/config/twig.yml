@@ -7,3 +7,10 @@ services:
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
         tags:
             - { name: twig.extension }
+
+    IdentificationBundle\Twig\UserDataExtension:
+        arguments:
+            - '@request_stack'
+            - '@IdentificationBundle\Identification\Service\DeviceDataProvider'
+        tags:
+            - { name: twig.extension }

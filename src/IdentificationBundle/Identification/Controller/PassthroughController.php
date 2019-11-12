@@ -9,6 +9,7 @@ use IdentificationBundle\Identification\Common\RequestParametersProvider;
 use IdentificationBundle\Identification\Service\PassthroughRequestPreparer;
 use SubscriptionBundle\Subscription\Common\RouteProvider;
 use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
+use SubscriptionBundle\Subscription\Subscribe\Controller\Event\SubscribeClickEventTracker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,6 +38,10 @@ class PassthroughController extends AbstractController
      * @var RouteProvider
      */
     private $routeProvider;
+    /**
+     * @var SubscribeClickEventTracker
+     */
+    private $clickEventTracker;
 
     /**
      * PassthroughController constructor.
@@ -46,13 +51,15 @@ class PassthroughController extends AbstractController
      * @param PassthroughRequestPreparer $passthroughRequestPreparer
      * @param SubscriptionExtractor      $subscriptionExtractor
      * @param RouteProvider              $routeProvider
+     * @param SubscribeClickEventTracker $clickEventTracker
      */
     public function __construct(
         PassthroughProcess $passthroughProcess,
         RequestParametersProvider $requestParametersProvider,
         PassthroughRequestPreparer $passthroughRequestPreparer,
         SubscriptionExtractor $subscriptionExtractor,
-        RouteProvider $routeProvider
+        RouteProvider $routeProvider,
+        SubscribeClickEventTracker $clickEventTracker
     )
     {
         $this->passthroughProcess         = $passthroughProcess;
@@ -60,6 +67,7 @@ class PassthroughController extends AbstractController
         $this->passthroughRequestPreparer = $passthroughRequestPreparer;
         $this->subscriptionExtractor      = $subscriptionExtractor;
         $this->routeProvider              = $routeProvider;
+        $this->clickEventTracker          = $clickEventTracker;
     }
 
     /**
@@ -72,6 +80,8 @@ class PassthroughController extends AbstractController
      */
     public function passthroughAction(Request $request)
     {
+        $this->clickEventTracker->trackEvent($request);
+
         if ($subscription = $this->subscriptionExtractor->extractSubscriptionFromSession($request->getSession())) {
             $subPack = $subscription->getSubscriptionPack();
             if ($subscription->isUnsubscribed() && !$subPack->isResubAllowed()) {

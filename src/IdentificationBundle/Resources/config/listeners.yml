@@ -5,7 +5,6 @@ services:
         arguments:
             - '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
-            - '@IdentificationBundle\Identification\Service\ISPResolver'
             - '@IdentificationBundle\Identification\Identifier'
             - '@IdentificationBundle\Identification\Service\TokenGenerator'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
@@ -14,3 +13,4 @@ services:
             - '@IdentificationBundle\Identification\Service\CarrierSelector'
             - '@IdentificationBundle\Identification\Service\DeviceDataProvider'
             - '@logger'
+            - '@IdentificationBundle\Identification\Service\CarrierResolver'

@@ -24,6 +24,7 @@ use SubscriptionBundle\CAPTool\Subscription\Exception\CapToolAccessException;
 use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter;
 use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitNotifier;
 use SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking;
+use SubscriptionBundle\Subscription\Subscribe\Controller\Event\SubscribeClickEventTracker;
 use SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -90,6 +91,10 @@ class PinIdentificationController extends AbstractController implements APIContr
     private $zeroCreditSubscriptionChecking;
 
     private $CAPToolRedirectUrlResolver;
+    /**
+     * @var SubscribeClickEventTracker
+     */
+    private $clickEventTracker;
 
 
     /**
@@ -108,6 +113,7 @@ class PinIdentificationController extends AbstractController implements APIContr
      * @param LoggerInterface                $logger
      * @param CampaignExtractor              $campaignExtractor
      * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
+     * @param SubscribeClickEventTracker     $clickEventTracker
      */
     public function __construct(
         WifiIdentSMSSender $identSMSSender,
@@ -122,7 +128,8 @@ class PinIdentificationController extends AbstractController implements APIContr
         CAPToolRedirectUrlResolver $CAPToolRedirectUrlResolver,
         LoggerInterface $logger,
         CampaignExtractor $campaignExtractor,
-        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
+        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking,
+        SubscribeClickEventTracker $clickEventTracker
     )
     {
         $this->identSMSSender                 = $identSMSSender;
@@ -138,6 +145,7 @@ class PinIdentificationController extends AbstractController implements APIContr
         $this->logger                         = $logger;
         $this->campaignExtractor              = $campaignExtractor;
         $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
+        $this->clickEventTracker              = $clickEventTracker;
     }
 
     /**
@@ -156,6 +164,8 @@ class PinIdentificationController extends AbstractController implements APIContr
      */
     public function sendSMSPinCodeAction(Request $request, ISPData $ispData)
     {
+        $this->clickEventTracker->trackEvent($request);
+
         $postData         = $request->request->all();
         $isResend         = isset($postData['resend-pin']);
         $mobileNumber     = $request->get('mobile_number', '');

@@ -112,23 +112,17 @@ services:
             - '@SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\PendingSubscriptionCreator'
 
+
     SubscriptionBundle\Subscription\Subscribe\Controller\SubscribeAction:
         tags: ['controller.service_arguments']
         arguments:
             - '@IdentificationBundle\User\Service\UserExtractor'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\CommonFlowHandler'
             - '@SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider'
-            - '@SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter'
-            - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
-            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
-            - '@IdentificationBundle\Identification\Common\PostPaidHandler'
-            - '@SubscriptionBundle\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider'
             - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter'
-            - '@SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator'
-            - '@SubscriptionBundle\Subscription\Subscribe\Voter\BatchSubscriptionVoter'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
-            - '@SubscriptionBundle\Subscription\Common\RouteProvider'
-            - '@SubscriptionBundle\CAPTool\Common\CAPToolRedirectUrlResolver'
+            - '@SubscriptionBundle\Subscription\Subscribe\Controller\ACL\SubscribeActionACL'
+            - '@SubscriptionBundle\Subscription\Subscribe\Controller\Event\SubscribeClickEventTracker'
 
 
     SubscriptionBundle\Subscription\Subscribe\Controller\FakeSubscribeAction:
@@ -146,13 +140,12 @@ services:
         tags: ['controller.service_arguments']
         arguments:
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
-            - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
             - '@SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider'
             - '@IdentificationBundle\User\Service\UserExtractor'
             - '@SubscriptionBundle\Subscription\Subscribe\Consent\ConsentFlowHandler'
-            - '@SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter'
-            - '@SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
+            - '@SubscriptionBundle\Subscription\Subscribe\Controller\ACL\ConsentSubscribeActionACL'
+            - '@SubscriptionBundle\Subscription\Subscribe\Controller\Event\SubscribeClickEventTracker'
 
     SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking:
         arguments:
@@ -198,3 +191,31 @@ services:
 
     SubscriptionBundle\Subscription\Subscribe\Common\PendingSubscriptionCreator:
         arguments: ['@logger', '@SubscriptionBundle\Subscription\Common\SubscriptionFactory', '@SubscriptionBundle\Service\EntitySaveHelper']
+
+    SubscriptionBundle\Subscription\Subscribe\Controller\ACL\SubscribeActionACL:
+        arguments:
+            - '@IdentificationBundle\Identification\Common\PostPaidHandler'
+            - '@IdentificationBundle\Identification\Service\RouteProvider'
+            - '@SubscriptionBundle\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider'
+            - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+            - '@SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter'
+            - '@SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator'
+            - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
+            - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter'
+            - '@SubscriptionBundle\CAPTool\Common\CAPToolRedirectUrlResolver'
+
+
+    SubscriptionBundle\Subscription\Subscribe\Controller\ACL\ConsentSubscribeActionACL:
+        arguments:
+        - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
+        - '@SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider'
+        - '@SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter'
+        - '@SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator'
+        - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
+        - '@IdentificationBundle\Identification\Service\RouteProvider'
+
+    SubscriptionBundle\Subscription\Subscribe\Controller\Event\SubscribeClickEventTracker:
+        arguments:
+            - '@SubscriptionBundle\Piwik\DataMapper\UserInformationMapper'
+            - '@SubscriptionBundle\Piwik\DataMapper\SubscribeClickEventMapper'
+            - '@SubscriptionBundle\Piwik\EventPublisher'

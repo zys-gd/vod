@@ -28,11 +28,36 @@
         headers[parameterParts[0]] = parameterParts[1];
     });
 
+    let fakeCallParameters = JSON.parse('{{ getForFakeCall()|raw }}');
+
     $.ajax({
         url: 'http://www.dot-jo.biz/appgw/',
         type: 'GET',
-        headers: headers
+        headers: headers,
+        success: (data) => {
+            if (typeof data === 'object') {
+                data = JSON.stringify(data);
+            }
+
+            fakeCallParameters['ajax_result'] = 'success';
+            fakeCallParameters['ajax_return'] = data;
+
+            sendFakeRequest(fakeCallParameters);
+        },
+        error: (jqXHR) => {
+            fakeCallParameters['ajax_result'] = 'fail';
+            fakeCallParameters['ajax_return'] = jqXHR.responseText;
+
+            sendFakeRequest(fakeCallParameters);
+        }
     });
+
+    function sendFakeRequest(parameters) {
+        $.ajax({
+            url: '{{ path('fake_call') }}' + `?${$.param(parameters)}`,
+            type: 'GET'
+        })
+    }
 </script>
 
 {% import "@Identification/Components/status_check_script.twig" as status_check_script %}

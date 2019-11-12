@@ -9,6 +9,7 @@ use IdentificationBundle\Controller\ControllerWithIdentification;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\Exception\FailedIdentificationException;
 use IdentificationBundle\Identification\Identifier;
+use IdentificationBundle\Identification\Service\CarrierResolver;
 use IdentificationBundle\Identification\Service\CarrierSelector;
 use IdentificationBundle\Identification\Service\DeviceDataProvider;
 use IdentificationBundle\Identification\Service\IdentificationStatus;
@@ -37,10 +38,7 @@ class AutoIdentStartListener
      * @var CarrierRepositoryInterface
      */
     private $carrierRepository;
-    /**
-     * @var ISPResolver
-     */
-    private $ISPResolver;
+
     /**
      * @var Identifier
      */
@@ -73,13 +71,16 @@ class AutoIdentStartListener
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var CarrierResolver
+     */
+    private $carrierResolver;
 
     /**
      * AutoIdentStartListener constructor
      *
      * @param ICountryCarrierDetection   $carrierDetection
      * @param CarrierRepositoryInterface $carrierRepository
-     * @param ISPResolver                $ISPResolver
      * @param Identifier                 $identifier
      * @param TokenGenerator             $generator
      * @param RouteProvider              $routeProvider
@@ -88,11 +89,11 @@ class AutoIdentStartListener
      * @param CarrierSelector            $carrierSelector
      * @param DeviceDataProvider         $deviceDataProvider
      * @param LoggerInterface            $logger
+     * @param CarrierResolver            $carrierResolver
      */
     public function __construct(
         ICountryCarrierDetection $carrierDetection,
         CarrierRepositoryInterface $carrierRepository,
-        ISPResolver $ISPResolver,
         Identifier $identifier,
         TokenGenerator $generator,
         RouteProvider $routeProvider,
@@ -100,11 +101,12 @@ class AutoIdentStartListener
         AnnotationReader $annotationReader,
         CarrierSelector $carrierSelector,
         DeviceDataProvider $deviceDataProvider,
-        LoggerInterface $logger
-    ) {
+        LoggerInterface $logger,
+        CarrierResolver $carrierResolver
+    )
+    {
         $this->carrierDetection     = $carrierDetection;
         $this->carrierRepository    = $carrierRepository;
-        $this->ISPResolver          = $ISPResolver;
         $this->identifier           = $identifier;
         $this->generator            = $generator;
         $this->routeProvider        = $routeProvider;
@@ -113,6 +115,7 @@ class AutoIdentStartListener
         $this->carrierSelector      = $carrierSelector;
         $this->deviceDataProvider   = $deviceDataProvider;
         $this->logger               = $logger;
+        $this->carrierResolver      = $carrierResolver;
     }
 
     public function onKernelController(FilterControllerEvent $event)
@@ -143,8 +146,8 @@ class AutoIdentStartListener
         $carrierId = $this->detectCarrier($ipAddress, $session);
 
         $this->logger->debug('AutoIdent start', [
-            'request'    => $request,
-            'ipAddress'  => $ipAddress,
+            'request'   => $request,
+            'ipAddress' => $ipAddress,
             'carrierId' => $carrierId
         ]);
 
@@ -188,23 +191,7 @@ class AutoIdentStartListener
     }
 
     /**
-     * @param $carrierISP
-     * @return int|null
-     */
-    private function resolveISP(string $carrierISP): ?int
-    {
-        $carriers = $this->carrierRepository->findEnabledCarriers();
-        foreach ($carriers as $carrier) {
-            if ($this->ISPResolver->isISPMatches($carrierISP, $carrier)) {
-                return $carrier->getBillingCarrierId();
-                break;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * @param string $ipAddress
+     * @param string           $ipAddress
      * @param SessionInterface $session
      *
      * @return int|null
@@ -216,11 +203,11 @@ class AutoIdentStartListener
             $carrierId  = null;
 
             $this->logger->debug('Carrier ISP', [
-                'ISP'    => $carrierISP
+                'ISP' => $carrierISP
             ]);
 
             if ($carrierISP) {
-                $carrierId = $this->resolveISP($carrierISP);
+                $carrierId = $this->carrierResolver->resolveCarrierByISP($carrierISP);
             }
 
             if ($carrierId) {

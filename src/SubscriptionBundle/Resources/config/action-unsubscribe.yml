@@ -45,6 +45,7 @@ services:
       - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscriptionEligibilityChecker'
       - '@SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
       - '@cross_subscription.api_connector'
+      - '@SubscriptionBundle\Subscription\Unsubscribe\Controller\Event\UnsubscribeClickEventTracker'
 
   SubscriptionBundle\Subscription\Unsubscribe\Admin\Sonata\UnsubscriptionAdmin:
     arguments:
@@ -98,3 +99,9 @@ services:
       - '@SubscriptionBundle\Subscription\Unsubscribe\Unsubscriber'
       - '@SubscriptionBundle\Subscription\Unsubscribe\Handler\UnsubscriptionHandlerProvider'
       - '@cross_subscription.api_connector'
+
+  SubscriptionBundle\Subscription\Unsubscribe\Controller\Event\UnsubscribeClickEventTracker:
+    arguments:
+      - '@SubscriptionBundle\Piwik\DataMapper\UserInformationMapper'
+      - '@SubscriptionBundle\Piwik\DataMapper\UnsubscribeClickEventMapper'
+      - '@SubscriptionBundle\Piwik\EventPublisher'
