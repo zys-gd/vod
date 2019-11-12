@@ -17,10 +17,17 @@
     <div class="d-flex align-items-center justify-content-center w-100">
         <div class="disclaimer-text">
             {% set title = translate('wrong_cookie_page.backlink_title') %}
-            {% set href = "javascript:history.back()" %}
-            {% set backLinkHtml = '<a class="history-back" href="'~ href ~'">'~title~'</a>' %}
+
+            {% set backLinkHtml = '<a class="x-history-back" href="/#">'~title~'</a>' %}
 
             {{ translate('wrong_cookie_page.text', {'%backLink%' : backLinkHtml }) |  raw }}
         </div>
     </div>
+
+    <script>
+        $(document).on('click', '.x-history-back', function () {
+            history.back();
+            return false;
+        })
+    </script>
 {% endblock %}

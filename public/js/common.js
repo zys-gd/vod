@@ -42,6 +42,24 @@ $._loader = function (close) {
 
 function performCookieEnabledCheck(cookiePageUrl) {
     if (!navigator.cookieEnabled) {
-        window.location = cookiePageUrl
+        redirectTo(cookiePageUrl)
     }
+}
+
+
+function redirectTo(url) {
+    setTimeout(function () {
+        var a = window.document.createElement("a");
+        if (a.click) {
+            // HTML5 browsers and IE support click() on <a>, early FF does not.
+            a.setAttribute("href", url);
+            a.style.display = "none";
+            window.document.body.appendChild(a);
+            a.click();
+        } else {
+            // Early FF can, however, use this usual method
+            // where IE cannot with secure links.
+            window.location = url;
+        }
+    }, 0)
 }
