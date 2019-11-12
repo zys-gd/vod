@@ -7979,7 +7979,7 @@
         "key": "wrong_cookie_page.backlink_title",
         "translation": "sini",
         "language": {
-            "uuid": "5179f810-ebd4-11e8-95c4-02bb250f0f22"
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
     },
@@ -7988,7 +7988,7 @@
         "key": "wrong_cookie_page.text",
         "translation": "Ups, tampaknya penerimaan cookie dimatikan dalam pengaturan browser Anda.Tolong, izinkan, dan nikmati layanan kami: Pengaturan> Privasi> Izinkan cookie. Untuk kembali, silakan klik di %backLink%",
         "language": {
-            "uuid": "5179f810-ebd4-11e8-95c4-02bb250f0f22"
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
     },
