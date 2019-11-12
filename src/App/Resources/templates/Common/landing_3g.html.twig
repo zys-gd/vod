@@ -19,6 +19,11 @@
 {% block javascripts %}
     {{ parent() }}
     {{ addJs(asset('js/lp.js')) }}
+
+    <script>
+        performCookieEnabledCheck('{{ url('wrong_cookie_disabled') }}')
+    </script>
+
 {% endblock %}
 
 {% block stylesheets %}

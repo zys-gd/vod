@@ -1,0 +1,25 @@
+{% extends '@App/base.html.twig' %}
+{% import importTemplate("Common/Blocks/header_stripped.html.twig") as  header %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('/css/custom-error-pages.css') }}" rel="stylesheet">
+{% endblock %}
+
+
+
+{% block header_content %}
+    {{ header.render() }}
+{% endblock header_content %}
+
+{% block body %}
+    <div class="d-flex align-items-center justify-content-center w-100">
+        <div class="disclaimer-text">
+            {% set title = translate('wrong_cookie_page.backlink_title') %}
+            {% set backLinkHtml = '<a class="history-back" href="'~ url('landing')~'">'~title~'</a>' %}
+
+            {{ translate('wrong_cookie_page.text', {'%backLink%' : backLinkHtml }) |  raw }}
+        </div>
+    </div>
+{% endblock %}
