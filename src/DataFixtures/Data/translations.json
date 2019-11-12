@@ -7950,7 +7950,7 @@
     {
         "uuid": "7ea53328-d3f2-44fa-8a29-7babdd27052f",
         "key": "wrong_cookie_page.text",
-        "translation": "Whoops, apparently cookies acceptance is turned off in your browser settings. Please, allow it and enjoy our service: Settings > Privacy > Allow cookies. To go back, please click %backLink%.",
+        "translation": "Whoops, apparently cookies acceptance is turned off in your browser settings. Please, allow it and enjoy our service: Settings > Site settings > Allow cookies. To go back, please click %backLink%.",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
