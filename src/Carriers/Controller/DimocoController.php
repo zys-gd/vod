@@ -78,7 +78,9 @@ class DimocoController extends AbstractController implements ControllerWithISPDe
         $result = $request->query->get('result', null);
 
         if (empty($result) || $result !== 'successful') {
-            return $this->redirectToRoute('index', ['err_handle' => 'subscribe_error']);
+            $reason = $request->query->get('reason', 'subscribe_error');
+
+            return $this->redirectToRoute('index', ['err_handle' => $reason]);
         }
 
         $template = $this->templateConfigurator->getTemplate('payment_confirmation', $data->getCarrierId());
