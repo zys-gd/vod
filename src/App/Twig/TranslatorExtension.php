@@ -15,6 +15,7 @@ use App\Domain\Service\Translator\Translator;
 use App\Exception\WrongTranslationKey;
 use ExtrasBundle\Utils\LocalExtractor;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Twig\Extension\AbstractExtension;
@@ -52,6 +53,10 @@ class TranslatorExtension extends AbstractExtension
     private $rightDirectionLanguages = [
         'ar'
     ];
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
 
     /**
      * TranslatorExtension constructor.
@@ -62,20 +67,25 @@ class TranslatorExtension extends AbstractExtension
      * @param LocalExtractor    $localExtractor
      * @param ShortcodeReplacer $replacer
      * @param DataAggregator    $dataAggregator
+     * @param RequestStack      $requestStack
      */
-    public function __construct(Translator $translator,
+    public function __construct(
+        Translator $translator,
         Session $session,
         KernelInterface $kernel,
         LocalExtractor $localExtractor,
         ShortcodeReplacer $replacer,
-        DataAggregator $dataAggregator
-    ) {
-        $this->translator = $translator;
-        $this->session = $session;
-        $this->kernel = $kernel;
+        DataAggregator $dataAggregator,
+        RequestStack $requestStack
+    )
+    {
+        $this->translator     = $translator;
+        $this->session        = $session;
+        $this->kernel         = $kernel;
         $this->localExtractor = $localExtractor;
-        $this->replacer = $replacer;
+        $this->replacer       = $replacer;
         $this->dataAggregator = $dataAggregator;
+        $this->requestStack   = $requestStack;
     }
 
     public function getFunctions()
@@ -97,7 +107,7 @@ class TranslatorExtension extends AbstractExtension
      */
     public function translate(string $translationKey, array $parameters = []): ?string
     {
-        $translation = $this->translateWithoutReplace($translationKey);
+        $translation   = $this->translateWithoutReplace($translationKey);
         $detectionData = $this->extractDetectionData();
 
         $shortcodeValues = [];
@@ -122,7 +132,7 @@ class TranslatorExtension extends AbstractExtension
         }
 
         $detectionData = $this->extractDetectionData();
-        $translation = $this->translator->translate($translationKey, $detectionData['billingCarrierId'], $detectionData['languageCode']);
+        $translation   = $this->translator->translate($translationKey, $detectionData['billingCarrierId'], $detectionData['languageCode']);
 
         if (is_null($translation) && $this->kernel->isDebug()) {
             throw new WrongTranslationKey("Translation key doesn't exist: \"{$translationKey}\"");
@@ -136,7 +146,7 @@ class TranslatorExtension extends AbstractExtension
      */
     public function isRightTextDirection()
     {
-        $languageCode = $this->localExtractor->getLocal();
+        $languageCode = $this->localExtractor->extractLocale($this->requestStack->getCurrentRequest());
 
         return in_array($languageCode, $this->rightDirectionLanguages);
     }
@@ -147,11 +157,11 @@ class TranslatorExtension extends AbstractExtension
     private function extractDetectionData()
     {
         $billingCarrierId = IdentificationFlowDataExtractor::extractBillingCarrierId($this->session);
-        $languageCode = $this->localExtractor->getLocal();
+        $languageCode     = $this->localExtractor->extractLocale($this->requestStack->getCurrentRequest());
 
         return [
             'billingCarrierId' => $billingCarrierId,
-            'languageCode' => $languageCode
+            'languageCode'     => $languageCode
         ];
     }
 }

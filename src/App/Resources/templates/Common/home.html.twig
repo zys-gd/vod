@@ -23,6 +23,11 @@
     {{ parent() }}
     <script type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+
+    <script>
+        performCookieEnabledCheck('{{ url('wrong_cookie_disabled') }}')
+    </script>
+
 {% endblock javascripts %}
 
 {% block header_content %}

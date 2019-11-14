@@ -11,6 +11,7 @@ use App\Domain\Service\Carrier\CarrierOTPVerifier;
 use App\Domain\Service\OneClickFlow\HasCustomOneClickRedirectRules;
 use App\Domain\Service\OneClickFlow\OneClickFlowCarriersProvider;
 use App\Domain\Service\OneClickFlow\OneClickFlowParameters;
+use App\Domain\Service\OneClickFlow\OneClickFlowResolver;
 use App\Piwik\ContentStatisticSender;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use CommonDataBundle\Service\TemplateConfigurator\Exception\TemplateNotFoundException;
@@ -106,6 +107,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var OneClickFlowCarriersProvider
      */
     private $oneClickHandlerProvider;
+    /**
+     * @var OneClickFlowResolver
+     */
+    private $oneClickFlowResolver;
 
     /**
      * LPController constructor.
@@ -125,6 +130,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param ConstraintAvailabilityChecker $visitConstraintChecker
      * @param CAPToolRedirectUrlResolver    $CAPToolRedirectUrlResolver
      * @param OneClickFlowCarriersProvider  $oneClickFlowCarriersProvider
+     * @param OneClickFlowResolver          $oneClickFlowResolver
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
@@ -141,8 +147,10 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         SubscribeUrlResolver $subscribeUrlResolver,
         ConstraintAvailabilityChecker $visitConstraintChecker,
         CAPToolRedirectUrlResolver $CAPToolRedirectUrlResolver,
-        OneClickFlowCarriersProvider $oneClickFlowCarriersProvider
-    ) {
+        OneClickFlowCarriersProvider $oneClickFlowCarriersProvider,
+        OneClickFlowResolver $oneClickFlowResolver
+    )
+    {
         $this->contentStatisticSender        = $contentStatisticSender;
         $this->campaignRepository            = $campaignRepository;
         $this->landingPageAccessResolver     = $landingPageAccessResolver;
@@ -158,6 +166,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         $this->visitConstraintChecker        = $visitConstraintChecker;
         $this->CAPToolRedirectUrlResolver    = $CAPToolRedirectUrlResolver;
         $this->oneClickHandlerProvider       = $oneClickFlowCarriersProvider;
+        $this->oneClickFlowResolver          = $oneClickFlowResolver;
     }
 
 
@@ -168,7 +177,6 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @param Request $request
      *
      * @return Response
-     *
      * @throws GuzzleException
      * @throws TemplateNotFoundException
      */
@@ -226,14 +234,11 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         if ($carrier) {
             $clickHandler = $this->oneClickHandlerProvider->get($carrier->getBillingCarrierId(), OneClickFlowParameters::LP_OFF);
-
-            if ($clickHandler && $this->landingPageAccessResolver->isLandingDisabled($carrier, $campaign)) {
+            if ($clickHandler && $this->oneClickFlowResolver->isLandingDisabled($carrier, $campaign)) {
                 if ($clickHandler instanceof HasCustomOneClickRedirectRules) {
-                    $redirectUrl = $clickHandler->getRedirectUrl();
-                } else {
-                    $redirectUrl = $this->subscribeUrlResolver->getSubscribeRoute($request, $carrier, $identificationToken);
+                    return new RedirectResponse($clickHandler->getRedirectUrl());
                 }
-
+                $redirectUrl = $this->subscribeUrlResolver->getSubscribeRoute($request, $carrier, $identificationToken);
                 return new RedirectResponse($redirectUrl);
             }
         }
@@ -255,11 +260,9 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      *     methods={"GET"},
      *     condition="request.isXmlHttpRequest()"
      * )
-     *
      * @param Request $request
      *
      * @return JsonResponse
-     *
      * @throws TemplateNotFoundException
      */
     public function selectCarrierAction(Request $request)
@@ -294,7 +297,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         }
 
         try {
-            $template = $this->templateConfigurator->getTemplate('landing_wifi', (int)$carrierId);
+            $template = $this->templateConfigurator->getTemplate('landing_wifi', (int)$carrierId); // @App/Common/landing_wifi.html.twig
             $html     = $this->renderView($template);
 
             return new JsonResponse($html, Response::HTTP_OK);
@@ -334,9 +337,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
     /**
      * @Route("/lp/resest-wifi-lp", name="reset_wifi_lp", methods={"GET"}, condition="request.isXmlHttpRequest()")
-     *
      * @return string
-     *
      * @throws TemplateNotFoundException
      */
     public function resetWifiLP()
@@ -351,11 +352,9 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
     /**
      * @Route("/lp/pin-confirm", name="pin_confirm", methods={"GET"}, condition="request.isXmlHttpRequest()")
-     *
      * @param Request $request
      *
      * @return JsonResponse
-     *
      * @throws TemplateNotFoundException
      */
     public function pinConfirmWifiLP(Request $request)
@@ -371,11 +370,9 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
     /**
      * @Route("/lp/change-number", name="change_number", methods={"GET"}, condition="request.isXmlHttpRequest()")
-     *
      * @param Request $request
      *
      * @return JsonResponse
-     *
      * @throws TemplateNotFoundException
      */
     public function changeNumberWifiLP(Request $request)

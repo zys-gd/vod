@@ -94,6 +94,9 @@ services:
 
     IdentificationBundle\Identification\Service\ISPResolver: ~
 
+    IdentificationBundle\Identification\Service\CarrierResolver:
+        arguments: ['@IdentificationBundle\Identification\Service\ISPResolver', '@App\Domain\Repository\CarrierRepository']
+
     IdentificationBundle\Identification\Service\Session\IdentificationDataStorage:
         arguments: ['@IdentificationBundle\Identification\Service\Session\SessionStorage']
 
@@ -226,6 +229,7 @@ services:
             - '@IdentificationBundle\Identification\Service\PassthroughRequestPreparer'
             - '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor'
             - '@SubscriptionBundle\Subscription\Common\RouteProvider'
+            - '@SubscriptionBundle\Subscription\Subscribe\Controller\Event\SubscribeClickEventTracker'
         tags: ['controller.service_arguments']
 
     IdentificationBundle\Identification\Service\PassthroughRequestPreparer:

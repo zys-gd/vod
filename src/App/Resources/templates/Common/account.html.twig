@@ -17,6 +17,12 @@
     <link href="{{ asset('/css/account.css') }}" rel="stylesheet">
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    {{ addJs(asset('js/otp.js')) }}
+{% endblock %}
+
+
 {% block header_content %}
     {{ header.render(translate('account.header-text')) }}
 {% endblock header_content %}

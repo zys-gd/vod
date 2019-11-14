@@ -1,0 +1,24 @@
+.jazz_logo {
+    transform: translate(10px, -10vw);
+    height: 0;
+    margin-bottom: 7vh;
+}
+.jazz_logo img {
+max-width: 25vw;
+}
+.clickbait {
+    font-size: 8vw;
+    font-weight: bold;
+    line-height: 0.9em;
+}
+.clickbait large {
+    font-size: 1.3em;
+}
+.clickbait red {
+    color: red;
+}
+
+.lp-sub-btn button {
+    font-size: 10vw;
+    padding: 10px 37px;
+}

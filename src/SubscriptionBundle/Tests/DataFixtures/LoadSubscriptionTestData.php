@@ -294,7 +294,6 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
         $carrier->setNumberOfAllowedSubscriptionsByConstraint(0);
         $carrier->setRedirectUrl(false);
         $carrier->setFlushDate(null);
-        $carrier->setIsUnlimitedSubscriptionAttemptsAllowed(true);
 
         $this->addReference('generic_carrier', $carrier);
         $this->addReference(sprintf('carrier_with_internal_id_%s', self::GENERIC_CARRIER), $carrier);
@@ -356,7 +355,6 @@ class LoadSubscriptionTestData extends AbstractFixture implements DependentFixtu
         $carrier->setNumberOfAllowedSubscriptionsByConstraint(0);
         $carrier->setRedirectUrl(false);
         $carrier->setFlushDate(null);
-        $carrier->setIsUnlimitedSubscriptionAttemptsAllowed(true);
 
         $this->addReference('allowed_resub_carrier', $carrier);
         $this->addReference(sprintf('carrier_with_internal_id_%s', self::ALLOWED_RESUB_CARRIER), $carrier);

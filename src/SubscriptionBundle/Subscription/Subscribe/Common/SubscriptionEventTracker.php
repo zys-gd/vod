@@ -87,4 +87,5 @@ class SubscriptionEventTracker
         );
         $this->eventPublisher->publish($conversionEvent);
     }
+
 }

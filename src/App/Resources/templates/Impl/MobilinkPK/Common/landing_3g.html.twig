@@ -1,0 +1,80 @@
+{% extends '@App/Common/landing_3g.html.twig' %}
+
+{% import importTemplate("Components/Blocks/Header/header_lp.html.twig") as  header %}
+{% import importTemplate("Components/Blocks/Footer/annotation.html.twig") as  annotation %}
+{% import importTemplate("Components/Blocks/Footer/menu.html.twig") as  footer_menu %}
+
+
+{# IMPORT SECTIONS #}
+{% import importTemplate("Common/LP/Sections/play_text_section.html.twig") as play_text_section %}
+{% import importTemplate("Common/LP/Sections/banner_section.html.twig") as banner_section %}
+{% import importTemplate("Common/LP/Sections/3G/subscribe_button_section.html.twig") as subscribe_button_section %}
+{% import importTemplate("Common/LP/Sections/offer_section.html.twig") as offer_section %}
+{% import importTemplate("Common/LP/Sections/icons_chanel_section.html.twig") as icons_chanel_section %}
+{% import importTemplate("Common/LP/Sections/lure_text_section.html.twig") as lure_text_section %}
+{# END IMPORT SECTIONS #}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/MobilinkPK/lp.css') }}"/>
+
+{% endblock stylesheets %}
+
+{% block body %}
+
+    <div class="d-flex flex-column align-items-center justify-content-top w-100"  style="background: {{ getCampaignData('background') }}">
+
+        <!-- PLAY TEXT SECTION -->
+        {{ play_text_section.render() }}
+        <!-- END PLAY TEXT SECTION-->
+
+        <!-- SUBSCRIBE BUTTON SECTION -->
+        {{ subscribe_button_section.render('buttons.subscribe', 'btn-lp_big', 'lp-sub-btn lp-sub-btn-top') }}
+        <!-- END SUBSCRIBE BUTTON SECTION -->
+
+        <!-- BANNER SECTION WITH SUB IMAGE -->
+        {{ banner_section.render(asset('img/lp/MobilinkPK/lp_banner.png')) }}
+        <!-- END BANNER SECTION WITH SUB IMAGE -->
+
+        <!-- Jazz logo -->
+        <div class="jazz_logo">
+            <img alt="" src="{{ asset('img/lp/MobilinkPK/jazz_logo.png') }}"/>
+        </div>
+        <!-- END Jazz logo -->
+
+        <!-- 1st offer -->
+        <div class="d-flex align-items-center justify-content-center mh-7">
+            <div class="d-flex align-items-center justify-content-center">
+                <h1 class="h1 clickbait">{{ translate('offer.landing.clickbait')|raw }}</h1>
+            </div>
+        </div>
+        <!-- END 1st offer -->
+
+        <!-- SUBSCRIBE BUTTON SECTION -->
+        {{ subscribe_button_section.render('buttons.subscribe', 'btn-lp_big', 'lp-sub-btn lp-sub-btn-bottom') }}
+        <!-- END SUBSCRIBE BUTTON SECTION -->
+
+        <!-- 2nd offer -->
+        <div>
+            <div class="d-flex align-items-center justify-content-center mh-7">
+                <div class="d-flex align-items-center justify-content-center">
+                    <h2 class="h2">{{ translate('offer.landing.clickbait_small')|raw }}</h2>
+                </div>
+            </div>
+        </div>
+        <!-- END 2nd offer -->
+
+        <!-- OFFER SECTION -->
+        {{ offer_section.render() }}
+        <!-- END OFFER SECTION -->
+
+        <!-- ICONS CHANEL SECTION -->
+        {{ icons_chanel_section.render() }}
+        <!-- END ICONS CHANEL SECTION -->
+
+        <!-- LURE TEXT SECTION  -->
+        {{  lure_text_section.render() }}
+        <!-- END LURE TEXT SECTION -->
+
+    </div>
+{% endblock body %}

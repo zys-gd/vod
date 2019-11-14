@@ -7919,5 +7919,95 @@
             "uuid": "5179fd32-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
+    },
+    {
+        "uuid": "0cabad02-5273-48aa-9ef7-913d16aae686",
+        "key": "wrong_cookie_page.backlink_title",
+        "translation": "ici",
+        "language": {
+            "uuid": "5179f269-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "195f9634-e56f-4794-b4c9-f59550d1bfde",
+        "key": "wrong_cookie_page.text",
+        "translation": "\u0639\u0641\u0648\u064b\u0627 \u060c \u064a\u0628\u062f\u0648 \u0623\u0646 \u0642\u0628\u0648\u0644 \u0645\u0644\u0641\u0627\u062a \u062a\u0639\u0631\u064a\u0641 \u0627\u0644\u0627\u0631\u062a\u0628\u0627\u0637 \u0641\u064a \u0648\u0636\u0639 \u0625\u064a\u0642\u0627\u0641 \u0641\u064a \u0625\u0639\u062f\u0627\u062f\u0627\u062a \u0627\u0644\u0645\u062a\u0635\u0641\u062d.\u064a\u0631\u062c\u0649 \u0627\u0644\u0633\u0645\u0627\u062d \u0644\u0647\u0627 \u0648\u0627\u0644\u0627\u0633\u062a\u0645\u062a\u0627\u0639 \u0628\u062e\u062f\u0645\u062a\u0646\u0627: \u0627\u0644\u0625\u0639\u062f\u0627\u062f\u0627\u062a> \u0627\u0644\u062e\u0635\u0648\u0635\u064a\u0629> \u0627\u0644\u0633\u0645\u0627\u062d \u0628\u0645\u0644\u0641\u0627\u062a \u062a\u0639\u0631\u064a\u0641 \u0627\u0644\u0627\u0631\u062a\u0628\u0627\u0637. \u0644\u0644\u0639\u0648\u062f\u0629 \u060c \u064a\u0631\u062c\u0649 \u0627\u0644\u0646\u0642\u0631 \u0639\u0644\u0649 %backLink%",
+        "language": {
+            "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "1a170783-91b5-43d8-9984-0be70bb73bc7",
+        "key": "wrong_cookie_page.backlink_title",
+        "translation": "\u0647\u0646\u0627",
+        "language": {
+            "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "7ea53328-d3f2-44fa-8a29-7babdd27052f",
+        "key": "wrong_cookie_page.text",
+        "translation": "Whoops, apparently cookies acceptance is turned off in your browser settings. Please, allow it and enjoy our service: Settings > Site settings > Allow cookies. To go back, please click %backLink%.",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "8614688e-8c8c-45a4-b600-4b9aa442d14a",
+        "key": "wrong_cookie_page.backlink_title",
+        "translation": "here",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "a8d1a389-52f8-443a-bfa0-213583e94b41",
+        "key": "wrong_cookie_page.text",
+        "translation": "Oups, apparemment, l'acceptation des cookies est d\u00e9sactiv\u00e9e dans les param\u00e8tres de votre navigateur.Autorisez-le et profitez de notre service: Param\u00e8tres> Confidentialit\u00e9> Autoriser les cookies. Pour revenir en arri\u00e8re, veuillez cliquer %backLink%",
+        "language": {
+            "uuid": "5179f269-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "af60cc81-8565-402f-b6d6-d6c7be1dc3ed",
+        "key": "wrong_cookie_page.backlink_title",
+        "translation": "sini",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "f9d6a7d9-7f62-4742-a0af-1cda32e096c2",
+        "key": "wrong_cookie_page.text",
+        "translation": "Ups, tampaknya penerimaan cookie dimatikan dalam pengaturan browser Anda.Tolong, izinkan, dan nikmati layanan kami: Pengaturan> Privasi> Izinkan cookie. Untuk kembali, silakan klik di %backLink%",
+        "language": {
+            "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "375116b1-6d25-44cb-acb4-6f5df6d3910d",
+        "key": "wrong_cookie_page.text",
+        "translation": "Ups, najwyra\u017aniej akceptacja plik\u00f3w cookie jest wy\u0142\u0105czona w ustawieniach przegl\u0105darki.Pozw\u00f3l na to i skorzystaj z naszej us\u0142ugi: Ustawienia> Ustawienia strony> Zezwalaj na pliki cookie. Aby wr\u00f3ci\u0107, kliknij %backLink%.",
+        "language": {
+            "uuid": "5179fd32-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
+    },
+    {
+        "uuid": "88842557-c5b4-4fd1-85fb-7a9804cf37c3",
+        "key": "wrong_cookie_page.backlink_title",
+        "translation": "tutaj",
+        "language": {
+            "uuid": "5179fd32-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": null
     }
 ]

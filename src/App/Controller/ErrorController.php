@@ -30,6 +30,14 @@ class ErrorController extends AbstractController
         $this->carrierSelector = $carrierSelector;
     }
 
+    /**
+     * @Route("/wroc", name="wrong_cookie_disabled")
+     * @return Response
+     */
+    public function wrongCookieDisabledAction()
+    {
+        return $this->render('@App/Error/wrong_cookie.html.twig');
+    }
 
     /**
      * @Route("/whoops", name="whoops")
@@ -44,16 +52,6 @@ class ErrorController extends AbstractController
         }
 
         return $this->render('@App/Error/whoops.html.twig');
-    }
-
-    /**
-     * @Route("/wros",name="wrong_os")
-     * @param Request $request
-     * @return Response
-     */
-    public function wrongOS(Request $request)
-    {
-        return $this->render('@App/Error/wrong_os.html.twig');
     }
 
     /**

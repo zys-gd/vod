@@ -78,6 +78,9 @@ class RequestSender
 
             $preparedParams    = $this->extractor->extractParameters($processParameters);
             $response          = $this->apiClient->sendPostProcessRequest($preparedParams, $type);
+
+
+
             $processedResponse = $this->responseMapper->map($type, $response);
             $this->logger->debug('Received response from billing', [
                 'status'  => $processedResponse->getStatus(),

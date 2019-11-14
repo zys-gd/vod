@@ -29,13 +29,13 @@ class GameEventMapper
         $subscriptionPack = $subscription->getSubscriptionPack();
         $orderInformation = $this->mapOrderInformation($subscription, $game, $subscriptionPack);
         $userInfo         = $this->userInformationMapper->mapUserInformation(
-            $subscription->getUser(),
-            $subscription,
-            0
+            0, $subscription->getUser(), $subscription
         );
         $additionalData   = $this->getAdditionalData($game);
 
-        return new ConversionEvent($userInfo, $orderInformation, $additionalData);
+        return new ConversionEvent(
+            $userInfo, $orderInformation->getOrderId(), $orderInformation, $additionalData
+        );
     }
 
     /**

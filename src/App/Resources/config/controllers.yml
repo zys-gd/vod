@@ -63,6 +63,7 @@ services:
             - '@SubscriptionBundle\CAPTool\Visit\ConstraintAvailabilityChecker'
             - '@SubscriptionBundle\CAPTool\Common\CAPToolRedirectUrlResolver'
             - '@App\Domain\Service\OneClickFlow\OneClickFlowCarriersProvider'
+            - '@App\Domain\Service\OneClickFlow\OneClickFlowResolver'
 
     App\Controller\ErrorController:
         arguments:

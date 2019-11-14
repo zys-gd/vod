@@ -87,3 +87,4 @@ services:
             - '@logger'
             - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking'
+            - '@SubscriptionBundle\Subscription\Subscribe\Controller\Event\SubscribeClickEventTracker'
