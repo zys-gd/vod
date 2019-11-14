@@ -21,6 +21,8 @@
             {% else %}
                 {{ link.render(url('landing'), translate(placeholder)) }}
             {% endif %}
+        {% elseif isCarrierPassthrough() %}
+            {{ link.render(url('identify_by_passthrough'), translate(placeholder), class) }}
         {% elseif isIdentified() and not isConsentFlow() %}
             {{ link.render(url('subscription.subscribe'), translate(placeholder), class) }}
         {% elseif isConsentFlow() %}
@@ -46,8 +48,8 @@
             e.preventDefault();
 
             var cfg = {
-                title: '{{ translate('messages.subscription_popup.confirmation_title') }}',
-                message: '{{ translate('messages.subscription_popup.confirmation_text', {'%phone%': getUserIdentifier()}) }}',
+                title   : '{{ translate('messages.subscription_popup.confirmation_title') }}',
+                message : '{{ translate('messages.subscription_popup.confirmation_text', {'%phone%': getUserIdentifier()}) }}',
                 okButton: '{{ translate('buttons.yes') }}',
                 noButton: '{{ translate('buttons.no') }}',
             };

@@ -17,7 +17,7 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {{ addJs(asset('js/otp.js')) }}
+    {% include ("@App/Common/LP/js_lp_block.html.twig") %}
     {% include importTemplate("Common/LP/wifi_subscribe_block_js.html.twig") %}
 {% endblock %}
 

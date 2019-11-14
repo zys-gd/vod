@@ -18,7 +18,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {{ addJs(asset('js/otp.js')) }}
+    {% include ("@App/Common/LP/js_lp_block.html.twig") %}
     <link href="{{ asset('/css/lp.css') }}" rel="stylesheet">
 {% endblock %}
 

@@ -13,6 +13,8 @@ services:
             - '@ExtrasBundle\Utils\LocalExtractor'
             - '@App\Domain\Service\Translator\ShortcodeReplacer'
             - '@App\Domain\Service\Translator\DataAggregator'
+            - '@request_stack'
+
     App\Twig\NavbarExtension:
         arguments:
             - '@App\Domain\Repository\MainCategoryRepository'

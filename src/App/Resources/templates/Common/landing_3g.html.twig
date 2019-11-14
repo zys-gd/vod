@@ -18,7 +18,9 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {{ addJs(asset('js/otp.js')) }}
+
+    {% include ("@App/Common/LP/js_lp_block.html.twig") %}
+
 {% endblock %}
 
 {% block stylesheets %}
