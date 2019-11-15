@@ -17,7 +17,6 @@ final class Version20191115105845 extends AbstractMigration
 
         $this->addSql('DROP TABLE cron_running_history');
         $this->addSql('DROP TABLE subscription_process_log');
-        $this->addSql('DROP TABLE campaign_schedule');
     }
 
     public function down(Schema $schema) : void
