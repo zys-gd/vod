@@ -1,6 +1,6 @@
 <?php
 
-namespace Carriers\Controller;
+namespace Carriers\TMobilePolandDimoco\Controller;
 
 use CommonDataBundle\Service\TemplateConfigurator\Exception\TemplateNotFoundException;
 use CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator;
@@ -12,9 +12,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class DimocoController
+ * Class PrepaymentController
  */
-class DimocoController extends AbstractController implements ControllerWithISPDetection
+class PrepaymentController extends AbstractController implements ControllerWithISPDetection
 {
     /**
      * @var TemplateConfigurator
