@@ -44,7 +44,7 @@ class TMobilePLDimocoOneClickHandler implements OneClickFlowInterface, HasCustom
      */
     public function getRedirectUrl(): string
     {
-        return $this->router->generate('prepayment');
+        return $this->router->generate('payment');
     }
 
     /**

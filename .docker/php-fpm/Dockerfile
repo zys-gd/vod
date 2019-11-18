@@ -17,7 +17,7 @@ RUN pecl install apcu \
     && docker-php-ext-enable apcu --ini-name 10-docker-php-ext-apcu.ini \
     && docker-php-ext-enable apc --ini-name 20-docker-php-ext-apc.ini
 
-RUN pecl install redis && docker-php-ext-enable redis
+RUN pecl install redis-4.2.0 && docker-php-ext-enable redis
 RUN pecl install amqp && docker-php-ext-enable amqp
 
 RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/

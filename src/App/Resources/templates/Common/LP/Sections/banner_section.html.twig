@@ -1,13 +1,17 @@
-{% macro render() %}
+{% macro render(bannerPath) %}
     {% import importTemplate("Components/Blocks/Main/banner.html.twig") as  banner %}
     {% import importTemplate("Common/LP/Sections/Wifi/subscribe_button_section.html.twig") as sub_btn_section %}
+
+    {% if bannerPath is not defined or bannerPath is null %}
+        {% set bannerPath %}{{ asset('img/lp/lp_subscribe_video.png') }}{% endset %}
+    {% endif %}
 
     <div class="d-flex align-items-center flex-column">
         {% if isClickableSubImage() %}
             {% if getCampaignData('banner') %}
                 {{ banner.render(getCampaignData('banner'), 'banner', 'w-100', 1) }}
             {% else %}
-                {{ banner.render(asset('img/lp/lp_subscribe_video.png'), 'banner', 'w-100', 1) }}
+                {{ banner.render(bannerPath, 'banner', 'w-100', 1) }}
             {% endif %}
         {% else %}
             {% if getCampaignData('banner') %}

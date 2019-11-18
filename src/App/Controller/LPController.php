@@ -297,7 +297,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         }
 
         try {
-            $template = $this->templateConfigurator->getTemplate('landing_wifi', (int)$carrierId);
+            $template = $this->templateConfigurator->getTemplate('landing_wifi', (int)$carrierId); // @App/Common/landing_wifi.html.twig
             $html     = $this->renderView($template);
 
             return new JsonResponse($html, Response::HTTP_OK);

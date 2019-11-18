@@ -5,3 +5,7 @@ services:
     Carriers\MobilinkPK\OneClick\MobilinkPKOneClickFlow:
         tags:
             - { name: app.one_click_flow_handler }
+
+    Carriers\MobilinkPK\Template\MobilinkPKTemplateHandler:
+        tags:
+            - { name: store_commons.template_handler }
