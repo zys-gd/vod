@@ -47,4 +47,5 @@ class ID
     const VIVA_BAHRAIN_MM       = 2258;
     const VODAFONE_EGYPT_MM     = 2259;
     const TMOBILE_POLAND_DIMOCO = 2260;
+    const ORANGE_EG_MM          = 2328;
 }
