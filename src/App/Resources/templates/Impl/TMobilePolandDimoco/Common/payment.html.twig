@@ -32,10 +32,12 @@
                 <span>100% Sport</span> <br>
                 <span>{{ translate('payment.offer') }}</span>
             </p>
+            <p>Opłata będzie pobierana co 13 zł / tydzień</p>
         </div>
         <div class="payment-text pr-3 pl-3">
             <p>{{ translate('payment.info.1', {'%terms_url%': path('terms_and_conditions')}) | raw }}</p>
             <p>{{ translate('payment.info.2') }}</p>
+            <p>Zapoznaj się z treścią regulaminu 100%sport</p>
             <form id="payment-confirm-form">
                 <div class="payment-text">
                     <label>
@@ -52,8 +54,8 @@
                     </button>
                 </div>
             </form>
-            <p>{{ translate('payment.info.4') }}</p>
-            <p>{{ translate('payment.info.5') }}</p>
+            <p>{{ translate('payment.info.4') }}. <a onclick="$('#Więcej').toggle(); return false;" href="#">Więcej</a></p>
+            <p id="Więcej" class="collapse">{{ translate('payment.info.5') }}</p>
         </div>
     </div>
 {% endblock %}

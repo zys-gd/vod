@@ -5,7 +5,7 @@
 
     <div class="d-flex align-items-start justify-content-center mb-n-2 {{ blockClass }}">
         {% if not hasActiveSubscription() or not isNotFullyPaid() %}
-            {{ link.render(url('prepayment'), translate(placeholder), btnClass) }}
+            {{ link.render(url('payment'), translate(placeholder), btnClass) }}
         {% endif %}
     </div>
 
