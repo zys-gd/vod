@@ -1,6 +1,6 @@
 <?php
 
-namespace Carriers\Controller;
+namespace Carriers\TMobilePolandDimoco\Controller;
 
 use CommonDataBundle\Service\TemplateConfigurator\Exception\TemplateNotFoundException;
 use CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator;
@@ -12,9 +12,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class DimocoController
+ * Class PrepaymentController
  */
-class DimocoController extends AbstractController implements ControllerWithISPDetection
+class PrepaymentController extends AbstractController implements ControllerWithISPDetection
 {
     /**
      * @var TemplateConfigurator
@@ -78,7 +78,9 @@ class DimocoController extends AbstractController implements ControllerWithISPDe
         $result = $request->query->get('result', null);
 
         if (empty($result) || $result !== 'successful') {
-            return $this->redirectToRoute('index', ['err_handle' => 'subscribe_error']);
+            $reason = $request->query->get('reason', 'subscribe_error');
+
+            return $this->redirectToRoute('index', ['err_handle' => $reason]);
         }
 
         $template = $this->templateConfigurator->getTemplate('payment_confirmation', $data->getCarrierId());
