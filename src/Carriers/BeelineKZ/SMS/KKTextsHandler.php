@@ -11,7 +11,7 @@ use SubscriptionBundle\Subscription\Notification\SMSText\CarrierSMSHandlerInterf
 /**
  * Class KZTextsHandler
  */
-class KZTextsHandler implements CarrierSMSHandlerInterface
+class KKTextsHandler implements CarrierSMSHandlerInterface
 {
     /**
      * @param CarrierInterface $carrier

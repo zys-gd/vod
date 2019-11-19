@@ -59,6 +59,6 @@ class BeelineKZNotificationHandler implements NotificationHandlerInterface
      */
     public function getSmsLanguage(): LanguageInterface
     {
-        return $this->languageRepository->findByCode('kz');
+        return $this->languageRepository->findByCode('kk');
     }
 }

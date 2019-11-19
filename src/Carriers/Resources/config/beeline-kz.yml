@@ -3,7 +3,7 @@ services:
         tags:
             - { name: subscription.sms_text_handler }
 
-    Carriers\BeelineKZ\SMS\KZTextsHandler:
+    Carriers\BeelineKZ\SMS\KKTextsHandler:
         tags:
             - { name: subscription.sms_text_handler }
 
