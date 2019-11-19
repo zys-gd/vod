@@ -1,0 +1,2 @@
+services:
+    IdentificationBundle\Carriers\OrangeEGMM\Identification\OrangeEGMMIdentificationHandler: ~

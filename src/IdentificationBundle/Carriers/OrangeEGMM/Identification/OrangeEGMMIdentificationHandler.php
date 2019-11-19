@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Carriers\OrangeEGMM\Identification;
+namespace IdentificationBundle\Carriers\OrangeEGMM\Identification;
 
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
