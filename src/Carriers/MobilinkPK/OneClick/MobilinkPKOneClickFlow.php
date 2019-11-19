@@ -18,7 +18,7 @@ class MobilinkPKOneClickFlow implements OneClickFlowInterface
      */
     public function canHandle(int $billingCarrierId, int $flowType): bool
     {
-        return false; //$billingCarrierId === ID::MOBILINK_PAKISTAN && $flowType === $this->getFlowType();
+        return $billingCarrierId === ID::MOBILINK_PAKISTAN && $flowType === $this->getFlowType();
     }
 
     public function getFlowType(): int
