@@ -4,15 +4,15 @@
     <div class="d-flex align-items-center flex-column">
         {% if isClickableSubImage() %}
             {% if getCampaignData('banner') %}
-                {{ banner.render(getCampaignData('banner'), 'banner', 'w-100 payment-banner', 1) }}
+                {{ banner.render(getCampaignData('banner'), 'banner', 'w-100', 1) }}
             {% else %}
-                {{ banner.render(asset('img/lp/lp_banner.png'), 'banner', 'w-100 payment-banner', 1) }}
+                {{ banner.render(asset('img/lp/lp_banner.png'), 'banner', 'w-100', 1) }}
             {% endif %}
         {% else %}
             {% if getCampaignData('banner') %}
-                <img src="{{ getCampaignData('banner') }}" class="w-100 payment-banner" alt="banner">
+                <img src="{{ getCampaignData('banner') }}" class="w-100" alt="banner">
             {% else %}
-                <img src="{{ asset('img/lp/lp_banner.png') }}" class="w-100 payment-banner" alt="banner">
+                <img src="{{ asset('img/lp/lp_banner.png') }}" class="w-100" alt="banner">
             {% endif %}
         {% endif %}
     </div>
