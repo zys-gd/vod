@@ -1,0 +1,11 @@
+services:
+    SubscriptionBundle\Carriers\BeelineKZ\Notification\BeelineKZNotificationHandler:
+        arguments:
+            - '@CommonDataBundle\Repository\Interfaces\LanguageRepositoryInterface'
+        tags:
+            - { name: subscription.notification_handler, type: subscribe }
+            - { name: subscription.notification_handler, type: unsubscribe }
+
+    SubscriptionBundle\Carriers\BeelineKZ\Subscribe\BeelineKZSubscribeHandler:
+        tags:
+            - { name: subscription.subscription_handler }
