@@ -68,6 +68,8 @@ class TelenorPKRenewHandler implements
 
     public function onRenewAlert(Subscription $subscription, CarrierInterface $carrier): void
     {
+        return;
+
         $pack = $this->provider->getActiveSubscriptionPackFromCarrier($carrier);
 
         $this->notifier->sendNotification(

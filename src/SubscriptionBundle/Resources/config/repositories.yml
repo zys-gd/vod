@@ -20,16 +20,6 @@ services:
     arguments:
       - SubscriptionBundle\Entity\CronTask
 
-  SubscriptionBundle\Repository\CronRunningHistoryRepository:
-    factory: ['@doctrine.orm.default_entity_manager', getRepository]
-    arguments:
-      - SubscriptionBundle\Entity\CronRunningHistory
-
-  SubscriptionBundle\Repository\LogRepository:
-    factory: ['@doctrine.orm.default_entity_manager', getRepository]
-    arguments:
-      - SubscriptionBundle\Entity\Log
-
   SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository:
     factory: ['@doctrine.orm.default_entity_manager', getRepository]
     arguments:
