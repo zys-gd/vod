@@ -58,8 +58,6 @@ class ComplaintsAdminController extends CRUDController
         'url'                      => 'The user came from',
         'subscription_date'        => 'Subscription date',
         'unsubscription_date'      => 'Unsubscription date',
-        'gameDownloadCount'        => 'Downloads number',
-        'gamesInfo'                => 'Games info',
         'subscription_attempts'    => 'Subscription attempts',
         'resubs_attempts'          => 'Resubscription attempts',
         'charges_successful_no'    => 'Amount of succes charges',
