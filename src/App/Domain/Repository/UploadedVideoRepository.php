@@ -105,4 +105,15 @@ class UploadedVideoRepository extends \Doctrine\ORM\EntityRepository
 
         return $q->getQuery()->getResult();
     }
+
+    public function findOutdatedVideo(\DateTimeInterface $dateTime)
+    {
+        $queryBuilder = $this->createQueryBuilder('v');
+        $query        = $queryBuilder
+            ->where(':expirationDate > v.createdDate')
+            ->setParameter('expirationDate', $dateTime)
+            ->getQuery();
+
+        return $query->getResult();
+    }
 }
