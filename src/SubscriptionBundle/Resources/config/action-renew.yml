@@ -50,6 +50,7 @@ services:
       - '@SubscriptionBundle\Repository\SubscriptionRepository'
       - '@SubscriptionBundle\Subscription\Renew\Handler\RenewHandlerProvider'
       - '@SubscriptionBundle\Service\EntitySaveHelper'
+      - '@App\Domain\Repository\CarrierRepository'
 
   cron.task:
     class: SubscriptionBundle\Subscription\Renew\Cron\CronTaskStatus

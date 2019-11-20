@@ -67,7 +67,7 @@ class RenewAlerter
 
         $renewer = $this->renewHandlerProvider->getRenewer($carrier);
 
-        $subPack = $this->carrierRepository->findActiveSubscriptionPack($carrier);
+        $subPack       = $this->carrierRepository->findActiveSubscriptionPack($carrier);
         $subscriptions = $this->repository->findExpiringTomorrowSubscriptions($carrier, $subPack);
 
         if ($renewer instanceof HasRenewAlerts) {
