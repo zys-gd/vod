@@ -2,17 +2,17 @@
 
 namespace DoctrineMigrations;
 
-use App\Domain\Entity\Carrier;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Doctrine\ORM\EntityManagerInterface;
 use SubscriptionBundle\Entity\SubscriptionPack;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20191120120604 extends AbstractMigration
+final class Version20191120120604 extends AbstractMigration implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
