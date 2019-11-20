@@ -57,7 +57,6 @@ class ReportingToolRequestSender
                 RequestOptions::FORM_PARAMS => ['msisdn' => $user->getIdentifier()],
             ]);
 
-            $data = [];
             $body = $response->getBody();
             if ($body instanceof StreamInterface) {
                 $contents = $body->getContents();
@@ -65,7 +64,7 @@ class ReportingToolRequestSender
                     $data = json_decode($contents, true);
                 }
             }
-            return $data;
+            return $data ?? [];
 
         } catch (GuzzleException $exception) {
             return [];
