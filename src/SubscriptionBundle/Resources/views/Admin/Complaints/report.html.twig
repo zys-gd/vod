@@ -100,36 +100,16 @@
                                 {% endif %}
                             </td>
                             <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                {% if user['gameDownloadCount'] %}
-                                    {{ user['gameDownloadCount'] }}
-                                {% endif %}
+                                {{ user['subscription_attempts'] }}
                             </td>
                             <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                {% if user['gamesInfo'] %}
-                                    {% for item in user['gamesInfo'] %}
-                                        {{ item }} <br/>
-                                    {% endfor %}
-                                {% endif %}
+                                {{ user['resubs_attempts'] }}
                             </td>
                             <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                {% if user['subscription_attempts'] %}
-                                    {{ user['subscription_attempts'] }}
-                                {% endif %}
+                                {{ user['charges_successful_no'] }}
                             </td>
                             <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                {% if user['resubs_attempts'] %}
-                                    {{ user['resubs_attempts'] }}
-                                {% endif %}
-                            </td>
-                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                {% if user['charges_successful_no'] %}
-                                    {{ user['charges_successful_no'] }}
-                                {% endif %}
-                            </td>
-                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                {% if user['charges_successful_value'] %}
-                                    {{ user['charges_successful_value'] }}
-                                {% endif %}
+                                {{ user['charges_successful_value'] }}
                             </td>
                         </tr>
                     {% endfor %}
