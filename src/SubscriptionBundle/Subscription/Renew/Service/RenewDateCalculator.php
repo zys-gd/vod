@@ -17,10 +17,13 @@ class RenewDateCalculator
 {
     /**
      * @param Subscription $subscription
+     *
      * @return Carbon
+     * @throws \Exception
      */
     public function calculateRenewDate(Subscription $subscription): Carbon
     {
+        /** @var SubscriptionPack $subscriptionPack */
         $subscriptionPack = $subscription->getSubscriptionPack();
         $periodicity      = $subscriptionPack->getPeriodicity();
         $renewDate        = $now = Carbon::now();
@@ -38,6 +41,12 @@ class RenewDateCalculator
                 $renewDate = $now->addDays($subscriptionPack->getCustomRenewPeriod());
                 break;
         }
+
+        if ($subscriptionPack->isFirstSubscriptionPeriodIsFree()) {
+            $carrier   = $subscriptionPack->getCarrier();
+            $renewDate = $now->addDays($carrier->getTrialPeriod());
+        }
+
         $preferredRenewalStart = $subscriptionPack->getPreferredRenewalStart()
             ? Carbon::instance($subscriptionPack->getPreferredRenewalStart())
             : Carbon::parse('00:00:00');
@@ -59,7 +68,8 @@ class RenewDateCalculator
                 $renewInterval->setTimestamp($rand_epoch);
 
                 $renewDate->setTime($renewInterval->format('h'), $renewInterval->format('i'));
-            } else if ($subscriptionPack->getPreferredRenewalEnd()) {
+            }
+            else if ($subscriptionPack->getPreferredRenewalEnd()) {
                 $renewDate->setTime(0, 0);
             }
         }
