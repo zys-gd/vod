@@ -44,8 +44,6 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $published                               = $row['published'];
             $isOneClickFlow                          = $row['isOneClickFlow'] ?? 0;
             $trialInitializer                        = $row['trialInitializer'];
-            $trialPeriod                             = $row['trialPeriod'];
-            $subscriptionPeriod                      = $row['subscriptionPeriod'];
             $isCampaignsOnPause                      = $row['isCampaignsOnPause'];
             $subscribeAttempts                       = $row['subscribeAttempts'];
             $numberOfAllowedSubscriptionByConstraint = $row['numberOfAllowedSubscriptionsByConstraint'];
@@ -63,8 +61,6 @@ class LoadCarriersData extends AbstractFixture implements ContainerAwareInterfac
             $carrier->setPublished($published);
             $carrier->setIsOneClickFlow($isOneClickFlow);
             $carrier->setTrialInitializer($trialInitializer);
-            $carrier->setTrialPeriod($trialPeriod);
-            $carrier->setSubscriptionPeriod($subscriptionPeriod);
             $carrier->setOperatorId($operatorId);
             $carrier->setIsCampaignsOnPause($isCampaignsOnPause);
             $carrier->setSubscribeAttempts((int)$subscribeAttempts);

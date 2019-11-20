@@ -43,8 +43,7 @@ class RenewDateCalculator
         }
 
         if ($subscriptionPack->isFirstSubscriptionPeriodIsFree()) {
-            $carrier   = $subscriptionPack->getCarrier();
-            $renewDate = $now->addDays($carrier->getTrialPeriod());
+            $renewDate = $now->addDays($subscriptionPack->getTrialPeriod());
         }
 
         $preferredRenewalStart = $subscriptionPack->getPreferredRenewalStart()
