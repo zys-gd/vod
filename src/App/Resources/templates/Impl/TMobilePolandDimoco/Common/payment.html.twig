@@ -7,6 +7,19 @@
         .confirm-payment-button {
             font-size: 15px;
         }
+
+        .payment-banner {
+            background-image: url("/img/carriers/tmobile-poland-dimoco/lp/lp_banner.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            height: 160px;
+        }
+
+        @media screen and (max-height: 660px) {
+            .payment-banner {
+                height: 140px;
+            }
+        }
     </style>
 {% endblock %}
 
@@ -26,7 +39,13 @@
 
 {% block body %}
     <div class="d-flex flex-column w-100 mt-1">
-        <div>{{ banner_section.render() }}</div>
+        <div>
+            {% if getCampaignData('banner') %}
+                <img src="{{ getCampaignData('banner') }}" class="w-100 payment-banner" alt="banner">
+            {% else %}
+                <div class="w-100 payment-banner"></div>
+            {% endif %}
+        </img>
         <div class="payment-text pl-3 mt-2">
             <p>
                 <span>100% Sport</span> <br>
@@ -51,7 +70,7 @@
                             type="submit"
                             class="confirm-payment-button"
                     >
-                        {{ translate('payment.button') }}
+                        Zamawiam i place na powyzszych warunkach
                     </button>
                 </div>
             </form>
