@@ -11,14 +11,14 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class DeleteExpiredVideos
+ * Class DeleteOutdatedVideos
  */
-class DeleteExpiredVideo extends Command
+class DeleteOutdatedVideoCommand extends Command
 {
     /**
      * @var string
      */
-    protected static $defaultName = 'app:delete-expired-videos';
+    protected static $defaultName = 'app:delete-outdated-videos';
 
     /**
      * @var EntityManagerInterface
@@ -36,31 +36,32 @@ class DeleteExpiredVideo extends Command
     private $cloudinaryConnector;
 
     /**
-     * DeleteExpiredVideos constructor
+     * DeleteOutdatedVideos constructor
      *
-     * @param EntityManagerInterface $entityManager
+     * @param EntityManagerInterface  $entityManager
      * @param UploadedVideoRepository $uploadedVideoRepository
-     * @param CloudinaryConnector $cloudinaryConnector
+     * @param CloudinaryConnector     $cloudinaryConnector
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         UploadedVideoRepository $uploadedVideoRepository,
         CloudinaryConnector $cloudinaryConnector
-    ) {
-        $this->entityManager = $entityManager;
+    )
+    {
+        $this->entityManager           = $entityManager;
         $this->uploadedVideoRepository = $uploadedVideoRepository;
-        $this->cloudinaryConnector = $cloudinaryConnector;
+        $this->cloudinaryConnector     = $cloudinaryConnector;
 
         parent::__construct();
     }
 
     protected function configure()
     {
-        $this->setDescription('Delete expired video');
+        $this->setDescription('Delete outdated video');
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      *
      * @return void
@@ -69,28 +70,31 @@ class DeleteExpiredVideo extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $expiredVideos = $this->uploadedVideoRepository->findExpiredVideo();
-        $count = count($expiredVideos);
-        $output->writeln("$count expired video was found");
+        $outdatedVideos = $this->uploadedVideoRepository->findOutdatedVideo(
+            new \DateTimeImmutable('-6 month')
+        );
+
+        $count = count($outdatedVideos);
+        $output->writeln("$count outdated video was found");
 
         $successfullyDeleted = 0;
-        $errors = [];
+        $errors              = [];
 
-        /** @var UploadedVideo $expiredVideo */
-        foreach ($expiredVideos as $expiredVideo) {
+        /** @var UploadedVideo $outdatedVideo */
+        foreach ($outdatedVideos as $outdatedVideo) {
             try {
-                $response = $this->cloudinaryConnector->destroyVideo($expiredVideo->getRemoteId());
-                $result = $response['result'];
+                $response = $this->cloudinaryConnector->destroyVideo($outdatedVideo->getRemoteId());
+                $result   = $response['result'];
 
                 if (
-                    $result === CloudinaryConnector::SUCCESS_DESTROY_RESULT
-                    || $result === CloudinaryConnector::NOT_FOUND_DESTROY_RESULT
+                    $result === CloudinaryConnector::SUCCESS_DESTROY_RESULT ||
+                    $result === CloudinaryConnector::NOT_FOUND_DESTROY_RESULT
                 ) {
                     $successfullyDeleted++;
-                    $this->entityManager->remove($expiredVideo);
+                    $this->entityManager->remove($outdatedVideo);
                 }
             } catch (\Exception $exception) {
-                $errors[] = $expiredVideo->getRemoteId();
+                $errors[] = $outdatedVideo->getRemoteId();
             }
         }
 

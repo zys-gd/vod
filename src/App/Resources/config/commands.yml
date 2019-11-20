@@ -1,11 +1,13 @@
 services:
-    _defaults:
-        autowire: true
-        tags:
-            - { name: console.command }
+  _defaults:
+    autowire: true
+    tags:
+      - { name: console.command }
 
-    App\Command\DeleteExpiredVideo:
+  App\Command\DeleteExpiredVideoCommand: ~
 
-    App\Command\AuditClearOldLogEntriesCommand:
+  App\Command\DeleteOutdatedVideoCommand: ~
 
-    App\Command\AuditClearEmptyBlameLogsCommand:
+  App\Command\AuditClearOldLogEntriesCommand: ~
+
+  App\Command\AuditClearEmptyBlameLogsCommand: ~
