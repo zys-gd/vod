@@ -23,3 +23,9 @@ services:
             - '@router'
         tags:
             - { name: app.one_click_flow_handler }
+
+    Carriers\TMobilePolandDimoco\Controller\PrepaymentController:
+        arguments:
+            - '@CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator'
+        tags:
+            - { name: controller.service_arguments }

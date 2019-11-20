@@ -176,7 +176,7 @@ class UnsubscriptionAdminController extends CRUDController
             $subscriptionId = $user['subscriptionId'];
             /** @var Subscription $subscription */
             $subscription = $this->subscriptionRepository->find($subscriptionId);
-            if ($this->adminUnsubscriber->unsubscribe($subscriptionId, (bool)$user['toBlacklist'])) {
+            if ($this->adminUnsubscriber->unsubscribe($subscription, (bool)$user['toBlacklist'])) {
                 $success[] = $subscription->getUuid();
             } else {
                 $errors[] = $subscription->getUuid();

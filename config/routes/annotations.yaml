@@ -11,5 +11,5 @@ identification:
     prefix: identification/
 
 carriers:
-    resource: ../../src/Carriers/Controller/
+    resource: ../../src/Carriers
     type: annotation
