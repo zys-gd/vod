@@ -15,7 +15,7 @@
             height: 160px;
         }
 
-        @media screen and (max-height: 660px) {
+        @media screen and (max-height: 700px) {
             .payment-banner {
                 height: 140px;
             }
@@ -46,14 +46,14 @@
                 <div class="w-100 payment-banner"></div>
             {% endif %}
         </img>
-        <div class="payment-text pl-3 mt-2">
+        <div class="payment-text pl-2 mt-2">
             <p>
                 <span>100% Sport</span> <br>
                 <span>{{ translate('payment.offer') }}</span>
             </p>
             <p>Opłata będzie pobierana co 13 zł / tydzień</p>
         </div>
-        <div class="payment-text pr-3 pl-3">
+        <div class="payment-text pr-2 pl-2">
             <p>{{ translate('payment.info.1', {'%terms_url%': path('terms_and_conditions')}) | raw }}</p>
             <p>{{ translate('payment.info.2') }}</p>
 
