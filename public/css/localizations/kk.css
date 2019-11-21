@@ -1,0 +1,41 @@
+.footer-menu_link {
+    padding: 1vw 0.5vw;
+    margin: 0 0.5vw;
+    font-size: 15px;
+}
+
+.lp-sub-btn button {
+    font-size: 30px;
+    padding: 10px 55px;
+}
+
+* {
+    font-family: 'Arial', sans-serif;
+}
+
+.header-title_content {
+    font-weight: 600;
+    font-family: 'Arial', sans-serif;
+}
+
+.play-text {
+    font-weight: 700;
+}
+
+.h1 {
+    font-weight: 700;
+    font-family: 'Arial';
+}
+
+.copyright {
+    font-weight: 600;
+    margin-top: 5px;
+}
+
+.annotation-block {
+    font-weight: 600;
+}
+
+.lure_box_title {
+    font-weight: 600;
+}
