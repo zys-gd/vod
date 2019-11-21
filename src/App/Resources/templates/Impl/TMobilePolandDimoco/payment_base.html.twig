@@ -16,18 +16,25 @@
         .confirm-payment-button {
             background-color: #d4457a;
             font-size: 15px;
-            padding: 10px 0;
+            padding: 10px 3px;
             color: white;
             text-transform: uppercase !important;
             font-weight: bold;
             border: none;
-            border-radius: 15px;
+            border-radius: 10px;
             width: 100%;
         }
 
         .payment-text {
             line-height: 15px;
             font-size: 14px;
+        }
+
+        @media screen and (max-height: 700px) {
+            .payment-text {
+                line-height: 13px;
+                font-size: 12px;
+            }
         }
 
         #payment-confirm-form input {
