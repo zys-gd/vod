@@ -74,17 +74,6 @@ services:
       - '@SubscriptionBundle\Service\EntitySaveHelper'
       - '@SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeFacade'
 
-  SubscriptionBundle\Subscription\Unsubscribe\Admin\Form\UnsubscribeByAffiliateForm:
-    arguments: ['@doctrine.orm.entity_manager']
-    tags:
-      - { name: form.type }
-
-
-  SubscriptionBundle\Subscription\Unsubscribe\Admin\Form\UnsubscribeByCampaignForm:
-    arguments: ['@doctrine.orm.entity_manager']
-    tags:
-      - { name: form.type }
-
   SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeEventChecker: ~
 
   SubscriptionBundle\Subscription\Unsubscribe\UnsubscribeEventTracker:
@@ -105,3 +94,10 @@ services:
       - '@SubscriptionBundle\Piwik\DataMapper\UserInformationMapper'
       - '@SubscriptionBundle\Piwik\DataMapper\UnsubscribeClickEventMapper'
       - '@SubscriptionBundle\Piwik\EventPublisher'
+
+  SubscriptionBundle\Subscription\Unsubscribe\Listener\MenuListener:
+    arguments: ['@SubscriptionBundle\Subscription\Unsubscribe\Admin\Sonata\UnsubscriptionAdmin']
+    tags:
+        - { name: kernel.event_listener, event: sonata.admin.event.configure.menu.sidebar, method: addMenuItems }
+
+

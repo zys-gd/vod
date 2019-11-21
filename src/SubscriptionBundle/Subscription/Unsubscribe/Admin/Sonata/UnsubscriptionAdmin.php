@@ -19,7 +19,7 @@ class UnsubscriptionAdmin extends AbstractAdmin
     {
         $actions = [];
 
-        $actions['import']['template'] = '@SubscriptionAdmin/Unsubscription/unsubscribe_form_button.html.twig';
+        $actions['unsubscribe_form']['template'] = '@SubscriptionAdmin/Unsubscription/unsubscribe_form_button.html.twig';
 
         return $actions;
     }
