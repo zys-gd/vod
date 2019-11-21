@@ -47,25 +47,25 @@
             {% endif %}
         </img>
         <div class="payment-text pl-2 mt-2">
-            <p>
+            <div>
                 <span>100% Sport</span> <br>
                 <span>{{ translate('payment.offer') }}</span>
-            </p>
-            <p>Opłata będzie pobierana co 13 zł / tydzień</p>
+            </div>
+            <div class="mt-2">Opłata będzie pobierana co 13 zł / tydzień</div>
         </div>
-        <div class="payment-text pr-2 pl-2">
-            <p>{{ translate('payment.info.1', {'%terms_url%': path('terms_and_conditions')}) | raw }}</p>
-            <p>{{ translate('payment.info.2') }}</p>
+        <div class="payment-text pr-2 pl-2 mt-2">
+            <div>{{ translate('payment.info.1', {'%terms_url%': path('terms_and_conditions')}) | raw }}</div>
+            <div class="mt-2">{{ translate('payment.info.2') }}</div>
 
-            <form id="payment-confirm-form">
+            <form id="payment-confirm-form" class="mt-2">
                 <div class="payment-text">
                     <label>
                         <input type="checkbox" required>
                         <span>{{ translate('payment.info.3') }}</span>
                     </label>
                 </div>
-                <p>Zapoznaj się z treścią regulaminu <a href="{{ path('terms_and_conditions') }}">100% Sport</a></p>
-                <div class="mt-3 mb-4 text-center">
+                <div>Zapoznaj się z treścią regulaminu <a href="{{ path('terms_and_conditions') }}">100% Sport</a></div>
+                <div class="mt-3 mb-3 text-center">
                     <button
                             type="submit"
                             class="confirm-payment-button"
