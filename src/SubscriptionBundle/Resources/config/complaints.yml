@@ -19,3 +19,12 @@ services:
             - '@SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository'
             - '@SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface'
             - '@CommonDataBundle\Repository\CountryRepository'
+
+
+
+    SubscriptionBundle\ComplaintsTool\Admin\Listener\MenuListener:
+        arguments: ['@SubscriptionBundle\ComplaintsTool\Admin\Sonata\ComplaintsAdmin']
+        tags:
+            - { name: kernel.event_listener, event: sonata.admin.event.configure.menu.sidebar, method: addMenuItems }
+
+
