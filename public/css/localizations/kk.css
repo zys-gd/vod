@@ -1,7 +1,7 @@
 .footer-menu_link {
-    padding: 1vw 0.5vw;
-    margin: 0 0.5vw;
-    font-size: 15px;
+    padding: 1vw 0.1vw;
+    margin: 0 1vw;
+    font-size: 13px;
 }
 
 .lp-sub-btn button {
@@ -16,6 +16,7 @@
 .header-title_content {
     font-weight: 600;
     font-family: 'Arial', sans-serif;
+    font-size: 25px;
 }
 
 .play-text {
@@ -38,4 +39,28 @@
 
 .lure_box_title {
     font-weight: 600;
+}
+
+.cookies-disclaimer {
+    font-size: 1.8vh !important;
+}
+
+@media screen and (max-width: 390px) and (max-height: 675px) {
+    .cookies-disclaimer {
+        font-size: 1.6vh !important;
+    }
+}
+
+@media screen and (min-width: 570px) and (min-height: 700px) {
+    .cookies-disclaimer {
+        font-size: 2vh !important;
+    }
+}
+
+@media screen and (min-width: 1150px) {
+    .cookies-disclaimer {
+        font-size: 2.5vh !important;
+        height: 15%;
+        top: 85%;
+    }
 }

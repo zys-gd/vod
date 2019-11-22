@@ -18,7 +18,6 @@ final class Version20191119110947 extends AbstractMigration
         $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d8d9d0-ebd4-11e8-95c4-02bb25djk9d7', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'menu.footer.contact_us', 'Бізбен байланысыңыз')");
         $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d8d9d0-ebd4-11e8-95c4-02bb25dk9d7d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'contact_us.title', 'Бізбен байланысыңыз')");
         $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d8d9d0-ebd4-11e8-95c4-02bb2k9d7f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'menu.footer.terms', 'Ережелер мен шарттар')");
-
         $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d8d9d0-ebd4-11e8-95c4-02bb25dj9a7q', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'annotation_block.text.1', 'Бағасы ұялы телефоныңыз шотына қосып қойылады')");
         $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d8d9d0-ebd4-11e8-95c4-02bb25dja7qd', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'annotation_block.text.2', 'Күніне %price% теңгеге шексіз спорттық бейнелерді көріңіз. Күн сайын жүздеген спорттық бейнелер мен жаңалықтарға қол жетімділік. Бізбен бірге қалыңыз!')");
         $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d8d9d0-ebd4-11e8-95c4-02bb25da7q8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'annotation_block.text.3', 'Жазылысты «Менің аккаунтым» бөлімінде кез келген уақытта тоқтатуға болады')");
@@ -106,23 +105,35 @@ final class Version20191119110947 extends AbstractMigration
         $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11l9-95c4-02bb25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'category.f49a555c-d10e-45c6-a6cb-de09cb59658f', 'Баскетбол')");
         $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-1l98-95c4-02bb25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'category.games', 'Спорт ойындары')");
         $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-e1l9-11e8-95c4-02bb25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'category.title', 'Санат')");
-
-//        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11e8-95c4-02bb25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', '', '')");
-//        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11e8-95c4-02bb25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', '', '')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11e8-95c4-02bb25ds1dus', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'footer.cookies_disclaimer', 'Біз сіздің веб-сайтыңызға ең жақсы тәжірибені ұсыну үшін cookie файлдарын қолданамыз. Сондай-ақ, біз сізге сәйкес жарнаманы көрсету үшін cookie файлдарын қолданамыз. Егер сіз параметрлерді өзгертпей жалғастыра берсеңіз, сіз 100% Спорт веб-сайтында барлық cookie файлдарын қабылдауға келісесіз деп санаймыз. Қосымша ақпарат немесе параметрлерді <a href=\"%cookies_settings_url%\">осы жерден</a> өзгертіңіз')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11e8-95c4-02bb25dj99k1', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'navbar.menu.faq', 'ЖҚС')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11e8-95c4-02bb25dj9k1d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'navbar.menu.terms', 'Ережелер мен шарттар')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11e8-95c4-02bb25d9k18d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'navbar.menu.contacts', 'Бізбен байланысыңыз')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11e8-95c4-02bb259k1f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'navbar.menu.account', 'Менің аккаунтым')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11e8-95c4-02bb29k19f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'navbar.menu.home', 'Басты бет')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11e8-95c4-02bb9k1j9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'messages.error.already_subscribed', 'Сіз белсенді жазылысқа ие екенсіз.')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11e8-95c4-02b9k1dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'messages.error.postpaid_restricted', 'Бұл ұсыныс тек алдын-ала төленген клиенттерге арналған')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11e8-95c4-029k15dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'messages.error.subscription_restricted', 'Құрметті клиент, кешіріңіз, бірақ сіз қазірдің өзінде жазылдыңыз немесе біздің қызметтердің біріне жазылдыңыз, осыған байланысты сізге жазылу мүмкіндігі шектеулі және мүмкін емес')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11e8-95c4-09k125dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'messages.error.not_enough_credit', 'Кешіріңіз, бірақ жазылуға жеткілікті теңгерім жоқ, балансты толтырып, әрекетті қайталаңыз')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11e8-95c4-9k1b25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'messages.error.subscribe_error', 'Кешіресіз, қазіргі уақытта өтінішіңізді өңдей алмаймыз. Әрекетті кейінірек қайталаңыз')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11e8-99k1-02bb25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'messages.error.already_subscribed_on_another_service', 'Құрметті клиент, кешіріңіз, бірақ сіз басқа жазылым қызметіне жазылдыңыз. 100sport.tv сайтына жазылғыңыз келсе, бізге хабарласыңыз.')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11e8-9k14-02bb25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'wrong_cookie_page.backlink_title', 'мұнда')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-19k1-95c4-02bb25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'wrong_cookie_page.text', 'Кіріңіз, шолғыш параметрлерінде cookie файлдарын қабылдау өшірілген. Оған рұқсат етіңіз және біздің қызметімізден ләззат алыңыз: Параметрлер> Сайт параметрлері> Cookie файлдарына рұқсат беру. Кері оралу үшін %backLink% басыңыз.')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-9k18-95c4-02bb25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'whoops', 'Қап. Біз сіздің сұрауыңызды жалғастыра алмаймыз. Кейінірек көріңіз. Егер сіз 100% спортқа оралғыңыз келсе, <a href=\"%url%\">осында</a> басыңыз.')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-e9k1-11e8-95c4-02bb25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'resub_not_allowed', 'Сіз 100% Спортқа жазыла алмайсыз, өйткені сіз жазылудан бас тарттыңыз. <br> Егер сіз қайта жазылғыңыз келсе, бізге <a class=\"contact-us-link red\" href=\"%contact_us_url%\">хабарласыңыз</a>')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-9k14-11e8-95c4-02bb25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'messages.error.blacklisted', 'Сіз спортқа 100% жазыла алмайсыз. Сіздің телефон нөміріңіз жазылудан қара тізімге енгізілген. Қосымша ақпарат алу үшін бізге <a class=\"contact-us-link red\" href=\"%contact-us-url%\">хабарласыңыз</a>')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899k1-ebd4-11e8-95c4-02bb25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'buttons.see_all', 'Бәрі')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d89k10-ebd4-11e8-95c4-02bb25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'subscription.status.error', 'Кешіресіз, қазіргі уақытта өтінішіңізді өңдей алмаймыз. Әрекетті кейінірек қайталаңыз')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d9k1d0-ebd4-11e8-95c4-02bb25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'subscription.status.not_enough_credit', 'Кешіріңіз, бірақ жазылуға жеткілікті теңгерім жоқ, өтінемін, теңгерімді толтырып, әрекетті қайталаңыз')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('519k19d0-ebd4-11e8-95c4-02bb25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'subscription.status.not_subscribe', '100% спортқа қош келдіңіз! <br> <small>Күніне шексіз бейнелерді тек %price% теңгеге сатып алыңыз</small>')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('59k199d0-ebd4-11e8-95c4-02bb25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'player.related_videos', 'Қосымша жүктеу')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('9k1899d0-ebd4-11e8-95c4-02bb25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'player.close', 'Жабық')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11e8-95c4-02bb25dj2k2i', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'buttons.load_more', 'Көбірек жүктеу')");
 
         // beeline kazakh
         $this->addSql("INSERT INTO translations (uuid, language_id, carrier_id, `key`, translation) VALUES ('51d8d9d0-ebd4-11e8-95c4-02bb25d1djf8', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', '3de06e41-f889-4f95-aac3-ebd31d9d7dg4', 'buttons.subscribe', 'ТӨЛЕУСІЗ ҚОСЫЛУ')");
         $this->addSql("INSERT INTO translations (uuid, language_id, carrier_id, `key`, translation) VALUES ('51d8d9d0-ebd4-11e8-95c4-02bb25d2jf8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', '3de06e41-f889-4f95-aac3-ebd31d9d7dg4', 'buttons.confirm', 'ЖАЗЫЛЫСТЫ РАСТАУ')");
         $this->addSql("INSERT INTO translations (uuid, language_id, carrier_id, `key`, translation) VALUES ('51d8d9d0-ebd4-11e8-95c4-02bbk9d79f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', '3de06e41-f889-4f95-aac3-ebd31d9d7dg4', 'offer.landing', 'Күніне тек %price% теңгеден шексіз спорттық видеоларды көріңіз - Айрықша ұсыныс: БІРІНШІ КҮНІ ТЕГІН! Жаңа пайдаланушылар үшін тек бір рет жарамды')");
-
-//        $this->addSql("INSERT INTO translations (uuid, language_id, carrier_id, `key`, translation) VALUES ('51d8d9d0-ebd4-11e8-95c4-02bb25dj9z1q', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', '3de06e41-f889-4f95-aac3-ebd31d9d7dg4', '', '')");
-//        $this->addSql("INSERT INTO translations (uuid, language_id, carrier_id, `key`, translation) VALUES ('51d8d9d0-ebd4-11e8-95c4-02bb25djz1qd', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', '3de06e41-f889-4f95-aac3-ebd31d9d7dg4', '', '')");
-//        $this->addSql("INSERT INTO translations (uuid, language_id, carrier_id, `key`, translation) VALUES ('51d8d9d0-ebd4-11e8-95c4-02bb25dz1q8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', '3de06e41-f889-4f95-aac3-ebd31d9d7dg4', '', '')");
-//        $this->addSql("INSERT INTO translations (uuid, language_id, carrier_id, `key`, translation) VALUES ('51d8d9d0-ebd4-11e8-95c4-02bb25z1qf8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', '3de06e41-f889-4f95-aac3-ebd31d9d7dg4', '', '')");
-//        $this->addSql("INSERT INTO translations (uuid, language_id, carrier_id, `key`, translation) VALUES ('51d8d9d0-ebd4-11e8-95c4-02bb2z1q9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', '3de06e41-f889-4f95-aac3-ebd31d9d7dg4', '', '')");
-//        $this->addSql("INSERT INTO translations (uuid, language_id, carrier_id, `key`, translation) VALUES ('51d8d9d0-ebd4-11e8-95c4-02bbz1qj9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', '3de06e41-f889-4f95-aac3-ebd31d9d7dg4', '', '')");
-//        $this->addSql("INSERT INTO translations (uuid, language_id, carrier_id, `key`, translation) VALUES ('51d8d9d0-ebd4-11e8-95c4-02bz1qdj9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', '3de06e41-f889-4f95-aac3-ebd31d9d7dg4', '', '')");
-
 
         // general english faq.title
         $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('5179fd32-ebd4-11e8-95c4-02bb250f0s8s', '5179f17c-ebd4-11e8-95c4-02bb250f0f22', 'faq.title', 'FAQ')");
@@ -131,13 +142,6 @@ final class Version20191119110947 extends AbstractMigration
         $this->addSql("INSERT INTO translations (uuid, language_id, carrier_id, `key`, translation) VALUES ('51d8d9d0-ebd4-11e8-95c4-02bb2djf8d8d', '5179f17c-ebd4-11e8-95c4-02bb250f0f22', '3de06e41-f889-4f95-aac3-ebd31d9d7dg4', 'buttons.subscribe', 'JOIN FOR FREE')");
         $this->addSql("INSERT INTO translations (uuid, language_id, carrier_id, `key`, translation) VALUES ('51d8d9d0-ebd4-11e8-95c4-02b4jf8d9f8d', '5179f17c-ebd4-11e8-95c4-02bb250f0f22', '3de06e41-f889-4f95-aac3-ebd31d9d7dg4', 'buttons.confirm', 'CONFIRM SUBSCRIPTION')");
         $this->addSql("INSERT INTO translations (uuid, language_id, carrier_id, `key`, translation) VALUES ('51d8d9d0-ebd4-11e8-95c4-02bk9d7j9f8d', '5179f17c-ebd4-11e8-95c4-02bb250f0f22', '3de06e41-f889-4f95-aac3-ebd31d9d7dg4', 'offer.landing', 'Watch unlimited sport videos for only %price% %currency% per %period% - Exclusive offer: FIRST DAY FREE! Valid only once for new users')");
-
-//        $this->addSql("INSERT INTO translations (uuid, language_id, carrier_id, `key`, translation) VALUES ('51d8dz1q-ebd4-11e8-95c4-02bb25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb250f0f22', '3de06e41-f889-4f95-aac3-ebd31d9d7dg4', '', '')");
-//        $this->addSql("INSERT INTO translations (uuid, language_id, carrier_id, `key`, translation) VALUES ('51d8z1q0-ebd4-11e8-95c4-02bb25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb250f0f22', '3de06e41-f889-4f95-aac3-ebd31d9d7dg4', '', '')");
-//        $this->addSql("INSERT INTO translations (uuid, language_id, carrier_id, `key`, translation) VALUES ('51dz1qd0-ebd4-11e8-95c4-02bb25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb250f0f22', '3de06e41-f889-4f95-aac3-ebd31d9d7dg4', '', '')");
-//        $this->addSql("INSERT INTO translations (uuid, language_id, carrier_id, `key`, translation) VALUES ('51z1q9d0-ebd4-11e8-95c4-02bb25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb250f0f22', '3de06e41-f889-4f95-aac3-ebd31d9d7dg4', '', '')");
-//        $this->addSql("INSERT INTO translations (uuid, language_id, carrier_id, `key`, translation) VALUES ('5z1qd9d0-ebd4-11e8-95c4-02bb25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb250f0f22', '3de06e41-f889-4f95-aac3-ebd31d9d7dg4', '', '')");
-//        $this->addSql("INSERT INTO translations (uuid, language_id, carrier_id, `key`, translation) VALUES ('z1q8d9d0-ebd4-11e8-95c4-02bb25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb250f0f22', '3de06e41-f889-4f95-aac3-ebd31d9d7dg4', '', '')");
     }
 
     public function down(Schema $schema) : void
@@ -191,6 +195,7 @@ final class Version20191119110947 extends AbstractMigration
         $this->addSql("DELETE FROM translations WHERE uuid = '51d88a9s-ebd4-11e8-95c4-02bb25dj9f8d'");
         $this->addSql("DELETE FROM translations WHERE uuid = '51d8a9s0-ebd4-11e8-95c4-02bb25dj9f8d'");
         $this->addSql("DELETE FROM translations WHERE uuid = '518a9sd0-ebd4-11e8-95c4-02bb25dj9f8d'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-11e8-95c4-02bb25ds1dus'");
         $this->addSql("DELETE FROM translations WHERE uuid = '58a9s9d0-ebd4-11e8-95c4-02bb25dj9f8d'");
         $this->addSql("DELETE FROM translations WHERE uuid = '8a9sd9d0-ebd4-11e8-95c4-02bb25dj9f8d'");
         $this->addSql("DELETE FROM translations WHERE uuid = '51d8d9d0-ebd4-11e8-95c4-02bb25dj9f99'");
@@ -254,5 +259,28 @@ final class Version20191119110947 extends AbstractMigration
         $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-11l9-95c4-02bb25dj9f8d'");
         $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-1l98-95c4-02bb25dj9f8d'");
         $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-e1l9-11e8-95c4-02bb25dj9f8d'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-11e8-95c4-02bb25dj99k1'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-11e8-95c4-02bb25dj9k1d'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-11e8-95c4-02bb25d9k18d'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-11e8-95c4-02bb259k1f8d'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-11e8-95c4-02bb29k19f8d'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-11e8-95c4-02bb9k1j9f8d'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-11e8-95c4-02b9k1dj9f8d'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-11e8-95c4-029k15dj9f8d'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-11e8-95c4-09k125dj9f8d'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-11e8-95c4-9k1b25dj9f8d'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-11e8-99k1-02bb25dj9f8d'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-11e8-9k14-02bb25dj9f8d'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-19k1-95c4-02bb25dj9f8d'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-9k18-95c4-02bb25dj9f8d'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-e9k1-11e8-95c4-02bb25dj9f8d'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-9k14-11e8-95c4-02bb25dj9f8d'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899k1-ebd4-11e8-95c4-02bb25dj9f8d'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d89k10-ebd4-11e8-95c4-02bb25dj9f8d'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d9k1d0-ebd4-11e8-95c4-02bb25dj9f8d'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '519k19d0-ebd4-11e8-95c4-02bb25dj9f8d'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '59k199d0-ebd4-11e8-95c4-02bb25dj9f8d'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '9k1899d0-ebd4-11e8-95c4-02bb25dj9f8d'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-11e8-95c4-02bb25dj2k2i'");
     }
 }
