@@ -10,3 +10,7 @@ services:
     Carriers\BeelineKZ\OneClick\BeelineKZOneClickFlow:
         tags:
             - { name: app.one_click_flow_handler }
+
+    Carriers\BeelineKZ\Template\BeelineKZTemplateHandler:
+        tags:
+            - { name: store_commons.template_handler }
