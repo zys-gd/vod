@@ -22,6 +22,7 @@ final class Version20191120120604 extends AbstractMigration implements Container
         $this->addSql("ALTER TABLE `carriers`  DROP `trial_period`,  DROP `subscription_period`;");
 
         $this->addSql("ALTER TABLE subscription_packs ADD trial_period INT(11) DEFAULT '0' NOT NULL");
+        $this->addSql("UPDATE subscription_packs SET trial_period=7 WHERE uuid='27261246-9034-438f-ba37-274d5079b138'");
     }
 
     public function postUp(Schema $schema)
