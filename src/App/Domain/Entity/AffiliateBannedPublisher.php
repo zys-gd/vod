@@ -15,6 +15,9 @@ class AffiliateBannedPublisher
     /** @var string */
     private $publisherId;
 
+    /** @var Carrier */
+    private $carrier;
+
     public function __construct(string $uuid)
     {
         $this->uuid = $uuid;
@@ -58,5 +61,21 @@ class AffiliateBannedPublisher
     public function setPublisherId(string $publisherId): void
     {
         $this->publisherId = $publisherId;
+    }
+
+    /**
+     * @return Carrier
+     */
+    public function getCarrier(): ?Carrier
+    {
+        return $this->carrier;
+    }
+
+    /**
+     * @param Carrier $carrier
+     */
+    public function setCarrier(Carrier $carrier): void
+    {
+        $this->carrier = $carrier;
     }
 }
