@@ -27,24 +27,27 @@ class RenewDateCalculator
         $subscriptionPack = $subscription->getSubscriptionPack();
         $periodicity      = $subscriptionPack->getPeriodicity();
         $renewDate        = $now = Carbon::now();
-        switch ($periodicity) {
-            case SubscriptionPack::DAILY:
-                $renewDate = $now->addDay();
-                break;
-            case SubscriptionPack::WEEKLY:
-                $renewDate = $now->addWeek();
-                break;
-            case SubscriptionPack::MONTHLY:
-                $renewDate = $now->addMonth();
-                break;
-            case SubscriptionPack::CUSTOM_PERIODICITY:
-                $renewDate = $now->addDays($subscriptionPack->getCustomRenewPeriod());
-                break;
-        }
 
         if ($subscriptionPack->isFirstSubscriptionPeriodIsFree()) {
             $renewDate = $now->addDays($subscriptionPack->getTrialPeriod());
         }
+        else {
+            switch ($periodicity) {
+                case SubscriptionPack::DAILY:
+                    $renewDate = $now->addDay();
+                    break;
+                case SubscriptionPack::WEEKLY:
+                    $renewDate = $now->addWeek();
+                    break;
+                case SubscriptionPack::MONTHLY:
+                    $renewDate = $now->addMonth();
+                    break;
+                case SubscriptionPack::CUSTOM_PERIODICITY:
+                    $renewDate = $now->addDays($subscriptionPack->getCustomRenewPeriod());
+                    break;
+            }
+        }
+
 
         $preferredRenewalStart = $subscriptionPack->getPreferredRenewalStart()
             ? Carbon::instance($subscriptionPack->getPreferredRenewalStart())
@@ -68,7 +71,7 @@ class RenewDateCalculator
 
                 $renewDate->setTime($renewInterval->format('h'), $renewInterval->format('i'));
             }
-            else if ($subscriptionPack->getPreferredRenewalEnd()) {
+            elseif ($subscriptionPack->getPreferredRenewalEnd()) {
                 $renewDate->setTime(0, 0);
             }
         }
