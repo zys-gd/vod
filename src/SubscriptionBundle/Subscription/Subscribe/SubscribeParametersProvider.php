@@ -77,7 +77,7 @@ class SubscribeParametersProvider
         }
 
         $parameters                         = $this->parametersProvider->prepareRequestParameters($subscription);
-        $parameters->additionalData         = array_merge($additionalInfo, $affiliateParams);
+        $parameters->additionalData         = array_merge($additionalInfo, ['aff_data' => $affiliateParams]);
         $parameters->chargeProduct          = $subscription->getUuid();
         $parameters->chargeTier             = $subscriptionPack->getTierId();
         $parameters->chargeStrategy         = $subscriptionPack->getBuyStrategyId();
