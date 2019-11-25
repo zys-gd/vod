@@ -16,12 +16,26 @@ class ComplaintsAdmin extends AbstractAdmin
      */
     protected $baseRoutePattern = 'complaints';
 
+    public function getDashboardActions()
+    {
+
+        $actions = [];
+
+        $actions['report']['template'] = '@SubscriptionAdmin/Complaints/make_report_button.html.twig';
+
+        return $actions;
+
+    }
+
+
     /**
      * @param RouteCollection $collection
      */
     public function configureRoutes(RouteCollection $collection)
     {
-        $collection->clearExcept(['create', 'list']);
+        $collection->clear();
+
+        $collection->add('report', 'report');
         $collection->add('downloadCsv', 'downloadCsv');
         $collection->add('downloadExcel', 'downloadExcel');
 

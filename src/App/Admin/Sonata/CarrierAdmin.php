@@ -139,7 +139,6 @@ class CarrierAdmin extends AbstractAdmin
             ->add('isp')
             ->add('published')
             ->add('isOneClickFlow')
-            ->add('trialInitializer')
             ->add('numberOfAllowedSubscriptionsByConstraint')
             ->add('redirectUrl')
             ->add('isCampaignsOnPause')
@@ -161,7 +160,6 @@ class CarrierAdmin extends AbstractAdmin
             ->add('isp')
             ->add('published')
             ->add('isOneClickFlow')
-            ->add('trialInitializer')
             ->add('isCampaignsOnPause')
             ->add('isClickableSubImage', null, [
                 'label' => 'Clickable image'
@@ -193,7 +191,6 @@ class CarrierAdmin extends AbstractAdmin
             ->add('isp')
             ->add('published')
             ->add('isOneClickFlow')
-            ->add('trialInitializer')
             ->add('numberOfAllowedSubscriptionsByConstraint', IntegerType::class, ['attr' => ['min' => 0], 'required' => false,])
             ->add('redirectUrl', UrlType::class, ['required' => false])
             ->add('isCampaignsOnPause')
@@ -233,7 +230,6 @@ class CarrierAdmin extends AbstractAdmin
             ->add('isp')
             ->add('published')
             ->add('isOneClickFlow')
-            ->add('trialInitializer')
             ->add('isCampaignsOnPause')
             ->add('subscribeAttempts')
             ->add('numberOfAllowedSubscriptionsByConstraint')
