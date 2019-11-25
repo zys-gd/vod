@@ -15,13 +15,25 @@ class UnsubscriptionAdmin extends AbstractAdmin
      */
     protected $baseRoutePattern = 'unsubscription';
 
+    public function getDashboardActions()
+    {
+        $actions = [];
+
+        $actions['unsubscribe_form']['template'] = '@SubscriptionAdmin/Unsubscription/unsubscribe_form_button.html.twig';
+
+        return $actions;
+    }
+
+
     /**
      * @param RouteCollection $collection
      */
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->clearExcept(['create', 'list']);
+        $collection->clear();
+
         $collection->add('unsubscribe', 'unsubscribe');
+        $collection->add('unsubscribe_form', 'unsubscribeForm');
 
         parent::configureRoutes($collection);
     }

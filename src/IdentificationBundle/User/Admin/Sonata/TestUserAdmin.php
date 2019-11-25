@@ -88,7 +88,8 @@ class TestUserAdmin extends AbstractAdmin
                     ],
                     'clean_from_cross_subscription' => [
                         'template' => '@IdentificationAdmin/TestUser/clean_from_cross_subscription.html.twig'
-                    ]
+                    ],
+                    'delete'                        => []
                 ]
             ]);
     }
@@ -111,7 +112,7 @@ class TestUserAdmin extends AbstractAdmin
      */
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->clearExcept(['create', 'list']);
+        $collection->clearExcept(['create', 'list', 'delete']);
 
         $collection->add('drop_user_data', $this->getRouterIdParameter() . '/dropUserData');
         $collection->add('set_status_for_renew', $this->getRouterIdParameter() . '/setStatusForRenew');

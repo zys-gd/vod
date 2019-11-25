@@ -18,10 +18,7 @@ use Psr\Http\Message\StreamInterface;
 class ReportingToolRequestSender
 {
     private $reportApiHost;
-    /**
-     * @var string
-     */
-    private $reportApihHost;
+
     /**
      * @var ClientInterface
      */
@@ -29,13 +26,13 @@ class ReportingToolRequestSender
 
     /**
      * ReportingToolRequestSender constructor.
-     * @param string          $reportApihHost
+     * @param string          $reportApiHost
      * @param ClientInterface $client
      */
-    public function __construct(string $reportApihHost, ClientInterface $client)
+    public function __construct(string $reportApiHost, ClientInterface $client)
     {
-        $this->reportApihHost = $reportApihHost;
-        $this->client         = $client;
+        $this->reportApiHost = $reportApiHost;
+        $this->client        = $client;
     }
 
 
@@ -57,7 +54,6 @@ class ReportingToolRequestSender
                 RequestOptions::FORM_PARAMS => ['msisdn' => $user->getIdentifier()],
             ]);
 
-            $data = [];
             $body = $response->getBody();
             if ($body instanceof StreamInterface) {
                 $contents = $body->getContents();
@@ -65,7 +61,7 @@ class ReportingToolRequestSender
                     $data = json_decode($contents, true);
                 }
             }
-            return $data;
+            return $data ?? [];
 
         } catch (GuzzleException $exception) {
             return [];

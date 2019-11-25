@@ -58,8 +58,6 @@ class ComplaintsAdminController extends CRUDController
         'url'                      => 'The user came from',
         'subscription_date'        => 'Subscription date',
         'unsubscription_date'      => 'Unsubscription date',
-        'gameDownloadCount'        => 'Downloads number',
-        'gamesInfo'                => 'Games info',
         'subscription_attempts'    => 'Subscription attempts',
         'resubs_attempts'          => 'Resubscription attempts',
         'charges_successful_no'    => 'Amount of succes charges',
@@ -110,7 +108,7 @@ class ComplaintsAdminController extends CRUDController
      *
      * @return Response
      */
-    public function createAction(Request $request = null)
+    public function reportAction(Request $request = null)
     {
         $form = $this->formFactory->create(ComplaintsForm::class);
         $form->handleRequest($request);
@@ -139,7 +137,7 @@ class ComplaintsAdminController extends CRUDController
             ]);
         }
 
-        return $this->renderWithExtraParams('@SubscriptionAdmin/Complaints/create.html.twig', [
+        return $this->renderWithExtraParams('@SubscriptionAdmin/Complaints/make_report.html.twig', [
             'content' => $content
         ]);
     }
@@ -191,6 +189,7 @@ class ComplaintsAdminController extends CRUDController
      * @return StreamedResponse
      *
      * @throws Exception
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function downloadExcelAction(Request $request)
     {
@@ -248,6 +247,7 @@ class ComplaintsAdminController extends CRUDController
      * @param array $msisdns
      *
      * @return array
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     private function getUsersReport(array $msisdns): array
     {
@@ -370,10 +370,5 @@ class ComplaintsAdminController extends CRUDController
             ->add('msisdns', HiddenType::class, ['data' => implode(',', $msisdns)])
             ->getForm()
             ->createView();
-    }
-
-    public function listAction()
-    {
-        return RedirectResponse::create($this->admin->generateUrl('create'));
     }
 }

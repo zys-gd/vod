@@ -6595,17 +6595,6 @@
         }
     },
     {
-        "uuid": "dk98d754-0ebf-43d8-9730-0z5a7dk1fj8f",
-        "key": "payment.button",
-        "translation": "Zamawiam i place na powyszych warunkach",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": {
-            "uuid": "dh14iu7d-ebd4-12e8-91c4-02bb25d3dh7e"
-        }
-    },
-    {
         "uuid": "dk98d754-0ebf-43d8-9730-0zi15a7dk18f",
         "key": "payment.info.2",
         "translation": "Op\u0142ata zostanie doliczona do Twojego rachunku w T-Mobile (telefon na abonament) lub odliczona od \u015brodk\u00f3w na koncie (telefon na kart\u0119).",

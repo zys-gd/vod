@@ -29,7 +29,7 @@
 </div>
 <div class="row" style="margin-bottom: 20px">
     <div class="col-lg-4">
-        <a class="btn btn-info" href="{{ admin.generateUrl('create') }}">Back</a>
+        <a class="btn btn-info" href="{{ admin.generateUrl('report') }}">Back</a>
     </div>
     <div class="col-lg-8 text-right">
         <a class="btn btn-info" href="#" onclick="document.getElementById('excelForm').submit();">Download excel</a>
@@ -100,36 +100,16 @@
                                 {% endif %}
                             </td>
                             <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                {% if user['gameDownloadCount'] %}
-                                    {{ user['gameDownloadCount'] }}
-                                {% endif %}
+                                {{ user['subscription_attempts'] }}
                             </td>
                             <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                {% if user['gamesInfo'] %}
-                                    {% for item in user['gamesInfo'] %}
-                                        {{ item }} <br/>
-                                    {% endfor %}
-                                {% endif %}
+                                {{ user['resubs_attempts'] }}
                             </td>
                             <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                {% if user['subscription_attempts'] %}
-                                    {{ user['subscription_attempts'] }}
-                                {% endif %}
+                                {{ user['charges_successful_no'] }}
                             </td>
                             <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                {% if user['resubs_attempts'] %}
-                                    {{ user['resubs_attempts'] }}
-                                {% endif %}
-                            </td>
-                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                {% if user['charges_successful_no'] %}
-                                    {{ user['charges_successful_no'] }}
-                                {% endif %}
-                            </td>
-                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                {% if user['charges_successful_value'] %}
-                                    {{ user['charges_successful_value'] }}
-                                {% endif %}
+                                {{ user['charges_successful_value'] }}
                             </td>
                         </tr>
                     {% endfor %}

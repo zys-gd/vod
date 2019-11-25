@@ -66,7 +66,7 @@ return [
     'DRM_API_URL'       => 'http://drm-api-dev-env.utbtaavpnd.eu-west-1.elasticbeanstalk.com/web/api/',
     'S3_ROOT_URL'       => 'https://s3.eu-central-1.amazonaws.com/playwing-appstore',
 
-    'REPORTING_STATS_API_HOST' => 'https://reporting.100sport.tv/a/api',
+    'REPORTING_STATS_API_HOST' => 'https://stage.reporting.playwing.com/a/api',
 
     'CROSS_SUBSCRIPTION_SERVICE' => null
 ];
