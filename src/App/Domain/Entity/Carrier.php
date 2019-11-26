@@ -59,18 +59,6 @@ class Carrier implements CarrierInterface, HasUuid
     private $trialInitializer = 'carrier';
 
     /**
-     * Trial period in days
-     * @var integer
-     */
-    private $trialPeriod = 0;
-
-    /**
-     * User subscription days amount
-     * @var integer
-     */
-    private $subscriptionPeriod = 7;
-
-    /**
      * @var $operatorId
      */
     private $operatorId = null;
@@ -216,41 +204,9 @@ class Carrier implements CarrierInterface, HasUuid
     /**
      * @return int
      */
-    public function getTrialPeriod(): int
-    {
-        return $this->trialPeriod;
-    }
-
-    /**
-     * @param int $trialPeriod
-     *
-     * @return Carrier
-     */
-    public function setTrialPeriod(int $trialPeriod)
-    {
-        $this->trialPeriod = $trialPeriod;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
     public function getSubscriptionPeriod(): int
     {
         return $this->subscriptionPeriod;
-    }
-
-    /**
-     * @param int $subscriptionPeriod
-     *
-     * @return Carrier
-     */
-    public function setSubscriptionPeriod(int $subscriptionPeriod): Carrier
-    {
-        $this->subscriptionPeriod = $subscriptionPeriod;
-
-        return $this;
     }
 
     /**
