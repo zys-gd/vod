@@ -32,14 +32,6 @@ App\Domain\Entity\Carrier:
             options:
                 default: 'carrier'
             length: 10
-        trialPeriod:
-            type: integer
-            options:
-                default: 0
-        subscriptionPeriod:
-            type: integer
-            options:
-                default: 7
         isCampaignsOnPause:
             type: boolean
             options:

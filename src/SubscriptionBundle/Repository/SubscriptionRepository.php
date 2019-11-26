@@ -7,6 +7,7 @@ use DateTime;
 use Doctrine\ORM\EntityRepository;
 use IdentificationBundle\Entity\User;
 use SubscriptionBundle\Entity\Subscription;
+use SubscriptionBundle\Entity\SubscriptionPack;
 
 /**
  * SubscriptionRepository
@@ -69,7 +70,7 @@ class SubscriptionRepository extends EntityRepository
      */
     public function getExpiredSubscriptions(CarrierInterface $carrier)
     {
-        $startedLimit = new DateTime('-' . $carrier->getTrialPeriod() . ' days');
+        // $startedLimit = new DateTime('-' . $carrier->getTrialPeriod() . ' days');
 
         $qb    = $this->getEntityManager()->createQueryBuilder();
         $query = $qb->select('s')
@@ -113,12 +114,14 @@ class SubscriptionRepository extends EntityRepository
 
     /**
      * @param CarrierInterface $carrier
+     * @param SubscriptionPack $subscriptionPack
+     *
      * @return Subscription[]
      * @throws \Exception
      */
-    public function findExpiringTomorrowSubscriptions(CarrierInterface $carrier)
+    public function findExpiringTomorrowSubscriptions(CarrierInterface $carrier, SubscriptionPack $subscriptionPack)
     {
-        $startedLimit = new DateTime('-' . $carrier->getSubscriptionPeriod() . ' days');
+        $startedLimit = new DateTime('-' . $subscriptionPack->getFinalPeriodForSubscription() . ' days');
 
         $query = $this->createQueryBuilder('s')
             ->join('s.user', 'user')
