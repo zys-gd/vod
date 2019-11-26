@@ -12,6 +12,7 @@ final class Version20191126131514 extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {
+
         $this->addSql("INSERT INTO languages (uuid, name, code) VALUES ('5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'Kazakh', 'kk')");
     }
 
