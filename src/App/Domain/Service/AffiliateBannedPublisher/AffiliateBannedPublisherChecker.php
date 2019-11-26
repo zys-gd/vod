@@ -27,7 +27,7 @@ class AffiliateBannedPublisherChecker
      *
      * @return bool
      */
-    public function isPublisherBanned(array $query, AffiliateInterface $affiliate, Carrier $carrier): bool
+    public function isPublisherBanned(array $query, AffiliateInterface $affiliate, Carrier $carrier = null): bool
     {
         foreach ($query as $paramName => $value) {
             if ($paramName == 'pid' || strpos($paramName, 'pub') === 0) {
