@@ -129,6 +129,14 @@ final class Version20191126131515 extends AbstractMigration
         $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('59k199d0-ebd4-11e8-95c4-02bb25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'player.related_videos', 'Қосымша жүктеу')");
         $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('9k1899d0-ebd4-11e8-95c4-02bb25dj9f8d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'player.close', 'Жабық')");
         $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11e8-95c4-02bb25dj2k2i', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'buttons.load_more', 'Көбірек жүктеу')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11e8-95c4-02bb25dj8d9d', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'buttons.download', 'ЖҮКТЕУ')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11e8-95c4-02bb25d8d9di', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'game.other_games', 'Басқа ойындар')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11e8-95c4-02bb258d9d2i', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'navbar.menu.sport_games', 'Спорт ойындары')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11e8-95c4-02bb28d9dk2i', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'messages.action.unsubscribe.confirm', 'Шынымен жазылысты тоқтатуды қалайсыз ба?')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11e8-95c4-02bb8d9d2k2i', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'buttons.yes', 'Иә')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11e8-95c4-02b8d9dj2k2i', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'buttons.no', 'ЖОҚ')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11e8-95c4-028d9ddj2k2i', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'messages.action.unsubscribe.confirmation.1', 'Сіз енді 100% sport мүшесі емессіз')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('51d899d0-ebd4-11e8-95c4-08d9d5dj2k2i', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', 'messages.action.unsubscribe.confirmation.2', 'messages.action.unsubscribe.confirmation.2')");
 
         // beeline kazakh
         $this->addSql("INSERT INTO translations (uuid, language_id, carrier_id, `key`, translation) VALUES ('51d8d9d0-ebd4-11e8-95c4-02bb25d1djf8', '5179f17c-ebd4-11e8-95c4-02bb25d8f6d4', '3de06e41-f889-4f95-aac3-ebd31d9d7dg4', 'buttons.subscribe', 'ТӨЛЕУСІЗ ҚОСЫЛУ')");
@@ -282,5 +290,13 @@ final class Version20191126131515 extends AbstractMigration
         $this->addSql("DELETE FROM translations WHERE uuid = '59k199d0-ebd4-11e8-95c4-02bb25dj9f8d'");
         $this->addSql("DELETE FROM translations WHERE uuid = '9k1899d0-ebd4-11e8-95c4-02bb25dj9f8d'");
         $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-11e8-95c4-02bb25dj2k2i'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-11e8-95c4-02bb25dj8d9d'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-11e8-95c4-02bb25d8d9di'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-11e8-95c4-02bb258d9d2i'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-11e8-95c4-02bb28d9dk2i'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-11e8-95c4-02bb8d9d2k2i'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-11e8-95c4-02b8d9dj2k2i'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-11e8-95c4-028d9ddj2k2i'");
+        $this->addSql("DELETE FROM translations WHERE uuid = '51d899d0-ebd4-11e8-95c4-08d9d5dj2k2i'");
     }
 }
