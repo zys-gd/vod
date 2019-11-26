@@ -23,7 +23,6 @@ final class Version20191126131505 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('DELETE FROM `carriers` WHERE uuid = "3de06e41-f889-4f95-aac3-ebd31d9d7dg4"');
