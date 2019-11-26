@@ -64,7 +64,7 @@ class BeelineKZWifiIdentificationHandler implements WifiIdentificationHandlerInt
     {
         return new PhoneValidationOptions(
             '+77XXXXXXXXXX',
-            '^\+48[0-9]{9}$',
+            '^\+77[0-9]{9}$',
             'XXXXX',
             '^[0-9]{5}$'
         );
