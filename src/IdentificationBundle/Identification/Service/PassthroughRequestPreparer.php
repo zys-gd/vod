@@ -52,7 +52,7 @@ class PassthroughRequestPreparer
 
     public function getProcessRequestParameters(Request $request): ProcessRequestParameters
     {
-        $affiliateParams     = $this->affiliateDataSerializer->serialize($request->getSession());
+        $affiliateParams     = $this->affiliateDataSerializer->serialize($request->getSession(), 'affiliate');
         $identificationToken = IdentificationFlowDataExtractor::extractIdentificationToken($request->getSession())
             ?? $this->generator->generateToken();
         $billingCarrierId    = IdentificationFlowDataExtractor::extractBillingCarrierId($request->getSession());
