@@ -32,7 +32,7 @@ class AffiliateBannedPublisherChecker
         foreach ($query as $paramName => $value) {
             if ($paramName == 'pid' || strpos($paramName, 'pub') === 0) {
                 $affiliateBannedPublisher = $this->affiliateBannedPublisherRepository->findBannedPublisher($affiliate, $value);
-                if ($bannedCarrier = $affiliateBannedPublisher->getCarrier()) {
+                if ($affiliateBannedPublisher && $bannedCarrier = $affiliateBannedPublisher->getCarrier()) {
                     return $bannedCarrier === $carrier;
                 }
                 return !!$affiliateBannedPublisher;
