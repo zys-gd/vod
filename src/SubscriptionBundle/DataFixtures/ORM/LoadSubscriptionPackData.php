@@ -9,8 +9,6 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use ExtrasBundle\Utils\FixtureDataLoader;
 use SubscriptionBundle\Entity\SubscriptionPack;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 class LoadSubscriptionPackData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -73,6 +71,7 @@ class LoadSubscriptionPackData extends AbstractFixture implements DependentFixtu
             $is_resub_allowed                    = $row['isResubAllowed'] ?? 0;
             $displayCurrency                     = $row['displayCurrency'] ?? '';
             $zeroCreditSubAvailable              = $row['zeroCreditSubAvailable'] ?? 0;
+            $trialPeriod                         = $row['trialPeriod'] ?? 0;
 
 
             $pack = new SubscriptionPack($uuid);
@@ -131,6 +130,7 @@ class LoadSubscriptionPackData extends AbstractFixture implements DependentFixtu
             $pack->setIsResubAllowed($is_resub_allowed);
             $pack->setDisplayCurrency($displayCurrency);
             $pack->setZeroCreditSubAvailable($zeroCreditSubAvailable);
+            $pack->setTrialPeriod($trialPeriod);
 
             $manager->persist($pack);
         }
