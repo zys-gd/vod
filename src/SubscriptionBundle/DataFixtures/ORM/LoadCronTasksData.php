@@ -32,6 +32,7 @@ class LoadCronTasksData extends AbstractFixture
             ["3", "hutchIndonesiaMassRenewCronTask", "0"],
             ["4", "zainKSAMassRenewCronTask", "0"],
             ["5", "zongPKMassRenewCronTask", "0"],
+            ["6", "beelineKZMassRenewCronTask", "0"],
         ];
 
 
