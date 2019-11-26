@@ -35,9 +35,6 @@ final class Version20190425163514 extends AbstractMigration implements Container
             ->setIsp('Vodafone Egypt')
             ->setPublished(true)
             ->setTrialInitializer('carrier')
-            ->setTrialPeriod(0)
-            ->setSubscriptionPeriod(1)
-            ->setResubAllowed(false)
             ->setOperatorId(0)
             ->setSubscribeAttempts(5)
             ->setIsCampaignsOnPause(false);
@@ -50,9 +47,6 @@ final class Version20190425163514 extends AbstractMigration implements Container
             ->setIsp('MOBINIL')
             ->setPublished(true)
             ->setTrialInitializer('carrier')
-            ->setTrialPeriod(0)
-            ->setSubscriptionPeriod(1)
-            ->setResubAllowed(false)
             ->setOperatorId(0)
             ->setSubscribeAttempts(5)
             ->setIsCampaignsOnPause(false);
