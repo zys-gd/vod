@@ -10,7 +10,6 @@ use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CampaignRepository;
 use App\Domain\Repository\CarrierRepository;
-use App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherChecker;
 use App\Domain\Service\OneClickFlow\OneClickFlowScheduler;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\CAPTool\Subscription\Exception\SubscriptionCapReachedOnAffiliate;
@@ -19,7 +18,6 @@ use SubscriptionBundle\CAPTool\Subscription\Exception\VisitCapReached;
 use SubscriptionBundle\CAPTool\Subscription\Limiter\SubscriptionCapChecker;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
@@ -63,11 +61,6 @@ class LandingPageACL
     private $session;
 
     /**
-     * @var AffiliateBannedPublisherChecker
-     */
-    private $affiliateBannedPublisherChecker;
-
-    /**
      * @var OneClickFlowScheduler
      */
     private $oneClickFlowScheduler;
@@ -82,7 +75,6 @@ class LandingPageACL
      * @param SessionInterface                $session
      * @param SubscriptionCapChecker          $subscriptionCapChecker
      * @param LoggerInterface                 $logger
-     * @param AffiliateBannedPublisherChecker $affiliateBannedPublisherChecker
      * @param OneClickFlowScheduler           $oneClickFlowScheduler
      */
     public function __construct(
@@ -93,7 +85,6 @@ class LandingPageACL
         SessionInterface $session,
         SubscriptionCapChecker $subscriptionCapChecker,
         LoggerInterface $logger,
-        AffiliateBannedPublisherChecker $affiliateBannedPublisherChecker,
         OneClickFlowScheduler $oneClickFlowScheduler
     )
     {
@@ -104,7 +95,6 @@ class LandingPageACL
         $this->carrierRepository               = $carrierRepository;
         $this->campaignRepository              = $campaignRepository;
         $this->session                         = $session;
-        $this->affiliateBannedPublisherChecker = $affiliateBannedPublisherChecker;
         $this->oneClickFlowScheduler           = $oneClickFlowScheduler;
     }
 
@@ -210,11 +200,5 @@ class LandingPageACL
                 $this->ensureVisitCapIsNotReached($carrier, $constraint);
             }
         }
-    }
-
-    public function isAffiliatePublisherBanned(Request $request, CampaignInterface $campaign): bool
-    {
-        $affiliate = $campaign->getAffiliate();
-        return $this->affiliateBannedPublisherChecker->isPublisherBanned($affiliate, $request->query->all());
     }
 }

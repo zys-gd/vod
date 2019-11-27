@@ -4,7 +4,7 @@
 namespace App\Domain\Service\AffiliateBannedPublisher;
 
 
-
+use App\Domain\Entity\Carrier;
 use App\Domain\Repository\AffiliateBannedPublisherRepository;
 use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 
@@ -21,16 +21,21 @@ class AffiliateBannedPublisherChecker
     }
 
     /**
-     * @param AffiliateInterface $affiliate
      * @param array              $query
+     * @param AffiliateInterface $affiliate
+     * @param Carrier            $carrier
      *
      * @return bool
      */
-    public function isPublisherBanned(AffiliateInterface $affiliate, array $query): bool
+    public function isPublisherBanned(array $query, AffiliateInterface $affiliate, Carrier $carrier = null): bool
     {
         foreach ($query as $paramName => $value) {
-            if($paramName == 'pid' || strpos($paramName, 'pub') === 0) {
-                return !!$this->affiliateBannedPublisherRepository->findBannedPublisher($affiliate, $value);
+            if ($paramName == 'pid' || strpos($paramName, 'pub') === 0) {
+                $affiliateBannedPublisher = $this->affiliateBannedPublisherRepository->findBannedPublisher($affiliate, $value);
+                if ($affiliateBannedPublisher && $bannedCarrier = $affiliateBannedPublisher->getCarrier()) {
+                    return $bannedCarrier === $carrier;
+                }
+                return !!$affiliateBannedPublisher;
             }
         }
 

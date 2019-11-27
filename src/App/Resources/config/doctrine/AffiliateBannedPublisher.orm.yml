@@ -19,3 +19,11 @@ App\Domain\Entity\AffiliateBannedPublisher:
             joinColumn:
                 name: affiliate_id
                 referencedColumnName: uuid
+
+    oneToOne:
+        carrier:
+            targetEntity: App\Domain\Entity\Carrier
+            nullable: true
+            joinColumn:
+                name: carrier_id
+                referencedColumnName: uuid
