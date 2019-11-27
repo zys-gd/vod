@@ -11,3 +11,19 @@
     font-size: 6vw;
     padding: 5px 20px;
 }
+
+@media screen and (max-width: 400px) {
+    .lp-sub-btn button {
+        font-size: 25px;
+        padding: 10px 50px;
+    }
+
+    .btn-lp_big.x-subscribe-button button {
+        padding: 10px 5px;
+    }
+
+    #wifi_button .button {
+        font-size: 5vw;
+        padding: 5px 15px;
+    }
+}
