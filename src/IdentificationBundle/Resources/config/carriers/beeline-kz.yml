@@ -1,0 +1,12 @@
+services:
+    IdentificationBundle\Carriers\BeelineKZ\BeelineKZIdentificationHandler:
+        tags:
+            - { name: identification.identification_handler }
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'
+
+    IdentificationBundle\Carriers\BeelineKZ\BeelineKZWifiIdentificationHandler:
+        tags:
+            - { name: identification.wifi_identification_handler }
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'

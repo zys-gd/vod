@@ -1,0 +1,16 @@
+services:
+    Carriers\BeelineKZ\SMS\ENTextsHandler:
+        tags:
+            - { name: subscription.sms_text_handler }
+
+    Carriers\BeelineKZ\SMS\KKTextsHandler:
+        tags:
+            - { name: subscription.sms_text_handler }
+
+    Carriers\BeelineKZ\OneClick\BeelineKZOneClickFlow:
+        tags:
+            - { name: app.one_click_flow_handler }
+
+    Carriers\BeelineKZ\Template\BeelineKZTemplateHandler:
+        tags:
+            - { name: store_commons.template_handler }

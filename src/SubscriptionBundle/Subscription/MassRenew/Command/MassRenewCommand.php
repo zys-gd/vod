@@ -17,11 +17,12 @@ class MassRenewCommand extends Command
 {
 
     const CRON_TASK_NAME_MAP = [
-        ID::MOBILINK_PAKISTAN    => 'mobilinkPakistanMassRenewCronTask',
-        ID::TELENOR_PAKISTAN_DOT => 'telenorPakistanDOTMassRenewCronTask',
-        ID::HUTCH3_INDONESIA_DOT => 'hutchIndonesiaMassRenewCronTask',
-        ID::ZAIN_SAUDI_ARABIA    => 'zainKSAMassRenewCronTask',
-        ID::ZONG_PAKISTAN        => 'zongPKMassRenewCronTask'
+        ID::MOBILINK_PAKISTAN      => 'mobilinkPakistanMassRenewCronTask',
+        ID::TELENOR_PAKISTAN_DOT   => 'telenorPakistanDOTMassRenewCronTask',
+        ID::HUTCH3_INDONESIA_DOT   => 'hutchIndonesiaMassRenewCronTask',
+        ID::ZAIN_SAUDI_ARABIA      => 'zainKSAMassRenewCronTask',
+        ID::ZONG_PAKISTAN          => 'zongPKMassRenewCronTask',
+        ID::BEELINE_KAZAKHSTAN_DOT => 'beelineKZMassRenewCronTask'
     ];
 
     /**

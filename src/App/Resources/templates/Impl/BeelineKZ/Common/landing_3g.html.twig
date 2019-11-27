@@ -1,0 +1,72 @@
+{% extends '@App/base.html.twig' %}
+{% import importTemplate("Components/Blocks/Header/header_lp.html.twig") as  header %}
+{% import importTemplate("Components/Blocks/Footer/annotation.html.twig") as  annotation %}
+{% import importTemplate("Components/Blocks/Footer/menu.html.twig") as  footer_menu %}
+
+
+{# IMPORT SECTIONS #}
+{% import importTemplate("Common/LP/Sections/play_text_section.html.twig") as play_text_section %}
+{% import importTemplate("Common/LP/Sections/banner_section.html.twig") as banner_section %}
+{% import importTemplate("Common/LP/Sections/3G/subscribe_button_section.html.twig") as subscribe_button_section %}
+{% import importTemplate("Common/LP/Sections/offer_section.html.twig") as offer_section %}
+{% import importTemplate("Common/LP/Sections/icons_chanel_section.html.twig") as icons_chanel_section %}
+{% import importTemplate("Common/LP/Sections/lure_text_section.html.twig") as lure_text_section %}
+{# END IMPORT SECTIONS #}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% include ("@App/Common/LP/js_lp_block.html.twig") %}
+
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('/css/lp.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/carriers/BeelineKZ/lp.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+
+    <div class="d-flex flex-column align-items-center justify-content-top w-100"  style="background: {{ getCampaignData('background') }}">
+
+        <!-- PLAY TEXT SECTION -->
+        {{ play_text_section.render() }}
+        <!-- END PLAY TEXT SECTION-->
+
+        <!-- SUBSCRIBE BUTTON SECTION -->
+        {{ subscribe_button_section.render('buttons.subscribe', 'btn-lp_big', 'lp-sub-btn lp-sub-btn-top') }}
+        <!-- END SUBSCRIBE BUTTON SECTION -->
+
+        <!-- BANNER SECTION WITH SUB IMAGE -->
+        {{ banner_section.render() }}
+        <!-- END BANNER SECTION WITH SUB IMAGE -->
+
+        <!-- SUBSCRIBE BUTTON SECTION -->
+        {{ subscribe_button_section.render('buttons.subscribe', 'btn-lp_big', 'lp-sub-btn lp-sub-btn-bottom') }}
+        <!-- END SUBSCRIBE BUTTON SECTION -->
+
+        <!-- OFFER SECTION -->
+        {{ offer_section.render() }}
+        <!-- END OFFER SECTION -->
+
+        <!-- ICONS CHANEL SECTION -->
+        {{ icons_chanel_section.render() }}
+        <!-- END ICONS CHANEL SECTION -->
+
+        <!-- LURE TEXT SECTION  -->
+        {{  lure_text_section.render() }}
+        <!-- END LURE TEXT SECTION -->
+
+    </div>
+{% endblock body %}
+
+{% block footer_content %}
+    {% if isCarrierDetected() %}
+        {{ annotation.render() }}
+    {% endif %}
+    {{ footer_menu.render() }}
+{% endblock footer_content %}
