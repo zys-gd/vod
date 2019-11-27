@@ -1,0 +1,13 @@
+.lp-sub-btn button {
+    font-size: 30px;
+    padding: 10px 55px;
+}
+
+.btn-lp_big.x-subscribe-button button {
+    padding: 10px 10px;
+}
+
+#wifi_button .button {
+    font-size: 6vw;
+    padding: 5px 20px;
+}
