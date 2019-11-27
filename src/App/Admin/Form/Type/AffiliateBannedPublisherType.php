@@ -3,7 +3,9 @@
 namespace App\Admin\Form\Type;
 
 use App\Domain\Entity\AffiliateBannedPublisher;
+use App\Domain\Entity\Carrier;
 use ExtrasBundle\Utils\UuidGenerator;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,12 +20,12 @@ class AffiliateBannedPublisherType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $fieldOptions = [
-            'required' => true,
+            'required'    => true,
             'constraints' => [
                 new NotBlank(),
                 new Length([
@@ -33,7 +35,13 @@ class AffiliateBannedPublisherType extends AbstractType
         ];
 
         $builder
-            ->add('publisher_id', TextType::class, $fieldOptions);
+            ->add('publisher_id', TextType::class, $fieldOptions)
+            ->add('carrier', EntityType::class, [
+                'class'       => Carrier::class,
+                'required'    => false,
+                'empty_data'  => null,
+                'placeholder' => '...'
+            ]);
     }
 
     /**

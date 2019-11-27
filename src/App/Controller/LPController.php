@@ -7,6 +7,7 @@ use App\Domain\ACL\LandingPageACL;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
 use App\Domain\Repository\CampaignRepository;
+use App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherChecker;
 use App\Domain\Service\Carrier\CarrierOTPVerifier;
 use App\Domain\Service\OneClickFlow\HasCustomOneClickRedirectRules;
 use App\Domain\Service\OneClickFlow\OneClickFlowCarriersProvider;
@@ -111,26 +112,31 @@ class LPController extends AbstractController implements ControllerWithISPDetect
      * @var OneClickFlowResolver
      */
     private $oneClickFlowResolver;
+    /**
+     * @var AffiliateBannedPublisherChecker
+     */
+    private $affiliateBannedPublisherChecker;
 
     /**
      * LPController constructor.
      *
-     * @param ContentStatisticSender        $contentStatisticSender
-     * @param CampaignRepository            $campaignRepository
-     * @param LandingPageACL                $landingPageAccessResolver
-     * @param CarrierOTPVerifier            $OTPVerifier
-     * @param string                        $defaultRedirectUrl
-     * @param TemplateConfigurator          $templateConfigurator
-     * @param WifiIdentificationDataStorage $wifiIdentificationDataStorage
-     * @param CarrierRepositoryInterface    $carrierRepository
-     * @param VisitTracker                  $visitTracker
-     * @param LoggerInterface               $logger
-     * @param CarrierSelector               $carrierSelector
-     * @param SubscribeUrlResolver          $subscribeUrlResolver
-     * @param ConstraintAvailabilityChecker $visitConstraintChecker
-     * @param CAPToolRedirectUrlResolver    $CAPToolRedirectUrlResolver
-     * @param OneClickFlowCarriersProvider  $oneClickFlowCarriersProvider
-     * @param OneClickFlowResolver          $oneClickFlowResolver
+     * @param ContentStatisticSender          $contentStatisticSender
+     * @param CampaignRepository              $campaignRepository
+     * @param LandingPageACL                  $landingPageAccessResolver
+     * @param CarrierOTPVerifier              $OTPVerifier
+     * @param string                          $defaultRedirectUrl
+     * @param TemplateConfigurator            $templateConfigurator
+     * @param WifiIdentificationDataStorage   $wifiIdentificationDataStorage
+     * @param CarrierRepositoryInterface      $carrierRepository
+     * @param VisitTracker                    $visitTracker
+     * @param LoggerInterface                 $logger
+     * @param CarrierSelector                 $carrierSelector
+     * @param SubscribeUrlResolver            $subscribeUrlResolver
+     * @param ConstraintAvailabilityChecker   $visitConstraintChecker
+     * @param CAPToolRedirectUrlResolver      $CAPToolRedirectUrlResolver
+     * @param OneClickFlowCarriersProvider    $oneClickFlowCarriersProvider
+     * @param OneClickFlowResolver            $oneClickFlowResolver
+     * @param AffiliateBannedPublisherChecker $affiliateBannedPublisherChecker
      */
     public function __construct(
         ContentStatisticSender $contentStatisticSender,
@@ -148,25 +154,27 @@ class LPController extends AbstractController implements ControllerWithISPDetect
         ConstraintAvailabilityChecker $visitConstraintChecker,
         CAPToolRedirectUrlResolver $CAPToolRedirectUrlResolver,
         OneClickFlowCarriersProvider $oneClickFlowCarriersProvider,
-        OneClickFlowResolver $oneClickFlowResolver
+        OneClickFlowResolver $oneClickFlowResolver,
+        AffiliateBannedPublisherChecker $affiliateBannedPublisherChecker
     )
     {
-        $this->contentStatisticSender        = $contentStatisticSender;
-        $this->campaignRepository            = $campaignRepository;
-        $this->landingPageAccessResolver     = $landingPageAccessResolver;
-        $this->OTPVerifier                   = $OTPVerifier;
-        $this->defaultRedirectUrl            = $defaultRedirectUrl;
-        $this->templateConfigurator          = $templateConfigurator;
-        $this->wifiIdentificationDataStorage = $wifiIdentificationDataStorage;
-        $this->carrierRepository             = $carrierRepository;
-        $this->visitTracker                  = $visitTracker;
-        $this->logger                        = $logger;
-        $this->carrierSelector               = $carrierSelector;
-        $this->subscribeUrlResolver          = $subscribeUrlResolver;
-        $this->visitConstraintChecker        = $visitConstraintChecker;
-        $this->CAPToolRedirectUrlResolver    = $CAPToolRedirectUrlResolver;
-        $this->oneClickHandlerProvider       = $oneClickFlowCarriersProvider;
-        $this->oneClickFlowResolver          = $oneClickFlowResolver;
+        $this->contentStatisticSender          = $contentStatisticSender;
+        $this->campaignRepository              = $campaignRepository;
+        $this->landingPageAccessResolver       = $landingPageAccessResolver;
+        $this->OTPVerifier                     = $OTPVerifier;
+        $this->defaultRedirectUrl              = $defaultRedirectUrl;
+        $this->templateConfigurator            = $templateConfigurator;
+        $this->wifiIdentificationDataStorage   = $wifiIdentificationDataStorage;
+        $this->carrierRepository               = $carrierRepository;
+        $this->visitTracker                    = $visitTracker;
+        $this->logger                          = $logger;
+        $this->carrierSelector                 = $carrierSelector;
+        $this->subscribeUrlResolver            = $subscribeUrlResolver;
+        $this->visitConstraintChecker          = $visitConstraintChecker;
+        $this->CAPToolRedirectUrlResolver      = $CAPToolRedirectUrlResolver;
+        $this->oneClickHandlerProvider         = $oneClickFlowCarriersProvider;
+        $this->oneClickFlowResolver            = $oneClickFlowResolver;
+        $this->affiliateBannedPublisherChecker = $affiliateBannedPublisherChecker;
     }
 
 
@@ -192,17 +200,18 @@ class LPController extends AbstractController implements ControllerWithISPDetect
             return RedirectResponse::create($this->defaultRedirectUrl);
         }
 
+        $carrier = $this->resolveCarrierFromRequest($request);
+
         /** @var Campaign $campaign */
         if ($campaign) {
             // Useless method atm.
             AffiliateVisitSaver::saveCampaignId($cid, $session);
 
-            if ($this->landingPageAccessResolver->isAffiliatePublisherBanned($request, $campaign)) {
+            if ($this->affiliateBannedPublisherChecker->isPublisherBanned($request->query->all(), $campaign->getAffiliate(), $carrier)) {
                 return new RedirectResponse($this->defaultRedirectUrl);
             }
         }
 
-        $carrier = $this->resolveCarrierFromRequest($request);
         if ($carrier && $campaign) {
             $this->logger->debug('Start CAP checking', ['carrier' => $carrier, 'campaign' => $campaign]);
 

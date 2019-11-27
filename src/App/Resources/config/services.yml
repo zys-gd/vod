@@ -111,7 +111,6 @@ services:
       - '@session'
       - '@SubscriptionBundle\CAPTool\Subscription\Limiter\SubscriptionCapChecker'
       - '@logger'
-      - '@App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherChecker'
       - '@App\Domain\Service\OneClickFlow\OneClickFlowScheduler'
 
 

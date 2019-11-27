@@ -190,6 +190,10 @@ SubscriptionBundle\Entity\SubscriptionPack:
             options:
                 default: false
             column: is_first_subscription_free
+        trialPeriod:
+            type: integer
+            options:
+                default: 0
         allowBonusCredit:
             type: boolean
             scale: 0
@@ -238,8 +242,8 @@ SubscriptionBundle\Entity\SubscriptionPack:
             nullable: false
             precision: 0
             gedmo:
-              timestampable:
-                on: create
+                timestampable:
+                    on: create
         updated:
             type: datetime
             scale: 0
@@ -248,8 +252,8 @@ SubscriptionBundle\Entity\SubscriptionPack:
             nullable: false
             precision: 0
             gedmo:
-              timestampable:
-                on: update
+                timestampable:
+                    on: update
 
         zeroCreditSubAvailable:
             type: boolean
