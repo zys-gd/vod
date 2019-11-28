@@ -93,4 +93,10 @@
         font-size: 5vw;
         padding: 5px 15px;
     }
+
+    .footer-menu_link {
+        padding: 1vw 0.1vw;
+        margin: 0 0.5vw;
+        font-size: 12px;
+    }
 }
