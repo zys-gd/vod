@@ -9,13 +9,12 @@ use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerInterface;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCommonFlow;
-use SubscriptionBundle\Subscription\Callback\Impl\HasCustomTrackingRules;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class TMobilePolandDimocoCallbackHandler
  */
-class TMobilePolandDimocoCallbackHandler implements CarrierCallbackHandlerInterface, HasCommonFlow, HasCustomTrackingRules
+class TMobilePolandDimocoCallbackHandler implements CarrierCallbackHandlerInterface, HasCommonFlow
 {
     /**
      * @var UserRepository
@@ -51,16 +50,6 @@ class TMobilePolandDimocoCallbackHandler implements CarrierCallbackHandlerInterf
     public function getUser(string $msisdn): ?User
     {
         return $this->userRepository->findOneByMsisdn($msisdn);
-    }
-
-    /**
-     * @param ProcessResult $result
-     *
-     * @return bool
-     */
-    public function isNeedToBeTracked(ProcessResult $result): bool
-    {
-        return true;
     }
 
     public function afterProcess(Subscription $subscription, User $User, ProcessResult $processResponse)
