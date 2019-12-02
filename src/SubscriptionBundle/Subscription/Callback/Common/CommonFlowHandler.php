@@ -191,7 +191,7 @@ class CommonFlowHandler
             $userInfo = $this->infoMapper->mapFromUser($subscription->getUser());
             $affiliateToken = $subscription->getAffiliateToken();
 
-            if ($type === 'subscribe' && $affiliateToken && !empty($affiliateToken['cid'])) {
+            if ($type === 'subscribe' && $affiliateToken && !empty($affiliateToken['cid']) && $processResponse->isSuccessful()) {
                 $this->affiliateSender->checkAffiliateEligibilityAndSendEvent(
                     $subscription,
                     $userInfo,

@@ -93,6 +93,6 @@ class TMobilePolandDimocoCallbackHandler implements CarrierCallbackHandlerInterf
      */
     public function isNeedToBeTracked(ProcessResult $result): bool
     {
-        return $result->isSuccessful();
+        return true;
     }
 }
