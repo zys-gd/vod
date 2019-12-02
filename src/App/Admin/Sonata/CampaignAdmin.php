@@ -101,14 +101,6 @@ class CampaignAdmin extends AbstractAdmin
     {
         $this->prepareImage($obj);
         $this->generateTestLink($obj);
-
-        $originalData = $this->em->getUnitOfWork()->getOriginalEntityData($obj);
-
-        if(count($originalData) > 0) {
-            if (isset($originalData['isOneClickFlow']) && $obj->isOneClickFlow() != $originalData['isOneClickFlow']) {
-                $obj->getAffiliate()->setIsOneClickFlow($obj->isOneClickFlow());
-            }
-        }
     }
 
     /**
