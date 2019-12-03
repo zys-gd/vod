@@ -23,10 +23,8 @@ class ProcessResultSuccessChecker
      *
      * @return bool
      */
-    public function isSuccessfulAndFinal(ProcessResult $processResult): bool
+    public function isSuccessfulForCapTrack(ProcessResult $processResult): bool
     {
-        return !$processResult->isFailed()
-            && !$processResult->getError()
-            && $processResult->getSubtype() === ProcessResult::PROCESS_SUBTYPE_FINAL;
+        return $processResult->isSuccessful() && !$processResult->getError();
     }
 }
