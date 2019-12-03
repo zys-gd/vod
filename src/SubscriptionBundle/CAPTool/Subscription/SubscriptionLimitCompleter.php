@@ -69,7 +69,7 @@ class SubscriptionLimitCompleter
         $carrier          = $subscriptionPack->getCarrier();
         $campaign         = $this->campaignExtractor->getCampaignForSubscription($subscription);
 
-        if ($this->resultSuccessChecker->isSuccessfulAndFinal($response)) {
+        if ($this->resultSuccessChecker->isSuccessfulForCapTrack($response)) {
 
             $this->logger->debug('Cap section', [
                 'campaign' => $campaign
