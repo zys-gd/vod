@@ -61,14 +61,14 @@
     </div>
     {% if users|length == 0  %}
         <div class="row text-right">
-            <a class="btn btn-info" href="{{ admin.generateUrl('create') }}">Back</a>
+            <a class="btn btn-info" href="{{ admin.generateUrl('unsubscribe_form') }}">Back</a>
         </div>
     {% else  %}
         <div id="start" class="row text-right">
             <button class="btn btn-info">Unsubscribe!</button>
         </div>
         <div id="back" class="row text-right" style="display: none;">
-            <a class="btn btn-info" href="{{ admin.generateUrl('create') }}">Back</a>
+            <a class="btn btn-info" href="{{ admin.generateUrl('unsubscribe_form') }}">Back</a>
         </div>
     {% endif %}
     <span id="unsubscribeUrl" hidden>{{ admin.generateUrl('unsubscribe') }}</span>

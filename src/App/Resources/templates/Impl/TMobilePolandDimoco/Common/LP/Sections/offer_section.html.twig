@@ -2,12 +2,12 @@
     <div id="landing-offer-container" class="mt-2">
         {% include importTemplate("Common/LP/landing_offer.html.twig") %}
     </div>
-{#    {% set campaignCategory = getCampaignData('category') %}#}
-{#    {% if campaignCategory and isWifiFlow() %}#}
-{#        <div>#}
-{#            <h2 class="h1 lp-category-title">#}
-{#                {{ translate('category.' ~ campaignCategory.uuid) }}: #{{ getCampaignData('campaignToken') }}#}
-{#            </h2>#}
-{#        </div>#}
-{#    {% endif %}#}
+    {% set campaignCategory = getCampaignData('category') %}
+    {% if campaignCategory and isWifiFlow() %}
+        <div>
+            <h2 class="h1 lp-category-title">
+                {{ translate('category.' ~ campaignCategory.uuid) }}: #{{ getCampaignData('campaignToken') }}
+            </h2>
+        </div>
+    {% endif %}
 {% endmacro %}

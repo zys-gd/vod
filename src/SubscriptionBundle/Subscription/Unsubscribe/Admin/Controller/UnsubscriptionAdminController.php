@@ -39,10 +39,8 @@ class UnsubscriptionAdminController extends CRUDController
      * @var array
      */
     private $tabList = [
-        UnsubscribeByMsisdnForm::NAME    => 'MSISDN',
-        UnsubscribeByFileForm::NAME      => 'FILE',
-        UnsubscribeByCampaignForm::NAME  => 'CAMPAIGNS',
-        UnsubscribeByAffiliateForm::NAME => 'AFFILIATE'
+        UnsubscribeByMsisdnForm::NAME => 'MSISDN',
+        UnsubscribeByFileForm::NAME   => 'FILE',
     ];
 
     /**
@@ -58,7 +56,7 @@ class UnsubscriptionAdminController extends CRUDController
      */
     private $subscriptionRepository;
     /**
-    /**
+     * /**
      * @var UserRepository
      */
     private $userRepository;
@@ -95,20 +93,21 @@ class UnsubscriptionAdminController extends CRUDController
         AdminUnsubscriber $adminUnsubscriber
     )
     {
-        $this->formFactory                   = $formFactory;
-        $this->subscriptionRepository        = $subscriptionRepository;
-        $this->userRepository                = $userRepository;
-        $this->blackListRepository           = $blackListRepository;
-        $this->affiliateLogRepository        = $affiliateLogRepository;
-        $this->adminUnsubscriber             = $adminUnsubscriber;
+        $this->formFactory            = $formFactory;
+        $this->subscriptionRepository = $subscriptionRepository;
+        $this->userRepository         = $userRepository;
+        $this->blackListRepository    = $blackListRepository;
+        $this->affiliateLogRepository = $affiliateLogRepository;
+        $this->adminUnsubscriber      = $adminUnsubscriber;
     }
+
     /**
      * @param Request|null $request
      *
      * @return Response
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function createAction(Request $request = null)
+    public function unsubscribeFormAction(Request $request = null)
     {
         $formName = $this->detectCurrentFormTab($request->request->all());
 
@@ -116,12 +115,6 @@ class UnsubscriptionAdminController extends CRUDController
         switch ($formName) {
             case 'msisdn':
                 $tabContent = $this->handleMsisdnForm($request);
-                break;
-            case 'affiliate':
-                $tabContent = $this->handleAffiliateForm($request);
-                break;
-            case 'campaign':
-                $tabContent = $this->handleCampaignForm($request);
                 break;
             case 'file':
                 $tabContent = $this->handleFileForm($request);
@@ -132,7 +125,7 @@ class UnsubscriptionAdminController extends CRUDController
         }
 
 
-        return $this->renderWithExtraParams('@SubscriptionAdmin/Unsubscription/create.html.twig', [
+        return $this->renderWithExtraParams('@SubscriptionAdmin/Unsubscription/unsubscribe_form.html.twig', [
             'tabs'       => $this->tabList,
             'tabContent' => $tabContent,
             'activeTab'  => $formName
@@ -188,11 +181,6 @@ class UnsubscriptionAdminController extends CRUDController
             'success' => $success,
             'errors'  => $errors
         ]);
-    }
-
-    public function listAction()
-    {
-        return RedirectResponse::create($this->admin->generateUrl('create'));
     }
 
     /**
@@ -282,82 +270,4 @@ class UnsubscriptionAdminController extends CRUDController
         ]);
     }
 
-    /**
-     * @param Request|null $request
-     *
-     * @return string
-     *
-     * @throws \Doctrine\DBAL\DBALException
-     */
-    protected function handleCampaignForm(Request $request = null): string
-    {
-        $form = $this->formFactory->create(UnsubscribeByCampaignForm::class);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-
-            /** @var ArrayCollection $campaigns */
-            $campaigns  = $data['campaign'];
-            $period     = $data['period'];
-            $usersLimit = $data['usersCount'];
-            $msisdns    = [];
-
-            /** @var CampaignInterface $campaign */
-            foreach ($campaigns->getIterator() as $campaign) {
-                $identifiers = $this->affiliateLogRepository->findByCampaignAndDateRange(
-                    $campaign->getCampaignToken(),
-                    $period['start'],
-                    $period['end'],
-                    $usersLimit
-                );
-
-                $msisdns = array_merge($msisdns, $identifiers);
-            }
-
-            return $this->renderPreparedUsers($msisdns);
-        }
-
-        return $this->renderView('@SubscriptionAdmin/Unsubscription/unsubscribe_by_campaign.html.twig', [
-            'form' => $form->createView()
-        ]);
-    }
-
-    /**
-     * @param Request|null $request
-     *
-     * @return string
-     *
-     * @throws \Doctrine\DBAL\DBALException
-     */
-    protected function handleAffiliateForm(Request $request = null): string
-    {
-        $form = $this->formFactory->create(UnsubscribeByAffiliateForm::class);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-
-            /** @var AffiliateInterface $affiliate */
-            $affiliate = $data['affiliate'];
-            /** @var CarrierInterface $carrier */
-            $carrier    = $data['carrier'];
-            $period     = $data['period'];
-            $usersLimit = $data['usersCount'];
-
-            $msisdns = $this->affiliateLogRepository->findByAffiliateCarrierAndDateRange(
-                $affiliate->getUuid(),
-                $carrier->getUuid(),
-                $period['start'],
-                $period['end'],
-                $usersLimit
-            );
-
-            return $this->renderPreparedUsers($msisdns);
-        }
-
-        return $this->renderView('@SubscriptionAdmin/Unsubscription/unsubscribe_by_affiliate.html.twig', [
-            'form' => $form->createView()
-        ]);
-    }
 }

@@ -31,10 +31,10 @@ class AffiliateDataSerializer
     }
 
 
-    public function serialize(SessionInterface $session): array
+    public function serialize(SessionInterface $session, $rootKey = 'aff_data'): array
     {
         return [
-            'aff_data' => AffiliateVisitSaver::extractPageVisitData($session)
+            $rootKey => AffiliateVisitSaver::extractPageVisitData($session)
         ];
     }
 }

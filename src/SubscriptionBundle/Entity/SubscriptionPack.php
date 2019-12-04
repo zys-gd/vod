@@ -208,6 +208,10 @@ class SubscriptionPack implements HasUuid
      */
     private $trackAffiliateOnZeroCreditSub = false;
 
+    /**
+     * @var int
+     */
+    private $trialPeriod;
 
     /**
      * SubscriptionPack constructor
@@ -712,6 +716,23 @@ class SubscriptionPack implements HasUuid
     public function setFirstSubscriptionPeriodIsFree($firstSubscriptionPeriodIsFree)
     {
         $this->firstSubscriptionPeriodIsFree = $firstSubscriptionPeriodIsFree;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTrialPeriod(): int
+    {
+        return $this->trialPeriod;
+    }
+
+    /**
+     * @param int $trialPeriod
+     *
+     */
+    public function setTrialPeriod(int $trialPeriod)
+    {
+        $this->trialPeriod = $trialPeriod;
     }
 
     /**

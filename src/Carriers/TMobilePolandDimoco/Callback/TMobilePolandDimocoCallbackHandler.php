@@ -1,11 +1,13 @@
 <?php
 
-namespace SubscriptionBundle\Carriers\TMobilePolandDimoco\Callback;
+namespace Carriers\TMobilePolandDimoco\Callback;
 
 use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Repository\UserRepository;
+use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
+use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitCompleter;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerInterface;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCommonFlow;
@@ -23,13 +25,30 @@ class TMobilePolandDimocoCallbackHandler implements CarrierCallbackHandlerInterf
     private $userRepository;
 
     /**
+     * @var SubscriptionLimitCompleter
+     */
+    private $subscriptionLimitCompleter;
+
+    /**
+     * @var ApiConnector
+     */
+    private $apiConnector;
+
+    /**
      * TMobilePolandDimocoCallbackHandler constructor.
      *
-     * @param UserRepository $userRepository
+     * @param UserRepository             $userRepository
+     * @param SubscriptionLimitCompleter $subscriptionLimitCompleter
+     * @param ApiConnector               $apiConnector
      */
-    public function __construct(UserRepository $userRepository)
-    {
+    public function __construct(
+        UserRepository $userRepository,
+        SubscriptionLimitCompleter $subscriptionLimitCompleter,
+        ApiConnector $apiConnector
+    ) {
         $this->userRepository = $userRepository;
+        $this->subscriptionLimitCompleter = $subscriptionLimitCompleter;
+        $this->apiConnector = $apiConnector;
     }
 
     /**
@@ -54,6 +73,20 @@ class TMobilePolandDimocoCallbackHandler implements CarrierCallbackHandlerInterf
     }
 
     /**
+     * @param Subscription  $subscription
+     * @param User          $User
+     * @param ProcessResult $processResponse
+     */
+    public function afterProcess(Subscription $subscription, User $User, ProcessResult $processResponse)
+    {
+        $this->subscriptionLimitCompleter->finishProcess($processResponse, $subscription);
+
+        $user = $subscription->getUser();
+
+        $this->apiConnector->registerSubscription($user->getIdentifier(), $user->getBillingCarrierId());
+    }
+
+    /**
      * @param ProcessResult $result
      *
      * @return bool
@@ -61,10 +94,5 @@ class TMobilePolandDimocoCallbackHandler implements CarrierCallbackHandlerInterf
     public function isNeedToBeTracked(ProcessResult $result): bool
     {
         return true;
-    }
-
-    public function afterProcess(Subscription $subscription, User $User, ProcessResult $processResponse)
-    {
-        // TODO: Implement afterProcess() method.
     }
 }

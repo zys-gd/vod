@@ -17,4 +17,14 @@ class ProcessResultSuccessChecker
     {
         return !$processResult->isFailed() && !$processResult->getError();
     }
+
+    /**
+     * @param ProcessResult $processResult
+     *
+     * @return bool
+     */
+    public function isSuccessfulForCapTrack(ProcessResult $processResult): bool
+    {
+        return $processResult->isSuccessful() && !$processResult->getError();
+    }
 }

@@ -457,5 +457,46 @@
         "carrier": {
             "uuid": "dh14iu7d-ebd4-12e8-91c4-02bb25d3dh7e"
         }
+    },
+    {
+        "uuid": "27261246-9034-438f-ba37-274dd6d5d4d3",
+        "status": true,
+        "name": "Beeline KZ",
+        "description": "",
+        "isResubAllowed": false,
+        "tierPrice": "50.00",
+        "tierCurrency": "KZT",
+        "displayCurrency": "",
+        "credits": "2",
+        "periodicity": 1,
+        "customRenewPeriod": 0,
+        "gracePeriod": 1,
+        "unlimitedGracePeriod": false,
+        "preferredRenewalStart": "1970-01-01T02:00:00+00:00",
+        "preferredRenewalEnd": "1970-01-01T21:00:00+00:00",
+        "welcomeSMSText": "",
+        "renewalSMSText": "",
+        "unsubscribeSMSText": "",
+        "tierId": 2,
+        "buyStrategyId": 61,
+        "renewStrategyId": "61",
+        "unlimited": false,
+        "firstSubscriptionPeriodIsFreeMultiple": false,
+        "firstSubscriptionPeriodIsFree": true,
+        "allowBonusCredit": false,
+        "allowBonusCreditMultiple": false,
+        "bonusCredit": 0,
+        "providerManagedSubscriptions": false,
+        "created": "2017-12-07T13:55:10+00:00",
+        "updated": "2018-03-29T11:56:06+00:00",
+        "zeroCreditSubAvailable": false,
+        "trackAffiliateOnZeroCreditSub": false,
+        "subscriptions": null,
+        "country": {
+            "uuid": "510415b8-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": {
+            "uuid": "3de06e41-f889-4f95-aac3-ebd31d9d7dg4"
+        }
     }
 ]

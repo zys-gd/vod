@@ -64,6 +64,7 @@ services:
             - '@SubscriptionBundle\CAPTool\Common\CAPToolRedirectUrlResolver'
             - '@App\Domain\Service\OneClickFlow\OneClickFlowCarriersProvider'
             - '@App\Domain\Service\OneClickFlow\OneClickFlowResolver'
+            - '@App\Domain\Service\AffiliateBannedPublisher\AffiliateBannedPublisherChecker'
 
     App\Controller\ErrorController:
         arguments:

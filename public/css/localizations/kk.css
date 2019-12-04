@@ -1,0 +1,102 @@
+.footer-menu_link {
+    padding: 1vw 0.1vw;
+    margin: 0 1vw;
+    font-size: 13px;
+}
+
+.lp-sub-btn button {
+    font-size: 30px;
+    padding: 10px 55px;
+}
+
+* {
+    font-family: 'Arial', sans-serif;
+}
+
+.header-title_content {
+    font-weight: 600;
+    font-family: 'Arial', sans-serif;
+    font-size: 25px;
+}
+
+.play-text {
+    font-weight: 700;
+}
+
+.h1 {
+    font-weight: 700;
+    font-family: 'Arial';
+}
+
+.copyright {
+    font-weight: 600;
+    margin-top: 5px;
+}
+
+.annotation-block {
+    font-weight: 600;
+}
+
+.lure_box_title {
+    font-weight: 600;
+}
+
+.cookies-disclaimer {
+    font-size: 1.8vh !important;
+}
+
+@media screen and (max-width: 390px) and (max-height: 675px) {
+    .cookies-disclaimer {
+        font-size: 1.6vh !important;
+    }
+}
+
+@media screen and (min-width: 570px) and (min-height: 700px) {
+    .cookies-disclaimer {
+        font-size: 2vh !important;
+    }
+}
+
+@media screen and (min-width: 1150px) {
+    .cookies-disclaimer {
+        font-size: 2.5vh !important;
+        height: 15%;
+        top: 85%;
+    }
+}
+
+.lp-sub-btn button {
+    font-size: 30px;
+    padding: 10px 55px;
+}
+
+.btn-lp_big.x-subscribe-button button {
+    padding: 10px 10px;
+}
+
+#wifi_button .button {
+    font-size: 6vw;
+    padding: 5px 20px;
+}
+
+@media screen and (max-width: 400px) {
+    .lp-sub-btn button {
+        font-size: 25px;
+        padding: 10px 50px;
+    }
+
+    .btn-lp_big.x-subscribe-button button {
+        padding: 10px 5px;
+    }
+
+    #wifi_button .button {
+        font-size: 5vw;
+        padding: 5px 15px;
+    }
+
+    .footer-menu_link {
+        padding: 1vw 0.1vw;
+        margin: 0 0.5vw;
+        font-size: 12px;
+    }
+}

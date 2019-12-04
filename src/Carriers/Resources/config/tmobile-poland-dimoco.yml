@@ -24,8 +24,16 @@ services:
         tags:
             - { name: app.one_click_flow_handler }
 
-    Carriers\TMobilePolandDimoco\Controller\PrepaymentController:
+    Carriers\TMobilePolandDimoco\Controller\PaymentController:
         arguments:
             - '@CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator'
         tags:
             - { name: controller.service_arguments }
+
+    Carriers\TMobilePolandDimoco\Callback\TMobilePolandDimocoCallbackHandler:
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'
+            - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitCompleter'
+            - '@cross_subscription.api_connector'
+        tags:
+            - {name: subscription.callback_carrier_handler, type: subscribe}

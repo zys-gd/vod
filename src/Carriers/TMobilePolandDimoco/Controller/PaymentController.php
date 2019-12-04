@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class PrepaymentController
  */
-class PrepaymentController extends AbstractController implements ControllerWithISPDetection
+class PaymentController extends AbstractController implements ControllerWithISPDetection
 {
     /**
      * @var TemplateConfigurator
@@ -29,22 +29,6 @@ class PrepaymentController extends AbstractController implements ControllerWithI
     public function __construct(TemplateConfigurator $templateConfigurator)
     {
         $this->templateConfigurator = $templateConfigurator;
-    }
-
-    /**
-     * @Route("/prepayment", name="prepayment")
-     *
-     * @param ISPData $data
-     *
-     * @return Response
-     *
-     * @throws TemplateNotFoundException
-     */
-    public function prepaymentAction(ISPData $data)
-    {
-        $template = $this->templateConfigurator->getTemplate('prepayment', $data->getCarrierId());
-
-        return $this->render($template);
     }
 
     /**

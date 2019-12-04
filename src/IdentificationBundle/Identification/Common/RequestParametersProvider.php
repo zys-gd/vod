@@ -71,6 +71,11 @@ class RequestParametersProvider
         // The request headers of the end user.
         $currentUserRequestHeaders = '';
         foreach ($headers as $key => $value) {
+
+            if ($key == 'cookie') {
+                continue;
+            }
+
             $currentUserRequestHeaders .= "{$key}: {$value[0]}\r\n";
         }
         $parameters->userHeaders    = $currentUserRequestHeaders;

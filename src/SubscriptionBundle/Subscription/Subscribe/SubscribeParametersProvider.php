@@ -48,12 +48,13 @@ class SubscribeParametersProvider
         RouterInterface $router,
         ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking,
         CampaignExtractor $campaignExtractor
-    ) {
-        $this->parametersProvider = $parametersProvider;
-        $this->requestStack = $requestStack;
-        $this->router = $router;
+    )
+    {
+        $this->parametersProvider             = $parametersProvider;
+        $this->requestStack                   = $requestStack;
+        $this->router                         = $router;
         $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
-        $this->campaignExtractor = $campaignExtractor;
+        $this->campaignExtractor              = $campaignExtractor;
     }
 
     /**
@@ -65,14 +66,18 @@ class SubscribeParametersProvider
     public function provideParameters(Subscription $subscription, array $additionalInfo): ProcessRequestParameters
     {
         $subscriptionPack = $subscription->getSubscriptionPack();
-        $campaign = $this->campaignExtractor->getCampaignForSubscription($subscription);
+        $campaign         = $this->campaignExtractor->getCampaignForSubscription($subscription);
 
         $isZeroCreditAvailable = $this
             ->zeroCreditSubscriptionChecking
             ->isZeroCreditAvailable($subscription->getUser()->getCarrier()->getBillingCarrierId(), $campaign);
 
+        if (!$affiliateParams = $subscription->getAffiliateToken()) {
+            $affiliateParams = [];
+        }
+
         $parameters                         = $this->parametersProvider->prepareRequestParameters($subscription);
-        $parameters->additionalData         = $additionalInfo;
+        $parameters->additionalData         = array_merge($additionalInfo, ['aff_data' => $affiliateParams]);
         $parameters->chargeProduct          = $subscription->getUuid();
         $parameters->chargeTier             = $subscriptionPack->getTierId();
         $parameters->chargeStrategy         = $subscriptionPack->getBuyStrategyId();
