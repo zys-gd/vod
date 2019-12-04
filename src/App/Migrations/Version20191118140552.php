@@ -35,8 +35,6 @@ final class Version20191118140552 extends AbstractMigration implements Container
             ->setIsp('MOBINIL')
             ->setPublished(true)
             ->setTrialInitializer('carrier')
-            ->setTrialPeriod(0)
-            ->setSubscriptionPeriod(1)
             ->setOperatorId(0)
             ->setSubscribeAttempts(5)
             ->setIsCampaignsOnPause(false);
