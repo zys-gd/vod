@@ -55,6 +55,7 @@ final class Version20191118140552 extends AbstractMigration implements Container
         $orangeEGMMSubPack->setCreated(new \DateTime());
         $orangeEGMMSubPack->setUpdated(new \DateTime());
         $orangeEGMMSubPack->setCountry($egypt);
+        $orangeEGMMSubPack->setTrialPeriod(0);
 
         $em->persist($orangeEGTpayCarrier);
         $em->persist($orangeEGMMCarrier);
