@@ -2,5 +2,6 @@ services:
     IdentificationBundle\Carriers\TMobilePolandDimoco\TMobilePolandDimocoIdentificationHandler:
         arguments:
             - '@IdentificationBundle\Repository\UserRepository'
+            - '@router'
         tags:
             - { name: identification.identification_handler }
