@@ -58,7 +58,6 @@ class LoadAffiliatesData extends AbstractFixture implements ContainerAwareInterf
             $affiliate->setEnabled($enabled);
             $affiliate->setPostbackUrl($postBackUrl);
             $affiliate->setSubPriceName($subPriceName);
-            $affiliate->setIsOneClickFlow($isOneClickFlow);
 
             $this->addReference(sprintf('affiliate_%s', $uuid), $affiliate);
 

@@ -53,10 +53,6 @@ App\Domain\Entity\Affiliate:
             length: 255
             column: sub_price_name
             nullable: true
-        isOneClickFlow:
-            type: boolean
-            options:
-                default: false
 
     lifecycleCallbacks: {  }
 

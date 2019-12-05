@@ -26,7 +26,6 @@ services:
             - '@SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventTracker'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking'
             - '@SubscriptionBundle\Subscription\Common\RouteProvider'
-            - '@SubscriptionBundle\Subscription\Subscribe\Common\AffiliateNotifier'
             - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\PendingSubscriptionCreator'
@@ -107,7 +106,6 @@ services:
             - '@ExtrasBundle\Utils\UrlParamAppender'
             - '@router.default'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\CommonResponseCreator'
-            - '@SubscriptionBundle\Subscription\Subscribe\Common\AffiliateNotifier'
             - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\PendingSubscriptionCreator'
@@ -163,17 +161,15 @@ services:
     SubscriptionBundle\Subscription\Subscribe\Service\CreditsCalculator:
         arguments: ['@SubscriptionBundle\Subscription\Renew\Service\RenewDateCalculator']
 
-    SubscriptionBundle\Subscription\Subscribe\Common\AffiliateNotifier:
-      arguments: ['@SubscriptionBundle\Affiliate\Service\AffiliateSender', '@SubscriptionBundle\Affiliate\Service\UserInfoMapper']
-
     SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventChecker: ~
 
     SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker:
       arguments:
         - '@SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventTracker'
-        - '@SubscriptionBundle\Subscription\Subscribe\Common\AffiliateNotifier'
         - '@logger'
         - '@SubscriptionBundle\Subscription\Subscribe\Common\ZeroCreditSubscriptionChecking'
+        - '@SubscriptionBundle\Affiliate\Service\AffiliateSender'
+        - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
 
 
     SubscriptionBundle\Subscription\Subscribe\ProcessStarter\SubscribeProcessStarterProvider:

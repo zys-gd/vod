@@ -99,15 +99,6 @@ class CarrierAdmin extends AbstractAdmin
             $object->setIsCapAlertDispatch(false);
         }
 
-        if ($object->isOneClickFlow() != $originalData['isOneClickFlow']) {
-            $isOneClickFlow = $object->isOneClickFlow();
-
-            $object->getCampaigns()->map(function (Campaign $campaign) use ($isOneClickFlow) {
-                $campaign->setIsOneClickFlow($isOneClickFlow);
-                $campaign->getAffiliate()->setIsOneClickFlow($isOneClickFlow);
-            });
-        }
-
         if ($object->getIsCampaignsOnPause() != $originalData['isCampaignsOnPause']) {
             $isCampaignsOnPause = $object->getIsCampaignsOnPause();
             $object->getCampaigns()->map(function (Campaign $campaign) use ($isCampaignsOnPause) {

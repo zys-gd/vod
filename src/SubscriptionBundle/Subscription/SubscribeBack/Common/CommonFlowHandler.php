@@ -223,9 +223,10 @@ class CommonFlowHandler
             $affiliateToken = json_encode(AffiliateVisitSaver::extractPageVisitData($request->getSession(), true));
             /** @var Subscription $newSubscription */
             /** @var ProcessResult $result */
-            list($newSubscription, $result) = $this->subscriber->subscribe($user, $subscriptionPack, $billingProcessId, $affiliateToken);
+            [$newSubscription, $result] = $this->subscriber->subscribe($user, $subscriptionPack, $billingProcessId, $affiliateToken);
 
-            $this->afterSubscriptionProcessTracker->track($result, $newSubscription, $handler, $campaign);
+            $campaignData = AffiliateVisitSaver::extractPageVisitData($request->getSession(), true);
+            $this->afterSubscriptionProcessTracker->track($result, $newSubscription, $handler, $campaign, false, $campaignData);
 
 
             $this->logger->debug('Create new subscription', ['subscription' => $subscription]);
