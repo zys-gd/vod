@@ -12,7 +12,6 @@ namespace IdentificationBundle\Identification\Controller;
 use IdentificationBundle\Identification\Common\Async\AsyncIdentFinisher;
 use IdentificationBundle\Identification\Common\Async\AsyncIdentStatusProvider;
 use IdentificationBundle\Identification\Service\RouteProvider;
-use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -34,10 +33,6 @@ class AsyncIdentController extends AbstractController
      * @var AsyncIdentStatusProvider
      */
     private $statusProvider;
-    /**
-     * @var IdentificationDataStorage
-     */
-    private $identificationDataStorage;
 
     /**
      * AsyncIdentController constructor.
@@ -45,18 +40,15 @@ class AsyncIdentController extends AbstractController
      * @param RouteProvider             $routeProvider
      * @param AsyncIdentFinisher        $finisher
      * @param AsyncIdentStatusProvider  $statusProvider
-     * @param IdentificationDataStorage $identificationDataStorage
      */
     public function __construct(
         RouteProvider $routeProvider,
         AsyncIdentFinisher $finisher,
-        AsyncIdentStatusProvider $statusProvider,
-        IdentificationDataStorage $identificationDataStorage
+        AsyncIdentStatusProvider $statusProvider
     ) {
         $this->routeProvider  = $routeProvider;
         $this->identFinisher  = $finisher;
         $this->statusProvider = $statusProvider;
-        $this->identificationDataStorage = $identificationDataStorage;
     }
 
     /**
@@ -68,11 +60,6 @@ class AsyncIdentController extends AbstractController
     {
         if (!$successUrl = $request->get('successUrl', '')) {
             throw new BadRequestHttpException('`successUrl` is required');
-        }
-
-        if ($this->identificationDataStorage->readValue(IdentificationDataStorage::SUBSCRIBE_AFTER_IDENT_KEY)) {
-            $this->identificationDataStorage->storeValue(IdentificationDataStorage::SUBSCRIBE_AFTER_IDENT_KEY, false);
-            $successUrl = $this->generateUrl('subscription.subscribe');
         }
 
         return $this->render('@Identification/asyncIdent/wait_for_callback.twig', [

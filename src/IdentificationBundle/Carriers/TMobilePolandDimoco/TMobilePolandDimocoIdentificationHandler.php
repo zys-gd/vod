@@ -9,6 +9,7 @@ use IdentificationBundle\Identification\Handler\HasCommonFlow;
 use IdentificationBundle\Identification\Handler\IdentificationHandlerInterface;
 use IdentificationBundle\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Class TMobilePolandDimocoIdentificationHandler
@@ -21,13 +22,20 @@ class TMobilePolandDimocoIdentificationHandler implements IdentificationHandlerI
     private $userRepository;
 
     /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
      * TMobilePolandDimocoIdentificationHandler constructor
      *
-     * @param UserRepository $userRepository
+     * @param UserRepository  $userRepository
+     * @param RouterInterface $router
      */
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository, RouterInterface $router)
     {
         $this->userRepository = $userRepository;
+        $this->router = $router;
     }
 
     /**
@@ -47,7 +55,13 @@ class TMobilePolandDimocoIdentificationHandler implements IdentificationHandlerI
      */
     public function getAdditionalIdentificationParams(Request $request): array
     {
-        return [];
+        $successUrl = $this->router->generate('subscription.subscribe', [], RouterInterface::ABSOLUTE_URL);
+
+        return [
+            'redirect_url' => $this
+                ->router
+                ->generate('wait_for_callback', ['successUrl' => $successUrl], RouterInterface::ABSOLUTE_URL)
+        ];
     }
 
     /**
