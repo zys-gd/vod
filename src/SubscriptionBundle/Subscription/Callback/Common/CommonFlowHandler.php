@@ -190,13 +190,11 @@ class CommonFlowHandler
             $affiliateToken = $subscription->getAffiliateToken();
 
             if ($type === 'subscribe' && $affiliateToken && !empty($affiliateToken['cid']) && $processResponse->isSuccessful()) {
-                $campaignData = AffiliateVisitSaver::extractPageVisitData($request->getSession(), true);
                 $this->affiliateSender->checkAffiliateEligibilityAndSendEvent(
                     $subscription,
                     $userInfo,
                     $affiliateToken,
-                    $affiliateToken['cid'],
-                    $campaignData
+                    $affiliateToken['cid']
                 );
             }
 

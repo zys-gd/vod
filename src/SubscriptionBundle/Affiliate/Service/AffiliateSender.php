@@ -73,8 +73,7 @@ class AffiliateSender
         Subscription $subscription,
         UserInfo $userInfo,
         array $campaignParams = null,
-        string $campaignToken = null,
-        array $campaignData = []
+        string $campaignToken = null
     ): void
     {
         $this->logger->debug('start AffiliateSender::checkAffiliateEligibilityAndSendEvent()', [
@@ -126,7 +125,7 @@ class AffiliateSender
                     $userInfo,
                     $campaign,
                     $subscription,
-                    $campaignData
+                    $campaignParams
                 );
             } catch (\Exception $ex) {
                 $entity = $this->affiliateLogFactory->create(
@@ -136,7 +135,7 @@ class AffiliateSender
                     $userInfo,
                     $campaign,
                     $subscription,
-                    $campaignData,
+                    $campaignParams,
                     $ex->getMessage()
                 );
             }
