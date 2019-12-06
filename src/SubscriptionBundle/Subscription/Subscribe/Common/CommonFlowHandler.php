@@ -14,6 +14,7 @@ use IdentificationBundle\Entity\User;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
+use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Subscription\Common\RouteProvider;
@@ -22,6 +23,8 @@ use SubscriptionBundle\Subscription\Subscribe\Exception\ExistingSubscriptionExce
 use SubscriptionBundle\Subscription\Subscribe\Handler\HasCommonFlow;
 use SubscriptionBundle\Subscription\Subscribe\Handler\HasCustomResponses;
 use SubscriptionBundle\Subscription\Subscribe\Handler\SubscriptionHandlerProvider;
+use SubscriptionBundle\Subscription\Subscribe\Common\AfterSubscriptionProcessTracker;
+use SubscriptionBundle\Subscription\Subscribe\Common\PendingSubscriptionCreator;
 use SubscriptionBundle\Subscription\Subscribe\Subscriber;
 use SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound;
 use SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider;
@@ -79,7 +82,10 @@ class CommonFlowHandler
      * @var RouteProvider
      */
     private $routeProvider;
-
+    /**
+     * @var AffiliateNotifier
+     */
+    private $affiliateNotifier;
     /**
      * @var CampaignExtractor
      */
@@ -109,6 +115,7 @@ class CommonFlowHandler
      * @param SubscriptionEventTracker        $subscriptionEventTracker
      * @param ZeroCreditSubscriptionChecking  $zeroCreditSubscriptionChecking
      * @param RouteProvider                   $routeProvider
+     * @param AffiliateNotifier               $affiliateNotifier
      * @param CampaignExtractor               $campaignExtractor
      * @param AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker
      * @param PendingSubscriptionCreator      $pendingSubscriptionCreator
@@ -126,6 +133,7 @@ class CommonFlowHandler
         SubscriptionEventTracker $subscriptionEventTracker,
         ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking,
         RouteProvider $routeProvider,
+        AffiliateNotifier $affiliateNotifier,
         CampaignExtractor $campaignExtractor,
         AfterSubscriptionProcessTracker $afterSubscriptionProcessTracker,
         PendingSubscriptionCreator $pendingSubscriptionCreator
@@ -142,6 +150,7 @@ class CommonFlowHandler
         $this->entitySaveHelper                = $entitySaveHelper;
         $this->subscriptionEventTracker        = $subscriptionEventTracker;
         $this->routeProvider                   = $routeProvider;
+        $this->affiliateNotifier               = $affiliateNotifier;
         $this->zeroCreditSubscriptionChecking  = $zeroCreditSubscriptionChecking;
         $this->campaignExtractor               = $campaignExtractor;
         $this->afterSubscriptionProcessTracker = $afterSubscriptionProcessTracker;
@@ -237,8 +246,8 @@ class CommonFlowHandler
         $additionalData = $subscriber->getAdditionalSubscribeParams($request, $User);
         $campaign       = $this->campaignExtractor->getCampaignFromSession($request->getSession());
         $result         = $this->subscriber->subscribe($subscription, $additionalData);
-        $campaignData   = AffiliateVisitSaver::extractPageVisitData($request->getSession(), true);
-        $this->afterSubscriptionProcessTracker->track($result, $subscription, $subscriber, $campaign, false, $campaignData);
+
+        $this->afterSubscriptionProcessTracker->track($result, $subscription, $subscriber, $campaign);
 
         $subscriber->afterProcess($subscription, $result);
         $this->entitySaveHelper->saveAll();
@@ -288,8 +297,7 @@ class CommonFlowHandler
             $additionalData = $subscriber->getAdditionalSubscribeParams($request, $user);
             $result         = $this->subscriber->resubscribe($subscription, $subscriptionPack, $additionalData);
 
-        }
-        else {
+        } else {
             $this->logger->debug('Resubscription is not allowed.', [
                 'packId'      => $subpackId,
                 'carrierName' => $subpackName
@@ -297,13 +305,12 @@ class CommonFlowHandler
 
             if ($request->get('is_ajax_request', null)) {
                 return $this->getSimpleJsonResponse('', 200, [], ['resub_not_allowed' => true]);
-            }
-            else {
+            } else {
                 return new RedirectResponse($this->routeProvider->getResubNotAllowedRoute());
             }
         }
-        $campaignData = AffiliateVisitSaver::extractPageVisitData($request->getSession(), true);
-        $this->afterSubscriptionProcessTracker->track($result, $subscription, $subscriber, null, true, $campaignData);
+
+        $this->afterSubscriptionProcessTracker->track($result, $subscription, $subscriber, null, true);
 
         $subscriber->afterProcess($subscription, $result);
         $this->entitySaveHelper->saveAll();
@@ -314,7 +321,6 @@ class CommonFlowHandler
     /**
      * @param Request $request
      * @param User    $User
-     *
      * @return Subscription
      * @throws ActiveSubscriptionPackNotFound
      */

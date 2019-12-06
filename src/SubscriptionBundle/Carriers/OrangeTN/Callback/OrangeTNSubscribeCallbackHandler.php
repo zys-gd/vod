@@ -10,7 +10,7 @@ use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerInterface;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCommonFlow;
-use SubscriptionBundle\Subscription\Callback\Impl\HasCustomTrackingRules;
+use SubscriptionBundle\Subscription\Callback\Impl\HasCustomConversionTrackingRules;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
  * Date: 01.11.18
  * Time: 11:18
  */
-class OrangeTNSubscribeCallbackHandler implements CarrierCallbackHandlerInterface, HasCustomTrackingRules, HasCommonFlow
+class OrangeTNSubscribeCallbackHandler implements CarrierCallbackHandlerInterface, HasCustomConversionTrackingRules, HasCommonFlow
 {
     private $userRepository;
 
@@ -43,7 +43,7 @@ class OrangeTNSubscribeCallbackHandler implements CarrierCallbackHandlerInterfac
         // TODO: Implement onRenewSendSuccess() method.
     }
 
-    public function isNeedToBeTracked(ProcessResult $result): bool
+    public function isConversionNeedToBeTracked(ProcessResult $result): bool
     {
         return true;
     }

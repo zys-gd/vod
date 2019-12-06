@@ -5,8 +5,6 @@ namespace SubscriptionBundle\Subscription\Subscribe\Common;
 
 
 use Psr\Log\LoggerInterface;
-use SubscriptionBundle\Affiliate\Service\AffiliateSender;
-use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
@@ -20,7 +18,10 @@ class AfterSubscriptionProcessTracker
      * @var SubscriptionEventTracker
      */
     private $subscriptionEventTracker;
-
+    /**
+     * @var AffiliateNotifier
+     */
+    private $affiliateNotifier;
     /**
      * @var LoggerInterface
      */
@@ -29,37 +30,26 @@ class AfterSubscriptionProcessTracker
      * @var ZeroCreditSubscriptionChecking
      */
     private $zeroCreditSubscriptionChecking;
-    /**
-     * @var AffiliateSender
-     */
-    private $affiliateSender;
-    /**
-     * @var UserInfoMapper
-     */
-    private $infoMapper;
 
     /**
      * AfterSubscriptionProcessTracker constructor.
      *
      * @param SubscriptionEventTracker       $subscriptionEventTracker
+     * @param AffiliateNotifier              $affiliateNotifier
      * @param LoggerInterface                $logger
      * @param ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
-     * @param AffiliateSender                $affiliateService
-     * @param UserInfoMapper                 $infoMapper
      */
     public function __construct(
         SubscriptionEventTracker $subscriptionEventTracker,
+        AffiliateNotifier $affiliateNotifier,
         LoggerInterface $logger,
-        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking,
-        AffiliateSender $affiliateService,
-        UserInfoMapper $infoMapper
+        ZeroCreditSubscriptionChecking $zeroCreditSubscriptionChecking
     )
     {
         $this->subscriptionEventTracker       = $subscriptionEventTracker;
+        $this->affiliateNotifier              = $affiliateNotifier;
         $this->logger                         = $logger;
         $this->zeroCreditSubscriptionChecking = $zeroCreditSubscriptionChecking;
-        $this->affiliateSender                = $affiliateService;
-        $this->infoMapper                     = $infoMapper;
     }
 
     /**
@@ -68,15 +58,13 @@ class AfterSubscriptionProcessTracker
      * @param object                 $subscriber
      * @param CampaignInterface|null $campaign
      * @param bool                   $isResubscribe
-     * @param array                  $campaignData
      */
     public function track(
         ProcessResult $processResult,
         Subscription $subscription,
         object $subscriber,
         CampaignInterface $campaign = null,
-        bool $isResubscribe = false,
-        array $campaignData = []
+        bool $isResubscribe = false
     ): void
     {
         $this->logger->debug('Start tracking after subscription', [
@@ -87,23 +75,15 @@ class AfterSubscriptionProcessTracker
             $isAffTracked = $this->resolveAffTrackedCondition($processResult, $subscriber, $campaign, $subscription->getSubscriptionPack());
 
             if ($isAffTracked) {
-                $this->affiliateSender->checkAffiliateEligibilityAndSendEvent(
-                    $subscription,
-                    $this->infoMapper->mapFromUser($subscription->getUser()),
-                    $subscription->getAffiliateToken(),
-                    $campaign->getCampaignToken(),
-                    $campaignData
-                );
+                $this->affiliateNotifier->notifyAffiliateAboutSubscription($subscription, $campaign);
             }
-        }
-        else {
+        } else {
             $isAffTracked = false;
         }
 
         if ($subscriber instanceof HasCustomPiwikTrackingRules) {
             $isPiwikTracked = $subscriber->isPiwikTrackedForSub($processResult);
-        }
-        else {
+        } else {
             $isPiwikTracked = ($processResult->isFailedOrSuccessful());
         }
 
@@ -120,8 +100,7 @@ class AfterSubscriptionProcessTracker
             // I'll prefer siding with the evil we know over the evil we don't.
             if ($isResubscribe) {
                 $this->subscriptionEventTracker->trackResubscribe($subscription, $processResult);
-            }
-            else {
+            } else {
                 $this->subscriptionEventTracker->trackSubscribe($subscription, $processResult);
             }
         }
@@ -132,15 +111,9 @@ class AfterSubscriptionProcessTracker
      * @param object            $subscriber
      * @param CampaignInterface $campaign
      * @param SubscriptionPack  $subscriptionPack
-     *
      * @return bool
      */
-    private function resolveAffTrackedCondition(
-        ProcessResult $processResult,
-        object $subscriber,
-        CampaignInterface $campaign,
-        SubscriptionPack $subscriptionPack
-    ): bool
+    private function resolveAffTrackedCondition(ProcessResult $processResult, object $subscriber, CampaignInterface $campaign, SubscriptionPack $subscriptionPack): bool
     {
         if ($subscriber instanceof HasCustomAffiliateTrackingRules) {
             return $subscriber->isAffiliateTrackedForSub($processResult, $campaign);

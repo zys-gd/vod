@@ -17,10 +17,10 @@ use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerInterface;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCommonFlow;
-use SubscriptionBundle\Subscription\Callback\Impl\HasCustomTrackingRules;
+use SubscriptionBundle\Subscription\Callback\Impl\HasCustomConversionTrackingRules;
 use Symfony\Component\HttpFoundation\Request;
 
-class EtisalatEGCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCustomTrackingRules, HasCommonFlow
+class EtisalatEGCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCustomConversionTrackingRules, HasCommonFlow
 {
     /**
      * @var UserRepository
@@ -46,7 +46,7 @@ class EtisalatEGCallbackSubscribe implements CarrierCallbackHandlerInterface, Ha
         // TODO: Implement onRenewSendSuccess() method.
     }
 
-    public function isNeedToBeTracked(ProcessResult $result): bool
+    public function isConversionNeedToBeTracked(ProcessResult $result): bool
     {
         return true;
     }

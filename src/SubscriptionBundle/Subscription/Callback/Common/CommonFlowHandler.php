@@ -5,8 +5,8 @@ namespace SubscriptionBundle\Subscription\Callback\Common;
 use IdentificationBundle\Entity\User;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateSender;
-use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
+use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Piwik\DataMapper\ConversionEventMapper;
@@ -14,9 +14,13 @@ use SubscriptionBundle\Piwik\EventPublisher;
 use SubscriptionBundle\Repository\SubscriptionRepository;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Subscription\Callback\Common\Handler\CallbackHandlerInterface;
+use SubscriptionBundle\Subscription\Callback\Common\Handler\RenewCallbackHandler;
+use SubscriptionBundle\Subscription\Callback\Common\Handler\SubscriptionCallbackHandler;
+use SubscriptionBundle\Subscription\Callback\Common\Handler\UnsubscriptionCallbackHandler;
+use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerInterface;
 use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerProvider;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCommonFlow;
-use SubscriptionBundle\Subscription\Callback\Impl\HasCustomTrackingRules;
+use SubscriptionBundle\Subscription\Callback\Impl\HasCustomConversionTrackingRules;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -174,32 +178,58 @@ class CommonFlowHandler
         $callbackTypeHandler->afterProcess($subscription, $processResponse);
         $this->entitySaveHelper->persistAndSave($subscription);
 
-        if ($carrierHandler instanceof HasCustomTrackingRules) {
-            $isNeedToBeTracked = $carrierHandler->isNeedToBeTracked($processResponse);
-        } else {
-            // TODO We have no such check on `subscribe method`.
-            // TODO its better to move all these sends to callback
-            // TODO refactor candidate
-            // TODO also im lazy. :P
+        $this->doTracking(
+            $type,
+            $processResponse,
+            $subscription,
+            $carrierHandler,
+            $callbackTypeHandler
+        );
 
-            $isNeedToBeTracked = ($type !== 'subscribe');
+        return $subscription;
+    }
+
+    /**
+     * @param string                          $type
+     * @param ProcessResult                   $processResponse
+     * @param Subscription                    $subscription
+     * @param CarrierCallbackHandlerInterface $carrierHandler
+     * @param CallbackHandlerInterface        $callbackTypeHandler
+     */
+    private function doTracking(
+        string $type,
+        ProcessResult $processResponse,
+        Subscription $subscription,
+        CarrierCallbackHandlerInterface $carrierHandler,
+        CallbackHandlerInterface $callbackTypeHandler
+    ): void
+    {
+        $isAffiliateNeedToBeTracked = ($type === 'subscribe' && $processResponse->isSuccessful());
+        $userInfo                   = $this->infoMapper->mapFromUser($subscription->getUser());
+        $campaignData               = $subscription->getAffiliateToken();
+
+        if ($isAffiliateNeedToBeTracked && $campaignData) {
+            $this->affiliateSender->checkAffiliateEligibilityAndSendEvent(
+                $subscription,
+                $userInfo,
+                $campaignData,
+                $campaignData['cid'] ?? null
+            );
+        } else {
+            $this->logger->debug('Affiliate is not need to be tracked', [
+                'isAffiliateNeedToBeTracked' => $isAffiliateNeedToBeTracked,
+                'campaignData'               => $campaignData
+            ]);
         }
 
-        if ($isNeedToBeTracked) {
-            $userInfo = $this->infoMapper->mapFromUser($subscription->getUser());
-            $affiliateToken = $subscription->getAffiliateToken();
 
-            if ($type === 'subscribe' && $affiliateToken && !empty($affiliateToken['cid']) && $processResponse->isSuccessful()) {
-                $campaignData = AffiliateVisitSaver::extractPageVisitData($request->getSession(), true);
-                $this->affiliateSender->checkAffiliateEligibilityAndSendEvent(
-                    $subscription,
-                    $userInfo,
-                    $affiliateToken,
-                    $affiliateToken['cid'],
-                    $campaignData
-                );
-            }
+        if ($carrierHandler instanceof HasCustomConversionTrackingRules) {
+            $isConversionNeedToBeTracked = $carrierHandler->isConversionNeedToBeTracked($processResponse);
+        } else {
+            $isConversionNeedToBeTracked = ($type !== 'subscribe');
+        }
 
+        if ($isConversionNeedToBeTracked) {
             $event = $this->conversionEventMapper->map(
                 $callbackTypeHandler->getPiwikEventName(),
                 $processResponse,
@@ -210,12 +240,10 @@ class CommonFlowHandler
             $this->conversionEventPublisher->publish($event);
         } else {
             $carrier = $subscription->getUser()->getCarrier();
-            $this->logger->debug('Event should be already tracked. Ignoring', [
+            $this->logger->debug('Conversion Event should be already tracked. Ignoring', [
                 'event'   => $callbackTypeHandler->getPiwikEventName(),
                 'carrier' => $carrier->getBillingCarrierId()
             ]);
         }
-
-        return $subscription;
     }
 }
