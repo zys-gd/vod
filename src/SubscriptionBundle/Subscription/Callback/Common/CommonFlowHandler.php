@@ -189,14 +189,14 @@ class CommonFlowHandler
 
         if ($isNeedToBeTracked) {
             $userInfo = $this->infoMapper->mapFromUser($subscription->getUser());
-            $affiliateToken = $subscription->getAffiliateToken();
+            $campaignData = $subscription->getAffiliateToken();
 
-            if ($type === 'subscribe' && $affiliateToken && !empty($affiliateToken['cid']) && $processResponse->isSuccessful()) {
+            if ($type === 'subscribe' && $campaignData && !empty($campaignData['cid']) && $processResponse->isSuccessful()) {
                 $this->affiliateSender->checkAffiliateEligibilityAndSendEvent(
                     $subscription,
                     $userInfo,
-                    $affiliateToken,
-                    $affiliateToken['cid']
+                    $campaignData,
+                    $campaignData['cid']
                 );
             }
 
