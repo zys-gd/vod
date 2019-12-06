@@ -125,7 +125,7 @@ class AffiliateSender
                     $userInfo,
                     $campaign,
                     $subscription,
-                    $campaignParams
+                    ['cid' => $campaignToken]
                 );
             } catch (\Exception $ex) {
                 $entity = $this->affiliateLogFactory->create(
@@ -135,7 +135,7 @@ class AffiliateSender
                     $userInfo,
                     $campaign,
                     $subscription,
-                    $campaignParams,
+                    ['cid' => $campaignToken],
                     $ex->getMessage()
                 );
             }
