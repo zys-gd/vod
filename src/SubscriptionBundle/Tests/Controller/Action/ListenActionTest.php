@@ -10,7 +10,7 @@ use SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository;
 use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerInterface;
 use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerProvider;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCommonFlow;
-use SubscriptionBundle\Subscription\Callback\Impl\HasCustomTrackingRules;
+use SubscriptionBundle\Subscription\Callback\Impl\HasCustomConversionTrackingRules;
 use SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use SubscriptionBundle\Tests\DataFixtures\LoadSubscriptionTestData;
@@ -371,13 +371,13 @@ class ListenActionTest extends \ExtrasBundle\Testing\Core\AbstractFunctionalTest
         $this->eventPublisher                 = Mockery::spy(\SubscriptionBundle\Piwik\EventPublisher::class);
 
         $carrierHandler = Mockery::spy(
-            HasCustomTrackingRules::class,
+            HasCustomConversionTrackingRules::class,
             CarrierCallbackHandlerInterface::class,
             HasCommonFlow::class
         );
 
         $carrierHandler->allows([
-            'isNeedToBeTracked' => true,
+            'isConversionNeedToBeTracked' => true,
         ]);
 
         $this->carrierCallbackHandlerProvider->allows([

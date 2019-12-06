@@ -23,7 +23,7 @@ use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Subscription\Callback\Common\CommonFlowHandler;
 use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerInterface;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCustomFlow;
-use SubscriptionBundle\Subscription\Callback\Impl\HasCustomTrackingRules;
+use SubscriptionBundle\Subscription\Callback\Impl\HasCustomConversionTrackingRules;
 use SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker;
 use SubscriptionBundle\Subscription\Common\SubscriptionFactory;
 use SubscriptionBundle\Subscription\Notification\Notifier;
@@ -242,8 +242,8 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
                 // track event
                 // TODO: use afterSubscriptionProcessTracker?
                 $isNeedToBeTracked = true;
-                if ($this instanceof HasCustomTrackingRules) {
-                    $isNeedToBeTracked = $this->isNeedToBeTracked($processResponse);
+                if ($this instanceof HasCustomConversionTrackingRules) {
+                    $isNeedToBeTracked = $this->isConversionNeedToBeTracked($processResponse);
                 }
                 if ($isNeedToBeTracked) {
                     $this->subscriptionEventTracker->trackSubscribe($subscription, $processResponse);
