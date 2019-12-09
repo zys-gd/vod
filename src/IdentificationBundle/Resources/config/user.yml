@@ -23,6 +23,7 @@ services:
       - '@SubscriptionBundle\Repository\SubscriptionRepository'
       - '@doctrine.orm.entity_manager'
       - '@cross_subscription.api_connector'
+      - '@SubscriptionBundle\BillingFramework\Process\DeleteProcess'
     calls:
       - [setContainer, ['@service_container']]
     tags:
