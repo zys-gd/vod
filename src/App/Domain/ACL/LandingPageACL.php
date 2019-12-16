@@ -5,6 +5,7 @@ namespace App\Domain\ACL;
 use App\Domain\ACL\Accessors\VisitAccessorByCampaign;
 use App\Domain\ACL\Accessors\VisitConstraintByAffiliate;
 use App\Domain\ACL\Exception\CampaignAccessException;
+use App\Domain\ACL\Exception\CampaignMissingParametersException;
 use App\Domain\ACL\Exception\CampaignPausedException;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
@@ -18,6 +19,7 @@ use SubscriptionBundle\CAPTool\Subscription\Exception\VisitCapReached;
 use SubscriptionBundle\CAPTool\Subscription\Limiter\SubscriptionCapChecker;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
@@ -68,14 +70,14 @@ class LandingPageACL
     /**
      * LandingPageAccessResolver constructor
      *
-     * @param VisitConstraintByAffiliate      $visitConstraintByAffiliate
-     * @param VisitAccessorByCampaign         $visitAccessorByCampaign
-     * @param CarrierRepository               $carrierRepository
-     * @param CampaignRepository              $campaignRepository
-     * @param SessionInterface                $session
-     * @param SubscriptionCapChecker          $subscriptionCapChecker
-     * @param LoggerInterface                 $logger
-     * @param OneClickFlowScheduler           $oneClickFlowScheduler
+     * @param VisitConstraintByAffiliate $visitConstraintByAffiliate
+     * @param VisitAccessorByCampaign    $visitAccessorByCampaign
+     * @param CarrierRepository          $carrierRepository
+     * @param CampaignRepository         $campaignRepository
+     * @param SessionInterface           $session
+     * @param SubscriptionCapChecker     $subscriptionCapChecker
+     * @param LoggerInterface            $logger
+     * @param OneClickFlowScheduler      $oneClickFlowScheduler
      */
     public function __construct(
         VisitConstraintByAffiliate $visitConstraintByAffiliate,
@@ -88,14 +90,14 @@ class LandingPageACL
         OneClickFlowScheduler $oneClickFlowScheduler
     )
     {
-        $this->visitConstraintByAffiliate      = $visitConstraintByAffiliate;
-        $this->visitAccessorByCampaign         = $visitAccessorByCampaign;
-        $this->carrierCapChecker               = $subscriptionCapChecker;
-        $this->logger                          = $logger;
-        $this->carrierRepository               = $carrierRepository;
-        $this->campaignRepository              = $campaignRepository;
-        $this->session                         = $session;
-        $this->oneClickFlowScheduler           = $oneClickFlowScheduler;
+        $this->visitConstraintByAffiliate = $visitConstraintByAffiliate;
+        $this->visitAccessorByCampaign    = $visitAccessorByCampaign;
+        $this->carrierCapChecker          = $subscriptionCapChecker;
+        $this->logger                     = $logger;
+        $this->carrierRepository          = $carrierRepository;
+        $this->campaignRepository         = $campaignRepository;
+        $this->session                    = $session;
+        $this->oneClickFlowScheduler      = $oneClickFlowScheduler;
     }
 
     /**
@@ -198,6 +200,19 @@ class LandingPageACL
 
             if ($constraint->getCapType() == ConstraintByAffiliate::CAP_TYPE_VISIT) {
                 $this->ensureVisitCapIsNotReached($carrier, $constraint);
+            }
+        }
+    }
+
+    public function ensureCampaignHaveAllParametersPassed(Request $request, Campaign $campaign): void
+    {
+        $affiliate           = $campaign->getAffiliate();
+        $affiliateParameters = array_values($affiliate->getParamsList());
+        $requestParameters   = array_keys($request->query->all());
+
+        foreach ($affiliateParameters as $affiliateParameter) {
+            if (!in_array($affiliateParameter, $requestParameters)) {
+                throw new CampaignMissingParametersException(sprintf('Missing parameter `%s`', $affiliateParameter));
             }
         }
     }
