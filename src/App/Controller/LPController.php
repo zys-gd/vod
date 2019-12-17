@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Domain\ACL\Exception\AccessException;
+use App\Domain\ACL\Exception\CampaignMissingParametersException;
 use App\Domain\ACL\LandingPageACL;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
@@ -204,6 +205,14 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         /** @var Campaign $campaign */
         if ($campaign) {
+
+            try {
+                $this->landingPageAccessResolver->ensureCampaignHaveAllParametersPassed($request, $campaign);
+            } catch (CampaignMissingParametersException $exception) {
+                $this->logger->debug('Parameters missing', ['params' => $request->query->all()]);
+                return RedirectResponse::create($this->defaultRedirectUrl);
+            }
+
             // Useless method atm.
             AffiliateVisitSaver::saveCampaignId($cid, $session);
 
@@ -419,10 +428,7 @@ class LPController extends AbstractController implements ControllerWithISPDetect
     private function resolveCampaignFromRequest($cid): ?Campaign
     {
         /** @var Campaign $campaign */
-        $campaign = $this->campaignRepository->findOneBy([
-            'campaignToken' => $cid,
-            'isPause'       => false
-        ]);
+        $campaign = $this->campaignRepository->findOneByCampaignToken($cid);
 
         return $campaign ?? null;
     }
