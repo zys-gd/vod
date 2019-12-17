@@ -72,20 +72,18 @@ class AffiliateSender
     public function checkAffiliateEligibilityAndSendEvent(
         Subscription $subscription,
         UserInfo $userInfo,
-        array $campaignParams = null,
+        array $campaignData = [],
         string $campaignToken = null
     ): void
     {
         $this->logger->debug('start AffiliateSender::checkAffiliateEligibilityAndSendEvent()', [
-            'userInfo'       => $userInfo,
-            'campaignParams' => $campaignParams,
-            '$campaignToken' => $campaignToken
+            'userInfo'      => $userInfo,
+            'campaignData'  => $campaignData,
+            'campaignToken' => $campaignToken
         ]);
+
         if (!$campaignToken) {
             return;
-        }
-        if (is_null($campaignParams)) {
-            $campaignParams = [];
         }
 
         /** @var CampaignInterface $campaign */
@@ -99,20 +97,18 @@ class AffiliateSender
             return;
         }
         $affiliate = $campaign->getAffiliate();
-        if (!$this->areParametersEqual($affiliate, $campaignParams)) {
-
-        }
-
 
         try {
-            $data = ['query' => $this->getPostBackParameters($affiliate, $campaign, $campaignParams, $subscription->getSubscriptionPack())];
+            $data = [
+                'query' => $this->getPostBackParameters($affiliate, $campaign, $campaignData, $subscription->getSubscriptionPack())
+            ];
 
             $fullUrl = $affiliate->getPostbackUrl() . '?' . http_build_query($data['query']);
 
             $this->logger->debug('check content', [
-                'userInfo'       => $data,
-                'campaignParams' => $fullUrl,
-                '$campaignToken' => $campaignToken
+                'userInfo'      => $data,
+                'fullUrl'       => $fullUrl,
+                'campaignToken' => $campaignToken
             ]);
 
             try {
@@ -125,7 +121,7 @@ class AffiliateSender
                     $userInfo,
                     $campaign,
                     $subscription,
-                    ['cid' => $campaignToken]
+                    $campaignData
                 );
             } catch (\Exception $ex) {
                 $entity = $this->affiliateLogFactory->create(
@@ -135,7 +131,7 @@ class AffiliateSender
                     $userInfo,
                     $campaign,
                     $subscription,
-                    ['cid' => $campaignToken],
+                    $campaignData,
                     $ex->getMessage()
                 );
             }
@@ -174,7 +170,7 @@ class AffiliateSender
     /**
      * @param AffiliateInterface $affiliate
      * @param CampaignInterface  $campaign
-     * @param array              $campaignParams
+     * @param array              $campaignData
      * @param SubscriptionPack   $subscriptionPack
      *
      * @return array
@@ -183,19 +179,18 @@ class AffiliateSender
     private function getPostBackParameters(
         AffiliateInterface $affiliate,
         CampaignInterface $campaign,
-        array $campaignParams,
+        array $campaignData,
         SubscriptionPack $subscriptionPack
     ): array
     {
         $query = [];
 
         if ($affiliate->isUniqueFlow()) {
-            $query = $this->jumpIntoUniqueFlow($affiliate, $campaignParams);
-        }
-        else {
+            $query = $this->jumpIntoUniqueFlow($affiliate, $campaignData);
+        } else {
             $paramsList    = $affiliate->getParamsList();
             $constantsList = $affiliate->getConstantsList();
-            $query         = $this->jumpIntoStandartFlow($paramsList, $constantsList, $campaignParams, $query);
+            $query         = $this->jumpIntoStandartFlow($paramsList, $constantsList, $campaignData, $query);
             $this->logger->debug('check content in getPostBackParameters()', [
                 'query' => $query
             ]);

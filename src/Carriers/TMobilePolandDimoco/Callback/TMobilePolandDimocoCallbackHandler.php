@@ -11,13 +11,13 @@ use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitCompleter;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerInterface;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCommonFlow;
-use SubscriptionBundle\Subscription\Callback\Impl\HasCustomTrackingRules;
+use SubscriptionBundle\Subscription\Callback\Impl\HasCustomConversionTrackingRules;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class TMobilePolandDimocoCallbackHandler
  */
-class TMobilePolandDimocoCallbackHandler implements CarrierCallbackHandlerInterface, HasCommonFlow, HasCustomTrackingRules
+class TMobilePolandDimocoCallbackHandler implements CarrierCallbackHandlerInterface, HasCommonFlow, HasCustomConversionTrackingRules
 {
     /**
      * @var UserRepository
@@ -91,7 +91,7 @@ class TMobilePolandDimocoCallbackHandler implements CarrierCallbackHandlerInterf
      *
      * @return bool
      */
-    public function isNeedToBeTracked(ProcessResult $result): bool
+    public function isConversionNeedToBeTracked(ProcessResult $result): bool
     {
         return true;
     }

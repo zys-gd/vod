@@ -68,7 +68,7 @@ class UnsubscriberTest extends TestCase
         $user->setCarrier($carrier);
 
         $this->unsubscribeEventChecker->allows([
-            'isNeedToBeTracked' => true
+            'isConversionNeedToBeTracked' => true
         ]);
 
         $this->unsubscriber->unsubscribe($subscription, $subscriptionPack);
@@ -95,7 +95,7 @@ class UnsubscriberTest extends TestCase
         $user->setCarrier($carrier);
 
         $this->unsubscribeEventChecker->allows([
-            'isNeedToBeTracked' => false
+            'isConversionNeedToBeTracked' => false
         ]);
 
         $this->unsubscriber->unsubscribe($subscription, $subscriptionPack);

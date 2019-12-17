@@ -109,11 +109,6 @@ class Affiliate implements HasUuid, AffiliateInterface
      */
     private $constraints;
 
-    /**
-     * @var bool
-     */
-    private $isOneClickFlow = false;
-
     /** @var ArrayCollection */
     private $bannedPublishers;
 
@@ -648,22 +643,6 @@ class Affiliate implements HasUuid, AffiliateInterface
         });
 
         return $filteredByType->isEmpty() ? null : $filteredByType->first();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isOneClickFlow(): bool
-    {
-        return $this->isOneClickFlow;
-    }
-
-    /**
-     * @param bool $isOneClickFlow
-     */
-    public function setIsOneClickFlow(bool $isOneClickFlow): void
-    {
-        $this->isOneClickFlow = $isOneClickFlow;
     }
 
     /**

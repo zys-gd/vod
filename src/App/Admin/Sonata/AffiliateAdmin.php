@@ -88,16 +88,6 @@ class AffiliateAdmin extends AbstractAdmin
     public function preUpdate($obj)
     {
         $this->generateTestLink($obj);
-
-        $originalData = $this->entityManager->getUnitOfWork()->getOriginalEntityData($obj);
-        if(count($originalData) > 0) {
-            if ($obj->isOneClickFlow() != $originalData['isOneClickFlow']) {
-                $isOneClickFlow = $obj->isOneClickFlow();
-                $obj->getCampaigns()->map(function (Campaign $campaign) use ($isOneClickFlow) {
-                    $campaign->setIsOneClickFlow($isOneClickFlow);
-                });
-            }
-        }
     }
 
     /**
@@ -114,7 +104,6 @@ class AffiliateAdmin extends AbstractAdmin
             ->add('commercialContact')
             ->add('technicalContact')
             ->add('skypeId')
-            ->add('isOneClickFlow')
             ->add('enabled');
     }
 
@@ -127,7 +116,6 @@ class AffiliateAdmin extends AbstractAdmin
             ->add('name')
             ->add('uuid')
             ->add('url')
-            ->add('isOneClickFlow')
             ->add('enabled', null, [
                 'label' => 'Is Enabled?'
             ])
@@ -153,9 +141,6 @@ class AffiliateAdmin extends AbstractAdmin
             ->add('commercialContact')
             ->add('technicalContact')
             ->add('skypeId')
-            ->add('isOneClickFlow', null, [
-                'help'  => 'If consent page exist, then show it. Otherwise will try to subscribe'
-            ])
             ->add('enabled');
     }
 
@@ -212,24 +197,6 @@ class AffiliateAdmin extends AbstractAdmin
                 'constraints' => [
                     new NotBlank()
                 ]
-            ])
-            ->add('isOneClickFlow', ChoiceFieldMaskType::class, [
-                'help'    => 'If consent page exist, then show it. Otherwise will try to subscribe',
-                'choices' => [
-                    'No'  => 0,
-                    'Yes' => 1,
-                ],
-                'map'     => [
-                    1 => ['carriers', 'carriers2'],
-                ],
-            ])
-            ->add('carriers', EntityType::class, [
-                'class'       => Carrier::class,
-                'expanded'    => false,
-                'required'    => false,
-                'multiple'    => true,
-                'placeholder' => 'Please select carriers',
-                'help'        => 'If empty, then for all carriers. Otherwise landing will be turned off only for chosen carriers.'
             ])
             ->end()
             ->end();

@@ -11,7 +11,7 @@ namespace SubscriptionBundle\Subscription\Callback\Impl;
 
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 
-interface HasCustomTrackingRules
+interface HasCustomConversionTrackingRules
 {
-    public function isNeedToBeTracked(ProcessResult $result): bool;
+    public function isConversionNeedToBeTracked(ProcessResult $result): bool;
 }

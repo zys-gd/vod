@@ -37,17 +37,13 @@ class OneClickFlowResolver
     public function isLandingDisabled(Carrier $carrier, Campaign $campaign = null): bool
     {
         try {
-            if (!$carrier->isOneClickFlow()) {
-                return false;
-            }
-
-            if (!$campaign) {
+            if ($carrier->isOneClickFlow()) {
                 return true;
             }
 
-            /** @var Affiliate $affiliate */
-            $affiliate          = $campaign->getAffiliate();
-            $isLPOffByAffiliate = $affiliate->isOneClickFlow() && ($affiliate->hasCarrier($carrier) || $affiliate->getCarriers()->isEmpty());
+            if (!$campaign) {
+                return false;
+            }
 
             $schedule                            = $this->oneClickFlowScheduler->getScheduleAsArray($campaign->getSchedule());
             $isCampaignScheduleExistAndTriggered = $schedule
@@ -56,7 +52,7 @@ class OneClickFlowResolver
 
             $isLPOffByCampaign = $campaign->isOneClickFlow() && $isCampaignScheduleExistAndTriggered;
 
-            return $isLPOffByAffiliate && $isLPOffByCampaign;
+            return $isLPOffByCampaign;
 
         } catch (\Throwable $e) {
             return false;

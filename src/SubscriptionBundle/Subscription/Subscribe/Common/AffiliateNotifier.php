@@ -47,7 +47,6 @@ class AffiliateNotifier
             $this->infoMapper->mapFromUser($subscription->getUser()),
             $subscription->getAffiliateToken(),
             $campaign->getCampaignToken()
-
         );
     }
 
