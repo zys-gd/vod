@@ -128,7 +128,7 @@ class CarrierOptionsExtension extends AbstractExtension
             $handler = $this->oneClickFlowCarriersProvider->get($billingCarrierId, $oneClickFlowRequestedParameter);
 
             if ($handler) {
-                if ($carrier->isOneClickFlow() && $campaign) {
+                if (!$carrier->isOneClickFlow() && $campaign) {
                     $schedule = $this->oneClickFlowScheduler->getScheduleAsArray($campaign->getSchedule());
                     $isCampaignScheduleExistAndTriggered = $schedule
                         ? $this->oneClickFlowScheduler->isNowInCampaignSchedule($schedule)
