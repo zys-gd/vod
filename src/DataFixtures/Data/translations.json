@@ -1160,17 +1160,6 @@
         }
     },
     {
-        "uuid": "46957854-477b-4593-af80-4e6b4860cdcf",
-        "key": "terms.block_3.text.1",
-        "translation": "This subscription service allows you to watch unlimited sports videos every %period% your phone from 100% sport catalogue for %price% %currency% (limited offer: 1st %period% FREE)(+ WAP connection charges). As long as you are subscribed to 100% sport, you will be able to watch unlimited content every %period%.",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": {
-            "uuid": "5142f9ec-ebd4-11e8-95c4-02bb250f0f22"
-        }
-    },
-    {
         "uuid": "705c9fa1-cc1f-41c0-b55f-ef7e06b521b2",
         "key": "subscription.status.not_subscribe",
         "translation": "Welcome to 100% Sport!\n<small>Get unlimited videos each %period% for only %price%\/%currency% (limited offer: 1st %period% FREE)<\/small>",
@@ -9849,17 +9838,6 @@
             "uuid": "5179f466-ebd4-11e8-95c4-02bb250f0f22"
         },
         "carrier": null
-    },
-    {
-        "uuid": "bf39b571-ac27-4816-b74a-23d68006fc29",
-        "key": "terms.block_3.text.1",
-        "translation": "This subscription service allows you to watch unlimited sports videos every %period% your phone from 100% sport catalog for %price% %currency% (limited offer: 1st %period% FREE)(+ WAP connection charges). As long as you are subscribed to 100% sport, you will be able to watch unlimited content every %period%.",
-        "language": {
-            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
-        },
-        "carrier": {
-            "uuid": "dk83h8d7-ebd4-12e8-91c4-02bb25d3k8dk"
-        }
     },
     {
         "uuid": "c060cd61-3274-4c42-bcf6-e3578685fe4e",

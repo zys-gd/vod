@@ -15,7 +15,7 @@ final class Version20191218122847 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('CREATE UNIQUE INDEX key_language ON translations (`key`, language_id)');
+        $this->addSql('CREATE UNIQUE INDEX unique_key ON translations (`key`, language_id, carrier_id)');
     }
 
     public function down(Schema $schema) : void
@@ -23,6 +23,6 @@ final class Version20191218122847 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('DROP INDEX key_language ON translations');
+        $this->addSql('DROP INDEX unique_key ON translations');
     }
 }
