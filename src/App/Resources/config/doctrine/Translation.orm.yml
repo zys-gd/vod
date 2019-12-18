@@ -14,8 +14,14 @@ App\Domain\Entity\Translation:
         translation:
             type: text
             nullable: false
+
+    uniqueConstraints:
+        key_language:
+            columns: key,language_id
+
     manyToOne:
         language:
+            column: "language_id"
             targetEntity: CommonDataBundle\Entity\Language
             joinColumn:
                 referencedColumnName: uuid
