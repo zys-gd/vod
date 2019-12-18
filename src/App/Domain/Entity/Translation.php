@@ -8,7 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @UniqueEntity(
- *     fields={"key", "language"},
+ *     fields={"key", "language","carrier"},
  *     message = "Translation with same key already exists"
  * )
  */

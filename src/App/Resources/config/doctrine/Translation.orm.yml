@@ -16,8 +16,8 @@ App\Domain\Entity\Translation:
             nullable: false
 
     uniqueConstraints:
-        key_language:
-            columns: key,language_id
+        unique_key:
+            columns: key,language_id,carrier_id
 
     manyToOne:
         language:
@@ -26,6 +26,7 @@ App\Domain\Entity\Translation:
             joinColumn:
                 referencedColumnName: uuid
         carrier:
+            column: "carrier_id"
             targetEntity: App\Domain\Entity\Carrier
             joinColumn:
                 referencedColumnName: uuid
