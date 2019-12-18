@@ -45,7 +45,7 @@ class AffiliateNotifier
         $this->sender->checkAffiliateEligibilityAndSendEvent(
             $subscription,
             $this->infoMapper->mapFromUser($subscription->getUser()),
-            $subscription->getAffiliateToken(),
+            $subscription->getAffiliateToken() ?? [],
             $campaign->getCampaignToken()
         );
     }
