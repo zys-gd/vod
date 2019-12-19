@@ -1,0 +1,18 @@
+SubscriptionBundle\Entity\SubscriptionReminder:
+    type: entity
+    table: subscription_reminders
+    repositoryClass: SubscriptionBundle\Repository\SubscriptionReminderRepository
+    id:
+        uuid:
+            type: guid
+    fields:
+        lastReminderSent:
+            type: date
+            nullable: true
+
+    oneToOne:
+        subscription:
+            targetEntity: SubscriptionBundle\Entity\Subscription
+            joinColumn:
+                name: subscription_id
+                referencedColumnName: uuid
