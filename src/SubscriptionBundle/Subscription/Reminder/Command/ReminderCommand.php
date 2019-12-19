@@ -3,7 +3,7 @@
 namespace SubscriptionBundle\Subscription\Reminder\Command;
 
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
-use SubscriptionBundle\Repository\SubscriptionRepository;
+use SubscriptionBundle\Subscription\Reminder\ReminderHandlerProvider;
 use SubscriptionBundle\Subscription\Renew\Cron\CronTaskStatus;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -15,6 +15,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ReminderCommand extends Command
 {
+    const CRON_TASK_NAME_MAP = [
+
+    ];
+
     /**
      * @var CarrierRepositoryInterface
      */
@@ -26,19 +30,18 @@ class ReminderCommand extends Command
     private $cronTaskStatus;
 
     /**
-     * @var SubscriptionRepository
+     * @var ReminderHandlerProvider
      */
-    private $subscriptionRepository;
+    private $handlerProvider;
 
     public function __construct(
         CarrierRepositoryInterface $carrierRepository,
         CronTaskStatus $cronTaskStatus,
-        SubscriptionRepository $subscriptionRepository
-    )
-    {
+        ReminderHandlerProvider $handlerProvider
+    ) {
         $this->carrierRepository = $carrierRepository;
         $this->cronTaskStatus = $cronTaskStatus;
-        $this->subscriptionRepository = $subscriptionRepository;
+        $this->handlerProvider = $handlerProvider;
 
         parent::__construct();
     }
@@ -62,6 +65,29 @@ class ReminderCommand extends Command
 
         if (!$carrierId) {
             throw new \InvalidArgumentException('Wrong carrier Id');
+        }
+
+        $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
+        $taskName = self::CRON_TASK_NAME_MAP[$carrierId] ?? null;
+
+        if (!$taskName) {
+            throw new \InvalidArgumentException('No cron tasks for selected carrier');
+        }
+
+        $this->cronTaskStatus->initializeCronTaskByName($taskName);
+
+        try {
+            $this->cronTaskStatus->start();
+        } catch (\Exception $e) {
+            $output->writeln($e->getMessage());
+
+            return;
+        }
+
+        $handler = $this->handlerProvider->getHandler($carrierId);
+
+        if (!$handler) {
+            throw new \InvalidArgumentException('No handler for selected carrier');
         }
     }
 }

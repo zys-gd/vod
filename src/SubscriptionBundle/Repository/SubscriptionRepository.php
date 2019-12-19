@@ -167,10 +167,9 @@ class SubscriptionRepository extends EntityRepository
                 'carrier'      => $carrier,
                 'daysInterval' => $daysInterval
             ])
+            ->setMaxResults(100)
             ->getQuery();
 
         return $query->getResult();
     }
 }
-
-
