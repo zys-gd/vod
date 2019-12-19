@@ -1,0 +1,8 @@
+services:
+    Carriers\OrangeEGMM\Template\OrangeEGMMTemplateHandler:
+        tags:
+            - { name: store_commons.template_handler }
+
+    Carriers\OrangeEGMM\OneClick\OrangeEGMMOneClickFlow:
+        tags:
+            - { name: app.one_click_flow_handler }

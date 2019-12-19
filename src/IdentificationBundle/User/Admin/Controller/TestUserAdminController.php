@@ -8,6 +8,7 @@ use IdentificationBundle\Repository\TestUserRepository;
 use IdentificationBundle\Repository\UserRepository;
 use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
 use Sonata\AdminBundle\Controller\CRUDController;
+use SubscriptionBundle\BillingFramework\Process\DeleteProcess;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Repository\SubscriptionRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -40,6 +41,10 @@ class TestUserAdminController extends CRUDController
      * @var ApiConnector
      */
     private $apiConnector;
+    /**
+     * @var DeleteProcess
+     */
+    private $deleteProcess;
 
     /**
      * TestUserAdminController constructor
@@ -49,13 +54,15 @@ class TestUserAdminController extends CRUDController
      * @param SubscriptionRepository $subscriptionRepository
      * @param EntityManagerInterface $entityManager
      * @param ApiConnector           $apiConnector
+     * @param DeleteProcess          $deleteProcess
      */
     public function __construct(
         UserRepository $userRepository,
         TestUserRepository $testUserRepository,
         SubscriptionRepository $subscriptionRepository,
         EntityManagerInterface $entityManager,
-        ApiConnector $apiConnector
+        ApiConnector $apiConnector,
+        DeleteProcess $deleteProcess
     )
     {
         $this->userRepository         = $userRepository;
@@ -63,6 +70,7 @@ class TestUserAdminController extends CRUDController
         $this->subscriptionRepository = $subscriptionRepository;
         $this->entityManager          = $entityManager;
         $this->apiConnector           = $apiConnector;
+        $this->deleteProcess          = $deleteProcess;
     }
 
     /**
@@ -167,4 +175,33 @@ class TestUserAdminController extends CRUDController
         return $response;
 
     }
+
+    /**
+     * @param string $id
+     *
+     * @return RedirectResponse
+     *
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Exception
+     */
+    public function dropFromBillingAction(string $id)
+    {
+        /** @var TestUser $testUser */
+        $testUser       = $this->testUserRepository->find($id);
+        $userIdentifier = $testUser->getUserIdentifier();
+
+        $response = new RedirectResponse($this->generateUrl('admin_identification_testuser_list'));
+
+        $this->deleteProcess->doDelete($userIdentifier);
+
+        $testUser->setLastTimeUsedAt(new \DateTime());
+
+        $this->entityManager->persist($testUser);
+        $this->entityManager->flush();
+
+        $this->addFlash('success', sprintf('Processes for user with identifier "%s" dropped successfully', $userIdentifier));
+
+        return $response;
+    }
+
 }

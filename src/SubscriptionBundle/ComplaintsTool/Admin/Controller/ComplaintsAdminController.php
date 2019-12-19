@@ -261,14 +261,16 @@ class ComplaintsAdminController extends CRUDController
             /** @var User $user */
             $user = $userRepository->findOneBy(['identifier' => $msisdn]);
 
-            if (!empty($user)) {
+            if (
+                !empty($user) &&
+                $subscription = $this->subscriptionRepository->findCurrentSubscriptionByOwner($user)
+            ) {
 
                 $usersInfo[$msisdn]         = $this->getEmptyData();
                 $usersInfo[$msisdn]['user'] = $user;
                 $usersInfo[$msisdn]['ip']   = $user->getIp();
 
                 /** @var Subscription $subscription */
-                $subscription = $this->subscriptionRepository->findCurrentSubscriptionByOwner($user);
 
                 if ($subscription->getCurrentStage() === Subscription::ACTION_SUBSCRIBE) {
                     $usersInfo[$msisdn]['subscription_date'] = $subscription->getUpdated();

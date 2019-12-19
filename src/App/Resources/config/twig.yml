@@ -53,6 +53,7 @@ services:
             - '@App\Domain\Service\OneClickFlow\OneClickFlowCarriersProvider'
             - '@App\Domain\Service\Carrier\CarrierProvider'
             - '@App\Domain\Service\OneClickFlow\OneClickFlowScheduler'
+            - '@logger'
 
     App\Twig\PassthroughExtension:
         arguments:

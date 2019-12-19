@@ -48,8 +48,6 @@ class TranslationsAdmin extends AbstractAdmin
         SubscriptionPackRepository $subscriptionPackRepository
     ) {
         $this->subscriptionPackRepository = $subscriptionPackRepository;
-        $this->setSubscriptionPackOptions();
-
         parent::__construct($code, $class, $baseControllerName);
     }
 
@@ -63,18 +61,6 @@ class TranslationsAdmin extends AbstractAdmin
         return new Translation(UuidGenerator::generate());
     }
 
-    protected function setSubscriptionPackOptions()
-    {
-        if(count($this->subscriptionPackOptions) == 1) {
-            $subscriptionPacks = $this->subscriptionPackRepository->findAll();
-
-            /** @var SubscriptionPack $subscriptionPack */
-            foreach ($subscriptionPacks as $subscriptionPack) {
-                $name = "[{$subscriptionPack->getUuid()}] {$subscriptionPack->getName()}";
-                $this->subscriptionPackOptions[$name] = $subscriptionPack->getUuid();
-            }
-        }
-    }
 
     /**
      * @param DatagridMapper $datagridMapper
@@ -87,14 +73,7 @@ class TranslationsAdmin extends AbstractAdmin
             ->add('carrier')
             ->add('key')
             ->add('language')
-//            ->add('subscription_pack_id',
-//                'doctrine_orm_string',
-//                [],
-//                'choice',
-//                [
-//                    'choices' => $this->subscriptionPackOptions
-//                ]
-//            )
+            ->add('translation')
         ;
     }
 

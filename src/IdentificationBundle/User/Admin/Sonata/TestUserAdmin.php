@@ -89,6 +89,9 @@ class TestUserAdmin extends AbstractAdmin
                     'clean_from_cross_subscription' => [
                         'template' => '@IdentificationAdmin/TestUser/clean_from_cross_subscription.html.twig'
                     ],
+                    'drop_from_billing' => [
+                        'template' => '@IdentificationAdmin/TestUser/drop_from_billing_button.html.twig'
+                    ],
                     'delete'                        => []
                 ]
             ]);
@@ -117,6 +120,7 @@ class TestUserAdmin extends AbstractAdmin
         $collection->add('drop_user_data', $this->getRouterIdParameter() . '/dropUserData');
         $collection->add('set_status_for_renew', $this->getRouterIdParameter() . '/setStatusForRenew');
         $collection->add('clean_from_cross_subscription', $this->getRouterIdParameter() . '/cleanFromCrossSubscription');
+        $collection->add('drop_from_billing', $this->getRouterIdParameter() . '/dropFromBilling');
 
         parent::configureRoutes($collection);
     }

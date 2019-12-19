@@ -35,3 +35,8 @@ services:
       - { name: sonata.admin, manager_type: orm, group: black_list_management, label: Black list }
     calls:
       - [ setTemplate, [edit, '@@SubscriptionAdmin/BlackList/edit.html.twig']]
+
+  SubscriptionBundle\Blacklist\Command\DeleteOutdatedBlacklistEntriesCommand:
+    arguments: ['@SubscriptionBundle\Repository\BlackListRepository', '@doctrine.orm.entity_manager']
+    tags:
+      - { name: console.command }

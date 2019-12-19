@@ -60,3 +60,5 @@ services:
             - '@SubscriptionBundle\BillingFramework\Process\API\RequestParametersExtractor'
             - '@SubscriptionBundle\BillingFramework\Process\API\LinkCreator'
 
+    SubscriptionBundle\BillingFramework\Process\DeleteProcess:
+        arguments: ['@SubscriptionBundle\BillingFramework\Process\API\Client', '@logger', '@SubscriptionBundle\BillingFramework\Process\API\LinkCreator']
