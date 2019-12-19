@@ -4,7 +4,14 @@ namespace App\Domain\Entity;
 
 use CommonDataBundle\Entity\Interfaces\HasUuid;
 use CommonDataBundle\Entity\Interfaces\LanguageInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+/**
+ * @UniqueEntity(
+ *     fields={"key", "language","carrier"},
+ *     message = "Translation with same key already exists"
+ * )
+ */
 class Translation implements HasUuid
 {
     /**

@@ -5,7 +5,7 @@
     {% if isClickable %}
         {% if isCarrierPassthrough() %}
             {% set href = url('identify_by_passthrough') %}
-        {% elseif isIdentified() %}
+        {% elseif isIdentified() and not isConsentFlow() %}
             {% set href = url('subscription.subscribe') %}
         {% elseif isConsentFlow() %}
             {% set href = url('subscription.consent_page_subscribe') %}

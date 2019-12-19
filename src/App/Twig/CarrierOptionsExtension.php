@@ -12,6 +12,7 @@ use App\Domain\Service\OneClickFlow\OneClickFlowParameters;
 use App\Domain\Service\OneClickFlow\OneClickFlowScheduler;
 use IdentificationBundle\Identification\Service\PassthroughChecker;
 use IdentificationBundle\Identification\Service\Session\IdentificationFlowDataExtractor;
+use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\CampaignExtractor;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig\Extension\AbstractExtension;
@@ -47,6 +48,10 @@ class CarrierOptionsExtension extends AbstractExtension
      * @var CarrierProvider
      */
     private $carrierProvider;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * CarrierOptionsExtension constructor.
@@ -58,6 +63,7 @@ class CarrierOptionsExtension extends AbstractExtension
      * @param OneClickFlowCarriersProvider $oneClickFlowCarriersProvider
      * @param CarrierProvider              $carrierProvider
      * @param OneClickFlowScheduler        $oneClickFlowScheduler
+     * @param LoggerInterface              $logger
      */
     public function __construct(
         SessionInterface $session,
@@ -66,7 +72,8 @@ class CarrierOptionsExtension extends AbstractExtension
         CampaignExtractor $campaignExtractor,
         OneClickFlowCarriersProvider $oneClickFlowCarriersProvider,
         CarrierProvider $carrierProvider,
-        OneClickFlowScheduler $oneClickFlowScheduler
+        OneClickFlowScheduler $oneClickFlowScheduler,
+        LoggerInterface $logger
     )
     {
         $this->session                      = $session;
@@ -76,6 +83,7 @@ class CarrierOptionsExtension extends AbstractExtension
         $this->oneClickFlowCarriersProvider = $oneClickFlowCarriersProvider;
         $this->carrierProvider              = $carrierProvider;
         $this->oneClickFlowScheduler        = $oneClickFlowScheduler;
+        $this->logger                       = $logger;
     }
 
     /**
@@ -112,7 +120,6 @@ class CarrierOptionsExtension extends AbstractExtension
      *
      * @return bool
      * @throws \Psr\Cache\InvalidArgumentException
-     *
      */
     private function oneClickFlowTwigResolver(int $oneClickFlowRequestedParameter)
     {
@@ -121,18 +128,19 @@ class CarrierOptionsExtension extends AbstractExtension
 
         if ($billingCarrierId) {
 
-            $carrier  = $this->carrierProvider->fetchCarrierIfNeeded($billingCarrierId);
+            $carrier = $this->carrierProvider->fetchCarrierIfNeeded($billingCarrierId);
             /** @var Campaign|null $campaign */
             $campaign = $this->campaignExtractor->getCampaignFromSession($this->session);
 
             $handler = $this->oneClickFlowCarriersProvider->get($billingCarrierId, $oneClickFlowRequestedParameter);
 
             if ($handler) {
-                if ($carrier->isOneClickFlow() && $campaign) {
-                    $schedule = $this->oneClickFlowScheduler->getScheduleAsArray($campaign->getSchedule());
+                if (!$carrier->isOneClickFlow() && $campaign) {
+                    $schedule                            = $this->oneClickFlowScheduler->getScheduleAsArray($campaign->getSchedule());
                     $isCampaignScheduleExistAndTriggered = $schedule
                         ? $this->oneClickFlowScheduler->isNowInCampaignSchedule($schedule)
                         : true;
+                    $this->logger->debug('Check one click for campaign', [$campaign->isOneClickFlow(), $isCampaignScheduleExistAndTriggered]);
                     return $campaign->isOneClickFlow() && $isCampaignScheduleExistAndTriggered;
                 }
                 return $carrier->isOneClickFlow();

@@ -14,12 +14,19 @@ App\Domain\Entity\Translation:
         translation:
             type: text
             nullable: false
+
+    uniqueConstraints:
+        unique_key:
+            columns: key,language_id,carrier_id
+
     manyToOne:
         language:
+            column: "language_id"
             targetEntity: CommonDataBundle\Entity\Language
             joinColumn:
                 referencedColumnName: uuid
         carrier:
+            column: "carrier_id"
             targetEntity: App\Domain\Entity\Carrier
             joinColumn:
                 referencedColumnName: uuid
