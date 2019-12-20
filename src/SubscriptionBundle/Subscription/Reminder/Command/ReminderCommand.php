@@ -4,6 +4,7 @@ namespace SubscriptionBundle\Subscription\Reminder\Command;
 
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Subscription\Reminder\ReminderHandlerProvider;
+use SubscriptionBundle\Subscription\Reminder\Service\CommonFlowHandler;
 use SubscriptionBundle\Subscription\Renew\Cron\CronTaskStatus;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -34,14 +35,29 @@ class ReminderCommand extends Command
      */
     private $handlerProvider;
 
+    /**
+     * @var CommonFlowHandler
+     */
+    private $commonFlowHandler;
+
+    /**
+     * ReminderCommand constructor
+     *
+     * @param CarrierRepositoryInterface $carrierRepository
+     * @param CronTaskStatus             $cronTaskStatus
+     * @param ReminderHandlerProvider    $handlerProvider
+     * @param CommonFlowHandler          $commonFlowHandler
+     */
     public function __construct(
         CarrierRepositoryInterface $carrierRepository,
         CronTaskStatus $cronTaskStatus,
-        ReminderHandlerProvider $handlerProvider
+        ReminderHandlerProvider $handlerProvider,
+        CommonFlowHandler $commonFlowHandler
     ) {
         $this->carrierRepository = $carrierRepository;
         $this->cronTaskStatus = $cronTaskStatus;
         $this->handlerProvider = $handlerProvider;
+        $this->commonFlowHandler = $commonFlowHandler;
 
         parent::__construct();
     }
@@ -89,5 +105,7 @@ class ReminderCommand extends Command
         if (!$handler) {
             throw new \InvalidArgumentException('No handler for selected carrier');
         }
+
+        $result = $this->commonFlowHandler->doRemind($carrier, $handler->getRemind());
     }
 }
