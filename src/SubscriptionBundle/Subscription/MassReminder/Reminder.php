@@ -1,17 +1,22 @@
 <?php
 
-namespace SubscriptionBundle\Subscription\Reminder\Service;
+namespace SubscriptionBundle\Subscription\MassReminder;
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use ExtrasBundle\Utils\UuidGenerator;
+use SubscriptionBundle\Entity\Subscription;
+use SubscriptionBundle\Entity\SubscriptionReminder;
 use SubscriptionBundle\Repository\SubscriptionReminderRepository;
 use SubscriptionBundle\Repository\SubscriptionRepository;
 use SubscriptionBundle\Subscription\Reminder\DTO\RemindSettings;
 use SubscriptionBundle\Subscription\Reminder\DTO\SendRemindersResult;
+use SubscriptionBundle\Subscription\Reminder\Service\RemindSender;
 
 /**
  * Class Reminder
  */
-class CommonFlowHandler
+class Reminder
 {
     /**
      * @var SubscriptionRepository
@@ -29,20 +34,28 @@ class CommonFlowHandler
     private $subscriptionReminderRepository;
 
     /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
      * CommonFlowHandler constructor.
      *
      * @param SubscriptionRepository         $subscriptionRepository
      * @param SubscriptionReminderRepository $subscriptionReminderRepository
      * @param RemindSender                   $remindSender
+     * @param EntityManagerInterface         $entityManager
      */
     public function __construct(
         SubscriptionRepository $subscriptionRepository,
         SubscriptionReminderRepository $subscriptionReminderRepository,
-        RemindSender $remindSender
+        RemindSender $remindSender,
+        EntityManagerInterface $entityManager
     ) {
         $this->subscriptionRepository = $subscriptionRepository;
         $this->remindSender = $remindSender;
         $this->subscriptionReminderRepository = $subscriptionReminderRepository;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -57,7 +70,7 @@ class CommonFlowHandler
     {
         $subscriptions = $this
             ->subscriptionRepository
-            ->findReminderSubscriptions($carrier, $remindSettings->getDaysInterval());
+            ->findSubscriptionsForRemind($carrier, $remindSettings->getDaysInterval());
 
         $result = new SendRemindersResult();
 
@@ -65,8 +78,14 @@ class CommonFlowHandler
             return $result;
         }
 
+        /** @var Subscription $subscription */
         foreach ($subscriptions as $subscription) {
-            $isSuccess = $this->remindSender->send($subscription, $remindSettings->getBody());
+            $isSuccess = $this->remindSender->send(
+                $subscription->getUser(),
+                $subscription->getSubscriptionPack(),
+                $subscription,
+                $remindSettings->getBody()
+            );
 
             if ($isSuccess) {
                 $result->addSuccessSubscription($subscription);
@@ -75,7 +94,16 @@ class CommonFlowHandler
             }
         }
 
-        $this->subscriptionReminderRepository->updateSentDateBySubscriptions($result->getSucceededSubscriptions());
+        $this->subscriptionReminderRepository->deleteBySubscriptions($result->getSucceededSubscriptions());
+
+        /** @var Subscription $subscription */
+        foreach ($result->getSucceededSubscriptions() as $subscription) {
+            $reminder = (new SubscriptionReminder(UuidGenerator::generate()))->setSubscription($subscription);
+
+            $this->entityManager->persist($reminder);
+        }
+
+        $this->entityManager->flush();
 
         return $result;
     }

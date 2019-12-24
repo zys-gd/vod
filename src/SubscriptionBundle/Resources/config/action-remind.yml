@@ -1,0 +1,9 @@
+services:
+    SubscriptionBundle\Subscription\Reminder\Service\RemindSender:
+        arguments:
+            - '@SubscriptionBundle\BillingFramework\Notification\API\RequestSender'
+            - '@SubscriptionBundle\Subscription\Notification\Common\MessageCompiler'
+            - '@SubscriptionBundle\Subscription\Notification\Common\DefaultSMSVariablesProvider'
+
+    SubscriptionBundle\Subscription\Reminder\ReminderHandlerProvider: ~
+

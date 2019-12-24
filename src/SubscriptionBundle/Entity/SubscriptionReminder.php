@@ -26,10 +26,13 @@ class SubscriptionReminder
      * SubscriptionReminder constructor
      *
      * @param string $uuid
+     *
+     * @throws \Exception
      */
     public function __construct(string $uuid)
     {
         $this->uuid = $uuid;
+        $this->lastReminderSent = new \DateTime();
     }
 
     /**

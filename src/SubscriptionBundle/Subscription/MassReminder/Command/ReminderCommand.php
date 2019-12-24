@@ -1,10 +1,11 @@
 <?php
 
-namespace SubscriptionBundle\Subscription\Reminder\Command;
+namespace SubscriptionBundle\Subscription\MassReminder\Command;
 
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
+use SubscriptionBundle\Subscription\MassReminder\Reminder;
 use SubscriptionBundle\Subscription\Reminder\ReminderHandlerProvider;
-use SubscriptionBundle\Subscription\Reminder\Service\CommonFlowHandler;
 use SubscriptionBundle\Subscription\Renew\Cron\CronTaskStatus;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -17,7 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ReminderCommand extends Command
 {
     const CRON_TASK_NAME_MAP = [
-
+        ID::BEELINE_KAZAKHSTAN_DOT => 'beelineKZDotMassRemindCronTask'
     ];
 
     /**
@@ -36,9 +37,9 @@ class ReminderCommand extends Command
     private $handlerProvider;
 
     /**
-     * @var CommonFlowHandler
+     * @var Reminder
      */
-    private $commonFlowHandler;
+    private $reminder;
 
     /**
      * ReminderCommand constructor
@@ -46,18 +47,18 @@ class ReminderCommand extends Command
      * @param CarrierRepositoryInterface $carrierRepository
      * @param CronTaskStatus             $cronTaskStatus
      * @param ReminderHandlerProvider    $handlerProvider
-     * @param CommonFlowHandler          $commonFlowHandler
+     * @param Reminder                   $reminder
      */
     public function __construct(
         CarrierRepositoryInterface $carrierRepository,
         CronTaskStatus $cronTaskStatus,
         ReminderHandlerProvider $handlerProvider,
-        CommonFlowHandler $commonFlowHandler
+        Reminder $reminder
     ) {
         $this->carrierRepository = $carrierRepository;
-        $this->cronTaskStatus = $cronTaskStatus;
-        $this->handlerProvider = $handlerProvider;
-        $this->commonFlowHandler = $commonFlowHandler;
+        $this->cronTaskStatus    = $cronTaskStatus;
+        $this->handlerProvider   = $handlerProvider;
+        $this->reminder          = $reminder;
 
         parent::__construct();
     }
@@ -74,6 +75,8 @@ class ReminderCommand extends Command
      * @param OutputInterface $output
      *
      * @return int|void|null
+     *
+     * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -84,6 +87,11 @@ class ReminderCommand extends Command
         }
 
         $carrier = $this->carrierRepository->findOneByBillingId($carrierId);
+
+        if (!$carrier) {
+            throw new \InvalidArgumentException('Wrong carrier Id');
+        }
+
         $taskName = self::CRON_TASK_NAME_MAP[$carrierId] ?? null;
 
         if (!$taskName) {
@@ -106,6 +114,13 @@ class ReminderCommand extends Command
             throw new \InvalidArgumentException('No handler for selected carrier');
         }
 
-        $result = $this->commonFlowHandler->doRemind($carrier, $handler->getRemind());
+        $result = $this->reminder->doRemind($carrier, $handler->getRemind());
+
+        $output->write(implode("\n", [
+            sprintf('Processed: %s', $result->getProcessed()),
+            sprintf('Succeeded: %s', count($result->getSucceededSubscriptions())),
+            sprintf('Failed: %s', count($result->getFailedSubscriptions())),
+            sprintf('Error: %s', $result->getError() ?? 'No errors'),
+        ]));
     }
 }

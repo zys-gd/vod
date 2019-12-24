@@ -39,6 +39,8 @@ class SubscriptionExtension extends ConfigurableExtension implements PrependExte
         $loader->load('action-unsubscribe.yml');
         $loader->load('action-renew.yml');
         $loader->load('action-mass-renew.yml');
+        $loader->load('action-remind.yml');
+        $loader->load('action-mass-remind.yml');
         $loader->load('action-subscribe-back.yml');
         $loader->load('billing-framework-integration.yml');
         $loader->load('listeners.yml');

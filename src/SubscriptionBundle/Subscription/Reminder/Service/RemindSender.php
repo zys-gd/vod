@@ -2,8 +2,10 @@
 
 namespace SubscriptionBundle\Subscription\Reminder\Service;
 
+use IdentificationBundle\Entity\User;
 use SubscriptionBundle\BillingFramework\Notification\API\RequestSender;
 use SubscriptionBundle\Entity\Subscription;
+use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Subscription\Notification\Common\DefaultSMSVariablesProvider;
 use SubscriptionBundle\Subscription\Notification\Common\MessageCompiler;
 
@@ -44,8 +46,29 @@ class RemindSender
         $this->variablesProvider = $variablesProvider;
     }
 
-    public function send(Subscription $subscription, string $body): bool
+    /**
+     * @param User             $user
+     * @param SubscriptionPack $subscriptionPack
+     * @param Subscription     $subscription
+     * @param string           $body
+     *
+     * @return bool
+     */
+    public function send(User $user, SubscriptionPack $subscriptionPack, Subscription $subscription, string $body): bool
     {
+        $variables = $this->variablesProvider->getDefaultSMSVariables($subscriptionPack, $subscription, $user);
 
+        $notification = $this->messageCompiler->compileNotification(
+            'reminder',
+            $user,
+            $body,
+            null,
+            $variables
+        );
+
+        $result = $this->requestSender->sendNotification($notification, $user->getCarrierId());
+        var_dump($result);
+
+        return true;
     }
 }

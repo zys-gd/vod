@@ -14,19 +14,17 @@ class SubscriptionReminderRepository extends EntityRepository
      *
      * @throws \Exception
      */
-    public function updateSentDateBySubscriptions(array $subscriptions)
+    public function deleteBySubscriptions(array $subscriptions)
     {
         $queryBuilder = $this->createQueryBuilder('sr');
 
         $query = $queryBuilder
-            ->update()
-            ->set('sr.lastReminderSent', ':currentDate')
+            ->delete()
             ->where(
                 $queryBuilder
                     ->expr()
                     ->in('sr.subscription', $subscriptions)
             )
-            ->setParameter('currentDate', new \DateTime())
             ->getQuery();
 
         $query->execute();

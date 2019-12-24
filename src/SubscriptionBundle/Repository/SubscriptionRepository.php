@@ -151,20 +151,20 @@ class SubscriptionRepository extends EntityRepository
      *
      * @return mixed
      */
-    public function findReminderSubscriptions(CarrierInterface $carrier, int $daysInterval)
+    public function findSubscriptionsForRemind(CarrierInterface $carrier, int $daysInterval)
     {
         $queryBuilder = $this->createQueryBuilder('s');
 
         $query = $queryBuilder
-            ->leftJoin(SubscriptionReminder::class, 'sr')
+            ->leftJoin(SubscriptionReminder::class, 'sr', Join::WITH, 'sr.subscription = s.uuid')
+            ->innerJoin('s.user', 'u', Join::WITH, 'u.carrier = :carrier')
             ->andWhere('s.status = :subStatus')
             ->andWhere('s.currentStage = :subAction')
-            ->andWhere('carrier = :carrier')
-            ->andWhere('DATEDIFF(CURRENT_DATE(), sr.lastReminderSent) > :daysInterval')
+            ->andWhere('DATE_DIFF(CURRENT_DATE(), sr.lastReminderSent) > :daysInterval')
             ->setParameters([
-                'subStatus'    => Subscription::IS_ACTIVE,
-                'subAction'    => Subscription::ACTION_SUBSCRIBE,
-                'carrier'      => $carrier,
+                'subStatus'      => Subscription::IS_ACTIVE,
+                'subAction'      => Subscription::ACTION_SUBSCRIBE,
+                'carrier'        => $carrier,
                 'daysInterval' => $daysInterval
             ])
             ->setMaxResults(100)

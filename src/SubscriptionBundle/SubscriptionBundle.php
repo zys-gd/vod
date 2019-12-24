@@ -5,6 +5,7 @@ namespace SubscriptionBundle;
 use SubscriptionBundle\DependencyInjection\Compiler\CallbackHandlerPass;
 use SubscriptionBundle\DependencyInjection\Compiler\CampaignConfirmationPass;
 use SubscriptionBundle\DependencyInjection\Compiler\NotificationHandlerPass;
+use SubscriptionBundle\DependencyInjection\Compiler\ReminderHandlerPass;
 use SubscriptionBundle\DependencyInjection\Compiler\RenewHandlerPass;
 use SubscriptionBundle\DependencyInjection\Compiler\SMSTextHandlerPass;
 use SubscriptionBundle\DependencyInjection\Compiler\SubscribeBackHandlerPass;
@@ -28,6 +29,7 @@ class SubscriptionBundle extends Bundle
         $container->addCompilerPass(new RenewHandlerPass());
         $container->addCompilerPass(new CampaignConfirmationPass());
         $container->addCompilerPass(new SubscriptionVoterPass());
+        $container->addCompilerPass(new ReminderHandlerPass());
 
         $container->addCompilerPass(new SMSTextHandlerPass());
         $container->addCompilerPass(new SubscribeBackHandlerPass());

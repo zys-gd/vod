@@ -14,3 +14,7 @@ services:
     Carriers\BeelineKZ\Template\BeelineKZTemplateHandler:
         tags:
             - { name: store_commons.template_handler }
+
+    Carriers\BeelineKZ\SMS\BeelineKZReminderHandler:
+        tags:
+            - { name: subscription.remind_handler }

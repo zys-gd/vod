@@ -7,7 +7,7 @@ SubscriptionBundle\Entity\SubscriptionReminder:
             type: guid
     fields:
         lastReminderSent:
-            type: date
+            type: datetime
             nullable: true
 
     oneToOne:
