@@ -225,8 +225,7 @@ class CommonFlowHandler
             /** @var ProcessResult $result */
             list($newSubscription, $result) = $this->subscriber->subscribe($user, $subscriptionPack, $billingProcessId, $affiliateToken);
 
-            $this->afterSubscriptionProcessTracker->track($result, $newSubscription, $handler, $campaign);
-
+            // $this->afterSubscriptionProcessTracker->track($result, $newSubscription, $handler, $campaign);
 
             $this->logger->debug('Create new subscription', ['subscription' => $subscription]);
             $this->logger->debug('Finish subscribeBack process');
