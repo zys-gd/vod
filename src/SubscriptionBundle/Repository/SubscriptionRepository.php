@@ -160,7 +160,15 @@ class SubscriptionRepository extends EntityRepository
             ->innerJoin('s.user', 'u', Join::WITH, 'u.carrier = :carrier')
             ->andWhere('s.status = :subStatus')
             ->andWhere('s.currentStage = :subAction')
-            ->andWhere('DATE_DIFF(CURRENT_DATE(), sr.lastReminderSent) > :daysInterval')
+            ->andWhere(
+                $queryBuilder->expr()->orX(
+                    'DATE_DIFF(CURRENT_DATE(), sr.lastReminderSent) >= :daysInterval',
+                    $queryBuilder->expr()->andX(
+                        'sr.lastReminderSent IS NULL',
+                        'DATE_DIFF(CURRENT_DATE(), s.created) >= :daysInterval'
+                    )
+                )
+            )
             ->setParameters([
                 'subStatus'      => Subscription::IS_ACTIVE,
                 'subAction'      => Subscription::ACTION_SUBSCRIBE,

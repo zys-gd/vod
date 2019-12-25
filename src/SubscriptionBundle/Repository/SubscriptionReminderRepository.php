@@ -3,6 +3,7 @@
 namespace SubscriptionBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use SubscriptionBundle\Entity\Subscription;
 
 /**
  * Class SubscriptionReminderRepository
@@ -23,8 +24,11 @@ class SubscriptionReminderRepository extends EntityRepository
             ->where(
                 $queryBuilder
                     ->expr()
-                    ->in('sr.subscription', $subscriptions)
+                    ->in('sr.subscription', ':subscriptions')
             )
+            ->setParameter('subscriptions', array_map(function($subscription) {
+                return $subscription->getUuid();
+            }, $subscriptions))
             ->getQuery();
 
         $query->execute();

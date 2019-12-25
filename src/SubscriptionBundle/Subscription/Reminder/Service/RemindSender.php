@@ -66,9 +66,12 @@ class RemindSender
             $variables
         );
 
-        $result = $this->requestSender->sendNotification($notification, $user->getCarrierId());
-        var_dump($result);
+        try {
+            $result = $this->requestSender->sendNotification($notification, $user->getCarrierId());
+        } catch (\Exception $exception) {
+            return false;
+        }
 
-        return true;
+        return $result === 'REMINDER_OK';
     }
 }

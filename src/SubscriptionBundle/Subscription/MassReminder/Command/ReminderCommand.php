@@ -121,6 +121,7 @@ class ReminderCommand extends Command
             sprintf('Succeeded: %s', count($result->getSucceededSubscriptions())),
             sprintf('Failed: %s', count($result->getFailedSubscriptions())),
             sprintf('Error: %s', $result->getError() ?? 'No errors'),
+            ''
         ]));
     }
 }
