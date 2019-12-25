@@ -125,6 +125,9 @@
     "fig/link-util": {
         "version": "1.0.0"
     },
+    "firebase/php-jwt": {
+        "version": "v5.0.0"
+    },
     "friendsofsymfony/user-bundle": {
         "version": "v2.1.2"
     },
@@ -136,6 +139,12 @@
     },
     "giggsey/locale": {
         "version": "1.6"
+    },
+    "google/auth": {
+        "version": "v1.6.1"
+    },
+    "googleads/googleads-php-lib": {
+        "version": "44.0.0"
     },
     "granedirval/data-dog-pager-bundle": {
         "version": "0.1.x-dev"
