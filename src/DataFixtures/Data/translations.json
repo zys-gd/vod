@@ -10325,5 +10325,16 @@
         "carrier": null,
         "key": "contact_us.promise",
         "translation": "سوف نتصل بك قريبا."
+    },
+    {
+        "uuid": "a1a1daee-efbf-4b38-9693-7cd0e0dcc1ba",
+        "key": "annotation_block.text_telenor_pk",
+        "translation": "This is a subscription service with auto renewal",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": {
+            "uuid": "97400b8f-722b-4339-a48e-a51419bbb143"
+        }
     }
 ]
