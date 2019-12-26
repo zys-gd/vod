@@ -35,11 +35,15 @@ class SubscriptionLimitNotifier
      */
     public function notifyLimitReachedForCarrier(CarrierInterface $carrier): void
     {
-        if (
-            !$carrier->getIsCapAlertDispatch() &&
-            $this->notificationSender->sendCapByCarrierNotification($carrier)
-        ) {
-            $carrier->setIsCapAlertDispatch(true);
+        if ($carrier->getIsCapAlertDispatch()) {
+            return;
+        }
+
+        $carrier->setIsCapAlertDispatch(true);
+        $this->entitySaveHelper->persistAndSave($carrier);
+
+        if (!$this->notificationSender->sendCapByCarrierNotification($carrier)) {
+            $carrier->setIsCapAlertDispatch(false);
             $this->entitySaveHelper->persistAndSave($carrier);
         }
     }
@@ -47,11 +51,15 @@ class SubscriptionLimitNotifier
     public function notifyLimitReachedByAffiliate(ConstraintByAffiliate $constraintByAffiliate, CarrierInterface $carrier): void
     {
 
-        if (
-            !$constraintByAffiliate->getIsCapAlertDispatch() &&
-            $this->notificationSender->sendCapByAffiliateNotification($constraintByAffiliate, $carrier)
-        ) {
-            $constraintByAffiliate->setIsCapAlertDispatch(true);
+        if ($constraintByAffiliate->getIsCapAlertDispatch()) {
+            return;
+        }
+
+        $constraintByAffiliate->setIsCapAlertDispatch(true);
+        $this->entitySaveHelper->persistAndSave($constraintByAffiliate);
+
+        if (!$this->notificationSender->sendCapByAffiliateNotification($constraintByAffiliate, $carrier)) {
+            $constraintByAffiliate->setIsCapAlertDispatch(false);
             $this->entitySaveHelper->persistAndSave($constraintByAffiliate);
         }
     }

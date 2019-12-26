@@ -203,7 +203,8 @@ class AutoIdentStartListener
             $carrierId  = null;
 
             $this->logger->debug('Carrier ISP', [
-                'ISP' => $carrierISP
+                'ISP' => $carrierISP,
+                'user_ip' => $ipAddress
             ]);
 
             if ($carrierISP) {
