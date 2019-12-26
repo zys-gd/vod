@@ -89,7 +89,7 @@ class CAPNotificationSender
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function sendCapByCarrierNotification(CarrierInterface $carrier)
+    public function sendCapByCarrierNotification(CarrierInterface $carrier): bool
     {
         $twig = '@Subscription/CapNotifications/cap_by_carrier_alert.html.twig';
 
