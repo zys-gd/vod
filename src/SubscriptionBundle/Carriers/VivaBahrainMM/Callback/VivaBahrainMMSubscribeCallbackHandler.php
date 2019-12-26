@@ -5,8 +5,10 @@ namespace SubscriptionBundle\Carriers\VivaBahrainMM\Callback;
 use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Entity\User;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
+use SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Callback\Common\CommonFlowHandler;
+use SubscriptionBundle\Subscription\Callback\Common\SubscriptionPreparer;
 use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerInterface;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCustomConversionTrackingRules;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCustomFlow;
@@ -24,15 +26,31 @@ class VivaBahrainMMSubscribeCallbackHandler implements CarrierCallbackHandlerInt
      * @var CommonFlowHandler
      */
     private $commonFlowHandler;
+    /**
+     * @var ProcessResponseMapper
+     */
+    private $processResponseMapper;
+    /**
+     * @var SubscriptionPreparer
+     */
+    private $subscriptionPreparer;
 
     /**
      * OrangeTNSubscribeCallbackHandler constructor.
      *
-     * @param CommonFlowHandler $commonFlowHandler
+     * @param CommonFlowHandler     $commonFlowHandler
+     * @param ProcessResponseMapper $processResponseMapper
+     * @param SubscriptionPreparer  $subscriptionPreparer
      */
-    public function __construct(CommonFlowHandler $commonFlowHandler)
+    public function __construct(
+        CommonFlowHandler $commonFlowHandler,
+        ProcessResponseMapper $processResponseMapper,
+        SubscriptionPreparer $subscriptionPreparer
+    )
     {
-        $this->commonFlowHandler = $commonFlowHandler;
+        $this->commonFlowHandler     = $commonFlowHandler;
+        $this->processResponseMapper = $processResponseMapper;
+        $this->subscriptionPreparer  = $subscriptionPreparer;
     }
 
     public function canHandle(Request $request, int $carrierId): bool
@@ -58,6 +76,10 @@ class VivaBahrainMMSubscribeCallbackHandler implements CarrierCallbackHandlerInt
      */
     public function process(Request $request, string $type)
     {
+        $requestParams   = (Object)$request->request->all();
+        $processResponse = $this->processResponseMapper->map($type, (object)['data' => $requestParams]);
+
+        $this->subscriptionPreparer->makeUserWithSubscription($processResponse);
         $this->commonFlowHandler->process($request, ID::VIVA_BAHRAIN_MM, $type);
     }
 }

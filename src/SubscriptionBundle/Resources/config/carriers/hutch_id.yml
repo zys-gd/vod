@@ -12,24 +12,6 @@ services:
     SubscriptionBundle\Carriers\HutchID\Callback\HutchIDCallbackSubscribe:
         tags:
             - {name: subscription.callback_carrier_handler, type: subscribe}
-        arguments:
-            - '@SubscriptionBundle\Subscription\Callback\Common\CommonFlowHandler'
-            - '@IdentificationBundle\Repository\UserRepository'
-            - '@SubscriptionBundle\Subscription\Common\SubscriptionFactory'
-            - '@SubscriptionBundle\Repository\SubscriptionRepository'
-            - '@SubscriptionBundle\Repository\SubscriptionPackRepository'
-            - '@SubscriptionBundle\Service\EntitySaveHelper'
-            - '@App\Domain\Repository\CarrierRepository'
-            - '@IdentificationBundle\Identification\Service\TokenGenerator'
-            - '@IdentificationBundle\User\Service\UserFactory'
-            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
-            - '@SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper'
-            - '@SubscriptionBundle\Carriers\HutchID\Callback\HutchIDSMSSubscriber'
-            - '@SubscriptionBundle\Subscription\Notification\Notifier'
-            - '@SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventTracker'
-            - '@logger'
-            - '@SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker'
-            - '@cross_subscription.api_connector'
 
     SubscriptionBundle\Carriers\HutchID\Callback\HutchIDCallbackUnsubscribe:
         arguments:

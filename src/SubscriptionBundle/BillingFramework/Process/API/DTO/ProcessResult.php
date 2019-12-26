@@ -91,6 +91,11 @@ class ProcessResult
 
     private $providerUser;
 
+    private $clientUser;
+
+    /** @var int */
+    private $carrier;
+
     private $providerFields = [];
     /**
      * @var array
@@ -117,9 +122,11 @@ class ProcessResult
      * @param null   $provider
      * @param null   $providerId
      * @param null   $providerUser
+     * @param null   $clientUser
      * @param array  $providerFields
      * @param array  $clientFields
      * @param int    $chargePaid
+     * @param int    $carrier
      */
     public function __construct(
         $id = null,
@@ -139,9 +146,11 @@ class ProcessResult
         $provider = null,
         $providerId = null,
         $providerUser = null,
+        $clientUser = null,
         $providerFields = [],
         $clientFields = [],
-        $chargePaid = null
+        $chargePaid = null,
+        int $carrier = null
     )
     {
         $this->id             = $id;
@@ -182,13 +191,27 @@ class ProcessResult
         $data['message'] = $message;
 
 
-        $this->provider     = $provider;
-        $this->providerId   = $providerId;
-        $this->providerUser = $providerUser;
-        $this->clientFields = $clientFields;
+        $this->provider       = $provider;
+        $this->providerId     = $providerId;
+        $this->providerUser   = $providerUser;
+        $this->clientFields   = $clientFields;
         $this->providerFields = $providerFields;
+        $this->clientUser     = $clientUser;
+        $this->carrier        = $carrier;
     }
 
+    public function getClientUser()
+    {
+        return $this->clientUser;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCarrier(): ?int
+    {
+        return $this->carrier;
+    }
 
     /**
      * @return int
