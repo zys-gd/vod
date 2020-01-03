@@ -1,47 +1,51 @@
 services:
+    _defaults:
+        autowire: true
 
-  SubscriptionBundle\Subscription\Callback\Controller\ListenAction:
-    arguments: ['@SubscriptionBundle\Subscription\Callback\Common\CommonFlowHandler', '@logger', '@SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerProvider']
-    tags: ['controller.service_arguments']
+    SubscriptionBundle\Subscription\Callback\Common\SubscriptionPreparer: ~
+
+    SubscriptionBundle\Subscription\Callback\Controller\ListenAction:
+        arguments: ['@SubscriptionBundle\Subscription\Callback\Common\CommonFlowHandler', '@logger', '@SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerProvider']
+        tags: ['controller.service_arguments']
 
 
-  SubscriptionBundle\Subscription\Callback\Impl\DefaultHandler:
-    arguments: ['@IdentificationBundle\Repository\UserRepository']
+    SubscriptionBundle\Subscription\Callback\Impl\DefaultHandler:
+        arguments: ['@IdentificationBundle\Repository\UserRepository']
 
-  SubscriptionBundle\Subscription\Callback\Common\CommonFlowHandler:
-      arguments:
-        - '@logger'
-        - '@SubscriptionBundle\Subscription\Callback\Common\CallbackTypeHandlerProvider'
-        - '@SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper'
-        - '@SubscriptionBundle\Repository\SubscriptionRepository'
-        - '@SubscriptionBundle\Service\EntitySaveHelper'
-        - '@SubscriptionBundle\Affiliate\Service\AffiliateSender'
-        - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
-        - '@SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerProvider'
-        - '@SubscriptionBundle\Piwik\DataMapper\ConversionEventMapper'
-        - '@SubscriptionBundle\Piwik\EventPublisher'
+    SubscriptionBundle\Subscription\Callback\Common\CommonFlowHandler:
+        arguments:
+            - '@logger'
+            - '@SubscriptionBundle\Subscription\Callback\Common\CallbackTypeHandlerProvider'
+            - '@SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper'
+            - '@SubscriptionBundle\Repository\SubscriptionRepository'
+            - '@SubscriptionBundle\Service\EntitySaveHelper'
+            - '@SubscriptionBundle\Affiliate\Service\AffiliateSender'
+            - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
+            - '@SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerProvider'
+            - '@SubscriptionBundle\Piwik\DataMapper\ConversionEventMapper'
+            - '@SubscriptionBundle\Piwik\EventPublisher'
 
-  SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerProvider:
-      arguments:
-        - '@SubscriptionBundle\Subscription\Callback\Impl\DefaultHandler'
+    SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerProvider:
+        arguments:
+            - '@SubscriptionBundle\Subscription\Callback\Impl\DefaultHandler'
 
-  SubscriptionBundle\Subscription\Callback\Common\CallbackTypeHandlerProvider:
-      arguments:
-        - '@SubscriptionBundle\Subscription\Callback\Common\Handler\UnsubscriptionCallbackHandler'
-        - '@SubscriptionBundle\Subscription\Callback\Common\Handler\SubscriptionCallbackHandler'
-        - '@SubscriptionBundle\Subscription\Callback\Common\Handler\RenewCallbackHandler'
+    SubscriptionBundle\Subscription\Callback\Common\CallbackTypeHandlerProvider:
+        arguments:
+            - '@SubscriptionBundle\Subscription\Callback\Common\Handler\UnsubscriptionCallbackHandler'
+            - '@SubscriptionBundle\Subscription\Callback\Common\Handler\SubscriptionCallbackHandler'
+            - '@SubscriptionBundle\Subscription\Callback\Common\Handler\RenewCallbackHandler'
 
-  SubscriptionBundle\Subscription\Callback\Common\Handler\UnsubscriptionCallbackHandler:
+    SubscriptionBundle\Subscription\Callback\Common\Handler\UnsubscriptionCallbackHandler:
         arguments:
             - '@SubscriptionBundle\Subscription\Unsubscribe\OnUnsubscribeUpdater'
 
-  SubscriptionBundle\Subscription\Callback\Common\Handler\SubscriptionCallbackHandler:
-      arguments:
-          - '@SubscriptionBundle\Subscription\Subscribe\OnSubscribeUpdater'
-          - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitCompleter'
-          - '@cross_subscription.api_connector'
+    SubscriptionBundle\Subscription\Callback\Common\Handler\SubscriptionCallbackHandler:
+        arguments:
+            - '@SubscriptionBundle\Subscription\Subscribe\OnSubscribeUpdater'
+            - '@SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitCompleter'
+            - '@cross_subscription.api_connector'
 
-  SubscriptionBundle\Subscription\Callback\Common\Handler\RenewCallbackHandler:
-      arguments:
-          - '@event_dispatcher'
-          - '@SubscriptionBundle\Subscription\Renew\OnRenewUpdater'
+    SubscriptionBundle\Subscription\Callback\Common\Handler\RenewCallbackHandler:
+        arguments:
+            - '@event_dispatcher'
+            - '@SubscriptionBundle\Subscription\Renew\OnRenewUpdater'

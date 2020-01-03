@@ -1,4 +1,10 @@
 services:
+    _defaults:
+        autowire: true
+
+    SubscriptionBundle\Service\:
+        resource: '../../Service/*'
+
     subscription.http.client:
         class: GuzzleHttp\Client
         factory: ['@SubscriptionBundle\Affiliate\Service\GuzzleClientFactory','getClient']

@@ -1,5 +1,6 @@
 services:
     _defaults:
+        autowire: true
         tags:
             - { name: subscription.callback_carrier_handler, type: subscribe }
             - { name: subscription.callback_carrier_handler, type: unsubscribe }

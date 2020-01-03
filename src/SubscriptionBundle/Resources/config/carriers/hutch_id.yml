@@ -1,4 +1,9 @@
 services:
+    _defaults:
+        autowire: true
+
+    Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector: '@cross_subscription.api_connector'
+
     SubscriptionBundle\Carriers\HutchID\Subscribe\HutchIDSubscriptionHandler:
         tags:
             - { name: subscription.subscription_handler }
