@@ -11,16 +11,16 @@
     <div class="d-flex align-items-center justify-content-center flex-column w-100">
         <div class=" contact_us__disclaimer mt-4">
             <div class=" text-center">
-                <p>Thanks for your interest on 100% sport! </p>
+                <p>{{ translate('contact_us.thanks') }}</p>
             </div>
         </div>
         <div class="contact_us__disclaimer">
             <div class=" text-center">
-                <p>We will contact you soon.</p>
+                <p>{{ translate('contact_us.promise') }}</p>
             </div>
         </div>
         <div>
-            {{ link.render(path('index'), 'HOMEPAGE') }}
+            {{ link.render(path('index'), translate('contact_us.link.text')) }}
         </div>
     </div>
 {% endblock %}

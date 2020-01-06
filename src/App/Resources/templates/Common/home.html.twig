@@ -72,7 +72,7 @@
             var errHandle = url.searchParams.get("err_handle");
             var message;
             if (errHandle && (message = resolveErrorMessage(errHandle))) {
-                showAlert({title: 'Error', message: message});
+                showAlert({title: '{{ translate('err_handle.title') }}', message: message});
 
                 $('#send-reminder').click(function () {
                     $.ajax({
