@@ -1,92 +1,16 @@
 services:
     _defaults:
         tags: ['twig.extension']
+        autowire: true
+        bind:
+            $cloudName: '%cloudinary_cloud_name%'
 
-    App\Twig\VideoProcessingHelperExtension:
-        arguments: ['%cloudinary_cloud_name%']
+    CommonDataBundle\Repository\Interfaces\CountryRepositoryInterface: '@CommonDataBundle\Repository\CountryRepository'
+    SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface: '@App\Domain\Repository\CampaignRepository'
+    Symfony\Component\HttpFoundation\Session\Session: '@session'
 
-    App\Twig\TranslatorExtension:
-        arguments:
-            - '@App\Domain\Service\Translator\Translator'
-            - '@session'
-            - '@kernel'
-            - '@ExtrasBundle\Utils\LocalExtractor'
-            - '@App\Domain\Service\Translator\ShortcodeReplacer'
-            - '@App\Domain\Service\Translator\DataAggregator'
-            - '@request_stack'
-
-    App\Twig\NavbarExtension:
-        arguments:
-            - '@App\Domain\Repository\MainCategoryRepository'
-            - '@router'
-            - '@session'
-            - '@App\Domain\Repository\CountryCategoryPriorityOverrideRepository'
-
-
-    App\Twig\GamesExtension:
-        arguments:
-          ['@App\Domain\Service\Games\ImagePathProvider']
-
-    App\Twig\FileRegistrarExtension: ~
-
-    Phive\Twig\Extensions\Deferred\DeferredExtension: ~
-
-    App\Twig\StringEncodingExtension: ~
-
-    App\Twig\LPExtension:
-        arguments:
-            - '@session'
-            - '@App\Domain\Repository\CarrierRepository'
-            - '@SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface'
-            - '@CommonDataBundle\Repository\CountryRepository'
-            - '@IdentificationBundle\WifiIdentification\WifiPhoneOptionsProvider'
-            - '@App\Domain\Service\Campaign\CampaignSerializer'
-
-    App\Twig\AuditExtension: ~
-
-    App\Twig\CarrierOptionsExtension:
-        arguments:
-            - '@session'
-            - '@App\Domain\Repository\CarrierRepository'
-            - '@IdentificationBundle\Identification\Service\PassthroughChecker'
-            - '@SubscriptionBundle\Affiliate\Service\CampaignExtractor'
-            - '@App\Domain\Service\OneClickFlow\OneClickFlowCarriersProvider'
-            - '@App\Domain\Service\Carrier\CarrierProvider'
-            - '@App\Domain\Service\OneClickFlow\OneClickFlowScheduler'
-            - '@logger'
-
-    App\Twig\PassthroughExtension:
-        arguments:
-            - '@IdentificationBundle\BillingFramework\Process\PassthroughProcess'
-            - '@IdentificationBundle\Identification\Common\RequestParametersProvider'
-            - '@request_stack'
-            - '@router'
-            - '@App\Domain\Repository\CarrierRepository'
-            - '@IdentificationBundle\Identification\Service\PassthroughChecker'
-
-    App\Twig\UserInformationExtension:
-        arguments:
-            - '@request_stack'
-            - '@IdentificationBundle\User\Service\UserExtractor'
-            - '@IdentificationBundle\Identification\Handler\IdentificationHandlerProvider'
-            - '@App\Domain\Repository\CarrierRepository'
-            - '@IdentificationBundle\Identification\Service\Session\IdentificationDataStorage'
-
-    App\Twig\TemplateImporterExtension:
-        arguments:
-            - '@session'
-            - '@CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator'
-
-    App\Twig\LocalizationExtension:
-        arguments:
-            - '@ExtrasBundle\Utils\LocalExtractor'
-            - '@session'
-            - '@Symfony\Component\Filesystem\Filesystem'
-            - '@App\Domain\Service\Carrier\CarrierProvider'
+    App\Twig\:
+        resource: '../../Twig/*'
 
     twig.extension.date:
         class: Twig_Extensions_Extension_Date
-
-    App\Twig\DeviceOSExtension:
-        tags:
-            - { name: twig.extension }

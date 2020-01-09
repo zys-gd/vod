@@ -1,0 +1,15 @@
+services:
+    _defaults:
+        autowire: true
+
+    Doctrine\ORM\EntityManager: '@doctrine.orm.entity_manager'
+    Psr\Log\LoggerInterface: '@logger'
+    Symfony\Component\HttpFoundation\Session\Session: '@session'
+    Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector: '@cross_subscription.api_connector'
+    ExtrasBundle\Cache\ArrayCache\ArrayCacheService: '@app.cache.array_default'
+    DeviceDetectionBundle\Service\Device: '@device_detection.service.device'
+    ExtrasBundle\Cache\CacheServiceWrapper: '@app.cache.default'
+    ExtrasBundle\Cache\ICacheService: '@ExtrasBundle\Cache\CacheServiceWrapper'
+
+    App\Piwik\:
+        resource: '../../Piwik/*'
