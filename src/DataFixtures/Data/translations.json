@@ -830,7 +830,7 @@
     {
         "uuid": "677f8042-109e-490d-8c77-0343c18e8057",
         "key": "copyright",
-        "translation": "\u00a9ORIGINDATA 2019 All rights reserved\n\u00a9 Red Bull Media House",
+        "translation": "\u00a9ORIGINDATA 2019 All rights reserved",
         "language": {
             "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -1938,7 +1938,7 @@
     {
         "uuid": "5cb1d28f-735e-4f20-8cd4-1585289c5c67",
         "key": "copyright",
-        "translation": "\u00a9ORIGINDATA 2019 All rights reserved \u00a9 Red Bull Media House",
+        "translation": "\u00a9ORIGINDATA 2019 All rights reserved",
         "language": {
             "uuid": "5179ee29-ebd4-11e8-95c4-02bb250f0f22"
         },
@@ -4882,7 +4882,7 @@
     {
         "uuid": "473265d5-4b71-42ea-88b9-c56c5c492577",
         "key": "copyright",
-        "translation": "\u00a9ORIGINDATA 2019 All rights reserved \u00a9 Red Bull Media House",
+        "translation": "\u00a9ORIGINDATA 2019 All rights reserved",
         "language": {
             "uuid": "5179f269-ebd4-11e8-95c4-02bb250f0f22"
         },
