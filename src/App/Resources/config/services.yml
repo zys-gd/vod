@@ -10,9 +10,43 @@ services:
     DeviceDetectionBundle\Service\Device: '@device_detection.service.device'
     ExtrasBundle\Cache\CacheServiceWrapper: '@app.cache.default'
     ExtrasBundle\Cache\ICacheService: '@ExtrasBundle\Cache\CacheServiceWrapper'
+    SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface: '@App\Domain\Repository\CampaignRepository'
+    CommonDataBundle\Repository\Interfaces\CountryRepositoryInterface: '@CommonDataBundle\Repository\CountryRepository'
+    Symfony\Component\Form\FormFactory: '@form.factory'
+
+    twig.extension.date:
+        class: Twig_Extensions_Extension_Date
 
     App\Domain\Service\:
         resource: '../../Domain/Service/*'
+
+    App\Twig\:
+        resource: '../../Twig/*'
+        tags: ['twig.extension']
+        bind:
+            $cloudName: '%cloudinary_cloud_name%'
+
+    App\Piwik\:
+        resource: '../../Piwik/*'
+
+    App\API\Controller\:
+        resource: '../../API/Controller/*'
+        tags: ['controller.service_arguments']
+
+    App\Admin\Controller\:
+        resource: '../../Admin/Controller/*'
+        tags: ['controller.service_arguments']
+
+    App\Controller\:
+        resource: '../../Controller/*'
+        tags: ['controller.service_arguments']
+
+    App\Command\:
+        resource: '../../Command/*'
+        tags: ['console.command']
+
+    App\Domain\ACL\:
+        resource: '../../Domain/ACL/*'
 
     App\Domain\Service\VideoProcessing\Connectors\CloudinaryConnector:
         arguments:
@@ -51,3 +85,24 @@ services:
     App\Domain\ACL\SubscribeACL:
         tags:
             - { name: subscription.voter }
+
+    App\Admin\Controller\UploadedVideoAdminController:
+        calls:
+            - [setContainer, ['@service_container']]
+        arguments:
+            $cloudinaryApiKey: '%cloudinary_api_key%'
+            $cloudinaryCloudName: '%cloudinary_cloud_name%'
+            $cloudinaryApiSecret: '%cloudinary_api_secret%'
+            $defaultPreset: '%default_preset%'
+            $trimPreset: '%trim_preset%'
+
+    App\Controller\LPController:
+        tags: ['controller.service_arguments'] # dont know why symfony wants this tag
+        arguments:
+            $defaultRedirectUrl: '%default_redirect_url%'
+
+    App\Controller\ContactUsController:
+        tags: ['controller.service_arguments']
+        arguments:
+            $contactUsMailTo: '%contact_us_mail_to%'
+            $contactUsMailFrom: '%contact_us_mail_from%'
