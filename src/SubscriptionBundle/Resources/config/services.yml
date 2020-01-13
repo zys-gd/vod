@@ -20,7 +20,7 @@ services:
 
     SubscriptionBundle\Affiliate\:
         resource: '../../Affiliate/*'
-        exclude: '../../Affiliate/{DTO,Exception,Admin}'
+        exclude: '../../Affiliate/{DTO,Exception}'
 
     SubscriptionBundle\Service\:
         resource: '../../Service/*'
@@ -64,9 +64,6 @@ services:
 
     SubscriptionBundle\Blacklist\:
         resource: '../../Blacklist/*'
-
-    SubscriptionBundle\CampaignConfirmation\:
-        resource: '../../CampaignConfirmation/*'
 
     SubscriptionBundle\CAPTool\:
         resource: '../../CAPTool/*'
@@ -140,13 +137,21 @@ services:
         calls:
             - [ setTemplate, [edit, '@@SubscriptionAdmin/BlackList/edit.html.twig']]
 
-    SubscriptionBundle\CampaignConfirmation\Handler\Google\GoogleCampaignHandler:
+    SubscriptionBundle\Affiliate\CampaignConfirmation\Google\Handler\GoogleCampaignHandler:
         tags:
             - {name: 'subscription.campaign_confirmation_handler'}
 
-    SubscriptionBundle\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider:
+    SubscriptionBundle\Affiliate\CampaignConfirmation\Google\Service\GoogleCredentialsProvider:
         arguments:
-            $defaultHandler: '@SubscriptionBundle\CampaignConfirmation\Handler\Common\CommonCampaignConfirmationHandler'
+            - '_client_id_placeholder_'
+            - '_client_secret_placeholder_'
+            - '_refresh_token_placeholder_'
+            - '_developer_token_placeholder_'
+            - '_client_customer_id_placeholder_'
+
+    SubscriptionBundle\Affiliate\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider:
+        arguments:
+            $defaultHandler: '@SubscriptionBundle\Affiliate\CampaignConfirmation\Handler\Common\DefaultHandler'
 
     subscription.captool.redis_client:
         class: Redis
