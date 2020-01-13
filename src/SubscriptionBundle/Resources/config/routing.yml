@@ -48,7 +48,7 @@ subscription.fake_alert:
 
 google_campaign:
     path: /google_campaign
-    defaults: {_controller: SubscriptionBundle\CampaignConfirmation\Controller\CampaignConfirmationController::googlePageAction}
+    defaults: {_controller: SubscriptionBundle\Affiliate\CampaignConfirmation\Google\Controller\CampaignConfirmationController::googlePageAction}
 
 subscription.data:
     path: /v2/data/subscription

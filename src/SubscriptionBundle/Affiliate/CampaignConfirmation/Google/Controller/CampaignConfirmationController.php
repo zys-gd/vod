@@ -1,7 +1,7 @@
 <?php
 
 
-namespace SubscriptionBundle\CampaignConfirmation\Controller;
+namespace SubscriptionBundle\Affiliate\CampaignConfirmation\Google\Controller;
 
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

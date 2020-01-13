@@ -212,8 +212,8 @@ class CommonFlowHandler
             $this->affiliateSender->checkAffiliateEligibilityAndSendEvent(
                 $subscription,
                 $userInfo,
-                $campaignData,
-                $campaignData['cid'] ?? null
+                $campaignData['cid'] ?? null,
+                $campaignData
             );
         } else {
             $this->logger->debug('Affiliate is not need to be tracked', [

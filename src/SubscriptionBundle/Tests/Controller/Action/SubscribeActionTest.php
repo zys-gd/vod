@@ -25,7 +25,7 @@ use SubscriptionBundle\BillingFramework\Notification\API\RequestSender as Notifi
 use SubscriptionBundle\BillingFramework\Process\API\RequestSender;
 use SubscriptionBundle\BillingFramework\Process\SubscriptionPackDataProvider;
 
-use SubscriptionBundle\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
+use SubscriptionBundle\Affiliate\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
 use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter;
 use SubscriptionBundle\DataFixtures\ORM\LoadExchangeRatesData;
 use SubscriptionBundle\Subscription\Notification\SMSText\SMSTextProvider;

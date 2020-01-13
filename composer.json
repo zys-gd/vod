@@ -32,6 +32,7 @@
         "e0ipso/amazon-sqs-php-extended-client-lib": "1.0.0-alpha",
         "friendsofsymfony/user-bundle": "^2.1",
         "geoip2/geoip2": "v2.9.0",
+        "googleads/googleads-php-lib": "^44.0",
         "granedirval/data-dog-pager-bundle": "dev-master",
         "guzzlehttp/guzzle": "v6.3.3",
         "league/flysystem-aws-s3-v3": "dev-master",
