@@ -1,9 +1,0 @@
-services:
-
-
-  SubscriptionBundle\Twig\SubscriptionStatusExtension:
-    tags:
-      - { name: twig.extension }
-    arguments:
-      ['@session', '@SubscriptionBundle\Subscription\Common\SubscriptionExtractor', '@app.cache.array_default']
-

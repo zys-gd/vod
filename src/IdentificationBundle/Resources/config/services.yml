@@ -1,6 +1,7 @@
 services:
     _defaults:
         autowire: true
+        autoconfigure: true
 
     Doctrine\ORM\EntityManager: '@doctrine.orm.entity_manager'
     IdentificationBundle\Repository\CarrierRepositoryInterface: '@App\Domain\Repository\CarrierRepository'

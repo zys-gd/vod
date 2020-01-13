@@ -1,10 +1,208 @@
 services:
-    subscription.http.client:
-        class: GuzzleHttp\Client
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    Doctrine\ORM\EntityManager: '@doctrine.orm.entity_manager'
+    Psr\Log\LoggerInterface: '@logger'
+    ExtrasBundle\Cache\ArrayCache\ArrayCacheService: '@app.cache.array_default'
+    SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface: '@App\Domain\Repository\CampaignRepository'
+    Symfony\Component\EventDispatcher\EventDispatcher: '@event_dispatcher'
+    Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector: '@cross_subscription.api_connector'
+    CommonDataBundle\Repository\Interfaces\LanguageRepositoryInterface: '@CommonDataBundle\Repository\LanguageRepository'
+    IdentificationBundle\Repository\CarrierRepositoryInterface: '@App\Domain\Repository\CarrierRepository'
+    Symfony\Component\Routing\RouterInterface: '@router'
+    SubscriptionBundle\Subscription\Renew\Cron\CronTaskStatus: '@cron.task'
+    Twig\Environment: '@twig'
+    Symfony\Component\Form\FormFactory: '@form.factory'
+    Redis: '@subscription.captool.redis_client'
+    SubscriptionBundle\Piwik\Senders\SenderInterface: '@SubscriptionBundle\Piwik\Senders\RabbitMQ'
+
+    SubscriptionBundle\Affiliate\:
+        resource: '../../Affiliate/*'
+        exclude: '../../Affiliate/{DTO,Exception,Admin}'
+
+    SubscriptionBundle\Service\:
+        resource: '../../Service/*'
+
+    SubscriptionBundle\Subscription\Callback\:
+        resource: '../../Subscription/Callback/*'
+
+    SubscriptionBundle\Subscription\Notification\:
+        resource: '../../Subscription/Notification/*'
+
+    SubscriptionBundle\Subscription\Common\:
+        resource: '../../Subscription/Common/*'
+
+    SubscriptionBundle\Subscription\MassRenew\:
+        resource: '../../Subscription/MassRenew/*'
+
+    SubscriptionBundle\Subscription\Renew\:
+        resource: '../../Subscription/Renew/*'
+        exclude: '../../Subscription/Renew/{DTO,Exception}'
+
+    SubscriptionBundle\Subscription\Subscribe\:
+        resource: '../../Subscription/Subscribe/*'
+        exclude: '../../Subscription/Subscribe/{DTO,Exception}'
+
+    SubscriptionBundle\Subscription\SubscribeBack\:
+        resource: '../../Subscription/SubscribeBack/*'
+
+    SubscriptionBundle\Subscription\Unsubscribe\:
+        resource: '../../Subscription/Unsubscribe/*'
+        exclude: '../../Subscription/Unsubscribe/{Exception}'
+
+    SubscriptionBundle\API\:
+        resource: '../../API/*'
+        exclude: '../../API/{Exception}'
+
+    SubscriptionBundle\BillingFramework\:
+        resource: '../../BillingFramework/*'
+
+    SubscriptionBundle\ReportingTool\:
+        resource: '../../ReportingTool/*'
+
+    SubscriptionBundle\Blacklist\:
+        resource: '../../Blacklist/*'
+
+    SubscriptionBundle\CampaignConfirmation\:
+        resource: '../../CampaignConfirmation/*'
+
+    SubscriptionBundle\CAPTool\:
+        resource: '../../CAPTool/*'
+
+    SubscriptionBundle\ComplaintsTool\:
+        resource: '../../ComplaintsTool/*'
+
+    SubscriptionBundle\Refund\:
+        resource: '../../Refund/*'
+
+    SubscriptionBundle\Twig\:
+        resource: '../../Twig/*'
+
+    SubscriptionBundle\Piwik\:
+        resource: '../../Piwik/*'
+        exclude: '../../Piwik/{DTO}'
+
+    GuzzleHttp\Client:
         factory: ['@SubscriptionBundle\Affiliate\Service\GuzzleClientFactory','getClient']
         tags:
             - { name: guzzle.client }
 
-    SubscriptionBundle\Service\EntitySaveHelper:
-        arguments: ['@doctrine.orm.entity_manager', '@logger']
+    SubscriptionBundle\Affiliate\Admin\Sonata\AffiliateLogAdmin:
+        arguments:
+            - ~
+            - SubscriptionBundle\Entity\Affiliate\AffiliateLog
+            - ~
+            - '@IdentificationBundle\Repository\TestUserRepository'
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: affiliate_management, label: Affiliate log }
+
+    SubscriptionBundle\Subscription\Callback\Controller\ListenAction:
+        tags: ['controller.service_arguments']
+
+    SubscriptionBundle\Subscription\Common\RouteProvider:
+        arguments:
+            - '@router'
+            - '_resub_not_allowed_route_placeholder_'
+            - '_action_not_allowed_url_placeholder_'
+            - '_callback_host_placeholder_'
+
+    SubscriptionBundle\Subscription\Unsubscribe\Admin\Sonata\UnsubscriptionAdmin:
+        arguments:
+            - ~
+            - SubscriptionBundle\Entity\Subscription
+            - 'SubscriptionBundle\Subscription\Unsubscribe\Admin\Controller\UnsubscriptionAdminController'
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: user_management, label: Unsubscriptions }
+
+    SubscriptionBundle\Subscription\Unsubscribe\Listener\MenuListener:
+        tags:
+            - { name: kernel.event_listener, event: sonata.admin.event.configure.menu.sidebar, method: addMenuItems }
+
+    SubscriptionBundle\BillingFramework\BillingOptionsProvider:
+        arguments:
+            - '_billing_api_host_placeholder_'
+            - '_client_id_placeholder_'
+
+    SubscriptionBundle\ReportingTool\ReportingToolRequestSender:
+        arguments:
+            $reportApiHost: '_reporting_stats_api_host_placeholder_'
+
+    SubscriptionBundle\Blacklist\Admin\Sonata\BlackListAdmin:
+        arguments:
+            - ~
+            - SubscriptionBundle\Entity\BlackList
+            - ~
+            - '@SubscriptionBundle\Blacklist\BlacklistSaver'
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: black_list_management, label: Black list }
+        calls:
+            - [ setTemplate, [edit, '@@SubscriptionAdmin/BlackList/edit.html.twig']]
+
+    SubscriptionBundle\CampaignConfirmation\Handler\Google\GoogleCampaignHandler:
+        tags:
+            - {name: 'subscription.campaign_confirmation_handler'}
+
+    SubscriptionBundle\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider:
+        arguments:
+            $defaultHandler: '@SubscriptionBundle\CampaignConfirmation\Handler\Common\CommonCampaignConfirmationHandler'
+
+    subscription.captool.redis_client:
+        class: Redis
+        factory: ['@app.cache.redis_connection_provider','create']
+        arguments:
+            - '2'
+            -   class: 'Redis'
+                timeout: 3
+
+    SubscriptionBundle\CAPTool\Admin\Sonata\ConstraintsByAffiliateAdmin:
+        arguments:
+            - ~
+            - SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate
+            - ~
+            - '@SubscriptionBundle\Repository\Affiliate\ConstraintByAffiliateRepository'
+            - '@doctrine.orm.entity_manager'
+            - '@SubscriptionBundle\CAPTool\Admin\Service\ConstraintByAffiliateCapCalculator'
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: affiliate_management, label: Constraints by affiliate }
+
+    SubscriptionBundle\CAPTool\Subscription\Notificaton\EmailProvider:
+        arguments:
+            - '_cap_notification_mail_to_placeholder_'
+            - '_cap_notification_mail_from_placeholder_'
+
+    SubscriptionBundle\ComplaintsTool\Admin\Sonata\ComplaintsAdmin:
+        arguments:
+            - ~
+            - IdentificationBundle\Entity\User
+            - 'SubscriptionBundle\ComplaintsTool\Admin\Controller\ComplaintsAdminController'
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: user_management, label: Complaints }
+
+    SubscriptionBundle\ComplaintsTool\Admin\Listener\MenuListener:
+        arguments: ['@SubscriptionBundle\ComplaintsTool\Admin\Sonata\ComplaintsAdmin']
+        tags:
+            - { name: kernel.event_listener, event: sonata.admin.event.configure.menu.sidebar, method: addMenuItems }
+
+    SubscriptionBundle\Piwik\Senders\RabbitMQ:
+        arguments:
+            - '_rabbitmq_host_placeholder_'
+            - '_rabbitmq_port_placeholder_'
+            - '_rabbitmq_user_placeholder_'
+            - '_rabbitmq_password_placeholder_'
+            - '_rabbitmq_vhost_placeholder_'
+            - '_rabbitmq_exchange_name_placeholder_'
+            - '_rabbitmq_queue_name_placeholder_'
+
+    SubscriptionBundle\Piwik\Profiler\TraceableSenderCollector:
+        tags:
+            - { name: data_collector,  template: '@Subscription/profiler/piwik_events.html.twig', id: 'subscription.piwik_events_collector'  }
+
+    SubscriptionBundle\Refund\Admin\Sonata\RefundAdmin:
+        arguments: [~, SubscriptionBundle\Entity\Refund, 'SubscriptionBundle\Refund\Admin\Controller\RefundAdminController']
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: refunds, label: Refunds }
+
+
 

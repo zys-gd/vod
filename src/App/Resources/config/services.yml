@@ -1,6 +1,7 @@
 services:
     _defaults:
         autowire: true
+        autoconfigure: true
 
     Doctrine\ORM\EntityManager: '@doctrine.orm.entity_manager'
     Psr\Log\LoggerInterface: '@logger'
@@ -97,12 +98,10 @@ services:
             $trimPreset: '%trim_preset%'
 
     App\Controller\LPController:
-        tags: ['controller.service_arguments'] # dont know why symfony wants this tag
         arguments:
             $defaultRedirectUrl: '%default_redirect_url%'
 
     App\Controller\ContactUsController:
-        tags: ['controller.service_arguments']
         arguments:
             $contactUsMailTo: '%contact_us_mail_to%'
             $contactUsMailFrom: '%contact_us_mail_from%'
