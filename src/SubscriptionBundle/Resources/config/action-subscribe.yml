@@ -196,7 +196,7 @@ services:
         arguments:
             - '@IdentificationBundle\Identification\Common\PostPaidHandler'
             - '@IdentificationBundle\Identification\Service\RouteProvider'
-            - '@SubscriptionBundle\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider'
+            - '@SubscriptionBundle\Affiliate\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider'
             - '@IdentificationBundle\Repository\CarrierRepositoryInterface'
             - '@SubscriptionBundle\Subscription\Subscribe\Service\BlacklistVoter'
             - '@SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator'

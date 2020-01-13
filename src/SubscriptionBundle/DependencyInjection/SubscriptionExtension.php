@@ -47,7 +47,7 @@ class SubscriptionExtension extends ConfigurableExtension implements PrependExte
         $loader->load('affiliate.yml');
         $loader->load('fixtures.yml');
         $loader->load('twig.yml');
-        $loader->load('campaign_confirmation.yml');
+        $loader->load('confirmation.yml');
         $loader->load('subscription-voters.yml');
         $loader->load('refund.yml');
 
@@ -109,6 +109,15 @@ class SubscriptionExtension extends ConfigurableExtension implements PrependExte
 
         $definition = $container->getDefinition('SubscriptionBundle\DataFixtures\ORM\LoadSubscriptionPackData');
         DefinitionReplacer::replacePlaceholder($definition, new Reference($mergedConfig['fixtures']['carrier_fixture']), '_carrier_fixture_service_placeholder_');
+
+        $definition = $container->getDefinition('SubscriptionBundle\Affiliate\CampaignConfirmation\Google\Service\GoogleCredentialsProvider');
+        DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['campaign_confirmation']['google']['client_id'], '_client_id_placeholder_');
+        DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['campaign_confirmation']['google']['client_key'], '_client_secret_placeholder_');
+        DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['campaign_confirmation']['google']['refresh_token'], '_refresh_token_placeholder_');
+        DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['campaign_confirmation']['google']['developer_token'], '_developer_token_placeholder_');
+        DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['campaign_confirmation']['google']['client_customer_id'], '_client_customer_id_placeholder_');
+
+
     }
 
 

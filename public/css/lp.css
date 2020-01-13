@@ -217,7 +217,7 @@
 
 #wifi_button .button {
     white-space: nowrap;
-    font-size: 7vw;
+    /*font-size: 7vw;*/
 }
 
 @keyframes highlight {

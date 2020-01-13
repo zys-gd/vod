@@ -68,5 +68,11 @@ return [
 
     'REPORTING_STATS_API_HOST' => 'https://stage.reporting.playwing.com/a/api',
 
-    'CROSS_SUBSCRIPTION_SERVICE' => null
+    'CROSS_SUBSCRIPTION_SERVICE' => null,
+
+    'GOOGLE_TRACKING_CLIENT_ID'          => "",
+    'GOOGLE_TRACKING_CLIENT_KEY'         => "",
+    'GOOGLE_TRACKING_REFRESH_TOKEN'      => "",
+    'GOOGLE_TRACKING_DEVELOPER_TOKEN'    => "",
+    'GOOGLE_TRACKING_CLIENT_CUSTOMER_ID' => ""
 ];

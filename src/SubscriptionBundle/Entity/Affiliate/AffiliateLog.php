@@ -9,15 +9,12 @@ use CommonDataBundle\Entity\Interfaces\HasUuid;
  */
 class AffiliateLog implements HasUuid
 {
-    const EVENT_VISIT = 1;
-    /*modified in OPTI Tracking Fixes 2 to be a new value*/
     const EVENT_SUBSCRIBE = 12;
-    const EVENT_RENEW = 3;
-    const EVENT_UNSUBSCRIBE = 4;
-    const EVENT_BUY = 5;
     const STATUS_SUCCESS = 1;
     const STATUS_FAILURE = 2;
-
+    const STATUS_WAITING = 3;
+    const STATUS_RETRY6 = 4;
+    const STATUS_RETRY24 = 5;
     /**
      * @var string
      */
@@ -111,7 +108,7 @@ class AffiliateLog implements HasUuid
      */
     public function __construct(string $uuid)
     {
-        $this->uuid = $uuid;
+        $this->uuid    = $uuid;
         $this->addedAt = new \DateTime();
     }
 

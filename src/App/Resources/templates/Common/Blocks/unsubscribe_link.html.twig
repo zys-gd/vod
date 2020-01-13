@@ -23,10 +23,11 @@
                          .done(function () {
                              $._loader(true);
                              showAlert({
-                                           title   : '{{ translate('messages.action.unsubscribe.confirmation.1') }}',
-                                           message : '{{ translate('messages.action.unsubscribe.confirmation.2') }}',
-                                           reload  : false,
-                                           callback: function () {
+                                           title    : '{{ translate('messages.action.unsubscribe.confirmation.1') }}',
+                                           message  : '{{ translate('messages.action.unsubscribe.confirmation.2') }}',
+                                           closeText: '{{ translate('messages.action.unsubscribe.button.close') }}',
+                                           reload   : false,
+                                           callback : function () {
                                                window.location = '{{ url('index') }}'
                                            }
                                        });

@@ -15,10 +15,10 @@ services:
     SubscriptionBundle\Affiliate\Service\AffiliateSender:
         arguments:
             - '@SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface'
-            - '@doctrine.orm.entity_manager'
-            - '@SubscriptionBundle\Affiliate\Service\GuzzleClientFactory'
-            - '@SubscriptionBundle\Affiliate\Service\AffiliateLogFactory'
             - '@logger'
+            - '@SubscriptionBundle\Affiliate\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider'
+            - '@SubscriptionBundle\Affiliate\Service\AffiliateLogFactory'
+            - '@doctrine.orm.default_entity_manager'
 
     SubscriptionBundle\Affiliate\Service\UserInfoMapper: ~
 
