@@ -1,4 +1,58 @@
 services:
+    _defaults:
+        autowire: true
+
+    Doctrine\ORM\EntityManager: '@doctrine.orm.entity_manager'
+    IdentificationBundle\Repository\CarrierRepositoryInterface: '@App\Domain\Repository\CarrierRepository'
+    Psr\Log\LoggerInterface: '@logger'
+    Symfony\Component\Routing\RouterInterface: '@router'
+    DeviceDetectionBundle\Service\Device: '@device_detection.service.device'
+    CountryCarrierDetectionBundle\Service\Interfaces\ICountryCarrierDetection: '@CountryCarrierDetectionBundle\Service\MaxMindIpInfo'
+    IdentificationBundle\Identification\Service\StorageInterface: '@IdentificationBundle\Identification\Service\Session\SessionStorage'
+
+    IdentificationBundle\:
+        resource: '../../*'
+        exclude: '../../{DTO,Exception,Controller,Tests}'
+
+    IdentificationBundle\Identification\Controller\:
+        resource: '../../Identification/Controller/*'
+        tags: ['controller.service_arguments']
+
+    IdentificationBundle\Callback\Controller\:
+        resource: '../../Callback/Controller/*'
+        tags: ['controller.service_arguments']
+
+    IdentificationBundle\Twig\:
+        resource: '../../Twig/*'
+        tags: ['twig.extension']
+
+    IdentificationBundle\Identification\Service\RouteProvider:
+        arguments:
+            - '@router'
+            - '_wifi_route_placeholder_'
+            - '_homepage_route_placeholder_'
+            - '_landing_route_placeholder_'
+            - '_my_account_route_placeholder_'
+            - '_wrong_carrier_route_placeholder_'
+            - '_contact_us_route_placeholder_'
+
+    IdentificationBundle\Identification\Profiler\IdentDataCollector:
+        tags:
+            - { name: data_collector, template: '@Identification/profiler/debug_ident.html.twig', id: 'identification.ident_data_collector' }
+
+    IdentificationBundle\Identification\Profiler\FakeCarrierIdentifier:
+        tags:
+            - {name: data_collector, template: '@Identification/profiler/fake_carrier_identifier.html.twig', id: 'identification.fake_carrier_identifier'}
+
+    IdentificationBundle\WifiIdentification\Controller\PinIdentificationController:
+        tags: ['controller.service_arguments']
+
+    IdentificationBundle\Listener\AutoIdentStartListener:
+        arguments:
+            $annotationReader: '@annotations.reader'
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller }
+
     IdentificationBundle\Controller\ParamConverter\ISPDetectionConverter:
         tags:
             - { name: request.param_converter, converter: isp_data_converter  }
@@ -10,9 +64,4 @@ services:
     IdentificationBundle\Controller\ParamConverter\DeviceDataConverter:
         tags:
             - { name: request.param_converter }
-        arguments:
-          ['@device_detection.service.device', '@CountryCarrierDetectionBundle\Service\ConnectionTypeService']
 
-    IdentificationBundle\Identification\Service\Session\SessionStorage:
-        arguments:
-            - '@session'
