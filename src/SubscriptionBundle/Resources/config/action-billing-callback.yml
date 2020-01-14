@@ -3,6 +3,13 @@ services:
         autowire: true
 
     SubscriptionBundle\Subscription\Callback\Common\SubscriptionPreparer: ~
+    SubscriptionBundle\Subscription\Callback\CallbackSubscribeFacade:
+        arguments:
+            - '@SubscriptionBundle\Subscription\Callback\Common\Handler\SubscriptionCallbackHandler'
+            - '@SubscriptionBundle\Service\EntitySaveHelper'
+            - '@SubscriptionBundle\Subscription\Callback\Common\SubscriptionPreparer'
+            - '@SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventTracker'
+            - '@cross_subscription.api_connector'
 
     SubscriptionBundle\Subscription\Callback\Controller\ListenAction:
         arguments: ['@SubscriptionBundle\Subscription\Callback\Common\CommonFlowHandler', '@logger', '@SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerProvider']

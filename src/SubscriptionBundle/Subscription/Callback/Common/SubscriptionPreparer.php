@@ -67,6 +67,8 @@ class SubscriptionPreparer
         $billingProcessId = $processResult->getId();
         $user             = $this->userProvider->obtainUser($msisdn, $carrier, $billingProcessId, '', null);
         $subscription     = $this->subscriptionProvider->obtainSubscription($user);
+
+        $subscription->setCurrentStage($subscription::ACTION_SUBSCRIBE);
         $this->entitySaveHelper->persistAndSave($user);
         $this->entitySaveHelper->persistAndSave($subscription);
 
