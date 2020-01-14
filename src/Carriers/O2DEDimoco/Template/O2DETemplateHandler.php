@@ -1,6 +1,6 @@
 <?php
 
-namespace Carriers\DebitelDEDimoco\Template;
+namespace Carriers\O2DEDimoco\Template;
 
 use CommonDataBundle\Service\TemplateConfigurator\Handler\TemplateHandlerInterface;
 use IdentificationBundle\BillingFramework\ID;
