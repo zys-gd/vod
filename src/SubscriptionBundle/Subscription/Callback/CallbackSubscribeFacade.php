@@ -102,6 +102,7 @@ class CallbackSubscribeFacade
         $this->subscriptionCallbackHandler->doProcess($subscription, $processResponse);
         $this->entitySaveHelper->persistAndSave($subscription);
         $this->logger->debug('doFullCallbackSubscribe creat subscription at:', [time()]);
+        $this->logger->debug('doFullCallbackSubscribe receive token', [$affiliateToken]);
         $this->subscriptionEventTracker->trackSubscribe($subscription, $processResponse);
 
         $userInfo = $this->infoMapper->mapFromUser($user);
