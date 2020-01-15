@@ -167,7 +167,8 @@ class CommonFlowHandler
             'carrier' => $carrier,
             'handler' => get_class($handler),
             'request' => $request,
-            'session' => $request->getSession()->all()
+            'session' => $request->getSession()->all(),
+            'time'    => time()
         ]);
 
         $msisdn           = $request->get('msisdn');
@@ -202,19 +203,12 @@ class CommonFlowHandler
         $subscription     = $this->subscriptionExtractor->getExistingSubscriptionForUser($user);
         $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
 
-        if ($subscription) {
-            if ($error == 'already_done') {
-                $updatedUrl = $this->urlParamAppender->appendUrl($redirectUrl, [
-                    'err_handle' => 'already_subscribed'
-                ]);
-                return new RedirectResponse($updatedUrl);
-            }
-
-            if (!$subscriptionPack->isResubAllowed()) {
-                return new RedirectResponse($this->subscriptionRouteProvider->getResubNotAllowedRoute());
-            }
+        if ($error == 'already_done') {
+            $updatedUrl = $this->urlParamAppender->appendUrl($redirectUrl, [
+                'err_handle' => 'already_subscribed'
+            ]);
+            return new RedirectResponse($updatedUrl);
         }
-
 
         if ($this->blacklistVoter->isPhoneNumberBlacklisted($msisdn)) {
             return $this->blacklistVoter->createNotAllowedResponse();

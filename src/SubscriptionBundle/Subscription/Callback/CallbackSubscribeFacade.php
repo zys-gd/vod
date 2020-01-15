@@ -7,6 +7,7 @@ namespace SubscriptionBundle\Subscription\Callback;
 use App\Domain\Entity\Carrier;
 use IdentificationBundle\Entity\User;
 use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
+use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateSender;
 use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
@@ -46,6 +47,10 @@ class CallbackSubscribeFacade
      * @var AffiliateSender
      */
     private $affiliateSender;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * SubscribeFacade constructor.
@@ -57,6 +62,7 @@ class CallbackSubscribeFacade
      * @param ApiConnector                $apiConnector
      * @param UserInfoMapper              $infoMapper
      * @param AffiliateSender             $affiliateService
+     * @param LoggerInterface             $logger
      */
     public function __construct(
         SubscriptionCallbackHandler $subscriptionCallbackHandler,
@@ -65,7 +71,8 @@ class CallbackSubscribeFacade
         SubscriptionEventTracker $subscriptionEventTracker,
         ApiConnector $apiConnector,
         UserInfoMapper $infoMapper,
-        AffiliateSender $affiliateService
+        AffiliateSender $affiliateService,
+        LoggerInterface $logger
     )
     {
         $this->subscriptionCallbackHandler = $subscriptionCallbackHandler;
@@ -75,6 +82,7 @@ class CallbackSubscribeFacade
         $this->crossSubscriptionApi        = $apiConnector;
         $this->infoMapper                  = $infoMapper;
         $this->affiliateSender             = $affiliateService;
+        $this->logger                      = $logger;
     }
 
     /**
@@ -85,6 +93,7 @@ class CallbackSubscribeFacade
      */
     public function doFullCallbackSubscribe(ProcessResult $processResponse, array $affiliateToken = null)
     {
+        $this->logger->debug('doFullCallbackSubscribe start subscription at:', [time()]);
         /** @var Carrier $carrier */
         /** @var User $user */
         /** @var Subscription $subscription */
@@ -92,6 +101,7 @@ class CallbackSubscribeFacade
         $subscription->setAffiliateToken(json_encode($affiliateToken));
         $this->subscriptionCallbackHandler->doProcess($subscription, $processResponse);
         $this->entitySaveHelper->persistAndSave($subscription);
+        $this->logger->debug('doFullCallbackSubscribe creat subscription at:', [time()]);
         $this->subscriptionEventTracker->trackSubscribe($subscription, $processResponse);
 
         $userInfo = $this->infoMapper->mapFromUser($user);
