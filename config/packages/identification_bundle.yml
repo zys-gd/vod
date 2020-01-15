@@ -50,3 +50,11 @@ subscription:
 
   fixtures:
     carrier_fixture: DataFixtures\LoadCarriersData
+
+  campaign_confirmation:
+    google:
+      client_id: "%google_tracking_client_id%"
+      client_key: "%google_tracking_client_key%"
+      refresh_token: "%google_tracking_refresh_token%"
+      developer_token: "%google_tracking_developer_token%"
+      client_customer_id: "%google_tracking_client_customer_id%"

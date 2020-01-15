@@ -1,12 +1,12 @@
 <?php
 
 
-namespace SubscriptionBundle\CampaignConfirmation\Handler;
+namespace SubscriptionBundle\Affiliate\CampaignConfirmation\Handler;
 
 
 use Symfony\Component\HttpFoundation\Request;
 
-interface CustomPage
+interface HasCustomPage
 {
     public function proceedCustomPage(Request $request);
 }
