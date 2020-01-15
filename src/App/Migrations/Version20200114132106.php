@@ -88,19 +88,18 @@ final class Version20200114132106 extends AbstractMigration
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b38-9693-7cd0e0dck9d8'");
-        $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b38-9693-7cd0e0dk9d8a'");
-        $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b38-9693-7cd0e0k9d8ba'");
-        $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b38-9693-7cd0e0dkf9f8'");
-        $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b38-9693-7cd0e0k9d8d7'");
-        $this->addSql("DELETE FROM translations WHERE uuid = '5179fa73-ebd4-11e8-95c4-02bb250f0f22'");
-        $this->addSql("DELETE FROM translations WHERE uuid = '5179fa73-ebd4-11e8-95c4-02bb250f0f22'");
-        $this->addSql("DELETE FROM translations WHERE uuid = '5179fa73-ebd4-11e8-95c4-02bb250f0f22'");
-        $this->addSql("DELETE FROM translations WHERE uuid = '5179fa73-ebd4-11e8-95c4-02bb250f0f22'");
-        $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b38-9693-7cd0e0dc101s'");
-        $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b38-9693-7cd0e0101sba'");
-        $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b38-9693-7cd0e0ddf9da'");
-
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b38-9693-7cd0e0dck9d8'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b38-9693-7cd0e0dk9d8a'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b38-9693-7cd0e0dkf9f8'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b38-9693-7cd0e0k9d8ba'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b38-9693-7cd0e0k9d8d7'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b38-9693-7cd0e0dc1j17'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b38-9693-7cd0e0d1j17a'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b38-9693-7cd0e01j17ba'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b38-9693-7cd0e1j171ba'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b38-9693-7cd0e0dc101s'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b38-9693-7cd0e0101sba'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b38-9693-7cd0e0ddf9da'");
        $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b38-9693-7cd0e0dcc13o'");
        $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b38-9693-7cd0e0dcc3oa'");
        $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b38-9693-7cd0e0dc3oba'");
@@ -116,7 +115,7 @@ final class Version20200114132106 extends AbstractMigration
        $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b38-93o3-7cd0e0dcc1ba'");
        $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b38-3o93-7cd0e0dcc1ba'");
        $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b3o-9693-7cd0e0dcc1ba'");
-//       $this->addSql("DELETE FROM translations WHERE uuid = ''");
+
 //       $this->addSql("DELETE FROM translations WHERE uuid = ''");
 //       $this->addSql("DELETE FROM translations WHERE uuid = ''");
 //       $this->addSql("DELETE FROM translations WHERE uuid = ''");
