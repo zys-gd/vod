@@ -87,11 +87,11 @@ class CallbackSubscribeFacade
 
     /**
      * @param ProcessResult $processResponse
-     * @param array|null    $affiliateToken
+     * @param array         $affiliateToken
      *
      * @throws \SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound
      */
-    public function doFullCallbackSubscribe(ProcessResult $processResponse, array $affiliateToken = null)
+    public function doFullCallbackSubscribe(ProcessResult $processResponse, array $affiliateToken = [])
     {
         $this->logger->debug('doFullCallbackSubscribe start subscription at:', [time()]);
         /** @var Carrier $carrier */
