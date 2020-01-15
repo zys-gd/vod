@@ -10,6 +10,8 @@ services:
             - '@SubscriptionBundle\Subscription\Callback\Common\SubscriptionPreparer'
             - '@SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventTracker'
             - '@cross_subscription.api_connector'
+            - '@SubscriptionBundle\Affiliate\Service\UserInfoMapper'
+            - '@SubscriptionBundle\Affiliate\Service\AffiliateSender'
 
     SubscriptionBundle\Subscription\Callback\Controller\ListenAction:
         arguments: ['@SubscriptionBundle\Subscription\Callback\Common\CommonFlowHandler', '@logger', '@SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerProvider']
