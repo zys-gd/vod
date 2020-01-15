@@ -172,6 +172,7 @@ class CommonFlowHandler
 
         $msisdn           = $request->get('msisdn');
         $billingProcessId = $request->get('bf_process_id');
+        $error            = $request->get('error');
         $campaign         = $this->campaignExtractor->getCampaignFromSession($request->getSession());
         $redirectUrl      = $this->routeProvider->getLinkToHomepage();
 
@@ -202,7 +203,7 @@ class CommonFlowHandler
         $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
 
         if ($subscription) {
-            if ($subscription->isSubscribed()) {
+            if ($error == 'already_done') {
                 $updatedUrl = $this->urlParamAppender->appendUrl($redirectUrl, [
                     'err_handle' => 'already_subscribed'
                 ]);
@@ -223,7 +224,7 @@ class CommonFlowHandler
             $affiliateToken = json_encode(AffiliateVisitSaver::extractPageVisitData($request->getSession(), true));
             /** @var Subscription $newSubscription */
             /** @var ProcessResult $result */
-            list($newSubscription, $result) = $this->subscriber->subscribe($user, $subscriptionPack, $billingProcessId, $affiliateToken);
+            [$newSubscription, $result] = $this->subscriber->subscribe($user, $subscriptionPack, $billingProcessId, $affiliateToken);
 
             // $this->afterSubscriptionProcessTracker->track($result, $newSubscription, $handler, $campaign);
 
