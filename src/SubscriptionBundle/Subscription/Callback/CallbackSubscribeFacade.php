@@ -87,11 +87,11 @@ class CallbackSubscribeFacade
 
     /**
      * @param ProcessResult $processResponse
-     * @param array         $affiliateToken
+     * @param array|null    $affiliateToken
      *
      * @throws \SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound
      */
-    public function doFullCallbackSubscribe(ProcessResult $processResponse, array $affiliateToken = [])
+    public function doFullCallbackSubscribe(ProcessResult $processResponse, array $affiliateToken = null)
     {
         $this->logger->debug('doFullCallbackSubscribe start subscription at:', [time()]);
         /** @var Carrier $carrier */
@@ -109,7 +109,7 @@ class CallbackSubscribeFacade
             $subscription,
             $userInfo,
             $affiliateToken['cid'] ?? null,
-            $affiliateToken
+            $affiliateToken ?? []
         );
 
         $this->crossSubscriptionApi->registerSubscription($user->getIdentifier(), $user->getBillingCarrierId());

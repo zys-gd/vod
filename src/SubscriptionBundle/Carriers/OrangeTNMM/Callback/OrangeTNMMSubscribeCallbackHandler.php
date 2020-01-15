@@ -80,7 +80,7 @@ class OrangeTNMMSubscribeCallbackHandler implements CarrierCallbackHandlerInterf
     {
         $requestParams   = (Object)$request->request->all();
         $processResponse = $this->processResponseMapper->map($type, (object)['data' => $requestParams]);
-        $affiliateToken = AffiliateVisitSaver::extractPageVisitData($request->getSession(), true);
+        $affiliateToken = AffiliateVisitSaver::extractPageVisitData($request->getSession());
         $this->callbackSubscribeFacade->doFullCallbackSubscribe($processResponse, $affiliateToken);
     }
 }
