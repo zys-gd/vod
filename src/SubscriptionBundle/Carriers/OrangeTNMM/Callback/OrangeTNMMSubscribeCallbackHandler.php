@@ -4,13 +4,11 @@ namespace SubscriptionBundle\Carriers\OrangeTNMM\Callback;
 
 use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Entity\User;
-use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Subscription\Callback\CallbackSubscribeFacade;
 use SubscriptionBundle\Subscription\Callback\Common\CommonFlowHandler;
-use SubscriptionBundle\Subscription\Callback\Common\SubscriptionPreparer;
 use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerInterface;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCustomConversionTrackingRules;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCustomFlow;
@@ -80,7 +78,6 @@ class OrangeTNMMSubscribeCallbackHandler implements CarrierCallbackHandlerInterf
     {
         $requestParams   = (Object)$request->request->all();
         $processResponse = $this->processResponseMapper->map($type, (object)['data' => $requestParams]);
-        $affiliateToken = AffiliateVisitSaver::extractPageVisitData($request->getSession());
-        $this->callbackSubscribeFacade->doFullCallbackSubscribe($processResponse, $affiliateToken);
+        $this->callbackSubscribeFacade->doFullCallbackSubscribe($processResponse);
     }
 }

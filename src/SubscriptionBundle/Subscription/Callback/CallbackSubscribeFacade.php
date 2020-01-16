@@ -87,30 +87,34 @@ class CallbackSubscribeFacade
 
     /**
      * @param ProcessResult $processResponse
-     * @param array|null    $affiliateToken
      *
      * @throws \SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound
      */
-    public function doFullCallbackSubscribe(ProcessResult $processResponse, array $affiliateToken = null)
+    public function doFullCallbackSubscribe(ProcessResult $processResponse)
     {
         $this->logger->debug('doFullCallbackSubscribe start subscription at:', [time()]);
         /** @var Carrier $carrier */
         /** @var User $user */
         /** @var Subscription $subscription */
         [$carrier, $user, $subscription] = $this->subscriptionPreparer->makeUserWithSubscription($processResponse);
-        $subscription->setAffiliateToken(json_encode($affiliateToken));
+
+        $clientFields  = $processResponse->getClientFields();
+        $affiliateData = $clientFields['aff_data'] ?? $clientFields['affiliate'] ?? [];
+
+        $subscription->setAffiliateToken(json_encode($affiliateData));
+
         $this->subscriptionCallbackHandler->doProcess($subscription, $processResponse);
         $this->entitySaveHelper->persistAndSave($subscription);
         $this->logger->debug('doFullCallbackSubscribe creat subscription at:', [time()]);
-        $this->logger->debug('doFullCallbackSubscribe receive token', [$affiliateToken]);
+        $this->logger->debug('doFullCallbackSubscribe receive affiliate', [$affiliateData]);
         $this->subscriptionEventTracker->trackSubscribe($subscription, $processResponse);
 
         $userInfo = $this->infoMapper->mapFromUser($user);
         $this->affiliateSender->checkAffiliateEligibilityAndSendEvent(
             $subscription,
             $userInfo,
-            $affiliateToken['cid'] ?? null,
-            $affiliateToken ?? []
+            $affiliateData['cid'] ?? null,
+            $affiliateData
         );
 
         $this->crossSubscriptionApi->registerSubscription($user->getIdentifier(), $user->getBillingCarrierId());

@@ -4,7 +4,6 @@ namespace SubscriptionBundle\Carriers\VodafoneEGMM\Callback;
 
 use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Entity\User;
-use SubscriptionBundle\Affiliate\Service\AffiliateVisitSaver;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper;
 use SubscriptionBundle\Entity\Subscription;
@@ -79,7 +78,6 @@ class VodafoneEGMMSubscribeCallbackHandler implements CarrierCallbackHandlerInte
     {
         $requestParams   = (Object)$request->request->all();
         $processResponse = $this->processResponseMapper->map($type, (object)['data' => $requestParams]);
-        $affiliateToken = AffiliateVisitSaver::extractPageVisitData($request->getSession());
-        $this->callbackSubscribeFacade->doFullCallbackSubscribe($processResponse, $affiliateToken);
+        $this->callbackSubscribeFacade->doFullCallbackSubscribe($processResponse);
     }
 }
