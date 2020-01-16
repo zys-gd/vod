@@ -173,7 +173,8 @@ class CommonFlowHandler
 
         $msisdn           = $request->get('msisdn');
         $billingProcessId = $request->get('bf_process_id');
-        $error            = $request->get('status');
+        $error            = $request->get('error');
+        $status           = $request->get('status');
         $campaign         = $this->campaignExtractor->getCampaignFromSession($request->getSession());
         $redirectUrl      = $this->routeProvider->getLinkToHomepage();
 
@@ -203,7 +204,7 @@ class CommonFlowHandler
         $subscription     = $this->subscriptionExtractor->getExistingSubscriptionForUser($user);
         $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
 
-        if ($error == 'already_done') {
+        if ($error == 'already_done' || $status == 'already_done') {
             $updatedUrl = $this->urlParamAppender->appendUrl($redirectUrl, [
                 'err_handle' => 'already_subscribed'
             ]);
