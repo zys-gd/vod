@@ -173,7 +173,7 @@ class CommonFlowHandler
 
         $msisdn           = $request->get('msisdn');
         $billingProcessId = $request->get('bf_process_id');
-        $error            = $request->get('error');
+        $error            = $request->get('status');
         $campaign         = $this->campaignExtractor->getCampaignFromSession($request->getSession());
         $redirectUrl      = $this->routeProvider->getLinkToHomepage();
 
