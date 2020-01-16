@@ -215,20 +215,14 @@ class CommonFlowHandler
             return $this->blacklistVoter->createNotAllowedResponse();
         }
 
-        try {
+        if (!$subscription) {
             $affiliateToken = json_encode(AffiliateVisitSaver::extractPageVisitData($request->getSession(), true));
-            /** @var Subscription $newSubscription */
-            /** @var ProcessResult $result */
-            [$newSubscription, $result] = $this->subscriber->subscribe($user, $subscriptionPack, $billingProcessId, $affiliateToken);
-
-            // $this->afterSubscriptionProcessTracker->track($result, $newSubscription, $handler, $campaign);
-
-            $this->logger->debug('Create new subscription', ['subscription' => $subscription]);
-            $this->logger->debug('Finish subscribeBack process');
-
-            return new RedirectResponse($redirectUrl);
-        } catch (\Exception $exception) {
-            return new RedirectResponse($this->routeProvider->getLinkToWrongCarrierPage());
+            $this->subscriber->subscribe($user, $subscriptionPack, $billingProcessId, $affiliateToken);
+            $this->logger->debug('Created new subscription');
         }
+
+        $this->logger->debug('Finish subscribeBack process');
+
+        return new RedirectResponse($redirectUrl);
     }
 }
