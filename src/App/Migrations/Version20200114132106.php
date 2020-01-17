@@ -119,6 +119,24 @@ final class Version20200114132106 extends AbstractMigration
         $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('a1a1daee-efbf-4b3q-9693-7cd0e0dcc1ba', '5179fa73-ebd4-11e8-95c4-02bb250f0f22', 'wifi.form.button.apply', 'Anwenden')");
         $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('a1a1daee-efbf-43q8-9693-7cd0e0dcc1ba', '5179fa73-ebd4-11e8-95c4-02bb250f0f22', 'wifi.form.input_pin', 'Pin-Code')");
         $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('a1a1daee-efbf-3q38-9693-7cd0e0dcc1ba', '5179fa73-ebd4-11e8-95c4-02bb250f0f22', 'messages.action.resend_pin', 'Neuer PIN-Code wurde erfolgreich gesendet')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('a1a1daee-efbf-3q38-9693-7cd0e0dcc171', '5179fa73-ebd4-11e8-95c4-02bb250f0f22', 'internal-server-error', 'Entschuldigung, der Dienst ist derzeit nicht verfügbar. Wir tun unser Bestes, um das Problem zu lösen! Wenn du zu 100% Sport zurückkehren möchtest, klicke bitte <a href=\"%url%\">hier</a>.')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('a1a1daee-efbf-3q38-9693-7cd0e0dcc71a', '5179fa73-ebd4-11e8-95c4-02bb250f0f22', 'messages.error.already_subscribed_on_another_service', 'Sehr geehrter Kunde, es tut uns leid, aber du hast bereits einen anderen Dienst abonniert. Wenn du 100sport.tv abonnieren möchtest, kontaktiere uns bitte.')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('a1a1daee-efbf-3q38-9693-7cd0e0dc71ba', '5179fa73-ebd4-11e8-95c4-02bb250f0f22', 'messages.error.subscription_restricted', 'Sehr geehrter Kunde, entschuldigung, aber du hast oder hattest bereits einen unserer Dienste abonniert. Daher ist die der Abschluss eines Abonnements für dich begrenzt und nicht möglich')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('a1a1daee-efbf-3q38-9693-7cd0e0d711ba', '5179fa73-ebd4-11e8-95c4-02bb250f0f22', 'messages.error.postpaid_restricted', 'Dieses Angebot gilt nur für Prepaid-Kunden')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('a1a1daee-efbf-3q38-9693-7cd0e071c1ba', '5179fa73-ebd4-11e8-95c4-02bb250f0f22', 'wrong_cookie_page.text', 'Hoppla, anscheinend ist die Annahme von Cookies in den Einstellungen deines Browsers deaktiviert. Bitte erlaube sie und genieße unser Angebot: Einstellungen > Website-Einstellungen > Cookies erlauben. Um zurückzugehen, klicke bitte auf %backLink%.')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('a1a1daee-efbf-3q38-9693-7cd0e71cc1ba', '5179fa73-ebd4-11e8-95c4-02bb250f0f22', 'whoops', 'Hoppla. Wir können deine Anfrage nicht bearbeiten. Bitte versuche es später. Wenn du zu 100% Sport zurückkehren möchtest, klicke bitte<a href=\"%url%\">hier</a>.')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('a1a1daee-efbf-3q38-9693-7cd071dcc1ba', '5179fa73-ebd4-11e8-95c4-02bb250f0f22', 'whoops.short', 'Hoppla. Wir können deine Anfrage nicht bearbeiten. Bitte versuche es später.')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('a1a1daee-efbf-3q38-9693-7cd710dcc1ba', '5179fa73-ebd4-11e8-95c4-02bb250f0f22', 'wrong_cookie_page.backlink_title', 'Hier')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('a1a1daee-efbf-3q38-9693-7c71e0dcc1ba', '5179fa73-ebd4-11e8-95c4-02bb250f0f22', 'message.error.pin_request_limit_exceeded', 'Das Limit für die PIN-Abfrage ist erreicht. Bitte versuche es später erneut!')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('a1a1daee-efbf-3q38-9693-7710e0dcc1ba', '5179fa73-ebd4-11e8-95c4-02bb250f0f22', 'subscription.status.error', 'Hoppla! Entschuldigung, aber es ist etwas schief gelaufen. Wir können das Abonnement nicht fortsetzen. Bitte versuche es später')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('a1a1daee-efbf-3q38-9693-71d0e0dcc1ba', '5179fa73-ebd4-11e8-95c4-02bb250f0f22', 'not-found-error', 'Entschuldigung, diese URL existiert nicht oder ist nicht mehr verfügbar. Wenn du zu 100% Sport zurückkehren möchtest, klicke bitte<a href=\"%url%\">hier</a>.')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('a1a1daee-efbf-3q38-9671-7cd0e0dcc1ba', '5179fa73-ebd4-11e8-95c4-02bb250f0f22', 'resub_not_allowed', 'Du kannst 100% Sport nicht abonnieren, da du bereits ein Abo gekündigt hast. <br>Wenn du erneut ein Abo abschließen willst, <a class=\"contact-us-link red\" href=\"%contact_us_url%\">Kontaktiere Uns</a> bitte')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('a1a1daee-efbf-3q38-9713-7cd0e0dcc1ba', '5179fa73-ebd4-11e8-95c4-02bb250f0f22', 'messages.error.subscribe_error', 'Entschuldigung, aber beim Abonnieren ist ein Fehler aufgetreten')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('a1a1daee-efbf-3q38-7193-7cd0e0dcc1ba', '5179fa73-ebd4-11e8-95c4-02bb250f0f22', 'messages.error.already_subscribed', 'Du hast bereits ein Abonnement')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('a1a1daee-efbf-3q71-9693-7cd0e0dcc1ba', '5179fa73-ebd4-11e8-95c4-02bb250f0f22', 'messages.error.blacklisted', 'Du kannst 100% Sport nicht abonnieren. Deine Telefonnummer wurde vom Abonnement ausgeschlossen. Für weitere Informationen <a class=\"contact-us-link red\" href=\"%contact_us_url%\">Kontaktiere Uns</a> bitte')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('a1a1daee-efbf-3718-9693-7cd0e0dcc1ba', '5179fa73-ebd4-11e8-95c4-02bb250f0f22', 'messages.error.wifi_blacklisted', 'Du kannst 100% Sport nicht abonnieren. Deine Telefonnummer wurde vom Abonnement ausgeschlossen.')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('a1a1daee-efbf-7138-9693-7cd0e0dcc1ba', '5179fa73-ebd4-11e8-95c4-02bb250f0f22', 'messages.error.not_enough_credit', 'Entschuldigung, aber dein Guthaben reicht ür ein Abo nicht aus. Bitte lade dein Guthaben auf und versuche es erneut.')");
+        $this->addSql("INSERT INTO translations (uuid, language_id, `key`, translation) VALUES ('a1a1daee-ef71-3q38-9693-7cd0e0dcc1ba', '5179fa73-ebd4-11e8-95c4-02bb250f0f22', 'subscription.status.not_enough_credit', 'Entschuldigung, aber dein Guthaben reicht ür ein Abo nicht aus. Bitte lade dein Guthaben auf und versuche es erneut.')");
     }
 
     public function down(Schema $schema) : void
@@ -231,5 +249,23 @@ final class Version20200114132106 extends AbstractMigration
        $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-4b3q-9693-7cd0e0dcc1ba'");
        $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-43q8-9693-7cd0e0dcc1ba'");
        $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-3q38-9693-7cd0e0dcc1ba'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-3q38-9693-7cd0e0dcc171'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-3q38-9693-7cd0e0dcc71a'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-3q38-9693-7cd0e0dc71ba'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-3q38-9693-7cd0e0d711ba'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-3q38-9693-7cd0e071c1ba'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-3q38-9693-7cd0e71cc1ba'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-3q38-9693-7cd071dcc1ba'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-3q38-9693-7cd710dcc1ba'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-3q38-9693-7c71e0dcc1ba'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-3q38-9693-7710e0dcc1ba'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-3q38-9693-71d0e0dcc1ba'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-3q38-9671-7cd0e0dcc1ba'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-3q38-9713-7cd0e0dcc1ba'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-3q38-7193-7cd0e0dcc1ba'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-3q71-9693-7cd0e0dcc1ba'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-3718-9693-7cd0e0dcc1ba'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-efbf-7138-9693-7cd0e0dcc1ba'");
+       $this->addSql("DELETE FROM translations WHERE uuid = 'a1a1daee-ef71-3q38-9693-7cd0e0dcc1ba'");
     }
 }
