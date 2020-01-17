@@ -78,6 +78,9 @@ class VodafoneEGMMSubscribeCallbackHandler implements CarrierCallbackHandlerInte
     {
         $requestParams   = (Object)$request->request->all();
         $processResponse = $this->processResponseMapper->map($type, (object)['data' => $requestParams]);
-        $this->callbackSubscribeFacade->doFullCallbackSubscribe($processResponse);
+
+        if ($processResponse->getError() != ProcessResult::ERROR_ALREADY_DONE) {
+            $this->callbackSubscribeFacade->doFullCallbackSubscribe($processResponse);
+        }
     }
 }

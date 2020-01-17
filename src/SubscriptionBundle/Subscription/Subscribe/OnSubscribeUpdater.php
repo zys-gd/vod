@@ -110,9 +110,6 @@ class OnSubscribeUpdater
                         $subscription->setCredits($subscription->getCredits() - 2);
                     }
                     break;
-                case 'already_done': // this case for ignoring duplicate subscribe callback (subscribeBack flow)
-                    $this->applySuccess($subscription);
-                    break;
                 default:
                     $this->applyFailure($subscription, $error);
             }
