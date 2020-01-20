@@ -17,7 +17,7 @@ use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
 use SubscriptionBundle\SubscriptionPack\SubscriptionPackProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 
 class FakeSubscribeAction
 {
@@ -28,7 +28,7 @@ class FakeSubscribeAction
      */
     private $userExtractor;
     /**
-     * @var Router
+     * @var RouterInterface
      */
     private $router;
     /**
@@ -56,7 +56,7 @@ class FakeSubscribeAction
      * SubscribeAction constructor.
      *
      * @param \IdentificationBundle\User\Service\UserExtractor $userExtractor
-     * @param Router                                           $router
+     * @param RouterInterface                                  $router
      * @param LoggerInterface                                  $logger
      * @param SubscriptionExtractor                            $subscriptionProvider
      * @param SubscriptionPackProvider                         $subscriptionPackProvider
@@ -65,7 +65,7 @@ class FakeSubscribeAction
      */
     public function __construct(
         UserExtractor $userExtractor,
-        Router $router,
+        RouterInterface $router,
         LoggerInterface $logger,
         SubscriptionExtractor $subscriptionProvider,
         SubscriptionPackProvider $subscriptionPackProvider,
