@@ -28,6 +28,10 @@ services:
     SubscriptionBundle\Subscription\Callback\:
         resource: '../../Subscription/Callback/*'
 
+    SubscriptionBundle\Subscription\Callback\Controller\:
+        resource: '../../Subscription/Callback/Controller/*'
+        tags: ['controller.service_arguments']
+
     SubscriptionBundle\Subscription\Notification\:
         resource: '../../Subscription/Notification/*'
 
@@ -41,16 +45,32 @@ services:
         resource: '../../Subscription/Renew/*'
         exclude: '../../Subscription/Renew/{DTO,Exception}'
 
+    SubscriptionBundle\Subscription\Renew\Controller\:
+        resource: '../../Subscription/Renew/Controller/*'
+        tags: ['controller.service_arguments']
+
     SubscriptionBundle\Subscription\Subscribe\:
         resource: '../../Subscription/Subscribe/*'
         exclude: '../../Subscription/Subscribe/{DTO,Exception}'
 
+    SubscriptionBundle\Subscription\Subscribe\Controller\:
+        resource: '../../Subscription/Subscribe/Controller/*'
+        tags: ['controller.service_arguments']
+
     SubscriptionBundle\Subscription\SubscribeBack\:
         resource: '../../Subscription/SubscribeBack/*'
+
+    SubscriptionBundle\Subscription\SubscribeBack\Controller\:
+        resource: '../../Subscription/SubscribeBack/Controller/*'
+        tags: ['controller.service_arguments']
 
     SubscriptionBundle\Subscription\Unsubscribe\:
         resource: '../../Subscription/Unsubscribe/*'
         exclude: '../../Subscription/Unsubscribe/{Exception}'
+
+    SubscriptionBundle\Subscription\Unsubscribe\Controller\:
+        resource: '../../Subscription/Unsubscribe/Controller/*'
+        tags: ['controller.service_arguments']
 
     SubscriptionBundle\API\:
         resource: '../../API/*'
