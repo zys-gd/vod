@@ -229,5 +229,9 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: refunds, label: Refunds }
 
-
+    SubscriptionBundle\Subscription\Callback\Common\CallbackTypeHandlerProvider:
+        arguments:
+            - '@SubscriptionBundle\Subscription\Callback\Common\Handler\UnsubscriptionCallbackHandler'
+            - '@SubscriptionBundle\Subscription\Callback\Common\Handler\SubscriptionCallbackHandler'
+            - '@SubscriptionBundle\Subscription\Callback\Common\Handler\RenewCallbackHandler'
 
