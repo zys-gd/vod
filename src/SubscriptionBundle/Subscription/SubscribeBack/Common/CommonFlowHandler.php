@@ -167,11 +167,14 @@ class CommonFlowHandler
             'carrier' => $carrier,
             'handler' => get_class($handler),
             'request' => $request,
-            'session' => $request->getSession()->all()
+            'session' => $request->getSession()->all(),
+            'time'    => time()
         ]);
 
         $msisdn           = $request->get('msisdn');
         $billingProcessId = $request->get('bf_process_id');
+        $error            = $request->get('error');
+        $status           = $request->get('status');
         $campaign         = $this->campaignExtractor->getCampaignFromSession($request->getSession());
         $redirectUrl      = $this->routeProvider->getLinkToHomepage();
 
@@ -201,39 +204,25 @@ class CommonFlowHandler
         $subscription     = $this->subscriptionExtractor->getExistingSubscriptionForUser($user);
         $subscriptionPack = $this->subscriptionPackProvider->getActiveSubscriptionPack($user);
 
-        if ($subscription) {
-            if ($subscription->isSubscribed()) {
-                $updatedUrl = $this->urlParamAppender->appendUrl($redirectUrl, [
-                    'err_handle' => 'already_subscribed'
-                ]);
-                return new RedirectResponse($updatedUrl);
-            }
-
-            if (!$subscriptionPack->isResubAllowed()) {
-                return new RedirectResponse($this->subscriptionRouteProvider->getResubNotAllowedRoute());
-            }
+        if ($error == 'already_done' || $status == 'already_done') {
+            $updatedUrl = $this->urlParamAppender->appendUrl($redirectUrl, [
+                'err_handle' => 'already_subscribed'
+            ]);
+            return new RedirectResponse($updatedUrl);
         }
-
 
         if ($this->blacklistVoter->isPhoneNumberBlacklisted($msisdn)) {
             return $this->blacklistVoter->createNotAllowedResponse();
         }
 
-        try {
+        if (!$subscription) {
             $affiliateToken = json_encode(AffiliateVisitSaver::extractPageVisitData($request->getSession(), true));
-            /** @var Subscription $newSubscription */
-            /** @var ProcessResult $result */
-            list($newSubscription, $result) = $this->subscriber->subscribe($user, $subscriptionPack, $billingProcessId, $affiliateToken);
-
-            $this->afterSubscriptionProcessTracker->track($result, $newSubscription, $handler, $campaign);
-
-
-            $this->logger->debug('Create new subscription', ['subscription' => $subscription]);
-            $this->logger->debug('Finish subscribeBack process');
-
-            return new RedirectResponse($redirectUrl);
-        } catch (\Exception $exception) {
-            return new RedirectResponse($this->routeProvider->getLinkToWrongCarrierPage());
+            $this->subscriber->subscribe($user, $subscriptionPack, $billingProcessId, $affiliateToken);
+            $this->logger->debug('Created new subscription');
         }
+
+        $this->logger->debug('Finish subscribeBack process');
+
+        return new RedirectResponse($redirectUrl);
     }
 }

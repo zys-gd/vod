@@ -5,3 +5,8 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
