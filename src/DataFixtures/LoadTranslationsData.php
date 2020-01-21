@@ -38,8 +38,8 @@ class LoadTranslationsData extends AbstractFixture implements ContainerAwareInte
             $key         = $row['key'];
             $translation = $row['translation'];
             $uuid        = $row['uuid'];
-            $language    = $row['language']['uuid'] ?? $row['language_id'];
-            $carrier     = $row['carrier']['uuid'] ?? $row['carrier_id'] ?? null;
+            $language    = $row['language_id'] ?? $row['language']['uuid'];
+            $carrier     = $row['carrier_id'] ?? $row['carrier']['uuid'] ?? null;
 
             FixtureDataLoader::insertRow([
                 '`key`'       => $key,
