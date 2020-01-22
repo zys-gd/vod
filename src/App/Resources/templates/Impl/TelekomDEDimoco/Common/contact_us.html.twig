@@ -52,15 +52,11 @@
             {{ form_end(form) }}
         </div>
 
-        <div class="d-flex justify-content-center text-center mt-3">
-            <span>{{ translate('contact_us.text.3') }}</span>
+        <div class="text-center ml-1 mt-4 mb-2">
+            {% if userIdentifier %}<span>{{ translate('contact_us.user.title') }}</span>: {{ userIdentifier }}.{% endif %}
+            <span>{{ translate('contact_us.text.3') }}.</span><br/>
+            <span>{{ translate('contact_us.text.4') }}.</span>
         </div>
-
-        {% if userIdentifier %}
-            <div class="d-flex justify-content-center text-center mt-3">
-                <span>{{ translate('contact_us.user.title') }}</span>: {{ userIdentifier }}
-            </div>
-        {% endif %}
     </div>
 {% endblock %}
 

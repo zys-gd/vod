@@ -10466,7 +10466,9 @@
     {
         "uuid": "e7a7d387-9185-4306-8c57-73ad8dbfa2d0",
         "language_id": "5179fa73-ebd4-11e8-95c4-02bb250f0f22",
-        "carrier_id": "3de06e41-f889-4f95-aac3-ebd31d7d9ag4",
+        "carrier": {
+            "uuid": "3de06e41-f889-4f95-aac3-ebd31d7d9ag4"
+        },
         "key": "contact_us.text.3",
         "translation": "Helpline: 08000000557 (EUR 0,00\/Min.)"
     },
