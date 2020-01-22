@@ -18,6 +18,7 @@ class SubscriptionFactory
 
     /**
      * SubscriptionFactory constructor.
+     *
      * @param EntitySaveHelper $entitySaveHelper
      */
     public function __construct(EntitySaveHelper $entitySaveHelper)
@@ -25,6 +26,14 @@ class SubscriptionFactory
         $this->entitySaveHelper = $entitySaveHelper;
     }
 
+    /**
+     * @param User             $user
+     * @param SubscriptionPack $subscriptionPack
+     * @param null             $affiliateToken
+     *
+     * @return Subscription
+     * @throws \Exception
+     */
     public function createAndSave(User $user, SubscriptionPack $subscriptionPack, $affiliateToken = null): Subscription
     {
         $subscription = $this->create($user, $subscriptionPack, $affiliateToken);
@@ -33,7 +42,21 @@ class SubscriptionFactory
         return $subscription;
     }
 
-    public function create(User $user, SubscriptionPack $subscriptionPack, $affiliateToken = null, int $status = Subscription::IS_ACTIVE): Subscription
+    /**
+     * @param User             $user
+     * @param SubscriptionPack $subscriptionPack
+     * @param null             $affiliateToken
+     * @param int              $status
+     *
+     * @return Subscription
+     * @throws \Exception
+     */
+    public function create(
+        User $user,
+        SubscriptionPack $subscriptionPack,
+        $affiliateToken = null,
+        int $status = Subscription::IS_ACTIVE
+    ): Subscription
     {
         $uuid         = UuidGenerator::generate();
         $subscription = new Subscription($uuid);
