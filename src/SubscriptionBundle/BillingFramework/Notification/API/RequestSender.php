@@ -9,7 +9,6 @@
 namespace SubscriptionBundle\BillingFramework\Notification\API;
 
 use GuzzleHttp\Client;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Notification\API\DTO\NotificationMessage;

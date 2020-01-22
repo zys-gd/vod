@@ -3,23 +3,14 @@
 namespace App\Controller;
 
 use App\Domain\DTO\BatchOfGames;
-use App\Domain\Entity\CountryCategoryPriorityOverride;
-use App\Domain\Entity\MainCategory;
-use App\Domain\Entity\UploadedVideo;
-use App\Domain\Repository\CountryCategoryPriorityOverrideRepository;
 use App\Domain\Repository\GameRepository;
-use App\Domain\Repository\MainCategoryRepository;
-use App\Domain\Repository\UploadedVideoRepository;
 use App\Domain\Service\HomepageVideoListProvider;
 use App\Piwik\ContentStatisticSender;
-use App\Domain\Service\VideoProcessing\UploadedVideoSerializer;
 use CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator;
-use ExtrasBundle\Utils\ArraySorter;
 use IdentificationBundle\Controller\ControllerWithIdentification;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
 use IdentificationBundle\Identification\Service\AlreadySubscribedIdentFinisher;
-use IdentificationBundle\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -102,7 +93,7 @@ class HomeController extends AbstractController implements
             $this->alreadySubscribedIdentFinisher->tryToIdentify($request);
         }
 
-        list($categorizedVideos, $indexedCategoryData) = $this->homepageVideoListProvider->getVideosForHomepage($data);
+        [$categorizedVideos, $indexedCategoryData] = $this->homepageVideoListProvider->getVideosForHomepage($data);
 
         $this->contentStatisticSender->trackVisit($request->getSession());
 

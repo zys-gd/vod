@@ -1,6 +1,0 @@
-services:
-
-  #gedmo.listener.loggable:
-  #      class: Gedmo\Loggable\LoggableListener
-  #      tags:
-  #          - { name: doctrine.event_subscriber, connection: default }

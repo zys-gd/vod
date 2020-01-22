@@ -3,16 +3,13 @@
 namespace App\Controller;
 
 use App\Domain\DTO\BatchOfNotExpiredVideos;
-use App\Domain\Entity\MainCategory;
 use App\Domain\Entity\UploadedVideo;
 use App\Domain\Repository\MainCategoryRepository;
 use App\Domain\Repository\UploadedVideoRepository;
 use App\Domain\Service\VideoProcessing\UploadedVideoSerializer;
-use IdentificationBundle\Identification\DTO\IdentificationData;
-use IdentificationBundle\Identification\DTO\ISPData;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
