@@ -205,6 +205,9 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         /** @var Campaign $campaign */
         if ($campaign) {
+            if ($campaign->getIsPause()) { // TODO: technical debt
+                return RedirectResponse::create($this->defaultRedirectUrl);
+            }
 
             try {
                 $this->landingPageAccessResolver->ensureCampaignHaveAllParametersPassed($request, $campaign);
