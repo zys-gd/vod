@@ -7,25 +7,17 @@ namespace SubscriptionBundle\Carriers\HutchID\Callback;
 use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Identification\Service\Session\IdentificationDataStorage;
 use IdentificationBundle\Identification\Service\TokenGenerator;
-use IdentificationBundle\Repository\CarrierRepositoryInterface;
-use IdentificationBundle\Repository\UserRepository;
-use IdentificationBundle\User\Service\UserFactory;
 use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper;
-use SubscriptionBundle\BillingFramework\Process\SubscribeProcess;
-use SubscriptionBundle\Carriers\HutchID\Callback\HutchIDSMSSubscriber;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Entity\SubscriptionPack;
-use SubscriptionBundle\Repository\SubscriptionPackRepository;
-use SubscriptionBundle\Repository\SubscriptionRepository;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Subscription\Callback\Common\CommonFlowHandler;
+use SubscriptionBundle\Subscription\Callback\Common\SubscriptionPreparer;
 use SubscriptionBundle\Subscription\Callback\Impl\CarrierCallbackHandlerInterface;
-use SubscriptionBundle\Subscription\Callback\Impl\HasCustomFlow;
 use SubscriptionBundle\Subscription\Callback\Impl\HasCustomConversionTrackingRules;
+use SubscriptionBundle\Subscription\Callback\Impl\HasCustomFlow;
 use SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker;
-use SubscriptionBundle\Subscription\Common\SubscriptionFactory;
 use SubscriptionBundle\Subscription\Notification\Notifier;
 use SubscriptionBundle\Subscription\Subscribe\Common\SubscriptionEventTracker;
 use SubscriptionBundle\Subscription\Subscribe\Exception\SubscriptionFlowException;
@@ -38,37 +30,13 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
      */
     private $commonFlowHandler;
     /**
-     * @var UserRepository
-     */
-    private $userRepository;
-    /**
-     * @var SubscriptionFactory
-     */
-    private $subscriptionCreator;
-    /**
-     * @var SubscriptionRepository
-     */
-    private $subscriptionRepository;
-    /**
-     * @var SubscriptionPackRepository
-     */
-    private $subscriptionPackRepository;
-    /**
      * @var EntitySaveHelper
      */
     private $entitySaveHelper;
     /**
-     * @var CarrierRepositoryInterface
-     */
-    private $carrierRepository;
-    /**
      * @var TokenGenerator
      */
     private $generator;
-    /**
-     * @var UserFactory
-     */
-    private $userFactory;
     /**
      * @var IdentificationDataStorage
      */
@@ -102,19 +70,17 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
      * @var ApiConnector
      */
     private $crossSubscriptionApi;
+    /**
+     * @var SubscriptionPreparer
+     */
+    private $subscriptionPreparer;
 
     /**
      * HutchIDCallbackSubscribe constructor.
      *
      * @param CommonFlowHandler           $commonFlowHandler
-     * @param UserRepository              $userRepository
-     * @param SubscriptionFactory         $subscriptionCreator
-     * @param SubscriptionRepository      $subscriptionRepository
-     * @param SubscriptionPackRepository  $subscriptionPackRepository
      * @param EntitySaveHelper            $entitySaveHelper
-     * @param CarrierRepositoryInterface  $carrierRepository
      * @param TokenGenerator              $generator
-     * @param UserFactory                 $userFactory
      * @param IdentificationDataStorage   $identificationDataStorage
      * @param ProcessResponseMapper       $processResponseMapper
      * @param HutchIDSMSSubscriber        $hutchIDSMSSubscriber
@@ -123,17 +89,12 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
      * @param LoggerInterface             $logger
      * @param ProcessResultSuccessChecker $processResultSuccessChecker
      * @param ApiConnector                $apiConnector
+     * @param SubscriptionPreparer        $subscriptionPreparer
      */
     public function __construct(
         CommonFlowHandler $commonFlowHandler,
-        UserRepository $userRepository,
-        SubscriptionFactory $subscriptionCreator,
-        SubscriptionRepository $subscriptionRepository,
-        SubscriptionPackRepository $subscriptionPackRepository,
         EntitySaveHelper $entitySaveHelper,
-        CarrierRepositoryInterface $carrierRepository,
         TokenGenerator $generator,
-        UserFactory $userFactory,
         IdentificationDataStorage $identificationDataStorage,
         ProcessResponseMapper $processResponseMapper,
         HutchIDSMSSubscriber $hutchIDSMSSubscriber,
@@ -141,26 +102,22 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
         SubscriptionEventTracker $subscriptionEventTracker,
         LoggerInterface $logger,
         ProcessResultSuccessChecker $processResultSuccessChecker,
-        ApiConnector $apiConnector
+        ApiConnector $apiConnector,
+        SubscriptionPreparer $subscriptionPreparer
     )
     {
-        $this->commonFlowHandler          = $commonFlowHandler;
-        $this->userRepository             = $userRepository;
-        $this->subscriptionCreator        = $subscriptionCreator;
-        $this->subscriptionRepository     = $subscriptionRepository;
-        $this->subscriptionPackRepository = $subscriptionPackRepository;
-        $this->entitySaveHelper           = $entitySaveHelper;
-        $this->carrierRepository          = $carrierRepository;
-        $this->generator                  = $generator;
-        $this->userFactory                = $userFactory;
-        $this->identificationDataStorage  = $identificationDataStorage;
-        $this->processResponseMapper      = $processResponseMapper;
-        $this->hutchIDSMSSubscriber       = $hutchIDSMSSubscriber;
-        $this->notifier                   = $notifier;
-        $this->subscriptionEventTracker   = $subscriptionEventTracker;
-        $this->logger                     = $logger;
-        $this->resultSuccessChecker       = $processResultSuccessChecker;
-        $this->crossSubscriptionApi       = $apiConnector;
+        $this->commonFlowHandler         = $commonFlowHandler;
+        $this->entitySaveHelper          = $entitySaveHelper;
+        $this->generator                 = $generator;
+        $this->identificationDataStorage = $identificationDataStorage;
+        $this->processResponseMapper     = $processResponseMapper;
+        $this->hutchIDSMSSubscriber      = $hutchIDSMSSubscriber;
+        $this->notifier                  = $notifier;
+        $this->subscriptionEventTracker  = $subscriptionEventTracker;
+        $this->logger                    = $logger;
+        $this->resultSuccessChecker      = $processResultSuccessChecker;
+        $this->crossSubscriptionApi      = $apiConnector;
+        $this->subscriptionPreparer      = $subscriptionPreparer;
     }
 
     public function canHandle(Request $request, int $carrierId): bool
@@ -188,35 +145,7 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
 
             $this->logger->debug('Callback listen process debug', [$processResponse, $requestParams]);
 
-            $billingCarrierId = $requestParams->carrier;
-            $carrier          = $this->carrierRepository->findOneByBillingId($billingCarrierId);
-            $msisdn           = $requestParams->client_user ?? $requestParams->provider_user;
-            $user             = $this->userRepository->findOneByMsisdn($msisdn);
-
-            if (!$user) {
-                $newToken = $this->generator->generateToken();
-                $user     = $this->userFactory->create(
-                    $msisdn,
-                    $carrier,
-                    '',
-                    $newToken,
-                    $processResponse->getId()
-                );
-
-                $this->entitySaveHelper->persistAndSave($user);
-
-                $this->identificationDataStorage->setIdentificationToken($newToken);
-            }
-
-            /** @var Subscription $subscription */
-            $subscription = $this->subscriptionRepository->findOneBy(['user' => $user]);
-
-            if (!$subscription) {
-                /** @var SubscriptionPack $subscriptionPack */
-                $subscriptionPack = $this->subscriptionPackRepository->findOneBy(['carrier' => $carrier, 'status' => 1]);
-
-                $subscription = $this->subscriptionCreator->create($user, $subscriptionPack);
-            }
+            [$carrier, $user, $subscription] = $this->subscriptionPreparer->makeUserWithSubscription($processResponse);
 
             $this->hutchIDSMSSubscriber->subscribe($subscription, $processResponse);
             $this->entitySaveHelper->persistAndSave($subscription);
@@ -240,7 +169,6 @@ class HutchIDCallbackSubscribe implements CarrierCallbackHandlerInterface, HasCu
                 );
 
                 // track event
-                // TODO: use afterSubscriptionProcessTracker?
                 $isNeedToBeTracked = true;
                 if ($this instanceof HasCustomConversionTrackingRules) {
                     $isNeedToBeTracked = $this->isConversionNeedToBeTracked($processResponse);

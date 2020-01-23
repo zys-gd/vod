@@ -33,33 +33,10 @@ class SubscriptionExtension extends ConfigurableExtension implements PrependExte
             new FileLocator(__DIR__ . '/../Resources/config')
         );
         $loader->load('services.yml');
-        $loader->load('action-billing-callback.yml');
-        $loader->load('action-billing-notif.yml');
-        $loader->load('action-subscribe.yml');
-        $loader->load('action-unsubscribe.yml');
-        $loader->load('action-renew.yml');
-        $loader->load('action-mass-renew.yml');
-        $loader->load('action-subscribe-back.yml');
-        $loader->load('billing-framework-integration.yml');
-        $loader->load('listeners.yml');
         $loader->load('repositories.yml');
-        $loader->load('piwik-integration.yml');
-        $loader->load('affiliate.yml');
         $loader->load('fixtures.yml');
-        $loader->load('twig.yml');
-        $loader->load('campaign_confirmation.yml');
-        $loader->load('subscription-voters.yml');
-        $loader->load('refund.yml');
 
-        $loader->load('captool-visit.yml');
-        $loader->load('captool-commons.yml');
-        $loader->load('captool-subscription.yml');
-        $loader->load('reporting-tool.yml');
-        $loader->load('blacklist.yml');
-        $loader->load('action-common.yml');
         $loader->load('subscription-pack.yml');
-        $loader->load('complaints.yml');
-        $loader->load('api.yml');
 
 
         $loader = new YamlFileLoader(
@@ -109,6 +86,15 @@ class SubscriptionExtension extends ConfigurableExtension implements PrependExte
 
         $definition = $container->getDefinition('SubscriptionBundle\DataFixtures\ORM\LoadSubscriptionPackData');
         DefinitionReplacer::replacePlaceholder($definition, new Reference($mergedConfig['fixtures']['carrier_fixture']), '_carrier_fixture_service_placeholder_');
+
+        $definition = $container->getDefinition('SubscriptionBundle\Affiliate\CampaignConfirmation\Google\Service\GoogleCredentialsProvider');
+        DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['campaign_confirmation']['google']['client_id'], '_client_id_placeholder_');
+        DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['campaign_confirmation']['google']['client_key'], '_client_secret_placeholder_');
+        DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['campaign_confirmation']['google']['refresh_token'], '_refresh_token_placeholder_');
+        DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['campaign_confirmation']['google']['developer_token'], '_developer_token_placeholder_');
+        DefinitionReplacer::replacePlaceholder($definition, $mergedConfig['campaign_confirmation']['google']['client_customer_id'], '_client_customer_id_placeholder_');
+
+
     }
 
 

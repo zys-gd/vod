@@ -50,17 +50,23 @@ class PassthroughRequestPreparer
         $this->affiliateDataSerializer   = $affiliateDataSerializer;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return ProcessRequestParameters
+     */
     public function getProcessRequestParameters(Request $request): ProcessRequestParameters
     {
-        $affiliateParams     = $this->affiliateDataSerializer->serialize($request->getSession(), 'affiliate');
-        $identificationToken = IdentificationFlowDataExtractor::extractIdentificationToken($request->getSession())
+        $additionalData             = $this->affiliateDataSerializer->serialize($request->getSession(), 'affiliate');
+        $identificationToken        = IdentificationFlowDataExtractor::extractIdentificationToken($request->getSession())
             ?? $this->generator->generateToken();
-        $billingCarrierId    = IdentificationFlowDataExtractor::extractBillingCarrierId($request->getSession());
-        $successUrl          = $this->router->generate('subscription.subscribe_back', [], RouterInterface::ABSOLUTE_URL);
-        $waitPageUrl         = $this
+        $billingCarrierId           = IdentificationFlowDataExtractor::extractBillingCarrierId($request->getSession());
+        $successUrl                 = $this->router->generate('subscription.subscribe_back', [], RouterInterface::ABSOLUTE_URL);
+        $waitPageUrl                = $this
             ->router
             ->generate('wait_for_callback', ['successUrl' => $successUrl], RouterInterface::ABSOLUTE_URL);
-
+        $listener                   = $this->router->generate('subscription.listen', [], RouterInterface::ABSOLUTE_URL);
+        $additionalData['listener'] = $listener;
 
         $parameters = $this->requestParametersProvider->prepareRequestParameters(
             $identificationToken,
@@ -68,7 +74,7 @@ class PassthroughRequestPreparer
             $request->getClientIp(),
             $waitPageUrl,
             $request->headers->all(),
-            $affiliateParams
+            $additionalData
         );
 
         return $parameters;

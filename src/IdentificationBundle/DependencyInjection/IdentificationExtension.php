@@ -24,15 +24,9 @@ class IdentificationExtension extends ConfigurableExtension implements PrependEx
     {
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('listeners.yml');
         $loader->load('services.yml');
-        $loader->load('action-ident.yml');
-        $loader->load('action-ident-callback.yml');
-        $loader->load('action-wifi-ident.yml');
-        $loader->load('billing-framework-integration.yml');
         $loader->load('repositories.yml');
         $loader->load('profiler.yml');
-        $loader->load('twig.yml');
         $loader->load('user.yml');
 
 

@@ -4,15 +4,16 @@ namespace SubscriptionBundle\Repository\Affiliate;
 
 use Doctrine\ORM\EntityRepository;
 use PDO;
+use SubscriptionBundle\Entity\Affiliate\AffiliateLog;
 use SubscriptionBundle\Entity\Subscription;
 
 class AffiliateLogRepository extends EntityRepository
 {
     /**
-     * @param string $campaignToken
+     * @param string    $campaignToken
      * @param \DateTime $started
      * @param \DateTime $expired
-     * @param int $limit
+     * @param int       $limit
      *
      * @return array
      *
@@ -26,7 +27,7 @@ class AffiliateLogRepository extends EntityRepository
     ): array
     {
         $start = $started->format('Y-m-d H:i:s');
-        $end = $expired->format('Y-m-d H:i:s');
+        $end   = $expired->format('Y-m-d H:i:s');
 
         $q = "SELECT al.user_msisdn FROM affiliate_log AS al
                 INNER JOIN `user` AS u ON u.identifier = al.user_msisdn
@@ -45,11 +46,11 @@ class AffiliateLogRepository extends EntityRepository
     }
 
     /**
-     * @param string $affiliateId
-     * @param string $carrierId
+     * @param string    $affiliateId
+     * @param string    $carrierId
      * @param \DateTime $started
      * @param \DateTime $expired
-     * @param int $limit
+     * @param int       $limit
      *
      * @return array
      *
@@ -64,7 +65,7 @@ class AffiliateLogRepository extends EntityRepository
     ): array
     {
         $start = $started->format('Y-m-d H:i:s');
-        $end = $expired->format('Y-m-d H:i:s');
+        $end   = $expired->format('Y-m-d H:i:s');
 
         $q = "SELECT al.user_msisdn FROM affiliates AS aff
                 INNER JOIN campaigns AS cmp ON aff.uuid = cmp.affiliate_id 
@@ -84,5 +85,29 @@ class AffiliateLogRepository extends EntityRepository
         $result = $statement->fetchAll(PDO::FETCH_COLUMN);
 
         return is_array($result) ? $result : [];
+    }
+
+    /**
+     * @param int                     $status
+     * @param \DateTimeInterface|null $earlierThan
+     * @return AffiliateLog[]
+     */
+    public function findBatch(int $status = null, \DateTimeInterface $earlierThan = null): array
+    {
+
+        $qb = $this->createQueryBuilder('al');
+
+        if ($status) {
+            $qb->andWhere('al.status = :waiting');
+            $qb->setParameter(':waiting', $status);
+        }
+        if ($earlierThan) {
+            $qb->andWhere('al.addedAt < :dateTime');
+            $qb->setParameter(':dateTime', $earlierThan);
+        }
+
+        $qb->setMaxResults(100);
+
+        return $qb->getQuery()->getResult();
     }
 }

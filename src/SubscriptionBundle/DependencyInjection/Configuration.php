@@ -81,6 +81,23 @@ class Configuration implements ConfigurationInterface
                 ->end()
             ->end();
 
+        $rootNode
+            ->children()
+                ->arrayNode('campaign_confirmation')
+                    ->children()
+                        ->arrayNode('google')
+                            ->children()
+                                ->scalarNode('client_id')->isRequired()->end()
+                                ->scalarNode('client_key')->isRequired()->end()
+                                ->scalarNode('refresh_token')->isRequired()->end()
+                                ->scalarNode('developer_token')->isRequired()->end()
+                                ->scalarNode('client_customer_id')->isRequired()->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+
         return $treeBuilder;
     }
 }

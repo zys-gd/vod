@@ -1,0 +1,10 @@
+services:
+    Carriers\DebitelDEDimoco\Template\DebitelDETemplateHandler:
+        tags:
+            - { name: store_commons.template_handler }
+
+    Carriers\DebitelDEDimoco\Identification\DebitelDEDimocoWifiIdentificationHandler:
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'
+        tags:
+            - { name: identification.wifi_identification_handler }

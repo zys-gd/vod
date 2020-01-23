@@ -9,76 +9,72 @@
 namespace SubscriptionBundle\Affiliate\Service;
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use SubscriptionBundle\Affiliate\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
+use SubscriptionBundle\Affiliate\CampaignConfirmation\Handler\HasInstantConfirmation;
 use SubscriptionBundle\Affiliate\DTO\UserInfo;
-use SubscriptionBundle\Affiliate\Exception\WrongIncomingParameters;
-use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 use SubscriptionBundle\Entity\Affiliate\AffiliateLog;
 use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
-use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface;
 
 class AffiliateSender
 {
-    const USER_AGENT = 'Mozilla/4.0 (compatible; MSIE 7.0 Windows NT 5.1; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729)';
     /**
      * @var CampaignRepositoryInterface
      */
     private $campaignRepository;
+
     /**
-     * @var EntityManagerInterface
+     * @var LoggerInterface
      */
-    private $entityManager;
+    private $logger;
     /**
-     * @var GuzzleClientFactory
+     * @var CampaignConfirmationHandlerProvider
      */
-    private $clientFactory;
+    private $handlerProvider;
     /**
      * @var AffiliateLogFactory
      */
     private $affiliateLogFactory;
     /**
-     * @var LoggerInterface
+     * @var EntityManagerInterface
      */
-    private $logger;
-
+    private $entityManager;
 
     /**
      * AffiliateSender constructor.
-     *
-     * @param CampaignRepositoryInterface $campaignRepository
-     * @param EntityManagerInterface      $entityManager
-     * @param GuzzleClientFactory         $clientFactory
-     * @param AffiliateLogFactory         $affiliateLogFactory
-     * @param LoggerInterface             $logger
+     * @param CampaignRepositoryInterface         $campaignRepository
+     * @param LoggerInterface                     $logger
+     * @param CampaignConfirmationHandlerProvider $handlerProvider
+     * @param AffiliateLogFactory                 $affiliateLogFactory
+     * @param EntityManagerInterface              $entityManager
      */
     public function __construct(
         CampaignRepositoryInterface $campaignRepository,
-        EntityManagerInterface $entityManager,
-        GuzzleClientFactory $clientFactory,
+        LoggerInterface $logger,
+        CampaignConfirmationHandlerProvider $handlerProvider,
         AffiliateLogFactory $affiliateLogFactory,
-        LoggerInterface $logger
+        EntityManagerInterface $entityManager
     )
     {
         $this->campaignRepository  = $campaignRepository;
-        $this->entityManager       = $entityManager;
-        $this->clientFactory       = $clientFactory;
-        $this->affiliateLogFactory = $affiliateLogFactory;
         $this->logger              = $logger;
+        $this->handlerProvider     = $handlerProvider;
+        $this->affiliateLogFactory = $affiliateLogFactory;
+        $this->entityManager       = $entityManager;
     }
 
+
     public function checkAffiliateEligibilityAndSendEvent(
-        Subscription $subscription,
-        UserInfo $userInfo,
-        array $campaignData = [],
-        string $campaignToken = null
+        Subscription $subscription, UserInfo $userInfo, string $campaignToken = null, array $userCampaignData = []
     ): void
     {
         $this->logger->debug('start AffiliateSender::checkAffiliateEligibilityAndSendEvent()', [
             'userInfo'      => $userInfo,
-            'campaignData'  => $campaignData,
+            'campaignData'  => $userCampaignData,
             'campaignToken' => $campaignToken
         ]);
 
@@ -96,53 +92,34 @@ class AffiliateSender
         if (!$this->isCampaignConnectedToCarrier($campaign, $carrier)) {
             return;
         }
-        $affiliate = $campaign->getAffiliate();
 
-        try {
-            $data = [
-                'query' => $this->getPostBackParameters($affiliate, $campaign, $campaignData, $subscription->getSubscriptionPack())
-            ];
 
-            $fullUrl = $affiliate->getPostbackUrl() . '?' . http_build_query($data['query']);
+        $affiliate           = $campaign->getAffiliate();
+        $confirmationHandler = $this->handlerProvider->getHandlerForAffiliateId($affiliate->getUuid());
 
-            $this->logger->debug('check content', [
-                'userInfo'      => $data,
-                'fullUrl'       => $fullUrl,
-                'campaignToken' => $campaignToken
-            ]);
-
-            try {
-                $client = $this->clientFactory->getClient();
-                $client->request('GET', $affiliate->getPostbackUrl(), array_merge(['timeout' => 5.0], $data));
-                $entity = $this->affiliateLogFactory->create(
-                    AffiliateLog::EVENT_SUBSCRIBE,
-                    true,
-                    $fullUrl,
-                    $userInfo,
-                    $campaign,
-                    $subscription,
-                    $campaignData
-                );
-            } catch (\Exception $ex) {
-                $entity = $this->affiliateLogFactory->create(
-                    AffiliateLog::EVENT_SUBSCRIBE,
-                    false,
-                    $fullUrl,
-                    $userInfo,
-                    $campaign,
-                    $subscription,
-                    $campaignData,
-                    $ex->getMessage()
-                );
-            }
-
+        if ($confirmationHandler instanceof HasInstantConfirmation) {
+            $confirmationHandler->doConfirm(
+                $affiliate,
+                $campaign,
+                $userCampaignData,
+                $subscription,
+                $userInfo
+            );
+        } else {
+            $entity = $this->affiliateLogFactory->create(
+                AffiliateLog::STATUS_WAITING,
+                '',
+                $userInfo,
+                $campaign,
+                $subscription,
+                $userCampaignData
+            );
             $this->entityManager->persist($entity);
             $this->entityManager->flush();
-
-            $this->logger->debug('end AffiliateSender::checkAffiliateEligibilityAndSendEvent(): success');
-        } catch (WrongIncomingParameters $e) {
-            $this->logger->debug('ending with error AffiliateSender::checkAffiliateEligibilityAndSendEvent(): not full data in request');
         }
+
+        $this->logger->debug('end AffiliateSender::checkAffiliateEligibilityAndSendEvent(): success');
+
     }
 
     private function isCampaignConnectedToCarrier(CampaignInterface $campaign, CarrierInterface $carrier): bool
@@ -157,126 +134,5 @@ class AffiliateSender
         return in_array($carrier->getBillingCarrierId(), $ids);
     }
 
-    public function areParametersEqual(AffiliateInterface $affiliate, array $campaignParams): bool
-    {
-        $paramsList = $affiliate->getParamsList();
-        if (!array_diff_key(array_flip($paramsList), $campaignParams)) {
-            return true;
-        }
 
-        return false;
-    }
-
-    /**
-     * @param AffiliateInterface $affiliate
-     * @param CampaignInterface  $campaign
-     * @param array              $campaignData
-     * @param SubscriptionPack   $subscriptionPack
-     *
-     * @return array
-     * @throws WrongIncomingParameters
-     */
-    private function getPostBackParameters(
-        AffiliateInterface $affiliate,
-        CampaignInterface $campaign,
-        array $campaignData,
-        SubscriptionPack $subscriptionPack
-    ): array
-    {
-        $query = [];
-
-        if ($affiliate->isUniqueFlow()) {
-            $query = $this->jumpIntoUniqueFlow($affiliate, $campaignData);
-        } else {
-            $paramsList    = $affiliate->getParamsList();
-            $constantsList = $affiliate->getConstantsList();
-            $query         = $this->jumpIntoStandartFlow($paramsList, $constantsList, $campaignData, $query);
-            $this->logger->debug('check content in getPostBackParameters()', [
-                'query' => $query
-            ]);
-        };
-
-        if (!$affiliate->isUniqueFlow() && $subPriceName = $affiliate->getSubPriceName()) {
-            $query = array_merge(
-                $query,
-                [$subPriceName => $this->calculateAffiliatePriceParameter($campaign, $subscriptionPack)]
-            );
-        }
-
-        $this->logger->debug('check content in getPostBackParameters()', [
-            'query' => $query
-        ]);
-
-        return $query;
-    }
-
-    protected function calculateAffiliatePriceParameter(
-        CampaignInterface $campaign,
-        SubscriptionPack $subscriptionPack
-    ): float
-    {
-        if ($campaign->isZeroCreditSubAvailable()) {
-            return $campaign->getZeroEurPrice();
-        }
-
-        if ($campaign->isFreeTrialSubscription() || $subscriptionPack->isFirstSubscriptionPeriodIsFree()) {
-            return $campaign->getFreeTrialPrice();
-        }
-
-        return $campaign->getGeneralPrice();
-    }
-
-    /**
-     * @param array $paramsList
-     * @param array $constantsList
-     * @param array $campaignParams
-     * @param array $query
-     *
-     * @return array
-     * @throws WrongIncomingParameters
-     */
-    private function jumpIntoStandartFlow(array $paramsList, array $constantsList, array $campaignParams, array $query)
-    {
-        $this->logger->debug('debug AffiliateSender::jumpIntoStandartFlow()', [
-            'paramsList (from DB)'      => $paramsList,
-            'campaignParams (from url)' => $campaignParams,
-            'constantsList'             => $constantsList,
-        ]);
-
-        if (!empty($paramsList)) {
-            foreach ($paramsList as $output => $input) {
-                try {
-                    $query[$output] = $campaignParams[$input]; // !isset($campaignParams[$input])
-                } catch (\Error $e) {
-                    throw new WrongIncomingParameters();
-                }
-            }
-        }
-        if (!empty($constantsList)) {
-            $query = array_merge($constantsList, $query);
-        }
-
-        return $query;
-
-
-    }
-
-    /**
-     * @param AffiliateInterface $affiliate
-     * @param array              $campaignParams
-     *
-     * @return array|string
-     */
-    private function jumpIntoUniqueFlow(AffiliateInterface $affiliate, array $campaignParams)
-    {
-        if (!empty($campaignParams) && array_key_exists($affiliate->getUniqueParameter(), $campaignParams)) {
-            $query = [
-                $affiliate->getUniqueParameter() => $campaignParams[$affiliate->getUniqueParameter()]
-            ];
-
-            return $query;
-        }
-
-        return [];
-    }
 }

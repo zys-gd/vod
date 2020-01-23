@@ -17,8 +17,8 @@ use IdentificationBundle\Identification\Handler\IdentificationHandlerProvider;
 use IdentificationBundle\Identification\Service\RouteProvider;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use SubscriptionBundle\Blacklist\BlacklistAttemptRegistrator;
-use SubscriptionBundle\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
-use SubscriptionBundle\CampaignConfirmation\Handler\CustomPage;
+use SubscriptionBundle\Affiliate\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
+use SubscriptionBundle\Affiliate\CampaignConfirmation\Handler\HasCustomPage;
 use SubscriptionBundle\CAPTool\Common\CAPToolRedirectUrlResolver;
 use SubscriptionBundle\CAPTool\Subscription\Exception\CapToolAccessException;
 use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter;
@@ -116,8 +116,8 @@ class SubscribeActionACL
             );
         }
 
-        $campaignConfirmationHandler = $this->campaignConfirmationHandlerProvider->provideHandler($request->getSession());
-        if ($campaignConfirmationHandler instanceof CustomPage) {
+        $campaignConfirmationHandler = $this->campaignConfirmationHandlerProvider->getHandlerForSession($request->getSession());
+        if ($campaignConfirmationHandler instanceof HasCustomPage) {
             $result = $campaignConfirmationHandler->proceedCustomPage($request);
             if ($result instanceof RedirectResponse) {
                 return $result;

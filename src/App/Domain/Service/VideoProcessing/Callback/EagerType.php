@@ -12,7 +12,6 @@ namespace App\Domain\Service\VideoProcessing\Callback;
 use App\Domain\Entity\UploadedVideo;
 use App\Domain\Repository\UploadedVideoRepository;
 use Doctrine\ORM\EntityManager;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
