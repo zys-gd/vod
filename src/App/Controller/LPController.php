@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Domain\ACL\Exception\AccessException;
 use App\Domain\ACL\Exception\CampaignMissingParametersException;
+use App\Domain\ACL\Exception\CampaignPausedException;
 use App\Domain\ACL\LandingPageACL;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
@@ -205,6 +206,9 @@ class LPController extends AbstractController implements ControllerWithISPDetect
 
         /** @var Campaign $campaign */
         if ($campaign) {
+            if ($campaign->getIsPause()) { // TODO: technical debt
+                return RedirectResponse::create($this->defaultRedirectUrl);
+            }
 
             try {
                 $this->landingPageAccessResolver->ensureCampaignHaveAllParametersPassed($request, $campaign);
