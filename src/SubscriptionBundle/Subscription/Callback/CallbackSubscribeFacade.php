@@ -11,6 +11,7 @@ use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\Service\AffiliateSender;
 use SubscriptionBundle\Affiliate\Service\UserInfoMapper;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
+use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitCompleter;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Service\EntitySaveHelper;
 use SubscriptionBundle\Subscription\Callback\Common\Handler\SubscriptionCallbackHandler;
@@ -51,6 +52,10 @@ class CallbackSubscribeFacade
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var SubscriptionLimitCompleter
+     */
+    private $subscriptionLimitCompleter;
 
     /**
      * SubscribeFacade constructor.
@@ -63,6 +68,7 @@ class CallbackSubscribeFacade
      * @param UserInfoMapper              $infoMapper
      * @param AffiliateSender             $affiliateService
      * @param LoggerInterface             $logger
+     * @param SubscriptionLimitCompleter  $subscriptionLimitCompleter
      */
     public function __construct(
         SubscriptionCallbackHandler $subscriptionCallbackHandler,
@@ -72,7 +78,8 @@ class CallbackSubscribeFacade
         ApiConnector $apiConnector,
         UserInfoMapper $infoMapper,
         AffiliateSender $affiliateService,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        SubscriptionLimitCompleter $subscriptionLimitCompleter
     )
     {
         $this->subscriptionCallbackHandler = $subscriptionCallbackHandler;
@@ -83,6 +90,7 @@ class CallbackSubscribeFacade
         $this->infoMapper                  = $infoMapper;
         $this->affiliateSender             = $affiliateService;
         $this->logger                      = $logger;
+        $this->subscriptionLimitCompleter  = $subscriptionLimitCompleter;
     }
 
     /**
@@ -118,5 +126,6 @@ class CallbackSubscribeFacade
         );
 
         $this->crossSubscriptionApi->registerSubscription($user->getIdentifier(), $user->getBillingCarrierId());
+        $this->subscriptionLimitCompleter->finishProcess($processResponse, $subscription);
     }
 }
