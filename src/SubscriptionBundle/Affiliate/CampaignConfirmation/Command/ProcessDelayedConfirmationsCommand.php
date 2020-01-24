@@ -9,15 +9,14 @@
 namespace SubscriptionBundle\Affiliate\CampaignConfirmation\Command;
 
 
-use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\Campaign;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\Affiliate\CampaignConfirmation\Handler\CampaignConfirmationHandlerProvider;
 use SubscriptionBundle\Affiliate\CampaignConfirmation\Handler\HasDelayedConfirmation;
-use SubscriptionBundle\Entity\Affiliate\AffiliateLog;
 use SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository;
 use SubscriptionBundle\Repository\Affiliate\CampaignRepositoryInterface;
+use SubscriptionBundle\Subscription\Renew\Cron\CronTaskStatus;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,6 +25,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
 class ProcessDelayedConfirmationsCommand extends Command
 {
+    CONST CRON_TASK_NAME = 'delayedConfirmationsCronTask';
+
     /**
      * @var AffiliateLogRepository
      */
@@ -50,16 +51,22 @@ class ProcessDelayedConfirmationsCommand extends Command
      * @var Stopwatch
      */
     private $stopwatch;
+    /**
+     * @var CronTaskStatus
+     */
+    private $cronTaskStatus;
 
 
     /**
      * ProcessDelayedConfirmationsCommand constructor.
+     *
      * @param AffiliateLogRepository              $affiliateLogRepository
      * @param CampaignConfirmationHandlerProvider $handlerProvider
      * @param CampaignRepositoryInterface         $campaignRepository
      * @param EntityManagerInterface              $entityManager
      * @param LoggerInterface                     $logger
      * @param Stopwatch                           $stopwatch
+     * @param CronTaskStatus                      $cronTaskStatus
      */
     public function __construct(
         AffiliateLogRepository $affiliateLogRepository,
@@ -67,7 +74,8 @@ class ProcessDelayedConfirmationsCommand extends Command
         CampaignRepositoryInterface $campaignRepository,
         EntityManagerInterface $entityManager,
         LoggerInterface $logger,
-        Stopwatch $stopwatch
+        Stopwatch $stopwatch,
+        CronTaskStatus $cronTaskStatus
     )
     {
         $this->affiliateLogRepository = $affiliateLogRepository;
@@ -76,6 +84,7 @@ class ProcessDelayedConfirmationsCommand extends Command
         $this->entityManager          = $entityManager;
         $this->logger                 = $logger;
         $this->stopwatch              = $stopwatch;
+        $this->cronTaskStatus         = $cronTaskStatus;
 
         parent::__construct();
     }
@@ -111,6 +120,14 @@ class ProcessDelayedConfirmationsCommand extends Command
             return;
         }
 
+        $this->cronTaskStatus->initializeCronTaskByName(self::CRON_TASK_NAME);
+        try {
+            $this->cronTaskStatus->start();
+        } catch (\Exception $e) {
+            $output->writeln($e->getMessage());
+            return;
+        }
+
         $timer        = $this->stopwatch->start('command');
         $messageParts = [
             "Sending conversions to GoogleAds ($type)"
@@ -131,7 +148,8 @@ class ProcessDelayedConfirmationsCommand extends Command
 
             if (!isset($results[$resultId])) {
                 $results[$resultId] = 1;
-            } else {
+            }
+            else {
                 $results[$resultId]++;
             }
 
@@ -142,6 +160,7 @@ class ProcessDelayedConfirmationsCommand extends Command
         }
 
         $timer->stop();
+        $this->cronTaskStatus->stop();
 
         $messageParts[] = sprintf("%s records processed", count($batch));
         $messageParts[] = sprintf("%s trackings succeeded", $results['success'] ?? 0);
@@ -159,7 +178,8 @@ class ProcessDelayedConfirmationsCommand extends Command
 
         if (isset($selectedCampaigns[$token])) {
 
-        } else {
+        }
+        else {
             $selectedCampaigns[$token] = $this->campaignRepository->findOneByCampaignToken($token);
         }
 
