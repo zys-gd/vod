@@ -1,0 +1,77 @@
+{% extends "@App/Common/LP/wifi_subscribe_block_js.html.twig" %}
+
+{% block js_subscribe_block_events %}
+    <script>
+        // confirm pin code
+        var formHandler = {
+            removeError: function (element, timeout) {
+                timeout = timeout || 2000;
+                setTimeout(function(){
+                    $(element).removeClass('error-wrap');
+                }, timeout);
+            },
+            capitalize: function(text) {
+                return text.charAt(0).toUpperCase() + text.slice(1)
+            }
+        };
+
+        $(document).ready(() => {
+            $(document).on('focusout', '#terms-and-conditions', function (e) {
+                e.preventDefault();
+                $(this).removeClass('highlighting-item');
+            });
+
+            $(document).on('mousedown', '#terms-and-conditions', function (e) {
+                e.stopImmediatePropagation();
+                e.preventDefault();
+            });
+
+            $(document).on('submit', 'form[data-form=confirm]', function (e) {
+                var form = $('#wifi_form');
+
+                e.preventDefault();
+                var confirmCheckbox = $('#confirm-checkbox');
+                if (!$(confirmCheckbox).is(':checked')) {
+                    $(confirmCheckbox).addClass('error-wrap').focus();
+                    formHandler.removeError(confirmCheckbox);
+                    return;
+                }
+
+                var pinCode = $(form).find('[name="pin_code"]');
+                if (!$(pinCode).val()) {
+                    $(pinCode).addClass('error-wrap').focus();
+                    formHandler.removeError(pinCode);
+                    return;
+                }
+
+                $._loader();
+
+                $.ajax({
+                    url: "{{ path('confirm_sms_pin_code') }}",
+                    method: "POST",
+                    data: form.serialize(),
+                    success: function (result) {
+                        if (result.data.success) {
+                            window.location = result.data.redirectUrl;
+                        } else {
+                            $._loader(true);
+                            showAlert({title: result.data.message});
+                        }
+                    },
+                    error: (xhr, status, error) => {
+                        var isErrorData = xhr.responseJSON.data !== 'undefined' || false;
+                        var alertData = {
+                            title: isErrorData ? xhr.responseJSON.data.status.toUpperCase() : 'Failure',
+                            message: isErrorData ? formHandler.capitalize(xhr.responseJSON.data.message) : ''
+                        };
+
+                        showAlert(alertData);
+                    },
+                    complete: () => $._loader(true)
+                });
+            });
+        });
+    </script>
+{% endblock %}
+
+

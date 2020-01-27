@@ -4,6 +4,7 @@ namespace IdentificationBundle\WifiIdentification\Controller;
 
 use ExtrasBundle\API\Controller\APIControllerInterface;
 use ExtrasBundle\Controller\Traits\ResponseTrait;
+use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\BillingFramework\Process\Exception\PinRequestProcessException;
 use IdentificationBundle\BillingFramework\Process\Exception\PinVerifyProcessException;
 use IdentificationBundle\Form\LPConfirmSMSPinCodeType;
@@ -240,33 +241,33 @@ class PinIdentificationController extends AbstractController implements APIContr
      */
     public function confirmSMSPinCodeAction(Request $request, ISPData $ispData, DeviceData $deviceData)
     {
-        if (!$mobileNumber = $request->get('mobile_number')) {
-            throw new BadRequestHttpException('`mobile_number` is required');
-        }
-
-        if (!$pinCode = $request->get('pin_code', '')) {
-            throw new BadRequestHttpException('`pin_code` is required');
-        }
-
-        $postData                 = $request->request->all();
-        $billingCarrierId         = $ispData->getCarrierId();
-        $campaign                 = $this->campaignExtractor->getCampaignFromSession($request->getSession());
-        $phoneNumberExtension     = $this->phoneOptionsProvider->getPhoneValidationOptions($billingCarrierId);
-        $isZeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isZeroCreditAvailable($billingCarrierId, $campaign);
-
-        $form = $this->createForm(LPConfirmSMSPinCodeType::class, [
-            'pin_code'               => $pinCode,
-            'pin_validation_pattern' => $phoneNumberExtension->getPinRegexPattern()
-        ]);
-
-        $form->submit($postData);
-
-        if (!$form->isValid()) {
-            $errors = $form->getErrors(true);
-            return $this->getSimpleJsonResponse($errors->current()->getMessage(), Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
         try {
+            if (!$mobileNumber = $request->get('mobile_number')) {
+                throw new BadRequestHttpException('`mobile_number` is required');
+            }
+
+            if (!$pinCode = $request->get('pin_code', '')) {
+                throw new BadRequestHttpException('`pin_code` is required');
+            }
+
+            $postData                 = $request->request->all();
+            $billingCarrierId         = $ispData->getCarrierId();
+            $campaign                 = $this->campaignExtractor->getCampaignFromSession($request->getSession());
+            $phoneNumberExtension     = $this->phoneOptionsProvider->getPhoneValidationOptions($billingCarrierId);
+            $isZeroCreditSubAvailable = $this->zeroCreditSubscriptionChecking->isZeroCreditAvailable($billingCarrierId, $campaign);
+
+            $form = $this->createForm(LPConfirmSMSPinCodeType::class, [
+                'pin_code'               => $pinCode,
+                'pin_validation_pattern' => $phoneNumberExtension->getPinRegexPattern()
+            ]);
+
+            $form->submit($postData);
+
+            if (!$form->isValid()) {
+                $errors = $form->getErrors(true);
+                return $this->getSimpleJsonResponse($errors->current()->getMessage(), Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+
             $response = $this->identConfirmator->confirm(
                 $billingCarrierId,
                 $pinCode,
@@ -280,6 +281,13 @@ class PinIdentificationController extends AbstractController implements APIContr
         } catch (PinVerifyProcessException $exception) {
             $message = $this->errorCodeResolver->resolveMessage($exception->getCode(), $billingCarrierId);
             return $this->getSimpleJsonResponse($message, Response::HTTP_OK, [], ['success' => false]);
+        } catch (BadRequestHttpException $exception) {
+            return $this->getSimpleJsonResponse(
+                $exception->getMessage(),
+                Response::HTTP_BAD_REQUEST,
+                [],
+                ['success' => false]
+            );
         } catch (\Exception $exception) {
             return $this->getSimpleJsonResponse($exception->getMessage(), Response::HTTP_OK, [], ['success' => false]);
         }
