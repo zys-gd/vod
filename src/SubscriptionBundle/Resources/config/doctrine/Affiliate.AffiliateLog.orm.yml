@@ -6,7 +6,7 @@ SubscriptionBundle\Entity\Affiliate\AffiliateLog:
       user_msisdn_index:
           columns: [ user_msisdn ]
       added_at_index:
-          columns: [ added_at ]
+          columns: [ status, added_at ]
     id:
         uuid:
             type: guid
