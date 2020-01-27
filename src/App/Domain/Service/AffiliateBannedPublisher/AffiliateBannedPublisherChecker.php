@@ -35,11 +35,10 @@ class AffiliateBannedPublisherChecker
         foreach ($publishersFromQuery as $key) {
             $publisherId = $query[$key];
 
-            if ($carrier) {
+            $affiliateBannedPublisher = $this->affiliateBannedPublisherRepository->findTotallyBannedPublisher($affiliate, $publisherId);
+
+            if (!$affiliateBannedPublisher && $carrier) {
                 $affiliateBannedPublisher = $this->affiliateBannedPublisherRepository->findBannedPublisher4Carrier($affiliate, $publisherId, $carrier);
-            }
-            else {
-                $affiliateBannedPublisher = $this->affiliateBannedPublisherRepository->findTotallyBannedPublisher($affiliate, $publisherId);
             }
 
             return !!$affiliateBannedPublisher;
