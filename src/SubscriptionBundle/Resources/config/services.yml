@@ -209,6 +209,9 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: user_management, label: Complaints }
 
+    SubscriptionBundle\ComplaintsTool\Admin\Controller\ComplaintsAdminController:
+        tags: ['controller.service_arguments']
+
     SubscriptionBundle\ComplaintsTool\Admin\Listener\MenuListener:
         arguments: ['@SubscriptionBundle\ComplaintsTool\Admin\Sonata\ComplaintsAdmin']
         tags:
@@ -232,6 +235,9 @@ services:
         arguments: [~, SubscriptionBundle\Entity\Refund, 'SubscriptionBundle\Refund\Admin\Controller\RefundAdminController']
         tags:
             - { name: sonata.admin, manager_type: orm, group: refunds, label: Refunds }
+
+    SubscriptionBundle\Refund\Admin\Controller\RefundAdminController:
+        tags: ['controller.service_arguments']
 
     SubscriptionBundle\Subscription\Callback\Common\CallbackTypeHandlerProvider:
         arguments:
