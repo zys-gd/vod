@@ -72,6 +72,10 @@ services:
         resource: '../../Subscription/Unsubscribe/Controller/*'
         tags: ['controller.service_arguments']
 
+    SubscriptionBundle\Subscription\Unsubscribe\Admin\Controller\:
+        resource: '../../Subscription/Unsubscribe/Admin/Controller/*'
+        tags: ['controller.service_arguments']
+
     SubscriptionBundle\API\:
         resource: '../../API/*'
         exclude: '../../API/{Exception}'
