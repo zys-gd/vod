@@ -233,11 +233,12 @@ class PinIdentificationController extends AbstractController implements APIContr
     /**
      * @Method("POST")
      * @Route("/pincode/confirm",name="confirm_sms_pin_code")
-     * @param Request    $request
-     * @param ISPData    $ispData
+     * @param Request $request
+     * @param ISPData $ispData
      * @param DeviceData $deviceData
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function confirmSMSPinCodeAction(Request $request, ISPData $ispData, DeviceData $deviceData)
     {
