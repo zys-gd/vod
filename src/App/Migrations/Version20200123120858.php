@@ -13,7 +13,7 @@ final class Version20200123120858 extends AbstractMigration
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP IF EXISTS INDEX UNIQ_29D2A3F721DFC797 ON affiliate_banned_publisher');
+        $this->addSql('DROP NDEX IF EXISTS  UNIQ_29D2A3F721DFC797 ON affiliate_banned_publisher');
     }
 
     public function down(Schema $schema) : void
