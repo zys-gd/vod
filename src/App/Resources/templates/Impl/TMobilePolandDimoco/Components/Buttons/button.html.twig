@@ -1,0 +1,12 @@
+{% macro render(title, class) %}
+    <button type="button" class="button {{ class }}">
+        {{ title }}
+    </button>
+{% endmacro render %}
+
+{% macro renderSubmitButton(title, class) %}
+    <button type="submit" class="button {{ class }}" data-redirect-to="{{ path('dimoco_pin_confirmation_page') }}">
+        {{ title }}
+    </button>
+{% endmacro renderSubmitButton %}
+
