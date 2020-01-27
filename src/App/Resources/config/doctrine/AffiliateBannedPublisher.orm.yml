@@ -8,9 +8,9 @@ App\Domain\Entity\AffiliateBannedPublisher:
     fields:
         publisherId:
             type: string
-#    uniqueConstraints:
-#        affiliate_banned_publisher_key:
-#            columns: [ affiliate_id, publisher_id ]
+    uniqueConstraints:
+        affiliate_banned_publisher_key:
+            columns: [ carrier_id, affiliate_id, publisher_id ]
 
     manyToOne:
         affiliate:
@@ -19,10 +19,9 @@ App\Domain\Entity\AffiliateBannedPublisher:
             joinColumn:
                 name: affiliate_id
                 referencedColumnName: uuid
-
-    oneToOne:
         carrier:
             targetEntity: App\Domain\Entity\Carrier
+            inversedBy: bannedPublishers
             nullable: true
             joinColumn:
                 name: carrier_id
