@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Domain\ACL\Exception\AccessException;
 use App\Domain\ACL\Exception\CampaignMissingParametersException;
-use App\Domain\ACL\Exception\CampaignPausedException;
 use App\Domain\ACL\LandingPageACL;
 use App\Domain\Entity\Campaign;
 use App\Domain\Entity\Carrier;
