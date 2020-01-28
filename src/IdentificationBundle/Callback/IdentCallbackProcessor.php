@@ -18,14 +18,13 @@ use IdentificationBundle\Callback\Handler\IdentCallbackHandlerProvider;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Identification\Common\PostPaidHandler;
 use IdentificationBundle\Identification\Handler\HasPostPaidRestriction;
-use IdentificationBundle\User\Service\UserFactory;
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
 use IdentificationBundle\Repository\UserRepository;
+use IdentificationBundle\User\Service\UserFactory;
 use Psr\Log\LoggerInterface;
 use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use SubscriptionBundle\BillingFramework\Process\API\Exception\EmptyResponse;
 use SubscriptionBundle\BillingFramework\Process\API\ProcessResponseMapper;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class IdentCallbackProcessor
 {
@@ -100,8 +99,9 @@ class IdentCallbackProcessor
      * @param string $type
      * @param int    $carrierId
      * @param array  $attributes
-     * @throws BadRequestHttpException
+     *
      * @throws EmptyResponse
+     * @throws \Exception
      */
     public function process(string $type, int $carrierId, array $attributes): void
     {
@@ -134,14 +134,16 @@ class IdentCallbackProcessor
     }
 
     /**
-     * @param $result
-     * @param $carrier
+     * @param ProcessResult    $result
+     * @param CarrierInterface $carrier
+     *
      * @return User
+     * @throws \Exception
      */
     private function handleSuccess(ProcessResult $result, CarrierInterface $carrier): User
     {
         $token        = $result->getClientId();
-        $msisdn       = $result->getProviderUser();
+        $msisdn       = $result->getClientUser() ?? $result->getProviderUser();
         $processId    = $result->getId();
         $clientFields = $result->getClientFields();
 
