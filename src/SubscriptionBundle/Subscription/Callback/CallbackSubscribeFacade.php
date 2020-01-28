@@ -107,16 +107,19 @@ class CallbackSubscribeFacade
         $this->entitySaveHelper->persistAndSave($subscription);
         $this->logger->debug('doFullCallbackSubscribe creat subscription at:', [time()]);
         $this->logger->debug('doFullCallbackSubscribe receive affiliate', [$affiliateData]);
+
         $this->subscriptionEventTracker->trackSubscribe($subscription, $processResponse);
 
-        $userInfo = $this->infoMapper->mapFromUser($user);
-        $this->affiliateSender->checkAffiliateEligibilityAndSendEvent(
-            $subscription,
-            $userInfo,
-            $affiliateData['cid'] ?? null,
-            $affiliateData
-        );
+        if ($subscription->isSubscribed() && $processResponse->isSuccessful()) {
+            $userInfo = $this->infoMapper->mapFromUser($user);
+            $this->affiliateSender->checkAffiliateEligibilityAndSendEvent(
+                $subscription,
+                $userInfo,
+                $affiliateData['cid'] ?? null,
+                $affiliateData
+            );
 
-        $this->crossSubscriptionApi->registerSubscription($user->getIdentifier(), $user->getBillingCarrierId());
+            $this->crossSubscriptionApi->registerSubscription($user->getIdentifier(), $user->getBillingCarrierId());
+        }
     }
 }
