@@ -92,7 +92,7 @@ class IdentCallbackProcessor
         $this->entityManager     = $entityManager;
         $this->userRepository    = $userRepository;
         $this->handlerProvider   = $handlerProvider;
-        $this->postPaidHandler = $postPaidHandler;
+        $this->postPaidHandler   = $postPaidHandler;
     }
 
     /**
@@ -116,7 +116,8 @@ class IdentCallbackProcessor
         if ($handler instanceof HasCustomFlow) {
             $handler->process($result, $carrier);
 
-        } elseif ($handler instanceof HasCommonFlow) {
+        }
+        elseif ($handler instanceof HasCommonFlow) {
             if ($result->isSuccessful()) {
                 $user = $this->handleSuccess($result, $carrier);
                 $handler->afterSuccess($user, $result);
@@ -124,11 +125,13 @@ class IdentCallbackProcessor
                 if ($handler instanceof HasPostPaidRestriction) {
                     $this->postPaidHandler->process($user->getIdentifier(), $carrier->getBillingCarrierId());
                 }
-            } else {
+            }
+            else {
 
             }
 
-        } else {
+        }
+        else {
             throw new \RuntimeException('Handlers for identification callback should have according interfaces');
         }
     }
@@ -149,9 +152,10 @@ class IdentCallbackProcessor
 
         /** @var User $user */
         if (!$user = $this->userRepository->findOneBy(['identifier' => $msisdn])) {
-            $user = $this->userFactory->create($msisdn, $carrier, $clientFields['user_ip'], $token, $processId );
+            $user = $this->userFactory->create($msisdn, $carrier, $clientFields['user_ip'], $token, $processId);
             $this->entityManager->persist($user);
-        } else {
+        }
+        else {
             $user->setIdentificationToken($token);
             $user->setIdentificationProcessId($processId);
         }
