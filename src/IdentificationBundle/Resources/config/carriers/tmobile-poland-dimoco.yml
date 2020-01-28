@@ -5,3 +5,6 @@ services:
             - '@router'
         tags:
             - { name: identification.identification_handler }
+    IdentificationBundle\Carriers\TMobilePolandDimoco\TMobilePolandDimocoErrorCodeMapper:
+        tags:
+            - { name: identification.error_code_mapper }

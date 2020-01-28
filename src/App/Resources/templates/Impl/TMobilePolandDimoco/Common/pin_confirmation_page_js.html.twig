@@ -9,9 +9,6 @@
                 setTimeout(function(){
                     $(element).removeClass('error-wrap');
                 }, timeout);
-            },
-            capitalize: function(text) {
-                return text.charAt(0).toUpperCase() + text.slice(1)
             }
         };
 
@@ -30,10 +27,9 @@
                 var form = $('#wifi_form');
 
                 e.preventDefault();
-                var confirmCheckbox = $('#confirm-checkbox');
-                if (!$(confirmCheckbox).is(':checked')) {
-                    $(confirmCheckbox).addClass('error-wrap').focus();
-                    formHandler.removeError(confirmCheckbox);
+                var confirmBlock = $('#terms-and-conditions');
+                if (!$('#confirm-checkbox').is(':checked')) {
+                    $(confirmBlock).addClass('highlighting-item').focus();
                     return;
                 }
 
@@ -54,15 +50,12 @@
                         if (result.data.success) {
                             window.location = result.data.redirectUrl;
                         } else {
-                            $._loader(true);
                             showAlert({title: result.data.message});
                         }
                     },
                     error: (xhr, status, error) => {
-                        var isErrorData = xhr.responseJSON.data !== 'undefined' || false;
                         var alertData = {
-                            title: isErrorData ? xhr.responseJSON.data.status.toUpperCase() : 'Failure',
-                            message: isErrorData ? formHandler.capitalize(xhr.responseJSON.data.message) : ''
+                            message: xhr.responseJSON.data !== 'undefined' ? xhr.responseJSON.data.message : ''
                         };
 
                         showAlert(alertData);
