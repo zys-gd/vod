@@ -7,7 +7,6 @@ namespace SubscriptionBundle\Subscription\SubscribeBack;
 use IdentificationBundle\BillingFramework\Data\DataProvider;
 use IdentificationBundle\Entity\User;
 use Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector;
-use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimitCompleter;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
 use SubscriptionBundle\Service\EntitySaveHelper;
@@ -38,10 +37,6 @@ class Subscriber
      */
     private $resultSuccessChecker;
     /**
-     * @var SubscriptionLimitCompleter
-     */
-    private $limitCompleter;
-    /**
      * @var ApiConnector
      */
     private $crossSubscription;
@@ -52,7 +47,6 @@ class Subscriber
         OnSubscribeUpdater $subscribeUpdater,
         DataProvider $dataProvider,
         ProcessResultSuccessChecker $resultSuccessChecker,
-        SubscriptionLimitCompleter $limitCompleter,
         ApiConnector $crossSubscription
     )
     {
@@ -61,7 +55,6 @@ class Subscriber
         $this->subscribeUpdater     = $subscribeUpdater;
         $this->dataProvider         = $dataProvider;
         $this->resultSuccessChecker = $resultSuccessChecker;
-        $this->limitCompleter       = $limitCompleter;
         $this->crossSubscription    = $crossSubscription;
     }
 
@@ -69,10 +62,10 @@ class Subscriber
      * @param User             $user
      * @param SubscriptionPack $subscriptionPack
      * @param string           $billingProcessId
-     *
      * @param string|null      $affiliateToken
+     *
      * @return array
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException*@throws \Exception
      */
     public function subscribe(User $user, SubscriptionPack $subscriptionPack, string $billingProcessId, string $affiliateToken = null): array
     {
@@ -82,7 +75,6 @@ class Subscriber
         $newSubscription->setAffiliateToken($affiliateToken);
 
         $this->subscribeUpdater->updateSubscriptionByResponse($newSubscription, $processResult);
-        $this->limitCompleter->finishProcess($processResult, $newSubscription);
 
         if ($newSubscription->isSubscribed() && $this->resultSuccessChecker->isSuccessful($processResult)) {
             $this->crossSubscription->registerSubscription($user->getIdentifier(), $user->getBillingCarrierId());
@@ -99,6 +91,7 @@ class Subscriber
      * @param SubscriptionPack $plan
      *
      * @return Subscription
+     * @throws \Exception
      */
     private function createPendingSubscription(User $User, SubscriptionPack $plan): Subscription
     {

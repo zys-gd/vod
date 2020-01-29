@@ -96,9 +96,13 @@ class SubscribeAction extends AbstractController
      * @param IdentificationData $identificationData
      * @param ISPData            $ISPData
      *
-     * @return Response
+     * @return RedirectResponse|Response|null
      * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Psr\Cache\InvalidArgumentException
      * @throws \SubscriptionBundle\SubscriptionPack\Exception\ActiveSubscriptionPackNotFound
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
     public function __invoke(Request $request, IdentificationData $identificationData, ISPData $ISPData)
     {
