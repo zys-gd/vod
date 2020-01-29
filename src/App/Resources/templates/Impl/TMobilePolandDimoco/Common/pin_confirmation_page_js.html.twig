@@ -53,13 +53,6 @@
                             showAlert({title: result.data.message});
                         }
                     },
-                    error: (xhr, status, error) => {
-                        var alertData = {
-                            message: xhr.responseJSON.data !== 'undefined' ? xhr.responseJSON.data.message : ''
-                        };
-
-                        showAlert(alertData);
-                    },
                     complete: () => $._loader(true)
                 });
             });
