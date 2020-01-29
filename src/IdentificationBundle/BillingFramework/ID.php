@@ -53,4 +53,12 @@ class ID
     const TELEKOM_DE_DIMOCO      = 2321;
     const O2_DE_DIMOCO           = 2322;
     const DEBITEL_DE_DIMOCO      = 2323;
+
+
+    const DE_DIMOCO_CARRIERS = [
+        self::DEBITEL_DE_DIMOCO,
+        self::O2_DE_DIMOCO,
+        self::TELEKOM_DE_DIMOCO,
+        self::VODAFONE_DE_DIMOCO,
+    ];
 }

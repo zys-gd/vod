@@ -96,7 +96,8 @@
             "": "src/",
             "App\\": "src/App",
             "Admin\\": "src/Admin",
-            "Carriers\\": "src/Carriers"
+            "Carriers\\": "src/Carriers",
+            "Providers\\": "src/Providers"
         }
     },
     "autoload-dev": {
