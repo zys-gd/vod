@@ -2,25 +2,18 @@
 
 namespace SubscriptionBundle\Subscription\Unsubscribe\Admin\Controller;
 
-use CommonDataBundle\Entity\Interfaces\CarrierInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use IdentificationBundle\Entity\User;
 use IdentificationBundle\Repository\UserRepository;
 use Sonata\AdminBundle\Controller\CRUDController;
-use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
-use SubscriptionBundle\Entity\Affiliate\CampaignInterface;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Repository\Affiliate\AffiliateLogRepository;
 use SubscriptionBundle\Repository\BlackListRepository;
 use SubscriptionBundle\Repository\SubscriptionRepository;
-use SubscriptionBundle\Subscription\Unsubscribe\Admin\Form\UnsubscribeByAffiliateForm;
-use SubscriptionBundle\Subscription\Unsubscribe\Admin\Form\UnsubscribeByCampaignForm;
 use SubscriptionBundle\Subscription\Unsubscribe\Admin\Form\UnsubscribeByFileForm;
 use SubscriptionBundle\Subscription\Unsubscribe\Admin\Form\UnsubscribeByMsisdnForm;
 use SubscriptionBundle\Subscription\Unsubscribe\Admin\Service\AdminUnsubscriber;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
