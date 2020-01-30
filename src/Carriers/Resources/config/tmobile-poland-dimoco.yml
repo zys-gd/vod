@@ -30,6 +30,12 @@ services:
         tags:
             - { name: controller.service_arguments }
 
+    Carriers\TMobilePolandDimoco\Controller\WifiIdentificationController:
+        arguments:
+            - '@CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator'
+        tags:
+            - { name: controller.service_arguments }
+
     Carriers\TMobilePolandDimoco\Callback\TMobilePolandDimocoCallbackHandler:
         arguments:
             - '@IdentificationBundle\Repository\UserRepository'

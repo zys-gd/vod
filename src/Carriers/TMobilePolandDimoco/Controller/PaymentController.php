@@ -6,6 +6,7 @@ use CommonDataBundle\Service\TemplateConfigurator\Exception\TemplateNotFoundExce
 use CommonDataBundle\Service\TemplateConfigurator\TemplateConfigurator;
 use IdentificationBundle\Controller\ControllerWithISPDetection;
 use IdentificationBundle\Identification\DTO\ISPData;
+use SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -63,7 +64,7 @@ class PaymentController extends AbstractController implements ControllerWithISPD
 
         if (empty($result) || $result !== 'successful') {
             $reason = $request->query->get('reason', 'subscribe_error');
-
+            // ProcessResult::ERROR_NOT_ENOUGH_CREDIT
             return $this->redirectToRoute('index', ['err_handle' => $reason]);
         }
 

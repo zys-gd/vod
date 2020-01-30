@@ -4,10 +4,9 @@
 namespace App\Domain\Repository;
 
 
-use App\Domain\Entity\Affiliate;
 use App\Domain\Entity\AffiliateBannedPublisher;
+use App\Domain\Entity\Carrier;
 use Doctrine\ORM\EntityRepository;
-use ExtrasBundle\Utils\UuidGenerator;
 use SubscriptionBundle\Entity\Affiliate\AffiliateInterface;
 
 class AffiliateBannedPublisherRepository extends EntityRepository
@@ -18,9 +17,29 @@ class AffiliateBannedPublisherRepository extends EntityRepository
      *
      * @return AffiliateBannedPublisher|null
      */
-    public function findBannedPublisher(AffiliateInterface $affiliate, string $publisherId): ?AffiliateBannedPublisher
+    public function findTotallyBannedPublisher(AffiliateInterface $affiliate, string $publisherId): ?AffiliateBannedPublisher
     {
-        return $this->findOneBy(['affiliate' => $affiliate, 'publisherId' => $publisherId]);
+        return $this->findOneBy([
+            'carrier' => null,
+            'affiliate' => $affiliate,
+            'publisherId' => $publisherId,
+        ]);
+    }
+
+    /**
+     * @param AffiliateInterface $affiliate
+     * @param string             $publisherId
+     * @param Carrier            $carrier
+     *
+     * @return AffiliateBannedPublisher|null
+     */
+    public function findBannedPublisher4Carrier(AffiliateInterface $affiliate, string $publisherId, Carrier $carrier): ?AffiliateBannedPublisher
+    {
+        return $this->findOneBy([
+            'carrier' => $carrier,
+            'affiliate' => $affiliate,
+            'publisherId' => $publisherId,
+        ]);
     }
 
     /**

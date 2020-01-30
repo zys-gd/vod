@@ -29,14 +29,19 @@ class AffiliateBannedPublisherChecker
      */
     public function isPublisherBanned(array $query, AffiliateInterface $affiliate, Carrier $carrier = null): bool
     {
-        foreach ($query as $paramName => $value) {
-            if ($paramName == 'pid' || strpos($paramName, 'pub') === 0) {
-                $affiliateBannedPublisher = $this->affiliateBannedPublisherRepository->findBannedPublisher($affiliate, $value);
-                if ($affiliateBannedPublisher && $bannedCarrier = $affiliateBannedPublisher->getCarrier()) {
-                    return $bannedCarrier === $carrier;
-                }
-                return !!$affiliateBannedPublisher;
+        $keys                = array_keys($query);
+        $publishersFromQuery = preg_grep('/^pid|^pub.*/', $keys);
+
+        foreach ($publishersFromQuery as $key) {
+            $publisherId = $query[$key];
+
+            $affiliateBannedPublisher = $this->affiliateBannedPublisherRepository->findTotallyBannedPublisher($affiliate, $publisherId);
+
+            if (!$affiliateBannedPublisher && $carrier) {
+                $affiliateBannedPublisher = $this->affiliateBannedPublisherRepository->findBannedPublisher4Carrier($affiliate, $publisherId, $carrier);
             }
+
+            return !!$affiliateBannedPublisher;
         }
 
         return false;
