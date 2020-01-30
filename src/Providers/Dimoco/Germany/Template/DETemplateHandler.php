@@ -5,10 +5,6 @@ namespace Providers\Dimoco\Germany\Template;
 use CommonDataBundle\Service\TemplateConfigurator\Handler\TemplateHandlerInterface;
 use IdentificationBundle\BillingFramework\ID;
 
-/**
- * Class DETemplateHandler
- * @package Providers\Dimoco\Germany\Template
- */
 class DETemplateHandler implements TemplateHandlerInterface
 {
     /**
@@ -30,6 +26,6 @@ class DETemplateHandler implements TemplateHandlerInterface
      */
     public function getFullTemplatePath(string $rootTwigPathAlias, string $templatePath, string $templateName): string
     {
-        return "$rootTwigPathAlias/Impl/DebitelDEDimoco/$templatePath/$templateName.html.twig";
+        return "$rootTwigPathAlias/Impl/DEDimoco/$templatePath/$templateName.html.twig";
     }
 }

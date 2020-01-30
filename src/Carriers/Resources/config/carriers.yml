@@ -1,0 +1,70 @@
+services:
+    _defaults:
+        autowire: true
+
+    carriers.template_handlers:
+        namespace: Carriers\
+        resource: '../../**/*TemplateHandler.php'
+        tags:
+            - { name: store_commons.template_handler }
+
+    carriers.wifi_identification_handlers:
+        namespace: Carriers\
+        resource: '../../**/*WifiIdentificationHandler.php'
+        tags:
+            - { name: identification.wifi_identification_handler }
+
+    carriers.one_click_flow_handlers:
+        namespace: Carriers\
+        resource: '../../**/*OneClickFlow.php'
+        tags:
+            - { name: app.one_click_flow_handler }
+
+    carriers.sms_text_handlers:
+        namespace: Carriers\
+        resource: '../../**/*TextsHandler.php'
+        tags:
+            - { name: subscription.sms_text_handler }
+
+    carriers.identification_handlers:
+        namespace: Carriers\
+        resource: '../../**/*IdentificationHandler.php'
+        exclude: '../../**/*WifiIdentificationHandler.php'
+        tags:
+            - { name: identification.identification_handler }
+
+    carriers.identification_callback_handlers:
+        namespace: Carriers\
+        resource: '../../**/*IdentificationCallbackHandler.php'
+        tags:
+            - { name: identification.identification_callback_handler }
+            -
+    carriers.subscription_handlers:
+        namespace: Carriers\
+        resource: '../../**/*SubscribeHandler.php'
+        exclude: '../../**/*UnsubscribeHandler.php'
+        tags:
+            - { name: subscription.subscription_handler }
+
+#    carriers.callback_carrier_handlers.subscribe:
+#        namespace: Carriers\
+#            resource: '../../**/*CallbackHandler.php'
+#            exclude: '../../**/*IdentificationCallbackHandler.php'
+#        tags:
+#            - {name: subscription.callback_carrier_handler, type: subscribe}
+#
+#    carriers.notification_handlers:
+#        arguments:
+#            - '@CommonDataBundle\Repository\Interfaces\LanguageRepositoryInterface'
+#        tags:
+#            - { name: subscription.notification_handler, type: subscribe }
+#            - { name: subscription.notification_handler, type: unsubscribe }
+#            - { name: subscription.notification_handler, type: notify_renew }
+
+
+
+
+
+
+
+

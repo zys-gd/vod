@@ -1,0 +1,16 @@
+services:
+    _defaults:
+        autowire: true
+
+    providers.template_handlers:
+        namespace: Providers\
+        resource: '../../**/*TemplateHandler.php'
+        tags:
+            - { name: store_commons.template_handler }
+
+    providers.wifi_identification_handlers:
+        namespace: Providers\
+        resource: '../../**/*WifiIdentificationHandler.php'
+        tags:
+            - { name: identification.wifi_identification_handler }
+

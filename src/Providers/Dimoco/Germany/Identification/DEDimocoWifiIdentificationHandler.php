@@ -9,10 +9,6 @@ use IdentificationBundle\Repository\UserRepository;
 use IdentificationBundle\WifiIdentification\DTO\PhoneValidationOptions;
 use IdentificationBundle\WifiIdentification\Handler\WifiIdentificationHandlerInterface;
 
-/**
- * Class DEDimocoWifiIdentificationHandler
- * @package Providers\Dimoco\Germany\Identification
- */
 class DEDimocoWifiIdentificationHandler implements WifiIdentificationHandlerInterface
 {
     /**
@@ -21,7 +17,7 @@ class DEDimocoWifiIdentificationHandler implements WifiIdentificationHandlerInte
     private $userRepository;
 
     /**
-     * DebitelDEDimocoWifiIdentificationHandler constructor
+     * DEDimocoWifiIdentificationHandler constructor.
      *
      * @param UserRepository $userRepository
      */

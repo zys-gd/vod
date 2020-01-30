@@ -69,6 +69,9 @@ class VODKernel extends BaseKernel
         $appConfDir = $this->getProjectDir() . '/src/Carriers/Resources/config/';
         $loader->load($appConfDir . '*' . self::CONFIG_EXTS, 'glob');
 
+        $appConfDir = $this->getProjectDir() . '/src/Providers/Resources/config/';
+        $loader->load($appConfDir . '*' . self::CONFIG_EXTS, 'glob');
+
         $fixturesDir = $this->getProjectDir() . '/src/DataFixtures/config/';
         $loader->load($fixturesDir . 'fixtures.yml');
 
