@@ -1,6 +1,10 @@
 services:
     _defaults:
         autowire: true
+        bind:
+            $redirectUrl: '%default_redirect_url%'
+
+    Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector: '@cross_subscription.api_connector'
 
     carriers.template_handlers:
         namespace: Carriers\
@@ -38,7 +42,7 @@ services:
         resource: '../../**/*IdentificationCallbackHandler.php'
         tags:
             - { name: identification.identification_callback_handler }
-            -
+
     carriers.subscription_handlers:
         namespace: Carriers\
         resource: '../../**/*SubscribeHandler.php'
@@ -46,25 +50,46 @@ services:
         tags:
             - { name: subscription.subscription_handler }
 
-#    carriers.callback_carrier_handlers.subscribe:
-#        namespace: Carriers\
-#            resource: '../../**/*CallbackHandler.php'
-#            exclude: '../../**/*IdentificationCallbackHandler.php'
-#        tags:
-#            - {name: subscription.callback_carrier_handler, type: subscribe}
-#
-#    carriers.notification_handlers:
-#        arguments:
-#            - '@CommonDataBundle\Repository\Interfaces\LanguageRepositoryInterface'
-#        tags:
-#            - { name: subscription.notification_handler, type: subscribe }
-#            - { name: subscription.notification_handler, type: unsubscribe }
-#            - { name: subscription.notification_handler, type: notify_renew }
+    carriers.controllers:
+        namespace: Carriers\
+        resource: '../../**/*Controller.php'
+        tags:
+            - { name: controller.service_arguments }
 
+    #    SUBSCRIPTION HANDLERS
+    carriers.subscription_callback_handlers.subscribe:
+        namespace: Carriers\
+        resource: '../../**/*SubscribeCallbackHandler.php'
+        tags:
+            - {name: subscription.callback_carrier_handler, type: subscribe}
 
+    carriers.subscription_callback_handlers.unsubscribe:
+        namespace: Carriers\
+        resource: '../../**/*UnsubscribeCallbackHandler.php'
+        tags:
+            - {name: subscription.callback_carrier_handler, type: unsubscribe}
 
+    carriers.subscription_callback_handlers.renew:
+        namespace: Carriers\
+        resource: '../../**/*RenewCallbackHandler.php'
+        tags:
+            - {name: subscription.callback_carrier_handler, type: renew}
 
+    carriers.notification_handlers.subscribe:
+        namespace: Carriers\
+        resource: '../../**/*SubscribeNotificationHandler.php'
+        tags:
+            - { name: subscription.notification_handler, type: subscribe }
 
+    carriers.notification_handlers.unsubscribe:
+        namespace: Carriers\
+        resource: '../../**/*UnsubscribeNotificationHandler.php'
+        tags:
+            - { name: subscription.notification_handler, type: unsubscribe }
 
-
+    carriers.notification_handlers.notify_renew:
+        namespace: Carriers\
+        resource: '../../**/*RenewNotificationHandler.php'
+        tags:
+            - { name: subscription.notification_handler, type: notify_renew }
 

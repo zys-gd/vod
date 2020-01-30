@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class ZainKSAHandler
  */
-class ZainKSAHandler implements SubscriptionHandlerInterface, HasCustomResponses, HasCommonFlow
+class ZainKSASubscribeHandler implements SubscriptionHandlerInterface, HasCustomResponses, HasCommonFlow
 {
     /**
      * @var string
@@ -43,8 +43,8 @@ class ZainKSAHandler implements SubscriptionHandlerInterface, HasCustomResponses
         CarrierRepository $carrierRepository
     )
     {
-        $this->redirectUrl                    = $redirectUrl;
-        $this->carrierRepository              = $carrierRepository;
+        $this->redirectUrl       = $redirectUrl;
+        $this->carrierRepository = $carrierRepository;
     }
 
     /**
@@ -60,6 +60,7 @@ class ZainKSAHandler implements SubscriptionHandlerInterface, HasCustomResponses
     /**
      * @param Request $request
      * @param User    $user
+     *
      * @return Response|null
      */
     public function createResponseBeforeSubscribeAttempt(Request $request, User $user)
@@ -86,6 +87,7 @@ class ZainKSAHandler implements SubscriptionHandlerInterface, HasCustomResponses
      * @param Request      $request
      * @param User         $User
      * @param Subscription $subscription
+     *
      * @return Response|null
      */
     public function createResponseForSuccessfulSubscribe(Request $request, User $User, Subscription $subscription)
@@ -97,13 +99,17 @@ class ZainKSAHandler implements SubscriptionHandlerInterface, HasCustomResponses
      * @param Request      $request
      * @param User         $User
      * @param Subscription $subscription
+     *
      * @return Response|null
      */
     public function createResponseForExistingSubscription(Request $request, User $User, Subscription $subscription)
     {
     }
 
-    public function afterProcess(Subscription $subscription, \SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult $result)
+    public function afterProcess(
+        Subscription $subscription,
+        \SubscriptionBundle\BillingFramework\Process\API\DTO\ProcessResult $result
+    )
     {
         // TODO: Implement afterProcess() method.
     }

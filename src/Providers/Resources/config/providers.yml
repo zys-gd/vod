@@ -1,6 +1,10 @@
 services:
     _defaults:
         autowire: true
+        bind:
+            $redirectUrl: '%default_redirect_url%'
+
+    Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector: '@cross_subscription.api_connector'
 
     providers.template_handlers:
         namespace: Providers\
@@ -13,4 +17,79 @@ services:
         resource: '../../**/*WifiIdentificationHandler.php'
         tags:
             - { name: identification.wifi_identification_handler }
+
+    providers.one_click_flow_handlers:
+        namespace: Providers\
+        resource: '../../**/*OneClickFlow.php'
+        tags:
+            - { name: app.one_click_flow_handler }
+
+    providers.sms_text_handlers:
+        namespace: Providers\
+        resource: '../../**/*TextsHandler.php'
+        tags:
+            - { name: subscription.sms_text_handler }
+
+    providers.identification_handlers:
+        namespace: Providers\
+        resource: '../../**/*IdentificationHandler.php'
+        exclude: '../../**/*WifiIdentificationHandler.php'
+        tags:
+            - { name: identification.identification_handler }
+
+    providers.identification_callback_handlers:
+        namespace: Providers\
+        resource: '../../**/*IdentificationCallbackHandler.php'
+        tags:
+            - { name: identification.identification_callback_handler }
+
+    providers.subscription_handlers:
+        namespace: Providers\
+        resource: '../../**/*SubscribeHandler.php'
+        exclude: '../../**/*UnsubscribeHandler.php'
+        tags:
+            - { name: subscription.subscription_handler }
+
+    providers.controllers:
+        namespace: Providers\
+        resource: '../../**/*Controller.php'
+        tags:
+            - { name: controller.service_arguments }
+
+    #    SUBSCRIPTION HANDLERS
+    providers.subscription_callback_handlers.subscribe:
+        namespace: Providers\
+        resource: '../../**/*SubscribeCallbackHandler.php'
+        tags:
+            - {name: subscription.callback_carrier_handler, type: subscribe}
+
+    providers.subscription_callback_handlers.unsubscribe:
+        namespace: Providers\
+        resource: '../../**/*UnsubscribeCallbackHandler.php'
+        tags:
+            - {name: subscription.callback_carrier_handler, type: unsubscribe}
+
+    providers.subscription_callback_handlers.renew:
+        namespace: Providers\
+        resource: '../../**/*RenewCallbackHandler.php'
+        tags:
+            - {name: subscription.callback_carrier_handler, type: renew}
+
+    providers.notification_handlers.subscribe:
+        namespace: Providers\
+        resource: '../../**/*SubscribeNotificationHandler.php'
+        tags:
+            - { name: subscription.notification_handler, type: subscribe }
+
+    providers.notification_handlers.unsubscribe:
+        namespace: Providers\
+        resource: '../../**/*UnsubscribeNotificationHandler.php'
+        tags:
+            - { name: subscription.notification_handler, type: unsubscribe }
+
+    providers.notification_handlers.notify_renew:
+        namespace: Providers\
+        resource: '../../**/*RenewNotificationHandler.php'
+        tags:
+            - { name: subscription.notification_handler, type: notify_renew }
 

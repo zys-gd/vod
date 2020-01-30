@@ -1,8 +1,0 @@
-services:
-    Carriers\VodafoneEGTpay\Template\VodafoneEGTpayTemplateHandler:
-        tags:
-            - { name: store_commons.template_handler }
-
-    Carriers\VodafoneEGTpay\OneClick\VodafoneEGTpayOneClickFlow:
-        tags:
-            - { name: app.one_click_flow_handler }

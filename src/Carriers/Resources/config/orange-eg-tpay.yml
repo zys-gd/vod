@@ -1,8 +1,0 @@
-services:
-    Carriers\OrangeEGTpay\Template\OrangeEGTpayTemplateHandler:
-        tags:
-            - { name: store_commons.template_handler }
-
-    Carriers\OrangeEGTpay\OneClick\OrangeEGTpayOneClickFlow:
-        tags:
-            - { name: app.one_click_flow_handler }
