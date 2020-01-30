@@ -1,13 +1,13 @@
 <?php
 
 
-namespace Carriers\OrangeEGMM\Template;
+namespace Providers\MondiaMedia\Template;
 
 
 use CommonDataBundle\Service\TemplateConfigurator\Handler\TemplateHandlerInterface;
 use IdentificationBundle\BillingFramework\ID;
 
-class OrangeEGMMTemplateHandler implements TemplateHandlerInterface
+class MMTemplateHandler implements TemplateHandlerInterface
 {
 
     /**
@@ -17,7 +17,7 @@ class OrangeEGMMTemplateHandler implements TemplateHandlerInterface
      */
     public function canHandle(int $billingCarrierId): bool
     {
-        return $billingCarrierId === ID::ORANGE_EG_MM;
+        return in_array($billingCarrierId, ID::MM_CARRIERS);
     }
 
     /**
@@ -29,6 +29,6 @@ class OrangeEGMMTemplateHandler implements TemplateHandlerInterface
      */
     public function getFullTemplatePath(string $rootTwigPathAlias, string $templatePath, string $templateName): string
     {
-        return "$rootTwigPathAlias/Impl/OrangeTNMM/$templatePath/$templateName.html.twig";
+        return "$rootTwigPathAlias/Impl/MondiaMedia/$templatePath/$templateName.html.twig";
     }
 }

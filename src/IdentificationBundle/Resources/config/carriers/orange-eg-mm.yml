@@ -1,4 +1,0 @@
-services:
-    IdentificationBundle\Carriers\OrangeEGMM\Identification\OrangeEGMMIdentificationHandler:
-        tags:
-            - { name: identification.identification_handler }

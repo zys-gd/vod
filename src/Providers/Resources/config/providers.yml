@@ -1,8 +1,8 @@
 services:
     _defaults:
         autowire: true
-        bind:
-            $redirectUrl: '%default_redirect_url%'
+#        bind:
+#            $redirectUrl: '%default_redirect_url%'
 
     Playwing\CrossSubscriptionAPIBundle\Connector\ApiConnector: '@cross_subscription.api_connector'
 

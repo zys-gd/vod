@@ -2,6 +2,8 @@
 
 namespace IdentificationBundle\BillingFramework;
 
+use phpDocumentor\Reflection\Types\Self_;
+
 class ID
 {
     const BRAZIL_TIM             = 2200;
@@ -60,5 +62,12 @@ class ID
         self::O2_DE_DIMOCO,
         self::TELEKOM_DE_DIMOCO,
         self::VODAFONE_DE_DIMOCO,
+    ];
+
+    const MM_CARRIERS = [
+        self::VODAFONE_EGYPT_MM,
+        self::VIVA_BAHRAIN_MM,
+        self::ORANGE_EG_MM,
+        self::ORANGE_TUNISIA_MM
     ];
 }
