@@ -7,6 +7,9 @@ namespace IdentificationBundle\Identification\Controller;
 use IdentificationBundle\BillingFramework\Process\PassthroughProcess;
 use IdentificationBundle\Identification\Common\RequestParametersProvider;
 use IdentificationBundle\Identification\Service\PassthroughRequestPreparer;
+use SubscriptionBundle\CAPTool\Common\CAPToolRedirectUrlResolver;
+use SubscriptionBundle\CAPTool\Subscription\Exception\CapToolAccessException;
+use SubscriptionBundle\CAPTool\Subscription\SubscriptionLimiter;
 use SubscriptionBundle\Subscription\Common\RouteProvider;
 use SubscriptionBundle\Subscription\Common\SubscriptionExtractor;
 use SubscriptionBundle\Subscription\Subscribe\Controller\Event\SubscribeClickEventTracker;
@@ -42,6 +45,14 @@ class PassthroughController extends AbstractController
      * @var SubscribeClickEventTracker
      */
     private $clickEventTracker;
+    /**
+     * @var SubscriptionLimiter
+     */
+    private $subscriptionLimiter;
+    /**
+     * @var CAPToolRedirectUrlResolver
+     */
+    private $CAPToolRedirectUrlResolver;
 
     /**
      * PassthroughController constructor.
@@ -52,6 +63,8 @@ class PassthroughController extends AbstractController
      * @param SubscriptionExtractor      $subscriptionExtractor
      * @param RouteProvider              $routeProvider
      * @param SubscribeClickEventTracker $clickEventTracker
+     * @param SubscriptionLimiter        $subscriptionLimiter
+     * @param CAPToolRedirectUrlResolver $CAPToolRedirectUrlResolver
      */
     public function __construct(
         PassthroughProcess $passthroughProcess,
@@ -59,7 +72,9 @@ class PassthroughController extends AbstractController
         PassthroughRequestPreparer $passthroughRequestPreparer,
         SubscriptionExtractor $subscriptionExtractor,
         RouteProvider $routeProvider,
-        SubscribeClickEventTracker $clickEventTracker
+        SubscribeClickEventTracker $clickEventTracker,
+        SubscriptionLimiter $subscriptionLimiter,
+        CAPToolRedirectUrlResolver $CAPToolRedirectUrlResolver
     )
     {
         $this->passthroughProcess         = $passthroughProcess;
@@ -68,6 +83,8 @@ class PassthroughController extends AbstractController
         $this->subscriptionExtractor      = $subscriptionExtractor;
         $this->routeProvider              = $routeProvider;
         $this->clickEventTracker          = $clickEventTracker;
+        $this->subscriptionLimiter        = $subscriptionLimiter;
+        $this->CAPToolRedirectUrlResolver = $CAPToolRedirectUrlResolver;
     }
 
     /**
@@ -75,8 +92,11 @@ class PassthroughController extends AbstractController
      * @param Request $request
      *
      * @return string
-     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
     public function passthroughAction(Request $request)
     {
@@ -88,6 +108,14 @@ class PassthroughController extends AbstractController
                 return new RedirectResponse($this->routeProvider->getResubNotAllowedRoute());
             }
         }
+
+        try {
+            $this->subscriptionLimiter->ensureCapIsNotReached($request->getSession());
+        } catch (CapToolAccessException $exception) {
+            $url = $this->CAPToolRedirectUrlResolver->resolveUrl($exception);
+            return RedirectResponse::create($url);
+        }
+        $this->subscriptionLimiter->reserveSlotForSubscription($request->getSession());
 
         $parameters = $this->passthroughRequestPreparer->getProcessRequestParameters($request);
 

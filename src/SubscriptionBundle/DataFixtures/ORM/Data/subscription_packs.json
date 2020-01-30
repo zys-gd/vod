@@ -383,7 +383,7 @@
         "name": "Zong PK",
         "description": "",
         "isResubAllowed": false,
-        "tierPrice": "50",
+        "tierPrice": "20",
         "tierCurrency": "PKR",
         "displayCurrency": "",
         "credits": "2",

@@ -33,12 +33,17 @@
                     $('#terms-and-conditions').focus();
                     return;
                 }
+
+                var redirectTo = $(form).find('[type=submit]').attr('data-redirect-to')
+                    ? $(form).find('[type=submit]').attr('data-redirect-to')
+                    : '';
+
                 $.ajax({
                     url: "{{ path('send_sms_pin_code') }}",
                     method: "POST",
                     data: form.serialize(),
                     beforeSend: () => $._loader(),
-                    success: response => new PinSuccessResponseResolver(response),
+                    success: response => new PinSuccessResponseResolver(response, redirectTo),
                     error: response => new PinErrorResponseResolver(response).resolve(),
                     complete: () => $._loader(true)
                 });
@@ -139,13 +144,18 @@
             });
 
 
-            function PinSuccessResponseResolver(response) {
+            function PinSuccessResponseResolver(response, redirectTo = '') {
                 if (response.data.isResend) {
                     showAlert({title: 'New PIN-code', message: 'has been successfully sent'});
                 }
 
                 phoneTarget = $('input[name=mobile_number]');
                 phone = phoneTarget.val();
+
+                if (redirectTo) {
+                    window.location = redirectTo + '?mobile_number=' + phone;
+                    return;
+                }
 
                 $.ajax({
                     url: "{{ path('pin_confirm') }}",

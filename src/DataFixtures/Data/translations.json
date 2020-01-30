@@ -10478,5 +10478,14 @@
         "carrier_id": "3de06e41-f889-4f95-aac3-ebd317d9adg4",
         "key": "contact_us.text.3",
         "translation": "Helpline: 08000000557 (EUR 0,00\/Min.)"
+    },
+    {
+        "uuid": "4cfd115b-f117-49a9-ae6c-8292221c6372",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": "dh14iu7d-ebd4-12e8-91c4-02bb25d3dh7e",
+        "key": "message.error.invalid_pin",
+        "translation": "You have entered a wrong PIN, please try again"
     }
 ]
