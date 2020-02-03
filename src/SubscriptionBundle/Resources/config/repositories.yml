@@ -40,3 +40,8 @@ services:
     factory: ['@doctrine.orm.default_entity_manager', getRepository]
     arguments:
       - SubscriptionBundle\Entity\Affiliate\ConstraintByAffiliate
+
+  SubscriptionBundle\Repository\SubscriptionReminderRepository:
+    factory: ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments:
+      - SubscriptionBundle\Entity\SubscriptionReminder

@@ -5,9 +5,11 @@ namespace SubscriptionBundle\Repository;
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use DateTime;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use IdentificationBundle\Entity\User;
 use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionPack;
+use SubscriptionBundle\Entity\SubscriptionReminder;
 
 /**
  * SubscriptionRepository
@@ -143,6 +145,39 @@ class SubscriptionRepository extends EntityRepository
         return $query->getResult();
     }
 
+    /**
+     * @param CarrierInterface $carrier
+     * @param int              $daysInterval
+     *
+     * @return mixed
+     */
+    public function findSubscriptionsForRemind(CarrierInterface $carrier, int $daysInterval)
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
+
+        $query = $queryBuilder
+            ->leftJoin(SubscriptionReminder::class, 'sr', Join::WITH, 'sr.subscription = s.uuid')
+            ->innerJoin('s.user', 'u', Join::WITH, 'u.carrier = :carrier')
+            ->andWhere('s.status = :subStatus')
+            ->andWhere('s.currentStage = :subAction')
+            ->andWhere(
+                $queryBuilder->expr()->orX(
+                    'DATE_DIFF(CURRENT_DATE(), sr.lastReminderSent) >= :daysInterval',
+                    $queryBuilder->expr()->andX(
+                        'sr.lastReminderSent IS NULL',
+                        'DATE_DIFF(CURRENT_DATE(), s.created) >= :daysInterval'
+                    )
+                )
+            )
+            ->setParameters([
+                'subStatus'      => Subscription::IS_ACTIVE,
+                'subAction'      => Subscription::ACTION_SUBSCRIBE,
+                'carrier'        => $carrier,
+                'daysInterval' => $daysInterval
+            ])
+            ->setMaxResults(100)
+            ->getQuery();
+
+        return $query->getResult();
+    }
 }
-
-

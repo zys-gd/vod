@@ -50,20 +50,20 @@ class MassRenewCommand extends Command
      * @param CarrierRepositoryInterface $carrierRepository
      * @param CronTaskStatus             $cronTaskStatus
      * @param RenewHandlerProvider       $renewHandlerProvider
-     * @param CommonFlowHandler          $commonFlowHandler
+     * @param CommonFlowHandler          $reminder
      */
     public function __construct(
         CarrierRepositoryInterface $carrierRepository,
         CronTaskStatus $cronTaskStatus,
         RenewHandlerProvider $renewHandlerProvider,
-        CommonFlowHandler $commonFlowHandler
+        CommonFlowHandler $reminder
     )
     {
         $this->carrierRepository    = $carrierRepository;
         $this->cronTaskStatus       = $cronTaskStatus;
         $this->renewHandlerProvider = $renewHandlerProvider;
         parent::__construct();
-        $this->commonFlowHandler = $commonFlowHandler;
+        $this->commonFlowHandler = $reminder;
     }
 
     public function configure()
