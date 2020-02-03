@@ -93,3 +93,9 @@ services:
         tags:
             - { name: subscription.notification_handler, type: notify_renew }
 
+    providers.remind_handlers:
+        namespace: Providers\
+        resource: '../../**/*ReminderHandler .php'
+        tags:
+            - { name: subscription.remind_handler }
+
