@@ -1,5 +1,5 @@
 {% macro render() %}
-    {% import '@App/Components/Buttons/button.html.twig' as button %}
+    {% import importTemplate("Components/Buttons/button.html.twig") as button %}
     {% import '@App/Components/Forms/wifi_phone.html.twig' as wifi_phone %}
     {% import '@App/Components/Forms/wifi_pin.html.twig' as wifi_pin %}
     {% import '@App/Components/Forms/wifi_select.html.twig' as wifi_select %}

@@ -47,7 +47,7 @@ class OnSubscribeUpdater
      * @param \SubscriptionBundle\Subscription\Common\SubscriptionExtractor        $subscriptionProvider
      * @param \SubscriptionBundle\Subscription\Subscribe\Service\CreditsCalculator $creditsCalculator
      * @param \SubscriptionBundle\Subscription\Renew\Service\RenewDateCalculator   $renewDateCalculator
-     * @param  CommonSubscriptionUpdater                                           $commonSubscriptionUpdater
+     * @param CommonSubscriptionUpdater                                            $commonSubscriptionUpdater
      * @param \SubscriptionBundle\Subscription\Common\ProcessResultSuccessChecker  $resultSuccessChecker
      */
     public function __construct(
@@ -68,6 +68,7 @@ class OnSubscribeUpdater
     /**
      * @param Subscription  $subscription
      * @param ProcessResult $processResponse
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function updateSubscriptionByResponse(Subscription $subscription, ProcessResult $processResponse)
@@ -83,6 +84,7 @@ class OnSubscribeUpdater
     /**
      * @param Subscription  $subscription
      * @param ProcessResult $result
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function updateSubscriptionByCallbackResponse(Subscription $subscription, ProcessResult $result)

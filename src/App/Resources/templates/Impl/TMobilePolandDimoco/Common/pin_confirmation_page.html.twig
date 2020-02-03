@@ -1,0 +1,90 @@
+{% extends '@App/Impl/TMobilePolandDimoco/Common/payment.html.twig' %}
+{% import importTemplate("Common/LP/Sections/banner_section.html.twig") as banner_section %}
+{% import '@App/Components/Forms/wifi_phone.html.twig' as wifi_phone %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .error-wrap.form-control:focus, input.error-wrap:focus {
+            border-color: #F4151E;
+            box-shadow: 0 0 0 0.1rem rgb(244,22,31);
+        }
+
+        #confirm-checkbox {
+            width: 20px;
+            height: 20px;
+        }
+
+        .highlighting-item {
+            animation: highlight 2000ms ease-out;
+        }
+
+        @keyframes highlight {
+            0% {
+                background-color: red;
+            }
+
+            100% {
+                background-color: white;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% include "@App/Impl/TMobilePolandDimoco/Common/pin_confirmation_page_js.html.twig" %}
+{% endblock %}
+
+{% block body %}
+    <div class="d-flex flex-column w-100 mt-1">
+        <form id="wifi_form" data-form="confirm">
+            {{ wifi_phone.render(phoneNumber, 'hidden') }}
+            <div class="payment-text pl-2 mt-2">
+                <div>
+                    <span>Origindata SAS</span> <br>
+                    <span>{{ translate('payment.offer') }}</span>
+                </div>
+                <div class="confirm-page-info confirm-page-info-line1 mt-2">
+                    Wpisz poniżej PIN otrzymany SMSem do potwierdzenia transakcji
+                </div>
+
+                <div class="pin-code-group text-center mt-2">
+                    <div class="form-group">
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="pin-code-input"
+                                name="pin_code"
+                                placeholder="{% if isCarrierDetected() %}{{ getPinValidationOptions().placeholder }} {% endif %}"
+                                pattern="{% if isCarrierDetected() %}{{ getPinValidationOptions().pattern }}{% endif %}"
+                        />
+                    </div>
+                </div>
+                <div class="mt-2">Opłata będzie pobierana co 13,00 zł / 7 dni</div>
+            </div>
+            <div class="payment-text pr-2 pl-2 mt-2">
+                <div>{{ translate('payment.info.1', {'%terms_url%': path('terms_and_conditions')}) | raw }}</div>
+                <div class="mt-2">{{ translate('payment.info.2') }}</div>
+                <div id="terms-and-conditions" class="payment-text mt-2">
+                    <label>
+                        <input type="checkbox" id="confirm-checkbox">
+                        <span>{{ translate('payment.info.3') }}</span>
+                    </label>
+                </div>
+                <div>
+                    Zapoznaj się z treścią regulaminu <a href="{{ path('terms_and_conditions') }}">100% Sport</a>
+                </div>
+                <div class="mt-3 mb-3 text-center">
+                    <button
+                            type="submit"
+                            class="confirm-payment-button"
+                    >
+                        Zamawiam i place na powyzszych warunkach
+                    </button>
+                </div>
+                <p>{{ translate('payment.info.4') }}. <a onclick="$('#Więcej').toggle(); return false;" href="#">Więcej</a></p>
+                <p id="Więcej" class="collapse">{{ translate('payment.info.5') }}</p>
+            </div>
+        </form>
+{% endblock %}

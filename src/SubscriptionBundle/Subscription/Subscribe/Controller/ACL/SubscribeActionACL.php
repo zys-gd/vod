@@ -103,6 +103,18 @@ class SubscribeActionACL
         $this->CAPToolRedirectUrlResolver          = $CAPToolRedirectUrlResolver;
     }
 
+    /**
+     * @param Request            $request
+     * @param ISPData            $ISPData
+     * @param IdentificationData $identificationData
+     *
+     * @return Response|null
+     * @throws \Psr\Cache\InvalidArgumentException
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
+     * @throws \Exception
+     */
     public function checkIfActionIsAllowed(Request $request, ISPData $ISPData, IdentificationData $identificationData): ?Response
     {
 

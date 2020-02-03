@@ -10399,5 +10399,93 @@
         "carrier": {
             "uuid": "97400b8f-722b-4339-a48e-a51419bbb143"
         }
+    },
+    {
+        "uuid": "0924d7c1-a8fb-455c-a75e-fb50b8090221",
+        "language_id": "5179f17c-ebd4-11e8-95c4-02bb250f0f22",
+        "carrier_id": "3de06e41-f889-4f95-aac3-ebd31d7d9ag4",
+        "key": "contact_us.text.3",
+        "translation": "Helpline: 08000000557 (EUR 0,00\/Min.)"
+    },
+    {
+        "uuid": "29d86259-96c7-4fe5-8260-e43205ba6337",
+        "language_id": "5179fa73-ebd4-11e8-95c4-02bb250f0f22",
+        "carrier_id": null,
+        "key": "about_us.title",
+        "translation": "Über uns"
+    },
+    {
+        "uuid": "2b8455f9-3ec7-449a-9c84-52d2990dad11",
+        "language_id": "5179fa73-ebd4-11e8-95c4-02bb250f0f22",
+        "carrier_id": "3de06e41-f889-4f95-aac3-ebd31d97d9a4",
+        "key": "contact_us.text.3",
+        "translation": "Helpline: 08000000557 (EUR 0,00\/Min.)"
+    },
+    {
+        "uuid": "6b3972b4-edc5-425d-a18a-cd0b9541a3a7",
+        "language_id": "5179fa73-ebd4-11e8-95c4-02bb250f0f22",
+        "carrier_id": null,
+        "key": "contact_us.user.title",
+        "translation": "Benutzer"
+    },
+    {
+        "uuid": "7b40f564-ed1a-4a09-a0bd-d1dcd68aa762",
+        "language_id": "5179fa73-ebd4-11e8-95c4-02bb250f0f22",
+        "carrier_id": null,
+        "key": "contact_us.text.3",
+        "translation": "Helpline: 08000000557 (EUR 0,00\/Min.)"
+    },
+    {
+        "uuid": "99118e62-857e-475b-b5f3-6e068672eab7",
+        "language_id": "5179fa73-ebd4-11e8-95c4-02bb250f0f22",
+        "carrier_id": "3de06e41-f889-4f95-aac3-ebd31d9d7d9a",
+        "key": "contact_us.text.3",
+        "translation": "Helpline: 08000000557 (EUR 0,00\/Min.)"
+    },
+    {
+        "uuid": "acbfff10-c1c7-46d5-bd7c-1110184f7bf5",
+        "language_id": "5179f17c-ebd4-11e8-95c4-02bb250f0f22",
+        "carrier_id": "3de06e41-f889-4f95-aac3-ebd31d97d9a4",
+        "key": "contact_us.text.3",
+        "translation": "Helpline: 08000000557 (EUR 0,00\/Min.)"
+    },
+    {
+        "uuid": "aead323e-0e93-4ea7-a55a-c077fe0519b5",
+        "language_id": "5179fa73-ebd4-11e8-95c4-02bb250f0f22",
+        "carrier_id": "3de06e41-f889-4f95-aac3-ebd317d9adg4",
+        "key": "contact_us.text.3",
+        "translation": "Helpline: 08000000557 (EUR 0,00\/Min.)"
+    },
+    {
+        "uuid": "c5719fcf-7396-419b-8404-c32c6581e8f5",
+        "language_id": "5179f17c-ebd4-11e8-95c4-02bb250f0f22",
+        "carrier_id": "3de06e41-f889-4f95-aac3-ebd31d9d7d9a",
+        "key": "contact_us.text.3",
+        "translation": "Helpline: 08000000557 (EUR 0,00\/Min.)"
+    },
+    {
+        "uuid": "e7a7d387-9185-4306-8c57-73ad8dbfa2d0",
+        "language_id": "5179fa73-ebd4-11e8-95c4-02bb250f0f22",
+        "carrier": {
+            "uuid": "3de06e41-f889-4f95-aac3-ebd31d7d9ag4"
+        },
+        "key": "contact_us.text.3",
+        "translation": "Helpline: 08000000557 (EUR 0,00\/Min.)"
+    },
+    {
+        "uuid": "eee97fd9-bb28-4ab7-81b3-1df2cec2d8a1",
+        "language_id": "5179f17c-ebd4-11e8-95c4-02bb250f0f22",
+        "carrier_id": "3de06e41-f889-4f95-aac3-ebd317d9adg4",
+        "key": "contact_us.text.3",
+        "translation": "Helpline: 08000000557 (EUR 0,00\/Min.)"
+    },
+    {
+        "uuid": "4cfd115b-f117-49a9-ae6c-8292221c6372",
+        "language": {
+            "uuid": "5179f17c-ebd4-11e8-95c4-02bb250f0f22"
+        },
+        "carrier": "dh14iu7d-ebd4-12e8-91c4-02bb25d3dh7e",
+        "key": "message.error.invalid_pin",
+        "translation": "You have entered a wrong PIN, please try again"
     }
 ]

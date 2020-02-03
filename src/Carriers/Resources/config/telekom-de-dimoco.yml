@@ -1,0 +1,10 @@
+services:
+    Carriers\TelekomDEDimoco\Template\TelekomDETemplateHandler:
+        tags:
+            - { name: store_commons.template_handler }
+
+    Carriers\TelekomDEDimoco\Identification\TelekomDEDimocoWifiIdentificationHandler:
+        arguments:
+            - '@IdentificationBundle\Repository\UserRepository'
+        tags:
+            - { name: identification.wifi_identification_handler }

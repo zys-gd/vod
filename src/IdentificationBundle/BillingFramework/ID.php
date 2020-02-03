@@ -49,4 +49,8 @@ class ID
     const TMOBILE_POLAND_DIMOCO  = 2260;
     const BEELINE_KAZAKHSTAN_DOT = 2327;
     const ORANGE_EG_MM           = 2328;
+    const VODAFONE_DE_DIMOCO     = 2320;
+    const TELEKOM_DE_DIMOCO      = 2321;
+    const O2_DE_DIMOCO           = 2322;
+    const DEBITEL_DE_DIMOCO      = 2323;
 }
