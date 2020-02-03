@@ -12,7 +12,6 @@ use SubscriptionBundle\DependencyInjection\Compiler\SubscribeBackHandlerPass;
 use SubscriptionBundle\DependencyInjection\Compiler\SubscribeProcessStarterPass;
 use SubscriptionBundle\DependencyInjection\Compiler\SubscriptionHandlerPass;
 use SubscriptionBundle\DependencyInjection\Compiler\SubscriptionVoterPass;
-use SubscriptionBundle\DependencyInjection\Compiler\TwigAdditionalPathsExtension;
 use SubscriptionBundle\DependencyInjection\Compiler\UnsubscriptionHandlerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;

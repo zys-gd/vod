@@ -1,6 +1,6 @@
 <?php
 
-namespace SubscriptionBundle\Subscription\MassReminder;
+namespace SubscriptionBundle\Reminder\MassReminder;
 
 use CommonDataBundle\Entity\Interfaces\CarrierInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -9,9 +9,9 @@ use SubscriptionBundle\Entity\Subscription;
 use SubscriptionBundle\Entity\SubscriptionReminder;
 use SubscriptionBundle\Repository\SubscriptionReminderRepository;
 use SubscriptionBundle\Repository\SubscriptionRepository;
-use SubscriptionBundle\Subscription\Reminder\DTO\RemindSettings;
-use SubscriptionBundle\Subscription\Reminder\DTO\SendRemindersResult;
-use SubscriptionBundle\Subscription\Reminder\Service\RemindSender;
+use SubscriptionBundle\Reminder\DTO\RemindSettings;
+use SubscriptionBundle\Reminder\DTO\SendRemindersResult;
+use SubscriptionBundle\Reminder\Service\RemindSender;
 
 /**
  * Class Reminder

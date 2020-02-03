@@ -1,8 +1,8 @@
 <?php
 
-namespace SubscriptionBundle\Subscription\Reminder\Handler;
+namespace SubscriptionBundle\Reminder\Handler;
 
-use SubscriptionBundle\Subscription\Reminder\DTO\RemindSettings;
+use SubscriptionBundle\Reminder\DTO\RemindSettings;
 
 /**
  * Interface ReminderHandlerInterface

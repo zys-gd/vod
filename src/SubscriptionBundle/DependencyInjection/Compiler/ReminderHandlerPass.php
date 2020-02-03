@@ -16,7 +16,7 @@ class ReminderHandlerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $definition = $container->findDefinition('SubscriptionBundle\Subscription\Reminder\ReminderHandlerProvider');
+        $definition = $container->findDefinition('SubscriptionBundle\Reminder\ReminderHandlerProvider');
 
         $taggedServices = $container->findTaggedServiceIds('subscription.remind_handler');
 

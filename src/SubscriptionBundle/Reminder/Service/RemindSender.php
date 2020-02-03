@@ -1,6 +1,6 @@
 <?php
 
-namespace SubscriptionBundle\Subscription\Reminder\Service;
+namespace SubscriptionBundle\Reminder\Service;
 
 use IdentificationBundle\Entity\User;
 use SubscriptionBundle\BillingFramework\Notification\API\RequestSender;

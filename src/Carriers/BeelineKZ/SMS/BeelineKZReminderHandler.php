@@ -3,8 +3,8 @@
 namespace Carriers\BeelineKZ\SMS;
 
 use IdentificationBundle\BillingFramework\ID;
-use SubscriptionBundle\Subscription\Reminder\DTO\RemindSettings;
-use SubscriptionBundle\Subscription\Reminder\Handler\ReminderHandlerInterface;
+use SubscriptionBundle\Reminder\DTO\RemindSettings;
+use SubscriptionBundle\Reminder\Handler\ReminderHandlerInterface;
 
 /**
  * Class BeelineKZReminderHandler

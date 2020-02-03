@@ -1,10 +1,10 @@
 <?php
 
-namespace SubscriptionBundle\Subscription\MassReminder\Command;
+namespace SubscriptionBundle\Reminder\MassReminder\Command;
 
 use IdentificationBundle\Repository\CarrierRepositoryInterface;
-use SubscriptionBundle\Subscription\MassReminder\Reminder;
-use SubscriptionBundle\Subscription\Reminder\ReminderHandlerProvider;
+use SubscriptionBundle\Reminder\MassReminder\Reminder;
+use SubscriptionBundle\Reminder\ReminderHandlerProvider;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

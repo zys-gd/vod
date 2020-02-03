@@ -1,6 +1,6 @@
 <?php
 
-namespace SubscriptionBundle\Subscription\Reminder\DTO;
+namespace SubscriptionBundle\Reminder\DTO;
 
 /**
  * Class RemindSettings

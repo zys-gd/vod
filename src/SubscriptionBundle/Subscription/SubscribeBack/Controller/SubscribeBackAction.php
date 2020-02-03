@@ -63,6 +63,7 @@ class SubscribeBackAction
      * @param ISPData $ispData
      *
      * @return RedirectResponse|Response
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function __invoke(Request $request, ISPData $ispData)
     {

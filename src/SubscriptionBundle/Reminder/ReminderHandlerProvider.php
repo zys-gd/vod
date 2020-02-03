@@ -1,8 +1,8 @@
 <?php
 
-namespace SubscriptionBundle\Subscription\Reminder;
+namespace SubscriptionBundle\Reminder;
 
-use SubscriptionBundle\Subscription\Reminder\Handler\ReminderHandlerInterface;
+use SubscriptionBundle\Reminder\Handler\ReminderHandlerInterface;
 
 /**
  * Class ReminderHandlerProvider
