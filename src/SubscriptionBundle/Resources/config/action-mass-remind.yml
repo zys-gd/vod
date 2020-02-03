@@ -2,7 +2,6 @@ services:
     SubscriptionBundle\Subscription\MassReminder\Command\ReminderCommand:
         arguments:
             - '@App\Domain\Repository\CarrierRepository'
-            - '@cron.task'
             - '@SubscriptionBundle\Subscription\Reminder\ReminderHandlerProvider'
             - '@SubscriptionBundle\Subscription\MassReminder\Reminder'
         tags:
