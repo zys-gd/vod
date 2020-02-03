@@ -1,6 +1,6 @@
 <?php
 
-namespace SubscriptionBundle\Carriers\OrangeEGMM\Callback;
+namespace Providers\MondiaMedia\Subscribe;
 
 use IdentificationBundle\BillingFramework\ID;
 use IdentificationBundle\Entity\User;
@@ -14,13 +14,7 @@ use SubscriptionBundle\Subscription\Callback\Impl\HasCustomConversionTrackingRul
 use SubscriptionBundle\Subscription\Callback\Impl\HasCustomFlow;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * Created by PhpStorm.
- * User: dmitriy
- * Date: 01.11.18
- * Time: 11:18
- */
-class OrangeEGMMSubscribeCallbackHandler implements CarrierCallbackHandlerInterface, HasCustomConversionTrackingRules, HasCustomFlow
+class MMSubscribeCallbackHandler implements CarrierCallbackHandlerInterface, HasCustomConversionTrackingRules, HasCustomFlow
 {
     /**
      * @var CommonFlowHandler
@@ -36,7 +30,7 @@ class OrangeEGMMSubscribeCallbackHandler implements CarrierCallbackHandlerInterf
     private $callbackSubscribeFacade;
 
     /**
-     * OrangeTNSubscribeCallbackHandler constructor.
+     * MMSubscribeCallbackHandler constructor.
      *
      * @param CommonFlowHandler       $commonFlowHandler
      * @param ProcessResponseMapper   $processResponseMapper
@@ -55,7 +49,7 @@ class OrangeEGMMSubscribeCallbackHandler implements CarrierCallbackHandlerInterf
 
     public function canHandle(Request $request, int $carrierId): bool
     {
-        return $carrierId == ID::ORANGE_EG_MM;
+        return in_array($carrierId, ID::MM_CARRIERS);
     }
 
     public function afterProcess(Subscription $subscription, User $User, ProcessResult $processResponse)
