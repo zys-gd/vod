@@ -72,11 +72,8 @@ class Reminder
             ->subscriptionRepository
             ->findSubscriptionsForRemind($carrier, $remindSettings->getDaysInterval());
 
-        $result = new SendRemindersResult();
-
-        if (empty($subscriptions)) {
-            return $result;
-        }
+        $succeeded = [];
+        $failed = [];
 
         /** @var Subscription $subscription */
         foreach ($subscriptions as $subscription) {
@@ -88,11 +85,13 @@ class Reminder
             );
 
             if ($isSuccess) {
-                $result->addSuccessSubscription($subscription);
+                $succeeded[] = $subscription;
             } else {
-                $result->addFailedSubscription($subscription);
+                $failed[] = $subscription;
             }
         }
+
+        $result = new SendRemindersResult($succeeded, $failed);
 
         $this->subscriptionReminderRepository->deleteBySubscriptions($result->getSucceededSubscriptions());
 

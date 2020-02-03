@@ -105,6 +105,13 @@ services:
         resource: '../../Piwik/*'
         exclude: '../../Piwik/{DTO}'
 
+    SubscriptionBundle\Subscription\MassReminder\:
+        resource: '../../Subscription/MassReminder/*'
+
+    SubscriptionBundle\Subscription\Reminder\:
+        resource: '../../Subscription/Reminder/*'
+        exclude: '../../Subscription/Reminder/{DTO}'
+
     GuzzleHttp\Client:
         factory: ['@SubscriptionBundle\Affiliate\Service\GuzzleClientFactory','getClient']
         tags:

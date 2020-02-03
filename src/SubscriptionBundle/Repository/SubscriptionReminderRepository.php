@@ -27,6 +27,7 @@ class SubscriptionReminderRepository extends EntityRepository
                     ->in('sr.subscription', ':subscriptions')
             )
             ->setParameter('subscriptions', array_map(function($subscription) {
+                /** @var $subscription Subscription */
                 return $subscription->getUuid();
             }, $subscriptions))
             ->getQuery();

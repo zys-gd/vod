@@ -17,17 +17,34 @@ class SendRemindersResult
     /**
      * @var array|Subscription[]
      */
-    private $succeededSubscriptions = [];
+    private $succeededSubscriptions;
 
     /**
      * @var array|Subscription[]
      */
-    private $failedSubscriptions = [];
+    private $failedSubscriptions;
 
     /**
      * @var string|null
      */
     private $error = null;
+
+    /**
+     * SendRemindersResult constructor
+     *
+     * @param array       $succeededSubscriptions
+     * @param array       $failedSubscriptions
+     * @param string|null $error
+     */
+    public function __construct(
+        array $succeededSubscriptions = [],
+        array $failedSubscriptions = [],
+        string $error = null
+    ) {
+        $this->succeededSubscriptions = $succeededSubscriptions;
+        $this->failedSubscriptions = $failedSubscriptions;
+        $this->error = $error;
+    }
 
     /**
      * @return int
@@ -46,16 +63,6 @@ class SendRemindersResult
     }
 
     /**
-     * @param Subscription $subscription
-     */
-    public function addSuccessSubscription(Subscription $subscription): void
-    {
-        $this->succeededSubscriptions[] = $subscription;
-
-        $this->processed += 1;
-    }
-
-    /**
      * @return array|Subscription[]
      */
     public function getFailedSubscriptions(): array
@@ -64,28 +71,10 @@ class SendRemindersResult
     }
 
     /**
-     * @param Subscription $subscription
-     */
-    public function addFailedSubscription(Subscription $subscription): void
-    {
-        $this->failedSubscriptions[] = $subscription;
-
-        $this->processed += 1;
-    }
-
-    /**
      * @return string|null
      */
     public function getError(): ?string
     {
         return $this->error;
-    }
-
-    /**
-     * @param string $error
-     */
-    public function setError(string $error): void
-    {
-        $this->error = $error;
     }
 }
